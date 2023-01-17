@@ -87,7 +87,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="984"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section covers such settings as primer size, temperature, GC and other general settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&gt;В этом разделе рассматриваются такие параметры, как размер праймера, температура, GC и другие общие настройки.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В этом разделе рассматриваются такие параметры, как размер праймера, температура, GC и другие общие настройки.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1036"/>
@@ -142,7 +142,7 @@
         <location filename="../src/Primer3Dialog.ui" line="1655"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum, Optimum, and Maximum percentage of Gs and Cs in any primer or oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание Gs и Cs в праймере или олигонуклеотиде.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Минимальное, оптимальное и максимальное процентное содержание нуклеотидов G и C в праймере или олигонуклеотиде.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
     </message>
     <message>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6060"/>
         <source>RT-PCR</source>
-        <translation>RT-PCR</translation>
+        <translation>ПЦР с обратной транскрипцией</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6072"/>
@@ -750,7 +750,7 @@
         <location filename="../src/Primer3Dialog.ui" line="5520"/>
         <location filename="../src/Primer3Dialog.ui" line="5603"/>
         <source>Lt:</source>
-        <translation>Lt:</translation>
+        <translation>Мч:</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4332"/>
@@ -764,12 +764,12 @@
         <location filename="../src/Primer3Dialog.ui" line="5586"/>
         <location filename="../src/Primer3Dialog.ui" line="5610"/>
         <source>Gt:</source>
-        <translation>Gt:</translation>
+        <translation>Бч:</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4721"/>
         <source>#N&apos;s</source>
-        <translation>N</translation>
+        <translation>Количество N</translation>
     </message>
     <message>
         <source>Mispriming</source>
@@ -863,7 +863,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6226"/>
         <source>Primer product must span at least one intron on the corresponding genomic DNA</source>
-        <translation>Продук праймера должен охватывать по крайней мере один интрон на соответствующей геномной ДНК</translation>
+        <translation>Продукт праймера должен охватывать по крайней мере один интрон на соответствующей геномной ДНК</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5940"/>
@@ -966,7 +966,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="322"/>
         <source>Included region</source>
-        <translation>Включенные регион</translation>
+        <translation>Включенные регионы</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="334"/>
@@ -1061,7 +1061,7 @@
         <location filename="../src/Primer3Dialog.ui" line="618"/>
         <location filename="../src/Primer3Dialog.ui" line="625"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer&apos;s 3&apos;&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer&apos;s 3&apos;&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр &lt;span style=&quot; font-weight:700;&quot;&gt;Пять совпадений на 3&apos; конце&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="628"/>
@@ -1186,7 +1186,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="1751"/>
         <location filename="../src/Primer3Dialog.ui" line="2007"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Same as &lt;span style=&quot; font-weight:700;&quot;&gt;Max 3&apos; Pair Complementarity&lt;/span&gt; but for calculating the score (melting temperature of structure) thermodynamical approach is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. Парная Комплементарность на 3&apos;&lt;/span&gt; но для расчета значения (температуры плавления структуры) используется термодинамический подход&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;То же, что и &lt;span style=&quot; font-weight:700;&quot;&gt;Макс. Парная Комплементарность на 3&apos;&lt;/span&gt;, но для расчета значения (температуры плавления структуры) используется термодинамический подход&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="1770"/>
@@ -1297,7 +1297,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="2103"/>
         <location filename="../src/Primer3Dialog.ui" line="2119"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum allowed similarity to ectopic sites in the template. A negative value means do not check.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое сходство с смещщенными сайтами в шаблоне. При отрицательном значении не проверяется.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Максимально допустимое сходство с смещенными сайтами в шаблоне. При отрицательном значении не проверяется.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="2154"/>
@@ -1777,7 +1777,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="3985"/>
         <location filename="../src/Primer3Dialog.ui" line="4150"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;DMSO Concentration&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эквивалентный параметр праймера &lt;span style=&quot; font-weight:700;&quot;&gt;Концентрация ДМСО&lt;/span&gt; для внутреннего олигонуклеотида.&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="3830"/>
@@ -1800,7 +1800,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Dialog.ui" line="4120"/>
         <location filename="../src/Primer3Dialog.ui" line="4214"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 3&apos; end of the middle oligo / probe must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Overlap Positions&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&apos;-конец среднего олигонуклеотида должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; {3&apos;?} {700;?} {700;?}</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;3&apos;-конец среднего олигонуклеотида должен перекрывать одно из соединений в &lt;span style=&quot; font-weight:700;&quot;&gt;Позициях перекрывания внутреннего олигонуклеотида&lt;/span&gt; на это значение. Смотри детальное описание параметра &lt;span style=&quot; font-weight:700;&quot;&gt;Список перекрывающихся соединений&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4230"/>
@@ -1816,7 +1816,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4275"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section describes &amp;quot;penalty weights&amp;quot;, which allow the user to modify the criteria that Primer3 uses to select the &amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section describes &amp;quot;penalty weights&amp;quot;, which allow the user to modify the criteria that Primer3 uses to select the &amp;quot;best&amp;quot; primers.&lt;/p&gt;&lt;p&gt;There are two classes of weights: for some parameters there is a &apos;Lt&apos; (less than) and a &apos;Gt&apos; (greater than) weight. These are the weights that Primer3 uses when the value is less or greater than (respectively) the specified optimum.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Эта секция описывает &amp;quot;веса штрафов&amp;quot;, которые позволяют пользователю модифицировать критерии, которые Primer3 использует при выборе &amp;quot;лучших&amp;quot; праймеров.&lt;/p&gt;&lt;p&gt;Существует два класса параметров весов - &apos;Мч&apos; (менее чем) и &apos;Бч&apos; (более чем). Эти веса Primer3 использует в случаях, когда значение менее или более чем (соответственно) заданное оптимальное значение.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="4299"/>
@@ -2096,7 +2096,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6063"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify if primer product must overlap exon-exon junction or span intron. This only applies when designing primers for a cDNA (mRNA) sequence with annotated exons.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В этой секции пользователь может определить должен ли праймер иметь экзон-экзон перекрытие или протяжный интрон. Работает только в случае дизайна праймеров для cDNA (mRNA) последовательностей, аннотированных экзонами.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6069"/>
@@ -2111,7 +2111,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6204"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If the range is set, primer search will be restricted to selected exons. For example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;If the range is larger than actual exon range or the starting exon number exceeds number of exons, error message is shown. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если диапазон установлен, поиск праймеров будет ограничен выбранными экзонами. Например:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1-5&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Если диапазон больше фактического диапазона экзонов или начальный номер экзона превышает количество экзонов, отображается сообщение об ошибке. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6245"/>
@@ -2121,7 +2121,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5943"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can specify sequence quality of target sequence and related parameters.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В данной секции пользователь может задать качество целевой последовательности и связанные параметры.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="5956"/>
@@ -2272,7 +2272,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Tests.cpp" line="36"/>
         <location filename="../src/Primer3Tests.cpp" line="319"/>
         <source>QDomNode isn&apos;t element</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="83"/>
@@ -2519,52 +2519,52 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="488"/>
         <source>Overlap Junction List</source>
-        <translation type="unfinished">Список перекрывающихся соединений</translation>
+        <translation>Список перекрывающихся соединений</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="497"/>
         <source>Internal Oligo Overlap Positions</source>
-        <translation type="unfinished">Позиции перекрывания внутренних олигонуклеотидов</translation>
+        <translation>Позиции перекрывания внутренних олигонуклеотидов</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="514"/>
         <source>The &quot;Include region&quot; should be the only one</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Включенный регион&quot; должен быть только один</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="521"/>
         <source>Include Regions</source>
-        <translation type="unfinished"></translation>
+        <translation>Включенные регионы</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="530"/>
         <source>Pair OK Region List</source>
-        <translation type="unfinished">Список ОК парных регионов</translation>
+        <translation>Список ОК парных регионов</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="540"/>
         <source>Start Codon Sequence</source>
-        <translation type="unfinished">Последовательность стартового кодона</translation>
+        <translation>Последовательность стартового кодона</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="551"/>
         <source>Five Matches on Primer&apos;s 5&apos;</source>
-        <translation type="unfinished">Пять совпадений на 5&apos; конце</translation>
+        <translation>Пять совпадений на 5&apos; конце</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="562"/>
         <source>Five Matches on Primer&apos;s 3&apos;</source>
-        <translation type="unfinished">Пять совпадений на 5&apos; конце {3&apos;?}</translation>
+        <translation>Пять совпадений на 3&apos; конце</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="573"/>
         <source>Five Matches on Internal Oligo&apos;s  5&apos;</source>
-        <translation type="unfinished">Пять совпадений на 5&apos; конце внутреннего олиго</translation>
+        <translation>Пять совпадений на 5&apos; конце внутреннего олиго</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="584"/>
         <source>Five Matches on Internal Oligo&apos;s 3&apos;</source>
-        <translation type="unfinished">Пять совпадений на 3&apos; конце внутренного олигонуклеотида</translation>
+        <translation>Пять совпадений на 3&apos; конце внутренного олигонуклеотида</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="624"/>
@@ -2574,17 +2574,17 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="641"/>
         <source>Task &quot;pick_discriminative_primers&quot; requires exactly one &quot;Targets&quot; region.</source>
-        <translation type="unfinished"></translation>
+        <translation>Опция &quot;pick_discriminative_primers&quot; Требует ровно один &quot;Целевой регион&quot;.</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="652"/>
         <source>At least one primer on the &quot;Main&quot; settings page should be enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Должен быть отмечен как минимум один из праймеров на странице &quot;Основные параметры&quot;.</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="657"/>
         <source>Primer3 task</source>
-        <translation type="unfinished"></translation>
+        <translation>Задача Primer3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="674"/>
