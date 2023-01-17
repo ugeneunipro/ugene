@@ -147,32 +147,27 @@ private:
 class SamtoolsBasedDbi : public U2AbstractDbi {
 public:
     SamtoolsBasedDbi();
-    ~SamtoolsBasedDbi() override;
+    ~SamtoolsBasedDbi();
 
-    void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os) override;
-    QVariantMap shutdown(U2OpStatus& os) override;
-    QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) override {
+    virtual void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os);
+    virtual QVariantMap shutdown(U2OpStatus& os);
+    virtual QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) {
         return QHash<QString, QString>();
     }
-    U2DataType getEntityTypeById(const U2DataId& id) const override;
-    U2ObjectDbi* getObjectDbi() override;
-    U2AssemblyDbi* getAssemblyDbi() override;
-    U2AttributeDbi* getAttributeDbi() override;
-    bool isReadOnly() const override;
+    virtual U2DataType getEntityTypeById(const U2DataId& id) const;
+    virtual U2ObjectDbi* getObjectDbi();
+    virtual U2AssemblyDbi* getAssemblyDbi();
+    virtual U2AttributeDbi* getAttributeDbi();
+    virtual bool isReadOnly() const;
 
+    bamFile getBamFile() const;
     const bam_header_t* getHeader() const;
     const bam_index_t* getIndex() const;
-
-    /**
-     * Creates a new 'bamFile' structure for the BAM file backed by the current DBI instance.
-     * The result bamFile is used as an input for various bam_* methods that may modify internal bamFile state and are not thread safe.
-     * Caller is responsible for closing the file.
-     */
-    bamFile openNewBamFileHandler() const;
 
 private:
     GUrl url;
     int assembliesCount;
+    bamFile bamHandler;
     bam_header_t* header;
     bam_index_t* index;
     QScopedPointer<SamtoolsBasedObjectDbi> objectDbi;
