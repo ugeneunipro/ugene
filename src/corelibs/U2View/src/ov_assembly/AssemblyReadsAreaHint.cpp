@@ -66,19 +66,30 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     setObjectName("AssemblyReadsAreaHint");
 }
 
-static QString getCigarString(const QString& ci) {
+static QString getCigarString(const QString& ci, bool trimmed = false) {
     if (ci.isEmpty()) {
         return QObject::tr("no information");
     }
 
     QString cigar;
-    for (int i = 0; i < ci.size(); ++i) {
+    int cigarSize = ci.size();
+    bool sizeBecameLess = false;
+    if (trimmed) {
+        cigarSize = qMin(cigarSize, AssemblyReadsAreaHint::LETTER_MAX_COUNT);
+        if (cigarSize < ci.size()) {
+            sizeBecameLess = true;
+        }
+    }
+    for (int i = 0; i < cigarSize; ++i) {
         QChar ch = ci.at(i);
         if (ch.isNumber()) {
             cigar.append(ch);
         } else {
             cigar.append(QString("<b>%1 </b>").arg(ch));
         }
+    }
+    if (sizeBecameLess) {
+        cigar.append("...");
     }
     return cigar;
 }
@@ -145,7 +156,7 @@ static QString formatReadInfo(U2AssemblyRead r) {
         text += QString("<tr><td>%1</td></tr>").arg(formatReadPosString(r));
         text += QString("<tr><td><b>Length</b>:&nbsp;%1</td></tr>").arg(len);
     }
-    text += QString("<tr><td><b>Cigar</b>:&nbsp;%1</td></tr>").arg(getCigarString(U2AssemblyUtils::cigar2String(r->cigar)));
+    text += QString("<tr><td><b>Cigar</b>:&nbsp;%1</td></tr>").arg(getCigarString(U2AssemblyUtils::cigar2String(r->cigar), true));
     {
         bool onCompl = ReadFlagsUtils::isComplementaryRead(r->flags);
         text += QString("<tr><td><b>Strand</b>:&nbsp;%1</td></tr>").arg(onCompl ? QObject::tr("complement") : QObject::tr("direct"));
