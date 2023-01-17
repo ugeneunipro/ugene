@@ -77,7 +77,9 @@ Primer3Plugin::Primer3Plugin()
 }
 
 Primer3Plugin::~Primer3Plugin() {
-    viewCtx->deleteLater();
+    if (viewCtx != nullptr) {
+        viewCtx->deleteLater();
+    }
 }
 
 Primer3ADVContext::Primer3ADVContext(QObject* p)
