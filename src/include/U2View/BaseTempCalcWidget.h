@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_sequence/temperature/BaseTempCalcWidget.h"
+#include "../../corelibs/U2View/src/temperature/BaseTempCalcWidget.h"
