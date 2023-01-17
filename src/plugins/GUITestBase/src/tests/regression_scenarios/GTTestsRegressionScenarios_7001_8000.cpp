@@ -2322,6 +2322,26 @@ GUI_TEST_CLASS_DEFINITION(test_7511) {
     GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST search..."});
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7515) {
+    // Run Tools->NGS data analysis->Extract consensus from assemblies... twice and see that UGENE does not crash.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // Wait up to 10 seconds for the crash and finish tasks if no crash happened.
+    GTGlobals::sleep(10000);
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::activateWindow(os, "Extract");
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7517) {
     // Check that MCA editor does not crash when closed in "replace-character" mode.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
