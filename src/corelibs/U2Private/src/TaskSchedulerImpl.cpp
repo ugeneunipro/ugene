@@ -150,6 +150,12 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         Task::State state = ti->task->getState();
         SAFE_POINT(state != Task::State_Finished, QString("Task %1 state is not 'finished'.").arg(ti->task->getTaskName()), hasFinished);
 
+        // Once thread is finished set 'selfRunFinished' to true.
+        // Important: update selfRunFinished from the main thread only to avoid concurrency issues.
+        if (state == Task::State_Running && ti->thread != nullptr && ti->thread->isFinished()) {
+            ti->selfRunFinished = true;
+        }
+
         if (ti->task->getTimeOut() > 0) {
             int secsPassed = GTimer::secsBetween(ti->task->getTimeInfo().startTime, GTimer::currentTimeMicros());
             if (ti->task->getTimeOut() < secsPassed) {
@@ -495,21 +501,24 @@ void TaskSchedulerImpl::releaseResources(TaskInfo* ti, const TaskResourceStage& 
         threadsResource->release(1);
         ti->hasLockedThreadResource = false;
     }
-    QVector<TaskResourceUsage>& tres = getTaskResources(ti->task);
-    for (auto& taskRes : tres) {
-        if (taskRes.stage != stage) {
+    QVector<TaskResourceUsage>& taskResources = getTaskResources(ti->task);
+    for (auto& res : taskResources) {
+        if (res.stage != stage) {
             // Make extra state validation to detect errors earlier.
-            bool isPrepareStageAndRunResourceIsUnlocked = isPrepareStage && taskRes.stage == TaskResourceStage::Run && !taskRes.locked;
-            SAFE_POINT(!isPrepareStage || isPrepareStageAndRunResourceIsUnlocked, QString("Task %1 lock state is not correct.").arg(ti->task->getTaskName()), );
+            SAFE_POINT(!isPrepareStage || !res.locked,
+                       QString("Task %1 lock state is not correct. Run stage resource is not unlocked: %2, selfRunFinished: %3")
+                           .arg(ti->task->getTaskName())
+                           .arg(res.resourceId)
+                           .arg(ti->selfRunFinished), );
             continue;
         }
-        if (taskRes.locked) {
-            AppResource* appRes = resourcePool->getResource(taskRes.resourceId);
-            appRes->release(taskRes.resourceUse);
-            taskRes.locked = false;
+        if (res.locked) {
+            AppResource* appRes = resourcePool->getResource(res.resourceId);
+            appRes->release(res.resourceUse);
+            res.locked = false;
         }
-        if (ti->dynamicAppResourceIds.removeOne(taskRes.resourceId)) {
-            resourcePool->unregisterResource(taskRes.resourceId);
+        if (ti->dynamicAppResourceIds.removeOne(res.resourceId)) {
+            resourcePool->unregisterResource(res.resourceId);
         }
     }
 }
@@ -1083,7 +1092,6 @@ void TaskThread::run() {
             onBadAlloc(ti->task);
         }
     }
-    ti->selfRunFinished = true;
     if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly)) {
         int timerId = startTimer(1);
         exec();
