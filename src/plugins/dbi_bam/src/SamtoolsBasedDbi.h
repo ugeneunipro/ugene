@@ -72,20 +72,19 @@ class SamtoolsBasedReadsIterator : public U2DbiIterator<U2AssemblyRead> {
 
 public:
     SamtoolsBasedReadsIterator(int assemblyId, const U2Region& r, SamtoolsBasedDbi& dbi, const QByteArray& nameFilter = "");
-    virtual ~SamtoolsBasedReadsIterator() {
-    }
 
-    virtual bool hasNext();
-    virtual U2AssemblyRead next();
-    virtual U2AssemblyRead peek();
+    bool hasNext() override;
+    U2AssemblyRead next() override;
+    U2AssemblyRead peek() override;
 
 private:
-    int assemblyId;
+    int assemblyId = 0;
     U2Region r;
     SamtoolsBasedDbi& dbi;
     QByteArray nameFilter;
 
-    qint64 nextPosToRead;
+    qint64 nextPosToRead = 0;
+    std::shared_ptr<BGZF> bamFile;
     QList<U2AssemblyRead> reads;
     QList<U2AssemblyRead>::Iterator current;
 

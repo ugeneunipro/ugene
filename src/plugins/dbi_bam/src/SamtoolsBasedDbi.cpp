@@ -531,7 +531,9 @@ int bamFetchFunction(const bam1_t* b, void* data) {
 }
 
 void SamtoolsBasedReadsIterator::fetchNextChunk() {
-    std::shared_ptr<BGZF> bamFile(dbi.openNewBamFileHandler(), [](BGZF* f) { closeBamFileHandler(f); });
+    if (bamFile.get() == nullptr) {
+        bamFile.reset(dbi.openNewBamFileHandler(), [](BGZF* f) { closeBamFileHandler(f); });
+    }
     SAFE_POINT(bamFile != nullptr, nextPosToRead = INT_MAX, );
 
     const bam_index_t* idx = dbi.getIndex();
