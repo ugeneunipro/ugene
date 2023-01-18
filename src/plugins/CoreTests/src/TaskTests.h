@@ -194,6 +194,12 @@ private:
     QString waitStateString;
 };
 
+class GTest_TaskCheckDynamicResources : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_TaskCheckDynamicResources, "task-check-dynamic-resources", TaskFlags(TaskFlags_NR_FOSCOE));
+};
+
 class TaskTests {
 public:
     static QList<XMLTestFactory*> createTestFactories();

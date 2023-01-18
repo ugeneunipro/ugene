@@ -26,8 +26,9 @@
 
 namespace U2 {
 
-TaskResourceUsage::TaskResourceUsage(const QString& _resourceId, int _usage, bool prepareStage)
-    : resourceId(_resourceId), resourceUse(_usage), prepareStageLock(prepareStage) {
+TaskResourceUsage::TaskResourceUsage(const QString& _resourceId, int _usage, const TaskResourceStage& _stage)
+    : resourceId(_resourceId), resourceUse(_usage), stage(_stage) {
+    SAFE_POINT(resourceId != UGENE_RESOURCE_ID_THREAD || stage == TaskResourceStage::Run, "Thread resource can be reserved only for Run stage", );
 }
 
 void TaskStateInfo::addWarning(const QString& warning) {
@@ -163,7 +164,7 @@ void Task::setMinimizeSubtaskErrorText(bool v) {
 
 void Task::addTaskResource(const TaskResourceUsage& r) {
     SAFE_POINT(state == Task::State_New, QString("Can't add task resource in current state: %1)").arg(getState()), );
-    SAFE_POINT(!insidePrepare || !r.prepareStageLock, "Can't add prepare-time resource from within prepare function call!", );
+    SAFE_POINT(!insidePrepare || r.stage != TaskResourceStage::Prepare, "Can't add prepare-time resource from within prepare function call!", );
     SAFE_POINT(!r.locked, QString("Resource is already locked, resource id: %1").arg(r.resourceId), );
     taskResources.append(r);
 }

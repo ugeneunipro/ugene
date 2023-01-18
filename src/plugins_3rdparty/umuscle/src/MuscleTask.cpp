@@ -90,7 +90,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSett
     int aliLen = ma->getLength();
     int nSeq = ma->getRowCount();
     int memUseMB = qint64(aliLen) * qint64(nSeq) * 200 / (1024 * 1024);  // 200x per char in alignment
-    TaskResourceUsage tru(UGENE_RESOURCE_ID_MEMORY, memUseMB);
+    TaskResourceUsage tru(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run);
 
     QString inputAlName = inputMA->getName();
     resultMA->setName(inputAlName);
@@ -110,7 +110,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSett
         setUseDescriptionFromSubtask(true);
         parallelSubTask = new MuscleParallelTask(inputSubMA, resultSubMA, config, ctx);
         addSubTask(parallelSubTask);
-        tru.prepareStageLock = true;
+        tru.stage = TaskResourceStage::Prepare;
     }
     addTaskResource(tru);
 }

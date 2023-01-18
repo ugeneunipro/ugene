@@ -45,8 +45,8 @@
 // clang-format on
 #endif
 
-#define LOG_TRACE(METHOD) \
-    coreLog.trace(QString("AppResource %1 ::" #METHOD " %2, available %3").arg(id).arg(n).arg(available()));
+#define LOG_TRACE(contextName) \
+    coreLog.trace(QString("AppResource %1::" contextName " delta: %2, available: %3").arg(id).arg(n).arg(available()));
 
 namespace U2 {
 
@@ -245,10 +245,22 @@ AppResourcePool* AppResourcePool::instance() {
 
 AppResource::AppResource(const QString& _id, int _capacity, const QString& _units)
     : id(_id), units(_units), capacity(_capacity) {
+    SAFE_POINT(!isDynamicResourceId(id) || capacity == 1, "Dynamic resources must have capacity = 1", )
 }
 
 int AppResource::getCapacity() const {
     return capacity;
+}
+
+static QString DYNAMIC_RESOURCE_PREFIX("dynamic:");
+
+bool AppResource::isDynamicResourceId(const QString& resourceId) {
+    return resourceId.startsWith(DYNAMIC_RESOURCE_PREFIX);
+}
+
+QString AppResource::buildDynamicResourceId(const QString& resourceId) {
+    SAFE_POINT(!resourceId.startsWith(DYNAMIC_RESOURCE_PREFIX), "Illegal non-dynamic resource id: " + resourceId, resourceId);
+    return DYNAMIC_RESOURCE_PREFIX + resourceId;
 }
 
 ////////////////////////////////////////////////
@@ -303,24 +315,27 @@ AppResourceSemaphore::~AppResourceSemaphore() {
 }
 
 void AppResourceSemaphore::acquire(int n) {
-    LOG_TRACE(acquire);
+    LOG_TRACE("acquire");
     resource->acquire(n);
 }
 
 bool AppResourceSemaphore::tryAcquire(int n) {
-    LOG_TRACE(tryAcquire);
-    return resource->tryAcquire(n);
+    LOG_TRACE("tryAcquire/before");
+    bool result = resource->tryAcquire(n);
+    LOG_TRACE("tryAcquire/after");
+    return result;
 }
 
 bool AppResourceSemaphore::tryAcquire(int n, int timeout) {
-    LOG_TRACE(tryAcquire_timeout);
+    LOG_TRACE("tryAcquire_timeout");
     return resource->tryAcquire(n, timeout);
 }
 
 void AppResourceSemaphore::release(int n) {
-    LOG_TRACE(release);
+    LOG_TRACE("release/before");
     SAFE_POINT(n >= 0, QString("AppResource %1 release %2 < 0 called").arg(id).arg(n), );
     resource->release(n);
+    LOG_TRACE("release/after");
     // QSemaphore allow to create resources by releasing, we do not want to get such behavior
     int avail = resource->available();
     SAFE_POINT(avail <= capacity, "Invalid result available resource value: " + QString::number(avail), );
@@ -331,7 +346,7 @@ int AppResourceSemaphore::available() const {
 }
 
 void AppResourceSemaphore::setCapacity(int n) {
-    LOG_TRACE(setCapacity);
+    LOG_TRACE("setCapacity");
     int diff = n - capacity;
     if (diff > 0) {
         // adding resources

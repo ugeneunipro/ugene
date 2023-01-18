@@ -32,12 +32,6 @@
 
 namespace U2 {
 
-/*
- * Primer3Task should lock this resource before run and unlock after finish
- * It's required because the original "primer3" tool doesn't support parallel calculations
- */
-#define UGENE_PRIMER3_SINGLE_THREAD_RESOURCE_ID "Primer 3 single thread"
-
 class Primer3ADVContext;
 class XMLTestFactory;
 

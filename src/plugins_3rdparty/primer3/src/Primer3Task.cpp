@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include <cstdlib>
+#include "Primer3Task.h"
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -31,12 +31,8 @@
 #include <U2Core/U1AnnotationUtils.h>
 
 #include "Primer3Plugin.h"
-#include "Primer3Task.h"
-
-#include "primer3_core/primer3_boulder_main.h"
-#include "primer3_core/print_boulder.h"
-#include "primer3_core/p3_seq_lib.h"
 #include "primer3_core/libprimer3.h"
+#include "primer3_core/primer3_boulder_main.h"
 
 namespace U2 {
 
@@ -64,7 +60,7 @@ PrimerSingle::PrimerSingle(const primer_rec& primerRec, oligo_type _type, int of
       selfEndStruct(primerRec.self_end_struct),
       type(_type) {
     if (type == oligo_type::OT_RIGHT) {
-        // Primer3 calculates all positions from 5' to 3' sequence ends - 
+        // Primer3 calculates all positions from 5' to 3' sequence ends -
         // from the left to the right in case of the direct sequence and from the right to the left in case of the reverse-complementary sequence
         start = start - length + 1;
     }
@@ -203,7 +199,7 @@ PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
       quality(primerPair.pair_quality),
-      tm(primerPair.product_tm), 
+      tm(primerPair.product_tm),
       repeatSim(primerPair.repeat_sim),
       repeatSimName(primerPair.rep_name),
       complAnyStruct(primerPair.compl_any_struct),
@@ -397,7 +393,8 @@ Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
     settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
     settings->setSequenceQuality(settings->getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
 
-    addTaskResource(TaskResourceUsage(UGENE_PRIMER3_SINGLE_THREAD_RESOURCE_ID, 1));
+    // Primer3Task is single threaded: the original "primer3" tool doesn't support parallel calculations.
+    addTaskResource(TaskResourceUsage(AppResource::buildDynamicResourceId("Primer 3 single thread"), 1, TaskResourceStage::Run));
 }
 
 void Primer3Task::run() {
@@ -446,7 +443,7 @@ void Primer3Task::run() {
     if (spanExonsEnabled) {
         settings->getPrimerSettings()->num_return = settings->getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
-    
+
     p3retval* resultPrimers = runPrimer3(settings->getPrimerSettings(), settings->getSeqArgs(), settings->isShowDebugging(), settings->isFormatOutput(), settings->isExplain());
     settings->setP3RetVal(resultPrimers);
 
@@ -498,7 +495,7 @@ Task::ReportResult Primer3Task::report() {
     if (resultPrimers->warnings.storage_size != 0) {
         stateInfo.addWarning(resultPrimers->warnings.data);
     }
-    
+
     return Task::ReportResult_Finished;
 }
 

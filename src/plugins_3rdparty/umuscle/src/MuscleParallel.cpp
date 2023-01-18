@@ -52,9 +52,9 @@ MuscleParallelTask::MuscleParallelTask(const MultipleSequenceAlignment& ma, Mult
     addSubTask(prepareTask);
 
     int memoryEstimationInMb = estimateMemoryUsageInMb(ma);
-    TaskResourceUsage resourseUsage(UGENE_RESOURCE_ID_MEMORY, memoryEstimationInMb, true);
-    resourseUsage.errorMessage = tr("There is not enough memory to align these sequences with MUSCLE. Required memory size: %1 Mb").arg(memoryEstimationInMb);
-    addTaskResource(resourseUsage);
+    TaskResourceUsage resourceUsage(UGENE_RESOURCE_ID_MEMORY, memoryEstimationInMb, TaskResourceStage::Prepare);
+    resourceUsage.errorMessage = tr("There is not enough memory to align these sequences with MUSCLE. Required memory size: %1 Mb").arg(memoryEstimationInMb);
+    addTaskResource(resourceUsage);
 }
 
 int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment& ma) {

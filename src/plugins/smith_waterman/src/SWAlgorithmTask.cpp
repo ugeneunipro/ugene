@@ -161,7 +161,7 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
     } else {
-        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, true));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
         t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
         addSubTask(t);
     }
@@ -597,7 +597,7 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
     } else {
-        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, true));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
         t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
         addSubTask(t);
     }

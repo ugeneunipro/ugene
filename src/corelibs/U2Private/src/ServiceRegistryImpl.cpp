@@ -24,6 +24,7 @@
 #include <QTimerEvent>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppResources.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/Log.h>
@@ -55,20 +56,20 @@ QList<Service*> ServiceRegistryImpl::findServices(ServiceType t) const {
 }
 
 /// Returns 'true' if a service with the specified ServiceType is registered and enabled
-Task* ServiceRegistryImpl::registerServiceTask(Service* s, bool lockServiceResource) {
-    return new RegisterServiceTask(this, s, lockServiceResource);
+Task* ServiceRegistryImpl::registerServiceTask(Service* s) {
+    return new RegisterServiceTask(this, s);
 }
 
-Task* ServiceRegistryImpl::unregisterServiceTask(Service* s, bool lockServiceResource) {
-    return new UnregisterServiceTask(this, s, lockServiceResource);
+Task* ServiceRegistryImpl::unregisterServiceTask(Service* s) {
+    return new UnregisterServiceTask(this, s);
 }
 
-Task* ServiceRegistryImpl::enableServiceTask(Service* s, bool lockServiceResource) {
-    return new EnableServiceTask(this, s, lockServiceResource);
+Task* ServiceRegistryImpl::enableServiceTask(Service* s) {
+    return new EnableServiceTask(this, s);
 }
 
-Task* ServiceRegistryImpl::disableServiceTask(Service* s, bool lockServiceResource) {
-    return new DisableServiceTask(this, s, true, lockServiceResource);
+Task* ServiceRegistryImpl::disableServiceTask(Service* s) {
+    return new DisableServiceTask(this, s, true);
 }
 
 void ServiceRegistryImpl::setServiceState(Service* s, ServiceState state) {
@@ -96,7 +97,7 @@ void ServiceRegistryImpl::timerEvent(QTimerEvent* event) {
     timerIsActive = false;
     Service* s = findServiceReadyToEnable();
     if (s != nullptr) {
-        AppContext::getTaskScheduler()->registerTopLevelTask(new EnableServiceTask(this, s, true));
+        AppContext::getTaskScheduler()->registerTopLevelTask(new EnableServiceTask(this, s));
     }
 }
 
@@ -141,13 +142,14 @@ AbstractServiceTask::AbstractServiceTask(const QString& taskName, TaskFlags flag
     SAFE_POINT_EXT(s, stateInfo.setError("Pointer to Service is null"), );
 
     if (lockServiceResource) {
-        QString serviceResourceId = Service::getServiceResourceId(s->getType());
-        addTaskResource(TaskResourceUsage(serviceResourceId, 1, true));
+        // Do not run service tasks (register/unregister/enable/disable) in parallel.
+        QString serviceResourceId = AppResource::buildDynamicResourceId("Service: " + s->getName());
+        addTaskResource(TaskResourceUsage(serviceResourceId, 1, TaskResourceStage::Prepare));
     }
 }
 
-RegisterServiceTask::RegisterServiceTask(ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource)
-    : AbstractServiceTask(tr("Register '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, lockServiceResource) {
+RegisterServiceTask::RegisterServiceTask(ServiceRegistryImpl* _sr, Service* _s)
+    : AbstractServiceTask(tr("Register '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, true) {
 }
 
 void RegisterServiceTask::prepare() {
@@ -249,8 +251,8 @@ Task::ReportResult EnableServiceTask::report() {
 }
 
 /// UnregisterServiceTask
-UnregisterServiceTask::UnregisterServiceTask(ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource)
-    : AbstractServiceTask(tr("Unregister '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, lockServiceResource) {
+UnregisterServiceTask::UnregisterServiceTask(ServiceRegistryImpl* _sr, Service* _s)
+    : AbstractServiceTask(tr("Unregister '%1' service").arg(_s->getName()), TaskFlag_NoRun, _sr, _s, true) {
 }
 
 void UnregisterServiceTask::prepare() {
@@ -305,7 +307,7 @@ void DisableServiceTask::prepare() {
         QList<Service*> childsToDisable = getDirectChilds(sr, s->getType());
         foreach (Service* c, childsToDisable) {
             if (c->isEnabled()) {
-                addSubTask(new DisableServiceTask(sr, c, false, false));
+                addSubTask(new DisableServiceTask(sr, c, false));
             }
         }
     }
