@@ -51,7 +51,6 @@
 #include <QFile>
 #include <QRadioButton>
 #include <QTableView>
-#include <QTableWidget>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -105,7 +104,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
@@ -477,17 +475,18 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
     GTLogTracer l;
     // 1. Open "_common_data/clustal/big.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/big.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTWidget::click(os, GTUtilsMsaEditor::getShowOverviewButton(os));  // Close 'Overview' to make the test faster.
 
     // 2. Align it with MUSCLE.
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Align", "Align with MUSCLE…"}));
     GTUtilsDialog::add(os, new MuscleDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    // Expected: Error notification appears with a correct human readable error. There is a error in log wit memory requirements.
+    // Expected: Error notification appears with a correct human-readable error. There is an error in log with memory requirements.
     GTUtilsNotifications::waitForNotification(os, true, "There is not enough memory to align these sequences with MUSCLE.");
     GTUtilsDialog::checkNoActiveWaiters(os);
-    CHECK_SET_ERR(l.checkMessage("Not enough resources for the task, resource name:"), "No default error in log");
+    CHECK_SET_ERR(l.checkMessage("Not enough resources for the task"), "No default error in log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5090) {
