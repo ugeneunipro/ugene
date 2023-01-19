@@ -26,7 +26,7 @@
 #include <QPointer>
 #include <QReadWriteLock>
 #include <QStringList>
-#include <QVarLengthArray>
+#include <QVector>
 
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatus.h>

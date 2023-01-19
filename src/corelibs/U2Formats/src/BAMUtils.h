@@ -27,6 +27,7 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrl.h>
+#include <U2Core/Nullable.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2Region.h>
 
@@ -86,7 +87,10 @@ public:
      * Caller is responsible to close the file.
      * If any error happens the method returns nullptr.
      */
-    static FILE* openFile(const QString& path, const QString& mode);
+    static Nullable<FILE> openFile(const QString& path, const QString& mode);
+
+    /** Closes file descriptor if the file descriptor is defined and is open. */
+    static void closeFileIfOpen(const Nullable<FILE>& file);
 
     /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
     static void* loadIndex(const QString& path);

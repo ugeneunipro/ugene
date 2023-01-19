@@ -174,10 +174,11 @@ U2DataType SamtoolsBasedDbi::getEntityTypeById(const U2DataId& id) const {
 
 bamFile SamtoolsBasedDbi::openNewBamFileHandler() const {
     QString filePath = url.getURLString();
-    int fd = fileno(BAMUtils::openFile(filePath, "rb"));
-    bamFile file = bam_dopen(fd, "rb");
-    file->owned_file = 1;
-    return file;
+    auto file = BAMUtils::openFile(filePath, "rb");
+    bamFile bFile = bam_dopen(file == nullptr ? -1 : fileno(file), "rb");
+    CHECK_EXT(bFile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
+    bFile->owned_file = 1;
+    return bFile;
 }
 
 const bam_header_t* SamtoolsBasedDbi::getHeader() const {
