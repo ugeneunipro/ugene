@@ -1,24 +1,35 @@
+/**
+ * UGENE - Integrated Bioinformatics Tools.
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
+ * http://ugene.net
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+
 #include <U2Core/U2SafePoints.h>
 
 /**
  * Helper class to handle nullable pointer values in a more safe (than default) and explicit way.
- * There are only 2 methods that can access the original pointer value:
- *
- * 1. get(): asserts that the value is not null and returns the value.
- *  A user can assert that the value is not null only if it was previously checked: isNullptr() is called.
- * 2. asNullable(): returns the original pointer value with no checks.
+ * Any access to the pointer value before null-check will trigger SAFE_POINT.
  */
 template<typename T>
 class Nullable {
 public:
     Nullable(T* _value = nullptr)
         : value(_value) {
-    }
-
-    /** Returns true if the pointer value is not null. */
-    bool isNullptr() const {
-        isChecked = true;
-        return value != nullptr;
     }
 
     bool operator==(const T* anotherValue) const {
