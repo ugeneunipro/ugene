@@ -34,7 +34,7 @@ class AssemblyReadsAreaHint : public QFrame {
     Q_OBJECT
 public:
     static const QPoint OFFSET_FROM_CURSOR;
-    static const int LETTER_MAX_COUNT = 60;
+    static const int LETTER_MAX_COUNT;
     static QString getReadDataAsString(const U2AssemblyRead& r);
 
 public:
