@@ -84,9 +84,9 @@ NP<FILE> BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
 
 /** Closes file descriptor if the file descriptor is defined and is open. */
 void BAMUtils::closeFileIfOpen(const NP<FILE>& file) {
-    if (file != nullptr && ftell(file) != -1) {
-        fclose(file);
-    }
+    int fd = file == nullptr ? -1 : fileno(file);
+    CHECK(fd > 0, );
+    fclose(file);
 }
 
 /** Version the original samopen() function with a correct handling of unicode in faiUrl and non-UGENE use cases removed. */
