@@ -28,7 +28,7 @@
 template<typename T>
 class Nullable {
 public:
-    Nullable(T* _value = nullptr)
+    Nullable(T* _value)
         : value(_value) {
     }
 
