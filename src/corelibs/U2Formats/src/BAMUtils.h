@@ -87,10 +87,10 @@ public:
      * Caller is responsible to close the file.
      * If any error happens the method returns nullptr.
      */
-    static Nullable<FILE> openFile(const QString& path, const QString& mode);
+    static NP<FILE> openFile(const QString& path, const QString& mode);
 
     /** Closes file descriptor if the file descriptor is defined and is open. */
-    static void closeFileIfOpen(const Nullable<FILE>& file);
+    static void closeFileIfOpen(const NP<FILE>& file);
 
     /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
     static void* loadIndex(const QString& path);

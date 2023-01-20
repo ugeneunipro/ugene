@@ -19,16 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#pragma once
 #include <U2Core/U2SafePoints.h>
 
+namespace U2 {
 /**
+ * NP is 'Nullable Pointer' (a shortcut).
  * Helper class to handle nullable pointer values in a more safe (than default) and explicit way.
  * Any access to the pointer value before null-check will trigger SAFE_POINT.
  */
 template<typename T>
-class Nullable {
+class NP {
 public:
-    Nullable(T* _value)
+    NP(T* _value)
         : value(_value) {
     }
 
@@ -60,3 +63,5 @@ private:
     T* value;
     mutable bool isChecked = false;
 };
+
+}  // namespace U2
