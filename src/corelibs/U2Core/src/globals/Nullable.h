@@ -46,7 +46,10 @@ public:
         return get();
     }
 
-    /** Returns pointer value that is guaranteed to be not null. Requires that one of equality check operators (==/!=) is called before this method. */
+    /**
+     * Returns pointer value that is guaranteed to be not null.
+     * Requires that one of the equality check operators (==/!=) is called before this method.
+     */
     T* get() const {
         SAFE_POINT(isChecked, "Nullable::get is called with null checks for null!", value);
         SAFE_POINT(value != nullptr, "Nullable::get is called for a nullptr value!", value);
