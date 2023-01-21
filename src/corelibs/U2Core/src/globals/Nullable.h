@@ -62,7 +62,7 @@ public:
 
     /**
      * Returns original value with no null-checks.
-     * May be used in code like `if (auto v = ptr.getNullable()) {...}`
+     * May be used in code like `if (auto v = ptr.getNullable()) {...}`.
      */
     T* getNullable() const {
         return value;
