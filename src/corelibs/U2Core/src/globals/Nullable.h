@@ -25,7 +25,7 @@
 namespace U2 {
 /**
  * NP is 'Nullable Pointer' (a shortcut).
- * Helper class to handle nullable pointer values in a more safe (than default) and explicit way.
+ * Helper class to handle nullable pointer values in a safer (than default) and explicit way.
  * Any access to the pointer value before null-check will trigger SAFE_POINT.
  */
 template<typename T>
