@@ -333,7 +333,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>200 nt</td></tr>"
                         "<tr><td>GC content: </td><td>44.50%</td></tr>"
-                        "<tr><td>Melting temperature: </td><td>79.78 &#176;C</td></tr>"
+                        "<tr><td><a href=\"Melting temperature\">Melting temperature</a>: </td><td>79.78 &#176;C</td></tr>"
                         "<tr><td colspan=2><b>ssDNA:</b></td></tr>"
                         "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Molecular weight: </td><td>61909.78 Da</td></tr>"
                         "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Extinction coefficient: </td><td>1987400 l/(mol * cm)</td></tr>"
@@ -364,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     QString s = QString("Length: </td><td>199 950 nt");
     QString s1 = QString("GC content: </td><td>38.84%");
-    QString s2 = QString("Melting temperature: </td><td>80.82 &#176;C");
+    QString s2 = QString("<a href=\"Melting temperature\">Melting temperature</a>: </td><td>80.82 &#176;C");
 
     // ssDNA
     QString s3 = QString("Molecular weight: </td><td>61730845.26 Da");
@@ -426,7 +426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     QString s = QString("Length: </td><td>199 950 nt");
     QString s1 = QString("GC content: </td><td>38.84%");
-    QString s2 = QString("Melting temperature: </td><td>80.82 &#176;C");
+    QString s2 = QString("<a href=\"Melting temperature\">Melting temperature</a>: </td><td>80.82 &#176;C");
 
     // ssDNA
     QString s3 = QString("Molecular weight: </td><td>61730845.26 Da");
@@ -503,7 +503,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 nt</td></tr>"
                 "<tr><td>GC content: </td><td>49.29%</td></tr>"
-                "<tr><td>Melting temperature: </td><td>75.36 &#176;C</td></tr>"
+                "<tr><td><a href=\"Melting temperature\">Melting temperature</a>: </td><td>N/A</td></tr>"
                 "<tr><td colspan=2><b>ssDNA:</b></td></tr>"
                 "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Molecular weight: </td><td>21572.21 Da</td></tr>"
                 "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Extinction coefficient: </td><td>656800 l/(mol * cm)</td></tr>"
@@ -517,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                 "</table>")
             .arg(QChar(0x3BC));
 
-    CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
+    CHECK_SET_ERR(statisticsLabel->text() == s, QString("Statistics is wrong, current: %1").arg(statisticsLabel->text()));
 
     auto w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     GTWidget::click(os, w2);
