@@ -31,7 +31,7 @@ namespace U2 {
 struct TempCalcSettings;
 
 /**
- * Widget to set up settings for temperature calculations
+ * @BaseTempCalcWidget class is a widget to set up settings for temperature calculations
  * User can set up all settings manually using this widget
  */
 class U2VIEW_EXPORT BaseTempCalcWidget : public QWidget {

@@ -26,6 +26,9 @@
 
 namespace U2 {
 
+/**
+ * @Primer3TempCalcFactory class could create instances of @Primer3TempCalc and @Primer3TempCalcWidget
+ */
 class Primer3TempCalcFactory : public TempCalcFactory {
 public:
     Primer3TempCalcFactory();

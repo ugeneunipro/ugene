@@ -26,6 +26,10 @@
 
 namespace U2 {
 
+/**
+ * @RoughTempCalcCmdFactory class is the same as @RoughTempCalcCmdFactory,
+ * but can create @BaseTempCalcWidget object, so could be used from GUI
+ */
 class U2VIEW_EXPORT RoughTempCalcFactory : public RoughTempCalcCmdFactory {
 public:
     RoughTempCalcFactory();

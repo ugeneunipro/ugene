@@ -36,7 +36,7 @@ TempCalcSettings* RoughTempCalcWidget::getSettings() const {
 }
 
 void RoughTempCalcWidget::restoreFromSettings(TempCalcSettings*) {
-    // do nothing
+    // @RoughTempCalc has no optionsa, so do nothing
 }
 
 }

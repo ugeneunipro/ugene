@@ -33,9 +33,9 @@ namespace U2 {
 struct TempCalcSettings;
 
 /**
- * Widget wich contains all BaseTempCalcWidget's
+ * @TempCalcWidget class is a Widget wich contains all @BaseTempCalcWidget's
  * Has combo box to switch settings and stacked widget, 
- * wich contains all BaseTempCalcWidget's
+ * wich contains all @BaseTempCalcWidget's
  */
 class U2VIEW_EXPORT TempCalcWidget : public QWidget {
     Q_OBJECT

@@ -33,8 +33,8 @@ namespace U2 {
 class TempCalcWidget;
 
 /**
- * Dialog wrapper around TempCalcWidget
- * If we need to use this widget in a separate dialog
+ * @TempCalcDialog class is a dialog wrapper around @TempCalcWidget
+ * Use this class if you need to use this widget in a separate dialog
  */
 class U2VIEW_EXPORT TempCalcDialog : public QDialog {
     Q_OBJECT

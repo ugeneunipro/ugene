@@ -29,7 +29,9 @@
 namespace U2 {
 
 /**
+ * @RoughTempCalcCmdFactory class could create instances of @RoughTempCalc
  * This implementation is intended to be used from ugenecl, because it doesn't have any dependencies from QtWidgets
+ * and can't create @BaseTempCalcWidget object
  */
 class U2ALGORITHM_EXPORT RoughTempCalcCmdFactory : public TempCalcFactory {
 public:

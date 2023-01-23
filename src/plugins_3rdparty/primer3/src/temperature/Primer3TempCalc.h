@@ -28,6 +28,9 @@
 
 namespace U2 {
 
+/**
+ * @Primer3TempCalcSettings class calculate melting temperature using Primer3
+ */
 struct Primer3TempCalcSettings : public TempCalcSettings {
     QMap<QString, QVariant> toVariantMap() const override;
     void fromVariantMap(const QMap<QString, QVariant>& mapSettings) override;

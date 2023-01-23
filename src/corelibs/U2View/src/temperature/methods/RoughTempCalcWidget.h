@@ -26,6 +26,9 @@
 
 namespace U2 {
 
+/**
+ * @RoughTempCalcWidget is a widget to set up settings for @RoughTempCalc
+ */
 class RoughTempCalcWidget : public BaseTempCalcWidget {
     Q_OBJECT
 public:

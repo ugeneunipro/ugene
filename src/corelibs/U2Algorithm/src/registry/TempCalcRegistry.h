@@ -31,7 +31,7 @@
 namespace U2 {
 
 /**
- * Registry for all methods of temperature calculation    
+ * @TempCalcRegistry is a class to registering for all methods of temperature calculation
  */
 class U2ALGORITHM_EXPORT TempCalcRegistry : public IdRegistry<TempCalcFactory> {
 public:
@@ -44,7 +44,7 @@ public:
      */
     BaseTempCalc* getDefaultTempCalculator(const QString& saveId = "") const;
     /**
-     * Get the default temperature calculator settings 
+     * Get the default temperature calculator settings
      * @return pointer to the temperature calculator settings
      */
     TempCalcSettings* getDefaultTempCalcSettings() const;

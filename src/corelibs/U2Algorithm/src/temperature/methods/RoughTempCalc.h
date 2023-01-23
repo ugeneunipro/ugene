@@ -26,6 +26,9 @@
 
 namespace U2 {
 
+/**
+ * @RoughTempCalc class calculates melting temperature using formulas from https://openwetware.org/wiki/Primer_Tm_estimation_methods
+ */
 class RoughTempCalc : public BaseTempCalc {
 public:
     RoughTempCalc(TempCalcSettings* settings);

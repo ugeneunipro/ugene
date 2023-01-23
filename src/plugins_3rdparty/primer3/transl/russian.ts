@@ -2155,6 +2155,172 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     </message>
 </context>
 <context>
+    <name>Primer3TempCalcWidget</name>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="20"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="30"/>
+        <source>Concentration of DNA strands</source>
+        <translation>Концентрация цепей ДНК</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="23"/>
+        <source>DNA Concentration</source>
+        <translation>Концентрация ДНК</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="36"/>
+        <source> nM</source>
+        <translation> нМ</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="49"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="59"/>
+        <source>Concentration of monovalent cations</source>
+        <translation>Концентрация одновалентных катионов</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="52"/>
+        <source>Monovalent Concentration</source>
+        <translation>Одновалентные катионы</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="62"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="88"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="114"/>
+        <source> mM</source>
+        <translation> мМ</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="75"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="85"/>
+        <source>Concentration of divalent cations</source>
+        <translation>Концентрация двухвалентных катионов</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="78"/>
+        <source>Divalent Concentration</source>
+        <translation>Двухвалентные катионы</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="101"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="111"/>
+        <source>Concentration of deoxynycleotide triphosphate</source>
+        <translation>Концентрация дезоксинуклеотидтрифосфата</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="104"/>
+        <source>DNTP Concentration</source>
+        <translation>Концентрация ДНТФ</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="127"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="137"/>
+        <source>Concentration of DMSO</source>
+        <translation>Концентрация диметилсульфоксида</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="130"/>
+        <source>DMSO Concentration</source>
+        <translation>Концентрация ДМСО</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="140"/>
+        <source> %</source>
+        <translation> %</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="150"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="160"/>
+        <source>Correction factor for DMSO</source>
+        <translation>Фактор коррекции ДМСО</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="153"/>
+        <source>DMSO Factor</source>
+        <translation>Фактор ДМСО</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="176"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="186"/>
+        <source>Concentration of formamide</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="179"/>
+        <source>Formamide Concentration</source>
+        <translation>Концентрация формамида</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="189"/>
+        <source> mol/l</source>
+        <translation> мол/л</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="199"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="209"/>
+        <source>The maximum sequence length for using the nearest neighbor model. For sequences longer than this, uses the &quot;GC%&quot; formula</source>
+        <translation>Максимальная длина последовательности, для расчета температуры плавления которой будет использоваться модель &quot;метода ближайшего соседа&quot;. Для последовательностей короче заданной будет использоваться формула, основанная на GC%</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="202"/>
+        <source>NN Max Length</source>
+        <translation>Максимальная длина МБС</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="212"/>
+        <source> nt</source>
+        <translation> нт</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="228"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="238"/>
+        <source>Specifies the table of thermodynamic parameters and the method of melting temperature calculation</source>
+        <translation>Задать таблицу термодинамических параметров и метод расчета температуры плавления</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="231"/>
+        <source>Thermodynamic Table</source>
+        <translation>Таблица терм. значений</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="248"/>
+        <source>Breslauer</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="253"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="289"/>
+        <source>SantaLucia</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="261"/>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="271"/>
+        <source>Specifies salt correction formula for the melting temperature calculation</source>
+        <translation>Задать формулу коррекции соли для расчета температуры плавления</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="264"/>
+        <source>Salt Correction Formula</source>
+        <translation>Коррекция соли</translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="284"/>
+        <source>Schildkraut</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="294"/>
+        <source>Owczarzy</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../src/Primer3Query.cpp" line="168"/>
@@ -2418,17 +2584,17 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 <context>
     <name>U2::Primer3ADVContext</name>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="97"/>
+        <location filename="../src/Primer3Plugin.cpp" line="94"/>
         <source>Primer3...</source>
         <translation>Primer3: Подбор праймеров...</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="125"/>
+        <location filename="../src/Primer3Plugin.cpp" line="122"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="126"/>
+        <location filename="../src/Primer3Plugin.cpp" line="123"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -2693,25 +2859,20 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
 <context>
     <name>U2::Primer3Plugin</name>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="60"/>
+        <location filename="../src/Primer3Plugin.cpp" line="58"/>
         <source>Primer3</source>
         <translation>Primer3</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Plugin.cpp" line="60"/>
+        <location filename="../src/Primer3Plugin.cpp" line="58"/>
         <source>Integrated tool for PCR primers design.</source>
         <translation>Инструмент для дизайна праймеров.</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Plugin.cpp" line="66"/>
-        <source>Primer3 lock</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>U2::Primer3SWTask</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="611"/>
+        <location filename="../src/Primer3Task.cpp" line="608"/>
         <source>Incorrect summ &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2719,7 +2880,7 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
 <context>
     <name>U2::Primer3Task</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="388"/>
+        <location filename="../src/Primer3Task.cpp" line="384"/>
         <source>Pick primers task</source>
         <translation>Выбор праймеров</translation>
     </message>
@@ -2727,22 +2888,22 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
 <context>
     <name>U2::Primer3ToAnnotationsTask</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="643"/>
+        <location filename="../src/Primer3Task.cpp" line="640"/>
         <source>Search primers to annotations</source>
         <translation>Search primers to annotations</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="676"/>
+        <location filename="../src/Primer3Task.cpp" line="673"/>
         <source>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</source>
         <translation>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="687"/>
+        <location filename="../src/Primer3Task.cpp" line="684"/>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Первый экзон из выбранного диапазона [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="696"/>
+        <location filename="../src/Primer3Task.cpp" line="693"/>
         <source>The the selected exon range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Выбраный диапазон экзонов [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
@@ -2755,7 +2916,7 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
         <translation type="vanished">The the selected exon range [%1,%2] is larger the number of exons (%2). Please set correct exon range.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="794"/>
+        <location filename="../src/Primer3Task.cpp" line="791"/>
         <source>Object with annotations was removed</source>
         <translation>Объект с аннотациями удален</translation>
     </message>

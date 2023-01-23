@@ -32,6 +32,9 @@
 
 namespace U2 {
 
+/**
+ * @Primer3TempCalcWidget is a widget to set up settings for @Primer3TempCalc
+ */
 class Primer3TempCalcWidget : public BaseTempCalcWidget, private Ui_Primer3TempCalcWidget {
     Q_OBJECT
 public:
