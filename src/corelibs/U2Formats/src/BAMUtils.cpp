@@ -51,6 +51,7 @@ extern "C" {
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
@@ -61,14 +62,6 @@ extern "C" {
 #include "BAMUtils.h"
 
 namespace U2 {
-
-/** Converts QString to wchar_t*. Caller is responsible to deallocated the returned result memory. */
-static wchar_t* toWideCharsArray(const QString& text) {
-    auto wideCharsText = new wchar_t[text.length() + 1];
-    int unicodeFileNameLength = text.toWCharArray(wideCharsText);
-    wideCharsText[unicodeFileNameLength] = 0;
-    return wideCharsText;
-}
 
 NP<FILE> BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
     return FileAndDirectoryUtils::openFile(fileUrl, mode);
@@ -217,7 +210,7 @@ static samfile_t* samOpen(const QString& url, const char* samMode, const QString
 static gzFile openGzipFile(const QString& fileUrl, const char* mode = "r") {
     gzFile fp = nullptr;
 #ifdef Q_OS_WIN
-    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
+    QScopedPointer<wchar_t> unicodeFileName(TextUtils::toWideCharsArray(fileUrl));
     fp = gzopen_w(unicodeFileName.data(), mode);
 #else
     fp = gzopen(fileUrl.toLocal8Bit().constData(), mode);

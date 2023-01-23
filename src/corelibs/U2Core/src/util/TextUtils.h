@@ -151,6 +151,9 @@ public:
 
     /** Returns index of the first whitespace character in the string or -1 if the string has no whites. */
     static int findIndexOfFirstWhiteSpace(const QString& text);
+
+    /** Converts QString to wchar_t*. Caller is responsible to deallocated the returned result memory. */
+    static wchar_t* toWideCharsArray(const QString& text);
 };
 
 template<typename T>
