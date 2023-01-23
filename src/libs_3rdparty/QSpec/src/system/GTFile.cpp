@@ -27,10 +27,9 @@
 #include "system/GTFile.h"
 
 #ifdef Q_OS_LINUX
-// We using c++14, while <filesystem> is in c++17, so using experimental version.
 // TODO: check on Windows & Mac.
-#    include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
+#    include <filesystem>
+namespace fs = std::filesystem;
 #endif
 
 #ifdef Q_OS_WIN
