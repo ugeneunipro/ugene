@@ -80,17 +80,11 @@ public:
      */
     static void createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os);
 
-    /**
-     * Calls fopen() correctly for files with Unicode
-     * names and returns a FILE* structure for the the opened file.
-     * For 'mode' see fopen() function description.
-     * Caller is responsible to close the file.
-     * If any error happens the method returns nullptr.
-     */
+    /** Calls FileAndDirectoryUtils::openFile(). Kept here for compatibility. */
     static NP<FILE> openFile(const QString& path, const QString& mode);
 
-    /** Closes file descriptor if the file descriptor is defined and is open. */
-    static void closeFileIfOpen(const NP<FILE>& file);
+    /** Calls FileAndDirectoryUtils::closeFileIfOpen(). Kept here for compatibility. */
+    static void closeFileIfOpen(FILE* file);
 
     /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
     static void* loadIndex(const QString& path);

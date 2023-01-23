@@ -26,6 +26,7 @@
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/Nullable.h>
 
 namespace U2 {
 
@@ -60,6 +61,18 @@ public:
      * The difference with 'isDirectoryWritable' is that this method doesn't check that the 'absoluteDirPath' dir exists.
      */
     static bool canWriteToPath(const QString& absoluteDirPath);
+
+    /**
+     * Calls fopen() correctly for files with Unicode
+     * names and returns a FILE* structure for the the opened file.
+     * For 'mode' see fopen() function description.
+     * Caller is responsible to close the file.
+     * If any error happens the method returns nullptr.
+     */
+    static NP<FILE> openFile(const QString& path, const QString& mode);
+
+    /** Closes file descriptor if the file descriptor is defined and is open. */
+    static void closeFileIfOpen(FILE* file);
 
 private:
     static QString getFormatId(const FormatDetectionResult& r);

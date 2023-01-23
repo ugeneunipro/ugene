@@ -101,15 +101,15 @@ report_error(BGZF* fp, const char* message) {
     fp->error = message;
 }
 
-int bgzf_check_bgzf(const char *fn)
+int bgzf_check_bgzf(FILE* file)
 {
     BGZF *fp;
     uint8_t buf[10],magic[10]="\037\213\010\4\0\0\0\0\0\377";
     int n;
 
-    if ((fp = bgzf_open(fn, "r")) == 0) 
+    if ((fp = bgzf_fdopen(file, "r")) == 0)
     {
-        fprintf(stderr, "[bgzf_check_bgzf] failed to open the file: %s\n",fn);
+        fprintf(stderr, "[bgzf_check_bgzf] failed to open the file\n");
         return -1;
     }
 
@@ -138,12 +138,12 @@ static BGZF *bgzf_read_init()
 
 static
 BGZF*
-open_read(int fd)
+open_read(FILE* file)
 {
-    FILE* file = fdopen(fd, "r");
-    BGZF* fp;
-	if (file == 0) return 0;
-	fp = bgzf_read_init();
+    if (file == 0) return 0;
+    int fd = fileno(file);
+    if (fd == -1) return 0;
+    BGZF* fp = bgzf_read_init();
     fp->file_descriptor = fd;
     fp->open_mode = 'r';
     fp->file = file;
@@ -152,12 +152,12 @@ open_read(int fd)
 
 static
 BGZF*
-open_write(int fd, int compress_level) // compress_level==-1 for the default level
+open_write(FILE* file, int compress_level) // compress_level==-1 for the default level
 {
-    FILE* file = fdopen(fd, "w");
-    BGZF* fp;
-	if (file == 0) return 0;
-	fp = malloc(sizeof(BGZF));
+    if (file == 0) return 0;
+    int fd = fileno(file);
+    if (fd == -1) return 0;
+    BGZF* fp = malloc(sizeof(BGZF));
     fp->file_descriptor = fd;
     fp->open_mode = 'w';
     fp->owned_file = 0;
@@ -175,51 +175,20 @@ open_write(int fd, int compress_level) // compress_level==-1 for the default lev
     return fp;
 }
 
-BGZF*
-bgzf_open(const char* __restrict path, const char* __restrict mode)
-{
-    BGZF* fp = NULL;
-    if (strchr(mode, 'r') || strchr(mode, 'R')) { /* The reading mode is preferred. */
-		int fd, oflag = O_RDONLY;
-#ifdef _WIN32
-		oflag |= O_BINARY;
-#endif
-        fd = open(path, oflag);
-		if (fd == -1) return 0;
-        fp = open_read(fd);
-    } else if (strchr(mode, 'w') || strchr(mode, 'W')) {
-		int fd, compress_level = -1, oflag = O_WRONLY | O_CREAT | O_TRUNC;
-#ifdef _WIN32
-		oflag |= O_BINARY;
-#endif
-		fd = open(path, oflag, 0666);
-		if (fd == -1) return 0;
-		{ // set compress_level
-			int i;
-			for (i = 0; mode[i]; ++i)
-				if (mode[i] >= '0' && mode[i] <= '9') break;
-			if (mode[i]) compress_level = (int)mode[i] - '0';
-			if (strchr(mode, 'u')) compress_level = 0;
-		}
-        fp = open_write(fd, compress_level);
-    }
-    if (fp != NULL) fp->owned_file = 1;
-    return fp;
-}
 
 BGZF*
-bgzf_fdopen(int fd, const char * __restrict mode)
+bgzf_fdopen(FILE* file, const char * __restrict mode)
 {
-	if (fd == -1) return 0;
+	if (file == 0) return 0;
     if (mode[0] == 'r' || mode[0] == 'R') {
-        return open_read(fd);
+        return open_read(file);
     } else if (mode[0] == 'w' || mode[0] == 'W') {
 		int i, compress_level = -1;
 		for (i = 0; mode[i]; ++i)
 			if (mode[i] >= '0' && mode[i] <= '9') break;
 		if (mode[i]) compress_level = (int)mode[i] - '0';
 		if (strchr(mode, 'u')) compress_level = 0;
-        return open_write(fd, compress_level);
+        return open_write(file, compress_level);
     } else {
         return NULL;
     }

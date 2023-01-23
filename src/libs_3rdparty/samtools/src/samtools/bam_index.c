@@ -414,44 +414,6 @@ bam_index_t *bam_index_load(const char *fn)
 	return idx;
 }
 
-int bam_index_build2(const char *fn, const char *_fnidx)
-{
-	char *fnidx;
-	FILE *fpidx;
-	bamFile fp;
-	bam_index_t *idx;
-	if ((fp = bam_open(fn, "r")) == 0) {
-		fprintf(stderr, "[bam_index_build2] fail to open the BAM file.\n");
-		return -1;
-	}
-	idx = bam_index_core(fp);
-	bam_close(fp);
-	if(idx == 0) {
-		fprintf(stderr, "[bam_index_build2] fail to index the BAM file.\n");
-		return -1;
-	}
-	if (_fnidx == 0) {
-		fnidx = (char*)calloc(strlen(fn) + 5, 1);
-		strcpy(fnidx, fn); strcat(fnidx, ".bai");
-	} else fnidx = strdup(_fnidx);
-	fpidx = fopen(fnidx, "wb");
-	if (fpidx == 0) {
-		fprintf(stderr, "[bam_index_build2] fail to create the index file.\n");
-		free(fnidx);
-		return -1;
-	}
-	bam_index_save(idx, fpidx);
-	bam_index_destroy(idx);
-	fclose(fpidx);
-	free(fnidx);
-	return 0;
-}
-
-int bam_index_build(const char *fn)
-{
-	return bam_index_build2(fn, 0);
-}
-
 static inline int reg2bins(uint32_t beg, uint32_t end, uint16_t list[BAM_MAX_BIN])
 {
 	int i = 0, k;
