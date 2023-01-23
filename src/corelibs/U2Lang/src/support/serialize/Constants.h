@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HR_CONTANTS_H_
-#define _U2_HR_CONTANTS_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -123,5 +122,3 @@ public:
 
 }  // namespace WorkflowSerialize
 }  // namespace U2
-
-#endif  // _U2_HR_CONTANTS_H_

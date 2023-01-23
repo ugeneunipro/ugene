@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GSEQUENCE_LINE_VIEW_ANNOTATED_H_
-#define _U2_GSEQUENCE_LINE_VIEW_ANNOTATED_H_
+#pragma once
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
@@ -163,5 +162,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

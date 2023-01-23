@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PAIR_ALIGN_H
-#define _U2_PAIR_ALIGN_H
+#pragma once
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -117,5 +116,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // PAIR_ALIGN_H

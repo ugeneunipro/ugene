@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ASSEMBLY_H_
-#define _U2_ASSEMBLY_H_
+#pragma once
 
 #include <QSharedData>
 
@@ -255,5 +254,3 @@ public:
 typedef QVector<qint32> U2AssemblyCoverageStat;
 
 }  // namespace U2
-
-#endif

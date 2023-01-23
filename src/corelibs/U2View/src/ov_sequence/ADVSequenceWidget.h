@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ADV_SEQUENCE_WIDGET_H_
-#define _U2_ADV_SEQUENCE_WIDGET_H_
+#pragma once
 
 #include <QAction>
 #include <QWidget>
@@ -115,5 +114,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

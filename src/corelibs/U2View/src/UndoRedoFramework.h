@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UNDO_REDO_FRAMEWORK_H_
-#define _U2_UNDO_REDO_FRAMEWORK_H_
+#pragma once
 
 #include <QAction>
 #include <QObject>
@@ -58,5 +57,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

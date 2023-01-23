@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_RUN_TASK_H
-#define _U2_EXTERNAL_TOOL_RUN_TASK_H
+#pragma once
 
 #include <QProcess>
 
@@ -233,5 +232,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_EXTERNAL_TOOL_RUN_TASK_H

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SCHEMA_ACTORS_REGISTRY_H_
-#define _SCHEMA_ACTORS_REGISTRY_H_
+#pragma once
 
 #include <QMutex>
 
@@ -42,5 +41,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _SCHEMA_ACTORS_REGISTRY_H_

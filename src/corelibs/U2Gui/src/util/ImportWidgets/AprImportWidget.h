@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_APR_IMPORT_WIDGET_H_
-#define _U2_APR_IMPORT_WIDGET_H_
+#pragma once
 
 #include <U2Formats/AprImporter.h>
 
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_APR_IMPORT_WIDGET_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _EDIT_MARKER_DIALOG_H_
-#define _EDIT_MARKER_DIALOG_H_
+#pragma once
 
 #include "ui_EditFloatMarkerWidget.h"
 #include "ui_EditIntegerMarkerWidget.h"
@@ -160,5 +159,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _EDIT_MARKER_DIALOG_H_

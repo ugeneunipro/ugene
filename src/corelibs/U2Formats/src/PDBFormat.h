@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PDB_FORMAT_H_
-#define _U2_PDB_FORMAT_H_
+#pragma once
 
 #include <QSharedDataPointer>
 
@@ -113,5 +112,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_TASKS_REGISTRY_
-#define _U2_WORKFLOW_TASKS_REGISTRY_
+#pragma once
 
 #include <U2Lang/ReadDocumentTaskFactory.h>
 
@@ -45,5 +44,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_TASKS_REGISTRY_

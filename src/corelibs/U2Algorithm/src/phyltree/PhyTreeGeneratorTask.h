@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __PHYTREEGENERATORTASK_H
-#define __PHYTREEGENERATORTASK_H
+#pragma once
 
 #include <U2Algorithm/CreatePhyTreeSettings.h>
 
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

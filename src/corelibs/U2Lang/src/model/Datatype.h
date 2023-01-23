@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_DATATYPE_H_
-#define _U2_WORKFLOW_DATATYPE_H_
+#pragma once
 
 #include <QExplicitlySharedDataPointer>
 
@@ -177,5 +176,3 @@ public:
 typedef IdRegistry<DataTypeValueFactory> DataTypeValueFactoryRegistry;
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_DATATYPE_H_

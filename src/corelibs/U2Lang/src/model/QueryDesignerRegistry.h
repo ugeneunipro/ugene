@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QUERY_DESIGNER_REGISTRY_H_
-#define _U2_QUERY_DESIGNER_REGISTRY_H_
+#pragma once
 
 #include <U2Core/IdRegistry.h>
 
@@ -44,5 +43,3 @@ signals:
 };
 
 }  // namespace U2
-
-#endif

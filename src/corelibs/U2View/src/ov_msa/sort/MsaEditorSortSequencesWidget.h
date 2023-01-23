@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_SORT_SEQUENCES_WIDGET_H_
-#define _U2_MSA_EDITOR_SORT_SEQUENCES_WIDGET_H_
+#pragma once
 
 #include <QComboBox>
 #include <QPushButton>
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

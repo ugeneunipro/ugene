@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOCUMENT_FORMATS_H_
-#define _U2_DOCUMENT_FORMATS_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -76,5 +75,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

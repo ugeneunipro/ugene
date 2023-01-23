@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYLTREE_TEXT_SETTINGS_DIALOG_H_
-#define _U2_PHYLTREE_TEXT_SETTINGS_DIALOG_H_
+#pragma once
 
 #include "BaseSettingsDialog.h"
 #include "ov_phyltree/TreeSettings.h"
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

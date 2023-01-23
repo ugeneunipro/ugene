@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _MA_ITERATOR_H_
-#define _MA_ITERATOR_H_
+#pragma once
 
 #include <U2Core/MultipleAlignment.h>
 
@@ -68,5 +67,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _MA_ITERATOR_H_

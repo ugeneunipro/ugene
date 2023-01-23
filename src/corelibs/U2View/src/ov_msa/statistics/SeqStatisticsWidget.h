@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQ_STATISTICS_WIDGET_H_
-#define _U2_SEQ_STATISTICS_WIDGET_H_
+#pragma once
 
 #include "../MsaOpSavableTab.h"
 #include "ui_MSADistancesColumnSettingsWidget.h"
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

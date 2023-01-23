@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _WORKFLOW_SCRIPT_FUNC_H_
-#define _WORKFLOW_SCRIPT_FUNC_H_
+#pragma once
 
 #include <QScriptValue>
 
@@ -108,5 +107,3 @@ public:
 };  // WorkflowScriptLibrary
 
 }  // namespace U2
-
-#endif

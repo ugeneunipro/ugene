@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_ASSEMBLEY_GUI_EXTENSION_H_
-#define _U2_DNA_ASSEMBLEY_GUI_EXTENSION_H_
+#pragma once
 
 #include <QWidget>
 
@@ -97,5 +96,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DNA_ASSEMBLEY_GUI_EXTENSION_H_

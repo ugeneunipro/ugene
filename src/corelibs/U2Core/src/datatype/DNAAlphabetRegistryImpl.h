@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _DNA_ALPHABET_REGISTRY_IMPL_H_
-#define _DNA_ALPHABET_REGISTRY_IMPL_H_
+#pragma once
 
 #include <U2Core/DNAAlphabet.h>
 
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

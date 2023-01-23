@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_FILTER_NAMES_H_
-#define _U2_PROJECT_FILTER_NAMES_H_
+#pragma once
 
 #include <QString>
 
@@ -45,5 +44,3 @@ extern const QString TEXT_CONTENT_FILTER_NAME;
 }  // namespace ProjectFilterNames
 
 }  // namespace U2
-
-#endif  // _U2_PROJECT_FILTER_NAMES_H_

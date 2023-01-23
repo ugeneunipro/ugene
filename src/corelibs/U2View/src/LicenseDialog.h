@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef LICENSEDIALOG_H
-#define LICENSEDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -45,4 +44,3 @@ private:
     Plugin* plugin;
 };
 }  // namespace U2
-#endif  // LICENSEDIALOG_H

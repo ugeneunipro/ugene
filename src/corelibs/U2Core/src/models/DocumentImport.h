@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOCUMENT_IMPORT_H_
-#define _U2_DOCUMENT_IMPORT_H_
+#pragma once
 
 #include <QDialog>
 
@@ -146,5 +145,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_MODEL_H_
-#define _U2_PROJECT_MODEL_H_
+#pragma once
 
 #include <QAction>
 
@@ -169,5 +168,3 @@ signals:
 }  // namespace U2
 Q_DECLARE_METATYPE(U2::Project*)
 Q_DECLARE_METATYPE(QList<U2::Document*>)
-
-#endif

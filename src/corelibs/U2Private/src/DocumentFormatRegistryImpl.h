@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _DOCUMENT_FORMAT_REGISTRY_IMPL_H_
-#define _DOCUMENT_FORMAT_REGISTRY_IMPL_H_
+#pragma once
 
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
@@ -60,4 +59,3 @@ private:
 };
 
 }  // namespace U2
-#endif

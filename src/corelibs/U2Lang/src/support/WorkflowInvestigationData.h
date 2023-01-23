@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_INVESTIGATION_DATA_H_
-#define _U2_WORKFLOW_INVESTIGATION_DATA_H_
+#pragma once
 
 #include <QMap>
 #include <QQueue>
@@ -31,5 +30,3 @@ namespace U2 {
 typedef QMap<QString, QQueue<QString>> WorkflowInvestigationData;
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_INVESTIGATION_DATA_H_

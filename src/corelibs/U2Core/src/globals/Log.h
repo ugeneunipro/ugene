@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_LOG_H_
-#define _U2_LOG_H_
+#pragma once
 
 #include <QMetaType>
 #include <QMutex>
@@ -158,5 +157,3 @@ static Logger userActLog(ULOG_CAT_USER_ACTIONS);
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::LogMessage)
-
-#endif

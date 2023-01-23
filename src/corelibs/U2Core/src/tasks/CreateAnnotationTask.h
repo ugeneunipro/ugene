@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_ANNOTATION_TASK_H_
-#define _U2_CREATE_ANNOTATION_TASK_H_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/AnnotationTableObject.h>
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

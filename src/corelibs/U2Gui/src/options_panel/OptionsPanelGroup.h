@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OPTIONS_PANEL_GROUP_H_
-#define _U2_OPTIONS_PANEL_GROUP_H_
+#pragma once
 
 namespace U2 {
 
@@ -47,5 +46,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

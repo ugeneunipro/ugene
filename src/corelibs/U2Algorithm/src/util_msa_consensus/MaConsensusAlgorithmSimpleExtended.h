@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_CONSENSUS_ALGORITHM_SIMPLE_EXTENDED_H_
-#define _U2_MA_CONSENSUS_ALGORITHM_SIMPLE_EXTENDED_H_
+#pragma once
 
 #include "MSAConsensusAlgorithm.h"
 
@@ -137,5 +136,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_CONSENSUS_ALGORITHM_SIMPLE_EXTENDED_H_

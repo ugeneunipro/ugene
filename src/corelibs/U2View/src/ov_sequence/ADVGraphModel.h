@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_AVD_GRAPH_MODEL_H_
-#define _U2_AVD_GRAPH_MODEL_H_
+#pragma once
 
 #include <QPixmap>
 #include <QPointer>
@@ -247,5 +246,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_LOG_CACHE_H_
-#define _U2_LOG_CACHE_H_
+#pragma once
 
 #include <QFileInfo>
 #include <QReadWriteLock>
@@ -107,5 +106,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

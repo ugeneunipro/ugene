@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SNPEFF_INFO_PARSER_H_
-#define _U2_SNPEFF_INFO_PARSER_H_
+#pragma once
 
 #include <QMap>
 
@@ -147,5 +146,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SNPEFF_INFO_PARSER_H_

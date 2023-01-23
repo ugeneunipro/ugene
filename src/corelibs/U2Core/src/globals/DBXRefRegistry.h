@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DBXREF_H_
-#define _U2_DBXREF_H_
+#pragma once
 
 #include <QMap>
 #include <QObject>
@@ -74,5 +73,3 @@ private:
 }  // namespace U2
 Q_DECLARE_METATYPE(U2::DBXRefRegistry*)
 Q_DECLARE_METATYPE(U2::DBXRefInfo)
-
-#endif

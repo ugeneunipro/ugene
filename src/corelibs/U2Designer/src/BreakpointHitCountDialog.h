@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _BREAKPOINT_HIT_COUNT_DIALOG_H_
-#define _BREAKPOINT_HIT_COUNT_DIALOG_H_
+#pragma once
 
 #include <QDialog>
 
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _BREAKPOINT_HIT_COUNT_DIALOG_H_

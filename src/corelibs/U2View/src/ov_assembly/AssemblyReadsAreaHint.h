@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __U2_ASSEMBLY_READS_AREA_HINT_H__
-#define __U2_ASSEMBLY_READS_AREA_HINT_H__
+#pragma once
 
 #include <QFrame>
 #include <QLabel>
@@ -51,5 +50,3 @@ protected:
 };  // AssemblyReadsAreaHint
 
 }  // namespace U2
-
-#endif  // __U2_ASSEMBLY_READS_AREA_HINT_H__

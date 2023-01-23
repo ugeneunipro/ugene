@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SMITH_WATERMAN_REPORT_CALLBACK_H_
-#define _U2_SMITH_WATERMAN_REPORT_CALLBACK_H_
+#pragma once
 
 #include <U2Algorithm/SmithWatermanResult.h>
 
@@ -156,5 +155,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

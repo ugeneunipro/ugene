@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOWNLOAD_REMOTE_FILE_DIALOG_H_
-#define _U2_DOWNLOAD_REMOTE_FILE_DIALOG_H_
+#pragma once
 
 #include <QDialog>
 #include <QList>
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_U2_DOWNLOAD_REMOTE_FILE_DIALOG_H_

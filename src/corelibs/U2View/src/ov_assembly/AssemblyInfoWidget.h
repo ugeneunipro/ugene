@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_INFO_WIDGET_H__
-#define __ASSEMBLY_INFO_WIDGET_H__
+#pragma once
 
 #include <U2Gui/OPWidgetFactory.h>
 #include <U2Gui/U2SavableWidget.h>
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // #ifndef __ASSEMBLY_INFO_WIDGET_H__

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_CONFIGURATION_H_
-#define _U2_WORKFLOW_CONFIGURATION_H_
+#pragma once
 
 #include "Attribute.h"
 #include "ConfigurationValidator.h"
@@ -87,5 +86,3 @@ private:
 };  // Configuration
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_CONFIGURATION_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITEBLOBOUTPUTSTREAM_H_
-#define _U2_SQLITEBLOBOUTPUTSTREAM_H_
+#pragma once
 
 #include <U2Core/OutputStream.h>
 #include <U2Core/U2SqlHelpers.h>
@@ -41,5 +40,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SQLITEBLOBOUTPUTSTREAM_H_

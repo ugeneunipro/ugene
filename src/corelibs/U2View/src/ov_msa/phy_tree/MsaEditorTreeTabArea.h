@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_TREE_TAB_AREA_H_
-#define _U2_MSA_EDITOR_TREE_TAB_AREA_H_
+#pragma once
 
 #include <QPushButton>
 #include <QTabWidget>
@@ -102,5 +101,3 @@ private:
     QLayout* currentLayout;
 };
 }  // namespace U2
-
-#endif

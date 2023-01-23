@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_MNGR_H_
-#define _U2_WORKFLOW_MNGR_H_
+#pragma once
 
 #include <assert.h>
 
@@ -168,5 +167,3 @@ class U2LANG_EXPORT DomainFactoryRegistry : public IdRegistry<DomainFactory> {
 }  // namespace Workflow
 
 }  // namespace U2
-
-#endif

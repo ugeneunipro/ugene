@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WINDOW_STEP_SELECTOR_WIDGET_
-#define _U2_WINDOW_STEP_SELECTOR_WIDGET_
+#pragma once
 
 #include <QDialog>
 #include <QDoubleSpinBox>
@@ -91,5 +90,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

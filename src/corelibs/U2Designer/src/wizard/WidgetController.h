@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WIDGETCONTROLLER_H_
-#define _U2_WIDGETCONTROLLER_H_
+#pragma once
 
 #include <QLabel>
 #include <QWidget>
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_WIDGETCONTROLLER_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _WORKFLOW_DBI_DATA_HANDLER_H_
-#define _WORKFLOW_DBI_DATA_HANDLER_H_
+#pragma once
 
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2Type.h>
@@ -64,5 +63,3 @@ private:
 
 Q_DECLARE_METATYPE(U2::Workflow::SharedDbiDataHandler);
 Q_DECLARE_METATYPE(QList<U2::Workflow::SharedDbiDataHandler>);
-
-#endif

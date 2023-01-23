@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_DBI_H_
-#define _U2_MSA_DBI_H_
+#pragma once
 
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2Msa.h>
@@ -151,5 +150,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

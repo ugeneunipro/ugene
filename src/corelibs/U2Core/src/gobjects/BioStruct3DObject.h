@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BIOSTRUCT3D_OBJECT_H_
-#define _U2_BIOSTRUCT3D_OBJECT_H_
+#pragma once
 
 #include <U2Core/BioStruct3D.h>
 #include <U2Core/GObject.h>
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_U2_BIOSTRUCT3D_OBJECT_H_

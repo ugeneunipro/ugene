@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_COMBO_BOX_CONTROLLER_H_
-#define _U2_MSA_COMBO_BOX_CONTROLLER_H_
+#pragma once
 
 #include <QComboBox>
 
@@ -140,5 +139,3 @@ void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Fa
 }
 
 }  // namespace U2
-
-#endif

@@ -1,8 +1,7 @@
 // QScriptEngine is a deprecated QT package and produces warnings during compilation with modern compilers.
 // QT team does not want to update/support this package anymore: so we mute these warnings.
 
-#ifndef _U2_SCRIPT_ENGINE_H_
-#define _U2_SCRIPT_ENGINE_H_
+#pragma once
 
 #ifdef __GNUC__
 #    pragma GCC diagnostic push
@@ -12,6 +11,4 @@
 #include <QScriptEngine>
 #ifdef __GNUC__
 #    pragma GCC diagnostic pop
-#endif
-
 #endif

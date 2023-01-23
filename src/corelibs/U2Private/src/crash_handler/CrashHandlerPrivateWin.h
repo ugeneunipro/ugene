@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CRASH_HANDLER_PRIVATE_WIN_H_
-#define _U2_CRASH_HANDLER_PRIVATE_WIN_H_
+#pragma once
 
 #include <qglobal.h>
 #ifdef Q_OS_WIN
@@ -63,5 +62,3 @@ private:
 }  // namespace U2
 
 #endif
-
-#endif  // _U2_CRASH_HANDLER_PRIVATE_WIN_H_

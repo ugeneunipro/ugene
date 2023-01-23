@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _WORKFLOW_LAST_READY_SCHEDULER_H_
-#define _WORKFLOW_LAST_READY_SCHEDULER_H_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 
@@ -68,5 +67,3 @@ protected:
 }  // namespace LocalWorkflow
 
 }  // namespace U2
-
-#endif  // _WORKFLOW_LAST_READY_SCHEDULER_H_

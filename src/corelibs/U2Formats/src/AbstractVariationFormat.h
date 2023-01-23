@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ABSTRACT_VARIATION_FORMAT_H_
-#define _U2_ABSTRACT_VARIATION_FORMAT_H_
+#pragma once
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/VariantTrackObject.h>
@@ -95,5 +94,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_ABSTRACT_VARIATION_FORMAT_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U1_ANNOTATION_UTILS_H_
-#define _U1_ANNOTATION_UTILS_H_
+#pragma once
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationData.h>
@@ -160,5 +159,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::U1AnnotationUtils::AnnotationStrategyForResize)
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BUILT_IN_DISTANCE_ALGORITHMS_H_
-#define _U2_BUILT_IN_DISTANCE_ALGORITHMS_H_
+#pragma once
 
 #include <QString>
 
@@ -36,5 +35,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

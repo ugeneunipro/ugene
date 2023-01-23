@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UDRRECORD_H_
-#define _U2_UDRRECORD_H_
+#pragma once
 
 #include <U2Core/U2Type.h>
 #include <U2Core/UdrSchema.h>
@@ -135,5 +134,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_UDRRECORD_H_

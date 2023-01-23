@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __COVERAGE_INFO_H__
-#define __COVERAGE_INFO_H__
+#pragma once
 
 #include <QSharedPointer>
 #include <QVector>
@@ -66,5 +65,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

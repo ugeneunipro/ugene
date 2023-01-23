@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_
-#define _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_
+#pragma once
 
 #include <QMap>
 #include <QString>
@@ -64,5 +63,3 @@ struct U2LANG_EXPORT BreakpointConditionDump {
 };
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_BREAKPOINT_HIT_COUNTER_SHARED_INFO_H_

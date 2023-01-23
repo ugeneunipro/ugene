@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SARRAY_INDEX_SERIALIZER_H_
-#define _U2_SARRAY_INDEX_SERIALIZER_H_
+#pragma once
 
 #include <QFile>
 
@@ -44,5 +43,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

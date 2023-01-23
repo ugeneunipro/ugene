@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DBICLASSPROTOTYPE_H_
-#define _U2_DBICLASSPROTOTYPE_H_
+#pragma once
 
 #include <QObject>
 #include <QScriptClass>
@@ -132,5 +131,3 @@ QScriptValue DbiScriptClass::toScriptValue(QScriptEngine* engine, const ScriptDb
 
 Q_DECLARE_METATYPE(U2::ScriptDbiData)
 Q_DECLARE_METATYPE(U2::ScriptDbiData*)
-
-#endif  // _U2_DBICLASSPROTOTYPE_H_

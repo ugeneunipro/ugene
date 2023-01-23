@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_RECTANGULAR_LAYOUT_ALGORITHM_H_
-#define _U2_TV_RECTANGULAR_LAYOUT_ALGORITHM_H_
+#pragma once
 
 namespace U2 {
 
@@ -37,5 +36,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

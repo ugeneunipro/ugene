@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_DISTANCE_ALGORITHM_H_
-#define _U2_MSA_DISTANCE_ALGORITHM_H_
+#pragma once
 
 #include <QMutex>
 #include <QVarLengthArray>
@@ -162,5 +161,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QD_SCHEME_H_
-#define _U2_QD_SCHEME_H_
+#pragma once
 
 #include <QPair>
 #include <QSharedData>
@@ -413,5 +412,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::QDActorPrototype*)
-
-#endif

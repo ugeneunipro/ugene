@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOCUMENT_MODEL_H_
-#define _U2_DOCUMENT_MODEL_H_
+#pragma once
 
 #include <QDateTime>
 #include <QMimeData>
@@ -580,5 +579,3 @@ public:
 
 Q_DECLARE_METATYPE(U2::Document*)
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::DocumentFormatFlags)
-
-#endif

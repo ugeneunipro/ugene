@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_URL_H_
-#define _U2_WORKFLOW_URL_H_
+#pragma once
 
 #include <QAction>
 #include <QComboBox>
@@ -570,5 +569,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::URLDelegate::Options)
-
-#endif

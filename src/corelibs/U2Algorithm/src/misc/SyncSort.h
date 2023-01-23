@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SYNC_SORT_H_
-#define _U2_SYNC_SORT_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -166,5 +165,3 @@ void SyncSort<T, S>::sort() {
 }
 
 }  // namespace U2
-
-#endif

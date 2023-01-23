@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _MARKER_UTILS_H_
-#define _MARKER_UTILS_H_
+#pragma once
 
 #include <U2Lang/Marker.h>
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _MARKER_UTILS_H_

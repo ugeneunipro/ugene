@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHY_TREE_GENERATOR_
-#define _U2_PHY_TREE_GENERATOR_
+#pragma once
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/PhyTree.h>
@@ -43,5 +42,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PHY_TREE_GENERATOR_

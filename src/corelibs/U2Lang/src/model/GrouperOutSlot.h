@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GROUPER_SLOT_ACTION_
-#define _GROUPER_SLOT_ACTION_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -116,5 +115,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_GROUPER_SLOT_ACTION_

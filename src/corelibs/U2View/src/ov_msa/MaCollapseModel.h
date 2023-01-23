@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_COLLAPSE_MODEL_H_
-#define _U2_MA_COLLAPSE_MODEL_H_
+#pragma once
 
 #include <QHash>
 #include <QList>
@@ -177,5 +176,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

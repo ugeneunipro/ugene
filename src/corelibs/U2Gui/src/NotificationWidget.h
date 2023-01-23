@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _NOTIFICATION_WIDGET_H
-#define _NOTIFICATION_WIDGET_H
+#pragma once
 
 #include <assert.h>
 
@@ -90,4 +89,3 @@ private:
 };
 
 }  // namespace U2
-#endif

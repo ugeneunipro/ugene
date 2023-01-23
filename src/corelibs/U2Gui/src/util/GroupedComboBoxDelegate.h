@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GROUPED_COMBOBOX_DELEGATE_H_
-#define _U2_GROUPED_COMBOBOX_DELEGATE_H_
+#pragma once
 
 #include <QItemDelegate>
 #include <QPainter>
@@ -46,5 +45,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GROUPED_COMBOBOX_DELEGATE_H_

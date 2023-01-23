@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GOBJECT_REFERENCE_H_
-#define _U2_GOBJECT_REFERENCE_H_
+#pragma once
 
 #include <QDataStream>
 
@@ -124,5 +123,3 @@ Q_DECLARE_METATYPE(U2::GObjectReference)
 Q_DECLARE_METATYPE(U2::GObjectRelation)
 Q_DECLARE_METATYPE(QList<U2::GObjectReference>)
 Q_DECLARE_METATYPE(QList<U2::GObjectRelation>)
-
-#endif

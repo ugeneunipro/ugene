@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TASK_H_
-#define _U2_TASK_H_
+#pragma once
 
 #include <QDateTime>
 #include <QPointer>
@@ -630,5 +629,3 @@ protected:
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::TaskFlags)
-
-#endif

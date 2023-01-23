@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ACTORPROTOTYPE_H_
-#define _U2_ACTORPROTOTYPE_H_
+#pragma once
 
 #include <QMimeData>
 #include <QObject>
@@ -172,5 +171,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_ACTORPROTOTYPE_H_

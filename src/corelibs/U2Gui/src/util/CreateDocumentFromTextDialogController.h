@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_DOCUMENT_FROM_TEXT_DIALOG_CONTROLLER_H_
-#define _U2_CREATE_DOCUMENT_FROM_TEXT_DIALOG_CONTROLLER_H_
+#pragma once
 
 #include <QDialog>
 
@@ -58,5 +57,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

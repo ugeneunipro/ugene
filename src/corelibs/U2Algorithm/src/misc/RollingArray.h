@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ROLLING_ARRAY_H_
-#define _U2_ROLLING_ARRAY_H_
+#pragma once
 
 #include <assert.h>
 
@@ -185,5 +184,3 @@ int RollingArray<T>::toPos(int rollPos) const {
 }
 
 }  // namespace U2
-
-#endif

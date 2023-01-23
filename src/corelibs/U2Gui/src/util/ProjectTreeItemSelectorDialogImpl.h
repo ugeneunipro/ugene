@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_TREE_ITEM_SELECTOR_DIALOG_IMPL_H_
-#define _U2_PROJECT_TREE_ITEM_SELECTOR_DIALOG_IMPL_H_
+#pragma once
 
 #include "ui_ProjectTreeItemSelectorDialogBase.h"
 
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

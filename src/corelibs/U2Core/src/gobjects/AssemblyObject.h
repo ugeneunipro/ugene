@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ASSEMBLY_OBJECT_H_
-#define _U2_ASSEMBLY_OBJECT_H_
+#pragma once
 
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
@@ -44,5 +43,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

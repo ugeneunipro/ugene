@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SCRIPT_H_
-#define _U2_SCRIPT_H_
+#pragma once
 
 #include "FormatDetection.h"
 #include "SchemeHandle.h"
@@ -68,5 +67,3 @@ U2SCRIPT_EXPORT U2ErrorType releaseContext();
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // _U2_SCRIPT_H_

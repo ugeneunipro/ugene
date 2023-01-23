@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef _U2_DATABASE_H_
-#define _U2_DATABASE_H_
+#pragma once
 
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/global.h>
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

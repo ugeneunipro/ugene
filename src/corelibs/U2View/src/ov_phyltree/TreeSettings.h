@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TREE_SETTINGS_H_
-#define _U2_TREE_SETTINGS_H_
+#pragma once
 
 #include <QDialog>
 #include <QFontInfo>
@@ -99,4 +98,3 @@ enum TreeViewOption {
 typedef QMap<TreeViewOption, QVariant> OptionsMap;
 
 }  // namespace U2
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALIGN_SEQUENCES_TO_ALIGNMENT_TASK_SETTINGS_H_
-#define _U2_ALIGN_SEQUENCES_TO_ALIGNMENT_TASK_SETTINGS_H_
+#pragma once
 
 #include "AbstractAlignmentTask.h"
 
@@ -42,5 +41,3 @@ public:
     qint64 maxSequenceLength;
 };
 }  // namespace U2
-
-#endif  // _U2_PAIRWISE_ALIGNMENT_TASK_H_

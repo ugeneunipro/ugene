@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ASSEMBLY_ANNOTATIONS_AREA_
-#define _ASSEMBLY_ANNOTATIONS_AREA_
+#pragma once
 
 #include <QWidget>
 
@@ -44,5 +43,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _ASSEMBLY_ANNOTATIONS_AREA_

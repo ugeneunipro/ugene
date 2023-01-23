@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FILES_ITERATOR_
-#define _U2_FILES_ITERATOR_
+#pragma once
 
 #include <QDir>
 
@@ -89,5 +88,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_FILES_ITERATOR_

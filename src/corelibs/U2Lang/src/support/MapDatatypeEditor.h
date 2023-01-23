@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_MAP_EDITOR_H_
-#define _U2_WORKFLOW_MAP_EDITOR_H_
+#pragma once
 
 #include <U2Lang/Configuration.h>
 #include <U2Lang/ConfigurationEditor.h>
@@ -128,5 +127,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

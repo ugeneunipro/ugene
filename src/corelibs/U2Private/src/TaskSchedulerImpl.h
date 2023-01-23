@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TASK_SCHEDULER_IMPL_H_
-#define _U2_TASK_SCHEDULER_IMPL_H_
+#pragma once
 
 #include <QMap>
 #include <QMutex>
@@ -214,4 +213,3 @@ private:
 };
 
 }  // namespace U2
-#endif

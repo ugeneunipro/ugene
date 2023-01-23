@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OLDUWL_H_
-#define _U2_OLDUWL_H_
+#pragma once
 
 #include "Tokenizer.h"
 
@@ -43,5 +42,3 @@ public:
 
 }  // namespace WorkflowSerialize
 }  // namespace U2
-
-#endif  // _U2_OLDUWL_H_

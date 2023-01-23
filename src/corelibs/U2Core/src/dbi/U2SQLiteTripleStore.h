@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QSLITE_TRIPLESTORE_
-#define _U2_QSLITE_TRIPLESTORE_
+#pragma once
 
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2OpStatus.h>
@@ -97,5 +96,3 @@ class TripleStoreL10N : public QObject {
 };
 
 }  // namespace U2
-
-#endif  // _U2_QSLITE_TRIPLESTORE_

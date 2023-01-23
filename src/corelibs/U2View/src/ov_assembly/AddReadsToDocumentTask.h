@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ADD_READS_TO_DOCUMENT_TASK_
-#define _U2_ADD_READS_TO_DOCUMENT_TASK_
+#pragma once
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/Task.h>
@@ -44,5 +43,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

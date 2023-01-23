@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RING_BUF_H_
-#define _U2_RING_BUF_H_
+#pragma once
 
 namespace U2 {
 
@@ -93,5 +92,3 @@ void RingBuffer::append(const char* src, int n) {
 }
 
 }  // namespace U2
-
-#endif

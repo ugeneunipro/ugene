@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FEATURE_KEY_FILTER_TASK_H_
-#define _U2_FEATURE_KEY_FILTER_TASK_H_
+#pragma once
 
 #include <U2Core/AbstractProjectFilterTask.h>
 #include <U2Core/GenbankFeatures.h>
@@ -55,5 +54,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_TEXT_CONTENT_FILTER_TASK_H_

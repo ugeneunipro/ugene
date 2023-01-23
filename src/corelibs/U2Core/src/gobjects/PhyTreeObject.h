@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYTREE_OBJECT_H_
-#define _U2_PHYTREE_OBJECT_H_
+#pragma once
 
 #include <U2Core/GObject.h>
 #include <U2Core/PhyTree.h>
@@ -77,5 +76,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _IOADAPTER_REGISTRY_IMPL_H_
-#define _IOADAPTER_REGISTRY_IMPL_H_
+#pragma once
 
 #include <U2Core/IOAdapter.h>
 
@@ -50,4 +49,3 @@ private:
 };
 
 }  // namespace U2
-#endif

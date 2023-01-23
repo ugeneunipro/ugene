@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_USER_ACTIONS_WRITER_H_
-#define _U2_USER_ACTIONS_WRITER_H_
+#pragma once
 
 #include <QEvent>
 #include <QMouseEvent>
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_USER_ACTIONS_WRITER_H_

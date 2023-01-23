@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SCRIPT_HIGHLIGHTER_H_
-#define _U2_SCRIPT_HIGHLIGHTER_H_
+#pragma once
 
 #include <QSyntaxHighlighter>
 
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SCRIPT_HIGHLIGHTER_H_

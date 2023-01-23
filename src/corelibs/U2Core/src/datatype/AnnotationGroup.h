@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATION_GROUP_H_
-#define _U2_ANNOTATION_GROUP_H_
+#pragma once
 
 #include <QMetaType>
 
@@ -129,5 +128,3 @@ private:
 
 Q_DECLARE_METATYPE(U2::AnnotationGroup)
 Q_DECLARE_METATYPE(U2::AnnotationGroup*)
-
-#endif  //

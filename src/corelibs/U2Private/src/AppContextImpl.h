@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_APPCONTEXT_IMPL_
-#define _U2_APPCONTEXT_IMPL_
+#pragma once
 
 #include <U2Core/AppContext.h>
 #include <U2Core/global.h>
@@ -743,5 +742,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

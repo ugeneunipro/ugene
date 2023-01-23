@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATIONS_TREE_VIEW_
-#define _U2_ANNOTATIONS_TREE_VIEW_
+#pragma once
 
 #include <QTimer>
 #include <QTreeWidget>
@@ -348,5 +347,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __EXTRACT_ANNOTATED_REGION_TASK_H__
-#define __EXTRACT_ANNOTATED_REGION_TASK_H__
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/DNASequence.h>
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

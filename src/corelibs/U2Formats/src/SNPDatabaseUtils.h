@@ -24,7 +24,6 @@
 
 #include <U2Formats/Database.h>
 
-#ifndef _U2_DATABASE_UTILS_
 #    define _U2_DATABASE_UTILS_
 
 namespace U2 {
@@ -37,5 +36,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DATABASE_UTILS_

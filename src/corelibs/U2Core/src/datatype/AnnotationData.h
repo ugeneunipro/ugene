@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATION_DATA_H_
-#define _U2_ANNOTATION_DATA_H_
+#pragma once
 
 #include <QDataStream>
 #include <QSharedData>
@@ -80,5 +79,3 @@ U2CORE_EXPORT QDataStream& operator<<(QDataStream& dataStream, const AnnotationD
 Q_DECLARE_METATYPE(U2::AnnotationData)
 Q_DECLARE_METATYPE(U2::SharedAnnotationData)
 Q_DECLARE_METATYPE(QList<U2::SharedAnnotationData>)
-
-#endif

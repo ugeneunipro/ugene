@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
-#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_H_
+#pragma once
 
 #include <U2Core/U2SafePoints.h>
 
@@ -267,5 +266,3 @@ inline bool operator==(const MultipleSequenceAlignmentData* ptr1, const Multiple
 }
 
 }  // namespace U2
-
-#endif

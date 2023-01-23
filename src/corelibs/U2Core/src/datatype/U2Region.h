@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REGION_H_
-#define _U2_REGION_H_
+#pragma once
 
 #include <QObject>
 #include <QRect>
@@ -253,5 +252,3 @@ U2CORE_EXPORT QDataStream& operator>>(QDataStream& in, U2Region& myObj);
 Q_DECLARE_TYPEINFO(U2::U2Region, Q_PRIMITIVE_TYPE);
 Q_DECLARE_METATYPE(U2::U2Region)
 Q_DECLARE_METATYPE(QVector<U2::U2Region>)
-
-#endif

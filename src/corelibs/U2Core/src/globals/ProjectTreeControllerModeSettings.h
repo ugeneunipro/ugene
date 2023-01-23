@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_TREE_CONTROLLER_MODE_SETTINGS_H_
-#define _U2_PROJECT_TREE_CONTROLLER_MODE_SETTINGS_H_
+#pragma once
 
 #include <QFont>
 #include <QStringList>
@@ -105,5 +104,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PROJECT_TREE_CONTROLLER_MODE_SETTINGS_H_

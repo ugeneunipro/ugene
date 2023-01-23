@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FEATURE_KEYS_H_
-#define _U2_FEATURE_KEYS_H_
+#pragma once
 
 #include <QtCore/QString>
 
@@ -52,5 +51,3 @@ const QString U2FeatureKeyOperationBond = "#~ob";
 const QString U2FeatureKeyCase = "#~c";
 
 }  // namespace U2
-
-#endif  //_U2_FEATURE_KEYS_H_

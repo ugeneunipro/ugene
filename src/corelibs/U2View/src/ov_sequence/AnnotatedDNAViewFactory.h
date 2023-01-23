@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATED_DNA_VIEW_FACTORY_H_
-#define _U2_ANNOTATED_DNA_VIEW_FACTORY_H_
+#pragma once
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -49,5 +48,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

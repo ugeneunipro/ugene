@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_SEQUENCE_FROM_TEXT_AND_OPEN_VIEW_TASK_H_
-#define _U2_CREATE_SEQUENCE_FROM_TEXT_AND_OPEN_VIEW_TASK_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/GUrl.h>
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CREATE_SEQUENCE_FROM_TEXT_AND_OPEN_VIEW_TASK_H_

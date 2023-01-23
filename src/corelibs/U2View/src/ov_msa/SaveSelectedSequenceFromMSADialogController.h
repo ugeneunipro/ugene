@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SAVE_SELECTED_SEQUENCES_DIALOG_CONTROLLER
-#define _U2_SAVE_SELECTED_SEQUENCES_DIALOG_CONTROLLER
+#pragma once
 
 #include <QDialog>
 
@@ -93,5 +92,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

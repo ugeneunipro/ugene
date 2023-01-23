@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ASSEMBLY_VARIANT_HINT_
-#define _ASSEMBLY_VARIANT_HINT_
+#pragma once
 
 #include <U2Core/U2Variant.h>
 
@@ -40,5 +39,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _ASSEMBLY_VARIANT_HINT_

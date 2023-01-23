@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_SCHEMES_MENU_BUILDER_H_
-#define _U2_MSA_SCHEMES_MENU_BUILDER_H_
+#pragma once
 
 #include <QAction>
 #include <QList>
@@ -64,5 +63,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

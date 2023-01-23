@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _NEW_GROUPER_SLOT_DIALOG_H_
-#define _NEW_GROUPER_SLOT_DIALOG_H_
+#pragma once
 
 #include <U2Lang/Descriptor.h>
 #include <U2Lang/GrouperOutSlot.h>
@@ -88,5 +87,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _NEW_GROUPER_SLOT_DIALOG_H_

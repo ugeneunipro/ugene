@@ -23,8 +23,7 @@
     Default DBI implementations
 */
 
-#ifndef _U2_ABSTRACT_DBI_H_
-#define _U2_ABSTRACT_DBI_H_
+#pragma once
 
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -339,5 +338,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

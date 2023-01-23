@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_BUS_MODEL_H_
-#define _U2_WORKFLOW_BUS_MODEL_H_
+#pragma once
 
 #include <U2Core/U2OpStatus.h>
 
@@ -217,5 +216,3 @@ public:
 typedef QMap<QString, QString> StrStrMap;
 Q_DECLARE_METATYPE(StrStrMap)
 Q_DECLARE_METATYPE(SlotPathMap)
-
-#endif

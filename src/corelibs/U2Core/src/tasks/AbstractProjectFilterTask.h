@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ABSTRACT_PROJECT_FILTER_TASK_H_
-#define _U2_ABSTRACT_PROJECT_FILTER_TASK_H_
+#pragma once
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ProjectTreeControllerModeSettings.h>
@@ -78,5 +77,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_ABSTRACT_PROJECT_FILTER_TASK_H_

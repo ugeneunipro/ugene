@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_LOCATION_H_
-#define _U2_LOCATION_H_
+#pragma once
 
 #include <QSharedData>
 
@@ -202,5 +201,3 @@ inline void U2LocationData::reset() {
 }
 
 }  // namespace U2
-
-#endif

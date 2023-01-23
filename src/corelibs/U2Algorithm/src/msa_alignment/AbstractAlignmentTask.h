@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ABSTRACT_ALIGNMENT_TASK_H_
-#define _U2_ABSTRACT_ALIGNMENT_TASK_H_
+#pragma once
 
 #include <QByteArray>
 #include <QString>
@@ -79,5 +78,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_ABSTRACT_ALIGNMENT_TASK_H_

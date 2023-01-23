@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PWM_CONVERSION_ALGORITHM_REGISTRY_H_
-#define _U2_PWM_CONVERSION_ALGORITHM_REGISTRY_H_
+#pragma once
 
 #include <QStringList>
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

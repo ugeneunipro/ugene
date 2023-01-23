@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REPEAT_FINDER_SETTINGS_H_
-#define _U2_REPEAT_FINDER_SETTINGS_H_
+#pragma once
 
 #include <QString>
 
@@ -142,5 +141,3 @@ struct RepeatFinderSettings {
 };
 
 }  // namespace U2
-
-#endif

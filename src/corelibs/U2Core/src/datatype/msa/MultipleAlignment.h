@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_ALIGNMENT_H_
-#define _U2_MULTIPLE_ALIGNMENT_H_
+#pragma once
 
 #include <QVariantMap>
 
@@ -256,5 +255,3 @@ inline bool operator==(const MultipleAlignmentData* ptr1, const MultipleAlignmen
 }
 
 }  // namespace U2
-
-#endif  // _U2_MULTIPLE_ALIGNMENT_H_

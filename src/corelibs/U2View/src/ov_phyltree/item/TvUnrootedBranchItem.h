@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_UNROOTED_BRANCH_ITEM_H_
-#define _U2_TV_UNROOTED_BRANCH_ITEM_H_
+#pragma once
 
 #include "TvBranchItem.h"
 
@@ -43,5 +42,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IO_ADAPTER_TEXT_STREAM_H_
-#define _U2_IO_ADAPTER_TEXT_STREAM_H_
+#pragma once
 
 #include <QBitArray>
 #include <QObject>
@@ -185,5 +184,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

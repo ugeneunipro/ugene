@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEXT_UTILS_H_
-#define _U2_TEXT_UTILS_H_
+#pragma once
 
 #include <assert.h>
 
@@ -378,5 +377,3 @@ inline QStringList TextUtils::transposeCSVRows(const QStringList& rows, const QS
 }
 
 }  // namespace U2
-
-#endif

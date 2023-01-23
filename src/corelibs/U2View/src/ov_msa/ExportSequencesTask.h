@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_SEQUENCES_TASK
-#define _U2_EXPORT_SEQUENCES_TASK
+#pragma once
 
 #include <QSet>
 
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

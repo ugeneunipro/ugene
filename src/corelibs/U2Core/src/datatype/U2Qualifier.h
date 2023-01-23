@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QUALIFIER_H_
-#define _U2_QUALIFIER_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -59,5 +58,3 @@ public:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::U2Qualifier)
-
-#endif

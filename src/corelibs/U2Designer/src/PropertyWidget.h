@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROPERTYWIDGET_H_
-#define _U2_PROPERTYWIDGET_H_
+#pragma once
 
 #include <QComboBox>
 #include <QDoubleSpinBox>
@@ -321,5 +320,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PROPERTYWIDGET_H_

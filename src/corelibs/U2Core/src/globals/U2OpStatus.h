@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OPSTATUS_H_
-#define _U2_OPSTATUS_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -61,5 +60,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

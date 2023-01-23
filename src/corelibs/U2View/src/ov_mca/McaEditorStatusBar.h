@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_EDITOR_STATUS_BAR_H_
-#define _U2_MCA_EDITOR_STATUS_BAR_H_
+#pragma once
 
 #include "ov_msa/MaEditorStatusBar.h"
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MCA_EDITOR_STATUS_BAR_H_

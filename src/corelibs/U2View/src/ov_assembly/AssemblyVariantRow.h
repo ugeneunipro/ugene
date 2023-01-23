@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ASSEMBLY_VARIANT_ROW_
-#define _ASSEMBLY_VARIANT_ROW_
+#pragma once
 
 #include <QMenu>
 #include <QWidget>
@@ -113,5 +112,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  // _ASSEMBLY_VARIANT_ROW_

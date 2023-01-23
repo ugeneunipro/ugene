@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATASET_H_
-#define _U2_DATASET_H_
+#pragma once
 
 #include <U2Core/FilesIterator.h>
 #include <U2Core/global.h>
@@ -85,5 +84,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(QList<U2::Dataset>);
-
-#endif  // _U2_DATASET_H_

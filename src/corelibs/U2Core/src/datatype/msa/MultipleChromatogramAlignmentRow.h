@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
-#define _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_
+#pragma once
 
 #include <U2Core/DNAChromatogram.h>
 #include <U2Core/DNASequence.h>
@@ -342,5 +341,3 @@ inline bool operator!=(const MultipleChromatogramAlignmentRowData* ptr1, const M
 }
 
 }  // namespace U2
-
-#endif  // _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_ROW_H_

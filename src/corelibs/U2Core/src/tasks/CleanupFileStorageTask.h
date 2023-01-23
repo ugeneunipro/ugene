@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CLEANUP_FILE_STORAGE_TASK_
-#define _U2_CLEANUP_FILE_STORAGE_TASK_
+#pragma once
 
 #include <U2Core/Task.h>
 
@@ -35,5 +34,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CLEANUP_FILE_STORAGE_TASK_

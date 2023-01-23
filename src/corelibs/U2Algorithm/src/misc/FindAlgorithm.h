@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FINDALGORITHM_H_
-#define _U2_FINDALGORITHM_H_
+#pragma once
 
 #include <QList>
 
@@ -180,5 +179,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

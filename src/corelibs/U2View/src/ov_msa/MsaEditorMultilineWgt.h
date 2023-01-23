@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_MULTILINE_WGT_H_
-#define _U2_MSA_EDITOR_MULTILINE_WGT_H_
+#pragma once
 
 #include "MaEditorMultilineWgt.h"
 
@@ -101,5 +100,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MSA_EDITOR_MULTILINE_WGT_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WIDGET_STATE_STORAGE_H_
-#define _U2_WIDGET_STATE_STORAGE_H_
+#pragma once
 
 #include <QMultiMap>
 #include <QVariantMap>
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_WIDGET_STATE_STORAGE_H_
