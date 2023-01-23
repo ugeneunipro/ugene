@@ -5,9 +5,12 @@ Download UGENE: [https://ugeneunipro.github.io/ugene/](https://ugeneunipro.githu
 
 ### Prerequisites
 
-Qt (>= 5.12.0 and <= 5.15.x) with the following components installed with Qt installer:
-* Desktop
-* QtScript
+* Qt (5.15.x) with the following components installed with Qt installer:
+  * Desktop
+  * QtScript
+
+
+* C++ compiler with c++17 standard support.
 
 ### For Windows users:
 
