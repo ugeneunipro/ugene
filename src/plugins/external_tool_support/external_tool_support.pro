@@ -90,6 +90,9 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/fastqc/FastqcSupport.h \
            src/fastqc/FastqcTask.h \
            src/fastqc/FastqcWorker.h \
+           src/fasttree/FastTreeSupport.h \
+           src/fasttree/FastTreeTask.h \
+           src/fasttree/FastTreeWidget.h \
            src/hmmer/ConvertAlignment2StockholmTask.h \
            src/hmmer/HmmerBuildDialog.h \
            src/hmmer/HmmerBuildFromFileTask.h \
@@ -324,6 +327,9 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/fastqc/FastqcSupport.cpp \
            src/fastqc/FastqcTask.cpp \
            src/fastqc/FastqcWorker.cpp \
+           src/fasttree/FastTreeSupport.cpp \
+           src/fasttree/FastTreeTask.cpp \
+           src/fasttree/FastTreeWidget.cpp \
            src/hmmer/ConvertAlignment2StockholmTask.cpp \
            src/hmmer/HmmerBuildDialog.cpp \
            src/hmmer/HmmerBuildFromFileTask.cpp \

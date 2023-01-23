@@ -87,6 +87,7 @@
 #include "cutadapt/CutadaptWorker.h"
 #include "fastqc/FastqcSupport.h"
 #include "fastqc/FastqcWorker.h"
+#include "fasttree/FastTreeSupport.h"
 #include "hmmer/HmmerBuildWorker.h"
 #include "hmmer/HmmerSearchWorker.h"
 #include "hmmer/HmmerSupport.h"
@@ -172,6 +173,9 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
 
     // IQTree
     etRegistry->registerEntry(new IQTreeSupport());
+
+    // FastTree
+    etRegistry->registerEntry(new FastTreeSupport());
 
     if (AppContext::getMainWindow()) {
         clustalWTool->getViewContext()->setParent(this);
