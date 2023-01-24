@@ -51,21 +51,26 @@ private:
     // input values
     QString docName;
     QString seqName;
+    QString seq;
     QVector<U2Region> regions;
     BaseTempCalc* temperatureCalculator = nullptr;
 
     // expected values
     DNAStatistics expectedStats;
 
-    // attribute names
+    /**
+     * Use either @DOC_NAME_ATTR and @SEQ_NAME_ATTR if you want to load sequence from file,
+     * or @SEQ_ATTR if you set up sequence as argument and name as test name
+     */
     static const QString DOC_NAME_ATTR;
     static const QString SEQ_NAME_ATTR;
+    static const QString SEQ_ATTR;
     /** 
      * 0-based, GenBank-like format without 'join' word: 1..20,40..60
      */
     static const QString REGIONS_ATTR;
     /**
-     * Semicolon separated list of comma separated pairs,
+     * Semicolon separated list of '=' separated pairs,
      * where the first value is a key (see @TempCalcSettings and its heirs)
      * and the second value is the value of the corresponding parameter.
      */

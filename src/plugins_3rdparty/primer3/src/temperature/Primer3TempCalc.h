@@ -91,7 +91,7 @@ struct Primer3TempCalcSettings : public TempCalcSettings {
     static const QString KEY_DNTP_CONC;
     static const QString KEY_DMSO_CONC;
     static const QString KEY_DMSO_FACT;
-    static const QString KEY_FPRMAMIDE_CONC;
+    static const QString KEY_FORMAMIDE_CONC;
     static const QString KEY_MAX_LEN;
     static const QString KEY_TM_METHOD;
     static const QString KEY_SALT_CORRECTION;
