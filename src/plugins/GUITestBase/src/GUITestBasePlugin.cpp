@@ -3366,6 +3366,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0010);
 
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0011);
+
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/in_silico_pcr
     /////////////////////////////////////////////////////////////////////////

@@ -42,11 +42,13 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
+#include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "primitives/GTAction.h"
 #include "system/GTFile.h"
 
@@ -220,6 +222,46 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsOptionPanelSequenceView::setSetMaxResults(os, 99900);
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/99900"), "Results string not match");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0011) {
+    // Open human_T1_cutted.fa
+    // Open the "Statistics" tab
+    // Expected: Melting temperature = 79.78
+    // Set Primer 3 settings
+    // Expected: Melting temperature = 78.57
+    // Open and close the "Statistics" tab again
+    // Expected: Melting temperature = 78.57
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
+    static const QString roughMeltTemp = "<tr><td><a href=\"Melting temperature\">Melting temperature</a>: </td><td>79.78 &#176;C</td></tr>";
+    CHECK_SET_ERR(statisticsLabel->text().contains(roughMeltTemp), QString("No expected string: %1").arg(roughMeltTemp));
+
+    QMap<MeltingTemperatureSettingsDialogFiller::Parameter, QString> parameters;
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::Algorithm, "Primer 3");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::DnaConc, "49.5");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::MonovalentConc, "55.0");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::DivalentConc, "2.5");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::DntpConc, "0.5");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::DmsoConc, "10.5");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::DmsoFactor, "0.4");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::FormamideConc, "1.2");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::MaxLen, "33");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::ThermodynamicTable, "0");
+    parameters.insert(MeltingTemperatureSettingsDialogFiller::Parameter::SaltCorrectionFormula, "2");
+    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
+    GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    static const QString primer3MeltTemp = "<tr><td><a href=\"Melting temperature\">Melting temperature</a>: </td><td>78.57 &#176;C</td></tr>";
+    CHECK_SET_ERR(statisticsLabel->text().contains(primer3MeltTemp), QString("No expected string: %1").arg(primer3MeltTemp));
+
+    GTUtilsOptionPanelSequenceView::closeTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
+    CHECK_SET_ERR(statisticsLabel->text().contains(primer3MeltTemp), QString("No expected string: %1").arg(primer3MeltTemp));
+}
+
 
 }  // namespace GUITest_common_scenarios_options_panel_sequence_view
 

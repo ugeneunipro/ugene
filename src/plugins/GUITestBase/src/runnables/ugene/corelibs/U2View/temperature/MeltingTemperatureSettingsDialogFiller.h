@@ -19,29 +19,45 @@
  * MA 02110-1301, USA.
  */
 
-#pragma once
+#ifndef _U2_MELTING_TEMPERATURE_DIALOG_FILLER_H_
+#define _U2_MELTING_TEMPERATURE_DIALOG_FILLER_H_
 
-#include <harness/UGUITestBase.h>
+#include <QPointer>
+
+#include "utils/GTUtilsDialog.h"
+
+class QTreeWidgetItem;
 
 namespace U2 {
+using namespace HI;
 
-namespace GUITest_common_scenarios_options_panel_sequence_view {
-#undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_options_panel_sequence_view"
+class MeltingTemperatureSettingsDialogFiller : public Filler {
+public:
+    enum Parameter {
+        Algorithm,
+        DnaConc,
+        MonovalentConc,
+        DivalentConc,
+        DntpConc,
+        DmsoConc,
+        DmsoFactor,
+        FormamideConc,
+        MaxLen,
+        ThermodynamicTable,
+        SaltCorrectionFormula
 
-GUI_TEST_CLASS_DECLARATION(test_0001)
-GUI_TEST_CLASS_DECLARATION(test_0002)
-GUI_TEST_CLASS_DECLARATION(test_0003)
-GUI_TEST_CLASS_DECLARATION(test_0004)
-GUI_TEST_CLASS_DECLARATION(test_0005)
-GUI_TEST_CLASS_DECLARATION(test_0006)
-GUI_TEST_CLASS_DECLARATION(test_0007)
-GUI_TEST_CLASS_DECLARATION(test_0008)
-GUI_TEST_CLASS_DECLARATION(test_0009)
-GUI_TEST_CLASS_DECLARATION(test_0010)
+    };
 
-GUI_TEST_CLASS_DECLARATION(test_0011)
+    MeltingTemperatureSettingsDialogFiller(HI::GUITestOpStatus& os, const QMap<Parameter, QString>& parameters);
 
-}  // namespace GUITest_common_scenarios_options_panel_sequence_view
+    void commonScenario() override;
 
-}  // namespace U2
+private:
+    QMap<Parameter, QString> parameters;
+
+
+};
+
+}
+
+#endif

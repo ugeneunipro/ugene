@@ -33,12 +33,14 @@ namespace U2 {
 
 TempCalcDialog::TempCalcDialog(QWidget* parent, TempCalcSettings* currentSettings)
     : QDialog(parent) {
+    setObjectName("MeltingTemperatureCalculationDialog");
     setWindowTitle(tr("Melting temperature"));
     setLayout(new QVBoxLayout);
     tempCalcWidget = new TempCalcWidget(this);
     tempCalcWidget->init(currentSettings);
     layout()->addWidget(tempCalcWidget);
     auto dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
+    dbb->setObjectName("buttonBox");
     connect(dbb, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(dbb, &QDialogButtonBox::accepted, this, &QDialog::accept);
     layout()->addWidget(dbb);

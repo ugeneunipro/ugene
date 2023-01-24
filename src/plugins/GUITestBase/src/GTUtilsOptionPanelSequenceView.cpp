@@ -20,6 +20,7 @@
  */
 
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
@@ -42,6 +43,7 @@
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -357,6 +359,36 @@ void GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(HI::GUIT
 void GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(HI::GUITestOpStatus& os, bool open) {
     CHECK(open != isAnnotationParametersShowHideWidgetOpened(os), );
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Annotation parameters"));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "showMeltingTemperatureDialog"
+void GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog(HI::GUITestOpStatus& os) {
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
+
+    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
+
+    QPoint labelGlobalPos = statisticsLabel->mapToGlobal(statisticsLabel->pos());
+    GTMouseDriver::moveTo(labelGlobalPos);
+    for (int column = 0; column < statisticsLabel->height(); column += 10) {
+        bool found = false;
+        for (int row = 0; row < statisticsLabel->width(); row += 10) {
+            GTThread::waitForMainThread();
+            QPoint newMousePos = labelGlobalPos + QPoint(column, row);
+            GTMouseDriver::moveTo(newMousePos);
+            Qt::CursorShape shape = statisticsLabel->cursor().shape();
+            if (shape != Qt::ArrowCursor) {
+                GTMouseDriver::click();
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            break;
+        }
+    }
+
 }
 #undef GT_METHOD_NAME
 

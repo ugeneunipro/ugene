@@ -115,6 +115,9 @@ public:
     static void openSaveAnnotationToShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openAnnotationParametersShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
 
+    // Statistics
+    static void showMeltingTemperatureDialog(HI::GUITestOpStatus& os);
+
 private:
     static QMap<Tabs, QString> initNames();
     static QMap<Tabs, QString> initInnerWidgetNames();
