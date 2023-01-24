@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-class MaCollapsibleGroup {
+class U2VIEW_EXPORT MaCollapsibleGroup {
 public:
     /* Creates with 1 MA row inside. */
     MaCollapsibleGroup(int maRowIndex, qint64 maRowId, bool isCollapsed = false);

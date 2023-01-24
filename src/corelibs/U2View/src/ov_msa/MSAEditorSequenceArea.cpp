@@ -62,12 +62,10 @@
 #include <U2Gui/Notification.h>
 #include <U2Gui/OPWidgetFactory.h>
 #include <U2Gui/OptionsPanel.h>
-#include <U2Gui/PositionSelector.h>
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 
 #include "CreateSubalignmentDialogController.h"
-#include "ExportSequencesTask.h"
 #include "MSAEditor.h"
 #include "MaEditorNameList.h"
 #include "MaEditorSelection.h"
@@ -107,10 +105,6 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
     createSubaligniment = new QAction(tr("Save subalignment..."), this);
     createSubaligniment->setObjectName("Save subalignment");
     connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubalignment()));
-
-    saveSequence = new QAction(tr("Export selected sequence(s)..."), this);
-    saveSequence->setObjectName("Save sequence");
-    connect(saveSequence, SIGNAL(triggered()), SLOT(sl_saveSequence()));
 
     removeAllGapsAction = new QAction(QIcon(":core/images/msaed_remove_all_gaps.png"), tr("Remove all gaps"), this);
     removeAllGapsAction->setObjectName("Remove all gaps");
@@ -295,7 +289,6 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m, bool isContextMenu) {
     QMenu* exportMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
     exportMenu->addAction(createSubaligniment);
-    exportMenu->addAction(saveSequence);
 
     if (isContextMenu) {
         m->setObjectName("msa sequence area context menu");
@@ -331,7 +324,6 @@ void MSAEditorSequenceArea::sl_updateActions() {
     bool readOnly = maObj->isStateLocked();
 
     createSubaligniment->setEnabled(!isAlignmentEmpty());
-    saveSequence->setEnabled(!isAlignmentEmpty());
     addSeqFromProjectAction->setEnabled(!readOnly);
     addSeqFromFileAction->setEnabled(!readOnly);
     toggleSequenceRowOrderAction->setEnabled(!readOnly && !isAlignmentEmpty());
@@ -477,41 +469,6 @@ void MSAEditorSequenceArea::sl_createSubalignment() {
         auto createSubAlignmentTask = new CreateSubalignmentAndOpenViewTask(msaObject, createSubalignmentSettings);
         AppContext::getTaskScheduler()->registerTopLevelTask(createSubAlignmentTask);
     }
-}
-
-void MSAEditorSequenceArea::sl_saveSequence() {
-    QWidget* parentWidget = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
-    QString suggestedFileName = editor->getMaObject()->getGObjectName() + "_sequence";
-    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(parentWidget, suggestedFileName);
-    const int rc = d->exec();
-    CHECK(!d.isNull(), );
-
-    if (rc == QDialog::Rejected) {
-        return;
-    }
-    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(d->getFormat());
-    SAFE_POINT(df != nullptr, "Unknown document format", );
-    QString extension = df->getSupportedDocumentFileExtensions().first();
-
-    MaCollapseModel* model = editor->getCollapseModel();
-    QList<int> selectedMaRowIndexes;
-    QList<QRect> selectedRects = editor->getSelection().getRectList();
-    for (const QRect& selectedRect : qAsConst(selectedRects)) {
-        for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
-            selectedMaRowIndexes << model->getMaRowIndexByViewRowIndex(viewRowIndex);
-        }
-    }
-    const MultipleSequenceAlignment& msa = getEditor()->getMaObject()->getMsa();
-    QSet<qint64> selectedMaRowIds = msa->getRowIdsByRowIndexes(selectedMaRowIndexes).toSet();
-    auto exportTask = new ExportSequencesTask(msa,
-                                              selectedMaRowIds,
-                                              d->getTrimGapsFlag(),
-                                              d->getAddToProjectFlag(),
-                                              d->getUrl(),
-                                              d->getFormat(),
-                                              extension,
-                                              d->getCustomFileName());
-    AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }
 
 void MSAEditorSequenceArea::sl_modelChanged() {

@@ -779,7 +779,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -802,7 +802,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with default settings
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010_1.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -825,7 +825,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate to amino with default settings
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0010_2.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1003,7 +1003,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
@@ -1026,7 +1026,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, testDir + "_common_data/scenarios/sandbox/COI_transl.aln"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMsaEditor::getActiveMsaEditorWindow(os), Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1057,7 +1057,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_2) {
 
     // 2. Convert alignment to amino. Use context menu {Export->Amino translation of alignment rows}
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4074,7 +4074,7 @@ GUI_TEST_CLASS_DEFINITION(test_0091) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with "Include gaps"
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0091.aln", true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4097,7 +4097,7 @@ GUI_TEST_CLASS_DEFINITION(test_0092) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with "Include gaps", click on the "Gap" radio button
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0092.aln", true, true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4120,7 +4120,7 @@ GUI_TEST_CLASS_DEFINITION(test_0093_1) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with "frame" 2
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0093.aln", false, false, 2));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4143,7 +4143,7 @@ GUI_TEST_CLASS_DEFINITION(test_0093_2) {
     // 2. Do document context menu {Export->Export aligniment to amino format}
     // 3. Translate with "frame" -3
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0093.aln", false, false, -3));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

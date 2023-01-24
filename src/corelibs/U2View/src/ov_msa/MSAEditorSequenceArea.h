@@ -34,7 +34,6 @@
 #include "MaCollapseModel.h"
 #include "MaEditorSequenceArea.h"
 #include "MsaEditorUserModStepController.h"
-#include "SaveSelectedSequenceFromMSADialogController.h"
 
 namespace U2 {
 
@@ -193,8 +192,6 @@ private slots:
 
     void sl_createSubalignment();
 
-    void sl_saveSequence();
-
     void sl_modelChanged() override;
 
     void sl_fontChanged(QFont font);
@@ -220,7 +217,6 @@ private:
     QAction* removeAllGapsAction;
 
     QAction* createSubaligniment;
-    QAction* saveSequence;
     QAction* addSeqFromFileAction;
     QAction* addSeqFromProjectAction;
 

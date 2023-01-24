@@ -102,7 +102,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MsaRowHeightController.h \
            src/ov_msa/MultilineScrollController.h \
            src/ov_msa/RowHeightController.h \
-           src/ov_msa/SaveSelectedSequenceFromMSADialogController.h \
            src/ov_msa/ScrollController.h \
            src/ov_msa/SequenceAreaRenderer.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
@@ -257,7 +256,6 @@ FORMS += src/LicenseDialog.ui \
          src/ov_msa/CreateSubalignmentDialog.ui \
          src/ov_msa/DeleteGapsDialog.ui \
          src/ov_msa/ExportHighlightedDialog.ui \
-         src/ov_msa/SaveSelectedSequenceFromMSADialog.ui \
          src/ov_msa/SelectSubalignmentDialog.ui \
          src/ov_msa/SequenceSelectorWidget.ui \
          src/ov_msa/export_consensus/ExportConsensusWidget.ui \
@@ -388,7 +386,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MsaRowHeightController.cpp \
            src/ov_msa/MultilineScrollController.cpp \
            src/ov_msa/RowHeightController.cpp \
-           src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp \
            src/ov_msa/ScrollController.cpp \
            src/ov_msa/SequenceAreaRenderer.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \

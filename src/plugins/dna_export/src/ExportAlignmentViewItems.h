@@ -54,12 +54,15 @@ public:
 
 protected slots:
     void sl_exportNucleicMsaToAmino();
+    void sl_exportSelectedMsaRowsToSeparateFiles();
 
     void updateActions();
 
 private:
-    MSAEditor* editor;
-    QAction* translateMSAAction;
+    MSAEditor* editor = nullptr;
+    QAction* exportNucleicMsaToAminoAction = nullptr;
+    QAction* exportMsaToSequenceFileFormatAction = nullptr;
+    QAction* exportSelectedMsaRowsToSeparateFilesAction = nullptr;
 };
 
 }  // namespace U2

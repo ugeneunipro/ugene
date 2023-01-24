@@ -37,13 +37,15 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include <U2View/ExportSequencesTask.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MaCollapseModel.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
 
 #include "ExportMSA2MSADialog.h"
+#include "ExportMSA2SequencesDialog.h"
 #include "ExportUtils.h"
+#include "dialogs/SaveSelectedSequenceFromMSADialogController.h"
 
 namespace U2 {
 
@@ -55,17 +57,17 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* 
 }
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
-    MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
-    SAFE_POINT(msaed != nullptr, "Invalid GObjectView", );
-    MSAExportContext* mc = new MSAExportContext(msaed);
-    addViewResource(msaed, mc);
+    auto msaEditor = qobject_cast<MSAEditor*>(v);
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
+    auto msaExportContext = new MSAExportContext(msaEditor);
+    addViewResource(msaEditor, msaExportContext);
 }
 
 void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
     assert(resources.size() == 1);
     QObject* r = resources.first();
-    MSAExportContext* mc = qobject_cast<MSAExportContext*>(r);
+    auto mc = qobject_cast<MSAExportContext*>(r);
     assert(mc != nullptr);
     mc->buildMenu(m);
 }
@@ -75,16 +77,27 @@ void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectView* v
 
 MSAExportContext::MSAExportContext(MSAEditor* e)
     : editor(e) {
-    translateMSAAction = new QAction(tr("Amino translation..."), this);
-    translateMSAAction->setObjectName("amino_translation_of_alignment_rows");
-    translateMSAAction->setEnabled(!e->isAlignmentEmpty());
-    connect(e->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), translateMSAAction, SLOT(setDisabled(bool)));
-    connect(translateMSAAction, SIGNAL(triggered()), SLOT(sl_exportNucleicMsaToAmino()));
+    exportNucleicMsaToAminoAction = new QAction(tr("Export amino acid translated alignment..."), this);
+    exportNucleicMsaToAminoAction->setObjectName("exportNucleicMsaToAminoAction");
+    connect(exportNucleicMsaToAminoAction, &QAction::triggered, this, &MSAExportContext::sl_exportNucleicMsaToAmino);
+
+    exportMsaToSequenceFileFormatAction = new QAction(tr("Export whole alignment to a sequence file format..."), this);
+    exportMsaToSequenceFileFormatAction->setObjectName("exportMsaToSequenceFileFormatAction");
+    connect(exportMsaToSequenceFileFormatAction, &QAction::triggered, [e] { ExportMSA2SequencesDialog::showDialogAndStartExportTask(e->getMaObject()); });
+
+    exportSelectedMsaRowsToSeparateFilesAction = new QAction(tr("Export selected rows to separate sequence files..."), this);
+    exportSelectedMsaRowsToSeparateFilesAction->setObjectName("exportSelectedMsaRowsToSeparateFilesAction");
+    connect(exportSelectedMsaRowsToSeparateFilesAction, &QAction::triggered, this, &MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles);
+
+    connect(e->getMaObject(), &MultipleSequenceAlignmentObject::si_alignmentChanged, this, [this] { updateActions(); });
+
+    updateActions();
 }
 
 void MSAExportContext::updateActions() {
-    translateMSAAction->setEnabled(editor->getMaObject()->getAlphabet()->isNucleic() &&
-                                   !editor->isAlignmentEmpty());
+    exportNucleicMsaToAminoAction->setEnabled(editor->getMaObject()->getAlphabet()->isNucleic() && !editor->isAlignmentEmpty());
+    exportMsaToSequenceFileFormatAction->setEnabled(!editor->isAlignmentEmpty());
+    exportSelectedMsaRowsToSeparateFilesAction->setEnabled(!editor->isAlignmentEmpty());
 }
 
 void MSAExportContext::buildMenu(QMenu* m) {
@@ -92,8 +105,35 @@ void MSAExportContext::buildMenu(QMenu* m) {
     SAFE_POINT(exportMenu != nullptr, "exportMenu is not found", );
     MultipleSequenceAlignmentObject* mObject = editor->getMaObject();
     if (mObject->getAlphabet()->isNucleic()) {
-        exportMenu->addAction(translateMSAAction);
+        exportMenu->addAction(exportNucleicMsaToAminoAction);
     }
+    exportMenu->addAction(exportSelectedMsaRowsToSeparateFilesAction);
+    exportMenu->addAction(exportMsaToSequenceFileFormatAction);
+}
+
+void MSAExportContext::sl_exportSelectedMsaRowsToSeparateFiles() {
+    auto parentWidget = AppContext::getMainWindow()->getQMainWindow();
+    QString suggestedFileName = editor->getMaObject()->getGObjectName() + "_sequence";
+    QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(parentWidget, suggestedFileName);
+    int rc = d->exec();
+    CHECK(!d.isNull() && rc != QDialog::Rejected, );
+
+    DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(d->getFormat());
+    SAFE_POINT(df != nullptr, "Unknown document format", );
+    QString extension = df->getSupportedDocumentFileExtensions().first();
+
+    QList<int> selectedMaRowIndexes = editor->getSelection().getSelectedRowIndexes();
+    const MultipleSequenceAlignment& msa = editor->getMaObject()->getMsa();
+    QSet<qint64> selectedMaRowIds = msa->getRowIdsByRowIndexes(selectedMaRowIndexes).toSet();
+    auto exportTask = new ExportSequencesTask(msa,
+                                              selectedMaRowIds,
+                                              d->getTrimGapsFlag(),
+                                              d->getAddToProjectFlag(),
+                                              d->getUrl(),
+                                              d->getFormat(),
+                                              extension,
+                                              d->getCustomFileName());
+    AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
 }
 
 void MSAExportContext::sl_exportNucleicMsaToAmino() {
@@ -118,12 +158,12 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     QList<qint64> rowIds = ma->getRowsIds();
     if (!selection.isEmpty() && d->exportWholeAlignment) {
         columnRegion = selection.getColumnRegion();
-        QList<int> maRowIndexes = editor->getCollapseModel()->getMaRowIndexesFromSelectionRects(selection.getRectList());
+        QList<int> maRowIndexes = editor->getSelection().getSelectedRowIndexes();
         rowIds = ma->getRowIdsByRowIndexes(maRowIndexes);
         SAFE_POINT(!rowIds.isEmpty(), "No rows to export!", );
     }
 
-    bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
+    bool convertUnknownToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
     bool reverseComplement = d->translationFrame < 0;
     int baseOffset = qAbs(d->translationFrame) - 1;
     auto exportTask = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma,
@@ -133,7 +173,7 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
                                                                         translationTable,
                                                                         d->formatId,
                                                                         !d->includeGaps,
-                                                                        convertUnknowToGaps,
+                                                                        convertUnknownToGaps,
                                                                         reverseComplement,
                                                                         baseOffset),
                                                   d->addToProjectFlag);

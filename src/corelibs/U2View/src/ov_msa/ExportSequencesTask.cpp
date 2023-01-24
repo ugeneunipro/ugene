@@ -21,7 +21,6 @@
 
 #include "ExportSequencesTask.h"
 
-#include <QFile>
 #include <QScopedPointer>
 
 #include <U2Core/AppContext.h>

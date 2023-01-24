@@ -4891,7 +4891,7 @@ GUI_TEST_CLASS_DEFINITION(test_1529) {
     // 3. Press the "Export" button.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state : A new file with MSA was created, added to the project.The MSA object name is "COI_transl.aln".

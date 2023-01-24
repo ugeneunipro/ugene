@@ -36,9 +36,9 @@ class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
     SaveSelectedSequenceFromMSADialogController(QWidget* p, const QString& defaultCustomFilename);
-    ~SaveSelectedSequenceFromMSADialogController();
+    ~SaveSelectedSequenceFromMSADialogController() override;
 
-    virtual void accept();
+    void accept() override;
 
     QString getUrl() const;
     DocumentFormatId getFormat() const;
