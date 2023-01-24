@@ -1868,7 +1868,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save sequence"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportSelectedMsaRowsToSeparateFilesAction"}, GTGlobals::UseKey));
     GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::FASTA, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1906,7 +1906,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029_1) {  // DIFFERENCE:gaps are trimmed, FASTQ 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 2));
-    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save sequence"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportSelectedMsaRowsToSeparateFilesAction"}, GTGlobals::UseKey));
     GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::FASTQ, false));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -1939,7 +1939,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 2));
-    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save sequence"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportSelectedMsaRowsToSeparateFilesAction"}, GTGlobals::UseKey));
     GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::Genbank, true, false));
     GTMouseDriver::click(Qt::RightButton);
 
