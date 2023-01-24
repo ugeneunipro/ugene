@@ -102,7 +102,7 @@ void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleSequenceAli
     QString defaultFileName = GUrlUtils::fixFileName(msaObject->getGObjectName());
     QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(defaultDir, defaultFileName, AppContext::getMainWindow()->getQMainWindow());
     int rc = d->exec();
-    CHECK(!d.isNull() && rc != QDialog::Rejected || msaObjectPtr.isNull(), );
+    CHECK(!d.isNull() && rc != QDialog::Rejected && !msaObjectPtr.isNull(), );
     lod.url = d->url;
 
     const MultipleSequenceAlignment& msa = msaObject->getMultipleAlignment();
