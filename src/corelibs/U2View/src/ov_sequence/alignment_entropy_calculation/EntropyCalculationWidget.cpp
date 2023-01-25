@@ -23,17 +23,17 @@
 
 #include "EntropyCalculationWidget.h"
 
-#include <U2Gui/ShowHideSubgroupWidget.h>
-#include <U2Gui/SaveDocumentController.h>
-#include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/U2FileDialog.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/UserApplicationsSettings.h>
-#include <U2Core/FileFilters.h>
-#include <U2Core/BaseDocumentFormats.h>
+
+#include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/SaveDocumentController.h>
+#include <U2Gui/ShowHideSubgroupWidget.h>
+#include <U2Gui/U2FileDialog.h>
 
 #include <U2View/AnnotatedDNAView.h>
 
@@ -48,6 +48,7 @@ EntropyCalculationWidget::EntropyCalculationWidget(AnnotatedDNAView* _annotatedD
     initLayout();
     initSaveController();
     connectSlots();
+    runButton->setEnabled(false);
 }
 
 void EntropyCalculationWidget::initLayout() {
@@ -77,9 +78,10 @@ void EntropyCalculationWidget::initSaveController() {
 void EntropyCalculationWidget::connectSlots() {
     connect(alignmentToolButton, SIGNAL(clicked()), SLOT(sl_onFileSelectorClicked()));
     connect(runButton, SIGNAL(clicked()), SLOT(sl_onRunButtonClicked()));
+    connect(alignmentLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_onTextChanged()));
 }
 
-void EntropyCalculationWidget::sl_onFileSelectorClicked() {
+void EntropyCalculationWidget::sl_onFileSelectorClicked() { 
     LastUsedDirHelper lod("ENTROPY_CALCULATION_LAST_DIR");
     QString filter = FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}, true, false);
     QString defaultFilter = FileFilters::createSingleFileFilterByDocumentFormatId(BaseDocumentFormats::CLUSTAL_ALN);
@@ -91,6 +93,10 @@ void EntropyCalculationWidget::sl_onFileSelectorClicked() {
 void EntropyCalculationWidget::sl_onRunButtonClicked() {
     auto loadTask = new EntropyCalculationTask(annotatedDnaView, alignmentLineEdit->text(), saveToLineEdit->text());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
+}
+
+void EntropyCalculationWidget::sl_onTextChanged() {
+    runButton->setEnabled(alignmentLineEdit->text() != "");
 }
 
 }  // namespace U2

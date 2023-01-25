@@ -38,6 +38,7 @@ public:
 private slots:
     void sl_onFileSelectorClicked();
     void sl_onRunButtonClicked();
+    void sl_onTextChanged();
 
 private:
     void initLayout();

@@ -132,8 +132,9 @@ QString FileFilters::createFileFilterByObjectTypes(const QList<GObjectType>& obj
             }
         }
     }
-    if (allFilesFilter)
+    if (allFilesFilter) {
         return withAllFilesFilter(filters);
+    }
     filters.sort();
     return filters.join(FILTER_SEPARATOR);
 }

@@ -22,15 +22,16 @@
 #ifndef _U2_ENTROPY_CALCULATION_TASK_H_
 #define _U2_ENTROPY_CALCULATION_TASK_H_
 
-#include <U2Core/Task.h>
+#include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/LoadDocumentTask.h>
-#include "U2Core/AddSequencesToAlignmentTask.h"
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Task.h>
 
 #include <U2View/AnnotatedDNAView.h>
 
 namespace U2 {
 
+/*Aligns a sequence to a multiple alignment provided in the 'alignmentFilePath' argument, calculates Shannon entropy and saves it to 'saveToPath' file*/
 class U2VIEW_EXPORT EntropyCalculationTask : public Task {
     Q_OBJECT
 public:
@@ -40,13 +41,17 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    LoadDocumentTask* loadDocumentTask;
-    AddSequenceObjectsToAlignmentTask* addSequenceTask;
+    void rollSequenceName();
+
+    LoadDocumentTask* loadDocumentTask = nullptr;
+    AddSequenceObjectsToAlignmentTask* addSequenceTask = nullptr;
     
     MultipleSequenceAlignmentObject* alignment;
     AnnotatedDNAView* annotatedDNAView;
     QString alignmentFilePath;
     QString saveToPath;
+    /*sequence name will change if the alignment contains a sequence with the same name*/
+    QString sequenceNameAfterAlignment;
 };
 
 }  // namespace U2
