@@ -13,23 +13,7 @@ typedef struct {
 } faidx1_t;
 KHASH_MAP_INIT_STR(s, faidx1_t)
 
-#ifndef _NO_RAZF
 #include "razf.h"
-#else
-#ifdef _WIN32
-#define ftello(fp) ftell(fp)
-#define fseeko(fp, offset, whence) fseek(fp, offset, whence)
-#else
-extern off_t ftello(FILE *stream);
-extern int fseeko(FILE *stream, off_t offset, int whence);
-#endif
-#define RAZF FILE
-#define razf_read(fp, buf, size) fread(buf, 1, size, fp)
-#define razf_open(fn, mode) fopen(fn, mode)
-#define razf_close(fp) fclose(fp)
-#define razf_seek(fp, offset, whence) fseeko(fp, offset, whence)
-#define razf_tell(fp) ftello(fp)
-#endif
 
 struct __faidx_t {
 	RAZF *rz;
@@ -37,10 +21,6 @@ struct __faidx_t {
 	char **name;
 	khash_t(s) *hash;
 };
-
-#ifndef kroundup32
-#define kroundup32(x) (--(x), (x)|=(x)>>1, (x)|=(x)>>2, (x)|=(x)>>4, (x)|=(x)>>8, (x)|=(x)>>16, ++(x))
-#endif
 
 static inline void fai_insert_index(faidx_t *idx, const char *name, int len, int line_len, int line_blen, uint64_t offset)
 {
