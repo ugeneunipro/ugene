@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -121,18 +121,18 @@ void AssemblyReadsArea::createMenu() {
     exportCoverage->setObjectName("Export coverage");
     connect(exportCoverage, SIGNAL(triggered()), browser, SLOT(sl_exportCoverage()));
 
-    QAction* exportConsensus = exportMenu->addAction("Consensus");
+    QAction* exportConsensus = exportMenu->addAction(tr("Consensus"));
     connect(exportConsensus, SIGNAL(triggered()), ui->getConsensusArea(), SLOT(sl_exportConsensus()));
 
     exportMenu->addSeparator();
 
-    exportReadAction = exportMenu->addAction("Current read");
+    exportReadAction = exportMenu->addAction(tr("Current read"));
     connect(exportReadAction, SIGNAL(triggered()), SLOT(sl_onExportRead()));
 
-    QAction* exportVisibleReads = exportMenu->addAction("Visible reads as sequences");
+    QAction* exportVisibleReads = exportMenu->addAction(tr("Visible reads as sequences"));
     connect(exportVisibleReads, SIGNAL(triggered()), SLOT(sl_onExportReadsOnScreen()));
 
-    QAction* exportAssemblyRegion = exportMenu->addAction("Assembly region");
+    QAction* exportAssemblyRegion = exportMenu->addAction(tr("Assembly region"));
     connect(exportAssemblyRegion, SIGNAL(triggered()), browser, SLOT(sl_extractAssemblyRegion()));
 
     readMenu->addSeparator();

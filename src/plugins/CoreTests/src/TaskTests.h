@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -192,6 +192,12 @@ private:
     bool waitOk;
     QString waitCondString;
     QString waitStateString;
+};
+
+class GTest_TaskCheckDynamicResources : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_TaskCheckDynamicResources, "task-check-dynamic-resources", TaskFlags(TaskFlags_NR_FOSCOE));
 };
 
 class TaskTests {

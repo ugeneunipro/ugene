@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,9 +48,8 @@ FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings& s)
     tpm = Progress_Manual;
     assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT != nullptr);
 
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                      FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr),
-                                      true));
+    int usageInMb = FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr);
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, usageInMb, TaskResourceStage::Prepare));
 }
 
 void FindAlgorithmTask::run() {

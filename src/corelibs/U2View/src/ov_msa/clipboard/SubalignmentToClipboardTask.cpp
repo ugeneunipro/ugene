@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -165,7 +165,7 @@ void RichTextMsaClipboardTask::prepare() {
     QString fontFamily = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString();
     int pointSize = appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt();
 
-    MsaHighlightingScheme* highlightingScheme = maEditor->getMaEditorWgt()->getSequenceArea()->getCurrentHighlightingScheme();
+    MsaHighlightingScheme* highlightingScheme = maEditor->getMaEditorWgt(0)->getSequenceArea()->getCurrentHighlightingScheme();
     SAFE_POINT(highlightingScheme != nullptr, "RTFMSA entry storing: NULL highlightingScheme object", );
 
     QString schemeName = highlightingScheme->metaObject()->className();

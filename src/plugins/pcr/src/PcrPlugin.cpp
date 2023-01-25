@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ PcrPlugin::PcrPlugin()
         opRegistry->registerFactory(new InSilicoPcrOPWidgetFactory());
 
         if (nullptr != library) {
-            QAction* libraryAction = new QAction(QIcon(":/core/images/db/database_go.png"), tr("Primer library"), this);
+            QAction* libraryAction = new QAction(QIcon(":/core/images/database_with_arrow.png"), tr("Primer library"), this);
             libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
             connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));
             ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, libraryAction);

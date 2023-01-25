@@ -1,54 +1,42 @@
 <suite test-timeout="1800" name="CMDLine ugene common tests">
-
     <env-var value="cmdline/_proto" name="PROTOTYPE"/>
-    <test-dir test-ext="*.xml" path="cmdline/common" test-format="XML"
-              exclude="convert-assembly/test_0001.xml,convert-assembly/test_0002.xml,convert-assembly/test_0003.xml,convert-assembly/test_0004.xml,convert-assembly/test_0005.xml,convert-assembly/test_0006.xml,convert-assembly/test_0007.xml,convert-assembly/test_0008.xml,custom-script-worker-functions/translate/negative/test_0001.xml,das_annotation/test01.xml,das_annotation/test02.xml,das_annotation/test03.xml,das_annotation/test04.xml,das_annotation/test05.xml,das_annotation/test06.xml,find-sw/test_0002.xml,find-sw/test_0003.xml,find-sw/test_0004.xml,find-sw/test_0005.xml,find-sw/test_0007.xml,find-sw/negative/test_0003.xml,find-sw/negative/test_0004.xml,find-sw/negative/test_0005.xml,find-sw/negative/test_0009.xml,hmm2-build/negative/text_0003.xml,hmm2-build/negative/text_0006.xml,remote-request/test_0001.xml,remote-request/test_0003.xml,remote-request/test_0005.xml,sitecon/search/negative/test_0001.xml,sitecon/search/negative/test_0002.xml,sitecon/search/negative/test_0003.xml,sitecon/search/negative/test_0004.xml,sitecon/search/negative/test_0005.xml,sitecon/search/negative/test_0006.xml,sitecon/search/negative/test_0007.xml,sitecon/search/negative/test_0008.xml,external-tool-support/bedGrapthToBigWig/test_0001.xml"/>
-    <excluded test="convert-assembly/test_0001.xml" reason="need a bug"/>
-    <excluded test="convert-assembly/test_0002.xml" reason="need a bug"/>
-    <excluded test="convert-assembly/test_0003.xml" reason="need a bug"/>
-    <excluded test="convert-assembly/test_0004.xml" reason="need a bug"/>
-    <excluded test="convert-assembly/test_0005.xml" reason="need a bug"/>
-    <excluded test="convert-assembly/test_0006.xml" reason="need a bug"/>
-    <excluded test="convert-assembly/test_0007.xml" reason="need a bug"/>
-    <excluded test="convert-assembly/test_0008.xml" reason="need a bug"/>
-    <excluded test="custom-script-worker-functions/removeFromAlignment/test_0001.xml" reason="https://ugene.dev/tracker/browse/UGENE-3110"/>
-    <excluded test="custom-script-worker-functions/removeFromAlignment/test_0002.xml" reason="https://ugene.dev/tracker/browse/UGENE-3110"/>
-    <excluded test="custom-script-worker-functions/translate/negative/test_0001.xml" reason="https://ugene.dev/tracker/browse/UGENE-2773"/>
-    <excluded test="das_annotation/test06.xml" reason="The new behavior looks right. Test is not updated because the &quot;Annotate with DAS&quot; festure will be removed soon."/>
-    <excluded test="external-tool-support/bedtools/test_0022.xml" reason="need a bug"/>
-    <excluded test="external-tool-support/snpeff/test_0001.xml" reason="need a bug"/>
-    <excluded test="external-tool-support/tcoffee/align_without_params.xml" reason="Fails on Linux only."/>
-    <excluded test="hmm2-build/negative/text_0003.xml" reason="test hangs up"/>
-    <excluded test="hmm2-build/negative/text_0006.xml" reason="where is bug?"/>
-    <excluded test="remote-request/test_0001.xml" reason="too long"/>
-    <excluded test="remote-request/circular/test_0001.xml" reason="UGENE-3695"/>
-    <excluded test="remote-request/circular/test_0002.xml" reason="UGENE-3695"/>
-    <excluded test="remote-request/circular/test_0003.xml" reason="UGENE-3695"/>
-    <excluded test="remote-request/circular/test_0004.xml" reason="UGENE-3695"/>
-    <excluded test="remote-request/circular/test_0005.xml" reason="UGENE-3695"/>
-    <excluded test="remote-request/circular/test_0006.xml" reason="UGENE-3695"/>
-    <excluded test="remote-request/negative/test_0002.xml" reason="too_long"/>
-    <excluded test="remote-request/negative/test_0005.xml" reason="too_long"/>
-    <excluded test="remote-request/negative/test_0006.xml" reason="too_long"/>
-    <excluded test="remote-request/negative/test_0007.xml" reason="too_long"/>
-    <excluded test="remote-request/test_0002.xml" reason="too_long"/>
-    <excluded test="remote-request/test_0003.xml" reason="too_long"/>
-    <excluded test="remote-request/test_0004.xml" reason="too_long"/>
-    <excluded test="remote-request/test_0005.xml" reason="too_long"/>
-    <excluded test="remote-request/test_0006.xml" reason="too_long"/>
-    <excluded test="remote-request/test_0007.xml" reason="too_long"/>
-    <excluded test="sitecon/search/negative/test_0001.xml" reason="bug?"/>
-    <excluded test="sitecon/search/negative/test_0002.xml" reason="bug?"/>
-    <excluded test="sitecon/search/negative/test_0003.xml" reason="bug?"/>
-    <excluded test="sitecon/search/negative/test_0004.xml" reason="bug?"/>
-    <excluded test="sitecon/search/negative/test_0005.xml" reason="bug?"/>
-    <excluded test="sitecon/search/negative/test_0006.xml" reason="bug?"/>
-    <excluded test="sitecon/search/negative/test_0007.xml" reason="bug?"/>
-    <excluded test="sitecon/search/negative/test_0008.xml" reason="bug?"/>
-    <excluded test="workflow_samples/raw_ngs/test_0001.xml" reason="UGENE-4898: TopHat is not available on Windows"/>
-    <excluded test="workflow_samples/raw_ngs/test_0002.xml" reason="UGENE-4898: TopHat is not available on Windows"/>
-    <excluded test="workflow_samples/raw_ngs/test_0003.xml" reason="hangs"/>
-    <excluded test="workflow_samples/raw_ngs/test_0004.xml" reason="hangs"/>
-    <excluded test="workflow_samples/raw_ngs/test_0005.xml" reason="hangs"/>
-    <excluded test="workflow_samples/raw_ngs/test_0006.xml" reason="hangs"/>
+    <test-dir test-ext="*.xml" path="cmdline/common" test-format="XML"/>
+    
+    <excluded test="primers-grouper/test_0001.xml" reason="https://ugene.dev/tracker/browse/UGENE-7764"/>
+
+    <excluded test="external-tool-support/spades/input_type/test_0001.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0002.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0003.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0004.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0005.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0006.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0007.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0008.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0009.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0010.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0011.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0012.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0013.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0014.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0015.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0016.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0017.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/input_type/test_0018.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/test_0001.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/test_0002.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/test_0003.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/test_0004.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/test_0005.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/test_0006.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="external-tool-support/spades/test_0007.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="stringtie/test_0001.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="stringtie/test_0002.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="stringtie/test_0003.xml" platform="windows" reason="Spades is not available on Windows"/>
+    <excluded test="workflow_samples/raw_ngs/test_0001.xml" platform="windows" reason="UGENE-4898: TopHat is not available on Windows"/>
+    <excluded test="workflow_samples/raw_ngs/test_0002.xml" platform="windows" reason="UGENE-4898: TopHat is not available on Windows"/>
+    <excluded test="workflow_samples/raw_ngs/test_0005.xml" platform="windows" reason="UGENE-7765"/>
+    <excluded test="workflow_samples/raw_ngs/test_0006.xml" platform="windows" reason="UGENE-7765"/>
+
+    <excluded test="external-tool-support/tcoffee/align_without_params.xml" platform="mac" reason="T-Coffee does't work when run from a folder with spaces like 'Unipro UGENE App."/>
+
 </suite>

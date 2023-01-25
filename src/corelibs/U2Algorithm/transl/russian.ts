@@ -8,6 +8,12 @@
         <source>Gaps:</source>
         <translation>Пробелы:</translation>
     </message>
+    <message>
+        <location filename="../src/misc/FindAlgorithm.cpp" line="160"/>
+        <location filename="../src/misc/FindAlgorithm.cpp" line="824"/>
+        <source>The search pattern is too long.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::AlignInAminoFormTask</name>

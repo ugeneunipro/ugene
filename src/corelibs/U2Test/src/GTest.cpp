@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -261,11 +261,23 @@ GTestSuite* GTestSuite::readTestSuite(const QString& url, QString& err) {
             continue;
         }
         QDomElement excludedEl = n.toElement();
+        QString platform = excludedEl.attribute("platform");
+
+        // Check if 'exclude' is per single OS only.
+        if (platform == "windows" && !isOsWindows()) {
+            continue;
+        }
+        if (platform == "linux" && !isOsLinux()) {
+            continue;
+        }
+        if (platform == "mac" && !isOsMac()) {
+            continue;
+        }
         QString testName = excludedEl.attribute("test");
 
         QString fullTestPath = suiteDir + "/" + dirPath + "/" + testName;
 
-        GTestRef* tref = new GTestRef(fullTestPath, testName, testFormatName);
+        auto tref = new GTestRef(fullTestPath, testName, testFormatName);
         QString reason = excludedEl.attribute("reason");
 
         if (!excluded.contains(tref)) {

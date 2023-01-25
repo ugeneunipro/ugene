@@ -14,7 +14,6 @@ include_directories(../../libs_3rdparty/samtools/src/samtools)
 
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
-qt5_add_resources(RCC_SRCS U2Algorithm.qrc)
 
 add_library(U2Algorithm SHARED ${HDRS} ${SRCS} ${RCC_SRCS})
 

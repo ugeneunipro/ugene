@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -299,6 +299,7 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
     QList<U2Region> upperCaseRegs;
     for (GObject* o : qAsConst(aos)) {
         auto ato = dynamic_cast<AnnotationTableObject*>(o);
+        SAFE_POINT(ato != nullptr, "U1AnnotationUtils::getRelatedLowerCaseRegions: ato is nullptr", {});
         foreach (Annotation* a, ato->getAnnotations()) {
             if (a->getName() == lowerCaseAnnotationName) {
                 lowerCaseRegs << a->getRegions().toList();
@@ -561,8 +562,7 @@ U2Location U1AnnotationUtils::shiftLocation(const U2Location& location, qint64 s
     return newLocation;
 }
 
-QMap<Annotation*, QList<QPair<QString, QString>>> FixAnnotationsUtils::fixAnnotations(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, 
-                                                                                      QList<Document*> docs, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str) {
+QMap<Annotation*, QList<QPair<QString, QString>>> FixAnnotationsUtils::fixAnnotations(U2OpStatus* os, U2SequenceObject* seqObj, const U2Region& regionToReplace, const DNASequence& sequence2Insert, QList<Document*> docs, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str) {
     FixAnnotationsUtils fixer(os, seqObj, regionToReplace, sequence2Insert, recalculateQualifiers, str, docs);
     fixer.fixAnnotations();
     return fixer.annotationForReport;

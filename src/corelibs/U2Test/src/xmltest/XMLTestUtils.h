@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_XML_TEST_UTILS_
-#define _U2_XML_TEST_UTILS_
+#pragma once
 
 #include <U2Test/GTest.h>
 
@@ -138,5 +137,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

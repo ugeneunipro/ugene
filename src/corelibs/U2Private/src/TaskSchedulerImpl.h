@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TASK_SCHEDULER_IMPL_H_
-#define _U2_TASK_SCHEDULER_IMPL_H_
+#pragma once
 
 #include <QMap>
 #include <QMutex>
@@ -78,6 +77,7 @@ public:
 
     QMutex pauseLocker;
 
+    bool isUserRunFinished = false;
 signals:
     /** Signal emitted by TaskFlag_RunMessageLoopOnly tasks only when new sub-tasks are added during the 'run' method execution. */
     void si_processMySubtasks();
@@ -102,12 +102,18 @@ public:
     Task* task = nullptr;
     TaskInfo* parentTaskInfo = nullptr;
     QList<Task*> newSubtasks;
+    /**
+     * List of allocated dynamic task resources.
+     * These resources must be deallocated by the scheduler after the task completion.
+     */
+    QList<QString> dynamicAppResourceIds;
 
     bool wasPrepared = false;  // 'true' if prepare() was called for the task
     bool subtasksWereCanceled = false;  // 'true' if canceled task has called cancel() on its subtasks
     bool selfRunFinished = false;  // indicates that the 'run' method of this task was finished
-    bool hasLockedPrepareResources = false;  // true if there were resource locks for 'prepare' stage
-    bool hasLockedRunResources = false;  // true if there were resource locks for 'run' stage
+
+    /** If true, the task has locked thread resource. */
+    bool hasLockedThreadResource = false;
 
     int prevProgress = 0;  // used for TaskProgress_Manual
     QString prevDesc;
@@ -175,8 +181,13 @@ private:
     void deleteTask(Task* t);
     void finishSubtasks(TaskInfo* pti);
 
-    QString tryLockResources(Task* task, bool prepareStage, bool& hasLockedResourcesAfterCall);  // returns error message
-    void releaseResources(TaskInfo* ti, bool prepareStage);
+    /**
+     * Attempts to lock task resources for the stage.
+     * Returns a custom task state message if task failed to lock all required resources.
+     * Sets task error if the resource can't be acquired and no new lock attempt is needed.
+     */
+    QString tryLockResources(TaskInfo* ti, const TaskResourceStage& stage);
+    void releaseResources(TaskInfo* ti, const TaskResourceStage& stage);
 
     void propagateStateToParent(Task* t);
     void updateOldTasksPriority();
@@ -202,4 +213,3 @@ private:
 };
 
 }  // namespace U2
-#endif

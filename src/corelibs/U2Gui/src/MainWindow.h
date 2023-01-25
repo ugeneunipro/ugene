@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MAIN_WINDOW_H_
-#define _U2_MAIN_WINDOW_H_
+#pragma once
 
 #include <QEvent>
 #include <QWidget>
@@ -243,4 +242,3 @@ public:
 Q_DECLARE_METATYPE(U2::MainWindow*)
 Q_DECLARE_METATYPE(U2::MWMDIManager*)
 Q_DECLARE_METATYPE(U2::MWDockManager*)
-#endif

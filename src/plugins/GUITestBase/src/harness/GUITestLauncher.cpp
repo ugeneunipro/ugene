@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -324,7 +324,13 @@ QProcessEnvironment GUITestLauncher::prepareTestRunEnvironment(const QString& te
     env.insert(ENV_USE_NATIVE_DIALOGS, "0");
     env.insert(U2_PRINT_TO_FILE, testOutputDir + "/logs/" + getTestOutputFileName(testName, testRunIteration));
 
-    QString iniFilePath = testOutputDir + "/inis/" + QString(testName).replace(':', '_') + "_r_" + QString::number(testRunIteration) + "_UGENE.ini";
+    // Some variables in UGENE are computed relative to the ini file folder (like MSA color schema dir).
+    // Use different folder for different runs.
+    QString iniFileDir = testOutputDir + "/inis/";
+    if (testRunIteration > 0) {
+        iniFileDir += QString::number(testRunIteration) + "/";
+    }
+    QString iniFilePath = iniFileDir + QString(testName).replace(':', '_') + "_r_" + QString::number(testRunIteration) + "_UGENE.ini";
     if (!iniFileTemplate.isEmpty() && QFile::exists(iniFileTemplate)) {
         QFile::copy(iniFileTemplate, iniFilePath);
     }

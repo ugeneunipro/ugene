@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -408,7 +408,7 @@ GenerateDNASequenceTask::GenerateDNASequenceTask(const QMap<char, qreal>& baseCo
 void GenerateDNASequenceTask::prepare() {
     int memUseMB = window / MBYTE_TO_BYTE;
     coreLog.trace(QString("Generate DNA sequence task: Memory resource %1").arg(memUseMB));
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run));
 }
 
 void GenerateDNASequenceTask::run() {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 
 namespace U2 {
 
+class MultipleSequenceAlignmentObject;
 class SaveDocumentController;
 
 class ExportMSA2SequencesDialog : public QDialog, private Ui_ExportMSA2SequencesDialog {
@@ -37,15 +38,17 @@ class ExportMSA2SequencesDialog : public QDialog, private Ui_ExportMSA2Sequences
 public:
     ExportMSA2SequencesDialog(const QString& defaultDir, const QString& defaultFilename, QWidget* p);
 
-    virtual void accept();
+    void accept() override;
 
-public:
+    /** Shows dialog and if user accepts it start the export task. */
+    static void showDialogAndStartExportTask(MultipleSequenceAlignmentObject* msaObject);
+
     QString url;
     QString defaultDir;
     QString defaultFileName;
     DocumentFormatId format;
-    bool trimGapsFlag;
-    bool addToProjectFlag;
+    bool trimGapsFlag = false;
+    bool addToProjectFlag = true;
 
 private:
     void initSaveController();

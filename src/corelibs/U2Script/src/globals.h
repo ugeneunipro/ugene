@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SCRIPT_GLOBALS_H_
-#define _U2_SCRIPT_GLOBALS_H_
+#pragma once
 
 #if defined _WIN32 || defined __CYGWIN__
 #    ifdef BUILDING_U2SCRIPT_DLL
@@ -109,5 +108,3 @@ U2SCRIPT_EXPORT U2ErrorType getLastFailedStringValue(int maxExpectedLength,
 #ifdef __cplusplus
 };
 #endif
-
-#endif  // _U2_SCRIPT_GLOBALS_H_

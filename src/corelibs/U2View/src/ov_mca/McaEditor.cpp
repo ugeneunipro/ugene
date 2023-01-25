@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -338,6 +338,10 @@ void McaEditor::addEditMenu(QMenu* menu) {
 
     editMenu->addAction(undoAction);
     editMenu->addAction(redoAction);
+}
+
+MaEditorMultilineWgt* McaEditor::getMaEditorMultilineWgt() const {
+    FAIL("getMaEditorMultilineWgt must never be called on MCA manager", nullptr);
 }
 
 MaEditorSelectionController* McaEditor::getSelectionController() const {

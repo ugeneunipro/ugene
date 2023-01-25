@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,8 +86,8 @@ QWidget* InUrlDatasetsController::createGUI(U2OpStatus& /*os*/) {
         sets.clear();
         sets << Dataset();
     }
-    URLAttribute* attr = dynamic_cast<URLAttribute*>(attribute());
-    SAFE_POINT(nullptr != attr, "Unexpected attribute value", nullptr);
+    auto attr = dynamic_cast<URLAttribute*>(attribute());
+    SAFE_POINT(attr != nullptr, "Unexpected attribute value", nullptr);
     const QSet<GObjectType> compatibleObjTypes = nullptr != attr ? attr->getCompatibleObjectTypes() : QSet<GObjectType>();
     dsc = new AttributeDatasetsController(sets, compatibleObjTypes);
     connect(dsc, SIGNAL(si_attributeChanged()), SLOT(sl_datasetsChanged()));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_REGISTRY_H_
-#define _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_REGISTRY_H_
+#pragma once
 
 #include <QBitArray>
 #include <QHash>
@@ -124,8 +123,7 @@ inline QBitArray* SWMulAlignResultNamesTagsRegistry::getBitmapOfTagsApplicabilit
 
 inline void SWMulAlignResultNamesTagsRegistry::resetCounters() {
     foreach (SWMulAlignResultNamesTag* tag, tags.values()) {
-        SWMulAlignExternalPropTag* externalPropertyTag = dynamic_cast<SWMulAlignExternalPropTag*>(tag);
-        if (nullptr != externalPropertyTag) {
+        if (auto externalPropertyTag = dynamic_cast<SWMulAlignExternalPropTag*>(tag)) {
             if (SWMulAlignExternalPropTag::COUNTER == externalPropertyTag->getType()) {
                 externalPropertyTag->resetCounter();
             }
@@ -161,5 +159,3 @@ inline QStringList* SWMulAlignResultNamesTagsRegistry::getDefaultTagsForPtrnSubs
 }
 
 }  // namespace U2
-
-#endif  // _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_REGISTRY_H_

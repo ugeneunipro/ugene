@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -175,10 +175,10 @@ void PrepareToImportTask::checkReferenceFile() {
 
     if (!BAMUtils::hasValidFastaIndex(refUrl)) {
         if (needToCopyFasta()) {
-            bool copied = QFile::copy(refUrl, getFastaUrl());
-            CHECK_EXT(copied, setError(getCopyError(refUrl, getFastaUrl())), );
-
-            refUrl = getFastaUrl();
+            QString fastaUrl = getFastaUrl();
+            bool copied = QFile::copy(refUrl, fastaUrl);
+            CHECK_EXT(copied, setError(getCopyError(refUrl, fastaUrl)), );
+            refUrl = fastaUrl;
         }
     }
 }

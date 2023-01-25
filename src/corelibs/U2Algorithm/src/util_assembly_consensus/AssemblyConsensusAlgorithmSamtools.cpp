@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@
 extern "C" {
 #include <bam2bcf.h>
 }
-#include <U2Core/Log.h>
 #include <U2Core/U2Assembly.h>
 #include <U2Core/U2SafePoints.h>
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,18 +66,12 @@ public:
     HttpRequestBLAST(Task* _task)
         : HttpRequest(_task) {
     }
-    virtual void sendRequest(const QString& program, const QString& query);
-    virtual void parseResult(const QByteArray& buf);
-    virtual QByteArray getOutputFile();
+    void sendRequest(const QString& program, const QString& query) override;
+    QByteArray getOutputFile() override;
 
 private:
-    class Waiter : public QThread {
-    public:
-        static void await(int mseconds) {
-            msleep(mseconds);
-        }
-    };
-    QString runHttpRequest(QString request);
+    void parseResult(const QByteArray& buf);
+    QString runHttpRequest(const QString& request);
     static const QString host;
     QByteArray output;
     void parseHit(const QDomNode& xml);

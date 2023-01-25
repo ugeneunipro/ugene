@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -316,7 +316,7 @@ void LoadDocumentTask::prepare() {
 
     int memUseMB = calculateMemory();
     if (memUseMB > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, false));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run));
     }
 }
 

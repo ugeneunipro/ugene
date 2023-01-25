@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DYN_TABLE_H_
-#define _U2_DYN_TABLE_H_
+#pragma once
 
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/global.h>
@@ -135,7 +134,7 @@ protected:
 
 private:
     void setValue(int x, int y, int val, bool isMatch) {
-        U2_ASSERT(((quint32)val & MATCH_MASK) == 0);
+        SAFE_POINT(((quint32)val & MATCH_MASK) == 0, "Value don't match the mask.", );
         int valueWithMatchMask = int((quint32)val | (isMatch ? Flag_Match : Flag_Mismatch));
         set(x, y, valueWithMatchMask);
     }
@@ -164,5 +163,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -537,12 +537,14 @@ void URLDelegate::sl_commit() {
 void URLDelegate::setEditorData(QWidget* editor,
                                 const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    URLWidget* lineEdit = dynamic_cast<URLWidget*>(editor);
+    auto lineEdit = dynamic_cast<URLWidget*>(editor);
+    SAFE_POINT(lineEdit != nullptr, "URLDelegate::setEditorData: lineEdit is null!", );
     lineEdit->setValue(val);
 }
 
 void URLDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    URLWidget* lineEdit = dynamic_cast<URLWidget*>(editor);
+    auto lineEdit = dynamic_cast<URLWidget*>(editor);
+    SAFE_POINT(lineEdit != nullptr, "URLDelegate::setModelData: lineEdit is null!", );
     QString val = lineEdit->value().toString().replace('\\', '/').trimmed();
     QStringList urls = val.split(";", QString::SkipEmptyParts);
     val = urls.join(";");
@@ -795,12 +797,14 @@ void StringListDelegate::sl_commit() {
 
 void StringListDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    StingListWidget* lineEdit = dynamic_cast<StingListWidget*>(editor);
+    auto lineEdit = dynamic_cast<StingListWidget*>(editor);
+    SAFE_POINT(lineEdit != nullptr, "StringListDelegate::setEditorData: lineEdit is null!", );
     lineEdit->setValue(val);
 }
 
 void StringListDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    StingListWidget* lineEdit = dynamic_cast<StingListWidget*>(editor);
+    auto lineEdit = dynamic_cast<StingListWidget*>(editor);
+    SAFE_POINT(lineEdit != nullptr, "StringListDelegate::setModelData: lineEdit is null!", );
 
     QString val = lineEdit->value().toString();
     model->setData(index, val, ConfigurationEditor::ItemValueRole);
@@ -891,12 +895,14 @@ QWidget* CharacterDelegate::createEditor(QWidget* parent,
 void CharacterDelegate::setEditorData(QWidget* editor,
                                       const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    IgnoreUpDownPropertyWidget* lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
+    auto lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
+    SAFE_POINT(lineEdit != nullptr, "CharacterDelegate::setEditorData: lineEdit is null", );
     lineEdit->setValue(val);
 }
 
 void CharacterDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    IgnoreUpDownPropertyWidget* lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
+    auto lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
+    SAFE_POINT(lineEdit != nullptr, "CharacterDelegate::setModelData: lineEdit is null", );
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -90,7 +90,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSett
     int aliLen = ma->getLength();
     int nSeq = ma->getRowCount();
     int memUseMB = qint64(aliLen) * qint64(nSeq) * 200 / (1024 * 1024);  // 200x per char in alignment
-    TaskResourceUsage tru(RESOURCE_MEMORY, memUseMB);
+    TaskResourceUsage tru(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run);
 
     QString inputAlName = inputMA->getName();
     resultMA->setName(inputAlName);
@@ -110,7 +110,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment& ma, const MuscleTaskSett
         setUseDescriptionFromSubtask(true);
         parallelSubTask = new MuscleParallelTask(inputSubMA, resultSubMA, config, ctx);
         addSubTask(parallelSubTask);
-        tru.prepareStageLock = true;
+        tru.stage = TaskResourceStage::Prepare;
     }
     addTaskResource(tru);
 }

@@ -114,6 +114,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/Log.h \
            src/globals/LogCache.h \
            src/globals/NetworkConfiguration.h \
+           src/globals/Nullable.h \
            src/globals/PasswordStorage.h \
            src/globals/PluginModel.h \
            src/globals/ProjectFilterTaskRegistry.h \

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,6 @@
 #include <QFile>
 #include <QRadioButton>
 #include <QTableView>
-#include <QTableWidget>
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -105,7 +104,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
@@ -477,17 +475,18 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
     GTLogTracer l;
     // 1. Open "_common_data/clustal/big.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/big.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTWidget::click(os, GTUtilsMsaEditor::getShowOverviewButton(os));  // Close 'Overview' to make the test faster.
 
     // 2. Align it with MUSCLE.
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Align", "Align with MUSCLE…"}));
     GTUtilsDialog::add(os, new MuscleDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    // Expected: Error notification appears with a correct human readable error. There is a error in log wit memory requirements.
+    // Expected: Error notification appears with a correct human-readable error. There is an error in log with memory requirements.
     GTUtilsNotifications::waitForNotification(os, true, "There is not enough memory to align these sequences with MUSCLE.");
     GTUtilsDialog::checkNoActiveWaiters(os);
-    CHECK_SET_ERR(l.checkMessage("Not enough resources for the task, resource name:"), "No default error in log");
+    CHECK_SET_ERR(l.checkMessage("Not enough resources for the task"), "No default error in log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5090) {
@@ -607,35 +606,6 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsTaskTreeView::waitTaskFinished(os, 20000);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5138_1) {
-    // 1. Open document test/_common_data/scenarios/msa/ma2_gapped.aln
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
-    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/msa/big_aln.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Do MSA area context menu->Statistics->generate distance matrix
-    //     Expected state: notification about low memory has appeared
-    Runnable* dis = new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::NONE, testDir + "_common_data/scenarios/sandbox/matrix.html");
-    GTUtilsDialog::waitForDialog(os, dis);
-    Runnable* pop = new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate distance matrix"}, GTGlobals::UseKey);
-    GTUtilsDialog::waitForDialog(os, pop);
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5138_2) {
-    //    1. Open document test/_common_data/clustal/big.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/5138", "big_5138.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Do MSA area context menu->Statistics->generate grid profile
-    //    Expected state: notification about low memory has appeared
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate grid profile"}, GTGlobals::UseKey));
-    GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, true, GenerateAlignmentProfileDialogFiller::NONE, testDir + "_common_data/scenarios/sandbox/stat.html"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsNotifications::waitForNotification(os, true, "not enough memory");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5149) {
@@ -2696,6 +2666,35 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5660) {
+    // Open document test/_common_data/clustal/1000_sequences.aln.fa
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
+    GTUtilsProject::openFile(os, testDir + "_common_data/clustal/1000_sequences.aln.fa");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Statistics->generate distance matrix
+    // Expected: HTML content is too large to be safely displayed in UGENE.
+    class ClickOkButtonScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new DistanceMatrixDialogFiller(os, new ClickOkButtonScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"MSAE_MENU_STATISTICS", "Generate distance matrix"}));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: task report contains "HTML content is too large to be safely displayed in UGENE."
+    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
+    CHECK_SET_ERR(activeWindow->windowTitle() == "Distance matrix for Multiple alignment", "Unexpected active window name");
+
+    auto textBrowser = GTWidget::findTextBrowser(os, "textBrowser", activeWindow);
+    QString text = textBrowser->toHtml();
+    CHECK_SET_ERR(text.contains("HTML content is too large to be safely displayed in UGENE."), text);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5663) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
@@ -4427,7 +4426,7 @@ GUI_TEST_CLASS_DEFINITION(test_5837) {
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save sequence"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportSelectedMsaRowsToSeparateFilesAction"}, GTGlobals::UseKey));
     GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::Ugene_db, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);

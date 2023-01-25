@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,6 @@ static const QString NOMAQROUND = "nomaqround";
 static const QString SEED = "seed";
 static const QString BEST = "best";
 static const QString ALL = "all";
-static const QString COLORSPACE = "colorspace";
 
 static const QString BASE_Bowtie_SUBDIR("bowtie");
 static const QString BASE_Bowtie_OUTFILE("out.sam");
@@ -129,7 +128,6 @@ void BowtieWorkerFactory::init() {
         static const QString SEED = "seed";
         static const QString BEST = "best";
         static const QString ALL = "all";
-        static const QString COLORSPACE = "colorspace";
         static const QString THREADS = "threads";
 
         Descriptor mismatchesType(MISMATCHES_TYPE,
@@ -208,11 +206,6 @@ void BowtieWorkerFactory::init() {
                           BowtieWorker::tr("All alignments"),
                           BowtieWorker::tr("Report all valid alignments per read or pair."));
 
-        Descriptor colorspace(COLORSPACE,
-                              BowtieWorker::tr("Colorspace"),
-                              BowtieWorker::tr("When -C is specified, read sequences are treated as colors. Colors may be encoded either as numbers \
-                              (0=blue, 1=green, 2=orange, 3=red) or as characters A/C/G/T (A=blue, C=green, G=orange, T=red)."));
-
         attrs << new Attribute(mismatchesType, BaseTypes::STRING_TYPE(), false, QVariant("-n mode"));
         attrs << new Attribute(mismatchesNumber, BaseTypes::NUM_TYPE(), false, QVariant(2));
         attrs << new Attribute(maqError, BaseTypes::NUM_TYPE(), false, QVariant(70));
@@ -222,7 +215,6 @@ void BowtieWorkerFactory::init() {
         attrs << new Attribute(chunkmbs, BaseTypes::NUM_TYPE(), false, QVariant(64));
         attrs << new Attribute(seed, BaseTypes::NUM_TYPE(), false, QVariant(0));
 
-        attrs << new Attribute(colorspace, BaseTypes::BOOL_TYPE(), false, QVariant(false));
         attrs << new Attribute(noMaqRounding, BaseTypes::BOOL_TYPE(), false, QVariant(false));
         attrs << new Attribute(noForward, BaseTypes::BOOL_TYPE(), false, QVariant(false));
         attrs << new Attribute(noReverse, BaseTypes::BOOL_TYPE(), false, QVariant(false));

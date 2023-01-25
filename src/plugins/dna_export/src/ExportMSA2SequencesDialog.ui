@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
-    <height>195</height>
+    <width>613</width>
+    <height>186</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>550</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Convert Alignment to Separate Sequences</string>
@@ -20,38 +26,79 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QLabel" name="fileLabel">
+      <widget class="QLabel" name="formatLabel">
        <property name="text">
-        <string>Export to file</string>
+        <string>Export format</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+     <item row="0" column="1" colspan="2">
+      <widget class="QComboBox" name="formatCombo"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="fileLabel">
+       <property name="text">
+        <string>Export file</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
       <widget class="QLineEdit" name="fileNameEdit"/>
      </item>
-     <item row="0" column="2">
+     <item row="1" column="2">
       <widget class="QToolButton" name="fileButton">
        <property name="text">
         <string>...</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="formatLabel">
+     <item row="2" column="0">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>File format to use</string>
+        <string>Gap characters ('-')  </string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1" colspan="2">
-      <widget class="QComboBox" name="formatCombo"/>
+     <item row="2" column="1" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QRadioButton" name="keepGapsRB">
+         <property name="text">
+          <string>Keep</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="trimGapsRB">
+         <property name="text">
+          <string>Trim</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QCheckBox" name="addToProjectBox">
      <property name="text">
-      <string>Add document to the project</string>
+      <string>Add exported document to the project</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -59,37 +106,15 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="gapGroup">
-     <property name="title">
-      <string>Gap characters ('-')</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QRadioButton" name="keepGapsRB">
-        <property name="text">
-         <string>Keep</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="trimGapsRB">
-        <property name="text">
-         <string>Trim</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

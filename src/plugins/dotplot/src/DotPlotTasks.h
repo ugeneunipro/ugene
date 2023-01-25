@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,16 +43,16 @@ public:
     SaveDotPlotTask(const QString& file,
                     QSharedPointer<QList<DotPlotResults>> dotPlotDirectList,
                     QSharedPointer<QList<DotPlotResults>> dotPlotInverseList,
-                    U2SequenceObject* seqX,
-                    U2SequenceObject* seqY,
+                    const QString& seqXName,
+                    const QString& seqYName,
                     int mLen,
                     int ident)
         : Task(tr("DotPlot saving"), TaskFlags_FOSCOE),
           filename(file),
           directList(dotPlotDirectList),
           inverseList(dotPlotInverseList),
-          sequenceX(seqX),
-          sequenceY(seqY),
+          sequenceXName(seqXName),
+          sequenceYName(seqYName),
           minLen(mLen),
           identity(ident) {
         tpm = Task::Progress_Manual;
@@ -66,7 +66,8 @@ private:
     QString filename;
     QSharedPointer<QList<DotPlotResults>> directList;
     QSharedPointer<QList<DotPlotResults>> inverseList;
-    U2SequenceObject *sequenceX, *sequenceY;
+    const QString sequenceXName;
+    const QString sequenceYName;
     int minLen, identity;
 
     void saveDotPlot(QTextStream& stream);

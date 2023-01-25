@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,6 @@
 #include <U2Formats/BAMUtils.h>
 #include <U2Formats/SAMFormat.h>
 
-#include <U2View/DnaAssemblyUtils.h>
-
 namespace U2 {
 
 #define FILE1_ATTR "file1"
@@ -49,7 +47,6 @@ namespace U2 {
 #define RES_FILE_NAME "res-file"
 #define CUSTOM_ATTR "custom-options"
 #define PAIRED_READS_ATTR "paired-reads"
-#define IS_BAM_ATTR "isbam"
 
 void GTest_DnaAssemblyToReferenceTask::init(XMLTestFormat*, const QDomElement& el) {
     refSeqUrl = el.attribute(REF_SEQ_ATTR);
@@ -177,30 +174,31 @@ void GTest_DnaAssemblyToReferenceTask::cleanup() {
 
 //----------------------------------------------------------
 void GTest_AssemblycompareTwoSAMbyLength::init(XMLTestFormat*, const QDomElement& el) {
-    file1Url = el.attribute(FILE1_ATTR);
-    if (file1Url.isEmpty()) {
+    QString file1Attr = el.attribute(FILE1_ATTR);
+    if (file1Attr.isEmpty()) {
         failMissingValue(FILE1_ATTR);
         return;
     }
-    file1Url = env->getVar("TEMP_DATA_DIR") + "/" + file1Url;
+    file1Url = file1Attr;
+    XMLTestUtils::replacePrefix(env, file1Url);
+    if (file1Url == file1Attr) {
+        file1Url = env->getVar("TEMP_DATA_DIR") + "/" + file1Url;  // Original behavior.
+    }
 
-    file2Url = el.attribute(FILE2_ATTR);
-    if (file2Url.isEmpty()) {
+    QString file2Attr = el.attribute(FILE2_ATTR);
+    if (file2Attr.isEmpty()) {
         failMissingValue(FILE2_ATTR);
         return;
     }
-    file2Url = env->getVar("COMMON_DATA_DIR") + "/" + file2Url;
-
-    QString isBamAtr = el.attribute(IS_BAM_ATTR);
-    if (!isBamAtr.isEmpty()) {
-        isBam = true;
-    } else {
-        isBam = false;
+    file2Url = file2Attr;
+    XMLTestUtils::replacePrefix(env, file2Url);
+    if (file2Url == file2Attr) {
+        file2Url = env->getVar("COMMON_DATA_DIR") + "/" + file2Url;  // Original behavior.
     }
 }
 
 Task::ReportResult GTest_AssemblycompareTwoSAMbyLength::report() {
-    BAMUtils::isEqualByLength(file1Url, file2Url, stateInfo, isBam);
+    BAMUtils::isEqualByLength(file1Url, file2Url, stateInfo);
 
     return ReportResult_Finished;
 }

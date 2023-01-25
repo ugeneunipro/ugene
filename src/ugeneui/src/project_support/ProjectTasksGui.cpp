@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -392,7 +392,7 @@ Task::ReportResult ExportProjectTask::report() {
 // tests
 
 void GTest_LoadProject::init(XMLTestFormat*, const QDomElement& el) {
-    addTaskResource(TaskResourceUsage(RESOURCE_PROJECT, 1, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_PROJECT, 1, TaskResourceStage::Prepare));
     projContextName = el.attribute("index");
     if (!el.attribute("load_from_temp").isEmpty()) {
         url = env->getVar("TEMP_DATA_DIR") + "/" + el.attribute("url");

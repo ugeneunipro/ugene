@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_BUS_MODEL_H_
-#define _U2_WORKFLOW_BUS_MODEL_H_
+#pragma once
 
 #include <U2Core/U2OpStatus.h>
 
@@ -217,5 +216,3 @@ public:
 typedef QMap<QString, QString> StrStrMap;
 Q_DECLARE_METATYPE(StrStrMap)
 Q_DECLARE_METATYPE(SlotPathMap)
-
-#endif

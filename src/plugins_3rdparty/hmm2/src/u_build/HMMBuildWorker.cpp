@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -244,7 +244,8 @@ bool HMMBuildWorker::isReady() const {
 
 Task* HMMBuildWorker::tick() {
     if (calSettings.seed < 0) {
-        algoLog.error(tr("Incorrect value for seed parameter"));
+        setDone();
+        nextTick = nullptr;
         return new FailTask(tr("Incorrect value for seed parameter"));
     }
 

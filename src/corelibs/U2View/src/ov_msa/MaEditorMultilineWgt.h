@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_MULTILINE_WGT_H_
-#define _U2_MA_EDITOR_MULTILINE_WGT_H_
+#pragma once
 
 #include <QGroupBox>
 #include <QScrollArea>
@@ -50,7 +49,6 @@ class MaEditorNameList;
 class MaEditorOverviewArea;
 class MaEditorSequenceArea;
 class RowHeightController;
-class MsaUndoRedoFramework;
 class MultilineScrollController;
 class SequenceAreaRenderer;
 class SimilarityStatisticsSettings;
@@ -62,7 +60,7 @@ class MSAEditorMultiTreeViewer;
 class U2VIEW_EXPORT MaEditorMultilineWgt : public QWidget {
     Q_OBJECT
 public:
-    MaEditorMultilineWgt(MaEditor* editor);
+    explicit MaEditorMultilineWgt(MaEditor* editor);
 
     /** Returns MA editor instance. The instance is always defined and is never null. */
     MaEditor* getEditor() const;
@@ -76,31 +74,24 @@ public:
     // Get multiline scroll controller
     MultilineScrollController* getScrollController() const;
 
-    // Get scroll area wich contain all MaEditorWidget(s)
+    // Get scroll area which contain all MaEditorWidget(s)
     QScrollArea* getChildrenScrollArea() const;
-
-    /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
-    bool isCollapsingOfSingleRowGroupsEnabled() const {
-        return enableCollapsingOfSingleRowGroups;
-    }
 
     // Get MaEditorWgt from multiline widget by index
     // Can be nullptr
-    virtual MaEditorWgt* getUI(uint index = 0) const;
+    virtual MaEditorWgt* getUI(int index) const;
 
     // Get index of the known MaEditorWgt from multiline widget
     // If not found will be 0
-    virtual uint getUIIndex(MaEditorWgt* _ui) const;
+    virtual int getUIIndex(MaEditorWgt* _ui) const;
 
-    virtual void updateSize(bool recurse = true) {
-        Q_UNUSED(recurse);
-    }
+    virtual void updateSize();
 
-    int getSequenceAreaWidth(uint index = 0) const;  // pixels
-    int getFirstVisibleBase(uint index = 0) const;
-    int getLastVisibleBase(uint index = 0) const;
-    int getSequenceAreaBaseLen(uint index = 0) const;  // bases
-    int getSequenceAreaBaseWidth(uint index = 0) const;  // pixels
+    int getSequenceAreaWidth(int index) const;  // pixels
+    int getFirstVisibleBase(int index) const;
+    int getLastVisibleBase(int index) const;
+    int getSequenceAreaBaseLen(int index) const;  // bases
+    int getSequenceAreaBaseWidth(int index) const;  // pixels
     int getSequenceAreaAllBaseLen() const;  // bases
     int getSequenceAreaAllBaseWidth() const;  // pixels
 
@@ -108,11 +99,10 @@ public:
                                      MaEditorOverviewArea* overviewArea,
                                      MaEditorStatusBar* statusBar) = 0;
     virtual void deleteChild(int index) = 0;
-    virtual void addChild(MaEditorWgt* child, int index = -1) = 0;
-    virtual bool updateChildrenCount() = 0;
+    virtual void addChild(MaEditorWgt* child) = 0;
 
     // Return lines count in multiline widget
-    uint getChildrenCount() const {
+    int getChildrenCount() const {
         return uiChildCount;
     }
 
@@ -164,10 +154,10 @@ protected:
     virtual void createChildren() = 0;
     virtual void updateChildren() = 0;
 
-    virtual void initScrollArea(QScrollArea* _scrollArea = nullptr) = 0;
-    virtual void initOverviewArea(MaEditorOverviewArea* overviewArea = nullptr) = 0;
-    virtual void initStatusBar(MaEditorStatusBar* statusbar = nullptr) = 0;
-    virtual void initChildrenArea(QGroupBox* _uiChildrenArea = nullptr) = 0;
+    virtual void initScrollArea() = 0;
+    virtual void initOverviewArea() = 0;
+    virtual void initStatusBar() = 0;
+    virtual void initChildrenArea() = 0;
 
 private:
     // For correct display of Overview. `wgt` may have already been removed, or may still exist, so we need handles.
@@ -179,8 +169,8 @@ private:
 
 protected:
     MaEditor* const editor;
-    QScrollArea* scrollArea;  // scroll area for multiline widget, it's widget is uiChildrenArea
-    QGroupBox* uiChildrenArea;
+    QScrollArea* scrollArea = nullptr;  // scroll area for multiline widget, it's widget is uiChildrenArea
+    QGroupBox* uiChildrenArea = nullptr;
     MaEditorOverviewArea* overviewArea = nullptr;
     MaEditorStatusBar* statusBar = nullptr;
 
@@ -189,16 +179,13 @@ protected:
 
     QVector<MaEditorWgt*> uiChild;
     ActiveChild activeChild;
-    uint uiChildLength = 0;
-    uint uiChildCount = 0;
+    int uiChildLength = 0;
+    int uiChildCount = 0;
     bool multilineMode = false;
 
-    bool enableCollapsingOfSingleRowGroups = false;
-    MultilineScrollController* scrollController;
+    MultilineScrollController* scrollController = nullptr;
 
 public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_EDITOR_MULTILINE_WGT_H_

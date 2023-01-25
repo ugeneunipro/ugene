@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,11 +39,11 @@ QString CrashLogCache::formMemInfo() {
     AppResourcePool* pool = AppResourcePool::instance();
     CHECK(pool, QString());
 
-    size_t memoryBytes = pool->getCurrentAppMemory();
+    size_t memoryBytes = AppResourcePool::getCurrentAppMemory();
     QString memInfo = QString("AppMemory: %1Mb").arg(memoryBytes / (1000 * 1000));
-    AppResource* mem = pool->getResource(RESOURCE_MEMORY);
+    AppResource* mem = pool->getResource(UGENE_RESOURCE_ID_MEMORY);
     if (mem) {
-        memInfo += QString("; Locked memory AppResource: %1/%2").arg(mem->maxUse() - mem->available()).arg(mem->maxUse());
+        memInfo += QString("; Locked memory AppResource: %1/%2").arg(mem->getCapacity() - mem->available()).arg(mem->getCapacity());
     }
 
     int currentMemory = 0, maxMemory = 0;

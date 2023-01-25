@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -280,7 +280,8 @@ bool EditMarkerGroupDialog::checkAddMarkerResult(const QString& newName, const Q
 void EditMarkerGroupDialog::accept() {
     marker->setName(markerGroupNameEdit->text());
     {  // check edit/add marker result
-        MarkerEditorWidget* parent = dynamic_cast<MarkerEditorWidget*>(this->parent());
+        auto parent = dynamic_cast<MarkerEditorWidget*>(this->parent());
+        SAFE_POINT(parent != nullptr, "EditMarkerGroupDialog: parent is null", );
         QString message;
 
         ParameterState state = marker->hasAdditionalParameter();
@@ -433,7 +434,8 @@ EditMarkerDialog::EditMarkerDialog(bool isNew, const QString& type, const QStrin
 
 void EditMarkerDialog::accept() {
     {  // check edit/add marker result
-        EditMarkerGroupDialog* parent = dynamic_cast<EditMarkerGroupDialog*>(this->parent());
+        auto parent = dynamic_cast<EditMarkerGroupDialog*>(this->parent());
+        SAFE_POINT(parent != nullptr, "EditMarkerDialog: parent is null", );
         QString message;
         QString valueString;
         QVariantList newVals;

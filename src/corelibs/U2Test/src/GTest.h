@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UGENE_TEST_FRAMEWORK_H_
-#define _U2_UGENE_TEST_FRAMEWORK_H_
+#pragma once
 
 #include <QList>
 #include <QMap>
@@ -33,7 +32,7 @@
 namespace U2 {
 
 /** Tests that need to verify log uses this resource */
-#define RESOURCE_LISTEN_LOG_IN_TESTS 1000001
+#define UGENE_RESOURCE_ID_TEST_LOG_LISTENER "Test logs listener"
 
 class U2TEST_EXPORT GTestEnvironment {
 public:
@@ -278,5 +277,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

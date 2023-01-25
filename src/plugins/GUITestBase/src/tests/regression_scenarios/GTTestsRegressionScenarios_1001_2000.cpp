@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -2065,23 +2065,23 @@ GUI_TEST_CLASS_DEFINITION(test_1203_1) {
 
     //    Select "Database" to "ncbi-blastn"
     //    Expected state: "Entrez query" lineedit is enabled
-    GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-blastn", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Program", "ncbi-blastn", GTUtilsWorkflowDesigner::comboValue);
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterEnabled(os, "Entrez query"), "Parameter is unexpectedly disabled");
 
     //    Select "Database" to "ncbi-blastp"
     //    Expected state: "Entrez query" lineedit is enabled
-    GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-blastp", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Program", "ncbi-blastp", GTUtilsWorkflowDesigner::comboValue);
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterEnabled(os, "Entrez query"), "Parameter is unexpectedly disabled");
 
     //    Select "Database" to "ncbi-cdd"
     //    Expected state: "Entrez query" lineedit is not visible
-    GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-cdd", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Program", "ncbi-cdd", GTUtilsWorkflowDesigner::comboValue);
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "Entrez query"), "Parameter is unexpectedly visible");
 
     //    Select "Database" to "ncbi-blastn"
     //    Expected state: "Entrez query" lineedit is enabled
     GTUtilsWorkflowDesigner::clickParameter(os, "BLAST output");
-    GTUtilsWorkflowDesigner::setParameter(os, "Database", "ncbi-blastn", GTUtilsWorkflowDesigner::comboValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Program", "ncbi-blastn", GTUtilsWorkflowDesigner::comboValue);
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterEnabled(os, "Entrez query"), "Parameter is unexpectedly disabled");
 }
 
@@ -4891,7 +4891,7 @@ GUI_TEST_CLASS_DEFINITION(test_1529) {
     // 3. Press the "Export" button.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state : A new file with MSA was created, added to the project.The MSA object name is "COI_transl.aln".
@@ -4905,13 +4905,13 @@ GUI_TEST_CLASS_DEFINITION(test_1531) {
     // 1. Open "samples/CLUSTALW/COI.aln".
     // 2. Activate the "Statistics" options panel.
     // 3. Click "Show distances column"
-    // Expected: the hint about reference abcense is shown.
+    // Expected: the hint about reference absence is shown.
     // 4. Right click "Phaneroptera_falcata" -> Set this sequence as reference.
-    // Expected: the hint about reference abcense is not shown.
+    // Expected: the hint about reference absence is not shown.
     // 5. Activate the "General" options panel.
     // 6. Click "Clear".
     // 7. Activate the "Statistics" options panel.
-    // Expected: the hint about reference abcense is shown.
+    // Expected: the hint about reference absence is shown.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -5126,7 +5126,7 @@ GUI_TEST_CLASS_DEFINITION(test_1573) {
     // 2. Select some sequences in the NameList area.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 2), QPoint(2, 6));
 
-    // 3. Click to the any sequence in this selection (in the NameList area).
+    // 3. Click to any sequence in this selection (in the NameList area).
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Montana_montana");
 
     // Expected state: only one sequence is selected (the clicked one).
@@ -5157,10 +5157,10 @@ GUI_TEST_CLASS_DEFINITION(test_1574) {
     //    5. Try to select some area in the NameList area (selection must start from the next row under the last row).
     GTUtilsMsaEditor::selectRows(os, 14, 10, GTGlobals::UseMouse);
 
-    //    Expected state: A region from the alignmnet bottom to the selection end point is selected.
+    //    Expected state: A region from the alignment bottom to the selection end point is selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(QPoint(0, 10), QPoint(11, 13)));
 
-    //    6. Try to select some area in the NameList area (selection must start from the bottom of widget.
+    //    6. Try to select some area in the NameList area (selection must start from the bottom of widget).
     GTUtilsMsaEditor::selectRows(os, 30, 10, GTGlobals::UseMouse);
 
     //    Expected state: A region from the alignment bottom to the selection end point is selected.
@@ -5380,7 +5380,7 @@ GUI_TEST_CLASS_DEFINITION(test_1595) {
     //    4) Add several files.
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/sars.gb");
-    //    5) Select some of the added items in the list.
+    //    5) Select some added items in the list.
     auto datasetWidget = GTWidget::findWidget(os, "DatasetWidget");
     auto items = GTWidget::findListWidget(os, "itemsArea", datasetWidget);
     GTListWidget::click(os, items, "sars.gb");
@@ -5534,7 +5534,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_6) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::collapsingMode(os) == true, "collapsing mode is unexpectidly off");
     //    Expected state: One collapsible item has appeared in MSA
 
-    //    3. Choose in MSA context menu { Align -> Align with MUSCLE… }
+    //    3. Choose in MSA context menu { Align -> Align with MUSCLE… }.
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with muscle"}, GTGlobals::UseMouse));
@@ -5767,7 +5767,7 @@ GUI_TEST_CLASS_DEFINITION(test_1627) {
     GTLogTracer logTracer;
 
     //    1. Select {Tools->Build dotplot...} in the main menu.
-    //    Expected state: the Build dotplot from the sequences" dialog appeared.
+    //    Expected state: the "Build dotplot from the sequences" dialog appeared.
 
     //    2. Fill next fields of the dialog and click the "Next" button:
     //        {File with first sequence:} _common_data/scenarios/dp_view/dpm1.fa
@@ -6186,7 +6186,7 @@ GUI_TEST_CLASS_DEFINITION(test_1672) {
     auto algoCombo = GTWidget::findComboBox(os, "algoComboBox");
     GTComboBox::selectItemByText(os, algoCombo, "Similarity");
     QString num1 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 8);
-    CHECK_SET_ERR(num1 == "100%", "unexpected sumilarity value an line 1: " + num1);
+    CHECK_SET_ERR(num1 == "100%", "unexpected similarity value an line 1: " + num1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1673) {

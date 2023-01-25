@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -72,20 +72,19 @@ class SamtoolsBasedReadsIterator : public U2DbiIterator<U2AssemblyRead> {
 
 public:
     SamtoolsBasedReadsIterator(int assemblyId, const U2Region& r, SamtoolsBasedDbi& dbi, const QByteArray& nameFilter = "");
-    virtual ~SamtoolsBasedReadsIterator() {
-    }
 
-    virtual bool hasNext();
-    virtual U2AssemblyRead next();
-    virtual U2AssemblyRead peek();
+    bool hasNext() override;
+    U2AssemblyRead next() override;
+    U2AssemblyRead peek() override;
 
 private:
-    int assemblyId;
+    int assemblyId = 0;
     U2Region r;
     SamtoolsBasedDbi& dbi;
     QByteArray nameFilter;
 
-    qint64 nextPosToRead;
+    qint64 nextPosToRead = 0;
+    std::shared_ptr<BGZF> bamFile;
     QList<U2AssemblyRead> reads;
     QList<U2AssemblyRead>::Iterator current;
 
@@ -147,27 +146,32 @@ private:
 class SamtoolsBasedDbi : public U2AbstractDbi {
 public:
     SamtoolsBasedDbi();
-    ~SamtoolsBasedDbi();
+    ~SamtoolsBasedDbi() override;
 
-    virtual void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os);
-    virtual QVariantMap shutdown(U2OpStatus& os);
-    virtual QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) {
+    void init(const QHash<QString, QString>& properties, const QVariantMap& persistentData, U2OpStatus& os) override;
+    QVariantMap shutdown(U2OpStatus& os) override;
+    QHash<QString, QString> getDbiMetaInfo(U2OpStatus&) override {
         return QHash<QString, QString>();
     }
-    virtual U2DataType getEntityTypeById(const U2DataId& id) const;
-    virtual U2ObjectDbi* getObjectDbi();
-    virtual U2AssemblyDbi* getAssemblyDbi();
-    virtual U2AttributeDbi* getAttributeDbi();
-    virtual bool isReadOnly() const;
+    U2DataType getEntityTypeById(const U2DataId& id) const override;
+    U2ObjectDbi* getObjectDbi() override;
+    U2AssemblyDbi* getAssemblyDbi() override;
+    U2AttributeDbi* getAttributeDbi() override;
+    bool isReadOnly() const override;
 
-    bamFile getBamFile() const;
     const bam_header_t* getHeader() const;
     const bam_index_t* getIndex() const;
+
+    /**
+     * Creates a new 'bamFile' structure for the BAM file backed by the current DBI instance.
+     * The result bamFile is used as an input for various bam_* methods that may modify internal bamFile state and are not thread safe.
+     * Caller is responsible for closing the file.
+     */
+    bamFile openNewBamFileHandler() const;
 
 private:
     GUrl url;
     int assembliesCount;
-    bamFile bamHandler;
     bam_header_t* header;
     bam_index_t* index;
     QScopedPointer<SamtoolsBasedObjectDbi> objectDbi;

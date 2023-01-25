@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOCUMENT_MODEL_H_
-#define _U2_DOCUMENT_MODEL_H_
+#pragma once
 
 #include <QDateTime>
 #include <QMimeData>
@@ -133,6 +132,9 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 
 /** Set of hints that can be processed during objects conversion */
 #define ObjectConvertion_UseGenbankHeader "use-genbank-header"
+
+/** Set of hints for formats with importers */
+#define ImportHint_DestinationUrl "import-hint-destination-url"
 
 class U2CORE_EXPORT DocumentFormat : public QObject {
     Q_OBJECT
@@ -577,5 +579,3 @@ public:
 
 Q_DECLARE_METATYPE(U2::Document*)
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::DocumentFormatFlags)
-
-#endif

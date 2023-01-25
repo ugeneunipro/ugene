@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_COVERAGE_GRAPH_H__
-#define __ASSEMBLY_COVERAGE_GRAPH_H__
+#pragma once
 
 #include <QSharedPointer>
 #include <QWidget>
@@ -71,5 +70,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

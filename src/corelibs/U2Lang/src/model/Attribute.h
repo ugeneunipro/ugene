@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_ATTR_H_
-#define _U2_WORKFLOW_ATTR_H_
+#pragma once
 
 #include <cassert>
 
@@ -264,5 +263,3 @@ inline int Attribute::getAttributeValue(Workflow::WorkflowContext* ctx) const {
 
 Q_DECLARE_METATYPE(U2::AttributeScript)
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::Attribute::Flags)
-
-#endif

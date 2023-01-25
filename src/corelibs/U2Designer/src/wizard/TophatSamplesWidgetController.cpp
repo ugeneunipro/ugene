@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -363,10 +363,10 @@ bool TophatSamples::rename(QLineEdit* nameEdit) {
 }
 
 void TophatSamples::sl_remove() {
-    QToolButton* toolButton = dynamic_cast<QToolButton*>(sender());
-    SAFE_POINT(nullptr != toolButton, "NULL button", );
+    auto toolButton = dynamic_cast<QToolButton*>(sender());
+    SAFE_POINT(toolButton != nullptr, "NULL button", );
     QWidget* sampleWidget = toolButton->parentWidget();
-    CHECK(nullptr != sampleWidget, );
+    CHECK(sampleWidget != nullptr, );
     CHECK(order.contains(sampleWidget), );
 
     // remove
@@ -399,8 +399,8 @@ void TophatSamples::sl_add() {
 }
 
 void TophatSamples::sl_selectionChanged() {
-    QListWidget* selectedList = dynamic_cast<QListWidget*>(sender());
-    CHECK(nullptr != selectedList, );
+    auto selectedList = dynamic_cast<QListWidget*>(sender());
+    CHECK(selectedList != nullptr, );
     CHECK(selectedList->selectedItems().size() > 0, );
 
     QWidget* sampleWidget = selectedList->parentWidget();

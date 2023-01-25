@@ -1,0 +1,9 @@
+<multi-test>
+
+    <load-document index="doc" url="fasta/not_raw.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="NOT_RAW_SEQUENCE" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj1" value="NUCL_RNA_EXTENDED_ALPHABET"/>
+
+</multi-test>

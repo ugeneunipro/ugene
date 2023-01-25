@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ABSTRACT_VARIATION_FORMAT_H_
-#define _U2_ABSTRACT_VARIATION_FORMAT_H_
+#pragma once
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/VariantTrackObject.h>
@@ -61,10 +60,12 @@ public:
 
 protected:
     bool isSupportHeader;
+    /** Write only columns up to 'maxColumnIndex'. */
+    bool useOnlyBaseColumns = false;
 
     QMap<int, ColumnRole> columnRoles;
 
-    int maxColumnNumber = 0;
+    int maxColumnIndex = 0;
 
     PositionIndexing indexing;
 
@@ -93,5 +94,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_ABSTRACT_VARIATION_FORMAT_H_

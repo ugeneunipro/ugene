@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef _U2_GRAPH_SETTINGS_DIALOG_H_
-#define _U2_GRAPH_SETTINGS_DIALOG_H_
+#pragma once
 
 #include <QDialog>
 #include <QMap>
@@ -57,5 +56,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_U2_GRAPH_SETTINGS_DIALOG_H_

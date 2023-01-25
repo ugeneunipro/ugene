@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -226,7 +226,7 @@ ConcreteTandemFinder::ConcreteTandemFinder(QString taskName, const char* _sequen
         suffArrMemory = seqSize * sizeof(quint32) * 2;
     }
     suffArrMemory = qMax(suffArrMemory / (1024 * 1024), 1);  // in Mb
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, suffArrMemory, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, suffArrMemory, TaskResourceStage::Prepare));
 }
 
 void ConcreteTandemFinder::prepare() {

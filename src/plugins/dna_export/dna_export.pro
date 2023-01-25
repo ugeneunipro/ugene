@@ -29,6 +29,7 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ImportQualityScoresWorker.h \
            src/McaEditorContext.h \
            src/dialogs/ExportMca2MsaDialog.h \
+           src/dialogs/SaveSelectedSequenceFromMSADialogController.h \
            src/tasks/ConvertMca2MsaTask.h \
            src/tasks/ExportMca2MsaTask.h
 
@@ -42,7 +43,8 @@ FORMS += src/CSVColumnConfigurationDialog.ui \
          src/ExportSequencesDialog.ui \
          src/GetSequenceByIdDialog.ui \
          src/ImportAnnotationsFromCSVDialog.ui \
-         src/dialogs/ExportMca2MsaDialog.ui
+         src/dialogs/ExportMca2MsaDialog.ui \
+         src/dialogs/SaveSelectedSequenceFromMSADialog.ui
 
 SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/DNAExportPlugin.cpp \
@@ -71,6 +73,7 @@ SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/ImportQualityScoresWorker.cpp \
            src/McaEditorContext.cpp \
            src/dialogs/ExportMca2MsaDialog.cpp \
+           src/dialogs/SaveSelectedSequenceFromMSADialogController.cpp \
            src/tasks/ConvertMca2MsaTask.cpp \
            src/tasks/ExportMca2MsaTask.cpp
 

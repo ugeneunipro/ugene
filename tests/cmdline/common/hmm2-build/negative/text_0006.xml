@@ -5,6 +5,6 @@
                  out="!tmp_data_dir!hmm2-buildn0006_tmp.hmm"
                  seed="42"
                  calibrate="true"
-                 message="Read alignment: Required parameter is not set: Input file(s)"/>
+                 message="Required parameter has no datasets specified: Input file(s)"/>
 
 </multi-test>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,8 +23,11 @@
 
 #include <QDir>
 #include <QTemporaryFile>
+#include <QTextStream>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -127,11 +130,19 @@ bool FileAndDirectoryUtils::isFileEmpty(const QString& url) {
 }
 
 void FileAndDirectoryUtils::dumpStringToFile(QFile* f, QString& str) {
-    if (Q_LIKELY(f == nullptr || str.length() <= MIN_LENGTH_TO_WRITE)) {
-        return;
-    }
+    CHECK(f != nullptr && str.length() >= MIN_LENGTH_TO_WRITE, );
     f->write(str.toLocal8Bit());
     str.clear();
+}
+
+bool FileAndDirectoryUtils::storeTextToFile(const QString& filePath, const QString& text) {
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly)) {
+        return false;
+    }
+    QTextStream out(&file);
+    out << text;
+    return true;
 }
 
 QString FileAndDirectoryUtils::getAbsolutePath(const QString& filePath) {
@@ -192,6 +203,27 @@ bool FileAndDirectoryUtils::canWriteToPath(const QString& absoluteDirPath) {
     file.remove();
 
     return true;
+}
+
+NP<FILE> FileAndDirectoryUtils::openFile(const QString& fileUrl, const QString& mode) {
+#ifdef Q_OS_WIN
+    QScopedPointer<wchar_t> unicodeFileName(TextUtils::toWideCharsArray(GUrlUtils::getNativeAbsolutePath(fileUrl)));
+    QString modeWithBinaryFlag = mode;
+    if (!modeWithBinaryFlag.contains("b")) {
+        modeWithBinaryFlag += "b";  // Always open file in binary mode, so any kind of sam, sam.gz, bam, bai files are processed the same way.
+    }
+    QScopedPointer<wchar_t> unicodeMode(TextUtils::toWideCharsArray(modeWithBinaryFlag));
+    return _wfopen(unicodeFileName.data(), unicodeMode.data());
+#else
+    return fopen(fileUrl.toLocal8Bit(), mode.toLatin1());
+#endif
+}
+
+/** Closes file descriptor if the file descriptor is defined and is open. */
+void FileAndDirectoryUtils::closeFileIfOpen(FILE* file) {
+    int fd = file == nullptr ? -1 : fileno(file);
+    CHECK(fd > 0, );
+    fclose(file);
 }
 
 }  // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_JS_CONTEXT_H_
-#define _U2_JS_CONTEXT_H_
+#pragma once
 
 #include <node.h>
 
@@ -47,5 +46,3 @@ Handle<Value> tick(const Arguments& args);
 }  // namespace U2
 
 NODE_MODULE(U2SCRIPT_MODULE_NAME, U2::Js::initModule)
-
-#endif  // _U2_JS_CONTEXT_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _COMMON_DBI_H_
-#define _COMMON_DBI_H_
+#pragma once
 
 #include "globals.h"
 
@@ -60,5 +59,3 @@ U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t* newName)
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // _COMMON_DBI_H_

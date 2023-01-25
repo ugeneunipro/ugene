@@ -28,7 +28,7 @@
 
 #include <stdint.h>
 
-#define MINOR_INF -1073741823
+#define MINOR_INF (-1073741823)
 
 typedef struct {
 	int gap_open;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STR_PACK_UTILS_H_
-#define _U2_STR_PACK_UTILS_H_
+#pragma once
 
 #include <QBitArray>
 #include <QCoreApplication>
@@ -88,5 +87,3 @@ template<>
 inline StrStrMap qvariant_cast<StrStrMap>(const QVariant& variant) {
     return U2::StrPackUtils::unpackMap(qvariant_cast<QString>(variant));
 }
-
-#endif  // _U2_STR_PACK_UTILS_H_

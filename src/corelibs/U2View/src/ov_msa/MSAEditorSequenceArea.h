@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_SEQUENCE_AREA_H_
-#define _U2_MSA_EDITOR_SEQUENCE_AREA_H_
+#pragma once
 
 #include <QMenu>
 #include <QToolBar>
@@ -35,7 +34,6 @@
 #include "MaCollapseModel.h"
 #include "MaEditorSequenceArea.h"
 #include "MsaEditorUserModStepController.h"
-#include "SaveSelectedSequenceFromMSADialogController.h"
 
 namespace U2 {
 
@@ -194,8 +192,6 @@ private slots:
 
     void sl_createSubalignment();
 
-    void sl_saveSequence();
-
     void sl_modelChanged() override;
 
     void sl_fontChanged(QFont font);
@@ -221,7 +217,6 @@ private:
     QAction* removeAllGapsAction;
 
     QAction* createSubaligniment;
-    QAction* saveSequence;
     QAction* addSeqFromFileAction;
     QAction* addSeqFromProjectAction;
 
@@ -269,4 +264,3 @@ private:
 };
 
 }  // namespace U2
-#endif

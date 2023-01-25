@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_
-#define _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_
+#pragma once
 
 #include <QMap>
 #include <QObject>
@@ -58,5 +57,3 @@ private:
 };  // class StructuralAlignmentAlgorithmRegistry
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,8 +49,8 @@ class TestViewController : public MWMDIWindow, Ui_TestView {
 public:
     TestViewController(TestRunnerService* s, bool cmd = false);
 
-    virtual void setupMDIToolbar(QToolBar* tb);
-    virtual void setupViewMenu(QMenu* n);
+    void setupMDIToolbar(QToolBar* tb) override;
+    void setupViewMenu(QMenu* n) override;
 
 private slots:
 
@@ -79,7 +79,7 @@ private slots:
     void sl_saveTest();
 
 protected:
-    virtual bool onCloseEvent();
+    bool onCloseEvent() override;
 
 private:
     void togglePopupMenuItems(bool enabled);
@@ -90,10 +90,10 @@ private:
     QList<TVTSItem*> getSelectedSuiteItems() const;
     QList<TVTestItem*> getSelectedTestItems() const;
 
-    void addTestSuiteList(QString url);
+    void addTestSuiteList(const QString& url);
     void addTestSuite(GTestSuite* ts);
     void addFolderTests(TVTSItem* tsi, GTestRef* testRef, const QString* curPath, bool haveExcludedTests);
-    void addTest(TVTSItem* tsi, GTestRef* t, QString excludeReason);
+    void addTest(TVTSItem* tsi, GTestRef* t, const QString& excludeReason);
     TVTSItem* findTestSuiteItem(GTestSuite* ts) const;
     TVTestItem* findTestViewItem(GTestRef* tr) const;
     TVTestItem* findTestViewItemRecursive(GTestRef* testRef, TVItem* sItem) const;
@@ -101,7 +101,7 @@ private:
 
     QList<GTestState*> getSubTestToRun(TVItem* sItem, bool runAll) const;
     QMap<GTestRef*, QString> getSubRefToExclude(TVItem* sItem, bool runAll) const;
-    bool allSuitesIsInRoot(const QList<TVTSItem*> suitesList) const;
+    bool allSuitesIsInRoot(const QList<TVTSItem*>& suitesList) const;
     void setExcludedState(TVItem* sItem, bool allSelected, bool newState);
     void setExcludedState(TVItem* sItem, bool allSelected, QString reason);
     void saveTestSuite(const QString& url, QMap<GTestRef*, QString> testsToEx, QString& err);
@@ -140,8 +140,8 @@ enum TVItemType {
 
 class TVItem : public QTreeWidgetItem {
 public:
-    TVItem(TVItemType t)
-        : type(t), excludedTests(false) {
+    TVItem(const TVItemType& t)
+        : type(t) {
     }
 
     virtual void updateVisual() = 0;
@@ -150,7 +150,7 @@ public:
 
     const TVItemType type;
 
-    bool excludedTests;
+    bool isExcluded = false;
 
     QString excludeReason;
 
@@ -162,7 +162,7 @@ public:
         return type == TVItem_Test;
     }
 
-    bool operator<(const QTreeWidgetItem& other) const {
+    bool operator<(const QTreeWidgetItem& other) const override {
         if (type != dynamic_cast<const TVItem&>(other).type) {
             return type == TVItem_TestSuite;
         }
@@ -176,9 +176,9 @@ public:
 
     TVTSItem(const QString& _name);
 
-    virtual void updateVisual();
+    void updateVisual() override;
 
-    virtual QString getRichDesc() const;
+    QString getRichDesc() const override;
 
     GTestSuite* ts;
 
@@ -193,13 +193,13 @@ class TVTestItem : public TVItem {
 public:
     TVTestItem(GTestState* testState);
 
-    ~TVTestItem();
+    ~TVTestItem() override;
 
-    virtual void updateVisual();
+    void updateVisual() override;
 
-    virtual QString getRichDesc() const;
+    QString getRichDesc() const override;
 
-    QString getTestContent();
+    QString getTestContent() const;
 
     GTestState* testState;
 };

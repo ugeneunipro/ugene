@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_INPUT_WIDGETS_CONTROLLERS_H
-#define _U2_INPUT_WIDGETS_CONTROLLERS_H
+#pragma once
 
 #include <QStringList>
 #include <QVariant>
@@ -188,5 +187,3 @@ private:
     QList<InputWidgetController*> widgetControllers;
 };
 }  // namespace U2
-
-#endif  // _U2_INPUT_WIDGETS_CONTROLLERS_H

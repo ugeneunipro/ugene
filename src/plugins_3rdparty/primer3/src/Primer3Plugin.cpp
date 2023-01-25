@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,23 +23,18 @@
 
 #include <QAction>
 #include <QMap>
-#include <QMenu>
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/GAutoDeleteList.h>
 #include <U2Core/L10n.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2Test/GTest.h>
 #include <U2Test/GTestFrameworkComponents.h>
-#include <U2Test/XMLTestFormat.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -63,9 +58,6 @@ Primer3Plugin::Primer3Plugin()
         viewCtx->init();
     }
 
-    auto p3Lock = new AppResourceSemaphore(PRIMER3_STATIC_LOCK_RESOURCE, 1, tr("Primer3 lock"));
-    AppContext::getAppSettings()->getAppResourcePool()->registerResource(p3Lock);
-
     QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new QDPrimerActorPrototype());
 
@@ -82,10 +74,6 @@ Primer3Plugin::Primer3Plugin()
         bool res = xmlTestFormat->registerTestFactory(f);
         SAFE_POINT(res, "Can't register XMLTestFactory", );
     }
-}
-
-Primer3Plugin::~Primer3Plugin() {
-    viewCtx->deleteLater();
 }
 
 Primer3ADVContext::Primer3ADVContext(QObject* p)
@@ -108,7 +96,7 @@ void Primer3ADVContext::sl_showDialog() {
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     SAFE_POINT(seqCtx != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
-    
+
     Primer3Dialog dialog(seqCtx);
     dialog.exec();
 
@@ -121,10 +109,10 @@ void Primer3ADVContext::sl_showDialog() {
         settings->setSequence(seqData, seqCtx->getSequenceObject()->isCircular());
         QString err = dialog.checkModel();
         CHECK_EXT(err.isEmpty(), QMessageBox::warning(QApplication::activeWindow(), dialog.windowTitle(), err), );
-        CHECK_EXT(dialog.prepareAnnotationObject(), QMessageBox::warning(QApplication::activeWindow(), 
-                                                                            tr("Error"), 
+        CHECK_EXT(dialog.prepareAnnotationObject(), QMessageBox::warning(QApplication::activeWindow(),
+                                                                            tr("Error"),
                                                                             tr("Cannot create an annotation object. Please check settings")), );
-            
+
         const CreateAnnotationModel& model = dialog.getCreateAnnotationModel(); auto ato = model.getAnnotationObject();
         seqCtx->getAnnotatedDNAView()->tryAddObject(ato);
         AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description));

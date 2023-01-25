@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -972,7 +972,10 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
+    // Move focus to the project view from MSA
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+
+    GTClipboard::setUrls(os, {dataDir + "samples/FASTA/human_T1.fa"});
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
@@ -981,6 +984,9 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 GUI_TEST_CLASS_DEFINITION(test_0060) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Move focus to the project view from MSA Editor.
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
 
     GTClipboard::setText(os, "ACGT");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
@@ -992,8 +998,10 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
+    // Move focus to the project view from Sequence view.
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
 
+    GTClipboard::setUrls(os, {dataDir + "samples/FASTA/human_T1.fa"});
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
@@ -1002,8 +1010,10 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa" << dataDir + "samples/HMM/aligment15900.hmm");
+    // Move focus to the project view from object view.
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
 
+    GTClipboard::setUrls(os, {dataDir + "samples/FASTA/human_T1.fa", dataDir + "samples/HMM/aligment15900.hmm"});
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
@@ -1074,8 +1084,10 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
+    // Move focus to the project view from object view.
+    GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
 
+    GTClipboard::setUrls(os, {dataDir + "samples/FASTA/human_T1.fa"});
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");

@@ -113,16 +113,6 @@ SOURCES += \
            src/utils/GTUtilsText.cpp \
            src/utils/GTUtilsToolTip.cpp
 
-# UGENE does not use either WebKit nor WebEngine anymore.
-# If the helper files below are needed add a special qmake parameter to include them into QSpec.
-#useWebKit() {
-#    HEADERS += src/primitives/GTWebkitView.h src/primitives/GTWebView.h
-#    SOURCES += src/primitives/GTWebkitView.cpp src/primitives/GTWebView.cpp
-#} else {
-#    HEADERS += src/primitives/GTWebEngineView.h src/primitives/GTWebView.h
-#    SOURCES += src/primitives/GTWebEngineView.cpp src/primitives/GTWebView.cpp
-#}
-
 macx {
 OBJECTIVE_HEADERS += src/primitives/private/GTMenuPrivateMac.h
 OBJECTIVE_SOURCES += src/primitives/private/GTMenuPrivateMac.mm

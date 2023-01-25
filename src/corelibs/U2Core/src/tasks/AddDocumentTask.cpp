@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -90,7 +90,8 @@ Task::ReportResult AddDocumentTask::report() {
             p->addDocument(document);
         }
     } else if (!stateInfo.isCanceled()) {
-        stateInfo.setError(stateInfo.getError() + tr("Document was removed"));
+        QString previousError = stateInfo.getError().isEmpty() ? "" : stateInfo.getError() + " ";
+        stateInfo.setError(previousError + tr("Document was removed."));
     }
     return ReportResult_Finished;
 }

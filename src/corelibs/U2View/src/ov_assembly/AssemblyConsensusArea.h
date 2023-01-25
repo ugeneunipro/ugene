@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_CONSENSUS_AREA_H__
-#define __ASSEMBLY_CONSENSUS_AREA_H__
+#pragma once
 
 #include <U2Algorithm/AssemblyConsensusAlgorithm.h>
 
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

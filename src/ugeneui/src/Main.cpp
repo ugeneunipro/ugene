@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,6 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QIcon>
-#include <QMessageBox>
 #include <QStyleFactory>
 #include <QTranslator>
 
@@ -863,9 +862,7 @@ int main(int argc, char** argv) {
 
     mw->registerStartupChecks(tasks);
 
-    MemoryLocker l(160, AppResource::SystemMemory);  // 100Mb on UGENE start, ~60Mb SQLite cache
     int rc = GApplication::exec();
-    l.release();
 
     // 4 deallocate resources
     if (!envList.contains(ENV_UGENE_DEV + QString("=1"))) {

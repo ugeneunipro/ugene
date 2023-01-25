@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -144,7 +144,7 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
 }
 
 void MsaExcludeListContext::updateMsaEditorSplitterStyle(MSAEditor* msaEditor) {
-    auto mainSplitter = msaEditor->getUI()->getUI()->getMainSplitter();
+    auto mainSplitter = msaEditor->getUI()->getUI(0)->getMainSplitter();
     MaSplitterUtils::updateFixedSizeHandleStyle(mainSplitter);
 }
 

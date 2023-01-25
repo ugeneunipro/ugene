@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,13 +114,12 @@ void MsaEditorWgt::refreshSimilarityColumn() {
 }
 
 void MsaEditorWgt::showSimilarity() {
-    if (nullptr == similarityStatistics) {
+    if (similarityStatistics == nullptr) {
         SimilarityStatisticsSettings settings;
-        settings.ma = getEditor()->getMaObject();
         settings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
         settings.ui = this;
 
-        dataList = new MsaEditorSimilarityColumn(this, new QScrollBar(Qt::Horizontal), &settings);
+        dataList = new MsaEditorSimilarityColumn(this, &settings);
         dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
         similarityStatistics = new MsaEditorAlignmentDependentWidget(dataList);
 
@@ -131,7 +130,7 @@ void MsaEditorWgt::showSimilarity() {
 }
 
 void MsaEditorWgt::hideSimilarity() {
-    if (nullptr != similarityStatistics) {
+    if (similarityStatistics != nullptr) {
         similarityStatistics->hide();
         similarityStatistics->cancelPendingTasks();
     }

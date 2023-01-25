@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SUBST_MATRIX_H
-#define _U2_SUBST_MATRIX_H
+#pragma once
 
 #include <QVarLengthArray>
 
@@ -122,5 +121,3 @@ inline int SMatrix::getScoreIdx(char c1, char c2) const {
 }
 
 }  // namespace U2
-
-#endif

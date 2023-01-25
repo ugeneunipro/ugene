@@ -6,11 +6,6 @@
             out="!tmp_data_dir!convert_assembly_0005.sam"
             out_format="sam"
     />
-
-    <load-document index="doc1" url="convert_assembly_0005.sam" io="local_file" format="sam" dir="temp"/>
-
-    <find-object-by-name index="obj" doc="doc1" name="ref_and_others" type="OT_MSA"/>
-    <check-numbers-of-sequence-in-Msequence obj="obj" value="11"/>
-    <check-Msequence-part obj="obj" value="--GGGGGGGGGGGGGGGGGGGGGGG" seqstart="35" seqname="r9"/>
-
+    <compare-sam-by-length file1="!common_data_dir!bam/small.bam.sorted.bam"
+                           file2="!tmp_data_dir!convert_assembly_0005.sam"/>
 </multi-test>

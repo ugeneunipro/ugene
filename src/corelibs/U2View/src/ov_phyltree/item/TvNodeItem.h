@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_BUTTON_ITEM_H_
-#define _U2_TV_BUTTON_ITEM_H_
+#pragma once
 
 #include <QBrush>
 #include <QGraphicsEllipseItem>
@@ -42,7 +41,8 @@ class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
 public:
     TvNodeItem(const QString& nodeName = nullptr);
 
-    bool isPathToRootSelected() const;
+    /** Returns true if the current node is selected and there is no other selected parent node on top of these node. */
+    bool isSelectionRoot() const;
 
     void toggleCollapsedState();
 
@@ -82,5 +82,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

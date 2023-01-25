@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,13 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TASK_H_
-#define _U2_TASK_H_
+#pragma once
 
 #include <QDateTime>
 #include <QPointer>
 #include <QReadWriteLock>
 #include <QStringList>
-#include <QVarLengthArray>
+#include <QVector>
 
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatus.h>
@@ -34,24 +33,25 @@
 
 namespace U2 {
 
+/** Constants to describe resource locking stage. */
+enum class U2CORE_EXPORT TaskResourceStage {
+    /** Resource must be locked before task->prepare() & released after successful task->report(). */
+    Prepare = 1,
+    /** Resource must be locked before task->run() & released after task->run(). */
+    Run = 2,
+};
+
 struct U2CORE_EXPORT TaskResourceUsage {
-    TaskResourceUsage(int id = 0, int use = 0, bool prepareStage = false)
-        : resourceId(id), resourceUse(use), prepareStageLock(prepareStage), locked(false) {
-    }
+    TaskResourceUsage(const QString& resourceId, int usage, const TaskResourceStage& stage);
+    TaskResourceUsage(const TaskResourceUsage& r) = default;
+    TaskResourceUsage& operator=(const TaskResourceUsage& r) = default;
 
-    enum UseType {
-        Read,
-        Write
-    };
+    QString resourceId;
+    int resourceUse = 0;
+    TaskResourceStage stage = TaskResourceStage::Prepare;
 
-    TaskResourceUsage(int id, UseType use, bool prepareStage = false)
-        : resourceId(id), resourceUse(use), prepareStageLock(prepareStage), locked(false) {
-    }
+    bool locked = false;
 
-    int resourceId;
-    int resourceUse;
-    bool prepareStageLock;
-    bool locked;
     /* Leave it empty for default message */
     QString errorMessage;
 };
@@ -72,52 +72,52 @@ public:
     int progress;
     int cancelFlag;
 
-    virtual bool hasError() const {
+    bool hasError() const override {
         return hasErr;
     }
-    virtual QString getError() const {
+    QString getError() const override {
         QReadLocker r(&lock);
         return error;
     }
-    virtual void setError(const QString& err) {
+    void setError(const QString& err) override {
         QWriteLocker w(&lock);
         error = err;
         hasErr = !error.isEmpty();
     }
 
-    virtual bool isCanceled() const {
+    bool isCanceled() const override {
         return cancelFlag;
     }
-    virtual void setCanceled(bool v) {
+    void setCanceled(bool v) override {
         cancelFlag = v;
     }
 
-    virtual int getProgress() const {
+    int getProgress() const override {
         return progress;
     }
-    virtual void setProgress(int v) {
+    void setProgress(int v) override {
         progress = v;
     }
 
-    virtual QString getDescription() const {
+    QString getDescription() const override {
         QReadLocker r(&lock);
         return desc;
     }
-    virtual void setDescription(const QString& _desc) {
+    void setDescription(const QString& _desc) override {
         QWriteLocker w(&lock);
         desc = _desc;
     }
 
-    virtual bool hasWarnings() const {
+    bool hasWarnings() const override {
         QReadLocker r(&lock);
         return !warnings.isEmpty();
     }
-    virtual QStringList getWarnings() const {
+    QStringList getWarnings() const override {
         QReadLocker r(&lock);
         return warnings;
     }
-    virtual void addWarning(const QString& warning);
-    virtual void addWarnings(const QStringList& wList);
+    void addWarning(const QString& warning) override;
+    void addWarnings(const QStringList& wList) override;
 
     /* The same as addWarnings() but it does not write to log. Used by TaskScheduler. */
     void insertWarnings(const QStringList& wList);
@@ -239,10 +239,8 @@ enum TaskFlag {
 // TODO: use this new alternative to FOSCOE, more logical: fail on error, cancel on cancel
 #define TaskFlags_FOSE_COSC (TaskFlags(TaskFlag_FailOnSubtaskError) | TaskFlag_CancelOnSubtaskCancel)
 #define TaskFlags_NR_FOSE_COSC (TaskFlags_FOSE_COSC | TaskFlag_NoRun)
-#define TaskFlags_RBSF_FOSE_COSC (TaskFlags_FOSE_COSC | TaskFlag_RunBeforeSubtasksFinished)
 
 Q_DECLARE_FLAGS(TaskFlags, TaskFlag)
-typedef QVarLengthArray<TaskResourceUsage, 1> TaskResources;
 
 class U2CORE_EXPORT Task : public QObject {
     Q_OBJECT
@@ -386,7 +384,7 @@ public:
     }
 
     virtual bool isTopLevelTask() const {
-        return getParentTask() == 0;
+        return getParentTask() == nullptr;
     }
 
     virtual Task* getParentTask() const {
@@ -482,7 +480,7 @@ public:
         setFlag(TaskFlag_ConcatenateChildrenErrors, v);
     }
 
-    const TaskResources& getTaskResources() {
+    const QVector<TaskResourceUsage>& getTaskResources() const {
         return taskResources;
     }
 
@@ -531,7 +529,7 @@ signals:
 protected:
     /// Called by scheduler when subtask is finished.
     virtual QList<Task*> onSubTaskFinished(Task* subTask);
-    void setRunResources(const TaskResources& taskR) {
+    void setRunResources(const QVector<TaskResourceUsage>& taskR) {
         assert(state <= State_Prepared);
         taskResources = taskR;
     }
@@ -556,7 +554,7 @@ private:
     Task* parentTask;
     QList<QPointer<Task>> subtasks;
     qint64 taskId;
-    TaskResources taskResources;
+    QVector<TaskResourceUsage> taskResources;
     bool insidePrepare;
 };
 
@@ -595,7 +593,7 @@ signals:
     void si_stateChanged(Task* task);
 
 protected:
-    TaskResources& getTaskResources(Task* t) {
+    QVector<TaskResourceUsage>& getTaskResources(Task* t) {
         return t->taskResources;
     }
 
@@ -631,5 +629,3 @@ protected:
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::TaskFlags)
-
-#endif

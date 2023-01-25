@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -243,7 +243,7 @@ bool BaseWorker::canTaskBeCanceled(Task* /*workerTask*/) const {
 
 Task* BaseWorker::tick(bool& canResultBeCanceled) {
     Task* result = tick();
-    if (nullptr != result) {
+    if (result != nullptr) {
         canResultBeCanceled = canTaskBeCanceled(result);
     }
 

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTILINE_SCROLL_CONTROLLER_H_
-#define _U2_MULTILINE_SCROLL_CONTROLLER_H_
+#pragma once
 
 #include <QScrollArea>
 
@@ -52,7 +51,7 @@ public:
 
     MultilineScrollController(MaEditor* maEditor, MaEditorMultilineWgt* ui);
 
-    void init(GScrollBar* vScrollBar, QScrollArea* childrenArea);
+    void init(GScrollBar* _vScrollBar, QScrollArea* childrenArea);
 
     // enable/disable multiline scroll controller while switching multiline mode
     void setEnable(bool enable = true);
@@ -148,5 +147,3 @@ private:
 Q_DECLARE_OPERATORS_FOR_FLAGS(MultilineScrollController::Directions)
 
 }  // namespace U2
-
-#endif  // _U2_MULTILINE_SCROLL_CONTROLLER_H_

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PAIR_ALIGN_H
-#define _U2_PAIR_ALIGN_H
+#pragma once
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -117,5 +116,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // PAIR_ALIGN_H

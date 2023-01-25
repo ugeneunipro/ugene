@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@ namespace U2 {
 #define FILE1_ATTR "file1"
 #define FILE2_ATTR "file2"
 #define FILE3_ATTR "file3"
-#define IS_BAM_ATTR "isbam"
 
 void GTest_Bowtie2::init(XMLTestFormat*, const QDomElement& el) {
     file1Url = el.attribute(FILE1_ATTR);
@@ -51,20 +50,13 @@ void GTest_Bowtie2::init(XMLTestFormat*, const QDomElement& el) {
         return;
     }
     file3Url = env->getVar("COMMON_DATA_DIR") + "/" + file3Url;
-
-    QString isBamAtr = el.attribute(IS_BAM_ATTR);
-    if (!isBamAtr.isEmpty()) {
-        isBam = true;
-    } else {
-        isBam = false;
-    }
 }
 
 Task::ReportResult GTest_Bowtie2::report() {
-    bool res = BAMUtils::isEqualByLength(file1Url, file2Url, stateInfo, isBam);
+    bool res = BAMUtils::isEqualByLength(file1Url, file2Url, stateInfo);
     if (!res) {
         stateInfo.setError("");
-        BAMUtils::isEqualByLength(file1Url, file3Url, stateInfo, isBam);
+        BAMUtils::isEqualByLength(file1Url, file3Url, stateInfo);
     }
 
     return ReportResult_Finished;

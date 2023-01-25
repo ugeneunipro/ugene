@@ -94,8 +94,6 @@ int main() {
   @copyright Heng Li
  */
 
-#define AC_VERSION_KHASH_H "0.2.5"
-
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -138,27 +136,11 @@ static const khint32_t __ac_prime_list[__ac_HASH_PRIME_SIZE] =
 #define __ac_isempty(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&2)
 #define __ac_isdel(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&1)
 #define __ac_iseither(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&3)
-#define __ac_set_isdel_false(flag, i) (flag[i>>4]&=~(1ul<<((i&0xfU)<<1)))
 #define __ac_set_isempty_false(flag, i) (flag[i>>4]&=~(2ul<<((i&0xfU)<<1)))
 #define __ac_set_isboth_false(flag, i) (flag[i>>4]&=~(3ul<<((i&0xfU)<<1)))
 #define __ac_set_isdel_true(flag, i) (flag[i>>4]|=1ul<<((i&0xfU)<<1))
 
 static const double __ac_HASH_UPPER = 0.77;
-
-#define KHASH_DECLARE(name, khkey_t, khval_t)		 					\
-	typedef struct {													\
-		khint_t n_buckets, size, n_occupied, upper_bound;				\
-		khint32_t *flags;												\
-		khkey_t *keys;													\
-		khval_t *vals;													\
-	} kh_##name##_t;													\
-	extern kh_##name##_t *kh_init_##name();								\
-	extern void kh_destroy_##name(kh_##name##_t *h);					\
-	extern void kh_clear_##name(kh_##name##_t *h);						\
-	extern khint_t kh_get_##name(const kh_##name##_t *h, khkey_t key); 	\
-	extern void kh_resize_##name(kh_##name##_t *h, khint_t new_n_buckets); \
-	extern khint_t kh_put_##name(kh_##name##_t *h, khkey_t key, int *ret); \
-	extern void kh_del_##name(kh_##name##_t *h, khint_t x);
 
 #define KHASH_INIT2(name, SCOPE, khkey_t, khval_t, kh_is_map, __hash_func, __hash_equal) \
 	typedef struct {													\

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DISABLE_WARNINGS_H_
-#define _U2_DISABLE_WARNINGS_H_
+#pragma once
 
 /***
  * Once included this file disables all listed warnings in the current compilation unit.
@@ -77,5 +76,3 @@
  * U2_DISABLE_WARNINGS
  */
 #define U2_DISABLE_WARNINGS
-
-#endif

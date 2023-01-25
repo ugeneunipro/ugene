@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __U2_ASSEMBLY_READS_AREA_HINT_H__
-#define __U2_ASSEMBLY_READS_AREA_HINT_H__
+#pragma once
 
 #include <QFrame>
 #include <QLabel>
@@ -34,7 +33,7 @@ class AssemblyReadsAreaHint : public QFrame {
     Q_OBJECT
 public:
     static const QPoint OFFSET_FROM_CURSOR;
-    static const int LETTER_MAX_COUNT = 60;
+    static const int LETTER_MAX_COUNT;
     static QString getReadDataAsString(const U2AssemblyRead& r);
 
 public:
@@ -51,5 +50,3 @@ protected:
 };  // AssemblyReadsAreaHint
 
 }  // namespace U2
-
-#endif  // __U2_ASSEMBLY_READS_AREA_HINT_H__

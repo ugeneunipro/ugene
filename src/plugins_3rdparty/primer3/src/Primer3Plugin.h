@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,12 +32,6 @@
 
 namespace U2 {
 
-/*
- * Primer3Task should lock this resource before run and unlock after finish
- * It's required because the original "primer3" tool doesn't support parallel calculations
- */
-#define PRIMER3_STATIC_LOCK_RESOURCE 15162342
-
 class Primer3ADVContext;
 class XMLTestFactory;
 
@@ -45,7 +39,6 @@ class Primer3Plugin : public Plugin {
     Q_OBJECT
 public:
     Primer3Plugin();
-    ~Primer3Plugin();
 
 private:
     Primer3ADVContext* viewCtx = nullptr;

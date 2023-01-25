@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -3291,39 +3291,6 @@ GUI_TEST_CLASS_DEFINITION(test_4557) {
     QString expected = "AAATCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGACCC";
 
     CHECK_SET_ERR(product == expected, "Unexpected product: " + product)
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4563) {
-    // 1. Set memory limit to 200 mb.
-    class MemoryLimitSetScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
-            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "memBox", dialog), 200);
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemoryLimitSetScenario));
-    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
-    // 2. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    // 3. Open the "Align sequences with MUSCLE" sample scheme.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
-
-    // 4. Set "_common_data/scenarios/_regression/4563/test_ma.fa" as the input file.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
-    GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma_1.fa");
-
-    // 5. Run the workflow.
-    GTWidget::click(os, GTAction::button(os, "Run workflow"));
-
-    // 6. check log message
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer::checkMessage("Can't allocate enough memory");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4587) {

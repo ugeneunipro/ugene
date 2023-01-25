@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -153,7 +153,7 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus& os, QS
     int viewRowIndex = getVisibleNames(os).indexOf(rowName);
     GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
     auto nameList = GTWidget::findWidget(os, "mca_editor_name_list");
-    RowHeightController *rowHeightController = mcaEditArea->getEditor()->getMaEditorWgt()->getRowHeightController();
+    RowHeightController *rowHeightController = mcaEditArea->getEditor()->getMaEditorWgt(0)->getRowHeightController();
     int yPos = rowHeightController->getScreenYRegionByViewRowIndex(viewRowIndex).startPos + rowHeightController->getRowHeightByViewRowIndex(viewRowIndex) / 2;
     if (showChromatogram) {
         yPos -= 65;
@@ -171,7 +171,7 @@ bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus& os, QStr
     auto mcaEditArea = GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area");
     int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
-    int rowHeight = mcaEditArea->getEditor()->getMaEditorWgt()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
+    int rowHeight = mcaEditArea->getEditor()->getMaEditorWgt(0)->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
     bool isChromatogramShown = rowHeight > 100;
     return isChromatogramShown;
 }

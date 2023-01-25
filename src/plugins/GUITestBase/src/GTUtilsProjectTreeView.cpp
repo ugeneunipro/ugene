@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,8 +68,8 @@ void GTUtilsProjectTreeView::checkProjectViewIsOpened(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "checkProjectViewIsClosed"
 void GTUtilsProjectTreeView::checkProjectViewIsClosed(HI::GUITestOpStatus& os) {
-    QWidget* documentTreeWidget = nullptr;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && documentTreeWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
+    QWidget* documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && documentTreeWidget != nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         documentTreeWidget = GTWidget::findWidget(os, widgetName, nullptr, {false});
     }
@@ -689,7 +689,6 @@ void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus& /*os*/, const 
 
 void GTUtilsProjectTreeView::sendDragAndDrop(HI::GUITestOpStatus& os, const QPoint& enterPos, QWidget* dropWidget) {
     sendDragAndDrop(os, enterPos, GTWidget::getWidgetVisibleCenterGlobal(dropWidget));
-    return;
 }
 
 void GTUtilsProjectTreeView::expandProjectView(HI::GUITestOpStatus& os) {

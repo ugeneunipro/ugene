@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -81,7 +81,7 @@ QWidget* McaExportConsensusTabFactory::createWidget(GObjectView* objView, const 
     widget->setLayout(layout);
 
     MaConsensusModeWidget* consensusModeWgt = new MaConsensusModeWidget(widget);
-    consensusModeWgt->init(ma->getMaObject(), ma->getMaEditorWgt()->getConsensusArea());
+    consensusModeWgt->init(ma->getMaObject(), ma->getMaEditorWgt(0)->getConsensusArea());
     ShowHideSubgroupWidget* consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWgt, true);
 
     MaExportConsensusWidget* exportWidget = new MaExportConsensusWidget(ma, widget);

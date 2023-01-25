@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -501,7 +501,7 @@ GUI_TEST_CLASS_DEFINITION(test_6083) {
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save sequence"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "exportSelectedMsaRowsToSeparateFilesAction"}, GTGlobals::UseKey));
     GTUtilsDialog::add(os, new ExportSelectedSequenceFromAlignment(os, testDir + "_common_data/scenarios/sandbox/", ExportSelectedSequenceFromAlignment::Ugene_db, true));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1095,7 +1095,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
     CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened, url: " + url);
 
     QByteArray data(10000, 0);
-    int bytesRead = io->readBlock(data.data(), data.size());
+    qint64 bytesRead = io->readBlock(data.data(), data.size());
     CHECK_SET_ERR(bytesRead > 100, "Expected at least some data to be read from url: " + url + ", error: " + io->errorString());
     CHECK_SET_ERR(!data.contains("Page not found"), "External Tools page is not found");
 }
@@ -1255,7 +1255,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     // Run the workflow and wait for the expected message.
     GTLogTracer logTracer;
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsLog::checkMessageWithWait(os, logTracer, "Downloading from https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
+    GTUtilsLog::checkMessageWithWait(os, logTracer, "GET https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
@@ -1311,7 +1311,7 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
     // Do it twice, for two different ids
     QList<QString> ensembleIds = QList<QString>() << "ENSG00000205571"
                                                   << "ENSG00000146463";
-    for (auto id : qAsConst(ensembleIds)) {
+    for (const auto& id : qAsConst(ensembleIds)) {
         QList<DownloadRemoteFileDialogFiller::Action> actions;
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, {id});
         actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
@@ -4977,7 +4977,7 @@ GUI_TEST_CLASS_DEFINITION(test_6742) {
 }
 GUI_TEST_CLASS_DEFINITION(test_6746) {
     // 1. Open "COI.aln".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Open "Search in Alignment" options panel tab.
@@ -6171,7 +6171,7 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
-    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+    CHECK_SET_ERR(errors.empty(), "Unexpected errors");
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
                   "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));

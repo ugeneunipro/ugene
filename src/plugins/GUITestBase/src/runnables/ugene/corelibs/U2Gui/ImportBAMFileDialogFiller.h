@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ using namespace HI;
 
 class ImportBAMFileFiller : public Filler {
 public:
-    ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl = "", const QString referenceFolderPath = "", const QString referenceFileName = "", bool importUnmappedReads = false, int timeoutMs = 120000);
+    ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl = "", const QString referenceFolderPath = "", const QString referenceFileName = "", bool importUnmappedReads = false, bool deselectAll = false, int timeoutMs = 120000);
     ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c);
 
     virtual void commonScenario();
@@ -39,6 +39,7 @@ private:
     const QString referenceFileName;
     const QString destinationUrl;
     const bool importUnmappedReads;
+    const bool deselectAll;
 };
 
 }  // namespace U2

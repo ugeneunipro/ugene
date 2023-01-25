@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,11 +23,9 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/ServiceTypes.h>
 
 #include <U2Gui/MainWindow.h>
 #include <U2Gui/ObjectViewModel.h>
@@ -46,7 +44,7 @@ ProjectImpl::ProjectImpl(const QString& _name, const QString& _url, const QList<
     }
     setModified(false);
 
-    resourceTracker = AppContext::getAppSettings()->getAppResourcePool()->getResource(RESOURCE_MEMORY);
+    resourceTracker = AppContext::getAppSettings()->getAppResourcePool()->getResource(UGENE_RESOURCE_ID_MEMORY);
 
     MWMDIManager* mdi = AppContext::getMainWindow()->getMDIManager();
     if (mdi != nullptr) {
@@ -150,7 +148,11 @@ bool ProjectImpl::lockResources(int sizeMB, const QString& url, QString& error) 
         resourceUsage[doc->getName()] = sizeMB;
         return true;
     } else {
-        error = tr("Not enough resources for load document, resource name: '%1' available: %2%3 requested: %4%3").arg(resourceTracker->name).arg(resourceTracker->available()).arg(resourceTracker->suffix).arg(sizeMB);
+        error = tr("Not enough resources for load document, resource: '%1' available: %2%3 requested: %4%3")
+                    .arg(resourceTracker->id)
+                    .arg(resourceTracker->available())
+                    .arg(resourceTracker->units)
+                    .arg(sizeMB);
         return false;
     }
 }

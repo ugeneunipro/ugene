@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,7 +63,7 @@ BlastCommonTask::BlastCommonTask(const BlastTaskSettings& _settings)
     for (const QByteArray& querySequence : qAsConst(settings.querySequences)) {
         querySequences << (settings.isSequenceCircular ? U2PseudoCircularization::createSequenceWithCircularOverlaps(querySequence) : querySequence);
     }
-    addTaskResource(TaskResourceUsage(RESOURCE_THREAD, settings.numberOfProcessors));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_THREAD, settings.numberOfProcessors, TaskResourceStage::Run));
     if (settings.querySequenceObject != nullptr) {
         TaskWatchdog::trackResourceExistence(settings.querySequenceObject, this, tr("A problem occurred during doing BLAST. The sequence is no more available."));
     }

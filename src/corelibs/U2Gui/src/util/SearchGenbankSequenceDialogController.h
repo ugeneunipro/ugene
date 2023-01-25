@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEARCH_GENBANK_SEQUENCE_DIALOG_CONTROLLER_H_
-#define _U2_SEARCH_GENBANK_SEQUENCE_DIALOG_CONTROLLER_H_
+#pragma once
 
 #include <QComboBox>
 #include <QDialog>
@@ -127,5 +126,3 @@ public slots:
 };
 
 }  // namespace U2
-
-#endif  //_U2_SEARCH_GENBANK_SEQUENCE_DIALOG_CONTROLLER_H_

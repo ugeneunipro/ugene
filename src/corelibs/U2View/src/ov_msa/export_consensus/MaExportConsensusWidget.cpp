@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,7 +61,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor* ma_, QWidget* parent)
 
     initSaveController();
 
-    MaEditorConsensusArea* consensusArea = ma->getMaEditorWgt()->getConsensusArea();
+    MaEditorConsensusArea* consensusArea = ma->getMaEditorWgt(0)->getConsensusArea();
     showHint(true);
 
     connect(exportBtn, SIGNAL(clicked()), SLOT(sl_exportClicked()));
@@ -83,7 +83,7 @@ void MaExportConsensusWidget::sl_exportClicked() {
     settings.ma = ma;
     settings.name = ma->getMaObject()->getGObjectName() + "_consensus";
     settings.url = saveController->getSaveFileName();
-    settings.algorithm = ma->getMaEditorWgt()->getConsensusArea()->getConsensusAlgorithm()->clone();
+    settings.algorithm = ma->getMaEditorWgt(0)->getConsensusArea()->getConsensusAlgorithm()->clone();
 
     auto exportTask = new ExportMaConsensusTask(settings);
     connect(exportTask, SIGNAL(si_stateChanged()), this, SLOT(sl_exportTaskStateChanged()));

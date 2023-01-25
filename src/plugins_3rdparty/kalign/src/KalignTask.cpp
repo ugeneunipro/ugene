@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSett
     tpm = Task::Progress_Manual;
     quint64 mem = inputMA->getRowCount() * sizeof(float);
     quint64 profileMem = (ma->getLength() + 2) * 22 * sizeof(float);  // the size of profile that is built during kalign
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024)));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024), TaskResourceStage::Run));
 }
 
 void KalignTask::_run() {

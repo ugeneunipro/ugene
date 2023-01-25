@@ -111,7 +111,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>:/core/images/db/database_go.png</normaloff>:/core/images/db/database_go.png</iconset>
+         <normaloff>:/core/images/database_with_arrow.png</normaloff>:/core/images/database_with_arrow.png</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>

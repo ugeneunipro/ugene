@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or * modify it under the terms of the GNU General Public License
@@ -49,7 +49,7 @@ void BowtieBuildTask::prepare() {
         }
         qint64 memUseMB = file.size() * 3 / 1024 / 1024 + 100;
         coreLog.trace(QString("bowtie-build:Memory resource %1").arg(memUseMB));
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run));
     }
 
     QStringList arguments;
@@ -161,7 +161,7 @@ void BowtieAlignTask::prepare() {
         static const int SHORT_READ_AVG_LENGTH = 1000;
         QFileInfo file(settings.indexFileName + indexSuffixes[0]);
         qint64 memUseMB = (file.size() * 4 + SHORT_READ_AVG_LENGTH * 10) / 1024 / 1024 + 100;
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, false));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run));
     }
 
     QStringList arguments;

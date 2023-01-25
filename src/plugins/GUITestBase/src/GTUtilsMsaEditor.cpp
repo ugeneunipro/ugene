@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -212,7 +212,7 @@ QRect GTUtilsMsaEditor::getColumnHeaderRect(GUITestOpStatus& os, int column) {
     MSAEditor* editor = getEditor(os);
     GT_CHECK_RESULT(nullptr != editor, "MSA Editor is NULL", QRect());
 
-    BaseWidthController* baseWidthController = editor->getUI()->getUI()->getBaseWidthController();
+    BaseWidthController* baseWidthController = editor->getUI()->getUI(0)->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),
                                                    consensusArea->geometry().top())),
                  QSize(baseWidthController->getBaseWidth(),
@@ -692,7 +692,7 @@ bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus& os) {
 
     // Get state of the "Multiline View" button on toolbar
     auto mmode = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
-    return !mmode->isVisible() ? false : !mmode->isEnabled() ? false : mmode->isChecked();
+    return mmode->isVisible() && mmode->isEnabled() && mmode->isChecked();
 }
 #undef GT_METHOD_NAME
 

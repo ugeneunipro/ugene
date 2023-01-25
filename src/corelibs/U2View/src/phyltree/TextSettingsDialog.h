@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYLTREE_TEXT_SETTINGS_DIALOG_H_
-#define _U2_PHYLTREE_TEXT_SETTINGS_DIALOG_H_
+#pragma once
 
 #include "BaseSettingsDialog.h"
 #include "ov_phyltree/TreeSettings.h"
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

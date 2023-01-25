@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _FORMAT_DETECTION_H_
-#define _FORMAT_DETECTION_H_
+#pragma once
 
 #include "globals.h"
 
@@ -65,5 +64,3 @@ U2SCRIPT_EXPORT U2ErrorType detectFileFormat(const wchar_t* pathToFile,
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // _FORMAT_DETECTION_H_

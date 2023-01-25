@@ -8,5 +8,7 @@
                  hits="10"
                  short="true"
                  blast-output="!tmp_data_dir!blast.xml"
-                 message="Incorrect value"/>
+                 message="Incorrect 'e-value' parameter value"
+                 nomessage="RemoteBLASTTask"
+    />
 </multi-test>

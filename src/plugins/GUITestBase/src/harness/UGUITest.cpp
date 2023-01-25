@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -108,7 +108,7 @@ static QString getDataDirImpl() {
     }
 
     if (!QFileInfo::exists(dataDir)) {
-        coreLog.error(QString("dataDir not found in the default places"));
+        coreLog.info("dataDir not found in the default places");
     }
 
     return dataDir;

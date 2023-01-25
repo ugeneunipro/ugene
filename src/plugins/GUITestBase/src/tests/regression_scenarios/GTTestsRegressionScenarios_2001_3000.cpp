@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -2810,7 +2810,7 @@ GUI_TEST_CLASS_DEFINITION(test_2498) {
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
 
     // Default alphabet for an empty alignment is nucleic -> Amino is enabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "amino_translation_of_alignment_rows"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "exportNucleicMsaToAminoAction"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);

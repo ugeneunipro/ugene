@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
 
 #include "SWMulAlignResultNamesTag.h"
 
-#ifndef _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_
 #    define _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_
 
 namespace U2 {
@@ -47,5 +46,3 @@ inline SWMulAlignSubseqPropTag::SWMulAlignSubseqPropTag(const QString _shorthand
 }
 
 }  // namespace U2
-
-#endif  // _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_

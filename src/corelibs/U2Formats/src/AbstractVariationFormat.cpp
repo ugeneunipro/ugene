@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,7 +114,7 @@ Document* AbstractVariationFormat::loadTextDocument(IOAdapterReader& reader, con
 
         QStringList columns = line.split(COLUMNS_SEPARATOR);
 
-        if (columns.size() < maxColumnNumber) {
+        if (columns.size() < maxColumnIndex) {
             os.addWarning(tr("Line %1: There are too few columns in this line. The line was skipped.").arg(lineNumber));
             continue;
         }
@@ -342,12 +342,12 @@ void AbstractVariationFormat::storeTrack(IOAdapterWriter& writer, const VariantT
         U2Variant variant = varsIter->next();
 
         snpString.clear();
-        for (int columnNumber = 0; columnNumber <= maxColumnNumber; columnNumber++) {
-            if (columnNumber != 0) {
+        for (int columnIndex = 0; columnIndex <= maxColumnIndex; columnIndex++) {
+            if (columnIndex != 0) {
                 snpString += COLUMNS_SEPARATOR;
             }
 
-            ColumnRole role = columnRoles.value(columnNumber, ColumnRole_Unknown);
+            ColumnRole role = columnRoles.value(columnIndex, ColumnRole_Unknown);
             switch (role) {
                 case ColumnRole_ChromosomeId:
                     snpString += track.sequenceName;
@@ -389,7 +389,7 @@ void AbstractVariationFormat::storeTrack(IOAdapterWriter& writer, const VariantT
                     snpString += variant.additionalInfo.value(U2Variant::VCF4_INFO, ".");
                     break;
                 case ColumnRole_Unknown: {
-                    const QString columnTitle = columnNumber < header.size() ? header[columnNumber] : QString::number(columnNumber);
+                    const QString columnTitle = columnIndex < header.size() ? header[columnIndex] : QString::number(columnIndex);
                     snpString += variant.additionalInfo.value(columnTitle, ".");
                     break;
                 }
@@ -399,15 +399,17 @@ void AbstractVariationFormat::storeTrack(IOAdapterWriter& writer, const VariantT
             }
         }
 
-        for (int i = maxColumnNumber + 1; i < header.size(); i++) {
-            snpString += COLUMNS_SEPARATOR + variant.additionalInfo.value(header[i], ".").toLatin1();
-        }
-
-        for (int i = qMax(maxColumnNumber + 1, header.size()); i <= maxColumnNumber + variant.additionalInfo.size(); i++) {
-            if (!variant.additionalInfo.contains(QString::number(i))) {
-                break;
+        if (!useOnlyBaseColumns) {
+            for (int i = maxColumnIndex + 1; i < header.size(); i++) {
+                snpString += COLUMNS_SEPARATOR + variant.additionalInfo.value(header[i], ".").toLatin1();
             }
-            snpString += COLUMNS_SEPARATOR + variant.additionalInfo[QString::number(i)].toLatin1();
+
+            for (int i = qMax(maxColumnIndex + 1, header.size()); i <= maxColumnIndex + variant.additionalInfo.size(); i++) {
+                if (!variant.additionalInfo.contains(QString::number(i))) {
+                    break;
+                }
+                snpString += COLUMNS_SEPARATOR + variant.additionalInfo[QString::number(i)].toLatin1();
+            }
         }
 
         snpString += "\n";

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SERVICE_REGISTRY_IMPL_
-#define _U2_SERVICE_REGISTRY_IMPL_
+#pragma once
 
 #include <QMap>
 
@@ -56,15 +55,15 @@ public:
     }
 
     /// Finds service with the specified ServiceType
-    virtual QList<Service*> findServices(ServiceType t) const;
+    QList<Service*> findServices(ServiceType t) const override;
 
-    virtual Task* registerServiceTask(Service* s, bool lockServiceResource);
+    Task* registerServiceTask(Service* s) override;
 
-    virtual Task* unregisterServiceTask(Service* s, bool lockServiceResource);
+    Task* unregisterServiceTask(Service* s) override;
 
-    virtual Task* enableServiceTask(Service* s, bool lockServiceResource);
+    Task* enableServiceTask(Service* s) override;
 
-    virtual Task* disableServiceTask(Service* s, bool lockServiceResource);
+    Task* disableServiceTask(Service* ) override;
 
     void unregisterPluginServices(Plugin* p);
 
@@ -82,7 +81,7 @@ private:
     }
 
 protected:
-    void timerEvent(QTimerEvent* event);
+    void timerEvent(QTimerEvent* event) override;
 
 private:
     QList<Service*> services;
@@ -93,7 +92,7 @@ private:
 class AbstractServiceTask : public Task {
     Q_OBJECT
 protected:
-    AbstractServiceTask(QString taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource);
+    AbstractServiceTask(const QString& taskName, TaskFlags flag, ServiceRegistryImpl* _sr, Service* _s, bool lockServiceResource);
 
     ServiceRegistryImpl* sr;
     Service* s;
@@ -102,41 +101,41 @@ protected:
 class RegisterServiceTask : public AbstractServiceTask {
     Q_OBJECT
 public:
-    RegisterServiceTask(ServiceRegistryImpl* sr, Service* s, bool lockServiceResource);
+    RegisterServiceTask(ServiceRegistryImpl* sr, Service* s);
 
-    virtual void prepare();
+    void prepare() override;
 
-    virtual ReportResult report();
+    ReportResult report() override;
 };
 
 class EnableServiceTask : public AbstractServiceTask {
     Q_OBJECT
 public:
-    EnableServiceTask(ServiceRegistryImpl* sr, Service* s, bool lockServiceResource);
+    EnableServiceTask(ServiceRegistryImpl* sr, Service* s, bool lockServiceResource = true);
 
-    virtual void prepare();
+    void prepare() override;
 
-    virtual ReportResult report();
+    ReportResult report() override;
 };
 
 class UnregisterServiceTask : public AbstractServiceTask {
     Q_OBJECT
 public:
-    UnregisterServiceTask(ServiceRegistryImpl* sr, Service* s, bool lockServiceResource);
+    UnregisterServiceTask(ServiceRegistryImpl* sr, Service* s);
 
-    virtual ReportResult report();
+    ReportResult report() override;
 
-    virtual void prepare();
+    void prepare() override;
 };
 
 class DisableServiceTask : public AbstractServiceTask {
     Q_OBJECT
 public:
-    DisableServiceTask(ServiceRegistryImpl* sr, Service* s, bool manual, bool lockServiceResource);
+    DisableServiceTask(ServiceRegistryImpl* sr, Service* s, bool manual, bool lockServiceResource = true);
 
-    virtual ReportResult report();
+    ReportResult report() override;
 
-    virtual void prepare();
+    void prepare() override;
 
 private:
     bool manual;
@@ -145,5 +144,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

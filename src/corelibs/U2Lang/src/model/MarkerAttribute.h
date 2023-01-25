@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include <U2Lang/Attribute.h>
 #include <U2Lang/Marker.h>
 
-#ifndef _MARKER_ATTRIBUTE_H_
 #    define _MARKER_ATTRIBUTE_H_
 
 namespace U2 {
@@ -44,5 +43,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _MARKER_ATTRIBUTE_H_

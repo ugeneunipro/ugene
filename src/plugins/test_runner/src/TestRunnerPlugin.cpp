@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -257,6 +257,8 @@ GTestSuite* TestRunnerService::findTestSuiteByURL(const QString& url) {
 void TestRunnerService::readBuiltInVars() {
     QStringList biVars;
     biVars << NUM_THREADS_VAR;
+    biVars << "COMMON_DATA_DIR";
+    biVars << "TEMP_DATA_DIR";
     readEnvForKeys(biVars);
 
     QMap<QString, QString> vars = env->getVars();
