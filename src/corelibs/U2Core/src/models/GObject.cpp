@@ -53,7 +53,7 @@ QVariantMap GObject::getGHintsMap() const {
 
 Document* GObject::getDocument() const {
     StateLockableTreeItem* sl = getParentStateLockItem();
-    Document* doc = qobject_cast<Document*>(sl);
+    auto doc = qobject_cast<Document*>(sl);
     return doc;
 }
 

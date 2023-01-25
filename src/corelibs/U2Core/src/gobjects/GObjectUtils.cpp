@@ -54,7 +54,7 @@ QList<GObject*> GObjectUtils::select(const QList<GObject*>& objs, GObjectType t,
         if ((t.isEmpty() && (f == UOF_LoadedAndUnloaded || !isUnloaded)) || o->getGObjectType() == t) {
             res.append(o);
         } else if (f == UOF_LoadedAndUnloaded && isUnloaded) {
-            UnloadedObject* uo = qobject_cast<UnloadedObject*>(o);
+            auto uo = qobject_cast<UnloadedObject*>(o);
             if (uo->getLoadedObjectType() == t) {
                 res.append(o);
             }
@@ -203,7 +203,7 @@ QList<GObject*> GObjectUtils::findObjectsRelatedToObjectByRole(const GObjectRefe
             if ((resultObjType.isEmpty() && !isUnloaded) || o->getGObjectType() == resultObjType) {
                 loadedObjs.insert(o);
             } else if (isUnloaded) {
-                UnloadedObject* uo = qobject_cast<UnloadedObject*>(o);
+                auto uo = qobject_cast<UnloadedObject*>(o);
                 if (uo->getLoadedObjectType() == resultObjType) {
                     unloadedObjs.insert(o);
                 }
@@ -336,7 +336,7 @@ bool GObjectUtils::hasType(GObject* obj, const GObjectType& type) {
     if (obj->getGObjectType() != GObjectTypes::UNLOADED) {
         return false;
     }
-    UnloadedObject* uo = qobject_cast<UnloadedObject*>(obj);
+    auto uo = qobject_cast<UnloadedObject*>(obj);
     return uo->getLoadedObjectType() == type;
 }
 

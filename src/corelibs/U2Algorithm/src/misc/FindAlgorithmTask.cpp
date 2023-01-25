@@ -140,7 +140,7 @@ void LoadPatternsFileTask::run() {
         const QList<GObject*>& objectsFromDoc = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         foreach (GObject* object, objectsFromDoc) {
-            U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
+            auto sequenceObject = qobject_cast<U2SequenceObject*>(object);
             assert(sequenceObject != nullptr);
             QByteArray sequence = sequenceObject->getWholeSequenceData(stateInfo);
             CHECK_OP(stateInfo, );

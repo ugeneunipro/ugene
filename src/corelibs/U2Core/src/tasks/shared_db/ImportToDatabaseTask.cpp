@@ -55,10 +55,10 @@ Task::ReportResult ImportToDatabaseTask::report() {
 
 void ImportToDatabaseTask::sortSubtasks() const {
     foreach (const QPointer<Task>& subtask, getSubtasks()) {
-        ImportDirToDatabaseTask* dirSubtask = qobject_cast<ImportDirToDatabaseTask*>(subtask.data());
-        ImportDocumentToDatabaseTask* documentSubtask = qobject_cast<ImportDocumentToDatabaseTask*>(subtask.data());
-        ImportFileToDatabaseTask* fileSubtask = qobject_cast<ImportFileToDatabaseTask*>(subtask.data());
-        ImportObjectToDatabaseTask* objectSubtask = qobject_cast<ImportObjectToDatabaseTask*>(subtask.data());
+        auto dirSubtask = qobject_cast<ImportDirToDatabaseTask*>(subtask.data());
+        auto documentSubtask = qobject_cast<ImportDocumentToDatabaseTask*>(subtask.data());
+        auto fileSubtask = qobject_cast<ImportFileToDatabaseTask*>(subtask.data());
+        auto objectSubtask = qobject_cast<ImportObjectToDatabaseTask*>(subtask.data());
 
         if (nullptr != dirSubtask) {
             dirSubtasks << dirSubtask;

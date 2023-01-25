@@ -99,7 +99,7 @@ QStringList ImportDocumentToDatabaseTask::getSkippedObjectNames() const {
     QStringList result;
     foreach (const QPointer<Task>& subtask, getSubtasks()) {
         if (subtask->isCanceled() || subtask->hasError()) {
-            ImportObjectToDatabaseTask* importObjectTask = qobject_cast<ImportObjectToDatabaseTask*>(subtask);
+            auto importObjectTask = qobject_cast<ImportObjectToDatabaseTask*>(subtask);
             if (nullptr != importObjectTask) {
                 GObject* object = importObjectTask->getSourceObject();
                 if (nullptr != object) {
@@ -128,7 +128,7 @@ QMap<GObject*, GObject*> ImportDocumentToDatabaseTask::getObjectPairs() const {
     QMap<GObject*, GObject*> objects;
     foreach (const QPointer<Task>& subtask, getSubtasks()) {
         if (!subtask->isCanceled() && !subtask->hasError()) {
-            ImportObjectToDatabaseTask* importObjectTask = qobject_cast<ImportObjectToDatabaseTask*>(subtask);
+            auto importObjectTask = qobject_cast<ImportObjectToDatabaseTask*>(subtask);
             if (nullptr != importObjectTask) {
                 GObject* srcObject = importObjectTask->getSourceObject();
                 GObject* dstObject = importObjectTask->getDestinationObject();
