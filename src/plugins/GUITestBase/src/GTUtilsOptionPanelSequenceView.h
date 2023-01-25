@@ -114,6 +114,7 @@ public:
     static void openOtherSettingsShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openSaveAnnotationToShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openAnnotationParametersShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
+    static void openInSilicoPcrMeltingTempertureShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
 
     // Statistics
     static void showMeltingTemperatureDialog(HI::GUITestOpStatus& os);

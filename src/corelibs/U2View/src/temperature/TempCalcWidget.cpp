@@ -41,6 +41,7 @@ TempCalcWidget::TempCalcWidget(QWidget* parent) :
     QWidget(parent),
     cbAlgorithm(new QComboBox(this)),
     swSettings(new QStackedWidget(this)) {
+    setObjectName("tempCalcWidget");
     cbAlgorithm->setObjectName("cbAlgorithm");
     auto label = new QLabel(tr("Choose temperature calculation algorithm:"), this);
     auto layout = new QVBoxLayout(this);

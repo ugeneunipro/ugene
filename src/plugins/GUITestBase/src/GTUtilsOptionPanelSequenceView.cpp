@@ -362,6 +362,12 @@ void GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(HI::
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "openInSilicoPcrMeltingTempertureShowHideWidget"
+void GTUtilsOptionPanelSequenceView::openInSilicoPcrMeltingTempertureShowHideWidget(HI::GUITestOpStatus& os, bool open) {
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Melting temperature"));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "showMeltingTemperatureDialog"
 void GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog(HI::GUITestOpStatus& os) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);

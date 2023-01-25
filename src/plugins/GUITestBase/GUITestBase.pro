@@ -168,6 +168,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsMcaEditorSequenceArea.h \
             src/GTUtilsMcaEditorStatusWidget.h \
             src/GTUtilsMdi.h \
+            src/GTUtilsMeltingTemperature.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
             src/GTUtilsNotifications.h \
@@ -451,6 +452,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsMcaEditorSequenceArea.cpp \
             src/GTUtilsMcaEditorStatusWidget.cpp \
             src/GTUtilsMdi.cpp \
+            src/GTUtilsMeltingTemperature.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \
             src/GTUtilsNotifications.cpp \

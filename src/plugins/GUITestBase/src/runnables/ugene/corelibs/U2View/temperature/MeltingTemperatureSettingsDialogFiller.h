@@ -26,6 +26,8 @@
 
 #include "utils/GTUtilsDialog.h"
 
+#include "GTUtilsMeltingTemperature.h"
+
 class QTreeWidgetItem;
 
 namespace U2 {
@@ -33,27 +35,12 @@ using namespace HI;
 
 class MeltingTemperatureSettingsDialogFiller : public Filler {
 public:
-    enum Parameter {
-        Algorithm,
-        DnaConc,
-        MonovalentConc,
-        DivalentConc,
-        DntpConc,
-        DmsoConc,
-        DmsoFactor,
-        FormamideConc,
-        MaxLen,
-        ThermodynamicTable,
-        SaltCorrectionFormula
-
-    };
-
-    MeltingTemperatureSettingsDialogFiller(HI::GUITestOpStatus& os, const QMap<Parameter, QString>& parameters);
+    MeltingTemperatureSettingsDialogFiller(HI::GUITestOpStatus& os, const QMap<GTUtilsMeltingTemperature::Parameter, QString>& parameters);
 
     void commonScenario() override;
 
 private:
-    QMap<Parameter, QString> parameters;
+    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters;
 
 
 };
