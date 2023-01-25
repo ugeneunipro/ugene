@@ -37,7 +37,8 @@ public:
                   Remove,
                   Import,
                   Export,
-                  Close };
+                  Close,
+                  Temperature};
     static QWidget* openLibrary(HI::GUITestOpStatus& os);
     static void clickButton(HI::GUITestOpStatus& os, Button button);
     static QAbstractButton* getButton(HI::GUITestOpStatus& os, Button button);

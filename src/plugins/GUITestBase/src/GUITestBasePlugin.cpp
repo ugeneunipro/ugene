@@ -3408,6 +3408,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0017);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/phyml
