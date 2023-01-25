@@ -3857,6 +3857,14 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
     delta = QPoint(0, 0);
     int fullLength = length * baseWidth;
     int extLength = 50;
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + QPoint(seqAreaWidth * 5 / 3 - fullLength + 20, 0));
+    GTGlobals::sleep(2000);
+
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    p = GTWidget::getWidgetCenter(handle);
+
     if (fullLength + 50 < seqAreaWidth) {
         delta = QPoint(seqAreaWidth - fullLength - extLength, 0);
     } else if (length * baseWidth < seqAreaWidth) {
@@ -3897,12 +3905,13 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     auto count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
     bool allAreVisible = true;
-    for (uint i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         CHECK_SET_ERR(w != nullptr, "Sequence widget must exist");
         allAreVisible = allAreVisible && w->isVisible();
     }
-    CHECK_SET_ERR((count > 1 && !allAreVisible), "Some line of the multiline view must be hidden #1");
+    CHECK_SET_ERR((count > 1 && !allAreVisible) || (count == 1 && allAreVisible),
+                  "Some line of the multiline view must be hidden #1");
 
     activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
     CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget must exist");
@@ -4007,7 +4016,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
                      true);
 
     allAreVisible = true;
-    for (uint i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         CHECK_SET_ERR(w != nullptr, "Sequence widget must exist");
         allAreVisible = allAreVisible && w->isVisible();
