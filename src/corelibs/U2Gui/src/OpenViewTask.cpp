@@ -371,7 +371,7 @@ AddDocumentAndOpenViewTask::AddDocumentAndOpenViewTask(DocumentProviderTask* dp,
 
 QList<Task*> AddDocumentAndOpenViewTask::onSubTaskFinished(Task* t) {
     QList<Task*> res;
-    AddDocumentTask* addTask = qobject_cast<AddDocumentTask*>(t);
+    auto addTask = qobject_cast<AddDocumentTask*>(t);
     if (addTask != nullptr && !addTask->getStateInfo().isCoR()) {
         Document* doc = addTask->getDocument();
         assert(doc != nullptr);

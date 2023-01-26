@@ -224,13 +224,13 @@ IntegralBus::IntegralBus(Port* p)
             coreLog.trace(QString("%1 - input bus map key=%2 val=%3").arg(name).arg(it.key()).arg(it.value()));
         }
 
-        IntegralBusPort* busPort = qobject_cast<IntegralBusPort*>(p);
+        auto busPort = qobject_cast<IntegralBusPort*>(p);
         SlotPathMap pathMap = busPort->getPaths();
         QMap<QString, QStringList> listMap = getListMappings(map, pathMap, p);
         busMap = new BusMap(map, listMap, pathMap);
     } else {  // p is output
         StrStrMap map;
-        IntegralBusPort* bp = qobject_cast<IntegralBusPort*>(p);
+        auto bp = qobject_cast<IntegralBusPort*>(p);
         DataTypePtr t = bp ? bp->getOwnType() : p->getType();
         if (t->isMap()) {
             foreach (Descriptor d, t->getAllDescriptors()) {

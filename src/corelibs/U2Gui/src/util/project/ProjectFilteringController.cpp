@@ -71,7 +71,7 @@ void ProjectFilteringController::sl_startFiltering() {
 }
 
 void ProjectFilteringController::sl_objectsFiltered(const QString& groupName, const SafeObjList& objs) {
-    AbstractProjectFilterTask* filterTask = qobject_cast<AbstractProjectFilterTask*>(sender());
+    auto filterTask = qobject_cast<AbstractProjectFilterTask*>(sender());
     SAFE_POINT(nullptr != filterTask, L10N::nullPointerError("project filter task"), );
     SAFE_POINT(!groupName.isEmpty(), "Invalid project filter group name", );
 
@@ -81,7 +81,7 @@ void ProjectFilteringController::sl_objectsFiltered(const QString& groupName, co
 }
 
 void ProjectFilteringController::sl_filteringFinished() {
-    AbstractProjectFilterTask* task = qobject_cast<AbstractProjectFilterTask*>(sender());
+    auto task = qobject_cast<AbstractProjectFilterTask*>(sender());
     SAFE_POINT(nullptr != task, L10N::nullPointerError("project filter task"), );
 
     if (task->isFinished()) {

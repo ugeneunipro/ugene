@@ -65,7 +65,7 @@ McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControll
 }
 
 bool McaReferenceNameFilterTask::filterAcceptsObject(GObject* obj) {
-    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
     CHECK(nullptr != mcaObj, false);
     U2SequenceObject* refObj = mcaObj->getReferenceObj();
     if (refObj != nullptr && settings.nameFilterAcceptsString(refObj->getSequenceName())) {

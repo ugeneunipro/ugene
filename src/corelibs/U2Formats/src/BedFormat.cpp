@@ -409,7 +409,7 @@ void BedFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
     bool firstLine = true;
 
     foreach (GObject* annotTableGObject, annotTables) {
-        AnnotationTableObject* annotTable = qobject_cast<AnnotationTableObject*>(annotTableGObject);
+        auto annotTable = qobject_cast<AnnotationTableObject*>(annotTableGObject);
         SAFE_POINT_EXT(annotTable != nullptr, os.setError(tr("Can not convert GObject to AnnotationTableObject")), );
 
         QString chromName;

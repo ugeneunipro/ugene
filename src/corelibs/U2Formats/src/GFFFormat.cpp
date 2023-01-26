@@ -608,7 +608,7 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
         cleanRow.append(".");
     }
     for (GObject* ato : qAsConst(atos)) {
-        AnnotationTableObject* annotationTable = dynamic_cast<AnnotationTableObject*>(ato);
+        auto annotationTable = dynamic_cast<AnnotationTableObject*>(ato);
         QList<Annotation*> aList = annotationTable->getAnnotations();
         // retrieving known IDs
         for (Annotation* ann : qAsConst(aList)) {
@@ -689,7 +689,7 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
             return;
         }
         foreach (GObject* s, sequences) {
-            U2SequenceObject* dnaso = qobject_cast<U2SequenceObject*>(s);
+            auto dnaso = qobject_cast<U2SequenceObject*>(s);
             QList<U2Region> lowerCaseRegs = U1AnnotationUtils::getRelatedLowerCaseRegions(dnaso, atos);
             QString fastaHeader = dnaso->getGObjectName();
             int tagSize = QString(SEQUENCE_TAG).size(), headerSize = fastaHeader.size();

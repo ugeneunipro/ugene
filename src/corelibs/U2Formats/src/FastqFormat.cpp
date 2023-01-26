@@ -452,7 +452,7 @@ Document* FastqFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, c
 
 void FastqFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     foreach (GObject* obj, d->getObjects()) {
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         if (seqObj == nullptr) {
             continue;
         }
@@ -526,7 +526,7 @@ void FastqFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObjec
     SAFE_POINT(objectsMap.contains(GObjectTypes::SEQUENCE), "Fastq entry storing: no sequences", );
     const QList<GObject*>& seqs = objectsMap[GObjectTypes::SEQUENCE];
     SAFE_POINT(1 == seqs.size(), "Fastq entry storing: sequence objects count error", );
-    U2SequenceObject* seqObj = dynamic_cast<U2SequenceObject*>(seqs.first());
+    auto seqObj = dynamic_cast<U2SequenceObject*>(seqs.first());
     SAFE_POINT(nullptr != seqObj, "Fastq entry storing: NULL sequence object", );
 
     GUrl url = seqObj->getDocument() ? seqObj->getDocument()->getURL() : GUrl();

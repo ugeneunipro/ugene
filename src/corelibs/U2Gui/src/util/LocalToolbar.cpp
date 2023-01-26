@@ -43,7 +43,7 @@ LocalToolbar::LocalToolbar(QWidget* p)
 void LocalToolbar::addAction(QAction* a) {
     QToolBar::addAction(a);
 
-    QToolButton* button = qobject_cast<QToolButton*>(widgetForAction(a));
+    auto button = qobject_cast<QToolButton*>(widgetForAction(a));
     button->setFixedSize(TOOLBAR_BUTTON_SIZE, TOOLBAR_BUTTON_SIZE);
 }
 

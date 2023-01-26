@@ -417,9 +417,9 @@ QString SchemaSerializer::xml2schema(const QDomElement& projectElement, Schema* 
     foreach (Actor* proc, procMap) {
         ActorPrototype* proto = proc->getProto();
         if (nullptr != proto->getEditor()) {
-            ActorConfigurationEditor* actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
+            auto actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
             if (nullptr != actorEd) {
-                ActorConfigurationEditor* editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
+                auto editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);
             }

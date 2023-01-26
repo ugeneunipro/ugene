@@ -53,7 +53,7 @@ U2SequenceObject::U2SequenceObject(const QString& name, const U2EntityRef& seqRe
 }
 
 bool U2SequenceObject::checkConstraints(const GObjectConstraints* c) const {
-    const U2SequenceObjectConstraints* dnac = qobject_cast<const U2SequenceObjectConstraints*>(c);
+    auto dnac = qobject_cast<const U2SequenceObjectConstraints*>(c);
     SAFE_POINT(dnac != nullptr, "Not a U2SequenceObjectConstraints!", false);
 
     if (dnac->sequenceSize != NO_LENGTH_CONSTRAINT) {

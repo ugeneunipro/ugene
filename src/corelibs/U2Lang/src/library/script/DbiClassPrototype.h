@@ -120,7 +120,7 @@ void DbiClassPrototype::registerScriptClass(QScriptEngine* engine) {
 template<class T>
 QScriptValue DbiScriptClass::toScriptValue(QScriptEngine* engine, const ScriptDbiData& id) {
     QScriptValue factory = engine->globalObject().property(T::CLASS_NAME);
-    T* sClass = qscriptvalue_cast<T*>(factory.data());
+    auto sClass = qscriptvalue_cast<T*>(factory.data());
     if (!sClass) {
         return engine->newVariant(qVariantFromValue(id));
     }

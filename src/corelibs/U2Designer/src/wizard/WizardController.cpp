@@ -799,7 +799,7 @@ void PageContentCreator::visit(DefaultPageContent* content) {
 
             // let it process attribute relations
             foreach (WidgetController* wcc, controllers) {
-                PropertyWizardController* pwc = qobject_cast<PropertyWizardController*>(wcc);
+                auto pwc = qobject_cast<PropertyWizardController*>(wcc);
                 if (pwc) {
                     wc->setAttributeValue(pwc->attributeWidget()->getInfo(), wc->getAttributeValue(pwc->attributeWidget()->getInfo()));
                 }
