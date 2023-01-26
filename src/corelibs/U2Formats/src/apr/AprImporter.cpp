@@ -85,7 +85,7 @@ QList<Task*> AprImporterTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     CHECK_OP(stateInfo, res);
 
-    DefaultConvertFileTask* convTask = qobject_cast<DefaultConvertFileTask*>(subTask);
+    auto convTask = qobject_cast<DefaultConvertFileTask*>(subTask);
     if (convTask != nullptr) {
         QString dstUrl = convTask->getResult();
         SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError(tr("Empty destination url")), res);
@@ -98,7 +98,7 @@ QList<Task*> AprImporterTask::onSubTaskFinished(Task* subTask) {
         res << loadTask;
     }
 
-    LoadDocumentTask* loadTask = qobject_cast<LoadDocumentTask*>(subTask);
+    auto loadTask = qobject_cast<LoadDocumentTask*>(subTask);
     if (loadTask != nullptr) {
         resultDocument = loadTask->takeDocument();
     }

@@ -82,7 +82,7 @@ void ExportObjectUtils::exportAnnotations(const AnnotationTableObject* aObj, con
                 if (seqDoc != nullptr && seqDoc->isLoaded()) {
                     GObject* obj = seqDoc->findGObjectByName(rel.ref.objName);
                     if (obj != nullptr && obj->getGObjectType() == GObjectTypes::SEQUENCE) {
-                        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+                        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
                         U2OpStatusImpl os;
                         seqData = seqObj->getWholeSequenceData(os);
                         CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );

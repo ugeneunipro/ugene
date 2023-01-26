@@ -157,7 +157,7 @@ void U2SavableWidget::setChildValue(const QString& childId, const QVariant& valu
     } else if (qobject_cast<QTextEdit*>(child) != nullptr) {
         qobject_cast<QTextEdit*>(child)->setText(value.toString());
     } else if (qobject_cast<QComboBox*>(child) != nullptr) {
-        QComboBox* cb = qobject_cast<QComboBox*>(child);
+        auto cb = qobject_cast<QComboBox*>(child);
         if (cb->count() == 0) {
             return;
         } else if (cb->count() <= value.toInt()) {

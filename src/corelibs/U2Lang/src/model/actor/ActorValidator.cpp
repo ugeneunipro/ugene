@@ -32,7 +32,7 @@ using namespace WorkflowSerialize;
 namespace Workflow {
 
 bool ActorValidator::validate(const Configuration* cfg, NotificationsList& notificationList) const {
-    const Actor* actor = static_cast<const Actor*>(cfg);
+    auto actor = static_cast<const Actor*>(cfg);
     SAFE_POINT(nullptr != actor, "NULL actor", false);
     QMap<QString, QString> options;
     return validate(actor, notificationList, options);

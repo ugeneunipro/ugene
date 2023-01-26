@@ -74,7 +74,7 @@ void DbiClassPrototype::release() {
 }
 
 ScriptDbiData* DbiClassPrototype::thisData() const {
-    ScriptDbiData* result = qscriptvalue_cast<ScriptDbiData*>(thisObject().data());
+    auto result = qscriptvalue_cast<ScriptDbiData*>(thisObject().data());
     SCRIPT_CHECK(nullptr != result, context(), "No this object", nullptr);
     return result;
 }

@@ -75,7 +75,7 @@ CreateAnnotationModel::CreateAnnotationModel()
 
 AnnotationTableObject* CreateAnnotationModel::getAnnotationObject() const {
     GObject* res = GObjectUtils::selectObjectByReference(annotationObjectRef, UOF_LoadedOnly);
-    AnnotationTableObject* aobj = qobject_cast<AnnotationTableObject*>(res);
+    auto aobj = qobject_cast<AnnotationTableObject*>(res);
     SAFE_POINT(aobj != nullptr, "Invalid annotation table detected!", nullptr);
     return aobj;
 }
@@ -396,7 +396,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
     GObject* obj = occ->getSelectedObject();
     QStringList groupNames = {GROUP_NAME_AUTO};
     if (obj != nullptr && !obj->isUnloaded() && !isAnnotationsTableVirtual()) {
-        AnnotationTableObject* ao = qobject_cast<AnnotationTableObject*>(obj);
+        auto ao = qobject_cast<AnnotationTableObject*>(obj);
         ao->getRootGroup()->getSubgroupPaths(groupNames);
     }
     SAFE_POINT(!groupNames.isEmpty(), "Unable to find annotation groups!", );
@@ -416,7 +416,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
 }
 
 void CreateAnnotationWidgetController::sl_setPredefinedGroupName() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QString name = a->text();
     w->setGroupName(name);
 }

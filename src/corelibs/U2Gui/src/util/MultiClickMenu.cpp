@@ -53,7 +53,7 @@ bool MultiClickMenu::isSelectEvent(QEvent* event) {
         return true;
     }
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+        auto keyEvent = dynamic_cast<QKeyEvent*>(event);
         CHECK(nullptr != keyEvent, false);
         return (keyEvent->key() == Qt::Key_Enter) || (keyEvent->key() == Qt::Key_Return);
     }

@@ -64,7 +64,7 @@ bool BaseCompleter::eventFilter(QObject* obj, QEvent* ev) {
     QEvent::Type eventType = ev->type();
     if (obj == editor) {
         if (eventType == QEvent::FocusOut) {
-            QFocusEvent* focusEvent = static_cast<QFocusEvent*>(ev);
+            auto focusEvent = static_cast<QFocusEvent*>(ev);
             if (focusEvent->reason() == Qt::PopupFocusReason) {
                 return true;
             }

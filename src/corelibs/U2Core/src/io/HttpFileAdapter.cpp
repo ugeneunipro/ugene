@@ -88,7 +88,7 @@ bool HttpFileAdapter::open(const GUrl& url_, IOAdapterMode m) {
     gurl = url_;
     init();
 
-    auto* httpFileAdapterFactory = qobject_cast<HttpFileAdapterFactory*>(getFactory());
+    auto httpFileAdapterFactory = qobject_cast<HttpFileAdapterFactory*>(getFactory());
     QNetworkProxy proxy = httpFileAdapterFactory->getProxyByUrl(url);
     return open(url, proxy);
 }

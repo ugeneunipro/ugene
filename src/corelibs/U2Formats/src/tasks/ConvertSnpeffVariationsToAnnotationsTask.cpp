@@ -162,7 +162,7 @@ QList<Task*> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFinis
 
         QList<VariantTrackObject*> variantTrackObjects;
         foreach (GObject* object, objects) {
-            VariantTrackObject* variantTrackObject = qobject_cast<VariantTrackObject*>(object);
+            auto variantTrackObject = qobject_cast<VariantTrackObject*>(object);
             SAFE_POINT_EXT(nullptr != variantTrackObject, setError("Can't cast GObject to VariantTrackObject"), newSubtasks);
             variantTrackObjects << variantTrackObject;
         }

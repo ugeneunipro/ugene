@@ -106,7 +106,7 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
     CHECK_OP(stateInfo, );
 
     foreach (Task* task, importTasks) {
-        ImportSequenceFromRawDataTask* importTask = qobject_cast<ImportSequenceFromRawDataTask*>(task);
+        auto importTask = qobject_cast<ImportSequenceFromRawDataTask*>(task);
         document->addObject(new U2SequenceObject(importTask->getSequenceName(), importTask->getEntityRef()));
     }
 

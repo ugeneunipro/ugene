@@ -45,7 +45,7 @@ namespace U2 {
 // SeqPasterEventFilter
 bool SeqPasterEventFilter::eventFilter(QObject* obj, QEvent* event) {
     if (QEvent::KeyPress == event->type()) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        auto keyEvent = static_cast<QKeyEvent*>(event);
         if (Qt::Key_Return == keyEvent->key()) {
             emit si_enterPressed();
             return true;
