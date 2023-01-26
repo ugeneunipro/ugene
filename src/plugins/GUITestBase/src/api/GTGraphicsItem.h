@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTGRAPHICSITEM_H
-#define GTGRAPHICSITEM_H
+#pragma once
 
 #include <QGraphicsItem>
 
@@ -38,5 +37,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // GTGRAPHICSITEM_H

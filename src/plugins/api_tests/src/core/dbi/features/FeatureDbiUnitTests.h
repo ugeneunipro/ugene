@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FEATURES_DBI_UNIT_TESTS_H_
-#define _U2_FEATURES_DBI_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -111,5 +110,3 @@ DECLARE_METATYPE(FeatureDbiUnitTests, getFeaturesByRegion);
 DECLARE_METATYPE(FeatureDbiUnitTests, getSubFeatures);
 DECLARE_METATYPE(FeatureDbiUnitTests, getFeaturesBySequence);
 DECLARE_METATYPE(FeatureDbiUnitTests, sortingSubgroups);
-
-#endif  // _U2_FEATURES_DBI_UNIT_TESTS_H_

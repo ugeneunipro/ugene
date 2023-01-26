@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QD_FIND_POLY_ACTOR_H_
-#define _U2_QD_FIND_POLY_ACTOR_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 
@@ -93,5 +92,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CIRCULAR_VIEW_IMAGE_EXPORT_TASK_H_
-#define _U2_CIRCULAR_VIEW_IMAGE_EXPORT_TASK_H_
+#pragma once
 
 #include <U2Gui/ImageExportTask.h>
 
@@ -118,5 +117,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CIRCULAR_VIEW_IMAGE_EXPORT_TASK_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HMMER_SEARCH_DIALOG_H_
-#define _U2_HMMER_SEARCH_DIALOG_H_
+#pragma once
 
 #include <QButtonGroup>
 
@@ -74,5 +73,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_HMMER_SEARCH_DIALOG_H_

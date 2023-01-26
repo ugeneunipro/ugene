@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYML_TESTS_H
-#define _U2_PHYML_TESTS_H
+#pragma once
 
 #include <QDomElement>
 #include <QFileInfo>
@@ -64,5 +63,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PHYML_TESTS_H

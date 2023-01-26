@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GROUPER_ACTION_UTILS_
-#define _GROUPER_ACTION_UTILS_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -140,5 +139,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _GROUPER_ACTION_UTILS_

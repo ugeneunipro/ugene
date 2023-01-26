@@ -21,8 +21,7 @@ k
  */
 
 /** Tree integration into MSA editor. */
-#ifndef GTTESTS_MSA_EDITOR_TREE_H_
-#define GTTESTS_MSA_EDITOR_TREE_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -41,5 +40,3 @@ GUI_TEST_CLASS_DECLARATION(test_0003_2)
 }  // namespace GUITest_common_scenarios_msa_editor_tree
 
 }  // namespace U2
-
-#endif  // GTTESTS_MSA_EDITOR_TREE_H_

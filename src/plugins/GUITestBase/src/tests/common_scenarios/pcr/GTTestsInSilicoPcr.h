@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GTTESTS_IN_SILICO_PCR_H_
-#define _GTTESTS_IN_SILICO_PCR_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -52,5 +51,3 @@ GUI_TEST_CLASS_DECLARATION(test_0019)
 
 }  // namespace GUITest_common_scenarios_in_silico_pcr
 }  // namespace U2
-
-#endif  // _GTTESTS_IN_SILICO_PCR_H_

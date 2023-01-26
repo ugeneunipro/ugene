@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H
-#define _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -52,4 +51,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H

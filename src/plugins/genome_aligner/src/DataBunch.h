@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATA_BUNCH_H_
-#define _U2_DATA_BUNCH_H_
+#pragma once
 
 #include "GenomeAlignerSearchQuery.h"
 
@@ -51,5 +50,3 @@ struct DataBunch {
 };
 
 }  // namespace U2
-
-#endif  // _U2_WRITE_ALIGNER_READS_SUB_TASK_H_

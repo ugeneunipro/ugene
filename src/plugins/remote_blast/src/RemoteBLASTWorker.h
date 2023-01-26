@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _REMOTE_QUERY_WORKER_
-#define _REMOTE_QUERY_WORKER_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -77,5 +76,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

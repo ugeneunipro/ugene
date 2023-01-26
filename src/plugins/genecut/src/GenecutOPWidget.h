@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENECUT_OP_WIDGET_H_
-#define _U2_GENECUT_OP_WIDGET_H_
+#pragma once
 
 //#include "PCRPrimerDesignForDNAAssemblyOPSavableTab.h"
 #include "ui_GenecutOPWidget.h"
@@ -147,5 +146,3 @@ private:
 
 
 }    // namespace U2
-
-#endif    // _U2_GENECUT_OP_WIDGET_H_

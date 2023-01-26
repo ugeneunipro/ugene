@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHMMER_SEARCH_TASK_TEST_H_
-#define _U2_PHMMER_SEARCH_TASK_TEST_H_
+#pragma once
 
 #include <U2Test/GTest.h>
 #include <U2Test/XMLTestFormat.h>
@@ -91,5 +90,3 @@ private:
 };  // GTest_UHMM3PhmmerCompare
 
 }  // namespace U2
-
-#endif

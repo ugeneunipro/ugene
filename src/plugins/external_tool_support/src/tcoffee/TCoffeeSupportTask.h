@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TCOFFEE_SUPPORT_TASK_H
-#define _U2_TCOFFEE_SUPPORT_TASK_H
+#pragma once
 
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GObjectReference.h>
@@ -114,4 +113,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // _U2_TCOFFEE_SUPPORT_TASK_H

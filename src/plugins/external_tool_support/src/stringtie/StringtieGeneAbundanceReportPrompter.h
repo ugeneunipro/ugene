@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_PROMPTER_H_
-#define _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_PROMPTER_H_
+#pragma once
 
 #include <U2Lang/WorkflowUtils.h>
 
@@ -38,5 +37,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_PROMPTER_H_

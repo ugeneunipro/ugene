@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SNPEFF_DATABASE_DELEGATE_H_
-#define _U2_SNPEFF_DATABASE_DELEGATE_H_
+#pragma once
 
 #include <QDialog>
 #include <QLineEdit>
@@ -91,5 +90,3 @@ private slots:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_SNPEFF_DATABASE_DELEGATE_H_

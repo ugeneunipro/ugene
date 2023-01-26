@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BAM_INVALID_FORMAT_EXCEPTION_H_
-#define _U2_BAM_INVALID_FORMAT_EXCEPTION_H_
+#pragma once
 
 #include "Exception.h"
 
@@ -34,5 +33,3 @@ public:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif  // _U2_BAM_INVALID_FORMAT_EXCEPTION_H_

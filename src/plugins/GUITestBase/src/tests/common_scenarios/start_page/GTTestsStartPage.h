@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTSSTARTPAGE_H
-#define GTTESTSSTARTPAGE_H
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -41,5 +40,3 @@ GUI_TEST_CLASS_DECLARATION(test_0008)
 }  // namespace GUITest_common_scenarios_start_page
 
 }  // namespace U2
-
-#endif  // GTTESTSSTARTPAGE_H

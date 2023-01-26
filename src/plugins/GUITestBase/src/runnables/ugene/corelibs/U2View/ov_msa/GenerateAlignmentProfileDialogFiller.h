@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GENERATEALIGNMENTPROFILEDIALOGFILLER_H
-#define GENERATEALIGNMENTPROFILEDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -77,5 +76,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // GENERATEALIGNMENTPROFILEDIALOGFILLER_H

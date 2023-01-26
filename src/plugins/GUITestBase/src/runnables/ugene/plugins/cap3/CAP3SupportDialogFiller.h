@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CAP3_SUPPORT_DIALOG_FILLER_H_
-#define _U2_CAP3_SUPPORT_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -42,4 +41,3 @@ private:
     QString output;
 };
 }  // namespace U2
-#endif  // CAP3SUPPORTDIALOGFILLER_H

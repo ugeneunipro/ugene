@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_FIND_ENZYMES_DIALOG_FILLER_H_
-#define _U2_GT_FIND_ENZYMES_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -63,5 +62,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_FIND_ENZYMES_DIALOG_FILLER_H_

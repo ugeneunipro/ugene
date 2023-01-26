@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUFFMERGE_WORKER_H
-#define _U2_CUFFMERGE_WORKER_H
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -78,5 +77,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

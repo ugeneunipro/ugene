@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SPADES_TEST_TASK_
-#define _U2_SPADES_TEST_TASK_
+#pragma once
 
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 
@@ -100,4 +99,3 @@ public:
 };
 
 }  // namespace U2
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _DIST_MATRIX_MODEL_WIDGET_H_
-#define _DIST_MATRIX_MODEL_WIDGET_H_
+#pragma once
 
 #include "U2View/DnaAssemblyGUIExtension.h"
 
@@ -47,5 +46,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

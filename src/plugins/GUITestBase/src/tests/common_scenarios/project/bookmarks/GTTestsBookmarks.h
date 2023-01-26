@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_TEST_PROJECT_BOOKMARKS_H_
-#define _U2_GUI_TEST_PROJECT_BOOKMARKS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -38,5 +37,3 @@ GUI_TEST_CLASS_DECLARATION(test_0002_2)
 }  // namespace GUITest_common_scenarios_project_bookmarks
 
 }  // namespace U2
-
-#endif

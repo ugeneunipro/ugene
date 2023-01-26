@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_CMDLINE_TASKS_H_
-#define _U2_WORKFLOW_CMDLINE_TASKS_H_
+#pragma once
 
 #include <U2Core/Task.h>
 
@@ -60,5 +59,3 @@ public:
 };  // WorkflowRunFromCMDLineTask
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_CMDLINE_TASKS_H_

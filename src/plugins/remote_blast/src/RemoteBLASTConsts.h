@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _REMOTE_QUERY_CONSTS_
-#define _REMOTE_QUERY_CONSTS_
+#pragma once
 
 #include <QStringList>
 
@@ -101,5 +100,3 @@ void addParametr(QString& str, const QString& paramName, double param);
 void addParametr(QString& str, const QString& paramName, int param);
 
 }  // namespace U2
-
-#endif

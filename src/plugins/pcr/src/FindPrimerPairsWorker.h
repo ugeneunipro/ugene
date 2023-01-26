@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_PRIMER_PAIRS_WORKER_H_
-#define _U2_FIND_PRIMER_PAIRS_WORKER_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -102,5 +101,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

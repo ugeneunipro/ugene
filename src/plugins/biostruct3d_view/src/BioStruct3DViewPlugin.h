@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BIOSTRUCT3D_VIEW_PLUGIN_H_
-#define _U2_BIOSTRUCT3D_VIEW_PLUGIN_H_
+#pragma once
 
 #include <QAction>
 #include <QMap>
@@ -70,5 +69,3 @@ protected slots:
 };
 
 }  // namespace U2
-
-#endif

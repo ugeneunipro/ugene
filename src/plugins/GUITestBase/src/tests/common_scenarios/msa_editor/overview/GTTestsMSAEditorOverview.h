@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef GTTESTSMSAEDITOROVERVIEW_H
-#define GTTESTSMSAEDITOROVERVIEW_H
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -54,4 +53,3 @@ GUI_TEST_CLASS_DECLARATION(test_0022)
 }  // namespace GUITest_common_scenarios_msa_editor_overview
 
 }  // namespace U2
-#endif  // GTTESTSMSAEDITOROVERVIEW_H

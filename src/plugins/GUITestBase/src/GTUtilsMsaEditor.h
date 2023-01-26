@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_MSA_EDITOR_H_
-#define _U2_GT_UTILS_MSA_EDITOR_H_
+#pragma once
 
 #include <GTGlobals.h>
 #include <primitives/PopupChooser.h>
@@ -199,5 +198,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_UTILS_MSA_EDITOR_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FLOWCHART_H_
-#define _U2_FLOWCHART_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceModel.h>
@@ -100,5 +99,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

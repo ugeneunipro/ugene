@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GC_FRAME_PLOT_H_
-#define _U2_GC_FRAME_PLOT_H_
+#pragma once
 
 #include <QAction>
 #include <QBitArray>
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GC_FRAME_PLOT_H_

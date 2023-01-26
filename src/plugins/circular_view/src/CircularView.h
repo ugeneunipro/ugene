@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CIRCULAR_PAN_VIEW_H_
-#define _U2_CIRCULAR_PAN_VIEW_H_
+#pragma once
 
 #include <QAction>
 #include <QFont>
@@ -245,5 +244,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

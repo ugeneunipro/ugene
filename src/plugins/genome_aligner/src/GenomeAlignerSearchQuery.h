@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENOME_ALIGNER_SEARCH_QUERY_H_
-#define _U2_GENOME_ALIGNER_SEARCH_QUERY_H_
+#pragma once
 
 #include <QVector>
 
@@ -117,4 +116,3 @@ private:
 };
 
 }  // namespace U2
-#endif  //_U2_GENOME_ALIGNER_SEARCH_QUERY_H_

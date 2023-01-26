@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PREPARE_TO_IMPORT_TASK_H
-#define _U2_PREPARE_TO_IMPORT_TASK_H
+#pragma once
 
 #include <U2Core/GUrl.h>
 #include <U2Core/Task.h>
@@ -56,5 +55,3 @@ private:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif

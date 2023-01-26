@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_JAVASUPPORT_H_
-#define _U2_JAVASUPPORT_H_
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -40,5 +39,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_JAVASUPPORT_H_

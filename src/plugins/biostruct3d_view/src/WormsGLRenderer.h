@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BIOSTRUCT3D_WORMS_RENDERER_H_
-#define _U2_BIOSTRUCT3D_WORMS_RENDERER_H_
+#pragma once
 
 #include <QMap>
 #include <QPair>
@@ -111,5 +110,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_BIOSTRUCT3D_WORMS_RENDERER_H_

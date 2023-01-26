@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef CONVERTACETOSQLITEDIALOGFILLER_H
-#define CONVERTACETOSQLITEDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -44,4 +43,3 @@ private:
     OutFileAction action;
 };
 }  // namespace U2
-#endif  // CONVERTACETOSQLITEDIALOGFILLER_H

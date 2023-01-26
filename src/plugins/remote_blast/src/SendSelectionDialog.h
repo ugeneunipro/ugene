@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SEND_SELECTION_DIALOG_H_
-#define _SEND_SELECTION_DIALOG_H_
+#pragma once
 
 #include <QMessageBox>
 
@@ -78,5 +77,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

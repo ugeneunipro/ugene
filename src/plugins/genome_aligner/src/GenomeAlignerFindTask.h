@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENOME_ALIGNER_FIND_TASK_H_
-#define _U2_GENOME_ALIGNER_FIND_TASK_H_
+#pragma once
 
 #include <QMutex>
 #include <QSemaphore>
@@ -181,5 +180,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GENOME_ALIGNER_FIND_TASK_H_

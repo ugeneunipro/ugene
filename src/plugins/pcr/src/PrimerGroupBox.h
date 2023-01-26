@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PCR_GROUP_BOX_H_
-#define _U2_PCR_GROUP_BOX_H_
+#pragma once
 
 #include "ui_PrimerGroupBox.h"
 
@@ -66,5 +65,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PCR_GROUP_BOX_H_

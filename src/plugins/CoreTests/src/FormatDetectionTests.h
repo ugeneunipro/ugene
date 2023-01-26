@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FORMAT_DETECTION_TESTS_H_
-#define _U2_FORMAT_DETECTION_TESTS_H_
+#pragma once
 
 #include <U2Core/DocumentUtils.h>
 
@@ -72,5 +71,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_FORMAT_DETECTION_TESTS_H_

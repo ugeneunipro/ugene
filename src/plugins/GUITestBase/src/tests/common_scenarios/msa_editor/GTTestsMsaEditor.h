@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTSMSAEDITOR_H
-#define GTTESTSMSAEDITOR_H
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -257,5 +256,3 @@ GUI_TEST_CLASS_DECLARATION(test_0096)
 }  // namespace GUITest_common_scenarios_msa_editor
 
 }  // namespace U2
-
-#endif  // GTTESTSMSAEDITOR_H

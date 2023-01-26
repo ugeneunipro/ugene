@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WMETADIALOG_H_
-#define _U2_WMETADIALOG_H_
+#pragma once
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/Schema.h>
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

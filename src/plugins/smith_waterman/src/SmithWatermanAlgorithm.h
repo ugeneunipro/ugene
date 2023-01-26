@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SMITHWATERMANALGORITHM_H
-#define _SMITHWATERMANALGORITHM_H
+#pragma once
 
 #include <QByteArray>
 #include <QVector>
@@ -121,5 +120,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

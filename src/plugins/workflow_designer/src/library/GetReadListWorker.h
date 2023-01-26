@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GET_READ_LIST_WORKER_H_
-#define _U2_GET_READ_LIST_WORKER_H_
+#pragma once
 
 #include <U2Lang/IntegralBusUtils.h>
 #include <U2Lang/LocalDomain.h>
@@ -103,5 +102,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

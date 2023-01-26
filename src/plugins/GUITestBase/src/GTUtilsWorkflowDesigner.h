@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_WORKFLOW_DESIGNER_H_
-#define _U2_GT_UTILS_WORKFLOW_DESIGNER_H_
+#pragma once
 
 #include <GTGlobals.h>
 
@@ -227,4 +226,3 @@ private:
 
 }  // namespace U2
 Q_DECLARE_METATYPE(QAction*)
-#endif  // _U2_GT_UTILS_WORKFLOW_DESIGNER_H_

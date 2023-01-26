@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_C_INTERFACE_MANUAL_TESTS_H_
-#define _U2_C_INTERFACE_MANUAL_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -73,5 +72,3 @@ DECLARE_METATYPE(CInterfaceManualTests, find_sequences);
 DECLARE_METATYPE(CInterfaceManualTests, gene_by_gene_report);
 DECLARE_METATYPE(CInterfaceManualTests, merge_sequence_annotation);
 DECLARE_METATYPE(CInterfaceManualTests, consensus);
-
-#endif  // _U2_C_INTERFACE_MANUAL_TESTS_H_

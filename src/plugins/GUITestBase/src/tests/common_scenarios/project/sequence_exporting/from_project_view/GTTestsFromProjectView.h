@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_TEST_FROM_PROJECT_VIEW_H_
-#define _U2_GUI_TEST_FROM_PROJECT_VIEW_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -49,5 +48,3 @@ GUI_TEST_CLASS_DECLARATION(test_0008_2)
 }  // namespace GUITest_common_scenarios_project_sequence_exporting_from_project_view
 
 }  // namespace U2
-
-#endif  // _U2_GUI_TEST_FROM_PROJECT_VIEW_H_

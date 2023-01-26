@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SCHEME_SIMILARITY_UTILS_H_
-#define _U2_SCHEME_SIMILARITY_UTILS_H_
+#pragma once
 
 #include <QFile>
 
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_C_INTERFACE_SAS_TESTS_H_

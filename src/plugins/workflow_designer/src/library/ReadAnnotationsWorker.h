@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_READ_ANNOTATIONS_WORKER_
-#define _U2_READ_ANNOTATIONS_WORKER_
+#pragma once
 
 #include "GenericReadActor.h"
 #include "GenericReadWorker.h"
@@ -99,5 +98,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_READ_ANNOTATIONS_WORKER_

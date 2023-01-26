@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_OPTION_PANEL_H_
-#define _U2_GT_TESTS_OPTION_PANEL_H_
+#pragma once
 
 #include <drivers/GTKeyboardDriver.h>
 #include <harness/UGUITestBase.h>
@@ -71,5 +70,3 @@ GUI_TEST_CLASS_DECLARATION(test_0022)
 }  // namespace GUITest_common_scenarios_options_panel
 
 }  // namespace U2
-
-#endif  // _U2_GT_TESTS_OPTION_PANEL_H_

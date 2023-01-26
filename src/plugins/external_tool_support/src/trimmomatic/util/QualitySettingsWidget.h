@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QUALITY_SETTINGS_WIDGET_H_
-#define _U2_QUALITY_SETTINGS_WIDGET_H_
+#pragma once
 
 #include "trimmomatic/TrimmomaticStep.h"
 #include "ui_QualitySettingsWidget.h"
@@ -47,5 +46,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_QUALITY_SETTINGS_WIDGET_H_

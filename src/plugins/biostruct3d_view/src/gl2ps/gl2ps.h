@@ -33,8 +33,7 @@
  * Please report all bugs and problems to <gl2ps@geuz.org>.
  */
 
-#ifndef GL2PS_H
-#define GL2PS_H
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -255,6 +254,4 @@ GL2PSDLL_API GLint gl2psSetTexScaling(GLfloat scaling);
 
 #if defined(__cplusplus)
 }
-#endif
-
 #endif

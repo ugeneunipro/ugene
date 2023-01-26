@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_QUALITY_SCORES_TASK_H_
-#define _U2_EXPORT_QUALITY_SCORES_TASK_H_
+#pragma once
 
 #include <QPointer>
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_EXPORT_QUALITY_SCORES_TASK_H_

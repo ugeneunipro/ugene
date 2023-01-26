@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RUNNABLES_PROJECT_TREE_ITEM_SELECTOR_DIALOG_FILLER_H_
-#define _U2_GT_RUNNABLES_PROJECT_TREE_ITEM_SELECTOR_DIALOG_FILLER_H_
+#pragma once
 
 #include "GTUtilsProjectTreeView.h"
 #include "utils/GTUtilsDialog.h"
@@ -49,5 +48,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

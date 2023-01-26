@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SW_QUERY_H_
-#define _U2_SW_QUERY_H_
+#pragma once
 
 #include <U2Algorithm/SmithWatermanSettings.h>
 #include <U2Algorithm/SmithWatermanTaskFactory.h>
@@ -80,5 +79,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GROUP_WORKER_H_
-#define _GROUP_WORKER_H_
+#pragma once
 
 #include <U2Lang/Datatype.h>
 #include <U2Lang/GrouperOutSlot.h>
@@ -84,5 +83,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _GROUP_WORKER_H_

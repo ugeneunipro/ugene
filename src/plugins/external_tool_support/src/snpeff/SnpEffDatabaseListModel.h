@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SNPEFF_DATABASE_LIST_MODEL_H_
-#define _U2_SNPEFF_DATABASE_LIST_MODEL_H_
+#pragma once
 
 #include <QAbstractTableModel>
 
@@ -66,5 +65,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SNPEFF_DATABASE_LIST_MODEL_H_

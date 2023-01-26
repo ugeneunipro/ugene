@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_FACTORY_H_
-#define _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_FACTORY_H_
+#pragma once
 
 #include <QCoreApplication>
 
@@ -46,5 +45,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_STRINGTIE_GENE_ABUNDANCE_REPORT_WORKER_FACTORY_H_

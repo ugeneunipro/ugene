@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATOR_WORKER_H_
-#define _U2_ANNOTATOR_WORKER_H_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -83,5 +82,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_PRIMERS_DIALOG_H_
-#define _U2_IMPORT_PRIMERS_DIALOG_H_
+#pragma once
 
 #include <U2Core/Folder.h>
 #include <U2Core/ProjectTreeControllerModeSettings.h>
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_IMPORT_PRIMERS_DIALOG_H_

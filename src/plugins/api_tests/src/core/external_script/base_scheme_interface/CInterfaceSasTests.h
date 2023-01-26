@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_C_INTERFACE_SAS_TESTS_H_
-#define _U2_C_INTERFACE_SAS_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -85,5 +84,3 @@ DECLARE_METATYPE(CInterfaceSasTests, split_alignment_into_sequences_sas)
 DECLARE_METATYPE(CInterfaceSasTests, split_assembly_into_sequences_sas)
 DECLARE_METATYPE(CInterfaceSasTests, text2sequence_sas)
 DECLARE_METATYPE(CInterfaceSasTests, extract_consensus_sas)
-
-#endif  // _U2_C_INTERFACE_SAS_TESTS_H_
