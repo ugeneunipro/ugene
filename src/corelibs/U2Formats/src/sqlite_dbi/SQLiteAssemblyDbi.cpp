@@ -582,7 +582,7 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     if (!ii.computeCoverage) {
         return;
     }
-    int csize = ii.coverage.size();
+    int coverageLength = ii.coverage.size();
 
     QVector<U2CigarOp> cigarVector;
     foreach (const U2CigarToken& cigar, read->cigar) {
@@ -592,20 +592,14 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const 
     cigarVector.removeAll(U2CigarOp_S);
     cigarVector.removeAll(U2CigarOp_P);
 
-    int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
-    int endPos = (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1;
-    if (endPos > csize - 1) {
-        endPos = csize - 1;
+    int coverageStartPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
+    int coverageEndPos = qMax(coverageStartPos, (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1);
+    if (coverageEndPos > coverageLength - 1) {
+        coverageEndPos = coverageLength - 1;
     }
     int* coverageData = ii.coverage.data();
-    for (int i = startPos; i <= endPos && i < csize; i++) {
-        switch (cigarVector[(i - startPos) * ii.coverageBasesPerPoint]) {
-            case U2CigarOp_D:  // skip the deletion
-            case U2CigarOp_N:  // skip the skiped
-                continue;
-            default:
-                coverageData[i]++;
-        }
+    for (int i = coverageStartPos; i <= coverageEndPos && i < coverageLength; i++) {
+        coverageData[i]++;
     }
 }
 

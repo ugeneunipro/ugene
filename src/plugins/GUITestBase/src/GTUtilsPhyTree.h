@@ -67,6 +67,9 @@ public:
     /** Zooms in (positive steps) or zooms out (negative steps) using mouse wheel. */
     static void zoomWithMouseWheel(HI::GUITestOpStatus& os, int steps);
 
+    /** Zooms in (positive steps) or zooms out (negative steps) using mouse wheel. */
+    static void zoomWithMouseWheel(HI::GUITestOpStatus& os, QWidget* treeViewer, int steps);
+
     /** Clicks zoom-in button once. */
     static void clickZoomInButton(HI::GUITestOpStatus& os);
 

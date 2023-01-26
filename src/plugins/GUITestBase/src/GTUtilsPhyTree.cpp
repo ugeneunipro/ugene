@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
@@ -409,11 +410,19 @@ int GTUtilsPhyTree::getSceneWidth(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "zoomWithMouseWheel"
 void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus& os, int steps) {
     TreeViewerUI* treeViewer = getTreeViewerUi(os);
+    zoomWithMouseWheel(os, treeViewer, steps);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomWithMouseWheelWithTreeViewer"
+void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus&, QWidget* treeViewer, int steps) {
     QPoint treeViewCenter = treeViewer->mapToGlobal(treeViewer->rect().center());
     GTMouseDriver::moveTo(treeViewCenter);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     for (int i = 0; i < qAbs(steps); i++) {
         GTMouseDriver::scroll(steps > 0 ? 1 : -1);
     }
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 

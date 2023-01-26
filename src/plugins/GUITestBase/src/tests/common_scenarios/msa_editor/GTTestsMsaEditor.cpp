@@ -61,6 +61,7 @@
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -3901,14 +3902,14 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Zoom in the tree to make horizontal scroll bar visible.
-    auto parent = GTWidget::findWidget(os, "qt_scrollarea_hcontainer", GTWidget::findWidget(os, "treeView"));
+    QWidget* treeViewer = GTWidget::findWidget(os, "treeView");
+    auto parent = GTWidget::findWidget(os, "qt_scrollarea_hcontainer", treeViewer);
     auto horizontalScrollbar = parent->findChild<QScrollBar*>();
     int valueBefore = GTScrollBar::getValue(os, horizontalScrollbar);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "treeView"));
-    for (int i = 0; i < 10; i++) {
-        GTMouseDriver::scroll(1);
-    }
+    GTWidget::click(os, treeViewer);
+    GTUtilsPhyTree::zoomWithMouseWheel(os, treeViewer, 10);
+
     // Check that scroll bar is shifted to the center: the value is increased.
     int valueAfter = GTScrollBar::getValue(os, horizontalScrollbar);
     CHECK_SET_ERR(valueAfter > valueBefore, QString("Unexpected scroll value: %1, original value: %2").arg(valueAfter).arg(valueBefore));
