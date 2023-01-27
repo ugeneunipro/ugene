@@ -18,9 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#ifndef _U2_MELTING_TEMPERATURE_DIALOG_FILLER_H_
-#define _U2_MELTING_TEMPERATURE_DIALOG_FILLER_H_
+#pragma once
 
 #include <QPointer>
 
@@ -46,5 +44,3 @@ private:
 };
 
 }
-
-#endif

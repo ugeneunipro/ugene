@@ -18,9 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#ifndef _U2_TEMP_CALC_DIALOG_
-#define _U2_TEMP_CALC_DIALOG_
+#pragma once
 
 #include <QDialog>
 #include <QSharedPointer>
@@ -59,5 +57,3 @@ private:
 };
 
 }
-
-#endif

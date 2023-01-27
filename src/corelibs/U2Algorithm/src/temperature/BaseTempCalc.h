@@ -18,9 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#ifndef _U2_BASE_TEMP_CALC_
-#define _U2_BASE_TEMP_CALC_
+#pragma once
 
 #include <QString>
 #include <QMap>
@@ -97,5 +95,3 @@ private:
 };
 
 }
-
-#endif

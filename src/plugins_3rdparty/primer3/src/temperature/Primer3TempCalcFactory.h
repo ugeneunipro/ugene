@@ -18,9 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#ifndef U2_PRIMER_3_MELT_TEMP_CALC_FACTORY_
-#define U2_PRIMER_3_MELT_TEMP_CALC_FACTORY_
+#pragma once
 
 #include <U2Algorithm/TempCalcFactory.h>
 
@@ -46,5 +44,3 @@ private:
 };
 
 }
-
-#endif

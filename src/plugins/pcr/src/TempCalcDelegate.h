@@ -18,9 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#ifndef _U2_TEMP_CALC_DELEGATE_H_
-#define _U2_TEMP_CALC_DELEGATE_H_
+#pragma once
 
 #include <U2Lang/ConfigurationEditor.h>
 
@@ -47,5 +45,3 @@ private slots:
 };
 
 }
-
-#endif

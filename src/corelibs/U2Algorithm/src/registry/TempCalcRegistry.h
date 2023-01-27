@@ -18,9 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
-#ifndef _U2_TEMP_CALC_REGISTRY_
-#define _U2_TEMP_CALC_REGISTRY_
+#pragma once
 
 #include <U2Core/IdRegistry.h>
 #include <U2Core/global.h>
@@ -74,5 +72,3 @@ private:
 };
 
 }
-
-#endif
