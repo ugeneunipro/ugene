@@ -162,7 +162,7 @@ public:
 
     static void calculateCoverage(SQLiteReadQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
-    static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
+    static void addToCoverage(U2AssemblyCoverageImportInfo& importInfo, const U2AssemblyRead& read);
 };
 
 class SQLiteAssemblyNameFilter : public SQLiteResultSetFilter<U2AssemblyRead> {
