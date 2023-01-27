@@ -35,6 +35,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -554,17 +555,12 @@ bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
 
 void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
     if (link == CAPTION_SEQ_MELTING_TEMPERATURE) {
-        auto dialog = new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings());
-        dialog->open();
-        connect(dialog, &QDialog::finished, this, [this](int result) {
-            auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
-            if (result == QDialog::DialogCode::Accepted) {
-                //delete temperatureCalculator;
-                temperatureCalculator = senderDialog->createTemperatureCalculator();
-                updateCommonStatisticsData(true);
-            }
-            senderDialog->deleteLater();
-        });
+        QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
+        int res = dialog->exec();
+        CHECK(!dialog.isNull() && res == QDialog::Accepted);
+
+        temperatureCalculator = dialog->createTemperatureCalculator();
+        updateCommonStatisticsData(true);
     }
 }
 

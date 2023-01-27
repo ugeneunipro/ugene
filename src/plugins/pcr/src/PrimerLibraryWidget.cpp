@@ -148,17 +148,12 @@ void PrimerLibraryWidget::sl_openTemperatureSettings() {
     PrimerLibrary* library = PrimerLibrary::getInstance(os);
     CHECK_OP_UI(os, );
 
-    auto dialog = new TempCalcDialog(this, library->getTemperatureSettings());
-    dialog->open();
-    connect(dialog, &QDialog::finished, this, [this, library](int result) {
-        auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
-        if (result == QDialog::DialogCode::Accepted) {
-            library->setTemperatureCalculator(senderDialog->createTemperatureCalculator());
-            updateTemperatureValues();
-        }
-        senderDialog->deleteLater();
-    });
+    QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(this, library->getTemperatureSettings()));
+    int res = dialog->exec();
+    CHECK(!dialog.isNull() && res == QDialog::Accepted);
 
+    library->setTemperatureCalculator(dialog->createTemperatureCalculator());
+    updateTemperatureValues();
 }
 
 void PrimerLibraryWidget::sl_selectionChanged() {

@@ -24,6 +24,7 @@
 #include <U2Algorithm/TempCalcRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/QObjectScopedPointer.h>
 
 #include <U2View/TempCalcDialog.h>
 
@@ -72,19 +73,14 @@ void TempCalcPropertyWidget::setValue(const QVariant& value) {
 }
 
 void TempCalcPropertyWidget::sl_showDialog() {
-    auto dialog = new TempCalcDialog(this, tempSettings);
-    dialog->open();
-    connect(dialog, &QDialog::finished, this, [this](int result) {
-        auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
-        if (result == QDialog::DialogCode::Accepted) {
-            delete tempSettings;
-            tempSettings = senderDialog->getTemperatureCalculatorSettings();
-            lineEdit->setText(tempSettings->id);
-            emit si_valueChanged(value());
-        }
-        senderDialog->deleteLater();
-    });
+    QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(this, tempSettings));
+    int res = dialog->exec();
+    CHECK(!dialog.isNull() && res == QDialog::Accepted);
 
+    delete tempSettings;
+    tempSettings = dialog->getTemperatureCalculatorSettings();
+    lineEdit->setText(tempSettings->id);
+    emit si_valueChanged(value());
 }
 
 }
