@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QMutex>
+#include <QSharedPointer>
 
 #include <U2Algorithm/BaseTempCalc.h>
 
@@ -56,7 +57,7 @@ public:
     void updateRawPrimer(Primer primer, U2OpStatus& os);
 
     TempCalcSettings* getTemperatureSettings() const;
-    void setTemperatureCalculator(BaseTempCalc* newTemperatureCalculator);
+    void setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator);
 
 signals:
     void si_primerAdded(const U2DataId& primerId);
@@ -88,7 +89,7 @@ private:
     static QScopedPointer<PrimerLibrary> instance;
     static QMutex mutex;
 
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
     /**
      * If false - try to initialize @temperatureCalculator from the database
      * See @initTemperatureCalculator() for details

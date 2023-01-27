@@ -40,7 +40,7 @@ class Primer3TempCalcWidget : public BaseTempCalcWidget, private Ui_Primer3TempC
 public:
     Primer3TempCalcWidget(QWidget* parent, const QString& id);
 
-    TempCalcSettings* getSettings() const override;
+    TempCalcSettings* createSettings() const override;
     void restoreFromSettings(TempCalcSettings* settings) override;
 
 };

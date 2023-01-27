@@ -31,8 +31,6 @@ namespace U2 {
 
 struct InSilicoPcrTaskSettings {
     InSilicoPcrTaskSettings() = default;
-    ~InSilicoPcrTaskSettings() = default;
-    Q_DISABLE_COPY_MOVE(InSilicoPcrTaskSettings)
 
     QByteArray sequence;
     GObjectReference sequenceObject;
@@ -45,7 +43,7 @@ struct InSilicoPcrTaskSettings {
     uint perfectMatch = 0;
     bool useAmbiguousBases = true;
     QString sequenceName;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 
     static constexpr qint64 MAX_SEQUENCE_LENGTH = 500 * 1024 * 1024;  // 500 Mb;
 };

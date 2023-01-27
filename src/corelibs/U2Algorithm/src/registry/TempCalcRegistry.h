@@ -28,6 +28,8 @@
 #include <U2Algorithm/BaseTempCalc.h>
 #include <U2Algorithm/TempCalcFactory.h>
 
+#include <QSharedPointer>
+
 namespace U2 {
 
 /**
@@ -42,19 +44,19 @@ public:
      * If @saveId is empty - get the first registred factory
      * @return pointer to the temperature calculator
      */
-    BaseTempCalc* getDefaultTempCalculator(const QString& saveId = "") const;
+    QSharedPointer<BaseTempCalc> createDefaultTempCalculator(const QString& saveId = "") const;
     /**
      * Get the default temperature calculator settings
      * @return pointer to the temperature calculator settings
      */
-    TempCalcSettings* getDefaultTempCalcSettings() const;
+    TempCalcSettings* createDefaultTempCalcSettings() const;
     /**
      * Get the temperature calculator settings by temperature settings,
      * which are stored as a variant map
      * @settingsMap map settings
      * @return pointer to the temperature calculator settings
      */
-    BaseTempCalc* getTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const;
+    QSharedPointer<BaseTempCalc> createTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const;
     /**
      * Save calculation settings to this static object
      * This is required if, for example, we need to store settings,

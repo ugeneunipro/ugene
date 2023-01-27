@@ -34,7 +34,7 @@ TempCalcDelegate::TempCalcDelegate(QObject* parent)
 
 QVariant TempCalcDelegate::getDisplayValue(const QVariant& value) const {
     if (!value.isValid()) {
-        QSharedPointer<TempCalcSettings> defaultSettings(AppContext::getTempCalcRegistry()->getDefaultTempCalcSettings());
+        QSharedPointer<TempCalcSettings> defaultSettings(AppContext::getTempCalcRegistry()->createDefaultTempCalcSettings());
         return defaultSettings->id;
     }
 

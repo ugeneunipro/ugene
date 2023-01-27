@@ -30,10 +30,6 @@ InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(InSilicoPcrTaskSettings* pcrSet
     pcrTask->setSubtaskProgressWeight((float)0.7);
 }
 
-InSilicoPcrWorkflowTask::~InSilicoPcrWorkflowTask() {
-    delete temperatureCalculator;
-}
-
 QList<Task*> InSilicoPcrWorkflowTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
     CHECK(subTask != nullptr, result);

@@ -26,6 +26,8 @@
 
 #include <U2Core/global.h>
 
+#include <QSharedPointer>
+
 namespace U2 {
 
 /**
@@ -37,9 +39,9 @@ class U2ALGORITHM_EXPORT RoughTempCalcCmdFactory : public TempCalcFactory {
 public:
     RoughTempCalcCmdFactory();
 
-    BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const override;
-    BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const override;
-    BaseTempCalc* createDefaultTempCalculator() const override;
+    QSharedPointer<BaseTempCalc> createTempCalculator(TempCalcSettings* settings) const override;
+    QSharedPointer<BaseTempCalc> createTempCalculator(const QMap<QString, QVariant>& mapSettings) const override;
+    QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const override;
     TempCalcSettings* createDefaultTempCalcSettings() const override;
     BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
 

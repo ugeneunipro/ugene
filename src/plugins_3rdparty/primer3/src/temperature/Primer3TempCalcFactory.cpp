@@ -33,20 +33,20 @@ const QString Primer3TempCalcFactory::ID = "Primer 3";
 Primer3TempCalcFactory::Primer3TempCalcFactory() 
     : TempCalcFactory(ID) {}
 
-BaseTempCalc* Primer3TempCalcFactory::createTempCalculator(TempCalcSettings* settings) const {
+QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(TempCalcSettings* settings) const {
     auto p3Settings = static_cast<Primer3TempCalcSettings*>(settings);
     SAFE_POINT(p3Settings != nullptr, L10N::nullPointerError("Primer3TempCalcSettings"), nullptr);
 
-    return new Primer3TempCalc(p3Settings);
+    return QSharedPointer<BaseTempCalc>(new Primer3TempCalc(p3Settings));
 }
 
-BaseTempCalc* Primer3TempCalcFactory::createTempCalculator(QMap<QString, QVariant> mapSettings) const {
+QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(const QMap<QString, QVariant>& mapSettings) const {
     auto p3Settings = new Primer3TempCalcSettings;
     p3Settings->fromVariantMap(mapSettings);
     return createTempCalculator(p3Settings);
 }
 
-BaseTempCalc* Primer3TempCalcFactory::createDefaultTempCalculator() const {
+QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createDefaultTempCalculator() const {
     return createTempCalculator(createDefaultTempCalcSettings());
 }
 

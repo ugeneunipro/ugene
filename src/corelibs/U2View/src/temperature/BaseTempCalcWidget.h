@@ -44,7 +44,7 @@ public:
      * Use this function when settings up is done.
      * @return pointer to the settings object
      */
-    virtual TempCalcSettings* getSettings() const = 0;
+    virtual TempCalcSettings* createSettings() const = 0;
     /**
      * Restore widget from the settings object.
      * @settings pointer to the settings object.

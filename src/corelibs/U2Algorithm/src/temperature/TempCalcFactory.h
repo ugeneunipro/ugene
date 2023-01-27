@@ -44,19 +44,19 @@ public:
      * @settings pointer to the TempCalcSettings of the calculator, which should be created
      * @return pointer to the temperature calculator
      */
-    virtual BaseTempCalc* createTempCalculator(TempCalcSettings* settings) const = 0;
+    virtual QSharedPointer<BaseTempCalc> createTempCalculator(TempCalcSettings* settings) const = 0;
     /**
      * Create temperature calculator
      * @mapSettings QMap of the corresponding settings.
      * See TempCalcSettings::toVariantMap() and TempCalcSettings::fromVariantMap() for details
      * @return pointer to the temperature calculator
      */
-    virtual BaseTempCalc* createTempCalculator(QMap<QString, QVariant> mapSettings) const = 0;
+    virtual QSharedPointer<BaseTempCalc> createTempCalculator(const QMap<QString, QVariant>& mapSettings) const = 0;
     /**
      * Create temperature calculator with the default settings
      * @return pointer to the temperature calculator
      */
-    virtual BaseTempCalc* createDefaultTempCalculator() const = 0;
+    virtual QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const = 0;
     /**
      * Create the default settings of the default temperature calculator 
      * @return pointer to the temperature calculator settings

@@ -31,7 +31,7 @@ RoughTempCalc::RoughTempCalc(TempCalcSettings* settings)
     : BaseTempCalc(settings) {}
 
 double RoughTempCalc::getMeltingTemperature(const QByteArray& sequence) {
-    CHECK(!sequence.isEmpty(), 0.0)
+    CHECK(!sequence.isEmpty(), INVALID_TM)
 
     int nA = 0;
     int nC = 0;

@@ -206,13 +206,12 @@ void SQLiteUdrDbi::createTable(const UdrSchemaId& schemaId, U2OpStatus& os) {
     CHECK_OP(os, );
 
     UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT_EXT(nullptr != udrRegistry, os.setError(L10N::nullPointerError("UdrSchemaRegistry")), );
+    SAFE_POINT_EXT(udrRegistry != nullptr, os.setError(L10N::nullPointerError("UdrSchemaRegistry")), );
 
     const UdrSchema* schema = udrRegistry->getSchemaById(schemaId);
-    SAFE_POINT_EXT(nullptr != schema, os.setError(L10N::nullPointerError("UdrSchema")), );
+    SAFE_POINT_EXT(schema != nullptr, os.setError(L10N::nullPointerError("UdrSchema")), );
     
     createTable(schema, os);
-    CHECK_OP(os, );
 }
 
 ModificationAction* SQLiteUdrDbi::getModificationAction(const U2DataId& id) {

@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QSharedPointer>
 #include <QWidget>
 
 #include <U2Core/BackgroundTaskRunner.h>
@@ -160,7 +161,7 @@ private:
 
     U2SavableWidget savableWidget;
 
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 
     static const int COMMON_STATISTICS_TABLE_CELLSPACING;
     static const QString CAPTION_SEQ_REGION_LENGTH;

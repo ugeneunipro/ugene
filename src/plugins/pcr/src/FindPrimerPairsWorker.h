@@ -83,8 +83,7 @@ public:
 class FindPrimersTask : public Task {
     Q_OBJECT
 public:
-    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, BaseTempCalc* temperatureCalculator);
-    ~FindPrimersTask();
+    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<BaseTempCalc>& temperatureCalculator);
 
     void run();
     QString getReport() const {
@@ -101,7 +100,7 @@ private:
 
 private:
     QList<DNASequence> sequences;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
     QString report;
     QString outputUrl;
     QStringList rows;

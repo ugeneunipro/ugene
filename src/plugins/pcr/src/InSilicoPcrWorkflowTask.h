@@ -34,7 +34,6 @@ public:
         InSilicoPcrProduct product;
     };
     InSilicoPcrWorkflowTask(InSilicoPcrTaskSettings* pcrSettings, const ExtractProductSettings& productSettings);
-    ~InSilicoPcrWorkflowTask();
 
     QList<Result> takeResult();
     const InSilicoPcrTaskSettings* getPcrSettings() const;
@@ -46,7 +45,7 @@ private:
     ExtractProductSettings productSettings;
     InSilicoPcrTask* pcrTask = nullptr;
     QList<ExtractProductTask*> productTasks;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 };
 
 }  // namespace U2

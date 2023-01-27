@@ -337,7 +337,7 @@ const QVector<double> DNAStatisticsTask::GC_RATIO_MAP = createGcRatioMap();
 DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
                                      const U2EntityRef seqRef,
                                      const QVector<U2Region>& regions,
-                                     BaseTempCalc* _temperatureCalculator)
+                                     const QSharedPointer<BaseTempCalc>& _temperatureCalculator)
     : BackgroundTask<DNAStatistics>(tr("Calculate sequence statistics"), TaskFlag_None),
       alphabet(alphabet),
       seqRef(seqRef),

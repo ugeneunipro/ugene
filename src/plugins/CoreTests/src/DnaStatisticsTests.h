@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QDomElement>
+#include <QSharedPointer>
 
 #include <U2Algorithm/BaseTempCalc.h>
 
@@ -40,8 +41,6 @@ class GTest_DnaStatisticsTest : public XmlTest {
     Q_OBJECT
         SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DnaStatisticsTest, "dna-statistics")
 
-    ~GTest_DnaStatisticsTest();
-
 private:
     void prepare() override;
     ReportResult report() override;
@@ -53,7 +52,7 @@ private:
     QString seqName;
     QString seq;
     QVector<U2Region> regions;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 
     // expected values
     DNAStatistics expectedStats;

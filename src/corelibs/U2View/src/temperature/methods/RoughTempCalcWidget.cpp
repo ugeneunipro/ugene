@@ -29,7 +29,7 @@ RoughTempCalcWidget::RoughTempCalcWidget(QWidget* parent, const QString& id) :
     BaseTempCalcWidget(parent, id) {}
 
 
-TempCalcSettings* RoughTempCalcWidget::getSettings() const {
+TempCalcSettings* RoughTempCalcWidget::createSettings() const {
     auto settings = new TempCalcSettings;
     settings->id = id;
     return settings;

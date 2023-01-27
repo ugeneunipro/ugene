@@ -94,7 +94,7 @@ TempCalcSettings* TempCalcWidget::getSettings() const {
     auto curentBaseTempCalcWidget = qobject_cast<BaseTempCalcWidget*>(currentWidget);
     SAFE_POINT(curentBaseTempCalcWidget != nullptr, L10N::nullPointerError("BaseTempCalcWidget"), nullptr);
 
-    return curentBaseTempCalcWidget->getSettings();
+    return curentBaseTempCalcWidget->createSettings();
 }
 
 }

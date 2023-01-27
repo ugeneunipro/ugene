@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/global.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -438,7 +439,7 @@ public:
     }
 
     void setTempCalcRegistry(TempCalcRegistry* value) {
-        assert(tcr == nullptr || value == nullptr);
+        SAFE_POINT(tcr == nullptr || value == nullptr, "TempCalcRegistry and tcr aren't nullptr", );
         tcr = value;
     }
 

@@ -378,7 +378,6 @@ void GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog(HI::GUITestOpS
     QPoint labelGlobalPos = statisticsLabel->mapToGlobal(statisticsLabel->pos());
     GTMouseDriver::moveTo(labelGlobalPos);
     for (int column = 0; column < statisticsLabel->height(); column += 10) {
-        bool found = false;
         for (int row = 0; row < statisticsLabel->width(); row += 10) {
             GTThread::waitForMainThread();
             QPoint newMousePos = labelGlobalPos + QPoint(column, row);
@@ -386,15 +385,11 @@ void GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog(HI::GUITestOpS
             Qt::CursorShape shape = statisticsLabel->cursor().shape();
             if (shape != Qt::ArrowCursor) {
                 GTMouseDriver::click();
-                found = true;
-                break;
+                return;;
             }
         }
-        if (found) {
-            break;
-        }
     }
-
+    GT_FAIL("Can't find the \"Melting temperature\" label", );
 }
 #undef GT_METHOD_NAME
 

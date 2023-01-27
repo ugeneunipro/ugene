@@ -34,7 +34,7 @@ namespace U2 {
 TempCalcPropertyWidget::TempCalcPropertyWidget(QWidget* parent, DelegateTags* tags) 
     : PropertyWidget(parent, tags) {
     lineEdit = new QLineEdit(this);
-    tempSettings = AppContext::getTempCalcRegistry()->getDefaultTempCalcSettings();
+    tempSettings = AppContext::getTempCalcRegistry()->createDefaultTempCalcSettings();
     lineEdit->setText(tempSettings->id);
     lineEdit->setPlaceholderText(tempSettings->id);
     lineEdit->setObjectName("tempCalcPropertyLineEdit");

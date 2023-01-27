@@ -108,7 +108,6 @@ PrimerLibrary::PrimerLibrary(DbiConnection* connection)
 }
 
 PrimerLibrary::~PrimerLibrary() {
-    delete temperatureCalculator;
     delete connection;
 }
 
@@ -226,8 +225,7 @@ TempCalcSettings* PrimerLibrary::getTemperatureSettings() const {
     return temperatureCalculator->getSettings();
 }
 
-void PrimerLibrary::setTemperatureCalculator(BaseTempCalc* newTemperatureCalculator) {
-    delete temperatureCalculator;
+void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator) {
     temperatureCalculator = newTemperatureCalculator;
     auto settingsMap = temperatureCalculator->getSettings()->toVariantMap();
     U2OpStatusImpl os;
@@ -354,13 +352,12 @@ void PrimerLibrary::initTemperatureCalculator() {
         calcId = recordValue;
     }
 
-    delete temperatureCalculator;
     auto factory = AppContext::getTempCalcRegistry()->getById(calcId);
     if (factory != nullptr) {
         temperatureCalculator = factory->createTempCalculator(settings);
         initializedFromDb = true;
     } else {
-        temperatureCalculator = AppContext::getTempCalcRegistry()->getDefaultTempCalculator();
+        temperatureCalculator = AppContext::getTempCalcRegistry()->createDefaultTempCalculator();
     }
     
 }

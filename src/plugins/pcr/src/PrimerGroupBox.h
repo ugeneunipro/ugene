@@ -40,7 +40,7 @@ public:
 
     QByteArray getPrimer() const;
     uint getMismatches() const;
-    void setTemperatureCalculator(BaseTempCalc* newTemperatureCalculator);
+    void setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator);
 
 signals:
     void si_primerChanged();
@@ -65,7 +65,7 @@ private:
 
     FindAlgorithmTask* findPrimerTask;
     AnnotatedDNAView* annotatedDnaView;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 };
 
 }  // namespace U2

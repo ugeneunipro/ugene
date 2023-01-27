@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QObject>
+#include <QSharedPointer>
 
 #include <U2Algorithm/BaseTempCalc.h>
 
@@ -34,7 +35,7 @@ namespace U2 {
 class U2CORE_EXPORT PrimerStatistics : public QObject {
     Q_OBJECT
 public:
-    static QString checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, BaseTempCalc* temperatureCalculator, bool& isCriticalError);
+    static QString checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, const QSharedPointer<BaseTempCalc>& temperatureCalculator, bool& isCriticalError);
 
     static bool validate(const QByteArray& primer);
     static bool validatePrimerLength(const QByteArray& primer);
@@ -55,9 +56,7 @@ public:
     enum Direction { Forward,
                      Reverse,
                      DoesntMatter };
-    PrimerStatisticsCalculator(const QByteArray& sequence, BaseTempCalc* temperatureCalculator, Direction direction = DoesntMatter, const qreal energyThreshold = -6);
-    ~PrimerStatisticsCalculator() = default;
-    Q_DISABLE_COPY_MOVE(PrimerStatisticsCalculator);
+    PrimerStatisticsCalculator(const QByteArray& sequence, const QSharedPointer<BaseTempCalc>& temperatureCalculator, Direction direction = DoesntMatter, const qreal energyThreshold = -6);
 
     double getGC() const;
     double getTm() const;
@@ -90,7 +89,7 @@ private:
 private:
     DimerFinderResult dimersInfo;
     const QByteArray sequence;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
     Direction direction;
     qreal energyThreshold = 0.0;
     int nA;
@@ -104,7 +103,7 @@ private:
 
 class U2CORE_EXPORT PrimersPairStatistics {
 public:
-    PrimersPairStatistics(const QByteArray& forward, const QByteArray& reverse, BaseTempCalc* temperatureCalculator);
+    PrimersPairStatistics(const QByteArray& forward, const QByteArray& reverse, const QSharedPointer<BaseTempCalc>& temperatureCalculator);
     ~PrimersPairStatistics() = default;
     Q_DISABLE_COPY_MOVE(PrimersPairStatistics);
 

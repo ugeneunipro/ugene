@@ -68,7 +68,7 @@ private:
     PcrOptionsPanelSavableTab savableWidget;
     // Required, because @annotatedDnaView is already dead in the destructor
     QString tempCalcId;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 };
 
 }  // namespace U2

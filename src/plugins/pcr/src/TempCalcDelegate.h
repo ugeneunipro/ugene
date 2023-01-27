@@ -39,7 +39,7 @@ public:
     PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
 private slots:
     void sl_commit();

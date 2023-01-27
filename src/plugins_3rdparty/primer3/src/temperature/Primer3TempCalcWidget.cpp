@@ -42,7 +42,7 @@ Primer3TempCalcWidget::Primer3TempCalcWidget(QWidget* parent, const QString& id)
     connect(cbSalt, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
 }
 
-TempCalcSettings* Primer3TempCalcWidget::getSettings() const {
+TempCalcSettings* Primer3TempCalcWidget::createSettings() const {
     auto p3Settings = new Primer3TempCalcSettings;
     p3Settings->id = id;
     p3Settings->dnaConc = dsbDna->value();

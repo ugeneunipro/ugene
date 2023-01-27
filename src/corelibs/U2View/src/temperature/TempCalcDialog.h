@@ -23,6 +23,7 @@
 #define _U2_TEMP_CALC_DIALOG_
 
 #include <QDialog>
+#include <QSharedPointer>
 
 #include <U2Algorithm/BaseTempCalc.h>
 
@@ -45,7 +46,7 @@ public:
      * Create temperature calculator according to settings from @tempCalcWidget
      * @return pointed to the created temperature calculator
      */
-    BaseTempCalc* getTemperatureCalculator() const;
+    QSharedPointer<BaseTempCalc> createTemperatureCalculator() const;
 
     /**
      * Get settings from the inner widget

@@ -83,7 +83,7 @@ uint PrimerGroupBox::getMismatches() const {
     return uint(value);
 }
 
-void PrimerGroupBox::setTemperatureCalculator(BaseTempCalc* newTemperatureCalculator) {
+void PrimerGroupBox::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator) {
     temperatureCalculator = newTemperatureCalculator;
     updateStatistics(getPrimer());
 }

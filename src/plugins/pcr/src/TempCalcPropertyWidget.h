@@ -43,7 +43,6 @@ public slots:
     void setValue(const QVariant& value) override;
 
 private slots:
-//    void sl_textEdited();
     void sl_showDialog();
 
 private:

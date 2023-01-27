@@ -65,7 +65,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _an
       resultTableShown(false),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())),
       tempCalcId(annotatedDnaView->getName() + ID_POSTFIX),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator(tempCalcId)) {
+      temperatureCalculator(AppContext::getTempCalcRegistry()->createDefaultTempCalculator(tempCalcId)) {
     GCOUNTER(cvar, "PCR options panel");
     setupUi(this);
     forwardPrimerBoxSubgroup->init(FORWARD_SUBGROUP_ID, tr("Forward primer"), forwardPrimerBox, true);
@@ -113,7 +113,6 @@ InSilicoPcrOptionPanelWidget::~InSilicoPcrOptionPanelWidget() {
         pcrTask->cancel();
     }
     AppContext::getTempCalcRegistry()->saveSettings(tempCalcId, temperatureCalculator->getSettings());
-    delete temperatureCalculator;
 }
 
 AnnotatedDNAView* InSilicoPcrOptionPanelWidget::getDnaView() const {
@@ -283,7 +282,6 @@ void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString& link) {
 
 void U2::InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged() {
     auto tempCalcSettings = temperatureWidget->getSettings();
-    delete temperatureCalculator;
     temperatureCalculator = AppContext::getTempCalcRegistry()->getById(tempCalcSettings->id)->createTempCalculator(tempCalcSettings);
     forwardPrimerBox->setTemperatureCalculator(temperatureCalculator);
     reversePrimerBox->setTemperatureCalculator(temperatureCalculator);

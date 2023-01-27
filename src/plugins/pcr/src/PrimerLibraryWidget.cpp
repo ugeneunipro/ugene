@@ -153,7 +153,7 @@ void PrimerLibraryWidget::sl_openTemperatureSettings() {
     connect(dialog, &QDialog::finished, this, [this, library](int result) {
         auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
         if (result == QDialog::DialogCode::Accepted) {
-            library->setTemperatureCalculator(senderDialog->getTemperatureCalculator());
+            library->setTemperatureCalculator(senderDialog->createTemperatureCalculator());
             updateTemperatureValues();
         }
         senderDialog->deleteLater();

@@ -59,7 +59,6 @@ public:
     };
 
     InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& primersUrl, const QVariantMap& tempSettings);
-    ~InSilicoPcrReportTask();
 
     void run();
 
@@ -77,7 +76,7 @@ private:
     QList<QPair<Primer, Primer>> primers;
     QString reportUrl;
     QString primersUrl;
-    BaseTempCalc* temperatureCalculator = nullptr;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 };
 
 class InSilicoPcrWorker : public BaseThroughWorker {

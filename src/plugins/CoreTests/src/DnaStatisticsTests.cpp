@@ -59,11 +59,6 @@ const QString GTest_DnaStatisticsTest::EXPECTED_DS_OD260_MASS = "expected-ds-od2
 
 const QString GTest_DnaStatisticsTest::EXPECTED_ISOELECTRIC_POINT = "expected-isoelectric-point";
 
-
-GTest_DnaStatisticsTest::~GTest_DnaStatisticsTest() {
-    delete temperatureCalculator;
-}
-
 void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
     task = nullptr;
 
@@ -111,7 +106,7 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
         CHECK_EXT(!resultMap.isEmpty(), setError("No temperature settings"), );
         CHECK_EXT(resultMap.keys().contains(TempCalcSettings::KEY_ID), setError("No ID were set"), );
 
-        temperatureCalculator = AppContext::getTempCalcRegistry()->getTempCalculatorBySettingsMap(resultMap);
+        temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(resultMap);
         CHECK_EXT(temperatureCalculator != nullptr, setError("Can't set temperature settings"), );
     }
 
@@ -207,10 +202,7 @@ void GTest_DnaStatisticsTest::prepare() {
 }
 
 bool checkDoubleProperty(double value, double expectedValue) {
-    if (qAbs(value - expectedValue) > qMax(qAbs(value / 1000), 0.005)) {
-        return false;
-    }
-    return true;
+    return qAbs(value - expectedValue) <= qMax(qAbs(value / 1000), 0.005);
 }
 
 Task::ReportResult GTest_DnaStatisticsTest::report() {

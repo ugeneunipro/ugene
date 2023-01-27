@@ -32,7 +32,7 @@ bool TempCalcRegistry::registerEntry(TempCalcFactory* t) {
     return IdRegistry::registerEntry(t);
 }
 
-BaseTempCalc* TempCalcRegistry::getDefaultTempCalculator(const QString& saveId) const {
+QSharedPointer<BaseTempCalc> TempCalcRegistry::createDefaultTempCalculator(const QString& saveId) const {
     CHECK(!saveId.isEmpty(), defaultFactory->createDefaultTempCalculator());
 
     auto savedFactory = getById(savedSettings.value(saveId).value(TempCalcSettings::KEY_ID).toString());
@@ -41,14 +41,14 @@ BaseTempCalc* TempCalcRegistry::getDefaultTempCalculator(const QString& saveId) 
     return savedFactory->createTempCalculator(savedSettings.value(saveId));
 }
 
-TempCalcSettings* TempCalcRegistry::getDefaultTempCalcSettings() const {
+TempCalcSettings* TempCalcRegistry::createDefaultTempCalcSettings() const {
     return defaultFactory->createDefaultTempCalcSettings();
 }
 
-BaseTempCalc* TempCalcRegistry::getTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const {
-    BaseTempCalc* result = nullptr;
+QSharedPointer<BaseTempCalc> TempCalcRegistry::createTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const {
+    QSharedPointer<BaseTempCalc> result;
     if (settingsMap.isEmpty()) {
-        result = getDefaultTempCalculator();
+        result = createDefaultTempCalculator();
     } else {
         auto settingsId = settingsMap.value(TempCalcSettings::KEY_ID).toString();
         result = getById(settingsId)->createTempCalculator(settingsMap);

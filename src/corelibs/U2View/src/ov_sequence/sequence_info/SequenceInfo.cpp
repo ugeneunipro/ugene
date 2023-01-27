@@ -81,7 +81,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView), 
       annotatedDnaViewName(annotatedDnaView->getName()),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->getDefaultTempCalculator(annotatedDnaViewName)) {
+      temperatureCalculator(AppContext::getTempCalcRegistry()->createDefaultTempCalculator(annotatedDnaViewName)) {
     SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
@@ -94,7 +94,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
 
 SequenceInfo::~SequenceInfo() {
     AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaViewName, temperatureCalculator->getSettings());
-    delete temperatureCalculator;
+    //delete temperatureCalculator;
 }
 
 void SequenceInfo::initLayout() {
@@ -559,8 +559,8 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
         connect(dialog, &QDialog::finished, this, [this](int result) {
             auto senderDialog = qobject_cast<TempCalcDialog*>(sender());
             if (result == QDialog::DialogCode::Accepted) {
-                delete temperatureCalculator;
-                temperatureCalculator = senderDialog->getTemperatureCalculator();
+                //delete temperatureCalculator;
+                temperatureCalculator = senderDialog->createTemperatureCalculator();
                 updateCommonStatisticsData(true);
             }
             senderDialog->deleteLater();
