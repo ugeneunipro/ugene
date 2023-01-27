@@ -3850,5 +3850,20 @@ GUI_TEST_CLASS_DEFINITION(test_7753) {
     GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7781) {
+    // Open "_common_data/scenarios/_regression/7781/7781.bam".
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7781.ugenedb", "", "", false));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7781/7781.bam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
+
+    QString textFromLabel = coveredRegionsLabel->text();
+    CHECK_SET_ERR(textFromLabel.contains("206"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("10"), "expected coverage value not found");
+    CHECK_SET_ERR(textFromLabel.contains("2"), "expected coverage value not found");
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
