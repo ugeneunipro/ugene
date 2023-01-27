@@ -3862,7 +3862,7 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
     CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
-    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 22");
+    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
 }
 
 }  // namespace GUITest_regression_scenarios
