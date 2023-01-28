@@ -541,7 +541,7 @@ void MultilineScrollController::sl_updateScrollBars() {
 
 void MultilineScrollController::updateChildrenScrollBarsPeivate() {
     int val;
-    for (uint i = 0; i < ui->getChildrenCount(); i++) {
+    for (int i = 0; i < ui->getChildrenCount(); i++) {
         auto wgt = ui->getUI(i);
         SAFE_POINT(wgt != nullptr, "Unexpected nullptr multiline editor child widget", );
 

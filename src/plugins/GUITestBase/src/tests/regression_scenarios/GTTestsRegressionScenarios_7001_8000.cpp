@@ -3910,7 +3910,7 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 
     count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
     allAreVisible = true;
-    for (uint i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
         CHECK_SET_ERR(w != nullptr, "Sequence widget exists");
         allAreVisible = allAreVisible && w->isVisible();
