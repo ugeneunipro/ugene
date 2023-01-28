@@ -1120,7 +1120,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
         prevStepWidth = sceneWidth;
     }
 
-    GTUtilsPhyTree::clickResetZoomButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
     int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
     CHECK_SET_ERR(sceneWidth == originalWidth, "Unexpected scene width on reset zoom");
 }

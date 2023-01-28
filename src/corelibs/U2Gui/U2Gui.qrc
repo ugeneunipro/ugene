@@ -159,8 +159,12 @@
         <file>images/unload_document.png</file>
         <file>images/warning_notification.png</file>
         <file>images/wrap_sequence.png</file>
+        <file>images/zoom_1_1.png</file>
         <file>images/zoom_in.png</file>
+        <file>images/zoom_in_tree.png</file>
+        <file>images/zoom_fit.png</file>
         <file>images/zoom_out.png</file>
+        <file>images/zoom_out_tree.png</file>
         <file>images/zoom_reg.png</file>
         <file>images/zoom_rows.png</file>
         <file>images/zoom_sel.png</file>

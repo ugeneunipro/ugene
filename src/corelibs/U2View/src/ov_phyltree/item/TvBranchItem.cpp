@@ -87,6 +87,7 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool is
 }
 
 void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
+    prepareGeometryChange();
     settings = newSettings;
     int penWidth = settings[BRANCH_THICKNESS].toInt();
     if (isSelected()) {
@@ -102,7 +103,9 @@ void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
     QFont font = TreeViewerUtils::getFontFromSettings(settings);
     QColor labelColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
     if (distanceTextItem != nullptr) {
-        distanceTextItem->setFont(font);
+        QFont distanceItemFont = font;  // TODO: have a separate setting for distance item. Distance items are less important than sequence names.
+        distanceItemFont.setPointSize(font.pointSize() - 2);
+        distanceTextItem->setFont(distanceItemFont);
         distanceTextItem->setBrush(labelColor);
     }
     if (nameTextItem != nullptr) {
@@ -203,6 +206,7 @@ void TvBranchItem::setDistanceText(const QString& text) {
 
 void TvBranchItem::setWidth(double newWidth) {
     CHECK(width != newWidth, )
+    prepareGeometryChange();
     double delta = newWidth - width;
     setPos(pos() + QPointF(delta, 0));
     setLabelPositions();
@@ -210,7 +214,6 @@ void TvBranchItem::setWidth(double newWidth) {
         QPointF newPos = getDistanceTextItem()->pos() + QPointF(-delta / 2, 0);
         getDistanceTextItem()->setPos(newPos);
     }
-    prepareGeometryChange();
     width = newWidth;
 }
 

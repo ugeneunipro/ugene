@@ -393,9 +393,15 @@ void GTUtilsPhyTree::clickZoomOutButton(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickResetZoomButton"
-void GTUtilsPhyTree::clickResetZoomButton(HI::GUITestOpStatus& os) {
-    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "resetZoomTreeViewerAction");
+#define GT_METHOD_NAME "clickZoomFitButton"
+void GTUtilsPhyTree::clickZoomFitButton(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomFitAction");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickZoom100Button"
+void GTUtilsPhyTree::clickZoom100Button(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoom100Action");
 }
 #undef GT_METHOD_NAME
 

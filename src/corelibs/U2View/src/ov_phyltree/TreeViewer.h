@@ -107,8 +107,9 @@ public:
     QAction* alignTreeLabelsAction = nullptr;
 
     QAction* zoomInAction = nullptr;
-    QAction* resetZoomAction = nullptr;
     QAction* zoomOutAction = nullptr;
+    QAction* zoom100Action = nullptr;
+    QAction* zoomFitAction = nullptr;
 
     QAction* printAction = nullptr;
     QAction* saveVisibleViewToFileAction = nullptr;
@@ -160,8 +161,6 @@ public:
 
     bool isOnlyLeafSelected() const;
 
-    void updateRect();
-
     /** Returns current root item of the tree. */
     TvBranchItem* getRoot() const;
 
@@ -173,8 +172,11 @@ public:
     /** Makes 1 zoom-out step, until minimum zoom limit is reached. */
     void zoomOut();
 
-    /** Resets zoom. Fits the tree into view. */
-    void resetZoom();
+    /** Resets zoom to 100%. */
+    void zoomTo100();
+
+    /** Adjusts zoom so the tree fits into the view. */
+    void zoomFit();
 
     /** Updates single option. */
     void updateOption(const TreeViewOption& option, const QVariant& newValue);
@@ -190,19 +192,14 @@ protected:
 
     virtual void setTreeLayout(const TreeLayout& newLayout);
 
-    void setZoomLevel(double newZoomLevel);
-
-    void defaultZoom();
-
-    /** Fits current scene into the view, so the whole tree is visible. Does not change aspect ratio. **/
-    void fitIntoView();
+    /** Sets zoom to the given level. Unchecks 'zoomFitAreaAction' if 'cancelFitToViewMode' is true. */
+    void setZoomLevel(double newZoomLevel, bool cancelFitToViewMode = true);
 
     /**
      * Recomputes scene layout and triggers redraw.
      * Updates legend, scene rect, label alignment and other UI properties.
-     * If 'fitSceneToView' is true calls fitInView() for the result scene.
      */
-    virtual void updateScene(bool fitSceneToView);
+    virtual void updateScene();
 
     /** Updates parameter of rect-layout branches using current settings. */
     void updateRectLayoutBranches();
@@ -246,7 +243,14 @@ private:
      */
     void saveOptionToSettings(const TreeViewOption& option, const QVariant& value);
 
+    /** Recalculates distanceToViewScale, minDistance, maxDistance. */
     void updateDistanceToViewScale();
+
+    /** Update width of the rectangular branches using distanceToViewScale. */
+    void assignRectangularBranchWidth();
+
+    double getScalebarDistanceRange() const;
+
     void rebuildTreeLayout();
 
     /** Copies whole tree image to clipboard. */
@@ -338,6 +342,10 @@ private:
 
     /** Used to compute on-screen length of every branch: length = distance * distanceToScreenScale. */
     double distanceToViewScale = 1;
+    /** Minimum branch distance in tree. */
+    double minDistance = 0;
+    /** Maximum branch distance in tree. */
+    double maxDistance = 0;
 
     QGraphicsLineItem* legendItem = nullptr;
     TvTextItem* scalebarTextItem = nullptr;
