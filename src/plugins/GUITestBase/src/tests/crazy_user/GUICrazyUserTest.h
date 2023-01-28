@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_CRAZY_USER_H_
-#define _U2_GT_TESTS_CRAZY_USER_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 //#include <U2Core/U2OpStatus.h>
@@ -70,5 +69,3 @@ protected:
 }  // namespace GUITest_crazy_user
 
 }  // namespace U2
-
-#endif

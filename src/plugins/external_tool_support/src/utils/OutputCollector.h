@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OUTPUT_COLLECTOR_H_
-#define _U2_OUTPUT_COLLECTOR_H_
+#pragma once
 
 #include <QString>
 
@@ -42,5 +41,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

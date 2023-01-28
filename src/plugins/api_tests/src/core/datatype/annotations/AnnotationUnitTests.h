@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATION_TESTS_H_
-#define _U2_ANNOTATION_TESTS_H_
+#pragma once
 
 #include <core/dbi/DbiTest.h>
 #include <unittest.h>
@@ -50,5 +49,3 @@ DECLARE_METATYPE(AnnotationUnitTest, getSet_Qualifiers)
 DECLARE_METATYPE(AnnotationUnitTest, find_Qualifiers)
 DECLARE_METATYPE(AnnotationUnitTest, get_Group)
 DECLARE_METATYPE(AnnotationUnitTest, getSet_Case)
-
-#endif  //_U2_ANNOTATION_TESTS_H_

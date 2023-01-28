@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef U2_SELECTMODELSDIALOG_H
-#define U2_SELECTMODELSDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -51,5 +50,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // #ifndef U2_SELECTMODELSDIALOG_H

@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_TRIMMOMATIC_ELEMENT_H_
-#define GTTESTS_TRIMMOMATIC_ELEMENT_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -39,5 +38,3 @@ GUI_TEST_CLASS_DECLARATION(test_0003)
 }  // namespace GUITest_common_scenarios_trimmomatic_element
 
 }  // namespace U2
-
-#endif  // GTTESTS_TRIMMOMATIC_ELEMENT_H_

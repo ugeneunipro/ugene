@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MR_BAYES_DIALOG_WIDGET_
-#define _U2_MR_BAYES_DIALOG_WIDGET_
+#pragma once
 
 #include <U2Core/AppContext.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -51,5 +50,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MR_BAYES_DIALOG_WIDGET_

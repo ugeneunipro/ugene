@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STARTUP_DIALOG_FILLER_H_
-#define _U2_STARTUP_DIALOG_FILLER_H_
+#pragma once
 
 #include <core/GUITestOpStatus.h>
 #include <harness/UGUITestBase.h>
@@ -44,5 +43,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_STARTUP_DIALOG_FILLER_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_SAMPLES_H_
-#define _U2_WORKFLOW_SAMPLES_H_
+#pragma once
 
 #include <QAction>
 #include <QButtonGroup>
@@ -166,5 +165,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

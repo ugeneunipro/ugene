@@ -838,10 +838,12 @@ void MaEditorSequenceArea::paintEvent(QPaintEvent* e) {
 
 void MaEditorSequenceArea::wheelEvent(QWheelEvent* we) {
     bool toMin = we->delta() > 0;
-    if (we->modifiers() == 0) {
-        shBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
-    } else if (we->modifiers() & Qt::SHIFT) {
-        svBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
+    // Manually shift scrollbars on wheel event.
+    // With no modifiers the default scrollbar is shifted.
+    // Wheel + Alt changes the default wheel action from horizontal <=> vertical (default QT behavior for scroll-areas).
+    auto scrollBar = we->modifiers() == Qt::AltModifier ? svBar : (we->modifiers() == 0 ? (shBar->isEnabled() ? shBar : svBar) : nullptr);
+    if (scrollBar) {
+        scrollBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
     }
     QWidget::wheelEvent(we);
 }

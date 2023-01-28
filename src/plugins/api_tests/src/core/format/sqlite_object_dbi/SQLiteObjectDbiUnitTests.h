@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITE_OBJECT_DBI_UNIT_TESTS_H_
-#define _U2_SQLITE_OBJECT_DBI_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -133,5 +132,3 @@ DECLARE_METATYPE(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo2)
 DECLARE_METATYPE(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo3);
 DECLARE_METATYPE(SQLiteObjectDbiUnitTests, commonUndoRedo_actionUndoActionUndo4);
 DECLARE_METATYPE(SQLiteObjectDbiUnitTests, commonUndoRedo_user3Single6);
-
-#endif

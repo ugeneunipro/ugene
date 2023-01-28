@@ -981,9 +981,12 @@ void TreeViewerUI::updateLegend() {
 }
 
 void TreeViewerUI::wheelEvent(QWheelEvent* we) {
-    double newZoomLevel = zoomLevel * pow(ZOOM_LEVEL_STEP, we->delta() / 120.0);
-    setZoomLevel(newZoomLevel);
-    we->accept();
+    // Wheel + Shift changes zoom level. Wheel only -> scrolls.
+    if (we->modifiers().testFlag(Qt::ControlModifier)) {
+        double newZoomLevel = zoomLevel * pow(ZOOM_LEVEL_STEP, we->delta() / 120.0);
+        setZoomLevel(newZoomLevel);
+    }
+    QGraphicsView::wheelEvent(we);
 }
 
 void TreeViewerUI::setZoomLevel(double newZoomLevel) {

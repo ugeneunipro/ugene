@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BASE_MESSAGE_TRANSLATOR_H_
-#define _U2_BASE_MESSAGE_TRANSLATOR_H_
+#pragma once
 
 #include <QString>
 #include <QVariant>
@@ -55,5 +54,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_BASE_MESSAGE_TRANSLATOR_H_

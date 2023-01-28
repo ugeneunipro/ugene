@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MAKE_BLAST_DB_DIALOG_H
-#define _U2_MAKE_BLAST_DB_DIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -53,4 +52,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // _U2_MAKE_BLAST_DB_DIALOG_H

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TRAILING_STEP_H_
-#define _U2_TRAILING_STEP_H_
+#pragma once
 
 #include "trimmomatic/TrimmomaticStep.h"
 
@@ -50,5 +49,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_TRAILING_STEP_H_

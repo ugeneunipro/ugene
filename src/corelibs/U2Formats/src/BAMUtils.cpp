@@ -33,7 +33,7 @@ extern "C" {
 #    pragma warning(disable : 4018)
 #endif
 
-#include <bam_rmdup.c>
+#include <sam.h>
 
 #ifdef _MSC_VER
 #    pragma warning(pop)

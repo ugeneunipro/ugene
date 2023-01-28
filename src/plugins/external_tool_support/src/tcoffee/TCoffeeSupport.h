@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TCOFFEE_SUPPORT_H
-#define _U2_TCOFFEE_SUPPORT_H
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -61,4 +60,3 @@ protected:
 };
 
 }  // namespace U2
-#endif  // _U2_TCOFFEE_SUPPORT_H

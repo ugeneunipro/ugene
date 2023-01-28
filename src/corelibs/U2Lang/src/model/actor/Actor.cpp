@@ -329,7 +329,7 @@ void Actor::updateGrouperSlots(const QMap<ActorId, ActorId>& actorsMapping) {
     }
     // update out slots
     {
-        GrouperOutSlotAttribute* attr = dynamic_cast<GrouperOutSlotAttribute*>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
+        auto attr = dynamic_cast<GrouperOutSlotAttribute*>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
         QList<GrouperOutSlot>& outSlots = attr->getOutSlots();
         QList<GrouperOutSlot>::iterator i = outSlots.begin();
         while (i != outSlots.end()) {
@@ -377,7 +377,7 @@ void Actor::replaceActor(Actor* oldActor, Actor* newActor, const QList<PortMappi
         }
 
         {
-            GrouperOutSlotAttribute* attr = dynamic_cast<GrouperOutSlotAttribute*>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
+            auto attr = dynamic_cast<GrouperOutSlotAttribute*>(getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
             QList<GrouperOutSlot>::iterator i = attr->getOutSlots().begin();
             for (; i != attr->getOutSlots().end(); i++) {
                 QString in = i->getBusMapInSlotId();

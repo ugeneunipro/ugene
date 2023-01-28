@@ -41,7 +41,7 @@ SequenceContentFilterTask::SequenceContentFilterTask(const ProjectTreeController
 }
 
 bool SequenceContentFilterTask::filterAcceptsObject(GObject* obj) {
-    U2SequenceObject* seqObject = qobject_cast<U2SequenceObject*>(obj);
+    auto seqObject = qobject_cast<U2SequenceObject*>(obj);
     CHECK(nullptr != seqObject, false);
 
     FindAlgorithmSettings findSettings;

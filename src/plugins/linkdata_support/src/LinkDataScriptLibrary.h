@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef _U2_LINKDATA_SCRIPT_LIBRARY_H_
-#define _U2_LINKDATA_SCRIPT_LIBRARY_H_
+#pragma once
 
 #include <QAuthenticator>
 #include <QNetworkAccessManager>
@@ -57,4 +56,3 @@ private:
 };
 
 }  // namespace U2
-#endif  //_U2_LINKDATA_SCRIPT_LIBRARY_H_

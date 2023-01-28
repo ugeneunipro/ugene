@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_MCA_2_MSA_DIALOG_H_
-#define _U2_EXPORT_MCA_2_MSA_DIALOG_H_
+#pragma once
 
 #include <QDialog>
 
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_EXPORT_MCA_2_MSA_DIALOG_H_

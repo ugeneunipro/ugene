@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HMMER_SEARCH_DIALOG_FILLER_H_
-#define _U2_HMMER_SEARCH_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 namespace U2 {
@@ -39,4 +38,3 @@ private:
     QString profile, newFilePath;
 };
 }  // namespace U2
-#endif  // _U2_UHMM3_SEARCH_DIALOG_FILLER_H_

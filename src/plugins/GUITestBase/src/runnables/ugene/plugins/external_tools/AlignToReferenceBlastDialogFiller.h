@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_FILLER_
-#define _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_FILLER_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_ALIGN_TO_REFERENCE_BLAST_DIALOG_FILLER_

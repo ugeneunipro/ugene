@@ -133,16 +133,16 @@ QString SearchGenbankSequenceDialogController::getIdsString(const QStringList& i
 
 QList<EntrezSummary> SearchGenbankSequenceDialogController::getSummaryResults() const {
     QList<EntrezSummary> results;
-    EntrezQueryTask* singleTask = qobject_cast<EntrezQueryTask*>(summaryTask);
-    MultiTask* multiTask = qobject_cast<MultiTask*>(summaryTask);
+    auto singleTask = qobject_cast<EntrezQueryTask*>(summaryTask);
+    auto multiTask = qobject_cast<MultiTask*>(summaryTask);
     if (nullptr != singleTask) {
         SAFE_POINT(nullptr != summaryResultHandler, L10N::nullPointerError("summary results handler"), results);
         results << summaryResultHandler->getResults();
     } else if (nullptr != multiTask) {
         foreach (const QPointer<Task>& subtask, multiTask->getSubtasks()) {
-            EntrezQueryTask* summarySubtask = qobject_cast<EntrezQueryTask*>(subtask.data());
+            auto summarySubtask = qobject_cast<EntrezQueryTask*>(subtask.data());
             SAFE_POINT(nullptr != summarySubtask, L10N::internalError(tr("an unexpected subtask")), results);
-            const ESummaryResultHandler* resultHandler = dynamic_cast<const ESummaryResultHandler*>(summarySubtask->getResultHandler());
+            auto resultHandler = dynamic_cast<const ESummaryResultHandler*>(summarySubtask->getResultHandler());
             SAFE_POINT(nullptr != resultHandler, L10N::nullPointerError("ESummaryResultHandler"), results);
             results << resultHandler->getResults();
             delete resultHandler;
@@ -308,10 +308,10 @@ void QueryBuilderController::sl_addQueryBlockWidget() {
 }
 
 void QueryBuilderController::sl_removeQueryBlockWidget() {
-    QToolButton* callbackButton = qobject_cast<QToolButton*>(sender());
+    auto callbackButton = qobject_cast<QToolButton*>(sender());
     assert(callbackButton);
 
-    QueryBlockWidget* queryBlockWidget = qobject_cast<QueryBlockWidget*>(callbackButton->parentWidget());
+    auto queryBlockWidget = qobject_cast<QueryBlockWidget*>(callbackButton->parentWidget());
     assert(queryBlockWidget);
 
     parentController->removeQueryBlockWidget(queryBlockWidget);

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef BRANCHSETTINGSDIALOGFILLER_H
-#define BRANCHSETTINGSDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -36,5 +35,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // BRANCHSETTINGSDIALOGFILLER_H

@@ -226,7 +226,7 @@ void GObjectComboBoxController::sl_onObjectAdded(GObject* obj) {
 }
 
 void GObjectComboBoxController::sl_onObjectRemoved(GObject* obj) {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     assert(doc != nullptr);
     QString t = obj->getGObjectType();
     if (t == GObjectTypes::UNLOADED && settings.uof == UOF_LoadedAndUnloaded) {
@@ -240,7 +240,7 @@ void GObjectComboBoxController::sl_lockedStateChanged() {
     if (!settings.onlyWritable) {
         return;
     }
-    GObject* obj = qobject_cast<GObject*>(sender());
+    auto obj = qobject_cast<GObject*>(sender());
     if (obj->isStateLocked()) {
         removeObject(obj->getReference());
     } else {

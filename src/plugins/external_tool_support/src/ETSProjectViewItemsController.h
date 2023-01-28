@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ETS_PROJECT_VIEW_ITEMS_CONTROLLER_H
-#define _U2_ETS_PROJECT_VIEW_ITEMS_CONTROLLER_H
+#pragma once
 
 #include <QAction>
 #include <QMenu>
@@ -45,4 +44,3 @@ private:
     ExternalToolSupportAction* makeBlastDbOnSelectionAction;
 };
 }  // namespace U2
-#endif  // _U2_ETS_PROJECT_VIEW_ITEMS_CONTROLLER_H

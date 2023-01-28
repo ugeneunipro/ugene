@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPHPACK_ENTROPY_H_
-#define _U2_GRAPHPACK_ENTROPY_H_
+#pragma once
 
 #include <QAction>
 #include <QBitArray>
@@ -48,4 +47,3 @@ public:
 };
 
 }  // namespace U2
-#endif

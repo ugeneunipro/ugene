@@ -552,7 +552,7 @@ QString ScreenedParamValidator::validate(const Configuration* cfg) const {
     CHECK(paramIsVisible, QString());
 
     QVariant val = param->getAttributePureValue();
-    const Workflow::Actor* a = dynamic_cast<const Workflow::Actor*>(cfg);
+    auto a = dynamic_cast<const Workflow::Actor*>(cfg);
     assert(a);
 
     Workflow::Port* p = a->getPort(port);
@@ -655,7 +655,7 @@ bool IntegralBusSlot::operator==(const IntegralBusSlot& ibs) const {
 /* PortValidator */
 /************************************************************************/
 bool PortValidator::validate(const Configuration* cfg, NotificationsList& notificationList) const {
-    const IntegralBusPort* port = static_cast<const IntegralBusPort*>(cfg);
+    auto port = static_cast<const IntegralBusPort*>(cfg);
     SAFE_POINT(nullptr != port, "NULL port", false);
     return validate(port, notificationList);
 }

@@ -82,7 +82,7 @@ QList<Task*> PasteTaskImpl::onSubTaskFinished(Task* task) {
     if (task->isCanceled() || task->hasError()) {
         return res;
     }
-    DocumentProviderTask* loadTask = qobject_cast<DocumentProviderTask*>(task);
+    auto loadTask = qobject_cast<DocumentProviderTask*>(task);
     if (loadTask != nullptr) {
         Document* doc = loadTask->takeDocument();
         processDocument(doc);

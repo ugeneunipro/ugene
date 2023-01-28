@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GL_FRAME_MANAGER_H_
-#define _U2_GL_FRAME_MANAGER_H_
+#pragma once
 
 #include <GraphicUtils.h>
 
@@ -102,5 +101,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GL_FRAME_MANAGER_H_

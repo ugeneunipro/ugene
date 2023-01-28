@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_PHY_TREE_H_
-#define _U2_GT_UTILS_PHY_TREE_H_
+#pragma once
 
 #include <U2View/TreeViewer.h>
 #include <U2View/TvNodeItem.h>
@@ -66,6 +65,9 @@ public:
 
     /** Zooms in (positive steps) or zooms out (negative steps) using mouse wheel. */
     static void zoomWithMouseWheel(HI::GUITestOpStatus& os, int steps);
+
+    /** Zooms in (positive steps) or zooms out (negative steps) using mouse wheel. */
+    static void zoomWithMouseWheel(HI::GUITestOpStatus& os, QWidget* treeViewer, int steps);
 
     /** Clicks zoom-in button once. */
     static void clickZoomInButton(HI::GUITestOpStatus& os);
@@ -114,5 +116,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_UTILS_PHY_TREE_H_

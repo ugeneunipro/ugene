@@ -23,7 +23,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by test_runner.rc
 //
-#define IDB_BITMAP1 101
+#pragma once
 
 // Next default values for new objects
 //
@@ -34,4 +34,3 @@
 #        define _APS_NEXT_CONTROL_VALUE 1001
 #        define _APS_NEXT_SYMED_VALUE 101
 #    endif
-#endif

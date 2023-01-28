@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GTUTILS_PCR_H_
-#define _GTUTILS_PCR_H_
+#pragma once
 
 #include <GTGlobals.h>
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _GTUTILS_PCR_H_

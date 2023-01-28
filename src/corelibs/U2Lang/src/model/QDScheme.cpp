@@ -185,7 +185,7 @@ QList<QDConstraint*> QDActor::getConstraints() const {
 QList<QDDistanceConstraint*> QDSchemeUnit::getDistanceConstraints() const {
     QList<QDDistanceConstraint*> res;
     foreach (QDConstraint* c, schemeConstraints) {
-        QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
+        auto dc = static_cast<QDDistanceConstraint*>(c);
         if (dc) {
             res.append(dc);
         }
@@ -365,7 +365,7 @@ void QDScheme::findRoute(QDSchemeUnit* curSu, QDSchemeUnit* routeDst, QList<QDSc
         // include "parameter" constraints
         foreach (QDConstraint* con, curSu->getActor()->getParamConstraints()) {
             if (con->constraintType() == QDConstraintTypes::DISTANCE) {
-                QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(con);
+                auto dc = static_cast<QDDistanceConstraint*>(con);
                 if (dc->getSchemeUnits().contains(curSu)) {
                     dcList.append(dc);
                 }
@@ -642,7 +642,7 @@ bool QDScheme::isValid() const {
     }
     foreach (QDConstraint* con, getConstraints()) {
         if (con->constraintType() == QDConstraintTypes::DISTANCE) {
-            QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(con);
+            auto dc = static_cast<QDDistanceConstraint*>(con);
             if (dc->getMin() > dc->getMax()) {
                 coreLog.error(QObject::tr("Invalid distance values"));
                 res = false;

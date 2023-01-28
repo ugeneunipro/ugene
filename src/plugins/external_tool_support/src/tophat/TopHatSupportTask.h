@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TOPHAT_SUPPORT_TASK_H_
-#define _U2_TOPHAT_SUPPORT_TASK_H_
+#pragma once
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/ExternalToolRunTask.h>
@@ -98,5 +97,3 @@ private:
     ExternalToolSupportTask* createIndexTask();
 };
 }  // namespace U2
-
-#endif

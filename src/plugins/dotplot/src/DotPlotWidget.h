@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOT_PLOT_WIDGET_H_
-#define _U2_DOT_PLOT_WIDGET_H_
+#pragma once
 
 #include <QMenu>
 #include <QTimer>
@@ -243,5 +242,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DOT_PLOT_WIDGET_H_

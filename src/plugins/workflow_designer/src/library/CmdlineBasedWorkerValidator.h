@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _CMDLINE_BASED_WORKER_VALIDATOR_
-#define _CMDLINE_BASED_WORKER_VALIDATOR_
+#pragma once
 
 #include <U2Lang/ActorValidator.h>
 
@@ -36,5 +35,3 @@ public:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  //_CMDLINE_BASED_WORKER_VALIDATOR_

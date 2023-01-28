@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_CMDLINE_BASED_WORKER_WIZARD_H_
-#define _U2_CREATE_CMDLINE_BASED_WORKER_WIZARD_H_
+#pragma once
 
 #include <QStandardItem>
 #include <QWizard>
@@ -267,5 +266,3 @@ private:
 
 }  // namespace U2
 // namespace U2
-
-#endif  // _U2_CREATE_CMDLINE_BASED_WORKER_WIZARD_H_

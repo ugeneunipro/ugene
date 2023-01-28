@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EDIT_ALIGNMENT_TESTS_H_
-#define _U2_EDIT_ALIGNMENT_TESTS_H_
+#pragma once
 
 #include <QDomElement>
 
@@ -100,5 +99,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  //_U2_EDIT_ALIGNMENT_TESTS_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_DBI_UNIT_TESTS_H_
-#define _U2_MSA_DBI_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -60,5 +59,3 @@ DECLARE_TEST(MsaDbiUnitTests, removeRows);
 DECLARE_METATYPE(MsaDbiUnitTests, createMsaObject);
 DECLARE_METATYPE(MsaDbiUnitTests, addRows);
 DECLARE_METATYPE(MsaDbiUnitTests, removeRows);
-
-#endif

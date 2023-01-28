@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENECUT_PLUGIN
-#define _U2_GENECUT_PLUGIN
+#pragma once
 
 #include <U2Core/PluginModel.h>
 
@@ -33,5 +32,3 @@ public:
 };
 
 }
-
-#endif

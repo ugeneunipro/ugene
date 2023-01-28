@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EDIT_FRAGMENT_DIALOG_FILLER_H_
-#define _U2_EDIT_FRAGMENT_DIALOG_FILLER_H_
+#pragma once
 
 #include <base_dialogs/GTFileDialog.h>
 
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_EDIT_FRAGMENT_DIALOG_FILLER_H_

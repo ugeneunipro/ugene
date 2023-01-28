@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BREAKPOINT_MANAGER_VIEW_H_
-#define _U2_BREAKPOINT_MANAGER_VIEW_H_
+#pragma once
 
 #include <QWidget>
 
@@ -124,5 +123,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_BREAKPOINT_MANAGER_VIEW_H_

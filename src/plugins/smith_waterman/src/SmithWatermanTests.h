@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SW_ALHORITHM_TESTS_H_
-#define _U2_SW_ALHORITHM_TESTS_H_
+#pragma once
 
 #include <QByteArray>
 #include <QDomElement>
@@ -104,4 +103,3 @@ private:
 };
 
 }  // namespace U2
-#endif

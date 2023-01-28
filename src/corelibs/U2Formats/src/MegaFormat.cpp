@@ -336,7 +336,7 @@ void MegaFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObject
     const QList<GObject*>& als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "Mega entry storing: alignment objects count error", );
 
-    const MultipleSequenceAlignmentObject* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
+    auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(als.first());
     SAFE_POINT(nullptr != obj, "Mega entry storing: NULL alignment object", );
 
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();

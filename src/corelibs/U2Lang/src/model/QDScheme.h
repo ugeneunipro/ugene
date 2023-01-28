@@ -269,7 +269,7 @@ public:
         return actor;
     }
     QString getId() const {
-        QDSchemeUnit* thisPtr = const_cast<QDSchemeUnit*>(this);
+        auto thisPtr = const_cast<QDSchemeUnit*>(this);
         return actor->getUnitId(thisPtr);
     }
 

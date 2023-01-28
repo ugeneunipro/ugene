@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLAST_TASK_SETTINGS_H
-#define _U2_BLAST_TASK_SETTINGS_H
+#pragma once
 
 #include <U2Core/DNASequenceObject.h>
 
@@ -162,4 +161,3 @@ public:
     U2SequenceObject* querySequenceObject;  // can be NULL
 };
 }  // namespace U2
-#endif  // _U2_BLAST_TASK_SETTINGS_H

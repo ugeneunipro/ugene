@@ -75,7 +75,7 @@ bool Header::isFixed() const {
 
 bool Header::eventFilter(QObject* o, QEvent* e) {
     if (e->type() == QEvent::MouseButtonPress) {
-        QMouseEvent* event = static_cast<QMouseEvent*>(e);
+        auto event = static_cast<QMouseEvent*>(e);
         if (event->button() == Qt::LeftButton) {
             if (o == close) {
                 parentWidget()->close();

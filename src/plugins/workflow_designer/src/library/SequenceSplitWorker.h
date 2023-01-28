@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __SEQUENCE_SPLIT_WORKER_H__
-#define __SEQUENCE_SPLIT_WORKER_H__
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/DNASequence.h>
@@ -81,5 +80,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

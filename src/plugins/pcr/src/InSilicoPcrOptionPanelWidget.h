@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_
-#define _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_
+#pragma once
 
 #include "PcrOptionsPanelSavableTab.h"
 #include "ui_InSilicoPcrOptionPanelWidget.h"
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_

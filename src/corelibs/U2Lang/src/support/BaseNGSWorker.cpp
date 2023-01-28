@@ -101,7 +101,7 @@ void BaseNGSWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    BaseNGSTask* NGSTask = dynamic_cast<BaseNGSTask*>(task);
+    auto NGSTask = dynamic_cast<BaseNGSTask*>(task);
 
     if (nullptr != NGSTask) {
         return NGSTask->getResult();

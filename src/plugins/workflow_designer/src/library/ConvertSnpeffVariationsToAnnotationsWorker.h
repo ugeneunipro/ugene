@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_WORKER_H_
-#define _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_WORKER_H_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -66,5 +65,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_CONVERT_SNPEFF_VARIATIONS_TO_ANNOTATIONS_WORKER_H_

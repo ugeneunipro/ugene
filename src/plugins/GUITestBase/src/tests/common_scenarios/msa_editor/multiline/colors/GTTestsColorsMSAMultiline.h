@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef U2_GTTESTS_MSA_EDITOR_MULTILINE_COLORS_H
-#define U2_GTTESTS_MSA_EDITOR_MULTILINE_COLORS_H
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -37,4 +36,3 @@ GUI_TEST_CLASS_DECLARATION(test_0003)
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_colors
 
 }  // namespace U2
-#endif  // U2_GTTESTS_MSA_EDITOR_MULTILINE_COLORS_H

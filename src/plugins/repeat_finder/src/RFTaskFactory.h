@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REPEAT_FINDER_ALG_IMPL_H_
-#define _U2_REPEAT_FINDER_ALG_IMPL_H_
+#pragma once
 
 #include <U2Algorithm/RepeatFinderSettings.h>
 #include <U2Algorithm/RepeatFinderTaskFactory.h>
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

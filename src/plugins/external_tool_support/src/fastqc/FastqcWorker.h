@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FASTQC_WORKER_H_
-#define _U2_FASTQC_WORKER_H_
+#pragma once
 
 #include <U2Core/GUrl.h>
 
@@ -88,5 +87,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  //_U2_FASTQC_WORKER_H_

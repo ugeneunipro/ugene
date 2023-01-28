@@ -29,8 +29,6 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _NO_RAZF
-
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -698,4 +696,3 @@ void razf_close(RAZF *rz){
 	free(rz);
 }
 
-#endif

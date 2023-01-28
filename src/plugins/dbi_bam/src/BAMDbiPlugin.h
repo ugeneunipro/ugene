@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BAM_DBI_PLUGIN_H_
-#define _U2_BAM_DBI_PLUGIN_H_
+#pragma once
 
 #include <time.h>
 
@@ -93,5 +92,3 @@ private:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif  // _U2_BAM_DBI_PLUGIN_H_

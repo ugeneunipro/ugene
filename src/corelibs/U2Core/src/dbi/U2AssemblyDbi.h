@@ -40,7 +40,7 @@ public:
 class U2AssemblyCoverageImportInfo {
 public:
     U2AssemblyCoverageImportInfo()
-        : computeCoverage(false), coverageBasesPerPoint(1) {
+        : computeCoverage(false), readBasesPerCoveragePoint(1) {
     }
 
     /** Specifies if assembly coverage is needed to be computed at import time*/
@@ -50,7 +50,7 @@ public:
     U2AssemblyCoverageStat coverage;
 
     /** Shows how many real bases are in 1 coverage point */
-    double coverageBasesPerPoint;
+    double readBasesPerCoveragePoint;
 };
 
 /** Additional reads info used during reads import into assembly */

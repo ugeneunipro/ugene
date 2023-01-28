@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SAMTOOLS_BASED_DBI_H_
-#define _U2_SAMTOOLS_BASED_DBI_H_
+#pragma once
 
 extern "C" {
 #include <bam.h>
@@ -204,5 +203,3 @@ public:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif  // _U2_SAMTOOLS_BASED_DBI_H_

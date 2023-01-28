@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_EXPORT_PLUGIN_TESTS_H_
-#define _U2_DNA_EXPORT_PLUGIN_TESTS_H_
+#pragma once
 
 #include <QDomElement>
 
@@ -77,5 +76,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

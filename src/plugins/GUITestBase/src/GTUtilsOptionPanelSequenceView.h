@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_OPTION_PANEL_SEQUENCE_VIEW_H_
-#define _U2_GT_UTILS_OPTION_PANEL_SEQUENCE_VIEW_H_
+#pragma once
 
 #include <QLineEdit>
 #include <QToolButton>
@@ -122,5 +121,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_UTILS_OPTION_PANEL_SEQUENCE_VIEW_H_

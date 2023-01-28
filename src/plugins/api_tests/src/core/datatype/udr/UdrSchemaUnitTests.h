@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UDR_SCHEMA_UNIT_TESTS_H_
-#define _U2_UDR_SCHEMA_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -128,5 +127,3 @@ DECLARE_METATYPE(UdrSchemaUnitTests, isCorrectName_HasSpaces);
 DECLARE_METATYPE(UdrSchemaUnitTests, registerSchema_IncorrectName);
 DECLARE_METATYPE(UdrSchemaUnitTests, UdrSchema_ObjectReference);
 DECLARE_METATYPE(UdrSchemaUnitTests, UdrSchema_NoObjectReference);
-
-#endif  // _U2_UDR_SCHEMA_UNIT_TESTS_H_

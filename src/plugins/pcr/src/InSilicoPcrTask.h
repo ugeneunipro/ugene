@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IN_SILICO_PCR_TASK_H_
-#define _U2_IN_SILICO_PCR_TASK_H_
+#pragma once
 
 #include <U2Algorithm/FindAlgorithmTask.h>
 
@@ -120,5 +119,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::InSilicoPcrProduct)
-
-#endif  // _U2_IN_SILICO_PCR_TASK_H_

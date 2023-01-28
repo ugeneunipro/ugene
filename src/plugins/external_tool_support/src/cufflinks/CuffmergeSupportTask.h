@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUFFMERGESUPPORTTASK_H_
-#define _U2_CUFFMERGESUPPORTTASK_H_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/ExternalToolRunTask.h>
@@ -85,5 +84,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CUFFMERGESUPPORTTASK_H_

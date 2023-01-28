@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYML_TASK_H
-#define _U2_PHYML_TASK_H
+#pragma once
 
 #include <U2Algorithm/PhyTreeGenerator.h>
 #include <U2Algorithm/PhyTreeGeneratorTask.h>
@@ -113,5 +112,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PHYML_TASK_H

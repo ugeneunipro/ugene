@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BAM_VIRTUAL_OFFSET_H_
-#define _U2_BAM_VIRTUAL_OFFSET_H_
+#pragma once
 
 #include <QtGlobal>
 
@@ -47,5 +46,3 @@ private:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif  // _VIRTUAL_OFFSET_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
-#define _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -38,5 +37,3 @@ GUI_TEST_CLASS_DECLARATION(test_0003_wrong_input)
 }  // namespace GUITest_assembly_extract_consensus
 
 }  // namespace U2
-
-#endif  // _U2_GUITEST_ASSEMBLY_EXTRACT_CONSENSUS_H_

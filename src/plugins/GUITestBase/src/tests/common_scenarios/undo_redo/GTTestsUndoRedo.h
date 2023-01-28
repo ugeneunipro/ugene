@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTSUNDOREDO_H
-#define GTTESTSUNDOREDO_H
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -60,5 +59,3 @@ GUI_TEST_CLASS_DECLARATION(test_0012)
 }  // namespace GUITest_common_scenarios_undo_redo
 
 }  // namespace U2
-
-#endif  // GTTESTSUNDOREDO_H

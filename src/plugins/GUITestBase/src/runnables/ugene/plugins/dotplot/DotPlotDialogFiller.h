@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RUNNABLES_DOTPLOT_DIALOG_FILLER_H_
-#define _U2_GT_RUNNABLES_DOTPLOT_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -40,5 +39,3 @@ private:
     bool invertedRepeats, but1kpressed;
 };
 }  // namespace U2
-
-#endif

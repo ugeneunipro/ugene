@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CIRCULAR_VIEW_SPLITTER_H_
-#define _U2_CIRCULAR_VIEW_SPLITTER_H_
+#pragma once
 
 #include <QAction>
 
@@ -80,5 +79,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_U2_CIRCULAR_VIEW_SPLITTER_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef CREATEELEMENTWITHSCRIPTDIALOGFILLER_H
-#define CREATEELEMENTWITHSCRIPTDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -70,5 +69,3 @@ private:
     QString text, message;
 };
 }  // namespace U2
-
-#endif  // CREATEELEMENTWITHSCRIPTDIALOGFILLER_H

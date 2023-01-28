@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef ALIASESDIALOGFILLER_H
-#define ALIASESDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -39,4 +38,3 @@ private:
     QMap<QPoint*, QString> map;
 };
 }  // namespace U2
-#endif  // ALIASESDIALOGFILLER_H

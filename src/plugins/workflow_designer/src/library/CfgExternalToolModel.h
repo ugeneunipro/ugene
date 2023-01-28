@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _CFG_EXTERNAL_TOOL_MODEL_H_
-#define _CFG_EXTERNAL_TOOL_MODEL_H_
+#pragma once
 
 #include <QAbstractTableModel>
 
@@ -183,5 +182,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _CFG_EXTERNAL_TOOL_MODEL_H_

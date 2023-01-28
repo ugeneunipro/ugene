@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_QUERY_DESIGNER_H_
-#define GTTESTS_QUERY_DESIGNER_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -39,5 +38,3 @@ GUI_TEST_CLASS_DECLARATION(test_0001_2)
 }  // namespace GUITest_common_scenarios_query_designer
 
 }  // namespace U2
-
-#endif  // GTTESTS_QUERY_DESIGNER_H_

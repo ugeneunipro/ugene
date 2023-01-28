@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LIBRARY_TABLE_CONTROLLER_H_
-#define _U2_PRIMER_LIBRARY_TABLE_CONTROLLER_H_
+#pragma once
 
 #include <U2Core/U2Type.h>
 
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PRIMER_LIBRARY_TABLE_CONTROLLER_H_

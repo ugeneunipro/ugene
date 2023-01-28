@@ -180,7 +180,7 @@ void ImportToDatabaseDialog::sl_removeClicked() {
 }
 
 void ImportToDatabaseDialog::sl_taskFinished() {
-    Task* task = qobject_cast<Task*>(sender());
+    auto task = qobject_cast<Task*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
 }

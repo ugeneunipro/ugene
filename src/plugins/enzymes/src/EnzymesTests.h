@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENZYMES_TESTS_H_
-#define _U2_ENZYMES_TESTS_H_
+#pragma once
 
 #include <QDomElement>
 #include <QMultiMap>
@@ -114,5 +113,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

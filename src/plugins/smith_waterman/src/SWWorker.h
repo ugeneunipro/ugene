@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SW_WORKER_H_
-#define _U2_SW_WORKER_H_
+#pragma once
 
 #include <U2Algorithm/SmithWatermanReportCallback.h>
 #include <U2Algorithm/SmithWatermanSettings.h>
@@ -93,5 +92,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

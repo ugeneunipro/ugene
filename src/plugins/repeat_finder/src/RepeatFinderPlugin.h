@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REPEAT_PLUGIN_H_
-#define _U2_REPEAT_PLUGIN_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 
@@ -51,5 +50,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

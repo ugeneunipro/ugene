@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEST_RUNNER_PLUGIN_H_
-#define _U2_TEST_RUNNER_PLUGIN_H_
+#pragma once
 
 #include <QAction>
 
@@ -99,5 +98,3 @@ private:
     virtual void setup(QScriptEngine *engine) const;
 };*/
 }  // namespace U2
-
-#endif

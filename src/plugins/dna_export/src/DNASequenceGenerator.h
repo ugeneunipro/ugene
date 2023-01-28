@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_SEQUENCE_GENERATOR_H_
-#define _U2_DNA_SEQUENCE_GENERATOR_H_
+#pragma once
 
 #include <QRandomGenerator>
 
@@ -209,5 +208,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif
