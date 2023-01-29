@@ -65,7 +65,7 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     ui = msaTreeViewerUi;
 
     auto toolBar = new QToolBar(tr("MSAEditor tree toolbar"));
-    buildMSAEditorStaticToolbar(toolBar);
+    buildStaticToolbar(toolBar);
 
     syncModeAction = new QAction(ui);
     syncModeAction->setCheckable(true);

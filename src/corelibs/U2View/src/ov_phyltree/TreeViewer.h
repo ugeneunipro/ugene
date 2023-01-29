@@ -58,8 +58,6 @@ public:
     void buildStaticToolbar(QToolBar* tb) override;
     void buildMenu(QMenu* m, const QString& type) override;
 
-    void buildMSAEditorStaticToolbar(QToolBar* tb);
-
     void createActions();
 
     QVariantMap saveState() override;
@@ -83,6 +81,8 @@ public:
     QVariantMap getSettingsState() const;
 
     void setSettingsState(const QVariantMap& m);
+
+    void onAfterViewWindowInit() override;
 
     TreeViewerUI* getTreeViewerUI() {
         return ui;

@@ -32,8 +32,8 @@ class TvNodeItem;
 class U2VIEW_EXPORT TvRectangularBranchItem : public TvBranchItem {
     Q_OBJECT
 public:
-    static constexpr double DEFAULT_WIDTH = 32.0;
-    static constexpr int DEFAULT_HEIGHT = 32;
+    static constexpr double DEFAULT_WIDTH = 25.0;
+    static constexpr int DEFAULT_HEIGHT = 25;
 
     TvRectangularBranchItem(const PhyBranch* branch, const QString& name, bool isRoot);
 

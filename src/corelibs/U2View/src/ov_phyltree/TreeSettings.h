@@ -88,7 +88,9 @@ enum TreeViewOption {
     /** Aligns leaf node labels (sequence/species names). */
     ALIGN_LEAF_NODE_LABELS,
 
+    /** Distance-units length of the legend line. */
     SCALEBAR_RANGE,
+
     SCALEBAR_FONT_SIZE,
     SCALEBAR_LINE_WIDTH,
 

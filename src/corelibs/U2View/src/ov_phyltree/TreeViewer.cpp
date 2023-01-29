@@ -281,14 +281,6 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(zoomFitAction);
 }
 
-void TreeViewer::buildMSAEditorStaticToolbar(QToolBar* tb) {
-    buildStaticToolbar(tb);
-    tb->removeAction(zoomInAction);
-    tb->removeAction(zoomOutAction);
-    tb->removeAction(zoom100Action);
-    tb->removeAction(zoomFitAction);
-}
-
 void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     if (type != GObjectViewMenuType::STATIC) {
         GObjectView::buildMenu(m, type);
@@ -362,6 +354,10 @@ QWidget* TreeViewer::createWidget() {
     return ui;
 }
 
+void TreeViewer::onAfterViewWindowInit() {
+    ui->updateScene();
+}
+
 void TreeViewer::onObjectRenamed(GObject*, const QString&) {
     // update title
     OpenTreeViewerTask::updateTitle(this);
@@ -429,7 +425,7 @@ static OptionsMap createDefaultTreeOptionsSettings() {
 
     settings[TREE_LAYOUT] = RECTANGULAR_LAYOUT;
     settings[BRANCHES_TRANSFORMATION_TYPE] = DEFAULT;
-    settings[SCALEBAR_RANGE] = 30.0;
+    settings[SCALEBAR_RANGE] = 0.05;  // Based on values from COI.aln.
     settings[SCALEBAR_FONT_SIZE] = 10;
     settings[SCALEBAR_LINE_WIDTH] = 1;
     settings[LABEL_COLOR] = QColor(Qt::darkGray);
@@ -831,6 +827,8 @@ void TreeViewerUI::updateRectLayoutBranches() {
 }
 
 void TreeViewerUI::updateScene() {
+    SAFE_POINT(treeViewer != nullptr, "TreeViewerUI::updateScene tree viewer is null!", );
+
     updateRectLayoutBranches();
     updateLegend();
 
@@ -841,9 +839,13 @@ void TreeViewerUI::updateScene() {
         updateLabelsAlignment();
     }
 
-    if (treeViewer != nullptr && treeViewer->zoomFitAction->isChecked()) {
+    // Shrink scene rect if need to the minimal possible size.
+    scene()->setSceneRect(scene()->itemsBoundingRect());
+
+    if (treeViewer->zoomFitAction->isChecked()) {
         zoomFit();
     }
+
     scene()->update();
 }
 
@@ -1027,6 +1029,8 @@ void TreeViewerUI::updateFixedSizeItemScales() {
             }
         }
     }
+    // QT does not auto-reduce scene size when some item (a node circle) is shrank.
+    scene()->setSceneRect(scene()->itemsBoundingRect());
 }
 
 void TreeViewerUI::mousePressEvent(QMouseEvent* e) {
@@ -1139,21 +1143,15 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
     newSelectionSettingsDelta[BRANCH_THICKNESS] = branch->getSettings()[BRANCH_THICKNESS];
     newSelectionSettingsDelta[BRANCH_COLOR] = branch->getSettings()[BRANCH_COLOR];
 
-    QFont font;
-    QColor color;
-    if (branch->getDistanceTextItem() != nullptr) {
-        font = branch->getDistanceTextItem()->font();
-        color = branch->getDistanceTextItem()->brush().color();
-    }
-    bool isCustomFont = font != qvariant_cast<QFont>(settings[LABEL_FONT_FAMILY]);
-    bool isCustomColor = color != qvariant_cast<QColor>(settings[LABEL_COLOR]);
-    if (isCustomFont || isCustomColor) {
+    TvTextItem* distanceTextItem = branch->getDistanceTextItem();
+    if (distanceTextItem != nullptr) {
+        QFont font = distanceTextItem->font();
         newSelectionSettingsDelta[LABEL_FONT_FAMILY] = font.family();
         newSelectionSettingsDelta[LABEL_FONT_SIZE] = font.pointSize();
         newSelectionSettingsDelta[LABEL_FONT_BOLD] = font.bold();
         newSelectionSettingsDelta[LABEL_FONT_ITALIC] = font.italic();
         newSelectionSettingsDelta[LABEL_FONT_UNDERLINE] = font.underline();
-        newSelectionSettingsDelta[LABEL_COLOR] = color;
+        newSelectionSettingsDelta[LABEL_COLOR] = distanceTextItem->brush().color();
     }
     // Remove settings that are the same as default.
     QList<TreeViewOption> newSelectionSettingsDeltaKeys = newSelectionSettingsDelta.keys();
@@ -1355,7 +1353,6 @@ void TreeViewerUI::sl_onBranchCollapsed(TvBranchItem*) {
     CHECK(isRectangularLayoutMode(), );
     recalculateRectangularLayout();
     updateScene();
-    updateFixedSizeItemScales();
     updateActionsState();
 }
 
