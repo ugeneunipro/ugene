@@ -279,7 +279,6 @@ private:
     void paint(QPainter& painter);
     void showLabels(LabelTypes labelTypes);
     // Scalebar
-    void addLegend();
     void updateLegend();
 
     void collapseSelected();
@@ -347,8 +346,8 @@ private:
     /** Maximum branch distance in tree. */
     double maxDistance = 0;
 
+    /** Legend item. Not null only in 'PHYLOGRAM' mode. */
     QGraphicsLineItem* legendItem = nullptr;
-    TvTextItem* scalebarTextItem = nullptr;
     QMenu* buttonPopup = nullptr;
 
     /** Settings for the whole view. Saved & restored on view creation and applied to all new elements by default. */

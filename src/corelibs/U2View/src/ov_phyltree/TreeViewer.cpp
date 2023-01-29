@@ -477,7 +477,6 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     setScene(new QGraphicsScene());
 
     initializeSettings();
-    addLegend();
     rebuildTreeLayout();
     updateDistanceToViewScale();
     assignRectangularBranchWidth();
@@ -765,7 +764,6 @@ void TreeViewerUI::updateTextOptionOnSelectedItems() {
 
 void TreeViewerUI::updateRectLayoutBranches() {
     auto type = static_cast<TreeType>(getOption(BRANCHES_TRANSFORMATION_TYPE).toInt());
-    legendItem->setVisible(type == PHYLOGRAM);
 
     updateStepsToLeafOnBranches();
     double averageBranchDistance = getAverageBranchDistance();
@@ -951,30 +949,39 @@ static QString formatDistanceForScalebar(double distance) {
     return str;
 }
 
-void TreeViewerUI::addLegend() {
-    legendItem = new QGraphicsLineItem(0, 0, 0, 0);
-    scalebarTextItem = new TvTextItem(legendItem, "");
-    updateLegend();
-    scene()->addItem(legendItem);
-}
-
 void TreeViewerUI::updateLegend() {
+    if (legendItem != nullptr) {
+        scene()->removeItem(legendItem);
+        delete legendItem;
+        legendItem = nullptr;
+    }
+
+    auto type = static_cast<TreeType>(getOption(BRANCHES_TRANSFORMATION_TYPE).toInt());
+    CHECK(type == PHYLOGRAM, );
+
+    QRectF sceneRectWithNoLegend = scene()->itemsBoundingRect();
+
     double scalebarRange = getScalebarDistanceRange();
     double legendLineLength = scalebarRange * distanceToViewScale;
-    scalebarTextItem->setText(formatDistanceForScalebar(scalebarRange));
+
+    legendItem = new QGraphicsLineItem(0, 0, legendLineLength, 0);
+    auto scalebarTextItem = new TvTextItem(legendItem, formatDistanceForScalebar(scalebarRange));
 
     QFont curFont = TreeViewerUtils::getFontFromSettings(settings);
     curFont.setPointSize(getOption(SCALEBAR_FONT_SIZE).toInt());
     scalebarTextItem->setFont(curFont);
 
-    QPen curPen = legendItem->pen();
-    curPen.setWidth(getOption(SCALEBAR_LINE_WIDTH).toInt());
-    legendItem->setPen(curPen);
+    QPen legendPen = legendItem->pen();
+    legendPen.setWidth(getOption(SCALEBAR_LINE_WIDTH).toInt());
+    legendItem->setPen(legendPen);
 
-    legendItem->setLine(0, 0, legendLineLength, 0);
+    QRectF textRect = scalebarTextItem->boundingRect();
+    scalebarTextItem->setPos(0.5 * (legendLineLength - textRect.width()), -textRect.height());
 
-    QRectF rect = scalebarTextItem->boundingRect();
-    scalebarTextItem->setPos(0.5 * (legendLineLength - rect.width()), -rect.height());
+    // Place the legend into the center of the scene, below other items.
+    legendItem->setPos(sceneRectWithNoLegend.left() + sceneRectWithNoLegend.width() / 2 - legendLineLength / 2,
+                       sceneRectWithNoLegend.bottom() + textRect.height());
+    scene()->addItem(legendItem);
 }
 
 void TreeViewerUI::wheelEvent(QWheelEvent* we) {

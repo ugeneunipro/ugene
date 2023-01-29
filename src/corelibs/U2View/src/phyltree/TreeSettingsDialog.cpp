@@ -43,7 +43,8 @@ TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const OptionsMap& settin
     treeViewCombo->addItem(getPhylogramTreeModeText());
     treeViewCombo->addItem(getCladogramTreeModeText());
 
-    switch (settings[BRANCHES_TRANSFORMATION_TYPE].toUInt()) {
+    int transformationType = settings[BRANCHES_TRANSFORMATION_TYPE].toInt();
+    switch (transformationType) {
         case DEFAULT:
             treeViewCombo->setCurrentIndex(treeViewCombo->findText(getDefaultTreeModeText()));
             break;
@@ -58,6 +59,7 @@ TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const OptionsMap& settin
     }
 
     connect(treeViewCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_treeTypeChanged(int)));
+    sl_treeTypeChanged(transformationType);
 }
 
 void TreeSettingsDialog::sl_treeTypeChanged(int value) {
