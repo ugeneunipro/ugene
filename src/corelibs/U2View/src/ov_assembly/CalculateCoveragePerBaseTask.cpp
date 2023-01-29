@@ -161,7 +161,7 @@ QList<Task*> CalculateCoveragePerBaseTask::onSubTaskFinished(Task* subTask) {
             res.append(new CalculateCoveragePerBaseOnRegionTask(dbiRef, assemblyId, region));
         }
     } else {
-        CalculateCoveragePerBaseOnRegionTask* calculateTask = qobject_cast<CalculateCoveragePerBaseOnRegionTask*>(subTask);
+        auto calculateTask = qobject_cast<CalculateCoveragePerBaseOnRegionTask*>(subTask);
         SAFE_POINT_EXT(nullptr != calculateTask, setError(tr("An unexpected subtask")), res);
 
         results.insert(calculateTask->getRegion().startPos, calculateTask->takeResult());

@@ -194,7 +194,7 @@ void ADVSyncViewManager::updateEnabledState() {
 }
 
 void ADVSyncViewManager::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
-    ADVSingleSequenceWidget* sw = qobject_cast<ADVSingleSequenceWidget*>(w);
+    auto sw = qobject_cast<ADVSingleSequenceWidget*>(w);
     if (sw == nullptr) {
         return;
     }
@@ -205,7 +205,7 @@ void ADVSyncViewManager::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
 }
 
 void ADVSyncViewManager::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
-    ADVSingleSequenceWidget* sw = qobject_cast<ADVSingleSequenceWidget*>(w);
+    auto sw = qobject_cast<ADVSingleSequenceWidget*>(w);
     if (sw == nullptr) {
         return;
     }
@@ -225,7 +225,7 @@ void ADVSyncViewManager::unlock() {
 QList<ADVSingleSequenceWidget*> ADVSyncViewManager::getViewsFromADV() const {
     QList<ADVSingleSequenceWidget*> res;
     foreach (ADVSequenceWidget* w, adv->getSequenceWidgets()) {
-        ADVSingleSequenceWidget* sw = qobject_cast<ADVSingleSequenceWidget*>(w);
+        auto sw = qobject_cast<ADVSingleSequenceWidget*>(w);
         if (sw != nullptr) {
             res.append(sw);
         }
@@ -239,7 +239,7 @@ void ADVSyncViewManager::sl_rangeChanged() {
     }
     recursion = true;
 
-    PanView* activePan = qobject_cast<PanView*>(sender());
+    auto activePan = qobject_cast<PanView*>(sender());
     const U2Region& activeRange = activePan->getVisibleRange();
     int activeOffset = activePan->getSyncOffset();
     foreach (ADVSingleSequenceWidget* sw, views) {
@@ -309,7 +309,7 @@ void ADVSyncViewManager::sl_sync() {
 }
 
 void ADVSyncViewManager::sync(bool lock, SyncMode m) {
-    ADVSingleSequenceWidget* focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
+    auto focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
     if (focusedW == nullptr) {
         return;
     }
@@ -391,7 +391,7 @@ int ADVSyncViewManager::findSelectedAnnotationPos(ADVSingleSequenceWidget* w) co
 }
 
 ADVSyncViewManager::SyncMode ADVSyncViewManager::detectSyncMode() const {
-    ADVSingleSequenceWidget* focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
+    auto focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
     assert(focusedW != nullptr);
     QList<ADVSingleSequenceWidget*> seqs = getViewsFromADV();
 
@@ -471,7 +471,7 @@ void ADVSyncViewManager::sl_onSelectionChanged(LRegionsSelection* sel, const QVe
 
     selectionRecursion = true;
 
-    ADVSingleSequenceWidget* focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
+    auto focusedW = qobject_cast<ADVSingleSequenceWidget*>(adv->getActiveSequenceWidget());
     if (focusedW == nullptr) {
         return;
     }
@@ -526,7 +526,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
         QList<ADVSequenceWidgetAction*> actions = w->getADVSequenceWidgetActions();
         bool active = false;
         for (ADVSequenceWidgetAction* action : qAsConst(actions)) {
-            AutoAnnotationsADVAction* aaAction = qobject_cast<AutoAnnotationsADVAction*>(action);
+            auto aaAction = qobject_cast<AutoAnnotationsADVAction*>(action);
             if (aaAction != nullptr) {
                 QList<QAction*> aaToggleActions = aaAction->getToggleActions();
                 for (QAction* toggleAction : qAsConst(aaToggleActions)) {
@@ -555,7 +555,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
 #define HAVE_ENABLED_AUTOANNOTATIONS "have_enabled_autoannotations"
 
 void ADVSyncViewManager::sl_toggleAutoAnnotationHighlighting() {
-    QAction* menuAction = qobject_cast<QAction*>(sender());
+    auto menuAction = qobject_cast<QAction*>(sender());
     if (menuAction == nullptr) {
         return;
     }

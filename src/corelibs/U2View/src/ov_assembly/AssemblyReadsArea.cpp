@@ -1005,7 +1005,7 @@ void AssemblyReadsArea::sl_onShadowingJump() {
 }
 
 void AssemblyReadsArea::sl_changeCellRenderer() {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     SAFE_POINT(action != nullptr, "changing cell renderer invoked not by action, ignoring request", );
 
     QString id = action->data().toString();

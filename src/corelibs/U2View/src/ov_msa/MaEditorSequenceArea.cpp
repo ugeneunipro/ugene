@@ -621,7 +621,7 @@ void MaEditorSequenceArea::sl_changeCopyFormat(const QString& formatId) {
 }
 
 void MaEditorSequenceArea::sl_changeColorScheme() {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     if (action == nullptr) {
         action = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
@@ -720,7 +720,7 @@ void MaEditorSequenceArea::sl_setDefaultColorScheme() {
 }
 
 void MaEditorSequenceArea::sl_changeHighlightScheme() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     if (a == nullptr) {
         a = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }

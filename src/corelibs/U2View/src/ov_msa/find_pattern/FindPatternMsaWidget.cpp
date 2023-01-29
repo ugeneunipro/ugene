@@ -754,7 +754,7 @@ void FindPatternMsaWidget::sl_searchModeChanged() {
 }
 
 void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
-    FindPatternMsaTask* findTask = static_cast<FindPatternMsaTask*>(sender());
+    auto findTask = static_cast<FindPatternMsaTask*>(sender());
     CHECK(findTask != nullptr, );
     if (findTask != searchTask) {
         return;

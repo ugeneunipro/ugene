@@ -109,12 +109,12 @@ U2SCRIPT_EXPORT void importFileToUgeneDb(const wchar_t* _url, UgeneDbHandle* res
 }
 
 U2SCRIPT_EXPORT void releaseObject(UgeneDbHandle resultObject) {
-    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(resultObject);
+    auto unwrappedObject = reinterpret_cast<U2::GObject*>(resultObject);
     delete unwrappedObject;  // TODO: make sure about db resources deallocation
 }
 
 U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object) {
-    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
+    auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     U2::GObject* result = nullptr;
     if (nullptr != unwrappedObject) {
         U2::U2OpStatusImpl statusInfo;
@@ -146,7 +146,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, 
                                                        adoptedUrl,
                                                        stateInfo);
     for (int i = 0; i < objectCount; ++i) {
-        GObject* object = reinterpret_cast<GObject*>(objects[i]);
+        auto object = reinterpret_cast<GObject*>(objects[i]);
         if (nullptr != object) {
             doc->addObject(object);
         }
@@ -156,7 +156,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, 
 }
 
 U2SCRIPT_EXPORT ObjectType getObjectType(UgeneDbHandle object) {
-    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
+    auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     U2::GObjectType result = U2::GObjectTypes::UNKNOWN;
     if (nullptr != unwrappedObject) {
         result = unwrappedObject->getGObjectType();
@@ -165,7 +165,7 @@ U2SCRIPT_EXPORT ObjectType getObjectType(UgeneDbHandle object) {
 }
 
 U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLength, wchar_t* name) {
-    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
+    auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     QString result;
     if (nullptr != unwrappedObject) {
         result = unwrappedObject->getGObjectName();
@@ -175,7 +175,7 @@ U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLeng
 }
 
 U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t* newName) {
-    U2::GObject* unwrappedObject = reinterpret_cast<U2::GObject*>(object);
+    auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     if (nullptr != unwrappedObject && nullptr != newName) {
         unwrappedObject->setGObjectName(QString::fromWCharArray(newName));
     }

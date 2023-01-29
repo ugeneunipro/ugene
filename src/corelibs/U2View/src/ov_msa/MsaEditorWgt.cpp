@@ -82,7 +82,7 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
-    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
 
     if (mui->getPhylTreeWidget() == nullptr) {
         MSAEditorMultiTreeViewer* multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());

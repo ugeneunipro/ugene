@@ -207,7 +207,7 @@ void OpenSavedMaEditorTask::open() {
         stateInfo.setError(tr("Alignment object not found: %1").arg(ref.objName));
         return;
     }
-    MultipleAlignmentObject* maObject = qobject_cast<MultipleAlignmentObject*>(obj);
+    auto maObject = qobject_cast<MultipleAlignmentObject*>(obj);
     assert(maObject != nullptr);
 
     MaEditor* maEditor = factory->getEditor(viewName, maObject, stateInfo);
@@ -245,7 +245,7 @@ void UpdateMaEditorTask::update() {
         return;  // view was closed;
     }
 
-    MaEditor* maView = qobject_cast<MaEditor*>(view.data());
+    auto maView = qobject_cast<MaEditor*>(view.data());
     SAFE_POINT_EXT(maView != nullptr, setError("MaEditor is NULL"), );
 
     OpenSavedMaEditorTask::updateRanges(stateData, maView);

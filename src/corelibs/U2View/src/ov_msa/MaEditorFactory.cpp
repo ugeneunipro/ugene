@@ -191,7 +191,7 @@ McaEditorFactory::McaEditorFactory()
 }
 
 MaEditor* McaEditorFactory::getEditor(const QString& viewName, GObject* obj, U2OpStatus&) {
-    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
     SAFE_POINT(mcaObj != nullptr, "Invalid GObject", nullptr);
     return new McaEditor(viewName, mcaObj);
 }

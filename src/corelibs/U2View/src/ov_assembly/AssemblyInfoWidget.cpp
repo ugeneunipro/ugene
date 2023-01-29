@@ -131,7 +131,7 @@ QWidget* AssemblyInfoWidgetFactory::createWidget(GObjectView* objView, const QVa
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    AssemblyBrowser* assemblyBrowser = qobject_cast<AssemblyBrowser*>(objView);
+    auto assemblyBrowser = qobject_cast<AssemblyBrowser*>(objView);
     SAFE_POINT(assemblyBrowser != nullptr,
                QString("Internal error: unable to cast object view to Assembly Browser for group '%1'.").arg(GROUP_ID),
                nullptr);
