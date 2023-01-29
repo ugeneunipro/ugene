@@ -33,10 +33,10 @@ public:
     /** Returns tree-options widget. */
     static QWidget* getOptionsPanelWidget(HI::GUITestOpStatus& os);
 
-    /** Returns font size used for sequence names. */
+    /** Returns currently shown font size. */
     static int getFontSize(HI::GUITestOpStatus& os);
 
-    /** Sets new sequence name font size. */
+    /** Sets new font size. */
     static void setFontSize(HI::GUITestOpStatus& os, int fontSize);
 
     /** Changes tree layout to the given value. */
