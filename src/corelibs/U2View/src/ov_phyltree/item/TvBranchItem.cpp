@@ -103,9 +103,7 @@ void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
     QFont font = TreeViewerUtils::getFontFromSettings(settings);
     QColor labelColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
     if (distanceTextItem != nullptr) {
-        QFont distanceItemFont = font;  // TODO: have a separate setting for distance item. Distance items are less important than sequence names.
-        distanceItemFont.setPointSize(font.pointSize() - 2);
-        distanceTextItem->setFont(distanceItemFont);
+        distanceTextItem->setFont(font);
         distanceTextItem->setBrush(labelColor);
     }
     if (nameTextItem != nullptr) {

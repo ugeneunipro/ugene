@@ -955,7 +955,7 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -2088,7 +2088,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
-    MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -4535,9 +4535,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QWidget* nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
 
     // 5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Paste"}));
@@ -4568,9 +4568,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4764", "4764.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
@@ -4588,9 +4588,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4764", "4764.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
@@ -5148,11 +5148,11 @@ GUI_TEST_CLASS_DEFINITION(test_4841) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelPhyTree::openTab(os);
 
-    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.033", "0.069");
+    TvNodeItem* midNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.033", "0.069");
     TvNodeItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.016", "0.017");
     TvNodeItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.068", "0.007");
-    GTUtilsPhyTree::clickNode(os, node);
 
+    GTUtilsPhyTree::clickNode(os, midNode);
     int originalFontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     int newFontSize1 = originalFontSize + 2;
     int newFontSize2 = originalFontSize + 4;
@@ -5160,32 +5160,32 @@ GUI_TEST_CLASS_DEFINITION(test_4841) {
 
     GTUtilsPhyTree::clickNode(os, parentNode);
     int fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == originalFontSize, QString("1. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
+    CHECK_SET_ERR(fontSize == originalFontSize, QString("1. 'parentNode' font must not change: %1, expected: %2").arg(fontSize).arg(originalFontSize));
 
-    GTUtilsPhyTree::clickNode(os, node);
+    GTUtilsPhyTree::clickNode(os, midNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize1, QString("2. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize1, QString("2. 'midNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 
     GTUtilsPhyTree::clickNode(os, childNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize1, QString("3. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize1, QString("3. 'childNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 
     // Collapse subtree and change font again.
-    GTUtilsPhyTree::doubleClickNode(os, node);
+    GTUtilsPhyTree::doubleClickNode(os, midNode);
     GTUtilsOptionPanelPhyTree::setFontSize(os, newFontSize2);
 
     GTUtilsPhyTree::clickNode(os, parentNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == originalFontSize, QString("4. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
+    CHECK_SET_ERR(fontSize == originalFontSize, QString("4. 'parentNode' font must not change: %1, expected: %2").arg(fontSize).arg(originalFontSize));
 
-    GTUtilsPhyTree::clickNode(os, node);
+    GTUtilsPhyTree::clickNode(os, midNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize2, QString("5. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize2, QString("5. 'midNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 
-    GTUtilsPhyTree::doubleClickNode(os, node);
+    GTUtilsPhyTree::doubleClickNode(os, midNode);
     GTUtilsPhyTree::clickNode(os, childNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize2, QString("6. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize2, QString("6. 'childNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4852) {

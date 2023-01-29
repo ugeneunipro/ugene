@@ -3570,7 +3570,7 @@ GUI_TEST_CLASS_DEFINITION(test_7682) {
 
 GUI_TEST_CLASS_DEFINITION(test_7686) {
     // Check "copy tree image to clipboard".
-    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/PF05282_full.nhx");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
 
     GTClipboard::clear(os);

@@ -33,11 +33,17 @@ public:
     /** Returns tree-options widget. */
     static QWidget* getOptionsPanelWidget(HI::GUITestOpStatus& os);
 
-    /** Returns currently shown font size. */
+    /** Returns font size used for sequence names. */
     static int getFontSize(HI::GUITestOpStatus& os);
 
-    /** Sets new font size. */
+    /** Returns font size used for inner texts in tree. */
+    static int getInnerFontSize(HI::GUITestOpStatus& os);
+
+    /** Sets new sequence name font size. */
     static void setFontSize(HI::GUITestOpStatus& os, int fontSize);
+
+    /** Sets new distance labels font size. */
+    static void setInnerFontSize(HI::GUITestOpStatus& os, int distanceFontSize);
 
     /** Changes tree layout to the given value. */
     static void changeTreeLayout(HI::GUITestOpStatus& os, const QString& layoutName);
