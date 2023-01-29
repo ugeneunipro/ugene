@@ -320,7 +320,7 @@ TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
     if (treeViewer != nullptr) {
         return treeViewer;
     }
-    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
     MSAEditorTreeViewer* currentTree = mui->getCurrentTree();
     return currentTree != nullptr
                ? currentTree->getTreeViewerUI()

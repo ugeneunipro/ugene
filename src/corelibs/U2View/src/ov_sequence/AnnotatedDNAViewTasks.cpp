@@ -195,7 +195,7 @@ void OpenAnnotatedDNAViewTask::open() {
     QList<GObject*> allSequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
     foreach (const GObjectReference& r, sequenceObjectRefs) {
         GObject* obj = GObjectUtils::selectObjectByReference(r, allSequenceObjects, UOF_LoadedOnly);
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         if (seqObj != nullptr) {
             U2OpStatusImpl status;
             seqObj->isValidDbiObject(status);
@@ -305,7 +305,7 @@ void OpenSavedAnnotatedDNAViewTask::open() {
             stateInfo.setError(tr("DNA sequence object not found: %1").arg(ref.objName));
             return;
         }
-        U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
+        auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
         sequenceObjects.append(dnaObj);
     }
     AnnotatedDNAView* v = new AnnotatedDNAView(viewName, sequenceObjects);
@@ -326,7 +326,7 @@ void UpdateAnnotatedDNAViewTask::update() {
         return;  // view was closed;
     }
 
-    AnnotatedDNAView* aview = qobject_cast<AnnotatedDNAView*>(view.data());
+    auto aview = qobject_cast<AnnotatedDNAView*>(view.data());
     assert(aview != nullptr);
 
     AnnotatedDNAViewState state(stateData);

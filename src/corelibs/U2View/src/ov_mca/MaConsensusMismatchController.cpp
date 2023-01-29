@@ -98,7 +98,7 @@ void MaConsensusMismatchController::sl_prev() {
 }
 
 void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direction) {
-    McaEditor* mcaEditor = qobject_cast<McaEditor*>(editor);
+    auto mcaEditor = qobject_cast<McaEditor*>(editor);
     CHECK(mcaEditor != nullptr, );
 
     SequenceObjectContext* ctx = mcaEditor->getReferenceContext();

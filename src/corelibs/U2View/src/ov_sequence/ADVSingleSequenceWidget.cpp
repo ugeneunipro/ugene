@@ -261,7 +261,7 @@ QToolButton* ADVSingleSequenceWidget::addButtonWithActionToToolbar(QAction* butt
             toolBar->addAction(buttonAction);
         }
     }
-    QToolButton* button = qobject_cast<QToolButton*>(toolBar->widgetForAction(buttonAction));
+    auto button = qobject_cast<QToolButton*>(toolBar->widgetForAction(buttonAction));
     button->setFixedHeight(ADV_HEADER_HEIGHT - ADV_HEADER_TOP_BOTTOM_INDENT);
 
     SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(buttonAction->objectName()), nullptr);
@@ -396,7 +396,7 @@ void ADVSingleSequenceWidget::setNumBasesVisible(qint64 n) {
 }
 
 void ADVSingleSequenceWidget::sl_onViewDestroyed(QObject* o) {
-    GSequenceLineView* v = static_cast<GSequenceLineView*>(o);
+    auto v = static_cast<GSequenceLineView*>(o);
     bool r = lineViews.removeOne(v);
     assert(r);
     Q_UNUSED(r);
@@ -564,7 +564,7 @@ bool ADVSingleSequenceWidget::isWidgetOnlyObject(GObject* o) const {
 bool ADVSingleSequenceWidget::eventFilter(QObject* o, QEvent* e) {
     QEvent::Type t = e->type();
     if (t == QEvent::Resize) {
-        GSequenceLineView* v = qobject_cast<GSequenceLineView*>(o);
+        auto v = qobject_cast<GSequenceLineView*>(o);
         if (lineViews.contains(v)) {
             updateMinMaxHeight();
         }
@@ -573,7 +573,7 @@ bool ADVSingleSequenceWidget::eventFilter(QObject* o, QEvent* e) {
     }
 
     if (o == headerWidget && t == QEvent::MouseButtonPress) {
-        QMouseEvent* event = dynamic_cast<QMouseEvent*>(e);
+        auto event = dynamic_cast<QMouseEvent*>(e);
         CHECK(event, false);
         if (event->buttons() == Qt::LeftButton) {
             emit si_titleClicked(this);

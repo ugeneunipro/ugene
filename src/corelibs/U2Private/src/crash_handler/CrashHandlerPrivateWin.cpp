@@ -96,7 +96,7 @@ bool CrashHandlerPrivateWin::breakpadCallback(const wchar_t* dump_path,
         dumpPath = QString::fromStdWString(dump_path) + "/" + QString::fromStdWString(minidump_id) + ".dmp";
     }
 
-    CrashHandlerPrivateWin* privateHandler = static_cast<CrashHandlerPrivateWin*>(context);
+    auto privateHandler = static_cast<CrashHandlerPrivateWin*>(context);
 #    ifdef Q_OS_WIN64
     privateHandler->walkStack(exinfo);
 #    endif

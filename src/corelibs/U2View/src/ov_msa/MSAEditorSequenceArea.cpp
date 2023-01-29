@@ -583,7 +583,7 @@ void MSAEditorSequenceArea::sl_pasteTaskFinished(Task* _pasteTask) {
 }
 
 void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task* task) {
-    AddSequencesFromDocumentsToAlignmentTask* addSeqTask = qobject_cast<AddSequencesFromDocumentsToAlignmentTask*>(task);
+    auto addSeqTask = qobject_cast<AddSequencesFromDocumentsToAlignmentTask*>(task);
     CHECK(addSeqTask != nullptr, );
     const MaModificationInfo& mi = addSeqTask->getMaModificationInfo();
     if (!mi.rowListChanged) {
@@ -635,7 +635,7 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
     QList<DNASequence> objectsToAdd;
     U2OpStatus2Log os;
     foreach (GObject* obj, objects) {
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         if (seqObj) {
             objectsToAdd.append(seqObj->getWholeSequence(os));
             SAFE_POINT_OP(os, );

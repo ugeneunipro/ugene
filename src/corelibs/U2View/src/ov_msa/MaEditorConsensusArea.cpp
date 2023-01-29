@@ -105,7 +105,7 @@ QSharedPointer<MSAEditorConsensusCache> MaEditorConsensusArea::getConsensusCache
 bool MaEditorConsensusArea::event(QEvent* e) {
     switch (e->type()) {
         case QEvent::ToolTip: {
-            QHelpEvent* he = static_cast<QHelpEvent*>(e);
+            auto he = static_cast<QHelpEvent*>(e);
             QString tip = createToolTip(he);
             if (!tip.isEmpty()) {
                 QToolTip::showText(he->globalPos(), tip);

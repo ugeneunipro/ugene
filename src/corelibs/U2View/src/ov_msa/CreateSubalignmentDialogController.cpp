@@ -110,21 +110,21 @@ const U2Region& CreateSubalignmentDialogController::getSelectedColumnsRegion() c
 
 void CreateSubalignmentDialogController::sl_allButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
+        auto cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(true);
     }
 }
 
 void CreateSubalignmentDialogController::sl_invertButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
+        auto cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(!cb->isChecked());
     }
 }
 
 void CreateSubalignmentDialogController::sl_noneButtonClicked() {
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
+        auto cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         cb->setChecked(false);
     }
 }
@@ -227,7 +227,7 @@ bool CreateSubalignmentDialogController::getAddToProjFlag() const {
 void CreateSubalignmentDialogController::updateSelectedRowIds() {
     selectedRowIds.clear();
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
-        QCheckBox* cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
+        auto cb = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         if (cb->isChecked()) {
             qint64 rowId = (qint64)cb->property(ROW_ID_PROPERTY).toLongLong();
             selectedRowIds << rowId;

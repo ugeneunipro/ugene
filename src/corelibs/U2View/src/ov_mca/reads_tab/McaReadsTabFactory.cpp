@@ -46,7 +46,7 @@ QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMa
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    MaEditor* ma = qobject_cast<MaEditor*>(objView);
+    auto ma = qobject_cast<MaEditor*>(objView);
     SAFE_POINT(ma != nullptr,
                QString("Internal error: unable to cast object view to MaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);

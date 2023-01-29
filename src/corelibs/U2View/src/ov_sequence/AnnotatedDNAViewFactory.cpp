@@ -65,7 +65,7 @@ bool AnnotatedDNAViewFactory::canCreateView(const MultiGSelection& multiSelectio
     }
 
     // 3.
-    const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
+    auto ds = qobject_cast<const DocumentSelection*>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
     if (ds == nullptr) {
         return false;
     }
@@ -104,7 +104,7 @@ Task* AnnotatedDNAViewFactory::createViewTask(const MultiGSelection& multiSelect
         }
     }
 
-    const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
+    auto ds = qobject_cast<const DocumentSelection*>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
     if (ds != nullptr) {
         foreach (Document* doc, ds->getSelectedDocuments()) {
             QList<GObject*> sequenceObjects = doc->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded);

@@ -525,7 +525,7 @@ void MSAEditor::initChildrenActionsAndSignals() {
 
         initDragAndDropSupport(child);
 
-        MSAEditorOverviewArea* overview = qobject_cast<MSAEditorOverviewArea*>(
+        auto overview = qobject_cast<MSAEditorOverviewArea*>(
             getUI()->getOverviewArea());
         if (overview != nullptr) {
             connect(child->getSequenceArea(), SIGNAL(si_highlightingChanged()), overview->getSimpleOverview(), SLOT(sl_highlightingChanged()));
@@ -596,7 +596,7 @@ void MSAEditor::initActions() {
 
 void MSAEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
     QMenu m;
-    MaEditorWgt* sender = qobject_cast<MaEditorWgt*>(QObject::sender());
+    auto sender = qobject_cast<MaEditorWgt*>(QObject::sender());
     int uiIndex = getUI()->getUIIndex(sender);
 
     addAppearanceMenu(&m, uiIndex);
@@ -633,7 +633,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
 }
 
 void MSAEditor::sl_showTreeOP() {
-    OptionsPanelWidget* opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
+    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
     if (opWidget == nullptr) {
         return;
     }
@@ -656,7 +656,7 @@ void MSAEditor::sl_showTreeOP() {
 }
 
 void MSAEditor::sl_hideTreeOP() {
-    OptionsPanelWidget* opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
+    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
     if (opWidget == nullptr) {
         return;
     }
@@ -678,10 +678,10 @@ bool MSAEditor::eventFilter(QObject*, QEvent* e) {
     if (e->type() == QEvent::DragEnter || e->type() == QEvent::Drop) {
         QDropEvent* de = (QDropEvent*)e;
         const QMimeData* md = de->mimeData();
-        const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
+        auto gomd = qobject_cast<const GObjectMimeData*>(md);
         if (gomd != nullptr) {
             CHECK(!maObject->isStateLocked(), false)
-            U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(gomd->objPtr.data());
+            auto dnaObj = qobject_cast<U2SequenceObject*>(gomd->objPtr.data());
             if (dnaObj != nullptr) {
                 if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == nullptr) {
                     return false;

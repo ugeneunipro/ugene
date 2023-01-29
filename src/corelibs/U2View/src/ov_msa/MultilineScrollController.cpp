@@ -152,7 +152,7 @@ void MultilineScrollController::vertScroll(const Directions& directions, bool by
     ui->setUpdatesEnabled(false);
 
     if (maEditor->getMultilineMode()) {
-        MsaMultilineScrollArea* scroller = qobject_cast<MsaMultilineScrollArea*>(
+        auto scroller = qobject_cast<MsaMultilineScrollArea*>(
             childrenScrollArea);
         CHECK(scroller != nullptr, );
         if (directions.testFlag(SliderMinimum)) {
