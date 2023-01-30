@@ -557,7 +557,7 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
     if (link == CAPTION_SEQ_MELTING_TEMPERATURE) {
         QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
         int res = dialog->exec();
-        CHECK(!dialog.isNull() && res == QDialog::Accepted);
+        CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
         temperatureCalculator = dialog->createTemperatureCalculator();
         updateCommonStatisticsData(true);

@@ -150,7 +150,7 @@ void PrimerLibraryWidget::sl_openTemperatureSettings() {
 
     QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(this, library->getTemperatureSettings()));
     int res = dialog->exec();
-    CHECK(!dialog.isNull() && res == QDialog::Accepted);
+    CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
     library->setTemperatureCalculator(dialog->createTemperatureCalculator());
     updateTemperatureValues();

@@ -75,7 +75,7 @@ void TempCalcPropertyWidget::setValue(const QVariant& value) {
 void TempCalcPropertyWidget::sl_showDialog() {
     QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(this, tempSettings));
     int res = dialog->exec();
-    CHECK(!dialog.isNull() && res == QDialog::Accepted);
+    CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
     delete tempSettings;
     tempSettings = dialog->getTemperatureCalculatorSettings();
