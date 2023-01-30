@@ -309,6 +309,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    1. Open the library, clear it, add sequences "AAAA", "CCCC", "GGGG", "TTTT".
     GTUtilsPrimerLibrary::openLibrary(os);
     GTUtilsPrimerLibrary::clearLibrary(os);
+    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters = {
+    {GTUtilsMeltingTemperature::Parameter::Algorithm, "Rough" } };
+    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Temperature);
+
 
     GTUtilsPrimerLibrary::addPrimer(os, "primer1", "AAAA");
     GTUtilsPrimerLibrary::addPrimer(os, "primer2", "CCCC");
