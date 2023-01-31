@@ -63,7 +63,7 @@ SearchQualifierDialog::SearchQualifier::SearchQualifier(AnnotationsTreeView* tre
     int childCount = rootGroup->childCount();
     for (int i = getStartGroupIndex(rootGroup); i < childCount; i++) {
         bool found = false;
-        AVItem* child = static_cast<AVItem*>(rootGroup->child(i));
+        auto child = static_cast<AVItem*>(rootGroup->child(i));
         if (child->type == AVItemType_Annotation) {
             searchInAnnotation(child, found);
         } else if (child->type == AVItemType_Group) {
@@ -136,7 +136,7 @@ void SearchQualifierDialog::SearchQualifier::showQualifier() const {
 void SearchQualifierDialog::SearchQualifier::searchInGroup(AVItem* group, bool& found) {
     for (int i = getStartGroupIndex(group); i < group->childCount(); i++) {
         found = false;
-        AVItem* child = static_cast<AVItem*>(group->child(i));
+        auto child = static_cast<AVItem*>(group->child(i));
         if (child->type == AVItemType_Annotation) {
             searchInAnnotation(child, found);
         } else if (child->type == AVItemType_Group) {
@@ -163,7 +163,7 @@ void SearchQualifierDialog::SearchQualifier::searchInAnnotation(AVItem* annotati
         return isExactMatch ? current.compare(expected, Qt::CaseInsensitive) == 0 : current.contains(expected, Qt::CaseInsensitive);
     };
 
-    AVAnnotationItem* ai = static_cast<AVAnnotationItem*>(annotation);
+    auto ai = static_cast<AVAnnotationItem*>(annotation);
     const QVector<U2Qualifier>& quals = ai->annotation->getQualifiers();
     int startIdx = getStartAnnotationIndex(ai);
     for (int j = startIdx; j < quals.size(); j++) {
@@ -194,7 +194,7 @@ int SearchQualifierDialog::SearchQualifier::getStartGroupIndex(AVItem* group) {
         return result;
     }
 
-    if (AVItem* parentGroup = dynamic_cast<AVItem*>(resultAnnotation->parent())) {
+    if (auto parentGroup = dynamic_cast<AVItem*>(resultAnnotation->parent())) {
         AVItem* groupToSearchChild = parentGroup != group
                                          ? parentGroup  // If parent group is a subgroup of group seek to its index.
                                          : resultAnnotation;  // If annotation is in the same group seek to its idx.
@@ -235,7 +235,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget* p, AnnotationsTreeView* tr
 
     clearPrevResults();
 
-    AVItem* currentItem = static_cast<AVItem*>(treeView->tree->currentItem());
+    auto currentItem = static_cast<AVItem*>(treeView->tree->currentItem());
     switch (currentItem->type) {
         case AVItemType_Group: {
             groupToSearchIn = currentItem;
@@ -247,7 +247,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget* p, AnnotationsTreeView* tr
             break;
         }
         case AVItemType_Qualifier: {
-            AVItem* annotation = dynamic_cast<AVItem*>(currentItem->parent());
+            auto annotation = dynamic_cast<AVItem*>(currentItem->parent());
             if (annotation && annotation->type == AVItemType_Annotation) {
                 parentAnnotationofPrevResult = annotation;
             }

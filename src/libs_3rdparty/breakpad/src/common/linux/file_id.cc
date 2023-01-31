@@ -68,8 +68,8 @@ static bool ElfClassBuildIDNoteIdentifier(const void* section, size_t length,
                 "Elf32_Nhdr and Elf64_Nhdr should be the same");
   typedef typename ElfClass32::Nhdr Nhdr;
 
-  const void* section_end = reinterpret_cast<const char*>(section) + length;
-  const Nhdr* note_header = reinterpret_cast<const Nhdr*>(section);
+  auto section_end = reinterpret_cast<const char*>(section) + length;
+  auto note_header = reinterpret_cast<const Nhdr*>(section);
   while (reinterpret_cast<const void*>(note_header) < section_end) {
     if (note_header->n_type == NT_GNU_BUILD_ID)
       break;
@@ -83,7 +83,7 @@ static bool ElfClassBuildIDNoteIdentifier(const void* section, size_t length,
     return false;
   }
 
-  const uint8_t* build_id = reinterpret_cast<const uint8_t*>(note_header) +
+  auto build_id = reinterpret_cast<const uint8_t*>(note_header) +
     sizeof(Nhdr) + NOTE_PADDING(note_header->n_namesz);
   identifier.insert(identifier.end(),
                     build_id,
@@ -134,8 +134,8 @@ static bool HashElfTextSection(const void* elf_mapped_base,
   // Only provide |kMDGUIDSize| bytes to keep identifiers produced by this
   // function backwards-compatible.
   my_memset(&identifier[0], 0, kMDGUIDSize);
-  const uint8_t* ptr = reinterpret_cast<const uint8_t*>(text_section);
-  const uint8_t* ptr_end = ptr + std::min(text_size, static_cast<size_t>(4096));
+  auto ptr = reinterpret_cast<const uint8_t*>(text_section);
+  auto ptr_end = ptr + std::min(text_size, static_cast<size_t>(4096));
   while (ptr < ptr_end) {
     for (unsigned i = 0; i < kMDGUIDSize; i++)
       identifier[i] ^= ptr[i];
@@ -183,11 +183,11 @@ string FileID::ConvertIdentifierToUUIDString(
   // Endian-ness swap to match dump processor expectation.
   memcpy(identifier_swapped, &identifier[0],
          std::min(kMDGUIDSize, identifier.size()));
-  uint32_t* data1 = reinterpret_cast<uint32_t*>(identifier_swapped);
+  auto data1 = reinterpret_cast<uint32_t*>(identifier_swapped);
   *data1 = htonl(*data1);
-  uint16_t* data2 = reinterpret_cast<uint16_t*>(identifier_swapped + 4);
+  auto data2 = reinterpret_cast<uint16_t*>(identifier_swapped + 4);
   *data2 = htons(*data2);
-  uint16_t* data3 = reinterpret_cast<uint16_t*>(identifier_swapped + 6);
+  auto data3 = reinterpret_cast<uint16_t*>(identifier_swapped + 6);
   *data3 = htons(*data3);
 
   return bytes_to_hex_string(identifier_swapped, kMDGUIDSize);

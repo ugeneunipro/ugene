@@ -50,11 +50,11 @@ SecStructPredictViewAction::SecStructPredictViewAction(AnnotatedDNAView* v)
 }
 
 void SecStructPredictViewAction::sl_execute() {
-    QAction* a = dynamic_cast<QAction*>(sender());
-    GObjectViewAction* viewAction = dynamic_cast<GObjectViewAction*>(a);
+    auto a = dynamic_cast<QAction*>(sender());
+    auto viewAction = dynamic_cast<GObjectViewAction*>(a);
     SAFE_POINT(nullptr != viewAction, "NULL action", );
 
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     SAFE_POINT(nullptr != av, "NULL dna view", );
 
     SecStructPredictAlgRegistry* sspar = AppContext::getSecStructPredictAlgRegistry();

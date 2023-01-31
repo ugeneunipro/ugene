@@ -75,7 +75,7 @@ void OpenSavedTextObjectViewTask::open() {
     assert(doc->isLoaded());
     QString objName = SimpleTextObjectView::getObjectName(stateData);
     GObject* obj = doc->findGObjectByName(objName);
-    TextObject* to = qobject_cast<TextObject*>(obj);
+    auto to = qobject_cast<TextObject*>(obj);
     if (!to) {
         stateInfo.setError(tr("Text object '%1' is not found").arg(objName));
         stateIsIllegal = true;
@@ -95,7 +95,7 @@ void OpenSimpleTextObjectViewTask::open() {
         Document* doc = obj->getDocument();
         CHECK_EXT(doc->isLoaded(), stateInfo.setError(tr("Document is not loaded!")), );
 
-        TextObject* to = qobject_cast<TextObject*>(obj);
+        auto to = qobject_cast<TextObject*>(obj);
         CHECK_EXT(nullptr != obj, stateInfo.setError(tr("Invalid object detected!")), );
 
         const QString viewName = GObjectViewUtils::genUniqueViewName(doc, to);
@@ -123,7 +123,7 @@ void UpdateSimpleTextObjectViewTask::update() {
     if (view.isNull()) {
         return;
     }
-    SimpleTextObjectView* tv = qobject_cast<SimpleTextObjectView*>(view);
+    auto tv = qobject_cast<SimpleTextObjectView*>(view);
     if (tv == nullptr) {
         return;
     }

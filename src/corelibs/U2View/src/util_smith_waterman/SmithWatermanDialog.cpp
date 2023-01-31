@@ -193,9 +193,9 @@ void SmithWatermanDialog::sl_patternChanged() {
 }
 
 void SmithWatermanDialog::sl_templateButtonPressed() {
-    const QPushButton* senderButton = qobject_cast<QPushButton*>(sender());
+    auto senderButton = qobject_cast<QPushButton*>(sender());
     const QString buttonText = senderButton->text();
-    QLineEdit* editInFocus = dynamic_cast<QLineEdit*>(QApplication::focusWidget());
+    auto editInFocus = dynamic_cast<QLineEdit*>(QApplication::focusWidget());
 
     assert(nullptr != senderButton && nullptr != editInFocus);
 
@@ -283,7 +283,7 @@ void SmithWatermanDialog::fillTemplateButtonsList() {
 }
 
 void SmithWatermanDialog::addAnnotationWidget() {
-    U2SequenceObject* dnaso = qobject_cast<U2SequenceObject*>(ctxSeq->getSequenceGObject());
+    auto dnaso = qobject_cast<U2SequenceObject*>(ctxSeq->getSequenceGObject());
     CreateAnnotationModel acm;
 
     acm.sequenceObjectRef = GObjectReference(dnaso);

@@ -83,7 +83,7 @@ AppCloseMessageBoxDialogFiller::AppCloseMessageBoxDialogFiller(GUITestOpStatus& 
 #define GT_METHOD_NAME "commonScenario"
 void AppCloseMessageBoxDialogFiller::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget(os);
-    QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
+    auto messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
     QAbstractButton* noButton = messageBox->button(QMessageBox::No);
@@ -110,7 +110,7 @@ MessageBoxNoToAllOrNo::MessageBoxNoToAllOrNo(GUITestOpStatus& os)
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxNoToAllOrNo::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget(os);
-    QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
+    auto messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
     QAbstractButton* button = messageBox->button(QMessageBox::NoToAll);
@@ -134,7 +134,7 @@ MessageBoxOpenAnotherProject::MessageBoxOpenAnotherProject(GUITestOpStatus& os)
 #define GT_METHOD_NAME "commonScenario"
 void MessageBoxOpenAnotherProject::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget(os);
-    QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
+    auto messageBox = qobject_cast<QMessageBox*>(activeModal);
     GT_CHECK(messageBox != NULL, "messageBox is NULL");
 
     QAbstractButton* button = messageBox->findChild<QAbstractButton*>("New Window");

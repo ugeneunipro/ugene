@@ -86,26 +86,26 @@ bool CurrentViewPainter::canPaintSvg(CustomExportSettings* /*settings*/, U2OpSta
 ZoomedViewPainter::ZoomedViewPainter(PanView* panView)
     : ExportImagePainter(),
       panView(panView) {
-    PanViewRenderArea* ra = qobject_cast<PanViewRenderArea*>(panView->getRenderArea());
+    auto ra = qobject_cast<PanViewRenderArea*>(panView->getRenderArea());
     panViewRenderer = ra->getRenderer();
 }
 
 void ZoomedViewPainter::paint(QPainter& p, CustomExportSettings* settings) const {
-    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
+    auto s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", );
 
     panViewRenderer->drawAll(p, s->getRegion());
 }
 
 QSize ZoomedViewPainter::getImageSize(CustomExportSettings* settings) const {
-    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
+    auto s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
 
     return panViewRenderer->getBaseCanvasSize(s->getRegion());
 }
 
 bool ZoomedViewPainter::canPaintSvg(CustomExportSettings* settings, U2OpStatus& /*os*/) const {
-    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
+    auto s = qobject_cast<SequenceExportSettings*>(settings);
     return checkAnnotationsCountInRegion(panView->getSequenceContext(), s->getRegion());
 }
 
@@ -117,14 +117,14 @@ DetailsViewPainter::DetailsViewPainter(DetView* detView)
     detViewRenderer = detView->getDetViewRenderArea()->getRenderer();
 }
 void DetailsViewPainter::paint(QPainter& p, CustomExportSettings* settings) const {
-    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
+    auto s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", );
 
     detViewRenderer->drawAll(p, detViewRenderer->getBaseCanvasSize(s->getRegion()), s->getRegion());
 }
 
 QSize DetailsViewPainter::getImageSize(CustomExportSettings* settings) const {
-    SequenceExportSettings* s = qobject_cast<SequenceExportSettings*>(settings);
+    auto s = qobject_cast<SequenceExportSettings*>(settings);
     SAFE_POINT(s != nullptr, "Cannot cast CustomExportSettings to SequenceExportSettings", QSize());
 
     return detViewRenderer->getBaseCanvasSize(s->getRegion());

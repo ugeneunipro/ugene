@@ -78,7 +78,7 @@ GSequenceGraphView::GSequenceGraphView(QWidget* p, SequenceObjectContext* ctx, G
     setFrameView(baseView->getFrameView());
 
     // process double clicks as centering requests
-    ADVSingleSequenceWidget* ssw = baseView == nullptr ? nullptr : qobject_cast<ADVSingleSequenceWidget*>(baseView->parentWidget());
+    auto ssw = baseView == nullptr ? nullptr : qobject_cast<ADVSingleSequenceWidget*>(baseView->parentWidget());
     if (ssw != nullptr) {
         connect(this, SIGNAL(si_centerPosition(qint64)), ssw, SLOT(sl_onLocalCenteringRequest(qint64)));
     }
