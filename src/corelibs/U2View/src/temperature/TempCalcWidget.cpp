@@ -79,20 +79,20 @@ TempCalcWidget::TempCalcWidget(QWidget* parent) :
 
 }
 
-void TempCalcWidget::init(TempCalcSettings* currentSettings) {
-    auto index = cbAlgorithm->findText(currentSettings->id);
+void TempCalcWidget::init(const TempCalcSettings& currentSettings) {
+    auto index = cbAlgorithm->findText(currentSettings.value(BaseTempCalc::KEY_ID).toString());
     CHECK(index != -1, );
 
     cbAlgorithm->setCurrentIndex(index);
     qobject_cast<BaseTempCalcWidget*>(swSettings->widget(index))->restoreFromSettings(currentSettings);
 }
 
-TempCalcSettings* TempCalcWidget::getSettings() const {
+TempCalcSettings TempCalcWidget::getSettings() const {
     auto currentWidget = swSettings->widget(cbAlgorithm->currentIndex());
-    SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), nullptr);
+    SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), {});
 
     auto curentBaseTempCalcWidget = qobject_cast<BaseTempCalcWidget*>(currentWidget);
-    SAFE_POINT(curentBaseTempCalcWidget != nullptr, L10N::nullPointerError("BaseTempCalcWidget"), nullptr);
+    SAFE_POINT(curentBaseTempCalcWidget != nullptr, L10N::nullPointerError("BaseTempCalcWidget"), {});
 
     return curentBaseTempCalcWidget->createSettings();
 }

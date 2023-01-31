@@ -27,65 +27,32 @@
 
 namespace U2 {
 
-const QString Primer3TempCalcSettings::KEY_DNA_CONC = "dna_conc";
-const QString Primer3TempCalcSettings::KEY_SALT_CONC = "salt_conc";
-const QString Primer3TempCalcSettings::KEY_DIVALENT_CONC = "divalent_conc";
-const QString Primer3TempCalcSettings::KEY_DNTP_CONC = "dntp_conc";
-const QString Primer3TempCalcSettings::KEY_DMSO_CONC = "dmso_conc";
-const QString Primer3TempCalcSettings::KEY_DMSO_FACT = "dmso_fact";
-const QString Primer3TempCalcSettings::KEY_FORMAMIDE_CONC = "formamide_conc";
-const QString Primer3TempCalcSettings::KEY_MAX_LEN = "max_len";
-const QString Primer3TempCalcSettings::KEY_TM_METHOD = "tm_method";
-const QString Primer3TempCalcSettings::KEY_SALT_CORRECTION = "salt_correction";
+const QString Primer3TempCalc::KEY_DNA_CONC = "dna_conc";
+const QString Primer3TempCalc::KEY_SALT_CONC = "salt_conc";
+const QString Primer3TempCalc::KEY_DIVALENT_CONC = "divalent_conc";
+const QString Primer3TempCalc::KEY_DNTP_CONC = "dntp_conc";
+const QString Primer3TempCalc::KEY_DMSO_CONC = "dmso_conc";
+const QString Primer3TempCalc::KEY_DMSO_FACT = "dmso_fact";
+const QString Primer3TempCalc::KEY_FORMAMIDE_CONC = "formamide_conc";
+const QString Primer3TempCalc::KEY_MAX_LEN = "max_len";
+const QString Primer3TempCalc::KEY_TM_METHOD = "tm_method";
+const QString Primer3TempCalc::KEY_SALT_CORRECTION = "salt_correction";
 
-QMap<QString, QVariant> Primer3TempCalcSettings::toVariantMap() const {
-    auto result = TempCalcSettings::toVariantMap();
-    result.insert(KEY_DNA_CONC, QVariant(dnaConc));
-    result.insert(KEY_SALT_CONC, QVariant(saltConc));
-    result.insert(KEY_DIVALENT_CONC, QVariant(divalentConc));
-    result.insert(KEY_DNTP_CONC, QVariant(dntpConc));
-    result.insert(KEY_DMSO_CONC, QVariant(dmsoConc));
-    result.insert(KEY_DMSO_FACT, QVariant(dmsoFact));
-    result.insert(KEY_FORMAMIDE_CONC, QVariant(formamideConc));
-    result.insert(KEY_MAX_LEN, QVariant(nnMaxLen));
-    result.insert(KEY_TM_METHOD, QVariant(static_cast<int>(tmMethod)));
-    result.insert(KEY_SALT_CORRECTION, QVariant(static_cast<int>(saltCorrections)));
-
-    return result;
-}
-
-void Primer3TempCalcSettings::fromVariantMap(const QMap<QString, QVariant>& mapSettings) {
-    TempCalcSettings::fromVariantMap(mapSettings);
-    dnaConc = mapSettings.value(KEY_DNA_CONC, dnaConc).toDouble();
-    saltConc = mapSettings.value(KEY_SALT_CONC, saltConc).toDouble();
-    divalentConc = mapSettings.value(KEY_DIVALENT_CONC, divalentConc).toDouble();
-    dntpConc = mapSettings.value(KEY_DNTP_CONC, dntpConc).toDouble();
-    dmsoConc = mapSettings.value(KEY_DMSO_CONC, dmsoConc).toDouble();
-    dmsoFact = mapSettings.value(KEY_DMSO_FACT, dmsoFact).toDouble();
-    formamideConc = mapSettings.value(KEY_FORMAMIDE_CONC, formamideConc).toDouble();
-    nnMaxLen = mapSettings.value(KEY_MAX_LEN, nnMaxLen).toInt();
-    tmMethod = static_cast<TmMethodType>(mapSettings.value(KEY_TM_METHOD, (int)tmMethod).toInt());
-    saltCorrections = static_cast<SaltCorrectionType>(mapSettings.value(KEY_SALT_CORRECTION, (int)saltCorrections).toInt());
-}
-
-Primer3TempCalc::Primer3TempCalc(Primer3TempCalcSettings* settings)
+Primer3TempCalc::Primer3TempCalc(const TempCalcSettings& settings)
     : BaseTempCalc(settings) {}
 
 double Primer3TempCalc::getMeltingTemperature(const QByteArray& sequence) {
-    auto p3Settings = static_cast<Primer3TempCalcSettings*>(settings);
-    SAFE_POINT(p3Settings != nullptr, L10N::nullPointerError("Primer3TempCalcSettings"), INVALID_TM);    
-    
     auto result = seqtm(sequence,
-                        p3Settings->dnaConc,
-                        p3Settings->saltConc,
-                        p3Settings->divalentConc,
-                        p3Settings->dntpConc,
-                        p3Settings->dmsoConc,
-                        p3Settings->dmsoFact,
-                        p3Settings->formamideConc,
-                        p3Settings->nnMaxLen,
-                        static_cast<tm_method_type>(p3Settings->tmMethod),
-                        static_cast<salt_correction_type>(p3Settings->saltCorrections),
+                        settings.value(KEY_DNA_CONC, DNA_CONC_DEFAULT).toDouble(),
+                        settings.value(KEY_SALT_CONC, SALT_CONC_DEFAULT).toDouble(),
+                        settings.value(KEY_DIVALENT_CONC, DIVALENT_CONC_DEFAULT).toDouble(),
+                        settings.value(KEY_DNTP_CONC, DNTP_CONC_DEFAULT).toDouble(),
+                        settings.value(KEY_DMSO_CONC, DMSO_CONC_DEFAULT).toDouble(),
+                        settings.value(KEY_DMSO_FACT, DMSO_FACT_DEFAULT).toDouble(),
+                        settings.value(KEY_FORMAMIDE_CONC, FORMAMIDE_CONC_DEFAULT).toDouble(),
+                        settings.value(KEY_MAX_LEN, NN_MAX_LEN_DEFAULT).toInt(),
+                        static_cast<tm_method_type>(settings.value(KEY_TM_METHOD, TM_METHOD_DEFAULT).toInt()),
+                        static_cast<salt_correction_type>(settings.value(KEY_SALT_CORRECTION, SALT_CORRECTIONS_DEFAULT).toInt()),
                         INVALID_TM).Tm;
     if (result == OLIGOTM_ERROR) {
         result = INVALID_TM;

@@ -22,11 +22,11 @@
 
 #include <QWidget>
 
+#include <U2Algorithm/BaseTempCalc.h>
+
 #include <U2Core/global.h>
 
 namespace U2 {
-
-struct TempCalcSettings;
 
 /**
  * @BaseTempCalcWidget class is a widget to set up settings for temperature calculations
@@ -40,14 +40,14 @@ public:
     /**
      * Get settings, which were set up.
      * Use this function when settings up is done.
-     * @return pointer to the settings object
+     * @return the settings object
      */
-    virtual TempCalcSettings* createSettings() const = 0;
+    virtual TempCalcSettings createSettings() const = 0;
     /**
      * Restore widget from the settings object.
-     * @settings pointer to the settings object.
+     * @settings the settings object.
      */
-    virtual void restoreFromSettings(TempCalcSettings* settings) = 0;
+    virtual void restoreFromSettings(const TempCalcSettings& settings) = 0;
 
 signals:
     void si_settingsChanged();

@@ -24,11 +24,11 @@
 #include <QComboBox>
 #include <QStackedWidget>
 
+#include <U2Algorithm/BaseTempCalc.h>
+
 #include <U2Core/global.h>
 
 namespace U2 {
-
-struct TempCalcSettings;
 
 /**
  * @TempCalcWidget class is a Widget wich contains all @BaseTempCalcWidget's
@@ -44,13 +44,13 @@ public:
      * Initialize widget with @currentSettings
      * @currentSettings settings to initialize widget
      */
-    void init(TempCalcSettings* currentSettings);
+    void init(const TempCalcSettings& currentSettings);
     /**
      * Get sequence object to the set settings
      * Settings object will be got from the active BaseTempCalcWidget
      * @return settings object
      */
-    TempCalcSettings* getSettings() const;
+    TempCalcSettings getSettings() const;
 
 signals:
     void si_settingsChanged();

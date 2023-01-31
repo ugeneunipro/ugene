@@ -31,10 +31,9 @@ class Primer3TempCalcFactory : public TempCalcFactory {
 public:
     Primer3TempCalcFactory();
 
-    QSharedPointer<BaseTempCalc> createTempCalculator(TempCalcSettings* settings) const override;
-    QSharedPointer<BaseTempCalc> createTempCalculator(const QMap<QString, QVariant>& mapSettings) const override;
+    QSharedPointer<BaseTempCalc> createTempCalculator(const TempCalcSettings& settings) const override;
     QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const override;
-    TempCalcSettings* createDefaultTempCalcSettings() const override;
+    TempCalcSettings createDefaultTempCalcSettings() const override;
     BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
 
 private:

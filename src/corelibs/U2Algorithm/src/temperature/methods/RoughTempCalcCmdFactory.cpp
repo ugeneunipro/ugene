@@ -29,13 +29,7 @@ const QString RoughTempCalcCmdFactory::ID = "Rough";
 RoughTempCalcCmdFactory::RoughTempCalcCmdFactory()
     : TempCalcFactory(ID) {}
 
-QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createTempCalculator(TempCalcSettings* settings) const {
-    return QSharedPointer<BaseTempCalc>(new RoughTempCalc(settings));
-}
-
-QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createTempCalculator(const QMap<QString, QVariant>& mapSettings) const {
-    auto settings = new TempCalcSettings;
-    settings->fromVariantMap(mapSettings);
+QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createTempCalculator(const TempCalcSettings& settings) const {
     return QSharedPointer<BaseTempCalc>(new RoughTempCalc(settings));
 }
 
@@ -43,9 +37,9 @@ QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createDefaultTempCalculato
     return createTempCalculator(createDefaultTempCalcSettings());
 }
 
-TempCalcSettings* RoughTempCalcCmdFactory::createDefaultTempCalcSettings() const {
-    auto settings = new TempCalcSettings;
-    settings->id = ID;
+TempCalcSettings RoughTempCalcCmdFactory::createDefaultTempCalcSettings() const {
+    TempCalcSettings settings;
+    settings.insert(BaseTempCalc::KEY_ID, ID);
     return settings;
 }
 

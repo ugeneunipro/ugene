@@ -42,37 +42,34 @@ Primer3TempCalcWidget::Primer3TempCalcWidget(QWidget* parent, const QString& id)
     connect(cbSalt, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &Primer3TempCalcWidget::si_settingsChanged);
 }
 
-TempCalcSettings* Primer3TempCalcWidget::createSettings() const {
-    auto p3Settings = new Primer3TempCalcSettings;
-    p3Settings->id = id;
-    p3Settings->dnaConc = dsbDna->value();
-    p3Settings->saltConc = dsbMonovalent->value();
-    p3Settings->divalentConc = dsbDivalent->value();
-    p3Settings->dntpConc = dsbDntp->value();
-    p3Settings->dmsoConc = dsbDmso->value();
-    p3Settings->dmsoFact = dsbDmsoFactor->value();
-    p3Settings->formamideConc = dsbFormamide->value();
-    p3Settings->nnMaxLen = sbNnMaxLength->value();
-    p3Settings->tmMethod = static_cast<Primer3TempCalcSettings::TmMethodType>(cbTable->currentIndex());
-    p3Settings->saltCorrections = static_cast<Primer3TempCalcSettings::SaltCorrectionType>(cbSalt->currentIndex());
+TempCalcSettings Primer3TempCalcWidget::createSettings() const {
+    TempCalcSettings settings;
+    settings.insert(BaseTempCalc::KEY_ID, id);
+    settings.insert(Primer3TempCalc::KEY_DNA_CONC, dsbDna->value());
+    settings.insert(Primer3TempCalc::KEY_SALT_CONC, dsbMonovalent->value());
+    settings.insert(Primer3TempCalc::KEY_DIVALENT_CONC, dsbDivalent->value());
+    settings.insert(Primer3TempCalc::KEY_DNTP_CONC, dsbDntp->value());
+    settings.insert(Primer3TempCalc::KEY_DMSO_CONC, dsbDmso->value());
+    settings.insert(Primer3TempCalc::KEY_DMSO_FACT, dsbDmsoFactor->value());
+    settings.insert(Primer3TempCalc::KEY_FORMAMIDE_CONC, dsbFormamide->value());
+    settings.insert(Primer3TempCalc::KEY_MAX_LEN, sbNnMaxLength->value());
+    settings.insert(Primer3TempCalc::KEY_TM_METHOD, cbTable->currentIndex());
+    settings.insert(Primer3TempCalc::KEY_SALT_CORRECTION, cbSalt->currentIndex());
 
-    return p3Settings;
+    return settings;
 }
 
-void Primer3TempCalcWidget::restoreFromSettings(TempCalcSettings* settings) {
-    auto p3Settings = static_cast<Primer3TempCalcSettings*>(settings);
-    SAFE_POINT(p3Settings != nullptr, L10N::nullPointerError("Primer3TempCalcSettings"), );
-
-    dsbDna->setValue(p3Settings->dnaConc);
-    dsbMonovalent->setValue(p3Settings->saltConc);
-    dsbDivalent->setValue(p3Settings->divalentConc);
-    dsbDntp->setValue(p3Settings->dntpConc);
-    dsbDmso->setValue(p3Settings->dmsoConc);
-    dsbDmsoFactor->setValue(p3Settings->dmsoFact);
-    dsbFormamide->setValue(p3Settings->formamideConc);
-    sbNnMaxLength->setValue(p3Settings->nnMaxLen);
-    cbTable->setCurrentIndex(static_cast<int>(p3Settings->tmMethod));
-    cbSalt->setCurrentIndex(static_cast<int>(p3Settings->saltCorrections));
+void Primer3TempCalcWidget::restoreFromSettings(const TempCalcSettings& settings) {
+    dsbDna->setValue(settings.value(Primer3TempCalc::KEY_DNA_CONC, Primer3TempCalc::DNA_CONC_DEFAULT).toDouble());
+    dsbMonovalent->setValue(settings.value(Primer3TempCalc::KEY_SALT_CONC, Primer3TempCalc::SALT_CONC_DEFAULT).toDouble());
+    dsbDivalent->setValue(settings.value(Primer3TempCalc::KEY_DIVALENT_CONC, Primer3TempCalc::DIVALENT_CONC_DEFAULT).toDouble());
+    dsbDntp->setValue(settings.value(Primer3TempCalc::KEY_DNTP_CONC, Primer3TempCalc::DNTP_CONC_DEFAULT).toDouble());
+    dsbDmso->setValue(settings.value(Primer3TempCalc::KEY_DMSO_CONC, Primer3TempCalc::DMSO_CONC_DEFAULT).toDouble());
+    dsbDmsoFactor->setValue(settings.value(Primer3TempCalc::KEY_DMSO_FACT, Primer3TempCalc::DMSO_FACT_DEFAULT).toDouble());
+    dsbFormamide->setValue(settings.value(Primer3TempCalc::KEY_FORMAMIDE_CONC, Primer3TempCalc::FORMAMIDE_CONC_DEFAULT).toDouble());
+    sbNnMaxLength->setValue(settings.value(Primer3TempCalc::KEY_MAX_LEN, Primer3TempCalc::NN_MAX_LEN_DEFAULT).toInt());
+    cbTable->setCurrentIndex(settings.value(Primer3TempCalc::KEY_TM_METHOD, Primer3TempCalc::TM_METHOD_DEFAULT).toInt());
+    cbSalt->setCurrentIndex(settings.value(Primer3TempCalc::KEY_SALT_CORRECTION, Primer3TempCalc::SALT_CORRECTIONS_DEFAULT).toInt());
 }
 
 }

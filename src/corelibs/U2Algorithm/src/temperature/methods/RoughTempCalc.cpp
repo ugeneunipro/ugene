@@ -27,7 +27,7 @@
 namespace U2 {
 
 
-RoughTempCalc::RoughTempCalc(TempCalcSettings* settings)
+RoughTempCalc::RoughTempCalc(const TempCalcSettings& settings)
     : BaseTempCalc(settings) {}
 
 double RoughTempCalc::getMeltingTemperature(const QByteArray& sequence) {

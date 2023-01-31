@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-TempCalcDialog::TempCalcDialog(QWidget* parent, TempCalcSettings* currentSettings)
+TempCalcDialog::TempCalcDialog(QWidget* parent, const TempCalcSettings& currentSettings)
     : QDialog(parent) {
     setObjectName("MeltingTemperatureCalculationDialog");
     setWindowTitle(tr("Melting temperature"));
@@ -48,10 +48,10 @@ TempCalcDialog::TempCalcDialog(QWidget* parent, TempCalcSettings* currentSetting
 
 QSharedPointer<BaseTempCalc> TempCalcDialog::createTemperatureCalculator() const {
     auto settings = tempCalcWidget->getSettings();
-    return AppContext::getTempCalcRegistry()->getById(settings->id)->createTempCalculator(settings);
+    return AppContext::getTempCalcRegistry()->getById(settings.value(BaseTempCalc::KEY_ID).toString())->createTempCalculator(settings);
 }
 
-TempCalcSettings* TempCalcDialog::getTemperatureCalculatorSettings() const {
+TempCalcSettings TempCalcDialog::getTemperatureCalculatorSettings() const {
     return tempCalcWidget->getSettings();
 }
 

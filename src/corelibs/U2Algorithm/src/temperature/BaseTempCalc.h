@@ -26,37 +26,22 @@
 
 #include <U2Core/global.h>
 
+#include <QSharedPointer>
+
 namespace U2 {
 
 /**
  * Settings for the temperature calculations
+ * key - id of parameter, value - its value
  */
-struct U2ALGORITHM_EXPORT TempCalcSettings {
-    /**
-     * Convert settings to variant map
-     * It's required it wee need to save this settings somewhere
-     * @return a map with the parameter id as a key and the corresponding parameter value as value
-     */
-    virtual QMap<QString, QVariant> toVariantMap() const;
-    /**
-     * Load settings from variant map
-     * Variant map could be loaded from some store
-     * @mapSettings a map with the parameter id as a key and the corresponding parameter value as value
-     */
-    virtual void fromVariantMap(const QMap<QString, QVariant>& mapSettings);
-
-    QString id;
-
-    static const QString KEY_ID;
-};
+using TempCalcSettings = QVariantMap;
 
 /**
  * Temperature calculator
  */
 class U2ALGORITHM_EXPORT BaseTempCalc {
 public:
-    BaseTempCalc(TempCalcSettings* settings);
-    ~BaseTempCalc();
+    BaseTempCalc(const TempCalcSettings& settings);
 
     /**
      * Calculate melting temperature
@@ -75,11 +60,17 @@ public:
      * @return the annealing temperaturev value
      */
     double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
-    TempCalcSettings* getSettings() const;
+    const TempCalcSettings& getSettings() const;
 
     static constexpr double INVALID_TM = -999999.0;
+    /**
+     * The algoritm ID.
+     * Also used in GUI (e.g. in combo boxes where all algorithms are presented - you see algorithm's ID)
+     */
+    static const QString KEY_ID;
+
 protected:
-    TempCalcSettings* settings = nullptr;
+    TempCalcSettings settings;
 
 private:
     static bool isNucleotideSequence(const QByteArray& sequence);

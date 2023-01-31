@@ -282,7 +282,8 @@ void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString& link) {
 
 void U2::InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged() {
     auto tempCalcSettings = temperatureWidget->getSettings();
-    temperatureCalculator = AppContext::getTempCalcRegistry()->getById(tempCalcSettings->id)->createTempCalculator(tempCalcSettings);
+    auto id = tempCalcSettings.value(BaseTempCalc::KEY_ID).toString();
+    temperatureCalculator = AppContext::getTempCalcRegistry()->getById(id)->createTempCalculator(tempCalcSettings);
     forwardPrimerBox->setTemperatureCalculator(temperatureCalculator);
     reversePrimerBox->setTemperatureCalculator(temperatureCalculator);
 }

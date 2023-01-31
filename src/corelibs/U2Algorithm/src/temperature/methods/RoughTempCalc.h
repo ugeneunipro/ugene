@@ -29,7 +29,7 @@ namespace U2 {
  */
 class RoughTempCalc : public BaseTempCalc {
 public:
-    RoughTempCalc(TempCalcSettings* settings);
+    RoughTempCalc(const TempCalcSettings& settings);
 
     double getMeltingTemperature(const QByteArray& sequence) override;
 

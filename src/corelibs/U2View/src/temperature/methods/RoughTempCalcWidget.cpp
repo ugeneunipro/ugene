@@ -29,14 +29,14 @@ RoughTempCalcWidget::RoughTempCalcWidget(QWidget* parent, const QString& id) :
     BaseTempCalcWidget(parent, id) {}
 
 
-TempCalcSettings* RoughTempCalcWidget::createSettings() const {
-    auto settings = new TempCalcSettings;
-    settings->id = id;
+TempCalcSettings RoughTempCalcWidget::createSettings() const {
+    TempCalcSettings settings;
+    settings.insert(BaseTempCalc::KEY_ID, id);
     return settings;
 }
 
-void RoughTempCalcWidget::restoreFromSettings(TempCalcSettings*) {
-    // @RoughTempCalc has no optionsa, so do nothing
+void RoughTempCalcWidget::restoreFromSettings(const TempCalcSettings&) {
+    // @RoughTempCalc has no options, so do nothing
 }
 
 }

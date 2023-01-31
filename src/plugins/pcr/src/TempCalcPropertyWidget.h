@@ -20,6 +20,8 @@
  */
 #pragma once
 
+#include <U2Algorithm/BaseTempCalc.h>
+
 #include <U2Lang/ConfigurationEditor.h>
 
 #include <QLineEdit>
@@ -27,13 +29,10 @@
 
 namespace U2 {
 
-struct TempCalcSettings;
-
 class TempCalcPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
     TempCalcPropertyWidget(QWidget* parent = nullptr, DelegateTags* tags = nullptr);
-    ~TempCalcPropertyWidget();
 
     QVariant value() override;
 
@@ -46,7 +45,7 @@ private slots:
 private:
     QLineEdit* lineEdit = nullptr;
     QToolButton* toolButton = nullptr;
-    TempCalcSettings* tempSettings = nullptr;
+    TempCalcSettings tempSettings;
 };
 
 

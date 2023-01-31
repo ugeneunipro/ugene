@@ -26,80 +26,73 @@
 
 namespace U2 {
 
-/**
- * @Primer3TempCalcSettings class calculate melting temperature using Primer3
- */
-struct Primer3TempCalcSettings : public TempCalcSettings {
-    QMap<QString, QVariant> toVariantMap() const override;
-    void fromVariantMap(const QMap<QString, QVariant>& mapSettings) override;
-
-    /* The table of nearest-neighbor thermodynamic parameters
-       and method for Tm calculation */
-    enum class TmMethodType {
-        Breslauer = 0, /* Method for Tm calculations and the thermodynamic parameters from
-                          [SantaLucia JR (1998) "A unified view of
-                          polymer, dumbbell and oligonucleotide DNA nearest-neighbor
-                          thermodynamics", Proc Natl Acad Sci 95:1460-65
-                          http://dx.doi.org/10.1073/pnas.95.4.1460] */
-        Santalucia = 1, /* Method for Tm
-                           calculations from the paper [Rychlik W, Spencer WJ and Rhoads RE
-                           (1990) "Optimization of the annealing temperature for DNA
-                           amplification in vitro", Nucleic Acids Res 18:6409-12
-                           http://www.pubmedcentral.nih.gov/articlerender.fcgi?tool=pubmed&pubmedid=2243783].
-                           and the thermodynamic parameters from the paper [Breslauer KJ, Frank
-                           R, Bl�cker H and Marky LA (1986) "Predicting DNA duplex stability
-                           from the base sequence" Proc Natl Acad Sci 83:4746-50
-                           http://dx.doi.org/10.1073/pnas.83.11.3746] */
-    };
-
-    /* Formula for salt correction */
-    enum class SaltCorrectionType {
-        Schildkraut = 0, /* [Schildkraut, C, and Lifson, S (1965)
-                            "Dependence of the melting temperature of DNA on salt
-                            concentration", Biopolymers 3:195-208 (not available on-line)] */
-        Santalucia = 1, /* [SantaLucia JR (1998) "A
-                           unified view of polymer, dumbbell and oligonucleotide DNA
-                           nearest-neighbor thermodynamics", Proc Natl Acad Sci 95:1460-65
-                           http://dx.doi.org/10.1073/pnas.95.4.1460] */
-        Owczarzy = 2, /* [Owczarzy, R., Moreira, B.G., You, Y., 
-                          Behlke, M.A., and Walder, J.A. (2008) "Predicting stability of DNA 
-                          duplexes in solutions containing magnesium and monovalent cations", 
-                          Biochemistry 47:5336-53 http://dx.doi.org/10.1021/bi702363u] */
-    };
-   
-    double dnaConc = 50.0;   /* DNA concentration (nanomolar). */
-    double saltConc = 50.0;  /* Concentration of divalent cations (millimolar). */
-    double divalentConc = 1.5; /* Concentration of divalent cations (millimolar) */
-    double dntpConc = 0.6;     /* Concentration of dNTPs (millimolar) */
-    double dmsoConc = 0.0;     /* Concentration of DMSO (%) */
-    double dmsoFact = 0.6;     /* DMSO correction factor, default 0.6 */
-    double formamideConc = 0.0; /* Concentration of formamide (mol/l) */
-    int nnMaxLen = 36;  /* The maximum sequence length for
-                            using the nearest neighbor model
-                            For sequences longer than this,
-                            uses the "GC%" formula.
-                        */
-
-    TmMethodType tmMethod = TmMethodType::Santalucia; /* See description above. */
-    SaltCorrectionType saltCorrections = SaltCorrectionType::Santalucia; /* See description above. */    
-
-    static const QString KEY_DNA_CONC;
-    static const QString KEY_SALT_CONC;
-    static const QString KEY_DIVALENT_CONC;
-    static const QString KEY_DNTP_CONC;
-    static const QString KEY_DMSO_CONC;
-    static const QString KEY_DMSO_FACT;
-    static const QString KEY_FORMAMIDE_CONC;
-    static const QString KEY_MAX_LEN;
-    static const QString KEY_TM_METHOD;
-    static const QString KEY_SALT_CORRECTION;
-};
 
 class Primer3TempCalc : public BaseTempCalc {
 public:
-    Primer3TempCalc(Primer3TempCalcSettings* settings);
+    Primer3TempCalc(const TempCalcSettings& settings);
 
     double getMeltingTemperature(const QByteArray& sequence) override;
+
+    /* DNA concentration (nanomolar). */
+    static const QString KEY_DNA_CONC;
+    /* Concentration of divalent cations (millimolar). */
+    static const QString KEY_SALT_CONC;
+    /* Concentration of divalent cations (millimolar) */
+    static const QString KEY_DIVALENT_CONC;
+    /* Concentration of dNTPs (millimolar) */
+    static const QString KEY_DNTP_CONC;
+    /* Concentration of DMSO (%) */
+    static const QString KEY_DMSO_CONC;
+    /* DMSO correction factor, default 0.6 */
+    static const QString KEY_DMSO_FACT;
+    /* Concentration of formamide (mol/l) */
+    static const QString KEY_FORMAMIDE_CONC;
+     /* The maximum sequence length for
+        using the nearest neighbor model
+        For sequences longer than this,
+        uses the "GC%" formula. */
+    static const QString KEY_MAX_LEN;
+    /* The table of nearest-neighbor thermodynamic parameters
+       and method for Tm calculation
+       0 - Method for Tm calculations and the thermodynamic parameters from
+           [SantaLucia JR (1998) "A unified view of
+           polymer, dumbbell and oligonucleotide DNA nearest-neighbor
+           thermodynamics", Proc Natl Acad Sci 95:1460-65
+           http://dx.doi.org/10.1073/pnas.95.4.1460]
+       1 - Method for Tm
+           calculations from the paper[Rychlik W, Spencer WJ and Rhoads RE
+           (1990) "Optimization of the annealing temperature for DNA
+           amplification in vitro", Nucleic Acids Res 18:6409-12
+           http://www.pubmedcentral.nih.gov/articlerender.fcgi?tool=pubmed&pubmedid=2243783].
+           and the thermodynamic parameters from the paper[Breslauer KJ, Frank
+           R, Bl�cker H and Marky LA(1986) "Predicting DNA duplex stability
+           from the base sequence" Proc Natl Acad Sci 83:4746-50
+           http://dx.doi.org/10.1073/pnas.83.11.3746] */
+    static const QString KEY_TM_METHOD;
+    /* Formula for salt correction
+       0 - [Schildkraut, C, and Lifson, S(1965)
+           "Dependence of the melting temperature of DNA on salt
+           concentration", Biopolymers 3:195-208 (not available on-line)]
+       1 - [SantaLucia JR(1998) "A
+           unified view of polymer, dumbbell and oligonucleotide DNA
+           nearest - neighbor thermodynamics", Proc Natl Acad Sci 95:1460-65
+           http://dx.doi.org/10.1073/pnas.95.4.1460]
+       2- Owczarzy, R., Moreira, B.G., You, Y.,
+           Behlke, M.A., and Walder, J.A. (2008) "Predicting stability of DNA
+           duplexes in solutions containing magnesium and monovalent cations",
+           Biochemistry 47 : 5336 - 53 http ://dx.doi.org/10.1021/bi702363u] */
+    static const QString KEY_SALT_CORRECTION;
+
+    static constexpr double DNA_CONC_DEFAULT = 50.0;
+    static constexpr double SALT_CONC_DEFAULT = 50.0;
+    static constexpr double DIVALENT_CONC_DEFAULT = 1.5;
+    static constexpr double DNTP_CONC_DEFAULT = 0.6;
+    static constexpr double DMSO_CONC_DEFAULT = 0.0;
+    static constexpr double DMSO_FACT_DEFAULT = 0.6;
+    static constexpr double FORMAMIDE_CONC_DEFAULT = 0.0;
+    static constexpr int NN_MAX_LEN_DEFAULT = 36;
+    static constexpr int TM_METHOD_DEFAULT = 1;
+    static constexpr int SALT_CORRECTIONS_DEFAULT = 1;
 };
 
 }

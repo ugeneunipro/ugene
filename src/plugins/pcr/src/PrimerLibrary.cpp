@@ -221,13 +221,13 @@ void PrimerLibrary::updateRawPrimer(Primer primer, U2OpStatus& os) {
     updatePrimer(primer, os);
 }
 
-TempCalcSettings* PrimerLibrary::getTemperatureSettings() const {
+const TempCalcSettings& PrimerLibrary::getTemperatureSettings() const {
     return temperatureCalculator->getSettings();
 }
 
 void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator) {
     temperatureCalculator = newTemperatureCalculator;
-    auto settingsMap = temperatureCalculator->getSettings()->toVariantMap();
+    auto settingsMap = temperatureCalculator->getSettings();
     U2OpStatusImpl os;
     auto records = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
     CHECK_OP(os, );
@@ -253,7 +253,7 @@ void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>&
         return;
     }
 
-    auto id = settingsMap.value(TempCalcSettings::KEY_ID);
+    auto id = settingsMap.value(BaseTempCalc::KEY_ID);
     auto idRecords = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
     CHECK_OP(os, );
 
@@ -277,7 +277,7 @@ void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>&
         } else {
             toRemove.append(UdrRecordId(PRIMER_SETTINGS_UDR_ID, record.getId().getRecordId()));
         }
-        CHECK_CONTINUE(recordParameter == TempCalcSettings::KEY_ID);
+        CHECK_CONTINUE(recordParameter == BaseTempCalc::KEY_ID);
         
         auto recordValue = record.getString(VALUE_FILED, os);
         CHECK_CONTINUE(recordValue == id);
@@ -304,7 +304,7 @@ void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>&
             udrDbi->removeRecord(record, os);
             CHECK_OP(os, );
         }
-        settingsMap.remove(TempCalcSettings::KEY_ID);
+        settingsMap.remove(BaseTempCalc::KEY_ID);
         addAllFromSettingsMap(settingsMap, os);
         CHECK_OP(os, );
     }
@@ -347,7 +347,7 @@ void PrimerLibrary::initTemperatureCalculator() {
         CHECK_OP(os, );
 
         settings.insert(recordParameter, recordValue);
-        CHECK_CONTINUE(recordParameter == TempCalcSettings::KEY_ID);
+        CHECK_CONTINUE(recordParameter == BaseTempCalc::KEY_ID);
 
         calcId = recordValue;
     }

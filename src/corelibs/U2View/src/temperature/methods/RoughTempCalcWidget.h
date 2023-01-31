@@ -32,10 +32,9 @@ class RoughTempCalcWidget : public BaseTempCalcWidget {
 public:
     RoughTempCalcWidget(QWidget* parent, const QString& id);
 
-    TempCalcSettings* createSettings() const override;
-    void restoreFromSettings(TempCalcSettings* settings) override;
+    TempCalcSettings createSettings() const override;
+    void restoreFromSettings(const TempCalcSettings& settings) override;
 
-private:
 };
 
 }

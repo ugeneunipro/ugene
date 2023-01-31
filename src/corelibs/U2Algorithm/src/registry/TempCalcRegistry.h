@@ -47,7 +47,7 @@ public:
      * Get the default temperature calculator settings
      * @return pointer to the temperature calculator settings
      */
-    TempCalcSettings* createDefaultTempCalcSettings() const;
+    TempCalcSettings createDefaultTempCalcSettings() const;
     /**
      * Get the temperature calculator settings by temperature settings,
      * which are stored as a variant map
@@ -64,11 +64,11 @@ public:
      * If @saveId is empty - get the first registred factory
      * @return pointer to the temperature calculator
      */
-    void saveSettings(const QString& saveId, TempCalcSettings* settings);
+    void saveSettings(const QString& saveId, const TempCalcSettings& settings);
 
 private:
     TempCalcFactory* defaultFactory = nullptr;
-    QMap<QString, QMap<QString, QVariant>> savedSettings;
+    QMap<QString, TempCalcSettings> savedSettings;
 };
 
 }

@@ -20,6 +20,8 @@
  */
 #pragma once
 
+#include "BaseTempCalc.h"
+
 #include <U2Core/global.h>
 
 #include <QString>
@@ -28,7 +30,6 @@ namespace U2 {
 
 class BaseTempCalc;
 class BaseTempCalcWidget;
-struct TempCalcSettings;
 
 /**
  * Factory, which creates temperature calculator and widget with the set of corresponding settings 
@@ -39,17 +40,10 @@ public:
 
     /**
      * Create temperature calculator
-     * @settings pointer to the TempCalcSettings of the calculator, which should be created
+     * @settings settings of the calculator, which should be created
      * @return pointer to the temperature calculator
      */
-    virtual QSharedPointer<BaseTempCalc> createTempCalculator(TempCalcSettings* settings) const = 0;
-    /**
-     * Create temperature calculator
-     * @mapSettings QMap of the corresponding settings.
-     * See TempCalcSettings::toVariantMap() and TempCalcSettings::fromVariantMap() for details
-     * @return pointer to the temperature calculator
-     */
-    virtual QSharedPointer<BaseTempCalc> createTempCalculator(const QMap<QString, QVariant>& mapSettings) const = 0;
+    virtual QSharedPointer<BaseTempCalc> createTempCalculator(const TempCalcSettings& settings) const = 0;
     /**
      * Create temperature calculator with the default settings
      * @return pointer to the temperature calculator
@@ -57,9 +51,9 @@ public:
     virtual QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const = 0;
     /**
      * Create the default settings of the default temperature calculator 
-     * @return pointer to the temperature calculator settings
+     * @return temperature calculator settings
      */
-    virtual TempCalcSettings* createDefaultTempCalcSettings() const = 0;
+    virtual TempCalcSettings createDefaultTempCalcSettings() const = 0;
     /**
      * Create widget to set manually settings and get TempCalcSettings from this widget
      * @parent widget parent

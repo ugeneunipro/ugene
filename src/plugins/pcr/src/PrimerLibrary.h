@@ -34,7 +34,6 @@
 namespace U2 {
 
 class DbiConnection;
-struct TempCalcSettings;
 class UdrDbi;
 
 class PrimerLibrary : public QObject {
@@ -56,7 +55,7 @@ public:
     void addRawPrimer(Primer primer, U2OpStatus& os);
     void updateRawPrimer(Primer primer, U2OpStatus& os);
 
-    TempCalcSettings* getTemperatureSettings() const;
+    const TempCalcSettings& getTemperatureSettings() const;
     void setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator);
 
 signals:

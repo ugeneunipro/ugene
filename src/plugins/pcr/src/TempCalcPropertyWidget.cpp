@@ -36,8 +36,8 @@ TempCalcPropertyWidget::TempCalcPropertyWidget(QWidget* parent, DelegateTags* ta
     : PropertyWidget(parent, tags) {
     lineEdit = new QLineEdit(this);
     tempSettings = AppContext::getTempCalcRegistry()->createDefaultTempCalcSettings();
-    lineEdit->setText(tempSettings->id);
-    lineEdit->setPlaceholderText(tempSettings->id);
+    lineEdit->setText(tempSettings.value(BaseTempCalc::KEY_ID).toString());
+    lineEdit->setPlaceholderText(tempSettings.value(BaseTempCalc::KEY_ID).toString());
     lineEdit->setObjectName("tempCalcPropertyLineEdit");
     lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     lineEdit->setReadOnly(true);
@@ -52,24 +52,17 @@ TempCalcPropertyWidget::TempCalcPropertyWidget(QWidget* parent, DelegateTags* ta
     layout()->addWidget(toolButton);
 }
 
-TempCalcPropertyWidget::~TempCalcPropertyWidget() {
-    delete tempSettings;
-}
-
 QVariant TempCalcPropertyWidget::value() {
-    return QVariant(tempSettings->toVariantMap());
+    return QVariant(tempSettings);
 }
 
 void TempCalcPropertyWidget::setValue(const QVariant& value) {
     CHECK(value.isValid(), );
     
     auto settingsVariantMap = value.toMap();
-    auto settingsId = settingsVariantMap.value(TempCalcSettings::KEY_ID).toString();
+    auto settingsId = settingsVariantMap.value(BaseTempCalc::KEY_ID).toString();
     lineEdit->setText(settingsId);
-    auto newSettigns = AppContext::getTempCalcRegistry()->getById(settingsId)->createDefaultTempCalcSettings();
-    newSettigns->fromVariantMap(settingsVariantMap);
-    delete tempSettings;
-    tempSettings = newSettigns;
+    tempSettings = AppContext::getTempCalcRegistry()->getById(settingsId)->createDefaultTempCalcSettings();
 }
 
 void TempCalcPropertyWidget::sl_showDialog() {
@@ -77,9 +70,8 @@ void TempCalcPropertyWidget::sl_showDialog() {
     int res = dialog->exec();
     CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
-    delete tempSettings;
     tempSettings = dialog->getTemperatureCalculatorSettings();
-    lineEdit->setText(tempSettings->id);
+    lineEdit->setText(tempSettings.value(BaseTempCalc::KEY_ID).toString());
     emit si_valueChanged(value());
 }
 

@@ -104,7 +104,7 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
             resultMap.insert(keyAndValue.first(), keyAndValue.last());
         }
         CHECK_EXT(!resultMap.isEmpty(), setError("No temperature settings"), );
-        CHECK_EXT(resultMap.keys().contains(TempCalcSettings::KEY_ID), setError("No ID were set"), );
+        CHECK_EXT(resultMap.keys().contains(BaseTempCalc::KEY_ID), setError("No ID were set"), );
 
         temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(resultMap);
         CHECK_EXT(temperatureCalculator != nullptr, setError("Can't set temperature settings"), );

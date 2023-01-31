@@ -33,27 +33,29 @@ const QString Primer3TempCalcFactory::ID = "Primer 3";
 Primer3TempCalcFactory::Primer3TempCalcFactory() 
     : TempCalcFactory(ID) {}
 
-QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(TempCalcSettings* settings) const {
-    auto p3Settings = static_cast<Primer3TempCalcSettings*>(settings);
-    SAFE_POINT(p3Settings != nullptr, L10N::nullPointerError("Primer3TempCalcSettings"), nullptr);
-
-    return QSharedPointer<BaseTempCalc>(new Primer3TempCalc(p3Settings));
-}
-
-QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(const QMap<QString, QVariant>& mapSettings) const {
-    auto p3Settings = new Primer3TempCalcSettings;
-    p3Settings->fromVariantMap(mapSettings);
-    return createTempCalculator(p3Settings);
+QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(const TempCalcSettings& settings) const {
+    return QSharedPointer<BaseTempCalc>(new Primer3TempCalc(settings));
 }
 
 QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createDefaultTempCalculator() const {
     return createTempCalculator(createDefaultTempCalcSettings());
 }
 
-TempCalcSettings* Primer3TempCalcFactory::createDefaultTempCalcSettings() const {
-    auto p3Settings = new Primer3TempCalcSettings;
-    p3Settings->id = ID;
-    return p3Settings;
+TempCalcSettings Primer3TempCalcFactory::createDefaultTempCalcSettings() const {
+    TempCalcSettings settings;
+    settings.insert(BaseTempCalc::KEY_ID, ID);
+    settings.insert(Primer3TempCalc::KEY_DNA_CONC, Primer3TempCalc::DNA_CONC_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_SALT_CONC, Primer3TempCalc::SALT_CONC_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_DIVALENT_CONC, Primer3TempCalc::DIVALENT_CONC_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_DNTP_CONC, Primer3TempCalc::DNTP_CONC_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_DMSO_CONC, Primer3TempCalc::DMSO_CONC_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_DMSO_FACT, Primer3TempCalc::DMSO_FACT_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_FORMAMIDE_CONC, Primer3TempCalc::FORMAMIDE_CONC_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_MAX_LEN, Primer3TempCalc::NN_MAX_LEN_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_TM_METHOD, Primer3TempCalc::TM_METHOD_DEFAULT);
+    settings.insert(Primer3TempCalc::KEY_SALT_CORRECTION, Primer3TempCalc::SALT_CORRECTIONS_DEFAULT);
+
+    return settings;
 }
 
 BaseTempCalcWidget* Primer3TempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {
