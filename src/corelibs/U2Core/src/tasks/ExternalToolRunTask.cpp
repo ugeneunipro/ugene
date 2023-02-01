@@ -63,6 +63,12 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
     CHECK_EXT(AppContext::getExternalToolRegistry()->getById(toolId) != nullptr, stateInfo.setError(tr("External tool is absent")), );
     QString toolPath = AppContext::getExternalToolRegistry()->getById(toolId)->getPath();
     CHECK_EXT(QFile::exists(toolPath), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(toolPath)), )
+    
+    const QString error = ExternalToolSupportUtils::checkOnlyLatinSymbolsInArgument(arguments);
+    if (!error.isEmpty()) {
+        stateInfo.setError(error);
+        return;
+    }
 
     toolName = AppContext::getExternalToolRegistry()->getToolNameById(toolId);
     coreLog.trace("Creating run task for: " + toolName);
@@ -335,6 +341,10 @@ void ExternalToolLogParser::setLastError(const QString& value) {
 
 ////////////////////////////////////////
 // ExternalToolSupportUtils
+const QString ExternalToolSupportUtils::NON_LATIN_SYMBOLS_IN_ARGUMENT_VALIDATION_ERROR = QObject::tr("One of the arguments passed to external tool is not in Latin alphabet."
+                                                                                                 " Make sure that the input and output files and folders, as well as the temporary folder,"
+                                                                                                 " are located in the paths which contain only Latin characters. Currently found invalid value - ");
+
 void ExternalToolSupportUtils::removeTmpDir(const QString& tmpDirUrl, U2OpStatus& os) {
     if (tmpDirUrl.isEmpty()) {
         os.setError(tr("Can not remove temporary folder: path is empty."));
@@ -584,6 +594,18 @@ QVariantMap ExternalToolSupportUtils::getScoresGapDependencyMap() {
     map.insert("5 -4", gaps);
 
     return map;
+}
+
+QString ExternalToolSupportUtils::checkOnlyLatinSymbolsInArgument(const QStringList& pathList) {
+    for (const QString& path : qAsConst(pathList)) {
+        if (!path.isEmpty()) {
+            QByteArray tolatin1(path.toLatin1());
+            if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
+                return NON_LATIN_SYMBOLS_IN_ARGUMENT_VALIDATION_ERROR + path;
+            }
+        }
+    }
+    return "";
 }
 
 ExternalToolLogProcessor::~ExternalToolLogProcessor() {

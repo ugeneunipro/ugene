@@ -158,6 +158,14 @@ public:
     static QString prepareArgumentsForCmdLine(const QStringList& arguments);
     static QStringList splitCmdLineArguments(const QString& execString);
     static QVariantMap getScoresGapDependencyMap();
+
+    /*
+    * Path validation.
+    */
+    static QString checkOnlyLatinSymbolsInArgument(const QStringList& pathList);
+
+private:
+    static const QString NON_LATIN_SYMBOLS_IN_ARGUMENT_VALIDATION_ERROR;
 };
 
 class U2CORE_EXPORT ExternalToolLogParser : public QObject {
@@ -233,5 +241,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_EXTERNAL_TOOL_RUN_TASK_H
