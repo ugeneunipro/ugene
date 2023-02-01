@@ -241,3 +241,6 @@ private:
 };
 
 }  // namespace U2
+
+#endif
+
