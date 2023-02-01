@@ -277,7 +277,7 @@ private:
 
     void paint(QPainter& painter);
 
-    /** Updates visible 'visible' state for labels based on the current options. */
+    /** Updates 'visible' state for labels based on the current options. */
     void updateLabelsVisibility();
 
     // Scalebar
