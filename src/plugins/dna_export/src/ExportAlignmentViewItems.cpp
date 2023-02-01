@@ -28,6 +28,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/ExportSequencesTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -37,7 +38,6 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/ExportSequencesTask.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>

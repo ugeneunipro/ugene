@@ -65,7 +65,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/DeleteGapsDialog.h \
            src/ov_msa/DrawHelper.h \
            src/ov_msa/ExportHighlightedDialogController.h \
-           src/ov_msa/ExportSequencesTask.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
            src/ov_msa/MSAEditorConsensusCache.h \
@@ -349,7 +348,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
            src/ov_msa/DrawHelper.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
-           src/ov_msa/ExportSequencesTask.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
            src/ov_msa/MSAEditorConsensusCache.cpp \

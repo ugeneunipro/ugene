@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-class U2VIEW_EXPORT ExportSequencesTask : public Task {
+class U2CORE_EXPORT ExportSequencesTask : public Task {
     Q_OBJECT
 public:
     ExportSequencesTask(const MultipleSequenceAlignment& msa,

@@ -53,7 +53,6 @@ ExportSequencesTask::ExportSequencesTask(const MultipleSequenceAlignment& msa, c
 }
 
 void ExportSequencesTask::prepare() {
-    QList<Task*> tasks;
     QSet<QString> existingFilenames;
     for (const DNASequence& sequence : qAsConst(sequences)) {
         QString filename = GUrlUtils::fixFileName(customFileName.isEmpty() ? sequence.getName() : customFileName);
@@ -65,7 +64,7 @@ void ExportSequencesTask::prepare() {
         GUrl url(filePath);
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
-        SAFE_POINT(df != nullptr, "Cant get DocuemtFormat by given DocumentFormatId", );
+        SAFE_POINT(df != nullptr, "Cant get DocumentFormat by given DocumentFormatId", );
 
         QScopedPointer<Document> doc(df->createNewLoadedDocument(iof, filePath, stateInfo));
         CHECK_OP(stateInfo, );
