@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_
-#define _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_
+#pragma once
 
 #include <QByteArray>
 #include <QObject>
@@ -134,5 +133,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_HR_SCHEMA_SERIALIZER_H_

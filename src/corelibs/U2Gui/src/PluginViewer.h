@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PLUGIN_VIEWER_H_
-#define _U2_PLUGIN_VIEWER_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceTypes.h>
@@ -39,5 +38,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QD_SCHEME_H_
-#define _U2_QD_SCHEME_H_
+#pragma once
 
 #include <QPair>
 #include <QSharedData>
@@ -270,7 +269,7 @@ public:
         return actor;
     }
     QString getId() const {
-        QDSchemeUnit* thisPtr = const_cast<QDSchemeUnit*>(this);
+        auto thisPtr = const_cast<QDSchemeUnit*>(this);
         return actor->getUnitId(thisPtr);
     }
 
@@ -413,5 +412,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::QDActorPrototype*)
-
-#endif

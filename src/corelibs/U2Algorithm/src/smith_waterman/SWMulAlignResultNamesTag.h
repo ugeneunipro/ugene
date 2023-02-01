@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_H_
-#define _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_H_
+#pragma once
 
 #include <QString>
 #include <QVariant>
@@ -65,5 +64,3 @@ inline const bool& SWMulAlignResultNamesTag::isAcceptableForSubseqNamesOnly() co
 }
 
 }  // namespace U2
-
-#endif  // _U2_SW_MUL_ALIGN_RESULT_NAMES_TAGS_H_

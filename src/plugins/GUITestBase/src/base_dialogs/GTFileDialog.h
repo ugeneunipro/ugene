@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTFILE_DIALOG_H
-#define GTFILE_DIALOG_H
+#pragma once
 
 #include <GTGlobals.h>
 #include <utils/GTUtilsDialog.h>
@@ -124,5 +123,3 @@ public:
 };
 
 }  // namespace HI
-
-#endif  // GTFILE_DIALOG_H

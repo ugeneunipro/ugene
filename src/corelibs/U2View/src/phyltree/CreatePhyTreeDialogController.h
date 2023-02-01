@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_PHY_TREE_DIALOG_CONTROLLER_H_
-#define _U2_CREATE_PHY_TREE_DIALOG_CONTROLLER_H_
+#pragma once
 
 #include <QDialog>
 
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CREATE_PHY_TREE_DIALOG_CONTROLLER_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_
-#define _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_
+#pragma once
 
 #include <QBitArray>
 #include <QObject>
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_CONSENSUS_MISMATCH_CONTROLLER_H_

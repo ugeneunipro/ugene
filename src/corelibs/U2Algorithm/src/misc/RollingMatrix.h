@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ROLLING_MATRIX_H_
-#define _U2_ROLLING_MATRIX_H_
+#pragma once
 
 #include <cstdio>
 
@@ -110,5 +109,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

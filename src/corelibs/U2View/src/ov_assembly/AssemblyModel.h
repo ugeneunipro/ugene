@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __U2_ASSEMBLY_BROWSER_MODEL_H__
-#define __U2_ASSEMBLY_BROWSER_MODEL_H__
+#pragma once
 
 #include <QFile>
 #include <QMutex>
@@ -165,5 +164,3 @@ private:
 };  // AssemblyModel
 
 }  // namespace U2
-
-#endif  // __U2_ASSEMBLY_BROWSER_MODEL_H__

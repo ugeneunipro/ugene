@@ -102,7 +102,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
 
     // 3. Find seq area #1
     auto w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
-    CHECK_SET_ERR(w != nullptr, QString("Can't find sequence area #1"));
 
     // 4. Switch to singleline mode
     // Press "Multiline View" button on toolbar
@@ -110,8 +109,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
 
     // 5. Find seq area #0, but not #1
     w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-    CHECK_SET_ERR(w != nullptr, QString("Can't find sequence area #0"));
-    w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1);
+    w = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 1, false);
     CHECK_SET_ERR(w == nullptr, QString("Unexpectedly found sequence area #1"));
 
     GTUtilsMsaEditor::setMultilineMode(os, false);

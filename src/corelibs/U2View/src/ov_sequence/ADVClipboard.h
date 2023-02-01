@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATED_DNA_VIEW_CLIPBOARD_H_
-#define _U2_ANNOTATED_DNA_VIEW_CLIPBOARD_H_
+#pragma once
 
 #include <QAction>
 
@@ -100,5 +99,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

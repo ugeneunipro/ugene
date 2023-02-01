@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __BACKGROUND_TASK_RUNNER_H__
-#define __BACKGROUND_TASK_RUNNER_H__
+#pragma once
 
 #include <QMap>
 
@@ -148,5 +147,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

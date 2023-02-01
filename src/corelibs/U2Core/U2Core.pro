@@ -114,6 +114,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/Log.h \
            src/globals/LogCache.h \
            src/globals/NetworkConfiguration.h \
+           src/globals/Nullable.h \
            src/globals/PasswordStorage.h \
            src/globals/PluginModel.h \
            src/globals/ProjectFilterTaskRegistry.h \
@@ -196,6 +197,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/tasks/CreateAnnotationTask.h \
            src/tasks/DeleteObjectsTask.h \
            src/tasks/DocumentProviderTask.h \
+           src/tasks/ExportSequencesTask.h \
            src/tasks/ExternalToolRunTask.h \
            src/tasks/ExtractAnnotatedRegionTask.h \
            src/tasks/FailTask.h \
@@ -429,6 +431,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/tasks/CreateAnnotationTask.cpp \
            src/tasks/DeleteObjectsTask.cpp \
            src/tasks/DocumentProviderTask.cpp \
+           src/tasks/ExportSequencesTask.cpp \
            src/tasks/ExternalToolRunTask.cpp \
            src/tasks/ExtractAnnotatedRegionTask.cpp \
            src/tasks/LoadDocumentTask.cpp \

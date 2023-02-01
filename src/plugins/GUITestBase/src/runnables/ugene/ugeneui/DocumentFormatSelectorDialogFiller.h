@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef DOCUMENTFORMATSELECTORDIALOGFILLER_H
-#define DOCUMENTFORMATSELECTORDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // DOCUMENTFORMATSELECTORDIALOGFILLER_H

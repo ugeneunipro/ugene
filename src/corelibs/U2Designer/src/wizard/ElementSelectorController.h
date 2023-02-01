@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ELEMENTSELECTORCONTROLLER_H_
-#define _U2_ELEMENTSELECTORCONTROLLER_H_
+#pragma once
 
 #include <U2Lang/ElementSelectorWidget.h>
 #include <U2Lang/Schema.h>
@@ -49,5 +48,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  // _U2_ELEMENTSELECTORCONTROLLER_H_

@@ -124,7 +124,7 @@ QList<Task*> QDScheduler::onSubTaskFinished(Task* subTask) {
 
 #define PUSH_WEIGTH (1.0f - PROCESSING_PROGRESS_WEIGHT / 100.0f)
 void QDScheduler::sl_updateProgress() {
-    Task* sub = qobject_cast<Task*>(sender());
+    auto sub = qobject_cast<Task*>(sender());
     int numProcessed = currentStep->getLinkedActors().size();
     if (numProcessed < settings.scheme->getActors().size()) {
         stateInfo.progress = progressDelta * (numProcessed + sub->getProgress() / 100.0f);
@@ -219,7 +219,7 @@ QVector<U2Region> QDResultLinker::findLocation(QDStep* step) {
             QList<QDResultUnit> resultList = candidate->getResultsList();
             for (const QDResultUnit& ru : qAsConst(resultList)) {
                 foreach (QDConstraint* c, step->getConstraints(su, ru->owner)) {
-                    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
+                    auto dc = static_cast<QDDistanceConstraint*>(c);
                     const U2Region& reg = QDConstraintController::matchLocation(dc, ru, complement);
                     suRegion = suRegion.intersect(reg);
                 }
@@ -802,7 +802,7 @@ static const int RUN_START = FIND_LOC_PROGRESS_WEIGHT * 100;
 static const int LINK_START = (FIND_LOC_PROGRESS_WEIGHT + RUN_TASK_PROGRESS_WEIGHT) * 100;
 
 void QDTask::sl_updateProgress() {
-    Task* sub = qobject_cast<Task*>(sender());
+    auto sub = qobject_cast<Task*>(sender());
     if (sub == findLocationTask) {
     } else if (sub == runTask) {
         stateInfo.progress = RUN_START + sub->getProgress() * RUN_TASK_PROGRESS_WEIGHT;

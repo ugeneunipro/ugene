@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef U2_GT_BASECOMPLETER_H
-#define U2_GT_BASECOMPLETER_H
+#pragma once
 
 #include "GTGlobals.h"
 
@@ -38,4 +37,3 @@ public:
 };
 
 }  // namespace U2
-#endif  // GTBASECOMPLETER_H

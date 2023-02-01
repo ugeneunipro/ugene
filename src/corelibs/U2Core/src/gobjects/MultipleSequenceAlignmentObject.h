@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
-#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_
+#pragma once
 
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -95,5 +94,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_OBJECT_H_

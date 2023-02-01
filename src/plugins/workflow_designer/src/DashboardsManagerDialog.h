@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DASHBOARDS_MANAGER_DIALOG_H_
-#define _U2_DASHBOARDS_MANAGER_DIALOG_H_
+#pragma once
 
 #include <U2Designer/Dashboard.h>
 #include <U2Designer/DashboardInfo.h>
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DASHBOARDS_MANAGER_DIALOG_H_

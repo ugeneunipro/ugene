@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_LOCAL_FILE_ADAPTER_H_
-#define _U2_LOCAL_FILE_ADAPTER_H_
+#pragma once
 
 #include <QFileInfo>
 
@@ -109,5 +108,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

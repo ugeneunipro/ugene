@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_WORKER_H_
-#define _U2_FIND_WORKER_H_
+#pragma once
 
 #include <U2Algorithm/FindAlgorithm.h>
 #include <U2Algorithm/FindAlgorithmTask.h>
@@ -91,5 +90,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

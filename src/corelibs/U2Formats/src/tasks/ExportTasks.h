@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_TASKS_H_
-#define _U2_EXPORT_TASKS_H_
+#pragma once
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -145,5 +144,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

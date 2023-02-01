@@ -75,7 +75,7 @@ McaEditorWgt::McaEditorWgt(McaEditor* editor)
 
     enableCollapsingOfSingleRowGroups = true;
 
-    McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consensusArea);
+    auto mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consensusArea);
     SAFE_POINT(mcaConsArea != nullptr, "Failed to cast consensus area to MCA consensus area", );
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");

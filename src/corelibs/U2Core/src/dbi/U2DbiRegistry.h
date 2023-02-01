@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DBI_REGISTRY_H_
-#define _U2_DBI_REGISTRY_H_
+#pragma once
 
 #include <QHash>
 #include <QMutex>
@@ -159,5 +158,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DBI_REGISTRY_H_

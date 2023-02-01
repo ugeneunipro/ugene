@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_SELECT_WIDGET_CONTROLLER
-#define _U2_SEQUENCE_SELECT_WIDGET_CONTROLLER
+#pragma once
 
 #include <U2Gui/SuggestCompleter.h>
 
@@ -62,5 +61,3 @@ private:
 };
 
 };  // namespace U2
-
-#endif

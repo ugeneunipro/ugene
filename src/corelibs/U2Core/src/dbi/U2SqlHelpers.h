@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQL_HELPERS_H_
-#define _U2_SQL_HELPERS_H_
+#pragma once
 
 #include <QHash>
 #include <QMutex>
@@ -421,5 +420,3 @@ protected:
     }
 
 }  // namespace U2
-
-#endif  // _U2_SQL_HELPERS_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_CONSENSUS_AREA_RENDERER_H_
-#define _U2_MCA_CONSENSUS_AREA_RENDERER_H_
+#pragma once
 
 #include "ov_msa/MaConsensusAreaRenderer.h"
 
@@ -39,5 +38,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MCA_CONSENSUS_AREA_RENDERER_H_

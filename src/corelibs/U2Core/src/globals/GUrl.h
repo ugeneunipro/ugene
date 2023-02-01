@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GURL_H_
-#define _U2_GURL_H_
+#pragma once
 
 #include <QMetaType>
 
@@ -125,5 +124,3 @@ QDataStream& operator>>(QDataStream& in, GUrl& myObj);
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::GUrl);
-
-#endif

@@ -116,7 +116,7 @@ void GeneByGeneReportWorker::cleanup() {
 }
 
 void GeneByGeneReportWorker::sl_taskFinished() {
-    GeneByGeneReportTask* t = dynamic_cast<GeneByGeneReportTask*>(sender());
+    auto t = dynamic_cast<GeneByGeneReportTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -218,7 +218,7 @@ Worker* GeneByGeneReportWorkerFactory::createWorker(Actor* a) {
 QString GeneByGeneReportPrompter::composeRichDoc() {
     QString res = "";
 
-    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(SEQ_SLOT_ID);
+    auto seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(SEQ_SLOT_ID);
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString annUrl = seqProducer ? seqProducer->getLabel() : unsetStr;

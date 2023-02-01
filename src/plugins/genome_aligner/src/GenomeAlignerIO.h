@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GENOME_ALIGNER_IO_H_
-#define _GENOME_ALIGNER_IO_H_
+#pragma once
 
 #include <QSharedPointer>
 #include <QString>
@@ -215,4 +214,3 @@ bool checkAndLogError(const U2OpStatusImpl& status);
 }  // namespace U2
 Q_DECLARE_METATYPE(U2::GenomeAlignerReaderContainer);
 Q_DECLARE_METATYPE(U2::GenomeAlignerWriterContainer);
-#endif  //_GENOME_ALIGNER_IO_H_

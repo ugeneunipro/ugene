@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITE_ASSEMBLY_DBI_H_
-#define _U2_SQLITE_ASSEMBLY_DBI_H_
+#pragma once
 
 #include <U2Core/U2SqlHelpers.h>
 
@@ -163,7 +162,7 @@ public:
 
     static void calculateCoverage(SQLiteReadQuery& q, const U2Region& r, U2AssemblyCoverageStat& coverage, U2OpStatus& os);
 
-    static void addToCoverage(U2AssemblyCoverageImportInfo& cii, const U2AssemblyRead& read);
+    static void addToCoverage(U2AssemblyCoverageImportInfo& importInfo, const U2AssemblyRead& read);
 };
 
 class SQLiteAssemblyNameFilter : public SQLiteResultSetFilter<U2AssemblyRead> {
@@ -190,5 +189,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

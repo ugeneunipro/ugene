@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GENOMEASSEMBLYREGISTRY_H
-#define GENOMEASSEMBLYREGISTRY_H
+#pragma once
 
 #include <QList>
 #include <QMutex>
@@ -209,5 +208,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // GENOMEASSEMBLYREGISTRY_H

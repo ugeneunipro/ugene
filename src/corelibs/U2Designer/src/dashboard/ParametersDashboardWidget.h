@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PARAMETERS_DASHBOARD_WIDGET_H_
-#define _U2_PARAMETERS_DASHBOARD_WIDGET_H_
+#pragma once
 
 #include <QAbstractButton>
 #include <QDomElement>
@@ -83,5 +82,3 @@ private:
     QList<HoverQLabel*> workerNameLabels;
 };
 }  // namespace U2
-
-#endif

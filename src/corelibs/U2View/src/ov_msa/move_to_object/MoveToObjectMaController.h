@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MOVETOOBJECTMAMENUCONTROLLER_H_
-#define _U2_MOVETOOBJECTMAMENUCONTROLLER_H_
+#pragma once
 
 #include <QAction>
 #include <QMenu>
@@ -78,5 +77,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MOVETOOBJECTMAMENUCONTROLLER_H_

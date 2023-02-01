@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_
-#define _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_
+#pragma once
 
 namespace HI {
 class GUITestOpStatus;
@@ -35,5 +34,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_UTILS_MCA_EDITOR_REFERENCE_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _MARKER_EDITOR_WIDGET_H_
-#define _MARKER_EDITOR_WIDGET_H_
+#pragma once
 
 #include "ui_EditIntegerMarkerWidget.h"
 #include "ui_EditMarkerDialog.h"
@@ -49,5 +48,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  // _MARKER_EDITOR_WIDGET_H_

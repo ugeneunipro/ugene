@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _WORKFLOW_ELEMENT_FACADE_H_
-#define _WORKFLOW_ELEMENT_FACADE_H_
+#pragma once
 
 #include <QString>
 
@@ -62,5 +61,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _WORKFLOW_ELEMENT_FACADE_H_

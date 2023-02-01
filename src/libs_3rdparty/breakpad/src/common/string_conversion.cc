@@ -56,7 +56,7 @@ void UTF8ToUTF16(const char* in, vector<uint16_t>* out) {
 }
 
 int UTF8ToUTF16Char(const char* in, int in_length, uint16_t out[2]) {
-  const UTF8* source_ptr = reinterpret_cast<const UTF8*>(in);
+  auto source_ptr = reinterpret_cast<const UTF8*>(in);
   const UTF8* source_end_ptr = source_ptr + 1;
   uint16_t* target_ptr = out;
   uint16_t* target_end_ptr = target_ptr + 2;
@@ -84,7 +84,7 @@ int UTF8ToUTF16Char(const char* in, int in_length, uint16_t out[2]) {
 
 void UTF32ToUTF16(const wchar_t* in, vector<uint16_t>* out) {
   size_t source_length = wcslen(in);
-  const UTF32* source_ptr = reinterpret_cast<const UTF32*>(in);
+  auto source_ptr = reinterpret_cast<const UTF32*>(in);
   const UTF32* source_end_ptr = source_ptr + source_length;
   // Erase the contents and zero fill to the expected size
   out->clear();
@@ -100,7 +100,7 @@ void UTF32ToUTF16(const wchar_t* in, vector<uint16_t>* out) {
 }
 
 void UTF32ToUTF16Char(wchar_t in, uint16_t out[2]) {
-  const UTF32* source_ptr = reinterpret_cast<const UTF32*>(&in);
+  auto source_ptr = reinterpret_cast<const UTF32*>(&in);
   const UTF32* source_end_ptr = source_ptr + 1;
   uint16_t* target_ptr = out;
   uint16_t* target_end_ptr = target_ptr + 2;
@@ -145,7 +145,7 @@ string UTF16ToUTF8(const vector<uint16_t>& in, bool swap) {
                                                strictConversion);
 
   if (result == conversionOK) {
-    const char* targetPtr = reinterpret_cast<const char*>(target_buffer.get());
+    auto targetPtr = reinterpret_cast<const char*>(target_buffer.get());
     return targetPtr;
   }
 

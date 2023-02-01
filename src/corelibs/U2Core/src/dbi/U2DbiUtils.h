@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DBI_UTILS_H_
-#define _U2_DBI_UTILS_H_
+#pragma once
 
 #include <U2Core/StrPackUtils.h>
 #include <U2Core/U2Dbi.h>
@@ -202,5 +201,3 @@ QList<T> U2DbiUtils::toList(U2DbiIterator<T>* it) {
 }
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SLEEP_PREVENTER_MAC_H_
-#define _U2_SLEEP_PREVENTER_MAC_H_
+#pragma once
 
 #include "TaskSchedulerImpl.h"
 
@@ -51,5 +50,3 @@ class SleepPreventerMac : public SleepPreventer {
 #endif
 
 }  // namespace U2
-
-#endif  // _U2_SLEEP_PREVENTER_MAC_H_

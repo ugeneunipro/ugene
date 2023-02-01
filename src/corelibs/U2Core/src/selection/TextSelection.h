@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEXT_SELECTION_H_
-#define _U2_TEXT_SELECTION_H_
+#pragma once
 
 #include "LRegionsSelection.h"
 #include "SelectionTypes.h"
@@ -43,5 +42,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -21,8 +21,7 @@
 
 /** Set of wrappers for typical workflow tasks */
 
-#ifndef _SIMPLE_WORKFLOW_TASK_H_
-#define _SIMPLE_WORKFLOW_TASK_H_
+#pragma once
 
 #include <QTemporaryFile>
 
@@ -112,5 +111,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // #ifndef _RUN_SCHEMA_FOR_TASK_H_

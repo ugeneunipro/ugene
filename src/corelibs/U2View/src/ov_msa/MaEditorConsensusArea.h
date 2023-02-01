@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_CONSENSUS_AREA_H_
-#define _U2_MA_EDITOR_CONSENSUS_AREA_H_
+#pragma once
 
 #include <QWidget>
 
@@ -142,5 +141,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_EDITOR_CONSENSUS_AREA_H_

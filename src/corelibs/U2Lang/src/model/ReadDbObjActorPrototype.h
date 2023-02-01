@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_READ_DB_OBJ_ACTOR_PROTOTYPE_H_
-#define _U2_READ_DB_OBJ_ACTOR_PROTOTYPE_H_
+#pragma once
 
 #include <U2Lang/IntegralBusModel.h>
 
@@ -39,5 +38,3 @@ public:
 }  // namespace Workflow
 
 }  // namespace U2
-
-#endif  // _U2_READ_DB_OBJ_ACTOR_PROTOTYPE_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_APP_FILE_STORAGE_
-#define _U2_APP_FILE_STORAGE_
+#pragma once
 
 #include <QFile>
 #include <QMutex>
@@ -134,5 +133,3 @@ public:
 };  // StorageRoles
 
 }  // namespace U2
-
-#endif  // _U2_APP_FILE_STORAGE_

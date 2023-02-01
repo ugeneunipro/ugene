@@ -412,7 +412,7 @@ void PairAlign::sl_alignButtonPressed() {
     AbstractAlignmentTaskFactory* factory = par->getAlgorithm(settings.algorithmId)->getFactory(settings.realizationName);
     SAFE_POINT(factory != nullptr, QString("Task factory for algorithm %1, realization %2 not found.").arg(settings.algorithmId, settings.realizationName), );
 
-    PairwiseAlignmentTask* task = qobject_cast<PairwiseAlignmentTask*>(factory->getTaskInstance(&settings));
+    auto task = qobject_cast<PairwiseAlignmentTask*>(factory->getTaskInstance(&settings));
     SAFE_POINT(task != nullptr, "Task is null!", );
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_alignComplete()));
     pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask = task;

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _CIRCULAR_ITEMS_H_
-#define _CIRCULAR_ITEMS_H_
+#pragma once
 
 #include <QFont>
 #include <QGraphicsPathItem>
@@ -169,5 +168,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _CIRCULAR_ITEMS_H_

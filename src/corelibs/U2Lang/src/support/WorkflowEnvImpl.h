@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_ENVIMPL_H_
-#define _U2_WORKFLOW_ENVIMPL_H_
+#pragma once
 
 #include <U2Lang/WorkflowEnv.h>
 
@@ -47,5 +46,3 @@ protected:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_ENVIMPL_H_

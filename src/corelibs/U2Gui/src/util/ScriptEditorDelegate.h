@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SCRIPT_EDITOR_DELEGATE_H_
-#define _U2_SCRIPT_EDITOR_DELEGATE_H_
+#pragma once
 
 #include <QWidget>
 
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SCRIPT_EDITOR_DELEGATE_H_

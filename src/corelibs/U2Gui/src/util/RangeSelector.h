@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RANGE_SELECTOR_H_
-#define _U2_RANGE_SELECTOR_H_
+#pragma once
 
 #include <QDialog>
 #include <QLabel>
@@ -112,5 +111,3 @@ protected slots:
 };
 
 }  // namespace U2
-
-#endif

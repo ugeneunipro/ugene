@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPH_MENU_H_
-#define _U2_GRAPH_MENU_H_
+#pragma once
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -72,5 +71,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

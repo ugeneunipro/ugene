@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_HIGH_FLEX_REGIONS_H_
-#define _U2_FIND_HIGH_FLEX_REGIONS_H_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/DNASequence.h>
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

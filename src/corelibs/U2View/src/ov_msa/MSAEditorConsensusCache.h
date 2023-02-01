@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
-#define _U2_MSA_EDITOR_CONSENSUS_CACHE_H_
+#pragma once
 
 #include <QBitArray>
 #include <QObject>
@@ -92,5 +91,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

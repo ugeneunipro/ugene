@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_POSITION_WEIGHT_MATRIX_H_
-#define _U2_POSITION_WEIGHT_MATRIX_H_
+#pragma once
 
 #include <QMap>
 #include <QVarLengthArray>
@@ -121,5 +120,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

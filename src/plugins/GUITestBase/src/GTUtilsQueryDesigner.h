@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GT_UTILS_QUERY_DESIGNER_H
-#define GT_UTILS_QUERY_DESIGNER_H
+#pragma once
 
 #include <QTreeWidget>
 
@@ -46,4 +45,3 @@ public:
 };
 
 }  // namespace U2
-#endif  // GT_UTILS_QUERY_DESIGNER_H

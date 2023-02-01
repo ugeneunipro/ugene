@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_SEQUENCE_H_
-#define _U2_DNA_SEQUENCE_H_
+#pragma once
 
 #include <QVariantMap>
 
@@ -67,5 +66,3 @@ public:
 
 Q_DECLARE_METATYPE(U2::DNASequence)
 Q_DECLARE_METATYPE(QList<U2::DNASequence>)
-
-#endif

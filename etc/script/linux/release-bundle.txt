@@ -1376,6 +1376,7 @@ tools/clustalw
 tools/cufflinks
 tools/cutadapt
 tools/fastqc
+tools/fasttree
 tools/hmmer3
 tools/iqtree
 tools/java8

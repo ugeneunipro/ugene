@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_ANNOTATIONS_QUALIFIERS_H_
-#define _U2_GT_TESTS_ANNOTATIONS_QUALIFIERS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -54,5 +53,3 @@ GUI_TEST_CLASS_DECLARATION(test_0009)
 }  // namespace GUITest_common_scenarios_annotations_qualifiers
 
 }  // namespace U2
-
-#endif  // GTTESTSMSAEDITOR_H

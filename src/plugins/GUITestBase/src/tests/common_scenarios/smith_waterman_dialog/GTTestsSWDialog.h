@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_TEST_SW_DIALOG_H_
-#define _U2_GUI_TEST_SW_DIALOG_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -39,5 +38,3 @@ GUI_TEST_CLASS_DECLARATION(test_0002)
 }  // namespace GUITest_common_scenarios_sw_dialog
 
 }  // namespace U2
-
-#endif

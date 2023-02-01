@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_INTEGRAL_BUS_H_
-#define _U2_WORKFLOW_INTEGRAL_BUS_H_
+#pragma once
 
 #include <QMutex>
 
@@ -157,5 +156,3 @@ protected:
 }  // namespace Workflow
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_INTEGRAL_BUS_H_

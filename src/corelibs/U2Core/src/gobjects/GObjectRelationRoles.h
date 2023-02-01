@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GOBJECT_RELATION_ROLES_H_
-#define _U2_GOBJECT_RELATION_ROLES_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -43,5 +42,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

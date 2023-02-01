@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CMDLINE_TASK_RUNNER_H_
-#define _U2_CMDLINE_TASK_RUNNER_H_
+#pragma once
 
 #include <QProcess>
 
@@ -89,5 +88,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CMDLINE_TASK_RUNNER_H_

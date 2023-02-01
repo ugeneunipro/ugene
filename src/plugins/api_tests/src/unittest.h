@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UNIT_TEST_H_
-#define _U2_UNIT_TEST_H_
+#pragma once
 
 #include <QMetaType>
 #include <QString>
@@ -88,5 +87,3 @@ QString toString(const T& t) {
 }
 
 }  // namespace U2
-
-#endif

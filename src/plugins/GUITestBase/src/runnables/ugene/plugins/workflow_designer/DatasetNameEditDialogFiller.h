@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef DATASETNAMEEDITDIALOGFILLER_H
-#define DATASETNAMEEDITDIALOGFILLER_H
+#pragma once
 
 #include <utils/GTUtilsDialog.h>
 
@@ -39,5 +38,3 @@ private:
     QString datasetName;
 };
 }  // namespace U2
-
-#endif  // DATASETNAMEEDITDIALOGFILLER_H

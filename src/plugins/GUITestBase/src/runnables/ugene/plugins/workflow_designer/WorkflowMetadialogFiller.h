@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef WORKFLOWMETADIALOGFILLER_H
-#define WORKFLOWMETADIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -40,4 +39,3 @@ private:
     QString url, name;
 };
 }  // namespace U2
-#endif  // WORKFLOWMETADIALOGFILLER_H

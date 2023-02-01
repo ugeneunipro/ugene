@@ -12,8 +12,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>547</width>
-    <height>374</height>
+    <width>658</width>
+    <height>443</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -131,7 +131,11 @@
        </widget>
       </item>
       <item row="0" column="2" colspan="4">
-       <widget class="QComboBox" name="xAxisCombo"/>
+       <widget class="QComboBox" name="xAxisCombo">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+        </property>
+       </widget>
       </item>
       <item row="11" column="4">
        <widget class="QSpinBox" name="minLenBox">
@@ -187,7 +191,11 @@
        </widget>
       </item>
       <item row="4" column="2" colspan="4">
-       <widget class="QComboBox" name="yAxisCombo"/>
+       <widget class="QComboBox" name="yAxisCombo">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+        </property>
+       </widget>
       </item>
       <item row="13" column="4">
        <widget class="QSpinBox" name="identityBox">

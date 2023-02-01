@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SUBST_MATRIX_H
-#define _U2_SUBST_MATRIX_H
+#pragma once
 
 #include <QVarLengthArray>
 
@@ -122,5 +121,3 @@ inline int SMatrix::getScoreIdx(char c1, char c2) const {
 }
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OP_WIDGET_FACTORY_REGISTRY_H_
-#define _U2_OP_WIDGET_FACTORY_REGISTRY_H_
+#pragma once
 
 #include <QMutex>
 
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

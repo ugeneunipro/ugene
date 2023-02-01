@@ -267,4 +267,12 @@ QString TextUtils::skip(const QBitArray& map, const QString& text) {
     return "";
 }
 
+wchar_t* TextUtils::toWideCharsArray(const QString& text) {
+    auto wideCharsText = new wchar_t[text.length() + 1];
+    int unicodeFileNameLength = text.toWCharArray(wideCharsText);
+    wideCharsText[unicodeFileNameLength] = 0;
+    return wideCharsText;
+}
+
+
 }  // namespace U2

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _DATABASE_REGISTRY_
-#define _DATABASE_REGISTRY_
+#pragma once
 
 #include <QList>
 #include <QMap>
@@ -75,5 +74,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

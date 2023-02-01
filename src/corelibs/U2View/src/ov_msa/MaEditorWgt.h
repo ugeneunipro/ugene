@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_WGT_H_
-#define _U2_MA_EDITOR_WGT_H_
+#pragma once
 
 #include <QWidget>
 
@@ -171,5 +170,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_EDITOR_WGT_H_

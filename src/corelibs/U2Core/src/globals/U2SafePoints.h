@@ -27,8 +27,7 @@
 
     NOTE: all checks below work in release mode. Be careful not to make code slow!
 */
-#ifndef _U2_SAFE_POINTS_
-#define _U2_SAFE_POINTS_
+#pragma once
 
 #include <assert.h>
 
@@ -146,5 +145,3 @@ public:
 
 /** Checks if 'os' has error or is cancelled and executes 'extraOp' and returns 'result' if it does. */
 #define CHECK_OP_EXT(os, extraOp, result) CHECK_EXT(!(os.isCoR()), extraOp, result)
-
-#endif

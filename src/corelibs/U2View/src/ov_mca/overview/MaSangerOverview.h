@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_SANGER_OVERVIEW_H_
-#define _U2_MA_SANGER_OVERVIEW_H_
+#pragma once
 
 #include "ov_msa/overview/MaOverview.h"
 
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_SANGER_OVERVIEW_H_

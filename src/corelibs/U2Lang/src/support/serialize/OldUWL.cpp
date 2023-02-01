@@ -47,7 +47,7 @@ const QString MARKER_NAME("marker-name");
 const QString MARKERS("markers");
 
 void parseOldMarker(Actor* proc, ParsedPairs& pairs) {
-    MarkerAttribute* markerAttr = dynamic_cast<MarkerAttribute*>(proc->getParameter(Constants::MARKER));
+    auto markerAttr = dynamic_cast<MarkerAttribute*>(proc->getParameter(Constants::MARKER));
     if (nullptr == markerAttr) {
         throw ReadFailed(QObject::tr("%1 actor has not markers attribute").arg(proc->getId()));
     }
@@ -73,7 +73,7 @@ void parseOldMarker(Actor* proc, ParsedPairs& pairs) {
 bool isOldMarkerActor(Actor* actor) {
     const QMap<QString, Attribute*> attrs = actor->getParameters();
     CHECK(1 == attrs.size(), false);
-    MarkerAttribute* attr = dynamic_cast<MarkerAttribute*>(*attrs.begin());
+    auto attr = dynamic_cast<MarkerAttribute*>(*attrs.begin());
     return (nullptr != attr);
 }
 }  // namespace

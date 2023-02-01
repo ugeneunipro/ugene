@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_COLLAPSE_MODEL_H_
-#define _U2_MA_COLLAPSE_MODEL_H_
+#pragma once
 
 #include <QHash>
 #include <QList>
@@ -32,7 +31,7 @@
 
 namespace U2 {
 
-class MaCollapsibleGroup {
+class U2VIEW_EXPORT MaCollapsibleGroup {
 public:
     /* Creates with 1 MA row inside. */
     MaCollapsibleGroup(int maRowIndex, qint64 maRowId, bool isCollapsed = false);
@@ -177,5 +176,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

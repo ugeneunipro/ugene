@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _EXPORT_PHRED_QUALITY_WORKER_H_
-#define _EXPORT_PHRED_QUALITY_WORKER_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 
@@ -74,5 +73,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _EXPORT_PHRED_QUALITY_WORKER_H_

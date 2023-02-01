@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SARRAY_INDEX_H_
-#define _U2_SARRAY_INDEX_H_
+#pragma once
 
 #include <QtGlobal>
 
@@ -260,5 +259,3 @@ int SArrayIndex::compare(quint32 x1, quint32 x2) const {
 }
 
 }  // namespace U2
-
-#endif

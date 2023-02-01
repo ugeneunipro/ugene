@@ -47,7 +47,7 @@ AnnotationSelection* ADVSequenceObjectContext::getAnnotationsSelection() const {
 }
 
 void ADVSequenceObjectContext::sl_onAnnotationRelationChange() {
-    AnnotationTableObject* obj = qobject_cast<AnnotationTableObject*>(sender());
+    auto obj = qobject_cast<AnnotationTableObject*>(sender());
     SAFE_POINT(obj != nullptr, tr("Incorrect signal sender!"), );
 
     if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {

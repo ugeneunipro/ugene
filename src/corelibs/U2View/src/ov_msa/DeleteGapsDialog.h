@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _DELETE_GAPS_DIALOG_
-#define _DELETE_GAPS_DIALOG_
+#pragma once
 
 #include <QDialog>
 
@@ -57,5 +56,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

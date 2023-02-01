@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ELAPSED_TIME_UPDATER_H_
-#define _ELAPSED_TIME_UPDATER_H_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 
@@ -47,5 +46,3 @@ private slots:
 }  // namespace LocalWorkflow
 
 }  // namespace U2
-
-#endif  // _ELAPSED_TIME_UPDATER_H_

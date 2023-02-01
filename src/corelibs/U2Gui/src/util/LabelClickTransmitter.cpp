@@ -40,7 +40,7 @@ bool LabelClickTransmitter::eventFilter(QObject* object, QEvent* event) {
     CHECK(label == object, false);
 
     CHECK(QEvent::MouseButtonRelease == event->type(), false);
-    QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
+    auto mouseEvent = dynamic_cast<QMouseEvent*>(event);
     CHECK(nullptr != event, false);
     CHECK(Qt::LeftButton == mouseEvent->button(), false);
 

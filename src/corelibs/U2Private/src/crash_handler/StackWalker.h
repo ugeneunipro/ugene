@@ -49,8 +49,7 @@
  *
  **********************************************************************/
 
-#ifndef _STACK_WALKER_H_
-#define _STACK_WALKER_H_
+#pragma once
 
 #include <qglobal.h>
 
@@ -178,7 +177,5 @@ protected:
 };
 
 }  // namespace U2
-
-#endif
 
 #endif

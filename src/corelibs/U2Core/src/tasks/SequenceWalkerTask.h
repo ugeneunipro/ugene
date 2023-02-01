@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_WALKER_TASK_H_
-#define _U2_SEQUENCE_WALKER_TASK_H_
+#pragma once
 
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
@@ -157,5 +156,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

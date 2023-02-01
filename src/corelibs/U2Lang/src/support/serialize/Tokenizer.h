@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TOKENIZER_H_
-#define _U2_TOKENIZER_H_
+#pragma once
 
 #include <QTextStream>
 
@@ -76,5 +75,3 @@ private:
 
 }  // namespace WorkflowSerialize
 }  // namespace U2
-
-#endif  // _U2_TOKENIZER_H_

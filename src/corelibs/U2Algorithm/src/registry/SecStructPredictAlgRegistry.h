@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEC_STRUCT_PREDICT_ALG_REGISTRY_H_
-#define _U2_SEC_STRUCT_PREDICT_ALG_REGISTRY_H_
+#pragma once
 
 #include <QList>
 #include <QMap>
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -72,7 +72,7 @@ Handle<Value> ActorWrap::newObject(const Arguments& args) {
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 1)) {
         return scope.Close(Undefined());
     }
-    const Workflow::Actor* actor = reinterpret_cast<Workflow::Actor*>(args[0]->IntegerValue());
+    auto actor = reinterpret_cast<Workflow::Actor*>(args[0]->IntegerValue());
     Q_ASSERT(nullptr != actor);
     ActorWrap* obj = new ActorWrap(actor);
     obj->Wrap(args.This());

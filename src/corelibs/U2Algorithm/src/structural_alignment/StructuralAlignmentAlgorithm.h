@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_H_
-#define _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_H_
+#pragma once
 
 #include <U2Core/BioStruct3D.h>
 #include <U2Core/BioStruct3DObject.h>
@@ -119,5 +118,3 @@ private:
 };  // class StructuralAlignmentTask
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_H_

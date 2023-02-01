@@ -50,6 +50,7 @@
 #include <utils/GTUtilsToolTip.h>
 
 #include <QApplication>
+#include <QClipboard>
 #include <QDir>
 #include <QFileInfo>
 #include <QListWidget>
@@ -3569,7 +3570,7 @@ GUI_TEST_CLASS_DEFINITION(test_7682) {
 
 GUI_TEST_CLASS_DEFINITION(test_7686) {
     // Check "copy tree image to clipboard".
-    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/PF05282_full.nhx");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
 
     GTClipboard::clear(os);
@@ -3773,6 +3774,187 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7720) {
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "amino_ext.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // ========================== multiline mode is off ===================
+    GTUtilsMsaEditor::setMultilineMode(os, false);
+
+    auto activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget is not visible");
+
+    auto splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter is not visible");
+
+    QSplitterHandle* handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    QPoint p;
+    int seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    int uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    int seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    int baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    int length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    QPoint delta(seqAreaBaseWidth / 5 * 4, 0);
+    if (length * baseWidth + 50 < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth - 50, 0);
+    } else if (length * baseWidth < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth, 0);
+    } else if (length * baseWidth - 50 < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth + 50, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(2000);
+    GTThread::waitForMainThread();
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    // ========================== multiline mode is on ===================
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTGlobals::sleep(2000);
+
+    activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget is not visible");
+
+    splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter is not visible");
+
+    handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta = QPoint(0, 0);
+    int fullLength = length * baseWidth;
+    int extLength = 50;
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + QPoint(seqAreaWidth * 5 / 3 - fullLength + 20, 0));
+    GTGlobals::sleep(2000);
+
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    p = GTWidget::getWidgetCenter(handle);
+
+    if (fullLength + extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength - extLength, 0);
+    } else if (fullLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength, 0);
+    } else if (fullLength - extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength + extLength, 0);
+    } else {
+        delta = QPoint(seqAreaWidth + extLength - uiWidth, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTGlobals::sleep(2000);
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    auto count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
+    bool allAreVisible = true;
+    for (int i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget must exist");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR((count > 1 && !allAreVisible) || (count == 1 && allAreVisible),
+                  "Some line of the multiline view must be hidden #1");
+
+    activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget must exist");
+
+    splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter must exist");
+
+    handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta = QPoint(seqAreaWidth / 5 * 4, 0);
+    if (length * baseWidth / 5 < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth / 5, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTGlobals::sleep(2000);
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
+    allAreVisible = true;
+    for (int i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget exists");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR(allAreVisible, "All lines of the multiline view must be visible");
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta = QPoint(0, 0);
+    fullLength = length * baseWidth;
+    if (fullLength + extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength - extLength, 0);
+    } else if (fullLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength, 0);
+    } else if (fullLength - extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength + extLength, 0);
+    } else {
+        delta = QPoint(seqAreaWidth + extLength - uiWidth, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTGlobals::sleep(2000);
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    allAreVisible = true;
+    for (int i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget must exist");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR((count > 1 && !allAreVisible) || (count == 1 && allAreVisible),
+                  "Some line of the multiline view must be hidden #2");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7740) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
@@ -3848,6 +4030,20 @@ GUI_TEST_CLASS_DEFINITION(test_7753) {
     GTFileDialog::openFile(os, sandboxFilePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7781) {
+    // Open "_common_data/scenarios/_regression/7781/7781.bam".
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7781.ugenedb", "", "", false));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7781/7781.bam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
+    QString textFromLabel = coveredRegionsLabel->text();
+    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
+    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
+    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
 }
 
 }  // namespace GUITest_regression_scenarios

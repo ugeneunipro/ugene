@@ -48,6 +48,7 @@
 #include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/fasttree/GTTestsFastTree.h"
 #include "tests/common_scenarios/genecut/GTTestsGeneCut.h"
 #include "tests/common_scenarios/iqtree/GTTestsIQTree.h"
 #include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
@@ -1820,11 +1821,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7712);
     REGISTER_TEST(GUITest_regression_scenarios::test_7714);
     REGISTER_TEST(GUITest_regression_scenarios::test_7715);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7720);
     REGISTER_TEST(GUITest_regression_scenarios::test_7740);
     REGISTER_TEST(GUITest_regression_scenarios::test_7744);
     REGISTER_TEST(GUITest_regression_scenarios::test_7748);
     REGISTER_TEST(GUITest_regression_scenarios::test_7751);
     REGISTER_TEST(GUITest_regression_scenarios::test_7753);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7781);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -3065,6 +3068,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_genecut::test_0010);
     REGISTER_TEST(GUITest_common_scenarios_genecut::test_0011);
     REGISTER_TEST(GUITest_common_scenarios_genecut::test_0012);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/fasttree
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_fasttree::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_fasttree::test_0002);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/iqtree

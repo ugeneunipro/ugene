@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IO_LIB_UTILS_H_
-#define _U2_IO_LIB_UTILS_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -197,4 +196,3 @@ inline float int_to_float(int in)
 }
 
 }  // namespace U2
-#endif

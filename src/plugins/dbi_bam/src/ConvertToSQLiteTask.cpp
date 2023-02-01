@@ -62,7 +62,7 @@ ConvertToSQLiteTask::ConvertToSQLiteTask(const GUrl& _sourceUrl, const U2DbiRef&
 static void enableCoverageOnImport(U2AssemblyCoverageImportInfo& cii, int referenceLength) {
     cii.computeCoverage = true;
     int coverageInfoSize = qMin(U2AssemblyUtils::MAX_COVERAGE_VECTOR_SIZE, referenceLength);
-    cii.coverageBasesPerPoint = qMax(1.0, ((double)referenceLength) / coverageInfoSize);
+    cii.readBasesPerCoveragePoint = qMax(1.0, ((double)referenceLength) / coverageInfoSize);
     cii.coverage.resize(coverageInfoSize);
 }
 

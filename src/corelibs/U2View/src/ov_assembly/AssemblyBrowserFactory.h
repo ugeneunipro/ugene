@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_BROWSER_FACTORY_H__
-#define __ASSEMBLY_BROWSER_FACTORY_H__
+#pragma once
 
 #include <U2Core/GObjectReference.h>
 
@@ -50,5 +49,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

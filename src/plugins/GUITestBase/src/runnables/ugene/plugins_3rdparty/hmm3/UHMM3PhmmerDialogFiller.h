@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UHMM3_PHMMER_DIALOG_FILLER_H_
-#define _U2_UHMM3_PHMMER_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -38,4 +37,3 @@ private:
     QString input;
 };
 }  // namespace U2
-#endif  // _U2_UHMM3_PHMMER_DIALOG_FILLER_H_

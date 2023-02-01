@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_OBJECT_CONTEXT_H_
-#define _U2_SEQUENCE_OBJECT_CONTEXT_H_
+#pragma once
 
 #include <QMenu>
 #include <QSet>
@@ -181,5 +180,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SEQUENCE_OBJECT_CONTEXT_H_

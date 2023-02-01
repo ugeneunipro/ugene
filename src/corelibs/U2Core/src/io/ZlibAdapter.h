@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ZLIB_ADAPTER_H_
-#define _U2_ZLIB_ADAPTER_H_
+#pragma once
 
 #include <U2Core/IOAdapter.h>
 
@@ -94,5 +93,3 @@ struct U2CORE_EXPORT GZipIndex {
 };  // GZipIndex
 
 };  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FEATURE_TYPE_H_
-#define _U2_FEATURE_TYPE_H_
+#pragma once
 
 #include <QColor>
 
@@ -278,5 +277,3 @@ typedef U2FeatureTypes::U2FeatureType U2FeatureType;
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::U2FeatureTypes::Alphabets)
-
-#endif  // _U2_FEATURE_TYPE_H_

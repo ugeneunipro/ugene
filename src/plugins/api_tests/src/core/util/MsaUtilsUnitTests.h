@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_UTILS_UNIT_TESTS_H_
-#define _U2_MSA_UTILS_UNIT_TESTS_H_
+#pragma once
 
 #include "MsaDbiUtilsUnitTests.h"
 
@@ -31,5 +30,3 @@ DECLARE_TEST(MsaUtilsUnitTests, two_names_with_spaces);
 DECLARE_TEST(MsaUtilsUnitTests, all_names_with_spaces);
 
 }  // namespace U2
-
-#endif

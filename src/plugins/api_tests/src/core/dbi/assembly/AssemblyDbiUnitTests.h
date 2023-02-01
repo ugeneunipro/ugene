@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ASSEMBLY_DBI_UNIT_TESTS_H_
-#define _U2_ASSEMBLY_DBI_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -195,5 +194,3 @@ Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_pack);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_packInvalid);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_removeReads);
 Q_DECLARE_METATYPE(U2::AssemblyDbiUnitTests_removeReadsInvalid);
-
-#endif  //_U2_ASSEMBLY_DBI_UNITTESTS_H_

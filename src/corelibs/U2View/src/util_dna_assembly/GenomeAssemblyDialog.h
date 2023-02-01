@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GENOMEASSEMBLYDIALOG_H
-#define GENOMEASSEMBLYDIALOG_H
+#pragma once
 
 #include <QStringList>
 #include <QVariant>
@@ -85,5 +84,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // GENOMEASSEMBLYDIALOG_H

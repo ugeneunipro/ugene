@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOT_HIGHLIGHT_SETTINGS_H_
-#define _U2_ANNOT_HIGHLIGHT_SETTINGS_H_
+#pragma once
 
 #include <QObject>
 
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

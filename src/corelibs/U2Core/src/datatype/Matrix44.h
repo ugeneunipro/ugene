@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MATRIX_44_H_
-#define _U2_MATRIX_44_H_
+#pragma once
 
 #include <QVector>
 
@@ -52,5 +51,3 @@ private:
 };  // class Matrix44
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_MATRIX_44_H_

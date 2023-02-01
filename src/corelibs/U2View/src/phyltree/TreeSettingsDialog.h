@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _TREE_SETTINGS_DIALOG_
-#define _TREE_SETTINGS_DIALOG_
+#pragma once
 
 #include "BaseSettingsDialog.h"
 #include "ov_phyltree/TreeSettings.h"
@@ -45,4 +44,3 @@ private slots:
 };
 
 }  // namespace U2
-#endif

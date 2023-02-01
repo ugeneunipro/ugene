@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H
-#define _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -84,4 +83,3 @@ private:
     bool hasValidInput = false;
 };
 }  // namespace U2
-#endif  // _U2_BLAST_PLUS_SUPPORT_RUN_DIALOG_H

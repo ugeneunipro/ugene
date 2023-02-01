@@ -345,7 +345,7 @@ ColorSchemaSettingsPageWidget::ColorSchemaSettingsPageWidget(ColorSchemaSettings
 }
 
 void ColorSchemaSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
-    ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
+    auto state = qobject_cast<ColorSchemaSettingsPageState*>(s);
     colorsDirEdit->setText(state->colorsDir);
     customSchemas = state->customSchemas;
     removedCustomSchemas = state->removedCustomSchemas;

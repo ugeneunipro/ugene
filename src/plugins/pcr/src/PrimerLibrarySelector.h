@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LIBRARY_SELECTOR_H_
-#define _U2_PRIMER_LIBRARY_SELECTOR_H_
+#pragma once
 
 #include <QDialog>
 
@@ -42,5 +41,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PRIMER_LIBRARY_SELECTOR_H_

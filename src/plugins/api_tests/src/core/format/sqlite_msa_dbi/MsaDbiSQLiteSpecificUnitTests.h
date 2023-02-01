@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_
-#define _U2_MSA_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -209,5 +208,3 @@ DECLARE_METATYPE(MsaDbiSQLiteSpecificUnitTests, removeRows_redo);
 DECLARE_METATYPE(MsaDbiSQLiteSpecificUnitTests, addRows_noModTrack);
 DECLARE_METATYPE(MsaDbiSQLiteSpecificUnitTests, addRows_undo);
 DECLARE_METATYPE(MsaDbiSQLiteSpecificUnitTests, addRows_redo);
-
-#endif

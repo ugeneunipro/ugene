@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MOD_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_
-#define _U2_MOD_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -256,5 +255,3 @@ DECLARE_METATYPE(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalUndoThenA
 DECLARE_METATYPE(ModDbiSQLiteSpecificUnitTests, updateRowName_noModTrack);
 DECLARE_METATYPE(ModDbiSQLiteSpecificUnitTests, updateRowName_severalSteps);
 DECLARE_METATYPE(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenAction);
-
-#endif

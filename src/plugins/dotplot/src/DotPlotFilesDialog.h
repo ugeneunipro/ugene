@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOT_PLOT_FILES_DIALOG_H_
-#define _U2_DOT_PLOT_FILES_DIALOG_H_
+#pragma once
 
 #include <ui_DotPlotFilesDialog.h>
 
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

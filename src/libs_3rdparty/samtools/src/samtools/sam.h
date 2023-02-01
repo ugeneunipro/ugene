@@ -37,39 +37,6 @@ extern char * SAMTOOLS_ERROR_MESSAGE;
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-	/*!
-	  @abstract     Open a SAM/BAM file
-
-	  @param fn SAM/BAM file name; "-" is recognized as stdin (for
-	  reading) or stdout (for writing).
-
-	  @param fd File descriptor for the file referenced by 'fn'. Used when is valid (!= -1).
-
-	  @param mode open mode /[rw](b?)(u?)(h?)([xX]?)/: 'r' for reading,
-	  'w' for writing, 'b' for BAM I/O, 'u' for uncompressed BAM output,
-	  'h' for outputing header in SAM, 'x' for HEX flag and 'X' for
-	  string flag. If 'b' present, it must immediately follow 'r' or
-	  'w'. Valid modes are "r", "w", "wh", "wx", "whx", "wX", "whX",
-	  "rb", "wb" and "wbu" exclusively.
-
-	  @param aux auxiliary data; if mode[0]=='w', aux points to
-	  bam_header_t; if strcmp(mode, "rb")!=0 and @SQ header lines in SAM
-	  are absent, aux points the file name of the list of the reference;
-	  aux is not used otherwise. If @SQ header lines are present in SAM,
-	  aux is not used, either.
-
-	  @return       SAM/BAM file handler
-	 */
-//	samfile_t *samopen_with_fd(const char *fn, int fd, const char *mode, const void *aux);
-//	samfile_t *samopen(const char *fn, const char *mode, const void *aux);
-
-	/*!
-	  @abstract     Close a SAM/BAM handler
-	  @param  fp    file handler to be closed
-	 */
-	void samclose(samfile_t *fp);
-
 	/*!
 	  @abstract     Read one alignment
 	  @param  fp    file handler
@@ -86,16 +53,11 @@ extern "C" {
 	 */
 	int samwrite(samfile_t *fp, const bam1_t *b);
 
-	/*!
-	  @abstract     Get the pileup for a whole alignment file
-	  @param  fp    file handler
-	  @param  mask  mask transferred to bam_plbuf_set_mask()
-	  @param  func  user defined function called in the pileup process
-	  #param  data  user provided data for func()
-	 */
-	int sampileup(samfile_t *fp, int mask, bam_pileup_f func, void *data);
-
-	char *samfaipath(const char *fn_ref);
+    /*!
+     @abstract     Close a SAM/BAM handler
+     @param  fp    file handler to be closed
+    */
+    void samclose(samfile_t *fp);
 
     bam_header_t *bam_header_dup(const bam_header_t *h0);
 

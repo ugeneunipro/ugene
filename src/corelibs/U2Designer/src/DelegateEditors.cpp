@@ -80,12 +80,12 @@ QWidget* SpinBoxDelegate::createEditor(QWidget* parent,
 void SpinBoxDelegate::setEditorData(QWidget* editor,
                                     const QModelIndex& index) const {
     int value = index.model()->data(index, ConfigurationEditor::ItemValueRole).toInt();
-    SpinBoxWidget* spinBox = static_cast<SpinBoxWidget*>(editor);
+    auto spinBox = static_cast<SpinBoxWidget*>(editor);
     spinBox->setValue(value);
 }
 
 void SpinBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    SpinBoxWidget* spinBox = static_cast<SpinBoxWidget*>(editor);
+    auto spinBox = static_cast<SpinBoxWidget*>(editor);
     int value = spinBox->value().toInt();
     model->setData(index, value, ConfigurationEditor::ItemValueRole);
 }
@@ -119,7 +119,7 @@ QVariantMap SpinBoxDelegate::getProperties() const {
 }
 
 void SpinBoxDelegate::sl_commit() {
-    SpinBoxWidget* editor = static_cast<SpinBoxWidget*>(sender());
+    auto editor = static_cast<SpinBoxWidget*>(sender());
     CHECK(editor != nullptr, );
     emit commitData(editor);
 }
@@ -151,12 +151,12 @@ QWidget* DoubleSpinBoxDelegate::createEditor(QWidget* parent,
 void DoubleSpinBoxDelegate::setEditorData(QWidget* editor,
                                           const QModelIndex& index) const {
     QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    DoubleSpinBoxWidget* spinBox = static_cast<DoubleSpinBoxWidget*>(editor);
+    auto spinBox = static_cast<DoubleSpinBoxWidget*>(editor);
     spinBox->setValue(value);
 }
 
 void DoubleSpinBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    DoubleSpinBoxWidget* spinBox = static_cast<DoubleSpinBoxWidget*>(editor);
+    auto spinBox = static_cast<DoubleSpinBoxWidget*>(editor);
     double value = spinBox->value().toDouble();
     model->setData(index, value, ConfigurationEditor::ItemValueRole);
 }
@@ -173,7 +173,7 @@ void DoubleSpinBoxDelegate::getItems(QVariantMap& items) const {
 }
 
 void DoubleSpinBoxDelegate::sl_commit() {
-    DoubleSpinBoxWidget* editor = static_cast<DoubleSpinBoxWidget*>(sender());
+    auto editor = static_cast<DoubleSpinBoxWidget*>(sender());
     CHECK(editor != nullptr, );
     emit commitData(editor);
 }
@@ -247,12 +247,12 @@ QWidget* ComboBoxDelegate::createEditor(QWidget* parent,
 void ComboBoxDelegate::setEditorData(QWidget* editor,
                                      const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    ComboBoxWidget* box = static_cast<ComboBoxWidget*>(editor);
+    auto box = static_cast<ComboBoxWidget*>(editor);
     box->setValue(val);
 }
 
 void ComboBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    ComboBoxWidget* box = static_cast<ComboBoxWidget*>(editor);
+    auto box = static_cast<ComboBoxWidget*>(editor);
     model->setData(index, box->value(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -284,7 +284,7 @@ QVariantMap ComboBoxDelegate::getAvailableItems() const {
 }
 
 void ComboBoxDelegate::sl_commit() {
-    ComboBoxWidget* editor = static_cast<ComboBoxWidget*>(sender());
+    auto editor = static_cast<ComboBoxWidget*>(sender());
 
     if (editor) {
         emit commitData(editor);
@@ -309,19 +309,19 @@ QWidget* ComboBoxWithUrlsDelegate::createEditor(QWidget* parent,
 
 void ComboBoxWithUrlsDelegate::sl_valueChanged(const QString& newVal) {
     emit si_valueChanged(newVal);
-    QWidget* editor = qobject_cast<QWidget*>(sender());
+    auto editor = qobject_cast<QWidget*>(sender());
     SAFE_POINT(nullptr != editor, "Invalid editor", );
     emit commitData(editor);
 }
 
 void ComboBoxWithUrlsDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    ComboBoxWithUrlWidget* box = static_cast<ComboBoxWithUrlWidget*>(editor);
+    auto box = static_cast<ComboBoxWithUrlWidget*>(editor);
     box->setValue(val);
 }
 
 void ComboBoxWithUrlsDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    ComboBoxWithUrlWidget* box = static_cast<ComboBoxWithUrlWidget*>(editor);
+    auto box = static_cast<ComboBoxWithUrlWidget*>(editor);
     model->setData(index, box->value(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -349,19 +349,19 @@ QWidget* ComboBoxEditableDelegate::createEditor(QWidget* parent,
 
 void ComboBoxEditableDelegate::sl_valueChanged(const QString& newVal) {
     emit si_valueChanged(newVal);
-    QWidget* editor = qobject_cast<QWidget*>(sender());
+    auto editor = qobject_cast<QWidget*>(sender());
     SAFE_POINT(nullptr != editor, "Invalid editor", );
     emit commitData(editor);
 }
 
 void ComboBoxEditableDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    ComboBoxEditableWidget* box = static_cast<ComboBoxEditableWidget*>(editor);
+    auto box = static_cast<ComboBoxEditableWidget*>(editor);
     box->setValue(val);
 }
 
 void ComboBoxEditableDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    ComboBoxEditableWidget* box = static_cast<ComboBoxEditableWidget*>(editor);
+    auto box = static_cast<ComboBoxEditableWidget*>(editor);
     model->setData(index, box->value(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -398,12 +398,12 @@ QWidget* ComboBoxWithChecksDelegate::createEditor(QWidget* parent,
 void ComboBoxWithChecksDelegate::setEditorData(QWidget* editor,
                                                const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    ComboBoxWithChecksWidget* box = static_cast<ComboBoxWithChecksWidget*>(editor);
+    auto box = static_cast<ComboBoxWithChecksWidget*>(editor);
     box->setValue(val);
 }
 
 void ComboBoxWithChecksDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    ComboBoxWithChecksWidget* box = static_cast<ComboBoxWithChecksWidget*>(editor);
+    auto box = static_cast<ComboBoxWithChecksWidget*>(editor);
     model->setData(index, box->value(), ConfigurationEditor::ItemValueRole);
     setEditorData(editor, index);
 }
@@ -528,7 +528,7 @@ QWidget* URLDelegate::createEditor(QWidget* parent,
 }
 
 void URLDelegate::sl_commit() {
-    URLWidget* editor = static_cast<URLWidget*>(sender());
+    auto editor = static_cast<URLWidget*>(sender());
 
     text = editor->value().toString();
     emit commitData(editor);
@@ -671,7 +671,7 @@ AttributeScriptDelegate::~AttributeScriptDelegate() {
 }
 
 void AttributeScriptDelegate::sl_commit() {
-    ScriptSelectionWidget* editor = static_cast<ScriptSelectionWidget*>(sender());
+    auto editor = static_cast<ScriptSelectionWidget*>(sender());
     emit commitData(editor);
 }
 
@@ -682,13 +682,13 @@ QWidget* AttributeScriptDelegate::createEditor(QWidget* parent, const QStyleOpti
 }
 
 void AttributeScriptDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
-    ScriptSelectionWidget* combo = qobject_cast<ScriptSelectionWidget*>(editor);
+    auto combo = qobject_cast<ScriptSelectionWidget*>(editor);
     assert(combo != nullptr);
     combo->setValue(index.model()->data(index, ConfigurationEditor::ItemValueRole));
 }
 
 void AttributeScriptDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    ScriptSelectionWidget* combo = qobject_cast<ScriptSelectionWidget*>(editor);
+    auto combo = qobject_cast<ScriptSelectionWidget*>(editor);
     assert(combo != nullptr);
     model->setData(index, combo->value(), ConfigurationEditor::ItemValueRole);
 }
@@ -923,12 +923,12 @@ QWidget* LineEditWithValidatorDelegate::createEditor(QWidget* parent, const QSty
 
 void LineEditWithValidatorDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    IgnoreUpDownPropertyWidget* lineEdit = qobject_cast<IgnoreUpDownPropertyWidget*>(editor);
+    auto lineEdit = qobject_cast<IgnoreUpDownPropertyWidget*>(editor);
     lineEdit->setValue(val);
 }
 
 void LineEditWithValidatorDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    IgnoreUpDownPropertyWidget* lineEdit = qobject_cast<IgnoreUpDownPropertyWidget*>(editor);
+    auto lineEdit = qobject_cast<IgnoreUpDownPropertyWidget*>(editor);
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -937,7 +937,7 @@ LineEditWithValidatorDelegate* LineEditWithValidatorDelegate::clone() {
 }
 
 void LineEditWithValidatorDelegate::sl_valueChanged() {
-    IgnoreUpDownPropertyWidget* editor = qobject_cast<IgnoreUpDownPropertyWidget*>(sender());
+    auto editor = qobject_cast<IgnoreUpDownPropertyWidget*>(sender());
     CHECK(editor != nullptr, );
 
     QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");

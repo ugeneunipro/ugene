@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENECUT_OP_WIDGET_FACTORY_H_
-#define _U2_GENECUT_OP_WIDGET_FACTORY_H_
+#pragma once
 
 #include <U2Gui/OPWidgetFactory.h>
 
@@ -44,5 +43,3 @@ private:
 };
 
 }    // namespace U2
-
-#endif    // _U2_GENECUT_OP_WIDGET_FACTORY_H_

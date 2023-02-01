@@ -383,7 +383,7 @@ bool ExceptionHandler::RequestUpload(DWORD crash_id) {
 
 // static
 DWORD ExceptionHandler::ExceptionHandlerThreadMain(void* lpParameter) {
-  ExceptionHandler* self = reinterpret_cast<ExceptionHandler*>(lpParameter);
+  auto self = reinterpret_cast<ExceptionHandler*>(lpParameter);
   assert(self);
   assert(self->handler_start_semaphore_ != NULL);
   assert(self->handler_finish_semaphore_ != NULL);

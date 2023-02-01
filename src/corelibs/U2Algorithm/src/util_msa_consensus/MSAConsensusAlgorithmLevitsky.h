@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_CONSENSUS_ALGORITHM_LEVITSKY_H_
-#define _U2_MSA_CONSENSUS_ALGORITHM_LEVITSKY_H_
+#pragma once
 
 #include <QVarLengthArray>
 
@@ -78,5 +77,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

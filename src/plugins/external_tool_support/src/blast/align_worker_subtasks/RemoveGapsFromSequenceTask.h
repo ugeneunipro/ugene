@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REMOVE_GAPS_FROM_SEQUENCE_TASK_H_
-#define _U2_REMOVE_GAPS_FROM_SEQUENCE_TASK_H_
+#pragma once
 
 #include <U2Core/SequenceDbiWalkerTask.h>
 
@@ -62,5 +61,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_REMOVE_GAPS_FROM_SEQUENCE_TASK_H_

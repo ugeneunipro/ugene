@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __COVERED_REGIONS_MANAGER_H__
-#define __COVERED_REGIONS_MANAGER_H__
+#pragma once
 
 #include <QVector>
 
@@ -75,5 +74,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

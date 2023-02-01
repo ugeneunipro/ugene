@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTILINE_SCROLL_CONTROLLER_H_
-#define _U2_MULTILINE_SCROLL_CONTROLLER_H_
+#pragma once
 
 #include <QScrollArea>
 
@@ -63,8 +62,6 @@ public:
     void scrollToViewRow(QPoint maPoint);
     void scrollToBase(QPoint maPoint);
     void scrollToPoint(const QPoint& maPoint);
-
-    void centerViewRow(QPoint maPoint);
 
     void setMultilineVScrollbarValue(int value);
     void setMultilineVScrollbarBase(int base);
@@ -138,15 +135,9 @@ private:
     int savedFirstVisibleMaRow;
     int savedFirstVisibleMaRowOffset;
 
-    // TODO:ichebyki
-    // Deprecated, will be removed
-    void centerBase(int baseNumber);
-    void centerPoint(const QPoint& maPoint);
-    void setCenterVisibleBase(int firstVisibleBase);
+    bool checkBoundary();
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(MultilineScrollController::Directions)
 
 }  // namespace U2
-
-#endif  // _U2_MULTILINE_SCROLL_CONTROLLER_H_

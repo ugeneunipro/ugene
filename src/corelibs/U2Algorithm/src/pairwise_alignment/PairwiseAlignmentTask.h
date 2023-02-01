@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PAIRWISE_ALIGNMENT_TASK_H_
-#define _U2_PAIRWISE_ALIGNMENT_TASK_H_
+#pragma once
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 
@@ -58,5 +57,3 @@ protected:
     QByteArray second;
 };
 }  // namespace U2
-
-#endif  // _U2_PAIRWISE_ALIGNMENT_TASK_H_

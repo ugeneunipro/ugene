@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_ANNOTATIONS_FROM_CSV_DIALOG_H_
-#define _U2_IMPORT_ANNOTATIONS_FROM_CSV_DIALOG_H_
+#pragma once
 
 #include "CSVColumnConfiguration.h"
 
@@ -92,5 +91,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

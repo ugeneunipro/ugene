@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_RECTANGULAR_BRANCH_ITEM_H_
-#define _U2_TV_RECTANGULAR_BRANCH_ITEM_H_
+#pragma once
 
 #include "TvBranchItem.h"
 
@@ -34,8 +33,6 @@ class U2VIEW_EXPORT TvRectangularBranchItem : public TvBranchItem {
     Q_OBJECT
 public:
     static constexpr double DEFAULT_WIDTH = 25.0;
-    static constexpr double MAXIMUM_WIDTH = 500.0;
-    static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
     TvRectangularBranchItem(const PhyBranch* branch, const QString& name, bool isRoot);
@@ -81,5 +78,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUSTOM_EXTERNAL_TOOL_LOG_PARSER_
-#define _U2_CUSTOM_EXTERNAL_TOOL_LOG_PARSER_
+#pragma once
 
 #include <U2Core/ExternalToolRunTask.h>
 
@@ -43,5 +42,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

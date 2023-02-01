@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_TEST_SERVICE_H_
-#define _U2_GUI_TEST_SERVICE_H_
+#pragma once
 
 #include <core/GUITest.h>
 
@@ -102,5 +101,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GUI_TEST_SERVICE_H_

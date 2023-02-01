@@ -1,5 +1,4 @@
 #include <string.h>
-#include "faidx.h"
 #include "sam.h"
 
 #define TYPE_BAM  1
@@ -38,13 +37,14 @@ void append_header_text(bam_header_t *header, char* text, int len)
 
 void samclose(samfile_t *fp)
 {
-	if (fp == 0) return;
-	if (fp->header) bam_header_destroy(fp->header);
-	if (fp->type & TYPE_BAM) bam_close(fp->x.bam);
-	else if (fp->type & TYPE_READ) sam_close(fp->x.tamr);
-	else fclose(fp->x.tamw);
-	free(fp);
+    if (fp == 0) return;
+    if (fp->header) bam_header_destroy(fp->header);
+    if (fp->type & TYPE_BAM) bgzf_close(fp->x.bam);
+    else if (fp->type & TYPE_READ) sam_close(fp->x.tamr);
+    else fclose(fp->x.tamw);
+    free(fp);
 }
+
 
 int samread(samfile_t *fp, bam1_t *b)
 {
@@ -65,41 +65,4 @@ int samwrite(samfile_t *fp, const bam1_t *b)
 		free(s);
 		return l + 1;
 	}
-}
-
-int sampileup(samfile_t *fp, int mask, bam_pileup_f func, void *func_data)
-{
-	bam_plbuf_t *buf;
-	int ret;
-	bam1_t *b;
-	b = bam_init1();
-	buf = bam_plbuf_init(func, func_data);
-	bam_plbuf_set_mask(buf, mask);
-	while ((ret = samread(fp, b)) >= 0)
-		bam_plbuf_push(b, buf);
-	bam_plbuf_push(0, buf);
-	bam_plbuf_destroy(buf);
-	bam_destroy1(b);
-	return 0;
-}
-
-char *samfaipath(const char *fn_ref)
-{
-	char *fn_list = 0;
-	SAMTOOLS_ERROR_MESSAGE = NULL;
-	if (fn_ref == 0) return 0;
-	fn_list = (char *)calloc(strlen(fn_ref) + 5, 1);
-	strcat(strcpy(fn_list, fn_ref), ".fai");
-	if (access(fn_list, R_OK) == -1) { // fn_list is unreadable
-		if (access(fn_ref, R_OK) == -1) {
-			fprintf(stderr, "[samfaipath] fail to read file %s.\n", fn_ref);
-		} else {
-			if (bam_verbose >= 3) fprintf(stderr, "[samfaipath] build FASTA index...\n");
-			if (fai_build(fn_ref) == -1) {
-				fprintf(stderr, "[samfaipath] fail to build FASTA index.\n");
-				free(fn_list); fn_list = 0;
-			}
-		}
-	}
-	return fn_list;
 }

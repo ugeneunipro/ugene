@@ -48,7 +48,7 @@ static const QByteArray ATTRIBUTE_SEP(":~!ugene-attribute!~:");
 static void closeBamFileHandler(BGZF* file) {
     CHECK(file != nullptr, );
     SAFE_POINT(file->owned_file == 1, "Invalid owned_file flag", );
-    int rc = bam_close(file);
+    int rc = bgzf_close(file);
     SAFE_POINT(rc == 0, "Failed to close BAM file", );
 }
 
@@ -174,10 +174,11 @@ U2DataType SamtoolsBasedDbi::getEntityTypeById(const U2DataId& id) const {
 
 bamFile SamtoolsBasedDbi::openNewBamFileHandler() const {
     QString filePath = url.getURLString();
-    int fd = fileno(BAMUtils::openFile(filePath, "rb"));
-    bamFile file = bam_dopen(fd, "rb");
-    file->owned_file = 1;
-    return file;
+    NP<FILE> file = BAMUtils::openFile(filePath, "rb");
+    bamFile bFile = bgzf_fdopen(file.getNullable(), "r");
+    CHECK_EXT(bFile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
+    bFile->owned_file = 1;
+    return bFile;
 }
 
 const bam_header_t* SamtoolsBasedDbi::getHeader() const {

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_XML_TEST_FORMAT_H_
-#define _U2_XML_TEST_FORMAT_H_
+#pragma once
 
 #include "../GTest.h"
 
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_TASK_TREE_VIEW_UTILS_H_
-#define _U2_GUI_TASK_TREE_VIEW_UTILS_H_
+#pragma once
 
 #include "GTGlobals.h"
 
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

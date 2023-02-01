@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __U2_BASE_TYPES_H_
-#define __U2_BASE_TYPES_H_
+#pragma once
 
 #include <U2Core/U2Type.h>
 
@@ -129,5 +128,3 @@ public:
 };  // UrlTypeValueFactory
 
 }  // namespace U2
-
-#endif  // __U2_BASE_TYPES_H_

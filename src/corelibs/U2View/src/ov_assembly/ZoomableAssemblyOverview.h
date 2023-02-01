@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ZOOMABLE_ASSEMBLY_OVERVIEW_H__
-#define __ZOOMABLE_ASSEMBLY_OVERVIEW_H__
+#pragma once
 
 #include <QSharedPointer>
 #include <QWidget>
@@ -151,5 +150,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

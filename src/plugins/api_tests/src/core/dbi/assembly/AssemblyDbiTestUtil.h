@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ASSEMBLY_DBI_TEST_UTIL_H_
-#define _ASSEMBLY_DBI_TEST_UTIL_H_
+#pragma once
 
 #include <U2Core/U2Assembly.h>
 
@@ -45,5 +44,3 @@ public:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::U2AssemblyRead);
-
-#endif

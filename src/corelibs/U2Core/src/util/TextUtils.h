@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEXT_UTILS_H_
-#define _U2_TEXT_UTILS_H_
+#pragma once
 
 #include <assert.h>
 
@@ -151,6 +150,9 @@ public:
 
     /** Returns index of the first whitespace character in the string or -1 if the string has no whites. */
     static int findIndexOfFirstWhiteSpace(const QString& text);
+
+    /** Converts QString to wchar_t*. Caller is responsible to deallocated the returned result memory. */
+    static wchar_t* toWideCharsArray(const QString& text);
 };
 
 template<typename T>
@@ -378,5 +380,3 @@ inline QStringList TextUtils::transposeCSVRows(const QStringList& rows, const QS
 }
 
 }  // namespace U2
-
-#endif

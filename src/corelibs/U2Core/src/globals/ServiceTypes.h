@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SERVICE_TYPE_H_
-#define _U2_SERVICE_TYPE_H_
+#pragma once
 
 #include "ServiceModel.h"
 
@@ -45,5 +44,3 @@ const ServiceType Service_MinCoreServiceId = 500;
 const ServiceType Service_MaxCoreServiceId = 1000;
 
 }  // namespace U2
-
-#endif

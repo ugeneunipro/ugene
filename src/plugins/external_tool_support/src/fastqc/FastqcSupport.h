@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FASTQC_SUPPORT_H_
-#define _U2_FASTQC_SUPPORT_H_
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -41,4 +40,3 @@ private slots:
 };
 
 }  // namespace U2
-#endif  // _U2_FASTQC_SUPPORT_H_

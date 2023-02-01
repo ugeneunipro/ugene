@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WIZARD_H_
-#define _U2_WIZARD_H_
+#pragma once
 
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/global.h>
@@ -77,5 +76,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_WIZARD_H_

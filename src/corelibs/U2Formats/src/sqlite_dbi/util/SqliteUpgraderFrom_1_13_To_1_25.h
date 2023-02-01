@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITE_UPGRADER_FROM_1_13_TO_1_25_H_
-#define _U2_SQLITE_UPGRADER_FROM_1_13_TO_1_25_H_
+#pragma once
 
 #include "SqliteUpgrader.h"
 
@@ -37,5 +36,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SQLITE_UPGRADER_FROM_0_TO_1_13_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_COLOR_SCHEME_CUSTOM_H_
-#define _U2_MSA_COLOR_SCHEME_CUSTOM_H_
+#pragma once
 
 #include <QColor>
 #include <QVector>
@@ -46,5 +45,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MSA_COLOR_SCHEME_CUSTOM_H_

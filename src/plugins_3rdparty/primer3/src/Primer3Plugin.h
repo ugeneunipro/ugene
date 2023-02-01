@@ -39,7 +39,6 @@ class Primer3Plugin : public Plugin {
     Q_OBJECT
 public:
     Primer3Plugin();
-    ~Primer3Plugin() override;
 
 private:
     Primer3ADVContext* viewCtx = nullptr;

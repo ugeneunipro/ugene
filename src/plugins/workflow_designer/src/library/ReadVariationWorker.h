@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _READ_VARIATION_LIST_WORKER_
-#define _READ_VARIATION_LIST_WORKER_
+#pragma once
 
 #include "GenericReadActor.h"
 #include "GenericReadWorker.h"
@@ -91,5 +90,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _READ_VARIATION_LIST_WORKER_

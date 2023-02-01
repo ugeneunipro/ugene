@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_APPRESOURCES_H_
-#define _U2_APPRESOURCES_H_
+#pragma once
 
 #include <QHash>
 #include <QReadWriteLock>
@@ -213,4 +212,3 @@ private:
 };
 
 }  // namespace U2
-#endif

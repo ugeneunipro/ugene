@@ -1104,8 +1104,11 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    int originalWidth = GTUtilsPhyTree::getSceneWidth(os);
-    int prevStepWidth = originalWidth;
+    int original100Width = GTUtilsPhyTree::getSceneWidth(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
+    int originalFitWidth = GTUtilsPhyTree::getSceneWidth(os);
+
+    int prevStepWidth = originalFitWidth;
     for (int i = 0; i < 3; i++) {
         GTUtilsPhyTree::clickZoomInButton(os);
         int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
@@ -1120,9 +1123,13 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
         prevStepWidth = sceneWidth;
     }
 
-    GTUtilsPhyTree::clickResetZoomButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
     int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
-    CHECK_SET_ERR(sceneWidth == originalWidth, "Unexpected scene width on reset zoom");
+    CHECK_SET_ERR(sceneWidth == originalFitWidth, "Unexpected scene width on fit zoom: " + QString::number(sceneWidth) + ", expected: " + QString::number(originalFitWidth));
+
+    GTUtilsPhyTree::clickZoom100Button(os);
+    sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
+    CHECK_SET_ERR(sceneWidth == original100Width, "Unexpected scene width on 100 zoom: " + QString::number(sceneWidth) + ", expected: " + QString::number(original100Width));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {

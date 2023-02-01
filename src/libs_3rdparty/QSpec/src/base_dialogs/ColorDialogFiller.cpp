@@ -60,7 +60,7 @@ void ColorDialogFiller::commonScenario() {
             QColor c;
         };
 
-        QColorDialog* d = qobject_cast<QColorDialog*>(dialog);
+        auto d = qobject_cast<QColorDialog*>(dialog);
         GTThread::runInMainThread(os, new Scenario(d, QColor(r, g, b)));
         GTThread::waitForMainThread();
         GTGlobals::sleep(500);

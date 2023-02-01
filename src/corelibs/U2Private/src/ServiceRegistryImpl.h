@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SERVICE_REGISTRY_IMPL_
-#define _U2_SERVICE_REGISTRY_IMPL_
+#pragma once
 
 #include <QMap>
 
@@ -145,5 +144,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

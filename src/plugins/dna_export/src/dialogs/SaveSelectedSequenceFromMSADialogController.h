@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SAVE_SELECTED_SEQUENCES_DIALOG_CONTROLLER
-#define _U2_SAVE_SELECTED_SEQUENCES_DIALOG_CONTROLLER
+#pragma once
 
 #include <QDialog>
 
@@ -37,9 +36,9 @@ class SaveSelectedSequenceFromMSADialogController : public QDialog {
     Q_OBJECT
 public:
     SaveSelectedSequenceFromMSADialogController(QWidget* p, const QString& defaultCustomFilename);
-    ~SaveSelectedSequenceFromMSADialogController();
+    ~SaveSelectedSequenceFromMSADialogController() override;
 
-    virtual void accept();
+    void accept() override;
 
     QString getUrl() const;
     DocumentFormatId getFormat() const;
@@ -93,5 +92,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _EDIT_BREAKPOINT_LABELS_DIALOG_H_
-#define _EDIT_BREAKPOINT_LABELS_DIALOG_H_
+#pragma once
 
 #include <QDialog>
 #include <QMap>
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _EDIT_BREAKPOINT_LABELS_DIALOG_H_

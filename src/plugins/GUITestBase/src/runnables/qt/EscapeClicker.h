@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef ESCAPECLICKER_H
-#define ESCAPECLICKER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -34,5 +33,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // ESCAPECLICKER_H

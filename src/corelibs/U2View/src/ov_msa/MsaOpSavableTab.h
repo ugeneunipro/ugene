@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_OPTIONS_PANEL_SAVABLE_TAB_H_
-#define _U2_MSA_OPTIONS_PANEL_SAVABLE_TAB_H_
+#pragma once
 
 #include <U2Gui/U2SavableWidget.h>
 
@@ -36,5 +35,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MSA_OPTIONS_PANEL_SAVABLE_TAB_H_

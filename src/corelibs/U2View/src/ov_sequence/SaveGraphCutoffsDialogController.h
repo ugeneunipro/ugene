@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SAVE_GRAPH_CUTOFFS_DIALOG_H_
-#define _U2_SAVE_GRAPH_CUTOFFS_DIALOG_H_
+#pragma once
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
@@ -58,4 +57,3 @@ public:
 };
 
 }  // namespace U2
-#endif  //_U2_SAVE_GRAPH_CUTOFFS_DIALOG_H_

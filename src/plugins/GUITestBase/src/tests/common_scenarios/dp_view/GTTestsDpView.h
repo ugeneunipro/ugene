@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_DP_VIEW_H_
-#define GTTESTS_DP_VIEW_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -50,5 +49,3 @@ GUI_TEST_CLASS_DECLARATION(test_0025)
 }  // namespace GUITest_Common_scenarios_dp_view
 
 }  // namespace U2
-
-#endif  // GTTESTS_DP_VIEW_H_

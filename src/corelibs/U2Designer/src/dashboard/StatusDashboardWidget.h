@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STATUS_DASHBOARD_WIDGET_H_
-#define _U2_STATUS_DASHBOARD_WIDGET_H_
+#pragma once
 
 #include <QDomElement>
 #include <QLabel>
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -189,7 +189,9 @@ void TvRectangularBranchItem::setBreathScaleAdjustment(double newBreadthScaleAdj
 }
 
 void TvRectangularBranchItem::setCurvature(double newCurvature) {
+    CHECK(newCurvature != curvature, );
     curvature = newCurvature;
+    prepareGeometryChange();
 }
 
 TvRectangularBranchItem::Side TvRectangularBranchItem::getSide() const {

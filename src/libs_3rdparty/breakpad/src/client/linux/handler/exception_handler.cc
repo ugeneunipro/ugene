@@ -424,7 +424,7 @@ struct ThreadArgument {
 // context here: see the top of the file.
 // static
 int ExceptionHandler::ThreadEntry(void* arg) {
-  const ThreadArgument* thread_arg = reinterpret_cast<ThreadArgument*>(arg);
+  auto thread_arg = reinterpret_cast<ThreadArgument*>(arg);
 
   // Close the write end of the pipe. This allows us to fail if the parent dies
   // while waiting for the continue signal.
@@ -507,7 +507,7 @@ bool ExceptionHandler::GenerateDump(CrashContext* context) {
   // of caution than smash it into random locations.
   static const unsigned kChildStackSize = 16000;
   PageAllocator allocator;
-  uint8_t* stack = reinterpret_cast<uint8_t*>(allocator.Alloc(kChildStackSize));
+  auto stack = reinterpret_cast<uint8_t*>(allocator.Alloc(kChildStackSize));
   if (!stack)
     return false;
   // clone() needs the top-most address. (scrub just to be safe)

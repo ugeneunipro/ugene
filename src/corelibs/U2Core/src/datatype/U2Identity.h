@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IDENTITY_H_
-#define _U2_IDENTITY_H_
+#pragma once
 
 #include <QHash>
 #include <QString>
@@ -104,5 +103,3 @@ uint qHash(const AbstractId<T>& key) {
     };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CMD_LINE_HELP_PROVIDER_
-#define _U2_CMD_LINE_HELP_PROVIDER_
+#pragma once
 
 #include "U2Core/global.h"
 
@@ -79,5 +78,3 @@ private:
 };  // CMDLineHelpProvider
 
 }  // namespace U2
-
-#endif

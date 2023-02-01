@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef CONFIGURATIONWIZARDFILLER_H
-#define CONFIGURATIONWIZARDFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -42,5 +41,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // CONFIGURATIONWIZARDFILLER_H

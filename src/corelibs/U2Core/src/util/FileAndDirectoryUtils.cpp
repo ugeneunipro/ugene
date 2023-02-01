@@ -25,7 +25,9 @@
 #include <QTemporaryFile>
 #include <QTextStream>
 
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -201,6 +203,27 @@ bool FileAndDirectoryUtils::canWriteToPath(const QString& absoluteDirPath) {
     file.remove();
 
     return true;
+}
+
+NP<FILE> FileAndDirectoryUtils::openFile(const QString& fileUrl, const QString& mode) {
+#ifdef Q_OS_WIN
+    QScopedPointer<wchar_t> unicodeFileName(TextUtils::toWideCharsArray(GUrlUtils::getNativeAbsolutePath(fileUrl)));
+    QString modeWithBinaryFlag = mode;
+    if (!modeWithBinaryFlag.contains("b")) {
+        modeWithBinaryFlag += "b";  // Always open file in binary mode, so any kind of sam, sam.gz, bam, bai files are processed the same way.
+    }
+    QScopedPointer<wchar_t> unicodeMode(TextUtils::toWideCharsArray(modeWithBinaryFlag));
+    return _wfopen(unicodeFileName.data(), unicodeMode.data());
+#else
+    return fopen(fileUrl.toLocal8Bit(), mode.toLatin1());
+#endif
+}
+
+/** Closes file descriptor if the file descriptor is defined and is open. */
+void FileAndDirectoryUtils::closeFileIfOpen(FILE* file) {
+    int fd = file == nullptr ? -1 : fileno(file);
+    CHECK(fd > 0, );
+    fclose(file);
 }
 
 }  // namespace U2

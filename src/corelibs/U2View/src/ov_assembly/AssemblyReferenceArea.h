@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_REFERENCE_AREA_H__
-#define __ASSEMBLY_REFERENCE_AREA_H__
+#pragma once
 
 #include <QMenu>
 #include <QSharedPointer>
@@ -112,5 +111,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -45,7 +45,7 @@ void AddObjectsToDocumentTask::prepare() {
 
 QList<Task*> AddObjectsToDocumentTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
-    CloneObjectTask* cloneTask = qobject_cast<CloneObjectTask*>(subTask);
+    auto cloneTask = qobject_cast<CloneObjectTask*>(subTask);
     CHECK(cloneTask != nullptr, result);
     doc->addObject(cloneTask->takeResult());
     return result;

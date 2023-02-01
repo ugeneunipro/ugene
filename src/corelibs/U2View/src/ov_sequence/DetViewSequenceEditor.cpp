@@ -102,7 +102,7 @@ bool DetViewSequenceEditor::eventFilter(QObject*, QEvent* event) {
         case QEvent::MouseButtonPress:
         case QEvent::MouseButtonRelease:
         case QEvent::MouseMove: {
-            QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
+            auto mouseEvent = dynamic_cast<QMouseEvent*>(event);
             SAFE_POINT(mouseEvent != nullptr, "Failed to cast QEvent to QMouseEvent", true);
 
             if (mouseEvent->buttons() & Qt::LeftButton) {
@@ -115,7 +115,7 @@ bool DetViewSequenceEditor::eventFilter(QObject*, QEvent* event) {
             // TODO_SVEDIT: separate methods
         case QEvent::KeyPress: {
             // set cursor position
-            QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+            auto keyEvent = dynamic_cast<QKeyEvent*>(event);
             SAFE_POINT(keyEvent != nullptr, "Failed to cast QEvent to QKeyEvent", true);
 
             int key = keyEvent->key();
@@ -306,7 +306,7 @@ void DetViewSequenceEditor::modifySequence(U2SequenceObject* seqObj, const U2Reg
     seqObj->replaceRegion(region, sequence, os);
     FixAnnotationsUtils::fixAnnotations(&os, seqObj, region, sequence, AppContext::getProject()->getDocuments(), s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(), strategy);
     SAFE_POINT_OP(os, );
-    ADVSequenceObjectContext* context = qobject_cast<ADVSequenceObjectContext*>(view->getSequenceContext());
+    auto context = qobject_cast<ADVSequenceObjectContext*>(view->getSequenceContext());
     SAFE_POINT(context != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
     context->getAnnotatedDNAView()->updateAutoAnnotations();
 }
@@ -327,7 +327,7 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
         reset();
         view->installEventFilter(this);
         // Make detailed view visible
-        ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(wgt);
+        auto sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(wgt);
         if (sequenceWidget) {
             sequenceWidget->setDetViewCollapsed(false);
         }
@@ -359,7 +359,7 @@ void DetViewSequenceEditor::sl_objectLockStateChanged() {
 }
 
 void DetViewSequenceEditor::sl_paste(Task* task) {
-    PasteTask* pasteTask = qobject_cast<PasteTask*>(task);
+    auto pasteTask = qobject_cast<PasteTask*>(task);
     CHECK(pasteTask != nullptr && !pasteTask->isCanceled(), );
 
     const QList<Document*>& docs = pasteTask->getDocuments();

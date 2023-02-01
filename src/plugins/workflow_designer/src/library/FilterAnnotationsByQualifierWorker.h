@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FILTER_ANNOTATIONS_BY_QUALIFIER_WORKER_H_
-#define _U2_FILTER_ANNOTATIONS_BY_QUALIFIER_WORKER_H_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 
@@ -87,5 +86,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  //_U2_FILTER_ANNOTATIONS_BY_QUALIFIER_WORKER_H_

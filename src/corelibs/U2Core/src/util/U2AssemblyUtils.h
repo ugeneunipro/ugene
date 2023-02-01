@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ASSEMBLY_UTILS_H_
-#define _U2_ASSEMBLY_UTILS_H_
+#pragma once
 
 #include <U2Core/U2Assembly.h>
 #include <U2Core/U2OpStatus.h>
@@ -92,5 +91,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

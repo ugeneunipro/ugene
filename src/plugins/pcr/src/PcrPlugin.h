@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PCR_PLUGIN_H_
-#define _U2_PCR_PLUGIN_H_
+#pragma once
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PluginModel.h>
@@ -38,5 +37,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PCR_PLUGIN_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_ASSEMBLY_ALG_REGISTRY_H_
-#define _U2_DNA_ASSEMBLY_ALG_REGISTRY_H_
+#pragma once
 
 #include <QList>
 #include <QMap>
@@ -110,5 +109,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

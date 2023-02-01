@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENBANK_LOCATION_PARSER_H
-#define _U2_GENBANK_LOCATION_PARSER_H
+#pragma once
 
 #include <QObject>
 
@@ -51,5 +50,3 @@ public:
 }  // namespace Genbank
 
 }  // namespace U2
-
-#endif

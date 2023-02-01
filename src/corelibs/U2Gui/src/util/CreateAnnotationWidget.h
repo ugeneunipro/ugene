@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_ANNOTATION_WIDGET_H_
-#define _U2_CREATE_ANNOTATION_WIDGET_H_
+#pragma once
 
 #include <QWidget>
 
@@ -121,5 +120,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CREATE_ANNOTATION_WIDGET_H_

@@ -94,7 +94,7 @@ AppSettingsGUIPageState* ColorSchemaSettingsPageController::getSavedState() {
 }
 
 void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState* s) {
-    ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
+    auto state = qobject_cast<ColorSchemaSettingsPageState*>(s);
 
     ColorSchemeUtils::setColorsDir(state->colorsDir);
     QDir dir(ColorSchemeUtils::getColorsDir());

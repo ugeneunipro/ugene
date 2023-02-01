@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U1_SEQUENCE_UTILS_H_
-#define _U1_SEQUENCE_UTILS_H_
+#pragma once
 
 #include <U2Core/U2Region.h>
 
@@ -54,5 +53,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

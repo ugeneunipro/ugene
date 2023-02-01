@@ -76,10 +76,6 @@ Primer3Plugin::Primer3Plugin()
     }
 }
 
-Primer3Plugin::~Primer3Plugin() {
-    viewCtx->deleteLater();
-}
-
 Primer3ADVContext::Primer3ADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DET_VIEW_RENDERER_H_
-#define _U2_DET_VIEW_RENDERER_H_
+#pragma once
 
 #include "SequenceViewAnnotatedRenderer.h"
 
@@ -68,5 +67,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DET_VIEW_RENDERER_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TRANSLATE_SEQUENCE_WORKER_H_
-#define _U2_TRANSLATE_SEQUENCE_WORKER_H_
+#pragma once
 
 #include <QSharedPointer>
 
@@ -102,5 +101,3 @@ public:
 }  // namespace LocalWorkflow
 
 }  // namespace U2
-
-#endif

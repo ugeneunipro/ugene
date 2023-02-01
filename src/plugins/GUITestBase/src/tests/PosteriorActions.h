@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_POSTERIOR_ACTIONS_H_
-#define _U2_POSTERIOR_ACTIONS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -43,5 +42,3 @@ POSTERIOR_ACTION_DECLARATION(post_action_0004)
 
 }  // namespace GUITest_posterior_actions
 }  // namespace U2
-
-#endif  // _U2_POSTERIOR_ACTIONS_H_

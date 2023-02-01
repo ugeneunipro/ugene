@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYTREE_H_
-#define _U2_PHYTREE_H_
+#pragma once
 
 #include <QMap>
 #include <QObject>
@@ -150,5 +149,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

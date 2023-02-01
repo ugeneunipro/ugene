@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALIGNMENT_ALGORITHM_GUI_EXTENSION_H_
-#define _U2_ALIGNMENT_ALGORITHM_GUI_EXTENSION_H_
+#pragma once
 
 #include <QMap>
 #include <QObject>
@@ -78,5 +77,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  //_U2_ALIGNMENT_ALGORITHM_GUI_EXTENSION_H_

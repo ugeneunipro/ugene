@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ACTORSCRIPTVALIDATOR_H_
-#define _U2_ACTORSCRIPTVALIDATOR_H_
+#pragma once
 
 #include "ActorValidator.h"
 
@@ -54,5 +53,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_ACTORSCRIPTVALIDATOR_H_

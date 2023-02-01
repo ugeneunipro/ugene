@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _WORKFLOW_DBI_DATA_STORAGE_H_
-#define _WORKFLOW_DBI_DATA_STORAGE_H_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/AssemblyObject.h>
@@ -99,5 +98,3 @@ public:
 }  // namespace Workflow
 
 }  // namespace U2
-
-#endif  // _WORKFLOW_DBI_DATA_STORAGE_H_

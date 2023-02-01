@@ -109,9 +109,9 @@ Actor* ActorPrototype::createInstance(const ActorId& actorId, AttributeScript* s
         proc->setParameter(i.key(), i.value());
     }
     if (ed) {
-        ActorConfigurationEditor* actorEd = dynamic_cast<ActorConfigurationEditor*>(ed);
+        auto actorEd = dynamic_cast<ActorConfigurationEditor*>(ed);
         if (nullptr != actorEd) {
-            ActorConfigurationEditor* editor = dynamic_cast<ActorConfigurationEditor*>(ed->clone());
+            auto editor = dynamic_cast<ActorConfigurationEditor*>(ed->clone());
             editor->setConfiguration(proc);
             proc->setEditor(editor);
         } else {

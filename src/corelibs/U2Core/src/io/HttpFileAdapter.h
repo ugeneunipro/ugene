@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HTTP_FILE_ADAPTER_H_
-#define _U2_HTTP_FILE_ADAPTER_H_
+#pragma once
 
 #include <QAuthenticator>
 #include <QEventLoop>
@@ -156,5 +155,3 @@ protected slots:
 };
 
 }  // namespace U2
-
-#endif

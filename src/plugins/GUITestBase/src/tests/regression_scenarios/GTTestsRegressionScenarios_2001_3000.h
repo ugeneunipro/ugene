@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_2001_3000_H_
-#define _U2_GT_TESTS_REGRESSION_SCENARIOS_2001_3000_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -240,5 +239,3 @@ GUI_TEST_CLASS_DECLARATION(test_2998)
 }  // namespace GUITest_regression_scenarios
 
 }  // namespace U2
-
-#endif  // _U2_GT_TESTS_REGRESSION_SCENARIOS_2001_3000_H_

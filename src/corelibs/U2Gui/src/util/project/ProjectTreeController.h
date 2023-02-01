@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECTTREECONTROLLER_H_
-#define _U2_PROJECTTREECONTROLLER_H_
+#pragma once
 
 #include <U2Core/DocumentSelection.h>
 #include <U2Core/FolderSelection.h>
@@ -172,5 +171,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PROJECTTREECONTROLLER_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_COUNTER_H_
-#define _U2_COUNTER_H_
+#pragma once
 
 #include <QList>
 #include <QObject>
@@ -91,5 +90,3 @@ public:
     cvar.value += 1;
 
 }  // namespace U2
-
-#endif

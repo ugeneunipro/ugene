@@ -21,7 +21,6 @@
 
 #include "SWMulAlignResultNamesTag.h"
 
-#ifndef _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_
 #    define _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_
 
 namespace U2 {
@@ -47,5 +46,3 @@ inline SWMulAlignSubseqPropTag::SWMulAlignSubseqPropTag(const QString _shorthand
 }
 
 }  // namespace U2
-
-#endif  // _U2_SW_MUL_ALIGN_SUBSEQ_PROP_TAG_H_

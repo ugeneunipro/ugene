@@ -465,7 +465,7 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
 
     QPainter p(pd);
     p.drawPixmap(0, 0, *cachedView);
-    Overview* gv = static_cast<Overview*>(view);
+    auto gv = static_cast<Overview*>(view);
     int panX = posToCoord(gv->getPan()->getVisibleRange().startPos);
     int panW = qMax(posToCoord(gv->getPan()->getVisibleRange().length), SLIDER_MIN_WIDTH);
     int detX = posToCoord(gv->getDet()->getVisibleRange().startPos) - int(ARROW_WIDTH / 2);
@@ -483,7 +483,7 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
     p.setPen(pen);
 
     // don't show arrow when det view collapsed
-    Overview* overview = qobject_cast<Overview*>(view);
+    auto overview = qobject_cast<Overview*>(view);
     SAFE_POINT(overview != nullptr, tr("Overview is NULL"), );
     ADVSingleSequenceWidget* ssw = overview->seqWidget;
     SAFE_POINT(ssw != nullptr, tr("ADVSingleSequenceWidget is NULL"), );
@@ -525,7 +525,7 @@ void OverviewRenderArea::drawRuler(QPainter& p) {
     QPen pen(Qt::black);
     pen.setWidth(PEN_WIDTH);
     p.setPen(pen);
-    Overview* gv = static_cast<Overview*>(view);
+    auto gv = static_cast<Overview*>(view);
     qint64 seqLen = gv->ctx->getSequenceLength();
     U2Region visibleRange = gv->getVisibleRange();
 
@@ -550,7 +550,7 @@ void OverviewRenderArea::drawSelection(QPainter& p) {
     QPen pen(QColor("#007DE3"));
     pen.setWidth(SELECTION_LINE_WIDTH);
     p.setPen(pen);
-    Overview* gv = qobject_cast<Overview*>(view);
+    auto gv = qobject_cast<Overview*>(view);
     DNASequenceSelection* sel = gv->ctx->getSequenceSelection();
     foreach (const U2Region& r, sel->getSelectedRegions()) {
         int x1 = posToCoord(r.startPos);

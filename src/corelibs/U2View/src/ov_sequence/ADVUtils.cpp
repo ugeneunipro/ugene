@@ -40,7 +40,7 @@ void ADVGlobalAction::sl_activeSequenceChanged() {
 }
 
 void ADVGlobalAction::updateState() {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(getObjectView());
+    auto av = qobject_cast<AnnotatedDNAView*>(getObjectView());
     ADVSequenceWidget* w = av->getActiveSequenceWidget();
     bool enabled = w != nullptr;
     if (enabled && flags.testFlag(ADVGlobalActionFlag_SingleSequenceOnly) && qobject_cast<ADVSingleSequenceWidget*>(w) == nullptr) {

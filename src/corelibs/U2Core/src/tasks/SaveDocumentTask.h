@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SAVE_DOCUMENT_TASK_H_
-#define _U2_SAVE_DOCUMENT_TASK_H_
+#pragma once
 
 #include <QPointer>
 
@@ -141,5 +140,3 @@ public:
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::SaveDocFlags)
-
-#endif

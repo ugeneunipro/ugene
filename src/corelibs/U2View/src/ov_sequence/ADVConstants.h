@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ADV_CONSTANTS_H_
-#define _U2_ADV_CONSTANTS_H_
+#pragma once
 
 namespace U2 {
 
@@ -46,5 +45,3 @@ namespace U2 {
 #define ANNOTATED_DNA_VIEW_FACTORY_ID "AnnotatedDNAView"
 
 }  // namespace U2
-
-#endif

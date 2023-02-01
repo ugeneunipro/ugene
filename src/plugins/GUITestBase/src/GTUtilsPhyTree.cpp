@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
@@ -392,9 +393,15 @@ void GTUtilsPhyTree::clickZoomOutButton(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickResetZoomButton"
-void GTUtilsPhyTree::clickResetZoomButton(HI::GUITestOpStatus& os) {
-    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "resetZoomTreeViewerAction");
+#define GT_METHOD_NAME "clickZoomFitButton"
+void GTUtilsPhyTree::clickZoomFitButton(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomFitAction");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickZoom100Button"
+void GTUtilsPhyTree::clickZoom100Button(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoom100Action");
 }
 #undef GT_METHOD_NAME
 
@@ -409,11 +416,19 @@ int GTUtilsPhyTree::getSceneWidth(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "zoomWithMouseWheel"
 void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus& os, int steps) {
     TreeViewerUI* treeViewer = getTreeViewerUi(os);
+    zoomWithMouseWheel(os, treeViewer, steps);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomWithMouseWheelWithTreeViewer"
+void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus&, QWidget* treeViewer, int steps) {
     QPoint treeViewCenter = treeViewer->mapToGlobal(treeViewer->rect().center());
     GTMouseDriver::moveTo(treeViewCenter);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     for (int i = 0; i < qAbs(steps); i++) {
         GTMouseDriver::scroll(steps > 0 ? 1 : -1);
     }
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
 }
 #undef GT_METHOD_NAME
 

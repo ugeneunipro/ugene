@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_UTILS_H_
-#define _U2_WORKFLOW_UTILS_H_
+#pragma once
 
 #include <QObject>
 #include <QProcess>
@@ -268,5 +267,3 @@ protected:
 };  // PrompterBase
 
 }  // namespace U2
-
-#endif

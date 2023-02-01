@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SCHEMA_WORKER_H_
-#define _SCHEMA_WORKER_H_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/Schema.h>
@@ -63,5 +62,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _SCHEMA_WORKER_H_

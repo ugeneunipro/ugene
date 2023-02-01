@@ -86,8 +86,8 @@ QString WorkflowUtils::getRichDoc(const Descriptor& d) {
 
 QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* md) {
     QString url;
-    const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
-    const DocumentMimeData* domd = qobject_cast<const DocumentMimeData*>(md);
+    auto gomd = qobject_cast<const GObjectMimeData*>(md);
+    auto domd = qobject_cast<const DocumentMimeData*>(md);
     if (gomd) {
         GObject* obj = gomd->objPtr.data();
         if (obj) {
@@ -601,7 +601,7 @@ static void data2text(WorkflowContext* context, DocumentFormatId formatId, GObje
     DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
     QScopedPointer<Document> d(new Document(df, iof, GUrl(), context->getDataStorage()->getDbiRef(), objList));
     d->setDocumentOwnsDbiResources(false);
-    StringAdapter* io = dynamic_cast<StringAdapter*>(iof->createIOAdapter());
+    auto io = dynamic_cast<StringAdapter*>(iof->createIOAdapter());
     io->open(GUrl(), IOAdapterMode_Write);
     U2OpStatusImpl os;
 
@@ -775,7 +775,7 @@ QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port* inPort) {
     if (links.size() == 1) {
         Port* src = links.keys().first();
         assert(src->isOutput());
-        IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(src);
+        auto bus = dynamic_cast<IntegralBusPort*>(src);
         assert(nullptr != bus);
         DataTypePtr type = bus->getType();
         return type->getDatatypesMap();
@@ -908,7 +908,7 @@ void WorkflowUtils::schemaFromFile(const QString& url, Schema* schema, Metadata*
 }
 
 static bool isDatasetsAttr(Attribute* attr) {
-    URLAttribute* dsa = dynamic_cast<URLAttribute*>(attr);
+    auto dsa = dynamic_cast<URLAttribute*>(attr);
     return (nullptr != dsa);
 }
 
@@ -1365,7 +1365,7 @@ QString PrompterBaseImpl::getScreenedURL(IntegralBusPort* input, const QString& 
 }
 
 QString PrompterBaseImpl::getProducers(const QString& port, const QString& slot) {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(port));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(port));
     CHECK(nullptr != input, "");
     QList<Actor*> producers = input->getProducers(slot);
 

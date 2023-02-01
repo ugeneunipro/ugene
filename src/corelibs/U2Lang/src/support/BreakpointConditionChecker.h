@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BREAKPOINT_CONDITION_CHECKER_H_
-#define _U2_BREAKPOINT_CONDITION_CHECKER_H_
+#pragma once
 
 #include <QMutex>
 
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_BREAKPOINT_CONDITION_CHECKER_H_

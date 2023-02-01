@@ -37,7 +37,7 @@ TextContentFilterTask::TextContentFilterTask(const ProjectTreeControllerModeSett
 }
 
 bool TextContentFilterTask::filterAcceptsObject(GObject* obj) {
-    TextObject* textObject = qobject_cast<TextObject*>(obj);
+    auto textObject = qobject_cast<TextObject*>(obj);
     CHECK(nullptr != textObject, false);
     return settings.nameFilterAcceptsString(textObject->getText());
 }

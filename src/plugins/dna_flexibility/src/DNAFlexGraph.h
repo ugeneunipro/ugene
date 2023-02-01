@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_FLEX_GRAPH_H_
-#define _U2_DNA_FLEX_GRAPH_H_
+#pragma once
 
 #include <U2View/GSequenceGraphView.h>
 #include <U2View/GraphMenu.h>
@@ -47,4 +46,3 @@ private:
 };
 
 }  // namespace U2
-#endif

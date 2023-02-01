@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_VIEW_CONTROLLER_H_
-#define _U2_WORKFLOW_VIEW_CONTROLLER_H_
+#pragma once
 
 #include <QAction>
 #include <QGraphicsScene>
@@ -446,5 +445,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

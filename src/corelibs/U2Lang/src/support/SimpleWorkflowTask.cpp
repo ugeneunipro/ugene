@@ -214,7 +214,7 @@ MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     CHECK_EXT(d != nullptr, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
 
-    MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
+    auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
     CHECK_EXT(maObj != nullptr, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
     return maObj->getMsaCopy();
 }

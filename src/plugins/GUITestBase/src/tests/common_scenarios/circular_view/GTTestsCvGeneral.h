@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GT_TESTS_CV_GENERAL_H_
-#define _GT_TESTS_CV_GENERAL_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -43,5 +42,3 @@ GUI_TEST_CLASS_DECLARATION(general_avail_8)
 
 }  // namespace GUITest_common_scenarios_circular_view
 }  // namespace U2
-
-#endif  // _GT_TESTS_CV_GENERAL_H_

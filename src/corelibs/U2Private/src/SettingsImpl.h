@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SETTINGS_IMPL
-#define _U2_SETTINGS_IMPL
+#pragma once
 
 #include <QMutex>
 #include <QSettings>
@@ -57,4 +56,3 @@ private:
     QSettings* settings;
 };
 }  // namespace U2
-#endif

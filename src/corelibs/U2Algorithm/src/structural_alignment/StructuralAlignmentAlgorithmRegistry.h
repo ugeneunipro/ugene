@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_
-#define _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_
+#pragma once
 
 #include <QMap>
 #include <QObject>
@@ -58,5 +57,3 @@ private:
 };  // class StructuralAlignmentAlgorithmRegistry
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_ALGORITHM_REGISTRY_H_

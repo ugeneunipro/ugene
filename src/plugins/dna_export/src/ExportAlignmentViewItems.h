@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_ALIGNMENT_VIEW_ITEMS_H_
-#define _U2_EXPORT_ALIGNMENT_VIEW_ITEMS_H_
+#pragma once
 
 #include <U2Core/U2Region.h>
 
@@ -54,14 +53,15 @@ public:
 
 protected slots:
     void sl_exportNucleicMsaToAmino();
+    void sl_exportSelectedMsaRowsToSeparateFiles();
 
     void updateActions();
 
 private:
-    MSAEditor* editor;
-    QAction* translateMSAAction;
+    MSAEditor* editor = nullptr;
+    QAction* exportNucleicMsaToAminoAction = nullptr;
+    QAction* exportMsaToSequenceFileFormatAction = nullptr;
+    QAction* exportSelectedMsaRowsToSeparateFilesAction = nullptr;
 };
 
 }  // namespace U2
-
-#endif

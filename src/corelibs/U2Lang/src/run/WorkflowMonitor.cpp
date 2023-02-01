@@ -339,7 +339,7 @@ QList<ExternalToolListener*> WorkflowMonitor::createWorkflowListeners(const QStr
 
 WDListener* WorkflowMonitor::getListener(const QString& actorId, int actorRunNumber, const QString& toolName, int toolRunNumber) const {
     foreach (ExternalToolListener* listener, workersLog[actorId].logs) {
-        WDListener* wdListener = dynamic_cast<WDListener*>(listener);
+        auto wdListener = dynamic_cast<WDListener*>(listener);
         SAFE_POINT(nullptr != wdListener, "Can't cast ExternalToolListener to WDListener", nullptr);
         if (actorRunNumber == wdListener->getActorRunNumber() &&
             actorId == wdListener->getActorId() &&
@@ -354,7 +354,7 @@ WDListener* WorkflowMonitor::getListener(const QString& actorId, int actorRunNum
 int WorkflowMonitor::getNewToolRunNumber(const QString& actorId, int actorRunNumber, const QString& toolName) {
     int toolRunNumber = 1;
     foreach (ExternalToolListener* listener, workersLog[actorId].logs) {
-        WDListener* wdListener = dynamic_cast<WDListener*>(listener);
+        auto wdListener = dynamic_cast<WDListener*>(listener);
         SAFE_POINT(nullptr != wdListener, "Can't cast ExternalToolListener to WDListener", 0);
         if (toolName == wdListener->getToolName() && actorRunNumber == wdListener->getActorRunNumber()) {
             toolRunNumber++;

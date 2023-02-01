@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SIMPLE_TEXT_OBJECT_VIEW_TASKS_H_
-#define _U2_SIMPLE_TEXT_OBJECT_VIEW_TASKS_H_
+#pragma once
 
 #include <U2Gui/ObjectViewTasks.h>
 
@@ -54,5 +53,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

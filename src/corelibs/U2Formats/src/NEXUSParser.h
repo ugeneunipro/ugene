@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_NEXUS_PARSER_H_
-#define _U2_NEXUS_PARSER_H_
+#pragma once
 
 #include <cassert>
 
@@ -150,5 +149,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_NEXUS_PARSER_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GA_SETTINGS_GUI_CONTROLLER_H_
-#define _U2_GA_SETTINGS_GUI_CONTROLLER_H_
+#pragma once
 
 #include <U2Gui/AppSettingsGUI.h>
 
@@ -35,5 +34,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GA_SETTINGS_GUI_CONTROLLER_H_

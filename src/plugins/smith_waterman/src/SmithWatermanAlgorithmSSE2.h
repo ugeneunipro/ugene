@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SMITHWATERMANALGORITHM_SSE2_H
-#define _SMITHWATERMANALGORITHM_SSE2_H
+#pragma once
 
 #include <emmintrin.h>
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

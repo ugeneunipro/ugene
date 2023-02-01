@@ -280,7 +280,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi* dbi, const U2Assembly& assm) {
                 Document* refDoc = prj->findDocumentByURL(U2DbiUtils::ref2Url(dbiHandle.dbi->getDbiRef()));
                 SAFE_POINT(refDoc != nullptr, tr("No reference document found in the project"), );
 
-                U2SequenceObject* refObj = qobject_cast<U2SequenceObject*>(refDoc->getObjectById(assembly.referenceId));
+                auto refObj = qobject_cast<U2SequenceObject*>(refDoc->getObjectById(assembly.referenceId));
                 SAFE_POINT(refObj != nullptr, tr("No reference object found in the project"), );
 
                 setReference(refObj);
@@ -444,7 +444,7 @@ void AssemblyModel::sl_docAdded(Document* d) {
 
 // when load-unload document
 void AssemblyModel::sl_referenceDocLoadedStateChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(doc, "Reference document is NULL!", );
 
     if (doc->isLoaded()) {
@@ -601,7 +601,7 @@ void AssemblyModel::addTrackObject(VariantTrackObject* trackObj) {
 }
 
 void AssemblyModel::sl_trackObjRemoved(GObject* o) {
-    VariantTrackObject* trackObj = qobject_cast<VariantTrackObject*>(o);
+    auto trackObj = qobject_cast<VariantTrackObject*>(o);
     if (nullptr != trackObj) {
         trackObjList.removeOne(trackObj);
         emit si_trackRemoved(trackObj);

@@ -218,7 +218,8 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
-			src/tests/common_scenarios/genecut/GTTestsGeneCut.h \
+            src/tests/common_scenarios/fasttree/GTTestsFastTree.h \
+            src/tests/common_scenarios/genecut/GTTestsGeneCut.h \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.h \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.h \
@@ -239,7 +240,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.h \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.h \
             src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h \
-			src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.h \
+            src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.h \
             src/tests/common_scenarios/project/GTTestsProject.h \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h \
@@ -499,7 +500,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
-			src/tests/common_scenarios/genecut/GTTestsGeneCut.cpp \
+            src/tests/common_scenarios/fasttree/GTTestsFastTree.cpp \
+            src/tests/common_scenarios/genecut/GTTestsGeneCut.cpp \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.cpp \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.cpp \
@@ -519,8 +521,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.cpp \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.cpp \
-            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \			
-			src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.cpp \
+            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \
+            src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.cpp \
             src/tests/common_scenarios/project/GTTestsProject.cpp \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.cpp \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.cpp \

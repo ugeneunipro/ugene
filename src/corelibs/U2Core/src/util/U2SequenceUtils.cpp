@@ -469,7 +469,7 @@ void U2SequenceImporter::addBlock(const char* data, qint64 len, U2OpStatus& os) 
         alphabetCharacterHit.set((unsigned char)data[i], true);
     }
     QByteArray bytes;
-    for (int i = 0; i < alphabetCharacterHit.size(); i++) {
+    for (size_t i = 0; i < alphabetCharacterHit.size(); i++) {
         if (alphabetCharacterHit[i]) {
             bytes.append(i);
         }

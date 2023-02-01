@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BAM_BGZF_READER_H_
-#define _U2_BAM_BGZF_READER_H_
+#pragma once
 
 #include <3rdparty/zlib/zlib.h>
 
@@ -57,5 +56,3 @@ private:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif  // _U2_BAM_BGZF_READER_H_

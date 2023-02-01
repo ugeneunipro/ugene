@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_INPUT_WIDGETS_CONTROLLERS_H
-#define _U2_INPUT_WIDGETS_CONTROLLERS_H
+#pragma once
 
 #include <QStringList>
 #include <QVariant>
@@ -188,5 +187,3 @@ private:
     QList<InputWidgetController*> widgetControllers;
 };
 }  // namespace U2
-
-#endif  // _U2_INPUT_WIDGETS_CONTROLLERS_H

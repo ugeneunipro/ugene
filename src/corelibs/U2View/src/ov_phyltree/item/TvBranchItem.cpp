@@ -87,6 +87,7 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool is
 }
 
 void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
+    prepareGeometryChange();
     settings = newSettings;
     int penWidth = settings[BRANCH_THICKNESS].toInt();
     if (isSelected()) {
@@ -203,6 +204,7 @@ void TvBranchItem::setDistanceText(const QString& text) {
 
 void TvBranchItem::setWidth(double newWidth) {
     CHECK(width != newWidth, )
+    prepareGeometryChange();
     double delta = newWidth - width;
     setPos(pos() + QPointF(delta, 0));
     setLabelPositions();
@@ -210,7 +212,6 @@ void TvBranchItem::setWidth(double newWidth) {
         QPointF newPos = getDistanceTextItem()->pos() + QPointF(-delta / 2, 0);
         getDistanceTextItem()->setPos(newPos);
     }
-    prepareGeometryChange();
     width = newWidth;
 }
 

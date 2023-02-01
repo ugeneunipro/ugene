@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITE_ASSEMBLY_MULTI_TABLE_DBI_H_
-#define _U2_SQLITE_ASSEMBLY_MULTI_TABLE_DBI_H_
+#pragma once
 
 #include <QReadWriteLock>
 
@@ -218,5 +217,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

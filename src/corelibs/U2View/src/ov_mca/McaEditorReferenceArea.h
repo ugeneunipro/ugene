@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_EDITOR_REFERENCE_VIEW_H_
-#define _U2_MCA_EDITOR_REFERENCE_VIEW_H_
+#pragma once
 
 #include <U2View/MaEditorSelection.h>
 #include <U2View/PanView.h>
@@ -88,5 +87,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MCA_EDITOR_REFERENCE_VIEW_H_

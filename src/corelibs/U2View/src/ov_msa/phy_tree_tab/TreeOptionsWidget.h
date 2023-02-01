@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TREE_OPTIONS_WIDGET_H_
-#define _U2_TREE_OPTIONS_WIDGET_H_
+#pragma once
 
 #include <U2Gui/U2SavableWidget.h>
 
@@ -116,5 +115,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

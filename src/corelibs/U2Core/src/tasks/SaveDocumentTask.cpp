@@ -292,7 +292,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document* doc) {
         if (msgBox->clickedButton() == saveButton) {
             QString newFileUrl = GUrlUtils::rollFileName(doc->getURLString(), "_modified_", DocumentUtils::getNewDocFileNameExcludesHint());
             QString saveFileFilter = doc->getDocumentFormat()->getSupportedDocumentFileExtensions().join(" *.").prepend("*.");
-            QWidget* activeWindow = qobject_cast<QWidget*>(QApplication::activeWindow());
+            auto activeWindow = qobject_cast<QWidget*>(QApplication::activeWindow());
             QFileDialog::Options options(qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0 ? QFileDialog::DontUseNativeDialog : 0);
             const QString fileName = QFileDialog::getSaveFileName(activeWindow, tr("Save as"), newFileUrl, saveFileFilter, 0, options);
             if (isOsMac()) {

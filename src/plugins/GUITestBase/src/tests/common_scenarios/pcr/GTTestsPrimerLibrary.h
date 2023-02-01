@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GTTESTS_PRIMER_LIBRARY_H_
-#define _GTTESTS_PRIMER_LIBRARY_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -44,5 +43,3 @@ GUI_TEST_CLASS_DECLARATION(test_0016)
 
 }  // namespace GUITest_common_scenarios_primer_library
 }  // namespace U2
-
-#endif  // _GTTESTS_PRIMER_LIBRARY_H_

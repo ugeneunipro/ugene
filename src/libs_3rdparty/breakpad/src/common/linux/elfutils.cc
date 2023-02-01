@@ -54,7 +54,7 @@ void FindElfClassSection(const char* elf_base,
 
   assert(my_strncmp(elf_base, ELFMAG, SELFMAG) == 0);
 
-  const Ehdr* elf_header = reinterpret_cast<const Ehdr*>(elf_base);
+  auto elf_header = reinterpret_cast<const Ehdr*>(elf_base);
   assert(elf_header->e_ident[EI_CLASS] == ElfClass::kClass);
 
   if (elf_header->e_shoff == 0) {
@@ -93,7 +93,7 @@ void FindElfClassSegment(const char* elf_base,
 
   assert(my_strncmp(elf_base, ELFMAG, SELFMAG) == 0);
 
-  const Ehdr* elf_header = reinterpret_cast<const Ehdr*>(elf_base);
+  auto elf_header = reinterpret_cast<const Ehdr*>(elf_base);
   assert(elf_header->e_ident[EI_CLASS] == ElfClass::kClass);
 
   const Phdr* phdrs =
@@ -188,11 +188,11 @@ bool FindElfSoNameFromDynamicSection(const void* section_start,
                                      size_t soname_size) {
   typedef typename ElfClass::Dyn Dyn;
 
-  auto* dynamic = static_cast<const Dyn*>(section_start);
+  auto dynamic = static_cast<const Dyn*>(section_start);
   size_t dcount = section_size / sizeof(Dyn);
   for (const Dyn* dyn = dynamic; dyn < dynamic + dcount; ++dyn) {
     if (dyn->d_tag == DT_SONAME) {
-      const char* dynstr = static_cast<const char*>(dynstr_start);
+      auto dynstr = static_cast<const char*>(dynstr_start);
       if (dyn->d_un.d_val >= dynstr_size) {
         // Beyond the end of the dynstr section
         return false;

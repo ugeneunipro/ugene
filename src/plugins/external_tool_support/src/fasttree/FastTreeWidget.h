@@ -19,41 +19,43 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_SEQUENCES_TASK
-#define _U2_EXPORT_SEQUENCES_TASK
+#pragma once
 
-#include <QSet>
+#include <QPlainTextEdit>
 
-#include <U2Core/DNASequence.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/Task.h>
+#include <U2Gui/InputWidgetsControllers.h>
 
+#include <U2View/CreatePhyTreeWidget.h>
 namespace U2 {
 
-class ExportSequencesTask : public Task {
+class PhyTreeDisplayOptionsWidget;
+
+class FastTreeWidget : public CreatePhyTreeWidget {
     Q_OBJECT
 public:
-    ExportSequencesTask(const MultipleSequenceAlignment& msa,
-                        const QSet<qint64>& rowIds,
-                        bool trimGaps,
-                        bool addToProjectFlag,
-                        const QString& dirUrl,
-                        const DocumentFormatId& format,
-                        const QString& extension,
-                        const QString& customFileName = QString());
+    FastTreeWidget(const MultipleSequenceAlignment& msa, QWidget* parent);
 
-protected:
-    void prepare() override;
+    void fillSettings(CreatePhyTreeSettings& settings) override;
+
+    void storeSettings() override;
+
+    void restoreDefault() override;
+
+    bool checkSettings(QString& message, const CreatePhyTreeSettings& settings) override;
 
 private:
-    QList<DNASequence> sequences;
-    bool addToProjectFlag;
-    QString dirUrl;
-    DocumentFormatId format;
-    QString extension;
-    QString customFileName;
+    void propagateWidgetValuesToTextParameters();
+
+    void propagateTextParametersToWidgetValues();
+
+    QPlainTextEdit* extraParametersTextEdit = nullptr;
+    PhyTreeDisplayOptionsWidget* displayOptionsWidget = nullptr;
+
+    QCheckBox* usePseudoCountsCheckBox = nullptr;
+    QCheckBox* useFastestCheckBox = nullptr;
+    bool isNucleotideAlignment = false;
+
+    bool isInsideChangeCallback = false;
 };
 
 }  // namespace U2
-
-#endif

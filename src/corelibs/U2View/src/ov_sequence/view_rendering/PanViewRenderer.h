@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PAN_VIEW_PAINTER_H_
-#define _U2_PAN_VIEW_PAINTER_H_
+#pragma once
 
 #include <U2Gui/GraphUtils.h>
 
@@ -97,5 +96,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PAN_VIEW_PAINTER_H_

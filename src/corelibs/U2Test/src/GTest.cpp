@@ -289,7 +289,7 @@ GTestSuite* GTestSuite::readTestSuite(const QString& url, QString& err) {
     foreach (GTestRef* test, suiteTests) {
         QMap<GTestRef*, QString>::iterator iter;
         for (iter = excluded.begin(); iter != excluded.end(); ++iter) {
-            GTestRef* ref = dynamic_cast<GTestRef*>(iter.key());
+            auto ref = dynamic_cast<GTestRef*>(iter.key());
             if (*test == *ref) {
                 suiteTests.removeOne(test);
             }

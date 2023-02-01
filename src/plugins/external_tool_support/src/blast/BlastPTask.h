@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLASTP_SUPPORT_TASK_H
-#define _U2_BLASTP_SUPPORT_TASK_H
+#pragma once
 
 #include "BlastCommonTask.h"
 
@@ -36,4 +35,3 @@ public:
 };
 
 }  // namespace U2
-#endif  // _U2_BLASTP_SUPPORT_TASK_H

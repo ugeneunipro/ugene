@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SCRIPT_WORKER_SERIALIZER_H_
-#define _SCRIPT_WORKER_SERIALIZER_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -35,5 +34,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _SCRIPT_WORKER_SERIALIZER_H_

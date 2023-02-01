@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_CONSENSUS_ALGORITHM_H_
-#define _U2_MSA_CONSENSUS_ALGORITHM_H_
+#pragma once
 
 #include <U2Core/MultipleAlignment.h>
 #include <U2Core/U2Region.h>
@@ -162,5 +161,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

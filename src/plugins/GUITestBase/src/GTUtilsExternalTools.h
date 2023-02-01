@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GTUTILS_EXTERNAL_TOOLS_H_
-#define _GTUTILS_EXTERNAL_TOOLS_H_
+#pragma once
 
 #include <core/GUITestOpStatus.h>
 
@@ -36,5 +35,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _GTUTILS_EXTERNAL_TOOLS_H_
