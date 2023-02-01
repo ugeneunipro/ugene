@@ -387,7 +387,7 @@ static QHash<TreeViewOption, QString> createTreeOptionsSettingNameMap() {
 #define INIT_OPTION_NAME(option) map[option] = QString(#option).toLower()
     QHash<TreeViewOption, QString> map;
     INIT_OPTION_NAME(BRANCHES_TRANSFORMATION_TYPE);
-    INIT_OPTION_NAME(TREE_LAYOUT);
+    INIT_OPTION_NAME(TREE_LAYOUT_TYPE);
     INIT_OPTION_NAME(BREADTH_SCALE_ADJUSTMENT_PERCENT);
     INIT_OPTION_NAME(BRANCH_CURVATURE);
     INIT_OPTION_NAME(LABEL_COLOR);
@@ -423,7 +423,7 @@ static QString getTreeOptionSettingName(const TreeViewOption& option) {
 static OptionsMap createDefaultTreeOptionsSettings() {
     OptionsMap settings;
 
-    settings[TREE_LAYOUT] = RECTANGULAR_LAYOUT;
+    settings[TREE_LAYOUT_TYPE] = RECTANGULAR_LAYOUT;
     settings[BRANCHES_TRANSFORMATION_TYPE] = DEFAULT;
     settings[SCALEBAR_RANGE] = 0.05;  // Based on values from COI.aln.
     settings[SCALEBAR_FONT_SIZE] = 10;
@@ -481,26 +481,26 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     updateDistanceToViewScale();
     assignRectangularBranchWidth();
 
-    connect(treeViewer->nameLabelsAction, SIGNAL(triggered(bool)), SLOT(sl_showNameLabelsTriggered(bool)));
-    connect(treeViewer->distanceLabelsAction, SIGNAL(triggered(bool)), SLOT(sl_showDistanceLabelsTriggered(bool)));
-    connect(treeViewer->printAction, SIGNAL(triggered()), SLOT(sl_printTriggered()));
+    connect(treeViewer->nameLabelsAction, &QAction::triggered, this, &TreeViewerUI::sl_showNameLabelsTriggered);
+    connect(treeViewer->distanceLabelsAction, &QAction::triggered, this, &TreeViewerUI::sl_showDistanceLabelsTriggered);
+    connect(treeViewer->printAction, &QAction::triggered, this, &TreeViewerUI::sl_printTriggered);
     connect(treeViewer->copyWholeTreeImageToClipboardAction, &QAction::triggered, this, &TreeViewerUI::copyWholeTreeImageToClipboard);
     connect(treeViewer->saveVisibleViewToFileAction, &QAction::triggered, this, &TreeViewerUI::saveVisibleViewToFile);
     connect(treeViewer->saveWholeTreeToSvgAction, &QAction::triggered, this, &TreeViewerUI::saveWholeTreeToSvg);
-    connect(treeViewer->alignTreeLabelsAction, SIGNAL(triggered(bool)), SLOT(sl_contTriggered(bool)));
-    connect(treeViewer->rectangularLayoutAction, SIGNAL(triggered(bool)), SLOT(sl_rectangularLayoutTriggered()));
-    connect(treeViewer->circularLayoutAction, SIGNAL(triggered(bool)), SLOT(sl_circularLayoutTriggered()));
-    connect(treeViewer->unrootedLayoutAction, SIGNAL(triggered(bool)), SLOT(sl_unrootedLayoutTriggered()));
-    connect(treeViewer->textSettingsAction, SIGNAL(triggered()), SLOT(sl_textSettingsTriggered()));
-    connect(treeViewer->treeSettingsAction, SIGNAL(triggered()), SLOT(sl_treeSettingsTriggered()));
+    connect(treeViewer->alignTreeLabelsAction, &QAction::triggered, this, &TreeViewerUI::sl_contTriggered);
+    connect(treeViewer->rectangularLayoutAction, &QAction::triggered, this, &TreeViewerUI::sl_rectangularLayoutTriggered);
+    connect(treeViewer->circularLayoutAction, &QAction::triggered, this, &TreeViewerUI::sl_circularLayoutTriggered);
+    connect(treeViewer->unrootedLayoutAction, &QAction::triggered, this, &TreeViewerUI::sl_unrootedLayoutTriggered);
+    connect(treeViewer->textSettingsAction, &QAction::triggered, this, &TreeViewerUI::sl_textSettingsTriggered);
+    connect(treeViewer->treeSettingsAction, &QAction::triggered, this, &TreeViewerUI::sl_treeSettingsTriggered);
     connect(treeViewer->zoomInAction, &QAction::triggered, this, &TreeViewerUI::zoomIn);
     connect(treeViewer->zoomOutAction, &QAction::triggered, this, &TreeViewerUI::zoomOut);
     connect(treeViewer->zoom100Action, &QAction::triggered, this, &TreeViewerUI::zoomTo100);
     connect(treeViewer->zoomFitAction, &QAction::triggered, this, &TreeViewerUI::zoomFit);
-    connect(treeViewer->branchesSettingsAction, SIGNAL(triggered()), SLOT(sl_setSettingsTriggered()));
-    connect(treeViewer->collapseAction, SIGNAL(triggered()), SLOT(sl_collapseTriggered()));
-    connect(treeViewer->rerootAction, SIGNAL(triggered()), SLOT(sl_rerootTriggered()));
-    connect(treeViewer->swapAction, SIGNAL(triggered()), SLOT(sl_swapTriggered()));
+    connect(treeViewer->branchesSettingsAction, &QAction::triggered, this, &TreeViewerUI::sl_setSettingsTriggered);
+    connect(treeViewer->collapseAction, &QAction::triggered, this, &TreeViewerUI::sl_collapseTriggered);
+    connect(treeViewer->rerootAction, &QAction::triggered, this, &TreeViewerUI::sl_rerootTriggered);
+    connect(treeViewer->swapAction, &QAction::triggered, this, &TreeViewerUI::sl_swapTriggered);
 
     buttonPopup = new QMenu(this);
 
@@ -548,7 +548,7 @@ void TreeViewerUI::initializeSettings() {
         settings[option] = AppContext::getSettings()->getValue(SETTINGS_PATH + "/" + settingName, defaultSettings[option]);
     }
     // Tree viewer can't be started with a non-rectangular layout today.
-    settings[TREE_LAYOUT] = RECTANGULAR_LAYOUT;
+    settings[TREE_LAYOUT_TYPE] = RECTANGULAR_LAYOUT;
 }
 
 /** Returns true if the option can be applied to the selection only. */
@@ -588,8 +588,8 @@ void TreeViewerUI::saveOptionToSettings(const TreeViewOption& option, const QVar
     emit si_optionChanged(option, value);
 }
 
-void TreeViewerUI::setTreeLayout(const TreeLayout& newLayout) {
-    switch (newLayout) {
+void TreeViewerUI::setTreeLayoutType(const TreeLayoutType& newLayoutType) {
+    switch (newLayoutType) {
         case RECTANGULAR_LAYOUT:
             treeViewer->rectangularLayoutAction->setChecked(true);
             changeTreeLayout(RECTANGULAR_LAYOUT);
@@ -607,8 +607,8 @@ void TreeViewerUI::setTreeLayout(const TreeLayout& newLayout) {
     }
 }
 
-TreeLayout TreeViewerUI::getTreeLayout() const {
-    return static_cast<TreeLayout>(getOption(TREE_LAYOUT).toInt());
+TreeLayoutType TreeViewerUI::getTreeLayoutType() const {
+    return static_cast<TreeLayoutType>(getOption(TREE_LAYOUT_TYPE).toInt());
 }
 
 bool TreeViewerUI::hasPartialSelection() const {
@@ -625,17 +625,17 @@ void TreeViewerUI::updateOptions(const U2::OptionsMap& changedOptions) {
 
 void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& newValue) {
     CHECK(getOption(option) != newValue, );
-    if (option != TREE_LAYOUT) {  // TREE_LAYOUT setting is updated as a part of 'setTreeLayout' call below.
+    if (option != TREE_LAYOUT_TYPE) {  // TREE_LAYOUT setting is updated as a part of 'setTreeLayout' call below.
         saveOptionToSettings(option, newValue);
     }
     switch (option) {
-        case TREE_LAYOUT:
-            setTreeLayout(static_cast<TreeLayout>(newValue.toInt()));
+        case TREE_LAYOUT_TYPE:
+            setTreeLayoutType(static_cast<TreeLayoutType>(newValue.toInt()));
             break;
         case BRANCHES_TRANSFORMATION_TYPE:
             // Recompute rect layout & re-created derived layout by 'changeTreeLayout()' if needed.
             updateRectLayoutBranches();
-            changeTreeLayout(getTreeLayout());
+            changeTreeLayout(getTreeLayoutType());
             break;
         case BREADTH_SCALE_ADJUSTMENT_PERCENT:
         case BRANCH_CURVATURE:
@@ -656,12 +656,13 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
             updateTreeSettingsOnSelectedItems();
             break;
         case SHOW_LEAF_NODE_LABELS:
-            changeNamesDisplay();
+            treeViewer->alignTreeLabelsAction->setEnabled(newValue.toBool());
             treeViewer->nameLabelsAction->setChecked(newValue.toBool());
+            updateScene();
             break;
         case SHOW_BRANCH_DISTANCE_LABELS:
-            showLabels(LabelType_Distance);
             treeViewer->distanceLabelsAction->setChecked(newValue.toBool());
+            updateScene();
             break;
         case SHOW_INNER_NODE_LABELS:
         case SHOW_NODE_SHAPE:
@@ -829,9 +830,8 @@ void TreeViewerUI::updateScene() {
 
     updateRectLayoutBranches();
     updateLegend();
+    updateLabelsVisibility();
 
-    showLabels(LabelType_Distance);
-    showLabels(LabelType_SequenceName);
     bool alignLabels = getOption(ALIGN_LEAF_NODE_LABELS).toBool();
     if (alignLabels) {
         updateLabelsAlignment();
@@ -1271,8 +1271,8 @@ void TreeViewerUI::sl_contTriggered(bool on) {
 void TreeViewerUI::changeLabelsAlignment() {
     updateLabelsAlignment();
 
-    TreeLayout curLayout = getTreeLayout();
-    switch (curLayout) {
+    TreeLayoutType layoutType = getTreeLayoutType();
+    switch (layoutType) {
         case CIRCULAR_LAYOUT:
             changeTreeLayout(CIRCULAR_LAYOUT);
             break;
@@ -1312,10 +1312,10 @@ static void makeLayoutNotCollapsed(TvBranchItem* branch) {
     }
 }
 
-void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
-    switch (newTreeLayout) {
+void TreeViewerUI::changeTreeLayout(const TreeLayoutType& newLayoutType) {
+    switch (newLayoutType) {
         case RECTANGULAR_LAYOUT: {
-            setNewTreeLayout(rectRoot, newTreeLayout);
+            setNewTreeLayout(rectRoot, newLayoutType);
             break;
         }
         case CIRCULAR_LAYOUT: {
@@ -1323,13 +1323,15 @@ void TreeViewerUI::changeTreeLayout(const TreeLayout& newTreeLayout) {
             makeLayoutNotCollapsed(root);  // Clients are subscribed to 'root'. Expand of the layout emits notifications.
             makeLayoutNotCollapsed(rectRoot);  // Root state & child layout states must be synchronized.
             bool degeneratedCase = distanceToViewScale <= TvRectangularBranchItem::DEFAULT_WIDTH;
-            setNewTreeLayout(TvCircularLayoutAlgorithm::convert(rectRoot, degeneratedCase), newTreeLayout);
+            TvBranchItem* circularLayoutRoot = TvCircularLayoutAlgorithm::convert(rectRoot, degeneratedCase);
+            setNewTreeLayout(circularLayoutRoot, newLayoutType);
             break;
         }
         case UNROOTED_LAYOUT: {
             makeLayoutNotCollapsed(root);  // See comments for CIRCULAR_LAYOUT.
             makeLayoutNotCollapsed(rectRoot);
-            setNewTreeLayout(TvUnrootedLayoutAlgorithm::convert(rectRoot), newTreeLayout);
+            TvBranchItem* radialLayoutRoot = TvUnrootedLayoutAlgorithm::convert(rectRoot);
+            setNewTreeLayout(radialLayoutRoot, newLayoutType);
             break;
         }
     }
@@ -1341,7 +1343,7 @@ void TreeViewerUI::rebuildTreeLayout() {
     CHECK_EXT(newRectRoot != nullptr, uiLog.error(tr("Failed to build tree layout.")), );
     CHECK(newRectRoot != nullptr, );
     rectRoot = newRectRoot;
-    switch (getTreeLayout()) {
+    switch (getTreeLayoutType()) {
         case CIRCULAR_LAYOUT:
             changeTreeLayout(CIRCULAR_LAYOUT);
             break;
@@ -1363,59 +1365,53 @@ void TreeViewerUI::sl_onBranchCollapsed(TvBranchItem*) {
     updateActionsState();
 }
 
-void TreeViewerUI::setNewTreeLayout(TvBranchItem* newRoot, const TreeLayout& treeLayout) {
+void TreeViewerUI::setNewTreeLayout(TvBranchItem* newRoot, const TreeLayoutType& layoutType) {
     if (root != nullptr) {
         root->setSelectedRecursively(false);
         scene()->removeItem(root);
         disconnect(root, &TvBranchItem::si_branchCollapsed, this, &TreeViewerUI::sl_onBranchCollapsed);
+        if (root != rectRoot) {
+            delete root;
+            root = nullptr;
+        }
     }
     root = newRoot;
     connect(root, &TvBranchItem::si_branchCollapsed, this, &TreeViewerUI::sl_onBranchCollapsed);
     scene()->addItem(root);
 
-    saveOptionToSettings(TREE_LAYOUT, treeLayout);
-
-    bool showNames = getOption(SHOW_LEAF_NODE_LABELS).toBool();
-    bool showDistances = getOption(SHOW_BRANCH_DISTANCE_LABELS).toBool();
-
-    // TODO: cleanup labels logic.
-    if (!showNames || !showDistances) {
-        LabelTypes lt;
-        if (!showDistances) {
-            lt |= LabelType_Distance;
-        }
-        if (!showNames) {
-            lt |= LabelType_SequenceName;
-        }
-        showLabels(lt);
-    }
+    saveOptionToSettings(TREE_LAYOUT_TYPE, layoutType);
     updateTreeSettingsOnAllNodes();
     updateTreeSettingsOnSelectedItems();
     updateTextOptionOnSelectedItems();
     updateScene();
 }
 
-void TreeViewerUI::showLabels(LabelTypes labelTypes) {
+void TreeViewerUI::updateLabelsVisibility() {
+    bool isDistanceLabelVisible = getOption(SHOW_BRANCH_DISTANCE_LABELS).toBool();
+    bool isSequenceNameLabelVisible = getOption(SHOW_LEAF_NODE_LABELS).toBool();
+
+    QFlags<LabelType> newVisibleLabelTypes;
+    newVisibleLabelTypes.setFlag(LabelType_Distance, isDistanceLabelVisible);
+    newVisibleLabelTypes.setFlag(LabelType_SequenceName, isSequenceNameLabelVisible);
+    CHECK(newVisibleLabelTypes != visibleLabelTypes, );
+
+    visibleLabelTypes = newVisibleLabelTypes;
+
     QStack<TvBranchItem*> stack;
     stack.push(root);
     if (root != rectRoot) {
         stack.push(rectRoot);
     }
-    maxNameWidth = 0.0;
     while (!stack.isEmpty()) {
         TvBranchItem* branchItem = stack.pop();
-        if (labelTypes.testFlag(LabelType_SequenceName)) {
-            if (branchItem->getNameTextItem() != nullptr) {
-                branchItem->setVisible(getOption(SHOW_LEAF_NODE_LABELS).toBool());
-                maxNameWidth = qMax(maxNameWidth, branchItem->getNameTextItem()->sceneBoundingRect().width());
-            }
+        if (auto sequenceNameLabel = branchItem->getNameTextItem()) {
+            sequenceNameLabel->setVisible(isSequenceNameLabelVisible);
         }
-        if (labelTypes.testFlag(LabelType_Distance)) {
-            if (branchItem->getDistanceTextItem() != nullptr) {
-                branchItem->getDistanceTextItem()->setVisible(getOption(SHOW_BRANCH_DISTANCE_LABELS).toBool());
-            }
+        if (auto distanceLabel = branchItem->getDistanceTextItem()) {
+            distanceLabel->setVisible(isDistanceLabelVisible);
         }
-        foreach (QGraphicsItem* item, branchItem->childItems()) {
+        QList<QGraphicsItem*> childItems = branchItem->childItems();
+        for (auto item : qAsConst(childItems)) {
             if (auto childBranchItem = dynamic_cast<TvBranchItem*>(item)) {
                 stack.push(childBranchItem);
             }
@@ -1425,16 +1421,6 @@ void TreeViewerUI::showLabels(LabelTypes labelTypes) {
 
 void TreeViewerUI::sl_showNameLabelsTriggered(bool on) {
     updateOption(SHOW_LEAF_NODE_LABELS, on);
-}
-
-void TreeViewerUI::changeNamesDisplay() {
-    bool showNames = getOption(SHOW_LEAF_NODE_LABELS).toBool();
-    treeViewer->alignTreeLabelsAction->setEnabled(showNames);
-
-    showLabels(LabelType_SequenceName);
-    QRectF rect = sceneRect();
-    rect.setWidth(rect.width() + (showNames ? 1 : -1) * maxNameWidth);
-    scene()->setSceneRect(rect);
 }
 
 void TreeViewerUI::updateTreeSettingsOnAllNodes() {
@@ -1515,7 +1501,7 @@ void TreeViewerUI::zoomTo100() {
 
 void TreeViewerUI::zoomFit() {
     CHECK(treeViewer->zoomFitAction->isChecked(), );
-    QRectF sceneRect = scene()->sceneRect();
+    QRectF sceneRect = scene()->itemsBoundingRect();
     double sceneWidth = sceneRect.width() + 2 * TREE_MARGINS;
     double sceneHeight = sceneRect.height() + 2 * TREE_MARGINS;
     double newZoomLevelX = viewport()->width() / sceneWidth;
@@ -1614,8 +1600,8 @@ void TreeViewerUI::updateActionsState() {
     bool rootIsSelected = root->isSelected();
     treeViewer->collapseAction->setEnabled(thereIsSelection && !rootIsSelected);
 
-    bool treeIsRooted = getTreeLayout() != UNROOTED_LAYOUT;
-    bool treeIsCircular = getTreeLayout() == CIRCULAR_LAYOUT;
+    bool treeIsRooted = getTreeLayoutType() != UNROOTED_LAYOUT;
+    bool treeIsCircular = getTreeLayoutType() == CIRCULAR_LAYOUT;
     treeViewer->swapAction->setEnabled(thereIsSelection &&
                                        treeIsRooted &&
                                        (!treeIsCircular || !isOnlyLeafSelected()) &&
@@ -1624,9 +1610,9 @@ void TreeViewerUI::updateActionsState() {
 }
 
 void TreeViewerUI::updateLayout() {
-    TreeLayout tmpL = getTreeLayout();
-    saveOptionToSettings(TREE_LAYOUT, RECTANGULAR_LAYOUT);
-    switch (tmpL) {
+    TreeLayoutType layoutType = getTreeLayoutType();
+    saveOptionToSettings(TREE_LAYOUT_TYPE, RECTANGULAR_LAYOUT);
+    switch (layoutType) {
         case CIRCULAR_LAYOUT:
             changeTreeLayout(CIRCULAR_LAYOUT);
             break;

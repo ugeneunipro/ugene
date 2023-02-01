@@ -148,8 +148,8 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
             treeViewCombo->setCurrentIndex(value.toInt());
             scalebarGroup->setEnabled(static_cast<TreeType>(value.toInt()) == PHYLOGRAM);
             break;
-        case TREE_LAYOUT: {
-            auto layout = static_cast<TreeLayout>(value.toInt());
+        case TREE_LAYOUT_TYPE: {
+            auto layout = static_cast<TreeLayoutType>(value.toInt());
             layoutCombo->setCurrentIndex(layout);
             breadthScaleAdjustmentSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
             curvatureSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
@@ -232,7 +232,7 @@ void TreeOptionsWidget::initializeOptionsMap() {
     optionsMap[curvatureSlider->objectName()] = BRANCH_CURVATURE;
 
     optionsMap[treeViewCombo->objectName()] = BRANCHES_TRANSFORMATION_TYPE;
-    optionsMap[layoutCombo->objectName()] = TREE_LAYOUT;
+    optionsMap[layoutCombo->objectName()] = TREE_LAYOUT_TYPE;
 }
 
 void TreeOptionsWidget::connectSlots() {

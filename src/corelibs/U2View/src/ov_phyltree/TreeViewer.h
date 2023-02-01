@@ -153,10 +153,10 @@ public:
     /** Returns current settings adjusted by 'selectionSettings'. */
     OptionsMap getSelectionSettings() const;
 
-    TreeLayout getTreeLayout() const;
+    TreeLayoutType getTreeLayoutType() const;
 
     bool isRectangularLayoutMode() const {
-        return getTreeLayout() == RECTANGULAR_LAYOUT;
+        return getTreeLayoutType() == RECTANGULAR_LAYOUT;
     }
 
     bool isOnlyLeafSelected() const;
@@ -190,7 +190,7 @@ protected:
     void mousePressEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
 
-    virtual void setTreeLayout(const TreeLayout& newLayout);
+    virtual void setTreeLayoutType(const TreeLayoutType& newLayoutType);
 
     /** Sets zoom to the given level. Unchecks 'zoomFitAreaAction' if 'cancelFitToViewMode' is true. */
     void setZoomLevel(double newZoomLevel, bool cancelFitToViewMode = true);
@@ -268,16 +268,18 @@ private:
     /** Returns list of fixed size elements: the elements that do not change their on screen dimensions regardless of the current zoom level. */
     QList<QGraphicsItem*> getFixedSizeItems() const;
 
-    void setNewTreeLayout(TvBranchItem* newRoot, const TreeLayout& treeLayout);
+    void setNewTreeLayout(TvBranchItem* newRoot, const TreeLayoutType& layoutType);
 
     enum LabelType {
         LabelType_SequenceName = 1,
         LabelType_Distance = 2
     };
-    typedef QFlags<LabelType> LabelTypes;
 
     void paint(QPainter& painter);
-    void showLabels(LabelTypes labelTypes);
+
+    /** Updates visible 'visible' state for labels based on the current options. */
+    void updateLabelsVisibility();
+
     // Scalebar
     void updateLegend();
 
@@ -301,8 +303,7 @@ private:
     /** Recalculates and assign 'steps to leaf' properties to every branch item in the rect-layout tree. */
     void updateStepsToLeafOnBranches();
 
-    void changeTreeLayout(const TreeLayout& newTreeLayout);
-    void changeNamesDisplay();
+    void changeTreeLayout(const TreeLayoutType& newLayoutType);
 
     /** Updates settings for selected items only. If there is no selection updates setting for all items. */
     void updateTextOptionOnSelectedItems();
@@ -331,8 +332,6 @@ protected:
     QPoint lastMousePressPos;
 
 private:
-    double maxNameWidth = 0;
-
     /**
      * Scale of the view. Changed on zoom-in/zoom-out.
      * ZoomLevel = 1 is equal to the Fit-Into-View mode (when window is resized zoom level does not change, but on-screen size of elements changes.
@@ -355,6 +354,9 @@ private:
 
     /** Settings override for the currently selected items. Contains only option that override 'settings' for the current selection. */
     OptionsMap selectionSettingsDelta;
+
+    /** Current visible labels state on the scene. May be different from the state in options when is stale. */
+    QFlags<LabelType> visibleLabelTypes;
 };
 
 }  // namespace U2

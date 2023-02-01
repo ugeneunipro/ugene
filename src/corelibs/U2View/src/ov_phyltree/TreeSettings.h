@@ -34,7 +34,7 @@ enum TreeType {
     CLADOGRAM
 };
 
-enum TreeLayout {
+enum TreeLayoutType {
     RECTANGULAR_LAYOUT,
     CIRCULAR_LAYOUT,
     UNROOTED_LAYOUT
@@ -43,7 +43,7 @@ enum TreeLayout {
 enum TreeViewOption {
     BRANCHES_TRANSFORMATION_TYPE,
 
-    TREE_LAYOUT,
+    TREE_LAYOUT_TYPE,
 
     /*
      * Affects breadth of the tree:
