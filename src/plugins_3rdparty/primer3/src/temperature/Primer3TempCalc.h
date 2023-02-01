@@ -77,7 +77,7 @@ public:
            unified view of polymer, dumbbell and oligonucleotide DNA
            nearest - neighbor thermodynamics", Proc Natl Acad Sci 95:1460-65
            http://dx.doi.org/10.1073/pnas.95.4.1460]
-       2- Owczarzy, R., Moreira, B.G., You, Y.,
+       2 - [Owczarzy, R., Moreira, B.G., You, Y.,
            Behlke, M.A., and Walder, J.A. (2008) "Predicting stability of DNA
            duplexes in solutions containing magnesium and monovalent cations",
            Biochemistry 47 : 5336 - 53 http ://dx.doi.org/10.1021/bi702363u] */

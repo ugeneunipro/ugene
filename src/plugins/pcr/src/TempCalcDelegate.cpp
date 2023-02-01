@@ -73,6 +73,4 @@ void TempCalcDelegate::sl_commit() {
     emit commitData(editor);
 }
 
-
-
 }
