@@ -202,8 +202,4 @@ double TvRectangularBranchItem::getHeight() const {
     return height;
 }
 
-const PhyBranch* TvRectangularBranchItem::getPhyBranch() const {
-    return phyBranch;
-}
-
 }  // namespace U2

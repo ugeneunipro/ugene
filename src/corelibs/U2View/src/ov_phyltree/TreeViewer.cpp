@@ -399,6 +399,7 @@ static QHash<TreeViewOption, QString> createTreeOptionsSettingNameMap() {
     INIT_OPTION_NAME(BRANCH_COLOR);
     INIT_OPTION_NAME(BRANCH_THICKNESS);
     INIT_OPTION_NAME(SHOW_NODE_SHAPE);
+    INIT_OPTION_NAME(SHOW_TIP_SHAPE);
     INIT_OPTION_NAME(NODE_COLOR);
     INIT_OPTION_NAME(NODE_RADIUS);
     INIT_OPTION_NAME(SHOW_BRANCH_DISTANCE_LABELS);
@@ -443,6 +444,7 @@ static OptionsMap createDefaultTreeOptionsSettings() {
     settings[BREADTH_SCALE_ADJUSTMENT_PERCENT] = 100;
     settings[BRANCH_CURVATURE] = 0;
     settings[SHOW_NODE_SHAPE] = false;
+    settings[SHOW_TIP_SHAPE] = false;
     // TODO: these 2 options are not shown and not used. Make them used again & use correct defaults.
     settings[NODE_RADIUS] = 2;
     settings[NODE_COLOR] = QColor(0, 0, 0);
@@ -509,6 +511,7 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     buttonPopup->addAction(treeViewer->zoomInAction);
     buttonPopup->addAction(treeViewer->zoomOutAction);
     buttonPopup->addAction(treeViewer->zoom100Action);
+    buttonPopup->addAction(treeViewer->zoomFitAction);
     buttonPopup->addSeparator();
 
     buttonPopup->addAction(treeViewer->swapAction);
@@ -666,6 +669,7 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
             break;
         case SHOW_INNER_NODE_LABELS:
         case SHOW_NODE_SHAPE:
+        case SHOW_TIP_SHAPE:
             updateTreeSettingsOnAllNodes();
             break;
         case ALIGN_LEAF_NODE_LABELS:
@@ -755,8 +759,6 @@ void TreeViewerUI::updateTextOptionOnSelectedItems() {
             if (branchItem->correspondingRectangularBranchItem != nullptr) {
                 branchItem->correspondingRectangularBranchItem->updateSettings(selectionSettings);
             }
-        } else if (auto nodeItem = dynamic_cast<TvNodeItem*>(item)) {
-            nodeItem->updateSettings(selectionSettings);
         } else if (auto legendText = dynamic_cast<TvTextItem*>(item)) {
             legendText->setBrush(qvariant_cast<QColor>(selectionSettings[LABEL_COLOR]));
         }
@@ -1596,17 +1598,27 @@ void TreeViewerUI::updateActionsState() {
 
     QList<QGraphicsItem*> updatingItems = scene()->selectedItems();
 
-    bool thereIsSelection = !updatingItems.isEmpty();
-    bool rootIsSelected = root->isSelected();
-    treeViewer->collapseAction->setEnabled(thereIsSelection && !rootIsSelected);
+    bool hasSelection = !updatingItems.isEmpty();
 
-    bool treeIsRooted = getTreeLayoutType() != UNROOTED_LAYOUT;
-    bool treeIsCircular = getTreeLayoutType() == CIRCULAR_LAYOUT;
-    treeViewer->swapAction->setEnabled(thereIsSelection &&
-                                       treeIsRooted &&
-                                       (!treeIsCircular || !isOnlyLeafSelected()) &&
-                                       !root->isSelected());
-    treeViewer->rerootAction->setEnabled(thereIsSelection && !rootIsSelected && treeIsRooted);
+    bool isLeafSelection = false;
+    if (hasSelection) {
+        isLeafSelection = true;
+        for (QGraphicsItem* graphItem : qAsConst(updatingItems)) {
+            if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
+                if (!branchItem->isLeaf()) {
+                    isLeafSelection = false;
+                    break;
+                }
+            }
+        }
+    }
+
+    bool isRootSelected = root->isSelected();
+    treeViewer->collapseAction->setEnabled(hasSelection && !isLeafSelection && !isRootSelected);
+    treeViewer->swapAction->setEnabled(hasSelection && !isLeafSelection && !isRootSelected);
+
+    bool isRootedLayout = getTreeLayoutType() != UNROOTED_LAYOUT;
+    treeViewer->rerootAction->setEnabled(hasSelection && !isLeafSelection && !isRootSelected && isRootedLayout);
 }
 
 void TreeViewerUI::updateLayout() {
@@ -1671,17 +1683,6 @@ void TreeViewerUI::updateLabelsAlignment() {
             curItem->setWidth(curItem->getWidth() - labelsShift);
         }
     }
-}
-
-bool TreeViewerUI::isOnlyLeafSelected() const {
-    int selectedItems = 0;
-    foreach (QGraphicsItem* graphItem, items()) {
-        auto nodeItem = dynamic_cast<TvNodeItem*>(graphItem);
-        if (nodeItem != nullptr && nodeItem->isSelected()) {
-            selectedItems++;
-        }
-    }
-    return selectedItems == 2;
 }
 
 TvBranchItem* TreeViewerUI::getRoot() const {

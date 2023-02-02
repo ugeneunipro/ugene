@@ -178,6 +178,9 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
         case SHOW_NODE_SHAPE:
             showNodeShapeCheck->setChecked(value.toBool());
             break;
+        case SHOW_TIP_SHAPE:
+            showTipShapeCheck->setChecked(value.toBool());
+            break;
         case NODE_COLOR:
         case NODE_RADIUS:
             // Not used.
@@ -226,6 +229,7 @@ void TreeOptionsWidget::initializeOptionsMap() {
     optionsMap[alignLabelsCheck->objectName()] = ALIGN_LEAF_NODE_LABELS;
     optionsMap[showNodeLabelsCheck->objectName()] = SHOW_INNER_NODE_LABELS;
     optionsMap[showNodeShapeCheck->objectName()] = SHOW_NODE_SHAPE;
+    optionsMap[showTipShapeCheck->objectName()] = SHOW_TIP_SHAPE;
 
     optionsMap[lineWeightSpinBox->objectName()] = BRANCH_THICKNESS;
     optionsMap[breadthScaleAdjustmentSlider->objectName()] = BREADTH_SCALE_ADJUSTMENT_PERCENT;
@@ -259,6 +263,7 @@ void TreeOptionsWidget::connectSlots() {
 
     // Nodes.
     connect(showNodeShapeCheck, &QCheckBox::stateChanged, this, &TreeOptionsWidget::sl_valueChanged);
+    connect(showTipShapeCheck, &QCheckBox::stateChanged, this, &TreeOptionsWidget::sl_valueChanged);
 
     // Scalebar settings widgets
     connect(scaleSpinBox, SIGNAL(valueChanged(double)), SLOT(sl_valueChanged()));

@@ -73,6 +73,8 @@ enum TreeViewOption {
      * If false: the shape is visible only for selected nodes or on hover over the node area.
      */
     SHOW_NODE_SHAPE,
+    /** Same as SHOW_NODE_SHAPE but for tips (leafs). */
+    SHOW_TIP_SHAPE,
     NODE_COLOR,
     NODE_RADIUS,
 

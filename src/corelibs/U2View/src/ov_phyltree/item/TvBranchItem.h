@@ -42,7 +42,7 @@ public:
         Left,
         Right
     };
-    TvBranchItem(bool withNode, const Side& side, const QString& nodeName);
+    TvBranchItem(const PhyBranch* branch, const Side& side, const QString& nodeName);
 
     TvNodeItem* getNodeItem() const;
 
@@ -84,7 +84,7 @@ public:
     QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;
 
     /** Spacing between branch line and branch label. */
-    static constexpr int TEXT_SPACING = 8;
+    static constexpr int TEXT_SPACING = 10;
 
     /** Width of the selected branch line. */
     static constexpr int SELECTED_PEN_WIDTH_DELTA = 1;
@@ -101,19 +101,25 @@ public:
     /** Returns top level (root) branch item in the tree. */
     TvBranchItem* getRoot();
 
-    /**Returns true if the branch is a root branch of the tree. */
+    /** Returns true if the branch is a root branch of the tree. */
     bool isRoot() const;
 
     /** Emits si_branchCollapsed signal for the given branch. Can only be called on the root branch. */
     void emitBranchCollapsed(TvBranchItem* branch);
 
+    /** Returns true if the branch is the last visual branch in the tree. */
+    bool isLeaf() const;
+
+    /** Phy-tree related branch. May be null for the root branch item. */
+    const PhyBranch* const phyBranch = nullptr;
+
 signals:
     void si_branchCollapsed(TvBranchItem* branch);
 
 protected:
-    TvBranchItem(const PhyBranch* branch, const QString& name, bool isRoot);
+    TvBranchItem(const PhyBranch* branch, const QString& sequenceName, bool isRoot);
 
-    virtual void setLabelPositions();
+    virtual void updateLabelPositions();
 
     /**
      * Sets up common painter properties based on the current selection/hover state.
@@ -122,9 +128,6 @@ protected:
     virtual void setUpPainter(QPainter* p);
 
     void addDistanceTextItem(double d);
-
-    /** Phy-tree related branch. May be null for the root branch item. */
-    const PhyBranch* phyBranch = nullptr;
 
     TvTextItem* distanceTextItem = nullptr;
     TvTextItem* nameTextItem = nullptr;

@@ -159,8 +159,6 @@ public:
         return getTreeLayoutType() == RECTANGULAR_LAYOUT;
     }
 
-    bool isOnlyLeafSelected() const;
-
     /** Returns current root item of the tree. */
     TvBranchItem* getRoot() const;
 

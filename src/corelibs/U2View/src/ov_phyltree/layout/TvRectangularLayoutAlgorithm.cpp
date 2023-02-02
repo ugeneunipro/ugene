@@ -58,7 +58,7 @@ static TvRectangularBranchItem* getChildItemByPhyBranch(TvRectangularBranchItem*
     QList<QGraphicsItem*> childItems = branchItem->childItems();
     for (QGraphicsItem* ci : qAsConst(childItems)) {
         if (auto gbi = dynamic_cast<TvRectangularBranchItem*>(ci)) {
-            if (gbi->getPhyBranch() == branch) {
+            if (gbi->phyBranch == branch) {
                 return gbi;
             }
         }
@@ -67,7 +67,7 @@ static TvRectangularBranchItem* getChildItemByPhyBranch(TvRectangularBranchItem*
 }
 
 void static recalculateBranches(TvRectangularBranchItem* branch, const PhyNode* rootPhyNode, int& currentRow) {
-    const PhyNode* phyNode = branch->getPhyBranch() != nullptr ? branch->getPhyBranch()->childNode : rootPhyNode;
+    const PhyNode* phyNode = branch->phyBranch != nullptr ? branch->phyBranch->childNode : rootPhyNode;
     CHECK(phyNode != nullptr, );
 
     const QList<PhyBranch*>& childPhyBranches = phyNode->getChildBranches();

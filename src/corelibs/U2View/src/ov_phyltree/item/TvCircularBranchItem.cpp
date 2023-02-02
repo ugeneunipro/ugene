@@ -34,8 +34,8 @@
 
 namespace U2 {
 
-TvCircularBranchItem::TvCircularBranchItem(QGraphicsItem* parent, double h, TvRectangularBranchItem* from, const QString& nodeName)
-    : TvBranchItem(true, from->getSide(), nodeName), height(h) {
+TvCircularBranchItem::TvCircularBranchItem(TvCircularBranchItem* parent, double h, TvRectangularBranchItem* from, const QString& nodeName)
+    : TvBranchItem(from->phyBranch, from->getSide(), nodeName), height(h) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
@@ -49,7 +49,6 @@ TvCircularBranchItem::TvCircularBranchItem(QGraphicsItem* parent, double h, TvRe
     if (from->getNameTextItem() != nullptr) {
         nameTextItem = new TvTextItem(this, from->getNameTextItem()->text());
         nameTextItem->setFont(from->getNameTextItem()->font());
-
         nameTextItem->setBrush(from->getNameTextItem()->brush());
     }
     if (from->getDistanceTextItem() != nullptr) {
@@ -57,7 +56,7 @@ TvCircularBranchItem::TvCircularBranchItem(QGraphicsItem* parent, double h, TvRe
         distanceTextItem->setFont(from->getDistanceTextItem()->font());
         distanceTextItem->setBrush(from->getDistanceTextItem()->brush());
     }
-    setLabelPositions();
+    updateLabelPositions();
     setPen(from->pen());
 }
 
@@ -91,7 +90,7 @@ QPainterPath TvCircularBranchItem::shape() const {
     return path;
 }
 
-void TvCircularBranchItem::setLabelPositions() {
+void TvCircularBranchItem::updateLabelPositions() {
     if (nameTextItem != nullptr) {
         QRectF rect = nameTextItem->boundingRect();
         double h = rect.height();

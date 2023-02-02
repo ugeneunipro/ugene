@@ -39,7 +39,7 @@ class PhyNode;
 
 class U2VIEW_EXPORT TvNodeItem : public QGraphicsEllipseItem {
 public:
-    TvNodeItem(const QString& nodeName = nullptr);
+    TvNodeItem(TvBranchItem* parentItem, const QString& nodeName = nullptr);
 
     /** Returns true if the current node is selected and there is no other selected parent node on top of these node. */
     bool isSelectionRoot() const;
@@ -63,6 +63,12 @@ public:
     TvTextItem* labelItem = nullptr;
     const QString nodeName;
 
+    /**
+     * TODO: create a default tree viewer settings provider used both by TreeOptionsWidget and items.
+     *  Or pass initial settings into the every item constructor.
+     */
+    bool isShapeVisible = false;
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* e) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) override;
@@ -73,12 +79,6 @@ protected:
     TreeViewerUI* getTreeViewerUI() const;
 
     bool isHovered = false;
-
-    /**
-     * TODO: create a default tree viewer settings provider used both by TreeOptionsWidget and items.
-     *  Or pass initial settings into the every item constructor.
-     */
-    bool isNodeShapeVisible = false;
 };
 
 }  // namespace U2

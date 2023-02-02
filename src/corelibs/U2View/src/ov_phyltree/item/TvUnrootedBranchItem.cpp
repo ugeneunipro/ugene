@@ -33,8 +33,8 @@
 
 namespace U2 {
 
-TvUnrootedBranchItem::TvUnrootedBranchItem(QGraphicsItem* parent, double angle, TvRectangularBranchItem* from, const QString& nodeName)
-    : TvBranchItem(true, from->getSide(), nodeName) {
+TvUnrootedBranchItem::TvUnrootedBranchItem(TvUnrootedBranchItem* parent, double angle, TvRectangularBranchItem* from, const QString& nodeName)
+    : TvBranchItem(from->phyBranch, from->getSide(), nodeName) {
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
@@ -56,11 +56,11 @@ TvUnrootedBranchItem::TvUnrootedBranchItem(QGraphicsItem* parent, double angle, 
         distanceTextItem->setFont(from->getDistanceTextItem()->font());
         distanceTextItem->setBrush(from->getDistanceTextItem()->brush());
     }
-    setLabelPositions();
+    updateLabelPositions();
     setPen(from->pen());
 }
 
-void TvUnrootedBranchItem::setLabelPositions() {
+void TvUnrootedBranchItem::updateLabelPositions() {
     if (nameTextItem != nullptr) {
         QRectF rect = nameTextItem->boundingRect();
         double h = rect.height();

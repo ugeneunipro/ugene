@@ -35,7 +35,7 @@ static TvUnrootedBranchItem* convertBranch(TvRectangularBranchItem* originalBran
                                            double coef) {
     double angle = coef * originalBranchItem->getHeight();
     auto convertedBranch = new TvUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeNameFromNodeItem());
-    const QList<QGraphicsItem*>& originalChildBranchItems = originalBranchItem->childItems();
+    QList<QGraphicsItem*> originalChildBranchItems = originalBranchItem->childItems();
     for (QGraphicsItem* originalChildItem : qAsConst(originalChildBranchItems)) {
         if (auto originalChildBranchItem = dynamic_cast<TvRectangularBranchItem*>(originalChildItem)) {
             convertBranch(originalChildBranchItem, convertedBranch, coef);
