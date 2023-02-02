@@ -4046,5 +4046,81 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7800) {
+    // Check that show/hide node shape option works.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelPhyTree::openTab(os);
+
+    GTCheckBox::checkState(os, "showNodeShapeCheck", false);
+    GTCheckBox::checkState(os, "showTipShapeCheck", false);
+
+    // ========================== rectangular layout ===================
+    QImage originalRectangularImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeRectangularLayout != originalRectangularImage, "imageWithNodesShapeRectangularLayout != originalRectangularImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeRectangularLayout == originalRectangularImage, "imageWithNoNodesShapeRectangularLayout == originalRectangularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeRectangularLayout != originalRectangularImage, "imageWithTipShapeRectangularLayout != originalRectangularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeRectangularLayout == originalRectangularImage, "imageWithNoTipShapeRectangularLayout == originalImage failed");
+
+    // ========================== circular layout ===================
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Circular"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
+
+    QImage originalCircularImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeCircularLayout != originalCircularImage, "imageWithNodesShapeCircularLayout != originalCircularImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeCircularLayout == originalCircularImage, "imageWithNoNodesShapeCircularLayout == originalCircularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeCircularLayout != originalCircularImage, "imageWithTipShapeCircularLayout != originalCircularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeCircularLayout == originalCircularImage, "imageWithNoTipShapeRectangularLayout == originalCircularImage failed");
+
+    // ========================== unrooted layout ===================
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Unrooted"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
+
+    QImage originalUnrootedImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeUnrootedLayout != originalUnrootedImage, "imageWithNodesShapeUnrootedLayout != originalUnrootedImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeUnrootedLayout == originalUnrootedImage, "imageWithNoNodesShapeUnrootedLayout == originalUnrootedImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeUnrootedCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage, "imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeUnrootedLayout == originalUnrootedImage, "imageWithNoTipShapeUnrootedLayout == originalUnrootedImage failed");
+
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
