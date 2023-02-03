@@ -46,7 +46,7 @@ public:
 
     void toggleCollapsedState();
 
-    bool isCollapsed();
+    bool isCollapsed() const;
 
     PhyNode* getPhyNode() const;
 

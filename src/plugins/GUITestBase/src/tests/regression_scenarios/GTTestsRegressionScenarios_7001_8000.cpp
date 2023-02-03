@@ -2920,7 +2920,7 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7617) {
-    //1. Build dotplot for human_T1.fa
+    // 1. Build dotplot for human_T1.fa
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/FASTA/human_T1.fa", "", false, true));
 
@@ -2928,9 +2928,9 @@ GUI_TEST_CLASS_DEFINITION(test_7617) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_7617", GTFileDialogUtils::Save));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
-    //2. Click "Remove sequence" (gray cross) on sequence widget toolbar
-    //3. Answer "Yes" in "Save dot-plot" dialog and choose valid path
-    //Expected state: no crash, no errors in the log
+    // 2. Click "Remove sequence" (gray cross) on sequence widget toolbar
+    // 3. Answer "Yes" in "Save dot-plot" dialog and choose valid path
+    // Expected state: no crash, no errors in the log
     GTLogTracer lt;
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
@@ -4011,10 +4011,10 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7753) {
-    //1. Open "data/samples/Assembly/chrM.sorted.bam".
-    //2. Delete bam file
-    //3. Press 'imort' button in dialog
-    //Expected state: you got message box with error and error in log
+    // 1. Open "data/samples/Assembly/chrM.sorted.bam".
+    // 2. Delete bam file
+    // 3. Press 'imort' button in dialog
+    // Expected state: you got message box with error and error in log
     class DeleteFileBeforeImport : public CustomScenario {
         void run(GUITestOpStatus& os) override {
             QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
@@ -4046,7 +4046,7 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7800) {
+GUI_TEST_CLASS_DEFINITION(test_7789) {
     // Check that show/hide node shape option works.
 
     GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
@@ -4071,6 +4071,7 @@ GUI_TEST_CLASS_DEFINITION(test_7800) {
     GTCheckBox::setChecked(os, "showTipShapeCheck", true);
     QImage imageWithTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageWithTipShapeRectangularLayout != originalRectangularImage, "imageWithTipShapeRectangularLayout != originalRectangularImage failed");
+    CHECK_SET_ERR(imageWithTipShapeRectangularLayout != imageWithNodesShapeRectangularLayout, "imageWithTipShapeRectangularLayout != imageWithNodesShapeRectangularLayout failed");
 
     GTCheckBox::setChecked(os, "showTipShapeCheck", false);
     QImage imageWithNoTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
@@ -4093,6 +4094,7 @@ GUI_TEST_CLASS_DEFINITION(test_7800) {
     GTCheckBox::setChecked(os, "showTipShapeCheck", true);
     QImage imageWithTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageWithTipShapeCircularLayout != originalCircularImage, "imageWithTipShapeCircularLayout != originalCircularImage failed");
+    CHECK_SET_ERR(imageWithTipShapeCircularLayout != imageWithNodesShapeCircularLayout, "imageWithTipShapeCircularLayout != imageWithNodesShapeCircularLayout failed");
 
     GTCheckBox::setChecked(os, "showTipShapeCheck", false);
     QImage imageWithNoTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
@@ -4115,11 +4117,11 @@ GUI_TEST_CLASS_DEFINITION(test_7800) {
     GTCheckBox::setChecked(os, "showTipShapeCheck", true);
     QImage imageWithTipShapeUnrootedCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage, "imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage failed");
+    CHECK_SET_ERR(imageWithTipShapeUnrootedCircularLayout != imageWithNodesShapeUnrootedLayout, "imageWithTipShapeUnrootedCircularLayout != imageWithNodesShapeUnrootedLayout failed");
 
     GTCheckBox::setChecked(os, "showTipShapeCheck", false);
     QImage imageWithNoTipShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageWithNoTipShapeUnrootedLayout == originalUnrootedImage, "imageWithNoTipShapeUnrootedLayout == originalUnrootedImage failed");
-
 }
 
 }  // namespace GUITest_regression_scenarios

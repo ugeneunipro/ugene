@@ -2142,7 +2142,7 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     QList<TvNodeItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
-    CHECK_SET_ERR(selectedNodes.size() == 5, QString("1. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
+    CHECK_SET_ERR(selectedNodes.size() == 12, QString("1. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reroot tree"}));
     GTUtilsPhyTree::clickNode(os, childNode, Qt::RightButton);
@@ -2157,7 +2157,7 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
-    CHECK_SET_ERR(selectedNodes.size() == 3, QString("2. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
+    CHECK_SET_ERR(selectedNodes.size() == 7, QString("2. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
     CHECK_SET_ERR(!rootNode->isSelected(), "Root not must not be selected");
     CHECK_SET_ERR(childNode->isSelected(), "Child node must be selected");
 }

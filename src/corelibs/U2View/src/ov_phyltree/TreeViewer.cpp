@@ -1341,10 +1341,16 @@ void TreeViewerUI::changeTreeLayout(const TreeLayoutType& newLayoutType) {
 
 void TreeViewerUI::rebuildTreeLayout() {
     auto newRectRoot = TvRectangularLayoutAlgorithm::buildTreeLayout(phyObject->getTree()->getRootNode());
-    updateTreeSettingsOnAllNodes();
     CHECK_EXT(newRectRoot != nullptr, uiLog.error(tr("Failed to build tree layout.")), );
-    CHECK(newRectRoot != nullptr, );
+
+    scene()->removeItem(root);
+    scene()->removeItem(rectRoot);
+    delete rectRoot;
     rectRoot = newRectRoot;
+    root = rectRoot;
+    scene()->addItem(rectRoot);
+
+    updateTreeSettingsOnAllNodes();
     switch (getTreeLayoutType()) {
         case CIRCULAR_LAYOUT:
             changeTreeLayout(CIRCULAR_LAYOUT);

@@ -52,9 +52,9 @@ TvBranchItem::TvBranchItem(const PhyBranch* _phyBranch, const TvBranchItem::Side
     setPen(pen1);
 }
 
-TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& sequenceName, bool isRoot)
-    : phyBranch(branch) {
-    distance = branch == nullptr ? 0.0 : branch->distance;
+TvBranchItem::TvBranchItem(const PhyBranch* _phyBranch, const QString& sequenceName, bool isRoot)
+    : phyBranch(_phyBranch) {
+    distance = phyBranch == nullptr ? 0.0 : phyBranch->distance;
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
@@ -67,8 +67,8 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& sequenceName,
     pen.setCosmetic(true);
     setPen(pen);
 
-    if (branch != nullptr || isRoot) {
-        QString nodeName = branch == nullptr ? "" : branch->childNode->name;
+    if (phyBranch != nullptr || isRoot) {
+        QString nodeName = phyBranch == nullptr ? "" : phyBranch->childNode->name;
         nodeItem = new TvNodeItem(this, nodeName);
     }
 

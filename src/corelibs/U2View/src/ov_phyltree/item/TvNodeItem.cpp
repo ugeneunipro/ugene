@@ -105,15 +105,14 @@ bool TvNodeItem::isSelectionRoot() const {
     return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }
 
-bool TvNodeItem::isCollapsed() {
-    auto parent = dynamic_cast<TvBranchItem*>(parentItem());
+bool TvNodeItem::isCollapsed() const {
+    TvBranchItem* parent = getParentBranchItem();
     return parent != nullptr && parent->isCollapsed();
 }
 
 PhyNode* TvNodeItem::getPhyNode() const {
-    auto parentBranchItem = dynamic_cast<TvBranchItem*>(parentItem());
-    CHECK(parentBranchItem != nullptr, nullptr);
-    return parentBranchItem->phyBranch == nullptr ? nullptr : parentBranchItem->phyBranch->childNode;
+    TvBranchItem* parentBranchItem = getParentBranchItem();
+    return parentBranchItem->phyBranch ? parentBranchItem->phyBranch->childNode : nullptr;
 }
 
 void TvNodeItem::updateSettings(const OptionsMap& settings) {
