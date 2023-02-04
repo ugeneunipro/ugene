@@ -272,8 +272,8 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
     if (alphabet->isNucleic()) {
         statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
         bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != BaseTempCalc::INVALID_TM;
-        QString meltingTmText = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", isValidMeltingTm);
-        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, meltingTmText, availableSpace, isValidMeltingTm);
+        QString meltingTmFormattedValue = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", isValidMeltingTm);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, meltingTmFormattedValue, availableSpace, isValidMeltingTm);
 
         const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
         statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(ssCaption) + "</b></td></tr>";
@@ -703,9 +703,11 @@ QString SequenceInfo::formTableRow(const QString& caption, const QString& value,
     QFontMetrics metrics = statisticLabel->fontMetrics();
     QString settingsLink;
     if (addHyperlink) {
-        settingsLink = QString(R"(&nbsp;&nbsp;<a href="%1" style="color: black;">...</a>)").arg(caption);
+        settingsLink = QString(R"(&nbsp;&nbsp;<a href="%1"><img src=":core/images/gear.svg" width=16 height=16;"></a>)")
+                           .arg(caption);
     }
-    result = "<tr><td>" + tr("%1").arg(caption) + ": </td><td>" + metrics.elidedText(value, Qt::ElideRight, availableSpace) + settingsLink + "</td></tr>";
+    result = "<tr><td>" + tr("%1").arg(caption) + ": </td><td" + (addHyperlink ? " style=\"vertical-align:top;\">" : ">") +
+             metrics.elidedText(value, Qt::ElideRight, availableSpace) + settingsLink + "</td></tr>";
     return result;
 }
 
