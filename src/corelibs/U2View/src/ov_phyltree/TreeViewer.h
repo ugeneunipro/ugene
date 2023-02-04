@@ -135,6 +135,14 @@ protected:
     TreeViewerUI* ui = nullptr;
 };
 
+/** Serialized tree state. Used to restore states like collapse/selection on tree re-layouts. */
+class U2VIEW_EXPORT TvTreeState {
+public:
+    bool isRootSelected = false;
+    const PhyBranch* selectionRootBranch = nullptr;
+    QSet<const PhyBranch*> collapsedBranches;
+};
+
 class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
     Q_OBJECT
     Q_DISABLE_COPY(TreeViewerUI)
@@ -293,6 +301,12 @@ private:
     /** Recomputes branch geometry: width, height, curvature. */
     void updateBranchGeometry(TvRectangularBranchItem* rootBranch) const;
 
+    /** Saves current scene state into 'treeState'. */
+    void saveSelectionAndCollapseStates();
+
+    /** Restores scene state from the current 'treeState'. */
+    void restoreSelectionAndCollapseStates();
+
 public:
     PhyTreeObject* const phyObject = nullptr;
     TreeViewer* const treeViewer = nullptr;
@@ -328,6 +342,8 @@ private:
 
     /** Current visible labels state on the scene. May be different from the state in options when is stale. */
     QFlags<LabelType> visibleLabelTypes;
-};
 
+    /** Snapshot of the collapsed/selected properties. Used to restore state on layout change. */
+    TvTreeState treeState;
+};
 }  // namespace U2

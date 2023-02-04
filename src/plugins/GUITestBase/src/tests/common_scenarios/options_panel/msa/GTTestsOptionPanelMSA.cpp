@@ -1533,7 +1533,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: layout changed, height slider is disabled
+    //    Expected state: layout changed, breadth slider is disabled.
     QImage circularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(rectImage != circularImage, "tree view not changed to circular");
     CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for circular layout");
@@ -1542,7 +1542,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: layout changed, height slider is disabled
+    //    Expected state: layout changed, breadth slider is disabled.
     QImage unrootedImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(rectImage != unrootedImage, "tree view not changed to unrooted");
     CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for unrooted layout");
@@ -1551,10 +1551,8 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: tree is similar to the beginning, height slider is enabled
+    // Expected state: tree is similar to the beginning, breadth slider is enabled.
     QImage rectImage2 = GTWidget::getImage(os, treeView);
-    rectImage.save("/home/yalgaer/work/local/before.png");
-    rectImage2.save("/home/yalgaer/work/local/after.png");
     CHECK_SET_ERR(rectImage == rectImage2, "final image is not equal to initial");
     CHECK_SET_ERR(breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in disabled for rectangular layout");
 }

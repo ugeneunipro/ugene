@@ -1076,6 +1076,40 @@ void TreeViewerUI::paint(QPainter& painter) {
     scene()->render(&painter);
 }
 
+void TreeViewerUI::saveSelectionAndCollapseStates() {
+    treeState = {};
+    CHECK(root != nullptr, );
+    QList<TvBranchItem*> branches;
+    collectChildBranches(root, branches);
+    treeState.isRootSelected = root->isSelected();
+    for (auto branch : qAsConst(branches)) {
+        if (treeState.selectionRootBranch == nullptr && branch->isSelected()) {
+            treeState.selectionRootBranch = branch->phyBranch;
+        }
+        if (branch->isCollapsed()) {
+            treeState.collapsedBranches << branch->phyBranch;
+        }
+    }
+}
+
+void TreeViewerUI::restoreSelectionAndCollapseStates() {
+    QList<TvBranchItem*> branches;
+    branches << root;
+    collectChildBranches(root, branches);
+    if (treeState.isRootSelected) {
+        root->setSelectedRecursively(true);
+    }
+    std::reverse(branches.begin(), branches.end());  // Collapse children first.
+    for (auto branch : qAsConst(branches)) {
+        if (branch != root && branch->phyBranch == treeState.selectionRootBranch) {
+            branch->setSelectedRecursively(true);
+        }
+        if (treeState.collapsedBranches.contains(branch->phyBranch)) {
+            branch->toggleCollapsedState();
+        }
+    }
+}
+
 void TreeViewerUI::sl_swapTriggered() {
     QList<QGraphicsItem*> graphItems = items();
     for (auto graphItem : qAsConst(graphItems)) {
@@ -1306,6 +1340,7 @@ void TreeViewerUI::updateBranchGeometry(TvRectangularBranchItem* rootBranch) con
 }
 
 void TreeViewerUI::switchTreeLayout(const TreeLayoutType& newLayoutType) {
+    saveSelectionAndCollapseStates();
     PhyNode* phyRoot = phyObject->getTree()->getRootNode();
     TvRectangularBranchItem* newRectRoot = TvRectangularLayoutAlgorithm::buildTvTreeHierarchy(phyRoot);
     TvRectangularLayoutAlgorithm::recalculateTreeLayout(newRectRoot, phyRoot);
@@ -1320,6 +1355,7 @@ void TreeViewerUI::switchTreeLayout(const TreeLayoutType& newLayoutType) {
                                        ? TvUnrootedLayoutAlgorithm::convert(newRectRoot)
                                        : newRectRoot);
     applyNewTreeLayout(newRoot, newRectRoot, newLayoutType);
+    restoreSelectionAndCollapseStates();
 }
 
 void TreeViewerUI::sl_onBranchCollapsed(TvBranchItem*) {
@@ -1361,6 +1397,18 @@ void TreeViewerUI::applyNewTreeLayout(TvBranchItem* newRoot, TvRectangularBranch
     updateTreeSettingsOnSelectedItems();
     updateTextOptionOnSelectedItems();
     updateScene();
+
+    if (!treeViewer->zoomFitAction->isChecked()) {
+        QScrollBar* hBar = horizontalScrollBar();
+        QScrollBar* vBar = verticalScrollBar();
+        if (layoutType == RECTANGULAR_LAYOUT) {  // Show top-right corner: start of the name list.
+            hBar->setValue(hBar->maximum());
+            vBar->setValue(vBar->minimum());
+        } else {  // Center view.
+            hBar->setValue((hBar->minimum() + hBar->maximum()) / 2);
+            vBar->setValue((vBar->minimum() + vBar->maximum()) / 2);
+        }
+    }
 }
 
 void TreeViewerUI::updateLabelsVisibility() {

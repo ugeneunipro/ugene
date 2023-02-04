@@ -764,28 +764,13 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //   Expected state: phylogenetic tree appears
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QList<QGraphicsItem*> list = treeView->scene()->items();
 
-    QList<QGraphicsSimpleTextItem*> branchList;
-    foreach (QGraphicsItem* item, list) {
-        auto textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
-        if (textItem && !textItem->text().contains("0.011")) {
-            branchList.append(textItem);
-        }
-    }
     // 2. Make sure the tree doesn't look like a vertical line. It should have some width
-    QList<QGraphicsItem*> lineList;
+    double w = 0;
+    QList<QGraphicsItem*> list = treeView->scene()->items();
     foreach (QGraphicsItem* item, list) {
-        auto textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
-        if (!textItem) {
-            lineList.append(item);
-        }
-    }
-
-    qreal w = 0;
-    foreach (QGraphicsItem* item, lineList) {
-        if (w < item->boundingRect().width()) {
-            w = item->boundingRect().width();
+        if (!qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item)) {
+            w = qMax(w, item->boundingRect().width());
         }
     }
 
@@ -797,19 +782,17 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
 
     GTMouseDriver::moveTo(globalCoord);
-    GTMouseDriver::click();
-    // TODO: Wait until is hovered.
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
 
     qreal finalW = 0;
-    foreach (QGraphicsItem* item, lineList) {
-        if (finalW < item->boundingRect().width()) {
-            finalW = item->boundingRect().width();
+    list = treeView->scene()->items();
+    foreach (QGraphicsItem* item, list) {
+        if (!qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item)) {
+            finalW = qMax(finalW, item->boundingRect().width());
         }
     }
-    CHECK_SET_ERR(w == finalW, "tree weights seems to be changed");
+    CHECK_SET_ERR(w == finalW, "tree weights seems to be changed: before: " + QString::number(w) + ", after: " + QString::number(finalW));
     //   Expected state: again, tree should have some width
 }
 
@@ -1000,26 +983,24 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Select the parent node of "Bicolorana_bicolor_EF540830" and "Roeseliana_roeseli".
-    TvNodeItem* node1Before = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
-    GTUtilsPhyTree::clickNode(os, node1Before);
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
+    GTUtilsPhyTree::clickNode(os, node);
     QList<TvNodeItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);  // 1 node & 2 tips.
-    CHECK_SET_ERR(selectedNodes.length() == 3 && selectedNodes.contains(node1Before), "A clicked node wasn't selected");
+    CHECK_SET_ERR(selectedNodes.length() == 3 && selectedNodes.contains(node), "A clicked node wasn't selected");
 
-    // Other node: must not change during swap-siblings action.
-    TvNodeItem* node2Before = GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
+    // Other node: must not change during swap-siblings action. If it changes it won't be found.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
 
     // Do the context menu command "Swap siblings".
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: left & right branches swapped.
-    TvNodeItem* node1After = GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
-    CHECK_SET_ERR(node1Before == node1After, "Swap action failed.");
+    // Expected state: left & right branches swapped. If not found -> there was no swap.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
 
-    // This node must not change.
-    TvNodeItem* node2After = GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
-    CHECK_SET_ERR(node2Before == node2After, "Swap action failed.");
+    // This node must not change. If it changes it won't be found.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
@@ -1036,19 +1017,18 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Select the parent node of "Bicolorana_bicolor_EF540830" and "Roeseliana_roeseli".
-    TvNodeItem* node1Before = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
-    GTUtilsPhyTree::clickNode(os, node1Before);
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
+    GTUtilsPhyTree::clickNode(os, node);
     QList<TvNodeItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
-    CHECK_SET_ERR(selectedNodes.length() == 3 && selectedNodes.contains(node1Before), "A clicked node wasn't selected");
+    CHECK_SET_ERR(selectedNodes.length() == 3 && selectedNodes.contains(node), "A clicked node wasn't selected");
 
     // Do the context menu command "Swap siblings".
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: left & right branches swapped.
-    TvNodeItem* node1After = GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
-    CHECK_SET_ERR(node1Before == node1After, "Swap action failed.");
+    // Expected state: left & right branches swapped. If not found -> there was no swap.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {

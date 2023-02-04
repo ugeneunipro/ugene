@@ -3451,43 +3451,41 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     };
 
     // Rectangular.
-    QStringList allRows = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    QStringList allInRect = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after opening");
 
     QList<TvNodeItem*> treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* rectNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, rectNodeToCollapse);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Rectangular");
-    QStringList rowsInRectCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInRectCollapse.sort();
-    CHECK_SET_ERR(rowsInRectCollapse.length() == allRows.length() - 2,
-                  "Invalid count of nodes after collapse in Rectangular: " + QString::number(rowsInRectCollapse.size()));
+    QStringList collapsedInRect = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInRect.length() == allInRect.length() - 2,
+                  "Invalid count of nodes after collapse in Rectangular: " + QString::number(collapsedInRect.size()));
 
     // Circular.
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Circular");
-    QStringList rowsInSyncModeCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    CHECK_SET_ERR(rowsInSyncModeCircular == allRows, "Nodes in Circular layout do not match");
+    QStringList collapsedInCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInCircular == collapsedInRect,
+                  QString("Nodes in Circular layout do not match: rect: '%1', circular: '%2'").arg(collapsedInRect.join(",")).arg(collapsedInCircular.join(",")));
     treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* circularNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, circularNodeToCollapse);
-    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Circular");
-    QStringList rowsInCircularCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInCircularCollapse.sort();
-    CHECK_SET_ERR(rowsInCircularCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Circular");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse op in Circular");
+    QStringList allInCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(allInCircular == allInRect, "Invalid nodes after collapse in Circular");
 
     // Unrooted.
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Unrooted");
-    QStringList rowsInSyncModeUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    CHECK_SET_ERR(rowsInSyncModeUnrooted == allRows, "Nodes in Unrooted layout do not match");
+    QStringList allInUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(allInUnrooted == allInRect, "Nodes in Unrooted layout do not match");
     treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* unrootedNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, unrootedNodeToCollapse);
-    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Unrooted");
-    QStringList rowsInUnrootedCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInUnrootedCollapse.sort();
-    CHECK_SET_ERR(rowsInUnrootedCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Unrooted");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse op in Unrooted");
+    QStringList collapsedInUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInUnrooted == collapsedInRect, "Invalid nodes after collapse in Unrooted");
 
     // Rectangular (back).
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
@@ -3496,7 +3494,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 
 GUI_TEST_CLASS_DEFINITION(test_7671) {
     // I made a small file which has the same error as file from the issue,
-    // because the file from the issue was almoust 100 Mb size
+    // because the file from the issue was almost 100 Mb size
 
     // Open _common_data/scenarios/_regression/7671/NC_051342_region.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7671/NC_051342_region.gb");
