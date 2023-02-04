@@ -1553,6 +1553,8 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     // Expected state: tree is similar to the beginning, height slider is enabled
     QImage rectImage2 = GTWidget::getImage(os, treeView);
+    rectImage.save("/home/yalgaer/work/local/before.png");
+    rectImage2.save("/home/yalgaer/work/local/after.png");
     CHECK_SET_ERR(rectImage == rectImage2, "final image is not equal to initial");
     CHECK_SET_ERR(breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in disabled for rectangular layout");
 }

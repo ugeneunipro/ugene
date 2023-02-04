@@ -23,8 +23,8 @@
 
 #include <QDialog>
 #include <QLabel>
-#include <QScopedPointer>
 #include <QVBoxLayout>
+#include <QScopedPointer>
 
 #include <U2Algorithm/BaseTempCalc.h>
 #include <U2Algorithm/TempCalcRegistry.h>
@@ -79,7 +79,7 @@ const QString SequenceInfo::AMINO_ACID_OCCUR_GROUP_ID = "amino_acid_occur_group"
 const QString SequenceInfo::STAT_GROUP_ID = "stat_group";
 
 SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
-    : annotatedDnaView(_annotatedDnaView),
+    : annotatedDnaView(_annotatedDnaView), 
       annotatedDnaViewName(annotatedDnaView->getName()),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
       temperatureCalculator(AppContext::getTempCalcRegistry()->createDefaultTempCalculator(annotatedDnaViewName)) {
@@ -271,9 +271,10 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
 
     if (alphabet->isNucleic()) {
         statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
-        bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != BaseTempCalc::INVALID_TM;
-        QString meltingTmText = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", isValidMeltingTm);
-        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, meltingTmText, availableSpace, isValidMeltingTm);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, 
+                                  getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", 
+                                           isValid && commonStatistics.meltingTemp != BaseTempCalc::INVALID_TM),
+                                  availableSpace, true);
 
         const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
         statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(ssCaption) + "</b></td></tr>";
@@ -701,11 +702,13 @@ QString SequenceInfo::formTableRow(const QString& caption, const QString& value,
     QString result;
 
     QFontMetrics metrics = statisticLabel->fontMetrics();
-    QString settingsLink;
+    QString hlBefore;
+    QString hlAfter;
     if (addHyperlink) {
-        settingsLink = QString(R"(&nbsp;&nbsp;<a href="%1" style="color: black;">...</a>)").arg(caption);
+        hlBefore = QString("<a href=\"%1\">").arg(caption);
+        hlAfter = "</a>";
     }
-    result = "<tr><td>" + tr("%1").arg(caption) + ": </td><td>" + metrics.elidedText(value, Qt::ElideRight, availableSpace) + settingsLink + "</td></tr>";
+    result = "<tr><td>" + hlBefore + tr("%1").arg(caption) + hlAfter + ": </td><td>" + metrics.elidedText(value, Qt::ElideRight, availableSpace) + "</td></tr>";
     return result;
 }
 
