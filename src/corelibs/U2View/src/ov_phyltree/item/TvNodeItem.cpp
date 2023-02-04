@@ -25,6 +25,7 @@
 #include <QList>
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
+#include <QTimer>
 
 #include <U2Core/PhyTree.h>
 #include <U2Core/U2SafePoints.h>
@@ -71,7 +72,7 @@ void TvNodeItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void TvNodeItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
-    toggleCollapsedState();
+    QTimer::singleShot(0, [this]() { toggleCollapsedState(); });
     QAbstractGraphicsShapeItem::mouseDoubleClickEvent(e);
 }
 
@@ -85,13 +86,8 @@ void TvNodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
-void TvNodeItem::toggleCollapsedState() {
-    CHECK(!getParentBranchItem()->isLeaf(), );
-    auto branch = dynamic_cast<TvBranchItem*>(parentItem());
-    SAFE_POINT(branch != nullptr, "Collapsing is impossible because node item has not parent branch", );
-    if (dynamic_cast<TvBranchItem*>(branch->parentItem()) != nullptr) {
-        branch->toggleCollapsedState();
-    }
+void TvNodeItem::toggleCollapsedState() const {
+    getParentBranchItem()->toggleCollapsedState();
 }
 
 bool TvNodeItem::isSelectionRoot() const {

@@ -141,10 +141,11 @@ void TvBranchItem::toggleCollapsedState() {
         rectItem->setPen(pen1);
     } else {
         for (auto& item : qAsConst(items)) {
-            if (auto rectItem = dynamic_cast<QGraphicsRectItem*>(item)) {
-                rectItem->setParentItem(nullptr);
-                scene()->removeItem(rectItem);
-            } else if (item != getDistanceTextItem() && item != getNameTextItem()) {
+            if (dynamic_cast<QGraphicsRectItem*>(item)) {
+                delete item;
+                continue;
+            }
+            if (item != getDistanceTextItem() && item != getNameTextItem()) {
                 item->show();
             }
         }

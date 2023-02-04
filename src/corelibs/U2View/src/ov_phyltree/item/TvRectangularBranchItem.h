@@ -53,10 +53,6 @@ public:
 
     void setSide(const Side& side);
 
-    void toggleCollapsedState() override;
-
-    void drawCollapsedRegion();
-
     void setCurvature(double newCurvature);
 
 private:

@@ -30,23 +30,23 @@
 
 namespace U2 {
 
-static TvUnrootedBranchItem* convertBranch(TvRectangularBranchItem* originalBranchItem,
-                                           TvUnrootedBranchItem* convertedParentBranchItem,
-                                           double coef) {
-    double angle = coef * originalBranchItem->getHeight();
-    auto convertedBranch = new TvUnrootedBranchItem(convertedParentBranchItem, angle, originalBranchItem, originalBranchItem->getNodeNameFromNodeItem());
-    QList<QGraphicsItem*> originalChildBranchItems = originalBranchItem->childItems();
-    for (QGraphicsItem* originalChildItem : qAsConst(originalChildBranchItems)) {
-        if (auto originalChildBranchItem = dynamic_cast<TvRectangularBranchItem*>(originalChildItem)) {
-            convertBranch(originalChildBranchItem, convertedBranch, coef);
+static TvUnrootedBranchItem* convertBranch(TvRectangularBranchItem* rectBranch,
+                                           TvUnrootedBranchItem* parentBranch,
+                                           double anglePerHeight) {
+    double angle = anglePerHeight * rectBranch->getHeight();
+    auto branch = new TvUnrootedBranchItem(parentBranch, angle, rectBranch, rectBranch->getNodeNameFromNodeItem());
+    QList<QGraphicsItem*> rectChildren = rectBranch->childItems();
+    for (QGraphicsItem* rectChild : qAsConst(rectChildren)) {
+        if (auto rectChildBranch = dynamic_cast<TvRectangularBranchItem*>(rectChild)) {
+            convertBranch(rectChildBranch, branch, anglePerHeight);
         }
     }
-    return convertedBranch;
+    return branch;
 }
 
 TvBranchItem* TvUnrootedLayoutAlgorithm::convert(TvRectangularBranchItem* rectRoot) {
-    double coef = 360.0 / rectRoot->childrenBoundingRect().height();
-    return convertBranch(rectRoot, nullptr, coef);
+    double anglePerHeight = 360.0 / rectRoot->childrenBoundingRect().height();
+    return convertBranch(rectRoot, nullptr, anglePerHeight);
 }
 
 }  // namespace U2

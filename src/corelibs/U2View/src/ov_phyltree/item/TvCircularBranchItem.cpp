@@ -39,7 +39,7 @@ TvCircularBranchItem::TvCircularBranchItem(TvCircularBranchItem* parent, double 
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
-    width = from->getWidth();
+    width = from->getWidth() / 2;
     setDist(from->getDist());
     setPos(width, 0);
     QPointF p = mapFromScene(0, 0);

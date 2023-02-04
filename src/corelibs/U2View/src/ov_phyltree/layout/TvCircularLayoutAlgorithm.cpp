@@ -32,25 +32,25 @@ static constexpr double DEGENERATED_WIDTH = 300;
 static constexpr double WIDTH_RADIUS = 30;
 static constexpr double SCALE = 6.0;
 
-static TvCircularBranchItem* convertBranch(TvRectangularBranchItem* originalBranchItem,
-                                           TvCircularBranchItem* convertedParentBranchItem,
-                                           double coef) {
-    double height = coef * originalBranchItem->getHeight();
-    auto convertedBranch = new TvCircularBranchItem(convertedParentBranchItem, height, originalBranchItem, originalBranchItem->getNodeNameFromNodeItem());
-    QList<QGraphicsItem*> originalChildItems = originalBranchItem->childItems();
-    for (QGraphicsItem* originalChildItem : qAsConst(originalChildItems)) {
-        if (auto ri = dynamic_cast<TvRectangularBranchItem*>(originalChildItem)) {
-            convertBranch(ri, convertedBranch, coef);
+static TvCircularBranchItem* convertBranch(TvRectangularBranchItem* rectBranch,
+                                           TvCircularBranchItem* parentBranch,
+                                           double heightScale) {
+    double height = heightScale * rectBranch->getHeight();
+    auto convertedBranch = new TvCircularBranchItem(parentBranch, height, rectBranch, rectBranch->getNodeNameFromNodeItem());
+    QList<QGraphicsItem*> rectChildren = rectBranch->childItems();
+    for (QGraphicsItem* rectChild : qAsConst(rectChildren)) {
+        if (auto rectChildBranch = dynamic_cast<TvRectangularBranchItem*>(rectChild)) {
+            convertBranch(rectChildBranch, convertedBranch, heightScale);
         }
     }
     return convertedBranch;
 }
 
 TvBranchItem* TvCircularLayoutAlgorithm::convert(TvRectangularBranchItem* rectRoot, bool degeneratedCase) {
-    double coef = SCALE / rectRoot->childrenBoundingRect().height();
+    double heightScale = SCALE / rectRoot->childrenBoundingRect().height();
     double originalWidth = rectRoot->getWidth();
     rectRoot->setWidthW(degeneratedCase ? DEGENERATED_WIDTH : WIDTH_RADIUS);
-    TvCircularBranchItem* circularLayoutRoot = convertBranch(rectRoot, nullptr, coef);
+    TvCircularBranchItem* circularLayoutRoot = convertBranch(rectRoot, nullptr, heightScale);
     rectRoot->setWidthW(originalWidth);
     return circularLayoutRoot;
 }

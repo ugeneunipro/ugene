@@ -188,8 +188,6 @@ protected:
     void mousePressEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
 
-    virtual void setTreeLayoutType(const TreeLayoutType& newLayoutType);
-
     /** Sets zoom to the given level. Unchecks 'zoomFitAreaAction' if 'cancelFitToViewMode' is true. */
     void setZoomLevel(double newZoomLevel, bool cancelFitToViewMode = true);
 
@@ -198,9 +196,6 @@ protected:
      * Updates legend, scene rect, label alignment and other UI properties.
      */
     virtual void updateScene();
-
-    /** Updates parameter of rect-layout branches using current settings. */
-    void updateRectLayoutBranches();
 
 signals:
     /** Emitted when option is changed: either due to selection change or an explicit option update. */
@@ -216,9 +211,6 @@ private slots:
     void sl_contTriggered(bool on);
     void sl_showNameLabelsTriggered(bool on);
     void sl_showDistanceLabelsTriggered(bool on);
-    void sl_rectangularLayoutTriggered();
-    void sl_circularLayoutTriggered();
-    void sl_unrootedLayoutTriggered();
     void sl_textSettingsTriggered();
     void sl_treeSettingsTriggered();
     void sl_rerootTriggered();
@@ -241,15 +233,7 @@ private:
      */
     void saveOptionToSettings(const TreeViewOption& option, const QVariant& value);
 
-    /** Recalculates distanceToViewScale, minDistance, maxDistance. */
-    void updateDistanceToViewScale();
-
-    /** Update width of the rectangular branches using distanceToViewScale. */
-    void assignRectangularBranchWidth();
-
     double getScalebarDistanceRange() const;
-
-    void rebuildTreeLayout();
 
     /** Copies whole tree image to clipboard. */
     void copyWholeTreeImageToClipboard();
@@ -266,7 +250,7 @@ private:
     /** Returns list of fixed size elements: the elements that do not change their on screen dimensions regardless of the current zoom level. */
     QList<QGraphicsItem*> getFixedSizeItems() const;
 
-    void setNewTreeLayout(TvBranchItem* newRoot, const TreeLayoutType& layoutType);
+    void applyNewTreeLayout(TvBranchItem* newRoot, TvRectangularBranchItem* newRectRoot, const TreeLayoutType& layoutType);
 
     enum LabelType {
         LabelType_SequenceName = 1,
@@ -281,27 +265,17 @@ private:
     // Scalebar
     void updateLegend();
 
-    void collapseSelected();
-
-    void updateLayout();
-
     /** Updates 'selectionSettings' every time selection is changed. */
     void updateSettingsOnSelectionChange();
 
-    void recalculateRectangularLayout();
     bool isSelectedCollapsed();
 
-    void updateActionsState();
-
-    /** Returns average branch distance in the tree. */
-    double getAverageBranchDistance() const;
+    void updateActions();
 
     void updateLabelsAlignment();
 
-    /** Recalculates and assign 'steps to leaf' properties to every branch item in the rect-layout tree. */
-    void updateStepsToLeafOnBranches();
-
-    void changeTreeLayout(const TreeLayoutType& newLayoutType);
+    /** Calculates new tree layout of the given type and sets it to as active on the scene. */
+    void switchTreeLayout(const TreeLayoutType& newLayoutType);
 
     /** Updates settings for selected items only. If there is no selection updates setting for all items. */
     void updateTextOptionOnSelectedItems();
@@ -338,10 +312,6 @@ private:
 
     /** Used to compute on-screen length of every branch: length = distance * distanceToScreenScale. */
     double distanceToViewScale = 1;
-    /** Minimum branch distance in tree. */
-    double minDistance = 0;
-    /** Maximum branch distance in tree. */
-    double maxDistance = 0;
 
     /** Legend item. Not null only in 'PHYLOGRAM' mode. */
     QGraphicsLineItem* legendItem = nullptr;

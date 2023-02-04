@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-static TvRectangularBranchItem* createBranch(const PhyNode* phyNode) {
+static TvRectangularBranchItem* buildSubTree(const PhyNode* phyNode) {
     const PhyBranch* parentPhyBranch = phyNode->getParentBranch();
     auto parentTvBranch = new TvRectangularBranchItem(parentPhyBranch, "", phyNode->isRootNode());
     if (phyNode->isLeafNode()) {
@@ -42,14 +42,14 @@ static TvRectangularBranchItem* createBranch(const PhyNode* phyNode) {
 
     const QList<PhyBranch*>& childPhyBranches = phyNode->getChildBranches();
     for (auto childPhyBranch : qAsConst(childPhyBranches)) {
-        auto childTvBranch = createBranch(childPhyBranch->childNode);
+        auto childTvBranch = buildSubTree(childPhyBranch->childNode);
         childTvBranch->setParentItem(parentTvBranch);
     }
     return parentTvBranch;
 }
 
-TvRectangularBranchItem* TvRectangularLayoutAlgorithm::buildTreeLayout(const PhyNode* phyRoot) {
-    TvRectangularBranchItem* rectRoot = createBranch(phyRoot);
+TvRectangularBranchItem* TvRectangularLayoutAlgorithm::buildTvTreeHierarchy(const PhyNode* phyRoot) {
+    TvRectangularBranchItem* rectRoot = buildSubTree(phyRoot);
     recalculateTreeLayout(rectRoot, phyRoot);
     return rectRoot;
 }
@@ -82,6 +82,8 @@ void static recalculateBranches(TvRectangularBranchItem* branch, const PhyNode* 
         TvRectangularBranchItem* childTvBranch = getChildItemByPhyBranch(branch, childPhyBranch);
         if (childTvBranch->isVisible()) {
             recalculateBranches(childTvBranch, nullptr, currentRow);
+        } else {
+            childTvBranch->setPos(0, 0);  // Align with parent.
         }
         childTvBranches.append(childTvBranch);
     }

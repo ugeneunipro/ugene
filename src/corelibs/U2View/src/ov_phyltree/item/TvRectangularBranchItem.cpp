@@ -24,7 +24,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QPainter>
-#include <QPen>
 #include <QStack>
 
 #include <U2Core/Log.h>
@@ -35,80 +34,6 @@ namespace U2 {
 
 TvRectangularBranchItem::TvRectangularBranchItem(const PhyBranch* branch, const QString& name, bool isRoot)
     : TvBranchItem(branch, name, isRoot) {
-}
-
-void TvRectangularBranchItem::toggleCollapsedState() {
-    collapsed = !collapsed;
-    QStack<TvBranchItem*> graphicsItems;
-    graphicsItems.push(this);
-    do {
-        TvBranchItem* branchItem = graphicsItems.pop();
-        QList<QGraphicsItem*> childItems = branchItem->childItems();
-        for (QGraphicsItem* graphItem : qAsConst(childItems)) {
-            if (dynamic_cast<QGraphicsRectItem*>(graphItem) && !branchItem->isCollapsed()) {
-                graphItem->setParentItem(nullptr);
-                scene()->removeItem(graphItem);
-                continue;
-            }
-
-            auto childItem = dynamic_cast<TvRectangularBranchItem*>(graphItem);
-            CHECK_CONTINUE(childItem != nullptr);
-
-            childItem->collapsed = !childItem->collapsed;
-            if (childItem->getNameTextItem() == nullptr) {
-                childItem->setVisible(branchItem->isVisible() && !branchItem->isCollapsed());
-            }
-            if (childItem->isCollapsed() && !branchItem->isCollapsed()) {
-                childItem->drawCollapsedRegion();
-            }
-            graphicsItems.push(childItem);
-        }
-    } while (!graphicsItems.isEmpty());
-
-    if (collapsed) {
-        drawCollapsedRegion();
-    } else {
-        setSelectedRecursively(true);
-    }
-    getRoot()->emitBranchCollapsed(this);
-}
-
-void TvRectangularBranchItem::drawCollapsedRegion() {
-    QList<QGraphicsItem*> items = childItems();
-    double xMin = 0;
-    double yMin = 0;
-    double yMax = 0;
-    bool isFirstIteration = true;
-
-    for (QGraphicsItem* graphItem : qAsConst(items)) {
-        auto branchItem = dynamic_cast<TvRectangularBranchItem*>(graphItem);
-        if (!branchItem) {
-            continue;
-        }
-        QPointF pos1 = branchItem->pos();
-        if (isFirstIteration) {
-            xMin = pos1.x();
-            yMin = yMax = pos1.y();
-            isFirstIteration = false;
-            continue;
-        }
-
-        xMin = qMin(xMin, pos1.x());
-        yMin = qMin(yMin, pos1.y());
-        yMax = qMax(yMax, pos1.y());
-    }
-    if (xMin >= 2 * TvRectangularBranchItem::DEFAULT_WIDTH)
-        xMin /= 2;
-    if (xMin < TvRectangularBranchItem::DEFAULT_WIDTH)
-        xMin = TvRectangularBranchItem::DEFAULT_WIDTH;
-
-    QPen blackPen(Qt::black);
-    prepareGeometryChange();
-    blackPen.setWidth(SELECTED_PEN_WIDTH_DELTA);
-    blackPen.setCosmetic(true);
-    double defHeight = qMin((int)(yMax - yMin) / 2, 30);
-    auto rectItem = new QGraphicsRectItem(0, -defHeight / 2, xMin, defHeight, this);
-    rectItem->setPen(blackPen);
 }
 
 void TvRectangularBranchItem::setParentItem(QGraphicsItem* item) {

@@ -44,7 +44,7 @@ public:
     /** Returns true if the current node is selected and there is no other selected parent node on top of these node. */
     bool isSelectionRoot() const;
 
-    void toggleCollapsedState();
+    void toggleCollapsedState() const;
 
     bool isCollapsed() const;
 

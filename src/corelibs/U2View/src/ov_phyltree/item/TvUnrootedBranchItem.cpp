@@ -38,7 +38,7 @@ TvUnrootedBranchItem::TvUnrootedBranchItem(TvUnrootedBranchItem* parent, double 
     setParentItem(parent);
     correspondingRectangularBranchItem = from;
     settings = from->getSettings();
-    width = from->getWidth();
+    width = from->getWidth() / 1.5;
     setDist(from->getDist());
     setPos(width, 0);
     angle = side == TvBranchItem::Side::Right ? angle : -angle;
