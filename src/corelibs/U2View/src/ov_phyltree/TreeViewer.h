@@ -290,6 +290,9 @@ private:
 
     void initializeSettings();
 
+    /** Recomputes branch geometry: width, height, curvature. */
+    void updateBranchGeometry(TvRectangularBranchItem* rootBranch) const;
+
 public:
     PhyTreeObject* const phyObject = nullptr;
     TreeViewer* const treeViewer = nullptr;

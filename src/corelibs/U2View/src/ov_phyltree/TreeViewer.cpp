@@ -606,7 +606,7 @@ void TreeViewerUI::updateOptions(const U2::OptionsMap& changedOptions) {
 
 void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& newValue) {
     CHECK(getOption(option) != newValue, );
-    if (option != TREE_LAYOUT_TYPE) {  // TREE_LAYOUT setting is updated as a part of 'setTreeLayout' call below.
+    if (option != TREE_LAYOUT_TYPE) {  // TREE_LAYOUT setting is updated as a part of 'switchTreeLayout' call below.
         saveOptionToSettings(option, newValue);
     }
     switch (option) {
@@ -618,6 +618,7 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
             break;
         case BREADTH_SCALE_ADJUSTMENT_PERCENT:
         case BRANCH_CURVATURE:
+            updateBranchGeometry(rectRoot);
             updateScene();
             break;
         case LABEL_COLOR:
@@ -815,7 +816,7 @@ static double getAverageBranchDistance(TvBranchItem* root) {
 }
 
 /** Updates branches geometry to match current settings and distanceToViewScale. */
-static void updateBranchSizes(TvRectangularBranchItem* rectRoot, double distanceToViewScale, const TreeType& treeType, double breadthScale, double branchCurvature) {
+static void updateBranches(TvRectangularBranchItem* rectRoot, double distanceToViewScale, const TreeType& treeType, double breadthScale, double branchCurvature) {
     updateStepsToLeafOnBranches(rectRoot);
     double averageBranchDistance = getAverageBranchDistance(rectRoot);
     double breadthScaleAdjustment = breadthScale / 100;
@@ -1296,6 +1297,14 @@ static double computeDistanceToViewScale(TvRectangularBranchItem* rectRoot) {
     return qMin(minDistScale, maxDistScale);
 }
 
+void TreeViewerUI::updateBranchGeometry(TvRectangularBranchItem* rootBranch) const {
+    // Upscale the recalculated tree to 'distanceToViewScale'.
+    auto treeType = static_cast<TreeType>(getOption(BRANCHES_TRANSFORMATION_TYPE).toInt());
+    double breadthScale = getOption(BREADTH_SCALE_ADJUSTMENT_PERCENT).toDouble();
+    double branchCurvature = getOption(BRANCH_CURVATURE).toDouble();
+    updateBranches(rootBranch, distanceToViewScale, treeType, breadthScale, branchCurvature);
+}
+
 void TreeViewerUI::switchTreeLayout(const TreeLayoutType& newLayoutType) {
     PhyNode* phyRoot = phyObject->getTree()->getRootNode();
     TvRectangularBranchItem* newRectRoot = TvRectangularLayoutAlgorithm::buildTvTreeHierarchy(phyRoot);
@@ -1303,11 +1312,7 @@ void TreeViewerUI::switchTreeLayout(const TreeLayoutType& newLayoutType) {
     CHECK_EXT(newRectRoot != nullptr, uiLog.error(tr("Failed to build tree layout.")), );
 
     distanceToViewScale = computeDistanceToViewScale(newRectRoot);
-
-    auto treeType = static_cast<TreeType>(getOption(BRANCHES_TRANSFORMATION_TYPE).toInt());
-    double breadthScale = getOption(BREADTH_SCALE_ADJUSTMENT_PERCENT).toDouble();
-    double branchCurvature = getOption(BRANCH_CURVATURE).toDouble();
-    updateBranchSizes(newRectRoot, distanceToViewScale, treeType, breadthScale, branchCurvature);
+    updateBranchGeometry(newRectRoot);
 
     TvBranchItem* newRoot = newLayoutType == CIRCULAR_LAYOUT
                                 ? TvCircularLayoutAlgorithm::convert(newRectRoot, distanceToViewScale <= TvRectangularBranchItem::DEFAULT_WIDTH)
@@ -1321,13 +1326,7 @@ void TreeViewerUI::sl_onBranchCollapsed(TvBranchItem*) {
     CHECK(isRectangularLayoutMode(), );
     PhyNode* phyRoot = phyObject->getTree()->getRootNode();
     TvRectangularLayoutAlgorithm::recalculateTreeLayout(rectRoot, phyRoot);
-
-    // Upscale the recalculated tree to 'distanceToViewScale'.
-    auto treeType = static_cast<TreeType>(getOption(BRANCHES_TRANSFORMATION_TYPE).toInt());
-    double breadthScale = getOption(BREADTH_SCALE_ADJUSTMENT_PERCENT).toDouble();
-    double branchCurvature = getOption(BRANCH_CURVATURE).toDouble();
-    updateBranchSizes(rectRoot, distanceToViewScale, treeType, breadthScale, branchCurvature);
-
+    updateBranchGeometry(rectRoot);
     updateScene();
     updateActions();
 }
