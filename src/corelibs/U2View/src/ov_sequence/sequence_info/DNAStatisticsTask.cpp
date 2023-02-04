@@ -44,7 +44,7 @@ DNAStatistics::DNAStatistics() {
 void DNAStatistics::clear() {
     length = 0;
     gcContent = 0;
-    meltingTemp = 0;
+    meltingTemp = BaseTempCalc::INVALID_TM;
 
     ssMolecularWeight = 0;
     ssExtinctionCoefficient = 0;
@@ -375,7 +375,8 @@ void DNAStatisticsTask::computeStats() {
 
     // Max size to avoid cache overflow
     static constexpr int MAX_SIZE = 1024 * 1024;
-    QByteArray meltTempSeq; 
+    static constexpr int MELTING_TM_LENGTH_LIMIT = 10 * 1000;  // Maximum sequence length to estimate melting temperature.
+    QByteArray meltTempSeq;
     for (const U2Region& region : qAsConst(regions)) {
         QList<U2Region> blocks = U2Region::split(region, MAX_SIZE);
         for (const U2Region& block : qAsConst(blocks)) {
@@ -385,7 +386,9 @@ void DNAStatisticsTask::computeStats() {
             const QByteArray seqBlock = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             CHECK_OP(os, );
 
-            meltTempSeq.append(seqBlock, qMin(MAX_SIZE - meltTempSeq.size(), seqBlock.size()));
+            if (meltTempSeq.size() < MELTING_TM_LENGTH_LIMIT) {
+                meltTempSeq.append(seqBlock, qMin(MELTING_TM_LENGTH_LIMIT - meltTempSeq.size(), seqBlock.size()));
+            }
             const char* sequenceData = seqBlock.constData();
 
             int previousChar = U2Msa::GAP_CHAR;
@@ -488,7 +491,7 @@ void DNAStatisticsTask::computeStats() {
         result.dsExtinctionCoefficient *= (1 - hypochromicity);
 
         // Calculating melting temperature
-        result.meltingTemp = temperatureCalculator->getMeltingTemperature(meltTempSeq);
+        result.meltingTemp = meltTempSeq.size() >= MELTING_TM_LENGTH_LIMIT ? BaseTempCalc::INVALID_TM : temperatureCalculator->getMeltingTemperature(meltTempSeq);
 
         // Calculating nmole/OD260
         if (result.ssExtinctionCoefficient != 0) {
