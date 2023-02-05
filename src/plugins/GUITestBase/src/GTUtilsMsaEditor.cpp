@@ -686,7 +686,7 @@ QListWidget* GTUtilsMsaEditor::getExcludeListWidget(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getMultilineMode"
+#define GT_METHOD_NAME "isMultilineMode"
 bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus& os) {
     auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
 
