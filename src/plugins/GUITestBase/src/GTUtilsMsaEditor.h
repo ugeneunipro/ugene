@@ -25,6 +25,7 @@
 #include <primitives/PopupChooser.h>
 
 #include <QColor>
+#include <QGraphicsView>
 #include <QListWidget>
 #include <QRect>
 #include <QToolButton>
@@ -35,7 +36,6 @@ class MSAEditor;
 class MSAEditorConsensusArea;
 class MaEditorNameList;
 class MSAEditorSequenceArea;
-class MSAEditorTreeViewerUI;
 class MsaEditorWgt;
 
 // If you can't find an appropriate method check the GTUtilsMsaEditorSequenceArea class
@@ -65,7 +65,7 @@ public:
     static QWidget* getGraphOverview(HI::GUITestOpStatus& os);
     static QWidget* getSimpleOverview(HI::GUITestOpStatus& os);
 
-    static MSAEditorTreeViewerUI* getTreeView(HI::GUITestOpStatus& os);
+    static QGraphicsView* getTreeView(HI::GUITestOpStatus& os);
 
     /** Checks that there is no Tree view opened in the active MSA editor. */
     static void checkNoTreeView(HI::GUITestOpStatus& os);
@@ -189,12 +189,12 @@ public:
     static QListWidget* getExcludeListWidget(HI::GUITestOpStatus& os);
 
     // Get current multiline mode, return true if multiline mode is active
-    static bool getMultilineMode(HI::GUITestOpStatus &os);
+    static bool getMultilineMode(HI::GUITestOpStatus& os);
     // Press "Multiline View" button on toolbar
     // If mode != getMultilineMode(os)
     // Then the multiline mode is changed
     // Else nothing is being done
-    static void setMultilineMode(HI::GUITestOpStatus &os, bool mode);
+    static void setMultilineMode(HI::GUITestOpStatus& os, bool mode);
 };
 
 }  // namespace U2

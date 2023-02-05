@@ -868,11 +868,7 @@ void TreeViewerUI::updateScene() {
 
     updateLegend();
     updateLabelsVisibility();
-
-    bool alignLabels = getOption(ALIGN_LEAF_NODE_LABELS).toBool();
-    if (alignLabels) {
-        updateLabelsAlignment();
-    }
+    updateLabelsAlignment();
 
     // Shrink scene rect if needed to the minimal possible size.
     scene()->setSceneRect(scene()->itemsBoundingRect());
@@ -1101,7 +1097,7 @@ void TreeViewerUI::restoreSelectionAndCollapseStates() {
     }
     std::reverse(branches.begin(), branches.end());  // Collapse children first.
     for (auto branch : qAsConst(branches)) {
-        if (branch != root && branch->phyBranch == treeState.selectionRootBranch) {
+        if (branch != root && branch->phyBranch != nullptr && branch->phyBranch == treeState.selectionRootBranch) {
             branch->setSelectedRecursively(true);
         }
         if (treeState.collapsedBranches.contains(branch->phyBranch)) {
@@ -1277,12 +1273,11 @@ void TreeViewerUI::sl_contTriggered(bool on) {
 }
 
 void TreeViewerUI::changeLabelsAlignment() {
-    updateLabelsAlignment();
     TreeLayoutType layoutType = getTreeLayoutType();
     if (layoutType != RECTANGULAR_LAYOUT) {
         switchTreeLayout(layoutType);
     } else {  // Re-use current layout.
-        show();
+        updateScene();
     }
 }
 
@@ -1587,20 +1582,16 @@ void TreeViewerUI::updateActions() {
 }
 
 void TreeViewerUI::updateLabelsAlignment() {
-    bool on = getOption(ALIGN_LEAF_NODE_LABELS).toBool();
+    bool isRightAlign = getOption(SHOW_LEAF_NODE_LABELS).toBool() && getOption(ALIGN_LEAF_NODE_LABELS).toBool();  // Align is ON only if names are visible.
     QStack<TvBranchItem*> stack;
     stack.push(root);
     if (root != rectRoot) {
         stack.push(rectRoot);
     }
 
-    if (!getOption(SHOW_LEAF_NODE_LABELS).toBool()) {
-        return;
-    }
-
-    qreal sceneRightPos = scene()->sceneRect().right();
+    double sceneRightPos = scene()->sceneRect().right();
     QList<TvBranchItem*> branchItems;
-    qreal labelsShift = 0;
+    double labelsShift = 0;
     while (!stack.empty()) {
         TvBranchItem* item = stack.pop();
         TvTextItem* nameText = item->getNameTextItem();
@@ -1612,10 +1603,10 @@ void TreeViewerUI::updateLabelsAlignment() {
             }
         } else {
             branchItems.append(item);
-            qreal newWidth = 0;
-            if (on) {
+            double newWidth = 0;
+            if (isRightAlign) {
                 QRectF textRect = nameText->sceneBoundingRect();
-                qreal textRightPos = textRect.right();
+                double textRightPos = textRect.right();
                 if (nameText->flags().testFlag(QGraphicsItem::ItemIgnoresTransformations)) {
                     QRectF transformedRect = transform().inverted().mapRect(textRect);
                     textRect.setWidth(transformedRect.width());

@@ -146,9 +146,9 @@ QWidget* GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTreeView"
-MSAEditorTreeViewerUI* GTUtilsMsaEditor::getTreeView(GUITestOpStatus& os) {
+QGraphicsView* GTUtilsMsaEditor::getTreeView(GUITestOpStatus& os) {
     QWidget* activeWindow = getActiveMsaEditorWindow(os);
-    return GTWidget::findExactWidget<MSAEditorTreeViewerUI*>(os, "treeView", activeWindow);
+    return GTWidget::findExactWidget<QGraphicsView*>(os, "treeView", activeWindow);
 }
 #undef GT_METHOD_NAME
 

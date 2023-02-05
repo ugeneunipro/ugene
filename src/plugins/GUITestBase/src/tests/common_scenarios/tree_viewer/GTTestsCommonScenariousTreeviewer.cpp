@@ -847,54 +847,31 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
-    // 1. Open "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Use context menu items { Tree -> Build tree }
-    // Expected: the "Build Phylogenetic Tree" dialog has appeared
-    // 3. Press the "Build" button in the dialog
-    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_TREES, "Build Tree"}));
-    QString outputDirPath(testDir + "_common_data/scenarios/sandbox");
-    QDir outputDir(outputDirPath);
-    GTUtilsDialog::add(os, new BuildTreeDialogFiller(os, outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-
-    // 4. Open the "Tree Setting" option panel tab
-    //  it does automatically
-    GTUtilsProjectTreeView::openView(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2298.nwk", 0, 0, true));
+    QAbstractButton* tree = GTAction::button(os, "Build Tree");
+    GTWidget::click(os, tree);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::toggleView(os);
-    MsaEditorWgt* ui = AppContext::getMainWindow()->getQMainWindow()->findChild<MsaEditorWgt*>();
-    QSplitter* splitter = ui->findChild<QSplitter*>();
-    splitter->setSizes(QList<int>() << 100 << 0 << 0);
-    // 5. Check the "Align labels" checkbox in the "Labels" section
-    QCheckBox* alignLabelsButton = dynamic_cast<QCheckBox*>(
-        GTWidget::findWidget(os, "alignLabelsCheck"));
-    CHECK_SET_ERR(nullptr != alignLabelsButton, "The \"Align labels\" button is not found");
-    GTCheckBox::setChecked(os, alignLabelsButton, true);
 
-    const QList<QGraphicsItem*> treeViewItems = treeView->items();
-    QMap<const QGraphicsItem*, QRectF> initialLocations;
-    foreach (const QGraphicsItem* item, treeViewItems) {
-        initialLocations[item] = item->boundingRect();
-    }
-    // GTWidget::getAllWidgetsInfo(os);
+    // Check the "Align labels" checkbox in the "Labels" section.
+    GTCheckBox::setChecked(os, "alignLabelsCheck", true);
+    GTThread::waitForMainThread();
+    QImage imageWithAlignBefore = GTUtilsPhyTree::captureTreeImage(os);
 
-    // GTGlobals::sleep(2000);
-    // 6. Check the "Show names" checkbox twice
-    QCheckBox* showNamesButton = dynamic_cast<QCheckBox*>(GTWidget::findWidget(os, "showNamesCheck"));
-    CHECK_SET_ERR(nullptr != showNamesButton, "The \"Show names\" button is not found");
-    GTCheckBox::setChecked(os, showNamesButton, false);
+    // Hide names.
+    GTCheckBox::setChecked(os, "showNamesCheck", false);
+    GTThread::waitForMainThread();
+    QImage imageWithNoNames = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNames != imageWithAlignBefore, "Error: imageWithNoNames is equal to imageWithAlignBefore");
 
-    GTCheckBox::setChecked(os, showNamesButton, true);
-
-    // Expected state: labels on the tree view have kept their location
-    foreach (const QGraphicsItem* item, treeViewItems) {
-        CHECK_SET_ERR(initialLocations[item] == item->boundingRect(),
-                      "Graphics item's position has changed!");
-    }
+    // Show names back: initial alignment view should be restored.
+    GTCheckBox::setChecked(os, "showNamesCheck", true);
+    GTThread::waitForMainThread();
+    QImage imageWithAlignAfter = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithAlignAfter == imageWithAlignBefore, "Error: imageWithAlignAfter is not equal to imageWithAlignBefore");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
