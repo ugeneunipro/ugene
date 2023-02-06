@@ -65,13 +65,13 @@ void GenomeAlignerFindTask::run() {
         if (isCanceled()) {
             break;
         }
-        QMutexLocker(&(alignContext->readingStatusMutex));
+        QMutexLocker mLocker(&alignContext->readingStatusMutex);
         bool isReadingStarted = alignContext->isReadingStarted;
         bool isReadingFinished = alignContext->isReadingFinished;
         if (isReadingStarted && isReadingFinished) {
             break;
         }
-        alignContext->readShortReadsWait.wait(&(alignContext->readingStatusMutex));
+        alignContext->readShortReadsWait.wait(mLocker.mutex());
     }
 
     QReadLocker locker(&alignContext->indexLock);

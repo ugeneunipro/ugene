@@ -1,0 +1,19 @@
+<multi-test>
+    <remove-temp-dir url="genome_aligner_7"/>
+    <create-temp-dir url="genome_aligner_7"/>
+    <copy-file from="!common_data_dir!genome_aligner/N_ref.fa" to="!tmp_data_dir!genome_aligner_7/N_ref.fa"/>
+    <run-cmdline
+            task="!common_data_dir!genome_aligner/workflow/genome-aligner.uwl"
+            in="!common_data_dir!genome_aligner/shortreads1Mb.fasta"
+            out-dir="!tmp_data_dir!genome_aligner_7"
+            ref="!tmp_data_dir!genome_aligner_7/N_ref.fa"
+            abs-mis-enabled="true"
+            abs-mis="0"
+            percent-mis="0"
+            rev-compl="false"
+            best-mode="true"
+            omit-count="0"
+    />
+    <compare-sam-by-length file1="genome_aligner_7/genome_aligner/out.sam" file2="genome_aligner/workflow/data_7.sam"/>
+    <remove-temp-dir url="genome_aligner_7"/>
+</multi-test>
