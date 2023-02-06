@@ -24,6 +24,7 @@
 
 #include <U2Core/global.h>
 
+#include <QCoreApplication>
 #include <QSharedPointer>
 
 namespace U2 {
@@ -34,6 +35,7 @@ namespace U2 {
  * and can't create @BaseTempCalcWidget object
  */
 class U2ALGORITHM_EXPORT RoughTempCalcCmdFactory : public TempCalcFactory {
+    Q_DECLARE_TR_FUNCTIONS(RoughTempCalcCmdFactory)
 public:
     RoughTempCalcCmdFactory();
 
@@ -42,7 +44,8 @@ public:
     TempCalcSettings createDefaultTempCalcSettings() const override;
     BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
 
-    static const QString ID;
+protected:
+    static const char* ID;
 
 };
 

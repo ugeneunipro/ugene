@@ -26,6 +26,8 @@
 
 #include <U2Core/AppContext.h>
 
+#include <U2Gui/HelpButton.h>
+
 #include <QDialogButtonBox>
 #include <QLayout>
 
@@ -41,6 +43,7 @@ TempCalcDialog::TempCalcDialog(QWidget* parent, const TempCalcSettings& currentS
     layout()->addWidget(tempCalcWidget);
     auto dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);
     dbb->setObjectName("buttonBox");
+    new HelpButton(this, dbb, "88080505");
     connect(dbb, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(dbb, &QDialogButtonBox::accepted, this, &QDialog::accept);
     layout()->addWidget(dbb);

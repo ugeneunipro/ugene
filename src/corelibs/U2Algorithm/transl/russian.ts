@@ -12,7 +12,15 @@
         <location filename="../src/misc/FindAlgorithm.cpp" line="160"/>
         <location filename="../src/misc/FindAlgorithm.cpp" line="824"/>
         <source>The search pattern is too long.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>RoughTempCalcCmdFactory</name>
+    <message>
+        <location filename="../src/temperature/methods/RoughTempCalcCmdFactory.cpp" line="27"/>
+        <source>Rough</source>
+        <translation>Приблизительный</translation>
     </message>
 </context>
 <context>
@@ -57,27 +65,27 @@
 <context>
     <name>U2::AssemblyConsensusAlgorithmFactorySamtools</name>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="45"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="44"/>
         <source>SAMtools</source>
         <translation>SAMtools</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="49"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="48"/>
         <source>Uses SAMtools to calculate consensus with regard to quality of reads</source>
         <translation>Использует SAMtools для расчета консенсуса по отношению к качеству ридов</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="70"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="69"/>
         <source>Fetching reads from database and converting to SAMtools format</source>
         <translation>Выборка ридов из базы данных и преобразование в формат SAMtools</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="73"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="72"/>
         <source>Sorting reads</source>
         <translation>Сортировка ридов</translation>
     </message>
     <message>
-        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="76"/>
+        <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmSamtools.cpp" line="75"/>
         <source>Calculating consensus</source>
         <translation>Вычисление консенсуса</translation>
     </message>
@@ -158,12 +166,12 @@
 <context>
     <name>U2::LoadPatternsFileTask</name>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="105"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="104"/>
         <source>Load pattern from file</source>
         <translation>Загрузить паттерн из файла</translation>
     </message>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="114"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="113"/>
         <source>Detecting format error for file %1</source>
         <translation>Ошибка распознавания формата для файла %1</translation>
     </message>
