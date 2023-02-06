@@ -85,7 +85,7 @@ public:
               includeConsensus(includeConsensus),
               includeRuler(includeRuler),
               multilineMode(multilineMode),
-              basesPerLine(basesPerLine){
+              basesPerLine(basesPerLine) {
         }
         bool includeNames;
         bool includeConsensus;

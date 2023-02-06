@@ -2411,9 +2411,11 @@ GUI_TEST_CLASS_DEFINITION(test_7521) {
 
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_nm.png", ExportMsaImage::Settings(false, false, true, false)));
     GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_mm.png", ExportMsaImage::Settings(false, false, true, true, 70)));
     GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QPixmap normalMode(sandBoxDir + "test_7521_nm");
     QPixmap multilineMode(sandBoxDir + "test_7521_mm");
@@ -2424,8 +2426,8 @@ GUI_TEST_CLASS_DEFINITION(test_7521) {
 
     double widthDiff = normalWidth / multilineWidth;
 
-    CHECK_SET_ERR(multilineHeight == normalHeight * 2 + 30, "Image height without multiline mode: " + QString::number(normalHeight) + "Image height with multiline mode: " + QString::number(multilineHeight));
-    CHECK_SET_ERR(widthDiff > 1 && widthDiff < 2, "Image width without multiline mode: " + QString::number(normalWidth) + "Image width with multiline mode: " + QString::number(multilineWidth));
+    CHECK_SET_ERR(multilineHeight == normalHeight * 2 + 30, "Image height in multiline mode: " + QString::number(normalHeight) + ", image height in multiline mode: " + QString::number(multilineHeight));
+    CHECK_SET_ERR(widthDiff > 1 && widthDiff < 2, "Image width in multiline mode: " + QString::number(normalWidth) + ", image width in multiline mode: " + QString::number(multilineWidth));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7531) {
