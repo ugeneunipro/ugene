@@ -109,6 +109,7 @@ void ExportMsaImage::commonScenario() {
     GTCheckBox::setChecked(os, "exportSeqNames", settings.includeNames, dialog);
     GTCheckBox::setChecked(os, "exportConsensus", settings.includeConsensus, dialog);
     GTCheckBox::setChecked(os, "exportRuler", settings.includeRuler, dialog);
+    GTCheckBox::setChecked(os, "multilineModeCheckbox", settings.basesPerLine, dialog);
     GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
 
     if (!comboValue.isEmpty()) {

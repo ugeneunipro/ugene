@@ -78,14 +78,17 @@ public:
     struct Settings {
         Settings(bool includeNames = false,
                  bool includeConsensus = false,
-                 bool includeRuler = true)
+                 bool includeRuler = true,
+                 bool basesPerLine = false)
             : includeNames(includeNames),
               includeConsensus(includeConsensus),
-              includeRuler(includeRuler) {
+              includeRuler(includeRuler),
+              basesPerLine(basesPerLine) {
         }
         bool includeNames;
         bool includeConsensus;
         bool includeRuler;
+        bool basesPerLine;
     };
 
     // default

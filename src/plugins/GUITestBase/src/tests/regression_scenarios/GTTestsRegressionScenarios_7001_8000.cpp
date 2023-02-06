@@ -100,6 +100,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
@@ -2402,6 +2403,29 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
     GTUtilsWorkflowDesigner::click(os, trimmomaticName);
     GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7521) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_100_columns.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_wo_mm.png", ExportMsaImage::Settings(false, false, true, false)));
+    GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+
+    GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_w_mm.png", ExportMsaImage::Settings(false, false, true, true)));
+    GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+
+    QPixmap withoutMultilineMode(sandBoxDir + "test_7521_wo_mm");
+    QPixmap withMultilineMode(sandBoxDir + "test_7521_w_mm");
+    int imageHeightWithoutMultilineMode = withoutMultilineMode.height();
+    int imageHeightWithMultilineMode = withMultilineMode.height();
+    int imageWidthWithoutMultilineMode = withoutMultilineMode.width();
+    int imageWidthWithMultilineMode = withMultilineMode.width();
+
+    double part = imageHeightWithMultilineMode / imageHeightWithoutMultilineMode;
+
+    CHECK_SET_ERR(part >= 2 && part <= 3, "Image height without multiline mode: " + QString::number(imageHeightWithoutMultilineMode) + "Image height with multiline mode: " + QString::number(imageHeightWithMultilineMode));
+    CHECK_SET_ERR(imageWidthWithoutMultilineMode > imageWidthWithMultilineMode , "Image width without multiline mode: " + QString::number(imageWidthWithoutMultilineMode) + "Image width with multiline mode: " + QString::number(imageWidthWithMultilineMode));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7531) {
