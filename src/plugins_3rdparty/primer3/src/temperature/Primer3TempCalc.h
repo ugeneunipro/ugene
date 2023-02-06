@@ -54,12 +54,7 @@ public:
     static const QString KEY_MAX_LEN;
     /* The table of nearest-neighbor thermodynamic parameters
        and method for Tm calculation
-       0 - Method for Tm calculations and the thermodynamic parameters from
-           [SantaLucia JR (1998) "A unified view of
-           polymer, dumbbell and oligonucleotide DNA nearest-neighbor
-           thermodynamics", Proc Natl Acad Sci 95:1460-65
-           http://dx.doi.org/10.1073/pnas.95.4.1460]
-       1 - Method for Tm
+       0 - Method for Tm
            calculations from the paper[Rychlik W, Spencer WJ and Rhoads RE
            (1990) "Optimization of the annealing temperature for DNA
            amplification in vitro", Nucleic Acids Res 18:6409-12
@@ -67,7 +62,12 @@ public:
            and the thermodynamic parameters from the paper[Breslauer KJ, Frank
            R, Bl�cker H and Marky LA(1986) "Predicting DNA duplex stability
            from the base sequence" Proc Natl Acad Sci 83:4746-50
-           http://dx.doi.org/10.1073/pnas.83.11.3746] */
+           http://dx.doi.org/10.1073/pnas.83.11.3746]
+       1 - Method for Tm calculations and the thermodynamic parameters from
+           [SantaLucia JR (1998) "A unified view of
+           polymer, dumbbell and oligonucleotide DNA nearest-neighbor
+           thermodynamics", Proc Natl Acad Sci 95:1460-65
+           http://dx.doi.org/10.1073/pnas.95.4.1460] */
     static const QString KEY_TM_METHOD;
     /* Formula for salt correction
        0 - [Schildkraut, C, and Lifson, S(1965)
