@@ -79,16 +79,19 @@ public:
         Settings(bool includeNames = false,
                  bool includeConsensus = false,
                  bool includeRuler = true,
-                 bool basesPerLine = false)
+                 bool multilineMode = false,
+                 int basesPerLine = 0)
             : includeNames(includeNames),
               includeConsensus(includeConsensus),
               includeRuler(includeRuler),
-              basesPerLine(basesPerLine) {
+              multilineMode(multilineMode),
+              basesPerLine(basesPerLine){
         }
         bool includeNames;
         bool includeConsensus;
         bool includeRuler;
-        bool basesPerLine;
+        bool multilineMode;
+        int basesPerLine;
     };
 
     // default
