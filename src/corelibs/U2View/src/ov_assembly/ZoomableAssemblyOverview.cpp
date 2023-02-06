@@ -472,7 +472,7 @@ void ZoomableAssemblyOverview::resizeEvent(QResizeEvent* e) {
 
 void ZoomableAssemblyOverview::mousePressEvent(QMouseEvent* me) {
     // background scribbling
-    if (me->button() == Qt::MidButton) {
+    if (me->button() == Qt::MiddleButton) {
         visibleRangeScribbling = true;
         visibleRangeLastPos = me->pos();
         setCursor(Qt::ClosedHandCursor);
@@ -515,7 +515,7 @@ void ZoomableAssemblyOverview::mouseMoveEvent(QMouseEvent* me) {
         moveSelectionToPos(me->pos() - selectionDiff);
     }
     // background scribbling (Ctrl-Click)
-    else if ((me->buttons() & Qt::MidButton) && visibleRangeScribbling) {
+    else if ((me->buttons() & Qt::MiddleButton) && visibleRangeScribbling) {
         int pixelDiff = visibleRangeLastPos.x() - me->pos().x();
         qint64 asmDiff = calcXAssemblyCoord(pixelDiff);
         checkedMoveVisibleRange(asmDiff);
@@ -549,7 +549,7 @@ void ZoomableAssemblyOverview::mouseReleaseEvent(QMouseEvent* me) {
         }
         return;
     }
-    if ((me->button() == Qt::MidButton) && visibleRangeScribbling) {
+    if ((me->button() == Qt::MiddleButton) && visibleRangeScribbling) {
         visibleRangeScribbling = false;
         setCursor(Qt::ArrowCursor);
     }

@@ -581,10 +581,10 @@ GUI_TEST_CLASS_DEFINITION(test_2032) {
     // Expected result: order of sequences in the project view is {d, a, c, b}
     QModelIndex documentItem = GTUtilsProjectTreeView::findIndex(os, "abcd.fa");
 
-    CHECK_SET_ERR(documentItem.child(0, 0).data() == "[s] a", "1. Unexpected name of the object in the project view!");
-    CHECK_SET_ERR(documentItem.child(1, 0).data() == "[s] b", "2. Unexpected name of the object in the project view!");
-    CHECK_SET_ERR(documentItem.child(2, 0).data() == "[s] c", "3. Unexpected name of the object in the project view!");
-    CHECK_SET_ERR(documentItem.child(3, 0).data() == "[s] d", "4. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(0, 0, documentItem).data() == "[s] a", "1. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(1, 0, documentItem).data() == "[s] b", "2. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(2, 0, documentItem).data() == "[s] c", "3. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(3, 0, documentItem).data() == "[s] d", "4. Unexpected name of the object in the project view!");
 
     // Expected result: order of sequences in the sequences view is {d, a, c, b}
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
