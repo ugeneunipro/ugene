@@ -249,10 +249,6 @@ QRectF TvBranchItem::visibleChildrenBoundingRect(const QTransform& viewTransform
                 continue;
             }
             QRectF itemRect = graphItem->sceneBoundingRect();
-            if (graphItem->flags().testFlag(QGraphicsItem::ItemIgnoresTransformations)) {
-                QRectF transformedRect = invertedTransform.mapRect(itemRect);
-                itemRect.setWidth(transformedRect.width());
-            }
             childrenBoundingRect |= itemRect;
             graphicsItems.push(graphItem);
         }

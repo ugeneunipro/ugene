@@ -95,9 +95,6 @@ public:
     /** Delta between parent's branch 'maxStepsToLeaf' and this branch 'maxStepsToLeaf'. */
     int maxStepsToLeafParentDelta = 1;
 
-    /** Corresponding rectangular branch item for the branch. Set only for circular & unrooted branch items. */
-    TvRectangularBranchItem* correspondingRectangularBranchItem = nullptr;
-
     /** Returns top level (root) branch item in the tree. */
     TvBranchItem* getRoot();
 

@@ -699,9 +699,6 @@ void TreeViewerUI::updateTreeSettingsOnSelectedItems() {
     for (QGraphicsItem* item : qAsConst(updatingItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(item)) {
             branchItem->updateSettings(selectionSettings);
-            if (branchItem->correspondingRectangularBranchItem != nullptr) {
-                branchItem->correspondingRectangularBranchItem->updateSettings(selectionSettings);
-            }
         } else if (auto nodeItem = dynamic_cast<TvNodeItem*>(item)) {
             nodeItem->updateSettings(selectionSettings);
         }
@@ -733,9 +730,6 @@ void TreeViewerUI::updateTextOptionOnSelectedItems() {
     for (auto item : qAsConst(itemsToUpdate)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(item)) {
             branchItem->updateSettings(selectionSettings);
-            if (branchItem->correspondingRectangularBranchItem != nullptr) {
-                branchItem->correspondingRectangularBranchItem->updateSettings(selectionSettings);
-            }
         } else if (auto legendText = dynamic_cast<TvTextItem*>(item)) {
             legendText->setBrush(qvariant_cast<QColor>(selectionSettings[LABEL_COLOR]));
         }
@@ -1607,11 +1601,6 @@ void TreeViewerUI::updateLabelsAlignment() {
             if (isRightAlign) {
                 QRectF textRect = nameText->sceneBoundingRect();
                 double textRightPos = textRect.right();
-                if (nameText->flags().testFlag(QGraphicsItem::ItemIgnoresTransformations)) {
-                    QRectF transformedRect = transform().inverted().mapRect(textRect);
-                    textRect.setWidth(transformedRect.width());
-                    textRightPos = textRect.right();
-                }
                 newWidth = sceneRightPos - (textRightPos + TvBranchItem::TEXT_SPACING);
                 labelsShift = qMin(newWidth, labelsShift);
             }
