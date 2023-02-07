@@ -4124,5 +4124,46 @@ GUI_TEST_CLASS_DEFINITION(test_7789) {
     CHECK_SET_ERR(imageWithNoTipShapeUnrootedLayout == originalUnrootedImage, "imageWithNoTipShapeUnrootedLayout == originalUnrootedImage failed");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7792) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+    QWidget* optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+
+    // Check 'curvature' slider is enabled and current value is 0.
+    QSlider* curvatureSlider = GTWidget::findSlider(os, "curvatureSlider", optionPanel);
+    CHECK_SET_ERR(curvatureSlider->isEnabled(), "1. Slider is not enabled");
+    CHECK_SET_ERR(curvatureSlider->value() == 0, "2. By default there is no curvature");
+
+    // Check 'expansion' slider is enabled and current value is 100.
+    QSlider* expansionSlider = GTWidget::findSlider(os, "breadthScaleAdjustmentSlider", optionPanel);
+    CHECK_SET_ERR(expansionSlider->isEnabled(), "3. Slider is not enabled");
+    CHECK_SET_ERR(expansionSlider->value() == 100, QString("4. By default expansion is 100: got %1").arg(expansionSlider->value()));
+
+    // Change curvature slider and check that image changes too.
+    QImage imageBefore = GTUtilsPhyTree::captureTreeImage(os);
+    GTSlider::setValue(os, curvatureSlider, 50);
+    QImage imageAfter1 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter1 != imageBefore, "5. Image is not changed");
+
+    // Double click on the slider and check that curvative is 0 and check that image changes to the original image
+    GTMouseDriver::moveTo(GTWidget::getWidgetVisibleCenterGlobal(GTWidget::findWidget(os, "curvatureSlider")));
+    GTMouseDriver::doubleClick();
+    CHECK_SET_ERR(curvatureSlider->value() == 0, "6. The curvature should be 0");
+    QImage imageAfter2 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter2 == imageBefore, "7. Image is changed");
+
+    // Change expansion slider and check that image changes too.
+    GTSlider::setValue(os, expansionSlider, 200);
+    QImage imageAfter3 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter3 != imageBefore, "8. Image is not changed");
+
+    // Double click on the expansion slider and check that expansion is 100 and check that image changes to the original one
+    GTMouseDriver::moveTo(GTWidget::getWidgetVisibleCenterGlobal(GTWidget::findWidget(os, "breadthScaleAdjustmentSlider")));
+    GTMouseDriver::doubleClick();
+    CHECK_SET_ERR(expansionSlider->value() == 100, "9. The expansion should be 100");
+    QImage imageAfter4 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
