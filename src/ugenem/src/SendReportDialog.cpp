@@ -37,8 +37,6 @@
 #include <QUrl>
 #include <qglobal.h>
 
-#include <U2Core/global.h>
-
 #include "Utils.h"
 #include "getMemorySize.c"
 
@@ -312,10 +310,16 @@ void SendReportDialog::sl_onOkClicked() {
 }
 
 QString ReportSender::getOSVersion() {
-    QString result = isOsLinux() ? "Linux"
-                                 : (isOsWindows() ? "Windows"
-                                                  : (isOsMac() ? "Mac"
-                                                               : "Unknown"));
+#ifdef Q_OS_DARWIN
+    QString result = "Mac";
+#elif defined(Q_OS_WIN)
+    QString result = "Windows";
+#elif defined(Q_OS_LINUX)
+    QString result = "Linux";
+#else
+    QString result = "Unknown";
+#endif
+
     QOperatingSystemVersion osVersion = QOperatingSystemVersion::current();
     result += QString(" %1.%2.%3").arg(osVersion.majorVersion()).arg(osVersion.minorVersion()).arg(osVersion.microVersion());
     return result;
