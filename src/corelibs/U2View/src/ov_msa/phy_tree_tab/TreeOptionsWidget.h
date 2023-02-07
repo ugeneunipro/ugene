@@ -55,7 +55,6 @@ class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWid
 public:
     TreeOptionsWidget(TreeViewer* tree);
     TreeOptionsWidget(MSAEditor* msaEditor);
-    ~TreeOptionsWidget() override;
 
 private slots:
     void sl_labelsColorButton();
@@ -71,6 +70,9 @@ private slots:
     void sl_onOptionChanged(const TreeViewOption& option, const QVariant& value);
 
 private:
+    /** Initialization code common for both constructors. */
+    void init();
+
     QStringList getSaveDisabledWidgets() const;
     void initializeOptionsMap();
     void initColorButtonsStyle();
@@ -89,7 +91,6 @@ private:
 
     MSAEditor* editor = nullptr;
     TreeViewerUI* treeViewer = nullptr;
-    QWidget* contentWidget = nullptr;
 
     TreeOptionsSavableWidget savableTab;
 
