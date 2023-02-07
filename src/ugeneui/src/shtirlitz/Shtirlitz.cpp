@@ -26,6 +26,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QNetworkReply>
+#include <QOperatingSystemVersion>
 #include <QProcess>
 #include <QSysInfo>
 #include <QUrl>
@@ -260,24 +261,21 @@ void Shtirlitz::getSysInfo(QString& name,
                            QString& productType,
                            QString& prettyProductName,
                            QString& cpuArchitecture) {
+    QOperatingSystemVersion osVersion = QOperatingSystemVersion::current();
+    version = QString("%1.%2.%3").arg(osVersion.majorVersion()).arg(osVersion.minorVersion()).arg(osVersion.microVersion());
 #if defined(Q_OS_WIN)
     name = "Windows";
-    version = QString::number(QSysInfo::WindowsVersion);
 #elif defined(Q_OS_DARWIN)
     name = "Mac";
-    version = QString::number(QSysInfo::MacintoshVersion);
 #elif defined(Q_OS_LINUX)
     name = "Linux";
     version = "unknown";  // no version is available :(
 #elif defined(Q_OS_FREEBSD)
     name = "FreeBSD";
-    version = "unknown";  // no version is available :(
 #elif defined(Q_OS_UNIX)
     name = "Unix";
-    version = "unknown";  // no version is available :(
 #else
     name = "Other";
-    version = "unknown";
 #endif
     kernelType = QSysInfo::kernelType();
     kernelVersion = QSysInfo::kernelVersion();
