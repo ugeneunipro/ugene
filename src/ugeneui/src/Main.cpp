@@ -27,7 +27,10 @@
 #endif  // Q_OS_WIN
 
 #ifdef Q_OS_DARWIN
+#    include <QOperatingSystemVersion>
+
 #    include "app_settings/ResetSettingsMac.h"
+
 #endif
 
 #include <QApplication>
@@ -388,7 +391,8 @@ static QString findKey(const QStringList& envList, const QString& key) {
 
 #ifdef Q_OS_DARWIN
 static void fixMacFonts() {
-    if (QSysInfo::MacintoshVersion > QSysInfo::MV_10_8) {
+    QOperatingSystemVersion osVersion = QOperatingSystemVersion::current();
+    if (osVersion.majorVersion() >= 10 && osVersion.minorVersion() >= 8) {
         // fix Mac OS X 10.9 (mavericks) font issue
         // https://bugreports.qt-project.org/browse/QTBUG-32789
         // the solution is taken from http://successfulsoftware.net/2013/10/23/fixing-qt-4-for-mac-os-x-10-9-mavericks/
