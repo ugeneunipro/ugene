@@ -215,26 +215,30 @@ void SiteconBuildTask::run() {
     assert(ma->getLength() == settings.windowSize);
 
     SiteconAlgorithm::calculateACGTContent(ma, settings);
-    CHECK(!stateInfo.isCoR(), );
-
     settings.numSequencesInAlignment = ma->getRowCount();
     m.settings = settings;
-    stateInfo.setDescription(tr("Calculating average and dispersion matrices"));
+    stateInfo.setDescription(tr("Calculating average and dispersion matrixes"));
     m.matrix = SiteconAlgorithm::calculateDispersionAndAverage(ma, settings, stateInfo);
-    CHECK(!stateInfo.isCoR(), );
-
+    if (stateInfo.hasError() || isCanceled()) {
+        return;
+    }
     stateInfo.setDescription(tr("Calculating weights"));
     SiteconAlgorithm::calculateWeights(ma, m.matrix, m.settings, false, stateInfo);
-    CHECK(!stateInfo.isCoR(), );
-
+    if (stateInfo.hasError() || isCanceled()) {
+        return;
+    }
     stateInfo.progress += 5;
     stateInfo.setDescription(tr("Calibrating first type error"));
     m.err1 = SiteconAlgorithm::calculateFirstTypeError(ma, settings, stateInfo);
-    CHECK(!stateInfo.isCoR(), );
-
+    if (stateInfo.hasError() || isCanceled()) {
+        return;
+    }
     stateInfo.progress += 10;
     stateInfo.setDescription(tr("Calibrating second type error"));
     m.err2 = SiteconAlgorithm::calculateSecondTypeError(m.matrix, settings, stateInfo);
+    if (stateInfo.hasError() || isCanceled()) {
+        return;
+    }
 }
 
 SiteconBuildToFileTask::SiteconBuildToFileTask(const QString& inFile, const QString& _outFile, const SiteconBuildSettings& s)
