@@ -28,13 +28,13 @@ using namespace HI;
 
 class SiteconBuildDialogFiller : public Filler {
 public:
-    SiteconBuildDialogFiller(HI::GUITestOpStatus& os, const QString& inputFile, const QString& model);
+    SiteconBuildDialogFiller(HI::GUITestOpStatus& os, const QString& inputFilePath, const QString& modelFilePath);
 
     void commonScenario() override;
 
 private:
-    const QString inputFile;
-    const QString model;
+    const QString inputFilePath;
+    const QString modelFilePath;
 };
 
 }  // namespace U2

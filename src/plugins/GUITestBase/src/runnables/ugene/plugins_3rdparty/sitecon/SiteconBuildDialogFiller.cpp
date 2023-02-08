@@ -28,18 +28,18 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::SiteconBuildDialogFiller"
 
-SiteconBuildDialogFiller::SiteconBuildDialogFiller(HI::GUITestOpStatus& os, const QString& inputFile, const QString& model)
+SiteconBuildDialogFiller::SiteconBuildDialogFiller(HI::GUITestOpStatus& os, const QString& _inputFilePath, const QString& _modelFilePath)
    : Filler(os, "SiteconBuildDialog"),
-      inputFile(inputFile),
-      model(model) {
+      inputFilePath(_inputFilePath),
+      modelFilePath(_modelFilePath) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void SiteconBuildDialogFiller::commonScenario() {
    QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-   GTLineEdit::setText(os, "inputEdit", inputFile, dialog);
-   GTLineEdit::setText(os, "outputEdit", model, dialog);
+   GTLineEdit::setText(os, "inputEdit", inputFilePath, dialog);
+   GTLineEdit::setText(os, "outputEdit", modelFilePath, dialog);
 
    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
