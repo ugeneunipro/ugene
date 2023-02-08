@@ -4058,7 +4058,7 @@ GUI_TEST_CLASS_DEFINITION(test_7753) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7770) {
-    GTUtilsDialog::waitForDialog(os, new SiteconBuildDialogFiller(os, testDir + "_common_data/clustal/1000_sequences.aln", "test"));
+    GTUtilsDialog::waitForDialog(os, new SiteconBuildDialogFiller(os, testDir + "_common_data/clustal/1000_sequences.aln", sandBoxDir + "/test_7770.sitecon"));
     GTMenu::clickMainMenuItem(os, {"Tools", "Search for TFBS", "Build SITECON model..."});
     // It is important to give a time for sitecon to warm up to reproduce the crash.
     GTGlobals::sleep(15000);
