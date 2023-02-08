@@ -54,28 +54,28 @@ public:
     static void checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab);
 
     // Find pattern options panel tab
-    static void enterPattern(HI::GUITestOpStatus& os, QString pattern, bool useCopyPaste = false);
-    static void enterPatternFromFile(HI::GUITestOpStatus& os, QString filepath, QString filename);
+    static void enterPattern(HI::GUITestOpStatus& os, const QString& pattern, bool useCopyPaste = false);
+    static void enterPatternFromFile(HI::GUITestOpStatus& os, const QString& filepath, const QString& filename);
 
-    static bool checkResultsText(HI::GUITestOpStatus& os, QString expectedText);
+    static bool checkResultsText(HI::GUITestOpStatus& os, const QString& expectedText);
 
     static void setSearchWithAmbiguousBases(HI::GUITestOpStatus& os, bool searchWithAmbiguousBases = true);
-    static void setStrand(HI::GUITestOpStatus& os, QString strandStr);
+    static void setStrand(HI::GUITestOpStatus& os, const QString& strandStr);
     static void setRegionType(HI::GUITestOpStatus& os, const QString& regionType);
     static void setRegion(HI::GUITestOpStatus& os, int from, int to);
     static void setSearchInTranslation(HI::GUITestOpStatus& os, bool inTranslation = true);
-    static void setSearchInLocation(HI::GUITestOpStatus& os, QString strandStr);
+    static void setSearchInLocation(HI::GUITestOpStatus& os, const QString& strandStr);
     static void setSetMaxResults(HI::GUITestOpStatus& os, int maxResults);
-    static void setAlgorithm(HI::GUITestOpStatus& os, QString algorithm);
+    static void setAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm);
     static void setMatchPercentage(HI::GUITestOpStatus& os, int percentage);
     static void setUsePatternName(HI::GUITestOpStatus& os, bool setChecked = true);
 
     static int getMatchPercentage(HI::GUITestOpStatus& os);
     static QString getRegionType(HI::GUITestOpStatus& os);
     static QPair<int, int> getRegion(HI::GUITestOpStatus& os);
-    static const QString getHintText(HI::GUITestOpStatus& os);
+    static QString getHintText(HI::GUITestOpStatus& os);
 
-    static void enterFilepathForSavingAnnotations(HI::GUITestOpStatus& os, QString filepath);
+    static void enterFilepathForSavingAnnotations(HI::GUITestOpStatus& os, const QString& filepath);
 
     static void toggleInputFromFilePattern(HI::GUITestOpStatus& os);
 
@@ -94,9 +94,9 @@ public:
 
     // In Silico PCR tab
     static void setForwardPrimer(HI::GUITestOpStatus& os, const QString& primer);
-    static void setForwardPrimerMismatches(HI::GUITestOpStatus& os, const int mismatches);
+    static void setForwardPrimerMismatches(HI::GUITestOpStatus& os, int mismatches);
     static void setReversePrimer(HI::GUITestOpStatus& os, const QString& primer);
-    static void setReversePrimerMismatches(HI::GUITestOpStatus& os, const int mismatches);
+    static void setReversePrimerMismatches(HI::GUITestOpStatus& os, int mismatches);
     static void showPrimersDetails(HI::GUITestOpStatus& os);
     static int productsCount(HI::GUITestOpStatus& os);
     static void pressFindProducts(HI::GUITestOpStatus& os);
@@ -109,15 +109,16 @@ public:
     static bool isSaveAnnotationToShowHideWidgetOpened(HI::GUITestOpStatus& os);
     static bool isAnnotationParametersShowHideWidgetOpened(HI::GUITestOpStatus& os);
 
-    static void openSearchAlgorithmShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openSearchInShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
-    static void openOtherSettingsShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openSaveAnnotationToShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
     static void openAnnotationParametersShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
-    static void openInSilicoPcrMeltingTempertureShowHideWidget(HI::GUITestOpStatus& os);
+    static void openInSilicoPcrMeltingTemperatureShowHideWidget(HI::GUITestOpStatus& os);
 
     // Statistics
     static void showMeltingTemperatureDialog(HI::GUITestOpStatus& os);
+
+    /** Template (with %1) for melting temperature report string when the TM is available. */
+    static const QString meltingTmReportString;
 
 private:
     static QMap<Tabs, QString> initNames();

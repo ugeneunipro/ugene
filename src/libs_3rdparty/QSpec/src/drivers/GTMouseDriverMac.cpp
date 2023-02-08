@@ -101,7 +101,7 @@ bool GTMouseDriver::click(const QPoint& p, Qt::MouseButton button) {
         eventType2 = kCGEventRightMouseDown;
         eventType3 = kCGEventRightMouseUp;
         btn = kCGMouseButtonRight;
-    } else if (button == Qt::MidButton) {
+    } else if (button == Qt::MiddleButton) {
         eventType2 = kCGEventOtherMouseDown;
         eventType3 = kCGEventOtherMouseUp;
         btn = kCGMouseButtonCenter;
@@ -154,7 +154,7 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
     } else if (button == Qt::RightButton) {
         eventType = kCGEventRightMouseDown;
         btn = kCGMouseButtonRight;
-    } else if (button == Qt::MidButton) {
+    } else if (button == Qt::MiddleButton) {
         eventType = kCGEventOtherMouseDown;
         btn = kCGMouseButtonCenter;
     } else {
@@ -185,7 +185,7 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
     } else if (button == Qt::RightButton) {
         eventType = kCGEventRightMouseUp;
         btn = kCGMouseButtonRight;
-    } else if (button == Qt::MidButton) {
+    } else if (button == Qt::MiddleButton) {
         eventType = kCGEventOtherMouseUp;
         btn = kCGMouseButtonCenter;
     } else {

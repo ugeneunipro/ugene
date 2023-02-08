@@ -23,7 +23,7 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMulti
 }
 
 bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
-    if (obj == this && maEditor->getMultilineMode() && event->type() == QEvent::KeyPress) {
+    if (obj == this && maEditor->isMultilineMode() && event->type() == QEvent::KeyPress) {
         auto kEvent = static_cast<QKeyEvent*>(event);
         bool isShiftPressed = kEvent->modifiers().testFlag(Qt::ShiftModifier);
         bool isCtrlPressed = kEvent->modifiers().testFlag(Qt::ControlModifier);
@@ -214,7 +214,7 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
 }
 
 void MsaMultilineScrollArea::wheelEvent(QWheelEvent* event) {
-    if (maEditor->getMultilineMode()) {
+    if (maEditor->isMultilineMode()) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()
                             ? 0

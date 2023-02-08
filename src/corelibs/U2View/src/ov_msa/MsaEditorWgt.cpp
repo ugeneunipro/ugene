@@ -177,7 +177,7 @@ MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
 
 QSize MsaEditorWgt::sizeHint() const {
     QSize s = QWidget::sizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height());
     }
     return s;
@@ -185,7 +185,7 @@ QSize MsaEditorWgt::sizeHint() const {
 
 QSize MsaEditorWgt::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         int newHeight = consensusArea->size().height() +
                         qMax(qMax(sequenceArea->minimumSizeHint().height(),
                                   nameList->minimumSizeHint().height()),

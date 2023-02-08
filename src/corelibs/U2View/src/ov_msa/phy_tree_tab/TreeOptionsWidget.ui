@@ -437,7 +437,14 @@
       <item>
        <widget class="QCheckBox" name="showNodeShapeCheck">
         <property name="text">
-         <string>Show nodes</string>
+         <string>Node shapes</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="showTipShapeCheck">
+        <property name="text">
+         <string>Tip shapes</string>
         </property>
        </widget>
       </item>

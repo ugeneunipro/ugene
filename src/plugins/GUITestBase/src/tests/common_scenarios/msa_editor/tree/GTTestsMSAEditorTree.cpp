@@ -20,8 +20,6 @@
  */
 #include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTAction.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 
 #include <QGraphicsView>
@@ -65,8 +63,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(nameList == expectedExpandedTreeNameList, "Initial full tree name list not matched: " + nameList.join(","));
 
     // Collapse subtree. Check that MSA name list has a collapsed group.
-    QList<TvNodeItem*> nodeList = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    TvNodeItem* parentOfSequenceC = nodeList[1];
+    TvNodeItem* parentOfSequenceC = GTUtilsPhyTree::getNodeByBranchText(os, "0", "0");
     GTUtilsPhyTree::doubleClickNode(os, parentOfSequenceC);
     nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     expectedExpandedTreeNameList = QStringList({"h", "b", "f", "d", "g", "a"});
@@ -132,7 +129,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_1) {
-    // Check that when sync mode is turned OFF from inside of the Tree widget the MSA sequence order is restored to the Original.
+    // Check that when sync mode is turned OFF from inside the Tree widget the MSA sequence order is restored to the Original.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     QStringList originalSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);

@@ -25,6 +25,7 @@
 #include <QPainter>
 #include <QStack>
 
+#include <U2Core/Log.h>
 #include <U2Core/PhyTree.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -35,17 +36,14 @@
 
 namespace U2 {
 
-TvBranchItem::TvBranchItem(bool withNode, const TvBranchItem::Side& _side, const QString& nodeName)
-    : side(_side) {
+TvBranchItem::TvBranchItem(const PhyBranch* _phyBranch, const TvBranchItem::Side& _side, const QString& nodeName)
+    : phyBranch(_phyBranch), side(_side) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
     setAcceptedMouseButtons(Qt::NoButton);
 
-    if (withNode) {
-        nodeItem = new TvNodeItem(nodeName);
-        nodeItem->setParentItem(this);
-    }
+    nodeItem = new TvNodeItem(this, nodeName);
 
     QColor branchColor = qvariant_cast<QColor>(settings[BRANCH_COLOR]);
     setBrush(branchColor);
@@ -54,9 +52,9 @@ TvBranchItem::TvBranchItem(bool withNode, const TvBranchItem::Side& _side, const
     setPen(pen1);
 }
 
-TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool isRoot)
-    : phyBranch(branch) {
-    distance = branch == nullptr ? 0.0 : branch->distance;
+TvBranchItem::TvBranchItem(const PhyBranch* _phyBranch, const QString& sequenceName, bool isRoot)
+    : phyBranch(_phyBranch) {
+    distance = phyBranch == nullptr ? 0.0 : phyBranch->distance;
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
@@ -69,20 +67,20 @@ TvBranchItem::TvBranchItem(const PhyBranch* branch, const QString& name, bool is
     pen.setCosmetic(true);
     setPen(pen);
 
-    if ((branch != nullptr && !branch->childNode->isLeafNode()) || isRoot) {
-        QString nodeName = branch == nullptr ? "" : branch->childNode->name;
-        nodeItem = new TvNodeItem(nodeName);
-        nodeItem->setParentItem(this);
+    if (phyBranch != nullptr || isRoot) {
+        QString nodeName = phyBranch == nullptr ? "" : phyBranch->childNode->name;
+        nodeItem = new TvNodeItem(this, nodeName);
     }
 
-    if (name.isEmpty()) {
-        addDistanceTextItem(distance);
-    } else {  // 'this' is not a real branch item, but the name label only with dotted alignment lines.
-        nameTextItem = new TvTextItem(this, name);
-        setLabelPositions();
+    if (!sequenceName.isEmpty()) {
+        // 'this' is not a real branch item, but the name label only with dotted alignment lines.
+        nameTextItem = new TvTextItem(this, sequenceName);
+        updateLabelPositions();
         nameTextItem->setZValue(1);
         pen.setStyle(Qt::DotLine);
         setPen(pen);
+    } else {
+        addDistanceTextItem(distance);
     }
 }
 
@@ -110,7 +108,10 @@ void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
         nameTextItem->setFont(font);
         nameTextItem->setBrush(labelColor);
     }
-    setLabelPositions();
+    if (nodeItem != nullptr) {
+        nodeItem->updateSettings(settings);
+    }
+    updateLabelPositions();
 }
 
 const OptionsMap& TvBranchItem::getSettings() const {
@@ -118,6 +119,7 @@ const OptionsMap& TvBranchItem::getSettings() const {
 }
 
 void TvBranchItem::toggleCollapsedState() {
+    CHECK(!isLeaf(), );
     collapsed = !collapsed;
     QList<QGraphicsItem*> items = childItems();
     if (collapsed) {
@@ -139,10 +141,11 @@ void TvBranchItem::toggleCollapsedState() {
         rectItem->setPen(pen1);
     } else {
         for (auto& item : qAsConst(items)) {
-            if (auto rectItem = dynamic_cast<QGraphicsRectItem*>(item)) {
-                rectItem->setParentItem(nullptr);
-                scene()->removeItem(rectItem);
-            } else if (item != getDistanceTextItem() && item != getNameTextItem()) {
+            if (dynamic_cast<QGraphicsRectItem*>(item)) {
+                delete item;
+                continue;
+            }
+            if (item != getDistanceTextItem() && item != getNameTextItem()) {
                 item->show();
             }
         }
@@ -185,7 +188,7 @@ QString TvBranchItem::getNodeNameFromNodeItem() const {
     return nodeItem != nullptr ? nodeItem->nodeName : "";
 }
 
-void TvBranchItem::setLabelPositions() {
+void TvBranchItem::updateLabelPositions() {
     if (nameTextItem != nullptr) {
         QRectF rect = nameTextItem->boundingRect();
         nameTextItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
@@ -207,7 +210,7 @@ void TvBranchItem::setWidth(double newWidth) {
     prepareGeometryChange();
     double delta = newWidth - width;
     setPos(pos() + QPointF(delta, 0));
-    setLabelPositions();
+    updateLabelPositions();
     if (getDistanceTextItem() != nullptr) {
         QPointF newPos = getDistanceTextItem()->pos() + QPointF(-delta / 2, 0);
         getDistanceTextItem()->setPos(newPos);
@@ -228,7 +231,7 @@ void TvBranchItem::setUpPainter(QPainter* p) {
 
 void TvBranchItem::initDistanceText(const QString& text) {
     distanceTextItem = new TvTextItem(this, text);
-    setLabelPositions();
+    updateLabelPositions();
     distanceTextItem->setZValue(1);
 }
 
@@ -246,10 +249,6 @@ QRectF TvBranchItem::visibleChildrenBoundingRect(const QTransform& viewTransform
                 continue;
             }
             QRectF itemRect = graphItem->sceneBoundingRect();
-            if (graphItem->flags().testFlag(QGraphicsItem::ItemIgnoresTransformations)) {
-                QRectF transformedRect = invertedTransform.mapRect(itemRect);
-                itemRect.setWidth(transformedRect.width());
-            }
             childrenBoundingRect |= itemRect;
             graphicsItems.push(graphItem);
         }
@@ -314,6 +313,11 @@ void TvBranchItem::setWidthW(double w) {
 
 void TvBranchItem::setDist(double d) {
     distance = d;
+}
+
+bool TvBranchItem::isLeaf() const {
+    // Handles both rectangular & circular/unrooted layouts that have different properties for leaf nodes.
+    return (phyBranch != nullptr && phyBranch->childNode->isLeafNode()) || getChildBranch(Side::Left) == nullptr;
 }
 
 }  // namespace U2

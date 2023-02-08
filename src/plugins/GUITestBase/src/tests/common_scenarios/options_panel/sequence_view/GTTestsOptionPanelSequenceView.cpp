@@ -42,14 +42,14 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
-#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
-#include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "primitives/GTAction.h"
+#include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "system/GTFile.h"
 
 namespace U2 {
@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
-    static const QString roughMeltTemp = "<tr><td><a href=\"Melting temperature\">Melting temperature</a>: </td><td>79.78 &#176;C</td></tr>";
+    QString roughMeltTemp = GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("79.78");
     CHECK_SET_ERR(statisticsLabel->text().contains(roughMeltTemp), QString("No expected string: %1").arg(roughMeltTemp));
 
     QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters;
@@ -253,7 +253,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
     GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    static const QString primer3MeltTemp = "<tr><td><a href=\"Melting temperature\">Melting temperature</a>: </td><td>78.57 &#176;C</td></tr>";
+
+    QString primer3MeltTemp = GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("78.57");
     CHECK_SET_ERR(statisticsLabel->text().contains(primer3MeltTemp), QString("No expected string: %1").arg(primer3MeltTemp));
 
     GTUtilsOptionPanelSequenceView::closeTab(os, GTUtilsOptionPanelSequenceView::Statistics);
@@ -261,7 +262,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
     CHECK_SET_ERR(statisticsLabel->text().contains(primer3MeltTemp), QString("No expected string: %1").arg(primer3MeltTemp));
 }
-
 
 }  // namespace GUITest_common_scenarios_options_panel_sequence_view
 

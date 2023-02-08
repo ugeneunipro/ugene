@@ -100,7 +100,7 @@ echo "##teamcity[blockOpened name='Sign']"
 function code_sign() {
   FILE_TO_SIGN=$1
   echo "Signing ${FILE_TO_SIGN}"
-  if signtool.exe sign /a /t http://timestamp.digicert.com /s MY /n "Novosibirsk Center of Information Technologies UNIPRO Ltd." /debug /v "${FILE_TO_SIGN}"; then
+  if signtool.exe sign /a /t http://timestamp.digicert.com /s MY /n "NCIT UNIPRO LLC" /debug /v "${FILE_TO_SIGN}"; then
     echo "File is signed successfully: ${FILE_TO_SIGN}"
   else
     echo "Failed to sign ${FILE_TO_SIGN}"
@@ -109,7 +109,7 @@ function code_sign() {
 }
 
 find "${APP_BUNDLE_DIR_NAME}" | grep -e .exe$ -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
-  code_sign "${BINARY_FILE}"
+  code_sign "${BINARY_FILE}" || exit 1
 done
 echo "##teamcity[blockClosed name='Sign']"
 

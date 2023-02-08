@@ -5,17 +5,17 @@
 #   * add Qt5_DIR variable to File->Settings->Build,Execution,Deployment->CMake pointing to valid QT dir.
 #   * add UGENE_TRANSLATION_FILE environment variable to the RUN configuration and point it to *.qm file produced by qmake build
 
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.22)
 project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 44.0-dev)
+set(UGENE_VERSION 46.0-dev)
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
-        -DQT_DISABLE_DEPRECATED_BEFORE=0x050700
+        -DQT_DISABLE_DEPRECATED_BEFORE=0x050900
 )
 
 set(CMAKE_CXX_STANDARD 14)

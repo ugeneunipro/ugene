@@ -100,6 +100,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
@@ -2404,6 +2405,31 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7521) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/align_subalign.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_nm.png", ExportMsaImage::Settings(false, false, true, false)));
+    GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_mm.png", ExportMsaImage::Settings(false, false, true, true, 70)));
+    GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QPixmap normalMode(sandBoxDir + "test_7521_nm");
+    QPixmap multilineMode(sandBoxDir + "test_7521_mm");
+    double normalHeight = normalMode.height();
+    double multilineHeight = multilineMode.height();
+    double normalWidth = normalMode.width();
+    double multilineWidth = multilineMode.width();
+
+    double widthDiff = normalWidth / multilineWidth;
+
+    CHECK_SET_ERR(multilineHeight == normalHeight * 2 + 30, "Image height in multiline mode: " + QString::number(normalHeight) + ", image height in multiline mode: " + QString::number(multilineHeight));
+    CHECK_SET_ERR(widthDiff > 1 && widthDiff < 2, "Image width in multiline mode: " + QString::number(normalWidth) + ", image width in multiline mode: " + QString::number(multilineWidth));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7531) {
     // Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
@@ -2920,7 +2946,7 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7617) {
-    //1. Build dotplot for human_T1.fa
+    // 1. Build dotplot for human_T1.fa
     GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
     GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/FASTA/human_T1.fa", "", false, true));
 
@@ -2928,9 +2954,9 @@ GUI_TEST_CLASS_DEFINITION(test_7617) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_7617", GTFileDialogUtils::Save));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
 
-    //2. Click "Remove sequence" (gray cross) on sequence widget toolbar
-    //3. Answer "Yes" in "Save dot-plot" dialog and choose valid path
-    //Expected state: no crash, no errors in the log
+    // 2. Click "Remove sequence" (gray cross) on sequence widget toolbar
+    // 3. Answer "Yes" in "Save dot-plot" dialog and choose valid path
+    // Expected state: no crash, no errors in the log
     GTLogTracer lt;
     auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
@@ -3451,43 +3477,41 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     };
 
     // Rectangular.
-    QStringList allRows = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    QStringList allInRect = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after opening");
 
     QList<TvNodeItem*> treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* rectNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, rectNodeToCollapse);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Rectangular");
-    QStringList rowsInRectCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInRectCollapse.sort();
-    CHECK_SET_ERR(rowsInRectCollapse.length() == allRows.length() - 2,
-                  "Invalid count of nodes after collapse in Rectangular: " + QString::number(rowsInRectCollapse.size()));
+    QStringList collapsedInRect = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInRect.length() == allInRect.length() - 2,
+                  "Invalid count of nodes after collapse in Rectangular: " + QString::number(collapsedInRect.size()));
 
     // Circular.
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Circular");
-    QStringList rowsInSyncModeCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    CHECK_SET_ERR(rowsInSyncModeCircular == allRows, "Nodes in Circular layout do not match");
+    QStringList collapsedInCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInCircular == collapsedInRect,
+                  QString("Nodes in Circular layout do not match: rect: '%1', circular: '%2'").arg(collapsedInRect.join(",")).arg(collapsedInCircular.join(",")));
     treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* circularNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, circularNodeToCollapse);
-    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Circular");
-    QStringList rowsInCircularCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInCircularCollapse.sort();
-    CHECK_SET_ERR(rowsInCircularCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Circular");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse op in Circular");
+    QStringList allInCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(allInCircular == allInRect, "Invalid nodes after collapse in Circular");
 
     // Unrooted.
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Unrooted");
-    QStringList rowsInSyncModeUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    CHECK_SET_ERR(rowsInSyncModeUnrooted == allRows, "Nodes in Unrooted layout do not match");
+    QStringList allInUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(allInUnrooted == allInRect, "Nodes in Unrooted layout do not match");
     treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* unrootedNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, unrootedNodeToCollapse);
-    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Unrooted");
-    QStringList rowsInUnrootedCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInUnrootedCollapse.sort();
-    CHECK_SET_ERR(rowsInUnrootedCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Unrooted");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse op in Unrooted");
+    QStringList collapsedInUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInUnrooted == collapsedInRect, "Invalid nodes after collapse in Unrooted");
 
     // Rectangular (back).
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
@@ -3496,7 +3520,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 
 GUI_TEST_CLASS_DEFINITION(test_7671) {
     // I made a small file which has the same error as file from the issue,
-    // because the file from the issue was almoust 100 Mb size
+    // because the file from the issue was almost 100 Mb size
 
     // Open _common_data/scenarios/_regression/7671/NC_051342_region.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7671/NC_051342_region.gb");
@@ -4011,10 +4035,10 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7753) {
-    //1. Open "data/samples/Assembly/chrM.sorted.bam".
-    //2. Delete bam file
-    //3. Press 'imort' button in dialog
-    //Expected state: you got message box with error and error in log
+    // 1. Open "data/samples/Assembly/chrM.sorted.bam".
+    // 2. Delete bam file
+    // 3. Press 'imort' button in dialog
+    // Expected state: you got message box with error and error in log
     class DeleteFileBeforeImport : public CustomScenario {
         void run(GUITestOpStatus& os) override {
             QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
@@ -4044,6 +4068,84 @@ GUI_TEST_CLASS_DEFINITION(test_7781) {
     CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
     CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
     CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7789) {
+    // Check that show/hide node shape option works.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelPhyTree::openTab(os);
+
+    GTCheckBox::checkState(os, "showNodeShapeCheck", false);
+    GTCheckBox::checkState(os, "showTipShapeCheck", false);
+
+    // ========================== rectangular layout ===================
+    QImage originalRectangularImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeRectangularLayout != originalRectangularImage, "imageWithNodesShapeRectangularLayout != originalRectangularImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeRectangularLayout == originalRectangularImage, "imageWithNoNodesShapeRectangularLayout == originalRectangularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeRectangularLayout != originalRectangularImage, "imageWithTipShapeRectangularLayout != originalRectangularImage failed");
+    CHECK_SET_ERR(imageWithTipShapeRectangularLayout != imageWithNodesShapeRectangularLayout, "imageWithTipShapeRectangularLayout != imageWithNodesShapeRectangularLayout failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeRectangularLayout == originalRectangularImage, "imageWithNoTipShapeRectangularLayout == originalImage failed");
+
+    // ========================== circular layout ===================
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Circular"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
+
+    QImage originalCircularImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeCircularLayout != originalCircularImage, "imageWithNodesShapeCircularLayout != originalCircularImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeCircularLayout == originalCircularImage, "imageWithNoNodesShapeCircularLayout == originalCircularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeCircularLayout != originalCircularImage, "imageWithTipShapeCircularLayout != originalCircularImage failed");
+    CHECK_SET_ERR(imageWithTipShapeCircularLayout != imageWithNodesShapeCircularLayout, "imageWithTipShapeCircularLayout != imageWithNodesShapeCircularLayout failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeCircularLayout == originalCircularImage, "imageWithNoTipShapeRectangularLayout == originalCircularImage failed");
+
+    // ========================== unrooted layout ===================
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Unrooted"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
+
+    QImage originalUnrootedImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeUnrootedLayout != originalUnrootedImage, "imageWithNodesShapeUnrootedLayout != originalUnrootedImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeUnrootedLayout == originalUnrootedImage, "imageWithNoNodesShapeUnrootedLayout == originalUnrootedImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeUnrootedCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage, "imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage failed");
+    CHECK_SET_ERR(imageWithTipShapeUnrootedCircularLayout != imageWithNodesShapeUnrootedLayout, "imageWithTipShapeUnrootedCircularLayout != imageWithNodesShapeUnrootedLayout failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeUnrootedLayout == originalUnrootedImage, "imageWithNoTipShapeUnrootedLayout == originalUnrootedImage failed");
 }
 
 }  // namespace GUITest_regression_scenarios

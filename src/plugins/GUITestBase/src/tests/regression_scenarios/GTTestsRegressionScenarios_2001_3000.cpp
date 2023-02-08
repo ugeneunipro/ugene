@@ -68,6 +68,7 @@
 #include <U2View/AnnotationsTreeView.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/TvBranchItem.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTTestsRegressionScenarios_2001_3000.h"
@@ -580,10 +581,10 @@ GUI_TEST_CLASS_DEFINITION(test_2032) {
     // Expected result: order of sequences in the project view is {d, a, c, b}
     QModelIndex documentItem = GTUtilsProjectTreeView::findIndex(os, "abcd.fa");
 
-    CHECK_SET_ERR(documentItem.child(0, 0).data() == "[s] a", "1. Unexpected name of the object in the project view!");
-    CHECK_SET_ERR(documentItem.child(1, 0).data() == "[s] b", "2. Unexpected name of the object in the project view!");
-    CHECK_SET_ERR(documentItem.child(2, 0).data() == "[s] c", "3. Unexpected name of the object in the project view!");
-    CHECK_SET_ERR(documentItem.child(3, 0).data() == "[s] d", "4. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(0, 0, documentItem).data() == "[s] a", "1. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(1, 0, documentItem).data() == "[s] b", "2. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(2, 0, documentItem).data() == "[s] c", "3. Unexpected name of the object in the project view!");
+    CHECK_SET_ERR(documentItem.model()->index(3, 0, documentItem).data() == "[s] d", "4. Unexpected name of the object in the project view!");
 
     // Expected result: order of sequences in the sequences view is {d, a, c, b}
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
@@ -2839,7 +2840,7 @@ GUI_TEST_CLASS_DEFINITION(test_2506_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2513) {
-    //    Open COI.nwk.
+    // Check Swap sibling & re-root for inner & leaf nodes in circular tree.
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/", "COI.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2849,19 +2850,20 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Select the last node, then call a context menu for it. It contains two menu items: "swap siblings" and "reroot".
-    // The first one should be always disabled (for the tree leafs), the second one should be always enabled.
     QList<TvNodeItem*> nodes = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Nodes list is empty");
 
-    GTUtilsPhyTree::clickNode(os, nodes[25]);
+    TvNodeItem* innerNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.016", "0.017");
+    TvNodeItem* tipNode = innerNode->getLeftBranchItem()->getNodeItem();
+
+    GTUtilsPhyTree::clickNode(os, tipNode);
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Swap Siblings"}, PopupChecker::IsDisabled));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Reroot tree"}, PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Reroot tree"}, PopupChecker::IsDisabled));  // We do not support re-root for leaves.
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsPhyTree::clickNode(os, nodes[22]);
+    GTUtilsPhyTree::clickNode(os, innerNode);
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Swap Siblings"}, PopupChecker::IsEnabled));
     GTMouseDriver::click(Qt::RightButton);

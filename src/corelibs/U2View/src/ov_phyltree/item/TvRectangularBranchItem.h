@@ -53,12 +53,6 @@ public:
 
     void setSide(const Side& side);
 
-    void toggleCollapsedState() override;
-
-    const PhyBranch* getPhyBranch() const;
-
-    void drawCollapsedRegion();
-
     void setCurvature(double newCurvature);
 
 private:

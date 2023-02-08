@@ -1748,7 +1748,7 @@ void DotPlotWidget::mousePressEvent(QMouseEvent* e) {
         }
     }
     // shifting dotplot view
-    if (e->button() == Qt::MidButton) {
+    if (e->button() == Qt::MiddleButton) {
         shifting = true;
     }
     if (timer->isActive()) {
@@ -1906,7 +1906,7 @@ void DotPlotWidget::mouseReleaseEvent(QMouseEvent* e) {
         updateCursor();
     }
 
-    if (e->button() == Qt::MidButton) {
+    if (e->button() == Qt::MiddleButton) {
         shifting = false;
     }
 

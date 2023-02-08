@@ -1533,7 +1533,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: layout changed, height slider is disabled
+    //    Expected state: layout changed, breadth slider is disabled.
     QImage circularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(rectImage != circularImage, "tree view not changed to circular");
     CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for circular layout");
@@ -1542,7 +1542,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: layout changed, height slider is disabled
+    //    Expected state: layout changed, breadth slider is disabled.
     QImage unrootedImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(rectImage != unrootedImage, "tree view not changed to unrooted");
     CHECK_SET_ERR(!breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in enabled for unrooted layout");
@@ -1551,7 +1551,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: tree is similar to the beginning, height slider is enabled
+    // Expected state: tree is similar to the beginning, breadth slider is enabled.
     QImage rectImage2 = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(rectImage == rectImage2, "final image is not equal to initial");
     CHECK_SET_ERR(breadthScaleAdjustmentSlider->isEnabled(), "breadthScaleAdjustmentSlider in disabled for rectangular layout");
@@ -1878,22 +1878,13 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTThread::waitForMainThread();
 
-    // Click to empty space near the node to reset selection
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.006", "0.104");
-    QPointF sceneCoord = node->mapToScene(node->boundingRect().topLeft());
-    QPoint viewCord = treeView->mapFromScene(sceneCoord);
-    QPoint globalCoord = treeView->mapToGlobal(viewCord);
-    globalCoord += QPoint(node->boundingRect().width() / 2 + 8, node->boundingRect().height() / 2 + 8);
-    GTMouseDriver::moveTo(globalCoord);
-    GTMouseDriver::click();
     setBranchColor(os, 255, 0, 0);
 
     // Expected state: color changed
-    CHECK_SET_ERR(treeView != nullptr, "tree view not found");
     QString colorName = "#ff0000";
+    auto treeView = GTWidget::findGraphicsView(os, "treeView");
     double initPercent = colorPercent(os, treeView, colorName);
-    CHECK_SET_ERR(initPercent != 0, "color not changed");
+    CHECK_SET_ERR(initPercent > 0, "color not changed");
 
     // Change  line Weight
     auto lineWeightSpinBox = GTWidget::findSpinBox(os, "lineWeightSpinBox");

@@ -67,8 +67,6 @@ class U2CORE_EXPORT PhyBranch : public QObject {
 public:
     PhyBranch() = default;
 
-    void movingToAnotherAddress(PhyBranch* newAddress);
-
     PhyNode* parentNode = nullptr;
     PhyNode* childNode = nullptr;
 

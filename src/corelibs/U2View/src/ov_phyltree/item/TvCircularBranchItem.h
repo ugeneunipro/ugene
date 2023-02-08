@@ -30,7 +30,7 @@ class TvRectangularBranchItem;
 
 class U2VIEW_EXPORT TvCircularBranchItem : public TvBranchItem {
 public:
-    TvCircularBranchItem(QGraphicsItem* parent, double height, TvRectangularBranchItem* from, const QString& nodeName);
+    TvCircularBranchItem(TvCircularBranchItem* parent, double height, TvRectangularBranchItem* from, const QString& nodeName);
 
     QRectF boundingRect() const override;
 
@@ -39,7 +39,7 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void setLabelPositions() override;
+    void updateLabelPositions() override;
 
 private:
     double height = 0;

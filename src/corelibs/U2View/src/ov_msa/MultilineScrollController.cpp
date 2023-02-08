@@ -99,7 +99,7 @@ void MultilineScrollController::setEnable(bool enable) {
 
 // TODO: new vertical scrollbar mode
 bool MultilineScrollController::eventFilter(QObject* object, QEvent* event) {
-    if (event->type() == QEvent::Wheel && maEditor->getMultilineMode()) {
+    if (event->type() == QEvent::Wheel && maEditor->isMultilineMode()) {
         if (object == vScrollBar) {
             // return vertEventFilter((QWheelEvent *) event);
             return true;
@@ -110,7 +110,7 @@ bool MultilineScrollController::eventFilter(QObject* object, QEvent* event) {
 }
 
 bool MultilineScrollController::vertEventFilter(QWheelEvent* event) {
-    if (maEditor->getMultilineMode()) {
+    if (maEditor->isMultilineMode()) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()
                             ? 0
@@ -151,7 +151,7 @@ void MultilineScrollController::sl_handleVScrollAction(int action) {
 void MultilineScrollController::vertScroll(const Directions& directions, bool byStep) {
     ui->setUpdatesEnabled(false);
 
-    if (maEditor->getMultilineMode()) {
+    if (maEditor->isMultilineMode()) {
         auto scroller = qobject_cast<MsaMultilineScrollArea*>(
             childrenScrollArea);
         CHECK(scroller != nullptr, );
@@ -388,7 +388,7 @@ void MultilineScrollController::setMultilineVScrollbarValue(int value) {
 }
 
 void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
-    if (maEditor->getMultilineMode()) {
+    if (maEditor->isMultilineMode()) {
         QSignalBlocker signalBlocker(this);
         ui->setUpdatesEnabled(false);
 
@@ -408,13 +408,13 @@ void MultilineScrollController::setFirstVisibleBase(int firstVisibleBase) {
 }
 
 void MultilineScrollController::setFirstVisibleViewRow(int viewRowIndex) {
-    if (!maEditor->getMultilineMode()) {
+    if (!maEditor->isMultilineMode()) {
         ui->getUI(0)->getScrollController()->setFirstVisibleViewRow(viewRowIndex);
     }
 }
 
 void MultilineScrollController::setFirstVisibleMaRow(int maRowIndex) {
-    if (!maEditor->getMultilineMode()) {
+    if (!maEditor->isMultilineMode()) {
         ui->getUI(0)->getScrollController()->setFirstVisibleMaRow(maRowIndex);
     }
 }
@@ -598,7 +598,7 @@ void MultilineScrollController::updateVerticalScrollBarPrivate() {
     vScrollBar->setPageStep(scrollAreaHeight);
 
     // don't show vert scrollbar in non-multiline mode
-    vScrollBar->setVisible(maEditor->getMultilineMode());
+    vScrollBar->setVisible(maEditor->isMultilineMode());
 
     // Special
     childrenScrollArea->verticalScrollBar()->setMinimum(0);

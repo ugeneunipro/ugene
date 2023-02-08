@@ -119,7 +119,6 @@ const QString FindPrimerPairsWorkerFactory::ACTOR_ID("find-primers");
 const QString FindPrimerPairsWorkerFactory::OUT_FILE("output-file");
 const QString FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID("temperature-settings");
 
-
 void FindPrimerPairsWorkerFactory::init() {
     QList<PortDescriptor*> p;
     QList<Attribute*> a;
@@ -142,9 +141,8 @@ void FindPrimerPairsWorkerFactory::init() {
                               FindPrimerPairsWorker::tr("Path to the report output file."));
 
     Descriptor temperatureDesc(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID,
-                               FindPrimerPairsWorker::tr("Temperature settings"), 
+                               FindPrimerPairsWorker::tr("Temperature settings"),
                                FindPrimerPairsWorker::tr("Set up temperature calculation method."));
-
 
     QList<Attribute*> attrs;
     attrs << new Attribute(reportFileDesc, BaseTypes::STRING_TYPE(), true);
@@ -177,8 +175,9 @@ void FindPrimerPairsWorkerFactory::init() {
 FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<BaseTempCalc>& _temperatureCalculator)
     : Task(tr("FindPrimersTask"), TaskFlag_None),
       sequences(sequences),
-      outputUrl(outputFileUrl),
-      temperatureCalculator(_temperatureCalculator) {}
+      temperatureCalculator(_temperatureCalculator),
+      outputUrl(outputFileUrl) {
+}
 
 void FindPrimersTask::run() {
     CHECK(sequences.size() > 0, );

@@ -638,10 +638,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     //    Expected state: Phylogenetic tree appears
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QList<TvNodeItem*> nodeList = GTUtilsPhyTree::getNodes(os);
-
-    CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
-    QPoint globalCoord = GTUtilsPhyTree::getGlobalCenterCoord(os, nodeList.last());
+    QPoint globalCoord = GTUtilsPhyTree::getGlobalCenterCoord(os, GTUtilsPhyTree::getNodeByBranchText(os, "0.023", "0.078"));
 
     //    2. Do context menu {Collapse} for any node
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Collapse"}));
@@ -652,7 +649,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     QList<QGraphicsSimpleTextItem*> branchList;
     QList<QGraphicsItem*> list = treeView->scene()->items();
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (textItem && (textItem->text().contains("0.052") || textItem->text().contains("0.045") ||
                          textItem->text().contains("bicolor") || textItem->text().contains("roeseli"))) {
             branchList.append(textItem);
@@ -662,7 +659,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     foreach (QGraphicsSimpleTextItem* item, branchList) {
         CHECK_SET_ERR(!item->isVisible(), item->text() + " is visible");
     }
-    //    Expected state: this node's branches has dissapered
+    //    Expected state: this node's branches has dispersed
 
     //    3. Do context menu {Expand} for same
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Collapse"}));
@@ -684,10 +681,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
 
     //    Expected state: Phylogenetic tree appears
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QList<TvNodeItem*> nodeList = GTUtilsPhyTree::getNodes(os);
 
-    CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
-    QPoint globalCoord = GTUtilsPhyTree::getGlobalCenterCoord(os, nodeList.last());
+    QPoint globalCoord = GTUtilsPhyTree::getGlobalCenterCoord(os, GTUtilsPhyTree::getNodeByBranchText(os, "0.023", "0.078"));
 
     //    2. Do context menu {Collapse} for any node
     GTMouseDriver::moveTo(globalCoord);
@@ -696,7 +691,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     QList<QGraphicsSimpleTextItem*> branchList;
     QList<QGraphicsItem*> list = treeView->scene()->items();
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (textItem && (textItem->text().contains("0.052") || textItem->text().contains("0.045") ||
                          textItem->text().contains("bicolor") || textItem->text().contains("roeseli"))) {
             branchList.append(textItem);
@@ -727,17 +722,15 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     //    Expected state: phylogenetic tree appears
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QList<TvNodeItem*> nodeList = GTUtilsPhyTree::getNodes(os);
-    CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
 
     //    2. Do context menu {Collapse} for any node
-    TvNodeItem* node = nodeList.at(1);
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.023", "0.078");
     GTUtilsPhyTree::doubleClickNode(os, node);
 
     QList<QGraphicsSimpleTextItem*> branchList;
     QList<QGraphicsItem*> list = treeView->scene()->items();
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (textItem && !textItem->text().contains("0.106") && !textItem->text().contains("0.007") &&
             !textItem->text().contains("0.103") && !textItem->text().contains("0") &&
             !textItem->text().contains("Phaneroptera_falcata") && !textItem->text().contains("Isophya_altaica_EF540820") &&
@@ -761,7 +754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
         }
         CHECK_SET_ERR(item->isVisible(), item->text() + " is not visible");
     }
-    //    Expected state: this node's branches has dissapeared
+    //    Expected state: this node's branches has disparaged
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
@@ -771,54 +764,35 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //   Expected state: phylogenetic tree appears
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QList<QGraphicsItem*> list = treeView->scene()->items();
 
-    QList<QGraphicsSimpleTextItem*> branchList;
-    foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
-        if (textItem && !textItem->text().contains("0.011")) {
-            branchList.append(textItem);
-        }
-    }
     // 2. Make sure the tree doesn't look like a vertical line. It should have some width
-    QList<QGraphicsItem*> lineList;
+    double w = 0;
+    QList<QGraphicsItem*> list = treeView->scene()->items();
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
-        if (!textItem) {
-            lineList.append(item);
-        }
-    }
-
-    qreal w = 0;
-    foreach (QGraphicsItem* item, lineList) {
-        if (w < item->boundingRect().width()) {
-            w = item->boundingRect().width();
+        if (!qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item)) {
+            w = qMax(w, item->boundingRect().width());
         }
     }
 
     CHECK_SET_ERR(w > 100, "tree seems to be too narrow");
     // 3. Choose any node and do the context menu command "Swap siblings"
-    QList<TvNodeItem*> nodeList = GTUtilsPhyTree::getNodes(os);
-    CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
-    QGraphicsItem* node = nodeList.at(1);
+    QGraphicsItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.003", "0.022");
     QPointF sceneCoord = node->mapToScene(node->boundingRect().center() - QPoint(-2, 0));  // Hack for tree button items: they are not hoverable on the right side.
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
 
     GTMouseDriver::moveTo(globalCoord);
-    GTMouseDriver::click();
-    // TODO: Wait until is hovered.
-
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
 
     qreal finalW = 0;
-    foreach (QGraphicsItem* item, lineList) {
-        if (finalW < item->boundingRect().width()) {
-            finalW = item->boundingRect().width();
+    list = treeView->scene()->items();
+    foreach (QGraphicsItem* item, list) {
+        if (!qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item)) {
+            finalW = qMax(finalW, item->boundingRect().width());
         }
     }
-    CHECK_SET_ERR(w == finalW, "tree weights seems to be changed");
+    CHECK_SET_ERR(w == finalW, "tree weights seems to be changed: before: " + QString::number(w) + ", after: " + QString::number(finalW));
     //   Expected state: again, tree should have some width
 }
 
@@ -838,8 +812,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     // 3. Press the first one
     // Expected state: the "Select files to open..." dialog has appeared
     // 4. Specify a path to the file "data/samples/Newick/COI.nwk", press the "Open" button
-    GTFileDialogUtils* ob = new GTFileDialogUtils(os, dataDir + "samples/Newick/", "COI.nwk");
-    GTUtilsDialog::waitForDialog(os, ob);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick/", "COI.nwk"));
     GTWidget::click(os, openButton);
 
     // Expected state: tree view has appeared together with the alignment
@@ -874,54 +847,31 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
-    // 1. Open "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Use context menu items { Tree -> Build tree }
-    // Expected: the "Build Phylogenetic Tree" dialog has appeared
-    // 3. Press the "Build" button in the dialog
-    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_TREES, "Build Tree"}));
-    QString outputDirPath(testDir + "_common_data/scenarios/sandbox");
-    QDir outputDir(outputDirPath);
-    GTUtilsDialog::add(os, new BuildTreeDialogFiller(os, outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-
-    // 4. Open the "Tree Setting" option panel tab
-    //  it does automatically
-    GTUtilsProjectTreeView::openView(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/2298.nwk", 0, 0, true));
+    QAbstractButton* tree = GTAction::button(os, "Build Tree");
+    GTWidget::click(os, tree);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::toggleView(os);
-    MsaEditorWgt* ui = AppContext::getMainWindow()->getQMainWindow()->findChild<MsaEditorWgt*>();
-    QSplitter* splitter = ui->findChild<QSplitter*>();
-    splitter->setSizes(QList<int>() << 100 << 0 << 0);
-    // 5. Check the "Align labels" checkbox in the "Labels" section
-    QCheckBox* alignLabelsButton = dynamic_cast<QCheckBox*>(
-        GTWidget::findWidget(os, "alignLabelsCheck"));
-    CHECK_SET_ERR(nullptr != alignLabelsButton, "The \"Align labels\" button is not found");
-    GTCheckBox::setChecked(os, alignLabelsButton, true);
 
-    const QList<QGraphicsItem*> treeViewItems = treeView->items();
-    QMap<const QGraphicsItem*, QRectF> initialLocations;
-    foreach (const QGraphicsItem* item, treeViewItems) {
-        initialLocations[item] = item->boundingRect();
-    }
-    // GTWidget::getAllWidgetsInfo(os);
+    // Check the "Align labels" checkbox in the "Labels" section.
+    GTCheckBox::setChecked(os, "alignLabelsCheck", true);
+    GTThread::waitForMainThread();
+    QImage imageWithAlignBefore = GTUtilsPhyTree::captureTreeImage(os);
 
-    // GTGlobals::sleep(2000);
-    // 6. Check the "Show names" checkbox twice
-    QCheckBox* showNamesButton = dynamic_cast<QCheckBox*>(GTWidget::findWidget(os, "showNamesCheck"));
-    CHECK_SET_ERR(nullptr != showNamesButton, "The \"Show names\" button is not found");
-    GTCheckBox::setChecked(os, showNamesButton, false);
+    // Hide names.
+    GTCheckBox::setChecked(os, "showNamesCheck", false);
+    GTThread::waitForMainThread();
+    QImage imageWithNoNames = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNames != imageWithAlignBefore, "Error: imageWithNoNames is equal to imageWithAlignBefore");
 
-    GTCheckBox::setChecked(os, showNamesButton, true);
-
-    // Expected state: labels on the tree view have kept their location
-    foreach (const QGraphicsItem* item, treeViewItems) {
-        CHECK_SET_ERR(initialLocations[item] == item->boundingRect(),
-                      "Graphics item's position has changed!");
-    }
+    // Show names back: initial alignment view should be restored.
+    GTCheckBox::setChecked(os, "showNamesCheck", true);
+    GTThread::waitForMainThread();
+    QImage imageWithAlignAfter = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithAlignAfter == imageWithAlignBefore, "Error: imageWithAlignAfter is not equal to imageWithAlignBefore");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
@@ -984,10 +934,10 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Select the parent node of "Bicolorana_bicolor_EF540830" and "Roeseliana_roeseli".
-    QList<TvNodeItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    double firstNodeDistance = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
-    GTUtilsPhyTree::clickNode(os, nodes[0]);
+    double distanceBefore = GTUtilsPhyTree::getNodeDistance(os, GTUtilsPhyTree::getNodes(os)[10]);
+    CHECK_SET_ERR(distanceBefore > 0, "Wrong node selected");
+
+    GTUtilsPhyTree::clickNode(os, GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045"));
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
     //    3. Do the context menu command "Reroot tree".
@@ -997,11 +947,8 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the tree is rerooted. The selected node parent node becomes a new tree root.
-    nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
-    qreal firstNodeDistanceNew = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
-
-    CHECK_SET_ERR(firstNodeDistance != firstNodeDistanceNew, "Distances are not changed. The tree was not rerooted?")
+    double distanceAfter = GTUtilsPhyTree::getNodeDistance(os, GTUtilsPhyTree::getNodes(os)[10]);
+    CHECK_SET_ERR(distanceBefore != distanceAfter, "Distances are not changed. The tree was not rerooted?")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {
@@ -1013,25 +960,24 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Select the parent node of "Bicolorana_bicolor_EF540830" and "Roeseliana_roeseli".
-    TvNodeItem* node1Before = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
-    GTUtilsPhyTree::clickNode(os, node1Before);
-    CHECK_SET_ERR(GTUtilsPhyTree::getSelectedNodes(os) == QList<TvNodeItem*>({node1Before}), "A clicked node wasn't selected");
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
+    GTUtilsPhyTree::clickNode(os, node);
+    QList<TvNodeItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);  // 1 node & 2 tips.
+    CHECK_SET_ERR(selectedNodes.length() == 3 && selectedNodes.contains(node), "A clicked node wasn't selected");
 
-    // Other node: must not change during swap-siblings action.
-    TvNodeItem* node2Before = GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
+    // Other node: must not change during swap-siblings action. If it changes it won't be found.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
 
     // Do the context menu command "Swap siblings".
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: left & right branches swapped.
-    TvNodeItem* node1After = GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
-    CHECK_SET_ERR(node1Before == node1After, "Swap action failed.");
+    // Expected state: left & right branches swapped. If not found -> there was no swap.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
 
-    // This node must not change.
-    TvNodeItem* node2After = GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
-    CHECK_SET_ERR(node2Before == node2After, "Swap action failed.");
+    // This node must not change. If it changes it won't be found.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.067", "0.078");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
@@ -1048,18 +994,18 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Select the parent node of "Bicolorana_bicolor_EF540830" and "Roeseliana_roeseli".
-    TvNodeItem* node1Before = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
-    GTUtilsPhyTree::clickNode(os, node1Before);
-    CHECK_SET_ERR(GTUtilsPhyTree::getSelectedNodes(os) == QList<TvNodeItem*>({node1Before}), "A clicked node wasn't selected");
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
+    GTUtilsPhyTree::clickNode(os, node);
+    QList<TvNodeItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
+    CHECK_SET_ERR(selectedNodes.length() == 3 && selectedNodes.contains(node), "A clicked node wasn't selected");
 
     // Do the context menu command "Swap siblings".
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Swap Siblings"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: left & right branches swapped.
-    TvNodeItem* node1After = GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
-    CHECK_SET_ERR(node1Before == node1After, "Swap action failed.");
+    // Expected state: left & right branches swapped. If not found -> there was no swap.
+    GTUtilsPhyTree::getNodeByBranchText(os, "0.045", "0.052");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
@@ -1079,9 +1025,11 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     GTWidget::click(os, GTUtilsPhyTree::getTreeViewerUi(os));
     QList<TvNodeItem*> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
+    double distanceBefore = GTUtilsPhyTree::getNodeDistance(os, nodes[10]);
+    CHECK_SET_ERR(distanceBefore > 0, "Wrong node selected");
 
-    qreal firstNodeDistance = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
-    GTUtilsPhyTree::clickNode(os, nodes.first());
+    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.052", "0.045");
+    GTUtilsPhyTree::clickNode(os, node);
     CHECK_SET_ERR(!GTUtilsPhyTree::getSelectedNodes(os).isEmpty(), "A clicked node wasn't selected");
 
     //    3. Do the context menu command "Reroot tree".
@@ -1094,8 +1042,8 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
     nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(!nodes.isEmpty(), "Tree nodes are not found");
 
-    qreal firstNodeDistanceNew = GTUtilsPhyTree::getNodeDistance(os, nodes.first());
-    CHECK_SET_ERR(firstNodeDistance != firstNodeDistanceNew, "Distances are not changed. The tree was not rerooted?")
+    double distanceAfter = GTUtilsPhyTree::getNodeDistance(os, nodes[10]);
+    CHECK_SET_ERR(distanceBefore != distanceAfter, "Distances are not changed. The tree was not rerooted?")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {

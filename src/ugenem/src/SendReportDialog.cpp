@@ -19,19 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#include <qglobal.h>
-
-#ifdef Q_OS_WIN
-#    include "DetectWin10.h"
-#endif
-#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
-#    include <unistd.h>  // for sysconf(3)
-#endif
+#include "SendReportDialog.h"
 
 #include <QBuffer>
-#include <QDate>
 #include <QDir>
-#include <QEventLoop>
 #include <QFile>
 #include <QHostInfo>
 #include <QHttpPart>
@@ -40,13 +31,12 @@
 #include <QNetworkProxy>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QOperatingSystemVersion>
 #include <QProcess>
-#include <QSysInfo>
 #include <QThread>
-#include <QTime>
 #include <QUrl>
+#include <qglobal.h>
 
-#include "SendReportDialog.h"
 #include "Utils.h"
 #include "getMemorySize.c"
 
@@ -320,103 +310,18 @@ void SendReportDialog::sl_onOkClicked() {
 }
 
 QString ReportSender::getOSVersion() {
-    QString result;
-#if defined(Q_OS_WIN32)
-    result = "Windows ";
-    switch (QSysInfo::WindowsVersion) {
-        case QSysInfo::WV_32s:
-            result += "3.1 with Win 32s";
-            break;
-        case QSysInfo::WV_95:
-            result += "95";
-            break;
-        case QSysInfo::WV_98:
-            result += "98";
-            break;
-        case QSysInfo::WV_Me:
-            result += "Me";
-            break;
-        case QSysInfo::WV_NT:
-            result += "NT (operating system version 4.0)";
-            break;
-        case QSysInfo::WV_2000:
-            result += "2000 (operating system version 5.0)";
-            break;
-        case QSysInfo::WV_XP:
-            result += "XP (operating system version 5.1)";
-            break;
-        case QSysInfo::WV_2003:
-            result += "Server 2003, Server 2003 R2, Home Server, XP Professional x64 Edition (operating system version 5.2)";
-            break;
-        case QSysInfo::WV_VISTA:
-            result += "Vista, Server 2008 (operating system version 6.0)";
-            break;
-        case QSysInfo::WV_WINDOWS7:
-            result += "7, Server 2008 R2 (operating system version 6.1)";
-            break;
-        case QSysInfo::WV_WINDOWS8:
-            result += "8 (operating system version 6.2)";
-            break;
-        default:
-            if (DetectWindowsVersion::isWindows10()) {
-                result += "10 (operating system version 10)";
-            } else {
-                result += QString("unknown (operating system version %1)").arg(DetectWindowsVersion::getVersionString());
-            }
-            break;
-    }
-
+#ifdef Q_OS_DARWIN
+    QString result = "Mac";
+#elif defined(Q_OS_WIN)
+    QString result = "Windows";
 #elif defined(Q_OS_LINUX)
-    result = "Linux";
-#elif defined(Q_OS_FREEBSD)
-    result = "FreeBSD";
-#elif defined(Q_OS_DARWIN)
-    result = "Mac ";
-    switch (static_cast<int>(QSysInfo::MacintoshVersion)) {
-        case QSysInfo::MV_9:
-            result += "Mac OS 9 (unsupported)";
-            break;
-        case QSysInfo::MV_10_0:
-            result += "OS X 10.0 (unsupported)";
-            break;
-        case QSysInfo::MV_10_1:
-            result += "OS X 10.1 (unsupported)";
-            break;
-        case QSysInfo::MV_10_2:
-            result += "OS X 10.2 (unsupported)";
-            break;
-        case QSysInfo::MV_10_3:
-            result += "OS X 10.3";
-            break;
-        case QSysInfo::MV_10_4:
-            result += "OS X 10.4";
-            break;
-        case QSysInfo::MV_10_5:
-            result += "OS X 10.5";
-            break;
-        case QSysInfo::MV_10_6:
-            result += "OS X 10.6";
-            break;
-        case QSysInfo::MV_10_7:
-            result += "OS X 10.7";
-            break;
-        case QSysInfo::MV_10_8:
-            result += "OS X 10.8";
-            break;
-        case QSysInfo::MV_10_9:
-            result += "OS X 10.9";
-            break;
-        case 0x000C:
-            result += "OS X 10.10";
-            break;
-        default:
-            result += "unknown";
-            break;
-    }
+    QString result = "Linux";
 #else
-    result = "Unsupported OS";
+    QString result = "Unknown";
 #endif
 
+    QOperatingSystemVersion osVersion = QOperatingSystemVersion::current();
+    result += QString(" %1.%2.%3").arg(osVersion.majorVersion()).arg(osVersion.minorVersion()).arg(osVersion.microVersion());
     return result;
 }
 

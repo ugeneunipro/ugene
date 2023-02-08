@@ -31,14 +31,14 @@ class PhyNode;
 
 class U2VIEW_EXPORT TvUnrootedBranchItem : public TvBranchItem {
 public:
-    TvUnrootedBranchItem(QGraphicsItem* parent, qreal angle, TvRectangularBranchItem* from, const QString& nodeName);
+    TvUnrootedBranchItem(TvUnrootedBranchItem* parent, qreal angle, TvRectangularBranchItem* from, const QString& nodeName);
 
     QRectF boundingRect() const override;
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void setLabelPositions() override;
+    void updateLabelPositions() override;
 };
 
 }  // namespace U2

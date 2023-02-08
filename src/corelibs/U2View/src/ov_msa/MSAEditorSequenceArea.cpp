@@ -172,7 +172,7 @@ bool MSAEditorSequenceArea::hasAminoAlphabet() {
 
 QSize MSAEditorSequenceArea::sizeHint() const {
     QSize s = QWidget::sizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height() + 2);
     }
     return s;
@@ -180,7 +180,7 @@ QSize MSAEditorSequenceArea::sizeHint() const {
 
 QSize MSAEditorSequenceArea::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         int viewRowCount = editor->getCollapseModel()->getViewRowCount();
         int numSequences = editor->getNumSequences();
         int newHeight = (editor->getRowHeight() + 0) *
@@ -202,7 +202,7 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 void MSAEditorSequenceArea::wheelEvent(QWheelEvent* we) {
-    if (!editor->getMultilineMode()) {
+    if (!editor->isMultilineMode()) {
         MaEditorSequenceArea::wheelEvent(we);
     }
 }

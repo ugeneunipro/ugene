@@ -788,7 +788,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     auto detailsComplementary = GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary);
     CHECK_SET_ERR(detailsComplementary.contains("61.12"), "Unexpected complementary primer temperature, expected: 61.12");
 
-    GTUtilsOptionPanelSequenceView::openInSilicoPcrMeltingTempertureShowHideWidget(os);
+    GTUtilsOptionPanelSequenceView::openInSilicoPcrMeltingTemperatureShowHideWidget(os);
     struct Steps {
         Steps(GTUtilsMeltingTemperature::Parameter _step, const QString& _stringValue, const QString& _directTemp, const QString& _complementaryTemp) :
             step(_step), stringValue(_stringValue), directTemp(_directTemp), complementaryTemp(_complementaryTemp) {}

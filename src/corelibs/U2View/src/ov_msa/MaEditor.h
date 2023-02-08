@@ -230,7 +230,7 @@ public:
     virtual void initActionsAndSignals() {};
     virtual void initChildrenActionsAndSignals() {};
 
-    virtual bool getMultilineMode() const;
+    virtual bool isMultilineMode() const;
     virtual bool setMultilineMode(bool newmode);
 
 signals:
