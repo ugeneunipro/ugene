@@ -20,11 +20,8 @@
 */
 
 #include "SiteconBuildDialogFiller.h"
-#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
-
-#include <QApplication>
 
 namespace U2 {
 using namespace HI;
