@@ -37,10 +37,6 @@ SiteconBuildDialogFiller::SiteconBuildDialogFiller(HI::GUITestOpStatus& os, cons
       model(model) {
 }
 
-SiteconBuildDialogFiller::SiteconBuildDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-   : Filler(os, "SiteconBuildDialog", scenario) {
-}
-
 #define GT_METHOD_NAME "commonScenario"
 void SiteconBuildDialogFiller::commonScenario() {
    QWidget* dialog = GTWidget::getActiveModalWidget(os);
