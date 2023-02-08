@@ -24,7 +24,7 @@
 
 namespace U2 {
 
-const char* RoughTempCalcCmdFactory::ID = QT_TR_NOOP("Rough");
+static const char* ID = QT_TR_NOOP("Rough");
 
 RoughTempCalcCmdFactory::RoughTempCalcCmdFactory()
     : TempCalcFactory(tr(ID)) {}

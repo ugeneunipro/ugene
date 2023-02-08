@@ -1106,7 +1106,7 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
     <message>
         <location filename="../src/PrimerLibraryWidget.cpp" line="76"/>
         <source>Temperature</source>
-        <translation>Температура плавдения</translation>
+        <translation>Температура плавления</translation>
     </message>
 </context>
 </TS>

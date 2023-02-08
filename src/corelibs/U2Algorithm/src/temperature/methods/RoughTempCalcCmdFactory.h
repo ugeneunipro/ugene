@@ -44,9 +44,6 @@ public:
     TempCalcSettings createDefaultTempCalcSettings() const override;
     BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const override;
 
-protected:
-    static const char* ID;
-
 };
 
 }
