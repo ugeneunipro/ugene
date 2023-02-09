@@ -24,10 +24,10 @@
 
 namespace U2 {
 
-static const char* ID = QT_TR_NOOP("Rough");
+static const char* ID = "Rough";
 
 RoughTempCalcCmdFactory::RoughTempCalcCmdFactory()
-    : TempCalcFactory(tr(ID)) {}
+    : TempCalcFactory(ID) {}
 
 QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createTempCalculator(const TempCalcSettings& settings) const {
     return QSharedPointer<BaseTempCalc>(new RoughTempCalc(settings));
@@ -39,7 +39,7 @@ QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createDefaultTempCalculato
 
 TempCalcSettings RoughTempCalcCmdFactory::createDefaultTempCalcSettings() const {
     TempCalcSettings settings;
-    settings.insert(BaseTempCalc::KEY_ID, tr(ID));
+    settings.insert(BaseTempCalc::KEY_ID, ID);
     return settings;
 }
 
