@@ -26,7 +26,7 @@
 namespace U2 {
 
 Primer3TempCalcFactory::Primer3TempCalcFactory()
-    : TempCalcFactory("primer3-tm-algorithm", QT_TRID_NOOP("Primer 3")) {
+    : TempCalcFactory("primer3-tm-algorithm", tr("Primer 3")) {
 }
 
 QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(const TempCalcSettings& settings) const {

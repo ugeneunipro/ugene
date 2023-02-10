@@ -26,7 +26,7 @@
 namespace U2 {
 
 RoughTempCalcCmdFactory::RoughTempCalcCmdFactory()
-    : TempCalcFactory("rough-tm-algorithm", QT_TRID_NOOP("Rough")) {
+    : TempCalcFactory("rough-tm-algorithm", tr("Rough")) {
 }
 
 QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createTempCalculator(const TempCalcSettings& settings) const {

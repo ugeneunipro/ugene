@@ -20,6 +20,8 @@
  */
 #pragma once
 
+#include <QCoreApplication>
+
 #include <U2Algorithm/TempCalcFactory.h>
 
 namespace U2 {
@@ -28,6 +30,7 @@ namespace U2 {
  * @Primer3TempCalcFactory class could create instances of @Primer3TempCalc and @Primer3TempCalcWidget
  */
 class Primer3TempCalcFactory : public TempCalcFactory {
+    Q_DECLARE_TR_FUNCTIONS(Primer3TempCalcFactory)
 public:
     Primer3TempCalcFactory();
 
@@ -37,4 +40,4 @@ public:
     BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent) const override;
 };
 
-}
+}  // namespace U2
