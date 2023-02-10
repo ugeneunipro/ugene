@@ -118,6 +118,7 @@ private:
 
     static const QString JSON_EMAIL;
     static const QString JSON_PASSWORD;
+    static const QString JSON_NEWS_SUBSCRIPTION;
     static const QString JSON_ROLE;
     static const QString JSON_ACCESS_TOKEN;
     static const QString JSON_REFRESH_TOKEN;
