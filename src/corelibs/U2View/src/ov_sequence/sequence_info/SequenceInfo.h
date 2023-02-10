@@ -163,32 +163,6 @@ private:
 
     QSharedPointer<BaseTempCalc> temperatureCalculator;
 
-    static const int COMMON_STATISTICS_TABLE_CELLSPACING;
-    static const QString CAPTION_SEQ_REGION_LENGTH;
-
-    static const QString CAPTION_SUFFIX_DS_DNA;
-    static const QString CAPTION_SUFFIX_SS_DNA;
-    static const QString CAPTION_SUFFIX_DS_RNA;
-    static const QString CAPTION_SUFFIX_SS_RNA;
-
-    // nucl
-    static const QString CAPTION_SEQ_GC_CONTENT;
-    static const QString CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT;
-    static const QString CAPTION_SEQ_EXTINCTION_COEFFICIENT;
-    static const QString CAPTION_SEQ_MELTING_TEMPERATURE;
-
-    static const QString CAPTION_SEQ_NMOLE_OD;
-    static const QString CAPTION_SEQ_MG_OD;
-
-    // amino
-    static const QString CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT;
-    static const QString CAPTION_SEQ_ISOELECTIC_POINT;
-
-    static const QString CHAR_OCCUR_GROUP_ID;
-    static const QString DINUCL_OCCUR_GROUP_ID;
-    static const QString CODON_OCCUR_GROUP_ID;
-    static const QString AMINO_ACID_OCCUR_GROUP_ID;
-    static const QString STAT_GROUP_ID;
 };
 
 }  // namespace U2

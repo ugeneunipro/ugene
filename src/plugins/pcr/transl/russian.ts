@@ -473,7 +473,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="75"/>
         <source>Melting temperature</source>
-        <translation>Тесператцра плавления</translation>
+        <translation>Температура плавления</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="76"/>
@@ -1106,7 +1106,7 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
     <message>
         <location filename="../src/PrimerLibraryWidget.cpp" line="76"/>
         <source>Temperature</source>
-        <translation>Температура</translation>
+        <translation>Температура плавления</translation>
     </message>
 </context>
 </TS>
