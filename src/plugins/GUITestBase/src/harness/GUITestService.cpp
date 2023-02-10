@@ -399,7 +399,7 @@ void GUITestService::removeDir(QString dirName) {
 }
 
 void GUITestService::sl_testThreadFinish() {
-    GUITestThread* testThread = qobject_cast<GUITestThread*>(sender());
+    auto testThread = qobject_cast<GUITestThread*>(sender());
     SAFE_POINT(nullptr != testThread, "testThread is NULL", );
     HI::GUITest* test = testThread->getTest();
     SAFE_POINT(nullptr != test, "GUITest is NULL", );

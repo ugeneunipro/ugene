@@ -190,7 +190,7 @@ QList<Task*> BAMImporterTask::onSubTaskFinished(Task* subTask) {
 
     else if ((isSqliteDbTransit && cloneTasks.contains(subTask))) {
         cloneTasks.removeOne(subTask);
-        CloneObjectTask* cloneTask = qobject_cast<CloneObjectTask*>(subTask);
+        auto cloneTask = qobject_cast<CloneObjectTask*>(subTask);
         SAFE_POINT_EXT(nullptr != cloneTask, setError("Unexpected task type: CloneObjectTask expected"), res);
         delete cloneTask->getSourceObject();
 

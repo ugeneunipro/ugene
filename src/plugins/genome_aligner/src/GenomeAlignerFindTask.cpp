@@ -182,7 +182,7 @@ ShortReadAlignerCPU::ShortReadAlignerCPU(int taskNo, GenomeAlignerIndex* i, Alig
 void ShortReadAlignerCPU::run() {
     SAFE_POINT_EXT(alignContext != nullptr, setError("Align context error"), );
 
-    GenomeAlignerFindTask* parent = static_cast<GenomeAlignerFindTask*>(getParentTask());
+    auto parent = static_cast<GenomeAlignerFindTask*>(getParentTask());
     SAFE_POINT_EXT(parent != nullptr, setError("Aligner parent error"), );
 
     QVector<int> binarySearchResults;

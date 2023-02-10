@@ -373,7 +373,7 @@ CAP3Prompter::CAP3Prompter(Actor* p)
 }
 
 QString CAP3Prompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR));
     Actor* producer = input->getProducer(IN_URL_SLOT_ID);
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
     QString doc = CAP3Worker::tr("Aligns long DNA reads from <u>%1</u> with CAP3.").arg(producerName);
@@ -505,7 +505,7 @@ Task* CAP3Worker::tick() {
 }
 
 void CAP3Worker::sl_taskFinished() {
-    CAP3SupportTask* capTask = qobject_cast<CAP3SupportTask*>(sender());
+    auto capTask = qobject_cast<CAP3SupportTask*>(sender());
     SAFE_POINT(nullptr != capTask, "NULL task!", );
 
     if (!capTask->isFinished()) {

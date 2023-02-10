@@ -73,7 +73,7 @@ void SpadesSupport::checkIn() {
     LocalWorkflow::SpadesWorkerFactory::init();
 
     GTestFormatRegistry* testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
     xmlTestFormat->registerTestFactories(SpadesTaskTest::createTestFactories());
 }
 

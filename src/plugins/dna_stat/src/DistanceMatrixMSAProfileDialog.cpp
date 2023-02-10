@@ -169,7 +169,7 @@ void DistanceMatrixMSAProfileTask::prepare() {
 }
 
 QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
-    MSADistanceAlgorithm* algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
+    auto algo = qobject_cast<MSADistanceAlgorithm*>(subTask);
     QList<Task*> res;
     if (algo != nullptr) {
         if (algo->hasError() || algo->isCanceled()) {

@@ -216,7 +216,7 @@ QList<Task*> GTest_UHMM3Search::onSubTaskFinished(Task* sub) {
     if (searchTask != sub) {
         return res;
     }
-    OutputCollector* collector = dynamic_cast<OutputCollector*>(searchTask->getListener(0));
+    auto collector = dynamic_cast<OutputCollector*>(searchTask->getListener(0));
     if (collector != nullptr) {
         QString hmmSearchLog = collector->getLog();
         // TODO: check non empty log and file existence after writing

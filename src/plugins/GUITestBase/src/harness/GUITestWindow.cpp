@@ -159,7 +159,7 @@ void EventFilter::generateMouseMessage() {
 void EventFilter::getInfo(QWidget* w) {
     CHECK(w != nullptr, );
     setBufferObject(w);
-    QMenu* menu = qobject_cast<QMenu*>(w);
+    auto menu = qobject_cast<QMenu*>(w);
     if (menu != nullptr) {
         CHECK(m != nullptr, )
         QAction* menuAct = menu->actionAt(menu->mapFromGlobal(m->globalPos()));
@@ -172,7 +172,7 @@ void EventFilter::getInfo(QWidget* w) {
         }
     }
 
-    QMenuBar* menuBar = qobject_cast<QMenuBar*>(w);
+    auto menuBar = qobject_cast<QMenuBar*>(w);
     if (menuBar != nullptr) {
         CHECK(m != nullptr, )
         QAction* menuBarAct = menuBar->actionAt(menuBar->mapFromGlobal(m->globalPos()));
@@ -187,7 +187,7 @@ void EventFilter::getInfo(QWidget* w) {
 
     className = w->metaObject()->className();
     objName = w->objectName();
-    QToolButton* toolButton = qobject_cast<QToolButton*>(w);
+    auto toolButton = qobject_cast<QToolButton*>(w);
     if (toolButton != nullptr && toolButton->defaultAction()) {
         actionName = toolButton->defaultAction()->objectName();
         text = toolButton->defaultAction()->text();
@@ -207,31 +207,31 @@ QString EventFilter::generateCode(QWidget* w) {
 
     focusWidget = w;
 
-    QMenuBar* menuBar = qobject_cast<QMenuBar*>(w);
+    auto menuBar = qobject_cast<QMenuBar*>(w);
     if (menuBar != nullptr) {
         result.append(menuBarCode(menuBar));
         return result;
     }
 
-    QMenu* menu = qobject_cast<QMenu*>(w);
+    auto menu = qobject_cast<QMenu*>(w);
     if (menu != nullptr) {
         result.append(menuCode(menu));
         return result;
     }
 
-    QCheckBox* check = qobject_cast<QCheckBox*>(w);
+    auto check = qobject_cast<QCheckBox*>(w);
     if (check) {
         result.append(checkBoxCode(check));
         return result;
     }
 
-    QRadioButton* radio = qobject_cast<QRadioButton*>(w);
+    auto radio = qobject_cast<QRadioButton*>(w);
     if (radio) {
         result.append(radioButtonCode(radio));
         return result;
     }
 
-    QToolButton* toolButton = qobject_cast<QToolButton*>(w);
+    auto toolButton = qobject_cast<QToolButton*>(w);
     if (toolButton) {
         result.append(toolButtonCode(toolButton));
         return result;
@@ -248,7 +248,7 @@ QString EventFilter::setValuesWhenFocusGone(QWidget* w) {
     CHECK(w != nullptr, "");
     QString result("");
 
-    QSpinBox* spin = qobject_cast<QSpinBox*>(w);
+    auto spin = qobject_cast<QSpinBox*>(w);
     if (spin != nullptr) {
         result.append(QString("QSpinBox* spin = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(spin->objectName()));
         result.append(QString("CHECK_SET_ERR(spin != NULL, \"%1 not found!\");\n").arg(spin->objectName()));
@@ -257,7 +257,7 @@ QString EventFilter::setValuesWhenFocusGone(QWidget* w) {
         return result;
     }
 
-    QDoubleSpinBox* doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
+    auto doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
     if (doubleSpin != nullptr) {
         result.append(QString("QDoubleSpinBox* spin = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(doubleSpin->objectName()));
         result.append(QString("CHECK_SET_ERR(spin != NULL, \"%1 not found!\");\n").arg(doubleSpin->objectName()));
@@ -266,7 +266,7 @@ QString EventFilter::setValuesWhenFocusGone(QWidget* w) {
         return result;
     }
 
-    QComboBox* combo = qobject_cast<QComboBox*>(w);
+    auto combo = qobject_cast<QComboBox*>(w);
     if (combo) {
         QString name = w->objectName();
         if (name == "qt_scrollarea_viewport") {
@@ -389,7 +389,7 @@ QString EventFilter::contextMenuCode(QWidget* w) const {
 QString EventFilter::generateFillerHeader() {
     QString result;
     result.append("\n\nHEADER\n\n");
-    QDialog* dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
+    auto dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
     QString fillerName = dialog->objectName() + "Filler";
 
     result.append("#include \"GTUtilsDialog.h\"\n"
@@ -427,7 +427,7 @@ QString EventFilter::generateFillerHeader() {
 QString EventFilter::generateFillerSource() const {
     QString result;
     result.append("\n\nSOURCE\n\n");
-    QDialog* dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
+    auto dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
     QString fillerName = dialog->objectName() + "Filler";
 
     result.append(QString("#include \"%1.h\"\n"

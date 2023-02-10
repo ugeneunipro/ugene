@@ -135,7 +135,7 @@ void BioStruct3DSplitter::removeBioStruct3DGLWidget(BioStruct3DGLWidget* glw) {
 bool BioStruct3DSplitter::eventFilter(QObject* o, QEvent* e) {
     Q_UNUSED(o);
     Q_UNUSED(e);
-    BioStruct3DGLWidget* glw = qobject_cast<BioStruct3DGLWidget*>(o);
+    auto glw = qobject_cast<BioStruct3DGLWidget*>(o);
 #ifdef Q_WS_X11
     // first variant of fix of QT4 bug: GL widget is frozen after minimize/maximize
     if (e->type() == QEvent::Hide) {
@@ -176,11 +176,11 @@ bool BioStruct3DSplitter::removeObject(BioStruct3DObject* obj) {
 
 void BioStruct3DSplitter::dragEnterEvent(QDragEnterEvent* event) {
     const QMimeData* md = event->mimeData();
-    const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
+    auto gomd = qobject_cast<const GObjectMimeData*>(md);
     if (gomd != nullptr) {
         GObject* obj = gomd->objPtr.data();
         if (obj->getGObjectType() == GObjectTypes::BIOSTRUCTURE_3D) {
-            BioStruct3DObject* bioStrucObj = qobject_cast<BioStruct3DObject*>(gomd->objPtr.data());
+            auto bioStrucObj = qobject_cast<BioStruct3DObject*>(gomd->objPtr.data());
             if (biostrucViewMap.contains(bioStrucObj))
                 event->acceptProposedAction();
         }
@@ -188,8 +188,8 @@ void BioStruct3DSplitter::dragEnterEvent(QDragEnterEvent* event) {
 }
 
 void BioStruct3DSplitter::dropEvent(QDropEvent* event) {
-    const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(event->mimeData());
-    BioStruct3DObject* bioStrucObj = qobject_cast<BioStruct3DObject*>(gomd->objPtr.data());
+    auto gomd = qobject_cast<const GObjectMimeData*>(event->mimeData());
+    auto bioStrucObj = qobject_cast<BioStruct3DObject*>(gomd->objPtr.data());
     Q_ASSERT(bioStrucObj != nullptr);
     addBioStruct3DGLWidget(bioStrucObj);
 }
@@ -261,7 +261,7 @@ BioStruct3DObject* BioStruct3DSplitter::findBioStruct3DObjByName(const QString& 
         QList<GObject*> biostructObjs = doc->findGObjectByType(GObjectTypes::BIOSTRUCTURE_3D);
         if (!biostructObjs.empty()) {
             Q_ASSERT(biostructObjs.size() == 1);
-            BioStruct3DObject* obj = qobject_cast<BioStruct3DObject*>(biostructObjs.first());
+            auto obj = qobject_cast<BioStruct3DObject*>(biostructObjs.first());
             Q_ASSERT(obj != nullptr);
             if (obj->getGObjectName() == objName) {
                 return obj;
@@ -548,7 +548,7 @@ void SplitterHeaderWidget::sl_bioStruct3DGLWidgetRemoved(BioStruct3DGLWidget* gl
 
 bool SplitterHeaderWidget::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::Wheel) {
-        BioStruct3DGLWidget* glWidget = qobject_cast<BioStruct3DGLWidget*>(obj);
+        auto glWidget = qobject_cast<BioStruct3DGLWidget*>(obj);
         if (glWidget) {
             setActiveView(glWidget);
         }
@@ -616,7 +616,7 @@ void SplitterHeaderWidget::updateToolbar() {
 }
 
 void SplitterHeaderWidget::sl_toggleBioStruct3DWidget(bool show) {
-    BioStruct3DGLWidget* glWidget = qobject_cast<BioStruct3DGLWidget*>(sender()->parent());
+    auto glWidget = qobject_cast<BioStruct3DGLWidget*>(sender()->parent());
     Q_ASSERT(glWidget != nullptr);
 
     glWidget->setVisible(show);
@@ -685,7 +685,7 @@ void SplitterHeaderWidget::registerWebUrls() {
 }
 
 void SplitterHeaderWidget::sl_openBioStructUrl() {
-    QAction* webAction = qobject_cast<QAction*>(QObject::sender());
+    auto webAction = qobject_cast<QAction*>(QObject::sender());
     if (webAction == nullptr)
         return;
     const QString& urlHeader = webActionMap.value(webAction);

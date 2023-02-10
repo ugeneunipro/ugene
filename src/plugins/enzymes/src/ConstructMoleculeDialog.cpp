@@ -341,7 +341,7 @@ void ConstructMoleculeDialog::sl_onAddFromProjectButtonClicked() {
             if (obj->isUnloaded()) {
                 continue;
             }
-            U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+            auto seqObj = qobject_cast<U2SequenceObject*>(obj);
 
             if (seqObj) {
                 QObjectScopedPointer<CreateFragmentDialog> dlg = new CreateFragmentDialog(seqObj, U2Region(0, seqObj->getSequenceLength()), this);

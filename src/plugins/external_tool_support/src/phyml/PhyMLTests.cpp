@@ -122,7 +122,7 @@ void GTest_PhyML::prepare() {
         return;
     }
     assert(obj != nullptr);
-    MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (ma == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

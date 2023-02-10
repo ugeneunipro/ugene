@@ -76,7 +76,7 @@ EnzymesPlugin::EnzymesPlugin()
     EnzymesSelectorWidget::setupSettings();
 
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
@@ -116,7 +116,7 @@ void EnzymesPlugin::sl_onOpenDigestSequenceDialog() {
         return;
     }
 
-    AnnotatedDNAView* view = qobject_cast<AnnotatedDNAView*>(w->getObjectView());
+    auto view = qobject_cast<AnnotatedDNAView*>(w->getObjectView());
     if (view == nullptr) {
         QMessageBox::information(QApplication::activeWindow(), openDigestSequenceDialog->text(), tr("There is no active sequence object.\nTo start partition open sequence document."));
         return;
@@ -139,7 +139,7 @@ void EnzymesPlugin::sl_onOpenCreateFragmentDialog() {
         return;
     }
 
-    AnnotatedDNAView* view = qobject_cast<AnnotatedDNAView*>(w->getObjectView());
+    auto view = qobject_cast<AnnotatedDNAView*>(w->getObjectView());
     if (view == nullptr) {
         QMessageBox::information(QApplication::activeWindow(), openCreateFragmentDialog->text(), tr("There is no active sequence object.\nTo create fragment open sequence document."));
         return;
@@ -176,7 +176,7 @@ EnzymesADVContext::EnzymesADVContext(QObject* p, const QList<QAction*>& actions)
 }
 
 void EnzymesADVContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":enzymes/images/enzymes.png"), tr("Find restriction sites..."), 50);
     a->setObjectName("Find restriction sites");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
@@ -189,9 +189,9 @@ void EnzymesADVContext::initViewContext(GObjectView* view) {
 }
 
 void EnzymesADVContext::sl_search() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     assert(action != nullptr);
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     assert(av != nullptr);
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
@@ -204,7 +204,7 @@ void EnzymesADVContext::sl_search() {
 #define PRIMER_ANNOTATION_GROUP_NAME "pair"
 
 void EnzymesADVContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+    auto av = qobject_cast<AnnotatedDNAView*>(v);
     SAFE_POINT(nullptr != av, "Invalid sequence view", );
     CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );
 
@@ -230,9 +230,9 @@ void EnzymesADVContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
 }
 
 void EnzymesADVContext::sl_createPCRProduct() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT(action != nullptr, "Invalid action object!", );
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(av != nullptr, "Invalid DNA view!", );
 
     const QList<Annotation*>& annotations = av->getAnnotationsSelection()->getAnnotations();

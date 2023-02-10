@@ -87,9 +87,9 @@ void HmmerSupport::sl_buildProfile() {
     MultipleSequenceAlignment ma;
     MWMDIWindow* activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     if (activeWindow != nullptr) {
-        GObjectViewWindow* objectViewWindow = qobject_cast<GObjectViewWindow*>(activeWindow);
+        auto objectViewWindow = qobject_cast<GObjectViewWindow*>(activeWindow);
         if (objectViewWindow != nullptr) {
-            MSAEditor* msaEditor = qobject_cast<MSAEditor*>(objectViewWindow->getObjectView());
+            auto msaEditor = qobject_cast<MSAEditor*>(objectViewWindow->getObjectView());
             if (msaEditor != nullptr) {
                 MultipleSequenceAlignmentObject* maObj = msaEditor->getMaObject();
                 if (maObj != nullptr) {
@@ -108,9 +108,9 @@ namespace {
 
 U2SequenceObject* getDnaSequenceObject() {
     U2SequenceObject* seqObj = nullptr;
-    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    auto activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
-        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
+        auto dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
         seqObj = (dnaView != nullptr ? dnaView->getActiveSequenceContext()->getSequenceObject() : nullptr);
     }
 
@@ -139,9 +139,9 @@ void HmmerSupport::sl_search() {
         return;
     }
     ADVSequenceObjectContext* seqCtx = nullptr;
-    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    auto activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
-        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
+        auto dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
         seqCtx = (dnaView != nullptr) ? dnaView->getActiveSequenceContext() : nullptr;
     }
 
@@ -166,9 +166,9 @@ void HmmerSupport::sl_phmmerSearch() {
         return;
     }
     ADVSequenceObjectContext* seqCtx = nullptr;
-    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
+    auto activeWindow = qobject_cast<GObjectViewWindow*>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
-        AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
+        auto dnaView = qobject_cast<AnnotatedDNAView*>(activeWindow->getObjectView());
         seqCtx = (dnaView != nullptr) ? dnaView->getActiveSequenceContext() : nullptr;
     }
 
@@ -276,7 +276,7 @@ HmmerMsaEditorContext::HmmerMsaEditorContext(QObject* parent)
 }
 
 void HmmerMsaEditorContext::initViewContext(GObjectView* view) {
-    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     CHECK(msaEditor->getMaObject() != nullptr, );
 
@@ -288,7 +288,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectView* view) {
 }
 
 void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectView* view, QMenu* menu) {
-    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     SAFE_POINT(menu != nullptr, "Menu is NULL", );
     CHECK(nullptr != msaEditor->getMaObject(), );
@@ -301,9 +301,9 @@ void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectView* view, QMenu* m
 }
 
 void HmmerMsaEditorContext::sl_build() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT(action != nullptr, "action is NULL", );
-    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(action->getObjectView());
+    auto msaEditor = qobject_cast<MSAEditor*>(action->getObjectView());
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
 
     MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
@@ -319,7 +319,7 @@ HmmerAdvContext::HmmerAdvContext(QObject* parent)
 }
 
 void HmmerAdvContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(view);
+    auto adv = qobject_cast<AnnotatedDNAView*>(view);
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
 
     ADVGlobalAction* searchAction = new ADVGlobalAction(adv, QIcon(":/external_tool_support/images/hmmer.png"), tr("Find HMM signals with HMMER3..."), 70);
@@ -330,9 +330,9 @@ void HmmerAdvContext::initViewContext(GObjectView* view) {
 void HmmerAdvContext::sl_search() {
     QWidget* parent = getParentWidget(sender());
     assert(parent != nullptr);
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     SAFE_POINT(action != nullptr, "action is NULL", );
-    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
     ADVSequenceObjectContext* seqCtx = adv->getActiveSequenceContext();
     if (seqCtx == nullptr) {
@@ -345,18 +345,18 @@ void HmmerAdvContext::sl_search() {
 }
 
 QWidget* HmmerAdvContext::getParentWidget(QObject* sender) {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender);
+    auto action = qobject_cast<GObjectViewAction*>(sender);
     SAFE_POINT(action != nullptr, "action is NULL", nullptr);
-    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", nullptr);
 
     return adv->getWidget() ? adv->getWidget() : AppContext::getMainWindow()->getQMainWindow();
 }
 
 U2SequenceObject* HmmerAdvContext::getSequenceInFocus(QObject* sender) {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender);
+    auto action = qobject_cast<GObjectViewAction*>(sender);
     SAFE_POINT(action != nullptr, "action is NULL", nullptr);
-    AnnotatedDNAView* adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto adv = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", nullptr);
     ADVSequenceObjectContext* seqCtx = adv->getActiveSequenceContext();
     if (seqCtx == nullptr) {

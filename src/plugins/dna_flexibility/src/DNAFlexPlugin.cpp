@@ -61,8 +61,8 @@ DNAFlexViewContext::DNAFlexViewContext(QObject* parent)
 
 void DNAFlexViewContext::sl_showDNAFlexDialog() {
     QAction* action = (QAction*)sender();
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(action);
-    AnnotatedDNAView* annotView = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(action);
+    auto annotView = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(annotView);
 
     ADVSequenceObjectContext* seqCtx = annotView->getActiveSequenceContext();
@@ -82,7 +82,7 @@ void DNAFlexViewContext::sl_showDNAFlexDialog() {
 }
 
 void DNAFlexViewContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* annotView = qobject_cast<AnnotatedDNAView*>(view);
+    auto annotView = qobject_cast<AnnotatedDNAView*>(view);
 
     // Adding the graphs item
     connect(annotView,
@@ -104,7 +104,7 @@ void DNAFlexViewContext::initViewContext(GObjectView* view) {
 }
 
 void DNAFlexViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* _sequenceWidget) {
-    ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(_sequenceWidget);
+    auto sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(_sequenceWidget);
     if (sequenceWidget == nullptr || sequenceWidget->getSequenceObject() == nullptr) {
         return;
     }

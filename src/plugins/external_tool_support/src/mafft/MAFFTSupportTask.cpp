@@ -76,7 +76,7 @@ MAFFTSupportTask::~MAFFTSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(nullptr != alObj, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -94,7 +94,7 @@ void MAFFTSupportTask::prepare() {
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (nullptr != obj) {
-            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
             SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("MAFFT Lock");
             alObj->lockState(lock);
@@ -207,7 +207,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying MAFFT results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);

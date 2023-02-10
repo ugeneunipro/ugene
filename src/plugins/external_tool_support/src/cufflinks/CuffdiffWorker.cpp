@@ -307,7 +307,7 @@ CuffdiffWorker::CuffdiffWorker(Actor* actor)
 
 void CuffdiffWorker::initSlotsState() {
     Port* port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
-    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
+    auto bus = dynamic_cast<IntegralBusPort*>(port);
 
     QList<Actor*> producers = bus->getProducers(SAMPLE_SLOT_ID);
     groupBySamples = !producers.isEmpty();
@@ -354,7 +354,7 @@ Task* CuffdiffWorker::tick() {
 }
 
 void CuffdiffWorker::sl_onTaskFinished() {
-    CuffdiffSupportTask* task = qobject_cast<CuffdiffSupportTask*>(sender());
+    auto task = qobject_cast<CuffdiffSupportTask*>(sender());
     if (Task::State_Finished != task->getState()) {
         return;
     }

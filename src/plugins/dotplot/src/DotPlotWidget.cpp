@@ -139,7 +139,7 @@ void DotPlotWidget::initActionsAndSignals() {
     connect(filterDotPlotAction, SIGNAL(triggered()), SLOT(sl_filter()));
 
     foreach (ADVSequenceWidget* advSeqWidget, dnaView->getSequenceWidgets()) {
-        ADVSingleSequenceWidget* ssw = qobject_cast<ADVSingleSequenceWidget*>(advSeqWidget);
+        auto ssw = qobject_cast<ADVSingleSequenceWidget*>(advSeqWidget);
         if (ssw != nullptr) {
             connect(ssw->getPanView(), SIGNAL(si_visibleRangeChanged()), SLOT(sl_panViewChanged()));
         }
@@ -302,8 +302,8 @@ int DotPlotWidget::getLrDifference(const U2Region& a, const U2Region& b) {
 }
 
 void DotPlotWidget::sl_panViewChanged() {
-    GSequenceLineView* lw = qobject_cast<GSequenceLineView*>(sender());
-    PanView* panView = qobject_cast<PanView*>(sender());
+    auto lw = qobject_cast<GSequenceLineView*>(sender());
+    auto panView = qobject_cast<PanView*>(sender());
 
     if (selecting || shifting || !(lw && panView) || nearestSelecting) {
         return;
@@ -415,7 +415,7 @@ void DotPlotWidget::cancelRepeatFinderTask() {
     RepeatFinderTaskFactory* factory = tfr->getFactory("");
     SAFE_POINT(factory != nullptr, "Repeats factory is NULL!", );
 
-    MultiTask* mTask = qobject_cast<MultiTask*>(dotPlotTask);
+    auto mTask = qobject_cast<MultiTask*>(dotPlotTask);
     if (mTask) {
         mTask->cancel();
         foreach (const QPointer<Task>& t, mTask->getSubtasks()) {
@@ -426,7 +426,7 @@ void DotPlotWidget::cancelRepeatFinderTask() {
 
 bool DotPlotWidget::event(QEvent* event) {
     if (event->type() == QEvent::ToolTip && hasFocus() && selActive) {
-        QHelpEvent* helpEvent = static_cast<QHelpEvent*>(event);
+        auto helpEvent = static_cast<QHelpEvent*>(event);
         QPoint pos = toInnerCoords(helpEvent->pos().x(), helpEvent->pos().y());
         pos = sequenceCoords(unshiftedUnzoomed(pos));
         const DotPlotResults* res = findNearestRepeat(pos);
@@ -474,7 +474,7 @@ void DotPlotWidget::sl_onSequenceSelectionChanged(LRegionsSelection* s, const QV
     if ((sequenceX == nullptr) || (sequenceY == nullptr)) {
         return;
     }
-    DNASequenceSelection* dnaSelection = qobject_cast<DNASequenceSelection*>(sen);
+    auto dnaSelection = qobject_cast<DNASequenceSelection*>(sen);
     if (dnaSelection) {
         const U2SequenceObject* selectedSequence = dnaSelection->getSequenceObject();
         if (selectedSequence == sequenceX->getSequenceGObject()) {
@@ -1274,7 +1274,7 @@ void DotPlotWidget::checkShift(bool emitSignal) {
     U2Region visRangeY;
 
     foreach (ADVSequenceWidget* advSeqWidget, dnaView->getSequenceWidgets()) {
-        ADVSingleSequenceWidget* advSingleSeqWidget = qobject_cast<ADVSingleSequenceWidget*>(advSeqWidget);
+        auto advSingleSeqWidget = qobject_cast<ADVSingleSequenceWidget*>(advSeqWidget);
         visRangeX = getVisibleRange(Qt::XAxis);
         visRangeY = getVisibleRange(Qt::YAxis);
 

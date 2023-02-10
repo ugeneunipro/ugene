@@ -122,7 +122,7 @@ void ReadShortReadsSubTask::dropToAlignContext() {
 void ReadShortReadsSubTask::run() {
     stateInfo.setProgress(0);
     GTIMER(cvar, tvar, "ReadSubTask");
-    GenomeAlignerTask* parent = static_cast<GenomeAlignerTask*>(getParentTask());
+    auto parent = static_cast<GenomeAlignerTask*>(getParentTask());
     if (!alignContext.bestMode) {
         parent->pWriteTask->flush();
     }

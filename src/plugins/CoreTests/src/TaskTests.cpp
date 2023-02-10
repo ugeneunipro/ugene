@@ -272,7 +272,7 @@ Task::ReportResult GTest_TaskCancelTest::report() {
         return ReportResult_Finished;
     }
     assert(obj != nullptr);
-    Task* task = qobject_cast<Task*>(obj);
+    auto task = qobject_cast<Task*>(obj);
     task->cancel();
     if (!task->getStateInfo().cancelFlag) {
         stateInfo.setError(QString("task state flag not matched: %1, expected %2 ").arg(task->getStateInfo().cancelFlag).arg(true));
@@ -307,7 +307,7 @@ Task::ReportResult GTest_TaskCheckFlag::report() {
         return ReportResult_Finished;
     }
     assert(obj != nullptr);
-    Task* task = qobject_cast<Task*>(obj);
+    auto task = qobject_cast<Task*>(obj);
     if (task->getFlags().operator&(flag) == 0) {
         stateInfo.setError(QString("task flags not matched %1, expected %2").arg(task->getFlags()).arg(flag));
         return ReportResult_Finished;

@@ -129,7 +129,7 @@ MAFFTPrompter::MAFFTPrompter(Actor* p)
     : PrompterBase<MAFFTPrompter>(p) {
 }
 QString MAFFTPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
 
@@ -192,9 +192,9 @@ Task* MAFFTWorker::tick() {
 }
 
 void MAFFTWorker::sl_taskFinished() {
-    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
+    auto wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    MAFFTSupportTask* t = qobject_cast<MAFFTSupportTask*>(wrapper->originalTask());
+    auto t = qobject_cast<MAFFTSupportTask*>(wrapper->originalTask());
     if (t->isCanceled()) {
         return;
     }

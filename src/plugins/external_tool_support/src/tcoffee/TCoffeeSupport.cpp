@@ -136,7 +136,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
     CHECK_OP(os, );
 
     // Call run T-Coffee align dialog
-    AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
+    auto action = qobject_cast<AlignMsaAction*>(sender());
     CHECK(action != nullptr, );
 
     MSAEditor* msaEditor = action->getMsaEditor();

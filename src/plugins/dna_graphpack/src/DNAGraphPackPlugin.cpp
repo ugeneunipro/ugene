@@ -70,7 +70,7 @@ DNAGraphPackViewContext::DNAGraphPackViewContext(QObject* p)
 }
 
 void DNAGraphPackViewContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* annotView = qobject_cast<AnnotatedDNAView*>(view);
+    auto annotView = qobject_cast<AnnotatedDNAView*>(view);
     connect(annotView,
             SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)),
             SLOT(sl_sequenceWidgetAdded(ADVSequenceWidget*)));
@@ -81,7 +81,7 @@ void DNAGraphPackViewContext::initViewContext(GObjectView* view) {
 }
 
 void DNAGraphPackViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* _sequenceWidget) {
-    ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(_sequenceWidget);
+    auto sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(_sequenceWidget);
     if (sequenceWidget == nullptr || sequenceWidget->getSequenceObject() == nullptr) {
         return;
     }

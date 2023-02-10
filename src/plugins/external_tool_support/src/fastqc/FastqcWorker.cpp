@@ -66,7 +66,7 @@ const QString FastQCFactory::ACTOR_ID("fastqc");
 // FastQCPrompter
 
 QString FastQCPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(FastQCWorker::INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(FastQCWorker::INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -205,7 +205,7 @@ void FastQCWorker::cleanup() {
 void FastQCWorker::sl_taskFinished(Task* task) {
     CHECK(!task->hasError() && !task->isCanceled(), );
 
-    FastQCTask* fastQCTask = dynamic_cast<FastQCTask*>(task);
+    auto fastQCTask = dynamic_cast<FastQCTask*>(task);
     QString url = fastQCTask != nullptr ? fastQCTask->getResult() : "";
     CHECK(!url.isEmpty(), );
 

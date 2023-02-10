@@ -89,7 +89,7 @@ void TrimmomaticWorker::processMetadata(QList<Task*> tasks) const {
     metaFileUrl.clear();
     CHECK(1 == tasks.size(), );
 
-    TrimmomaticTask* trimTask = qobject_cast<TrimmomaticTask*>(tasks.first());
+    auto trimTask = qobject_cast<TrimmomaticTask*>(tasks.first());
     metaFileUrl = trimTask->getInputUrl1();
 }
 
@@ -125,7 +125,7 @@ Task* TrimmomaticWorker::createPrepareTask(U2OpStatus& os) const {
 }
 
 void TrimmomaticWorker::onPrepared(Task* task, U2OpStatus& os) {
-    MultiTask* prepareTask = qobject_cast<MultiTask*>(task);
+    auto prepareTask = qobject_cast<MultiTask*>(task);
     CHECK_EXT(nullptr != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     changeAdapters();
@@ -156,12 +156,12 @@ Task* TrimmomaticWorker::createTask(const QList<Message>& messages) const {
 }
 
 QVariantMap TrimmomaticWorker::getResult(Task* workerTask, U2OpStatus& os) const {
-    MultiTask* multiTask = qobject_cast<MultiTask*>(workerTask);
+    auto multiTask = qobject_cast<MultiTask*>(workerTask);
     CHECK_EXT(multiTask != nullptr, os.setError(L10N::internalError("Unexpected task")), QVariantMap());
 
     QVariantMap result;
     foreach (Task* childTask, multiTask->getTasks()) {
-        TrimmomaticTask* trimTask = qobject_cast<TrimmomaticTask*>(childTask);
+        auto trimTask = qobject_cast<TrimmomaticTask*>(childTask);
         CHECK_CONTINUE(trimTask != nullptr);
 
         if (!pairedReadsInput) {
