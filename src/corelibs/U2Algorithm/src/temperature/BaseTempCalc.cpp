@@ -46,7 +46,7 @@ double BaseTempCalc::getAnnealingTemperature(const QByteArray& product, const QB
     double productTm = getMeltingTemperature(product);
     /* Rychlik W, Spencer WJ, Rhoads RE (1990)
        Optimization of the annealing temperature for DNA amplification in vitro.
-       Nucleic Acids Res 18(21):6409�6412. */
+       Nucleic Acids Res 18(21):6409–6412. */
     return 0.3 * primersTm + 0.7 * productTm - 14.9;
 }
 
