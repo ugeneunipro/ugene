@@ -57,14 +57,14 @@ public:
      * @product the whole product (has forward and reverse primers on 5' ends of direct and reverse-complementary stand)
      * @forwardPrimer forward primer, located on 3' end of the direct product stand
      * @reversePrimer reverse primer, located on 3' end of the reverse-complementary product stand
-     * @return the annealing temperaturev value
+     * @return the annealing temperature value
      */
     double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
     const TempCalcSettings& getSettings() const;
 
     static constexpr double INVALID_TM = -999999.0;
     /**
-     * The algoritm ID.
+     * The algorithm ID.
      * Also used in GUI (e.g. in combo boxes where all algorithms are presented - you see algorithm's ID)
      */
     static const QString KEY_ID;
@@ -79,7 +79,7 @@ private:
      * or @alternativePrimer (if @initialPrimer has symbols from the DNA extended alphabet)
      * @initialPrimer calculate melting temperature of this primer (if nucleotide)
      * @alternativePrimer calculate melting temperature of this primer (if @initialPrimer is not nucleotide)
-     * @return the calculated temperaturev value
+     * @return the calculated temperature value
      */
     double getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer);
 };
