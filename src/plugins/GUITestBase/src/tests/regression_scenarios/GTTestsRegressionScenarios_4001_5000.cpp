@@ -3284,7 +3284,7 @@ GUI_TEST_CLASS_DEFINITION(test_4557) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString product = GTUtilsSequenceView::getSequenceAsString(os);
