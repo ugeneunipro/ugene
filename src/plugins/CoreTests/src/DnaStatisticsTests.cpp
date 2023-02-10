@@ -27,11 +27,10 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2Location.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/GenbankLocationParser.h>
 
@@ -77,7 +76,6 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
         return;
     }
 
-
     if (element.hasAttribute(REGIONS_ATTR)) {
         const QString regionsString = element.attribute(REGIONS_ATTR);
         CHECK_EXT(!regionsString.isEmpty(), emptyValue(REGIONS_ATTR), );
@@ -107,7 +105,7 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
         CHECK_EXT(resultMap.keys().contains(BaseTempCalc::KEY_ID), setError("No ID were set"), );
 
         temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(resultMap);
-        CHECK_EXT(temperatureCalculator != nullptr, setError("Can't set temperature settings"), );
+        CHECK_EXT(temperatureCalculator != nullptr, setError("Can't set temperature settings: " + resultMap.value("id").toString()), );
     }
 
     if (element.hasAttribute(EXPECTED_LENGTH)) {
@@ -190,7 +188,6 @@ void GTest_DnaStatisticsTest::prepare() {
 
         sequenceObject = new U2SequenceObject(dnaSequence.getName(), sequenceRef);
     }
-
 
     if (regions.isEmpty()) {
         U2Region reg(0, sequenceObject->getSequenceLength());

@@ -37,27 +37,27 @@ class BaseTempCalcWidget;
 class U2ALGORITHM_EXPORT TempCalcFactory {
 public:
     TempCalcFactory(const QString& id, const QString& visualName);
+    virtual ~TempCalcFactory() = default;
 
     /**
-     * Create temperature calculator
-     * @settings settings of the calculator, which should be created
-     * @return pointer to the temperature calculator
+     * Creates temperature calculator.
+     * @settings settings of the calculator, which should be created.
+     * @return pointer to the temperature calculator.
      */
     virtual QSharedPointer<BaseTempCalc> createTempCalculator(const TempCalcSettings& settings) const = 0;
     /**
-     * Create temperature calculator with the default settings
-     * @return pointer to the temperature calculator
+     * Creates temperature calculator with the default settings.
+     * @return pointer to the temperature calculator.
      */
     virtual QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const = 0;
     /**
-     * Create the default settings of the default temperature calculator
-     * @return temperature calculator settings
+     * Creates default settings of the default temperature calculator.
+     * @return temperature calculator settings.
      */
     virtual TempCalcSettings createDefaultTempCalcSettings() const = 0;
     /**
-     * Create widget to set manually settings and get TempCalcSettings from this widget
-     * @parent widget parent
-     * @return pointer to the temperature calculator
+     * Creates widget to set manually settings and get TempCalcSettings from this widget.
+     * @return pointer to the temperature calculator.
      */
     virtual BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent) const = 0;
 

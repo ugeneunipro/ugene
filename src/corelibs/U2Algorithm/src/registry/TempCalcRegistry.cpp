@@ -37,7 +37,7 @@ QSharedPointer<BaseTempCalc> TempCalcRegistry::createDefaultTempCalculator(const
 
     auto savedFactory = getById(savedSettings.value(saveId).value(BaseTempCalc::KEY_ID).toString());
     CHECK(savedFactory != nullptr, defaultFactory->createDefaultTempCalculator());
-    
+
     return savedFactory->createTempCalculator(savedSettings.value(saveId));
 }
 
@@ -46,19 +46,16 @@ TempCalcSettings TempCalcRegistry::createDefaultTempCalcSettings() const {
 }
 
 QSharedPointer<BaseTempCalc> TempCalcRegistry::createTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const {
-    QSharedPointer<BaseTempCalc> result;
     if (settingsMap.isEmpty()) {
-        result = createDefaultTempCalculator();
-    } else {
-        auto settingsId = settingsMap.value(BaseTempCalc::KEY_ID).toString();
-        result = getById(settingsId)->createTempCalculator(settingsMap);
+        return createDefaultTempCalculator();
     }
-
-    return result;
+    auto settingsId = settingsMap.value(BaseTempCalc::KEY_ID).toString();
+    TempCalcFactory* calcFactory = getById(settingsId);
+    return calcFactory != nullptr ? calcFactory->createTempCalculator(settingsMap) : nullptr;
 }
 
 void TempCalcRegistry::saveSettings(const QString& saveId, const TempCalcSettings& settings) {
     savedSettings.insert(saveId, settings);
 }
 
-}
+}  // namespace U2

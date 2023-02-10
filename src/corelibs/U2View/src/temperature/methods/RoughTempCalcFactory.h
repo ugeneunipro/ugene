@@ -30,8 +30,6 @@ namespace U2 {
  */
 class U2VIEW_EXPORT RoughTempCalcFactory : public RoughTempCalcCmdFactory {
 public:
-    RoughTempCalcFactory() = default;
-
     BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent) const override;
 };
 

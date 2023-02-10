@@ -1,4 +1,4 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<dna-statistics seq="ACTTTCCTGTTGGACAAGCCCTTT" temperature-calculation="id=Primer 3;dna_conc=50;salt_conc=50;divalent_conc=0;dntp_conc=10;dmso_conc=0;dmso_fact=0.6;formamide_conc=0;max_len=36;tm_method=0;salt_correction=0" expected-melting-temp="65.349952"/>
+	<dna-statistics seq="ACTTTCCTGTTGGACAAGCCCTTT" temperature-calculation="id=primer3-tm-algorithm;dna_conc=50;salt_conc=50;divalent_conc=0;dntp_conc=10;dmso_conc=0;dmso_fact=0.6;formamide_conc=0;max_len=36;tm_method=0;salt_correction=0" expected-melting-temp="65.349952"/>
 </multi-test>

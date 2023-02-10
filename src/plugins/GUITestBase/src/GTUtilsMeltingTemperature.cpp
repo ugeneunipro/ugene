@@ -42,12 +42,12 @@ void GTUtilsMeltingTemperature::setParameters(HI::GUITestOpStatus& os, const QMa
     const auto& parameterKeys = parameters.keys();
     GT_CHECK(parameterKeys.contains(Parameter::Algorithm), "Algorithm wasn't set up");
 
-    auto algId = parameters.value(Parameter::Algorithm);
+    auto algName = parameters.value(Parameter::Algorithm);
     auto allAlgorithms = GTComboBox::getValues(os, cbAlgorithm);
-    GT_CHECK(allAlgorithms.contains(algId), QString("Unexpected algorithm ID: %1").arg(algId));
+    GT_CHECK(allAlgorithms.contains(algName), QString("Unexpected algorithm ID: %1").arg(algName));
 
-    GTComboBox::selectItemByText(os, cbAlgorithm, algId);
-    if (algId == "Primer 3") {
+    GTComboBox::selectItemByText(os, cbAlgorithm, algName);
+    if (algName == "Primer 3") {
         if (parameterKeys.contains(Parameter::DnaConc)) {
             GTDoubleSpinbox::setValue(os, "dsbDna", parameters.value(Parameter::DnaConc).toDouble(), GTGlobals::UseKeyBoard, parent);
         }
