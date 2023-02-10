@@ -19,15 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include "RoughTempCalc.h"
 #include "RoughTempCalcCmdFactory.h"
+
+#include "RoughTempCalc.h"
 
 namespace U2 {
 
-const QString RoughTempCalcCmdFactory::ID = "Rough";
-
 RoughTempCalcCmdFactory::RoughTempCalcCmdFactory()
-    : TempCalcFactory(ID) {}
+    : TempCalcFactory("rough-tm-algorithm", QT_TRID_NOOP("Rough")) {
+}
 
 QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createTempCalculator(const TempCalcSettings& settings) const {
     return QSharedPointer<BaseTempCalc>(new RoughTempCalc(settings));
@@ -39,12 +39,12 @@ QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createDefaultTempCalculato
 
 TempCalcSettings RoughTempCalcCmdFactory::createDefaultTempCalcSettings() const {
     TempCalcSettings settings;
-    settings.insert(BaseTempCalc::KEY_ID, ID);
+    settings.insert(BaseTempCalc::KEY_ID, id);
     return settings;
 }
 
-BaseTempCalcWidget* RoughTempCalcCmdFactory::createTempCalcSettingsWidget(QWidget*, const QString&) const {
+BaseTempCalcWidget* RoughTempCalcCmdFactory::createTempCalcSettingsWidget(QWidget*) const {
     return nullptr;
 }
 
-}
+}  // namespace U2

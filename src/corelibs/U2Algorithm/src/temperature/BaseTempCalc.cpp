@@ -20,17 +20,18 @@
  * MA 02110-1301, USA.
  */
 
-#include "BaseTempCalc.h"
-
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
+
+#include "BaseTempCalc.h"
 
 namespace U2 {
 
 const QString BaseTempCalc::KEY_ID = "id";
 
 BaseTempCalc::BaseTempCalc(const TempCalcSettings& _settings)
-    : settings(_settings) {}
+    : settings(_settings) {
+}
 
 double BaseTempCalc::getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer) {
     CHECK(isNucleotideSequence(product), INVALID_TM);
@@ -45,7 +46,7 @@ double BaseTempCalc::getAnnealingTemperature(const QByteArray& product, const QB
     double productTm = getMeltingTemperature(product);
     /* Rychlik W, Spencer WJ, Rhoads RE (1990)
        Optimization of the annealing temperature for DNA amplification in vitro.
-       Nucleic Acids Res 18(21):6409–6412. */
+       Nucleic Acids Res 18(21):6409ï¿½6412. */
     return 0.3 * primersTm + 0.7 * productTm - 14.9;
 }
 
@@ -70,5 +71,4 @@ const TempCalcSettings& BaseTempCalc::getSettings() const {
     return settings;
 }
 
-}
-
+}  // namespace U2

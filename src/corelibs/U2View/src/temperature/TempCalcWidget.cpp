@@ -21,7 +21,9 @@
 
 #include "TempCalcWidget.h"
 
-#include "BaseTempCalcWidget.h"
+#include <QDialog>
+#include <QLabel>
+#include <QVBoxLayout>
 
 #include <U2Algorithm/BaseTempCalc.h>
 #include <U2Algorithm/TempCalcRegistry.h>
@@ -30,29 +32,25 @@
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QLabel>
-#include <QVBoxLayout>
+#include "BaseTempCalcWidget.h"
 
 namespace U2 {
 
-TempCalcWidget::TempCalcWidget(QWidget* parent) :
-    QWidget(parent),
-    cbAlgorithm(new QComboBox(this)),
-    swSettings(new QStackedWidget(this)) {
+TempCalcWidget::TempCalcWidget(QWidget* parent)
+    : QWidget(parent),
+      cbAlgorithm(new QComboBox(this)),
+      swSettings(new QStackedWidget(this)) {
     setObjectName("tempCalcWidget");
     cbAlgorithm->setObjectName("cbAlgorithm");
     auto label = new QLabel(tr("Choose temperature calculation algorithm:"), this);
     auto layout = new QVBoxLayout(this);
     layout->addWidget(label);
     layout->addWidget(cbAlgorithm);
-    layout->addWidget(swSettings);    
-    const auto& factories = AppContext::getTempCalcRegistry()->getAllEntries();
+    layout->addWidget(swSettings);
+    auto factories = AppContext::getTempCalcRegistry()->getAllEntries();
     for (auto tempCalcMethodFactory : qAsConst(factories)) {
-        const auto& id = tempCalcMethodFactory->getId();
-        auto settingsWidget = tempCalcMethodFactory->createTempCalcSettingsWidget(this, id);
-        cbAlgorithm->addItem(id);
+        auto settingsWidget = tempCalcMethodFactory->createTempCalcSettingsWidget(this);
+        cbAlgorithm->addItem(tempCalcMethodFactory->visualName, tempCalcMethodFactory->getId());
         swSettings->addWidget(settingsWidget);
         settingsWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         connect(settingsWidget, &BaseTempCalcWidget::si_settingsChanged, this, &TempCalcWidget::si_settingsChanged);
@@ -62,7 +60,7 @@ TempCalcWidget::TempCalcWidget(QWidget* parent) :
     connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), swSettings, &QStackedWidget::setCurrentIndex);
     connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TempCalcWidget::si_settingsChanged);
     connect(swSettings, &QStackedWidget::currentChanged, this, [this](int index) {
-        //setSizePolicy() and adjustSize() are required for widget resizing on @settingsWidget widget changed
+        // setSizePolicy() and adjustSize() are required for widget resizing on @settingsWidget widget changed
         for (int i = 0; i < swSettings->count(); i++) {
             CHECK_CONTINUE(i != index);
 
@@ -76,25 +74,26 @@ TempCalcWidget::TempCalcWidget(QWidget* parent) :
         adjustSize();
         parentWidget()->adjustSize();
     });
-
 }
 
 void TempCalcWidget::init(const TempCalcSettings& currentSettings) {
-    auto index = cbAlgorithm->findText(currentSettings.value(BaseTempCalc::KEY_ID).toString());
+    auto index = cbAlgorithm->findData(currentSettings.value(BaseTempCalc::KEY_ID));
     CHECK(index != -1, );
 
     cbAlgorithm->setCurrentIndex(index);
-    qobject_cast<BaseTempCalcWidget*>(swSettings->widget(index))->restoreFromSettings(currentSettings);
+    auto baseCalcWidget = qobject_cast<BaseTempCalcWidget*>(swSettings->widget(index));
+    SAFE_POINT(baseCalcWidget != nullptr, "Not a BaseTempCalcWidget", );
+    baseCalcWidget->restoreFromSettings(currentSettings);
 }
 
 TempCalcSettings TempCalcWidget::getSettings() const {
     auto currentWidget = swSettings->widget(cbAlgorithm->currentIndex());
     SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), {});
 
-    auto curentBaseTempCalcWidget = qobject_cast<BaseTempCalcWidget*>(currentWidget);
-    SAFE_POINT(curentBaseTempCalcWidget != nullptr, L10N::nullPointerError("BaseTempCalcWidget"), {});
+    auto currentBaseTempCalcWidget = qobject_cast<BaseTempCalcWidget*>(currentWidget);
+    SAFE_POINT(currentBaseTempCalcWidget != nullptr, L10N::nullPointerError("BaseTempCalcWidget"), {});
 
-    return curentBaseTempCalcWidget->createSettings();
+    return currentBaseTempCalcWidget->createSettings();
 }
 
-}
+}  // namespace U2

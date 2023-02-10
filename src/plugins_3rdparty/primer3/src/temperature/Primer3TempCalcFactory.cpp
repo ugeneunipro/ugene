@@ -23,15 +23,11 @@
 #include "Primer3TempCalc.h"
 #include "Primer3TempCalcWidget.h"
 
-#include <U2Core/L10n.h>
-#include <U2Core/U2SafePoints.h>
-
 namespace U2 {
 
-const QString Primer3TempCalcFactory::ID = "Primer 3";
-
-Primer3TempCalcFactory::Primer3TempCalcFactory() 
-    : TempCalcFactory(ID) {}
+Primer3TempCalcFactory::Primer3TempCalcFactory()
+    : TempCalcFactory("primer3-tm-algorithm", QT_TRID_NOOP("Primer 3")) {
+}
 
 QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(const TempCalcSettings& settings) const {
     return QSharedPointer<BaseTempCalc>(new Primer3TempCalc(settings));
@@ -43,7 +39,7 @@ QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createDefaultTempCalculator
 
 TempCalcSettings Primer3TempCalcFactory::createDefaultTempCalcSettings() const {
     TempCalcSettings settings;
-    settings.insert(BaseTempCalc::KEY_ID, ID);
+    settings.insert(BaseTempCalc::KEY_ID, id);
     settings.insert(Primer3TempCalc::KEY_DNA_CONC, Primer3TempCalc::DNA_CONC_DEFAULT);
     settings.insert(Primer3TempCalc::KEY_SALT_CONC, Primer3TempCalc::SALT_CONC_DEFAULT);
     settings.insert(Primer3TempCalc::KEY_DIVALENT_CONC, Primer3TempCalc::DIVALENT_CONC_DEFAULT);
@@ -58,8 +54,8 @@ TempCalcSettings Primer3TempCalcFactory::createDefaultTempCalcSettings() const {
     return settings;
 }
 
-BaseTempCalcWidget* Primer3TempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {
+BaseTempCalcWidget* Primer3TempCalcFactory::createTempCalcSettingsWidget(QWidget* parent) const {
     return new Primer3TempCalcWidget(parent, id);
 }
 
-}
+}  // namespace U2

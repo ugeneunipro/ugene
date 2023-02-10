@@ -24,12 +24,7 @@
 
 namespace U2 {
 
-
-RoughTempCalcFactory::RoughTempCalcFactory()
-    : RoughTempCalcCmdFactory() {}
-
-
-BaseTempCalcWidget* RoughTempCalcFactory::createTempCalcSettingsWidget(QWidget* parent, const QString& id) const {
+BaseTempCalcWidget* RoughTempCalcFactory::createTempCalcSettingsWidget(QWidget* parent) const {
     return new RoughTempCalcWidget(parent, id);
 }
 

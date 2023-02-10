@@ -20,11 +20,11 @@
  */
 #pragma once
 
-#include "BaseTempCalc.h"
+#include <QString>
 
 #include <U2Core/global.h>
 
-#include <QString>
+#include "BaseTempCalc.h"
 
 namespace U2 {
 
@@ -32,11 +32,11 @@ class BaseTempCalc;
 class BaseTempCalcWidget;
 
 /**
- * Factory, which creates temperature calculator and widget with the set of corresponding settings 
+ * Factory, which creates temperature calculator and widget with the set of corresponding settings
  */
 class U2ALGORITHM_EXPORT TempCalcFactory {
 public:
-    TempCalcFactory(const QString& id);
+    TempCalcFactory(const QString& id, const QString& visualName);
 
     /**
      * Create temperature calculator
@@ -50,22 +50,23 @@ public:
      */
     virtual QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const = 0;
     /**
-     * Create the default settings of the default temperature calculator 
+     * Create the default settings of the default temperature calculator
      * @return temperature calculator settings
      */
     virtual TempCalcSettings createDefaultTempCalcSettings() const = 0;
     /**
      * Create widget to set manually settings and get TempCalcSettings from this widget
      * @parent widget parent
-     * @id id of current temperature calculation method
      * @return pointer to the temperature calculator
      */
-    virtual BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent, const QString& id) const = 0;
+    virtual BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent) const = 0;
 
+    /** Returns id of the factory. The method is required by IdRegistry. */
     const QString& getId() const;
 
-protected:
     const QString id;
+
+    const QString visualName;
 };
 
-}
+}  // namespace U2

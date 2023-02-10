@@ -23,11 +23,12 @@
 
 namespace U2 {
 
-TempCalcFactory::TempCalcFactory(const QString& _id) 
-    : id(_id) {}
+TempCalcFactory::TempCalcFactory(const QString& _id, const QString& _visualName)
+    : id(_id), visualName(_visualName) {
+}
 
 const QString& TempCalcFactory::getId() const {
     return id;
 }
 
-}
+}  // namespace U2
