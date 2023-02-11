@@ -98,8 +98,6 @@ public:
     QAction* circularLayoutAction = nullptr;
     QAction* unrootedLayoutAction = nullptr;
 
-    QAction* branchesSettingsAction = nullptr;
-
     QAction* nameLabelsAction = nullptr;
     QAction* showNodeLabelsAction = nullptr;
     QAction* distanceLabelsAction = nullptr;
@@ -222,9 +220,6 @@ private slots:
     void sl_textSettingsTriggered();
     void sl_treeSettingsTriggered();
     void sl_rerootTriggered();
-
-    void sl_setSettingsTriggered();
-    void sl_branchSettings();
 
 private:
     /**

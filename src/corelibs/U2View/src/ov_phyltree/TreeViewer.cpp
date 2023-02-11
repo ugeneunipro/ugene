@@ -66,7 +66,6 @@
 #include "TreeViewerState.h"
 #include "TreeViewerTasks.h"
 #include "TreeViewerUtils.h"
-#include "phyltree/BranchSettingsDialog.h"
 #include "phyltree/TextSettingsDialog.h"
 #include "phyltree/TreeSettingsDialog.h"
 
@@ -146,8 +145,6 @@ void TreeViewer::createActions() {
     unrootedLayoutAction->setObjectName("Unrooted");
 
     // Branch Settings
-    branchesSettingsAction = new QAction(QIcon(":core/images/color_wheel.png"), tr("Branch Settings..."), ui);
-    branchesSettingsAction->setObjectName("Branch Settings");
     collapseAction = new QAction(QIcon(":/core/images/collapse_tree.png"), tr("Collapse"), ui);
     collapseAction->setObjectName("Collapse");
     rerootAction = new QAction(QIcon(":/core/images/reroot.png"), tr("Reroot tree"), ui);
@@ -266,7 +263,6 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
 
     // Branch Settings
     tb->addAction(alignTreeLabelsAction);
-    tb->addAction(branchesSettingsAction);
 
     tb->addSeparator();
     tb->addAction(collapseAction);
@@ -296,7 +292,6 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     m->addMenu(layoutMenu);
 
     // Branch Settings
-    m->addAction(branchesSettingsAction);
     m->addAction(collapseAction);
     m->addAction(rerootAction);
     m->addAction(swapAction);
@@ -497,7 +492,6 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
     connect(treeViewer->zoomOutAction, &QAction::triggered, this, &TreeViewerUI::zoomOut);
     connect(treeViewer->zoom100Action, &QAction::triggered, this, &TreeViewerUI::zoomTo100);
     connect(treeViewer->zoomFitAction, &QAction::triggered, this, &TreeViewerUI::zoomFit);
-    connect(treeViewer->branchesSettingsAction, &QAction::triggered, this, &TreeViewerUI::sl_setSettingsTriggered);
     connect(treeViewer->collapseAction, &QAction::triggered, this, &TreeViewerUI::sl_collapseTriggered);
     connect(treeViewer->rerootAction, &QAction::triggered, this, &TreeViewerUI::sl_rerootTriggered);
     connect(treeViewer->swapAction, &QAction::triggered, this, &TreeViewerUI::sl_swapTriggered);
@@ -520,8 +514,6 @@ TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
 
     buttonPopup->addAction(treeViewer->collapseAction);
     buttonPopup->addSeparator();
-
-    buttonPopup->addAction(treeViewer->branchesSettingsAction);
 
     auto treeImageActionsMenu = new QMenu(tr("Tree image"), this);
     treeImageActionsMenu->menuAction()->setObjectName("treeImageActionsMenu");
@@ -664,21 +656,10 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
     }
 }
 
-void TreeViewerUI::sl_setSettingsTriggered() {
-    sl_branchSettings();
-}
-
 OptionsMap TreeViewerUI::getSelectionSettings() const {
     OptionsMap effectiveSettings = settings;
     effectiveSettings.insert(selectionSettingsDelta);
     return effectiveSettings;
-}
-
-void TreeViewerUI::sl_branchSettings() {
-    QObjectScopedPointer<BranchSettingsDialog> dialog = new BranchSettingsDialog(this, getSelectionSettings());
-    dialog->exec();
-    CHECK(!dialog.isNull() && dialog->result() == QDialog::Accepted, );
-    updateOptions(dialog->getSettings());
 }
 
 void TreeViewerUI::updateTreeSettingsOnSelectedItems() {
@@ -874,17 +855,17 @@ void TreeViewerUI::updateScene() {
     scene()->update();
 }
 
-QVariantMap TreeViewerUI::getSettingsState() const {
-    QString branchColor("branch_color");
-    QString branchThickness("branch_thickness");
-    QVariantMap m;
+static QString branchColorSettingsKey("branch_color");
+static QString branchThicknessSettingsKey("branch_thickness");
 
+QVariantMap TreeViewerUI::getSettingsState() const {
+    QVariantMap m;
     int i = 0;
     foreach (QGraphicsItem* graphItem, items()) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             OptionsMap branchSettings = branchItem->getSettings();
-            m[branchColor] = qvariant_cast<QColor>(branchSettings[BRANCH_COLOR]);
-            m[branchThickness + i] = branchSettings[BRANCH_THICKNESS].toInt();
+            m[branchColorSettingsKey + QString::number(i)] = qvariant_cast<QColor>(branchSettings[BRANCH_COLOR]);
+            m[branchThicknessSettingsKey + QString::number(i)] = branchSettings[BRANCH_THICKNESS].toInt();
             i++;
         }
     }
@@ -893,19 +874,17 @@ QVariantMap TreeViewerUI::getSettingsState() const {
 }
 
 void TreeViewerUI::setSettingsState(const QVariantMap& m) {
-    QString branchColor("branch_color");
-    QString branchThickness("branch_thickness");
     int i = 0;
     foreach (QGraphicsItem* graphItem, items()) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             OptionsMap branchSettings = branchItem->getSettings();
 
-            QVariant vColor = m[branchColor + i];
+            QVariant vColor = m[branchColorSettingsKey + QString::number(i)];
             if (vColor.type() == QVariant::Color) {
                 branchSettings[BRANCH_COLOR] = vColor.value<QColor>();
             }
 
-            QVariant vThickness = m[branchThickness + i];
+            QVariant vThickness = m[branchThicknessSettingsKey + QString::number(i)];
             if (vThickness.type() == QVariant::Int) {
                 branchSettings[BRANCH_THICKNESS] = vThickness.toInt();
             }

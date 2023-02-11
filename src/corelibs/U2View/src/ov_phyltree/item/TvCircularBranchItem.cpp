@@ -35,8 +35,7 @@
 namespace U2 {
 
 TvCircularBranchItem::TvCircularBranchItem(TvCircularBranchItem* parent, double h, TvRectangularBranchItem* from, const QString& nodeName)
-    : TvBranchItem(from->phyBranch, from->getSide(), nodeName), height(h) {
-    setParentItem(parent);
+    : TvBranchItem(parent, from->phyBranch, from->getSide(), nodeName), height(h) {
     settings = from->getSettings();
     width = from->getWidth() / 2;
     setDist(from->getDist());

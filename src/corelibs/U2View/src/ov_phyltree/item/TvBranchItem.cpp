@@ -31,13 +31,12 @@
 
 #include "../TreeViewerUtils.h"
 #include "TvNodeItem.h"
-#include "TvRectangularBranchItem.h"
 #include "TvTextItem.h"
 
 namespace U2 {
 
-TvBranchItem::TvBranchItem(const PhyBranch* _phyBranch, const TvBranchItem::Side& _side, const QString& nodeName)
-    : phyBranch(_phyBranch), side(_side) {
+TvBranchItem::TvBranchItem(TvBranchItem* parentTvBranch, const PhyBranch* _phyBranch, const TvBranchItem::Side& _side, const QString& nodeName)
+    : QAbstractGraphicsShapeItem(parentTvBranch), phyBranch(_phyBranch), side(_side) {
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(false);
@@ -52,8 +51,8 @@ TvBranchItem::TvBranchItem(const PhyBranch* _phyBranch, const TvBranchItem::Side
     setPen(pen1);
 }
 
-TvBranchItem::TvBranchItem(const PhyBranch* _phyBranch, const QString& sequenceName, bool isRoot)
-    : phyBranch(_phyBranch) {
+TvBranchItem::TvBranchItem(TvBranchItem* parentTvBranch, const PhyBranch* _phyBranch, const QString& sequenceName, bool isRoot)
+    : QAbstractGraphicsShapeItem(parentTvBranch), phyBranch(_phyBranch) {
     distance = phyBranch == nullptr ? 0.0 : phyBranch->distance;
     settings[BRANCH_THICKNESS] = 1;
     setFlag(QGraphicsItem::ItemIsSelectable);
@@ -235,27 +234,6 @@ void TvBranchItem::initDistanceText(const QString& text) {
     distanceTextItem->setZValue(1);
 }
 
-QRectF TvBranchItem::visibleChildrenBoundingRect(const QTransform& viewTransform) const {
-    QRectF childrenBoundingRect;
-    QStack<const QGraphicsItem*> graphicsItems;
-    graphicsItems.push(this);
-
-    QTransform invertedTransform = viewTransform.inverted();
-    do {
-        const QGraphicsItem* branchItem = graphicsItems.pop();
-        QList<QGraphicsItem*> items = branchItem->childItems();
-        for (QGraphicsItem* graphItem : qAsConst(items)) {
-            if (!graphItem->isVisible()) {
-                continue;
-            }
-            QRectF itemRect = graphItem->sceneBoundingRect();
-            childrenBoundingRect |= itemRect;
-            graphicsItems.push(graphItem);
-        }
-    } while (!graphicsItems.isEmpty());
-    return childrenBoundingRect;
-}
-
 bool TvBranchItem::isRoot() const {
     return parentItem() == nullptr;
 }
@@ -318,6 +296,16 @@ void TvBranchItem::setDist(double d) {
 bool TvBranchItem::isLeaf() const {
     // Handles both rectangular & circular/unrooted layouts that have different properties for leaf nodes.
     return (phyBranch != nullptr && phyBranch->childNode->isLeafNode()) || getChildBranch(Side::Left) == nullptr;
+}
+
+const TvBranchItem::Side& TvBranchItem::getSide() const {
+    return side;
+}
+
+void TvBranchItem::setSide(const TvBranchItem::Side& newSide) {
+    CHECK(side != newSide, );
+    prepareGeometryChange();
+    side = newSide;
 }
 
 }  // namespace U2

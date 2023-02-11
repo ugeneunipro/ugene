@@ -32,22 +32,8 @@
 
 namespace U2 {
 
-TvRectangularBranchItem::TvRectangularBranchItem(const PhyBranch* branch, const QString& name, bool isRoot)
-    : TvBranchItem(branch, name, isRoot) {
-}
-
-void TvRectangularBranchItem::setParentItem(QGraphicsItem* item) {
-    prepareGeometryChange();
-    height = side == Side::Right ? pos().y() - item->pos().y() : item->pos().y() - pos().y();
-    setPos(width, side == Side::Right ? height : -height);
-
-    QAbstractGraphicsShapeItem::setParentItem(item);
-}
-
-void TvRectangularBranchItem::setSide(const Side& newSide) {
-    CHECK(side != newSide, );
-    prepareGeometryChange();
-    side = newSide;
+TvRectangularBranchItem::TvRectangularBranchItem(TvRectangularBranchItem* parentBranch, const PhyBranch* branch, const QString& name, bool isRoot)
+    : TvBranchItem(parentBranch, branch, name, isRoot) {
 }
 
 QRectF TvRectangularBranchItem::boundingRect() const {
@@ -117,10 +103,6 @@ void TvRectangularBranchItem::setCurvature(double newCurvature) {
     CHECK(newCurvature != curvature, );
     curvature = newCurvature;
     prepareGeometryChange();
-}
-
-TvRectangularBranchItem::Side TvRectangularBranchItem::getSide() const {
-    return side;
 }
 
 double TvRectangularBranchItem::getHeight() const {

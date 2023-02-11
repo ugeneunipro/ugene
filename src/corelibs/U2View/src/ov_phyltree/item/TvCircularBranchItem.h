@@ -39,7 +39,7 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void updateLabelPositions() override;
+    void updateLabelPositions() final override;
 
 private:
     double height = 0;

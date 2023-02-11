@@ -223,7 +223,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_text/SimpleTextObjectView.h \
            src/ov_text/SimpleTextObjectViewTasks.h \
            src/phyltree/BaseSettingsDialog.h \
-           src/phyltree/BranchSettingsDialog.h \
            src/phyltree/CreatePhyTreeDialogController.h \
            src/phyltree/CreatePhyTreeWidget.h \
            src/phyltree/PhyTreeDisplayOptionsWidget.h \
@@ -276,7 +275,6 @@ FORMS += src/LicenseDialog.ui \
          src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui \
          src/ov_sequence/find_pattern/FindPatternForm.ui \
          src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui \
-         src/phyltree/BranchSettingsDialog.ui \
          src/phyltree/CreatePhyTreeDialog.ui \
          src/phyltree/PhyTreeDisplayOptionsWidget.ui \
          src/phyltree/TextSettingsDialog.ui \
@@ -505,7 +503,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_text/SimpleTextObjectView.cpp \
            src/ov_text/SimpleTextObjectViewTasks.cpp \
            src/phyltree/BaseSettingsDialog.cpp \
-           src/phyltree/BranchSettingsDialog.cpp \
            src/phyltree/CreatePhyTreeDialogController.cpp \
            src/phyltree/CreatePhyTreeWidget.cpp \
            src/phyltree/PhyTreeDisplayOptionsWidget.cpp \

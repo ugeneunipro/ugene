@@ -34,8 +34,7 @@
 namespace U2 {
 
 TvUnrootedBranchItem::TvUnrootedBranchItem(TvUnrootedBranchItem* parent, double angle, TvRectangularBranchItem* from, const QString& nodeName)
-    : TvBranchItem(from->phyBranch, from->getSide(), nodeName) {
-    setParentItem(parent);
+    : TvBranchItem(parent, from->phyBranch, from->getSide(), nodeName) {
     settings = from->getSettings();
     width = from->getWidth() / 1.5;
     setDist(from->getDist());

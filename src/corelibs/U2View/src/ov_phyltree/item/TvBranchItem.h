@@ -42,7 +42,7 @@ public:
         Left,
         Right
     };
-    TvBranchItem(const PhyBranch* branch, const Side& side, const QString& nodeName);
+    TvBranchItem(TvBranchItem* parentTvBranch, const PhyBranch* branch, const Side& side, const QString& nodeName);
 
     TvNodeItem* getNodeItem() const;
 
@@ -81,7 +81,9 @@ public:
 
     void initDistanceText(const QString& text = "");
 
-    QRectF visibleChildrenBoundingRect(const QTransform& viewTransform) const;
+    const Side& getSide() const;
+
+    void setSide(const Side& side);
 
     /** Spacing between branch line and branch label. */
     static constexpr int TEXT_SPACING = 10;
@@ -114,7 +116,7 @@ signals:
     void si_branchCollapsed(TvBranchItem* branch);
 
 protected:
-    TvBranchItem(const PhyBranch* branch, const QString& sequenceName, bool isRoot);
+    TvBranchItem(TvBranchItem* parentTvBranch, const PhyBranch* branch, const QString& sequenceName, bool isRoot);
 
     virtual void updateLabelPositions();
 
