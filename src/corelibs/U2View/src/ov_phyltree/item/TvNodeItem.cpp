@@ -115,8 +115,8 @@ void TvNodeItem::updateSettings(const OptionsMap& settings) {
     bool isTipNode = getParentBranchItem()->isLeaf();
     isShapeVisible = settings[isTipNode ? SHOW_TIP_SHAPE : SHOW_NODE_SHAPE].toBool();
 
-    bool isLabelVisible = settings[SHOW_INNER_NODE_LABELS].toBool();
-    if (!nodeName.isEmpty() && isLabelVisible) {
+    bool isLabelVisible = !isTipNode && settings[SHOW_INNER_NODE_LABELS].toBool();
+    if (labelItem == nullptr && isLabelVisible && !nodeName.isEmpty()) {
         labelItem = new TvTextItem(this, nodeName);
         labelItem->setZValue(1);
     }
