@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/ColorDialogFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
@@ -429,6 +430,39 @@ void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus&, QWidget* treeViewer, i
         GTMouseDriver::scroll(steps > 0 ? 1 : -1);
     }
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setBranchColor"
+void GTUtilsPhyTree::setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b) {
+    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
+    auto branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
+    GTWidget::click(os, branchesColorButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getColorPercent"
+double GTUtilsPhyTree::getColorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName) {
+    int total = 0;
+    int found = 0;
+    const QImage img = GTWidget::getImage(os, widget);
+    QRect r = widget->rect();
+    int wid = r.width();
+    int heig = r.height();
+    for (int i = 0; i < wid; i++) {
+        for (int j = 0; j < heig; j++) {
+            total++;
+            QPoint p(i, j);
+            QRgb rgb = img.pixel(p);
+            QColor color = QColor(rgb);
+            QString name = color.name();
+            if (name == colorName) {
+                found++;
+            }
+        }
+    }
+    double result = static_cast<double>(found) / total;
+    return result;
 }
 #undef GT_METHOD_NAME
 

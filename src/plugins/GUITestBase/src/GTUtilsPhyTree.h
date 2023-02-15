@@ -113,6 +113,12 @@ public:
     static TvBranchItem* getRootBranch(HI::GUITestOpStatus& os);
     static TvRectangularBranchItem* getRootRectangularBranch(HI::GUITestOpStatus& os);
 
+    /** Set branch color. */
+    static void setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b);
+
+    /** Returns color percent. */
+    static double getColorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName);
+
 private:
     static QList<TvRectangularBranchItem*> getSubtreeOrderedRectangularBranches(HI::GUITestOpStatus& os, TvRectangularBranchItem* rootBranch);
     static bool rectangularBranchLessThan(TvRectangularBranchItem* first, TvRectangularBranchItem* second);
