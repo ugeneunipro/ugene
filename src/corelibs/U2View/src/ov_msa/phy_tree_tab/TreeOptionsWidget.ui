@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>238</width>
-    <height>869</height>
+    <height>886</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -249,6 +249,7 @@
               <widget class="QToolButton" name="boldAttrButton">
                <property name="font">
                 <font>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -279,6 +280,7 @@
               <widget class="QToolButton" name="underlineAttrButton">
                <property name="font">
                 <font>
+                 <weight>50</weight>
                  <italic>false</italic>
                  <bold>false</bold>
                  <underline>true</underline>
