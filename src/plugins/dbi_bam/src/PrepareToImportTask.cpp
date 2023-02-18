@@ -156,7 +156,8 @@ void PrepareToImportTask::checkReferenceFile() {
         return;
     }
 
-    // Check if FASTA index will be created and ensure the reference dir is writable. Copy reference to the work dir if not.
+    // Check if FASTA index will be created and ensure the reference dir is writable.
+    // Copy reference to the work dir if the reference dir is not writable.
     bool isFaiBuildNeeded = !BAMUtils::hasValidFastaIndex(refUrl);
     QString refUrlDir = QFileInfo(refUrl).absolutePath();
     if (isFaiBuildNeeded && !FileAndDirectoryUtils::isDirectoryWritable(refUrlDir)) {
