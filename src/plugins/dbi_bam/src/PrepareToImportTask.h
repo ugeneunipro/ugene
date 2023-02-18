@@ -30,27 +30,23 @@ namespace BAM {
 
 class PrepareToImportTask : public Task {
 public:
-    PrepareToImportTask(const GUrl& assebmlyUrl, bool sam, const QString& refUrl, const QString& workingDir);
-    void run();
+    PrepareToImportTask(const GUrl& assemblyUrl, bool sam, const QString& refUrl, const QString& _workDir);
+    void run() override;
     const GUrl& getSourceUrl() const;
     bool isNewURL() const;
 
 private:
     GUrl sourceURL;
     QString refUrl;
-    QString workingDir;
+    QString workDir;
     bool samFormat;
     bool newURL;
 
 private:
     void checkReferenceFile();
-    QString getBamUrl() const;
-    QString getSortedBamUrl(const QString& bamUrl) const;
     QString getIndexedBamUrl(const QString& sortedBamUrl) const;
-    QString getFastaUrl() const;
     QString getCopyError(const QString& url1, const QString& url2) const;
     bool needToCopyBam(const QString& sortedBamUrl) const;
-    bool needToCopyFasta() const;
 };
 
 }  // namespace BAM
