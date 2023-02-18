@@ -63,10 +63,6 @@
 #include "export_image/MSAImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
-#include "ov_msa/MaEditorConsensusArea.h"
-#include "ov_msa/MaEditorSelection.h"
-#include "ov_msa/MaEditorSequenceArea.h"
-#include "overview/MaEditorOverviewArea.h"
 #include "overview/MaGraphOverview.h"
 #include "overview/MaSimpleOverview.h"
 
@@ -243,8 +239,6 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
         }
     }
 
-    // Save toolbar for future switching singleline <-> multiline modes
-    this->staticToolBar = tb;
     tb->addAction(getMaEditorWgt(0)->copyFormattedSelectionAction);
 
     tb->addAction(saveAlignmentAction);
@@ -280,12 +274,7 @@ void MSAEditor::buildMenu(QMenu* m, const QString& type) {
         return;
     }
 
-    // Save menu for future switching singleline <-> multiline modes
-    this->staticMenu = m;
-    this->staticMenuType = type;
-
-    // create menu for 0th child, as all children use the same sequeance
-    // so menu action's result will applyed to all lines
+    // Create a menu for the first child -> all other children will re-use it.
     addAppearanceMenu(m, 0);
 
     addNavigationMenu(m);
@@ -1009,11 +998,7 @@ void MSAEditor::sl_multilineViewAction() {
     if (childrenChanged) {
         initChildrenActionsAndSignals();
         updateActions();
-        buildStaticToolbar(staticToolBar);
-        fillMenu(staticMenu, staticMenuType);
-
-        Settings* s = AppContext::getSettings();
-        s->setValue(getSettingsRoot() + MSAE_MULTILINE_MODE, multilineMode);
+        AppContext::getSettings()->setValue(getSettingsRoot() + MSAE_MULTILINE_MODE, multilineMode);
     }
 }
 
