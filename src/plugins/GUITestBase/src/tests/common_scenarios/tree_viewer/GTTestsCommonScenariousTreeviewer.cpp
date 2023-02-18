@@ -20,6 +20,7 @@
  */
 
 #include <GTGlobals.h>
+#include <base_dialogs/ColorDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -27,10 +28,10 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
-
 #include <QColor>
 #include <QGraphicsItem>
 #include <QMainWindow>
@@ -52,7 +53,6 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/BranchSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 
@@ -597,14 +597,16 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     // PhyTree branch settings
 
-    // 1. Open file _common_data/scenario/tree_view/COI.nwk
+    // Open file _common_data/scenario/tree_view/COI.nwk
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/tree_view/COI.nwk");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
     // Expected state: phylogenetic tree appears
 
-    // 2. Open context menu on branch and  select {change settings} menu item
+    // Open Tree Settins Options Panel tab
+    GTUtilsOptionPanelPhyTree::openTab(os);
+
+    auto lineWeightSpinBox = GTWidget::findSpinBox(os, "lineWeightSpinBox");
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QList<QGraphicsItem*> list = treeView->scene()->items();
     QList<TvNodeItem*> nodeList = GTUtilsPhyTree::getNodes(os);
     CHECK_SET_ERR(!nodeList.isEmpty(), "nodeList is empty");
 
@@ -613,20 +615,21 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QPoint viewCord = treeView->mapFromScene(sceneCoord);
     QPoint globalCoord = treeView->mapToGlobal(viewCord);
 
-    // Expected state: Branch settings dialog appears
-
-    // 3. Change thickness and color to differ than standard. Click OK
-    // Expected state: selected branch changed
-    GTUtilsDialog::waitForDialog(os, new BranchSettingsDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Branch Settings"}));
+    // Change thickness and color
     GTMouseDriver::moveTo(globalCoord);
     GTMouseDriver::click();
-    GTMouseDriver::click(Qt::RightButton);
 
-    globalCoord.setX(globalCoord.x() - 15);  // pick a branch coordinate
+    GTUtilsPhyTree::setBranchColor(os, 0, 0, 255);
 
-    QColor color = GTWidget::getColor(os, treeView, treeView->mapFromGlobal(globalCoord));
-    CHECK_SET_ERR(color.name() == "#0000ff", "Expected: #0000ff, found: " + color.name());
+    // Expected state: color changed
+    QString colorName = "#0000ff";
+    double initPercent = GTUtilsPhyTree::getColorPercent(os, treeView, colorName);
+    CHECK_SET_ERR(initPercent > 0, "color not changed");
+
+    // Change  line Weight
+    GTSpinBox::setValue(os, lineWeightSpinBox, 30);
+    double finalPercent = GTUtilsPhyTree::getColorPercent(os, treeView, colorName);
+    CHECK_SET_ERR(finalPercent > initPercent * 10, "branches width changed not enough");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {

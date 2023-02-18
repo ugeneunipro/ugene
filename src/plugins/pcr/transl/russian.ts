@@ -1020,7 +1020,7 @@
     <message>
         <location filename="../src/PrimerLibraryMdiWindow.cpp" line="38"/>
         <source>Primer Library</source>
-        <translation>Библиотека олигонуклеотидов</translation>
+        <translation>Библиотека праймеров</translation>
     </message>
 </context>
 <context>
