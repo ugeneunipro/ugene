@@ -272,7 +272,7 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
     if (alphabet->isNucleic()) {
         statsInfo += formTableRow(tr(CAPTION_SEQ_GC_CONTENT), getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
         bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != BaseTempCalc::INVALID_TM;
-        QString meltingTmFormattedValue = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " &#176;C", isValidMeltingTm);
+        QString meltingTmFormattedValue = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " °C", isValidMeltingTm);
         statsInfo += formTableRow(tr(CAPTION_SEQ_MELTING_TEMPERATURE), meltingTmFormattedValue, availableSpace, isValidMeltingTm);
 
         const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
