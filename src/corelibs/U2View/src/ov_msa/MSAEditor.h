@@ -78,7 +78,7 @@ class U2VIEW_EXPORT MSAEditor : public MaEditor {
 
 public:
     MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj);
-    ~MSAEditor();
+    ~MSAEditor() override;
 
     QString getSettingsRoot() const override {
         return MSAE_SETTINGS_ROOT;
@@ -300,6 +300,12 @@ private:
 
     /** Selection state controller. */
     MaEditorSelectionController* selectionController;
+
+    // Main windows toolbar and menu
+    // we need to save it for recreating actions while switching singleline <-> multiline modes
+    QToolBar* staticToolBar;
+    QMenu* staticMenu;
+    QString staticMenuType;
 };
 
 /** Set of custom menu actions in MSA editor. */
