@@ -46,7 +46,7 @@
 namespace U2 {
 using namespace HI;
 
-const QString GTUtilsOptionPanelSequenceView::meltingTmReportString = "<tr><td>Melting temperature: </td><td style=\"vertical-align:top;\">%1 &#176;C&nbsp;&nbsp;<a href=\"Melting temperature\"><img src=\":core/images/gear.svg\" width=16 height=16;\"></a></td></tr>";
+const QString GTUtilsOptionPanelSequenceView::meltingTmReportString = "<tr><td>Melting temperature: </td><td style=\"vertical-align:top;\">%1 °C&nbsp;&nbsp;<a href=\"Melting temperature\"><img src=\":core/images/gear.svg\" width=16 height=16;\"></a></td></tr>";
 
 QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequenceView::initNames() {
     QMap<Tabs, QString> result;
