@@ -58,6 +58,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
 #include <U2Gui/Notification.h>
@@ -131,7 +132,6 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -4179,7 +4179,7 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
     QImage imageAfter1 = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageAfter1 != imageBefore, "5. Image is not changed");
 
-    // Double click on the slider and check that curvative is 0 and check that image changes to the original image
+    // Double-click on the slider and check that curvative is 0 and check that image changes to the original image
     GTMouseDriver::moveTo(GTWidget::getWidgetVisibleCenterGlobal(GTWidget::findWidget(os, "curvatureSlider")));
     GTMouseDriver::doubleClick();
     CHECK_SET_ERR(curvatureSlider->value() == 0, "6. The curvature should be 0");
@@ -4191,12 +4191,29 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
     QImage imageAfter3 = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageAfter3 != imageBefore, "8. Image is not changed");
 
-    // Double click on the expansion slider and check that expansion is 100 and check that image changes to the original one
+    // Double-click on the expansion slider and check that expansion is 100 and check that image changes to the original one
     GTMouseDriver::moveTo(GTWidget::getWidgetVisibleCenterGlobal(GTWidget::findWidget(os, "breadthScaleAdjustmentSlider")));
     GTMouseDriver::doubleClick();
     CHECK_SET_ERR(expansionSlider->value() == 100, "9. The expansion should be 100");
     QImage imageAfter4 = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7806) {
+    QDir(sandBoxDir).mkdir("test_7806");
+    QDir(sandBoxDir).mkdir("test_7806/1");
+    QDir(sandBoxDir).mkdir("test_7806/2");
+
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.fa", sandBoxDir + "/test_7806/1/chrM.fa");
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sam", sandBoxDir + "/test_7806/2/chrM.sam");
+    IOAdapterUtils::writeTextFile(sandBoxDir + "test_7806/2/chrM.fa", "1234");
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", sandBoxDir + "/test_7806/1", "chrM.fa"));
+    GTFileDialog::openFile(os, sandBoxDir + "/test_7806/2/chrM.sam");
+
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    int size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
+    CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
 }  // namespace GUITest_regression_scenarios

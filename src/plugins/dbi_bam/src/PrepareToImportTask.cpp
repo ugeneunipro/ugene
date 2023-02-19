@@ -27,6 +27,7 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/BAMUtils.h>
@@ -36,31 +37,14 @@
 namespace U2 {
 namespace BAM {
 
-PrepareToImportTask::PrepareToImportTask(const GUrl& url, bool sam, const QString& refUrl, const QString& workingDir)
-    : Task("Prepare assembly file to import", TaskFlag_None),
-      sourceURL(url), refUrl(refUrl), workingDir(workingDir), samFormat(sam), newURL(false) {
+PrepareToImportTask::PrepareToImportTask(const GUrl& _assemblyUrl, bool _sam, const QString& _refUrl, const QString& _workDir)
+    : Task(tr("Prepare assembly file to import"), TaskFlag_None),
+      sourceURL(_assemblyUrl), refUrl(_refUrl), workDir(_workDir), samFormat(_sam), newURL(false) {
     tpm = Progress_Manual;
 }
 
-QString PrepareToImportTask::getBamUrl() const {
-    if (samFormat) {
-        QString samUrl = sourceURL.getURLString();
-        return workingDir + "/" + QFileInfo(samUrl).fileName() + ".bam";
-    } else {
-        return sourceURL.getURLString();
-    }
-}
-
-QString PrepareToImportTask::getSortedBamUrl(const QString& bamUrl) const {
-    return workingDir + "/" + QFileInfo(bamUrl).fileName() + "_sorted";
-}
-
 QString PrepareToImportTask::getIndexedBamUrl(const QString& sortedBamUrl) const {
-    return workingDir + "/" + QFileInfo(sortedBamUrl).fileName();
-}
-
-QString PrepareToImportTask::getFastaUrl() const {
-    return workingDir + "/" + QFileInfo(refUrl).fileName();
+    return workDir + "/" + QFileInfo(sortedBamUrl).fileName();
 }
 
 QString PrepareToImportTask::getCopyError(const QString& url1, const QString& url2) const {
@@ -74,17 +58,15 @@ bool equalUrls(const QString& url1, const QString& url2) {
 }  // namespace
 
 bool PrepareToImportTask::needToCopyBam(const QString& sortedBamUrl) const {
-    const QString indexedBamUrl = getIndexedBamUrl(sortedBamUrl);
+    QString indexedBamUrl = getIndexedBamUrl(sortedBamUrl);
     return !equalUrls(indexedBamUrl, sortedBamUrl);
-}
-
-bool PrepareToImportTask::needToCopyFasta() const {
-    return !equalUrls(getFastaUrl(), refUrl);
 }
 
 void PrepareToImportTask::run() {
     // SAM to BAM if needed
-    QString bamUrl = getBamUrl();
+    QString bamUrl = samFormat
+                         ? workDir + "/" + QFileInfo(sourceURL.getURLString()).fileName() + ".bam"
+                         : sourceURL.getURLString();
     if (samFormat) {
         newURL = true;
         stateInfo.setDescription(LoadInfoTask::tr("Converting SAM to BAM"));
@@ -108,7 +90,8 @@ void PrepareToImportTask::run() {
         newURL = true;
         stateInfo.setDescription(LoadInfoTask::tr("Sorting BAM"));
 
-        sortedBamUrl = BAMUtils::sortBam(bamUrl, getSortedBamUrl(bamUrl), stateInfo).getURLString();
+        QString sortedBamFilePathPrefix = workDir + "/" + QFileInfo(bamUrl).fileName() + "_sorted";
+        sortedBamUrl = BAMUtils::sortBam(bamUrl, sortedBamFilePathPrefix, stateInfo).getURLString();
         CHECK_OP(stateInfo, );
     }
     stateInfo.setProgress(66);
@@ -168,14 +151,19 @@ void PrepareToImportTask::checkReferenceFile() {
         return;
     }
     QString formatId = detectedFormatId(formats.first());
-    if (BaseDocumentFormats::FASTA != formatId) {
+    if (formatId != BaseDocumentFormats::FASTA) {
         setError(LoadInfoTask::tr("The detected reference sequence format is '%1'. Only FASTA is supported").arg(formatId));
         return;
     }
 
-    if (!BAMUtils::hasValidFastaIndex(refUrl)) {
-        if (needToCopyFasta()) {
-            QString fastaUrl = getFastaUrl();
+    // Check if FASTA index will be created and ensure the reference dir is writable.
+    // Copy reference to the work dir if the reference dir is not writable.
+    bool isFaiBuildNeeded = !BAMUtils::hasValidFastaIndex(refUrl);
+    QString refUrlDir = QFileInfo(refUrl).absolutePath();
+    if (isFaiBuildNeeded && !FileAndDirectoryUtils::isDirectoryWritable(refUrlDir)) {
+        QString fastaUrl = workDir + "/" + QFileInfo(refUrl).fileName();
+        if (!equalUrls(fastaUrl, refUrl)) {
+            CHECK_EXT(QFileInfo::exists(fastaUrl), setError(tr("Can't copy reference file to the work dir. File already exists: %1").arg(fastaUrl)), );
             bool copied = QFile::copy(refUrl, fastaUrl);
             CHECK_EXT(copied, setError(getCopyError(refUrl, fastaUrl)), );
             refUrl = fastaUrl;
