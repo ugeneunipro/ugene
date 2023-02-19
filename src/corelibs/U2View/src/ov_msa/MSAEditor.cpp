@@ -63,10 +63,6 @@
 #include "export_image/MSAImageExportTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "move_to_object/MoveToObjectMaController.h"
-#include "ov_msa/MaEditorConsensusArea.h"
-#include "ov_msa/MaEditorSelection.h"
-#include "ov_msa/MaEditorSequenceArea.h"
-#include "overview/MaEditorOverviewArea.h"
 #include "overview/MaGraphOverview.h"
 #include "overview/MaSimpleOverview.h"
 

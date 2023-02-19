@@ -270,8 +270,7 @@ protected slots:
     void sl_gotoSelectedRead();
 
     virtual void sl_multilineViewAction() {
-        SAFE_POINT(false, "The function sl_multilineViewAction() must be overrided", );
-        return;
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overriden", );
     };
 
 private slots:

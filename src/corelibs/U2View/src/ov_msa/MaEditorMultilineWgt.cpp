@@ -43,7 +43,6 @@
 #include "ov_msa/DrawHelper.h"
 #include "ov_msa/MultilineScrollController.h"
 #include "ov_msa/ScrollController.h"
-
 namespace U2 {
 
 /************************************************************************/
@@ -134,7 +133,13 @@ bool MaEditorMultilineWgt::setMultilineMode(bool newmode) {
         } else {
             uiChildrenArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
         }
+        // TODO: 'updateChildren' is written in unsafe way on Mac: after all widgets are deleted the active window is switched to next non-empty window.
+        //  Currently we use workaround: manually returning a focus back to the current window.
+        auto activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
         updateChildren();
+        if (isOsMac()) {
+            AppContext::getMainWindow()->getMDIManager()->activateWindow(activeWindow);
+        }
         int firstBase = getUI(0)->getScrollController()->getFirstVisibleBase();
         if (multilineMode) {
             scrollController->setEnable(true);

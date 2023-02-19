@@ -78,7 +78,7 @@ class U2VIEW_EXPORT MSAEditor : public MaEditor {
 
 public:
     MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj);
-    ~MSAEditor();
+    ~MSAEditor() override;
 
     QString getSettingsRoot() const override {
         return MSAE_SETTINGS_ROOT;
