@@ -27,6 +27,7 @@
 #include <QList>
 #include <QScopedPointer>
 #include <QString>
+#include <QTreeWidgetItem>
 
 #include <U2Core/LoadRemoteDocumentTask.h>
 #include <U2Core/global.h>
@@ -59,18 +60,16 @@ class QueryBuilderController;
 
 class QueryBlockWidget : public QWidget {
     Q_OBJECT
-private:
-    NCBISearchContext ctx;
-    QComboBox *conditionBox, *termBox;
-    QLineEdit* queryEdit;
-
 public:
     QueryBlockWidget(QueryBuilderController* controller, bool first);
-    ~QueryBlockWidget();
-    QString getQuery();
-    void setInputFocus() {
-        queryEdit->setFocus();
-    }
+    QString getQuery() const;
+    void setInputFocus();
+
+private:
+    NCBISearchContext ctx;
+    QComboBox* conditionBox = nullptr;
+    QComboBox* termBox = nullptr;
+    QLineEdit* queryEdit;
 };
 
 class SearchGenbankSequenceDialogController;
@@ -83,7 +82,6 @@ private:
 
 public:
     QueryBuilderController(SearchGenbankSequenceDialogController* parent);
-    ~QueryBuilderController();
     void removeQueryBlockWidget(QPushButton* callbackButton);
 private slots:
     void sl_updateQuery();
@@ -108,13 +106,13 @@ private:
 
     QList<EntrezSummary> getSummaryResults() const;
 
-    Ui_SearchGenbankSequenceDialog* ui;
-    QueryBuilderController* queryBlockController;
+    Ui_SearchGenbankSequenceDialog* ui = nullptr;
+    QueryBuilderController* queryBlockController = nullptr;
     QScopedPointer<ESearchResultHandler> searchResultHandler;
-    EntrezQueryTask* searchTask;
+    EntrezQueryTask* searchTask = nullptr;
     QScopedPointer<ESummaryResultHandler> summaryResultHandler;
-    Task* summaryTask;
-    QPushButton* downloadButton;
+    Task* summaryTask = nullptr;
+    QPushButton* downloadButton = nullptr;
 
     static const int MAX_IDS_PER_QUERY = 100;
 
@@ -125,4 +123,10 @@ public slots:
     void sl_taskStateChanged(Task* task);
 };
 
+class SearchResultRowItem : public QTreeWidgetItem {
+public:
+    SearchResultRowItem(QTreeWidget* treeWidget, const EntrezSummary& desc);
+
+    bool operator<(const QTreeWidgetItem& other) const override;
+};
 }  // namespace U2
