@@ -123,7 +123,7 @@ QStringList SearchGenbankSequenceDialogController::splitIds(const QStringList& i
 }
 
 QString SearchGenbankSequenceDialogController::getIdsString(const QStringList& idsList, int startIndex, int count) {
-    idsList.mid(startIndex, count).join(",");
+    return idsList.mid(startIndex, count).join(",");
 }
 
 QList<EntrezSummary> SearchGenbankSequenceDialogController::getSummaryResults() const {
