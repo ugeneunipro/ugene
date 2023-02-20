@@ -128,7 +128,7 @@ void QDWorkerFactory::init() {
  * QDPrompter
  ******************************/
 QString QDPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("from %1").arg(producer ? producer->getLabel() : unsetStr);
@@ -251,7 +251,7 @@ void QDWorker::sl_taskFinished(Task* t) {
         return;
     }
     if (output) {
-        QDScheduler* sched = qobject_cast<QDScheduler*>(t);
+        auto sched = qobject_cast<QDScheduler*>(t);
         QList<SharedAnnotationData> res;
         AnnotationTableObject* ao = sched->getSettings().annotationsObj;
         annObjToAnnDataList(ao, res);

@@ -65,13 +65,13 @@ void WizardFiller::commonScenario() {
 #define GT_METHOD_NAME "WizardFiller::getExpandButton"
 QToolButton* WizardFiller::getExpandButton(HI::GUITestOpStatus& os) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not of wizard type", nullptr);
 
     QList<QWidget*> widList = wizard->currentPage()->findChildren<QWidget*>();
     QList<QToolButton*> plusList;
     for (QWidget* w : qAsConst(widList)) {
-        QToolButton* but = qobject_cast<QToolButton*>(w);
+        auto but = qobject_cast<QToolButton*>(w);
         if (but && but->text() == "+" && abs(but->rect().width() - 19) < 2) {
             plusList.append(but);
         }

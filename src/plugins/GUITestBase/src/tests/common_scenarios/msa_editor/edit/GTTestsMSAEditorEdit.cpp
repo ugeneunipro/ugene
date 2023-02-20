@@ -804,7 +804,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
             auto table = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
 
             for (int i = 0; i < table->rowCount(); i++) {
-                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
+                auto box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 CHECK_SET_ERR(box->isChecked(), QString("box '%1' is not checked").arg(box->text()));
             }
 
@@ -813,7 +813,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
             // Expected result: all sequences unchecked
             for (int i = 0; i < table->rowCount(); i++) {
-                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
+                auto box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 CHECK_SET_ERR(!box->isChecked(), QString("box '%1' is checked").arg(box->text()));
             }
 
@@ -825,7 +825,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
             const QStringList list = {"Zychia_baranovi", "Montana_montana"};
             for (int i = 0; i < table->rowCount(); i++) {
                 GTKeyboardDriver::keyClick(Qt::Key_Down);
-                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
+                auto box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 if (list.contains(box->text())) {
                     GTKeyboardDriver::keyClick(Qt::Key_Space);
                 }
@@ -836,7 +836,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
             // Expected result: all sequences except Montana_montana, Zychia_baranovi are checked
             for (int i = 1; i < table->rowCount(); i++) {
-                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
+                auto box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 if (list.contains(box->text())) {
                     CHECK_SET_ERR(!box->isChecked(), QString("box '%1' is checked. It must be unchecked").arg(box->text()));
                 } else {
@@ -849,7 +849,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
             // Expected result: all sequences are checked
             for (int i = 0; i < table->rowCount(); i++) {
-                QCheckBox* box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
+                auto box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
                 CHECK_SET_ERR(box->isChecked(), QString("box '%1' is not checked").arg(box->text()));
             }
 

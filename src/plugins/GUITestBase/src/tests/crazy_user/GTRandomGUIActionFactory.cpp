@@ -70,7 +70,7 @@ public:
         : GTAbstractGUIAction(priority) {
     }
     virtual void run() {
-        QWidget* objCasted = qobject_cast<QWidget*>(obj);
+        auto objCasted = qobject_cast<QWidget*>(obj);
         SAFE_POINT(nullptr != objCasted, "", );
 
         GTWidget::click(os, objCasted);
@@ -88,7 +88,7 @@ public:
         : GTAbstractGUIAction(priority) {
     }
     virtual void run() {
-        QFileDialog* objCasted = qobject_cast<QFileDialog*>(obj);
+        auto objCasted = qobject_cast<QFileDialog*>(obj);
         SAFE_POINT(nullptr != objCasted, "", );
 
         QString findPath = UGUITest::dataDir;

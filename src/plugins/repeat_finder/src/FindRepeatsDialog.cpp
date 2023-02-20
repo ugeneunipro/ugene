@@ -179,7 +179,7 @@ QStringList FindRepeatsDialog::getAvailableAnnotationNames() const {
 }
 
 void FindRepeatsDialog::sl_setPredefinedAnnotationName() {
-    SetAnnotationNameAction* a = qobject_cast<SetAnnotationNameAction*>(sender());
+    auto a = qobject_cast<SetAnnotationNameAction*>(sender());
     QString text = a->text();
     a->le->setText(text);
 }

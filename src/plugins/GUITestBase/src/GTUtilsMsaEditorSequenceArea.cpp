@@ -142,7 +142,7 @@ QRect GTUtilsMSAEditorSequenceArea::getPositionRect(GUITestOpStatus& os,
     GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QRect());
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
 
-    MsaEditorWgt* msaEditorWidget = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
+    auto msaEditorWidget = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
     U2Region regX = msaEditorWidget->getBaseWidthController()->getBaseGlobalRange(position.x());
     U2Region regY = msaEditorWidget->getRowHeightController()->getGlobalYRegionByViewRowIndex(position.y());
 
@@ -161,7 +161,7 @@ QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(GUITestOpStatus& os, con
     GT_CHECK_RESULT(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index), QPoint());
     auto msaEditArea = GTWidget::findExactWidget<MSAEditorSequenceArea*>(os, "msa_editor_sequence_area", activeWindow);
 
-    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
+    auto ui = qobject_cast<MsaEditorWgt*>(msaEditArea->getEditor()->getUI()->getUI(index));
     int posX = ui->getBaseWidthController()->getBaseScreenCenter(p.x());
     int posY = (int)ui->getRowHeightController()->getScreenYRegionByViewRowIndex(p.y()).center();
     return msaEditArea->mapToGlobal({posX, posY});
@@ -672,7 +672,7 @@ void GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(GUITestOpStatus& os, 
     // at first we get line #0 widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(index);
     GT_CHECK(activeWindow != nullptr, QString("Can't find MaEditorWgt %1").arg(index));
-    const MSAEditorSequenceArea* msaEditArea = qobject_cast<MSAEditorSequenceArea*>(
+    auto msaEditArea = qobject_cast<MSAEditorSequenceArea*>(
         GTWidget::findWidget(os, "msa_editor_sequence_area", activeWindow));
     GT_CHECK_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", );
 
@@ -795,7 +795,7 @@ bool GTUtilsMSAEditorSequenceArea::checkColor(GUITestOpStatus& os, const QPoint&
 int GTUtilsMSAEditorSequenceArea::getRowHeight(GUITestOpStatus& os, int rowNumber) {
     // There are more than one MaEditorWgt in multiline mode, so at first we get line #0 widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
-    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(activeWindow);
+    auto ui = qobject_cast<MsaEditorWgt*>(activeWindow);
 
     SAFE_POINT(ui != nullptr, "Can't find MSA editor windows", -1);
     return ui->getRowHeightController()->getRowHeightByViewRowIndex(rowNumber);

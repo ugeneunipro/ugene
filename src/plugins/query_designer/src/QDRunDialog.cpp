@@ -104,14 +104,14 @@ void QDRunDialog::sl_selectInputFile() {
 
     if (!dir.url.isEmpty()) {
         inFileEdit->setText(dir.url);
-        QueryViewController* view = qobject_cast<QueryViewController*>(parentWidget());
+        auto view = qobject_cast<QueryViewController*>(parentWidget());
         SAFE_POINT(nullptr != view, "View is NULL", );
         view->setDefaultInFile(dir.url);
     }
 }
 
 void QDRunDialog::sl_outputFileChanged() {
-    QueryViewController* view = qobject_cast<QueryViewController*>(parentWidget());
+    auto view = qobject_cast<QueryViewController*>(parentWidget());
     SAFE_POINT(nullptr != view, "View is NULL", );
     view->setDefaultOutFile(saveController->getSaveFileName());
 }
@@ -215,7 +215,7 @@ void QDRunDialogTask::setupQuery() {
     const QList<GObject*>& objs = docWithSequence->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objs.isEmpty(), setError(tr("Sequence not found, document: %1").arg(docWithSequence->getURLString())), );
 
-    U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(objs.first());
+    auto seqObj = qobject_cast<U2SequenceObject*>(objs.first());
     DNASequence sequence = seqObj->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, );
     scheme->setSequence(sequence);
@@ -301,7 +301,7 @@ QDDialog::QDDialog(ADVSequenceObjectContext* _ctx)
 }
 
 void QDDialog::addAnnotationsWidget() {
-    U2SequenceObject* dnaso = qobject_cast<U2SequenceObject*>(ctx->getSequenceGObject());
+    auto dnaso = qobject_cast<U2SequenceObject*>(ctx->getSequenceGObject());
     CreateAnnotationModel acm;
     acm.sequenceObjectRef = GObjectReference(dnaso);
     acm.hideAnnotationType = true;

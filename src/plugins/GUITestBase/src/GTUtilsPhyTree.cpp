@@ -237,7 +237,7 @@ void GTUtilsPhyTree::doubleClickNode(HI::GUITestOpStatus& os, TvNodeItem* node) 
 #define GT_METHOD_NAME "getNodeDistance"
 qreal GTUtilsPhyTree::getNodeDistance(HI::GUITestOpStatus& os, TvNodeItem* node) {
     GT_CHECK_RESULT(node != nullptr, "Node is NULL", 0);
-    TvRectangularBranchItem* branch = dynamic_cast<TvRectangularBranchItem*>(node->parentItem());
+    auto branch = dynamic_cast<TvRectangularBranchItem*>(node->parentItem());
     GT_CHECK_RESULT(branch != nullptr, "Node's branch' is NULL", 0);
     return branch->getDist();
 }

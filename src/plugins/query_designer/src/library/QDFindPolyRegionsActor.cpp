@@ -204,7 +204,7 @@ Task* QDFindPolyActor::getAlgorithmTask(const QVector<U2Region>& location) {
 }
 
 void QDFindPolyActor::sl_onTaskFinished(Task* t) {
-    FindPolyRegionsTask* fprt = qobject_cast<FindPolyRegionsTask*>(t);
+    auto fprt = qobject_cast<FindPolyRegionsTask*>(t);
     QList<SharedAnnotationData> annotations = fprt->getResultAsAnnotations();
     foreach (SharedAnnotationData d, annotations) {
         if (d->location->regions.first().length > getMaxResultLen()) {

@@ -554,7 +554,7 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     auto msaEditorView = GTWidget::findWidget(os, "msa_editor_COI_0");
-    MsaEditorWgt* msaWidget = qobject_cast<MsaEditorWgt*>(msaEditorView);
+    auto msaWidget = qobject_cast<MsaEditorWgt*>(msaEditorView);
     MaEditorNameList* nameListWidget = msaWidget->getEditorNameList();
     MaEditorConsensusArea* consWidget = msaWidget->getConsensusArea();
     MaEditorSequenceArea* seqAreaWidget = msaWidget->getSequenceArea();
@@ -813,10 +813,10 @@ GUI_TEST_CLASS_DEFINITION(test_5227) {
     GTUtilsPcr::setMismatches(os, U2Strand::Direct, 15);
     GTUtilsPcr::setMismatches(os, U2Strand::Complementary, 12);
 
-    QSpinBox* perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
+    auto perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
     GTSpinBox::setValue(os, perfectSpinBox, 10, GTGlobals::UseKeyBoard);
 
-    QSpinBox* productSizeSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "productSizeSpinBox"));
+    auto productSizeSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "productSizeSpinBox"));
     GTSpinBox::setValue(os, productSizeSpinBox, 100, GTGlobals::UseKeyBoard);
 
     // 4. Find products
@@ -885,7 +885,7 @@ GUI_TEST_CLASS_DEFINITION(test_5246) {
     // 3. Change amino translation
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton", GTWidget::findWidget(os, "ADV_single_sequence_widget_0")));
-    QMenu* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+    auto menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     GTMenu::clickMenuItemByName(os, menu, {"14. The Alternative Flatworm Mitochondrial Code"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state: orfs recalculated
@@ -978,7 +978,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTextEdit* textEdit = dynamic_cast<QTextEdit*>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
+    auto textEdit = dynamic_cast<QTextEdit*>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(textEdit->toPlainText().contains("1:    From AaaI (944) To AagI (24) - 3442 bp "), "Expected message is not found in the report text");
 }
 
@@ -1361,7 +1361,7 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findWidget(os, "takeAllButton"));
 
-            QTreeWidget* tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "molConstructWidget"));
+            auto tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "molConstructWidget"));
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "Blunt"));
 
             GTWidget::click(os, GTWidget::findWidget(os, "downButton"));

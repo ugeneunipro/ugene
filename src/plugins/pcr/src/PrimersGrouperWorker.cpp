@@ -50,7 +50,7 @@ namespace LocalWorkflow {
 QString PrimersGrouperPromter::composeRichDoc() {
     QString res;
 
-    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;

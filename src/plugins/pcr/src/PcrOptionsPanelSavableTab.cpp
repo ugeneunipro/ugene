@@ -56,10 +56,10 @@ PcrOptionsPanelSavableTab::~PcrOptionsPanelSavableTab() {
 }
 
 QVariant PcrOptionsPanelSavableTab::getChildValue(const QString& childId) const {
-    InSilicoPcrProductsTable* productTable = qobject_cast<InSilicoPcrProductsTable*>(getChildWidgetById(childId));
+    auto productTable = qobject_cast<InSilicoPcrProductsTable*>(getChildWidgetById(childId));
 
     if (nullptr != productTable) {
-        const QList<InSilicoPcrProduct>& products = qobject_cast<InSilicoPcrProductsTable*>(productTable)->getAllProducts();
+        auto products = qobject_cast<InSilicoPcrProductsTable*>(productTable)->getAllProducts();
         AdvContextPcrProductPair data(productTable->getCurrentSequenceContext(), products);
         return QVariant::fromValue<AdvContextPcrProductPair>(data);
     } else {
@@ -68,7 +68,7 @@ QVariant PcrOptionsPanelSavableTab::getChildValue(const QString& childId) const 
 }
 
 void PcrOptionsPanelSavableTab::setChildValue(const QString& childId, const QVariant& value) {
-    InSilicoPcrProductsTable* productTable = qobject_cast<InSilicoPcrProductsTable*>(getChildWidgetById(childId));
+    auto productTable = qobject_cast<InSilicoPcrProductsTable*>(getChildWidgetById(childId));
 
     if (nullptr != productTable) {
         originalWrappedWidget->setResultTableShown(true);
@@ -95,7 +95,7 @@ bool PcrOptionsPanelSavableTab::childValueIsAcceptable(const QString& childId, c
 
 QString PcrOptionsPanelSavableTab::getChildId(QWidget* child) const {
     if (nullptr != qobject_cast<PrimerGroupBox*>(child->parent())) {
-        QWidget* parentGroupBox = qobject_cast<QWidget*>(child->parent());
+        auto parentGroupBox = qobject_cast<QWidget*>(child->parent());
         return U2SavableWidget::getChildId(parentGroupBox) + WIDGET_ID_SEPARATOR + child->objectName();
     } else {
         return U2SavableWidget::getChildId(child);

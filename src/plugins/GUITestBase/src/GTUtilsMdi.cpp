@@ -140,7 +140,7 @@ void GTUtilsMdi::closeWindow(HI::GUITestOpStatus& os, const QString& windowName,
     MainWindow* mw = AppContext::getMainWindow();
     GT_CHECK(mw != nullptr, "MainWindow == NULL");
 
-    MWMDIWindow* window = qobject_cast<MWMDIWindow*>(findWindow(os, windowName, options));
+    auto window = qobject_cast<MWMDIWindow*>(findWindow(os, windowName, options));
     GT_CHECK(window != nullptr, "Cannot find MDI window");
     GTWidget::close(os, window->parentWidget());
 }
@@ -195,7 +195,7 @@ QWidget* GTUtilsMdi::getActiveObjectViewWindow(GUITestOpStatus& os, const QStrin
         if (mdiWindow == nullptr) {
             continue;
         }
-        GObjectViewWindow* activeViewWindow = qobject_cast<GObjectViewWindow*>(mdiWindow);
+        auto activeViewWindow = qobject_cast<GObjectViewWindow*>(mdiWindow);
         if (activeViewWindow != nullptr && activeViewWindow->getViewFactoryId() == viewId) {
             viewWindow = activeViewWindow;
         }
@@ -223,7 +223,7 @@ QList<QWidget*> GTUtilsMdi::getAllObjectViewWindows(const QString& viewId) {
     QList<QWidget*> result;
     if (mainWindow != nullptr) {
         foreach (QWidget* window, mainWindow->getMDIManager()->getWindows()) {
-            GObjectViewWindow* objectViewWindow = qobject_cast<GObjectViewWindow*>(window);
+            auto objectViewWindow = qobject_cast<GObjectViewWindow*>(window);
             if (objectViewWindow != nullptr && objectViewWindow->getViewFactoryId() == viewId) {
                 result << objectViewWindow;
             }
@@ -236,7 +236,7 @@ QList<QWidget*> GTUtilsMdi::getAllObjectViewWindows(const QString& viewId) {
 #define GT_METHOD_NAME "activeWindowTitle"
 QString GTUtilsMdi::activeWindowTitle(HI::GUITestOpStatus& os) {
     QWidget* w = activeWindow(os);
-    MWMDIWindow* mdi = qobject_cast<MWMDIWindow*>(w);
+    auto mdi = qobject_cast<MWMDIWindow*>(w);
     GT_CHECK_RESULT(mdi, "unexpected object type", QString());
     return mdi->windowTitle();
 }

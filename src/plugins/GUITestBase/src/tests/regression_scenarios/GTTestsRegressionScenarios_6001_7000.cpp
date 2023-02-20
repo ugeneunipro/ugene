@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_6058) {
     //"25. Candidate Division SR1 and Gracilibacteria Code"
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTWidget::click(os, GTWidget::findWidget(os, "AminoToolbarButton", GTWidget::findWidget(os, "ADV_single_sequence_widget_0")));
-    QMenu* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+    auto menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     QStringList actionText;
     foreach (QAction* a, menu->actions()) {
         actionText.append(a->text());
@@ -1688,7 +1688,7 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
         CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
         QMainWindow* mainWindow = mw->getQMainWindow();
         CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
-        QWidget* w = qobject_cast<QWidget*>(mainWindow);
+        auto w = qobject_cast<QWidget*>(mainWindow);
         GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
     }
 
@@ -2291,7 +2291,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     class ModifyScenario : public CustomScenario {
         void run(GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
@@ -2318,7 +2318,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     class CheckScenario : public CustomScenario {
         void run(GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
 
             GTWidget::click(os, wizard->button(QWizard::NextButton));
@@ -5542,7 +5542,7 @@ GUI_TEST_CLASS_DEFINITION(test_6816) {
 
     // 3. Set both primers "Y"
     QWidget* primerBox = GTWidget::findWidget(os, "forwardPrimerBox");
-    QLineEdit* primerLe = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", primerBox));
+    auto primerLe = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", primerBox));
     GTLineEdit::setText(os, primerLe, "y", true);
 
     primerBox = GTWidget::findWidget(os, "reversePrimerBox");
@@ -5550,7 +5550,7 @@ GUI_TEST_CLASS_DEFINITION(test_6816) {
     GTLineEdit::setText(os, primerLe, "y", true);
 
     // Expected state: "Show primer details" label is hidden, "Unable to calculate primer statistics." warning message is shown
-    QLabel* detailsLinkLabel = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "detailsLinkLabel"));
+    auto detailsLinkLabel = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "detailsLinkLabel"));
     CHECK_SET_ERR(detailsLinkLabel->isHidden(), "detailsLinkLabel unexpectedly shown");
 
     auto warningLabel = GTWidget::findLabel(os, "warningLabel");

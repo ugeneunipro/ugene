@@ -646,7 +646,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTWidget::click(os, boldButton);
     CHECK_SET_ERR(qobject_cast<QPushButton*>(boldButton)->isChecked(), "Bold button is not checked");
 
-    QFontComboBox* fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
+    auto fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
     CHECK_SET_ERR(fontComboBox != nullptr, "Font comboBox is NULL");
     if (isOsLinux()) {
         GTComboBox::selectItemByText(os, fontComboBox, "Serif");

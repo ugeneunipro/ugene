@@ -390,7 +390,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     QList<int> initPos;
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (node && node->boundingRect().width() > 100) {
             QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomRight());
             QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
@@ -403,7 +403,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     int i = 0;
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (node && node->boundingRect().width() > 100 && i == 0) {
             QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomRight());
             QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
@@ -421,7 +421,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMenu::clickMainMenuItem(os, {"Actions", "Align Labels"});
     QList<int> finalPos;
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (node && node->boundingRect().width() > 100) {
             QPointF sceneCoord = node->mapToScene(node->boundingRect().bottomRight());
             QPoint globalCoord = treeView->mapToGlobal(sceneCoord.toPoint());
@@ -447,7 +447,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QList<QGraphicsItem*> list = treeView->scene()->items();
 
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (node && node->isVisible()) {
             CHECK_SET_ERR(!node->text().contains("o") || !node->text().contains("a"), "names are visiable");
         }
@@ -459,7 +459,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTWidget::click(os, GTWidget::findWidget(os, "Show Labels"));
 
     foreach (QGraphicsItem* item, list) {
-        QGraphicsSimpleTextItem* node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
+        auto node = qgraphicsitem_cast<QGraphicsSimpleTextItem*>(item);
         if (node && node->isVisible()) {
             if (node->text() != "0.011") {
                 CHECK_SET_ERR(!node->text().contains("0."), "Distances are visiable");

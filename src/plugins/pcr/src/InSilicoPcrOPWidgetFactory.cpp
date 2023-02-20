@@ -40,7 +40,7 @@ InSilicoPcrOPWidgetFactory::InSilicoPcrOPWidgetFactory()
 QWidget* InSilicoPcrOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
     Q_UNUSED(options);
 
-    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+    auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 
     InSilicoPcrOptionPanelWidget* opWidget = new InSilicoPcrOptionPanelWidget(annotatedDnaView);

@@ -97,7 +97,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
     //  TODO: wrap into api
     auto forwardPrimerBox = GTWidget::findWidget(os, "forwardPrimerBox");
-    QLineEdit* forwardPrimerLine = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", forwardPrimerBox));
+    auto forwardPrimerLine = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", forwardPrimerBox));
     GTLineEdit::setText(os, forwardPrimerLine, "Q%1", true);
 
     // Expected: the line edit is empty, the statistics label is empty.
@@ -107,7 +107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTLineEdit::setText(os, forwardPrimerLine, "atcg", true);
 
     // Expected: the line edit content is "ATCG", the statistics label shows the temperature and "4-mer".
-    QLabel* statsLabel = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "characteristicsLabel", forwardPrimerBox));
+    auto statsLabel = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "characteristicsLabel", forwardPrimerBox));
     CHECK_SET_ERR(forwardPrimerLine->text() == "ATCG", "No upper-case");
     CHECK_SET_ERR(statsLabel->text().endsWith("4-mer"), "Wrong statistics label");
 
@@ -284,7 +284,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "TGACCGTCTCAGGAGGTGGTTGTGTCAGAGGTTTT");
 
     // Expected: primer warning is shown, the find button text is "Find product(s) anyway".
-    QAbstractButton* findButton = dynamic_cast<QAbstractButton*>(GTWidget::findWidget(os, "findProductButton"));
+    auto findButton = dynamic_cast<QAbstractButton*>(GTWidget::findWidget(os, "findProductButton"));
     CHECK_SET_ERR(warning->isVisible(), "Primer warning is not visible");
     CHECK_SET_ERR(findButton->text() == "Find product(s) anyway", "Wrong find button text 1");
 
@@ -405,7 +405,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count 1");
 
     // 6. Set the 3' perfect match: 16.
-    QSpinBox* perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
+    auto perfectSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
     GTSpinBox::setValue(os, perfectSpinBox, 16, GTGlobals::UseKeyBoard);
 
     // 7. Click the find button.
@@ -644,7 +644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsPcr::setPrimer(os, U2Strand::Direct, "---");
 
     // Expected state: '-' pressing is ignored
-    QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
+    auto primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
     CHECK_SET_ERR(primerEdit != nullptr, "Cannot find primer line edit");
     CHECK_SET_ERR(primerEdit->text().isEmpty(), "There are unexpected characters in PrimerLineEdit");
 }
@@ -661,7 +661,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::InSilicoPcr);
 
-    QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTWidget::findWidget(os, "forwardPrimerBox")));
+    auto primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", GTWidget::findWidget(os, "forwardPrimerBox")));
     GTLineEdit::setText(os, primerEdit, "AC\r\nCCTG   GAGAG\nCATCG\tAT", true, true);
 
     CHECK_SET_ERR(primerEdit->text() == "ACCCTGGAGAGCATCGAT", "Incorrect whitespaces removing");

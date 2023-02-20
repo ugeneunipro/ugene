@@ -45,7 +45,7 @@ Task* RFTaskFactory::getTaskInstance(const RepeatFinderSettings& c) const {
 }
 
 void RFTaskFactory::setRFResultsListener(Task* b, RFResultsListener* l) {
-    RFAlgorithmBase* rfTask = qobject_cast<RFAlgorithmBase*>(b);
+    auto rfTask = qobject_cast<RFAlgorithmBase*>(b);
     if (rfTask) {
         rfTask->setRFResultsListener(l);
     }

@@ -1360,7 +1360,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {  // commit AboutDialogController.cpp
         CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
         QMainWindow* mainWindow = mw->getQMainWindow();
         CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
-        QWidget* w = qobject_cast<QWidget*>(mainWindow);
+        auto w = qobject_cast<QWidget*>(mainWindow);
         GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
     }
     GTKeyboardDriver::keyClick(Qt::Key_F1);
@@ -2358,9 +2358,9 @@ GUI_TEST_CLASS_DEFINITION(test_1234) {
 
     auto parent = GTWidget::findWidget(os, "test_1234.fa");
 
-    ADVSingleSequenceWidget* seq0 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent));
-    ADVSingleSequenceWidget* seq1 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_1", parent));
-    ADVSingleSequenceWidget* seq2 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_2", parent));
+    auto seq0 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_0", parent));
+    auto seq1 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_1", parent));
+    auto seq2 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_2", parent));
 
     CHECK_SET_ERR(nullptr != seq0, "Failed to find a sequence widget for seq0!");
     CHECK_SET_ERR(nullptr != seq1, "Failed to find a sequence widget for seq1!");
@@ -2772,7 +2772,7 @@ GUI_TEST_CLASS_DEFINITION(test_1266) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             auto w = GTWidget::findWidget(os, "Disable BAQ computation label", dialog);
-            QWidget* parent = qobject_cast<QWidget*>(w->parent());
+            auto parent = qobject_cast<QWidget*>(w->parent());
             QString s = parent->toolTip();
             CHECK_SET_ERR(s.contains("<html>Disable"), "unexpected tooltip: " + s);
 
@@ -2932,7 +2932,7 @@ GUI_TEST_CLASS_DEFINITION(test_1299) {
     GTMouseDriver::moveTo(globalP);
     GTMouseDriver::click();
 
-    QComboBox* box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
+    auto box = qobject_cast<QComboBox*>(tw->findChild<QComboBox*>());
 
     CHECK_SET_ERR(box->itemText(3) != "Additional", "Additional item not found");
 
@@ -3411,7 +3411,7 @@ GUI_TEST_CLASS_DEFINITION(test_1338) {
 GUI_TEST_CLASS_DEFINITION(test_1342) {
     class CustomPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
-            QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
 
             GTMenu::clickMenuItemByText(os, activePopupMenu, {"Add element"});
@@ -3585,7 +3585,7 @@ GUI_TEST_CLASS_DEFINITION(test_1364) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* d = GTWidget::getActiveModalWidget(os);
-            QFileDialog* dialog = qobject_cast<QFileDialog*>(d);
+            auto dialog = qobject_cast<QFileDialog*>(d);
             CHECK_SET_ERR(dialog, "activeModalWidget is not file dialog");
 
             QString name = dialog->directory().dirName();
@@ -3958,7 +3958,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, 0));
     GTMouseDriver::click();
 
-    QLineEdit* line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
+    auto line = qobject_cast<QLineEdit*>(table->findChild<QLineEdit*>());
     CHECK_SET_ERR(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
     GTLineEdit::setText(os, line, dataDir + "samples/FASTA/HMM/aligment15900.hmm");
     if (isOsMac()) {
@@ -4494,7 +4494,7 @@ GUI_TEST_CLASS_DEFINITION(test_1463) {
     GTWidget::click(os, GTWidget::findWidget(os, "CircularViewAction"));
 
     // 5. Look at the "Restrictions Sites Map" widget to the right of the circular view.
-    QTreeWidget* tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    auto tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
 
     // Expected state: enzymes in this widget are ordered alphabetically.
     QString item1 = tree->topLevelItem(0)->text(0);
@@ -4534,7 +4534,7 @@ GUI_TEST_CLASS_DEFINITION(test_1491) {
             GTRadioButton::click(os, dynamic_cast<QRadioButton*>(GTWidget::findWidget(os, "join2alignmentMode", GTWidget::getActiveModalWidget(os))));
 
             // 5. Select a sequence
-            QListWidget* list = dynamic_cast<QListWidget*>(GTWidget::findWidget(os, "listDocuments", GTWidget::getActiveModalWidget(os)));
+            auto list = dynamic_cast<QListWidget*>(GTWidget::findWidget(os, "listDocuments", GTWidget::getActiveModalWidget(os)));
             GTListWidget::click(os, list, "3. murine.gb");
 
             // 6. Press "Up" or "Down" arrow.
@@ -5059,7 +5059,7 @@ GUI_TEST_CLASS_DEFINITION(test_1567) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -6255,7 +6255,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_3) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     QWidget* wgt = QApplication::focusWidget();
-    QTextEdit* edit = qobject_cast<QTextEdit*>(wgt);
+    auto edit = qobject_cast<QTextEdit*>(wgt);
     CHECK_SET_ERR(edit != nullptr, "Text edit is not in focus");
 }
 
@@ -6311,7 +6311,7 @@ GUI_TEST_CLASS_DEFINITION(test_1677) {
         void run(HI::GUITestOpStatus& os) {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
             GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq"));
@@ -6443,7 +6443,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
         void run(HI::GUITestOpStatus& os) {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
             GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq"));
@@ -6527,7 +6527,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
         void run(HI::GUITestOpStatus& os) {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
             GTUtilsDialog::waitForDialog(os, new customFileDialog_1681(os, testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq"));
@@ -6914,7 +6914,7 @@ GUI_TEST_CLASS_DEFINITION(test_1734) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/bam/small.bam.sorted.bam"));
@@ -6947,7 +6947,7 @@ GUI_TEST_CLASS_DEFINITION(test_1735) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QWizard* wizard = qobject_cast<QWizard*>(dialog);
+            auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 
             //    3. Set "_common_data/cmdline/call-variations/chrM.fa" as reference; "_common_data/bam/chrM.sorted.bam" as input assembly.
@@ -7331,7 +7331,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Change the value of the scale spinbox. E.g. set it to 75%
-    QComboBox* scaleCombo = dynamic_cast<QComboBox*>(GTWidget::findWidget(os, "wdScaleCombo"));
+    auto scaleCombo = dynamic_cast<QComboBox*>(GTWidget::findWidget(os, "wdScaleCombo"));
     CHECK_SET_ERR(nullptr != scaleCombo, "Unable to find scale combobox!");
     GTComboBox::selectItemByText(os, scaleCombo, "75%");
 

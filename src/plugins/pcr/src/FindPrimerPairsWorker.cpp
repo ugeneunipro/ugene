@@ -54,7 +54,7 @@ namespace LocalWorkflow {
 QString FindPrimerPairsPromter::composeRichDoc() {
     QString res;
 
-    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
@@ -99,7 +99,7 @@ Task* FindPrimerPairsWorker::tick() {
 
 void FindPrimerPairsWorker::sl_onTaskFinished(Task* t) {
     QString reportFileUrl = getValue<QString>(FindPrimerPairsWorkerFactory::OUT_FILE);
-    FindPrimersTask* findTask = qobject_cast<FindPrimersTask*>(t);
+    auto findTask = qobject_cast<FindPrimersTask*>(t);
 
     if (!findTask->hasError() && !findTask->isCanceled()) {
         if (!findTask->getReport().isEmpty()) {

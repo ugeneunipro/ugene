@@ -384,7 +384,7 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto w = GTWidget::findWidget(os, "schemeName", dialog);
-    QLineEdit* schemeNameLine = qobject_cast<QLineEdit*>(w);
+    auto schemeNameLine = qobject_cast<QLineEdit*>(w);
     GT_CHECK(schemeNameLine, "schemeName lineEdit not found ");
 
     GTLineEdit::setText(os, schemeNameLine, schemeName);

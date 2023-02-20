@@ -100,7 +100,7 @@ void GTUtilsWizard::setInputFiles(HI::GUITestOpStatus& os, const QList<QStringLi
 #define GT_METHOD_NAME "setAllParameters"
 void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus& os, QMap<QString, QVariant> map) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK(wizard, "activeModalWidget is not wizard");
 
     QWidget* nextButton;
@@ -134,7 +134,7 @@ void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus& os, QMap<QString, QVar
 #define GT_METHOD_NAME "setParameter"
 void GTUtilsWizard::setParameter(HI::GUITestOpStatus& os, const QString& parameterName, const QVariant& parameterValue) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK(wizard, "activeModalWidget is not wizard");
 
     expandWizardParameterIfNeeded(os, parameterName, dialog);
@@ -152,18 +152,18 @@ void GTUtilsWizard::setParameter(HI::GUITestOpStatus& os, const QString& paramet
 #define GT_METHOD_NAME "getParameter"
 QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus& os, const QString& parameterName) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not wizard", {});
 
     expandWizardParameterIfNeeded(os, parameterName, dialog);
 
     auto w = GTWidget::findWidget(os, parameterName + " widget", dialog);
 
-    QComboBox* combo = qobject_cast<QComboBox*>(w);
+    auto combo = qobject_cast<QComboBox*>(w);
     if (combo != nullptr) {
         return QVariant(combo->currentText());
     }
-    QSpinBox* spin = qobject_cast<QSpinBox*>(w);
+    auto spin = qobject_cast<QSpinBox*>(w);
     if (spin != nullptr) {
         return QVariant(spin->value());
     }

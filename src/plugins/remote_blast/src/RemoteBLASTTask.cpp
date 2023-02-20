@@ -74,7 +74,7 @@ QList<Task*> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task* subTask) {
 
     // Query was finished
 
-    RemoteBLASTTask* rrTask = qobject_cast<RemoteBLASTTask*>(queryTask);
+    auto rrTask = qobject_cast<RemoteBLASTTask*>(queryTask);
     SAFE_POINT(nullptr != rrTask, "Invalid remote BLAST task!", res);
     QList<SharedAnnotationData> anns = rrTask->getResultedAnnotations();
     if (anns.isEmpty()) {

@@ -730,7 +730,7 @@ GUI_TEST_CLASS_DEFINITION(test_4087) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTUtilsOptionPanelSequenceView::enterPattern(os, "U");
-    QLabel* label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
+    auto label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
     CHECK_SET_ERR(label->isVisible(), "Warning is not shown 1");
     CHECK_SET_ERR(label->text().contains("Warning"), "Warning is not shown 2");
 
@@ -1307,7 +1307,7 @@ GUI_TEST_CLASS_DEFINITION(test_4151) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_all_views", toolbar));
 
     // Expected state: Vertical scroll bar isn't shown.
-    QScrollArea* advScrollArea = dynamic_cast<QScrollArea*>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
+    auto advScrollArea = dynamic_cast<QScrollArea*>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
     CHECK_SET_ERR(!advScrollArea->verticalScrollBar()->isVisible(), "Scrollbar is unexpectedly visible");
 }
 
@@ -2348,7 +2348,7 @@ GUI_TEST_CLASS_DEFINITION(test_4309_1) {
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, row));
     GTMouseDriver::click();
 
-    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    auto box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
     CHECK_SET_ERR(box, "QComboBox not found. Widget in this cell might be not QComboBox");
     QString vectorNtiFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::VECTOR_NTI_SEQUENCE)->getFormatName();
     QString genbankFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK)->getFormatName();
@@ -2514,7 +2514,7 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Select any restriction site in the "Restriction Sites Map" widget.
-    QTreeWidget* tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    auto tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem* item = GTTreeWidget::findItem(os, tree, "89345..89350");
     GTTreeWidget::click(os, item);
 
@@ -3961,7 +3961,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidget* tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    auto tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem* item = GTTreeWidget::findItem(os, tree, "76105..76110");
     GTTreeWidget::click(os, item);
 
@@ -3969,7 +3969,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidget* newtree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    auto newtree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem* newitem = GTTreeWidget::findItem(os, newtree, "10101..10106");
     GTTreeWidget::click(os, newitem);
 }
@@ -4444,7 +4444,7 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
 
     class AllPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
-            QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
             GTMenu::clickMenuItemByText(os, activePopupMenu, {"Analyze"});
             activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());

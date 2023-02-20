@@ -167,7 +167,7 @@ InSilicoPcrPrompter::InSilicoPcrPrompter(Actor* a)
 }
 
 QString InSilicoPcrPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     SAFE_POINT(nullptr != input, "No input port", "");
     const Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
@@ -195,7 +195,7 @@ Task* InSilicoPcrWorker::createPrepareTask(U2OpStatus& os) const {
 }
 
 void InSilicoPcrWorker::onPrepared(Task* task, U2OpStatus& os) {
-    LoadDocumentTask* loadTask = qobject_cast<LoadDocumentTask*>(task);
+    auto loadTask = qobject_cast<LoadDocumentTask*>(task);
     CHECK_EXT(nullptr != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     QScopedPointer<Document> doc(loadTask->takeDocument());
@@ -229,7 +229,7 @@ void InSilicoPcrWorker::fetchPrimers(const QList<GObject*>& objects, U2OpStatus&
 
 Primer InSilicoPcrWorker::createPrimer(GObject* object, bool& skipped, U2OpStatus& os) {
     Primer result;
-    U2SequenceObject* primerSeq = qobject_cast<U2SequenceObject*>(object);
+    auto primerSeq = qobject_cast<U2SequenceObject*>(object);
     CHECK_EXT(nullptr != primerSeq, os.setError(L10N::nullPointerError("Primer sequence")), result);
 
     if (primerSeq->getSequenceLength() > Primer::MAX_LEN) {
@@ -246,18 +246,18 @@ Primer InSilicoPcrWorker::createPrimer(GObject* object, bool& skipped, U2OpStatu
 
 QList<Message> InSilicoPcrWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> result;
-    InSilicoPcrReportTask* reportTask = qobject_cast<InSilicoPcrReportTask*>(task);
+    auto reportTask = qobject_cast<InSilicoPcrReportTask*>(task);
     if (nullptr != reportTask) {
         monitor()->addOutputFile(getValue<QString>(REPORT_ATTR_ID), actor->getId(), true);
         return result;
     }
 
-    MultiTask* multiTask = qobject_cast<MultiTask*>(task);
+    auto multiTask = qobject_cast<MultiTask*>(task);
     CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("MultiTask")), result);
 
     InSilicoPcrReportTask::TableRow tableRow;
     foreach (Task* t, multiTask->getTasks()) {
-        InSilicoPcrWorkflowTask* pcrTask = qobject_cast<InSilicoPcrWorkflowTask*>(t);
+        auto pcrTask = qobject_cast<InSilicoPcrWorkflowTask*>(t);
         CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("InSilicoPcrTask")), result);
 
         int pairNumber = pcrTask->property(PAIR_NUMBER_PROP_ID).toInt();

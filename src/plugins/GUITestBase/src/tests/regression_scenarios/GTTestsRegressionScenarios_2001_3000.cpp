@@ -588,10 +588,10 @@ GUI_TEST_CLASS_DEFINITION(test_2032) {
 
     // Expected result: order of sequences in the sequences view is {d, a, c, b}
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    ADVSingleSequenceWidget* seq0 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
-    ADVSingleSequenceWidget* seq1 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
-    ADVSingleSequenceWidget* seq2 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_2"));
-    ADVSingleSequenceWidget* seq3 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_3"));
+    auto seq0 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    auto seq1 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
+    auto seq2 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_2"));
+    auto seq3 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget(os, "ADV_single_sequence_widget_3"));
 
     CHECK_SET_ERR(seq0 != nullptr, "1. Failed to find a sequence widget!");
     CHECK_SET_ERR(seq1 != nullptr, "2. Failed to find a sequence widget!");
@@ -3139,7 +3139,7 @@ GUI_TEST_CLASS_DEFINITION(test_2568) {
     public:
         void run(HI::GUITestOpStatus& os) {
             QWidget* d = GTWidget::getActiveModalWidget(os);
-            QFileDialog* dialog = qobject_cast<QFileDialog*>(d);
+            auto dialog = qobject_cast<QFileDialog*>(d);
             CHECK_SET_ERR(dialog, "activeModalWidget is not file dialog");
 
             QString name = dialog->directory().dirName();

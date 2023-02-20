@@ -204,7 +204,7 @@ bool ORFDialog::eventFilter(QObject* obj, QEvent* ev) {
     if (obj == resultsTree && ev->type() == QEvent::KeyPress) {
         QKeyEvent* ke = (QKeyEvent*)ev;
         if (ke->key() == Qt::Key_Space) {
-            ORFListItem* item = static_cast<ORFListItem*>(resultsTree->currentItem());
+            auto item = static_cast<ORFListItem*>(resultsTree->currentItem());
             if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
@@ -311,7 +311,7 @@ void ORFDialog::importResults() {
 void ORFDialog::sl_onResultActivated(QTreeWidgetItem* i, int col) {
     Q_UNUSED(col);
     assert(i != nullptr);
-    ORFListItem* item = static_cast<ORFListItem*>(i);
+    auto item = static_cast<ORFListItem*>(i);
 
     ctx->getSequenceSelection()->setRegion(item->res.region);
 
@@ -434,7 +434,7 @@ void ORFDialog::findStartedAAUpdateTask() {
     foreach (Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
         QString taskName = t->getTaskName();
         if (taskName == AutoAnnotationsUpdateTask::NAME) {
-            AutoAnnotationsUpdateTask* aaTask = qobject_cast<AutoAnnotationsUpdateTask*>(t);
+            auto aaTask = qobject_cast<AutoAnnotationsUpdateTask*>(t);
             SAFE_POINT(aaTask != nullptr, "Bad conversion from Task to AutoAnnotationsUpdateTask", );
             if (ctx->getSequenceObject()->getEntityRef() == aaTask->getSequenceObject()->getEntityRef()) {
                 aaUpdateTask = aaTask;

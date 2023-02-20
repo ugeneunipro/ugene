@@ -146,7 +146,7 @@ QList<Task*> GTest_QDSchedulerTest::onSubTaskFinished(Task* subTask) {
         const QList<AnnotationGroup*> expRes = expResG->getSubgroups();
         subs.append(new CompareAnnotationGroupsTask(res, expRes));
     } else {
-        CompareAnnotationGroupsTask* compareTask = qobject_cast<CompareAnnotationGroupsTask*>(subTask);
+        auto compareTask = qobject_cast<CompareAnnotationGroupsTask*>(subTask);
         assert(compareTask);
         if (!compareTask->areEqual()) {
             setError(tr("Results do not match."));

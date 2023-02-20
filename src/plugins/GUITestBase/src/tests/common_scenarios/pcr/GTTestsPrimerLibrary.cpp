@@ -84,7 +84,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     public:
         void run(HI::GUITestOpStatus& os) {
             // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
-            QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit"));
+            auto primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit"));
             GTLineEdit::setText(os, primerEdit, "Q%1", true);
 
             // Expected: the line edit is empty.

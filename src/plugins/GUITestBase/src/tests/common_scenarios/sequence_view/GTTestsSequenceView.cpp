@@ -289,7 +289,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             : PopupChooser(_os, QStringList()) {
         }
         void run() override {
-            QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
 
             int i = 0;
             QList<QAction*> act = activePopupMenu->actions();
@@ -329,7 +329,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     auto toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
-    QToolBar* tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
+    auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
     QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
@@ -364,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 
     auto toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
-    QToolBar* tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
+    auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
     QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
@@ -426,7 +426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     // 1. Enable Auto-annotations
     auto toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
-    QToolBar* tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
+    auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
     QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
@@ -1250,7 +1250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    Overview* over = qobject_cast<Overview*>(GTWidget::findWidget(os, "OverviewRenderArea")->parentWidget()->parentWidget());
+    auto over = qobject_cast<Overview*>(GTWidget::findWidget(os, "OverviewRenderArea")->parentWidget()->parentWidget());
     GTWidget::click(os, over);
     for (int i = 0; i < 10; i++) {
         GTMouseDriver::scroll(1);
@@ -1265,7 +1265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044_1) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    Overview* over = qobject_cast<Overview*>(GTWidget::findWidget(os, "OverviewRenderArea")->parentWidget()->parentWidget());
+    auto over = qobject_cast<Overview*>(GTWidget::findWidget(os, "OverviewRenderArea")->parentWidget()->parentWidget());
     GTWidget::click(os, over);
 
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
@@ -2158,7 +2158,7 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
     // Expected: the menu appears.
-    QMenu* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+    auto menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     CHECK_SET_ERR(nullptr != menu, "No menu");
 
     // 3. Click "Show/hide translations".

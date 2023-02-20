@@ -1705,7 +1705,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     GTWidget::click(os, GTAction::button(os, "Change Font"));
 
     auto nameListWidget = GTWidget::findWidget(os, "msa_editor_COI_0");
-    MsaEditorWgt* ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
+    auto ui = qobject_cast<MsaEditorWgt*>(nameListWidget);
 
     QFont f = ui->getEditor()->getFont();
     QString expectedFont = "Verdana,10,-1,5,50,0,0,0,0,0";

@@ -267,7 +267,7 @@ GUI_TEST_CLASS_DEFINITION(menu_test_0001) {
 
     // Show context menu
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
-    QMenu* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+    auto menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     CHECK_SET_ERR(menu != nullptr, QString("No conrext menu"));
 
     // Check menu length

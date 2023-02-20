@@ -154,7 +154,7 @@ private:
         GTMouseDriver::doubleClick();
         GTThread::waitForMainThread();
 
-        QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
+        auto box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString dataType = dataTypeToString(type);
         GTComboBox::selectItemByText(os, box, dataType);
         if (isOsWindows()) {

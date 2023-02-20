@@ -669,7 +669,7 @@ public:
     }
     void run() override {
         QWidget* activeModal = GTWidget::getActiveModalWidget(os);
-        QMessageBox* messageBox = qobject_cast<QMessageBox*>(activeModal);
+        auto messageBox = qobject_cast<QMessageBox*>(activeModal);
         CHECK_SET_ERR(messageBox != nullptr, "messageBox is NULL");
 
         QAbstractButton* button = messageBox->button(b);
@@ -921,7 +921,7 @@ GUI_TEST_CLASS_DEFINITION(test_3220) {
     GTMouseDriver::click(Qt::LeftButton);
 
     QTreeWidgetItem* generalItem = GTUtilsAnnotationsTreeView::findItem(os, "D");
-    AVAnnotationItem* annotation = dynamic_cast<AVAnnotationItem*>(generalItem);
+    auto annotation = dynamic_cast<AVAnnotationItem*>(generalItem);
     CHECK_SET_ERR(annotation != nullptr, "Annotation is not found");
     CHECK_SET_ERR(annotation->annotation->findFirstQualifierValue("newqualifier") == "val\"", "Qualifier is not found");
     CHECK_SET_ERR(annotation->annotation->findFirstQualifierValue("newqualifier2") == "val\"2", "Qualifier 2 is not found");
@@ -1124,7 +1124,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
     GTWidget::click(os, GTWidget::findWidget(os, "CHROMA_ACTION", toolbar));
 
-    QSplitterHandle* splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_det_view_A1#berezikov"));
+    auto splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget(os, "qt_splithandle_det_view_A1#berezikov"));
     CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
 
     auto detView = GTWidget::findWidget(os, "render_area_A1#berezikov");
@@ -3807,7 +3807,7 @@ GUI_TEST_CLASS_DEFINITION(test_3755) {
     auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
     GTComboBox::selectItemByText(os, highlightingScheme, "Conservation level");
     auto w = GTWidget::findWidget(os, "thresholdSlider");
-    QSlider* slider = qobject_cast<QSlider*>(w);
+    auto slider = qobject_cast<QSlider*>(w);
     GTSlider::setValue(os, slider, 80);
     QColor after = GTWidget::getColor(os, seqArea, QPoint(2, 1));
     // check color change
@@ -3897,7 +3897,7 @@ GUI_TEST_CLASS_DEFINITION(test_3772) {
     // Expected:
     // a) The alphabets warning appears.
     // b) The pattern text area is red.
-    QLabel* label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
+    auto label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
     CHECK_SET_ERR(label->isVisible(), "Warning is not shown 1");
     CHECK_SET_ERR(label->text().contains("Warning"), "Warning is not shown 2");
 
