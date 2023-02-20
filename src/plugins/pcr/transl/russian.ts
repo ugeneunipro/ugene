@@ -976,7 +976,7 @@
     <message>
         <location filename="../src/PcrPlugin.cpp" line="60"/>
         <source>Primer library</source>
-        <translation>Библиотека олигонуклеотидов</translation>
+        <translation>Библиотека праймеров</translation>
     </message>
 </context>
 <context>
@@ -1072,8 +1072,8 @@
         <location filename="../src/PrimerLibraryTable.cpp" line="223"/>
         <source>Your primer library is empty.
 Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library.</source>
-        <translation>Ваша Библиотека олигонуклеотидов пуста.
-Используйте &quot;Инструменты -&gt; Праймер -&gt; Библиотека олигонуклеотидов&quot; для управления библиотекой праймеров.</translation>
+        <translation>Ваша Библиотека праймеров пуста.
+Используйте &quot;Инструменты -&gt; Праймер -&gt; Библиотека праймеров&quot; для управления библиотекой праймеров.</translation>
     </message>
 </context>
 <context>
