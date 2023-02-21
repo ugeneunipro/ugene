@@ -28,6 +28,7 @@
 #include <U2Core/Task.h>
 
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/RealignSequencesInAlignmentTask.h>
 
 namespace U2 {
 
@@ -35,23 +36,26 @@ namespace U2 {
 class U2VIEW_EXPORT EntropyCalculationTask : public Task {
     Q_OBJECT
 public:
-    EntropyCalculationTask(AnnotatedDNAView* annotatedDNAView, const QString& alignmentFilePath, const QString& saveToPath);
+    EntropyCalculationTask(AnnotatedDNAView* annotatedDNAView, const QString& alignmentFilePath, const QString& saveToPath, const QString& alignmentAlgorithm);
     void prepare();
     void run();
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     void rollSequenceName();
+    void shannonEntropy();
 
     LoadDocumentTask* loadDocumentTask = nullptr;
     AddSequenceObjectsToAlignmentTask* addSequenceTask = nullptr;
+    RealignSequencesInAlignmentTask* realignSequencesTask = nullptr;
     
     MultipleSequenceAlignmentObject* alignment;
     AnnotatedDNAView* annotatedDNAView;
-    QString alignmentFilePath;
-    QString saveToPath;
+    const QString alignmentFilePath;
+    const QString saveToPath;
+    const QString alignmentAlgorithm;
     /*sequence name will change if the alignment contains a sequence with the same name*/
-    QString sequenceNameAfterAlignment;
+    QString newSequenceName = "template_name";
 };
 
 }  // namespace U2

@@ -23,6 +23,8 @@
 
 #include <QFileInfo>
 
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
+
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
@@ -33,11 +35,15 @@
 #include <U2View/ADVSequenceObjectContext.h>
 
 namespace U2 {
-EntropyCalculationTask::EntropyCalculationTask(AnnotatedDNAView* _annotatedDNAView, const QString& _alignmentFilePath, const QString& _saveToPath): 
-    Task(tr("Alignment entropy calculation"), TaskFlags_FOSE_COSC), 
+EntropyCalculationTask::EntropyCalculationTask(AnnotatedDNAView* _annotatedDNAView, 
+                                               const QString& _alignmentFilePath, 
+                                               const QString& _saveToPath, 
+                                               const QString& _alignmentAlgorithm)
+    : Task(tr("Alignment entropy calculation"), TaskFlags_FOSE_COSC), 
     annotatedDNAView(_annotatedDNAView),
     alignmentFilePath(_alignmentFilePath), 
-    saveToPath(_saveToPath) {
+    saveToPath(_saveToPath),
+    alignmentAlgorithm(_alignmentAlgorithm) {
 }
 
 void EntropyCalculationTask::prepare() {
@@ -50,6 +56,7 @@ void EntropyCalculationTask::prepare() {
 }
 
 void EntropyCalculationTask::run() {
+    shannonEntropy();
 }
 
 QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
@@ -62,10 +69,26 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         alignment = qobject_cast<MultipleSequenceAlignmentObject*>(objects.at(0));
         CHECK_EXT(alignment != nullptr, setError(tr("Cannot cast to MultipleSequenceAlignmentObject: %1").arg(alignmentFilePath)), res);
         rollSequenceName();
-        addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, 
-            {annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getSequence(U2_REGION_MAX, stateInfo)});
+        auto sequence = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getSequence(U2_REGION_MAX, stateInfo);
+        sequence.setName(newSequenceName);
+        addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, {sequence});
         CHECK_OP(stateInfo, res);
         res << addSequenceTask;
+    }
+    if (subTask == addSequenceTask) {
+        qint64 rowId = alignment->getMultipleAlignment()->getRow(newSequenceName)->getRowId();
+        if (alignmentAlgorithm == "UGENE") {
+            realignSequencesTask = new RealignSequencesInAlignmentTask(alignment, {rowId}, 
+                BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE);
+        }
+        if (alignmentAlgorithm == "MAFFT") {
+            //TODO
+        }
+        if (alignmentAlgorithm == "MUSCLE") {
+            //TODO
+        }
+        CHECK_OP(stateInfo, res);
+        res << realignSequencesTask;
     }
     return res;
 }
@@ -75,7 +98,30 @@ void EntropyCalculationTask::rollSequenceName() {
     for (MultipleAlignmentRow row: alignment->getRows()) {
         rowNames << row->getName();
     }
-    sequenceNameAfterAlignment = GUrlUtils::rollFileName(annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getSequenceName(), "_", rowNames);
+    newSequenceName = GUrlUtils::rollFileName(newSequenceName, "_", rowNames);
+}
+
+void EntropyCalculationTask::shannonEntropy() {
+    QMap<long, float> entropyForEveryRow;
+    auto alignedSequence = alignment->getMultipleAlignment()->getRow(newSequenceName);
+    int size = alignment->getMultipleAlignment()->getRowCount() - 1;
+
+    for (int i = alignedSequence->getCoreRegion().startPos; i < alignedSequence->getCoreRegion().endPos(); i++) {
+        if (!alignedSequence->isGap(i)) {
+            float rowEntropy = 0;
+            QMap<char, long> counts;
+            for (MultipleAlignmentRow row : alignment->getRows()) {
+                if (row->getName() != newSequenceName) {
+                    counts[row->charAt(i)]++;
+                }
+            }
+            for (char aminoAcid : counts.values()) {
+                float p_x = (float)aminoAcid / size;
+                rowEntropy -= p_x * log(p_x);
+            }
+            entropyForEveryRow[i] = rowEntropy;
+        }
+    }
 }
 
 }  // namespace U2

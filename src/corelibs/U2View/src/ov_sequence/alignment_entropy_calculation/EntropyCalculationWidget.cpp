@@ -41,6 +41,7 @@ namespace U2 {
 
 const QString EntropyCalculationWidget::MUSCLE("MUSCLE");
 const QString EntropyCalculationWidget::MAFFT("MAFFT");
+const QString EntropyCalculationWidget::UGENE("UGENE");
 
 EntropyCalculationWidget::EntropyCalculationWidget(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView) {
@@ -54,8 +55,9 @@ EntropyCalculationWidget::EntropyCalculationWidget(AnnotatedDNAView* _annotatedD
 void EntropyCalculationWidget::initLayout() {
     additionalSettingsLayout->addWidget(new ShowHideSubgroupWidget(
         QObject::tr("Additional settings"), QObject::tr("Additional settings"), additionalSettingsWidget, true));
-    algorithmComboBox->addItem(MUSCLE);
-    algorithmComboBox->addItem(MAFFT);
+    //algorithmComboBox->addItem(MAFFT);
+    algorithmComboBox->addItem(UGENE);
+    //algorithmComboBox->addItem(MUSCLE);
 }
 
 void EntropyCalculationWidget::initSaveController() {
@@ -91,7 +93,7 @@ void EntropyCalculationWidget::sl_onFileSelectorClicked() {
 }
 
 void EntropyCalculationWidget::sl_onRunButtonClicked() {
-    auto loadTask = new EntropyCalculationTask(annotatedDnaView, alignmentLineEdit->text(), saveToLineEdit->text());
+    auto loadTask = new EntropyCalculationTask(annotatedDnaView, alignmentLineEdit->text(), saveToLineEdit->text(), algorithmComboBox->currentText());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 
