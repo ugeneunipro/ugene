@@ -438,17 +438,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Main.cpp" line="524"/>
+        <location filename="../src/Main.cpp" line="535"/>
         <source>Translation file not found: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="830"/>
+        <location filename="../src/Main.cpp" line="845"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="831"/>
+        <location filename="../src/Main.cpp" line="846"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
     </message>
@@ -682,7 +682,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="573"/>
+        <location filename="../src/Main.cpp" line="584"/>
         <source>Style not available %1</source>
         <translation>Стиль не доступен: %1</translation>
     </message>
@@ -1556,38 +1556,42 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::ProjectImpl</name>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="105"/>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="103"/>
         <source>Project URL is set to %1
 </source>
         <translation>Адрес проекта изменён : %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="115"/>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="113"/>
         <source>Project contains NULL document</source>
         <translation>Project contains NULL document</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="125"/>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="123"/>
         <source>Adding document to the project: %1</source>
         <translation>Adding document to the project: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="147"/>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="145"/>
         <source>Find document failed during resource locking</source>
         <translation>Find document failed during resource locking</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="153"/>
-        <source>Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</source>
-        <translation>Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</translation>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="151"/>
+        <source>Not enough resources for load document, resource: &apos;%1&apos; available: %2%3 requested: %4%3</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="159"/>
+        <source>Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</source>
+        <translation type="vanished">Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</translation>
+    </message>
+    <message>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="161"/>
         <source>No document provided for removeDocument</source>
         <translation>No document provided for removeDocument</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="160"/>
+        <location filename="../src/project_support/ProjectImpl.cpp" line="162"/>
         <source>Removing document from the project: %1</source>
         <translation>Removing document from the project: %1</translation>
     </message>
@@ -1886,7 +1890,7 @@ Now you can type ugene in command line to start UGENE.</translation>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="1103"/>
         <source>The search pattern is too long. Pattern was truncated to 1000 symbols.</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаблон поиска слишком длинный.  Он будет урезан до 1000 символов.</translation>
     </message>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="1121"/>
@@ -1970,7 +1974,7 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="372"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="370"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1978,32 +1982,32 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::ShtirlitzTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="131"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="132"/>
         <source>Shtirlitz is sending the first-time report</source>
         <translation>Отправляется отчет о системе</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="144"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="145"/>
         <source>%1 days passed passed since previous Shtirlitz&apos;s report. Shtirlitz is sending the new one.</source>
         <translation>%1 дней прошло со времени отправки последнего отчета. Отправляется новый отчет.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="328"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="326"/>
         <source>Connecting to remote server</source>
         <translation>Соединение с удаленным сервером</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="349"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="347"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Невозможно определить адрес сервера статистики</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="353"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="351"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Ошибка сети при определении адреса сервера статистики:</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="366"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="364"/>
         <source>Network error while sending report: </source>
         <translation>Ошибка сети при отправке отчета:</translation>
     </message>
@@ -2342,7 +2346,7 @@ Would you like to download and install it?</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/Main.cpp" line="522"/>
+        <location filename="../src/Main.cpp" line="533"/>
         <source>UGENE initialization started</source>
         <translation>Инициализация UGENE</translation>
     </message>

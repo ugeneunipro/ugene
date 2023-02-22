@@ -52,25 +52,14 @@
 namespace U2 {
 
 static constexpr int COMMON_STATISTICS_TABLE_CELLSPACING = 5;
-static const char* CAPTION_SEQ_REGION_LENGTH = QT_TR_NOOP("Length");
 
 static const QString CAPTION_SUFFIX_DS_DNA = "dsDNA:";
 static const QString CAPTION_SUFFIX_SS_DNA = "ssDNA:";
 static const QString CAPTION_SUFFIX_DS_RNA = "dsRNA:";
 static const QString CAPTION_SUFFIX_SS_RNA = "ssRNA:";
 
-// nucl
-static const char* CAPTION_SEQ_GC_CONTENT = QT_TR_NOOP("GC content");
-static const char* CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = QT_TR_NOOP("Molecular weight");
-static const char* CAPTION_SEQ_EXTINCTION_COEFFICIENT = QT_TR_NOOP("Extinction coefficient");
-static const char* CAPTION_SEQ_MELTING_TEMPERATURE = QT_TR_NOOP("Melting temperature");
-
 static const QString CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub>";
 static const QString CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>");  // 0x3BC - greek 'mu'
-
-// amino
-static const char* CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = QT_TR_NOOP("Molecular weight");
-static const char* CAPTION_SEQ_ISOELECTIC_POINT = QT_TR_NOOP("Isoelectic point");
 
 static const QString CHAR_OCCUR_GROUP_ID = "char_occur_group";
 static const QString DINUCL_OCCUR_GROUP_ID = "dinucl_occur_group";

@@ -163,6 +163,17 @@ private:
 
     QSharedPointer<BaseTempCalc> temperatureCalculator;
 
+    static constexpr char* CAPTION_SEQ_REGION_LENGTH = QT_TR_NOOP("Length");
+
+    // nucl
+    static constexpr char* CAPTION_SEQ_GC_CONTENT = QT_TR_NOOP("GC content");
+    static constexpr char* CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = QT_TR_NOOP("Molecular weight");
+    static constexpr char* CAPTION_SEQ_EXTINCTION_COEFFICIENT = QT_TR_NOOP("Extinction coefficient");
+    static constexpr char* CAPTION_SEQ_MELTING_TEMPERATURE = QT_TR_NOOP("Melting temperature");
+
+    // amino
+    static constexpr char* CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = QT_TR_NOOP("Molecular weight");
+    static constexpr char* CAPTION_SEQ_ISOELECTIC_POINT = QT_TR_NOOP("Isoelectic point");
 };
 
 }  // namespace U2
