@@ -43,7 +43,7 @@ public:
 
 private:
     void rollSequenceName();
-    void shannonEntropy();
+    void calculateShannonEntropy();
 
     LoadDocumentTask* loadDocumentTask = nullptr;
     AddSequenceObjectsToAlignmentTask* addSequenceTask = nullptr;

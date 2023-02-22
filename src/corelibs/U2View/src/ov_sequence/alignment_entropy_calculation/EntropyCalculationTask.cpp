@@ -56,7 +56,7 @@ void EntropyCalculationTask::prepare() {
 }
 
 void EntropyCalculationTask::run() {
-    shannonEntropy();
+    calculateShannonEntropy();
 }
 
 QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
@@ -75,16 +75,16 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         CHECK_OP(stateInfo, res);
         res << addSequenceTask;
     }
-    if (subTask == addSequenceTask) {
+    else if (subTask == addSequenceTask) {
         qint64 rowId = alignment->getMultipleAlignment()->getRow(newSequenceName)->getRowId();
         if (alignmentAlgorithm == "UGENE") {
             realignSequencesTask = new RealignSequencesInAlignmentTask(alignment, {rowId}, 
                 BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE);
         }
-        if (alignmentAlgorithm == "MAFFT") {
+        else if (alignmentAlgorithm == "MAFFT") {
             //TODO
         }
-        if (alignmentAlgorithm == "MUSCLE") {
+        else if (alignmentAlgorithm == "MUSCLE") {
             //TODO
         }
         CHECK_OP(stateInfo, res);
@@ -95,32 +95,32 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
 
 void EntropyCalculationTask::rollSequenceName() {
     QSet<QString> rowNames;
-    for (MultipleAlignmentRow row: alignment->getRows()) {
+    for (const auto& row : alignment->getRows()) {
         rowNames << row->getName();
     }
     newSequenceName = GUrlUtils::rollFileName(newSequenceName, "_", rowNames);
 }
 
-void EntropyCalculationTask::shannonEntropy() {
-    QMap<long, float> entropyForEveryRow;
+void EntropyCalculationTask::calculateShannonEntropy() {
+    QMap<qint64, double> entropyForEveryColumn;
     auto alignedSequence = alignment->getMultipleAlignment()->getRow(newSequenceName);
     int size = alignment->getMultipleAlignment()->getRowCount() - 1;
 
     for (int i = alignedSequence->getCoreRegion().startPos; i < alignedSequence->getCoreRegion().endPos(); i++) {
-        if (!alignedSequence->isGap(i)) {
-            float rowEntropy = 0;
-            QMap<char, long> counts;
-            for (MultipleAlignmentRow row : alignment->getRows()) {
-                if (row->getName() != newSequenceName) {
-                    counts[row->charAt(i)]++;
-                }
-            }
-            for (char aminoAcid : counts.values()) {
-                float p_x = (float)aminoAcid / size;
-                rowEntropy -= p_x * log(p_x);
-            }
-            entropyForEveryRow[i] = rowEntropy;
+        CHECK_CONTINUE(!alignedSequence->isGap(i));
+        CHECK_EXT_CONTINUE(size != 0, entropyForEveryColumn[i] = 0);
+        double columnEntropy = 0;
+        QMap<char, qint64> counts;
+        for (const auto& row : alignment->getRows()) {
+            CHECK_CONTINUE(row->getName() != newSequenceName);
+            counts[row->charAt(i)]++;
         }
+        auto const values = counts.values();
+        for (const char& aminoAcid : qAsConst(values)) {
+            double p = (double)aminoAcid / size;
+            columnEntropy -= p * log(p);
+        }
+        entropyForEveryColumn[i] = columnEntropy;
     }
 }
 
