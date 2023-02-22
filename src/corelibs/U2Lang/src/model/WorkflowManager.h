@@ -36,10 +36,9 @@
 #include <U2Lang/Schema.h>
 #include <U2Lang/WorkflowContext.h>
 #include <U2Lang/WorkflowTransport.h>
+#include <U2Lang/WorkflowDebugStatus.h>
 
 namespace U2 {
-
-class WorkflowDebugStatus;
 
 namespace Workflow {
 
@@ -97,7 +96,7 @@ enum WorkerState {
 class U2LANG_EXPORT Scheduler : public Worker {
 public:
     Scheduler(Schema* sch)
-        : schema(sch), lastTask(nullptr) {
+        : schema(sch), lastTask(nullptr), debugInfo(nullptr) {
     }
     virtual WorkerState getWorkerState(const ActorId&) = 0;
     virtual Task* replayLastWorkerTick() = 0;
@@ -106,7 +105,11 @@ public:
     virtual void makeOneTick(const ActorId&) = 0;
     virtual void setDebugInfo(WorkflowDebugStatus* newDebugInfo) {
         Q_ASSERT(nullptr != newDebugInfo);
+        if (debugInfo) {
+            debugInfo->disconnect();
+        }
         debugInfo = newDebugInfo;
+        QObject::connect(debugInfo, &QObject::destroyed, [=]() { debugInfo->disconnect(); debugInfo = nullptr; });
     }
 
 protected:

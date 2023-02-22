@@ -103,7 +103,9 @@ Task* LastReadyScheduler::tick() {
                 if (requestedActorForNextTick.isEmpty() || a->getId() == requestedActorForNextTick) {
                     lastWorker = a->castPeer<BaseWorker>();
                     measuredTick();
-                    debugInfo->checkActorForBreakpoint(a);
+                    if (debugInfo) {
+                        debugInfo->checkActorForBreakpoint(a);
+                    }
                     if (!requestedActorForNextTick.isEmpty()) {
                         requestedActorForNextTick = ActorId();
                     }

@@ -311,6 +311,7 @@ WorkflowView::~WorkflowView() {
     delete currentActor;
     delete scene;
     delete breakpointView;
+    delete debugInfo;
 }
 
 void WorkflowView::setupScene() {

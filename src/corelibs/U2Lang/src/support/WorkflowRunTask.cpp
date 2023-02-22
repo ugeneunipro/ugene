@@ -184,6 +184,7 @@ WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema& sh,
     connect(debugInfo, SIGNAL(si_busInvestigationIsRequested(const Workflow::Link*, int)), SLOT(sl_busInvestigationIsRequested(const Workflow::Link*, int)));
     connect(debugInfo, SIGNAL(si_busCountOfMessagesIsRequested(const Workflow::Link*)), SLOT(sl_busCountOfMessagesRequested(const Workflow::Link*)));
     connect(debugInfo, SIGNAL(si_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)), SLOT(sl_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)));
+    connect(debugInfo, &QObject::destroyed, [=]() { debugInfo->disconnect(); debugInfo = nullptr; });
 
     WorkflowMonitor* m = new WorkflowMonitor(this, schema);
     context = new WorkflowContext(schema->getProcesses(), m);
@@ -253,7 +254,9 @@ void WorkflowIterationRunTask::prepare() {
         stateInfo.setError(tr("Failed to create a workflow context"));
         return;
     }
-    debugInfo->setContext(context);
+    if (!debugInfo) {
+        debugInfo->setContext(context);
+    }
     scheduler = df->createScheduler(schema);
     if (!scheduler) {
         stateInfo.setError(tr("Failed to create scheduler in domain %1").arg(df->getDisplayName()));
@@ -275,7 +278,7 @@ void WorkflowIterationRunTask::prepare() {
 QList<Task*> WorkflowIterationRunTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> tasks;
     // handle the situation when pause signal was not delivered to the current thread
-    while (debugInfo->isPaused() && !isCanceled()) {
+    while (debugInfo != nullptr && debugInfo->isPaused() && !isCanceled()) {
         QCoreApplication::processEvents();
     }
     if (scheduler->isReady() && nextTickRestoring) {
@@ -339,7 +342,7 @@ Task::ReportResult WorkflowIterationRunTask::report() {
 }
 
 WorkerState WorkflowIterationRunTask::getState(const ActorId& id) {
-    if (scheduler) {
+    if (scheduler && debugInfo) {
         const WorkerState currentState = scheduler->getWorkerState(rmap.value(id));
         return (debugInfo->isPaused() && Workflow::WorkerRunning == currentState) ? Workflow::WorkerPaused : currentState;
     }

@@ -3642,6 +3642,22 @@ GUI_TEST_CLASS_DEFINITION(test_7700) {
                       .arg(positionStr, coverageStr));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7701) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::toggleDebugMode(os);
+
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsWorkflowDesigner::click(os, "Read alignment");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read alignment", dataDir + "samples/CLUSTALW/ty3.aln.gz");
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsMdi::closeAllWindows(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7712) {
     class FilterShortScaffoldsWizard : public CustomScenario {
     public:
