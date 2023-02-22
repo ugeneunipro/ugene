@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_COVERAGE_GRAPH_H__
-#define __ASSEMBLY_COVERAGE_GRAPH_H__
+#pragma once
 
 #include <QSharedPointer>
 #include <QWidget>
@@ -71,5 +70,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

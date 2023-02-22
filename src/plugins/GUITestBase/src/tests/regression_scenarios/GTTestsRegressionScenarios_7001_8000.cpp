@@ -50,6 +50,7 @@
 #include <utils/GTUtilsToolTip.h>
 
 #include <QApplication>
+#include <QClipboard>
 #include <QDir>
 #include <QFileInfo>
 #include <QListWidget>
@@ -57,6 +58,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 
 #include <U2Gui/Notification.h>
@@ -99,6 +101,7 @@
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
@@ -112,6 +115,8 @@
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
@@ -123,10 +128,10 @@
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/sitecon/SiteconBuildDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -567,15 +572,13 @@ GUI_TEST_CLASS_DEFINITION(test_7154) {
     QTreeWidgetItem* grpA = annA->parent();
     QTreeWidgetItem* grpB = annB->parent();
     QPoint pointA = GTUtilsAnnotationsTreeView::getItemCenter(os, "annA");
-    QPoint pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     QPoint pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
-    GTThread::waitForMainThread();
     GTMouseDriver::dragAndDrop(pointA, pointGrpB);
 
     // 8. Drag&drop group #1 to group #2
+    QPoint pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     pointGrpA = GTTreeWidget::getItemCenter(os, grpA);
     pointGrpB = GTTreeWidget::getItemCenter(os, grpB);
-    GTThread::waitForMainThread();
     GTMouseDriver::dragAndDrop(pointGrpA, pointGrpB);
 
     // Expected: group moved successfully, no crash
@@ -2322,6 +2325,26 @@ GUI_TEST_CLASS_DEFINITION(test_7511) {
     GTMenu::clickMainMenuItem(os, {"Tools", "BLAST", "BLAST search..."});
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7515) {
+    // Run Tools->NGS data analysis->Extract consensus from assemblies... twice and see that UGENE does not crash.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // Wait up to 10 seconds for the crash and finish tasks if no crash happened.
+    GTGlobals::sleep(10000);
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::activateWindow(os, "Extract");
+    GTUtilsWorkflowDesigner::stopWorkflow(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7517) {
     // Check that MCA editor does not crash when closed in "replace-character" mode.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
@@ -2381,6 +2404,31 @@ GUI_TEST_CLASS_DEFINITION(test_7520) {
     GTUtilsWorkflowDesigner::click(os, trimmomaticName);
     GTUtilsWorkflowDesigner::setParameter(os, "Trimming steps", "", GTUtilsWorkflowDesigner::customDialogSelector);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7521) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/align_subalign.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_nm.png", ExportMsaImage::Settings(false, false, true, false)));
+    GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::add(os, new ExportMsaImage(os, testDir + "_common_data/scenarios/sandbox/test_7521_mm.png", ExportMsaImage::Settings(false, false, true, true, 70)));
+    GTWidget::click(os, GTAction::button(os, "export_msa_as_image_action"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QPixmap normalMode(sandBoxDir + "test_7521_nm");
+    QPixmap multilineMode(sandBoxDir + "test_7521_mm");
+    double normalHeight = normalMode.height();
+    double multilineHeight = multilineMode.height();
+    double normalWidth = normalMode.width();
+    double multilineWidth = multilineMode.width();
+
+    double widthDiff = normalWidth / multilineWidth;
+
+    CHECK_SET_ERR(multilineHeight == normalHeight * 2 + 30, "Image height in multiline mode: " + QString::number(normalHeight) + ", image height in multiline mode: " + QString::number(multilineHeight));
+    CHECK_SET_ERR(widthDiff > 1 && widthDiff < 2, "Image width in multiline mode: " + QString::number(normalWidth) + ", image width in multiline mode: " + QString::number(multilineWidth));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7531) {
@@ -2898,6 +2946,27 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     CHECK_SET_ERR(documents.contains(initialCoiNwkDocument), "Expected initial tree document to be present in the project and re-used in MSA editor");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7617) {
+    // 1. Build dotplot for human_T1.fa
+    GTUtilsDialog::waitForDialog(os, new DotPlotFiller(os));
+    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, dataDir + "samples/FASTA/human_T1.fa", "", false, true));
+
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, "test_7617", GTFileDialogUtils::Save));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+
+    // 2. Click "Remove sequence" (gray cross) on sequence widget toolbar
+    // 3. Answer "Yes" in "Save dot-plot" dialog and choose valid path
+    // Expected state: no crash, no errors in the log
+    GTLogTracer lt;
+    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    QFile f(sandBoxDir + "test_7617");
+    CHECK_SET_ERR(f.exists() && f.size() != 0, "Result file is not exists or empty");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTLogTracer logTracer;
 
@@ -3409,43 +3478,41 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     };
 
     // Rectangular.
-    QStringList allRows = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    QStringList allInRect = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after opening");
 
     QList<TvNodeItem*> treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* rectNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, rectNodeToCollapse);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Rectangular");
-    QStringList rowsInRectCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInRectCollapse.sort();
-    CHECK_SET_ERR(rowsInRectCollapse.length() == allRows.length() - 2,
-                  "Invalid count of nodes after collapse in Rectangular: " + QString::number(rowsInRectCollapse.size()));
+    QStringList collapsedInRect = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInRect.length() == allInRect.length() - 2,
+                  "Invalid count of nodes after collapse in Rectangular: " + QString::number(collapsedInRect.size()));
 
     // Circular.
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Circular");
-    QStringList rowsInSyncModeCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    CHECK_SET_ERR(rowsInSyncModeCircular == allRows, "Nodes in Circular layout do not match");
+    QStringList collapsedInCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInCircular == collapsedInRect,
+                  QString("Nodes in Circular layout do not match: rect: '%1', circular: '%2'").arg(collapsedInRect.join(",")).arg(collapsedInCircular.join(",")));
     treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* circularNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, circularNodeToCollapse);
-    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Circular");
-    QStringList rowsInCircularCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInCircularCollapse.sort();
-    CHECK_SET_ERR(rowsInCircularCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Circular");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse op in Circular");
+    QStringList allInCircular = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(allInCircular == allInRect, "Invalid nodes after collapse in Circular");
 
     // Unrooted.
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after switch to Unrooted");
-    QStringList rowsInSyncModeUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    CHECK_SET_ERR(rowsInSyncModeUnrooted == allRows, "Nodes in Unrooted layout do not match");
+    QStringList allInUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(allInUnrooted == allInRect, "Nodes in Unrooted layout do not match");
     treeNodes = GTUtilsPhyTree::getNodes(os);
     TvNodeItem* unrootedNodeToCollapse = selectNodeToCollapse(treeNodes);
     GTUtilsPhyTree::doubleClickNode(os, unrootedNodeToCollapse);
-    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse in Unrooted");
-    QStringList rowsInUnrootedCollapse = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
-    rowsInUnrootedCollapse.sort();
-    CHECK_SET_ERR(rowsInUnrootedCollapse == rowsInRectCollapse, "Invalid nodes after collapse in Unrooted");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON after collapse op in Unrooted");
+    QStringList collapsedInUnrooted = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    CHECK_SET_ERR(collapsedInUnrooted == collapsedInRect, "Invalid nodes after collapse in Unrooted");
 
     // Rectangular (back).
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
@@ -3454,7 +3521,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
 
 GUI_TEST_CLASS_DEFINITION(test_7671) {
     // I made a small file which has the same error as file from the issue,
-    // because the file from the issue was almoust 100 Mb size
+    // because the file from the issue was almost 100 Mb size
 
     // Open _common_data/scenarios/_regression/7671/NC_051342_region.gb
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7671/NC_051342_region.gb");
@@ -3528,7 +3595,7 @@ GUI_TEST_CLASS_DEFINITION(test_7682) {
 
 GUI_TEST_CLASS_DEFINITION(test_7686) {
     // Check "copy tree image to clipboard".
-    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/PF05282_full.nhx");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
 
     GTClipboard::clear(os);
@@ -3748,6 +3815,187 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7720) {
+    GTFileDialog::openFile(os, testDir + "_common_data/realign_sequences_in_alignment/", "amino_ext.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // ========================== multiline mode is off ===================
+    GTUtilsMsaEditor::setMultilineMode(os, false);
+
+    auto activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget is not visible");
+
+    auto splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter is not visible");
+
+    QSplitterHandle* handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    QPoint p;
+    int seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    int uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    int seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    int baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    int length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    QPoint delta(seqAreaBaseWidth / 5 * 4, 0);
+    if (length * baseWidth + 50 < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth - 50, 0);
+    } else if (length * baseWidth < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth, 0);
+    } else if (length * baseWidth - 50 < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth + 50, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(2000);
+    GTThread::waitForMainThread();
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    // ========================== multiline mode is on ===================
+    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTGlobals::sleep(2000);
+
+    activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget is not visible");
+
+    splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter is not visible");
+
+    handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta = QPoint(0, 0);
+    int fullLength = length * baseWidth;
+    int extLength = 50;
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + QPoint(seqAreaWidth * 5 / 3 - fullLength + 20, 0));
+    GTGlobals::sleep(2000);
+
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    p = GTWidget::getWidgetCenter(handle);
+
+    if (fullLength + extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength - extLength, 0);
+    } else if (fullLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength, 0);
+    } else if (fullLength - extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength + extLength, 0);
+    } else {
+        delta = QPoint(seqAreaWidth + extLength - uiWidth, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTGlobals::sleep(2000);
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    auto count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
+    bool allAreVisible = true;
+    for (int i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget must exist");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR((count > 1 && !allAreVisible) || (count == 1 && allAreVisible),
+                  "Some line of the multiline view must be hidden #1");
+
+    activeWindow = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(0);
+    CHECK_SET_ERR(activeWindow != nullptr, "Sequence widget must exist");
+
+    splitter = GTWidget::findSplitter(os, "name_and_sequence_areas_splitter", activeWindow);
+    CHECK_SET_ERR(splitter != nullptr, "Splitter must exist");
+
+    handle = splitter->handle(1);
+    CHECK_SET_ERR(handle != nullptr, "MSA Splitter handle is NULL");
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta = QPoint(seqAreaWidth / 5 * 4, 0);
+    if (length * baseWidth / 5 < uiWidth) {
+        delta = QPoint(seqAreaWidth - length * baseWidth / 5, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTGlobals::sleep(2000);
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    count = GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount();
+    allAreVisible = true;
+    for (int i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget exists");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR(allAreVisible, "All lines of the multiline view must be visible");
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    delta = QPoint(0, 0);
+    fullLength = length * baseWidth;
+    if (fullLength + extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength - extLength, 0);
+    } else if (fullLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength, 0);
+    } else if (fullLength - extLength < seqAreaWidth) {
+        delta = QPoint(seqAreaWidth - fullLength + extLength, 0);
+    } else {
+        delta = QPoint(seqAreaWidth + extLength - uiWidth, 0);
+    }
+
+    p = GTWidget::getWidgetCenter(handle);
+    GTMouseDriver::dragAndDrop(p, p + delta);
+    GTGlobals::sleep(2000);
+
+    seqAreaBaseWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaBaseWidth(0);
+    uiWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->width();
+    seqAreaWidth = GTUtilsMsaEditor::getEditor(os)->getUI()->getSequenceAreaWidth(0);
+    baseWidth = GTUtilsMsaEditor::getEditor(os)->getColumnWidth();
+    length = GTUtilsMsaEditor::getEditor(os)->getAlignmentLen();
+
+    allAreVisible = true;
+    for (int i = 0; i < count; i++) {
+        auto w = GTUtilsMsaEditor::getEditor(os)->getUI()->getUI(i);
+        CHECK_SET_ERR(w != nullptr, "Sequence widget must exist");
+        allAreVisible = allAreVisible && w->isVisible();
+    }
+    CHECK_SET_ERR((count > 1 && !allAreVisible) || (count == 1 && allAreVisible),
+                  "Some line of the multiline view must be hidden #2");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7740) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
@@ -3801,6 +4049,187 @@ GUI_TEST_CLASS_DEFINITION(test_7751) {
     GTWidget::click(os, swapSiblingsButton);
     CHECK_SET_ERR(swapSiblingsButton->isEnabled(), "Swap siblings must be enabled");
     GTUtilsPhyTree::getNodeByBranchText(os, "0.009", "0.026");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7753) {
+    // 1. Open "data/samples/Assembly/chrM.sorted.bam".
+    // 2. Delete bam file
+    // 3. Press 'imort' button in dialog
+    // Expected state: you got message box with error and error in log
+    class DeleteFileBeforeImport : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            QFile::remove(sandBoxDir + "test_7753/chrM.sorted.bam");
+            GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
+        }
+    };
+    GTLogTracer logTracer;
+    QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
+    QDir().mkpath(sandBoxDir + "test_7753");
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, new DeleteFileBeforeImport()));
+    GTFileDialog::openFile(os, sandboxFilePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7770) {
+    GTUtilsDialog::waitForDialog(os, new SiteconBuildDialogFiller(os, testDir + "_common_data/clustal/1000_sequences.aln", sandBoxDir + "/test_7770.sitecon"));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Search for TFBS", "Build SITECON model..."});
+    // It is important to give a time for sitecon to warm up to reproduce the crash.
+    GTGlobals::sleep(15000);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Cancel the execution.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 5000);  // Check the task is canceled fast enough with no crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7781) {
+    // Open "_common_data/scenarios/_regression/7781/7781.bam".
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7781.ugenedb", "", "", false));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7781/7781.bam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
+    QString textFromLabel = coveredRegionsLabel->text();
+    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
+    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
+    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7789) {
+    // Check that show/hide node shape option works.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelPhyTree::openTab(os);
+
+    GTCheckBox::checkState(os, "showNodeShapeCheck", false);
+    GTCheckBox::checkState(os, "showTipShapeCheck", false);
+
+    // ========================== rectangular layout ===================
+    QImage originalRectangularImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeRectangularLayout != originalRectangularImage, "imageWithNodesShapeRectangularLayout != originalRectangularImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeRectangularLayout == originalRectangularImage, "imageWithNoNodesShapeRectangularLayout == originalRectangularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeRectangularLayout != originalRectangularImage, "imageWithTipShapeRectangularLayout != originalRectangularImage failed");
+    CHECK_SET_ERR(imageWithTipShapeRectangularLayout != imageWithNodesShapeRectangularLayout, "imageWithTipShapeRectangularLayout != imageWithNodesShapeRectangularLayout failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeRectangularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeRectangularLayout == originalRectangularImage, "imageWithNoTipShapeRectangularLayout == originalImage failed");
+
+    // ========================== circular layout ===================
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Circular"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
+
+    QImage originalCircularImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeCircularLayout != originalCircularImage, "imageWithNodesShapeCircularLayout != originalCircularImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeCircularLayout == originalCircularImage, "imageWithNoNodesShapeCircularLayout == originalCircularImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeCircularLayout != originalCircularImage, "imageWithTipShapeCircularLayout != originalCircularImage failed");
+    CHECK_SET_ERR(imageWithTipShapeCircularLayout != imageWithNodesShapeCircularLayout, "imageWithTipShapeCircularLayout != imageWithNodesShapeCircularLayout failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeCircularLayout == originalCircularImage, "imageWithNoTipShapeRectangularLayout == originalCircularImage failed");
+
+    // ========================== unrooted layout ===================
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Unrooted"}));
+    GTWidget::click(os, GTWidget::findWidget(os, "Layout"));
+
+    QImage originalUnrootedImage = GTUtilsPhyTree::captureTreeImage(os);
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", true);
+    QImage imageWithNodesShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNodesShapeUnrootedLayout != originalUnrootedImage, "imageWithNodesShapeUnrootedLayout != originalUnrootedImage failed");
+
+    GTCheckBox::setChecked(os, "showNodeShapeCheck", false);
+    QImage imageWithNoNodesShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoNodesShapeUnrootedLayout == originalUnrootedImage, "imageWithNoNodesShapeUnrootedLayout == originalUnrootedImage failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", true);
+    QImage imageWithTipShapeUnrootedCircularLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage, "imageWithTipShapeUnrootedCircularLayout != originalUnrootedImage failed");
+    CHECK_SET_ERR(imageWithTipShapeUnrootedCircularLayout != imageWithNodesShapeUnrootedLayout, "imageWithTipShapeUnrootedCircularLayout != imageWithNodesShapeUnrootedLayout failed");
+
+    GTCheckBox::setChecked(os, "showTipShapeCheck", false);
+    QImage imageWithNoTipShapeUnrootedLayout = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageWithNoTipShapeUnrootedLayout == originalUnrootedImage, "imageWithNoTipShapeUnrootedLayout == originalUnrootedImage failed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7792) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+    QWidget* optionPanel = GTUtilsOptionPanelPhyTree::openTab(os);
+
+    // Check 'curvature' slider is enabled and current value is 0.
+    QSlider* curvatureSlider = GTWidget::findSlider(os, "curvatureSlider", optionPanel);
+    CHECK_SET_ERR(curvatureSlider->isEnabled(), "1. Slider is not enabled");
+    CHECK_SET_ERR(curvatureSlider->value() == 0, "2. By default there is no curvature");
+
+    // Check 'expansion' slider is enabled and current value is 100.
+    QSlider* expansionSlider = GTWidget::findSlider(os, "breadthScaleAdjustmentSlider", optionPanel);
+    CHECK_SET_ERR(expansionSlider->isEnabled(), "3. Slider is not enabled");
+    CHECK_SET_ERR(expansionSlider->value() == 100, QString("4. By default expansion is 100: got %1").arg(expansionSlider->value()));
+
+    // Change curvature slider and check that image changes too.
+    QImage imageBefore = GTUtilsPhyTree::captureTreeImage(os);
+    GTSlider::setValue(os, curvatureSlider, 50);
+    QImage imageAfter1 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter1 != imageBefore, "5. Image is not changed");
+
+    // Double-click on the slider and check that curvative is 0 and check that image changes to the original image
+    GTMouseDriver::moveTo(GTWidget::getWidgetVisibleCenterGlobal(GTWidget::findWidget(os, "curvatureSlider")));
+    GTMouseDriver::doubleClick();
+    CHECK_SET_ERR(curvatureSlider->value() == 0, "6. The curvature should be 0");
+    QImage imageAfter2 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter2 == imageBefore, "7. Image is changed");
+
+    // Change expansion slider and check that image changes too.
+    GTSlider::setValue(os, expansionSlider, 200);
+    QImage imageAfter3 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter3 != imageBefore, "8. Image is not changed");
+
+    // Double-click on the expansion slider and check that expansion is 100 and check that image changes to the original one
+    GTMouseDriver::moveTo(GTWidget::getWidgetVisibleCenterGlobal(GTWidget::findWidget(os, "breadthScaleAdjustmentSlider")));
+    GTMouseDriver::doubleClick();
+    CHECK_SET_ERR(expansionSlider->value() == 100, "9. The expansion should be 100");
+    QImage imageAfter4 = GTUtilsPhyTree::captureTreeImage(os);
+    CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7806) {
+    QDir(sandBoxDir).mkdir("test_7806");
+    QDir(sandBoxDir).mkdir("test_7806/1");
+    QDir(sandBoxDir).mkdir("test_7806/2");
+
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.fa", sandBoxDir + "/test_7806/1/chrM.fa");
+    GTFile::copy(os, dataDir + "samples/Assembly/chrM.sam", sandBoxDir + "/test_7806/2/chrM.sam");
+    IOAdapterUtils::writeTextFile(sandBoxDir + "test_7806/2/chrM.fa", "1234");
+
+    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", sandBoxDir + "/test_7806/1", "chrM.fa"));
+    GTFileDialog::openFile(os, sandBoxDir + "/test_7806/2/chrM.sam");
+
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    int size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
+    CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
 }  // namespace GUITest_regression_scenarios

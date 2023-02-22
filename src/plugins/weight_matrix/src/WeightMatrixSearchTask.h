@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WEIGHT_MATRIX_SEARCH_TASK_H_
-#define _U2_WEIGHT_MATRIX_SEARCH_TASK_H_
+#pragma once
 
 #include <QMutex>
 #include <QPair>
@@ -128,5 +127,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

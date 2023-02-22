@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENECUT_HTTP_FILE_ADAPTER_H_
-#define _U2_GENECUT_HTTP_FILE_ADAPTER_H_
+#pragma once
 
 #include <U2Core/HttpFileAdapter.h>
 #include <U2Core/U2IdTypes.h>
@@ -68,5 +67,3 @@ private slots:
 };
 
 }
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TYPE_H_
-#define _U2_TYPE_H_
+#pragma once
 
 #include <QObject>
 
@@ -298,5 +297,3 @@ private:
 
 Q_DECLARE_METATYPE(QList<U2::U2DataId>)
 Q_DECLARE_METATYPE(U2::U2DbiRef)
-
-#endif

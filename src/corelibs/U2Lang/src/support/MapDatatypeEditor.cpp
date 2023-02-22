@@ -397,9 +397,9 @@ void DescriptorListEditorDelegate::setEditorData(QWidget* editor,
     DataTypePtr type = WorkflowEnv::getDataTypeRegistry()->getById(typeId);
     IntegralBusUtils::SplitResult r = IntegralBusUtils::splitCandidates(list, toDesc, type);
 
-    QComboBox* combo = static_cast<QComboBox*>(editor);
+    auto combo = static_cast<QComboBox*>(editor);
     combo->setItemDelegate(new ItemDelegateForHeaders());
-    QStandardItemModel* cm = qobject_cast<QStandardItemModel*>(combo->model());
+    auto cm = qobject_cast<QStandardItemModel*>(combo->model());
     combo->clear();
     bool isList = index.model()->data(index, Qt::UserRole + 2).toBool();
 
@@ -421,10 +421,10 @@ void DescriptorListEditorDelegate::setEditorData(QWidget* editor,
 }
 
 void DescriptorListEditorDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    QComboBox* combo = static_cast<QComboBox*>(editor);
+    auto combo = static_cast<QComboBox*>(editor);
     QVariant value;
     if (index.model()->data(index, Qt::UserRole + 2).toBool()) {
-        QStandardItemModel* cm = qobject_cast<QStandardItemModel*>(combo->model());
+        auto cm = qobject_cast<QStandardItemModel*>(combo->model());
         Descriptor res;
         QStringList ids;
         for (int i = 0; i < cm->rowCount(); ++i) {

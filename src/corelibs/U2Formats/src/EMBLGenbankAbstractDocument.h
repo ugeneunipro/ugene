@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EMBL_GENBANK_ABSTRACT_DOCUMENT_H_
-#define _U2_EMBL_GENBANK_ABSTRACT_DOCUMENT_H_
+#pragma once
 
 #include <QStringList>
 
@@ -147,5 +146,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

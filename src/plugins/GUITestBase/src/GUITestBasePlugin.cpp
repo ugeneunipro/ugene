@@ -48,6 +48,7 @@
 #include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
+#include "tests/common_scenarios/fasttree/GTTestsFastTree.h"
 #include "tests/common_scenarios/genecut/GTTestsGeneCut.h"
 #include "tests/common_scenarios/iqtree/GTTestsIQTree.h"
 #include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
@@ -278,15 +279,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2089);  // "no forbidden folder characters on linux and mac";
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_7700);
-
-    // Memory allocation related tests. Test only 32-bit platforms.
-    // These tests should be rewritten to check 64-bit memory allocation.
-
-#ifdef Q_PROCESSOR_X86_32
-    REGISTER_TEST(GUITest_regression_scenarios::test_4563);
-    REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_5138_1, 420000);
-    REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
-#endif
 
     //////////////////////////////////////////////////////////////////////////
     // Regression scenarios/
@@ -1782,8 +1774,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7508);
     REGISTER_TEST(GUITest_regression_scenarios::test_7509);
     REGISTER_TEST(GUITest_regression_scenarios::test_7511);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7515);
     REGISTER_TEST(GUITest_regression_scenarios::test_7517);
     REGISTER_TEST(GUITest_regression_scenarios::test_7520);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7521);
     REGISTER_TEST(GUITest_regression_scenarios::test_7531);
     REGISTER_TEST(GUITest_regression_scenarios::test_7535);
     REGISTER_TEST(GUITest_regression_scenarios::test_7539);
@@ -1804,6 +1798,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7607);
     REGISTER_TEST(GUITest_regression_scenarios::test_7609);
     REGISTER_TEST(GUITest_regression_scenarios::test_7616);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7617);
     REGISTER_TEST(GUITest_regression_scenarios::test_7623);
     REGISTER_TEST(GUITest_regression_scenarios::test_7629);
     REGISTER_TEST(GUITest_regression_scenarios::test_7630);
@@ -1828,10 +1823,18 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7712);
     REGISTER_TEST(GUITest_regression_scenarios::test_7714);
     REGISTER_TEST(GUITest_regression_scenarios::test_7715);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7720);
     REGISTER_TEST(GUITest_regression_scenarios::test_7740);
     REGISTER_TEST(GUITest_regression_scenarios::test_7744);
     REGISTER_TEST(GUITest_regression_scenarios::test_7748);
     REGISTER_TEST(GUITest_regression_scenarios::test_7751);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7753);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7770);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7781);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7789);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7792);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_7806);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -3074,6 +3077,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_genecut::test_0012);
 
     /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/fasttree
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_fasttree::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_fasttree::test_0002);
+
+    /////////////////////////////////////////////////////////////////////////
     // common_scenarios/iqtree
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_iqtree::test_0001);
@@ -3366,6 +3375,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0010);
 
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0011);
+
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/in_silico_pcr
     /////////////////////////////////////////////////////////////////////////
@@ -3389,6 +3400,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0017);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0018);
     REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0019);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0020);
+    REGISTER_TEST(GUITest_common_scenarios_in_silico_pcr::test_0021);
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/pcr/primer_library
     /////////////////////////////////////////////////////////////////////////
@@ -3404,6 +3417,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0015);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0016);
+    REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0017);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/phyml

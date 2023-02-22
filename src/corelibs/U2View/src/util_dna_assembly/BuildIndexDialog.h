@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BUILD_INDEX_DIALOG_H_
-#define _U2_BUILD_INDEX_DIALOG_H_
+#pragma once
 
 #include <QVariant>
 
@@ -59,5 +58,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif  //  _U2_BUILD_INDEX_DIALOG_H_

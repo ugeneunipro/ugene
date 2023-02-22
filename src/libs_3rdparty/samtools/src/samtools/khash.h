@@ -24,29 +24,6 @@
 */
 
 /*
-  An example:
-
-#include "khash.h"
-KHASH_MAP_INIT_INT(32, char)
-int main() {
-	int ret, is_missing;
-	khiter_t k;
-	khash_t(32) *h = kh_init(32);
-	k = kh_put(32, h, 5, &ret);
-	if (!ret) kh_del(32, h, k);
-	kh_value(h, k) = 10;
-	k = kh_get(32, h, 10);
-	is_missing = (k == kh_end(h));
-	k = kh_get(32, h, 5);
-	kh_del(32, h, k);
-	for (k = kh_begin(h); k != kh_end(h); ++k)
-		if (kh_exist(h, k)) kh_value(h, k) = 1;
-	kh_destroy(32, h);
-	return 0;
-}
-*/
-
-/*
   2011-02-14 (0.2.5):
 
     * Allow to declare global functions.
@@ -94,8 +71,6 @@ int main() {
   @copyright Heng Li
  */
 
-#define AC_VERSION_KHASH_H "0.2.5"
-
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -138,27 +113,11 @@ static const khint32_t __ac_prime_list[__ac_HASH_PRIME_SIZE] =
 #define __ac_isempty(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&2)
 #define __ac_isdel(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&1)
 #define __ac_iseither(flag, i) ((flag[i>>4]>>((i&0xfU)<<1))&3)
-#define __ac_set_isdel_false(flag, i) (flag[i>>4]&=~(1ul<<((i&0xfU)<<1)))
 #define __ac_set_isempty_false(flag, i) (flag[i>>4]&=~(2ul<<((i&0xfU)<<1)))
 #define __ac_set_isboth_false(flag, i) (flag[i>>4]&=~(3ul<<((i&0xfU)<<1)))
 #define __ac_set_isdel_true(flag, i) (flag[i>>4]|=1ul<<((i&0xfU)<<1))
 
 static const double __ac_HASH_UPPER = 0.77;
-
-#define KHASH_DECLARE(name, khkey_t, khval_t)		 					\
-	typedef struct {													\
-		khint_t n_buckets, size, n_occupied, upper_bound;				\
-		khint32_t *flags;												\
-		khkey_t *keys;													\
-		khval_t *vals;													\
-	} kh_##name##_t;													\
-	extern kh_##name##_t *kh_init_##name();								\
-	extern void kh_destroy_##name(kh_##name##_t *h);					\
-	extern void kh_clear_##name(kh_##name##_t *h);						\
-	extern khint_t kh_get_##name(const kh_##name##_t *h, khkey_t key); 	\
-	extern void kh_resize_##name(kh_##name##_t *h, khint_t new_n_buckets); \
-	extern khint_t kh_put_##name(kh_##name##_t *h, khkey_t key, int *ret); \
-	extern void kh_del_##name(kh_##name##_t *h, khint_t x);
 
 #define KHASH_INIT2(name, SCOPE, khkey_t, khval_t, kh_is_map, __hash_func, __hash_equal) \
 	typedef struct {													\

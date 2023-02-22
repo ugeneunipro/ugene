@@ -23,8 +23,7 @@
 /* Copy of "workflow_designer/ProxyDelegate.h"                          */
 /************************************************************************/
 
-#ifndef _U2_QUERY_PROC_CFG_DELEGATE_H_
-#define _U2_QUERY_PROC_CFG_DELEGATE_H_
+#pragma once
 
 #include <QItemDelegate>
 
@@ -87,5 +86,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

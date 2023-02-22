@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANNOTATION_GROUP_TESTS_H_
-#define _U2_ANNOTATION_GROUP_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -41,5 +40,3 @@ DECLARE_METATYPE(AnnotationGroupUnitTest, groupHierarchy)
 DECLARE_METATYPE(AnnotationGroupUnitTest, getSet_Annotations)
 DECLARE_METATYPE(AnnotationGroupUnitTest, findAnnotationsInSubtree)
 DECLARE_METATYPE(AnnotationGroupUnitTest, getSet_Subgroups)
-
-#endif  //_U2_ANNOTATION_GROUP_TESTS_H_

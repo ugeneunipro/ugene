@@ -593,7 +593,7 @@ QString GTUtilsWorkflowDesigner::getWorkerText(HI::GUITestOpStatus& os, const QS
     for (QGraphicsItem* child : qAsConst(workerChildren)) {
         foreach (QGraphicsItem* subchild, child->childItems()) {
             QGraphicsObject* graphObject = subchild->toGraphicsObject();
-            QGraphicsTextItem* textItem = qobject_cast<QGraphicsTextItem*>(graphObject);
+            auto textItem = qobject_cast<QGraphicsTextItem*>(graphObject);
             if (nullptr != textItem) {
                 return textItem->toPlainText();
             }
@@ -726,7 +726,7 @@ QList<WorkflowBusItem*> GTUtilsWorkflowDesigner::getAllConnectionArrows(HI::GUIT
     QList<WorkflowBusItem*> result;
 
     foreach (QGraphicsItem* item, sceneView->items()) {
-        WorkflowBusItem* arrow = qgraphicsitem_cast<WorkflowBusItem*>(item);
+        auto arrow = qgraphicsitem_cast<WorkflowBusItem*>(item);
         if (arrow != nullptr) {
             result.append(arrow);
         }
@@ -819,7 +819,7 @@ void GTUtilsWorkflowDesigner::connect(HI::GUITestOpStatus& os, WorkflowProcessIt
 
 #define GT_METHOD_NAME "disconnect"
 void GTUtilsWorkflowDesigner::disconect(HI::GUITestOpStatus& os, WorkflowProcessItem* from, WorkflowProcessItem* to) {
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(from->scene()->views().at(0));
+    auto sceneView = qobject_cast<QGraphicsView*>(from->scene()->views().at(0));
     GT_CHECK(sceneView, "sceneView not found");
 
     WorkflowBusItem* arrow = getConnectionArrow(os, from, to);
@@ -833,7 +833,7 @@ void GTUtilsWorkflowDesigner::disconect(HI::GUITestOpStatus& os, WorkflowProcess
 
 #define GT_METHOD_NAME "getConnectionArrow"
 WorkflowBusItem* GTUtilsWorkflowDesigner::getConnectionArrow(HI::GUITestOpStatus& os, WorkflowProcessItem* from, WorkflowProcessItem* to) {
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(from->scene()->views().at(0));
+    auto sceneView = qobject_cast<QGraphicsView*>(from->scene()->views().at(0));
     GT_CHECK_RESULT(sceneView, "sceneView not found", nullptr)
     QList<WorkflowPortItem*> fromList = from->getPortItems();
     QList<WorkflowPortItem*> toList = to->getPortItems();
@@ -857,7 +857,7 @@ QGraphicsTextItem* GTUtilsWorkflowDesigner::getArrowHint(HI::GUITestOpStatus& os
     GT_CHECK_RESULT(arrow != nullptr, "arrow item is NULL", nullptr);
 
     foreach (QGraphicsItem* item, arrow->childItems()) {
-        QGraphicsTextItem* hint = qgraphicsitem_cast<QGraphicsTextItem*>(item);
+        auto hint = qgraphicsitem_cast<QGraphicsTextItem*>(item);
         if (hint != nullptr) {
             return hint;
         }
@@ -873,7 +873,7 @@ QList<WorkflowProcessItem*> GTUtilsWorkflowDesigner::getWorkers(HI::GUITestOpSta
     auto sceneView = GTWidget::findGraphicsView(os, "sceneView", wdWindow);
     QList<QGraphicsItem*> items = sceneView->items();
     foreach (QGraphicsItem* it, items) {
-        WorkflowProcessItem* worker = qgraphicsitem_cast<WorkflowProcessItem*>(it);
+        auto worker = qgraphicsitem_cast<WorkflowProcessItem*>(it);
         if (worker) {
             result.append(worker);
         }
@@ -1233,7 +1233,7 @@ QStringList GTUtilsWorkflowDesigner::getComboBoxParameterValues(HI::GUITestOpSta
     GTMouseDriver::click();
     GTGlobals::sleep();
 
-    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    auto box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
     GT_CHECK_RESULT(box, "QComboBox not found. Widget in this cell might be not QComboBox", QStringList());
 
     QStringList result;
@@ -1263,10 +1263,10 @@ QList<QPair<QString, bool>> GTUtilsWorkflowDesigner::getCheckableComboboxValuesF
     GTMouseDriver::click();
     GTGlobals::sleep();
 
-    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    auto box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
     GT_CHECK_RESULT(box, "QComboBox not found. Widget in this cell might be not QComboBox", result);
 
-    QStandardItemModel* checkBoxModel = qobject_cast<QStandardItemModel*>(box->model());
+    auto checkBoxModel = qobject_cast<QStandardItemModel*>(box->model());
     GT_CHECK_RESULT(nullptr != checkBoxModel, "Unexpected checkbox model", result);
 
     for (int i = 0; i < checkBoxModel->rowCount(); ++i) {
@@ -1448,7 +1448,7 @@ void GTUtilsWorkflowDesigner::setParameterScripting(HI::GUITestOpStatus& os, QSt
     GTMouseDriver::click();
 
     // SET VALUE
-    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    auto box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
     GT_CHECK(box != nullptr, "QComboBox not found. Scripting might be unavaluable for this parameter");
     GTComboBox::selectItemByText(os, box, scriptMode);
 }

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_NCBI_SEARCH_DIALOG_FILLER_H_
-#define _U2_NCBI_SEARCH_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -111,5 +110,3 @@ private:
 typedef QPair<int, QString> intStrStrPair;
 Q_DECLARE_METATYPE(intStrStrPair)
 Q_DECLARE_METATYPE(QList<int>)
-
-#endif  // _U2_NCBI_SEARCH_DIALOG_FILLER_H_

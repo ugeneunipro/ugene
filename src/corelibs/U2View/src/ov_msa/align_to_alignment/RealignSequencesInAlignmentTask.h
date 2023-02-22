@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REALIGN_SEQUENCES_IN_ALIGNMENT_TASK_
-#define _U2_REALIGN_SEQUENCES_IN_ALIGNMENT_TASK_
+#pragma once
 
 #include <QSet>
 #include <QStringList>
@@ -58,5 +57,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

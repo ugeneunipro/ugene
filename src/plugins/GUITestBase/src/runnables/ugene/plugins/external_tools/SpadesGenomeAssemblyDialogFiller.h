@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SPADES_GENOME_ASSEMBLY_DIALOG_FILLER_H_
-#define _U2_SPADES_GENOME_ASSEMBLY_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -56,5 +55,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // SPADESGENOMEASSEMBLYDIALOGFILLER_H

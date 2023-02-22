@@ -117,7 +117,7 @@ ClustalOSupportContext::ClustalOSupportContext(QObject* p)
 }
 
 void ClustalOSupportContext::initViewContext(GObjectView* view) {
-    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(view);
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
     msaEditor->registerActionProvider(this);

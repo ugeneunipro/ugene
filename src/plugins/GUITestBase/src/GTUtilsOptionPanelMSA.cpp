@@ -260,7 +260,7 @@ void GTUtilsOptionPanelMsa::addSecondSeqToPA(HI::GUITestOpStatus& os, QString se
 #undef GT_METHOD_NAME
 
 QString GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(HI::GUITestOpStatus& os, int num) {
-    QLineEdit* le = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", num));
+    auto le = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", num));
     return le->text();
 }
 
@@ -291,7 +291,7 @@ void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus& os, QString seqName,
 
 #define GT_METHOD_NAME "getAddButton"
 QToolButton* GTUtilsOptionPanelMsa::getAddButton(HI::GUITestOpStatus& os, int number) {
-    QToolButton* result = qobject_cast<QToolButton*>(getWidget(os, "addSeq", number));
+    auto result = qobject_cast<QToolButton*>(getWidget(os, "addSeq", number));
     GT_CHECK_RESULT(result != nullptr, "toolbutton is NULL", nullptr);
     return result;
 }
@@ -299,7 +299,7 @@ QToolButton* GTUtilsOptionPanelMsa::getAddButton(HI::GUITestOpStatus& os, int nu
 
 #define GT_METHOD_NAME "getDeleteButton"
 QToolButton* GTUtilsOptionPanelMsa::getDeleteButton(HI::GUITestOpStatus& os, int number) {
-    QToolButton* result = qobject_cast<QToolButton*>(getWidget(os, "deleteSeq", number));
+    auto result = qobject_cast<QToolButton*>(getWidget(os, "deleteSeq", number));
     GT_CHECK_RESULT(result != nullptr, "toolbutton is NULL", nullptr);
     return result;
 }
@@ -479,7 +479,7 @@ void GTUtilsOptionPanelMsa::clickPrev(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "getSeqLineEdit"
 QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus& os, int number) {
-    QLineEdit* result = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", number));
+    auto result = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", number));
     GT_CHECK_RESULT(result != nullptr, "sequenceLineEdit is NULL", nullptr);
     return result;
 }

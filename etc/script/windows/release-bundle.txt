@@ -1428,6 +1428,7 @@ tools/clustalo
 tools/clustalw
 tools/cutadapt
 tools/fastqc
+tools/fasttree
 tools/hmmer3
 tools/iqtree
 tools/java

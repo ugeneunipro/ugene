@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_ALIGNMENT_INFO_H_
-#define _U2_MULTIPLE_ALIGNMENT_INFO_H_
+#pragma once
 
 #include <QString>
 #include <QVariantMap>
@@ -75,5 +74,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MULTIPLE_ALIGNMENT_INFO_H_

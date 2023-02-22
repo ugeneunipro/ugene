@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_STATE_CHECK_H_
-#define _U2_MA_STATE_CHECK_H_
+#pragma once
 
 namespace U2 {
 
@@ -36,5 +35,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_STATE_CHECK_H_

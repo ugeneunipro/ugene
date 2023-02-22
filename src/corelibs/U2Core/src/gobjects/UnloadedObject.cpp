@@ -60,7 +60,7 @@ UnloadedObjectInfo::UnloadedObjectInfo(GObject* obj) {
     entityRef = obj->getEntityRef();
 
     if (obj->isUnloaded()) {
-        UnloadedObject* uo = qobject_cast<UnloadedObject*>(obj);
+        auto uo = qobject_cast<UnloadedObject*>(obj);
         type = uo->getLoadedObjectType();
     } else {
         type = obj->getGObjectType();

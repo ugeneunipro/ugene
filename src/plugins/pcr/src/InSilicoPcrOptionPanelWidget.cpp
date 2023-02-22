@@ -23,6 +23,8 @@
 
 #include <QMessageBox>
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
@@ -39,6 +41,7 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
+#include <U2View/TempCalcWidget.h>
 
 #include "ExtractProductTask.h"
 #include "InSilicoPcrTask.h"
@@ -48,22 +51,28 @@ namespace U2 {
 
 namespace {
 const QString DETAILS_LINK = "details";
+const QString ID_POSTFIX = "_in_silico_pcr";
 const QString FORWARD_SUBGROUP_ID = "forward";
 const QString REVERSE_SUBGROUP_ID = "reverse";
 const QString SETTINGS_SUBGROUP_ID = "settings";
+const QString TEMPERATURE_SUBGROUP_ID = "temperature";
 }  // namespace
 
-InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* annotatedDnaView)
+InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _annotatedDnaView)
     : QWidget(),
-      annotatedDnaView(annotatedDnaView),
+      annotatedDnaView(_annotatedDnaView),
       pcrTask(nullptr),
       resultTableShown(false),
-      savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())) {
+      savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())),
+      tempCalcId(annotatedDnaView->getName() + ID_POSTFIX),
+      temperatureCalculator(AppContext::getTempCalcRegistry()->createDefaultTempCalculator(tempCalcId)) {
     GCOUNTER(cvar, "PCR options panel");
     setupUi(this);
     forwardPrimerBoxSubgroup->init(FORWARD_SUBGROUP_ID, tr("Forward primer"), forwardPrimerBox, true);
     reversePrimerBoxSubgroup->init(REVERSE_SUBGROUP_ID, tr("Reverse primer"), reversePrimerBox, true);
     settingsSubgroup->init(SETTINGS_SUBGROUP_ID, tr("Settings"), settingsWidget, true);
+    temperatureWidget->init(temperatureCalculator->getSettings());
+    temperatureSubgroup->init(TEMPERATURE_SUBGROUP_ID, tr("Melting temperature"), temperatureWidget, false);
     annsComboBox->addItem(tr("Inner"), ExtractProductSettings::Inner);
     annsComboBox->addItem(tr("All intersected"), ExtractProductSettings::All);
     annsComboBox->addItem(tr("None"), ExtractProductSettings::None);
@@ -71,6 +80,8 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* ann
 
     forwardPrimerBox->setAnnotatedDnaView(annotatedDnaView);
     reversePrimerBox->setAnnotatedDnaView(annotatedDnaView);
+    forwardPrimerBox->setTemperatureCalculator(temperatureCalculator);
+    reversePrimerBox->setTemperatureCalculator(temperatureCalculator);
 
     connect(forwardPrimerBox, SIGNAL(si_primerChanged()), SLOT(sl_onPrimerChanged()));
     connect(reversePrimerBox, SIGNAL(si_primerChanged()), SLOT(sl_onPrimerChanged()));
@@ -82,6 +93,7 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* ann
     connect(productsTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_onProductsSelectionChanged()));
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(sl_onProductDoubleClicked()));
     connect(detailsLinkLabel, SIGNAL(linkActivated(const QString&)), SLOT(sl_showDetails(const QString&)));
+    connect(temperatureWidget, &TempCalcWidget::si_settingsChanged, this, &InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged);
 
     static const QString linkText = QString("<a href=\"%1\" style=\"color: %2\">%3</a>").arg(DETAILS_LINK).arg(Theme::linkColorLabelStr()).arg(tr("Show primers details"));
     detailsLinkLabel->setText(linkText);
@@ -100,6 +112,7 @@ InSilicoPcrOptionPanelWidget::~InSilicoPcrOptionPanelWidget() {
     if (nullptr != pcrTask) {
         pcrTask->cancel();
     }
+    AppContext::getTempCalcRegistry()->saveSettings(tempCalcId, temperatureCalculator->getSettings());
 }
 
 AnnotatedDNAView* InSilicoPcrOptionPanelWidget::getDnaView() const {
@@ -123,7 +136,7 @@ void InSilicoPcrOptionPanelWidget::sl_onPrimerChanged() {
     }
 
     bool isCriticalError = false;
-    QString message = PrimerStatistics::checkPcrPrimersPair(forward, reverse, isCriticalError);
+    QString message = PrimerStatistics::checkPcrPrimersPair(forward, reverse, temperatureCalculator, isCriticalError);
     detailsLinkLabel->setVisible(!isCriticalError);
 
     findProductButton->setEnabled(true);
@@ -153,19 +166,20 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
     SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
 
-    InSilicoPcrTaskSettings settings;
-    settings.forwardPrimer = forwardPrimerBox->getPrimer();
-    settings.reversePrimer = reversePrimerBox->getPrimer();
-    settings.forwardMismatches = forwardPrimerBox->getMismatches();
-    settings.reverseMismatches = reversePrimerBox->getMismatches();
-    settings.maxProductSize = uint(maxProduct);
-    settings.perfectMatch = uint(perfectMatch);
-    settings.useAmbiguousBases = useAmbiguousBasesCheckBox->isChecked();
+    auto settings = new InSilicoPcrTaskSettings;
+    settings->forwardPrimer = forwardPrimerBox->getPrimer();
+    settings->reversePrimer = reversePrimerBox->getPrimer();
+    settings->forwardMismatches = forwardPrimerBox->getMismatches();
+    settings->reverseMismatches = reversePrimerBox->getMismatches();
+    settings->maxProductSize = uint(maxProduct);
+    settings->perfectMatch = uint(perfectMatch);
+    settings->useAmbiguousBases = useAmbiguousBasesCheckBox->isChecked();
     U2OpStatusImpl os;
-    settings.sequence = sequenceObject->getWholeSequenceData(os);
+    settings->sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
-    settings.sequenceObject = GObjectReference(sequenceObject);
-    settings.isCircular = sequenceObject->isCircular();
+    settings->sequenceObject = GObjectReference(sequenceObject);
+    settings->isCircular = sequenceObject->isCircular();
+    settings->temperatureCalculator = temperatureCalculator;
 
     pcrTask = new InSilicoPcrTask(settings);
     connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
@@ -190,7 +204,7 @@ void InSilicoPcrOptionPanelWidget::sl_onFindTaskFinished() {
 }
 
 void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask* task) {
-    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings().sequenceObject);
+    ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings()->sequenceObject);
     CHECK(nullptr != sequenceContext, );
 
     productsTable->showProducts(task->getResults(), sequenceContext);
@@ -227,7 +241,7 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
         setResultTableShown(false);
     }
     CHECK(nullptr != pcrTask, );
-    bool taskChanged = GObjectReference(sequenceContext->getSequenceGObject()) == pcrTask->getSettings().sequenceObject;
+    bool taskChanged = GObjectReference(sequenceContext->getSequenceGObject()) == pcrTask->getSettings()->sequenceObject;
     if (taskChanged) {
         pcrTask->cancel();
     }
@@ -261,9 +275,17 @@ void InSilicoPcrOptionPanelWidget::sl_onProductDoubleClicked() {
 
 void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString& link) {
     SAFE_POINT(DETAILS_LINK == link, "Incorrect link", );
-    PrimersPairStatistics calc(forwardPrimerBox->getPrimer(), reversePrimerBox->getPrimer());
+    PrimersPairStatistics calc(forwardPrimerBox->getPrimer(), reversePrimerBox->getPrimer(), temperatureCalculator);
     QObjectScopedPointer<PrimersDetailsDialog> dlg = new PrimersDetailsDialog(this, calc.generateReport());
     dlg->exec();
+}
+
+void U2::InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged() {
+    auto tempCalcSettings = temperatureWidget->getSettings();
+    auto id = tempCalcSettings.value(BaseTempCalc::KEY_ID).toString();
+    temperatureCalculator = AppContext::getTempCalcRegistry()->getById(id)->createTempCalculator(tempCalcSettings);
+    forwardPrimerBox->setTemperatureCalculator(temperatureCalculator);
+    reversePrimerBox->setTemperatureCalculator(temperatureCalculator);
 }
 
 }  // namespace U2

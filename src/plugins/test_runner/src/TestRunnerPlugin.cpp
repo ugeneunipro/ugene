@@ -257,6 +257,8 @@ GTestSuite* TestRunnerService::findTestSuiteByURL(const QString& url) {
 void TestRunnerService::readBuiltInVars() {
     QStringList biVars;
     biVars << NUM_THREADS_VAR;
+    biVars << "COMMON_DATA_DIR";
+    biVars << "TEMP_DATA_DIR";
     readEnvForKeys(biVars);
 
     QMap<QString, QString> vars = env->getVars();

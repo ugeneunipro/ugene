@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_COREAPI_ID_REGISTRY_H_
-#define _U2_COREAPI_ID_REGISTRY_H_
+#pragma once
 
 #include <QMap>
 
@@ -32,7 +31,7 @@ namespace U2 {
 template<class T>
 class IdRegistry {
 public:
-    virtual T* getById(const QString& id) {
+    virtual T* getById(const QString& id) const {
         return registry.value(id, nullptr);
     }
     virtual bool registerEntry(T* t) {
@@ -63,5 +62,3 @@ protected:
 };  // IdRegistry
 
 }  // namespace U2
-
-#endif  // _U2_COREAPI_ID_REGISTRY_H_

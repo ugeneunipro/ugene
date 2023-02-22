@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PROJECT_DOCUMENT_COMBOBOX_CONTROLLER
-#define _U2_PROJECT_DOCUMENT_COMBOBOX_CONTROLLER
+#pragma once
 
 #include <QComboBox>
 #include <QObject>
@@ -58,5 +57,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

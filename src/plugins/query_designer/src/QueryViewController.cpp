@@ -238,7 +238,7 @@ void QueryScene::sl_showItemDesc(bool show) {
     showDesc = show;
     foreach (QGraphicsItem* it, items()) {
         if (it->type() == QDElementType) {
-            QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
+            auto uv = qgraphicsitem_cast<QDElement*>(it);
             uv->sl_refresh();
             uv->rememberSize();
             uv->adaptSize();
@@ -251,7 +251,7 @@ void QueryScene::sl_showOrder(bool show) {
     showOrder = show;
     foreach (QGraphicsItem* it, items()) {
         if (it->type() == QDElementType) {
-            QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
+            auto uv = qgraphicsitem_cast<QDElement*>(it);
             uv->sl_refresh();
         }
     }
@@ -299,7 +299,7 @@ QList<QDElement*> QueryScene::getElements() const {
     QList<QDElement*> res;
     foreach (QGraphicsItem* item, items()) {
         if (item->type() == QDElementType) {
-            QDElement* el = qgraphicsitem_cast<QDElement*>(item);
+            auto el = qgraphicsitem_cast<QDElement*>(item);
             res.append(el);
         }
     }
@@ -332,7 +332,7 @@ void QueryScene::setRowsNumber(int count) {
         rowsNum = count;
         foreach (QGraphicsItem* item, items()) {
             if (item->type() == FootnoteItemType) {
-                Footnote* fn = qgraphicsitem_cast<Footnote*>(item);
+                auto fn = qgraphicsitem_cast<Footnote*>(item);
                 fn->moveBy(0.0, dY);
             }
         }
@@ -412,10 +412,10 @@ void QueryScene::dragMoveEvent(QGraphicsSceneDragDropEvent* event) {
         qreal delta = sceneRect().width() * sceneRect().width() + sceneRect().height() * sceneRect().height();
         QDElement *src = nullptr, *dst = nullptr;
         for (QGraphicsItem* itLeft : qAsConst(annItemsToLeft)) {
-            QDElement* leftAnn = qgraphicsitem_cast<QDElement*>(itLeft);
+            auto leftAnn = qgraphicsitem_cast<QDElement*>(itLeft);
             assert(leftAnn);
             for (QGraphicsItem* itRight : qAsConst(annItemsToRight)) {
-                QDElement* rightAnn = qgraphicsitem_cast<QDElement*>(itRight);
+                auto rightAnn = qgraphicsitem_cast<QDElement*>(itRight);
                 assert(rightAnn);
                 QLineF srcToPos(leftAnn->getRightConnector(), mousePos);
                 QLineF dstToPos(rightAnn->getLeftConnector(), mousePos);
@@ -517,7 +517,7 @@ void QueryScene::addActor(QDActor* actor, const QPointF& pos) {
         dx += UNIT_PADDING + uv->boundingRect().width();
     }
     foreach (QDConstraint* c, actor->getParamConstraints()) {
-        QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
+        auto dc = static_cast<QDDistanceConstraint*>(c);
         if (dc) {
             QueryViewController::setupConstraintEditor(dc);
             Footnote* fn = new Footnote(unit2view.value(dc->getSource()),
@@ -569,7 +569,7 @@ void QueryScene::addDistanceConstraint(QDElement* src, QDElement* dst, QDDistanc
 
 void QueryScene::removeActor(QDActor* actor) {
     foreach (QGraphicsItem* it, getElements()) {
-        QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
+        auto uv = qgraphicsitem_cast<QDElement*>(it);
         assert(uv);
         if (uv->getActor() == actor) {
             removeItem(uv);
@@ -605,7 +605,7 @@ void QueryScene::removeConstraint(QDConstraint* constraint) {
     Q_UNUSED(su);
     assert(su->getConstraints().contains(constraint));
     foreach (QGraphicsItem* it, getFootnotes()) {
-        Footnote* fn = qgraphicsitem_cast<Footnote*>(it);
+        auto fn = qgraphicsitem_cast<Footnote*>(it);
         assert(fn);
         if (fn->getConstraint() == constraint) {
             removeItem(fn);
@@ -972,7 +972,7 @@ void QueryViewController::sl_deleteItem() {
     foreach (QGraphicsItem* item, selectedItems) {
         switch (item->type()) {
             case QDElementType: {
-                QDElement* uv = qgraphicsitem_cast<QDElement*>(item);
+                auto uv = qgraphicsitem_cast<QDElement*>(item);
                 assert(uv);
                 QDActor* a = uv->getActor();
                 if (!actors2remove.contains(a)) {
@@ -980,7 +980,7 @@ void QueryViewController::sl_deleteItem() {
                 }
             } break;
             case FootnoteItemType: {
-                Footnote* fn = qgraphicsitem_cast<Footnote*>(item);
+                auto fn = qgraphicsitem_cast<Footnote*>(item);
                 assert(fn);
                 QDConstraint* c = fn->getConstraint();
                 if (!constraints2remove.contains(c)) {
@@ -1016,12 +1016,12 @@ void QueryViewController::sl_editItem() {
     if (1 == selectedItems.size()) {
         QGraphicsItem* selectedItem = selectedItems.at(0);
         if (selectedItem->type() == QDElementType) {
-            QDElement* unitView = qgraphicsitem_cast<QDElement*>(selectedItem);
+            auto unitView = qgraphicsitem_cast<QDElement*>(selectedItem);
             QDActor* a = unitView->getSchemeUnit()->getActor();
             editor->edit(a);
         }
         if (selectedItem->type() == FootnoteItemType) {
-            Footnote* fn = qgraphicsitem_cast<Footnote*>(selectedItem);
+            auto fn = qgraphicsitem_cast<Footnote*>(selectedItem);
             QDConstraint* con = fn->getConstraint();
             editor->edit(con);
         }

@@ -32,6 +32,7 @@
 namespace U2 {
 
 const QPoint AssemblyReadsAreaHint::OFFSET_FROM_CURSOR(13, 13);
+const int AssemblyReadsAreaHint::LETTER_MAX_COUNT = 60;
 static const int HINT_MAX_WIDTH = 200;
 
 AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
@@ -66,19 +67,23 @@ AssemblyReadsAreaHint::AssemblyReadsAreaHint(QWidget* parent)
     setObjectName("AssemblyReadsAreaHint");
 }
 
-static QString getCigarString(const QString& ci) {
+QString getCigarString(const QString& ci) {
     if (ci.isEmpty()) {
         return QObject::tr("no information");
     }
 
     QString cigar;
-    for (int i = 0; i < ci.size(); ++i) {
+    int cigarSize = qMin(ci.size(), AssemblyReadsAreaHint::LETTER_MAX_COUNT);
+    for (int i = 0; i < cigarSize; ++i) {
         QChar ch = ci.at(i);
         if (ch.isNumber()) {
             cigar.append(ch);
         } else {
             cigar.append(QString("<b>%1 </b>").arg(ch));
         }
+    }
+    if (cigarSize < ci.size()) {
+        cigar.append("...");
     }
     return cigar;
 }
@@ -181,9 +186,9 @@ void AssemblyReadsAreaHint::setData(U2AssemblyRead r, QList<U2AssemblyRead> mate
 }
 
 bool AssemblyReadsAreaHint::eventFilter(QObject*, QEvent* event) {
-    QMouseEvent* e = dynamic_cast<QMouseEvent*>(event);
+    auto e = dynamic_cast<QMouseEvent*>(event);
     if (e != nullptr) {
-        QWidget* p = qobject_cast<QWidget*>(parent());
+        auto p = qobject_cast<QWidget*>(parent());
         QMouseEvent eventToParent(e->type(), p->mapFromGlobal(QCursor::pos()), e->button(), e->buttons(), e->modifiers());
         QApplication::sendEvent(p, &eventToParent);
         return true;
@@ -193,7 +198,7 @@ bool AssemblyReadsAreaHint::eventFilter(QObject*, QEvent* event) {
 }
 
 void AssemblyReadsAreaHint::leaveEvent(QEvent*) {
-    AssemblyReadsArea* p = qobject_cast<AssemblyReadsArea*>(parent());
+    auto p = qobject_cast<AssemblyReadsArea*>(parent());
     QPoint curInParentCoords = p->mapFromGlobal(QCursor::pos());
     if (!p->rect().contains(curInParentCoords)) {
         p->sl_hideHint();
@@ -201,7 +206,7 @@ void AssemblyReadsAreaHint::leaveEvent(QEvent*) {
 }
 
 void AssemblyReadsAreaHint::mouseMoveEvent(QMouseEvent* e) {
-    AssemblyReadsArea* p = qobject_cast<AssemblyReadsArea*>(parent());
+    auto p = qobject_cast<AssemblyReadsArea*>(parent());
     p->sl_hideHint();
     QFrame::mouseMoveEvent(e);
 }

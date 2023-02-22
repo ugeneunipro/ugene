@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _DB_REQUEST_FACTORY_
-#define _DB_REQUEST_FACTORY_
+#pragma once
 
 #include <U2Core/DataBaseRegistry.h>
 
@@ -35,5 +34,3 @@ class BLASTFactory : public DataBaseFactory {
 };
 
 }  // namespace U2
-
-#endif

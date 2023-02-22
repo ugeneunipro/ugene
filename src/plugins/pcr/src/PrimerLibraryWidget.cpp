@@ -24,6 +24,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -32,6 +34,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
+
+#include <U2View/TempCalcDialog.h>
 
 #include "EditPrimerDialog.h"
 #include "PrimerLibrary.h"
@@ -50,7 +54,7 @@
 namespace U2 {
 
 PrimerLibraryWidget::PrimerLibraryWidget(QWidget* parent)
-    : QWidget(parent), editPrimerButton(nullptr), removePrimersButton(nullptr) {
+    : QWidget(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930783");
 
@@ -68,6 +72,9 @@ PrimerLibraryWidget::PrimerLibraryWidget(QWidget* parent)
 
     exportPrimersButton = buttonBox->addButton(tr("Export primer(s)"), QDialogButtonBox::ActionRole);
     connect(exportPrimersButton, SIGNAL(clicked()), SLOT(sl_exportPrimers()));
+
+    temperatureButton = buttonBox->addButton(tr("Temperature"), QDialogButtonBox::ActionRole);
+    connect(temperatureButton, &QPushButton::clicked, this, &PrimerLibraryWidget::sl_openTemperatureSettings);
 
     connect(buttonBox, SIGNAL(rejected()), SIGNAL(si_close()));
 
@@ -136,11 +143,37 @@ void PrimerLibraryWidget::sl_exportPrimers() {
     exportDialog->exec();
 }
 
+void PrimerLibraryWidget::sl_openTemperatureSettings() {
+    U2OpStatusImpl os;
+    PrimerLibrary* library = PrimerLibrary::getInstance(os);
+    CHECK_OP_UI(os, );
+
+    QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(this, library->getTemperatureSettings()));
+    int res = dialog->exec();
+    CHECK(!dialog.isNull() && res == QDialog::Accepted, );
+
+    library->setTemperatureCalculator(dialog->createTemperatureCalculator());
+    updateTemperatureValues();
+}
+
 void PrimerLibraryWidget::sl_selectionChanged() {
     QList<Primer> selection = primerTable->getSelection();
     editPrimerButton->setEnabled(1 == selection.size());
     removePrimersButton->setDisabled(selection.isEmpty());
     exportPrimersButton->setDisabled(selection.isEmpty());
+}
+
+void PrimerLibraryWidget::updateTemperatureValues() {
+    U2OpStatusImpl os;
+    PrimerLibrary* library = PrimerLibrary::getInstance(os);
+    CHECK_OP_UI(os, );
+
+    const auto& primers = primerTable->getAllPrimers();
+    for (const auto& primer : qAsConst(primers)) {
+        library->updateRawPrimer(primer, os);
+        CHECK_OP_UI(os, );
+    }
+
 }
 
 }  // namespace U2

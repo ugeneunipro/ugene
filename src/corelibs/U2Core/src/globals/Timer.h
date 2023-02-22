@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TIMER_H_
-#define _U2_TIMER_H_
+#pragma once
 
 #include <QDateTime>
 
@@ -144,5 +143,3 @@ inline qint64 TimeCounter::getCounter() {
 }
 
 }  // namespace U2
-
-#endif

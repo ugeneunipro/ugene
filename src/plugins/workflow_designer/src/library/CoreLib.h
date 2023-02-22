@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_CORE_LIB_LIB_H_
-#define _U2_WORKFLOW_CORE_LIB_LIB_H_
+#pragma once
 
 #include <U2Lang/Datatype.h>
 
@@ -40,5 +39,3 @@ public:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif

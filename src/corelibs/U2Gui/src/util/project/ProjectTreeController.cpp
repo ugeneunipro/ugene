@@ -591,7 +591,7 @@ void ProjectTreeController::sl_onImportToDatabase() {
     }
     SAFE_POINT(doc != nullptr, tr("Select a database to import anything"), );
 
-    QWidget* mainWindow = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
+    auto mainWindow = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<ImportToDatabaseDialog> importDialog = new ImportToDatabaseDialog(doc, selectedFolders.first().getFolderPath(), mainWindow);
     importDialog->exec();
 }

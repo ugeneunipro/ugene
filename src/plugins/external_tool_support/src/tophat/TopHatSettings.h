@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TOPHAT_SETTINGS_H_
-#define _U2_TOPHAT_SETTINGS_H_
+#pragma once
 
 #include <U2Core/DNASequenceObject.h>
 
@@ -101,5 +100,3 @@ public:
     static const QString SEQUENCE;
 };
 }  // namespace U2
-
-#endif

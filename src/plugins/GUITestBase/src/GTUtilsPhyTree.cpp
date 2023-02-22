@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/ColorDialogFiller.h>
+#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
@@ -235,7 +237,7 @@ void GTUtilsPhyTree::doubleClickNode(HI::GUITestOpStatus& os, TvNodeItem* node) 
 #define GT_METHOD_NAME "getNodeDistance"
 qreal GTUtilsPhyTree::getNodeDistance(HI::GUITestOpStatus& os, TvNodeItem* node) {
     GT_CHECK_RESULT(node != nullptr, "Node is NULL", 0);
-    TvRectangularBranchItem* branch = dynamic_cast<TvRectangularBranchItem*>(node->parentItem());
+    auto branch = dynamic_cast<TvRectangularBranchItem*>(node->parentItem());
     GT_CHECK_RESULT(branch != nullptr, "Node's branch' is NULL", 0);
     return branch->getDist();
 }
@@ -392,9 +394,15 @@ void GTUtilsPhyTree::clickZoomOutButton(HI::GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickResetZoomButton"
-void GTUtilsPhyTree::clickResetZoomButton(HI::GUITestOpStatus& os) {
-    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "resetZoomTreeViewerAction");
+#define GT_METHOD_NAME "clickZoomFitButton"
+void GTUtilsPhyTree::clickZoomFitButton(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomFitAction");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickZoom100Button"
+void GTUtilsPhyTree::clickZoom100Button(HI::GUITestOpStatus& os) {
+    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoom100Action");
 }
 #undef GT_METHOD_NAME
 
@@ -409,11 +417,52 @@ int GTUtilsPhyTree::getSceneWidth(HI::GUITestOpStatus& os) {
 #define GT_METHOD_NAME "zoomWithMouseWheel"
 void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus& os, int steps) {
     TreeViewerUI* treeViewer = getTreeViewerUi(os);
+    zoomWithMouseWheel(os, treeViewer, steps);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "zoomWithMouseWheelWithTreeViewer"
+void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus&, QWidget* treeViewer, int steps) {
     QPoint treeViewCenter = treeViewer->mapToGlobal(treeViewer->rect().center());
     GTMouseDriver::moveTo(treeViewCenter);
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
     for (int i = 0; i < qAbs(steps); i++) {
         GTMouseDriver::scroll(steps > 0 ? 1 : -1);
     }
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setBranchColor"
+void GTUtilsPhyTree::setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b) {
+    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
+    auto branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
+    GTWidget::click(os, branchesColorButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getColorPercent"
+double GTUtilsPhyTree::getColorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName) {
+    int total = 0;
+    int found = 0;
+    const QImage img = GTWidget::getImage(os, widget);
+    QRect r = widget->rect();
+    int wid = r.width();
+    int heig = r.height();
+    for (int i = 0; i < wid; i++) {
+        for (int j = 0; j < heig; j++) {
+            total++;
+            QPoint p(i, j);
+            QRgb rgb = img.pixel(p);
+            QColor color = QColor(rgb);
+            QString name = color.name();
+            if (name == colorName) {
+                found++;
+            }
+        }
+    }
+    double result = static_cast<double>(found) / total;
+    return result;
 }
 #undef GT_METHOD_NAME
 

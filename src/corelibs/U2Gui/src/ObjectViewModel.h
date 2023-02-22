@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OBJECT_VIEW_MODEL_H_
-#define _U2_OBJECT_VIEW_MODEL_H_
+#pragma once
 
 #include <QAction>
 #include <QMap>
@@ -494,5 +493,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

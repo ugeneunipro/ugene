@@ -129,7 +129,7 @@ void TrimmomaticDialogFiller::addSteps() {
         GT_CHECK(!stepString.isEmpty(), "Step not found");
 
         GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-        QMenu* menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
+        auto menu = qobject_cast<QMenu*>(GTWidget::findWidget(os, "stepsMenu"));
         GTMenu::clickMenuItemByName(os, menu, {stepString});
         GTKeyboardDriver::keyClick(Qt::Key_Escape);
         GTGlobals::sleep(500);

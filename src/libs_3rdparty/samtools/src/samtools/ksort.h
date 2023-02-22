@@ -267,11 +267,8 @@ typedef struct {
 
 #define ks_mergesort(name, n, a, t) ks_mergesort_##name(n, a, t)
 #define ks_introsort(name, n, a) ks_introsort_##name(n, a)
-#define ks_combsort(name, n, a) ks_combsort_##name(n, a)
-#define ks_heapsort(name, n, a) ks_heapsort_##name(n, a)
 #define ks_heapmake(name, n, a) ks_heapmake_##name(n, a)
 #define ks_heapadjust(name, i, n, a) ks_heapadjust_##name(i, n, a)
-#define ks_ksmall(name, n, a, k) ks_ksmall_##name(n, a, k)
 #define ks_shuffle(name, n, a) ks_shuffle_##name(n, a)
 
 #define ks_lt_generic(a, b) ((a) < (b))
@@ -280,6 +277,5 @@ typedef struct {
 typedef const char *ksstr_t;
 
 #define KSORT_INIT_GENERIC(type_t) KSORT_INIT(type_t, type_t, ks_lt_generic)
-#define KSORT_INIT_STR KSORT_INIT(str, ksstr_t, ks_lt_str)
 
 #endif

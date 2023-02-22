@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FILE_STORAGE_UTILS_
-#define _U2_FILE_STORAGE_UTILS_
+#pragma once
 
 #include <U2Core/AppFileStorage.h>
 
@@ -64,5 +63,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_FILE_STORAGE_UTILS_

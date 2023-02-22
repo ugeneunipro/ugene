@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CDS_FACTORY_REGISTRY_H_
-#define _U2_CDS_FACTORY_REGISTRY_H_
+#pragma once
 
 #include <U2Algorithm/CDSearchTaskFactory.h>
 
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ADV_SYNC_VIEW_MANAGER_H_
-#define _U2_ADV_SYNC_VIEW_MANAGER_H_
+#pragma once
 
 #include <QAction>
 #include <QMenu>
@@ -120,4 +119,3 @@ private:
 };
 
 }  // namespace U2
-#endif

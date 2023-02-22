@@ -90,7 +90,7 @@ void HmmerSearchDialog::init(U2SequenceObject* seqObj) {
 
     QWidget* firstTab = tabWidget->widget(0);
     assert(nullptr != firstTab);
-    QVBoxLayout* curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
+    auto curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
     assert(nullptr != curLayout);
     QWidget* aw = annotationsWidgetController->getWidget();
     curLayout->insertWidget(1, aw);

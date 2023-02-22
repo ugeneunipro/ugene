@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_APPSETTINGS_GUI_H_
-#define _U2_APPSETTINGS_GUI_H_
+#pragma once
 
 #include <QDialogButtonBox>
 #include <QWidget>
@@ -115,5 +114,3 @@ private:
 #define APP_SETTINGS_FORMAT "format"
 
 }  // namespace U2
-
-#endif

@@ -152,7 +152,7 @@ void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus& os) {
 static QWidget* findAnyVisibleNotificationWidget() {
     QList<QWidget*> list = QApplication::allWidgets();
     foreach (QWidget* wid, list) {
-        Notification* notification = qobject_cast<Notification*>(wid);
+        auto notification = qobject_cast<Notification*>(wid);
         if (notification != nullptr && notification->isVisible()) {
             return notification;
         }

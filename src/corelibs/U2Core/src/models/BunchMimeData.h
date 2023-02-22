@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BUNCHMIMEDATA_H_
-#define _U2_BUNCHMIMEDATA_H_
+#pragma once
 
 #include <U2Core/Folder.h>
 #include <U2Core/GObject.h>
@@ -44,5 +43,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_BUNCHMIMEDATA_H_

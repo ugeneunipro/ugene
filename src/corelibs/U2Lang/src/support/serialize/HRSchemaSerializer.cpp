@@ -670,7 +670,7 @@ GrouperSlotAction HRSchemaSerializer::parseAction(Tokenizer& tokenizer) {
 }
 
 void HRSchemaSerializer::parseGrouperOutSlots(Actor* proc, const QStringList& outSlotDefs, const QString& attrId) {
-    GrouperOutSlotAttribute* attr = dynamic_cast<GrouperOutSlotAttribute*>(proc->getParameter(attrId));
+    auto attr = dynamic_cast<GrouperOutSlotAttribute*>(proc->getParameter(attrId));
     Tokenizer tokenizer;
 
     QStringList names;
@@ -1024,7 +1024,7 @@ QPair<Port*, Port*> HRSchemaSerializer::parseDataflow(Tokenizer& tokenizer, cons
         throw ReadFailed(tr("Undefined slot id '%1' at '%2'").arg(destSlotId).arg(destTok));
     }
 
-    IntegralBusPort* bus = qobject_cast<IntegralBusPort*>(destPort);
+    auto bus = qobject_cast<IntegralBusPort*>(destPort);
     IntegralBusSlot slot(srcSlotId, "", actorMap.value(srcActorName)->getId());
     bus->setBusMapValue(destSlotId, slot.toString());
 
@@ -1154,9 +1154,9 @@ static void parseBody(WorkflowSchemaReaderData& data) {
     foreach (Actor* proc, data.actorMap.values()) {
         ActorPrototype* proto = proc->getProto();
         if (nullptr != proto->getEditor()) {
-            ActorConfigurationEditor* actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
+            auto actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
             if (nullptr != actorEd) {
-                ActorConfigurationEditor* editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
+                auto editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);
             }
@@ -1188,7 +1188,7 @@ static void setFlows(WorkflowSchemaReaderData& data) {
 void HRSchemaSerializer::addEmptyValsToBindings(const QList<Actor*>& procs) {
     for (Actor* actor : qAsConst(procs)) {
         foreach (Port* p, actor->getInputPorts()) {
-            IntegralBusPort* port = qobject_cast<IntegralBusPort*>(p);
+            auto port = qobject_cast<IntegralBusPort*>(p);
             StrStrMap busMap = port->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
             DataTypePtr t = port->Port::getType();
             assert(t->isMap());
@@ -1428,7 +1428,7 @@ QString HRSchemaSerializer::scriptBlock(const QString& scriptText, int tabsNum) 
 }
 
 QString HRSchemaSerializer::grouperOutSlotsDefinition(Attribute* attribute) {
-    GrouperOutSlotAttribute* a = dynamic_cast<GrouperOutSlotAttribute*>(attribute);
+    auto a = dynamic_cast<GrouperOutSlotAttribute*>(attribute);
     QString result;
 
     foreach (const GrouperOutSlot& slot, a->getOutSlots()) {
@@ -1760,7 +1760,7 @@ QString HRSchemaSerializer::dataflowDefinition(const QList<Actor*>& procs, const
     for (Actor* actor : qAsConst(procs)) {
         foreach (Port* inputPort, actor->getEnabledInputPorts()) {
             StrStrMap busMap = inputPort->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
-            IntegralBusPort* busPort = qobject_cast<IntegralBusPort*>(inputPort);
+            auto busPort = qobject_cast<IntegralBusPort*>(inputPort);
 
             const QList<QString>& keys = busMap.keys();
             for (const QString& key : qAsConst(keys)) {
@@ -2052,7 +2052,7 @@ Actor* HRSchemaSerializer::deprecatedActorsReplacer(const QString& id, const QSt
 }
 
 void HRSchemaSerializer::parseMarkers(Actor* proc, const QStringList& markerDefs, const QString& attrId) {
-    MarkerAttribute* attr = dynamic_cast<MarkerAttribute*>(proc->getParameter(attrId));
+    auto attr = dynamic_cast<MarkerAttribute*>(proc->getParameter(attrId));
     if (nullptr == attr) {
         throw ReadFailed(tr("%1 actor has not marker attribute").arg(proc->getId()));
     }
@@ -2112,7 +2112,7 @@ Marker* HRSchemaSerializer::parseMarker(const QString& def) {
 }
 
 QString HRSchemaSerializer::markersDefinition(Attribute* attribute) {
-    MarkerAttribute* mAttr = dynamic_cast<MarkerAttribute*>(attribute);
+    auto mAttr = dynamic_cast<MarkerAttribute*>(attribute);
     SAFE_POINT(nullptr != mAttr, "NULL marker attribute", "");
     QString res;
 

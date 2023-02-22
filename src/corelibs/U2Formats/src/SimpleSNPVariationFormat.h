@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SIMPLE_SNP_VARIATION_FORMAT_H_
-#define _U2_SIMPLE_SNP_VARIATION_FORMAT_H_
+#pragma once
 
 #include <U2Core/BaseDocumentFormats.h>
 
@@ -38,5 +37,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SIMPLE_SNP_VARIATION_FORMAT_H_

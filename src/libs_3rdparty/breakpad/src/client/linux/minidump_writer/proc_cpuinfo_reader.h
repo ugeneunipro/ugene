@@ -74,7 +74,7 @@ public:
       //   - empty lines happen.
       //   - <field-name> can contain spaces.
       //   - some fields have an empty <value>
-      char* sep = static_cast<char*>(my_memchr(line, ':', line_len));
+      auto sep = static_cast<char*>(my_memchr(line, ':', line_len));
       if (sep == NULL)
         continue;
 

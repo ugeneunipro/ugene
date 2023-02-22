@@ -99,7 +99,7 @@ void RoleFiller::commonScenario() {
     auto qualifierLineEdit = GTWidget::findLineEdit(os, "qualifierNameEdit", dialog);
 
     GTGlobals::sleep(300);
-    ImportAnnotationsToCsvFiller::StartParameter* startP = dynamic_cast<ImportAnnotationsToCsvFiller::StartParameter*>(parameter);
+    auto startP = dynamic_cast<ImportAnnotationsToCsvFiller::StartParameter*>(parameter);
     if (startP) {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "startRB", dialog));
         GTCheckBox::setChecked(os, addOffsetCheckBox, startP->addOffset);
@@ -108,36 +108,36 @@ void RoleFiller::commonScenario() {
         }
     }
 
-    ImportAnnotationsToCsvFiller::EndParameter* endP = dynamic_cast<ImportAnnotationsToCsvFiller::EndParameter*>(parameter);
+    auto endP = dynamic_cast<ImportAnnotationsToCsvFiller::EndParameter*>(parameter);
     if (endP) {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "endRB", dialog));
         GTCheckBox::setChecked(os, endPosCheckBox, endP->endPos);
     }
 
-    ImportAnnotationsToCsvFiller::LengthParameter* lenghtP = dynamic_cast<ImportAnnotationsToCsvFiller::LengthParameter*>(parameter);
+    auto lenghtP = dynamic_cast<ImportAnnotationsToCsvFiller::LengthParameter*>(parameter);
     if (lenghtP) {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "lengthRB", dialog));
     }
 
-    ImportAnnotationsToCsvFiller::StrandMarkParameter* strandMarkP = dynamic_cast<ImportAnnotationsToCsvFiller::StrandMarkParameter*>(parameter);
+    auto strandMarkP = dynamic_cast<ImportAnnotationsToCsvFiller::StrandMarkParameter*>(parameter);
     if (strandMarkP) {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "complMarkRB", dialog));
         GTCheckBox::setChecked(os, strandMarkCheckBox, strandMarkP->markValue);
         GTLineEdit::setText(os, markValueLineEdit, strandMarkP->markValueName);
     }
 
-    ImportAnnotationsToCsvFiller::NameParameter* nameP = dynamic_cast<ImportAnnotationsToCsvFiller::NameParameter*>(parameter);
+    auto nameP = dynamic_cast<ImportAnnotationsToCsvFiller::NameParameter*>(parameter);
     if (nameP) {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "nameRB", dialog));
     }
 
-    ImportAnnotationsToCsvFiller::QualifierParameter* qualP = dynamic_cast<ImportAnnotationsToCsvFiller::QualifierParameter*>(parameter);
+    auto qualP = dynamic_cast<ImportAnnotationsToCsvFiller::QualifierParameter*>(parameter);
     if (qualP) {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "qualifierRB", dialog));
         GTLineEdit::setText(os, qualifierLineEdit, qualP->name);
     }
 
-    ImportAnnotationsToCsvFiller::IgnoreParameter* ignoreP = dynamic_cast<ImportAnnotationsToCsvFiller::IgnoreParameter*>(parameter);
+    auto ignoreP = dynamic_cast<ImportAnnotationsToCsvFiller::IgnoreParameter*>(parameter);
     if (ignoreP) {
         GTRadioButton::click(os, GTWidget::findRadioButton(os, "ignoreRB", dialog));
     }

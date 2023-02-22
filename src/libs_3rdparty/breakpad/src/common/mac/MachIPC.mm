@@ -119,7 +119,7 @@ bool MachMessage::AddDescriptor(const MachMsgPortDescriptor& desc) {
 
   // unfortunately, we need to move the data to allow space for the
   // new descriptor
-  u_int8_t* p = reinterpret_cast<u_int8_t*>(GetDataPacket());
+  auto p = reinterpret_cast<u_int8_t*>(GetDataPacket());
   bcopy(p, p+sizeof(MachMsgPortDescriptor), GetDataLength()+2*sizeof(int32_t));
   
   SetDescriptor(GetDescriptorCount(), desc);

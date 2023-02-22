@@ -159,7 +159,7 @@ void CircularViewSplitter::removeView(CircularView* view, RestrctionMapWidget* r
     SAFE_POINT(view != nullptr, tr("Circular View is NULL"), );
     QWidget* viewport = view->parentWidget();
     SAFE_POINT(viewport != nullptr, tr("Circular View viewport is NULL"), );
-    QScrollArea* scrollArea = qobject_cast<QScrollArea*>(viewport->parentWidget());
+    auto scrollArea = qobject_cast<QScrollArea*>(viewport->parentWidget());
     SAFE_POINT(scrollArea != nullptr, tr("Scroll area is NULL"), );
     view->setParent(nullptr);
     delete scrollArea;
@@ -238,7 +238,7 @@ void CircularViewSplitter::adaptSize() {
     QWidget* widget = parentWidget();
 
     Q_ASSERT(widget != nullptr);
-    QSplitter* parentSplitter = qobject_cast<QSplitter*>(widget);
+    auto parentSplitter = qobject_cast<QSplitter*>(widget);
 
     int index = parentSplitter->indexOf(this);
     QList<int> sizes = parentSplitter->sizes();

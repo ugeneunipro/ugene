@@ -5,6 +5,7 @@ bowtie_suite.xml
 bwa_suite.xml
 cmdline_common_suite.xml
 dna_export_suite.xml
+dna_statistics_suite.xml
 doc_format_suite.xml
 edit_alignment_suite.xml
 edit_sequence_suite.xml

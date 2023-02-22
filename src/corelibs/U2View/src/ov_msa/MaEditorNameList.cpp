@@ -623,7 +623,7 @@ void MaEditorNameList::sl_updateActions() {
 void MaEditorNameList::sl_vScrollBarActionPerformed() {
     CHECK(isDragging, );
 
-    GScrollBar* vScrollBar = qobject_cast<GScrollBar*>(sender());
+    auto vScrollBar = qobject_cast<GScrollBar*>(sender());
     SAFE_POINT(vScrollBar != nullptr, "vScrollBar is NULL", );
 
     const QAbstractSlider::SliderAction action = vScrollBar->getRepeatAction();

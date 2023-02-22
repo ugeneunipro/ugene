@@ -436,7 +436,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesAsAlignment() {
 
 void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
     ProjectView* pv = AppContext::getProjectView();
-    assert(pv != nullptr);
+    SAFE_POINT(pv != nullptr, "Project is null", );
 
     MultiGSelection ms;
     ms.addSelection(pv->getGObjectSelection());
@@ -446,19 +446,9 @@ void ExportProjectViewItemsContoller::sl_saveAlignmentAsSequences() {
         QMessageBox::critical(nullptr, L10N::errorTitle(), tr("Select one alignment object to export"));
         return;
     }
-    GObject* obj = set.first();
-    MultipleSequenceAlignmentObject* maObject = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    const MultipleSequenceAlignment msa = maObject->getMultipleAlignment();
-
-    QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(obj->getDocument()->getURL().dirPath(), GUrlUtils::fixFileName(obj->getGObjectName()), AppContext::getMainWindow()->getQMainWindow());
-    const int rc = d->exec();
-    CHECK(!d.isNull(), );
-
-    if (rc == QDialog::Rejected) {
-        return;
-    }
-    Task* t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
-    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+    auto msaObject = qobject_cast<MultipleSequenceAlignmentObject*>(set.first());
+    SAFE_POINT(msaObject != nullptr, "Not MSA object!", );
+    ExportMSA2SequencesDialog::showDialogAndStartExportTask(msaObject);
 }
 
 void ExportProjectViewItemsContoller::sl_exportMcaToMsa() {
@@ -549,7 +539,7 @@ void ExportProjectViewItemsContoller::sl_exportChromatogramToSCF() {
         return;
     }
     GObject* obj = set.first();
-    DNAChromatogramObject* chromaObj = qobject_cast<DNAChromatogramObject*>(obj);
+    auto chromaObj = qobject_cast<DNAChromatogramObject*>(obj);
     assert(chromaObj != nullptr);
 
     QObjectScopedPointer<ExportChromatogramDialog> d = new ExportChromatogramDialog(QApplication::activeWindow(), chromaObj->getDocument()->getURL());
@@ -586,7 +576,7 @@ void ExportProjectViewItemsContoller::sl_exportAnnotations() {
     }
 
     GObject* obj = set.first();
-    AnnotationTableObject* aObj = qobject_cast<AnnotationTableObject*>(obj);
+    auto aObj = qobject_cast<AnnotationTableObject*>(obj);
     SAFE_POINT(nullptr != aObj, "Invalid annotation table detected!", );
     if (!aObj->getAnnotations().isEmpty()) {
         SAFE_POINT(nullptr != aObj->getDocument(), "Invalid document detected!", );
@@ -620,7 +610,7 @@ void ExportProjectViewItemsContoller::sl_exportSequenceQuality() {
         if (gObj->getDocument()->getDocumentFormatId() != BaseDocumentFormats::FASTQ) {
             continue;
         }
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(gObj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(gObj);
         ExportQualityScoresConfig cfg;
         cfg.dstFilePath = lod.url;
         Task* exportTask = new ExportPhredQualityScoresTask(seqObj, cfg);

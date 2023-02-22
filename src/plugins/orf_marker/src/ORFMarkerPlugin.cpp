@@ -71,7 +71,7 @@ ORFMarkerPlugin::ORFMarkerPlugin()
 
     // ORFMarker test
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
@@ -93,7 +93,7 @@ ORFViewContext::ORFViewContext(QObject* p)
 }
 
 void ORFViewContext::initViewContext(GObjectView* v) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+    auto av = qobject_cast<AnnotatedDNAView*>(v);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":orf_marker/images/orf_marker.png"), tr("Find ORFs..."), 20);
     a->setObjectName("Find ORFs");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
@@ -102,8 +102,8 @@ void ORFViewContext::initViewContext(GObjectView* v) {
 
 void ORFViewContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(a);
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();

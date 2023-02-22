@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_ROW_HEIGHT_CONTROLLER_H_
-#define _U2_MSA_ROW_HEIGHT_CONTROLLER_H_
+#pragma once
 
 #include "RowHeightController.h"
 
@@ -36,5 +35,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MSA_ROW_HEIGHT_CONTROLLER_H_

@@ -48,9 +48,8 @@ FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings& s)
     tpm = Progress_Manual;
     assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT != nullptr);
 
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                      FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr),
-                                      true));
+    int usageInMb = FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr);
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, usageInMb, TaskResourceStage::Prepare));
 }
 
 void FindAlgorithmTask::run() {
@@ -141,7 +140,7 @@ void LoadPatternsFileTask::run() {
         const QList<GObject*>& objectsFromDoc = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         foreach (GObject* object, objectsFromDoc) {
-            U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
+            auto sequenceObject = qobject_cast<U2SequenceObject*>(object);
             assert(sequenceObject != nullptr);
             QByteArray sequence = sequenceObject->getWholeSequenceData(stateInfo);
             CHECK_OP(stateInfo, );

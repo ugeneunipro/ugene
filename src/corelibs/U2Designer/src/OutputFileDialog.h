@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OUTPUTFILEDIALOG_H_
-#define _U2_OUTPUTFILEDIALOG_H_
+#pragma once
 
 #include "ui_CreateDirectoryDialog.h"
 #include "ui_OutputFileDialog.h"
@@ -98,5 +97,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_OUTPUTFILEDIALOG_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_INDEX_REUSE_H_
-#define _U2_INDEX_REUSE_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -44,5 +43,3 @@ GUI_TEST_CLASS_DECLARATION(test_0010)
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_index_reuse
 }  // namespace U2
-
-#endif  // INDEXREUSE_H

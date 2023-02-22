@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BITS_H_
-#define _U2_BITS_H_
+#pragma once
 
 #include <QByteArray>
 #include <QObject>
@@ -128,5 +127,3 @@ inline qint64 U2Bits::makeFirstNSignedBitsValue(int nBits) {
 }
 
 }  // namespace U2
-
-#endif

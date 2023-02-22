@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_DBI_UTILS_
-#define _U2_MSA_DBI_UTILS_
+#pragma once
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2MsaDbi.h>
@@ -245,5 +244,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

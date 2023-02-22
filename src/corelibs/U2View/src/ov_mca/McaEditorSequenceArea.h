@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_EDITOR_SEQUENCE_AREA_
-#define _U2_MCA_EDITOR_SEQUENCE_AREA_
+#pragma once
 
 #include <U2Gui/ScaleBar.h>
 
@@ -133,5 +132,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MCA_EDITOR_SEQUENCE_AREA_

@@ -50,7 +50,7 @@ namespace LocalWorkflow {
 QString PrimersGrouperPromter::composeRichDoc() {
     QString res;
 
-    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
@@ -99,7 +99,7 @@ Task* PrimersGrouperWorker::tick() {
 
 void PrimersGrouperWorker::sl_onTaskFinished(Task* t) {
     QString reportFileUrl = getValue<QString>(PrimersGrouperWorkerFactory::OUT_FILE);
-    PrimerGrouperTask* grouperTask = qobject_cast<PrimerGrouperTask*>(t);
+    auto grouperTask = qobject_cast<PrimerGrouperTask*>(t);
 
     if (!grouperTask->hasError() && !grouperTask->isCanceled()) {
         if (!grouperTask->getReport().isEmpty()) {
@@ -175,12 +175,19 @@ PrimerGrouperTask::PrimerGrouperTask(const QString& outputFileUrl, const QList<D
 }
 
 static bool groupsCompareFunction(const QList<int>& firstGroup, const QList<int>& secondGroup) {
+    if (firstGroup.size() == secondGroup.size()) {
+        for (int i = 0; i < firstGroup.size(); i++) {
+            if (firstGroup[i] == secondGroup[i]) {
+                continue;
+            }
+            return firstGroup[i] > secondGroup[i];
+        }
+    }
     return firstGroup.size() > secondGroup.size();
 }
 
 void PrimerGrouperTask::run() {
-    CHECK(primerPairs.size() > 0, );
-
+    CHECK(!primerPairs.empty(), );
     findCompatibleGroups();  // primersCompatibilityMatrix);
 }
 
@@ -188,54 +195,58 @@ bool PrimerGrouperTask::isCompatiblePairs(int firstPairIndex, int secondPairInde
     PrimersPair firstPair = primerPairs.at(firstPairIndex);
     PrimersPair secondPair = primerPairs.at(secondPairIndex);
 
-    PrimersPairStatistics forwardCalc(firstPair.first.constData(), secondPair.first.constData());
-    PrimersPairStatistics reverseCalc(firstPair.second.constData(), secondPair.second.constData());
+    HeteroDimersFinder forwardCalc(firstPair.first.constData(), secondPair.first.constData());
+    HeteroDimersFinder reverseCalc(firstPair.second.constData(), secondPair.second.constData());
 
-    PrimersPairStatistics crossCalc1(firstPair.first.constData(), secondPair.second.constData());
-    PrimersPairStatistics crossCalc2(firstPair.second.constData(), secondPair.first.constData());
+    HeteroDimersFinder crossCalc1(firstPair.first.constData(), secondPair.second.constData());
+    HeteroDimersFinder crossCalc2(firstPair.second.constData(), secondPair.first.constData());
 
-    return !forwardCalc.isHeteroDimers() && !reverseCalc.isHeteroDimers() && !crossCalc1.isHeteroDimers() && !crossCalc2.isHeteroDimers();
+    return !forwardCalc.getResult().canBeFormed && !reverseCalc.getResult().canBeFormed && !crossCalc1.getResult().canBeFormed && !crossCalc2.getResult().canBeFormed;
 }
 
 void PrimerGrouperTask::findCompatibleGroups() {
-    QList<QList<int>> compatiblePrimersGroups;
+    algoLog.details("PrimerGrouperTask got pairs: " + QString::number(primerPairs.length()));
 
-    for (int primerIndex = 0; primerIndex < primerPairs.size(); primerIndex++) {
+    // Start with a sorted set of primer pairs, so the result will be repeatable.
+    std::stable_sort(primerPairs.begin(), primerPairs.end(), [](const PrimersPair& p1, const PrimersPair& p2) {
+        return (p1.first.getName() + p1.second.getName()) < (p2.first.getName() + p2.second.getName());
+    });
+
+    // Add each primer pair (by index) into a compatible group.
+    QList<QList<int>> groups;
+    for (int primerPairIndex = 0; primerPairIndex < primerPairs.size(); primerPairIndex++) {
         if (isCanceled()) {
             return;
         }
+        stateInfo.setProgress(primerPairIndex * 100 / primerPairs.size());
 
-        stateInfo.setProgress(primerIndex * 100 / primerPairs.size());
-
-        bool isCompatibleWithGroup = false;
-        for (int groupIndex = 0; groupIndex < compatiblePrimersGroups.size(); groupIndex++) {
-            isCompatibleWithGroup = true;
-            QList<int>& curGroup = compatiblePrimersGroups[groupIndex];
-            foreach (int primerInGroup, curGroup) {
-                if (!isCompatiblePairs(primerInGroup, primerIndex)) {
-                    isCompatibleWithGroup = false;
+        // Check all already created groups for compatibility.
+        bool isPrimerPairAddedToGroup = false;
+        for (int groupIndex = 0; groupIndex < groups.size() && !isPrimerPairAddedToGroup; groupIndex++) {
+            QList<int>& group = groups[groupIndex];
+            for (int i = 0; i < group.length(); i++) {
+                int primerPairIndexFromGroup = group[i];
+                if (isCompatiblePairs(primerPairIndexFromGroup, primerPairIndex)) {
+                    isPrimerPairAddedToGroup = true;
+                    group.append(primerPairIndexFromGroup);
                     break;
                 }
             }
-            if (isCompatibleWithGroup) {
-                curGroup.append(primerIndex);
-                break;
-            }
         }
-        if (!isCompatibleWithGroup) {
-            compatiblePrimersGroups.append(QList<int>() << primerIndex);
+        if (!isPrimerPairAddedToGroup) {
+            groups.append({primerPairIndex});
         }
     }
 
-    if (!compatiblePrimersGroups.isEmpty()) {
-        std::sort(compatiblePrimersGroups.begin(), compatiblePrimersGroups.end(), groupsCompareFunction);
-        createReport(compatiblePrimersGroups);
+    algoLog.details("PrimerGrouperTask: made groups: " + QString::number(groups.size()));
+    if (!groups.isEmpty()) {
+        std::stable_sort(groups.begin(), groups.end(), groupsCompareFunction);
+        createReport(groups);
         writeReportToFile();
     }
 }
-
 void PrimerGrouperTask::createReport(const QList<QList<int>>& correctPrimersGroups) {
-    CHECK(correctPrimersGroups.size() > 0, );
+    CHECK(!correctPrimersGroups.empty(), );
 
     report += "<!DOCTYPE html>\n";
     report += "<html>\n";

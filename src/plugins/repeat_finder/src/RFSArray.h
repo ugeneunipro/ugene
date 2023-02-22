@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RF_SARRAY_ALG_H_
-#define _U2_RF_SARRAY_ALG_H_
+#pragma once
 
 #include <QList>
 #include <QMutex>
@@ -164,5 +163,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

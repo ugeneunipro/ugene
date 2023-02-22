@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DIRECTORY_ITEM_H_
-#define _U2_DIRECTORY_ITEM_H_
+#pragma once
 
 #include "UrlItem.h"
 #include "ui_DirectoryOptions.h"
@@ -68,5 +67,3 @@ signals:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DIRECTORY_ITEM_H_

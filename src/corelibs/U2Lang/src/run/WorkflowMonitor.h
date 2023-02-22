@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOWMONITOR_H_
-#define _U2_WORKFLOWMONITOR_H_
+#pragma once
 
 #include <QTextStream>
 
@@ -255,5 +254,3 @@ Q_DECLARE_METATYPE(U2::Workflow::Monitor::FileInfo)
 Q_DECLARE_METATYPE(U2::Workflow::Monitor::WorkerInfo)
 Q_DECLARE_METATYPE(U2::Workflow::Monitor::LogEntry)
 Q_DECLARE_METATYPE(U2::Workflow::Monitor::WorkerParamsInfo)
-
-#endif  // _U2_WORKFLOWMONITOR_H_

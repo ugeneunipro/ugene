@@ -730,7 +730,7 @@ GUI_TEST_CLASS_DEFINITION(test_4087) {
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTUtilsOptionPanelSequenceView::enterPattern(os, "U");
-    QLabel* label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
+    auto label = dynamic_cast<QLabel*>(GTWidget::findWidget(os, "lblErrorMessage"));
     CHECK_SET_ERR(label->isVisible(), "Warning is not shown 1");
     CHECK_SET_ERR(label->text().contains("Warning"), "Warning is not shown 2");
 
@@ -955,7 +955,7 @@ GUI_TEST_CLASS_DEFINITION(test_4106) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -1307,7 +1307,7 @@ GUI_TEST_CLASS_DEFINITION(test_4151) {
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_all_views", toolbar));
 
     // Expected state: Vertical scroll bar isn't shown.
-    QScrollArea* advScrollArea = dynamic_cast<QScrollArea*>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
+    auto advScrollArea = dynamic_cast<QScrollArea*>(GTWidget::findWidget(os, "annotated_DNA_scrollarea"));
     CHECK_SET_ERR(!advScrollArea->verticalScrollBar()->isVisible(), "Scrollbar is unexpectedly visible");
 }
 
@@ -1916,7 +1916,7 @@ GUI_TEST_CLASS_DEFINITION(test_4232) {
 
     // 4. Drag&drop the sequence object from the project view on the assembly view
     const QModelIndex sequenceDocIndex = GTUtilsProjectTreeView::findIndex(os, "illumina.fa");
-    const QModelIndex sequenceObjIndex = sequenceDocIndex.child(0, 0);
+    const QModelIndex sequenceObjIndex = sequenceDocIndex.model()->index(0, 0, sequenceDocIndex);
 
     GTUtilsProjectTreeView::dragAndDrop(os, sequenceObjIndex, GTWidget::findWidget(os, "assembly_reads_area"));
 
@@ -2088,7 +2088,7 @@ GUI_TEST_CLASS_DEFINITION(test_4284) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Select a sequence that is two sequences above the last visible sequence in the name list area.
-    MSAEditorSequenceArea *msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
+    MSAEditorSequenceArea* msaEdistorSequenceArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
     const int endPos = msaEdistorSequenceArea->getEditor()->getUI()->getUI(0)->getScrollController()->getLastVisibleViewRowIndex(
         msaEdistorSequenceArea->height());
 
@@ -2142,7 +2142,7 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     QList<TvNodeItem*> selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
-    CHECK_SET_ERR(selectedNodes.size() == 5, QString("1. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
+    CHECK_SET_ERR(selectedNodes.size() == 12, QString("1. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
 
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {"Reroot tree"}));
     GTUtilsPhyTree::clickNode(os, childNode, Qt::RightButton);
@@ -2157,7 +2157,7 @@ GUI_TEST_CLASS_DEFINITION(test_4293) {
     GTUtilsDialog::checkNoActiveWaiters(os);
 
     selectedNodes = GTUtilsPhyTree::getSelectedNodes(os);
-    CHECK_SET_ERR(selectedNodes.size() == 3, QString("2. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
+    CHECK_SET_ERR(selectedNodes.size() == 7, QString("2. Unexpected number of selected nodes: %1").arg(selectedNodes.size()));
     CHECK_SET_ERR(!rootNode->isSelected(), "Root not must not be selected");
     CHECK_SET_ERR(childNode->isSelected(), "Child node must be selected");
 }
@@ -2348,7 +2348,7 @@ GUI_TEST_CLASS_DEFINITION(test_4309_1) {
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, row));
     GTMouseDriver::click();
 
-    QComboBox* box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
+    auto box = qobject_cast<QComboBox*>(table->findChild<QComboBox*>());
     CHECK_SET_ERR(box, "QComboBox not found. Widget in this cell might be not QComboBox");
     QString vectorNtiFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::VECTOR_NTI_SEQUENCE)->getFormatName();
     QString genbankFormatName = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK)->getFormatName();
@@ -2514,7 +2514,7 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 4. Select any restriction site in the "Restriction Sites Map" widget.
-    QTreeWidget* tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    auto tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem* item = GTTreeWidget::findItem(os, tree, "89345..89350");
     GTTreeWidget::click(os, item);
 
@@ -3284,46 +3284,13 @@ GUI_TEST_CLASS_DEFINITION(test_4557) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString product = GTUtilsSequenceView::getSequenceAsString(os);
     QString expected = "AAATCAGATTCACCAAAGTTGAAATGAAGGAAAAAATGCTAAGGGCAGCCAGAGAGACCC";
 
     CHECK_SET_ERR(product == expected, "Unexpected product: " + product)
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4563) {
-    // 1. Set memory limit to 200 mb.
-    class MemoryLimitSetScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
-            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "memBox", dialog), 200);
-
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-        }
-    };
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemoryLimitSetScenario));
-    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
-    // 2. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    // 3. Open the "Align sequences with MUSCLE" sample scheme.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
-
-    // 4. Set "_common_data/scenarios/_regression/4563/test_ma.fa" as the input file.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
-    GTMouseDriver::click();
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma.fa");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/_regression/4563/test_ma_1.fa");
-
-    // 5. Run the workflow.
-    GTWidget::click(os, GTAction::button(os, "Run workflow"));
-
-    // 6. check log message
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer::checkMessage("Can't allocate enough memory");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4587) {
@@ -3994,7 +3961,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidget* tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    auto tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem* item = GTTreeWidget::findItem(os, tree, "76105..76110");
     GTTreeWidget::click(os, item);
 
@@ -4002,7 +3969,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QTreeWidget* newtree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
+    auto newtree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "restrictionMapTreeWidget"));
     QTreeWidgetItem* newitem = GTTreeWidget::findItem(os, newtree, "10101..10106");
     GTTreeWidget::click(os, newitem);
 }
@@ -4477,7 +4444,7 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
 
     class AllPopupChecker : public CustomScenario {
         void run(HI::GUITestOpStatus& os) {
-            QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+            auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
             GTMenu::clickMenuItemByText(os, activePopupMenu, {"Analyze"});
             activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
@@ -4568,9 +4535,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QWidget* nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
 
     // 5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Paste"}));
@@ -4601,9 +4568,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4764", "4764.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
@@ -4621,9 +4588,9 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4764", "4764.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor *editor = mw->findChild<MSAEditor *>();
-    QWidget *sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
+    QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
+    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
@@ -5181,11 +5148,11 @@ GUI_TEST_CLASS_DEFINITION(test_4841) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelPhyTree::openTab(os);
 
-    TvNodeItem* node = GTUtilsPhyTree::getNodeByBranchText(os, "0.033", "0.069");
+    TvNodeItem* midNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.033", "0.069");
     TvNodeItem* childNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.016", "0.017");
     TvNodeItem* parentNode = GTUtilsPhyTree::getNodeByBranchText(os, "0.068", "0.007");
-    GTUtilsPhyTree::clickNode(os, node);
 
+    GTUtilsPhyTree::clickNode(os, midNode);
     int originalFontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
     int newFontSize1 = originalFontSize + 2;
     int newFontSize2 = originalFontSize + 4;
@@ -5193,32 +5160,32 @@ GUI_TEST_CLASS_DEFINITION(test_4841) {
 
     GTUtilsPhyTree::clickNode(os, parentNode);
     int fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == originalFontSize, QString("1. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
+    CHECK_SET_ERR(fontSize == originalFontSize, QString("1. 'parentNode' font must not change: %1, expected: %2").arg(fontSize).arg(originalFontSize));
 
-    GTUtilsPhyTree::clickNode(os, node);
+    GTUtilsPhyTree::clickNode(os, midNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize1, QString("2. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize1, QString("2. 'midNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 
     GTUtilsPhyTree::clickNode(os, childNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize1, QString("3. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize1, QString("3. 'childNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 
     // Collapse subtree and change font again.
-    GTUtilsPhyTree::doubleClickNode(os, node);
+    GTUtilsPhyTree::doubleClickNode(os, midNode);
     GTUtilsOptionPanelPhyTree::setFontSize(os, newFontSize2);
 
     GTUtilsPhyTree::clickNode(os, parentNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == originalFontSize, QString("4. Parent node font must not change: %1 vs %2").arg(fontSize).arg(originalFontSize));
+    CHECK_SET_ERR(fontSize == originalFontSize, QString("4. 'parentNode' font must not change: %1, expected: %2").arg(fontSize).arg(originalFontSize));
 
-    GTUtilsPhyTree::clickNode(os, node);
+    GTUtilsPhyTree::clickNode(os, midNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize2, QString("5. Node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize2, QString("5. 'midNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 
-    GTUtilsPhyTree::doubleClickNode(os, node);
+    GTUtilsPhyTree::doubleClickNode(os, midNode);
     GTUtilsPhyTree::clickNode(os, childNode);
     fontSize = GTUtilsOptionPanelPhyTree::getFontSize(os);
-    CHECK_SET_ERR(fontSize == newFontSize2, QString("6. Child node font does not match: %1 vs %2").arg(fontSize).arg(newFontSize1));
+    CHECK_SET_ERR(fontSize == newFontSize2, QString("6. 'childNode' font does not match: %1, expected: %2").arg(fontSize).arg(newFontSize1));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4852) {

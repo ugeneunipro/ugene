@@ -237,7 +237,7 @@ void CollocationsDialogController::sl_saveClicked() {
     }
     QList<SharedAnnotationData> list;
     for (int i = 0, n = resultsList->count(); i < n; ++i) {
-        CDCResultItem* item = static_cast<CDCResultItem*>(resultsList->item(i));
+        auto item = static_cast<CDCResultItem*>(resultsList->item(i));
         SharedAnnotationData data = m.data;
         data->location->regions.append(item->r);
         data->setStrand(U2Strand::Direct);
@@ -282,7 +282,7 @@ void CollocationsDialogController::importResults() {
         CDCResultItem* item = new CDCResultItem(r);
         bool inserted = false;
         for (int i = 0, n = resultsList->count(); i < n; i++) {
-            CDCResultItem* tmp = static_cast<CDCResultItem*>(resultsList->item(i));
+            auto tmp = static_cast<CDCResultItem*>(resultsList->item(i));
             assert(!tmp->r.contains(r) && !r.contains(tmp->r));
             if (tmp->r.startPos > r.startPos) {
                 resultsList->insertItem(i, item);
@@ -297,7 +297,7 @@ void CollocationsDialogController::importResults() {
 
 void CollocationsDialogController::sl_onResultActivated(QListWidgetItem* item) {
     assert(item != nullptr);
-    CDCResultItem* ri = static_cast<CDCResultItem*>(item);
+    auto ri = static_cast<CDCResultItem*>(item);
     Q_UNUSED(ri);
     // todo: add to selection?
     // ctx->getPanView()->setVisibleRange(ri->r);

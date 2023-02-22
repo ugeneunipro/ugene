@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RANGE_H_
-#define _U2_RANGE_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -48,4 +47,3 @@ U2Range<T> operator+(const U2Range<T>& r1, const U2Range<T>& r2) {
 }
 
 }  // namespace U2
-#endif

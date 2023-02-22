@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYTREE_H_
-#define _U2_PHYTREE_H_
+#pragma once
 
 #include <QMap>
 #include <QObject>
@@ -67,8 +66,6 @@ class U2CORE_EXPORT PhyBranch : public QObject {
     Q_OBJECT
 public:
     PhyBranch() = default;
-
-    void movingToAnotherAddress(PhyBranch* newAddress);
 
     PhyNode* parentNode = nullptr;
     PhyNode* childNode = nullptr;
@@ -150,5 +147,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

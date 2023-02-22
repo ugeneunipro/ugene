@@ -160,7 +160,7 @@ void ClustalWSupportContext::sl_align() {
     CHECK_OP(os, );
 
     // Call run ClustalW align dialog
-    AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
+    auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor* msaEditor = action->getMsaEditor();
     MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();

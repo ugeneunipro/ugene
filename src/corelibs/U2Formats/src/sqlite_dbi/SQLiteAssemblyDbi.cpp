@@ -418,7 +418,7 @@ QByteArray SQLiteAssemblyUtils::packData(SQLiteAssemblyDataMethod method, const 
         memcpy(data + pos, aux.constData(), aux.length());
     }
 
-//#define _SQLITE_CHECK_ASSEMBLY_DATA_PACKING_
+// #define _SQLITE_CHECK_ASSEMBLY_DATA_PACKING_
 #ifdef _SQLITE_CHECK_ASSEMBLY_DATA_PACKING_
     U2AssemblyRead tmp(new U2AssemblyReadData());
     unpackData(res, tmp, os);
@@ -578,34 +578,33 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery& q, const U2Region& 
     }
 }
 
-void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& ii, const U2AssemblyRead& read) {
-    if (!ii.computeCoverage) {
-        return;
-    }
-    int csize = ii.coverage.size();
+void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo& importInfo, const U2AssemblyRead& read) {
+    CHECK(importInfo.computeCoverage && !importInfo.coverage.isEmpty(), );
+    SAFE_POINT(importInfo.readBasesPerCoveragePoint >= 1, "Invalid readBasesPerCoveragePoint:" + QString::number(importInfo.readBasesPerCoveragePoint), );
 
-    QVector<U2CigarOp> cigarVector;
-    foreach (const U2CigarToken& cigar, read->cigar) {
-        cigarVector += QVector<U2CigarOp>(cigar.count, cigar.op);
+    // TODO: below is a very memory inefficient cigar unrolling algorithm.
+    //  Should be re-written with a tree for large cigars.
+    //  See https://ugene.dev/tracker/browse/UGENE-7782.
+    QVector<U2CigarOp> readToReferenceMap;
+    for (const U2CigarToken& cigar : qAsConst(read->cigar)) {
+        CHECK_CONTINUE(cigar.op != U2CigarOp_I && cigar.op != U2CigarOp_H && cigar.op != U2CigarOp_S && cigar.op != U2CigarOp_P);
+        readToReferenceMap += QVector<U2CigarOp>(cigar.count, cigar.op);
     }
-    cigarVector.removeAll(U2CigarOp_I);
-    cigarVector.removeAll(U2CigarOp_S);
-    cigarVector.removeAll(U2CigarOp_P);
 
-    int startPos = (int)(read->leftmostPos / ii.coverageBasesPerPoint);
-    int endPos = (int)((read->leftmostPos + read->effectiveLen) / ii.coverageBasesPerPoint) - 1;
-    if (endPos > csize - 1) {
-        endPos = csize - 1;
-    }
-    int* coverageData = ii.coverage.data();
-    for (int i = startPos; i <= endPos && i < csize; i++) {
-        switch (cigarVector[(i - startPos) * ii.coverageBasesPerPoint]) {
-            case U2CigarOp_D:  // skip the deletion
-            case U2CigarOp_N:  // skip the skiped
-                continue;
-            default:
-                coverageData[i]++;
+    int coverageStartIndex = int(read->leftmostPos / importInfo.readBasesPerCoveragePoint);
+    int coverageLengthUnderRead = qBound(1, int(read->effectiveLen / importInfo.readBasesPerCoveragePoint), importInfo.coverage.size() - coverageStartIndex);
+    int* coverageData = importInfo.coverage.data();
+    int readMapLength = readToReferenceMap.length();
+    int readMapLengthPerCoveragePoint = int(importInfo.readBasesPerCoveragePoint);
+    for (int ci = 0; ci < coverageLengthUnderRead; ci++) {
+        int readMapIndexStart = int(ci * importInfo.readBasesPerCoveragePoint);
+        int readMapIndexEnd = qMin(readMapIndexStart + readMapLengthPerCoveragePoint, readMapLength);
+        bool isReadPresentInCoveredRegion = false;
+        for (int ri = readMapIndexStart; ri < readMapIndexEnd && !isReadPresentInCoveredRegion; ri++) {
+            int cigarOp = readToReferenceMap[ri];
+            isReadPresentInCoveredRegion = cigarOp != U2CigarOp_D && cigarOp != U2CigarOp_N;
         }
+        coverageData[coverageStartIndex + ci] += isReadPresentInCoveredRegion ? 1 : 0;
     }
 }
 

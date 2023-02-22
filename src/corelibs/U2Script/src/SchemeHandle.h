@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SCHEME_HANDLE_H_
-#define _SCHEME_HANDLE_H_
+#pragma once
 
 #include "globals.h"
 
@@ -389,5 +388,3 @@ U2SCRIPT_EXPORT U2ErrorType launchSas(const wchar_t* algorithmType,
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // _SCHEME_HANDLE_H_

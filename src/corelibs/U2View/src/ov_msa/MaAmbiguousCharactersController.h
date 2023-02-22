@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_
-#define _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_
+#pragma once
 
 #include <QObject>
 
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_AMBIGUOUS_CHARACTERS_CONTROLLER_H_

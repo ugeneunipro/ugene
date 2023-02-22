@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_RECTANGULAR_BRANCH_ITEM_H_
-#define _U2_TV_RECTANGULAR_BRANCH_ITEM_H_
+#pragma once
 
 #include "TvBranchItem.h"
 
@@ -34,33 +33,19 @@ class U2VIEW_EXPORT TvRectangularBranchItem : public TvBranchItem {
     Q_OBJECT
 public:
     static constexpr double DEFAULT_WIDTH = 25.0;
-    static constexpr double MAXIMUM_WIDTH = 500.0;
-    static constexpr double EPSILON = 0.0000000001;
     static constexpr int DEFAULT_HEIGHT = 25;
 
-    TvRectangularBranchItem(const PhyBranch* branch, const QString& name, bool isRoot);
+    TvRectangularBranchItem(TvRectangularBranchItem* parentBranch, const PhyBranch* branch, const QString& name, bool isRoot);
 
     QRectF boundingRect() const override;
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-
-    void setParentItem(QGraphicsItem* item);
-
-    Side getSide() const;
 
     double getHeight() const;
 
     void setHeight(double newHeight);
 
     void setBreathScaleAdjustment(double newBreadthScaleAdjustment);
-
-    void setSide(const Side& side);
-
-    void toggleCollapsedState() override;
-
-    const PhyBranch* getPhyBranch() const;
-
-    void drawCollapsedRegion();
 
     void setCurvature(double newCurvature);
 
@@ -72,14 +57,6 @@ private:
 
     /** See BREADTH_SCALE_ADJUSTMENT doc. */
     double breadthScaleAdjustment = 1;
-
-    /**
-     * Leaf branches have additional UI element to show selected state.
-     * TODO: this must be a fixed size (non-scaling) component same as node or branch text.
-     */
-    QGraphicsEllipseItem* leafBranchSelectionMarker = nullptr;
 };
 
 }  // namespace U2
-
-#endif

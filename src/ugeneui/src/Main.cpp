@@ -27,13 +27,15 @@
 #endif  // Q_OS_WIN
 
 #ifdef Q_OS_DARWIN
+#    include <QOperatingSystemVersion>
+
 #    include "app_settings/ResetSettingsMac.h"
+
 #endif
 
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QIcon>
-#include <QMessageBox>
 #include <QStyleFactory>
 #include <QTranslator>
 
@@ -58,6 +60,7 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 #include <U2Algorithm/StructuralAlignmentAlgorithmRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
+#include <U2Algorithm/TempCalcRegistry.h>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppFileStorage.h>
@@ -130,6 +133,7 @@
 #include <U2View/McaReadsTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
+#include <U2View/RoughTempCalcFactory.h>
 #include <U2View/SeqStatisticsWidgetFactory.h>
 #include <U2View/SequenceInfoFactory.h>
 #include <U2View/TreeOptionsWidgetFactory.h>
@@ -340,6 +344,12 @@ static void initProjectFilterTaskRegistry() {
     registry->registerTaskFactory(new FeatureKeyFilterTaskFactory);
 }
 
+static void initTemperatureCalculators() {
+    auto tcr = AppContext::getTempCalcRegistry();
+
+    tcr->registerEntry(new RoughTempCalcFactory);
+}
+
 class GApplication : public QApplication {
 public:
     GApplication(int& argc, char** argv)
@@ -381,7 +391,8 @@ static QString findKey(const QStringList& envList, const QString& key) {
 
 #ifdef Q_OS_DARWIN
 static void fixMacFonts() {
-    if (QSysInfo::MacintoshVersion > QSysInfo::MV_10_8) {
+    QOperatingSystemVersion osVersion = QOperatingSystemVersion::current();
+    if (osVersion.majorVersion() >= 10 && osVersion.minorVersion() >= 8) {
         // fix Mac OS X 10.9 (mavericks) font issue
         // https://bugreports.qt-project.org/browse/QTBUG-32789
         // the solution is taken from http://successfulsoftware.net/2013/10/23/fixing-qt-4-for-mac-os-x-10-9-mavericks/
@@ -770,6 +781,10 @@ int main(int argc, char** argv) {
     auto dashboardInfoRegistry = new DashboardInfoRegistry;
     appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
 
+    auto tcr = new TempCalcRegistry;
+    appContext->setTempCalcRegistry(tcr);
+    initTemperatureCalculators();
+
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
 
@@ -861,9 +876,7 @@ int main(int argc, char** argv) {
 
     mw->registerStartupChecks(tasks);
 
-    MemoryLocker l(160, AppResource::SystemMemory);  // 100Mb on UGENE start, ~60Mb SQLite cache
     int rc = GApplication::exec();
-    l.release();
 
     // 4 deallocate resources
     if (!envList.contains(ENV_UGENE_DEV + QString("=1"))) {
@@ -874,6 +887,9 @@ int main(int argc, char** argv) {
 
     appContext->setDashboardInfoRegistry(nullptr);
     delete dashboardInfoRegistry;
+
+    appContext->setTempCalcRegistry(nullptr);
+    delete tcr;
 
     appContext->setPasteFactory(nullptr);
     delete pasteFactory;

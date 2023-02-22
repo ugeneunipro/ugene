@@ -152,7 +152,7 @@ void BaseWorker::setScriptVariableFromBus(AttributeScript* script, IntegralBus* 
         ActorId actorId = IntegralBusType::parseSlotDesc(slotDesc);
         QString attrId = IntegralBusType::parseAttributeIdFromSlotDesc(slotDesc);
         QString portId = bus->getPortId();
-        IntegralBusPort* busPort = qobject_cast<IntegralBusPort*>(actor->getPort(portId));
+        auto busPort = qobject_cast<IntegralBusPort*>(actor->getPort(portId));
         assert(busPort != nullptr);
 
         Actor* bindedAttrOwner = busPort->getLinkedActorById(actorId);
@@ -364,7 +364,7 @@ static CommunicationSubject* setupBus(Port* p) {
     BaseWorker* worker = p->owner()->castPeer<BaseWorker>();
     assert(worker);
     CommunicationSubject* subj = worker;
-    IntegralBus* bus = qobject_cast<IntegralBus*>(p->castPeer<QObject>());
+    auto bus = qobject_cast<IntegralBus*>(p->castPeer<QObject>());
     if (bus) {
         assert(subj->getCommunication(id) == dynamic_cast<CommunicationChannel*>(bus));
         subj = bus;
@@ -376,7 +376,7 @@ static CommunicationSubject* setupBus(Port* p) {
         subj = bus;
         foreach (Port* op, p->owner()->getPorts()) {
             if (p->isInput() != op->isInput()) {
-                IntegralBus* ob = qobject_cast<IntegralBus*>(op->castPeer<QObject>());
+                auto ob = qobject_cast<IntegralBus*>(op->castPeer<QObject>());
                 if (ob) {
                     ob->addComplement(bus);
                     bus->addComplement(ob);
@@ -395,7 +395,7 @@ Worker* LocalDomainFactory::createWorker(Actor* a) {
         w = f->createWorker(a);
 #ifdef _DEBUG
         assert(w);
-        BaseWorker* bw = dynamic_cast<BaseWorker*>(w);
+        auto bw = dynamic_cast<BaseWorker*>(w);
         assert(qobject_cast<BaseWorker*>(bw));
         assert(bw == a->getPeer());
 #endif

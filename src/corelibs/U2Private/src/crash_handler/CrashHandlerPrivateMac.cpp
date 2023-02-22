@@ -129,7 +129,7 @@ bool CrashHandlerPrivateMac::breakpadCallback(const char* dump_dir, const char* 
         dumpUrl = QString::fromLocal8Bit(dump_dir) + "/" + QString::fromLocal8Bit(minidump_id) + ".dmp";
     }
 
-    CrashHandlerPrivateMac* privateHandler = static_cast<CrashHandlerPrivateMac*>(context);
+    auto privateHandler = static_cast<CrashHandlerPrivateMac*>(context);
     privateHandler->dumpWasSuccessfullySaved = succeeded;
 
     handleException("C++ exception|Unhandled exception", dumpUrl);

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _TLS_TASK_H_
-#define _TLS_TASK_H_
+#pragma once
 
 #include <QThreadStorage>
 
@@ -88,5 +87,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _TLS_TASK_H_

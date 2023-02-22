@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITE_ATTRIBUTE_DBI_H_
-#define _U2_SQLITE_ATTRIBUTE_DBI_H_
+#pragma once
 
 #include "SQLiteDbi.h"
 
@@ -101,5 +100,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

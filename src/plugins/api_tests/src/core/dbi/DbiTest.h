@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef DBITEST_H
-#define DBITEST_H
+#pragma once
 
 #include <unittest.h>
 
@@ -58,5 +57,3 @@ inline QString toString<U2Region>(const U2Region& r) {
 }
 
 }  // namespace U2
-
-#endif  // DBITEST_H

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_DIMERS_FINDER_H_
-#define _U2_PRIMER_DIMERS_FINDER_H_
+#pragma once
 
 #include <QObject>
 
@@ -32,7 +31,6 @@ namespace U2 {
 struct U2CORE_EXPORT DimerFinderResult {
     QString getFullReport() const;
     QString getShortReport() const;
-    QString getReportWithMeltingTemp() const;
 
     QString dimersOverlap;
     double deltaG = 0.0;
@@ -81,5 +79,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PRIMER_STATISTICS_H_

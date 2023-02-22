@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ASSEMBLY_READ_ITERATOR_H_
-#define _U2_ASSEMBLY_READ_ITERATOR_H_
+#pragma once
 
 #include <U2Core/U2Assembly.h>
 
@@ -84,4 +83,3 @@ private:
 extern void shortReadIteratorSmokeTest();
 
 }  // namespace U2
-#endif

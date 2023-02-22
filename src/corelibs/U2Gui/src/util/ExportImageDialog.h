@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_IMAGE_DIALOG_H_
-#define _U2_EXPORT_IMAGE_DIALOG_H_
+#pragma once
 
 #include <QDialog>
 
@@ -81,7 +80,7 @@ public slots:
     void accept();
 
 private slots:
-    void sl_onFormatsBoxItemChanged(const QString& format);
+    void sl_onFormatsBoxItemChanged(const QString& newFormat);
 
     void sl_showMessage(const QString& message);
     void sl_disableExport(bool disable);
@@ -110,5 +109,3 @@ private:
 };  // class ExportImageDialog
 
 }  // namespace U2
-
-#endif

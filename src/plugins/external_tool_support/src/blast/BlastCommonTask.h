@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BLAST_SUPPORT_TASK_H
-#define _U2_BLAST_SUPPORT_TASK_H
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/ExternalToolRunTask.h>
@@ -105,4 +104,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // _U2_BLAST_SUPPORT_TASK_H

@@ -62,7 +62,7 @@ void AssemblyVariantHint::setData(const QList<U2Variant>& varList) {
 }
 
 void AssemblyVariantHint::leaveEvent(QEvent*) {
-    AssemblyVariantRow* p = qobject_cast<AssemblyVariantRow*>(parent());
+    auto p = qobject_cast<AssemblyVariantRow*>(parent());
     QPoint curInParentCoords = p->mapFromGlobal(QCursor::pos());
     if (!p->rect().contains(curInParentCoords)) {
         p->sl_hideHint();
@@ -70,7 +70,7 @@ void AssemblyVariantHint::leaveEvent(QEvent*) {
 }
 
 void AssemblyVariantHint::mouseMoveEvent(QMouseEvent* e) {
-    AssemblyVariantRow* p = qobject_cast<AssemblyVariantRow*>(parent());
+    auto p = qobject_cast<AssemblyVariantRow*>(parent());
     p->sl_hideHint();
     QFrame::mouseMoveEvent(e);
 }

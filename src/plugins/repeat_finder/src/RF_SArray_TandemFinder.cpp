@@ -63,7 +63,7 @@ QList<Task*> FindTandemsToAnnotationsTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (qobject_cast<TandemFinder*>(subTask) != nullptr) {
-        TandemFinder* tandemFinderTask = qobject_cast<TandemFinder*>(subTask);
+        auto tandemFinderTask = qobject_cast<TandemFinder*>(subTask);
         QList<SharedAnnotationData> annotations = importTandemAnnotations(tandemFinderTask->getResults(),
                                                                           tandemFinderTask->getSettings().seqRegion.startPos,
                                                                           tandemFinderTask->getSettings().showOverlappedTandems);
@@ -150,7 +150,7 @@ QList<Task*> TandemFinder::onSubTaskFinished(Task* subTask) {
         return regionTasks;
     }
     if (qobject_cast<TandemFinder_Region*>(subTask) != nullptr) {
-        TandemFinder_Region* regionTask = qobject_cast<TandemFinder_Region*>(subTask);
+        auto regionTask = qobject_cast<TandemFinder_Region*>(subTask);
         const quint64 offs = regionTask->getRegionOffset();
         QMutexLocker foundTandemsLocker(&tandemsAccessMutex);
         QList<Tandem> regionTandems = regionTask->getResult();
@@ -226,7 +226,7 @@ ConcreteTandemFinder::ConcreteTandemFinder(QString taskName, const char* _sequen
         suffArrMemory = seqSize * sizeof(quint32) * 2;
     }
     suffArrMemory = qMax(suffArrMemory / (1024 * 1024), 1);  // in Mb
-    addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, suffArrMemory, true));
+    addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, suffArrMemory, TaskResourceStage::Prepare));
 }
 
 void ConcreteTandemFinder::prepare() {

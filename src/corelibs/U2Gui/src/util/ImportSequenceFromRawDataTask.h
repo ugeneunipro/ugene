@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_SEQUENCE_FROM_RAW_DATA_TASK_H_
-#define _U2_IMPORT_SEQUENCE_FROM_RAW_DATA_TASK_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/Task.h>
@@ -47,5 +46,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_IMPORT_SEQUENCE_FROM_RAW_DATA_TASK_H_

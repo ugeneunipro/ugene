@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EDITOR_DATA_LIST_H_
-#define _U2_MSA_EDITOR_DATA_LIST_H_
+#pragma once
 
 #include <QLabel>
 #include <QPushButton>
@@ -140,5 +139,3 @@ private:
     QString dataIsBeingUpdatedMessage;
 };
 }  // namespace U2
-
-#endif

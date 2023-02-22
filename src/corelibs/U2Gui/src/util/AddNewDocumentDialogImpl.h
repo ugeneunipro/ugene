@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ADD_NEW_DOCUMENT_DIALOG_IMPL_H_
-#define _U2_ADD_NEW_DOCUMENT_DIALOG_IMPL_H_
+#pragma once
 
 #include "AddNewDocumentDialogController.h"
 #include "ui_AddNewDocumentDialog.h"
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

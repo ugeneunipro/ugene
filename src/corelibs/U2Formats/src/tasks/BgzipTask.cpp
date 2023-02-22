@@ -24,6 +24,7 @@
 #include <QDir>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -70,12 +71,14 @@ void BgzipTask::run() {
         bgzfUrl = GUrl(fileUrl.getURLString() + ".gz");
     }
 
-    BGZF* out = bgzf_open(bgzfUrl.getURLString().toLatin1().data(), "w");
-    BGZF_wrapper out_wr(out);
+    NP<FILE> outFile = FileAndDirectoryUtils::openFile(bgzfUrl.getURLString(), "w");
+    BGZF* out = bgzf_fdopen(outFile.getNullable(), "w");
     if (out == nullptr) {
         Task::setError(tr("Can not open output file '%2'").arg(bgzfUrl.getURLString()));
+        FileAndDirectoryUtils::closeFileIfOpen(outFile);
         return;
     }
+    BGZF_wrapper out_wr(out);
 
     const int BUFFER_SIZE = 2097152;
     QByteArray readBuffer(BUFFER_SIZE, '\0');
@@ -118,7 +121,10 @@ Task::ReportResult BgzipTask::report() {
 }
 
 bool BgzipTask::checkBgzf(const GUrl& fileUrl) {
-    return bgzf_check_bgzf(fileUrl.getURLString().toLatin1().constData());
+    NP<FILE> file = FileAndDirectoryUtils::openFile(fileUrl.getURLString(), "r");
+    int checkResult = file == nullptr ? -1 : bgzf_check_bgzf(file);
+    FileAndDirectoryUtils::closeFileIfOpen(file);
+    return checkResult;  // TODO: method returns incorrect type and the logic looks inverted from the normal.
 }
 
 GzipDecompressTask::GzipDecompressTask(const GUrl& zipUrl, const GUrl& fileUrl)

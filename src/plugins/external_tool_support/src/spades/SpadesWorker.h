@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SPADES_WORKER_
-#define _U2_SPADES_WORKER_
+#pragma once
 
 #include <U2Algorithm/GenomeAssemblyRegistry.h>
 
@@ -137,5 +136,3 @@ protected:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_SPADES_WORKER_

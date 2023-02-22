@@ -77,7 +77,7 @@ void QDLoadSceneTask::prepare() {
 
 QList<Task*> QDLoadSceneTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> subTasks;
-    QDLoadDocumentTask* t = qobject_cast<QDLoadDocumentTask*>(subTask);
+    auto t = qobject_cast<QDLoadDocumentTask*>(subTask);
     assert(t);
     QDDocument* loadedDoc = t->getDocument();
     assert(loadedDoc);
@@ -107,7 +107,7 @@ QDLoadSchemeTask::QDLoadSchemeTask(const QString& uri)
 
 QList<Task*> QDLoadSchemeTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> subTasks;
-    QDLoadDocumentTask* t = qobject_cast<QDLoadDocumentTask*>(subTask);
+    auto t = qobject_cast<QDLoadDocumentTask*>(subTask);
     assert(t);
     QDDocument* loadedDoc = t->getDocument();
     assert(loadedDoc);
@@ -411,7 +411,7 @@ static const QString MIN_ATTR_NAME = "min";
 static const QString MAX_ATTR_NAME = "max";
 QDLinkStatement* QDSchemeSerializer::saveConstraint(QDConstraint* constraint, QDDocument* doc, const QMap<QDSchemeUnit*, QDElementStatement*>& unit2stmt) {
     if (QDConstraintTypes::DISTANCE == constraint->constraintType()) {
-        QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(constraint);
+        auto dc = static_cast<QDDistanceConstraint*>(constraint);
         QDSchemeUnit* src = dc->getSource();
         QDSchemeUnit* dst = dc->getDestination();
         QList<QString> elIds;

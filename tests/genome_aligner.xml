@@ -1,9 +1,5 @@
-<suite name="Genome Aligner Tests" test-timeout="150">
+<suite name="Genome Aligner Tests">
 
     <test-dir test-format="XML" test-ext="*.xml" path="genome_aligner"/>
 
-    <excluded test="test001.xml" reason="Fails by timeout"/>
-    <excluded test="test002.xml" reason="Fails by timeout"/>
-    <excluded test="workflow/test_0001.xml" reason="Fails by timeout"/>
-    <excluded test="workflow/test_0002.xml" reason="Fails by timeout"/>
 </suite>

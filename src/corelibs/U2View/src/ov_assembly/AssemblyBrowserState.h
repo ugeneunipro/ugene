@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ASSEMBLY_BROSER_STATE_H_
-#define _U2_ASSEMBLY_BROSER_STATE_H_
+#pragma once
 
 #include <QVariant>
 
@@ -75,5 +74,3 @@ inline QVariantMap AssemblyBrowserState::buildStateMap(const AssemblyBrowser* v)
 }
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _TREE_VIEWER_UTILS_H_
-#define _TREE_VIEWER_UTILS_H_
+#pragma once
 
 #include <QFont>
 #include "TreeSettings.h"
@@ -38,5 +37,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _TREE_VIEWER_UTILS_H_

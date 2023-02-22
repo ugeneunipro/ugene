@@ -74,7 +74,7 @@ void BaseOneOneWorker::onPrepared(Task* /*task*/, U2OpStatus& /*os*/) {
 }
 
 void BaseOneOneWorker::sl_taskFinished() {
-    Task* task = dynamic_cast<Task*>(sender());
+    auto task = dynamic_cast<Task*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished() && !task->isCanceled() && !task->hasError(), );
     U2OpStatusImpl os;
@@ -90,7 +90,7 @@ void BaseOneOneWorker::sl_taskFinished() {
 }
 
 void BaseOneOneWorker::sl_prepared() {
-    Task* task = dynamic_cast<Task*>(sender());
+    auto task = dynamic_cast<Task*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
     if (task->isCanceled() || task->hasError()) {

@@ -43,7 +43,7 @@ void FindPatternMsaWidgetSavableTab::setChildValue(const QString& childId, const
     if (regionWidgetIds.contains(childId)) {
         bool ok = false;
         int intVal = value.toInt(&ok);
-        FindPatternMsaWidget* parentWidget = qobject_cast<FindPatternMsaWidget*>(wrappedWidget);
+        auto parentWidget = qobject_cast<FindPatternMsaWidget*>(wrappedWidget);
         SAFE_POINT(parentWidget != nullptr, "Wrong casting", )
         int multipleAlignmentLength = parentWidget->getTargetMsaLength();
         SAFE_POINT(ok, "Invalid conversion to int", );

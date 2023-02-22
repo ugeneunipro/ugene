@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CONVERTFILETASK_H_
-#define _U2_CONVERTFILETASK_H_
+#pragma once
 
 #include <U2Core/GUrl.h>
 #include <U2Core/Task.h>
@@ -109,5 +108,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CONVERTFILETASK_H_

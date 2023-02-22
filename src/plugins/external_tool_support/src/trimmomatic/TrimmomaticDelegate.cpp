@@ -76,22 +76,19 @@ PropertyWidget* TrimmomaticDelegate::createWizardWidget(U2OpStatus&,
 void TrimmomaticDelegate::setEditorData(QWidget* editor,
                                         const QModelIndex& index) const {
     const QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    TrimmomaticPropertyWidget* propertyWidget =
-        qobject_cast<TrimmomaticPropertyWidget*>(editor);
+    auto propertyWidget = qobject_cast<TrimmomaticPropertyWidget*>(editor);
     propertyWidget->setValue(value);
 }
 
 void TrimmomaticDelegate::setModelData(QWidget* editor,
                                        QAbstractItemModel* model,
                                        const QModelIndex& index) const {
-    TrimmomaticPropertyWidget* propertyWidget =
-        qobject_cast<TrimmomaticPropertyWidget*>(editor);
+    auto propertyWidget = qobject_cast<TrimmomaticPropertyWidget*>(editor);
     model->setData(index, propertyWidget->value(), ConfigurationEditor::ItemValueRole);
 }
 
 void TrimmomaticDelegate::sl_commit() {
-    TrimmomaticPropertyWidget* editor =
-        qobject_cast<TrimmomaticPropertyWidget*>(sender());
+    auto editor = qobject_cast<TrimmomaticPropertyWidget*>(sender());
     CHECK(editor != nullptr, );
     emit commitData(editor);
 }

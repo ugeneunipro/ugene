@@ -130,7 +130,7 @@ void AnnotHighlightTree::sl_onItemClicked(QTreeWidgetItem* item, int column) {
         return;
     }
 
-    AnnotHighlightTreeItem* annotHighlightItem = static_cast<AnnotHighlightTreeItem*>(item);
+    auto annotHighlightItem = static_cast<AnnotHighlightTreeItem*>(item);
 
     QColorDialog::ColorDialogOption options = static_cast<QColorDialog::ColorDialogOption>(0);
     if (qgetenv(ENV_GUI_TEST) == "1") {

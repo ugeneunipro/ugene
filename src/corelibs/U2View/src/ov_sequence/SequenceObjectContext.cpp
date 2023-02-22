@@ -274,7 +274,7 @@ StatisticsCache<QMap<QByteArray, qint64>>* SequenceObjectContext::getCodonsOccur
 }
 
 void SequenceObjectContext::sl_onAnnotationRelationChange() {
-    AnnotationTableObject* obj = qobject_cast<AnnotationTableObject*>(sender());
+    auto obj = qobject_cast<AnnotationTableObject*>(sender());
     SAFE_POINT(obj != nullptr, tr("Incorrect signal sender!"), );
 
     if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
@@ -335,7 +335,7 @@ void SequenceObjectContext::setAminoTranslation(const QString& tid) {
 
 void SequenceObjectContext::sl_setAminoTranslation() {
     GCOUNTER(cvar, "DetView_SetAminoTranslation");
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QString tid = a->data().toString();
     setAminoTranslation(tid);
 }
@@ -413,7 +413,7 @@ QSet<AnnotationTableObject*> SequenceObjectContext::getAnnotationObjects(bool in
 }
 
 void SequenceObjectContext::sl_toggleTranslations() {
-    QAction* a = qobject_cast<QAction*>(QObject::sender());
+    auto a = qobject_cast<QAction*>(QObject::sender());
     CHECK(a != nullptr, );
 
     if (a->isChecked()) {

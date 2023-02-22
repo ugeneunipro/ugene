@@ -150,7 +150,7 @@ void GTComboBox::checkValues(GUITestOpStatus& os, QComboBox* comboBox, const QSt
 
     QListView* view = comboBox->findChild<QListView*>();
     GT_CHECK(NULL != view, "list view is not found");
-    QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(view->model());
+    auto model = dynamic_cast<QStandardItemModel*>(view->model());
     GT_CHECK(NULL != model, "model is not found");
     QList<QStandardItem*> items = model->findItems("", Qt::MatchContains);
 

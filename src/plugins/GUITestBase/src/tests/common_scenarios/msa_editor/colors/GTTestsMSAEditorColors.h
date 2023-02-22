@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_MSA_EDITOR_COLORS_H_
-#define GTTESTS_MSA_EDITOR_COLORS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -44,5 +43,3 @@ GUI_TEST_CLASS_DECLARATION(test_0007)
 }  // namespace GUITest_common_scenarios_msa_editor_colors
 
 }  // namespace U2
-
-#endif  // GTTESTS_MSA_EDITOR_COLORS_H_

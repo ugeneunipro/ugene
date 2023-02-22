@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef MOLECULARSURFACEFACTORYREGISTRY_H
-#define MOLECULARSURFACEFACTORYREGISTRY_H
+#pragma once
 
 #include "MolecularSurface.h"
 
@@ -43,5 +42,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // MOLECULARSURFACEFACTORYREGISTRY_H

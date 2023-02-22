@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_
-#define GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -55,5 +54,3 @@ GUI_TEST_CLASS_DECLARATION(test_0017)
 }  // namespace GUITest_common_scenarios_align_sequences_to_msa
 
 }  // namespace U2
-
-#endif  // GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_

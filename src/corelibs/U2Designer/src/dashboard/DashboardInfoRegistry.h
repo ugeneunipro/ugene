@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DASHBOARD_INFO_REGISTRY_H_
-#define _U2_DASHBOARD_INFO_REGISTRY_H_
+#pragma once
 
 #include "DashboardInfo.h"
 #include "ScanDashboardsDirTask.h"
@@ -71,5 +70,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DASHBOARD_INFO_REGISTRY_H_

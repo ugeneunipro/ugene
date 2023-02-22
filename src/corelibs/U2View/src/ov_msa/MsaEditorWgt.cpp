@@ -82,7 +82,7 @@ void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
 }
 
 void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
-    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
 
     if (mui->getPhylTreeWidget() == nullptr) {
         MSAEditorMultiTreeViewer* multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
@@ -177,7 +177,7 @@ MSAEditorMultiTreeViewer* MsaEditorWgt::getMultiTreeViewer() const {
 
 QSize MsaEditorWgt::sizeHint() const {
     QSize s = QWidget::sizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height());
     }
     return s;
@@ -185,7 +185,7 @@ QSize MsaEditorWgt::sizeHint() const {
 
 QSize MsaEditorWgt::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         int newHeight = consensusArea->size().height() +
                         qMax(qMax(sequenceArea->minimumSizeHint().height(),
                                   nameList->minimumSizeHint().height()),

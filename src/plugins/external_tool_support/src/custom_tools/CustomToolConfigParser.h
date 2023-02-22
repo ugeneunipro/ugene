@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUSTOM_TOOL_CONFIG_PARSER_H_
-#define _U2_CUSTOM_TOOL_CONFIG_PARSER_H_
+#pragma once
 
 #include <QCoreApplication>
 #include <QDomElement>
@@ -59,5 +58,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CUSTOM_TOOL_CONFIG_PARSER_H_

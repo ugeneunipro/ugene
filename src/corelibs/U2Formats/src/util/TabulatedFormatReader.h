@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TABULATED_FORMAT_READER_H_
-#define _U2_TABULATED_FORMAT_READER_H_
+#pragma once
 
 #include <QObject>
 #include <QStringList>
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_TABULATED_FORMAT_READER_H_

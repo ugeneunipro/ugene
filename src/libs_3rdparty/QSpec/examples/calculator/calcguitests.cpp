@@ -16,11 +16,11 @@ CalcGUITestsLauncher::CalcGUITestsLauncher()
 TEST_CLASS_DEFINITION(Test1) {
     GTGlobals::sleep();
 
-    QToolButton *button_2 = qobject_cast<QToolButton *>(GTWidget::findButtonByText(os, "2"));
+    auto *button_2 = qobject_cast<QToolButton *>(GTWidget::findButtonByText(os, "2"));
 
-    QToolButton *button_plus = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "plus"));
+    auto *button_plus = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "plus"));
 
-    QToolButton *button_equal = qobject_cast<QToolButton *>(GTWidget::findButtonByText(os, "="));
+    auto *button_equal = qobject_cast<QToolButton *>(GTWidget::findButtonByText(os, "="));
 
     GTWidget::click(os, button_2);
     // GTButton::click(os,"2");
@@ -31,7 +31,7 @@ TEST_CLASS_DEFINITION(Test1) {
 
     GTWidget::click(os, button_equal);
 
-    QLineEdit *display = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "display"));
+    auto *display = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "display"));
 
     CHECK_SET_ERR(display->text() == "4", "result is not equal 4");
 }
@@ -47,7 +47,7 @@ TEST_CLASS_DEFINITION(Test2) {
 
     GTWidget::click(os, GTWidget::findButtonByText(os, "="));
 
-    QLineEdit *display = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "display"));
+    auto *display = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "display"));
 
     CHECK_SET_ERR(display->text() == "5", "result is not equal 5");
 }

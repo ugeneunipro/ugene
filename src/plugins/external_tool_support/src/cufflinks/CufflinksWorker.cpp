@@ -302,7 +302,7 @@ CufflinksWorker::CufflinksWorker(Actor* actor)
 
 void CufflinksWorker::initSlotsState() {
     Port* port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
-    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
+    auto bus = dynamic_cast<IntegralBusPort*>(port);
     settings.fromFile = bus->getProducers(BaseSlots::ASSEMBLY_SLOT().getId()).isEmpty();
 }
 
@@ -373,7 +373,7 @@ Task* CufflinksWorker::tick() {
 }
 
 void CufflinksWorker::sl_cufflinksTaskFinished() {
-    CufflinksSupportTask* cufflinksSupportTask = qobject_cast<CufflinksSupportTask*>(sender());
+    auto cufflinksSupportTask = qobject_cast<CufflinksSupportTask*>(sender());
     CHECK(cufflinksSupportTask->isFinished(), );
 
     if (nullptr != output) {

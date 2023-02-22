@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REGISTER_CUSTOM_TOOL_TASK_H_
-#define _U2_REGISTER_CUSTOM_TOOL_TASK_H_
+#pragma once
 
 #include <QDomDocument>
 
@@ -46,5 +45,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_REGISTER_CUSTOM_TOOL_TASK_H_

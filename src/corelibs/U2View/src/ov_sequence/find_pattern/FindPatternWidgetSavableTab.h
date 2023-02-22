@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_PATTERN_SAVABLE_TAB_H_
-#define _U2_FIND_PATTERN_SAVABLE_TAB_H_
+#pragma once
 
 #include <QStringList>
 
@@ -43,5 +42,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

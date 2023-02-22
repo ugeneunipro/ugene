@@ -74,11 +74,8 @@ DotPlotErrors SaveDotPlotTask::checkFile(const QString& filename) {
 }
 
 void SaveDotPlotTask::saveDotPlot(QTextStream& stream) {
-    SAFE_POINT(sequenceX, "sequenceX is NULL", );
-    SAFE_POINT(sequenceY, "sequenceY is NULL", );
-
-    stream << sequenceX->getGObjectName() << endl;
-    stream << sequenceY->getGObjectName() << endl;
+    stream << sequenceXName << endl;
+    stream << sequenceYName << endl;
 
     stream << minLen << " " << identity << endl;
 

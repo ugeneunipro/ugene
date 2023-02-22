@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OBJECTVIEW_TREE_CONTROLLER_
-#define _U2_OBJECTVIEW_TREE_CONTROLLER_
+#pragma once
 
 #include <QAction>
 #include <QTreeWidget>
@@ -159,5 +158,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

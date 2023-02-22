@@ -41,6 +41,7 @@ HEADERS += src/misc/BitsTable.h \
            src/registry/SplicedAlignmentTask.h \
            src/registry/SplicedAlignmentTaskRegistry.h \
            src/registry/SubstMatrixRegistry.h \
+           src/registry/TempCalcRegistry.h \
            src/smith_waterman/SmithWatermanReportCallback.h \
            src/smith_waterman/SmithWatermanResult.h \
            src/smith_waterman/SmithWatermanResultFilters.h \
@@ -57,6 +58,10 @@ HEADERS += src/misc/BitsTable.h \
            src/structural_alignment/StructuralAlignmentAlgorithm.h \
            src/structural_alignment/StructuralAlignmentAlgorithmFactory.h \
            src/structural_alignment/StructuralAlignmentAlgorithmRegistry.h \
+           src/temperature/BaseTempCalc.h \
+           src/temperature/TempCalcFactory.h \
+           src/temperature/methods/RoughTempCalc.h \
+           src/temperature/methods/RoughTempCalcCmdFactory.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithm.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmDefault.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmRegistry.h \
@@ -143,6 +148,7 @@ SOURCES += src/misc/BitsTable.cpp \
            src/registry/SplicedAlignmentTask.cpp \
            src/registry/SplicedAlignmentTaskRegistry.cpp \
            src/registry/SubstMatrixRegistry.cpp \
+           src/registry/TempCalcRegistry.cpp \
            src/smith_waterman/SmithWatermanReportCallback.cpp \
            src/smith_waterman/SmithWatermanResult.cpp \
            src/smith_waterman/SmithWatermanResultFilters.cpp \
@@ -156,6 +162,10 @@ SOURCES += src/misc/BitsTable.cpp \
            src/structural_alignment/StructuralAlignmentAlgorithm.cpp \
            src/structural_alignment/StructuralAlignmentAlgorithmFactory.cpp \
            src/structural_alignment/StructuralAlignmentAlgorithmRegistry.cpp \
+           src/temperature/BaseTempCalc.cpp \
+           src/temperature/TempCalcFactory.cpp \
+           src/temperature/methods/RoughTempCalc.cpp \
+           src/temperature/methods/RoughTempCalcCmdFactory.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithm.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmDefault.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmRegistry.cpp \

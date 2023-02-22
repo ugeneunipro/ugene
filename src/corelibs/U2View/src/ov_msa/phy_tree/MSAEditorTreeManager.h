@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSAEDITOR_TREE_MANAGER_H_
-#define _U2_MSAEDITOR_TREE_MANAGER_H_
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -86,4 +85,3 @@ private:
 };
 
 }  // namespace U2
-#endif

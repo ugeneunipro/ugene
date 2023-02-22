@@ -19,10 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMERLIBRARY_H_
-#define _U2_PRIMERLIBRARY_H_
+#pragma once
 
 #include <QMutex>
+#include <QSharedPointer>
+
+#include <U2Algorithm/BaseTempCalc.h>
 
 #include <U2Core/Primer.h>
 #include <U2Core/U2OpStatus.h>
@@ -53,14 +55,32 @@ public:
     void addRawPrimer(Primer primer, U2OpStatus& os);
     void updateRawPrimer(Primer primer, U2OpStatus& os);
 
+    const TempCalcSettings& getTemperatureSettings() const;
+    void setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator);
+
 signals:
     void si_primerAdded(const U2DataId& primerId);
     void si_primerChanged(const U2DataId& primerId);
     void si_primerRemoved(const U2DataId& primerId);
 
 private:
-    static void initPrimerUdr(U2OpStatus& os);
-    static void setTmAndGcOfPrimer(Primer& primer);
+    static void initPrimerUdrs(U2OpStatus& os);
+    void setTmAndGcOfPrimer(Primer& primer);
+    /**
+     * PrimerSettings table was added in v 46
+     * We need to create this table if it not exists
+     */
+    void createPrimerSettingsTableIfNotExists();
+    /**
+     * Init temperature calculator
+     * Read the calculator ID and check registry
+     * If the corresponding factory already in registry - take it and use to create calculator
+     * Also switch @initializedFromDb to true, beacuse it's required only once
+     * If it's not - create the default one
+     * This is required because some factory may be still not initialized 
+     * (if, for example, the initialization point in some other plugin, which is not loaded yet)
+     */
+    void initTemperatureCalculator();
 
     PrimerLibrary(DbiConnection* connection);
 
@@ -68,10 +88,14 @@ private:
     static QScopedPointer<PrimerLibrary> instance;
     static QMutex mutex;
 
-    DbiConnection* connection;
-    UdrDbi* udrDbi;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    /**
+     * If false - try to initialize @temperatureCalculator from the database
+     * See @initTemperatureCalculator() for details
+     */
+    bool initializedFromDb = false;
+    DbiConnection* connection = nullptr;
+    UdrDbi* udrDbi = nullptr;
 };
 
 }  // namespace U2
-
-#endif  // _U2_PRIMERLIBRARY_H_

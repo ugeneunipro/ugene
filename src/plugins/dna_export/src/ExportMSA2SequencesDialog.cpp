@@ -21,15 +21,26 @@
 
 #include "ExportMSA2SequencesDialog.h"
 
+#include <QMainWindow>
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Formats/ExportTasks.h>
 
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/SaveDocumentController.h>
+
+#include "ExportUtils.h"
 
 namespace U2 {
 
@@ -70,7 +81,8 @@ void ExportMSA2SequencesDialog::initSaveController() {
     config.fileNameEdit = fileNameEdit;
     config.formatCombo = formatCombo;
     config.parentWidget = this;
-    config.defaultFileName = defaultDir + "/" + defaultFileName + "." + AppContext::getDocumentFormatRegistry()->getFormatById(config.defaultFormatId)->getSupportedDocumentFileExtensions().first();
+    QString defaultFileExtension = AppContext::getDocumentFormatRegistry()->getFormatById(config.defaultFormatId)->getSupportedDocumentFileExtensions().first();
+    config.defaultFileName = defaultDir + "/" + defaultFileName + "." + defaultFileExtension;
 
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::SEQUENCE;
@@ -78,6 +90,24 @@ void ExportMSA2SequencesDialog::initSaveController() {
     formatConstraints.addFlagToSupport(DocumentFormatFlag_SupportWriting);
 
     saveController = new SaveDocumentController(config, formatConstraints, this);
+}
+
+void ExportMSA2SequencesDialog::showDialogAndStartExportTask(MultipleSequenceAlignmentObject* msaObject) {
+    SAFE_POINT(msaObject != nullptr, "ExportMSA2SequencesDialog: msaObject is null!", );
+
+    QPointer<MultipleSequenceAlignmentObject> msaObjectPtr(msaObject);
+
+    LastUsedDirHelper lod;
+    QString defaultDir = lod.dir.isEmpty() ? GUrl(msaObject->getDocument()->getURLString()).dirPath() : lod.dir;
+    QString defaultFileName = GUrlUtils::fixFileName(msaObject->getGObjectName());
+    QObjectScopedPointer<ExportMSA2SequencesDialog> d = new ExportMSA2SequencesDialog(defaultDir, defaultFileName, AppContext::getMainWindow()->getQMainWindow());
+    int rc = d->exec();
+    CHECK(!d.isNull() && rc != QDialog::Rejected && !msaObjectPtr.isNull(), );
+    lod.url = d->url;
+
+    const MultipleSequenceAlignment& msa = msaObject->getMultipleAlignment();
+    auto t = ExportUtils::wrapExportTask(new ExportMSA2SequencesTask(msa, d->url, d->trimGapsFlag, d->format), d->addToProjectFlag);
+    AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
 }  // namespace U2

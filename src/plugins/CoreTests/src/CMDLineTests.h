@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CMDLINE_TESTS_H_
-#define _U2_CMDLINE_TESTS_H_
+#pragma once
 
 #include <QProcess>
 
@@ -65,5 +64,3 @@ public:
 };  // CMDLineTests
 
 }  // namespace U2
-
-#endif  // _U2_CMDLINE_TESTS_H_

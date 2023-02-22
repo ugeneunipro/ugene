@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_
-#define _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_
+#pragma once
 
 #include "SequencePainter.h"
 #include "ui_SequenceImageExportSettingsWidget.h"
@@ -54,5 +53,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SEQUENCE_EXPORT_SETTINGS_WIDGET_H_

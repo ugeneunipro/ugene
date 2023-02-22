@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PAIREDDATASETSCONTROLLER_H_
-#define _U2_PAIREDDATASETSCONTROLLER_H_
+#pragma once
 
 #include <U2Designer/DatasetsController.h>
 
@@ -47,5 +46,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PAIREDDATASETSCONTROLLER_H_

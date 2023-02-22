@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CONSTRUCT_MOLECULE_DIALOG_FILLER_H_
-#define _U2_CONSTRUCT_MOLECULE_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CONSTRUCT_MOLECULE_DIALOG_FILLER_H_

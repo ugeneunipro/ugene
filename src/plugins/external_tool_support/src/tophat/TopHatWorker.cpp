@@ -557,7 +557,7 @@ QList<Actor*> TopHatWorker::getProducers(const QString& slotId) const {
     Port* port = actor->getPort(BasePorts::IN_SEQ_PORT_ID());
     SAFE_POINT(nullptr != port, "Internal error during initializing TopHatWorker: port is NULL!", QList<Actor*>());
 
-    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
+    auto bus = dynamic_cast<IntegralBusPort*>(port);
     SAFE_POINT(nullptr != bus, "Internal error during initializing TopHatWorker: bus is NULL!", QList<Actor*>());
 
     return bus->getProducers(slotId);
@@ -734,7 +734,7 @@ Task* TopHatWorker::tick() {
 }
 
 void TopHatWorker::sl_topHatTaskFinished() {
-    TopHatSupportTask* task = qobject_cast<TopHatSupportTask*>(sender());
+    auto task = qobject_cast<TopHatSupportTask*>(sender());
     if (!task->isFinished()) {
         return;
     }

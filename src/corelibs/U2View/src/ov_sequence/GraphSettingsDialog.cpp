@@ -99,7 +99,7 @@ GraphSettingsDialog::GraphSettingsDialog(GSequenceGraphDrawer* d, const U2Region
 }
 
 void GraphSettingsDialog::sl_onPickColorButtonClicked() {
-    QPushButton* colorButton = qobject_cast<QPushButton*>(sender());
+    auto colorButton = qobject_cast<QPushButton*>(sender());
     SAFE_POINT(colorButton, "Button for color is NULL", );
 
     QString colorName = colorButton->objectName();

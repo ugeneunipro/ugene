@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FEATURES_TABLE_OBJECT_H_
-#define _U2_FEATURES_TABLE_OBJECT_H_
+#pragma once
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
@@ -121,5 +120,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

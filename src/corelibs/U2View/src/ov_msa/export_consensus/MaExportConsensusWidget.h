@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_EXPORT_CONSENSUS_TAB_H_
-#define _U2_MSA_EXPORT_CONSENSUS_TAB_H_
+#pragma once
 
 #include <U2Gui/U2SavableWidget.h>
 
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

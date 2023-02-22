@@ -110,7 +110,7 @@ void GUITestRunner::sl_runAllGUITests() {
 }
 
 void GUITestRunner::sl_testFinished() {
-    GUITestThread* testThread = qobject_cast<GUITestThread*>(sender());
+    auto testThread = qobject_cast<GUITestThread*>(sender());
     // SAFE_POINT(NULL != testThread, "TestThread is null", );
     GUITest* test = testThread->getTest();
     QString result = testThread->getTestResult();

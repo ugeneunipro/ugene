@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATA_PATH_REGISTRY_H
-#define _U2_DATA_PATH_REGISTRY_H
+#pragma once
 
 #include <QDir>
 #include <QMap>
@@ -96,5 +95,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::U2DataPath::Options)
-
-#endif  // _U2_DATA_PATH_REGISTRY_H

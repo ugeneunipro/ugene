@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __U2_WORKFLOW_BASE_SLOTS_H_
-#define __U2_WORKFLOW_BASE_SLOTS_H_
+#pragma once
 
 #include <U2Core/U2Type.h>
 
@@ -45,5 +44,3 @@ public:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // __U2_WORKFLOW_BASE_SLOTS_H_

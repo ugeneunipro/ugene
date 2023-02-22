@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef APPSETTINGSDIALOGFILLER_H
-#define APPSETTINGSDIALOGFILLER_H
+#pragma once
 
 #include <base_dialogs/GTFileDialog.h>
 
@@ -118,4 +117,3 @@ public:
     virtual void commonScenario();
 };
 }  // namespace U2
-#endif  // APPSETTINGSDIALOGFILLER_H

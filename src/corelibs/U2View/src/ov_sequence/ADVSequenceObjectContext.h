@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ADV_SEQUENCE_OBJECT_CONTEXT_H_
-#define _U2_ADV_SEQUENCE_OBJECT_CONTEXT_H_
+#pragma once
 
 #include "SequenceObjectContext.h"
 
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -415,7 +415,7 @@ ExternalToolsValidationMasterTask::ExternalToolsValidationMasterTask(const QList
 
 QList<Task*> ExternalToolsValidationMasterTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> subTasks;
-    ExternalToolValidateTask* validateTask = qobject_cast<ExternalToolValidateTask*>(subTask);
+    auto validateTask = qobject_cast<ExternalToolValidateTask*>(subTask);
     bool muted = false;
 
     if (validateTask) {
@@ -441,7 +441,7 @@ QList<Task*> ExternalToolsValidationMasterTask::onSubTaskFinished(Task* subTask)
 Task::ReportResult ExternalToolsValidationMasterTask::report() {
     if (listener != nullptr) {
         for (const QPointer<Task>& subTask : qAsConst(getSubtasks())) {
-            ExternalToolValidateTask* task = qobject_cast<ExternalToolValidateTask*>(subTask.data());
+            auto task = qobject_cast<ExternalToolValidateTask*>(subTask.data());
             SAFE_POINT(task, "Unexpected ExternalToolValidateTask subtask", ReportResult_Finished);
             listener->setToolState(task->getToolId(), task->isValidTool());
         }

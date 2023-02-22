@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef EXPORT_SELECTED_SEQUENCE_FROM_ALIGNMENT_DIALOG_FILLER_H
-#define EXPORT_SELECTED_SEQUENCE_FROM_ALIGNMENT_DIALOG_FILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -49,5 +48,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // EXPORT_SELECTED_SEQUENCE_FROM_ALIGNMENT_DIALOG_FILLER_H

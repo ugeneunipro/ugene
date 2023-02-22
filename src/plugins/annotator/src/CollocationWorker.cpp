@@ -143,7 +143,7 @@ void CollocationWorkerFactory::init() {
 }
 
 QString CollocationPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* seqProducer = input->getProducer(SEQ_SLOT);
     QString seqName = seqProducer ? tr(" sequence from <u>%1</u>").arg(seqProducer->getLabel()) : "";
     QString annName = getProducers(BasePorts::IN_SEQ_PORT_ID(), FEATURE_TABLE_SLOT);
@@ -238,7 +238,7 @@ Task* CollocationWorker::tick() {
 }
 
 void CollocationWorker::sl_taskFinished() {
-    CollocationSearchTask* t = qobject_cast<CollocationSearchTask*>(sender());
+    auto t = qobject_cast<CollocationSearchTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }

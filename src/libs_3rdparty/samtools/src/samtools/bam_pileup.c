@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <assert.h>
 #include "sam.h"
 
@@ -303,11 +302,6 @@ void bam_plp_reset(bam_plp_t iter)
 void bam_plp_set_mask(bam_plp_t iter, int mask)
 {
 	iter->flag_mask = mask < 0? BAM_DEF_MASK : (BAM_FUNMAP | mask);
-}
-
-void bam_plp_set_maxcnt(bam_plp_t iter, int maxcnt)
-{
-	iter->maxcnt = maxcnt;
 }
 
 /*****************

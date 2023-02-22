@@ -82,7 +82,7 @@ ClustalWSupportTask::~ClustalWSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(nullptr != alObj, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -106,7 +106,7 @@ void ClustalWSupportTask::prepare() {
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (nullptr != obj) {
-            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
             SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalWAlignment");
             alObj->lockState(lock);
@@ -223,7 +223,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(tmpDoc->getObjects().length() == 1, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // move MultipleSequenceAlignment from new alignment to old document
-        MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
+        auto newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(tmpDoc->getObjects().first());
         SAFE_POINT(newMAligmentObject != nullptr, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
         resultMA = newMAligmentObject->getMsaCopy();
@@ -234,7 +234,7 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LIBRARY_TABLE_H_
-#define _U2_PRIMER_LIBRARY_TABLE_H_
+#pragma once
 
 #include <QAbstractItemModel>
 #include <QTableView>
@@ -43,6 +42,7 @@ public:
     QModelIndex parent(const QModelIndex& index) const;
     int rowCount(const QModelIndex& parent) const;
 
+    const QList<Primer>& getAllPrimers() const;
     Primer getPrimer(const QModelIndex& index, U2OpStatus& os) const;
     void addPrimer(const Primer& primer);
     void updatePrimer(const Primer& primer);
@@ -63,6 +63,7 @@ class PrimerLibraryTable : public QTableView {
 public:
     PrimerLibraryTable(QWidget* parent);
 
+    const QList<Primer>& getAllPrimers() const;
     QList<Primer> getSelection() const;
     void addPrimer(const Primer& primer);
     void updatePrimer(const Primer& primer);
@@ -80,5 +81,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PRIMER_LIBRARY_TABLE_H_

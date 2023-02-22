@@ -51,11 +51,11 @@ MaOverview::MaOverview(MaEditor* _editor, QWidget* _ui)
     // The hack
     // for MSA we have MaEditorMultilineWgt
     // for MCA we have MaEditorWgt
-    MaEditorMultilineWgt* mwgt = qobject_cast<MaEditorMultilineWgt*>(_ui);
+    auto mwgt = qobject_cast<MaEditorMultilineWgt*>(_ui);
     if (mwgt != nullptr) {
         connect(mwgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     } else {
-        MaEditorWgt* swgt = qobject_cast<MaEditorWgt*>(_ui);
+        auto swgt = qobject_cast<MaEditorWgt*>(_ui);
         if (swgt != nullptr) {
             connect(swgt->getSequenceArea(), SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
             connect(swgt->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));

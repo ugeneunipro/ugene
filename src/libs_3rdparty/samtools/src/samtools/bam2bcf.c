@@ -4,16 +4,15 @@
 #include "kstring.h"
 #include "bam2bcf.h"
 #include "errmod.h"
-#include "bcftools/bcf.h"
 
 extern	void ks_introsort_uint32_t(size_t n, uint32_t a[]);
 
-#define CALL_ETA 0.03f
-#define CALL_MAX 256
 #define CALL_DEFTHETA 0.83f
 #define DEF_MAPQ 20
 
 #define CAP_DIST 25
+
+char bam_nt16_nt4_table[] = { 4, 0, 1, 4, 2, 4, 4, 4, 3, 4, 4, 4, 4, 4, 4, 4 };
 
 bcf_callaux_t *bcf_call_init(double theta, int min_baseQ)
 {
@@ -105,7 +104,7 @@ int bcf_call_glfgen(int _n, const bam_pileup1_t *pl, int ref_base, bcf_callaux_t
     int alt_dp=0, read_len=0;
     for (i=0; i<_n; i++) {
         const bam_pileup1_t *p = pl + i;
-        if ( bam1_seqi(bam1_seq(p->b),p->qpos) == ref_base ) 
+        if ( bam1_seqi(bam1_seq(p->b),p->qpos) == ref_base )
             continue;
 
         var_pos[alt_dp] = p->qpos;
@@ -182,7 +181,7 @@ void calc_vdb(int n, const bcf_callret1_t *calls, bcf_call_t *call)
         weight += dp;
 		}
     }
-    tot_prob = weight ? tot_prob/weight : 1; 
+    tot_prob = weight ? tot_prob/weight : 1;
     //fprintf(stderr,"prob=%f\n", tot_prob);
     call->vdb = tot_prob;
 }
@@ -263,95 +262,5 @@ int bcf_call_combine(int n, const bcf_callret1_t *calls, int ref_base /*4-bit*/,
 
     calc_vdb(n, calls, call);
 
-	return 0;
-}
-
-int bcf_call2bcf(int tid, int pos, bcf_call_t *bc, bcf1_t *b, bcf_callret1_t *bcr, int is_SP,
-				 const bcf_callaux_t *bca, const char *ref)
-{
-	extern double kt_fisher_exact(int n11, int n12, int n21, int n22, double *_left, double *_right, double *two);
-	kstring_t s;
-	int i, j;
-	b->n_smpl = bc->n;
-	b->tid = tid; b->pos = pos; b->qual = 0;
-	s.s = b->str; s.m = b->m_str; s.l = 0;
-	kputc('\0', &s);
-	if (bc->ori_ref < 0) { // an indel
-		// write REF
-		kputc(ref[pos], &s);
-		for (j = 0; j < bca->indelreg; ++j) kputc(ref[pos+1+j], &s);
-		kputc('\0', &s);
-		// write ALT
-		kputc(ref[pos], &s);
-		for (i = 1; i < 4; ++i) {
-			if (bc->a[i] < 0) break;
-			if (i > 1) {
-				kputc(',', &s); kputc(ref[pos], &s);
-			}
-			if (bca->indel_types[bc->a[i]] < 0) { // deletion
-				for (j = -bca->indel_types[bc->a[i]]; j < bca->indelreg; ++j)
-					kputc(ref[pos+1+j], &s);
-			} else { // insertion; cannot be a reference unless a bug
-				char *inscns = &bca->inscns[bc->a[i] * bca->maxins];
-				for (j = 0; j < bca->indel_types[bc->a[i]]; ++j)
-					kputc("ACGTN"[(int)inscns[j]], &s);
-				for (j = 0; j < bca->indelreg; ++j) kputc(ref[pos+1+j], &s);
-			}
-		}
-		kputc('\0', &s);
-	} else { // a SNP
-		kputc("ACGTN"[bc->ori_ref], &s); kputc('\0', &s);
-		for (i = 1; i < 5; ++i) {
-			if (bc->a[i] < 0) break;
-			if (i > 1) kputc(',', &s);
-			kputc(bc->unseen == i? 'X' : "ACGT"[bc->a[i]], &s);
-		}
-		kputc('\0', &s);
-	}
-	kputc('\0', &s);
-	// INFO
-	if (bc->ori_ref < 0) kputs("INDEL;", &s);
-	kputs("DP=", &s); kputw(bc->ori_depth, &s); kputs(";I16=", &s);
-	for (i = 0; i < 16; ++i) {
-		if (i) kputc(',', &s);
-		kputw(bc->anno[i], &s);
-	}
-    if ( bc->vdb!=1 )
-    {
-        ksprintf(&s, ";VDB=%.4f", bc->vdb);
-    }
-	kputc('\0', &s);
-	// FMT
-	kputs("PL", &s);
-	if (bcr) {
-		kputs(":DP", &s);
-		if (is_SP) kputs(":SP", &s);
-	}
-	kputc('\0', &s);
-	b->m_str = s.m; b->str = s.s; b->l_str = s.l;
-	bcf_sync(b);
-	memcpy(b->gi[0].data, bc->PL, b->gi[0].len * bc->n);
-	if (bcr) {
-		uint16_t *dp = (uint16_t*)b->gi[1].data;
-		int32_t *sp = is_SP? b->gi[2].data : 0;
-		for (i = 0; i < bc->n; ++i) {
-			bcf_callret1_t *p = bcr + i;
-			dp[i] = p->depth < 0xffff? p->depth : 0xffff;
-			if (is_SP) {
-				if (p->anno[0] + p->anno[1] < 2 || p->anno[2] + p->anno[3] < 2
-					|| p->anno[0] + p->anno[2] < 2 || p->anno[1] + p->anno[3] < 2)
-				{
-					sp[i] = 0;
-				} else {
-					double left, right, two;
-					int x;
-					kt_fisher_exact(p->anno[0], p->anno[1], p->anno[2], p->anno[3], &left, &right, &two);
-					x = (int)(-4.343 * log(two) + .499);
-					if (x > 255) x = 255;
-					sp[i] = x;
-				}
-			}
-		}
-	}
 	return 0;
 }

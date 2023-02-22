@@ -65,6 +65,8 @@ QAbstractButton* GTUtilsPrimerLibrary::getButton(HI::GUITestOpStatus& os, Button
             return box->buttons()[4];
         case Export:
             return box->buttons()[5];
+        case Temperature:
+            return box->buttons()[6];
         default:
             return nullptr;
     }

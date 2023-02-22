@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GSCROLL_BAR_H_
-#define _U2_GSCROLL_BAR_H_
+#pragma once
 
 #include <QScrollBar>
 
@@ -45,5 +44,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

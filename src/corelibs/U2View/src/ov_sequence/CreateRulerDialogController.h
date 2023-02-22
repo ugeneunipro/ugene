@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_RULER_DIALOG_CONTROLLER_H_
-#define _U2_CREATE_RULER_DIALOG_CONTROLLER_H_
+#pragma once
 
 #include <QDialog>
 #include <QSet>
@@ -57,5 +56,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

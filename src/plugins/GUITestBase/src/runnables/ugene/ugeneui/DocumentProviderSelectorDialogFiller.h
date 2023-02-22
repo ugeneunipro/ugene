@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOCUMENT_PROVIDER_SELECTOR_DIALOG_FILLER_H_
-#define _U2_DOCUMENT_PROVIDER_SELECTOR_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -43,5 +42,3 @@ private:
     static QMap<OpenWith, QString> initMap();
 };
 }  // namespace U2
-
-#endif  // _U2_DOCUMENT_PROVIDER_SELECTOR_DIALOG_FILLER_H_

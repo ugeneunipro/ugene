@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKER_NAME_VALIDATOR_H_
-#define _U2_WORKER_NAME_VALIDATOR_H_
+#pragma once
 
 #include <QValidator>
 
@@ -38,5 +37,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_WORKER_NAME_VALIDATOR_H_

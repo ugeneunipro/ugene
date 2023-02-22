@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SERVICE_MODEL_H_
-#define _U2_SERVICE_MODEL_H_
+#pragma once
 
 #include <QList>
 #include <QPointer>
@@ -52,10 +51,13 @@ typedef QFlags<ServiceFlag> ServiceFlags;
 
 class U2CORE_EXPORT Service : public QObject {
     friend class ServiceRegistry;
-    friend class ServiceLock;
     Q_OBJECT
 public:
-    Service(ServiceType t, const QString& _name, const QString& _desc, const QList<ServiceType>& parentServices = QList<ServiceType>(), ServiceFlags flags = ServiceFlag_None);
+    Service(const ServiceType& t,
+            const QString& _name,
+            const QString& _desc,
+            const QList<ServiceType>& parentServices = QList<ServiceType>(),
+            ServiceFlags flags = ServiceFlag_None);
 
     const QList<ServiceType>& getParentServiceTypes() const {
         return parentServices;
@@ -128,15 +130,15 @@ public:
 
     /// registers the service in a registry and initiates enabling task if all parent services are enabled
     /// if service started successfully - checks all child services if new services can be started
-    virtual Task* registerServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* registerServiceTask(Service* s) = 0;
 
     /// unregisters the service in a registry.
     /// if the service is enabled -> initiates service disabling task first
-    virtual Task* unregisterServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* unregisterServiceTask(Service* s) = 0;
 
-    virtual Task* enableServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* enableServiceTask(Service* s) = 0;
 
-    virtual Task* disableServiceTask(Service* s, bool lockServiceResource = true) = 0;
+    virtual Task* disableServiceTask(Service* s) = 0;
 
 protected:
     void _setServiceState(Service* s, ServiceState state);
@@ -153,5 +155,3 @@ signals:
 };
 
 }  // namespace U2
-
-#endif

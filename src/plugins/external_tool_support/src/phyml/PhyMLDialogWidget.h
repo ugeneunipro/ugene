@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHYML_DIALOG_WIDGET_H
-#define _U2_PHYML_DIALOG_WIDGET_H
+#pragma once
 
 #include <U2Gui/InputWidgetsControllers.h>
 
@@ -97,5 +96,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PHYML_DIALOG_WIDGET_H

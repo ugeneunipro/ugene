@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_READ_ASSEMBLY_TASK_
-#define _U2_READ_ASSEMBLY_TASK_
+#pragma once
 
 #include <U2Lang/ReadDocumentTaskFactory.h>
 
@@ -80,5 +79,3 @@ public:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_READ_ASSEMBLY_TASK_

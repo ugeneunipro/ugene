@@ -101,7 +101,7 @@ SpideySupportContext::SpideySupportContext(QObject* p)
 }
 
 void SpideySupportContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(view);
+    auto dnaView = qobject_cast<AnnotatedDNAView*>(view);
     assert(dnaView != nullptr);
     if (dnaView->getActiveSequenceContext() == nullptr) {
         return;
@@ -161,11 +161,11 @@ void SpideySupportContext::sl_align_with_Spidey() {
         return;
     }
 
-    U2SequenceObject* rnaObj = qobject_cast<U2SequenceObject*>(objects.first());
+    auto rnaObj = qobject_cast<U2SequenceObject*>(objects.first());
 
-    ADVGlobalAction* action = qobject_cast<ADVGlobalAction*>(sender());
+    auto action = qobject_cast<ADVGlobalAction*>(sender());
     assert(action != nullptr);
-    AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto dnaView = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     U2SequenceObject* dnaObj = dnaView->getActiveSequenceContext()->getSequenceObject();
 
     if (rnaObj && dnaObj) {

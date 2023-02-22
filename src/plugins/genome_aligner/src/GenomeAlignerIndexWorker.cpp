@@ -120,7 +120,7 @@ Task* GenomeAlignerBuildWorker::tick() {
 }
 
 void GenomeAlignerBuildWorker::sl_taskFinished() {
-    GenomeAlignerTask* t = qobject_cast<GenomeAlignerTask*>(sender());
+    auto t = qobject_cast<GenomeAlignerTask*>(sender());
     if (t->getState() != Task::State_Finished) {
         return;
     }

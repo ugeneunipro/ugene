@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CMD_LINE_REGISTRY_
-#define _U2_CMD_LINE_REGISTRY_
+#pragma once
 
 #include <QMap>
 #include <QStringList>
@@ -70,5 +69,3 @@ private:
 };  // CMDLineRegistry
 
 }  // namespace U2
-
-#endif  // _U2_CMD_LINE_REGISTRY_

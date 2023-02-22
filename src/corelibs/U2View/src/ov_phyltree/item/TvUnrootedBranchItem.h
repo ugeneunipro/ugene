@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_UNROOTED_BRANCH_ITEM_H_
-#define _U2_TV_UNROOTED_BRANCH_ITEM_H_
+#pragma once
 
 #include "TvBranchItem.h"
 
@@ -32,16 +31,14 @@ class PhyNode;
 
 class U2VIEW_EXPORT TvUnrootedBranchItem : public TvBranchItem {
 public:
-    TvUnrootedBranchItem(QGraphicsItem* parent, qreal angle, TvRectangularBranchItem* from, const QString& nodeName);
+    TvUnrootedBranchItem(TvUnrootedBranchItem* parent, qreal angle, TvRectangularBranchItem* from, const QString& nodeName);
 
     QRectF boundingRect() const override;
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void setLabelPositions() override;
+    void updateLabelPositions() final override;
 };
 
 }  // namespace U2
-
-#endif

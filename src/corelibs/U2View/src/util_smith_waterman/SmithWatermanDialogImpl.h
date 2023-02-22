@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SMITH_WATERMAN_DIALOG_IMPL_H_
-#define _U2_SMITH_WATERMAN_DIALOG_IMPL_H_
+#pragma once
 
 #include <QCloseEvent>
 #include <QDialog>
@@ -119,5 +118,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

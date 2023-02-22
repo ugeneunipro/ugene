@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_CONTENT_FILTER_TASK_H_
-#define _U2_SEQUENCE_CONTENT_FILTER_TASK_H_
+#pragma once
 
 #include <U2Algorithm/FindAlgorithm.h>
 
@@ -67,5 +66,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SEQUENCE_CONTENT_FILTER_TASK_H_

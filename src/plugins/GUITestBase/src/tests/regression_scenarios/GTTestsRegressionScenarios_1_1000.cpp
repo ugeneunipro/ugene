@@ -184,7 +184,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057_2) {
     const QString expectedQualifierName = "db_xref";
 
     foreach (QTreeWidgetItem* item, selectedItems) {
-        AVQualifierItem* qualifierItem = dynamic_cast<AVQualifierItem*>(item);
+        auto qualifierItem = dynamic_cast<AVQualifierItem*>(item);
         if (nullptr != qualifierItem) {
             qualifiersCount++;
             const QString qualifierName = item->data(0, Qt::DisplayRole).toString();
@@ -287,7 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057_5) {
 
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::getAllSelectedItems(os);
     foreach (QTreeWidgetItem* i, items) {
-        AVItem* item = dynamic_cast<AVItem*>(i);
+        auto item = dynamic_cast<AVItem*>(i);
         CHECK_SET_ERR(item != nullptr, "AvItem is NULL");
         CHECK_SET_ERR(item->type == AVItemType_Group, "There are items selected");
     }
@@ -503,7 +503,7 @@ GUI_TEST_CLASS_DEFINITION(test_0574) {
             GTWidget::click(os, GTWidget::findWidget(os, "takeAllButton"));
 
             // 7. Select your fragment in "New molecule contents", click Edit
-            QTreeWidget* tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "molConstructWidget"));
+            auto tree = dynamic_cast<QTreeWidget*>(GTWidget::findWidget(os, "molConstructWidget"));
             GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "Blunt"));
 
             // 8. For the left end: select Overhang, check Custom Overhang, select 5'-3', write "AA" (without the quotes) to the 5'-3' edit

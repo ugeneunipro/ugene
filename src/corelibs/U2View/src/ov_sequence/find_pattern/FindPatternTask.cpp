@@ -48,7 +48,7 @@ QList<Task*> FindPatternTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == findAlgorithmTask) {
-        FindAlgorithmTask* task = qobject_cast<FindAlgorithmTask*>(findAlgorithmTask);
+        auto task = qobject_cast<FindAlgorithmTask*>(findAlgorithmTask);
         SAFE_POINT(task, "Failed to cast FindAlgorithTask!", QList<Task*>());
 
         QList<FindAlgorithmResult> resultz = task->popResults();
@@ -126,7 +126,7 @@ FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings& settin
 
 QList<Task*> FindPatternListTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
-    FindPatternTask* task = qobject_cast<FindPatternTask*>(subTask);
+    auto task = qobject_cast<FindPatternTask*>(subTask);
     SAFE_POINT(nullptr != task, "Failed to cast FindPatternTask!", QList<Task*>());
     if (!task->hasNoResults()) {
         noResults = false;

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MAIN_WINDOW_H_
-#define _U2_MAIN_WINDOW_H_
+#pragma once
 
 #include <QEvent>
 #include <QWidget>
@@ -243,4 +242,3 @@ public:
 Q_DECLARE_METATYPE(U2::MainWindow*)
 Q_DECLARE_METATYPE(U2::MWMDIManager*)
 Q_DECLARE_METATYPE(U2::MWDockManager*)
-#endif

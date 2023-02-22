@@ -20,6 +20,8 @@ HEADERS += src/EditPrimerDialog.h \
            src/PrimerLibraryWidget.h \
            src/PrimersDetailsDialog.h \
            src/PrimersGrouperWorker.h \
+           src/TempCalcDelegate.h \
+           src/TempCalcPropertyWidget.h \
            src/export/ExportPrimersDialog.h \
            src/export/ExportPrimersToDatabaseTask.h \
            src/export/ExportPrimersToLocalFileTask.h \
@@ -58,6 +60,8 @@ SOURCES += src/EditPrimerDialog.cpp \
            src/PrimerLibraryWidget.cpp \
            src/PrimersDetailsDialog.cpp \
            src/PrimersGrouperWorker.cpp \
+           src/TempCalcDelegate.cpp \
+           src/TempCalcPropertyWidget.cpp \
            src/export/ExportPrimersDialog.cpp \
            src/export/ExportPrimersToDatabaseTask.cpp \
            src/export/ExportPrimersToLocalFileTask.cpp \

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _NOTIFICATION_H_
-#define _NOTIFICATION_H_
+#pragma once
 
 #include <QAction>
 #include <QCheckBox>
@@ -233,5 +232,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

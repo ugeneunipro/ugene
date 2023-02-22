@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GTTESTS_GENECUT_H_
-#define _GTTESTS_GENECUT_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -45,5 +44,3 @@ GUI_TEST_CLASS_DECLARATION(test_0012)
 
 }  // namespace GUITest_common_scenarios_genecut
 }  // namespace U2
-
-#endif  // _GTTESTS_GENECUT_H_

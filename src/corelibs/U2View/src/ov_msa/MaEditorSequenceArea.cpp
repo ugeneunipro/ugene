@@ -271,7 +271,7 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 
     setSelectionRect(newSelectionRect);
     QPoint newCursorPos = editor->getCursorPosition() + QPoint(dx, dy);
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         if (newCursorPos.x() <= getLastVisibleBase(false) &&
             newCursorPos.x() >= getFirstVisibleBase()) {
             editor->setCursorPosition(newCursorPos);
@@ -621,7 +621,7 @@ void MaEditorSequenceArea::sl_changeCopyFormat(const QString& formatId) {
 }
 
 void MaEditorSequenceArea::sl_changeColorScheme() {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     if (action == nullptr) {
         action = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
@@ -720,7 +720,7 @@ void MaEditorSequenceArea::sl_setDefaultColorScheme() {
 }
 
 void MaEditorSequenceArea::sl_changeHighlightScheme() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     if (a == nullptr) {
         a = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
@@ -838,10 +838,12 @@ void MaEditorSequenceArea::paintEvent(QPaintEvent* e) {
 
 void MaEditorSequenceArea::wheelEvent(QWheelEvent* we) {
     bool toMin = we->delta() > 0;
-    if (we->modifiers() == 0) {
-        shBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
-    } else if (we->modifiers() & Qt::SHIFT) {
-        svBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
+    // Manually shift scrollbars on wheel event.
+    // With no modifiers the default scrollbar is shifted.
+    // Wheel + Alt changes the default wheel action from horizontal <=> vertical (default QT behavior for scroll-areas).
+    auto scrollBar = we->modifiers() == Qt::AltModifier ? svBar : (we->modifiers() == 0 ? (shBar->isEnabled() ? shBar : svBar) : nullptr);
+    if (scrollBar) {
+        scrollBar->triggerAction(toMin ? QAbstractSlider::SliderSingleStepSub : QAbstractSlider::SliderSingleStepAdd);
     }
     QWidget::wheelEvent(we);
 }
@@ -1056,7 +1058,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Left:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1074,7 +1076,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Right:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1092,7 +1094,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Up:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1110,7 +1112,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             break;
         case Qt::Key_Down:
             // Delegate the event to the multiline widgets in case of 1x1 selection
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode() && selectionRect.size() == QSize(1, 1)) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode() && selectionRect.size() == QSize(1, 1)) {
                 break;
             }
             if (!isShiftPressed || !isMsaEditor) {
@@ -1133,7 +1135,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_Home:
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
             if (isShiftPressed) {
@@ -1145,7 +1147,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_End:
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
             if (isShiftPressed) {
@@ -1159,7 +1161,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             break;
         case Qt::Key_PageUp:
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
             ui->getScrollController()->scrollPage(isShiftPressed
@@ -1167,7 +1169,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
                                                       : ScrollController::Left);
             break;
         case Qt::Key_PageDown:
-            if (isMsaEditor && !isShiftPressed && editor->getMultilineMode()) {
+            if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
             ui->getScrollController()->scrollPage(isShiftPressed
@@ -1236,7 +1238,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
         moveSelection(countOfGaps, 0, true);
     }
     if (!editor->getSelection().isEmpty()) {
-        if (editor->getMultilineMode()) {
+        if (editor->isMultilineMode()) {
             // TODO:ichebyki
             // ?
             QPoint cursorPosition = editor->getCursorPosition();

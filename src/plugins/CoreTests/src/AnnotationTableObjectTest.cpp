@@ -73,7 +73,7 @@ Task::ReportResult GTest_CheckNumAnnotations::report() {
         return ReportResult_Finished;
     }
     assert(obj != nullptr);
-    AnnotationTableObject* anntbl = qobject_cast<AnnotationTableObject*>(obj);
+    auto anntbl = qobject_cast<AnnotationTableObject*>(obj);
     const QList<Annotation*> annList = anntbl->getAnnotations();
     if (num != annList.size()) {
         stateInfo.setError(QString("annotations count not matched: %1, expected %2 ").arg(annList.size()).arg(num));
@@ -112,7 +112,7 @@ Task::ReportResult GTest_FindAnnotationByNum::report() {
         return ReportResult_Finished;
     }
 
-    AnnotationTableObject* anntbl = qobject_cast<AnnotationTableObject*>(obj);
+    auto anntbl = qobject_cast<AnnotationTableObject*>(obj);
     if (anntbl == nullptr) {
         stateInfo.setError(QString("qobject_cast error: null-pointer annotation table"));
         return ReportResult_Finished;
@@ -182,7 +182,7 @@ Task::ReportResult GTest_FindAnnotationByName::report() {
         return ReportResult_Finished;
     }
 
-    AnnotationTableObject* anntbl = qobject_cast<AnnotationTableObject*>(obj);
+    auto anntbl = qobject_cast<AnnotationTableObject*>(obj);
     if (anntbl == nullptr) {
         stateInfo.setError(QString("qobject_cast error: null-pointer annotation table"));
         return ReportResult_Finished;

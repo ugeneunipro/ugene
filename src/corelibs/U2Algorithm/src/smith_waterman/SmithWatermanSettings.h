@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SMITH_WATERMAN_SETTINGS_H_
-#define _U2_SMITH_WATERMAN_SETTINGS_H_
+#pragma once
 
 #include <QHash>
 
@@ -125,5 +124,3 @@ struct SmithWatermanSettings {
 };
 
 }  // namespace U2
-
-#endif

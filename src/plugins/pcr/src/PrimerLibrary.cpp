@@ -24,6 +24,8 @@
 #include <QDir>
 #include <QFileInfo>
 
+#include <U2Algorithm/TempCalcRegistry.h>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/L10n.h>
@@ -31,6 +33,7 @@
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/UdrDbi.h>
 #include <U2Core/UdrRecord.h>
 #include <U2Core/UdrSchemaRegistry.h>
@@ -43,19 +46,23 @@ QMutex PrimerLibrary::mutex;
 
 namespace {
 const UdrSchemaId PRIMER_UDR_ID = "Primer";
+const UdrSchemaId PRIMER_SETTINGS_UDR_ID = PRIMER_UDR_ID + "Settings";
 const int NAME_FILED = 0;
 const int SEQ_FILED = 1;
 const int GC_FILED = 2;
 const int TM_FILED = 3;
+const int PRAMETER_FILED = 0;
+const int VALUE_FILED = 1;
 }  // namespace
 
 PrimerLibrary* PrimerLibrary::getInstance(U2OpStatus& os) {
     QMutexLocker lock(&mutex);
     if (instance.data() != nullptr) {
+        instance->initTemperatureCalculator();
         return instance.data();
     }
 
-    initPrimerUdr(os);
+    initPrimerUdrs(os);
     CHECK_OP(os, nullptr);
 
     UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
@@ -94,32 +101,47 @@ void PrimerLibrary::release() {
 }
 
 PrimerLibrary::PrimerLibrary(DbiConnection* connection)
-    : connection(connection), udrDbi(nullptr) {
+    : connection(connection) {
     udrDbi = connection->dbi->getUdrDbi();
+    createPrimerSettingsTableIfNotExists();
+    initTemperatureCalculator();
 }
 
 PrimerLibrary::~PrimerLibrary() {
     delete connection;
 }
 
-void PrimerLibrary::initPrimerUdr(U2OpStatus& os) {
-    CHECK(nullptr == AppContext::getUdrSchemaRegistry()->getSchemaById(PRIMER_UDR_ID), );
+void PrimerLibrary::initPrimerUdrs(U2OpStatus& os) {
+    auto registerUdrSchema = [](U2OpStatus& state, const UdrSchemaId& id, const QList<QPair<QByteArray, UdrSchema::DataType>>& fields) {
+        CHECK(AppContext::getUdrSchemaRegistry()->getSchemaById(id) == nullptr, );
 
-    UdrSchema::FieldDesc name("name", UdrSchema::STRING);
-    UdrSchema::FieldDesc sequence("sequence", UdrSchema::STRING);
-    UdrSchema::FieldDesc gc("GC", UdrSchema::DOUBLE);
-    UdrSchema::FieldDesc tm("Tm", UdrSchema::DOUBLE);
+        QScopedPointer<UdrSchema> primerSchema(new UdrSchema(id));
+        for (const auto& field : qAsConst(fields)) {
+            primerSchema->addField(UdrSchema::FieldDesc(field.first, field.second), state);
+            CHECK_OP(state, );
+        }
 
-    QScopedPointer<UdrSchema> primerSchema(new UdrSchema(PRIMER_UDR_ID));
-    primerSchema->addField(name, os);
-    primerSchema->addField(sequence, os);
-    primerSchema->addField(gc, os);
-    primerSchema->addField(tm, os);
-    CHECK_OP(os, );
+        AppContext::getUdrSchemaRegistry()->registerSchema(primerSchema.data(), state);
+        if (!state.hasError()) {
+            primerSchema.take();
+        }
+    };
 
-    AppContext::getUdrSchemaRegistry()->registerSchema(primerSchema.data(), os);
-    if (!os.hasError()) {
-        primerSchema.take();
+    {
+        QList<QPair<QByteArray, UdrSchema::DataType>> fields;
+        fields.append({ "name", UdrSchema::STRING });
+        fields.append({ "sequence", UdrSchema::STRING });
+        fields.append({ "GC", UdrSchema::DOUBLE });
+        fields.append({ "Tm", UdrSchema::DOUBLE });
+        registerUdrSchema(os, PRIMER_UDR_ID, fields);
+        CHECK_OP(os, );
+    }
+    {
+        QList<QPair<QByteArray, UdrSchema::DataType>> fields;
+        fields.append({ "parameter", UdrSchema::STRING });
+        fields.append({ "value", UdrSchema::STRING });
+        registerUdrSchema(os, PRIMER_SETTINGS_UDR_ID, fields);
+        CHECK_OP(os, );
     }
 }
 
@@ -199,15 +221,145 @@ void PrimerLibrary::updateRawPrimer(Primer primer, U2OpStatus& os) {
     updatePrimer(primer, os);
 }
 
+const TempCalcSettings& PrimerLibrary::getTemperatureSettings() const {
+    return temperatureCalculator->getSettings();
+}
+
+void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator) {
+    temperatureCalculator = newTemperatureCalculator;
+    auto settingsMap = temperatureCalculator->getSettings();
+    U2OpStatusImpl os;
+    auto records = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
+    CHECK_OP(os, );
+
+    auto addAllFromSettingsMap = [this](const QVariantMap& settings, U2OpStatus& state) {
+        auto keys = settings.keys();
+        for (const auto& key : qAsConst(keys)) {
+            QList<UdrValue> values;
+            values << UdrValue(key);
+            values << UdrValue(settings.value(key).toString());
+            udrDbi->addRecord(PRIMER_SETTINGS_UDR_ID, values, state);
+            CHECK_OP(state, );
+        }
+    };
+
+    if (records.isEmpty()) {
+        udrDbi->createTable(PRIMER_SETTINGS_UDR_ID, os);
+        CHECK_OP(os, );
+
+        addAllFromSettingsMap(settingsMap, os);
+        CHECK_OP(os, );
+
+        return;
+    }
+
+    auto id = settingsMap.value(BaseTempCalc::KEY_ID);
+    auto idRecords = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
+    CHECK_OP(os, );
+
+    // if @KEY_ID is the same (method wasn't changed, only parameters) we need just update values
+    bool update = false;
+    // otherwise - remove everything but @KEY_ID (this one could be updated)
+    QList<UdrRecordId> toRemove;
+    QList<UdrRecord> toUpdate;
+    auto keys = settingsMap.keys();
+    for (const auto& record : qAsConst(idRecords)) {
+        auto recordParameter = record.getString(PRAMETER_FILED, os);
+        CHECK_OP(os, );
+
+        if (keys.contains(recordParameter)) {
+            auto recordValue = record.getString(VALUE_FILED, os);
+            CHECK_OP(os, );
+
+            if (settingsMap.value(recordParameter) != recordValue) {
+                toUpdate.append(record);
+            }
+        } else {
+            toRemove.append(UdrRecordId(PRIMER_SETTINGS_UDR_ID, record.getId().getRecordId()));
+        }
+        CHECK_CONTINUE(recordParameter == BaseTempCalc::KEY_ID);
+        
+        auto recordValue = record.getString(VALUE_FILED, os);
+        CHECK_CONTINUE(recordValue == id);
+
+        update = true;
+    }
+
+    // Either update all (if only parameters of algorithm were changed)
+    // or only key (if the algorithm itself was changed)
+    SAFE_POINT(update || (!update && toUpdate.size() == 1), "Incorrect update size", );
+    for (const auto& record : qAsConst(toUpdate)) {
+        auto recordParameter = record.getString(PRAMETER_FILED, os);
+        auto recordParameterValue = settingsMap.value(recordParameter).toString();
+        QList<UdrValue> values;
+        values << UdrValue(recordParameter);
+        values << UdrValue(recordParameterValue);
+        UdrRecordId recirdId(PRIMER_SETTINGS_UDR_ID, record.getId().getRecordId());
+        udrDbi->updateRecord(recirdId, values, os);
+        CHECK_OP(os, );
+    }
+
+    if (!update) {
+        for (const auto& record : qAsConst(toRemove)) {
+            udrDbi->removeRecord(record, os);
+            CHECK_OP(os, );
+        }
+        settingsMap.remove(BaseTempCalc::KEY_ID);
+        addAllFromSettingsMap(settingsMap, os);
+        CHECK_OP(os, );
+    }
+
+}
+
 void PrimerLibrary::setTmAndGcOfPrimer(Primer& primer) {
     if (PrimerStatistics::validate(primer.sequence)) {
-        PrimerStatisticsCalculator calc(primer.sequence.toLocal8Bit());
+        PrimerStatisticsCalculator calc(primer.sequence.toLocal8Bit(), temperatureCalculator);
         primer.gc = calc.getGC();
         primer.tm = calc.getTm();
     } else {
         primer.gc = Primer::INVALID_GC;
-        primer.tm = Primer::INVALID_TM;
+        primer.tm = BaseTempCalc::INVALID_TM;
     }
+}
+
+void PrimerLibrary::createPrimerSettingsTableIfNotExists() {
+    U2OpStatusImpl os;
+    // This table appears in v46 and not exist in previous versions
+    // need to create it
+    udrDbi->createTable(PRIMER_SETTINGS_UDR_ID, os);
+    CHECK_OP(os, );
+}
+
+void PrimerLibrary::initTemperatureCalculator() {
+    CHECK(!initializedFromDb, );
+
+    U2OpStatusImpl os;
+    auto records = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
+    CHECK_OP(os, );
+
+    QVariantMap settings;
+    QString calcId;
+    for (const auto& record : qAsConst(records)) {
+        auto recordParameter = record.getString(PRAMETER_FILED, os);
+        CHECK_OP(os, );
+
+        auto recordValue = record.getString(VALUE_FILED, os);
+        CHECK_OP(os, );
+
+        settings.insert(recordParameter, recordValue);
+        CHECK_CONTINUE(recordParameter == BaseTempCalc::KEY_ID);
+
+        calcId = recordValue;
+    }
+
+    auto factory = AppContext::getTempCalcRegistry()->getById(calcId);
+    if (factory != nullptr) {
+        temperatureCalculator = factory->createTempCalculator(settings);
+        initializedFromDb = true;
+    } else {
+        temperatureCalculator = AppContext::getTempCalcRegistry()->createDefaultTempCalculator();
+    }
+    
 }
 
 }  // namespace U2

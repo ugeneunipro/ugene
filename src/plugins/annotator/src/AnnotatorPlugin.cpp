@@ -70,7 +70,7 @@ AnnotatorPlugin::AnnotatorPlugin()
 
     // Annotator test
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
@@ -88,7 +88,7 @@ AnnotatorViewContext::AnnotatorViewContext(QObject* p, bool customAutoAnnotation
 }
 
 void AnnotatorViewContext::initViewContext(GObjectView* v) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+    auto av = qobject_cast<AnnotatedDNAView*>(v);
     ADVGlobalAction* findRegionsAction = new ADVGlobalAction(av, QIcon(":annotator/images/regions.png"), tr("Find annotated regions..."), 30);
     connect(findRegionsAction, SIGNAL(triggered()), SLOT(sl_showCollocationDialog()));
 
@@ -101,8 +101,8 @@ void AnnotatorViewContext::initViewContext(GObjectView* v) {
 
 void AnnotatorViewContext::sl_showCollocationDialog() {
     QAction* a = (QAction*)sender();
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(a);
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
 
     QSet<QString> allNames;
@@ -129,8 +129,8 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
 
 void AnnotatorViewContext::sl_showCustomAutoAnnotationDialog() {
     QAction* a = (QAction*)sender();
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(a);
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();

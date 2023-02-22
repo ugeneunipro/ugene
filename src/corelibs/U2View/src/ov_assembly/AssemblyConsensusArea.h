@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_CONSENSUS_AREA_H__
-#define __ASSEMBLY_CONSENSUS_AREA_H__
+#pragma once
 
 #include <U2Algorithm/AssemblyConsensusAlgorithm.h>
 
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_OPEN_DOCUMENT_TASK_H_
-#define _U2_OPEN_DOCUMENT_TASK_H_
+#pragma once
 
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/GUrl.h>
@@ -109,5 +108,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif

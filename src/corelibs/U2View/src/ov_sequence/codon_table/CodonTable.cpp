@@ -118,7 +118,7 @@ void CodonTableView::sl_setVisible() {
 }
 
 void CodonTableView::sl_setAminoTranslation() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     if (a != nullptr) {
         QString tid = a->data().toString();
         setAminoTranslation(tid);

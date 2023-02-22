@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHY_TREE_DISPLAY_OPTIONS_WIDGET_H_
-#define _U2_PHY_TREE_DISPLAY_OPTIONS_WIDGET_H_
+#pragma once
 
 #include "CreatePhyTreeWidget.h"
 
@@ -45,5 +44,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PHY_TREE_DISPLAY_OPTIONS_WIDGET_H_

@@ -166,7 +166,7 @@ LoadUnloadedDocumentTask* LoadUnloadedDocumentTask::findActiveLoadingTask(Docume
     QString res = getResourceName(d);
     QList<Task*> tasks = AppContext::getResourceTracker()->getResourceUsers(res);
     foreach (Task* t, tasks) {
-        LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
+        auto lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
         if (lut != nullptr) {
             return lut;
         }
@@ -316,7 +316,7 @@ void LoadDocumentTask::prepare() {
 
     int memUseMB = calculateMemory();
     if (memUseMB > 0) {
-        addTaskResource(TaskResourceUsage(RESOURCE_MEMORY, memUseMB, false));
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, memUseMB, TaskResourceStage::Run));
     }
 }
 

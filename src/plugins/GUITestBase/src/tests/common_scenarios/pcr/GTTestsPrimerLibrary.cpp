@@ -32,12 +32,14 @@
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMeltingTemperature.h"
 #include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/AddPrimerDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ExportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
@@ -82,7 +84,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     public:
         void run(HI::GUITestOpStatus& os) {
             // 3. Set the focus at the primer line edit and write "Q%1" (not ACGT).
-            QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit"));
+            auto primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit"));
             GTLineEdit::setText(os, primerEdit, "Q%1", true);
 
             // Expected: the line edit is empty.
@@ -307,6 +309,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    1. Open the library, clear it, add sequences "AAAA", "CCCC", "GGGG", "TTTT".
     GTUtilsPrimerLibrary::openLibrary(os);
     GTUtilsPrimerLibrary::clearLibrary(os);
+    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters = {
+    {GTUtilsMeltingTemperature::Parameter::Algorithm, "Rough" } };
+    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Temperature);
+
 
     GTUtilsPrimerLibrary::addPrimer(os, "primer1", "AAAA");
     GTUtilsPrimerLibrary::addPrimer(os, "primer2", "CCCC");
@@ -537,6 +544,28 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     const int librarySize = GTUtilsPrimerLibrary::librarySize(os);
     CHECK_SET_ERR(2 == librarySize, QString("An unexpected library size: expect %1, got %2").arg(2).arg(librarySize));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0017) {
+    // Open Primer Library
+    // Check, that dialog works
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters = {
+        {GTUtilsMeltingTemperature::Parameter::Algorithm, "Primer 3" },
+        { GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00" },
+        { GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00" },
+        { GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50" },
+        { GTUtilsMeltingTemperature::Parameter::DntpConc, "0" },
+        { GTUtilsMeltingTemperature::Parameter::DmsoConc, "1" },
+        { GTUtilsMeltingTemperature::Parameter::DmsoFactor, "1.6" },
+        { GTUtilsMeltingTemperature::Parameter::FormamideConc, "1" },
+        { GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0" },
+        { GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2" },
+        { GTUtilsMeltingTemperature::Parameter::MaxLen, "33"} };
+    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Temperature);
+}
+
 
 }  // namespace GUITest_common_scenarios_primer_library
 }  // namespace U2

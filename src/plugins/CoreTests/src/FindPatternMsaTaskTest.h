@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_PATTERN_MSA_TASK_TEST_
-#define _U2_FIND_PATTERN_MSA_TASK_TEST_
+#pragma once
 
 #include <QDomElement>
 #include <QFileInfo>
@@ -60,5 +59,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

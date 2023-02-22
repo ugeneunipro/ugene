@@ -76,7 +76,7 @@ TCoffeeSupportTask::~TCoffeeSupportTask() {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 CHECK(nullptr != alObj, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
@@ -100,7 +100,7 @@ void TCoffeeSupportTask::prepare() {
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (nullptr != obj) {
-            MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
             SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalWAlignment");
             alObj->lockState(lock);
@@ -208,7 +208,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         const QList<GObject*>& newDocumentObjects = tmpDoc->getObjects();
         SAFE_POINT(!newDocumentObjects.empty(), "No objects in the temporary document!", res);
 
-        MultipleSequenceAlignmentObject* newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
+        auto newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
         SAFE_POINT(nullptr != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
 
         resultMA = newMAligmentObject->getMsaCopy();
@@ -219,7 +219,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
             if (nullptr != obj) {
-                MultipleSequenceAlignmentObject* alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
                 SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);

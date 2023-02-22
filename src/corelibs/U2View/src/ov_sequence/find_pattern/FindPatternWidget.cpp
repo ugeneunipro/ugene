@@ -201,7 +201,7 @@ FindPatternEventFilter::FindPatternEventFilter(QTextEdit* textEdit)
 bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
     const QEvent::Type eventType = event->type();
     if (eventType == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+        auto keyEvent = dynamic_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
             if (keyEvent->modifiers().testFlag(Qt::ShiftModifier)) {
                 emit si_shiftEnterPressed();
@@ -215,7 +215,7 @@ bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
             }
         }
     } else if (eventType == QEvent::Show) {
-        QWidget* watched = dynamic_cast<QWidget*>(obj);
+        auto watched = dynamic_cast<QWidget*>(obj);
         if (nullptr != watched) {
             watched->setFocus();
         }
@@ -1099,7 +1099,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern>& patterns) 
 }
 
 void FindPatternWidget::sl_loadPatternTaskStateChanged() {
-    LoadPatternsFileTask* loadTask = qobject_cast<LoadPatternsFileTask*>(sender());
+    auto loadTask = qobject_cast<LoadPatternsFileTask*>(sender());
     CHECK(loadTask != nullptr, );
     CHECK(loadTask->isFinished() && !loadTask->isCanceled(), );
     CHECK(!loadTask->hasError(), );
@@ -1123,7 +1123,7 @@ bool compareByRegionStartPos(const SharedAnnotationData& r1, const SharedAnnotat
 }
 
 void FindPatternWidget::sl_findPatternTaskStateChanged() {
-    FindPatternListTask* findTask = qobject_cast<FindPatternListTask*>(sender());
+    auto findTask = qobject_cast<FindPatternListTask*>(sender());
     CHECK(findTask != nullptr, );
     if (findTask != searchTask) {
         return;
@@ -1148,7 +1148,7 @@ void FindPatternWidget::sl_findPatternTaskStateChanged() {
             checkState();
             // Activate the first search result.
             if (currentResultIndex >= 0) {
-                ADVSingleSequenceWidget* seqWdgt = qobject_cast<ADVSingleSequenceWidget*>(annotatedDnaView->getActiveSequenceWidget());
+                auto seqWdgt = qobject_cast<ADVSingleSequenceWidget*>(annotatedDnaView->getActiveSequenceWidget());
                 if (seqWdgt != nullptr) {
                     if (seqWdgt->getDetView() != nullptr && !seqWdgt->getDetView()->isEditMode()) {
                         showCurrentResult();
@@ -1448,7 +1448,7 @@ void FindPatternWidget::stopCurrentSearchTask() {
 }
 
 void FindPatternWidget::setUpTabOrder() const {
-    CreateAnnotationWidgetController* annotationWidget = qobject_cast<CreateAnnotationWidgetController*>(createAnnotationController);
+    auto annotationWidget = qobject_cast<CreateAnnotationWidgetController*>(createAnnotationController);
     SAFE_POINT(annotationWidget != nullptr, "Bad casting to CreateAnnotationWidgetController", );
 
     QWidget::setTabOrder(nextPushButton, boxAlgorithm);

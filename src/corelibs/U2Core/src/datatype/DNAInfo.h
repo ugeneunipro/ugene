@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_INFO_H_
-#define _U2_DNA_INFO_H_
+#pragma once
 
 #include <QPair>
 #include <QString>
@@ -171,5 +170,3 @@ public:
 Q_DECLARE_METATYPE(U2::DNALocusInfo)
 Q_DECLARE_METATYPE(U2::DNASourceInfo)
 Q_DECLARE_METATYPE(U2::DNAReferenceInfo)
-
-#endif

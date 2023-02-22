@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_WORKFLOW_SAMPLES_H_
-#define GTTESTS_WORKFLOW_SAMPLES_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -36,5 +35,3 @@ GUI_TEST_CLASS_DECLARATION(test_0001)
 }  // namespace GUITest_common_scenarios_workflow_samples
 
 }  // namespace U2
-
-#endif  // GTTESTS_WORKFLOW_SAMPLES_H_

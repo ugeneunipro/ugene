@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SCRIPTING_TOOL_REGISTRY_H
-#define _U2_SCRIPTING_TOOL_REGISTRY_H
+#pragma once
 
 #include <QMap>
 #include <QStringList>
@@ -76,4 +75,3 @@ protected:
 };
 
 }  // namespace U2
-#endif  // _U2_SCRIPTING_TOOL_REGISTRY_H

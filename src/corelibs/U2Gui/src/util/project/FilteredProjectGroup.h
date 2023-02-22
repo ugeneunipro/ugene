@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FILTERED_PROJECT_GROUP_H_
-#define _U2_FILTERED_PROJECT_GROUP_H_
+#pragma once
 
 #include <QObject>
 
@@ -79,5 +78,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_FILTERED_PROJECT_GROUP_H_

@@ -170,12 +170,12 @@ PropertyWidget* SnpEffDatabaseDelegate::createWizardWidget(U2OpStatus& /*os*/, Q
 void SnpEffDatabaseDelegate::setEditorData(QWidget* editor,
                                            const QModelIndex& index) const {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    SnpEffDatabasePropertyWidget* propertyWidget = dynamic_cast<SnpEffDatabasePropertyWidget*>(editor);
+    auto propertyWidget = dynamic_cast<SnpEffDatabasePropertyWidget*>(editor);
     propertyWidget->setValue(val);
 }
 
 void SnpEffDatabaseDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    SnpEffDatabasePropertyWidget* propertyWidget = dynamic_cast<SnpEffDatabasePropertyWidget*>(editor);
+    auto propertyWidget = dynamic_cast<SnpEffDatabasePropertyWidget*>(editor);
     QString val = propertyWidget->value().toString();
     model->setData(index, val, ConfigurationEditor::ItemValueRole);
 }
@@ -185,7 +185,7 @@ PropertyDelegate* SnpEffDatabaseDelegate::clone() {
 }
 
 void SnpEffDatabaseDelegate::sl_commit() {
-    SnpEffDatabasePropertyWidget* editor = static_cast<SnpEffDatabasePropertyWidget*>(sender());
+    auto editor = static_cast<SnpEffDatabasePropertyWidget*>(sender());
     CHECK(editor != nullptr, );
     emit commitData(editor);
 }

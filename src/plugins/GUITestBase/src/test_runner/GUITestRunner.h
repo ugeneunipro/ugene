@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GUITESTRUNNER_H
-#define GUITESTRUNNER_H
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // GUITESTRUNNER_H

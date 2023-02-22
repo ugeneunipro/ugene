@@ -119,7 +119,7 @@ void MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(QAction* a, QMenu* co
 }
 
 void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions, QList<MsaColorSchemeFactory*> colorFactories, MaEditorSequenceArea* actionsParent) {
-    MSAEditor* msa = qobject_cast<MSAEditor*>(actionsParent->getEditor());
+    auto msa = qobject_cast<MSAEditor*>(actionsParent->getEditor());
 
     foreach (MsaColorSchemeFactory* factory, colorFactories) {
         QString name = factory->getName();
@@ -129,14 +129,14 @@ void MsaSchemesMenuBuilder::fillColorSchemeMenuActions(QList<QAction*>& actions,
         action->setData(factory->getId());
         actions.append(action);
 
-        if (msa != nullptr && msa->getMultilineMode()) {
+        if (msa != nullptr && msa->isMultilineMode()) {
             signalMapper->setMapping(action, action->data().toString());
             connect(action, SIGNAL(triggered()), signalMapper, SLOT(map()));
         } else {
             connect(action, SIGNAL(triggered()), actionsParent, SLOT(sl_changeColorScheme()));
         }
     }
-    if (msa != nullptr && msa->getMultilineMode()) {
+    if (msa != nullptr && msa->isMultilineMode()) {
         connect(signalMapper, SIGNAL(mapped(const QString&)), msa->getUI(), SLOT(sl_changeColorScheme(const QString&)));
     }
 }

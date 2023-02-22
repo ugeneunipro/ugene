@@ -197,7 +197,7 @@ public:
 
     void run(HI::GUITestOpStatus& os) {
         GTMouseDriver::release();
-        QMenu* activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+        auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
         CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
 
         QStringList actualGroupNames;

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef VANDERWAALSSURFACE_H
-#define VANDERWAALSSURFACE_H
+#pragma once
 
 #include "MolecularSurface.h"
 
@@ -39,5 +38,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // VANDERWAALSSURFACE_H

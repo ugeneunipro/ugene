@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_COMBO_BOX_CONTROLLER_H_
-#define _U2_MSA_COMBO_BOX_CONTROLLER_H_
+#pragma once
 
 #include <QComboBox>
 
@@ -129,8 +128,8 @@ void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
 template<class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Factory*> rawSchemesFactories, const QString& groupName) {
     CHECK(!rawSchemesFactories.isEmpty(), );
-    GroupedComboBoxDelegate* schemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(comboBox->itemDelegate());
-    QStandardItemModel* schemeModel = qobject_cast<QStandardItemModel*>(comboBox->model());
+    auto schemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(comboBox->itemDelegate());
+    auto schemeModel = qobject_cast<QStandardItemModel*>(comboBox->model());
     CHECK(schemeDelegate != nullptr, );
     CHECK(schemeModel != nullptr, );
     schemeDelegate->addParentItem(schemeModel, groupName);
@@ -140,5 +139,3 @@ void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Fa
 }
 
 }  // namespace U2
-
-#endif

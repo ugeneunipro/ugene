@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SQLITEUDRDBI_H_
-#define _U2_SQLITEUDRDBI_H_
+#pragma once
 
 #include "SQLiteDbi.h"
 
@@ -42,6 +41,7 @@ public:
     void removeRecord(const UdrRecordId& recordId, U2OpStatus& os);
     InputStream* createInputStream(const UdrRecordId& recordId, int fieldNum, U2OpStatus& os);
     OutputStream* createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os);
+    void createTable(const UdrSchemaId& schemaId, U2OpStatus& os) override;
     void initSqlSchema(U2OpStatus& os);
 
     ModificationAction* getModificationAction(const U2DataId& id);
@@ -69,5 +69,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_SQLITEUDRDBI_H_

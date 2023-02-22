@@ -151,7 +151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
     foreach (QGraphicsItem* item, items) {
-        WorkflowProcessItem* s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
+        auto s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
         if (s) {
             id = s->getStyle();
             CHECK_SET_ERR(id == "simple", "items style is not minimal");
@@ -178,7 +178,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
     foreach (QGraphicsItem* item, items) {
-        WorkflowProcessItem* s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
+        auto s = qgraphicsitem_cast<WorkflowProcessItem*>(item);
         if (s) {
             id = s->getStyle();
             CHECK_SET_ERR(id == "ext", "items style is not minimal");

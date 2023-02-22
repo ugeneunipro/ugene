@@ -23,7 +23,6 @@
 
 #include <QImageWriter>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
@@ -119,10 +118,10 @@ void ExportImageDialog::accept() {
     QDialog::accept();
 }
 
-void ExportImageDialog::sl_onFormatsBoxItemChanged(const QString& format) {
-    setSizeControlsEnabled(!isVectorGraphicFormat(format));
+void ExportImageDialog::sl_onFormatsBoxItemChanged(const QString& newFormat) {
+    setSizeControlsEnabled(!isVectorGraphicFormat(newFormat));
 
-    const bool areQualityWidgetsVisible = isLossyFormat(format);
+    bool areQualityWidgetsVisible = isLossyFormat(newFormat);
     ui->qualityLabel->setVisible(areQualityWidgetsVisible);
     ui->qualityHorizontalSlider->setVisible(areQualityWidgetsVisible);
     ui->qualitySpinBox->setVisible(areQualityWidgetsVisible);
@@ -231,9 +230,10 @@ void ExportImageDialog::initSaveController(const QString& defaultFormat) {
     config.rollSuffix = "_copy";
 
     SaveDocumentController::SimpleFormatsInfo formatsInfo;
-    QStringList formats = getFormats();
-    foreach (const QString& format, formats) {
-        formatsInfo.addFormat(format, QStringList() << format.toLower());
+    QStringList formatComboTexts = getFormats();
+    for (const auto& formatComboText : qAsConst(formatComboTexts)) {
+        QString fileExtension = formatComboText.toLower();
+        formatsInfo.addFormat(formatComboText, {fileExtension});
     }
 
     saveController = new SaveDocumentController(config, formatsInfo, this);

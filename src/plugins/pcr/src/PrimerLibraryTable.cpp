@@ -23,6 +23,8 @@
 
 #include <QPainter>
 
+#include <U2Algorithm/BaseTempCalc.h>
+
 #include <U2Core/L10n.h>
 #include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -94,6 +96,10 @@ int PrimerLibraryModel::rowCount(const QModelIndex& parent) const {
     return primers.size();
 }
 
+const QList<Primer>& PrimerLibraryModel::getAllPrimers() const {
+    return primers;
+}
+
 Primer PrimerLibraryModel::getPrimer(const QModelIndex& index, U2OpStatus& os) const {
     CHECK_EXT(index.row() >= 0 && index.row() < primers.size(), os.setError(L10N::internalError("Incorrect primer number")), Primer());
     return primers.at(index.row());
@@ -132,7 +138,7 @@ QVariant PrimerLibraryModel::displayData(const QModelIndex& index) const {
         case 1:
             return primer.gc != Primer::INVALID_GC ? PrimerStatistics::getDoubleStringValue(primer.gc) : tr("N/A");
         case 2:
-            return primer.tm != Primer::INVALID_TM ? PrimerStatistics::getDoubleStringValue(primer.tm) : tr("N/A");
+            return primer.tm != BaseTempCalc::INVALID_TM ? PrimerStatistics::getDoubleStringValue(primer.tm) : tr("N/A");
         case 3:
             return primer.sequence.length();
         case 4:
@@ -172,6 +178,10 @@ PrimerLibraryTable::PrimerLibraryTable(QWidget* parent)
     setModel(model);
 
     viewport()->installEventFilter(this);
+}
+
+const QList<Primer>& PrimerLibraryTable::getAllPrimers() const {
+    return model->getAllPrimers();
 }
 
 QList<Primer> PrimerLibraryTable::getSelection() const {

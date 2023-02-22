@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_CONTEXT_H_
-#define _U2_WORKFLOW_CONTEXT_H_
+#pragma once
 
 #include <QMutex>
 
@@ -100,5 +99,3 @@ public:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_CONTEXT_H_

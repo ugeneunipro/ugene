@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_CUSTOM_TOOLS_TASK_H_
-#define _U2_IMPORT_CUSTOM_TOOLS_TASK_H_
+#pragma once
 
 #include <QScopedPointer>
 
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_IMPORT_CUSTOM_TOOLS_TASK_H_

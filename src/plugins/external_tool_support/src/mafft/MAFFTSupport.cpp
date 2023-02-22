@@ -160,7 +160,7 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     CHECK_OP(os, );
 
     // Call run MAFFT align dialog
-    AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
+    auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
 
     MSAEditor* msaEditor = action->getMsaEditor();

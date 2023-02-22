@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BED_FORMAT_H_
-#define _U2_BED_FORMAT_H_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -149,5 +148,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

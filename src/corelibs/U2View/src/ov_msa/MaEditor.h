@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_H_
-#define _U2_MA_EDITOR_H_
+#pragma once
 
 #include <U2Core/U2SafePoints.h>
 
@@ -231,7 +230,7 @@ public:
     virtual void initActionsAndSignals() {};
     virtual void initChildrenActionsAndSignals() {};
 
-    virtual bool getMultilineMode() const;
+    virtual bool isMultilineMode() const;
     virtual bool setMultilineMode(bool newmode);
 
 signals:
@@ -271,8 +270,7 @@ protected slots:
     void sl_gotoSelectedRead();
 
     virtual void sl_multilineViewAction() {
-        SAFE_POINT(false, "The function sl_multilineViewAction() must be overrided", );
-        return;
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overriden", );
     };
 
 private slots:
@@ -373,5 +371,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MA_EDITOR_H_

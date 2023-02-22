@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_WORKFLOW_PARAMETERS_VALIDATION_H_
-#define GTTESTS_WORKFLOW_PARAMETERS_VALIDATION_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -41,5 +40,3 @@ GUI_TEST_CLASS_DECLARATION(test_0006)
 }  // namespace GUITest_common_scenarios_workflow_parameters_validation
 
 }  // namespace U2
-
-#endif  // GTTESTS_WORKFLOW_DESIGNER_H_

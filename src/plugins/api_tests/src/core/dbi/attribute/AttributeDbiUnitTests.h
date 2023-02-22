@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ATTRIBUTE_DBI_UNIT_TEST_H_
-#define _U2_ATTRIBUTE_DBI_UNIT_TEST_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -143,5 +142,3 @@ Q_DECLARE_METATYPE(U2::AttributeDbiUnitTests_RealAttribute);
 Q_DECLARE_METATYPE(U2::AttributeDbiUnitTests_removeAttributes);
 Q_DECLARE_METATYPE(U2::AttributeDbiUnitTests_removeObjectAttributes);
 Q_DECLARE_METATYPE(U2::AttributeDbiUnitTests_StringAttribute);
-
-#endif

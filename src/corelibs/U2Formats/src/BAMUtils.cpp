@@ -22,6 +22,8 @@
 #include <QFileInfo>
 #include <QTemporaryFile>
 
+#include <U2Core/FileAndDirectoryUtils.h>
+
 extern "C" {
 #include <bam.h>
 #include <bam_sort.c>
@@ -31,7 +33,7 @@ extern "C" {
 #    pragma warning(disable : 4018)
 #endif
 
-#include <bam_rmdup.c>
+#include <sam.h>
 
 #ifdef _MSC_VER
 #    pragma warning(pop)
@@ -44,13 +46,12 @@ extern "C" {
 #include <SamtoolsAdapter.h>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
@@ -62,47 +63,142 @@ extern "C" {
 
 namespace U2 {
 
-/** Converts QString to wchar_t*. Caller is responsible to deallocated the returned result memory. */
-static wchar_t* toWideCharsArray(const QString& text) {
-    auto wideCharsText = new wchar_t[text.length() + 1];
-    int unicodeFileNameLength = text.toWCharArray(wideCharsText);
-    wideCharsText[unicodeFileNameLength] = 0;
-    return wideCharsText;
-}
-
-FILE* BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
-#ifdef Q_OS_WIN
-    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(GUrlUtils::getNativeAbsolutePath(fileUrl)));
-    QString modeWithBinaryFlag = mode;
-    if (!modeWithBinaryFlag.contains("b")) {
-        modeWithBinaryFlag += "b";  // Always open file in binary mode, so any kind of sam, sam.gz, bam, bai files are processed the same way.
-    }
-    QScopedPointer<wchar_t> unicodeMode(toWideCharsArray(modeWithBinaryFlag));
-    return _wfopen(unicodeFileName.data(), unicodeMode.data());
-#else
-    return fopen(fileUrl.toLocal8Bit(), mode.toLatin1());
-#endif
+NP<FILE> BAMUtils::openFile(const QString& fileUrl, const QString& mode) {
+    return FileAndDirectoryUtils::openFile(fileUrl, mode);
 }
 
 /** Closes file descriptor if the file descriptor is defined and is open. */
-static void closeFileIfOpen(FILE* file) {
-    if (file != nullptr && ftell(file) > 0) {
-        fclose(file);
-    }
+void BAMUtils::closeFileIfOpen(FILE* file) {
+    FileAndDirectoryUtils::closeFileIfOpen(file);
 }
 
-static samfile_t* samOpen(const QString& url, const char* samMode, const void* aux = nullptr) {
+/** Version the original samopen() function with a correct handling of unicode in faiUrl and non-UGENE use cases removed. */
+static samfile_t* samopen_ugene(const NP<FILE>& file, const char* mode, const QString& faiUrl, bam_header_t* bamHeader) {
+    SAFE_POINT(file != nullptr, "samopen_ugene: file is null!", nullptr);
+    int fd = fileno(file);
+    SAFE_POINT(fd != -1, "samopen_ugene: file is closed", nullptr);
+    int TYPE_BAM = 1;
+    int TYPE_READ = 2;
+    auto fp = (samfile_t*)calloc(1, sizeof(samfile_t));
+    if (strchr(mode, 'r')) {  // read
+        fp->type |= TYPE_READ;
+        if (strchr(mode, 'b')) {  // binary
+            fp->type |= TYPE_BAM;
+            fp->x.bam = bgzf_fdopen(file, "r");
+            if (fp->x.bam == nullptr) {
+                free(fp);
+                return nullptr;
+            }
+            fp->header = bam_header_read(fp->x.bam);
+        } else {  // text
+            fp->x.tamr = sam_dopen(fd);
+            if (fp->x.tamr == nullptr) {
+                free(fp);
+                return nullptr;
+            }
+            fp->header = sam_header_read(fp->x.tamr);
+            if (fp->header == nullptr) {
+                free(fp);
+                return nullptr;
+            }
+            if (fp->header->n_targets == 0) {  // no @SQ fields
+                if (!faiUrl.isEmpty()) {
+                    bam_header_t* textheader = fp->header;
+                    NP<FILE> faiFile = BAMUtils::openFile(faiUrl, "r");
+                    if (faiFile == nullptr) {
+                        free(fp);
+                        return nullptr;
+                    }
+                    fp->header = sam_header_read2_fd(fileno(faiFile));
+                    if (fp->header == nullptr) {
+                        free(fp);
+                        return nullptr;
+                    }
+                    append_header_text(fp->header, textheader->text, textheader->l_text);
+                    bam_header_destroy(textheader);
+                }
+                if (fp->header->n_targets == 0 && bam_verbose >= 1) {
+                    fprintf(stderr, "[samopen] no @SQ lines in the header.\n");
+                }
+            } else if (bam_verbose >= 2) {
+                fprintf(stderr, "[samopen] SAM header is present: %d sequences.\n", fp->header->n_targets);
+            }
+        }
+    } else if (strchr(mode, 'w')) {  // write
+        fp->header = bam_header_dup(bamHeader);
+        if (strchr(mode, 'b')) {  // binary
+            char bmode[3];
+            int compress_level = -1;
+            int i;
+            for (i = 0; mode[i]; ++i) {
+                if (mode[i] >= '0' && mode[i] <= '9') {
+                    break;
+                }
+            }
+            if (mode[i]) {
+                compress_level = mode[i] - '0';
+            }
+            if (strchr(mode, 'u')) {
+                compress_level = 0;
+            }
+            bmode[0] = 'w';
+            bmode[1] = compress_level < 0 ? 0 : compress_level + '0';
+            bmode[2] = 0;
+            fp->type |= TYPE_BAM;
+            fp->x.bam = bgzf_fdopen(file, bmode);
+            if (fp->x.bam == nullptr) {
+                free(fp);
+                return nullptr;
+            }
+            bam_header_write(fp->x.bam, fp->header);
+        } else {  // text
+            // open file
+            fp->x.tamw = fdopen(fd, "w");
+            if (fp->x.tamr == nullptr) {
+                free(fp);
+                return nullptr;
+            }
+            if (strchr(mode, 'X')) {
+                fp->type |= BAM_OFSTR << 2;
+            } else if (strchr(mode, 'x')) {
+                fp->type |= BAM_OFHEX << 2;
+            } else {
+                fp->type |= BAM_OFDEC << 2;
+            }
+            // write header
+            if (strchr(mode, 'h')) {
+                // parse the header text
+                bam_header_t* alt = bam_header_init();
+                alt->l_text = fp->header->l_text;
+                alt->text = fp->header->text;
+                sam_header_parse(alt);
+                alt->l_text = 0;
+                alt->text = nullptr;
+                // check if there are @SQ lines in the header
+                fwrite(fp->header->text, 1, fp->header->l_text, fp->x.tamw);  // FIXME: better to skip the trailing NULL
+                if (alt->n_targets) {  // then write the header text without dumping ->target_{name,len}
+                    if (alt->n_targets != fp->header->n_targets && bam_verbose >= 1) {
+                        fprintf(stderr, "[samopen] inconsistent number of target sequences. Output the text header.\n");
+                    }
+                } else {  // then dump ->target_{name,len}
+                    for (int i = 0; i < fp->header->n_targets; ++i) {
+                        fprintf(fp->x.tamw, "@SQ\tSN:%s\tLN:%d\n", fp->header->target_name[i], fp->header->target_len[i]);
+                    }
+                }
+                bam_header_destroy(alt);
+            }
+        }
+    }
+    return fp;
+}
+
+static samfile_t* samOpen(const QString& url, const char* samMode, const QString& faiUrl = "", bam_header_t* header = nullptr) {
     QString fileMode = samMode;
     fileMode.replace("h", "");
-    FILE* file = BAMUtils::openFile(url, fileMode);
-    if (file == nullptr) {
-        return nullptr;
-    }
-    samfile_t* samfile = samopen_with_fd("", fileno(file), samMode, aux);
-    if (samfile == nullptr) {
-        closeFileIfOpen(file);
-        return nullptr;
-    }
+    NP<FILE> file = BAMUtils::openFile(url, fileMode);
+    samfile_t* samfile = samopen_ugene(file, samMode, faiUrl, header);
+    CHECK_EXT(samfile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
+
     bool isBam = samfile->type == 1;
     if (isBam) {
         samfile->x.bam->owned_file = 1;
@@ -114,7 +210,7 @@ static samfile_t* samOpen(const QString& url, const char* samMode, const void* a
 static gzFile openGzipFile(const QString& fileUrl, const char* mode = "r") {
     gzFile fp = nullptr;
 #ifdef Q_OS_WIN
-    QScopedPointer<wchar_t> unicodeFileName(toWideCharsArray(fileUrl));
+    QScopedPointer<wchar_t> unicodeFileName(TextUtils::toWideCharsArray(fileUrl));
     fp = gzopen_w(unicodeFileName.data(), mode);
 #else
     fp = gzopen(fileUrl.toLocal8Bit().constData(), mode);
@@ -123,13 +219,8 @@ static gzFile openGzipFile(const QString& fileUrl, const char* mode = "r") {
 }
 
 static void closeFiles(samfile_t* in, samfile_t* out) {
-    if (in != nullptr) {
-        samclose(in);
-    }
-
-    if (nullptr != out) {
-        samclose(out);
-    }
+    samclose(in);
+    samclose(out);
 }
 
 static samfile_t* openSamWithFai(const QString& samUrl, U2OpStatus& os) {
@@ -142,9 +233,7 @@ static samfile_t* openSamWithFai(const QString& samUrl, U2OpStatus& os) {
     BAMUtils::createFai(faiUrl, references, os);
     CHECK_OP(os, nullptr);
 
-    QByteArray faiUrlData = faiUrl.toLocal8Bit();
-    void* aux = (void*)faiUrlData.constData();
-    return samOpen(samUrl, "r", aux);
+    return samOpen(samUrl, "r", faiUrl);
 }
 
 static QString openFileError(const QString& file) {
@@ -153,10 +242,6 @@ static QString openFileError(const QString& file) {
 
 static QString headerError(const QString& file) {
     return QObject::tr("Fail to read the header from the file: \"%1\"").arg(file);
-}
-
-static QString faiError(const QString& filePath) {
-    return QObject::tr("Can not build the fasta index for the file: \"%1\"").arg(filePath);
 }
 
 static QString readsError(const QString& file) {
@@ -169,29 +254,15 @@ static QString truncatedError(const QString& file) {
 
 static void checkFileReadState(int read, U2OpStatus& os, const QString& fileName) {
     if (read == READ_ERROR_CODE) {
-        os.setError(SAMTOOLS_ERROR_MESSAGE != nullptr ? SAMTOOLS_ERROR_MESSAGE : readsError(fileName));
+        os.setError(readsError(fileName));
     } else if (read < -1) {
         os.setError(truncatedError(fileName) + ", code: " + QString::number(read));
     }
 }
 
-static QList<QByteArray> convertStringList(const QStringList& sList) {
-    QList<QByteArray> result;
-    for (int i = 0; i < sList.size(); i++) {
-        result.append(sList.at(i).toLocal8Bit());
-    }
-    return result;
-}
-
-static void convertByteArray(const QList<QByteArray>& byteArray, char** charArray) {
-    for (int i = 0; i < byteArray.size(); i++) {
-        charArray[i] = const_cast<char*>(byteArray[i].constData());
-    }
-}
-
 #define SAMTOOL_CHECK(cond, msg, ret) \
     if (!(cond)) { \
-        os.setError(SAMTOOLS_ERROR_MESSAGE != nullptr ? SAMTOOLS_ERROR_MESSAGE : msg); \
+        os.setError(msg); \
         closeFiles(in, out); \
         return ret; \
     }
@@ -201,7 +272,7 @@ void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QSt
     samfile_t* out = nullptr;
     SAMTOOL_CHECK(in != nullptr, openFileError(bamPath), );
     SAMTOOL_CHECK(in->header != nullptr, headerError(bamPath), );
-    out = samOpen(samPath, "wh", in->header);
+    out = samOpen(samPath, "wh", "", in->header);
     SAMTOOL_CHECK(out != nullptr, openFileError(samPath), );
 
     bam1_t* b = bam_init1();
@@ -217,17 +288,12 @@ void BAMUtils::convertBamToSam(U2OpStatus& os, const QString& bamPath, const QSt
 void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QString& bamPath, const QString& referencePath) {
     samfile_t* in = nullptr;
     samfile_t* out = nullptr;
-    char* aux = nullptr;
-    if (!referencePath.isEmpty()) {
-        aux = samfaipath(referencePath.toLocal8Bit().constData());
-        SAMTOOL_CHECK(aux != nullptr, faiError(referencePath), );
-    }
-
-    in = samOpen(samPath, "r", aux);
+    QString faiPath = hasValidFastaIndex(referencePath) ? referencePath + ".fai" : "";
+    in = samOpen(samPath, "r", faiPath);
     SAMTOOL_CHECK(in != nullptr, openFileError(samPath), );
     SAMTOOL_CHECK(in->header != nullptr, headerError(samPath), );
     if (in->header->n_targets == 0) {
-        os.addWarning(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(samPath));
+        coreLog.details(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(samPath));
         samclose(in);
         in = openSamWithFai(samPath, os);
         SAMTOOL_CHECK(!os.hasError(), os.getError(), );
@@ -235,7 +301,7 @@ void BAMUtils::convertSamToBam(U2OpStatus& os, const QString& samPath, const QSt
         SAMTOOL_CHECK(in->header != nullptr, headerError(samPath), );
     }
 
-    out = samOpen(bamPath, "wb", in->header);
+    out = samOpen(bamPath, "wb", "", in->header);
     SAMTOOL_CHECK(out != nullptr, openFileError(bamPath), );
 
     bam1_t* b = bam_init1();
@@ -284,8 +350,8 @@ bool BAMUtils::isSortedBam(const QString& bamUrl, U2OpStatus& os) {
     QString error;
     bool result = false;
 
-    FILE* file = openFile(bamUrl, "rb");
-    bamFile bamHandler = bam_dopen(fileno(file), "rb");
+    NP<FILE> file = BAMUtils::openFile(bamUrl, "rb");
+    bamFile bamHandler = bgzf_fdopen(file.getNullable(), "r");
     if (bamHandler != nullptr) {
         header = bam_header_read(bamHandler);
         if (header != nullptr) {
@@ -303,9 +369,10 @@ bool BAMUtils::isSortedBam(const QString& bamUrl, U2OpStatus& os) {
             bam_header_destroy(header);
         }
         if (bamHandler != nullptr) {
-            bam_close(bamHandler);
+            bgzf_close(bamHandler);
+        } else {
+            BAMUtils::closeFileIfOpen(file);
         }
-        closeFileIfOpen(file);
     }
 
     if (!error.isEmpty()) {
@@ -330,14 +397,6 @@ bool BAMUtils::isSortedBam(const QString& bamUrl, U2OpStatus& os) {
     return true;
 }
 
-inline static int bytes2MB(qint64 bytes) {
-    return (int)(bytes / (1024 * 1024)) + 1;
-}
-
-inline static qint64 mB2bytes(int mb) {
-    return (qint64)mb * 1024 * 1024;
-}
-
 static int bamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge);
 
 static QString createNumericSuffix(int n) {
@@ -349,9 +408,8 @@ static void bamSortBlocks(int n, int k, bam1_p* buf, const QString& prefix, cons
     QString sortedFileName = n < 0 ? prefix + ".bam" : prefix + "." + createNumericSuffix(n) + ".bam";
     coreLog.trace(QString("bamSortBlocks, n: %1, k: %2, prefix: %3, sorted file: %4").arg(n).arg(k).arg(prefix).arg(sortedFileName));
     ks_mergesort(sort, k, buf, nullptr);
-    FILE* file = BAMUtils::openFile(sortedFileName, "w");
-    int fd = file == nullptr ? 0 : fileno(file);
-    bamFile fp = fd == 0 ? nullptr : bam_dopen(fd, "w");
+    NP<FILE> file = BAMUtils::openFile(sortedFileName, "w");
+    bamFile fp = bgzf_fdopen(file.getNullable(), "w");
     if (fp == nullptr) {
         coreLog.error(BAMUtils::tr("[sort_blocks] fail to create file %1").arg(sortedFileName));
         return;
@@ -360,23 +418,23 @@ static void bamSortBlocks(int n, int k, bam1_p* buf, const QString& prefix, cons
     for (int i = 0; i < k; ++i) {
         bam_write1_core(fp, &buf[i]->core, buf[i]->data_len, buf[i]->data);
     }
-    bam_close(fp);
+    bgzf_close(fp);
 }
 
 static void bamSortCore(U2OpStatus& os, const QString& bamFileToSort, const QString& prefix) {
     coreLog.trace("bamSortCore: " + bamFileToSort + ", result prefix: " + prefix);
-    FILE* file = BAMUtils::openFile(bamFileToSort, "rb");
+    NP<FILE> file = BAMUtils::openFile(bamFileToSort, "rb");
     CHECK_EXT(file != nullptr, os.setError(BAMUtils::tr("Failed to open file: %1").arg(bamFileToSort)), );
-    int fd = fileno(file);
+    bamFile fp = bgzf_fdopen(file, "r");
+    if (fp == nullptr) {
+        BAMUtils::closeFileIfOpen(file);
+        coreLog.error(BAMUtils::tr("[bam_sort_core] fail to open file"));
+        return;
+    }
     int n = 0;
     int k = 0;
     size_t max_mem = 100 * 1000 * 1000;
     size_t mem = 0;
-    bamFile fp = bam_dopen(fd, "r");
-    if (fp == nullptr) {
-        coreLog.error(BAMUtils::tr("[bam_sort_core] fail to open file"));
-        return;
-    }
     bam_header_t* header = bam_header_read(fp);
     change_SO(header, "coordinate");
     auto buf = (bam1_t**)calloc(max_mem / BAM_CORE_SIZE, sizeof(bam1_t*));
@@ -422,7 +480,7 @@ static void bamSortCore(U2OpStatus& os, const QString& bamFileToSort, const QStr
     }
     free(buf);
     bam_header_destroy(header);
-    bam_close(fp);
+    bgzf_close(fp);
 }
 
 GUrl BAMUtils::sortBam(const QString& bamUrl, const QString& sortedBamFilePath, U2OpStatus& os) {
@@ -444,16 +502,15 @@ static int bamMergeCore(const QString& outFileName, const QList<QString>& filesT
     int n = filesToMerge.length();
     auto fp = (bamFile*)calloc(n, sizeof(bamFile));
     auto heap = (heap1_t*)calloc(n, sizeof(heap1_t));
-    auto iter = (bam_iter_t*)calloc(n, sizeof(bam_iter_t));
     // read the first
     for (int i = 0; i != n; ++i) {
-        FILE* file = BAMUtils::openFile(filesToMerge[i], "r");
-        int fd = file == nullptr ? 0 : fileno(file);
-        fp[i] = bam_dopen(fd, "r");
+        NP<FILE> file = BAMUtils::openFile(filesToMerge[i], "r");
+        fp[i] = bgzf_fdopen(file.getNullable(), "r");
         if (fp[i] == nullptr) {
             coreLog.error(BAMUtils::tr("[bam_merge_core] fail to open file %1").arg(filesToMerge[i]));
+            BAMUtils::closeFileIfOpen(file);
             for (int j = 0; j < i; ++j) {
-                bam_close(fp[j]);
+                bgzf_close(fp[j]);
             }
             free(fp);
             free(heap);
@@ -473,6 +530,9 @@ static int bamMergeCore(const QString& outFileName, const QList<QString>& filesT
                                       .arg(hout->target_name[j])
                                       .arg(hin->target_name[j])
                                       .arg(filesToMerge[i]));
+                    for (int m = 0; m <= i; m++) {
+                        bgzf_close(fp[m]);
+                    }
                     free(fp);
                     free(heap);
                     return -1;
@@ -488,6 +548,7 @@ static int bamMergeCore(const QString& outFileName, const QList<QString>& filesT
     }
 
     uint64_t idx = 0;
+    auto iter = (bam_iter_t*)calloc(n, sizeof(bam_iter_t));
     for (int i = 0; i < n; ++i) {
         heap1_t* h = heap + i;
         h->i = i;
@@ -499,10 +560,15 @@ static int bamMergeCore(const QString& outFileName, const QList<QString>& filesT
             h->pos = HEAP_EMPTY;
         }
     }
-    FILE* outFile = BAMUtils::openFile(outFileName, "wb");
-    bamFile fpout = outFile == nullptr ? nullptr : bam_dopen(fileno(outFile), "w");
+    NP<FILE> outFile = BAMUtils::openFile(outFileName, "wb");
+    bamFile fpout = bgzf_fdopen(outFile.getNullable(), "w");
     if (fpout == nullptr) {
         coreLog.error(BAMUtils::tr("Failed to create the output file: %1").arg(outFileName));
+        BAMUtils::closeFileIfOpen(outFile);
+        for (int i = 0; i < n; ++i) {
+            bam_iter_destroy(iter[i]);
+            bgzf_close(fp[i]);
+        }
         free(fp);
         free(heap);
         return -1;
@@ -531,9 +597,9 @@ static int bamMergeCore(const QString& outFileName, const QList<QString>& filesT
 
     for (int i = 0; i != n; ++i) {
         bam_iter_destroy(iter[i]);
-        bam_close(fp[i]);
+        bgzf_close(fp[i]);
     }
-    bam_close(fpout);
+    bgzf_close(fpout);
     free(fp);
     free(heap);
     free(iter);
@@ -553,15 +619,13 @@ GUrl BAMUtils::mergeBam(const QStringList& bamUrls, const QString& mergedBamTarg
 void* BAMUtils::loadIndex(const QString& filePath) {
     // See bam_index_load_local.
     QString mode = "rb";
-    FILE* fp = openFile(filePath + ".bai", mode);
-    if (fp == nullptr && filePath.endsWith("bam")) {
-        fp = openFile(filePath.chopped(4) + ".bai", mode);
+    NP<FILE> file = BAMUtils::openFile(filePath + ".bai", mode);
+    if (file == nullptr && filePath.endsWith("bam")) {
+        file = BAMUtils::openFile(filePath.chopped(4) + ".bai", mode);
     }
-    CHECK(fp != nullptr, nullptr);
-    bam_index_t* idx = bam_index_load_core(fp);
-    if (idx != nullptr) {
-        closeFileIfOpen(fp);
-    }
+    CHECK(file != nullptr, nullptr);
+    bam_index_t* idx = bam_index_load_core(file);
+    closeFileIfOpen(file);
     return idx;
 }
 
@@ -585,24 +649,14 @@ bool BAMUtils::hasValidBamIndex(const QString& bamUrl) {
     return true;
 }
 
-bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
-    const QByteArray fastaFileName = fastaUrl.getURLString().toLocal8Bit();
-
-    char* index = samfaipath(fastaFileName.constData());
-
-    if (nullptr == index) {
+bool BAMUtils::hasValidFastaIndex(const QString& fastaUrl) {
+    CHECK(!fastaUrl.isEmpty(), false);
+    QFileInfo idxFileInfo(fastaUrl + ".fai");
+    if (!idxFileInfo.exists() || !idxFileInfo.isReadable()) {
         return false;
-    } else {
-        free(index);
-
-        QFileInfo idxFileInfo(fastaUrl.getURLString() + ".fai");
-        QFileInfo fastaFileInfo(fastaUrl.getURLString());
-        if (idxFileInfo.lastModified() < fastaFileInfo.lastModified()) {
-            return false;
-        }
-
-        return true;
     }
+    QFileInfo fastaFileInfo(fastaUrl);
+    return idxFileInfo.lastModified() >= fastaFileInfo.lastModified();
 }
 
 /**
@@ -610,22 +664,21 @@ bool BAMUtils::hasValidFastaIndex(const GUrl& fastaUrl) {
  * Exact copy of 'bam_index_build2' with a correct unicode file names support.
  */
 static int bamIndexBuild(const QString& bamFileName) {
-    FILE* bFile = BAMUtils::openFile(bamFileName, "rb");
-    CHECK(bFile != nullptr, -1);
-    bamFile fp = bam_dopen(fileno(bFile), "rb");
+    NP<FILE> file = BAMUtils::openFile(bamFileName, "rb");
+    bamFile fp = bgzf_fdopen(file.getNullable(), "r");
     if (fp == nullptr) {
-        closeFileIfOpen(bFile);
+        BAMUtils::closeFileIfOpen(file);
         fprintf(stderr, "[bam_index_build2] fail to open the BAM file.\n");
         return -1;
     }
     fp->owned_file = 1;
     bam_index_t* idx = bam_index_core(fp);
-    bam_close(fp);
+    bgzf_close(fp);
     if (idx == nullptr) {
         fprintf(stderr, "[bam_index_build2] fail to index the BAM file.\n");
         return -1;
     }
-    FILE* fpidx = BAMUtils::openFile(bamFileName + ".bai", "wb");
+    NP<FILE> fpidx = BAMUtils::openFile(bamFileName + ".bai", "wb");
     if (fpidx == nullptr) {
         fprintf(stderr, "[bam_index_build2] fail to create the index file.\n");
         return -1;
@@ -801,7 +854,7 @@ void BAMUtils::writeObjects(const QList<GObject*>& objects, const QString& url, 
         return;
     }
 
-    samfile_t* out = samOpen(url, openMode.constData(), header);
+    samfile_t* out = samOpen(url, openMode.constData(), "", header);
     bam_header_destroy(header);
     CHECK_EXT(out != nullptr, os.setError(QString("Can not open file for writing: %1").arg(url)), );
 
@@ -817,11 +870,10 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
     const char* readMode1 = fileUrl1.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
     const char* readMode2 = fileUrl2.endsWith(".bam", Qt::CaseInsensitive) ? "rb" : "r";
     {
-        void* aux = nullptr;
-        in = samOpen(fileUrl1, readMode1, aux);
+        in = samOpen(fileUrl1, readMode1);
         SAMTOOL_CHECK(in != nullptr, openFileError(fileUrl1), false);
 
-        out = samOpen(fileUrl2, readMode2, aux);
+        out = samOpen(fileUrl2, readMode2);
         SAMTOOL_CHECK(out != nullptr, openFileError(fileUrl2), false);
 
         if (in->header != out->header) {
@@ -854,8 +906,19 @@ bool BAMUtils::isEqualByLength(const QString& fileUrl1, const QString& fileUrl2,
     if (r1 != r2) {
         os.setError(QString("Different samread result codes at the end of files: %1 vs %2").arg(r1).arg(r2));
     }
-    if (length1 != length2) {
+    std::sort(length1.begin(), length1.end());
+    std::sort(length2.begin(), length2.end());
+    if (length1.size() != length2.size()) {
         os.setError(QString("Different number of reads in files: %1 vs %2").arg(length1.size()).arg(length2.size()));
+    } else if (length1 != length2) {
+        QString reads1;
+        QString reads2;
+        for (int i = 0; i < length1.size(); i++) {
+            QString sep = i > 0 ? ", " : "";
+            reads1 += sep + QString::number(length1[i]);
+            reads2 += sep + QString::number(length2[i]);
+        }
+        os.setError(QString("Different reads in files: count: %1, 1:'%2' vs 2:'%3'").arg(length1.size()).arg(reads1).arg(reads2));
     }
     bam_destroy1(b1);
     bam_destroy1(b2);
@@ -869,11 +932,11 @@ namespace {
 const int bufferSize = 1024 * 1024;  // 1 Mb
 const int referenceColumn = 2;  // 5 Mb
 
-inline QByteArray readLine(IOAdapter* io, char* buffer, int bufferSize) {
+inline QByteArray readLine(IOAdapter* io, char* buffer, int maxLineLength) {
     QByteArray result;
     bool terminatorFound = false;
     do {
-        qint64 length = io->readLine(buffer, bufferSize, &terminatorFound);
+        qint64 length = io->readLine(buffer, maxLineLength, &terminatorFound);
         CHECK(-1 != length, result);
         result += QByteArray(buffer, length);
     } while (!terminatorFound);
@@ -913,7 +976,7 @@ QStringList BAMUtils::scanSamForReferenceNames(const GUrl& samUrl, U2OpStatus& o
 void BAMUtils::createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os) {
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(faiUrl, os, IOAdapterMode_Write));
     CHECK_OP(os, );
-    foreach (const QString& reference, references) {
+    for (const QString& reference : qAsConst(references)) {
         QString line = reference + "\n";
         io->writeBlock(line.toLocal8Bit());
     }

@@ -69,7 +69,7 @@ void EnzymeFolderItem::addEnzymeItem(Annotation* enzAnn) {
 void EnzymeFolderItem::removeEnzymeItem(Annotation* enzAnn) {
     int count = childCount();
     for (int i = 0; i < count; ++i) {
-        EnzymeItem* item = static_cast<EnzymeItem*>(child(i));
+        auto item = static_cast<EnzymeItem*>(child(i));
         if (item->getEnzymeAnnotation() == enzAnn) {
             removeChild(item);
             QString site = --count == 1 ? RestrctionMapWidget::tr("site") : RestrctionMapWidget::tr("sites");
@@ -163,7 +163,7 @@ EnzymeFolderItem* RestrctionMapWidget::findEnzymeFolderByName(const QString& enz
 
     for (int i = 0; i < count; i++) {
         assert(treeWidget->topLevelItem(i)->type() == ENZYME_FOLDER_ITEM_TYPE);
-        EnzymeFolderItem* item = static_cast<EnzymeFolderItem*>(treeWidget->topLevelItem(i));
+        auto item = static_cast<EnzymeFolderItem*>(treeWidget->topLevelItem(i));
         if (item->getName() == enzymeName) {
             return item;
         }
@@ -176,7 +176,7 @@ void RestrctionMapWidget::sl_itemSelectionChanged() {
     QList<QTreeWidgetItem*> selected = treeWidget->selectedItems();
     foreach (QTreeWidgetItem* item, selected) {
         if (item->type() == ENZYME_ITEM_TYPE) {
-            EnzymeItem* enzItem = static_cast<EnzymeItem*>(item);
+            auto enzItem = static_cast<EnzymeItem*>(item);
             AnnotationSelection* sel = ctx->getAnnotationsSelection();
             sel->clear();
             sel->add(enzItem->getEnzymeAnnotation());

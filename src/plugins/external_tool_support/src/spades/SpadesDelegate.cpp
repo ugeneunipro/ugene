@@ -71,22 +71,19 @@ PropertyWidget* SpadesDelegate::createWizardWidget(U2OpStatus&,
 void SpadesDelegate::setEditorData(QWidget* editor,
                                    const QModelIndex& index) const {
     const QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    SpadesPropertyWidget* propertyWidget =
-        qobject_cast<SpadesPropertyWidget*>(editor);
+    auto propertyWidget = qobject_cast<SpadesPropertyWidget*>(editor);
     propertyWidget->setValue(value);
 }
 
 void SpadesDelegate::setModelData(QWidget* editor,
                                   QAbstractItemModel* model,
                                   const QModelIndex& index) const {
-    SpadesPropertyWidget* propertyWidget =
-        qobject_cast<SpadesPropertyWidget*>(editor);
+    auto propertyWidget = qobject_cast<SpadesPropertyWidget*>(editor);
     model->setData(index, propertyWidget->value(), ConfigurationEditor::ItemValueRole);
 }
 
 void SpadesDelegate::sl_commit() {
-    SpadesPropertyWidget* editor =
-        qobject_cast<SpadesPropertyWidget*>(sender());
+    auto editor = qobject_cast<SpadesPropertyWidget*>(sender());
     CHECK(editor != nullptr, );
     emit commitData(editor);
 }

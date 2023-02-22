@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_VIRTUAL_FILE_SYSTEM_H_
-#define _U2_VIRTUAL_FILE_SYSTEM_H_
+#pragma once
 
 #include <QByteArray>
 #include <QMap>
@@ -91,5 +90,3 @@ private:
 };  // VirtualFileSystemRegistry
 
 }  // namespace U2
-
-#endif  // _U2_VIRTUAL_FILE_SYSTEM_H_

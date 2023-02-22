@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FEATURE_TABLE_OBJECT_TESTS_H_
-#define _U2_FEATURE_TABLE_OBJECT_TESTS_H_
+#pragma once
 
 #include <core/dbi/DbiTest.h>
 #include <unittest.h>
@@ -73,5 +72,3 @@ DECLARE_METATYPE(FeatureTableObjectUnitTest, clone)
 DECLARE_METATYPE(FeatureTableObjectUnitTest, getAnnotationsByName)
 DECLARE_METATYPE(FeatureTableObjectUnitTest, getAnnotationsByRegion)
 DECLARE_METATYPE(FeatureTableObjectUnitTest, checkConstraints)
-
-#endif  //_U2_FEATURE_TABLE_OBJECT_TESTS_H_

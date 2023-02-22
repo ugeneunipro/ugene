@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_LABEL_MODEL_H_
-#define _U2_LABEL_MODEL_H_
+#pragma once
 
 #include <QLabel>
 #include <QMouseEvent>
@@ -180,4 +179,3 @@ private:
 };
 
 }  // namespace U2
-#endif

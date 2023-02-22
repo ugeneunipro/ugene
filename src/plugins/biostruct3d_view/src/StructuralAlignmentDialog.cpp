@@ -47,7 +47,7 @@ static QList<BioStruct3DObject*> findAvailableBioStructs() {
     QList<GObject*> objs = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::BIOSTRUCTURE_3D);
     QList<BioStruct3DObject*> biostructs;
     foreach (GObject* obj, objs) {
-        BioStruct3DObject* bso = qobject_cast<BioStruct3DObject*>(obj);
+        auto bso = qobject_cast<BioStruct3DObject*>(obj);
         assert(bso);
         biostructs << bso;
     }
@@ -117,7 +117,7 @@ void StructuralAlignmentDialog::accept() {
     // TODO: clone live-range?
     U2OpStatus2Log os;
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
-    BioStruct3DObject* mobClone = qobject_cast<BioStruct3DObject*>(mobSubset.obj->clone(dbiRef, os));
+    auto mobClone = qobject_cast<BioStruct3DObject*>(mobSubset.obj->clone(dbiRef, os));
     mobSubset.obj = mobClone;
 
     StructuralAlignmentTaskSettings settings(refSubset, mobSubset);

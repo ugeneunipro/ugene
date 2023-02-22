@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MAFFT_SUPPORT_RUN_DIALOG_H
-#define _U2_MAFFT_SUPPORT_RUN_DIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -61,4 +60,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // _U2_MAFFT_SUPPORT_RUN_DIALOG_H

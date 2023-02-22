@@ -647,7 +647,7 @@ MaUndoRedoFramework* MaEditor::getUndoRedoFramework() const {
     return undoRedoFramework;
 }
 
-bool MaEditor::getMultilineMode() const {
+bool MaEditor::isMultilineMode() const {
     return multilineMode;
 }
 

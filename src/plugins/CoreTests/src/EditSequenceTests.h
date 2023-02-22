@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EDIT_SEQUENCE_TESTS_H_
-#define _U2_EDIT_SEQUENCE_TESTS_H_
+#pragma once
 
 #include <QDomElement>
 #include <QObject>
@@ -105,4 +104,3 @@ public:
     static QList<XMLTestFactory*> createTestFactories();
 };
 }  // namespace U2
-#endif

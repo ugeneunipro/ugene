@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WEIGHTMATRIX_PLUGIN_H_
-#define _U2_WEIGHTMATRIX_PLUGIN_H_
+#pragma once
 
 #include <QMenu>
 
@@ -63,5 +62,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GROUPER_EDITOR_WIDGET_H_
-#define _GROUPER_EDITOR_WIDGET_H_
+#pragma once
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/GrouperOutSlot.h>
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _GROUPER_EDITOR_WIDGET_H_

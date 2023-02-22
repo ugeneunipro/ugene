@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_REPEAT_FINDER_H_
-#define _U2_GT_TESTS_REPEAT_FINDER_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -38,5 +37,3 @@ GUI_TEST_CLASS_DECLARATION(test_0001)
 }  // namespace GUITest_common_scenarios_repeat_finder
 
 }  // namespace U2
-
-#endif  // _U2_GT_TESTS_REPEAT_FINDER_H_

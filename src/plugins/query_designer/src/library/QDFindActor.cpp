@@ -115,7 +115,7 @@ Task* QDFindActor::getAlgorithmTask(const QVector<U2Region>& location) {
 }
 
 void QDFindActor::sl_onFindTaskFinished(Task* t) {
-    FindAlgorithmTask* findTask = qobject_cast<FindAlgorithmTask*>(t);
+    auto findTask = qobject_cast<FindAlgorithmTask*>(t);
     QList<FindAlgorithmResult> res = findTask->popResults();
     foreach (const FindAlgorithmResult& r, res) {
         QDResultUnit ru(new QDResultUnitData);

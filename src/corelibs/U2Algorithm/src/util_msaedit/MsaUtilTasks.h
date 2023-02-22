@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_UTIL_TASKS
-#define _U2_MSA_UTIL_TASKS
+#pragma once
 
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
@@ -100,5 +99,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MSA_UTIL_TASKS

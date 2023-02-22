@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DATATYPE_SERIALIZE_UTILS_UNIT_TESTS_H_
-#define _U2_DATATYPE_SERIALIZE_UTILS_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -68,5 +67,3 @@ DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, WMatrixSerializer);
 DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, WMatrixSerializer_failed);
 DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, FMatrixSerializer);
 DECLARE_METATYPE(DatatypeSerializeUtilsUnitTest, FMatrixSerializer_failed);
-
-#endif  // _U2_DATATYPE_SERIALIZE_UTILS_UNIT_TESTS_H_

@@ -25,6 +25,7 @@
 #include <QList>
 #include <QPen>
 #include <QStyleOptionGraphicsItem>
+#include <QTimer>
 
 #include <U2Core/PhyTree.h>
 #include <U2Core/U2SafePoints.h>
@@ -34,6 +35,7 @@
 #include "TvBranchItem.h"
 #include "TvRectangularBranchItem.h"
 #include "TvTextItem.h"
+
 namespace U2 {
 
 /** Button radius in pixels. */
@@ -43,23 +45,14 @@ static const QBrush normalStateBrush(Qt::lightGray);
 static const QBrush selectedStateBrush(QColor("#EA9700"));
 static const QBrush hoveredStateBrush(QColor("#FFA500"));  // The same hue as selected but lighter.
 
-TvNodeItem::TvNodeItem(const QString& _nodeName)
-    : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius)),
+TvNodeItem::TvNodeItem(TvBranchItem* parentItem, const QString& _nodeName)
+    : QGraphicsEllipseItem(QRectF(-radius, -radius, 2 * radius, 2 * radius), parentItem),
       nodeName(_nodeName) {
     setPen(QColor(Qt::black));
     setAcceptHoverEvents(true);
     setZValue(2);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setToolTip(QObject::tr("Left click to select the branch\nDouble-click to collapse the branch"));
-    if (!nodeName.isEmpty()) {
-        labelItem = new TvTextItem(this, nodeName);
-        QRectF rect = labelItem->boundingRect();
-        labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
-        labelItem->setZValue(1);
-        // TODO: create a default tree viewer settings provider used both by TreeOptionsWidget and items.
-        //  Or pass initial settings into the every item constructor.
-        labelItem->setVisible(false);
-    }
 }
 
 void TvNodeItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
@@ -79,7 +72,7 @@ void TvNodeItem::mousePressEvent(QGraphicsSceneMouseEvent* e) {
 }
 
 void TvNodeItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* e) {
-    toggleCollapsedState();
+    QTimer::singleShot(0, [this]() { toggleCollapsedState(); });
     QAbstractGraphicsShapeItem::mouseDoubleClickEvent(e);
 }
 
@@ -93,12 +86,8 @@ void TvNodeItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event) {
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
-void TvNodeItem::toggleCollapsedState() {
-    auto branch = dynamic_cast<TvBranchItem*>(parentItem());
-    SAFE_POINT(branch != nullptr, "Collapsing is impossible because node item has not parent branch", );
-    if (dynamic_cast<TvBranchItem*>(branch->parentItem()) != nullptr) {
-        branch->toggleCollapsedState();
-    }
+void TvNodeItem::toggleCollapsedState() const {
+    getParentBranchItem()->toggleCollapsedState();
 }
 
 bool TvNodeItem::isSelectionRoot() const {
@@ -112,33 +101,31 @@ bool TvNodeItem::isSelectionRoot() const {
     return parentBranchItem == nullptr || !parentBranchItem->isSelected();
 }
 
-bool TvNodeItem::isCollapsed() {
-    auto parent = dynamic_cast<TvBranchItem*>(parentItem());
+bool TvNodeItem::isCollapsed() const {
+    TvBranchItem* parent = getParentBranchItem();
     return parent != nullptr && parent->isCollapsed();
 }
 
 PhyNode* TvNodeItem::getPhyNode() const {
-    auto parentBranchItem = dynamic_cast<TvBranchItem*>(parentItem());
-    CHECK(parentBranchItem != nullptr, nullptr);
-
-    auto parentRectBranchItem = dynamic_cast<TvRectangularBranchItem*>(parentBranchItem);
-    if (parentRectBranchItem == nullptr) {
-        SAFE_POINT(parentBranchItem->correspondingRectangularBranchItem, "No correspondingRectangularBranchItem", nullptr);
-        parentRectBranchItem = parentBranchItem->correspondingRectangularBranchItem;
-    }
-
-    const PhyBranch* nodeBranch = parentRectBranchItem->getPhyBranch();
-    CHECK(nodeBranch != nullptr, nullptr);
-
-    return nodeBranch->childNode;
+    TvBranchItem* parentBranchItem = getParentBranchItem();
+    return parentBranchItem->phyBranch ? parentBranchItem->phyBranch->childNode : nullptr;
 }
 
 void TvNodeItem::updateSettings(const OptionsMap& settings) {
-    isNodeShapeVisible = settings[SHOW_NODE_SHAPE].toBool();
+    bool isTipNode = getParentBranchItem()->isLeaf();
+    isShapeVisible = settings[isTipNode ? SHOW_TIP_SHAPE : SHOW_NODE_SHAPE].toBool();
+
+    bool isLabelVisible = !isTipNode && settings[SHOW_INNER_NODE_LABELS].toBool();
+    if (labelItem == nullptr && isLabelVisible && !nodeName.isEmpty()) {
+        labelItem = new TvTextItem(this, nodeName);
+        labelItem->setZValue(1);
+    }
     if (labelItem != nullptr) {
         labelItem->setFont(TreeViewerUtils::getFontFromSettings(settings));
         labelItem->setBrush(qvariant_cast<QColor>(settings[LABEL_COLOR]));
-        labelItem->setVisible(settings[SHOW_INNER_NODE_LABELS].toBool());
+        QRectF rect = labelItem->boundingRect();
+        labelItem->setPos(TvBranchItem::TEXT_SPACING, -rect.height() / 2);
+        labelItem->setVisible(isLabelVisible);
     }
 }
 
@@ -166,7 +153,7 @@ TvBranchItem* TvNodeItem::getRightBranchItem() const {
 }
 
 void TvNodeItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
-    CHECK(isNodeShapeVisible || isHovered || isSelected(), );
+    CHECK(isShapeVisible || isHovered || isSelected(), );
 
     setBrush(isHovered ? hoveredStateBrush : (isSelected() ? selectedStateBrush : normalStateBrush));
     painter->setRenderHint(QPainter::Antialiasing);

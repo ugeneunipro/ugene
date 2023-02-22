@@ -119,7 +119,7 @@ McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeCo
 }
 
 bool McaReferenceContentFilterTask::filterAcceptsObject(GObject* obj) {
-    MultipleChromatogramAlignmentObject* mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
+    auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
     CHECK(nullptr != mcaObj, false);
 
     foreach (const QString& pattern, settings.tokensToShow) {

@@ -253,7 +253,7 @@ void BlastWithExtFileRunDialog::tryApplyDoc(Document* doc) {
         if (obj->getGObjectType() != GObjectTypes::SEQUENCE) {
             continue;
         }
-        U2SequenceObject* seq = dynamic_cast<U2SequenceObject*>(obj);
+        auto seq = dynamic_cast<U2SequenceObject*>(obj);
         SAFE_POINT(seq != nullptr, "NULL sequence object", );
 
         BlastTaskSettings localSettings;

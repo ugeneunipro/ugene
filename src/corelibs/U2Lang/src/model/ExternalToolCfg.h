@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_CONFIG_H_
-#define _U2_EXTERNAL_TOOL_CONFIG_H_
+#pragma once
 
 #include <QMap>
 #include <QObject>
@@ -132,5 +131,3 @@ private:
 Q_DECLARE_METATYPE(U2::AttributeConfig)
 Q_DECLARE_METATYPE(U2::DataConfig)
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::AttributeConfig::Flags)
-
-#endif  // _U2_EXTERNAL_TOOL_CONFIG_H_

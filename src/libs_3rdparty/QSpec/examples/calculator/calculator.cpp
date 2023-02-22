@@ -138,7 +138,7 @@ Calculator::Calculator(QWidget *parent)
 
 //! [7]
 void Calculator::digitClicked() {
-    Button *clickedButton = qobject_cast<Button *>(sender());
+    auto *clickedButton = qobject_cast<Button *>(sender());
     int digitValue = clickedButton->text().toInt();
     if (display->text() == "0" && digitValue == 0.0)
         return;
@@ -155,7 +155,7 @@ void Calculator::digitClicked() {
 void Calculator::unaryOperatorClicked()
 //! [8] //! [9]
 {
-    Button *clickedButton = qobject_cast<Button *>(sender());
+    auto *clickedButton = qobject_cast<Button *>(sender());
     QString clickedOperator = clickedButton->text();
     double operand = display->text().toDouble();
     double result = 0.0;
@@ -184,7 +184,7 @@ void Calculator::unaryOperatorClicked()
 void Calculator::additiveOperatorClicked()
 //! [10] //! [11]
 {
-    Button *clickedButton = qobject_cast<Button *>(sender());
+    auto *clickedButton = qobject_cast<Button *>(sender());
     QString clickedOperator = clickedButton->text();
     double operand = display->text().toDouble();
 
@@ -222,7 +222,7 @@ void Calculator::additiveOperatorClicked()
 
 //! [18]
 void Calculator::multiplicativeOperatorClicked() {
-    Button *clickedButton = qobject_cast<Button *>(sender());
+    auto *clickedButton = qobject_cast<Button *>(sender());
     QString clickedOperator = clickedButton->text();
     double operand = display->text().toDouble();
 

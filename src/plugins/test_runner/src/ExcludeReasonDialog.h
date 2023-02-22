@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef EXCLUDERESAONDIALOG_H
-#define EXCLUDERESAONDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -41,4 +40,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // EXCLUDERESAONDIALOG_H

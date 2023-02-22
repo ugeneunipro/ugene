@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef _U2_VARIATION_PROPERTIES_UTILS_H_
-#define _U2_VARIATION_PROPERTIES_UTILS_H_
+#pragma once
 
 #include <QByteArray>
 #include <QVector>
@@ -117,5 +116,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_U2_VARIATION_PROPERTIES_UTILS_H_

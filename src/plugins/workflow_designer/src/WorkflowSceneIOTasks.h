@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_SCENE_IO_TASK_H_
-#define _U2_WORKFLOW_SCENE_IO_TASK_H_
+#pragma once
 
 #include <QPointer>
 
@@ -55,4 +54,3 @@ private:
 };
 
 }  // namespace U2
-#endif

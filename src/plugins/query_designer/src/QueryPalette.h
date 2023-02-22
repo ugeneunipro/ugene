@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QUERY_PALETTE_H_
-#define _U2_QUERY_PALETTE_H_
+#pragma once
 
 #include <QAction>
 #include <QTreeWidget>
@@ -73,5 +72,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(QAction*)
-
-#endif

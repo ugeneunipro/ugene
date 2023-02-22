@@ -503,7 +503,7 @@ void LinuxDumper::GetMappingEffectiveNameAndPath(const MappingInfo& mapping,
     }
   } else {
     // Otherwise, replace the basename with the SONAME.
-    char* basename = const_cast<char*>(my_strrchr(file_path, '/'));
+    auto basename = const_cast<char*>(my_strrchr(file_path, '/'));
     if (basename) {
       my_strlcpy(basename + 1, file_name,
                  file_path_size - my_strlen(file_path) +
@@ -557,7 +557,7 @@ bool LinuxDumper::EnumerateMappings() {
   // Although the initial executable is usually the first mapping, it's not
   // guaranteed (see http://crosbug.com/25355); therefore, try to use the
   // actual entry point to find the mapping.
-  const void* entry_point_loc = reinterpret_cast<void*>(auxv_[AT_ENTRY]);
+  auto entry_point_loc = reinterpret_cast<void*>(auxv_[AT_ENTRY]);
 
   const int fd = sys_open(maps_path, O_RDONLY, 0);
   if (fd < 0)

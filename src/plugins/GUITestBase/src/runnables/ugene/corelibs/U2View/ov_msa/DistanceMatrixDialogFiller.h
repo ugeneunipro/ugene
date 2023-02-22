@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef DISTANCEMATRIXDIALOGFILLER_H
-#define DISTANCEMATRIXDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 namespace U2 {
@@ -49,5 +48,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // DISTANCEMATRIXDIALOGFILLER_H

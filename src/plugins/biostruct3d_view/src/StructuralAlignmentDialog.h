@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_STRUCTURAL_ALIGNMENT_DIALOG_H_
-#define _U2_STRUCTURAL_ALIGNMENT_DIALOG_H_
+#pragma once
 
 #include "ui_StructuralAlignmentDialog.h"
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_STRUCTURAL_ALIGNMENT_DIALOG_H_

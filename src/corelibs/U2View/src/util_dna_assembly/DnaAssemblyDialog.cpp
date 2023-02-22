@@ -277,7 +277,7 @@ const QList<ShortReadSet> DnaAssemblyDialog::getShortReadSets() {
     int numItems = shortReadsTable->topLevelItemCount();
 
     for (int i = 0; i < numItems; ++i) {
-        ShortReadsTableItem* item = static_cast<ShortReadsTableItem*>(shortReadsTable->topLevelItem(i));
+        auto item = static_cast<ShortReadsTableItem*>(shortReadsTable->topLevelItem(i));
         sets.append(ShortReadSet(item->getUrl(), item->getType(), item->getOrder()));
     }
     return sets;
@@ -396,7 +396,7 @@ void DnaAssemblyDialog::addGuiExtension() {
 bool DnaAssemblyDialog::eventFilter(QObject* obj, QEvent* event) {
     if (obj == shortReadsTable) {
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            auto keyEvent = static_cast<QKeyEvent*>(event);
             if (keyEvent->key() == Qt::Key_Delete) {
                 sl_onRemoveShortReadsButtonClicked();
             }
@@ -413,7 +413,7 @@ bool DnaAssemblyDialog::eventFilter(QObject* obj, QEvent* event) {
 void DnaAssemblyDialog::sl_onLibraryTypeChanged() {
     int count = shortReadsTable->topLevelItemCount();
     for (int i = 0; i < count; ++i) {
-        ShortReadsTableItem* item = static_cast<ShortReadsTableItem*>(shortReadsTable->topLevelItem(i));
+        auto item = static_cast<ShortReadsTableItem*>(shortReadsTable->topLevelItem(i));
         item->setLibraryType(libraryComboBox->currentIndex() == 0 ? LIBRARY_TYPE_SINGLE : LIBRARY_TYPE_PAIRED);
     }
 }

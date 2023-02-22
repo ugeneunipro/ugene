@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GRAPHIC_UTILS_H_
-#define _U2_GRAPHIC_UTILS_H_
+#pragma once
 
 #include <QOpenGLFunctions_2_0>
 
@@ -157,5 +156,3 @@ inline void checkGlError(const char* file, int line) {
 }
 
 }  // namespace U2
-
-#endif  // _U2_GRAPHIC_UTILS_H_

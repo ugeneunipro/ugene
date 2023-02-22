@@ -1028,7 +1028,7 @@ QVariant ProjectViewModel::getObjectToolTipData(GObject* /*obj*/, Document* pare
 QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnabled) const {
     // There is a special case: circular sequence object should have an icon that differs from the standard sequence icon!
     if (obj->getGObjectType() == GObjectTypes::SEQUENCE) {
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         SAFE_POINT(seqObj != nullptr, "Cannot cast GObject to U2SequenceObject", QVariant());
         if (seqObj->isCircular()) {
             const QIcon circIcon(":core/images/circular_seq.png");
@@ -1181,7 +1181,7 @@ void ProjectViewModel::dropDocument(Document* doc, Document* targetDoc, const QS
 }
 
 void ProjectViewModel::sl_documentImported() {
-    ImportDocumentToDatabaseTask* task = dynamic_cast<ImportDocumentToDatabaseTask*>(sender());
+    auto task = dynamic_cast<ImportDocumentToDatabaseTask*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
     CHECK(!task->getStateInfo().isCoR(), );
@@ -1206,7 +1206,7 @@ void ProjectViewModel::sl_documentImported() {
 }
 
 void ProjectViewModel::sl_objectImported() {
-    ImportObjectToDatabaseTask* task = dynamic_cast<ImportObjectToDatabaseTask*>(sender());
+    auto task = dynamic_cast<ImportObjectToDatabaseTask*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
     CHECK(!task->getStateInfo().isCoR(), );
@@ -1248,7 +1248,7 @@ void ProjectViewModel::sl_objectRemoved(GObject* obj) {
 }
 
 void ProjectViewModel::sl_documentModifiedStateChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1258,7 +1258,7 @@ void ProjectViewModel::sl_documentModifiedStateChanged() {
 }
 
 void ProjectViewModel::sl_documentLoadedStateChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1279,7 +1279,7 @@ void ProjectViewModel::sl_documentLoadedStateChanged() {
 }
 
 void ProjectViewModel::sl_lockedStateChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1298,7 +1298,7 @@ void ProjectViewModel::sl_lockedStateChanged() {
 }
 
 void ProjectViewModel::sl_documentURLorNameChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(nullptr != doc, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
@@ -1308,7 +1308,7 @@ void ProjectViewModel::sl_documentURLorNameChanged() {
 }
 
 void ProjectViewModel::sl_objectModifiedStateChanged() {
-    GObject* obj = qobject_cast<GObject*>(sender());
+    auto obj = qobject_cast<GObject*>(sender());
     SAFE_POINT(nullptr != obj, "NULL object", );
     QModelIndex idx = getIndexForObject(obj);
     emit dataChanged(idx, idx);

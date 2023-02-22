@@ -27,9 +27,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <3rdparty/zlib/zlib.h>
-#ifdef _USE_KNETFILE
-#include "knetfile.h"
-#endif
 
 //typedef int8_t bool;
 
@@ -37,14 +34,7 @@ typedef struct {
     int file_descriptor;
     char open_mode;  // 'r' or 'w'
     int16_t owned_file, compress_level;
-#ifdef _USE_KNETFILE
-	union {
-		knetFile *fpr;
-		FILE *fpw;
-	} x;
-#else
     FILE* file;
-#endif
     int uncompressed_block_size;
     int compressed_block_size;
     void* uncompressed_block;
@@ -67,14 +57,7 @@ extern "C" {
  * A subsequent bgzf_close will not close the file descriptor.
  * Returns null on error.
  */
-BGZF* bgzf_fdopen(int fd, const char* __restrict mode);
-
-/*
- * Open the specified file for reading or writing.
- * Mode must be either "r" or "w".
- * Returns null on error.
- */
-BGZF* bgzf_open(const char* path, const char* __restrict mode);
+BGZF* bgzf_fdopen(FILE* file, const char* __restrict mode);
 
 /*
  * Close the BGZ file and free all associated resources.
@@ -128,7 +111,7 @@ int bgzf_check_EOF(BGZF *fp);
 int bgzf_read_block(BGZF* fp);
 int bgzf_flush(BGZF* fp);
 int bgzf_flush_try(BGZF *fp, int size);
-int bgzf_check_bgzf(const char *fn);
+int bgzf_check_bgzf(FILE* file);
 
 #ifdef __cplusplus
 }
@@ -151,11 +134,7 @@ static inline int bgzf_getc(BGZF *fp)
 	}
 	c = ((unsigned char*)fp->uncompressed_block)[fp->block_offset++];
     if (fp->block_offset == fp->block_length) {
-#ifdef _USE_KNETFILE
-        fp->block_address = knet_tell(fp->x.fpr);
-#else
         fp->block_address = ftello(fp->file);
-#endif
         fp->block_offset = 0;
         fp->block_length = 0;
     }

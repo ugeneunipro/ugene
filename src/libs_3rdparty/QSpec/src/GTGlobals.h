@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_GLOBALS_H_
-#define _HI_GT_GLOBALS_H_
+#pragma once
 
 #include <core/GUITestOpStatus.h>
 #include <core/global.h>
@@ -150,5 +149,3 @@ public:
     }
 
 }  // namespace HI
-
-#endif

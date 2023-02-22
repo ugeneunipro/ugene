@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_VIEW_ITEMS_H_
-#define _U2_WORKFLOW_VIEW_ITEMS_H_
+#pragma once
 
 #include <QAction>
 #include <QGraphicsItem>
@@ -309,5 +308,3 @@ private:
 }  // namespace U2
 
 Q_DECLARE_METATYPE(U2::StyleId);
-
-#endif

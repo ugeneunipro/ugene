@@ -96,7 +96,7 @@ void QDElement::updateDescription() {
 }
 
 void QDElement::rememberSize() {
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     assert(qs);
     if (!qs->showActorDesc()) {
         extendedHeight = bound.height();
@@ -104,7 +104,7 @@ void QDElement::rememberSize() {
 }
 
 void QDElement::adaptSize() {
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     assert(qs);
     prepareGeometryChange();
     if (qs->showActorDesc()) {
@@ -167,7 +167,7 @@ void QDElement::loadState(QDElementStatement* el) {
 void QDElement::saveState(QDElementStatement* el) const {
     assert(el->getType() == Element);
     QGraphicsScene* s = scene();
-    QueryScene* qs = qobject_cast<QueryScene*>(s);
+    auto qs = qobject_cast<QueryScene*>(s);
     assert(qs);
     qreal extHeight = extendedHeight;
     if (qs->showActorDesc()) {
@@ -184,7 +184,7 @@ void QDElement::saveState(QDElementStatement* el) const {
 
 void QDElement::sl_refresh() {
     QString baseHtml = "<center>" + getHeaderString();
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     if (qs && !qs->showActorDesc()) {
         doc->setHtml(baseHtml);
     } else {
@@ -208,7 +208,7 @@ QString QDElement::getHeaderString() const {
     QString annotateAsStr = unit->getActor()->annotateAs();
     annotateAsStr.replace('<', "&lt;");
     annotateAsStr.replace('>', "&gt;");
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     QDActorParameters* params = unit->getActor()->getParameters();
     if (getActor()->getSchemeUnits().size() == 1) {
         res = QString("<b>%1 (\"%3\")</b>")
@@ -347,7 +347,7 @@ void QDElement::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
 }
 
 void QDElement::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     assert(qs);
     QDScheme* scheme = qs->getScheme();
     const QList<QDActor*>& actors = scheme->getActors();
@@ -438,7 +438,7 @@ void QDElement::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
         QList<QDSchemeUnit*> suList = a->getSchemeUnits();
         for (QDSchemeUnit* su : qAsConst(suList)) {
             foreach (QGraphicsItem* it, qs->getElements()) {
-                QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
+                auto uv = qgraphicsitem_cast<QDElement*>(it);
                 assert(uv);
                 if (uv->getSchemeUnit() == su) {
                     uv->sl_refresh();
@@ -455,7 +455,7 @@ bool QDElement::sceneEvent(QEvent* event) {
         case QEvent::GraphicsSceneHoverEnter:
         case QEvent::GraphicsSceneHoverMove: {
             itemResizeFlags = 0;
-            QGraphicsSceneHoverEvent* he = static_cast<QGraphicsSceneHoverEvent*>(event);
+            auto he = static_cast<QGraphicsSceneHoverEvent*>(event);
             QPointF p = he->pos();
             int dxRight = qAbs(boundingRect().right() - p.x());
             int dxLeft = qAbs(boundingRect().left() - p.x());
@@ -494,8 +494,8 @@ bool QDElement::sceneEvent(QEvent* event) {
             break;
         case QEvent::GraphicsSceneMouseMove: {
             if (itemResizeFlags) {
-                QueryScene* qs = qobject_cast<QueryScene*>(scene());
-                QGraphicsSceneMouseEvent* me = static_cast<QGraphicsSceneMouseEvent*>(event);
+                auto qs = qobject_cast<QueryScene*>(scene());
+                auto me = static_cast<QGraphicsSceneMouseEvent*>(event);
                 if (me->buttons() & Qt::LeftButton) {
                     QPointF p = me->pos();
                     p.setY(round(p.y(), GRID_STEP));
@@ -622,7 +622,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant& value)
         case ItemPositionChange: {
             // value is the new position
             QPointF newPos = value.toPointF();
-            QueryScene* qs = qobject_cast<QueryScene*>(scene());
+            auto qs = qobject_cast<QueryScene*>(scene());
             if (qs == nullptr) {
                 return newPos;
             }
@@ -685,7 +685,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant& value)
             return newPos;
         } break;
         case ItemPositionHasChanged: {
-            QueryScene* qs = qobject_cast<QueryScene*>(scene());
+            auto qs = qobject_cast<QueryScene*>(scene());
             if (qs == nullptr) {
                 return QGraphicsItem::itemChange(change, value);
             }
@@ -716,7 +716,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant& value)
             if ((value.value<QGraphicsScene*>()) != nullptr) {
                 sl_refresh();
                 adaptSize();
-                QueryScene* qs = qobject_cast<QueryScene*>(scene());
+                auto qs = qobject_cast<QueryScene*>(scene());
                 QueryViewController* view = qs->getViewController();
                 if (view) {
                     connect(itemDescription, SIGNAL(linkActivated(const QString&)), view, SLOT(sl_selectEditorCell(const QString&)));
@@ -731,7 +731,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant& value)
 }
 
 void QDElement::updateFootnotes() {
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     QGraphicsView* view = qs->views().at(0);
     assert(view);
     QGraphicsView::ViewportUpdateMode mode = view->viewportUpdateMode();
@@ -786,8 +786,8 @@ bool QDElementDescription::sceneEvent(QEvent* event) {
         case QEvent::GraphicsSceneMouseRelease:
         case QEvent::GraphicsSceneMouseMove:
         case QEvent::GraphicsSceneMousePress: {
-            QGraphicsSceneMouseEvent* me = static_cast<QGraphicsSceneMouseEvent*>(event);
-            QDElement* parent = qgraphicsitem_cast<QDElement*>(parentItem());
+            auto me = static_cast<QGraphicsSceneMouseEvent*>(event);
+            auto parent = qgraphicsitem_cast<QDElement*>(parentItem());
             assert(parent);
             me->setPos(mapToParent(me->pos()));
             res = parent->sceneEvent(me);
@@ -837,7 +837,7 @@ void Footnote::sl_update() {
 void Footnote::updatePos() {
     qreal xPos = getSrcPoint().x();
     int step = boundingRect().height() + FOOTNOTE_MARGIN;
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     assert(qs);
     const QRectF& area = qs->footnotesArea();
     // look for vacant position
@@ -931,7 +931,7 @@ void Footnote::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     if (draging) {
         pen.setColor(Qt::green);
     }
-    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(constraint);
+    auto dc = static_cast<QDDistanceConstraint*>(constraint);
     if (dc && dc->getMin() > dc->getMax()) {
         pen.setColor(Qt::red);
     }
@@ -1061,7 +1061,7 @@ bool QDDescriptionItem::sceneEvent(QEvent* event) {
     switch (event->type()) {
         case QEvent::GraphicsSceneHoverEnter:
         case QEvent::GraphicsSceneHoverMove: {
-            QGraphicsSceneHoverEvent* he = static_cast<QGraphicsSceneHoverEvent*>(event);
+            auto he = static_cast<QGraphicsSceneHoverEvent*>(event);
             QPointF p = he->pos();
             qreal dxRight = qAbs(boundingRect().right() - p.x());
             qreal dxLeft = qAbs(boundingRect().left() - p.x());
@@ -1087,7 +1087,7 @@ bool QDDescriptionItem::sceneEvent(QEvent* event) {
         case QEvent::GraphicsSceneMouseMove: {
             if (resize) {
                 // QueryScene* qs = qobject_cast<QueryScene*>(scene());
-                QGraphicsSceneMouseEvent* me = static_cast<QGraphicsSceneMouseEvent*>(event);
+                auto me = static_cast<QGraphicsSceneMouseEvent*>(event);
                 if (me->buttons() & Qt::LeftButton) {
                     QPointF p = me->pos();
                     QPointF oldPos = me->lastPos();
@@ -1162,11 +1162,11 @@ QVariant QDRulerItem::itemChange(GraphicsItemChange change, const QVariant& valu
 }
 
 void QDRulerItem::sl_updateGeometry() {
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     assert(qs);
     QList<QDElement*> items;
     foreach (QGraphicsItem* it, qs->getElements()) {
-        QDElement* uv = qgraphicsitem_cast<QDElement*>(it);
+        auto uv = qgraphicsitem_cast<QDElement*>(it);
         assert(uv);
         items.append(uv);
     }
@@ -1192,7 +1192,7 @@ void QDRulerItem::sl_updateGeometry() {
 void QDRulerItem::sl_updateText() {
     int minDist = 0;
     int maxDist = 0;
-    QueryScene* qs = qobject_cast<QueryScene*>(scene());
+    auto qs = qobject_cast<QueryScene*>(scene());
     assert(qs);
     QDScheme* scheme = qs->getScheme();
     QList<QDSchemeUnit*> units;

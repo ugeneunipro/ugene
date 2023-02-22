@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TABLE_VIEW_TAB_KEY_H_
-#define _U2_TABLE_VIEW_TAB_KEY_H_
+#pragma once
 
 #include <QTableView>
 
@@ -38,5 +37,3 @@ private:
     QModelIndex getNextIndex() const;
 };
 }  // namespace U2
-
-#endif  // _U2_TABLE_VIEW_TAB_KEY_H_

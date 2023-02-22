@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALPHABET_UTILS_H_
-#define _U2_ALPHABET_UTILS_H_
+#pragma once
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -172,5 +171,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

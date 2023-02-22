@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RANDOM_GUI_ACTION_FACTORY_H_
-#define _U2_GT_RANDOM_GUI_ACTION_FACTORY_H_
+#pragma once
 
 #include "GTAbstractGUIAction.h"
 
@@ -40,5 +39,3 @@ public:
 }  // namespace GUITest_crazy_user
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALIGNMENT_LOGO_H_
-#define _U2_ALIGNMENT_LOGO_H_
+#pragma once
 
 #include <QGraphicsItem>
 #include <QMainWindow>
@@ -166,5 +165,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

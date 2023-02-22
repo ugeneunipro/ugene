@@ -83,6 +83,11 @@ uint PrimerGroupBox::getMismatches() const {
     return uint(value);
 }
 
+void PrimerGroupBox::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator) {
+    temperatureCalculator = newTemperatureCalculator;
+    updateStatistics(getPrimer());
+}
+
 void PrimerGroupBox::sl_translate() {
     const QByteArray translation = DNASequenceUtils::reverseComplement(primerEdit->text().toLocal8Bit());
     primerEdit->setInvalidatedText(translation);
@@ -134,8 +139,10 @@ void PrimerGroupBox::sl_activeSequenceChanged() {
 }
 
 QString PrimerGroupBox::getTmString(const QString& sequence) {
-    double tm = PrimerStatistics::getMeltingTemperature(sequence.toLocal8Bit());
-    QString tmString = tm != Primer::INVALID_TM ? PrimerStatistics::getDoubleStringValue(tm) + QString::fromLatin1("\x00B0") + "C" : tr("N/A");
+    SAFE_POINT(temperatureCalculator != nullptr, L10N::nullPointerError("BaseTempCalc"), "");
+
+    double tm = temperatureCalculator->getMeltingTemperature(sequence.toLocal8Bit());
+    QString tmString = tm != BaseTempCalc::INVALID_TM ? PrimerStatistics::getDoubleStringValue(tm) + QString::fromLatin1("\x00B0") + "C" : tr("N/A");
     return tr("Tm = ") + tmString;
 }
 

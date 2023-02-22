@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SAM_FORMAT_H
-#define _SAM_FORMAT_H
+#pragma once
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
@@ -110,5 +109,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_SAM_FORMAT_H

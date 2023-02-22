@@ -19,8 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_UTILS_H_
-#define _U2_SEQUENCE_UTILS_H_
+#pragma once
+
+#include <bitset>
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/FormatSettings.h>
@@ -135,6 +136,8 @@ protected:
 
     const DNATranslation* aminoTT = nullptr;
     const DNATranslation* complTT = nullptr;
+
+    std::bitset<256> alphabetCharacterHit;
 };
 
 /** Class to read sequences when there is already readers which use U2SequenceImporter interface */
@@ -193,5 +196,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -233,7 +233,6 @@ void GUIUtils::showMessage(QWidget* widgetToPaintOn, QPainter& painter, const QS
 
     QFontMetrics metrics(painter.font(), widgetToPaintOn);
     painter.drawText(widgetToPaintOn->rect(), Qt::AlignCenter, metrics.elidedText(message, Qt::ElideRight, widgetToPaintOn->rect().width()));
-    return;
 }
 
 void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerAction, QAction* actionToInsert) {
@@ -246,6 +245,24 @@ void GUIUtils::insertActionAfter(QMenu* menu, QAction* insertionPointMarkerActio
     }
     QAction* actionBefore = actions[markerIndex + 1];
     menu->insertAction(actionBefore, actionToInsert);
+}
+
+ResetSliderOnDoubleClickBehavior::ResetSliderOnDoubleClickBehavior(QAbstractSlider* slider, QLabel* relatedLabel)
+    : QObject(slider), defaultValue(slider->value()) {
+    slider->installEventFilter(this);
+    if (relatedLabel != nullptr) {
+        relatedLabel->installEventFilter(this);
+    }
+}
+
+bool ResetSliderOnDoubleClickBehavior::eventFilter(QObject*, QEvent* event) {
+    if (event->type() == QEvent::MouseButtonDblClick) {
+        auto slider = qobject_cast<QAbstractSlider*>(parent());
+        SAFE_POINT(slider != nullptr, "Parent object is not a slider", false);
+        slider->setValue(defaultValue);
+        return true;
+    }
+    return false;
 }
 
 }  // namespace U2

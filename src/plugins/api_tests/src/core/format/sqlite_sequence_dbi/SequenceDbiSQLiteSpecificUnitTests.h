@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_
-#define _U2_SEQUENCE_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -125,5 +124,3 @@ DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_begin_redo);
 DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_redo);
 DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_middle_middleNoLength_redo);
 DECLARE_METATYPE(SequenceDbiSQLiteSpecificUnitTests, updateSeqData_end_redo);
-
-#endif  // _U2_SEQUENCE_DBI_SQLITE_SPECIFIC_UNIT_TESTS_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQ_PASTER_WIDGET_CONTROLLER_H_
-#define _U2_SEQ_PASTER_WIDGET_CONTROLLER_H_
+#pragma once
 
 #include <QWidget>
 
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

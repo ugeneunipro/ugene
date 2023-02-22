@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BOWTIE2_SUPPORT_WORKER_
-#define _U2_BOWTIE2_SUPPORT_WORKER_
+#pragma once
 
 #include "utils/BaseShortReadsAlignerWorker.h"
 
@@ -56,5 +55,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_BOWTIE2_SUPPORT_WORKER_

@@ -33,12 +33,6 @@
 
 namespace U2 {
 
-const qint64 InSilicoPcrTaskSettings::MAX_SEQUENCE_LENGTH = 500 * 1024 * 1024;  // 500 Mb
-
-InSilicoPcrTaskSettings::InSilicoPcrTaskSettings()
-    : isCircular(false), forwardMismatches(0), reverseMismatches(0), maxProductSize(0), perfectMatch(0) {
-}
-
 InSilicoPcrProduct::InSilicoPcrProduct()
     : ta(Primer::INVALID_TM),
       forwardPrimerMatchLength(0),
@@ -49,22 +43,23 @@ bool InSilicoPcrProduct::isValid() const {
     return ta != Primer::INVALID_TM;
 }
 
-InSilicoPcrTask::InSilicoPcrTask(const InSilicoPcrTaskSettings& _settings)
+InSilicoPcrTask::InSilicoPcrTask(InSilicoPcrTaskSettings* _settings)
     : Task(tr("In Silico PCR"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
       settings(_settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
-    minProductSize = qMax(settings.forwardPrimer.length(), settings.reversePrimer.length());
+    minProductSize = qMax(settings->forwardPrimer.length(), settings->reversePrimer.length());
+    SAFE_POINT_EXT(settings->temperatureCalculator != nullptr, setError(L10N::nullPointerError("BaseTempCalc")), );
 }
 
 namespace {
-int getMaxError(const InSilicoPcrTaskSettings& settings, U2Strand::Direction direction) {
+int getMaxError(const InSilicoPcrTaskSettings* settings, U2Strand::Direction direction) {
     int res = 0;
     if (direction == U2Strand::Direct) {
-        res = qMin(settings.forwardMismatches, settings.forwardPrimer.length() - settings.perfectMatch);
-        res = qMin(res, settings.forwardPrimer.length() - 1);
+        res = qMin(settings->forwardMismatches, settings->forwardPrimer.length() - settings->perfectMatch);
+        res = qMin(res, settings->forwardPrimer.length() - 1);
     } else {
-        res = qMin(settings.reverseMismatches, settings.reversePrimer.length() - settings.perfectMatch);
-        res = qMin(res, settings.reversePrimer.length() - 1);
+        res = qMin(settings->reverseMismatches, settings->reversePrimer.length() - settings->perfectMatch);
+        res = qMin(res, settings->reversePrimer.length() - 1);
     }
     return qMax(0, res);
 }
@@ -78,25 +73,25 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
     DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
     SAFE_POINT_EXT(nullptr != translator, setError(L10N::nullPointerError("DNA Translator")), result);
 
-    result.sequence = settings.sequence;
-    result.searchIsCircular = settings.isCircular;
-    result.searchRegion.length = settings.sequence.length();
+    result.sequence = settings->sequence;
+    result.searchIsCircular = settings->isCircular;
+    result.searchRegion.length = settings->sequence.length();
     result.patternSettings = FindAlgorithmPatternSettings_Subst;
     result.strand = FindAlgorithmStrand_Both;
-    result.useAmbiguousBases = settings.useAmbiguousBases;
+    result.useAmbiguousBases = settings->useAmbiguousBases;
 
     int pos = 0;
     if (U2Strand::Direct == direction) {
-        result.pattern = settings.forwardPrimer;
+        result.pattern = settings->forwardPrimer;
         pos = 0;
     } else {
-        result.pattern = settings.reversePrimer;
+        result.pattern = settings->reversePrimer;
         pos = result.sequence.size();
     }
 
     result.maxErr = getMaxError(settings, direction);
     if (!result.searchIsCircular) {
-        QByteArray ledge(result.pattern.size() - settings.perfectMatch - 1, 'N');
+        QByteArray ledge(result.pattern.size() - settings->perfectMatch - 1, 'N');
         result.sequence.insert(pos, ledge);
     }
     result.searchRegion.length = result.sequence.length();
@@ -105,8 +100,12 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
     return result;
 }
 
+InSilicoPcrTask::~InSilicoPcrTask() {
+    delete settings;
+}
+
 void InSilicoPcrTask::prepare() {
-    if (!PrimerStatistics::validatePrimerLength(settings.forwardPrimer) || !PrimerStatistics::validatePrimerLength(settings.reversePrimer)) {
+    if (!PrimerStatistics::validatePrimerLength(settings->forwardPrimer) || !PrimerStatistics::validatePrimerLength(settings->reversePrimer)) {
         algoLog.details(tr("One of the given do not fits acceptable length. Task cancelled."));
         stateInfo.setCanceled(true);
         return;
@@ -156,11 +155,11 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
     bool switched = forward.strand.isComplementary();
     if ((U2Strand::Direct == direction && switched) ||
         (U2Strand::Complementary == direction && !switched)) {
-        result.primer = settings.reversePrimer;
-        result.mismatches = settings.reverseMismatches;
+        result.primer = settings->reversePrimer;
+        result.mismatches = settings->reverseMismatches;
         result.region = reverse.region;
         const qint64 reverseRegionEndPos = reverse.region.endPos();
-        const qint64 sequenceSize = settings.sequence.size();
+        const qint64 sequenceSize = settings->sequence.size();
         if (reverseRegionEndPos > sequenceSize) {
             result.region = U2Region(reverse.region.startPos, sequenceSize - reverse.region.startPos);
             result.ledge = reverseRegionEndPos - sequenceSize;
@@ -169,15 +168,15 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
             result.ledge = 0;
         }
     } else {
-        result.primer = settings.forwardPrimer;
-        result.mismatches = settings.forwardMismatches;
-        const int ledge = result.primer.size() - settings.perfectMatch - 1;
+        result.primer = settings->forwardPrimer;
+        result.mismatches = settings->forwardMismatches;
+        const int ledge = result.primer.size() - settings->perfectMatch - 1;
         if (forward.region.startPos < ledge) {
             result.region = U2Region(0, forward.region.length - forward.region.startPos);
             result.ledge = forward.region.startPos;
         } else {
             result.region = U2Region(forward.region.startPos, forward.region.length);
-            if (!settings.isCircular) {
+            if (!settings->isCircular) {
                 result.region.startPos -= (ledge);
             }
             result.ledge = 0;
@@ -190,7 +189,7 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
 bool InSilicoPcrTask::filter(const PrimerBind& leftBind, const PrimerBind& rightBind, qint64 productSize) const {
     CHECK(isCorrectProductSize(productSize, minProductSize), false);
 
-    if (settings.perfectMatch > 0) {
+    if (settings->perfectMatch > 0) {
         if (leftBind.mismatches > 0) {
             CHECK(checkPerfectMatch(leftBind, U2Strand::Direct), false);
         }
@@ -202,7 +201,7 @@ bool InSilicoPcrTask::filter(const PrimerBind& leftBind, const PrimerBind& right
 }
 
 bool InSilicoPcrTask::isCorrectProductSize(qint64 productSize, qint64 minPrimerSize) const {
-    return (productSize >= minPrimerSize) && (productSize <= qint64(settings.maxProductSize));
+    return (productSize >= minPrimerSize) && (productSize <= qint64(settings->maxProductSize));
 }
 
 bool InSilicoPcrTask::checkPerfectMatch(const PrimerBind& bind, U2Strand::Direction direction) const {
@@ -215,7 +214,7 @@ bool InSilicoPcrTask::checkPerfectMatch(const PrimerBind& bind, U2Strand::Direct
     const int primerLength = croppedPrimer.length();
     SAFE_POINT(sequenceLength == primerLength, L10N::internalError("Wrong match length"), false);
 
-    int perfectMatch = qMin(sequence.length(), int(settings.perfectMatch));
+    int perfectMatch = qMin(sequence.length(), int(settings->perfectMatch));
     for (int i = 0; i < perfectMatch; i++) {
         char a = sequence.at(sequenceLength - 1 - i);
         char b = croppedPrimer.at(primerLength - 1 - i);
@@ -228,11 +227,11 @@ bool InSilicoPcrTask::checkPerfectMatch(const PrimerBind& bind, U2Strand::Direct
 
 QByteArray InSilicoPcrTask::getSequence(const U2Region& region, U2Strand::Direction direction) const {
     QByteArray sequence;
-    if (settings.isCircular && region.endPos() > settings.sequence.size()) {
-        sequence = settings.sequence.mid(region.startPos, settings.sequence.size() - region.startPos);
-        sequence += settings.sequence.mid(0, region.endPos() - settings.sequence.size());
+    if (settings->isCircular && region.endPos() > settings->sequence.size()) {
+        sequence = settings->sequence.mid(region.startPos, settings->sequence.size() - region.startPos);
+        sequence += settings->sequence.mid(0, region.endPos() - settings->sequence.size());
     } else {
-        sequence = settings.sequence.mid(region.startPos, region.length);
+        sequence = settings->sequence.mid(region.startPos, region.length);
     }
     if (U2Strand::Complementary == direction) {
         return DNASequenceUtils::reverseComplement(sequence);
@@ -245,8 +244,8 @@ QString InSilicoPcrTask::generateReport() const {
     for (int i = 0; i < 150; i++) {
         spaces += "&nbsp;";
     }
-    if (PrimerStatistics::validate(settings.forwardPrimer) && PrimerStatistics::validate(settings.reversePrimer)) {
-        PrimersPairStatistics calc(settings.forwardPrimer, settings.reversePrimer);
+    if (PrimerStatistics::validate(settings->forwardPrimer) && PrimerStatistics::validate(settings->reversePrimer)) {
+        PrimersPairStatistics calc(settings->forwardPrimer, settings->reversePrimer, settings->temperatureCalculator);
         return tr("Products found: %1").arg(results.size()) +
                "<br>" +
                spaces +
@@ -261,10 +260,10 @@ QString InSilicoPcrTask::generateReport() const {
 }
 
 InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) const {
-    QByteArray productSequence = settings.sequence.mid(product.startPos, product.length);
+    QByteArray productSequence = settings->sequence.mid(product.startPos, product.length);
     if (productSequence.length() < product.length) {
-        if (settings.isCircular) {
-            productSequence += settings.sequence.left(product.endPos() - settings.sequence.length());
+        if (settings->isCircular) {
+            productSequence += settings->sequence.left(product.endPos() - settings->sequence.length());
         } else {
             CHECK(updateSequenceByPrimers(leftPrimer, rightPrimer, productSequence), InSilicoPcrProduct());
         }
@@ -272,15 +271,15 @@ InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, c
 
     InSilicoPcrProduct result;
     result.region = product;
-    result.ta = PrimerStatistics::getAnnealingTemperature(productSequence,
-                                                          direction == U2Strand::Direct ? settings.forwardPrimer : settings.reversePrimer,
-                                                          direction == U2Strand::Direct ? settings.reversePrimer : settings.forwardPrimer);
+    result.ta = settings->temperatureCalculator->getAnnealingTemperature(productSequence,
+                                                          direction == U2Strand::Direct ? settings->forwardPrimer : settings->reversePrimer,
+                                                          direction == U2Strand::Direct ? settings->reversePrimer : settings->forwardPrimer);
     result.forwardPrimerMatchLength = leftPrimer.region.length + leftPrimer.ledge;
     result.reversePrimerMatchLength = rightPrimer.region.length + rightPrimer.ledge;
-    result.forwardPrimer = settings.forwardPrimer;
-    result.reversePrimer = settings.reversePrimer;
-    result.forwardPrimerLedge = settings.forwardPrimer.left(leftPrimer.ledge);
-    result.reversePrimerLedge = settings.reversePrimer.left(rightPrimer.ledge);
+    result.forwardPrimer = settings->forwardPrimer;
+    result.reversePrimer = settings->reversePrimer;
+    result.forwardPrimerLedge = settings->forwardPrimer.left(leftPrimer.ledge);
+    result.reversePrimerLedge = settings->reversePrimer.left(rightPrimer.ledge);
     if (U2Strand::Complementary == direction) {
         qSwap(result.forwardPrimer, result.reversePrimer);
     }
@@ -312,8 +311,8 @@ void InSilicoPcrTask::updateSequenceByPrimer(const PrimerBind& primer, QByteArra
 qint64 InSilicoPcrTask::getProductSize(const PrimerBind& leftBind, const PrimerBind& rightBind) const {
     const qint64 ledge = rightBind.ledge + leftBind.ledge;
     qint64 result = rightBind.region.endPos() - leftBind.region.startPos + ledge;
-    if (result < 0 && settings.isCircular) {
-        result += settings.sequence.length();
+    if (result < 0 && settings->isCircular) {
+        result += settings->sequence.length();
     }
     return result;
 }
@@ -322,7 +321,7 @@ const QList<InSilicoPcrProduct>& InSilicoPcrTask::getResults() const {
     return results;
 }
 
-const InSilicoPcrTaskSettings& InSilicoPcrTask::getSettings() const {
+const InSilicoPcrTaskSettings* InSilicoPcrTask::getSettings() const {
     return settings;
 }
 

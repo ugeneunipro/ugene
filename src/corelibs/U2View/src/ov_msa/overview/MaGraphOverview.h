@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_GRAPH_OVERVIEW_H_
-#define _U2_MSA_GRAPH_OVERVIEW_H_
+#pragma once
 
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2Core/global.h>
@@ -157,5 +156,3 @@ inline bool operator!=(const MaGraphOverviewState& s1, const MaGraphOverviewStat
 }
 
 }  // namespace U2
-
-#endif  // _U2_MSA_GRAPH_OVERVIEW_H_

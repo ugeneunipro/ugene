@@ -98,7 +98,7 @@ QDDistanceType QDConstraintController::getInvertedType(QDDistanceType type) {
 }
 
 bool QDConstraintController::match(QDConstraint* c, const QDResultUnit& r1, const QDResultUnit& r2, bool complement) {
-    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
+    auto dc = static_cast<QDDistanceConstraint*>(c);
     assert(dc);
 
     const U2Region& reg1 = r1->region;

@@ -108,7 +108,7 @@ static QString getDataDirImpl() {
     }
 
     if (!QFileInfo::exists(dataDir)) {
-        coreLog.error(QString("dataDir not found in the default places"));
+        coreLog.info("dataDir not found in the default places");
     }
 
     return dataDir;

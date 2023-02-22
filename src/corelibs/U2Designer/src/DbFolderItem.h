@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DB_FOLDER_ITEM_H_
-#define _U2_DB_FOLDER_ITEM_H_
+#pragma once
 
 #include "UrlItem.h"
 
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_U2_DB_FOLDER_ITEM_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ACTORCONTEXT_H_
-#define _U2_ACTORCONTEXT_H_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 
@@ -43,5 +42,3 @@ private:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_ACTORCONTEXT_H_

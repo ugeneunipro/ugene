@@ -310,7 +310,7 @@ void DigestSequenceDialog::sl_timerUpdate() {
 }
 
 void DigestSequenceDialog::sl_taskStateChanged() {
-    Task* task = qobject_cast<Task*>(sender());
+    auto task = qobject_cast<Task*>(sender());
     SAFE_POINT(task != nullptr, tr("Auto-annotations update task is NULL."), );
 
     if (task->getState() == Task::State_Finished) {

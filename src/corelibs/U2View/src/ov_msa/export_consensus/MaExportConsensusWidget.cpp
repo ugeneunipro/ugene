@@ -129,7 +129,7 @@ void MaExportConsensusWidget::sl_consensusChanged(const QString& algoId) {
 }
 
 void MaExportConsensusWidget::sl_exportTaskStateChanged() {
-    ExportMaConsensusTask* exportTask = qobject_cast<ExportMaConsensusTask*>(sender());
+    auto exportTask = qobject_cast<ExportMaConsensusTask*>(sender());
     SAFE_POINT(exportTask != nullptr, "ExportMaConsensusTask object is unexpectedly NULL", );
 
     if (exportTask->getState() == Task::State_Finished) {

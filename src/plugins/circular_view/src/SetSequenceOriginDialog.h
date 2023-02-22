@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_ORIGIN_DIALOG_H_
-#define _U2_SEQUENCE_ORIGIN_DIALOG_H_
+#pragma once
 
 #include <ui_SetSequenceOriginDialog.h>
 
@@ -39,5 +38,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

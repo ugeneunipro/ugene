@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UGENE_TEST_FRAMEWORK_H_
-#define _U2_UGENE_TEST_FRAMEWORK_H_
+#pragma once
 
 #include <QList>
 #include <QMap>
@@ -33,7 +32,7 @@
 namespace U2 {
 
 /** Tests that need to verify log uses this resource */
-#define RESOURCE_LISTEN_LOG_IN_TESTS 1000001
+#define UGENE_RESOURCE_ID_TEST_LOG_LISTENER "Test logs listener"
 
 class U2TEST_EXPORT GTestEnvironment {
 public:
@@ -71,7 +70,7 @@ public:
     template<class T>
     static T* getContext(const GTest* test, const QString& name) {
         QObject* o = test->getContext(name);
-        T* res = qobject_cast<T*>(o);
+        auto res = qobject_cast<T*>(o);
         return res;
     }
 
@@ -278,5 +277,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

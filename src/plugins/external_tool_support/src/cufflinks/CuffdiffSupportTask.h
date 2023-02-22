@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUFFDIFFSUPPORTTASK_H_
-#define _U2_CUFFDIFFSUPPORTTASK_H_
+#pragma once
 
 #include <U2Core/AnnotationData.h>
 #include <U2Core/DocumentModel.h>
@@ -112,5 +111,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CUFFDIFFSUPPORTTASK_H_

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FOLDER_SELECTION_H_
-#define _U2_FOLDER_SELECTION_H_
+#pragma once
 
 #include <U2Core/Folder.h>
 #include <U2Core/SelectionModel.h>
@@ -42,5 +41,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_FOLDER_SELECTION_H_

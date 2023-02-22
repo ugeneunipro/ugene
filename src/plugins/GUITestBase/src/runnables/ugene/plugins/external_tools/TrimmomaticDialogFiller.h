@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef TRIMMOMATIC_DIALOG_FILLER_H
-#define TRIMMOMATIC_DIALOG_FILLER_H
+#pragma once
 
 #include <base_dialogs/GTFileDialog.h>
 
@@ -104,5 +103,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // TRIMMOMATIC_DIALOG_FILLER_H

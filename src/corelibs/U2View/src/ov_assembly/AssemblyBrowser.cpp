@@ -195,7 +195,7 @@ bool AssemblyBrowser::eventFilter(QObject* o, QEvent* e) {
         if (e->type() == QEvent::DragEnter || e->type() == QEvent::Drop) {
             QDropEvent* de = (QDropEvent*)e;
             const QMimeData* md = de->mimeData();
-            const GObjectMimeData* gomd = qobject_cast<const GObjectMimeData*>(md);
+            auto gomd = qobject_cast<const GObjectMimeData*>(md);
             if (gomd != nullptr) {
                 if (e->type() == QEvent::DragEnter) {
                     de->acceptProposedAction();
@@ -219,7 +219,7 @@ QString AssemblyBrowser::tryAddObject(GObject* obj) {
     static const QString unacceptableObjectError = tr("Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.");
 
     if (GObjectTypes::SEQUENCE == obj->getGObjectType()) {
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         CHECK(nullptr != seqObj, tr("Internal error: broken sequence object"));
         SAFE_POINT(nullptr != objDoc->getDocumentFormat(), "", tr("Internal error: empty document format"));
 
@@ -266,7 +266,7 @@ QString AssemblyBrowser::tryAddObject(GObject* obj) {
             model->associateWithReference(refId);
         }
     } else if (GObjectTypes::VARIANT_TRACK == obj->getGObjectType()) {
-        VariantTrackObject* trackObj = qobject_cast<VariantTrackObject*>(obj);
+        auto trackObj = qobject_cast<VariantTrackObject*>(obj);
         CHECK(nullptr != trackObj, tr("Internal error: broken variant track object"));
 
         model->addTrackObject(trackObj);
@@ -747,7 +747,7 @@ void AssemblyBrowser::sl_onReadHintEnabledChanged(bool checked) {
 }
 
 void AssemblyBrowser::sl_changeOverviewType() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     if (a == nullptr) {
         assert(false);
         return;

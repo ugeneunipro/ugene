@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMAGE_EXPORT_TASK_H
-#define _U2_IMAGE_EXPORT_TASK_H
+#pragma once
 
 #include <QSize>
 
@@ -141,5 +140,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_IMAGE_EXPORT_TASK_H

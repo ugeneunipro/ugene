@@ -395,7 +395,7 @@ void GTest_RemoveColumnsOfGaps::prepare() {
     }
     assert(nullptr != obj);
 
-    MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (nullptr == maObj) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;

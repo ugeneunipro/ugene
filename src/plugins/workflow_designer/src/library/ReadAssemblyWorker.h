@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _READ_ASSEMBLY_WORKER_
-#define _READ_ASSEMBLY_WORKER_
+#pragma once
 
 #include "GenericReadActor.h"
 #include "GenericReadWorker.h"
@@ -66,5 +65,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _READ_ASSEMBLY_WORKER_

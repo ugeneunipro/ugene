@@ -176,8 +176,8 @@ HmmerSearchPrompter::HmmerSearchPrompter(Actor* p)
 }
 
 QString HmmerSearchPrompter::composeRichDoc() {
-    Actor* hmmProducer = qobject_cast<IntegralBusPort*>(target->getPort(HMM_URL_PORT))->getProducer(HMM_URL_PORT);
-    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BasePorts::IN_SEQ_PORT_ID());
+    auto hmmProducer = qobject_cast<IntegralBusPort*>(target->getPort(HMM_URL_PORT))->getProducer(HMM_URL_PORT);
+    auto seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BasePorts::IN_SEQ_PORT_ID());
 
     QString seqName = (seqProducer ? tr("For each sequence from <u>%1</u>,").arg(seqProducer->getLabel()) : "");
     QString hmmName = (hmmProducer ? tr("using all profiles provided by <u>%1</u>,").arg(hmmProducer->getLabel()) : "");
@@ -302,7 +302,7 @@ void HmmerSearchWorker::sl_taskFinished(Task* task) {
         QList<SharedAnnotationData> list;
 
         foreach (const QPointer<Task>& sub, task->getSubtasks()) {
-            HmmerSearchTask* searchTask = qobject_cast<HmmerSearchTask*>(sub.data());
+            auto searchTask = qobject_cast<HmmerSearchTask*>(sub.data());
             if (searchTask == nullptr) {
                 continue;
             }

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GOBJECT_H_
-#define _U2_GOBJECT_H_
+#pragma once
 
 #include <QMimeData>
 #include <QMutex>
@@ -198,5 +197,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

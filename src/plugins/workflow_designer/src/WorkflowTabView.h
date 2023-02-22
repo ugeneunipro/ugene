@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOWTABVIEW_H_
-#define _U2_WORKFLOWTABVIEW_H_
+#pragma once
 
 #include <QTabBar>
 #include <QTabWidget>
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOWTABVIEW_H_

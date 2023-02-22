@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
-#define _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/MsaRowUtils.h>
@@ -289,5 +288,3 @@ inline bool operator!=(const MultipleSequenceAlignmentRowData* ptr1, const Multi
 }
 
 }  // namespace U2
-
-#endif  // _U2_MULTIPLE_SEQUENCE_ALIGNMENT_ROW_H_

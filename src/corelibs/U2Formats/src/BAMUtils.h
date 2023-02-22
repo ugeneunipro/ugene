@@ -19,14 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BAM_UTILS_H_
-#define _U2_BAM_UTILS_H_
+#pragma once
 
 #include <QFile>
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrl.h>
+#include <U2Core/Nullable.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2Region.h>
 
@@ -57,7 +57,7 @@ public:
 
     static bool hasValidBamIndex(const QString& bamUrl);
 
-    static bool hasValidFastaIndex(const GUrl& fastaUrl);
+    static bool hasValidFastaIndex(const QString& fastaUrl);
 
     static void createBamIndex(const QString& bamUrl, U2OpStatus& os);
 
@@ -79,14 +79,11 @@ public:
      */
     static void createFai(const GUrl& faiUrl, const QStringList& references, U2OpStatus& os);
 
-    /**
-     * Calls fopen() correctly for files with Unicode
-     * names and returns a FILE* structure for the the opened file.
-     * For 'mode' see fopen() function description.
-     * Caller is responsible to close the file.
-     * If any error happens the method returns nullptr.
-     */
-    static FILE* openFile(const QString& path, const QString& mode);
+    /** Calls FileAndDirectoryUtils::openFile(). Kept here for compatibility. */
+    static NP<FILE> openFile(const QString& path, const QString& mode);
+
+    /** Calls FileAndDirectoryUtils::closeFileIfOpen(). Kept here for compatibility. */
+    static void closeFileIfOpen(FILE* file);
 
     /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
     static void* loadIndex(const QString& path);
@@ -109,5 +106,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_BAM_UTILS_H_

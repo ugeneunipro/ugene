@@ -178,7 +178,7 @@ bool GzipUtil::skip(const GZipIndexAccessPoint& here, qint64 offset) {
     int ret = 0;
     char discard[GZipIndex::WINSIZE];
 
-    LocalFileAdapter* localIO = qobject_cast<LocalFileAdapter*>(io);
+    auto localIO = qobject_cast<LocalFileAdapter*>(io);
     if (nullptr == localIO) {
         return false;
     }

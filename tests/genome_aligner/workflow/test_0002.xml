@@ -1,11 +1,10 @@
 <multi-test>
     <remove-temp-dir url="genome_aligner_2"/>
-    <create-temp-dir url="genome_aligner_2"/>
-    <copy-file from="!common_data_dir!genome_aligner/shortreads15Mb.fasta" to="!tmp_data_dir!genome_aligner_2/shortreads15Mb.fasta"/>
     <copy-file from="!common_data_dir!genome_aligner/chrY.fa" to="!tmp_data_dir!genome_aligner_2/chrY.fa"/>
+    <create-temp-dir url="genome_aligner_2"/>
     <run-cmdline
             task="!common_data_dir!genome_aligner/workflow/genome-aligner.uwl"
-            in="!tmp_data_dir!genome_aligner_2/shortreads15Mb.fasta"
+            in="!common_data_dir!genome_aligner/shortreads1Mb.fasta"
             out-dir="!tmp_data_dir!genome_aligner_2"
             ref="!tmp_data_dir!genome_aligner_2/chrY.fa"
             abs-mis-enabled="true"

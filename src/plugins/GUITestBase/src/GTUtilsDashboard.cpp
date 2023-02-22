@@ -172,7 +172,7 @@ QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus& os, const
     if (cellWidget != nullptr && cellWidget->objectName() == "tableCell") {
         if (const QLayout* const cellLayout = cellWidget->layout()) {
             for (int labelInd = 0; labelInd < cellLayout->count(); ++labelInd) {
-                if (const auto* const label = qobject_cast<QLabel*>(cellLayout->itemAt(labelInd)->widget())) {
+                if (auto label = qobject_cast<QLabel*>(cellLayout->itemAt(labelInd)->widget())) {
                     text = label->text();
                 }
             }

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_CHROMATOGRAM_OBJECT_UNIT_TESTS_H_
-#define _U2_DNA_CHROMATOGRAM_OBJECT_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -81,5 +80,3 @@ DECLARE_METATYPE(DNAChromatogramObjectUnitTests, clone);
 DECLARE_METATYPE(DNAChromatogramObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(DNAChromatogramObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(DNAChromatogramObjectUnitTests, remove);
-
-#endif  // _U2_DNA_CHROMATOGRAM_OBJECT_UNIT_TESTS_H_

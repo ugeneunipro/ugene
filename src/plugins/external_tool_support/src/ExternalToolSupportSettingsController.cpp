@@ -240,7 +240,7 @@ void ExternalToolSupportSettingsPageWidget::sl_deleteCustomToolButtonClicked() {
     const QString toolId = externalToolsItems.key(selectedItems.first());
     CHECK(!toolId.isEmpty(), );
 
-    CustomExternalTool* tool = qobject_cast<CustomExternalTool*>(AppContext::getExternalToolRegistry()->getById(toolId));
+    auto tool = qobject_cast<CustomExternalTool*>(AppContext::getExternalToolRegistry()->getById(toolId));
     SAFE_POINT(nullptr != tool, "Can't get CustomExternalTool from the registry", );
     const QString configFilePath = tool->getConfigFilePath();
 
@@ -327,7 +327,7 @@ static ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList) 
 }
 
 void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
-    ExternalToolSupportSettingsPageState* state = qobject_cast<ExternalToolSupportSettingsPageState*>(s);
+    auto state = qobject_cast<ExternalToolSupportSettingsPageState*>(s);
     SAFE_POINT(state != nullptr, "ExternalToolSupportSettingsPageState is absent", );
 
     const QList<ExternalTool*> toolList = state->getExternalTools();
@@ -413,7 +413,7 @@ void ExternalToolSupportSettingsPageWidget::setToolState(ExternalTool* tool) {
     SAFE_POINT(nullptr != item, QString("Tree item for the tool %1 not found").arg(tool->getName()), );
 
     externalToolsInfo[tool->getId()].isValid = tool->isValid();
-    QLabel* moduleToolLabel = qobject_cast<QLabel*>(twIntegratedTools->itemWidget(item, 1));
+    auto moduleToolLabel = qobject_cast<QLabel*>(twIntegratedTools->itemWidget(item, 1));
     QString moduleToolState;
     QString toolStateDesc;
 
@@ -591,7 +591,7 @@ AppSettingsGUIPageState* ExternalToolSupportSettingsPageWidget::getState(QString
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
-    PathLineEdit* s = qobject_cast<PathLineEdit*>(sender());
+    auto s = qobject_cast<PathLineEdit*>(sender());
 
     if (!s || !s->isModified()) {
         return;
@@ -627,7 +627,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_validationComplete() {
-    ExternalToolValidationListener* listener = qobject_cast<ExternalToolValidationListener*>(sender());
+    auto listener = qobject_cast<ExternalToolValidationListener*>(sender());
     SAFE_POINT(nullptr != listener, "Unexpected message sender", );
 
     listener->deleteLater();
@@ -646,14 +646,14 @@ void ExternalToolSupportSettingsPageWidget::sl_validationComplete() {
 void ExternalToolSupportSettingsPageWidget::sl_toolValidationStatusChanged(bool isValid) {
     Q_UNUSED(isValid);
 
-    ExternalTool* s = qobject_cast<ExternalTool*>(sender());
+    auto s = qobject_cast<ExternalTool*>(sender());
     SAFE_POINT(nullptr != s, "Unexpected message sender", );
 
     setToolState(s);
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_itemSelectionChanged() {
-    QTreeWidget* treeWidget = qobject_cast<QTreeWidget*>(sender());
+    auto treeWidget = qobject_cast<QTreeWidget*>(sender());
     QList<QTreeWidgetItem*> selectedItems = treeWidget->selectedItems();
 
     pbDelete->setEnabled(!twCustomTools->selectedItems().isEmpty());
@@ -680,7 +680,7 @@ void ExternalToolSupportSettingsPageWidget::sl_itemSelectionChanged() {
 }
 
 void ExternalToolSupportSettingsPageWidget::sl_onPathEditWidgetClick() {
-    QWidget* s = qobject_cast<QWidget*>(sender());
+    auto s = qobject_cast<QWidget*>(sender());
     SAFE_POINT(s != nullptr, "Unexpected message sender", );
 
     QList<QTreeWidgetItem*> listOfItems = twIntegratedTools->findItems("", Qt::MatchContains | Qt::MatchRecursive);
@@ -843,7 +843,7 @@ void PathLineEdit::sl_onBrowse() {
 }
 
 void PathLineEdit::sl_clear() {
-    QToolButton* s = qobject_cast<QToolButton*>(sender());
+    auto s = qobject_cast<QToolButton*>(sender());
     assert(s);
     setText("");
     s->setEnabled(false);

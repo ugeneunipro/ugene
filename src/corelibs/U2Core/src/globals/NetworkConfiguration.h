@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_NETWORK_CONFIGURATION_H_
-#define _U2_NETWORK_CONFIGURATION_H_
+#pragma once
 
 #include <QMap>
 #include <QNetworkProxy>
@@ -113,5 +112,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

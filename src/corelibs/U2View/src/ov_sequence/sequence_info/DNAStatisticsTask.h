@@ -19,11 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_STATISTICS_TASK_H_
-#define _U2_DNA_STATISTICS_TASK_H_
+#pragma once
 
 #include <QMap>
 #include <QVector>
+#include <QSharedPointer>
 
 #include <U2Core/BackgroundTaskRunner.h>
 #include <U2Core/U2Region.h>
@@ -35,6 +35,7 @@ using MononucleotidesExtinctionCoefficientsMap = QVector<int>;
 using DinucleotidesExtinctionCoefficientsMap = QVector<QVector<int>>;
 
 class DNAAlphabet;
+class BaseTempCalc;
 class U2SequenceDbi;
 
 struct U2VIEW_EXPORT DNAStatistics {
@@ -62,7 +63,7 @@ struct U2VIEW_EXPORT DNAStatistics {
 class U2VIEW_EXPORT DNAStatisticsTask : public BackgroundTask<DNAStatistics> {
     Q_OBJECT
 public:
-    DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef seqRef, const QVector<U2Region>& regions);
+    DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef seqRef, const QVector<U2Region>& regions, const QSharedPointer<BaseTempCalc>& temperatureCalculator);
 
 private:
     void run() override;
@@ -70,6 +71,7 @@ private:
     const DNAAlphabet* alphabet;
     U2EntityRef seqRef;
     QVector<U2Region> regions;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 
     QVector<qint64> charactersCount;
     QVector<qint64> rcCharactersCount;
@@ -95,5 +97,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DNA_STATISTICS_TASK_H_

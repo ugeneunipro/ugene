@@ -104,7 +104,7 @@ class PageAllocator {
   // This method exists for testing pursposes only.
   bool OwnsPointer(const void* p) {
     for (PageHeader* header = last_; header; header = header->next) {
-      const char* current = reinterpret_cast<char*>(header);
+      auto current = reinterpret_cast<char*>(header);
       if ((p >= current) && (p < current + header->num_pages * page_size_))
         return true;
     }
@@ -127,7 +127,7 @@ class PageAllocator {
     __msan_unpoison(a, page_size_ * num_pages);
 #endif
 
-    struct PageHeader* header = reinterpret_cast<PageHeader*>(a);
+    auto header = reinterpret_cast<PageHeader*>(a);
     header->next = last_;
     header->num_pages = num_pages;
     last_ = header;

@@ -65,7 +65,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/DeleteGapsDialog.h \
            src/ov_msa/DrawHelper.h \
            src/ov_msa/ExportHighlightedDialogController.h \
-           src/ov_msa/ExportSequencesTask.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
            src/ov_msa/MSAEditorConsensusCache.h \
@@ -102,7 +101,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MsaRowHeightController.h \
            src/ov_msa/MultilineScrollController.h \
            src/ov_msa/RowHeightController.h \
-           src/ov_msa/SaveSelectedSequenceFromMSADialogController.h \
            src/ov_msa/ScrollController.h \
            src/ov_msa/SequenceAreaRenderer.h \
            src/ov_msa/SequenceSelectorWidgetController.h \
@@ -225,12 +223,16 @@ HEADERS += src/LicenseDialog.h \
            src/ov_text/SimpleTextObjectView.h \
            src/ov_text/SimpleTextObjectViewTasks.h \
            src/phyltree/BaseSettingsDialog.h \
-           src/phyltree/BranchSettingsDialog.h \
            src/phyltree/CreatePhyTreeDialogController.h \
            src/phyltree/CreatePhyTreeWidget.h \
            src/phyltree/PhyTreeDisplayOptionsWidget.h \
            src/phyltree/TextSettingsDialog.h \
            src/phyltree/TreeSettingsDialog.h \
+           src/temperature/methods/RoughTempCalcFactory.h \
+           src/temperature/methods/RoughTempCalcWidget.h \
+           src/temperature/BaseTempCalcWidget.h \
+           src/temperature/TempCalcDialog.h \
+           src/temperature/TempCalcWidget.h \
            src/util_dna_assembly/BuildIndexDialog.h \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.h \
            src/util_dna_assembly/DnaAssemblyDialog.h \
@@ -257,7 +259,6 @@ FORMS += src/LicenseDialog.ui \
          src/ov_msa/CreateSubalignmentDialog.ui \
          src/ov_msa/DeleteGapsDialog.ui \
          src/ov_msa/ExportHighlightedDialog.ui \
-         src/ov_msa/SaveSelectedSequenceFromMSADialog.ui \
          src/ov_msa/SelectSubalignmentDialog.ui \
          src/ov_msa/SequenceSelectorWidget.ui \
          src/ov_msa/export_consensus/ExportConsensusWidget.ui \
@@ -274,7 +275,6 @@ FORMS += src/LicenseDialog.ui \
          src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui \
          src/ov_sequence/find_pattern/FindPatternForm.ui \
          src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui \
-         src/phyltree/BranchSettingsDialog.ui \
          src/phyltree/CreatePhyTreeDialog.ui \
          src/phyltree/PhyTreeDisplayOptionsWidget.ui \
          src/phyltree/TextSettingsDialog.ui \
@@ -351,7 +351,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
            src/ov_msa/DrawHelper.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
-           src/ov_msa/ExportSequencesTask.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
            src/ov_msa/MSAEditorConsensusCache.cpp \
@@ -388,7 +387,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MsaRowHeightController.cpp \
            src/ov_msa/MultilineScrollController.cpp \
            src/ov_msa/RowHeightController.cpp \
-           src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp \
            src/ov_msa/ScrollController.cpp \
            src/ov_msa/SequenceAreaRenderer.cpp \
            src/ov_msa/SequenceSelectorWidgetController.cpp \
@@ -505,12 +503,16 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_text/SimpleTextObjectView.cpp \
            src/ov_text/SimpleTextObjectViewTasks.cpp \
            src/phyltree/BaseSettingsDialog.cpp \
-           src/phyltree/BranchSettingsDialog.cpp \
            src/phyltree/CreatePhyTreeDialogController.cpp \
            src/phyltree/CreatePhyTreeWidget.cpp \
            src/phyltree/PhyTreeDisplayOptionsWidget.cpp \
            src/phyltree/TextSettingsDialog.cpp \
            src/phyltree/TreeSettingsDialog.cpp \
+           src/temperature/methods/RoughTempCalcFactory.cpp \
+           src/temperature/methods/RoughTempCalcWidget.cpp \
+           src/temperature/BaseTempCalcWidget.cpp \
+           src/temperature/TempCalcDialog.cpp \
+           src/temperature/TempCalcWidget.cpp \
            src/util_dna_assembly/BuildIndexDialog.cpp \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.cpp \
            src/util_dna_assembly/DnaAssemblyDialog.cpp \

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CRASH_HANDLER_PRIVATE_UNIX_NOT_MAC_H_
-#define _U2_CRASH_HANDLER_PRIVATE_UNIX_NOT_MAC_H_
+#pragma once
 
 #include <qglobal.h>
 #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
@@ -64,5 +63,3 @@ private:
 }  // namespace U2
 
 #endif
-
-#endif  // _U2_CRASH_HANDLER_PRIVATE_UNIX_NOT_MAC_H_

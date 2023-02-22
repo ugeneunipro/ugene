@@ -19,10 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_STATISTICS_TESTS_H_
-#define _U2_DNA_STATISTICS_TESTS_H_
+#pragma once
 
 #include <QDomElement>
+#include <QSharedPointer>
+
+#include <U2Algorithm/BaseTempCalc.h>
 
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
@@ -37,7 +39,7 @@ class DNAStatisticsTask;
 
 class GTest_DnaStatisticsTest : public XmlTest {
     Q_OBJECT
-    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DnaStatisticsTest, "dna-statistics")
+        SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_DnaStatisticsTest, "dna-statistics")
 
 private:
     void prepare() override;
@@ -48,15 +50,30 @@ private:
     // input values
     QString docName;
     QString seqName;
+    QString seq;
     QVector<U2Region> regions;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
 
     // expected values
     DNAStatistics expectedStats;
 
-    // attribute names
+    /**
+     * Use either @DOC_NAME_ATTR and @SEQ_NAME_ATTR if you want to load sequence from file,
+     * or @SEQ_ATTR if you set up sequence as argument and name as test name
+     */
     static const QString DOC_NAME_ATTR;
     static const QString SEQ_NAME_ATTR;
-    static const QString REGIONS_ATTR;  // 0-based, GenBank-like format without 'join' word: 1..20,40..60
+    static const QString SEQ_ATTR;
+    /** 
+     * 0-based, GenBank-like format without 'join' word: 1..20,40..60
+     */
+    static const QString REGIONS_ATTR;
+    /**
+     * Semicolon separated list of '=' separated pairs,
+     * where the first value is a key (see @TempCalcSettings and its heirs)
+     * and the second value is the value of the corresponding parameter.
+     */
+    static const QString TEMPERATURE_CALCULATION_ATTR;
 
     static const QString EXPECTED_LENGTH;
     static const QString EXPECTED_GC_CONTENT;
@@ -81,5 +98,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DNA_STATISTICS_TESTS_H_

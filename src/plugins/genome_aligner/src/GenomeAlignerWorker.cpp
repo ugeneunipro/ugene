@@ -126,7 +126,7 @@ void GenomeAlignerWorker::cleanup() {
 }
 
 void GenomeAlignerWorker::sl_taskFinished() {
-    GenomeAlignerTask* t = dynamic_cast<GenomeAlignerTask*>(sender());
+    auto t = dynamic_cast<GenomeAlignerTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -200,7 +200,7 @@ DnaAssemblyToRefTaskSettings GenomeAlignerWorker::getSettings(U2OpStatus& os) {
 QString GenomeAlignerPrompter::composeRichDoc() {
     QString res = "";
 
-    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
+    auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;

@@ -1,5 +1,4 @@
-#ifndef MSAMULTILINESCROLLAREA_H
-#define MSAMULTILINESCROLLAREA_H
+#pragma once
 
 #include <QScrollArea>
 
@@ -36,5 +35,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // MSAMULTILINESCROLLAREA_H

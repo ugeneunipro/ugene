@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_SETTINGS_WIDGET_H__
-#define __ASSEMBLY_SETTINGS_WIDGET_H__
+#pragma once
 
 #include <QWidget>
 
@@ -80,5 +79,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // #ifndef __ASSEMBLY_SETTINGS_WIDGET_H__

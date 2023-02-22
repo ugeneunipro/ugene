@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALIGN_SEQUENCES_TO_ALIGNMENT_SUPPORT_H_
-#define _U2_ALIGN_SEQUENCES_TO_ALIGNMENT_SUPPORT_H_
+#pragma once
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -80,4 +79,3 @@ public slots:
 };
 
 }  // namespace U2
-#endif

@@ -73,7 +73,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.h \
-            src/runnables/ugene/corelibs/U2View/ov_msa/BranchSettingsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h \
@@ -81,6 +80,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h \
+            src/runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h \
 #   Runnables / UGENE / plugins_3rdparty
 #   Runnables / UGENE / plugins_3rdparty / kalign
@@ -91,6 +91,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h \
+            src/runnables/ugene/plugins_3rdparty/sitecon/SiteconBuildDialogFiller.h \
 #   Runnables / UGENE / plugins
 #   Runnables / UGENE / plugins / annotator
             src/runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h \
@@ -167,6 +168,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsMcaEditorSequenceArea.h \
             src/GTUtilsMcaEditorStatusWidget.h \
             src/GTUtilsMdi.h \
+            src/GTUtilsMeltingTemperature.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
             src/GTUtilsNotifications.h \
@@ -218,7 +220,8 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
-			src/tests/common_scenarios/genecut/GTTestsGeneCut.h \
+            src/tests/common_scenarios/fasttree/GTTestsFastTree.h \
+            src/tests/common_scenarios/genecut/GTTestsGeneCut.h \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.h \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.h \
@@ -239,7 +242,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.h \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.h \
             src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.h \
-			src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.h \
+            src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.h \
             src/tests/common_scenarios/project/GTTestsProject.h \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.h \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.h \
@@ -354,7 +357,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.cpp \
-            src/runnables/ugene/corelibs/U2View/ov_msa/BranchSettingsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.cpp \
@@ -362,6 +364,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.cpp \
+            src/runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.cpp \
 #   Runnables / UGENE / plugins_3rdparty
 #   Runnables / UGENE / plugins_3rdparty / kalign
@@ -372,6 +375,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.cpp \
+            src/runnables/ugene/plugins_3rdparty/sitecon/SiteconBuildDialogFiller.cpp \
 #   Runnables / UGENE / plugins
 #   Runnables / UGENE / plugins / annotator
             src/runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.cpp \
@@ -448,6 +452,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsMcaEditorSequenceArea.cpp \
             src/GTUtilsMcaEditorStatusWidget.cpp \
             src/GTUtilsMdi.cpp \
+            src/GTUtilsMeltingTemperature.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \
             src/GTUtilsNotifications.cpp \
@@ -499,7 +504,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
-			src/tests/common_scenarios/genecut/GTTestsGeneCut.cpp \
+            src/tests/common_scenarios/fasttree/GTTestsFastTree.cpp \
+            src/tests/common_scenarios/genecut/GTTestsGeneCut.cpp \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.cpp \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \
             src/tests/common_scenarios/msa_editor/GTTestsMsaEditor.cpp \
@@ -519,8 +525,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \
             src/tests/common_scenarios/pcr/GTTestsInSilicoPcr.cpp \
             src/tests/common_scenarios/pcr/GTTestsPrimerLibrary.cpp \
-            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \			
-			src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.cpp \
+            src/tests/common_scenarios/phyml/GTTestsCommonScenariosPhyml.cpp \
+            src/tests/common_scenarios/primer3/GTTestsCommonScenariosPrimer3.cpp \
             src/tests/common_scenarios/project/GTTestsProject.cpp \
             src/tests/common_scenarios/project/anonymous_project/GTTestsProjectAnonymousProject.cpp \
             src/tests/common_scenarios/project/bookmarks/GTTestsBookmarks.cpp \

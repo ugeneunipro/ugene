@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_TEST_SEQUENCE_EDIT_MODE_H_
-#define _U2_GUI_TEST_SEQUENCE_EDIT_MODE_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -47,5 +46,3 @@ GUI_TEST_CLASS_DECLARATION(with_anns_test_0008)
 }  // namespace GUITest_common_scenarios_sequence_edit_mode
 
 }  // namespace U2
-
-#endif

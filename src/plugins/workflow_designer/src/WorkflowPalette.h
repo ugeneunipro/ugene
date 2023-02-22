@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_PALETTE_H_
-#define _U2_WORKFLOW_PALETTE_H_
+#pragma once
 
 #include <QAction>
 #include <QTreeWidget>
@@ -141,5 +140,3 @@ private:
 
 Q_DECLARE_METATYPE(QAction*)
 Q_DECLARE_METATYPE(U2::Workflow::ActorPrototype*)
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_SETTINGS_H_
-#define _U2_EXTERNAL_TOOL_SUPPORT_SETTINGS_H_
+#pragma once
 
 #include <QDirIterator>
 #include <QFont>
@@ -93,5 +92,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

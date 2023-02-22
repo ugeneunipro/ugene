@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_SEQUENCE_VIEW_ITEMS_H_
-#define _U2_EXPORT_SEQUENCE_VIEW_ITEMS_H_
+#pragma once
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
@@ -100,5 +99,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

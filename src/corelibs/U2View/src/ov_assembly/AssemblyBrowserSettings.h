@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_BROWSER_SETTINGS_H__
-#define __ASSEMBLY_BROWSER_SETTINGS_H__
+#pragma once
 
 namespace U2 {
 
@@ -48,5 +47,3 @@ public:
 };  // AssemblyBrowserSettings
 
 }  // namespace U2
-
-#endif  // __ASSEMBLY_BROWSER_SETTINGS_H__

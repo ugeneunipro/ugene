@@ -69,7 +69,7 @@ QTreeWidgetItem* GTUtilsBookmarksTreeView::findItem(GUITestOpStatus& os, const Q
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
 
     for (int i = 0; i < treeWidget->topLevelItemCount(); i++) {
-        OVTViewItem* vi = static_cast<OVTViewItem*>(treeWidget->topLevelItem(i));
+        auto vi = static_cast<OVTViewItem*>(treeWidget->topLevelItem(i));
         if (vi->viewName == itemName) {
             return vi;
         }
@@ -94,7 +94,7 @@ QString GTUtilsBookmarksTreeView::getSelectedItem(GUITestOpStatus& os) {
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
 
     for (int i = 0; i < treeWidget->topLevelItemCount(); i++) {
-        OVTViewItem* vi = static_cast<OVTViewItem*>(treeWidget->topLevelItem(i));
+        auto vi = static_cast<OVTViewItem*>(treeWidget->topLevelItem(i));
         if (vi->isSelected()) {
             return vi->viewName;
         }

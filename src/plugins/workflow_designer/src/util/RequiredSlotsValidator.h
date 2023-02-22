@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REQUIREDSLOTSVALIDATOR_H_
-#define _U2_REQUIREDSLOTSVALIDATOR_H_
+#pragma once
 
 #include <U2Lang/IntegralBusModel.h>
 
@@ -38,5 +37,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_REQUIREDSLOTSVALIDATOR_H_

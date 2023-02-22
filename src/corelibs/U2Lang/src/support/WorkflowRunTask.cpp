@@ -91,7 +91,7 @@ inline bool isValidFile(const QString& link, const qint64& processStartTime) {
 QList<WorkerState> WorkflowRunTask::getState(Actor* actor) {
     QList<WorkerState> ret;
     foreach (const QPointer<Task>& t, getSubtasks()) {
-        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
+        auto rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
         ret << rt->getState(actor->getId());
     }
     return ret;
@@ -100,7 +100,7 @@ QList<WorkerState> WorkflowRunTask::getState(Actor* actor) {
 int WorkflowRunTask::getMsgNum(const Link* l) {
     int ret = 0;
     foreach (const QPointer<Task>& t, getSubtasks()) {
-        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
+        auto rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
         ret += rt->getMsgNum(l);
     }
     return ret;

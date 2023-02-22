@@ -215,7 +215,7 @@ QList<GObjectView*> GTUtilsDocument::getAllGObjectViews() {
     QList<MWMDIWindow*> windows = mwMDIManager->getWindows();
 
     foreach (MWMDIWindow* w, windows) {
-        if (GObjectViewWindow* gObjectViewWindow = qobject_cast<GObjectViewWindow*>(w)) {
+        if (auto gObjectViewWindow = qobject_cast<GObjectViewWindow*>(w)) {
             if (GObjectView* gObjectView = gObjectViewWindow->getObjectView()) {
                 gObjectViews.append(gObjectView);
             }

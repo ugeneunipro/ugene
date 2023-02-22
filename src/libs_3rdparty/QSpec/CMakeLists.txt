@@ -12,9 +12,6 @@ include_directories(../../include)
 file(GLOB_RECURSE SRCS src/*.cpp)
 file(GLOB_RECURSE HDRS src/*.h)
 
-list(FILTER SRCS EXCLUDE REGEX "src/primitives/GTWeb*")
-list(FILTER HDRS EXCLUDE REGEX "src/primitives/GTWeb*")
-
 add_library(QSpec SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(QSpec

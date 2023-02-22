@@ -69,7 +69,7 @@ QList<Task*> DNAFlexTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == findHighFlexTask) {
-        FindHighFlexRegions* findTask = qobject_cast<FindHighFlexRegions*>(findHighFlexTask);
+        auto findTask = qobject_cast<FindHighFlexRegions*>(findHighFlexTask);
         SAFE_POINT(findTask, "Failed to cast FindHighFlexRegions task!", QList<Task*>());
 
         QList<HighFlexResult> results = findTask->getResults();

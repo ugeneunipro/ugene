@@ -65,7 +65,7 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     ui = msaTreeViewerUi;
 
     auto toolBar = new QToolBar(tr("MSAEditor tree toolbar"));
-    buildMSAEditorStaticToolbar(toolBar);
+    buildStaticToolbar(toolBar);
 
     syncModeAction = new QAction(ui);
     syncModeAction->setCheckable(true);
@@ -126,8 +126,6 @@ void MSAEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
     syncModeAction->setChecked(isChecked);
     syncModeAction->setText(isChecked ? tr("Disable Tree and Alignment synchronization") : tr("Enable Tree and Alignment synchronization"));
     syncModeAction->setIcon(QIcon(isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png"));
-
-    msaTreeViewerUi->updateRect();
 }
 
 void MSAEditorTreeViewer::setMSAEditor(MSAEditor* newEditor) {

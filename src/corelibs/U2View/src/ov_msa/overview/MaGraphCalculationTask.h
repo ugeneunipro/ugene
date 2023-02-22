@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_GRAPH_CALCULATION_TASK_H_
-#define _U2_MSA_GRAPH_CALCULATION_TASK_H_
+#pragma once
 
 #include <QPolygonF>
 
@@ -132,5 +131,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_MSA_GRAPH_CALCULATION_TASK_H_

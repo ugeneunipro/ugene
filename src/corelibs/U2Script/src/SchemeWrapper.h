@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SCHEME_WRAPPER_H_
-#define _SCHEME_WRAPPER_H_
+#pragma once
 
 #include <QMap>
 #include <QString>
@@ -136,5 +135,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _SCHEME_WRAPPER_H_

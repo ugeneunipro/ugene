@@ -153,7 +153,7 @@ Task::ReportResult GTest_PFMCreateTest::report() {
             stateInfo.setError(GTest::tr("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
             return ReportResult_Finished;
         }
-        MultipleSequenceAlignmentObject* myAlign = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
+        auto myAlign = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
         const MultipleSequenceAlignment al = myAlign->getMultipleAlignment();
         PFMatrix pfm(al, type);
         for (int i = 0, n = (type == PFM_MONONUCLEOTIDE) ? 4 : 16; i < n; i++) {

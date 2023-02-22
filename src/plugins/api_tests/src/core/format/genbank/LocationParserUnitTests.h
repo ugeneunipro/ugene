@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENBANK_LOCATION_PARSER_UNIT_TESTS_H_
-#define _U2_GENBANK_LOCATION_PARSER_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -88,5 +87,3 @@ DECLARE_METATYPE(LocationParserTestData, locationParserGreaterInvalid);
 DECLARE_METATYPE(LocationParserTestData, locationParserName);
 DECLARE_METATYPE(LocationParserTestData, locationParserNameInvalid);
 DECLARE_METATYPE(LocationParserTestData, locationBuildStringNumberInvalid);
-
-#endif

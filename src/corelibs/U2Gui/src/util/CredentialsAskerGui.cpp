@@ -37,7 +37,7 @@ namespace U2 {
 bool CredentialsAskerGui::askWithFixedLogin(const QString& resourceUrl) const {
     SAFE_POINT(AppContext::isGUIMode(), "Unexpected application run mode", false);
 
-    QWidget* mainWindow = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
+    auto mainWindow = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
 
     QString userName;
     const QString shortDbiUrl = U2DbiUtils::full2shortDbiUrl(resourceUrl, userName);
@@ -61,7 +61,7 @@ bool CredentialsAskerGui::askWithFixedLogin(const QString& resourceUrl) const {
 bool CredentialsAskerGui::askWithModifiableLogin(QString& resourceUrl) const {
     SAFE_POINT(AppContext::isGUIMode(), "Unexpected application run mode", false);
 
-    QWidget* mainWindow = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
+    auto mainWindow = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
 
     QString userName;
     const QString shortDbiUrl = U2DbiUtils::full2shortDbiUrl(resourceUrl, userName);

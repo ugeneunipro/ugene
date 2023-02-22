@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RPS_BLAST_SUPPORT_TASK_H_
-#define _U2_RPS_BLAST_SUPPORT_TASK_H_
+#pragma once
 
 #include <U2Algorithm/CDSearchTaskFactory.h>
 
@@ -57,5 +56,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

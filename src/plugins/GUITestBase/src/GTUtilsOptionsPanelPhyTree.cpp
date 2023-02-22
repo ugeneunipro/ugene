@@ -24,6 +24,7 @@
 #include <primitives/GTWidget.h>
 
 #include <U2View/TreeViewerFactory.h>
+#include <U2View/TvBranchItem.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsOptionsPanelPhyTree.h"

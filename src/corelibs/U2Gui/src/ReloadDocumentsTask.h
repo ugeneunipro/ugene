@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_RELOAD_DOCUMENTS_TASK_
-#define _U2_RELOAD_DOCUMENTS_TASK_
+#pragma once
 
 #include <QCoreApplication>
 
@@ -45,4 +44,3 @@ private:
 };
 
 }  // namespace U2
-#endif

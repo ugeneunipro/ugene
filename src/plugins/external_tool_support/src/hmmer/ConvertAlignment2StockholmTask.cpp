@@ -113,7 +113,7 @@ void ConvertAlignment2Stockholm::prepareSaveTask() {
         stateInfo.addWarning(tr("File contains several multiple alignments. Only the first one is saved to the result file."));
     }
 
-    MultipleSequenceAlignmentObject* maObject = qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
+    auto maObject = qobject_cast<MultipleSequenceAlignmentObject*>(objects.first());
     saveTask = new SaveAlignmentTask(maObject->getMultipleAlignment(), resultUrl, BaseDocumentFormats::STOCKHOLM);
     saveTask->setSubtaskProgressWeight(50);
 }

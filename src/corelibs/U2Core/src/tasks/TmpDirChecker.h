@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef TMPDIRCHECKER_H
-#define TMPDIRCHECKER_H
+#pragma once
 
 #include <QDir>
 
@@ -46,4 +45,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // TMPDIRCHECKER_H

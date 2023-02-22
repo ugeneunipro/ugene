@@ -19,10 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_STATISTICS_H_
-#define _U2_PRIMER_STATISTICS_H_
+#pragma once
 
 #include <QObject>
+#include <QSharedPointer>
+
+#include <U2Algorithm/BaseTempCalc.h>
 
 #include <U2Core/global.h>
 
@@ -33,10 +35,7 @@ namespace U2 {
 class U2CORE_EXPORT PrimerStatistics : public QObject {
     Q_OBJECT
 public:
-    static QString checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, bool& isCriticalError);
-    static double getMeltingTemperature(const QByteArray& sequence);
-    static double getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer);
-    static double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
+    static QString checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, const QSharedPointer<BaseTempCalc>& temperatureCalculator, bool& isCriticalError);
 
     static bool validate(const QByteArray& primer);
     static bool validatePrimerLength(const QByteArray& primer);
@@ -57,7 +56,7 @@ public:
     enum Direction { Forward,
                      Reverse,
                      DoesntMatter };
-    PrimerStatisticsCalculator(const QByteArray& sequence, Direction direction = DoesntMatter, const qreal energyThreshold = -6);
+    PrimerStatisticsCalculator(const QByteArray& sequence, const QSharedPointer<BaseTempCalc>& temperatureCalculator, Direction direction = DoesntMatter, const qreal energyThreshold = -6);
 
     double getGC() const;
     double getTm() const;
@@ -84,11 +83,13 @@ public:
     static const double DIMERS_ENERGY_THRESHOLD;
 
 private:
+
     QString getMessage(const QString& error) const;
 
 private:
     DimerFinderResult dimersInfo;
     const QByteArray sequence;
+    QSharedPointer<BaseTempCalc> temperatureCalculator;
     Direction direction;
     qreal energyThreshold = 0.0;
     int nA;
@@ -102,7 +103,9 @@ private:
 
 class U2CORE_EXPORT PrimersPairStatistics {
 public:
-    PrimersPairStatistics(const QByteArray& forward, const QByteArray& reverse);
+    PrimersPairStatistics(const QByteArray& forward, const QByteArray& reverse, const QSharedPointer<BaseTempCalc>& temperatureCalculator);
+    ~PrimersPairStatistics() = default;
+    Q_DISABLE_COPY_MOVE(PrimersPairStatistics);
 
     QString getFirstError() const;
 
@@ -138,5 +141,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_PRIMER_STATISTICS_H_

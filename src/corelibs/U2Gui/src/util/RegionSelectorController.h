@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REGION_SELECTOR_CONTROLLER_H_
-#define _U2_REGION_SELECTOR_CONTROLLER_H_
+#pragma once
 
 #include <QComboBox>
 #include <QLineEdit>
@@ -135,5 +134,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_REGION_SELECTOR_CONTROLLER_H_

@@ -343,13 +343,13 @@ void SpadesWorker::trySetDone(U2OpStatus& os) {
 }
 
 void SpadesWorker::sl_taskFinished() {
-    GenomeAssemblyMultiTask* t = dynamic_cast<GenomeAssemblyMultiTask*>(sender());
+    auto t = dynamic_cast<GenomeAssemblyMultiTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled() || t->getResultUrl().isEmpty()) {
         return;
     }
 
     QString scaffoldUrl = t->getResultUrl();
-    SpadesTask* spadesTask = qobject_cast<SpadesTask*>(t->getAssemblyTask());
+    auto spadesTask = qobject_cast<SpadesTask*>(t->getAssemblyTask());
     CHECK(spadesTask != nullptr, );
     QString contigsUrl = spadesTask->getContigsUrl();
 

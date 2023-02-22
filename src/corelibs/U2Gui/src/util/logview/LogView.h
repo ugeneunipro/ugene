@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_LOGVIEW_IMPL_
-#define _U2_LOGVIEW_IMPL_
+#pragma once
 
 #include <LogSettings.h>
 
@@ -119,5 +118,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

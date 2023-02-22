@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _SCRIPT_PROTO_MAKER_H_
-#define _SCRIPT_PROTO_MAKER_H_
+#pragma once
 
 #include <U2Core/global.h>
 
@@ -64,5 +63,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _SCRIPT_PROTO_MAKER_H_

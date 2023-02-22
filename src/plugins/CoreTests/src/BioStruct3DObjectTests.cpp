@@ -68,7 +68,7 @@ Task::ReportResult GTest_BioStruct3DNumberOfAtoms::report() {
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
+    auto biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -112,7 +112,7 @@ Task::ReportResult GTest_BioStruct3DNumberOfChains::report() {
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
+    auto biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -203,7 +203,7 @@ Task::ReportResult GTest_BioStruct3DAtomCoordinates::report() {
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
+    auto biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -282,7 +282,7 @@ Task::ReportResult GTest_BioStruct3DAtomChainIndex::report() {
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
+    auto biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -355,7 +355,7 @@ Task::ReportResult GTest_BioStruct3DAtomResidueName::report() {
         return ReportResult_Finished;
     }
 
-    BioStruct3DObject* biostructObj = qobject_cast<BioStruct3DObject*>(obj);
+    auto biostructObj = qobject_cast<BioStruct3DObject*>(obj);
     if (biostructObj == nullptr) {
         stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;

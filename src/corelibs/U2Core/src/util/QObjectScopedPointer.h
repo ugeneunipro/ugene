@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QOBJECT_SCOPED_POINTER_H_
-#define _U2_QOBJECT_SCOPED_POINTER_H_
+#pragma once
 
 #include <QPointer>
 
@@ -69,5 +68,3 @@ inline bool operator==(const QObjectScopedPointer<T>& p, const T* o) {
 }
 
 }  // namespace U2
-
-#endif  // _U2_QOBJECT_SCOPED_POINTER_H_

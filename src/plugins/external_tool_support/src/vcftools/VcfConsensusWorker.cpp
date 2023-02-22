@@ -100,7 +100,7 @@ void VcfConsensusWorker::cleanup() {
 }
 
 void VcfConsensusWorker::sl_taskFinished() {
-    VcfConsensusSupportTask* t = dynamic_cast<VcfConsensusSupportTask*>(sender());
+    auto t = dynamic_cast<VcfConsensusSupportTask*>(sender());
     CHECK(t != nullptr, );
     CHECK(t->isFinished() && !t->hasError(), );
 
@@ -166,7 +166,7 @@ void VcfConsensusWorkerFactory::init() {
 }
 
 QString VcfConsensusPrompter::composeRichDoc() {
-    IntegralBusPort* in = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_ID));
+    auto in = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_ID));
     SAFE_POINT(in != nullptr, "NULL input port", "");
     QString fasta = getProducersOrUnset(IN_PORT_ID, IN_FASTA_URL_SLOT_ID);
     QString vcf = getProducersOrUnset(IN_PORT_ID, IN_VCF_URL_SLOT_ID);

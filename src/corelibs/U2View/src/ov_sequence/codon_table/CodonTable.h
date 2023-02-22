@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CODON_TABLE_H_
-#define _U2_CODON_TABLE_H_
+#pragma once
 
 #include <QLabel>
 #include <QTableWidget>
@@ -74,5 +73,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CODON_TABLE_H_

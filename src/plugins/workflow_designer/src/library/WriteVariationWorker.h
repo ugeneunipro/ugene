@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _WRITE_VARIATION_LIST_WORKER_
-#define _WRITE_VARIATION_LIST_WORKER_
+#pragma once
 
 #include "BaseDocWriter.h"
 
@@ -53,5 +52,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _WRITE_VARIATION_LIST_WORKER_

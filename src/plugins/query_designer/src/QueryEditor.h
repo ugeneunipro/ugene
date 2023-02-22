@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QUERY_EDITOR_H_
-#define _U2_QUERY_EDITOR_H_
+#pragma once
 
 #include "ui_QueryEditorWidget.h"
 
@@ -62,5 +61,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

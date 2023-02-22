@@ -81,7 +81,7 @@ void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
 }
 
 void SnpEffSupport::sl_databaseListIsReady() {
-    SnpEffDatabaseListTask* task = dynamic_cast<SnpEffDatabaseListTask*>(sender());
+    auto task = dynamic_cast<SnpEffDatabaseListTask*>(sender());
     SAFE_POINT(task != nullptr, "SnpEffDatabaseListTask is NULL: wrong sender", );
     if (task->isCanceled() || task->hasError() || !task->isFinished()) {
         return;

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QUERY_DESIGNER_PLUGIN_H_
-#define _U2_QUERY_DESIGNER_PLUGIN_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceModel.h>
@@ -75,5 +74,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif

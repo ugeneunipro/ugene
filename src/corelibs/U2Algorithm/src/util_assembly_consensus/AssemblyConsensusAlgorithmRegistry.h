@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ASSEMBLY_CONSENSUS_ALGORITHM_REGISTRY_H_
-#define _U2_ASSEMBLY_CONSENSUS_ALGORITHM_REGISTRY_H_
+#pragma once
 
 #include <QMap>
 #include <QStringList>
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

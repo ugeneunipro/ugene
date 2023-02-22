@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UDR_DBI_UNIT_TESTS_H_
-#define _U2_UDR_DBI_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -110,5 +109,3 @@ DECLARE_METATYPE(UdrDbiUnitTests, createObject);
 DECLARE_METATYPE(UdrDbiUnitTests, createObject_removeObject);
 DECLARE_METATYPE(UdrDbiUnitTests, getObjectRecords_1);
 DECLARE_METATYPE(UdrDbiUnitTests, getObjectRecords_2);
-
-#endif  // _U2_UDR_DBI_UNIT_TESTS_H_

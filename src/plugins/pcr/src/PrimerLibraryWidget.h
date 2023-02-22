@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LIBRARY_WIDGET_H_
-#define _U2_PRIMER_LIBRARY_WIDGET_H_
+#pragma once
 
 #include <QAbstractItemModel>
 
@@ -47,14 +46,16 @@ private slots:
     void sl_removePrimers();
     void sl_importPrimers();
     void sl_exportPrimers();
+    void sl_openTemperatureSettings();
     void sl_selectionChanged();
 
 private:
-    QPushButton* editPrimerButton;
-    QPushButton* removePrimersButton;
-    QPushButton* exportPrimersButton;
+    void updateTemperatureValues();
+
+    QPushButton* editPrimerButton = nullptr;
+    QPushButton* removePrimersButton = nullptr;
+    QPushButton* exportPrimersButton = nullptr;
+    QPushButton* temperatureButton = nullptr;
 };
 
 }  // namespace U2
-
-#endif  // _U2_PRIMER_LIBRARY_WIDGET_H_

@@ -40,35 +40,20 @@
   @copyright Genome Research Ltd.
  */
 
-#define BAM_VERSION "0.1.18 (r982:295)"
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-#ifndef BAM_LITE
+
 #define BAM_VIRTUAL_OFFSET16
 #include "bgzf.h"
 /*! @abstract BAM file handler */
 typedef BGZF *bamFile;
-#define bam_open(fn, mode) bgzf_open(fn, mode)
-#define bam_dopen(fd, mode) bgzf_fdopen(fd, mode)
-#define bam_close(fp) bgzf_close(fp)
 #define bam_read(fp, buf, size) bgzf_read(fp, buf, size)
 #define bam_write(fp, buf, size) bgzf_write(fp, buf, size)
 #define bam_tell(fp) bgzf_tell(fp)
 #define bam_seek(fp, pos, dir) bgzf_seek(fp, pos, dir)
-#else
-#define BAM_TRUE_OFFSET
-#include <3rdparty/zlib/zlib.h>
-typedef gzFile bamFile;
-#define bam_open(fn, mode) gzopen(fn, mode)
-#define bam_dopen(fd, mode) gzdopen(fd, mode)
-#define bam_close(fp) gzclose(fp)
-#define bam_read(fp, buf, size) gzread(fp, buf, size)
-/* no bam_write/bam_tell/bam_seek() here */
-#endif
 
 /*! @typedef
   @abstract Structure for the alignment header.
@@ -200,7 +185,6 @@ typedef struct {
 typedef struct __bam_iter_t *bam_iter_t;
 
 #define bam1_strand(b) (((b)->core.flag&BAM_FREVERSE) != 0)
-#define bam1_mstrand(b) (((b)->core.flag&BAM_FMREVERSE) != 0)
 
 /*! @function
   @abstract  Get the CIGAR array
@@ -299,7 +283,6 @@ extern "C" {
 	  @param  fn  SAM file name
 	  @return     SAM file handler
 	 */
-	tamFile sam_open(const char *fn);
 	tamFile sam_dopen(int fd);
 
 	/*!
@@ -325,7 +308,7 @@ extern "C" {
 	  @discussion Each line in this file consists of chromosome name and
 	  the length of chromosome.
 	 */
-	bam_header_t *sam_header_read2(const char *fn_list);
+	bam_header_t *sam_header_read2_fd(int fd);
 
 	/*!
 	  @abstract       Read header from a SAM file (if present)
@@ -354,9 +337,6 @@ extern "C" {
 	  place.
 	 */
 	int sam_header_parse_rg(bam_header_t *h);
-
-#define sam_write1(header, b) bam_view1(header, b)
-
 
 	/********************************
 	 * APIs for string dictionaries *

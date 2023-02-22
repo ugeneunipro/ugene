@@ -135,7 +135,7 @@ MsaExcludeListWidget* MsaExcludeListContext::openExcludeList(MSAEditor* msaEdito
     CHECK(excludeList == nullptr, excludeList);
     GCOUNTER(cvar, "MsaExcludeListWidget");
 
-    QVBoxLayout* multilineMainLayout = qobject_cast<QVBoxLayout*>(msaEditor->getUI()->layout());
+    auto multilineMainLayout = qobject_cast<QVBoxLayout*>(msaEditor->getUI()->layout());
     SAFE_POINT(multilineMainLayout != nullptr, "Can't insert exclude list widget in Msa editor", nullptr)
     excludeList = new MsaExcludeListWidget(msaEditor->getUI(), msaEditor, this);
     multilineMainLayout->insertWidget(1, excludeList);

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PLUGINMODEL_H_
-#define _U2_PLUGINMODEL_H_
+#pragma once
 
 #include <QList>
 #include <QObject>
@@ -122,5 +121,3 @@ signals:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_RECTANGULAR_LAYOUT_ALGORITHM_H_
-#define _U2_TV_RECTANGULAR_LAYOUT_ALGORITHM_H_
+#pragma once
 
 namespace U2 {
 
@@ -31,11 +30,11 @@ class TvRectangularLayoutAlgorithm {
 public:
     TvRectangularLayoutAlgorithm() = delete;
 
-    static TvRectangularBranchItem* buildTreeLayout(const PhyNode* phyRoot);
+    /** Builds new TvTree* hierarchy with no layout coordinates. */
+    static TvRectangularBranchItem* buildTvTreeHierarchy(const PhyNode* phyRoot);
 
+    /** Recalculates tree layout in-place. Checks isCollapsed() state on branches. */
     static void recalculateTreeLayout(TvRectangularBranchItem* rootBranchItem, const PhyNode* rootPhyNode);
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BASE_IDENTITIES_
-#define _U2_BASE_IDENTITIES_
+#pragma once
 
 /** Application global IDs types */
 
@@ -41,5 +40,3 @@ typedef QString IOAdapterId;
 typedef QString GTestFormatId;
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RUNNABLES_EXPORT_IMAGE_DIALOG_FILLER_H_
-#define _U2_GT_RUNNABLES_EXPORT_IMAGE_DIALOG_FILLER_H_
+#pragma once
 
 #include <utils/GTUtilsDialog.h>
 
@@ -79,14 +78,20 @@ public:
     struct Settings {
         Settings(bool includeNames = false,
                  bool includeConsensus = false,
-                 bool includeRuler = true)
+                 bool includeRuler = true,
+                 bool multilineMode = false,
+                 int basesPerLine = 0)
             : includeNames(includeNames),
               includeConsensus(includeConsensus),
-              includeRuler(includeRuler) {
+              includeRuler(includeRuler),
+              multilineMode(multilineMode),
+              basesPerLine(basesPerLine) {
         }
         bool includeNames;
         bool includeConsensus;
         bool includeRuler;
+        bool multilineMode;
+        int basesPerLine;
     };
 
     // default
@@ -184,5 +189,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  //_U2_GT_RUNNABLES_EXPORT_IMAGE_DIALOG_FILLER_H_

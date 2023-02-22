@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUITESTBASE_PLUGIN_H_
-#define _U2_GUITESTBASE_PLUGIN_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -51,5 +50,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -124,7 +124,7 @@ Task::ReportResult GTest_AddPartToSequenceTask::report() {
             Document* loadedDocument = getContext<Document>(this, docName);
             QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
             for (GObject* table : qAsConst(annotationTablesList)) {
-                AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
+                auto ato = dynamic_cast<AnnotationTableObject*>(table);
                 foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                     if (curentAnnotation->getName() == annotationName) {
                         int i = 0;
@@ -153,7 +153,7 @@ Task::ReportResult GTest_AddPartToSequenceTask::report() {
             Document* loadedDocument = getContext<Document>(this, docName);
             QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
             for (GObject* table : qAsConst(annotationTablesList)) {
-                AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
+                auto ato = dynamic_cast<AnnotationTableObject*>(table);
                 foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                     if (curentAnnotation->getName() == annotationName) {
                         QVector<U2Region> regions = curentAnnotation->getRegions();
@@ -257,7 +257,7 @@ Task::ReportResult GTest_RemovePartFromSequenceTask::report() {
         Document* loadedDocument = getContext<Document>(this, docName);
         QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         for (GObject* table : qAsConst(annotationTablesList)) {
-            AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
+            auto ato = dynamic_cast<AnnotationTableObject*>(table);
             foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                 if (curentAnnotation->getName() == annotationName) {
                     int i = 0;
@@ -386,7 +386,7 @@ Task::ReportResult GTest_ReplacePartOfSequenceTask::report() {
         Document* loadedDocument = getContext<Document>(this, docName);
         QList<GObject*> annotationTablesList = loadedDocument->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         for (GObject* table : qAsConst(annotationTablesList)) {
-            AnnotationTableObject* ato = dynamic_cast<AnnotationTableObject*>(table);
+            auto ato = dynamic_cast<AnnotationTableObject*>(table);
             foreach (Annotation* curentAnnotation, ato->getAnnotations()) {
                 if (curentAnnotation->getName() == annotationName) {
                     int i = 0;

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __ASSEMBLY_CELL_RENDERER__
-#define __ASSEMBLY_CELL_RENDERER__
+#pragma once
 
 #include <QColor>
 #include <QFont>
@@ -98,5 +97,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

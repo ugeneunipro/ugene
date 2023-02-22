@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_DISTANCE_ALGORITHM_HAMMING_H_
-#define _U2_MSA_DISTANCE_ALGORITHM_HAMMING_H_
+#pragma once
 
 #include "BuiltInDistanceAlgorithms.h"
 #include "MSADistanceAlgorithm.h"
@@ -58,5 +57,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

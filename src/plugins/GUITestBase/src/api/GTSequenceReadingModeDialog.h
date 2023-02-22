@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTSEQUENCEREADINGMODEDIALOG_H
-#define GTSEQUENCEREADINGMODEDIALOG_H
+#pragma once
 
 #include <QDialogButtonBox>
 #include <QString>
@@ -47,5 +46,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // GTSEQUENCEREADINGMODEDIALOG_H

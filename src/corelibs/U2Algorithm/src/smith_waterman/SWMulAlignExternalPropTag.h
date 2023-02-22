@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SW_MUL_ALIGN_POS_NUMBER_TAG_H_
-#define _U2_SW_MUL_ALIGN_POS_NUMBER_TAG_H_
+#pragma once
 
 #include "SWMulAlignResultNamesTag.h"
 
@@ -59,5 +58,3 @@ inline SWMulAlignExternalPropTag::Type SWMulAlignExternalPropTag::getType() cons
 }
 
 }  // namespace U2
-
-#endif  // _U2_SW_MUL_ALIGN_POS_NUMBER_TAG_H_

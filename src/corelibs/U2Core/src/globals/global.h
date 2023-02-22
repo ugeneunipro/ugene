@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_COREAPI_H_
-#define _U2_COREAPI_H_
+#pragma once
 
 #include <assert.h>
 
@@ -204,5 +203,3 @@ inline bool isOsUnix() {
     return false;
 #endif
 }
-
-#endif

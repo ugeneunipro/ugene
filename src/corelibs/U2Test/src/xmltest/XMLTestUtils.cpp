@@ -26,6 +26,7 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include <U2Core/AppResources.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -49,7 +50,7 @@ void XmlTest::checkAttribute(const QDomElement& element, const QString& attribut
     }
 
     CHECK_EXT(!element.hasAttribute(attribute) || acceptableValues.contains(element.attribute(attribute)),
-              setError(QString("Attribute '%1' has inacceptable value. Acceptable values are: %2")
+              setError(QString("Attribute '%1' has unacceptable value. Acceptable values are: %2")
                            .arg(attribute)
                            .arg(acceptableValues.join(", "))), );
 }
@@ -128,7 +129,6 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment* env, QString& path) {
         envVarName = "WORKFLOW_OUTPUT_DIR";
         prefix = WORKFLOW_OUTPUT_DIR_PREFIX;
     } else {
-        algoLog.details(QString("There are no known prefixes in the path: '%1', the path was not modified").arg(path));
         return;
     }
 
@@ -140,8 +140,8 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment* env, QString& path) {
     int prefixSize = prefix.size();
     QStringList relativePaths = path.mid(prefixSize).split(";");
 
-    for (const QString& releativePath : qAsConst(relativePaths)) {
-        QString fullPath = prefixPath + releativePath;
+    for (const QString& relativePath : qAsConst(relativePaths)) {
+        QString fullPath = prefixPath + relativePath;
         result += fullPath + ";";
     }
 
@@ -150,15 +150,8 @@ void XMLTestUtils::replacePrefix(const GTestEnvironment* env, QString& path) {
 
 bool XMLTestUtils::parentTasksHaveError(Task* t) {
     Task* parentTask = t->getParentTask();
-    CHECK(nullptr != parentTask, false);
-
-    bool result = false;
-    if (parentTask->hasError()) {
-        result = true;
-    } else {
-        result = parentTasksHaveError(parentTask);
-    }
-    return result;
+    CHECK(parentTask != nullptr, false);
+    return parentTask->hasError() || parentTasksHaveError(parentTask);
 }
 
 const QString XMLMultiTest::FAIL_ON_SUBTEST_FAIL = "fail-on-subtest-fail";
@@ -203,13 +196,9 @@ void XMLMultiTest::init(XMLTestFormat* tf, const QDomElement& el) {
         subs.append(subTest);
     }
     if (!hasError()) {
-        if (lockForLogListening) {
-            addTaskResource(TaskResourceUsage(RESOURCE_LISTEN_LOG_IN_TESTS, TaskResourceUsage::Write, true));
-        } else {
-            addTaskResource(TaskResourceUsage(RESOURCE_LISTEN_LOG_IN_TESTS, TaskResourceUsage::Read, true));
-        }
-
-        foreach (Task* t, subs) {
+        auto lockTime = lockForLogListening ? AppResourceReadWriteLock::Write : AppResourceReadWriteLock::Read;
+        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_TEST_LOG_LISTENER, lockTime, TaskResourceStage::Prepare));
+        for (Task* t : qAsConst(subs)) {
             addSubTask(t);
         }
     }

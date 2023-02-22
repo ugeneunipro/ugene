@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MA_EDITOR_TASKS_H_
-#define _U2_MA_EDITOR_TASKS_H_
+#pragma once
 
 #include <U2Core/DocumentProviderTask.h>
 #include <U2Core/GObjectReference.h>
@@ -151,5 +150,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -324,7 +324,7 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task* subTask) {
         readAssemblyOutputTask = factory->createTask(outputFiles.value(ACCEPTED_HITS), QVariantMap(), settings.workflowContext());
         result.append(readAssemblyOutputTask);
     } else if (subTask == readAssemblyOutputTask) {
-        Workflow::ReadDocumentTask* readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
+        auto readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
         SAFE_POINT(nullptr != readDocTask, "Internal error during parsing TopHat output: NULL read document task!", result);
 
         QList<Workflow::SharedDbiDataHandler> acceptedHitsResults;

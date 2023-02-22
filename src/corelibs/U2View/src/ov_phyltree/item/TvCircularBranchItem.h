@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TV_CIRCULAR_BRANCH_ITEM_H_
-#define _U2_TV_CIRCULAR_BRANCH_ITEM_H_
+#pragma once
 
 #include "TvBranchItem.h"
 
@@ -31,7 +30,7 @@ class TvRectangularBranchItem;
 
 class U2VIEW_EXPORT TvCircularBranchItem : public TvBranchItem {
 public:
-    TvCircularBranchItem(QGraphicsItem* parent, double height, TvRectangularBranchItem* from, const QString& nodeName);
+    TvCircularBranchItem(TvCircularBranchItem* parent, double height, TvRectangularBranchItem* from, const QString& nodeName);
 
     QRectF boundingRect() const override;
 
@@ -40,12 +39,10 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 protected:
-    void setLabelPositions() override;
+    void updateLabelPositions() final override;
 
 private:
     double height = 0;
 };
 
 }  // namespace U2
-
-#endif

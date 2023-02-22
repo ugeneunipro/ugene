@@ -379,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GObjectViewWindow* activeWindow = qobject_cast<GObjectViewWindow*>(GTUtilsMdi::activeWindow(os));
+    auto activeWindow = qobject_cast<GObjectViewWindow*>(GTUtilsMdi::activeWindow(os));
     if (!activeWindow->getViewName().contains("NC_001363")) {
         os.setError("NC_001363 sequence has been not opened in sequence view");
         return;

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RUNNABLES_CREATE_OBJECT_RELATION_DIALOG_H_
-#define _U2_GT_RUNNABLES_CREATE_OBJECT_RELATION_DIALOG_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -38,5 +37,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_RUNNABLES_CREATE_OBJECT_RELATION_DIALOG_H_

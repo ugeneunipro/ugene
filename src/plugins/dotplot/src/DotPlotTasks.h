@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOT_PLOT_TASKS_H_
-#define _U2_DOT_PLOT_TASKS_H_
+#pragma once
 
 #include <QTextStream>
 
@@ -43,16 +42,16 @@ public:
     SaveDotPlotTask(const QString& file,
                     QSharedPointer<QList<DotPlotResults>> dotPlotDirectList,
                     QSharedPointer<QList<DotPlotResults>> dotPlotInverseList,
-                    U2SequenceObject* seqX,
-                    U2SequenceObject* seqY,
+                    const QString& seqXName,
+                    const QString& seqYName,
                     int mLen,
                     int ident)
         : Task(tr("DotPlot saving"), TaskFlags_FOSCOE),
           filename(file),
           directList(dotPlotDirectList),
           inverseList(dotPlotInverseList),
-          sequenceX(seqX),
-          sequenceY(seqY),
+          sequenceXName(seqXName),
+          sequenceYName(seqYName),
           minLen(mLen),
           identity(ident) {
         tpm = Task::Progress_Manual;
@@ -66,7 +65,8 @@ private:
     QString filename;
     QSharedPointer<QList<DotPlotResults>> directList;
     QSharedPointer<QList<DotPlotResults>> inverseList;
-    U2SequenceObject *sequenceX, *sequenceY;
+    const QString sequenceXName;
+    const QString sequenceYName;
     int minLen, identity;
 
     void saveDotPlot(QTextStream& stream);
@@ -185,5 +185,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DOT_PLOT_TASKS_H_

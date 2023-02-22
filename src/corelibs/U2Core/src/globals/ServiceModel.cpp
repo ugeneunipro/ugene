@@ -22,30 +22,12 @@
 #include "ServiceModel.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/U2SafePoints.h>
-
-#include "PluginModel.h"
 
 namespace U2 {
 
-Service::Service(ServiceType t, const QString& _name, const QString& _desc, const QList<ServiceType>& _parentServices, ServiceFlags f)
+Service::Service(const ServiceType& t, const QString& _name, const QString& _desc, const QList<ServiceType>& _parentServices, ServiceFlags f)
     : type(t), name(_name), description(_desc), parentServices(_parentServices), state(ServiceState_Disabled_New), flags(f) {
-    // Register service resource
-    AppSettings* settings = AppContext::getAppSettings();
-    SAFE_POINT(nullptr != settings, "Can not get application settings", );
-    AppResourcePool* resourcePool = settings->getAppResourcePool();
-    SAFE_POINT(nullptr != resourcePool, "Can not get resource pool", );
-
-    AppResource* resource = resourcePool->getResource(t.id);
-
-    if (nullptr == resource) {
-        AppResourceSemaphore* serviceResource = new AppResourceSemaphore(t.id, 1, _name);
-        resourcePool->registerResource(serviceResource);
-    } else {
-        SAFE_POINT(resource->name == _name, QString("Resources %1 and %2 have the same identifiers").arg(resource->name).arg(_name), );
-    }
 }
 
 void ServiceRegistry::_setServiceState(Service* s, ServiceState state) {

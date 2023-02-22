@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTUTILSMCAEDITORSEQUENCEAREA_H
-#define GTUTILSMCAEDITORSEQUENCEAREA_H
+#pragma once
 
 #include <GTGlobals.h>
 
@@ -80,4 +79,3 @@ public:
 };
 
 }  // namespace U2
-#endif  // GTUTILSMSAEDITORSEQUENCEAREA_H

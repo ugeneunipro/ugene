@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_EDITOR_H_
-#define _U2_WORKFLOW_EDITOR_H_
+#pragma once
 
 #include <QShortcutEvent>
 
@@ -132,5 +131,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

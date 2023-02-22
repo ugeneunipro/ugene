@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GUITESTINGWINDOWIMPL_H
-#define GUITESTINGWINDOWIMPL_H
+#pragma once
 
 #include <U2Core/AppContext.h>
 
@@ -165,4 +164,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // GUITESTINGWINDOWIMPL_H

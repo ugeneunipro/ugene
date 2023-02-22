@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UDRDBI_H_
-#define _U2_UDRDBI_H_
+#pragma once
 
 #include <U2Core/InputStream.h>
 #include <U2Core/OutputStream.h>
@@ -90,9 +89,14 @@ public:
      */
     virtual OutputStream* createOutputStream(const UdrRecordId& recordId, int fieldNum, qint64 size, U2OpStatus& os) = 0;
 
+    /**
+     * Creates the new table of schema of the corresponding @schemaId
+     * If table already exists nothing happens
+     * Returns error to @os if problems have appeared.
+     */
+    virtual void createTable(const UdrSchemaId& schemaId, U2OpStatus& os) = 0;
+
     virtual ModificationAction* getModificationAction(const U2DataId& id) = 0;
 };
 
 }  // namespace U2
-
-#endif  // _U2_UDRDBI_H_

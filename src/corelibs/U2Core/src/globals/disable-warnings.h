@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DISABLE_WARNINGS_H_
-#define _U2_DISABLE_WARNINGS_H_
+#pragma once
 
 /***
  * Once included this file disables all listed warnings in the current compilation unit.
@@ -77,5 +76,3 @@
  * U2_DISABLE_WARNINGS
  */
 #define U2_DISABLE_WARNINGS
-
-#endif

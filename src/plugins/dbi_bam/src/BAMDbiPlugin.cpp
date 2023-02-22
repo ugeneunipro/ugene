@@ -23,6 +23,7 @@
 
 #include <QAction>
 #include <QDir>
+#include <QFile>
 #include <QMainWindow>
 #include <QMenu>
 #include <QMessageBox>
@@ -189,7 +190,7 @@ QList<Task*> BAMImporterTask::onSubTaskFinished(Task* subTask) {
 
     else if ((isSqliteDbTransit && cloneTasks.contains(subTask))) {
         cloneTasks.removeOne(subTask);
-        CloneObjectTask* cloneTask = qobject_cast<CloneObjectTask*>(subTask);
+        auto cloneTask = qobject_cast<CloneObjectTask*>(subTask);
         SAFE_POINT_EXT(nullptr != cloneTask, setError("Unexpected task type: CloneObjectTask expected"), res);
         delete cloneTask->getSourceObject();
 
@@ -251,11 +252,16 @@ void BAMImporterTask::initPrepareToImportTask() {
             convert = false;
             stateInfo.setCanceled(true);
         }
+        if (!QFile::exists(srcUrl.getURLString())) {
+            setError(tr("File %1 does not exists.").arg(srcUrl.getURLString()));
+            QMessageBox::critical(AppContext::getMainWindow()->getQMainWindow(), L10N::errorTitle(), stateInfo.getError());
+            return;
+        }
     } else if (loadInfoTask->isSam() && loadInfoTask->getInfo().getHeader().getReferences().isEmpty()) {
         convert = false;
         setError(tr("SAM cannot be converted to BAM: neither reference nor header in SAM file is present"));
     }
-
+    
     if (convert) {
         QString dirUrl = getDirUrl(loadInfoTask->getSourceUrl());
         if (!FileAndDirectoryUtils::isDirectoryWritable(dirUrl)) {

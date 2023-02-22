@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_READ_SEQ_WORKER_H_
-#define _U2_WORKFLOW_READ_SEQ_WORKER_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/DNASequenceObject.h>
@@ -153,5 +152,3 @@ protected:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

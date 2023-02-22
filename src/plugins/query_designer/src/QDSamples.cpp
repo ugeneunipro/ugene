@@ -56,7 +56,7 @@ QList<Task*> QDLoadSamplesTask::onSubTaskFinished(Task* subTask) {
     if (isCanceled()) {
         return st;
     }
-    QDLoadDocumentTask* loadTask = qobject_cast<QDLoadDocumentTask*>(subTask);
+    auto loadTask = qobject_cast<QDLoadDocumentTask*>(subTask);
     assert(loadTask);
     QDSample sample;
     sample.content = loadTask->getDocument();

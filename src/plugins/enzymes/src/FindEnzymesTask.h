@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_ENZYMES_TASK_H_
-#define _U2_FIND_ENZYMES_TASK_H_
+#pragma once
 
 #include <limits>
 
@@ -191,5 +190,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -138,7 +138,7 @@ void ChromatogramView::pack() {
 
 void ChromatogramView::setRenderAreaHeight(int k) {
     // k = chromaMax
-    ChromatogramViewRenderArea* cvra = static_cast<ChromatogramViewRenderArea*>(renderArea);
+    auto cvra = static_cast<ChromatogramViewRenderArea*>(renderArea);
     cvra->setAreaHeight(k);
     completeUpdate();
 }
@@ -318,7 +318,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
 }
 
 void ChromatogramView::sl_onSequenceObjectLoaded(Task* t) {
-    LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
+    auto lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
     GObject* go = GObjectUtils::selectObjectByReference(lut->getConfig().checkObjRef,
                                                         lut->getDocument()->getObjects(),
                                                         UOF_LoadedOnly);
@@ -382,7 +382,7 @@ QAction* ChromatogramView::createToggleTraceAction(const QString& actionName) {
 }
 
 void ChromatogramView::sl_showHideTrace() {
-    QAction* traceAction = qobject_cast<QAction*>(sender());
+    auto traceAction = qobject_cast<QAction*>(sender());
 
     if (!traceAction) {
         return;
@@ -465,7 +465,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     static const qreal dividerTraceOrBaseCallsLines = 2;
     static const qreal dividerBoolShowBaseCallsChars = 1.5;
 
-    ChromatogramView* chromaView = qobject_cast<ChromatogramView*>(view);
+    auto chromaView = qobject_cast<ChromatogramView*>(view);
 
     const U2Region& visible = view->getVisibleRange();
     assert(!visible.isEmpty());
@@ -680,7 +680,7 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
         kLinearTransformBaseCallsOfEdited = kLinearTransformBaseCalls;
         bLinearTransformBaseCallsOfEdited = bLinearTransformBaseCalls;
     }
-    ChromatogramView* cview = qobject_cast<ChromatogramView*>(view);
+    auto cview = qobject_cast<ChromatogramView*>(view);
     for (int i = int(visible.startPos); i < visible.endPos(); i++) {
         QColor color = getBaseColor(ba[i]);
         p.setPen(color);

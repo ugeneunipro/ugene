@@ -574,7 +574,7 @@ QWidget* UrlAndDatasetController::createDatasetPageWidget(Dataset* set) {
 }
 
 QWidget* UrlAndDatasetController::createUrlWidget(URLDelegate* ctrl, const QString& value) {
-    URLWidget* urlWidget = qobject_cast<URLWidget*>(ctrl->createEditor(nullptr, QStyleOptionViewItem(), QModelIndex()));
+    auto urlWidget = qobject_cast<URLWidget*>(ctrl->createEditor(nullptr, QStyleOptionViewItem(), QModelIndex()));
     urlWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     urlWidget->setValue(value);
 
@@ -635,10 +635,10 @@ QList<Dataset> UrlAndDatasetController::getUrls() const {
 }
 
 void UrlAndDatasetController::sl_urlChanged(QWidget* widget) {
-    URLDelegate* urlDelegate = qobject_cast<URLDelegate*>(sender());
+    auto urlDelegate = qobject_cast<URLDelegate*>(sender());
     SAFE_POINT(urlDelegate, "URL delegate is NULL", );
 
-    URLWidget* editor = qobject_cast<URLWidget*>(widget);
+    auto editor = qobject_cast<URLWidget*>(widget);
     SAFE_POINT(editor, "Unexpected widget", );
 
     for (int i = 0; i < ctrls.count(); ++i) {

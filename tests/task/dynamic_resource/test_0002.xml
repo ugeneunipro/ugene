@@ -1,0 +1,3 @@
+<multi-test>
+    <task-check-dynamic-resources lock_stage="run"/>
+</multi-test>

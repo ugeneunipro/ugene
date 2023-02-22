@@ -38,22 +38,22 @@
 namespace U2 {
 
 void GTUtilsPcr::setPrimer(HI::GUITestOpStatus& os, U2Strand::Direction direction, const QByteArray& primer) {
-    QLineEdit* primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", primerBox(os, direction)));
+    auto primerEdit = dynamic_cast<QLineEdit*>(GTWidget::findWidget(os, "primerEdit", primerBox(os, direction)));
     GTLineEdit::setText(os, primerEdit, primer, true);
 }
 
 void GTUtilsPcr::setMismatches(HI::GUITestOpStatus& os, U2Strand::Direction direction, int mismatches) {
-    QSpinBox* mismatchesSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "mismatchesSpinBox", primerBox(os, direction)));
+    auto mismatchesSpinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "mismatchesSpinBox", primerBox(os, direction)));
     GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKeyBoard);
 }
 
 void GTUtilsPcr::setPerfectMatch(HI::GUITestOpStatus& os, int number) {
-    QSpinBox* spinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
+    auto spinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "perfectSpinBox"));
     GTSpinBox::setValue(os, spinBox, number, GTGlobals::UseKeyBoard);
 }
 
 void GTUtilsPcr::setMaxProductSize(HI::GUITestOpStatus& os, int number) {
-    QSpinBox* spinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "productSizeSpinBox"));
+    auto spinBox = dynamic_cast<QSpinBox*>(GTWidget::findWidget(os, "productSizeSpinBox"));
     GTSpinBox::setValue(os, spinBox, number, GTGlobals::UseKeyBoard);
 }
 

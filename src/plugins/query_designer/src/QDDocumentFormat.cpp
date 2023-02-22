@@ -90,7 +90,7 @@ void QDDocFormat::storeDocument(Document* document, IOAdapter* io, U2OpStatus&) 
     assert(document->getDocumentFormat() == this);
     assert(document->getObjects().size() == 1);
 
-    QDGObject* wo = qobject_cast<QDGObject*>(document->getObjects().first());
+    auto wo = qobject_cast<QDGObject*>(document->getObjects().first());
     assert(wo && wo->getScene());
 
     QByteArray rawData = QDSceneSerializer::scene2doc(wo->getScene())->toByteArray();
@@ -165,7 +165,7 @@ void OpenQDViewTask::open() {
         }
     }
     foreach (QPointer<GObject> po, selectedObjects) {
-        QDGObject* o = qobject_cast<QDGObject*>(po);
+        auto o = qobject_cast<QDGObject*>(po);
         assert(o && !o->getScene());
         QueryViewController* view = new QueryViewController;
         view->loadScene(o->getSceneRawData());

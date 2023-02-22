@@ -185,7 +185,7 @@ ClustalWPrompter::ClustalWPrompter(Actor* p)
     : PrompterBase<ClustalWPrompter>(p) {
 }
 QString ClustalWPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
     QString doc = tr("Aligns each MSA supplied <u>%1</u> with \"<u>ClustalW</u>\".")
@@ -276,9 +276,9 @@ Task* ClustalWWorker::tick() {
 }
 
 void ClustalWWorker::sl_taskFinished() {
-    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
+    auto wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    ClustalWSupportTask* t = qobject_cast<ClustalWSupportTask*>(wrapper->originalTask());
+    auto t = qobject_cast<ClustalWSupportTask*>(wrapper->originalTask());
     if (t->isCanceled()) {
         return;
     }

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_MCA_EDITOR_STATUS_WIDGET_H_
-#define _U2_GT_UTILS_MCA_EDITOR_STATUS_WIDGET_H_
+#pragma once
 
 class QWidget;
 
@@ -53,5 +52,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_UTILS_MCA_EDITOR_STATUS_WIDGET_H_

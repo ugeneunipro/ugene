@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SEQUENCE_DBI_UNITTESTS_H_
-#define _U2_SEQUENCE_DBI_UNITTESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -141,5 +140,3 @@ Q_DECLARE_METATYPE(U2::SequenceDbiUnitTests_updateHugeSequenceData);
 Q_DECLARE_METATYPE(U2::SequenceDbiUnitTests_updateSequenceData);
 Q_DECLARE_METATYPE(U2::SequenceDbiUnitTests_updateSequenceObject);
 Q_DECLARE_METATYPE(U2::SequenceDbiUnitTests_updateSequencesData);
-
-#endif  //_U2_SEQUENCE_DBI_UNITTESTS_H_

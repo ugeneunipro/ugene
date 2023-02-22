@@ -93,7 +93,7 @@ void OpenAssemblyBrowserTask::open() {
     }
 
     foreach (QPointer<GObject> po, selectedObjects) {
-        AssemblyObject* o = qobject_cast<AssemblyObject*>(po);
+        auto o = qobject_cast<AssemblyObject*>(po);
 
         SAFE_POINT(o, "Invalid assembly object!", );
 
@@ -169,7 +169,7 @@ void OpenSavedAssemblyBrowserTask::open() {
         stateInfo.setError(tr("Assembly object not found: %1").arg(ref.objName));
         return;
     }
-    AssemblyObject* asmObj = qobject_cast<AssemblyObject*>(obj);
+    auto asmObj = qobject_cast<AssemblyObject*>(obj);
     SAFE_POINT(asmObj != nullptr, "Object has type ASSEMBLY, but cannot cast to AssemblyObject", );
 
     AssemblyBrowser* ab = OpenAssemblyBrowserTask::openBrowserForObject(asmObj, viewName, true);
@@ -186,7 +186,7 @@ void UpdateAssemblyBrowserTask::update() {
         return;  // view was closed;
     }
 
-    AssemblyBrowser* ab = qobject_cast<AssemblyBrowser*>(view.data());
+    auto ab = qobject_cast<AssemblyBrowser*>(view.data());
     SAFE_POINT(ab != nullptr, "UpdateAssemblyBrowserTask::update: view is not AssemblyBrowser", );
 
     AssemblyBrowserState(stateData).restoreState(ab);
