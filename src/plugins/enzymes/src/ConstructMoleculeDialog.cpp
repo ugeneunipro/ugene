@@ -233,7 +233,10 @@ void ConstructMoleculeDialog::update() {
                 QString overhang = items.at(0);
                 QString strand = items.count() > 1 ? items.at(1) : QString();
 
-                QColor color = (prevOverhang == overhang && strand != prevStrand) ? Qt::green : Qt::red;
+                bool equaledOverhangs = prevOverhang == overhang;
+                bool differentStrands = strand != prevStrand;
+                bool noStrands = strand.isEmpty() && prevStrand.isEmpty();
+                QColor color = (equaledOverhangs && (differentStrands || noStrands)) ? Qt::green : Qt::red;
 
                 prevItem->setTextColor(2, color);
                 item->setTextColor(0, color);
