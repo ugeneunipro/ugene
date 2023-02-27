@@ -354,10 +354,10 @@ void PrimerLibrary::initTemperatureCalculator() {
 
     auto factory = AppContext::getTempCalcRegistry()->getById(calcId);
     if (factory != nullptr) {
-        temperatureCalculator = factory->createTempCalculator(settings);
+        temperatureCalculator = factory->createCalculator(settings);
         initializedFromDb = true;
     } else {
-        temperatureCalculator = AppContext::getTempCalcRegistry()->createDefaultTempCalculator();
+        temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculator();
     }
     
 }

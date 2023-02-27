@@ -89,7 +89,7 @@ Task* FindPrimerPairsWorker::tick() {
     if (!inPort->hasMessage() && inPort->isEnded()) {
         QString reportFileUrl = getValue<QString>(FindPrimerPairsWorkerFactory::OUT_FILE);
         auto tempSettings = getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID);
-        auto tempCalc = AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID));
+        auto tempCalc = AppContext::getTempCalcRegistry()->createTempCalculator(getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID));
         Task* t = new FindPrimersTask(reportFileUrl, data, tempCalc);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
         return t;

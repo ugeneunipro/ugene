@@ -49,7 +49,7 @@ TempCalcWidget::TempCalcWidget(QWidget* parent)
     layout->addWidget(swSettings);
     auto factories = AppContext::getTempCalcRegistry()->getAllEntries();
     for (auto tempCalcMethodFactory : qAsConst(factories)) {
-        auto settingsWidget = tempCalcMethodFactory->createTempCalcSettingsWidget(this);
+        auto settingsWidget = tempCalcMethodFactory->createSettingsWidget(this);
         cbAlgorithm->addItem(tempCalcMethodFactory->visualName, tempCalcMethodFactory->getId());
         swSettings->addWidget(settingsWidget);
         settingsWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);

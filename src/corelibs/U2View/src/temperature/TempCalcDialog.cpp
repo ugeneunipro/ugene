@@ -51,7 +51,7 @@ TempCalcDialog::TempCalcDialog(QWidget* parent, const TempCalcSettings& currentS
 
 QSharedPointer<BaseTempCalc> TempCalcDialog::createTemperatureCalculator() const {
     auto settings = tempCalcWidget->getSettings();
-    return AppContext::getTempCalcRegistry()->getById(settings.value(BaseTempCalc::KEY_ID).toString())->createTempCalculator(settings);
+    return AppContext::getTempCalcRegistry()->getById(settings.value(BaseTempCalc::KEY_ID).toString())->createCalculator(settings);
 }
 
 TempCalcSettings TempCalcDialog::getTemperatureCalculatorSettings() const {

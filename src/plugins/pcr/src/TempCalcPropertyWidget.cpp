@@ -21,6 +21,8 @@
 
 #include "TempCalcPropertyWidget.h"
 
+#include <QLayout>
+
 #include <U2Algorithm/TempCalcRegistry.h>
 
 #include <U2Core/AppContext.h>
@@ -28,16 +30,13 @@
 
 #include <U2View/TempCalcDialog.h>
 
-#include <QLayout>
-
 namespace U2 {
 
-TempCalcPropertyWidget::TempCalcPropertyWidget(QWidget* parent, DelegateTags* tags) 
+TempCalcPropertyWidget::TempCalcPropertyWidget(QWidget* parent, DelegateTags* tags)
     : PropertyWidget(parent, tags) {
+    tempSettings = AppContext::getTempCalcRegistry()->getDefaultTempCalcFactory()->createDefaultSettings();
+
     lineEdit = new QLineEdit(this);
-    tempSettings = AppContext::getTempCalcRegistry()->createDefaultTempCalcSettings();
-    lineEdit->setText(tempSettings.value(BaseTempCalc::KEY_ID).toString());
-    lineEdit->setPlaceholderText(tempSettings.value(BaseTempCalc::KEY_ID).toString());
     lineEdit->setObjectName("tempCalcPropertyLineEdit");
     lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     lineEdit->setReadOnly(true);
@@ -50,6 +49,12 @@ TempCalcPropertyWidget::TempCalcPropertyWidget(QWidget* parent, DelegateTags* ta
     toolButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     connect(toolButton, &QToolButton::clicked, this, &TempCalcPropertyWidget::sl_showDialog);
     layout()->addWidget(toolButton);
+    updateUiState();
+}
+
+void TempCalcPropertyWidget::updateUiState() {
+    auto factory = AppContext::getTempCalcRegistry()->getDefaultTempCalcFactory();
+    lineEdit->setText(factory->visualName);
 }
 
 QVariant TempCalcPropertyWidget::value() {
@@ -58,11 +63,12 @@ QVariant TempCalcPropertyWidget::value() {
 
 void TempCalcPropertyWidget::setValue(const QVariant& value) {
     CHECK(value.isValid(), );
-    
+
     auto settingsVariantMap = value.toMap();
-    auto settingsId = settingsVariantMap.value(BaseTempCalc::KEY_ID).toString();
-    lineEdit->setText(settingsId);
-    tempSettings = AppContext::getTempCalcRegistry()->getById(settingsId)->createDefaultTempCalcSettings();
+    auto algorithmId = settingsVariantMap.value(BaseTempCalc::KEY_ID).toString();
+    auto factory = AppContext::getTempCalcRegistry()->getById(algorithmId);
+    tempSettings = factory->createDefaultSettings();
+    updateUiState();
 }
 
 void TempCalcPropertyWidget::sl_showDialog() {
@@ -71,8 +77,8 @@ void TempCalcPropertyWidget::sl_showDialog() {
     CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
     tempSettings = dialog->getTemperatureCalculatorSettings();
-    lineEdit->setText(tempSettings.value(BaseTempCalc::KEY_ID).toString());
+    updateUiState();
     emit si_valueChanged(value());
 }
 
-}
+}  // namespace U2

@@ -366,7 +366,7 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
         pcrSettings->useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
         pcrSettings->perfectMatch = getValue<int>(PERFECT_ATTR_ID);
         pcrSettings->sequenceName = seq->getSequenceName();
-        pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID));
+        pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculator(getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID));
 
         Task* pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
         pcrTask->setProperty(PAIR_NUMBER_PROP_ID, i);
@@ -390,7 +390,7 @@ InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table,
       primers(primers), 
       reportUrl(reportUrl), 
       primersUrl(_primersUrl),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(tempSettings)) {}
+      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculator(tempSettings)) {}
 
 void InSilicoPcrReportTask::run() {
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(reportUrl, stateInfo, IOAdapterMode_Write));
