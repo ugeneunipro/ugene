@@ -26,7 +26,6 @@
 namespace U2 {
 
 bool TempCalcRegistry::registerEntry(TempCalcFactory* newFactory) {
-    // If Primer3 factory is available: give it a priority and use it by default.
     if (defaultFactory == nullptr || defaultFactory->defaultPriority < newFactory->defaultPriority) {
         defaultFactory = newFactory;
     }
