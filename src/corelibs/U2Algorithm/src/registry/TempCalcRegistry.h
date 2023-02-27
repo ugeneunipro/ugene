@@ -48,7 +48,8 @@ public:
 
     /**
      * Creates a temperature calculator instance preconfigured with the given settings.
-     * If settings are not provided or contains invalid algorithm ID returns a null value.
+     * If settings contains invalid algorithm ID returns a null value.
+     * If settings are empty returns the default calculator.
      */
     QSharedPointer<BaseTempCalc> createTempCalculator(const QVariantMap& settingsMap) const;
 

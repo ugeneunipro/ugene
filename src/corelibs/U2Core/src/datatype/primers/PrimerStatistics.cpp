@@ -23,10 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceUtils.h>
-#include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Primer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -101,6 +98,7 @@ PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray& _sequen
       direction(_direction), 
       energyThreshold(_energyThreshold),
       nA(0), nC(0), nG(0), nT(0), maxRun(0) {
+    SAFE_POINT(temperatureCalculator != nullptr, "PrimerStatisticsCalculator:temperatureCalculator is null" ,)
     CHECK(!sequence.isEmpty(), );
 
     int currentRun = 0;
@@ -294,10 +292,10 @@ QString PrimersPairStatistics::getFirstError() const {
 }
 
 #define CREATE_COLUMN(name, width, center) \
-    result += QString("<th width=\"%1%\"/><p %2><strong>%3</strong></p></th>").arg(width).arg(center ? "align=\"center\"" : "align=\"left\"").arg(name);
+    result += QString("<th width=\"%1%\"/><p %2><strong>%3</strong></p></th>").arg(width).arg((center) ? "align=\"center\"" : "align=\"left\"").arg(name);
 
 #define CREATE_CELL(value, good, center) \
-    result += QString("<td %1 %2>%3</td>").arg(good ? "" : " style=\"color: red;\"").arg(center ? " align=\"center\"" : "").arg(value);
+    result += QString("<td %1 %2>%3</td>").arg((good) ? "" : " style=\"color: red;\"").arg((center) ? " align=\"center\"" : "").arg(value);
 
 #define CREATE_ROW(criteria, range, value1, value2, good1, good2) \
     result += "<tr>"; \

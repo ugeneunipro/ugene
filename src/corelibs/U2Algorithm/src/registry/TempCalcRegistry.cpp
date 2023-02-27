@@ -46,6 +46,10 @@ TempCalcFactory* TempCalcRegistry::getDefaultTempCalcFactory() const {
 }
 
 QSharedPointer<BaseTempCalc> TempCalcRegistry::createTempCalculator(const QVariantMap& settingsMap) const {
+    if (settingsMap.isEmpty()) {
+        auto factory = getDefaultTempCalcFactory();
+        return factory->createCalculator(factory->createDefaultSettings());
+    }
     CHECK(!settingsMap.isEmpty(), nullptr);
     auto factoryId = settingsMap.value(BaseTempCalc::KEY_ID).toString();
     TempCalcFactory* calcFactory = getById(factoryId);

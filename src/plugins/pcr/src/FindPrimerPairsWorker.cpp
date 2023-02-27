@@ -177,6 +177,7 @@ FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASe
       sequences(sequences),
       temperatureCalculator(_temperatureCalculator),
       outputUrl(outputFileUrl) {
+    SAFE_POINT(temperatureCalculator != nullptr, "FindPrimersTask: temperatureCalculator is null" ,)
 }
 
 void FindPrimersTask::run() {

@@ -371,9 +371,6 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
         pcrSettings->sequenceName = seq->getSequenceName();
         QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
         TempCalcRegistry* tmRegistry = AppContext::getTempCalcRegistry();
-        if (tmAlgorithmSettings.isEmpty()) {
-            tmAlgorithmSettings = tmRegistry->getDefaultTempCalcFactory()->createDefaultSettings();
-        }
         pcrSettings->temperatureCalculator = tmRegistry->createTempCalculator(tmAlgorithmSettings);
         CHECK(pcrSettings->temperatureCalculator != nullptr,
               new FailTask(tr("Failed to find TM algorithm with id '%1'.").arg(tmAlgorithmSettings.value(BaseTempCalc::KEY_ID).toString())));
