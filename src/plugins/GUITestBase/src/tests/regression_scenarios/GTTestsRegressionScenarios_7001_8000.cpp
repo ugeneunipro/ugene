@@ -3720,6 +3720,8 @@ GUI_TEST_CLASS_DEFINITION(test_7701) {
     GTUtilsWorkflowDesigner::click(os, "Read alignment");
     GTUtilsWorkflowDesigner::addInputFile(os, "Read alignment", dataDir + "samples/CLUSTALW/ty3.aln.gz");
 
+    GTUtilsWorkflowDesigner::setBreakpoint(os, "Write alignment");
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsMdi::closeAllWindows(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
