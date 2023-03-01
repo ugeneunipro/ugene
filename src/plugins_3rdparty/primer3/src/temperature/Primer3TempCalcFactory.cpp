@@ -26,18 +26,14 @@
 namespace U2 {
 
 Primer3TempCalcFactory::Primer3TempCalcFactory()
-    : TempCalcFactory("primer3-tm-algorithm", tr("Primer 3")) {
+    : TempCalcFactory("primer3-tm-algorithm", tr("Primer 3"), -1) {  // TODO: Make Primer3 default once issues are fixed.
 }
 
-QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createTempCalculator(const TempCalcSettings& settings) const {
+QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createCalculator(const TempCalcSettings& settings) const {
     return QSharedPointer<BaseTempCalc>(new Primer3TempCalc(settings));
 }
 
-QSharedPointer<BaseTempCalc> Primer3TempCalcFactory::createDefaultTempCalculator() const {
-    return createTempCalculator(createDefaultTempCalcSettings());
-}
-
-TempCalcSettings Primer3TempCalcFactory::createDefaultTempCalcSettings() const {
+TempCalcSettings Primer3TempCalcFactory::createDefaultSettings() const {
     TempCalcSettings settings;
     settings.insert(BaseTempCalc::KEY_ID, id);
     settings.insert(Primer3TempCalc::KEY_DNA_CONC, Primer3TempCalc::DNA_CONC_DEFAULT);
@@ -54,7 +50,7 @@ TempCalcSettings Primer3TempCalcFactory::createDefaultTempCalcSettings() const {
     return settings;
 }
 
-BaseTempCalcWidget* Primer3TempCalcFactory::createTempCalcSettingsWidget(QWidget* parent) const {
+BaseTempCalcWidget* Primer3TempCalcFactory::createSettingsWidget(QWidget* parent) const {
     return new Primer3TempCalcWidget(parent, id);
 }
 

@@ -20,24 +20,25 @@
  */
 
 #include "TempCalcDelegate.h"
-#include "TempCalcPropertyWidget.h"
 
 #include <U2Algorithm/BaseTempCalc.h>
 #include <U2Algorithm/TempCalcRegistry.h>
 
 #include <U2Core/AppContext.h>
 
+#include "TempCalcPropertyWidget.h"
+
 namespace U2 {
 
-TempCalcDelegate::TempCalcDelegate(QObject* parent) 
-    : PropertyDelegate(parent) {}
+TempCalcDelegate::TempCalcDelegate(QObject* parent)
+    : PropertyDelegate(parent) {
+}
 
 QVariant TempCalcDelegate::getDisplayValue(const QVariant& value) const {
     if (!value.isValid()) {
-        TempCalcSettings defaultSettings(AppContext::getTempCalcRegistry()->createDefaultTempCalcSettings());
-        return defaultSettings.value(BaseTempCalc::KEY_ID).toString();
+        auto defaultFactory = AppContext::getTempCalcRegistry()->getDefaultTempCalcFactory();
+        return defaultFactory->getId();
     }
-
     return value.toMap().value(BaseTempCalc::KEY_ID).toString();
 }
 
@@ -73,4 +74,4 @@ void TempCalcDelegate::sl_commit() {
     emit commitData(editor);
 }
 
-}
+}  // namespace U2

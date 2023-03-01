@@ -39,10 +39,9 @@ class U2ALGORITHM_EXPORT RoughTempCalcCmdFactory : public TempCalcFactory {
 public:
     RoughTempCalcCmdFactory();
 
-    QSharedPointer<BaseTempCalc> createTempCalculator(const TempCalcSettings& settings) const override;
-    QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const override;
-    TempCalcSettings createDefaultTempCalcSettings() const override;
-    BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent) const override;
+    QSharedPointer<BaseTempCalc> createCalculator(const TempCalcSettings& settings) const override;
+    TempCalcSettings createDefaultSettings() const override;
+    BaseTempCalcWidget* createSettingsWidget(QWidget* parent) const override;
 };
 
 }

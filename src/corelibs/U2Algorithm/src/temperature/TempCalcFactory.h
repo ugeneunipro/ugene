@@ -36,30 +36,18 @@ class BaseTempCalcWidget;
  */
 class U2ALGORITHM_EXPORT TempCalcFactory {
 public:
-    TempCalcFactory(const QString& id, const QString& visualName);
+    TempCalcFactory(const QString& id, const QString& visualName, int defaultPriority);
+
     virtual ~TempCalcFactory() = default;
 
-    /**
-     * Creates temperature calculator.
-     * @settings settings of the calculator, which should be created.
-     * @return pointer to the temperature calculator.
-     */
-    virtual QSharedPointer<BaseTempCalc> createTempCalculator(const TempCalcSettings& settings) const = 0;
-    /**
-     * Creates temperature calculator with the default settings.
-     * @return pointer to the temperature calculator.
-     */
-    virtual QSharedPointer<BaseTempCalc> createDefaultTempCalculator() const = 0;
-    /**
-     * Creates default settings of the default temperature calculator.
-     * @return temperature calculator settings.
-     */
-    virtual TempCalcSettings createDefaultTempCalcSettings() const = 0;
-    /**
-     * Creates widget to set manually settings and get TempCalcSettings from this widget.
-     * @return pointer to the temperature calculator.
-     */
-    virtual BaseTempCalcWidget* createTempCalcSettingsWidget(QWidget* parent) const = 0;
+    /** Creates temperature calculator pre-configured with the given settings. */
+    virtual QSharedPointer<BaseTempCalc> createCalculator(const TempCalcSettings& settings) const = 0;
+
+    /** Creates default settings of the default temperature calculator. */
+    virtual TempCalcSettings createDefaultSettings() const = 0;
+
+    /** Creates a widget with a settings for the given TempCalc. */
+    virtual BaseTempCalcWidget* createSettingsWidget(QWidget* parent) const = 0;
 
     /** Returns id of the factory. The method is required by IdRegistry. */
     const QString& getId() const;
@@ -67,6 +55,12 @@ public:
     const QString id;
 
     const QString visualName;
+
+    /**
+     * Priority of this algorithm to be selected as the default in UGENE.
+     * The built-in 'Rough' algorithm has 0 priority. Any higher value will be preferable over '0'.
+     */
+    const int defaultPriority;
 };
 
 }  // namespace U2

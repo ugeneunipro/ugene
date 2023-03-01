@@ -23,8 +23,8 @@
 
 namespace U2 {
 
-TempCalcFactory::TempCalcFactory(const QString& _id, const QString& _visualName)
-    : id(_id), visualName(_visualName) {
+TempCalcFactory::TempCalcFactory(const QString& _id, const QString& _visualName, int _defaultPriority)
+    : id(_id), visualName(_visualName), defaultPriority(_defaultPriority) {
 }
 
 const QString& TempCalcFactory::getId() const {

@@ -20,13 +20,13 @@
  */
 #pragma once
 
-#include <U2Core/IdRegistry.h>
-#include <U2Core/global.h>
+#include <QSharedPointer>
 
 #include <U2Algorithm/BaseTempCalc.h>
 #include <U2Algorithm/TempCalcFactory.h>
 
-#include <QSharedPointer>
+#include <U2Core/IdRegistry.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -35,40 +35,36 @@ namespace U2 {
  */
 class U2ALGORITHM_EXPORT TempCalcRegistry : public IdRegistry<TempCalcFactory> {
 public:
-    bool registerEntry(TempCalcFactory* t) override;
+    bool registerEntry(TempCalcFactory* factory) override;
+
+    /** Returns the default temperature calculator factory. The returned factory is never null. */
+    TempCalcFactory* getDefaultTempCalcFactory() const;
+
     /**
-     * Get the default temperature calculator
-     * Get the factory with the corresponding ID @saveId
-     * If @saveId is empty - get the first registred factory
-     * @return pointer to the temperature calculator
+     * Creates a pre-configured 'BaseTempCalc' using saved settings ID.
+     * If ID is not provided or settings are not found creates a default calculator with a default settings.
      */
-    QSharedPointer<BaseTempCalc> createDefaultTempCalculator(const QString& saveId = "") const;
+    QSharedPointer<BaseTempCalc> createTempCalculator(const QString& settingsId = "") const;
+
     /**
-     * Get the default temperature calculator settings
-     * @return pointer to the temperature calculator settings
+     * Creates a temperature calculator instance preconfigured with the given settings.
+     * If settings contains invalid algorithm ID returns a null value.
+     * If settings are empty returns the default calculator.
      */
-    TempCalcSettings createDefaultTempCalcSettings() const;
+    QSharedPointer<BaseTempCalc> createTempCalculator(const QVariantMap& settingsMap) const;
+
     /**
-     * Get the temperature calculator settings by temperature settings,
-     * which are stored as a variant map
-     * @settingsMap map settings
-     * @return pointer to the temperature calculator settings
+     * Saves TM algorithms settings by the given 'settingsId' key.
+     * The saved settings can be retrieved later within the same UGENE session using 'createCalculator' method.
      */
-    QSharedPointer<BaseTempCalc> createTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const;
-    /**
-     * Save calculation settings to this static object
-     * This is required if, for example, we need to store settings,
-     * which are stored in some other object, but this object should be destroyed
-     * (for example, if this object is some widget and should be closed).
-     * @saveId ID of the saved settings. If it is settings of some Sequence View you can use its AnnotatedDNAView name
-     * If @saveId is empty - get the first registred factory
-     * @return pointer to the temperature calculator
-     */
-    void saveSettings(const QString& saveId, const TempCalcSettings& settings);
+    void saveSettings(const QString& settingsId, const TempCalcSettings& settings);
+
+    /** Loads previously saved settings. Returns an empty value if the settings was not found. */
+    TempCalcSettings loadSettings(const QString& settingsId) const;
 
 private:
     TempCalcFactory* defaultFactory = nullptr;
     QMap<QString, TempCalcSettings> savedSettings;
 };
 
-}
+}  // namespace U2

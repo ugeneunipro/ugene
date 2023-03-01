@@ -322,7 +322,11 @@ int InSilicoPcrWorker::createMetadata(int sequenceLength, const U2Region& produc
 Task* InSilicoPcrWorker::onInputEnded() {
     CHECK(!reported, nullptr);
     reported = true;
-    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID), getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID));
+    QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
+    if (tmAlgorithmSettings.isEmpty()) {
+        tmAlgorithmSettings = AppContext::getTempCalcRegistry()->getDefaultTempCalcFactory()->createDefaultSettings();
+    }
+    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID), tmAlgorithmSettings);
 }
 
 Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
@@ -350,7 +354,6 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
     productSettings.targetDbiRef = context->getDataStorage()->getDbiRef();
     productSettings.annotationsExtraction = ExtractProductSettings::AnnotationsExtraction(getValue<int>(EXTRACT_ANNOTATIONS_ATTR_ID));
 
-
     QList<Task*> tasks;
     for (int i = 0; i < primers.size(); i++) {
         auto pcrSettings = new InSilicoPcrTaskSettings;
@@ -366,7 +369,11 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
         pcrSettings->useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
         pcrSettings->perfectMatch = getValue<int>(PERFECT_ATTR_ID);
         pcrSettings->sequenceName = seq->getSequenceName();
-        pcrSettings->temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID));
+        QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
+        TempCalcRegistry* tmRegistry = AppContext::getTempCalcRegistry();
+        pcrSettings->temperatureCalculator = tmRegistry->createTempCalculator(tmAlgorithmSettings);
+        CHECK(pcrSettings->temperatureCalculator != nullptr,
+              new FailTask(tr("Failed to find TM algorithm with id '%1'.").arg(tmAlgorithmSettings.value(BaseTempCalc::KEY_ID).toString())));
 
         Task* pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
         pcrTask->setProperty(PAIR_NUMBER_PROP_ID, i);
@@ -381,18 +388,21 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
 /************************************************************************/
 /* InSilicoPcrReportTask */
 /************************************************************************/
-InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table, 
-                                             const QList<QPair<Primer, Primer>>& primers, 
-                                             const QString& reportUrl, 
-                                             const QString& _primersUrl, 
+InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table,
+                                             const QList<QPair<Primer, Primer>>& primers,
+                                             const QString& reportUrl,
+                                             const QString& _primersUrl,
                                              const QVariantMap& tempSettings)
-    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), 
-      primers(primers), 
-      reportUrl(reportUrl), 
+    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table),
+      primers(primers),
+      reportUrl(reportUrl),
       primersUrl(_primersUrl),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculatorBySettingsMap(tempSettings)) {}
+      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculator(tempSettings)) {
+    SAFE_POINT(temperatureCalculator != nullptr, "temperatureCalculator is nullptr!", )
+}
 
 void InSilicoPcrReportTask::run() {
+    CHECK(temperatureCalculator != nullptr, );
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(reportUrl, stateInfo, IOAdapterMode_Write));
     CHECK_OP(stateInfo, );
     const QString report = createReport();

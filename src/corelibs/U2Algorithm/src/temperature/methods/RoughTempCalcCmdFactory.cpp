@@ -26,24 +26,20 @@
 namespace U2 {
 
 RoughTempCalcCmdFactory::RoughTempCalcCmdFactory()
-    : TempCalcFactory("rough-tm-algorithm", tr("Rough")) {
+    : TempCalcFactory("rough-tm-algorithm", tr("Rough"), 0) {
 }
 
-QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createTempCalculator(const TempCalcSettings& settings) const {
+QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createCalculator(const TempCalcSettings& settings) const {
     return QSharedPointer<BaseTempCalc>(new RoughTempCalc(settings));
 }
 
-QSharedPointer<BaseTempCalc> RoughTempCalcCmdFactory::createDefaultTempCalculator() const {
-    return createTempCalculator(createDefaultTempCalcSettings());
-}
-
-TempCalcSettings RoughTempCalcCmdFactory::createDefaultTempCalcSettings() const {
+TempCalcSettings RoughTempCalcCmdFactory::createDefaultSettings() const {
     TempCalcSettings settings;
     settings.insert(BaseTempCalc::KEY_ID, id);
     return settings;
 }
 
-BaseTempCalcWidget* RoughTempCalcCmdFactory::createTempCalcSettingsWidget(QWidget*) const {
+BaseTempCalcWidget* RoughTempCalcCmdFactory::createSettingsWidget(QWidget*) const {
     return nullptr;
 }
 

@@ -25,37 +25,44 @@
 
 namespace U2 {
 
-bool TempCalcRegistry::registerEntry(TempCalcFactory* t) {
-    if (defaultFactory == nullptr) {
-        defaultFactory = t;
+bool TempCalcRegistry::registerEntry(TempCalcFactory* newFactory) {
+    if (defaultFactory == nullptr || defaultFactory->defaultPriority < newFactory->defaultPriority) {
+        defaultFactory = newFactory;
     }
-    return IdRegistry::registerEntry(t);
+    return IdRegistry::registerEntry(newFactory);
 }
 
-QSharedPointer<BaseTempCalc> TempCalcRegistry::createDefaultTempCalculator(const QString& saveId) const {
-    CHECK(!saveId.isEmpty(), defaultFactory->createDefaultTempCalculator());
-
-    auto savedFactory = getById(savedSettings.value(saveId).value(BaseTempCalc::KEY_ID).toString());
-    CHECK(savedFactory != nullptr, defaultFactory->createDefaultTempCalculator());
-
-    return savedFactory->createTempCalculator(savedSettings.value(saveId));
+QSharedPointer<BaseTempCalc> TempCalcRegistry::createTempCalculator(const QString& settingsId) const {
+    auto settings = loadSettings(settingsId);
+    auto factoryId = settings.value(BaseTempCalc::KEY_ID).toString();
+    auto factory = getById(factoryId);
+    CHECK(factory != nullptr, defaultFactory->createCalculator(defaultFactory->createDefaultSettings()));
+    return factory->createCalculator(savedSettings.value(settingsId));
 }
 
-TempCalcSettings TempCalcRegistry::createDefaultTempCalcSettings() const {
-    return defaultFactory->createDefaultTempCalcSettings();
+TempCalcFactory* TempCalcRegistry::getDefaultTempCalcFactory() const {
+    SAFE_POINT(defaultFactory != nullptr, "defaultFactory is null!", nullptr);
+    return defaultFactory;
 }
 
-QSharedPointer<BaseTempCalc> TempCalcRegistry::createTempCalculatorBySettingsMap(const QVariantMap& settingsMap) const {
+QSharedPointer<BaseTempCalc> TempCalcRegistry::createTempCalculator(const QVariantMap& settingsMap) const {
     if (settingsMap.isEmpty()) {
-        return createDefaultTempCalculator();
+        auto factory = getDefaultTempCalcFactory();
+        return factory->createCalculator(factory->createDefaultSettings());
     }
-    auto settingsId = settingsMap.value(BaseTempCalc::KEY_ID).toString();
-    TempCalcFactory* calcFactory = getById(settingsId);
-    return calcFactory != nullptr ? calcFactory->createTempCalculator(settingsMap) : nullptr;
+    CHECK(!settingsMap.isEmpty(), nullptr);
+    auto factoryId = settingsMap.value(BaseTempCalc::KEY_ID).toString();
+    TempCalcFactory* calcFactory = getById(factoryId);
+    CHECK(calcFactory != nullptr, nullptr);
+    return calcFactory->createCalculator(settingsMap);
 }
 
-void TempCalcRegistry::saveSettings(const QString& saveId, const TempCalcSettings& settings) {
-    savedSettings.insert(saveId, settings);
+void TempCalcRegistry::saveSettings(const QString& settingsId, const TempCalcSettings& settings) {
+    savedSettings.insert(settingsId, settings);
+}
+
+TempCalcSettings TempCalcRegistry::loadSettings(const QString& settingsId) const {
+    return savedSettings.value(settingsId);
 }
 
 }  // namespace U2

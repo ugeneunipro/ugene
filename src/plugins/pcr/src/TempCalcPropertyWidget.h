@@ -43,6 +43,9 @@ private slots:
     void sl_showDialog();
 
 private:
+    /** Updates state of UI based in the current settings. */
+    void updateUiState();
+
     QLineEdit* lineEdit = nullptr;
     QToolButton* toolButton = nullptr;
     TempCalcSettings tempSettings;

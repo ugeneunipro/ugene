@@ -82,7 +82,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView),
       annotatedDnaViewName(annotatedDnaView->getName()),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->createDefaultTempCalculator(annotatedDnaViewName)) {
+      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculator(annotatedDnaViewName)) {
     SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
