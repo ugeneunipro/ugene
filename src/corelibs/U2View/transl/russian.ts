@@ -1078,10 +1078,6 @@ p, li { white-space: pre-wrap; }
         <translation>Символов в строке (режим переноса)</translation>
     </message>
     <message>
-        <source>Include sequences&apos; names</source>
-        <translation type="vanished">Включить имена последовательностей</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/export_image/MSAExportSettings.ui" line="71"/>
         <source>Include consensus</source>
         <translation>Включить консенсус</translation>
