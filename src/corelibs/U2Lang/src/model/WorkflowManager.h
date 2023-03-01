@@ -108,7 +108,7 @@ public:
             debugInfo->disconnect();
         }
         debugInfo = newDebugInfo;
-        QObject::connect(debugInfo, &QObject::destroyed, [=]() { debugInfo->disconnect(); debugInfo = nullptr; });
+        QObject::connect(debugInfo, &QObject::destroyed, [=]() { debugInfo = nullptr; });
     }
 
 protected:

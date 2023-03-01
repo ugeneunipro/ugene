@@ -184,7 +184,9 @@ WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema& sh,
     connect(debugInfo, SIGNAL(si_busInvestigationIsRequested(const Workflow::Link*, int)), SLOT(sl_busInvestigationIsRequested(const Workflow::Link*, int)));
     connect(debugInfo, SIGNAL(si_busCountOfMessagesIsRequested(const Workflow::Link*)), SLOT(sl_busCountOfMessagesRequested(const Workflow::Link*)));
     connect(debugInfo, SIGNAL(si_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)), SLOT(sl_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)));
-    connect(debugInfo, &QObject::destroyed, [=]() { debugInfo->disconnect(); debugInfo = nullptr; });
+    connect(debugInfo, &QObject::destroyed, [=]() { 
+        debugInfo = nullptr; 
+        });
 
     WorkflowMonitor* m = new WorkflowMonitor(this, schema);
     context = new WorkflowContext(schema->getProcesses(), m);
