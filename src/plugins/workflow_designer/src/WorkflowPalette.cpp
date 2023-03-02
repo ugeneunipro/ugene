@@ -55,7 +55,7 @@ WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* sche
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true);
 
-    QVBoxLayout* vl = dynamic_cast<QVBoxLayout*>(layout());
+    auto vl = dynamic_cast<QVBoxLayout*>(layout());
     vl->addLayout(nameFilter);
     vl->addWidget(elementsList);
 
@@ -323,7 +323,7 @@ void WorkflowPaletteElements::setContent(ActorPrototypeRegistry* reg) {
 void WorkflowPaletteElements::rebuild() {
     setMouseTracking(false);
     resetSelection();
-    ActorPrototypeRegistry* reg = qobject_cast<ActorPrototypeRegistry*>(sender());
+    auto reg = qobject_cast<ActorPrototypeRegistry*>(sender());
     if (!reg) {
         reg = protoRegistry;
     }
@@ -509,7 +509,7 @@ bool WorkflowPaletteElements::editPrototype(ActorPrototype* proto) {
 }
 
 void WorkflowPaletteElements::handleItemAction() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     assert(a);
     assert(actionMap[a]);
     if (a) {
@@ -522,7 +522,7 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
         currentAction->setChecked(false);
     }
 
-    QAction* senderAction = qobject_cast<QAction*>(sender());
+    auto senderAction = qobject_cast<QAction*>(sender());
     bool fromMenu = false;
     if (senderAction->data() == MENU_ACTION_MARKER) {
         fromMenu = true;
@@ -773,7 +773,7 @@ void WorkflowPaletteElements::replaceOldConfigWithNewConfig(ExternalProcessConfi
 }
 
 bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype* proto) const {
-    WorkflowView* wv = dynamic_cast<WorkflowView*>(schemaConfig);
+    auto wv = dynamic_cast<WorkflowView*>(schemaConfig);
     CHECK(wv != nullptr, false);
     int actorWithCurrentProtoCounter = 0;
     const QList<Actor*> actorList = wv->getSchema()->getProcesses();

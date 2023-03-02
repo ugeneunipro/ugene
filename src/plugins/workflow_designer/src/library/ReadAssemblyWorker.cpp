@@ -61,7 +61,7 @@ ReadAssemblyWorker::ReadAssemblyWorker(Actor* p)
 
 void ReadAssemblyWorker::init() {
     GenericDocReader::init();
-    IntegralBus* outBus = dynamic_cast<IntegralBus*>(ch);
+    auto outBus = dynamic_cast<IntegralBus*>(ch);
     assert(outBus);
     mtype = outBus->getBusType();
 }

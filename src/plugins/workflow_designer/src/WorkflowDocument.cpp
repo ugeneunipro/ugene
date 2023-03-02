@@ -122,7 +122,7 @@ void WorkflowDocFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus&) {
     assert(d->getDocumentFormat() == this);
     assert(d->getObjects().size() == 1);
 
-    WorkflowGObject* wo = qobject_cast<WorkflowGObject*>(d->getObjects().first());
+    auto wo = qobject_cast<WorkflowGObject*>(d->getObjects().first());
     assert(wo && wo->getView());
 
     const Metadata& meta = wo->getView()->getMeta();
@@ -192,7 +192,7 @@ void OpenWorkflowViewTask::open() {
         }
     }
     foreach (QPointer<GObject> po, selectedObjects) {
-        WorkflowGObject* o = qobject_cast<WorkflowGObject*>(po);
+        auto o = qobject_cast<WorkflowGObject*>(po);
         assert(o && !o->getView());
         WorkflowView::openWD(o);
     }

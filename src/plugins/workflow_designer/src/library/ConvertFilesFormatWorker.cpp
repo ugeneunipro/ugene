@@ -64,7 +64,7 @@ static const QString CUSTOM_DIR_ID("custom-dir");
 /* ConvertFilesFormatPrompter */
 /************************************************************************/
 QString ConvertFilesFormatPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -228,7 +228,7 @@ void ConvertFilesFormatWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    ConvertFileTask* convertFileTask = dynamic_cast<ConvertFileTask*>(task);
+    auto convertFileTask = dynamic_cast<ConvertFileTask*>(task);
 
     if (nullptr != convertFileTask) {
         return convertFileTask->getResult();

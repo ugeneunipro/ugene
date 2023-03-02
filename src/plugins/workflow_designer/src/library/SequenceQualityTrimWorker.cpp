@@ -46,7 +46,7 @@ SequenceQualityTrimPrompter::SequenceQualityTrimPrompter(Actor* actor)
 }
 
 QString SequenceQualityTrimPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     const Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     const QString producerName = tr("from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -74,7 +74,7 @@ Task* SequenceQualityTrimWorker::createTask(const Message& message, U2OpStatus& 
 
 QList<Message> SequenceQualityTrimWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> messages;
-    SequenceQualityTrimTask* trimTask = qobject_cast<SequenceQualityTrimTask*>(task);
+    auto trimTask = qobject_cast<SequenceQualityTrimTask*>(task);
     SAFE_POINT_EXT(nullptr != trimTask, os.setError(tr("An unexpected task type")), messages);
 
     QScopedPointer<U2SequenceObject> trimmedSequenceObject(trimTask->takeTrimmedSequence());

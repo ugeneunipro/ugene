@@ -204,7 +204,7 @@ void HMMBuildWorkerFactory::cleanup() {
  * HMMBuildPrompter
  ******************************/
 QString HMMBuildPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* msaProducer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
 
     QString msaName = msaProducer ? tr("For each MSA from <u>%1</u>,").arg(msaProducer->getLabel()) : "";
@@ -293,7 +293,7 @@ Task* HMMBuildWorker::tick() {
 }
 
 void HMMBuildWorker::sl_taskFinished() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
@@ -305,7 +305,7 @@ void HMMBuildWorker::sl_taskFinished() {
 }
 
 void HMMBuildWorker::sl_taskFinished(Task* t) {
-    HMMBuildTask* build = qobject_cast<HMMBuildTask*>(t);
+    auto build = qobject_cast<HMMBuildTask*>(t);
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
@@ -327,7 +327,7 @@ void HMMBuildWorker::sl_taskFinished(Task* t) {
         }
         algoLog.info(tr("Built HMM profile"));
     } else {
-        HMMCalibrateAbstractTask* calibrate = qobject_cast<HMMCalibrateAbstractTask*>(sender());
+        auto calibrate = qobject_cast<HMMCalibrateAbstractTask*>(sender());
         assert(calibrate);
         hmm = calibrate->getHMM();
         output->put(Message(HMMLib::HMM_PROFILE_TYPE(), qVariantFromValue<plan7_s*>(hmm)));

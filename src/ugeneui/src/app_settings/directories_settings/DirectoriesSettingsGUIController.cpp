@@ -70,7 +70,7 @@ AppSettingsGUIPageState* DirectoriesSettingsPageController::getSavedState() {
 }
 
 void DirectoriesSettingsPageController::saveState(AppSettingsGUIPageState* s) {
-    DirectoriesSettingsPageState* state = qobject_cast<DirectoriesSettingsPageState*>(s);
+    auto state = qobject_cast<DirectoriesSettingsPageState*>(s);
     UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
     st->setDownloadDirPath(state->downloadsDirPath);
     st->setDefaultDataDirPath(state->documentsDirectory);
@@ -108,7 +108,7 @@ DirectoriesSettingsPageWidget::DirectoriesSettingsPageWidget(DirectoriesSettings
 }
 
 void DirectoriesSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
-    DirectoriesSettingsPageState* state = qobject_cast<DirectoriesSettingsPageState*>(s);
+    auto state = qobject_cast<DirectoriesSettingsPageState*>(s);
     downloadsDirPathEdit->setText(state->downloadsDirPath);
     documentsDirectoryEdit->setText(state->documentsDirectory);
     tmpDirPathEdit->setText(state->temporaryDirPath);

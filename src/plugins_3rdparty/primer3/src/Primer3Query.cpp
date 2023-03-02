@@ -138,7 +138,7 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
 }
 
 void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
-    Primer3SWTask* primerTask = qobject_cast<Primer3SWTask*>(t);
+    auto primerTask = qobject_cast<Primer3SWTask*>(t);
     assert(primerTask);
     QList<PrimerPair> bestPairs = primerTask->getBestPairs();
     foreach (PrimerPair pair, bestPairs) {

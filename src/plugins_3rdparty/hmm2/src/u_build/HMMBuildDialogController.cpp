@@ -145,7 +145,7 @@ void HMMBuildDialogController::reject() {
 }
 
 void HMMBuildDialogController::sl_onStateChanged() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
@@ -252,7 +252,7 @@ QList<Task*> HMMBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (list.isEmpty()) {
             stateInfo.setError(tr("Alignment object not found!"));
         } else {
-            MultipleSequenceAlignmentObject* msa = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
+            auto msa = qobject_cast<MultipleSequenceAlignmentObject*>(list.first());
             const MultipleSequenceAlignment ma = msa->getMultipleAlignment();
             if (settings.name.isEmpty()) {
                 settings.name = msa->getGObjectName() == MA_OBJECT_NAME ? doc->getName() : msa->getGObjectName();

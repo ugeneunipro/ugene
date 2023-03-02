@@ -178,7 +178,7 @@ Worker* AssemblyToSequencesWorkerFactory::createWorker(Actor* a) {
 QString AssemblyToSequencesPrompter::composeRichDoc() {
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
 
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::ASSEMBLY_SLOT().getId());
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 

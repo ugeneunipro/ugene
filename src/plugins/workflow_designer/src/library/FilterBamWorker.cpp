@@ -64,7 +64,7 @@ static const QString FLAG_ID("flag");
 /* FilterBamPrompter */
 /************************************************************************/
 QString FilterBamPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -262,7 +262,7 @@ void FilterBamWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    SamtoolsViewFilterTask* filterTask = dynamic_cast<SamtoolsViewFilterTask*>(task);
+    auto filterTask = dynamic_cast<SamtoolsViewFilterTask*>(task);
 
     if (nullptr != filterTask) {
         return filterTask->getResult();

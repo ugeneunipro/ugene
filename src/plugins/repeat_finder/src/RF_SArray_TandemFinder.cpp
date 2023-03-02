@@ -309,7 +309,7 @@ void ExactSizedTandemFinder::run() {
         delete suffixArray;  // TODO: remove all deletes
     } else {
         const quint32* sArray = index->getSArray();
-        const quint32* sArrayLast = const_cast<quint32*>(sArray + index->getSArraySize() - 1);
+        auto sArrayLast = const_cast<quint32*>(sArray + index->getSArraySize() - 1);
         quint32* currentDiffPos = (quint32*)sArray;
 
         while (currentDiffPos < sArrayLast) {
@@ -344,7 +344,7 @@ quint32* ExactSizedTandemFinder::checkAndSpreadTandem(const quint32* tandemStart
     const char* tandemStart = index->sarr2seq(tandemStartIndex);  // seqCast(tandemStartIndex,0);
     quint32* arrRunner = (quint32*)tandemLastIndex - 1;
     {
-        const quint32* sArrayLast = const_cast<quint32*>(index->getSArray() + index->getSArraySize() - 1);
+        auto sArrayLast = const_cast<quint32*>(index->getSArray() + index->getSArraySize() - 1);
         // run until distance become incorrect, it is incredible if we run far with changing prefix
         do {
             ++arrRunner;
@@ -480,7 +480,7 @@ void LargeSizedTandemFinder::run() {
         delete suffixArray;
     } else {
         const quint32* sArray = index->getSArray();
-        const quint32* sArrayLast = const_cast<quint32*>(sArray + index->getSArraySize() - 1);
+        auto sArrayLast = const_cast<quint32*>(sArray + index->getSArraySize() - 1);
         quint32* currentDiffPos = (quint32*)sArray;
 
         // TODO: rewrite this code
@@ -514,7 +514,7 @@ quint32* LargeSizedTandemFinder::checkAndSpreadTandem(const quint32* tandemStart
 
     quint32* arrRunner = (quint32*)tandemLastIndex - 1;
     {
-        const quint32* sArrayLast = const_cast<quint32*>(index->getSArray() + index->getSArraySize() - 1);
+        auto sArrayLast = const_cast<quint32*>(index->getSArray() + index->getSArraySize() - 1);
         // run until distance become incorrect, it is incredible if we run far with changing prefix
         do {
             ++arrRunner;

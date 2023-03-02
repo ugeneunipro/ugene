@@ -42,7 +42,7 @@ QList<WeightMatrixSearchResult> WeightMatrixSearchTask::takeResults() {
     lock.lock();
     QList<WeightMatrixSearchResult> res;
     foreach (const QPointer<Task>& task, getSubtasks()) {
-        WeightMatrixSingleSearchTask* curr = static_cast<WeightMatrixSingleSearchTask*>(task.data());
+        auto curr = static_cast<WeightMatrixSingleSearchTask*>(task.data());
         res.append(curr->takeResults());
     }
     lock.unlock();

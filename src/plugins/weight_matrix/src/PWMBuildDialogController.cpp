@@ -125,7 +125,7 @@ void PWMBuildDialogController::sl_inFileButtonClicked() {
 
     QList<GObject*> mobjs = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (!mobjs.isEmpty()) {
-        MultipleSequenceAlignmentObject* mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+        auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
         replaceLogo(mobj->getMultipleAlignment());
     } else {
         mobjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
@@ -244,7 +244,7 @@ void PWMBuildDialogController::sl_okButtonClicked() {
 }
 
 void PWMBuildDialogController::sl_onStateChanged() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
@@ -404,7 +404,7 @@ QList<Task*> PFMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         assert(d != nullptr);
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
-            MultipleSequenceAlignmentObject* mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
             buildTask = new PFMatrixBuildTask(settings, mobj->getMultipleAlignment());
             res.append(buildTask);
         } else {
@@ -531,7 +531,7 @@ QList<Task*> PWMatrixBuildToFileTask::onSubTaskFinished(Task* subTask) {
         assert(d != nullptr);
         QList<GObject*> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (!mobjs.isEmpty()) {
-            MultipleSequenceAlignmentObject* mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
             buildTask = new PWMatrixBuildTask(settings, mobj->getMultipleAlignment());
             res.append(buildTask);
         } else {

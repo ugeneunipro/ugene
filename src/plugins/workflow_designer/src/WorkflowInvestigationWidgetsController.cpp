@@ -55,7 +55,7 @@ WorkflowInvestigationWidgetsController::WorkflowInvestigationWidgetsController(Q
       showAllColumnsAction(nullptr),
       selectedColumn(DEFAULT_SELECTED_COLUMN),
       columnWidths() {
-    QTabWidget* container = dynamic_cast<QTabWidget*>(parent);
+    auto container = dynamic_cast<QTabWidget*>(parent);
     Q_ASSERT(nullptr != container);
     Q_UNUSED(container);
 
@@ -96,7 +96,7 @@ bool WorkflowInvestigationWidgetsController::eventFilter(QObject* watched, QEven
 }
 
 void WorkflowInvestigationWidgetsController::setCurrentInvestigation(const Workflow::Link* bus) {
-    QTabWidget* container = dynamic_cast<QTabWidget*>(parent());
+    auto container = dynamic_cast<QTabWidget*>(parent());
     Q_ASSERT(nullptr != container);
     const int tabNumberForInvestigation = container->indexOf(investigationView);
     if (-1 != tabNumberForInvestigation) {
@@ -172,10 +172,10 @@ void WorkflowInvestigationWidgetsController::adjustInvestigationColumnWidth(
 }
 
 void WorkflowInvestigationWidgetsController::setInvestigationWidgetsVisible(bool visible) {
-    QTabWidget* container = dynamic_cast<QTabWidget*>(parent());
+    auto container = dynamic_cast<QTabWidget*>(parent());
     Q_ASSERT(nullptr != container);
     if (!visible && nullptr != investigationView) {
-        WorkflowInvestigationWidget* currentWidget = dynamic_cast<WorkflowInvestigationWidget*>(container->currentWidget());
+        auto currentWidget = dynamic_cast<WorkflowInvestigationWidget*>(container->currentWidget());
         wasDisplayed = (investigationView == currentWidget);
         container->removeTab(container->indexOf(static_cast<QWidget*>(investigationView)));
         deleteBusInvestigations();

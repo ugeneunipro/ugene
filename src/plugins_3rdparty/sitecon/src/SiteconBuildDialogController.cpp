@@ -128,7 +128,7 @@ void SiteconBuildDialogController::sl_okButtonClicked() {
 }
 
 void SiteconBuildDialogController::sl_onStateChanged() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
@@ -277,7 +277,7 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (mobjs.isEmpty()) {
             stateInfo.setError(tr("No alignment found"));
         } else {
-            MultipleSequenceAlignmentObject* mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
             const MultipleSequenceAlignment msa = mobj->getMultipleAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, msa, baseName);

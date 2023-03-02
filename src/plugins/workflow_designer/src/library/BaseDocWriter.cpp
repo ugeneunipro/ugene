@@ -397,7 +397,7 @@ Task* BaseDocWriter::createWriteToSharedDbTask(const QVariantMap& data) {
 }
 
 void BaseDocWriter::sl_objectImported(Task* importTask) {
-    ImportObjectToDatabaseTask* realTask = qobject_cast<ImportObjectToDatabaseTask*>(importTask);
+    auto realTask = qobject_cast<ImportObjectToDatabaseTask*>(importTask);
     SAFE_POINT(nullptr != realTask, "Invalid task detected", );
     delete realTask->getSourceObject();
 }

@@ -128,7 +128,7 @@ void HMMCalibrateDialogController::sl_okButtonClicked() {
 }
 
 void HMMCalibrateDialogController::sl_onStateChanged() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     assert(task != NULL);
     if (task != t || t->getState() != Task::State_Finished) {
         return;

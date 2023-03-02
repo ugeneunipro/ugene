@@ -59,7 +59,7 @@ void GroupWorker::init() {
     outChannel = ports.value(OUTPUT_PORT);
     mtype = outChannel->getBusType();
 
-    GrouperOutSlotAttribute* slotsAttr = dynamic_cast<GrouperOutSlotAttribute*>(actor->getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
+    auto slotsAttr = dynamic_cast<GrouperOutSlotAttribute*>(actor->getParameter(CoreLibConstants::GROUPER_OUT_SLOTS_ATTR));
     outSlots = slotsAttr->getOutSlots();
     groupSlot = actor->getParameter(CoreLibConstants::GROUPER_SLOT_ATTR)->getAttributePureValue().toString();
     produceOneGroup = groupSlot.isEmpty();
@@ -233,7 +233,7 @@ QString GroupPrompter::composeRichDoc() {
     Port* input = target->getInputPorts().first();
     if (input->getLinks().size() > 0) {
         Port* src = input->getLinks().keys().first();
-        IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(src);
+        auto bus = dynamic_cast<IntegralBusPort*>(src);
         assert(nullptr != bus);
         DataTypePtr type = bus->getType();
         QMap<Descriptor, DataTypePtr> busMap = type->getDatatypesMap();

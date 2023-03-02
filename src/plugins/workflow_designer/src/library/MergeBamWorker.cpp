@@ -65,7 +65,7 @@ static const QString OUT_NAME_ID("out-name");
 /* MergeBamPrompter */
 /************************************************************************/
 QString MergeBamPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -197,7 +197,7 @@ void MergeBamWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    MergeBamTask* mergeTask = dynamic_cast<MergeBamTask*>(task);
+    auto mergeTask = dynamic_cast<MergeBamTask*>(task);
 
     if (nullptr != mergeTask) {
         return mergeTask->getResult();

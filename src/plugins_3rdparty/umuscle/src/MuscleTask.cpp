@@ -348,7 +348,7 @@ QList<Task*> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task* subTask) {
     // todo: move to utility alphabet reduction
     const DNAAlphabet* al = nullptr;
     foreach (GObject* obj, seqObjects) {
-        U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
+        auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
         const DNAAlphabet* objAl = dnaObj->getAlphabet();
         if (al == nullptr) {
             al = objAl;

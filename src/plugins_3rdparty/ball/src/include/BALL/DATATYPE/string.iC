@@ -711,7 +711,7 @@ BALL_INLINE
 bool String::isFloat() const 
 {
 	char* test;
-	char* str = const_cast<char*>(c_str());
+	auto str = const_cast<char*>(c_str());
   errno = 0;
 
 //Get rid of those friggin warnings

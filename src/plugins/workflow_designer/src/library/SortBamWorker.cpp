@@ -65,7 +65,7 @@ static const QString INDEX_ID("index");
 /* SortBamPrompter */
 /************************************************************************/
 QString SortBamPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -192,7 +192,7 @@ void SortBamWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    SamtoolsSortTask* sortTask = dynamic_cast<SamtoolsSortTask*>(task);
+    auto sortTask = dynamic_cast<SamtoolsSortTask*>(task);
 
     if (nullptr != sortTask) {
         return sortTask->getResult();

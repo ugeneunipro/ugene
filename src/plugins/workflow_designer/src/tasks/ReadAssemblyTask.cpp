@@ -269,7 +269,7 @@ void ReadAssemblyTask::run() {
         return;
     }
     foreach (GObject* go, assemblies) {
-        AssemblyObject* assemblyObj = dynamic_cast<AssemblyObject*>(go);
+        auto assemblyObj = dynamic_cast<AssemblyObject*>(go);
         CHECK_EXT(nullptr != assemblyObj, taskLog.error(tr("Incorrect assembly object in %1").arg(url)), );
 
         SharedDbiDataHandler handler = ctx->getDataStorage()->getDataHandler(assemblyObj->getEntityRef(), useGC);

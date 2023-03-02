@@ -144,7 +144,7 @@ void WriteDocActorProto::construct(bool canWriteToSharedDb, bool addValidator, b
  *****************************/
 QString WriteGenbankPrompter::composeRichDoc() {
     QString outPortId = target->getInputPorts().first()->getId();
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(outPortId));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(outPortId));
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString seqName = seqProducer ? tr(" sequence from <u>%1</u>").arg(seqProducer->getLabel()) : "";
     QString annName = getProducers(outPortId, BaseSlots::ANNOTATION_TABLE_SLOT().getId());
@@ -182,7 +182,7 @@ const QString generatedStr = "<font color='blue'>" + QApplication::translate("Wr
 }
 QString WriteFastaPrompter::composeRichDoc() {
     QString outPortId = target->getInputPorts().first()->getId();
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(outPortId));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(outPortId));
     QString url = getScreenedURL(qobject_cast<IntegralBusPort*>(target->getPort(outPortId)),
                                  BaseAttributes::URL_OUT_ATTRIBUTE().getId(),
                                  BaseSlots::URL_SLOT().getId(),

@@ -91,7 +91,7 @@ Task* MarkSequenceWorker::tick() {
             anns << QVariant::fromValue(ad);
         }
 
-        MarkerAttribute* attr = dynamic_cast<MarkerAttribute*>(actor->getParameter(MARKER_ATTR_ID));
+        auto attr = dynamic_cast<MarkerAttribute*>(actor->getParameter(MARKER_ATTR_ID));
         QVariantMap m;
         foreach (Marker* marker, attr->getMarkers()) {
             QString res;

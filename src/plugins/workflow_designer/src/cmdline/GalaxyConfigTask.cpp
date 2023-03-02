@@ -560,7 +560,7 @@ bool GalaxyConfigTask::writeInputElements() {
 }
 
 bool GalaxyConfigTask::isDelegateComboBox(PropertyDelegate* pd) {
-    ComboBoxDelegate* cbd = dynamic_cast<ComboBoxDelegate*>(pd);
+    auto cbd = dynamic_cast<ComboBoxDelegate*>(pd);
     if (cbd != nullptr) {
         return true;
     }
@@ -568,7 +568,7 @@ bool GalaxyConfigTask::isDelegateComboBox(PropertyDelegate* pd) {
 }
 
 bool GalaxyConfigTask::isDelegateComboBoxWithChecks(PropertyDelegate* pd) {
-    ComboBoxWithChecksDelegate* cbwcd = dynamic_cast<ComboBoxWithChecksDelegate*>(pd);
+    auto cbwcd = dynamic_cast<ComboBoxWithChecksDelegate*>(pd);
     if (cbwcd != nullptr) {
         return true;
     }
@@ -576,11 +576,11 @@ bool GalaxyConfigTask::isDelegateComboBoxWithChecks(PropertyDelegate* pd) {
 }
 
 bool GalaxyConfigTask::isDelegateSpinBox(PropertyDelegate* pd) {
-    SpinBoxDelegate* sbd = dynamic_cast<SpinBoxDelegate*>(pd);
+    auto sbd = dynamic_cast<SpinBoxDelegate*>(pd);
     if (sbd != nullptr) {
         return true;
     }
-    DoubleSpinBoxDelegate* dsbd = dynamic_cast<DoubleSpinBoxDelegate*>(pd);
+    auto dsbd = dynamic_cast<DoubleSpinBoxDelegate*>(pd);
     if (dsbd != nullptr) {
         return true;
     }
@@ -588,7 +588,7 @@ bool GalaxyConfigTask::isDelegateSpinBox(PropertyDelegate* pd) {
 }
 
 bool GalaxyConfigTask::isDelegateStringList(PropertyDelegate* pd) {
-    StringListDelegate* sld = dynamic_cast<StringListDelegate*>(pd);
+    auto sld = dynamic_cast<StringListDelegate*>(pd);
     if (sld != nullptr) {
         return true;
     }

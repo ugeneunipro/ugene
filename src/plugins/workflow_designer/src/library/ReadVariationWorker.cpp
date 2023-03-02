@@ -58,7 +58,7 @@ ReadVariationWorker::ReadVariationWorker(Actor* p)
 void ReadVariationWorker::init() {
     GenericDocReader::init();
     splitMode = ReadVariationProto::SplitAlleles(getValue<int>(ReadVariationProto::SPLIT_ATTR));
-    IntegralBus* outBus = dynamic_cast<IntegralBus*>(ch);
+    auto outBus = dynamic_cast<IntegralBus*>(ch);
     assert(outBus);
     mtype = outBus->getBusType();
 }
@@ -69,7 +69,7 @@ Task* ReadVariationWorker::createReadTask(const QString& url, const QString& dat
 }
 
 void ReadVariationWorker::onTaskFinished(Task* task) {
-    ReadVariationTask* t = qobject_cast<ReadVariationTask*>(task);
+    auto t = qobject_cast<ReadVariationTask*>(task);
     MessageMetadata metadata(t->getUrl(), t->getDatasetName());
     context->getMetadataStorage().put(metadata);
     foreach (const QVariantMap& m, t->takeResults()) {
@@ -157,7 +157,7 @@ void ReadVariationTask::run() {
     doc->setDocumentOwnsDbiResources(false);
 
     foreach (GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
-        VariantTrackObject* trackObj = dynamic_cast<VariantTrackObject*>(go);
+        auto trackObj = dynamic_cast<VariantTrackObject*>(go);
         CHECK_EXT(nullptr != trackObj, taskLog.error(tr("Incorrect track object in %1").arg(url)), )
 
         QVariantMap m;

@@ -47,7 +47,7 @@ extern "C" {
 #include <U2Lang/SimpleWorkflowTask.h>
 
 extern "C" kalign_context* getKalignContext() {
-    U2::KalignContext* ctx = static_cast<U2::KalignContext*>(U2::TLSUtils::current(KALIGN_CONTEXT_ID));
+    auto ctx = static_cast<U2::KalignContext*>(U2::TLSUtils::current(KALIGN_CONTEXT_ID));
     assert(ctx->d != NULL);
     return ctx->d;
 }
@@ -106,7 +106,7 @@ void KalignTask::doAlign() {
 }
 
 Task::ReportResult KalignTask::report() {
-    KalignContext* ctx = static_cast<KalignContext*>(taskContext);
+    auto ctx = static_cast<KalignContext*>(taskContext);
     delete ctx->d;
     return ReportResult_Finished;
 }

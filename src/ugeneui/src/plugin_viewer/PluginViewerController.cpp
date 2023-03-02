@@ -127,10 +127,10 @@ void PluginViewerController::disconnectVisualActions() {
 }
 
 void PluginViewerController::updateActions() {
-    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
+    auto item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
 
     bool isService = item != nullptr && item->isServiceItem();
-    Service* s = isService ? (static_cast<PlugViewServiceItem*>(item))->service : nullptr;
+    auto s = isService ? (static_cast<PlugViewServiceItem*>(item))->service : nullptr;
     bool isServiceEnabled = isService && s->isEnabled();
 
     enableServiceAction->setEnabled(isService && !isServiceEnabled);
@@ -162,7 +162,7 @@ void PluginViewerController::buildItems() {
 PlugViewPluginItem* PluginViewerController::findPluginItem(Plugin* p) const {
     int nPlugins = ui.treeWidget->topLevelItemCount();
     for (int i = 0; i < nPlugins; i++) {
-        PlugViewPluginItem* item = static_cast<PlugViewPluginItem*>(ui.treeWidget->topLevelItem(i));
+        auto item = static_cast<PlugViewPluginItem*>(ui.treeWidget->topLevelItem(i));
         if (item->plugin == p) {
             return item;
         }
@@ -241,16 +241,16 @@ void PluginViewerController::sl_show() {
 }
 
 PlugViewServiceItem* PluginViewerController::getCurrentServiceItem() const {
-    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
+    auto item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
     assert(item != nullptr && item->isServiceItem());
-    PlugViewServiceItem* si = static_cast<PlugViewServiceItem*>(item);
+    auto si = static_cast<PlugViewServiceItem*>(item);
     return si;
 }
 
 PlugViewPluginItem* PluginViewerController::getCurrentPluginItem() const {
-    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
+    auto item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
     assert(item != nullptr && item->isPluginItem());
-    PlugViewPluginItem* pi = static_cast<PlugViewPluginItem*>(item);
+    auto pi = static_cast<PlugViewPluginItem*>(item);
     return pi;
 }
 
@@ -276,19 +276,19 @@ void PluginViewerController::sl_disableService() {
 void PluginViewerController::updateState() {
     updateActions();
     ui.infoView->clear();
-    PlugViewTreeItem* item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
+    auto item = static_cast<PlugViewTreeItem*>(ui.treeWidget->currentItem());
     if (item == nullptr) {
         ui.infoView->setText(tr("Select a plugin to view more information about it."));
         return;
     }
     QString text;
     if (item->isPluginItem()) {
-        PlugViewPluginItem* p = static_cast<PlugViewPluginItem*>(item);
+        auto p = static_cast<PlugViewPluginItem*>(item);
         text = "<b>" + p->plugin->getName() + "</b><p>";
         text += p->plugin->getDescription();
     } else {
         assert(item->isServiceItem());
-        PlugViewServiceItem* s = static_cast<PlugViewServiceItem*>(item);
+        auto s = static_cast<PlugViewServiceItem*>(item);
         text = s->service->getDescription();
     }
     ui.infoView->setText(text);
@@ -301,7 +301,7 @@ void PluginViewerController::sl_treeCurrentItemChanged(QTreeWidgetItem* current,
         return;
     }
     ui.showLicenseButton->setEnabled(true);
-    PlugViewPluginItem* curentItem = dynamic_cast<PlugViewPluginItem*>(current);
+    auto curentItem = dynamic_cast<PlugViewPluginItem*>(current);
     if (!curentItem->plugin->isFree()) {
         if (!curentItem->plugin->isLicenseAccepted()) {
             showLicense();
@@ -322,7 +322,7 @@ void PluginViewerController::sl_showHideLicense() {
     }
 }
 void PluginViewerController::sl_acceptLicense() {
-    PlugViewPluginItem* curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
+    auto curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
     showLicense();
     AppContext::getPluginSupport()->setLicenseAccepted(curentItem->plugin);
 }
@@ -331,7 +331,7 @@ void PluginViewerController::showLicense() {
     ui.showLicenseButton->setText(tr("Hide License"));
     ui.licenseView->show();
     ui.licenseLabel->show();
-    PlugViewPluginItem* curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
+    auto curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
     if (!curentItem->plugin->isFree()) {
         if (!curentItem->plugin->isLicenseAccepted()) {
             ui.acceptLicenseButton->show();

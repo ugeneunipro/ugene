@@ -88,7 +88,7 @@ void PWMJASPARDialogController::sl_onSelectionChanged() {
         fileName = "";
         return;
     }
-    JasparTreeItem* it = static_cast<JasparTreeItem*>(item);
+    auto it = static_cast<JasparTreeItem*>(item);
     QMap<QString, QString> props = it->matrix.getProperties();
     fileName = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/position_weight_matrix/JASPAR/";
     fileName.append(it->matrix.getProperty("tax_group")).append("/");

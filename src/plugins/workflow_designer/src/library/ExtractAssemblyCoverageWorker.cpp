@@ -78,7 +78,7 @@ void ExtractAssemblyCoverageWorker::cleanup() {
 }
 
 void ExtractAssemblyCoverageWorker::sl_taskFinished() {
-    ExportCoverageTask* task = dynamic_cast<ExportCoverageTask*>(sender());
+    auto task = dynamic_cast<ExportCoverageTask*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished() && !task->hasError() && !task->isCanceled(), );
 

@@ -66,7 +66,7 @@ static const QString TREAT_READS_ID("treat_reads");
 /* RmdupBamPrompter */
 /************************************************************************/
 QString RmdupBamPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -199,7 +199,7 @@ void RmdupBamWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    SamtoolsRmdupTask* rmdupTask = dynamic_cast<SamtoolsRmdupTask*>(task);
+    auto rmdupTask = dynamic_cast<SamtoolsRmdupTask*>(task);
 
     if (nullptr != rmdupTask) {
         return rmdupTask->getResult();

@@ -260,9 +260,9 @@ static StrandOption getStrand(const QString& s) {
  * SWPrompter
  **************************/
 QString SWPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    IntegralBusPort* patternPort = qobject_cast<IntegralBusPort*>(target->getPort(PATTERN_PORT));
+    auto patternPort = qobject_cast<IntegralBusPort*>(target->getPort(PATTERN_PORT));
     Actor* ptrnProducer = patternPort->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
 
@@ -516,7 +516,7 @@ Task* SWWorker::tick() {
 
 void SWWorker::sl_taskFinished(Task* t) {
     QList<SharedAnnotationData> annData;
-    MultiTask* multiSw = qobject_cast<MultiTask*>(t);
+    auto multiSw = qobject_cast<MultiTask*>(t);
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     QList<Task*> subs = multiSw->getTasks();
     SAFE_POINT(!subs.isEmpty(), "Invalid task is encountered", );

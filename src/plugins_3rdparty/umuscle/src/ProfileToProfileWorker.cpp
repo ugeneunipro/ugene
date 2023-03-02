@@ -94,7 +94,7 @@ void ProfileToProfileWorker::cleanup() {
 }
 
 void ProfileToProfileWorker::sl_taskFinished() {
-    ProfileToProfileTask* t = dynamic_cast<ProfileToProfileTask*>(sender());
+    auto t = dynamic_cast<ProfileToProfileTask*>(sender());
     if (t->isCanceled()) {
         return;
     }
@@ -165,7 +165,7 @@ const MultipleSequenceAlignment& ProfileToProfileTask::getResult() {
 
 void ProfileToProfileTask::appendResult(Task* task) {
     subtaskCount--;
-    MuscleTask* t = dynamic_cast<MuscleTask*>(task);
+    auto t = dynamic_cast<MuscleTask*>(task);
     SAFE_POINT(nullptr != t, "NULL Muscle task!", );
 
     const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getMsaRows();

@@ -149,7 +149,7 @@ Task* PWMatrixBuildWorker::tick() {
 }
 
 void PWMatrixBuildWorker::sl_taskFinished() {
-    PWMatrixBuildTask* t = qobject_cast<PWMatrixBuildTask*>(sender());
+    auto t = qobject_cast<PWMatrixBuildTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }
@@ -236,7 +236,7 @@ Task* PFMatrixBuildWorker::tick() {
 }
 
 void PFMatrixBuildWorker::sl_taskFinished() {
-    PFMatrixBuildTask* t = qobject_cast<PFMatrixBuildTask*>(sender());
+    auto t = qobject_cast<PFMatrixBuildTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }
@@ -335,7 +335,7 @@ Task* PFMatrixConvertWorker::tick() {
 }
 
 void PFMatrixConvertWorker::sl_taskFinished() {
-    PWMatrixBuildTask* t = qobject_cast<PWMatrixBuildTask*>(sender());
+    auto t = qobject_cast<PWMatrixBuildTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }

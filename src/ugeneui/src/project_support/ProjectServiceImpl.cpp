@@ -91,7 +91,7 @@ void ProjectServiceImpl::sl_save() {
 }
 
 void ProjectServiceImpl::sl_saveAs() {
-    QWidget* p = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
+    auto p = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<ProjectDialogController> d = new ProjectDialogController(ProjectDialogController::Save_Project, p);
     const int rc = d->exec();
     CHECK(!d.isNull(), );

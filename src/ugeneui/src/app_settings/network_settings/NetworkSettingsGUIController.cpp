@@ -49,7 +49,7 @@ AppSettingsGUIPageState* NetworkSettingsPageController::getSavedState() {
 }
 
 void NetworkSettingsPageController::saveState(AppSettingsGUIPageState* s) {
-    NetworkSettingsPageState* state = qobject_cast<NetworkSettingsPageState*>(s);
+    auto state = qobject_cast<NetworkSettingsPageState*>(s);
     NetworkConfiguration* dst = AppContext::getAppSettings()->getNetworkConfiguration();
     dst->copyFrom(state->config);
     UserAppsSettings* st = AppContext::getAppSettings()->getUserAppsSettings();
@@ -86,7 +86,7 @@ void NetworkSettingsPageWidget::sl_ExceptionsChecked(int) {
 }
 
 void NetworkSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
-    NetworkSettingsPageState* state = qobject_cast<NetworkSettingsPageState*>(s);
+    auto state = qobject_cast<NetworkSettingsPageState*>(s);
     const NetworkConfiguration& set = state->config;
     QNetworkProxy httpProxy = set.getProxy(QNetworkProxy::HttpProxy);
     if (QNetworkProxy::DefaultProxy != httpProxy.type()) {

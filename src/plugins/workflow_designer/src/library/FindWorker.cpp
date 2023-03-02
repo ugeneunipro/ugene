@@ -100,7 +100,7 @@ private:
         return isStringAttrSet(cfg, PATTERN_FILE_ATTR);
     }
     bool isPatternSlotBinded(const Configuration* cfg) const {
-        const Workflow::Actor* a = dynamic_cast<const Workflow::Actor*>(cfg);
+        auto a = dynamic_cast<const Workflow::Actor*>(cfg);
         SAFE_POINT(nullptr != a, "NULL actor", false);
         Workflow::Port* p = a->getPort(BasePorts::IN_SEQ_PORT_ID());
         SAFE_POINT(nullptr != p, "NULL port", false);
@@ -247,7 +247,7 @@ static FindAlgorithmStrand getStrand(const QString& s) {
  * FindPrompter
  ***************************/
 QString FindPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
 
@@ -455,7 +455,7 @@ Task* FindWorker::tick() {
 }
 
 void FindWorker::sl_taskFinished(Task* t) {
-    MultiTask* multiFind = qobject_cast<MultiTask*>(t);
+    auto multiFind = qobject_cast<MultiTask*>(t);
     SAFE_POINT(multiFind != nullptr, "Invalid task encountered!", );
     QList<Task*> subs = multiFind->getTasks();
     SAFE_POINT(!subs.isEmpty(), "No subtasks found!", );
@@ -465,7 +465,7 @@ void FindWorker::sl_taskFinished(Task* t) {
     bool isCircular = false;
     int seqLen = -1;
     for (Task* sub : qAsConst(subs)) {
-        FindAlgorithmTask* findTask = qobject_cast<FindAlgorithmTask*>(sub);
+        auto findTask = qobject_cast<FindAlgorithmTask*>(sub);
         if (nullptr != findTask) {
             if (findTask->isCanceled() || findTask->hasError()) {
                 return;
@@ -505,7 +505,7 @@ void FindWorker::sl_taskFinished(Task* t) {
             }
 
         } else {
-            LoadPatternsFileTask* loadTask = qobject_cast<LoadPatternsFileTask*>(sub);
+            auto loadTask = qobject_cast<LoadPatternsFileTask*>(sub);
             if (nullptr != loadTask) {
                 namesPatterns = loadTask->getNamesPatterns();
             }
@@ -549,7 +549,7 @@ void FindAllRegionsTask::prepare() {
 QList<FindAlgorithmResult> FindAllRegionsTask::getResult() {
     QList<FindAlgorithmResult> lst;
     foreach (const QPointer<Task>& t, getSubtasks()) {
-        FindAlgorithmTask* ft = qobject_cast<FindAlgorithmTask*>(t.data());
+        auto ft = qobject_cast<FindAlgorithmTask*>(t.data());
         lst += ft->popResults();
     }
     return lst;

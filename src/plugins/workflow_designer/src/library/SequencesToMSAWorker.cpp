@@ -85,7 +85,7 @@ void MSAFromSequencesTask::run() {
 }
 
 void SequencesToMSAWorker::sl_onTaskFinished(Task* t) {
-    MSAFromSequencesTask* maTask = qobject_cast<MSAFromSequencesTask*>(t);
+    auto maTask = qobject_cast<MSAFromSequencesTask*>(t);
     MultipleSequenceAlignment ma = maTask->getResult();
 
     if (!ma->isEmpty()) {

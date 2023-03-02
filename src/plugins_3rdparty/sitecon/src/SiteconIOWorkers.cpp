@@ -190,7 +190,7 @@ QString SiteconReadPrompter::composeRichDoc() {
 }
 
 QString SiteconWritePrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(SITECON_IN_PORT_ID));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(SITECON_IN_PORT_ID));
     SAFE_POINT(nullptr != input, "NULL input port", "");
     QString from = getProducersOrUnset(SITECON_IN_PORT_ID, SiteconWorkerFactory::SITECON_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
@@ -218,7 +218,7 @@ Task* SiteconReader::tick() {
 }
 
 void SiteconReader::sl_taskFinished() {
-    SiteconReadTask* t = qobject_cast<SiteconReadTask*>(sender());
+    auto t = qobject_cast<SiteconReadTask*>(sender());
     if (t->isCanceled()) {
         return;
     }

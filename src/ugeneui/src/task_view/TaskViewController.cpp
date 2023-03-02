@@ -108,7 +108,7 @@ void TaskViewDockWidget::updateState() {
     bool hasActiveTask = false;
     bool hasTaskWithReport = false;
     foreach (QTreeWidgetItem* i, selItems) {
-        TVTreeItem* ti = static_cast<TVTreeItem*>(i);
+        auto ti = static_cast<TVTreeItem*>(i);
         hasActiveTask = hasActiveTask || ti->task != nullptr;
         hasTaskWithReport = hasTaskWithReport || ti->reportButton != nullptr;
     }
@@ -187,14 +187,14 @@ TVTreeItem* TaskViewDockWidget::createTaskItem(Task* task) {
 
 void TaskViewDockWidget::sl_itemDoubleClicked(QTreeWidgetItem* item, int column) {
     Q_UNUSED(column);
-    TVTreeItem* ti = static_cast<TVTreeItem*>(item);
+    auto ti = static_cast<TVTreeItem*>(item);
     if (ti != nullptr && ti->reportButton != nullptr) {
         activateReport(ti);
     }
 }
 
 void TaskViewDockWidget::sl_cancelTaskByButton() {
-    TVButton* b = qobject_cast<TVButton*>(sender());
+    auto b = qobject_cast<TVButton*>(sender());
     if (b->ti->task != nullptr) {
         b->ti->task->cancel();
     } else {
@@ -208,7 +208,7 @@ TVTreeItem* TaskViewDockWidget::findItem(Task* t, bool topLevelOnly) const {
         QTreeWidgetItem* item = tree->topLevelItem(i);
         SAFE_POINT(nullptr != item, QString("%1 top level item is NULL").arg(i), nullptr);
 
-        TVTreeItem* ti = dynamic_cast<TVTreeItem*>(item);
+        auto ti = dynamic_cast<TVTreeItem*>(item);
         SAFE_POINT(nullptr != ti, QString("%1 QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
 
         if (ti->task == t) {
@@ -233,7 +233,7 @@ TVTreeItem* TaskViewDockWidget::findChildItem(TVTreeItem* ti, Task* t) const {
         QTreeWidgetItem* item = ti->child(i);
         SAFE_POINT(nullptr != item, QString("%1 child item is NULL").arg(i), nullptr);
 
-        TVTreeItem* cti = dynamic_cast<TVTreeItem*>(item);
+        auto cti = dynamic_cast<TVTreeItem*>(item);
         SAFE_POINT(nullptr != ti, QString("%1 child QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
 
         if (cti->task == t) {
@@ -259,14 +259,14 @@ void TaskViewDockWidget::sl_onTopLevelTaskUnregistered(Task* t) {
 }
 
 void TaskViewDockWidget::sl_activateReportByButton() {
-    TVButton* b = qobject_cast<TVButton*>(sender());
+    auto b = qobject_cast<TVButton*>(sender());
     activateReport(b->ti);
 }
 
 void TaskViewDockWidget::sl_onViewTaskReport() {
     QList<QTreeWidgetItem*> items = tree->selectedItems();
     SAFE_POINT(items.size() == 1, "An incorrect selection in the Task View", );
-    TVTreeItem* ti = static_cast<TVTreeItem*>(items.first());
+    auto ti = static_cast<TVTreeItem*>(items.first());
     activateReport(ti);
 }
 
@@ -274,7 +274,7 @@ int TaskViewDockWidget::countAvailableReports() const {
     int res = 0;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         QTreeWidgetItem* item = tree->topLevelItem(i);
-        TVTreeItem* ti = static_cast<TVTreeItem*>(item);
+        auto ti = static_cast<TVTreeItem*>(item);
         res += ti->reportButton == nullptr ? 0 : 1;
     }
     return res;
@@ -289,7 +289,7 @@ void TaskViewDockWidget::removeReport(TVTreeItem* ti) {
 void TaskViewDockWidget::sl_onRemoveTaskReport() {
     QList<QTreeWidgetItem*> items = tree->selectedItems();
     SAFE_POINT(items.size() == 1, "An incorrect selection in the Task View", );
-    TVTreeItem* ti = static_cast<TVTreeItem*>(items.first());
+    auto ti = static_cast<TVTreeItem*>(items.first());
     removeReport(ti);
 }
 
@@ -309,7 +309,7 @@ void TaskViewDockWidget::activateReport(TVTreeItem* ti) {
 }
 
 void TaskViewDockWidget::sl_onSubtaskAdded(Task* sub) {
-    Task* parent = qobject_cast<Task*>(sender());
+    auto parent = qobject_cast<Task*>(sender());
     TVTreeItem* ti = findItem(parent, false);
     CHECK(ti != nullptr, );
     if (ti->isExpanded() || ti->childCount() > 0) {
@@ -320,7 +320,7 @@ void TaskViewDockWidget::sl_onSubtaskAdded(Task* sub) {
 }
 
 void TaskViewDockWidget::sl_onTaskProgress() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     CHECK(nullptr != t, );
     TVTreeItem* ti = findItem(t, false);
     if (ti == nullptr) {
@@ -333,7 +333,7 @@ void TaskViewDockWidget::sl_onTaskProgress() {
 }
 
 void TaskViewDockWidget::sl_onTaskDescription() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     TVTreeItem* ti = findItem(t, false);
     if (ti == nullptr) {
         assert(!t->isTopLevelTask());
@@ -377,7 +377,7 @@ void TaskViewDockWidget::sl_onCancelTask() {
     QList<QTreeWidgetItem*> items = tree->selectedItems();
     assert(!items.isEmpty());
     foreach (QTreeWidgetItem* item, items) {
-        TVTreeItem* tv = static_cast<TVTreeItem*>(item);
+        auto tv = static_cast<TVTreeItem*>(item);
         tv->task->cancel();
     }
 }
@@ -386,7 +386,7 @@ void TaskViewDockWidget::sl_itemExpanded(QTreeWidgetItem* qi) {
     if (qi->childCount() > 0) {
         return;
     }
-    TVTreeItem* ti = static_cast<TVTreeItem*>(qi);
+    auto ti = static_cast<TVTreeItem*>(qi);
     if (ti->task == nullptr) {
         return;
     }
@@ -465,7 +465,7 @@ QString TVReportWindow::prepareReportHTML(Task* t) {
 
 bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
     if (e->type() == QEvent::MouseButtonPress) {
-        QMouseEvent* me = static_cast<QMouseEvent*>(e);
+        auto me = static_cast<QMouseEvent*>(e);
         QString url = textEdit->anchorAt(me->pos());
         if (!url.isEmpty()) {
             if (me->button() == Qt::LeftButton) {
@@ -478,7 +478,7 @@ bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
             }
         }
     } else if (e->type() == QEvent::MouseMove) {
-        QMouseEvent* me = static_cast<QMouseEvent*>(e);
+        auto me = static_cast<QMouseEvent*>(e);
         if (!textEdit->anchorAt(me->pos()).isEmpty()) {
             textEdit->viewport()->setCursor(Qt::PointingHandCursor);
         } else {
@@ -522,7 +522,7 @@ QAction* TVReportWindow::createFileAction(const QString& url, QObject* parent) {
 }
 
 void TVReportWindow::sl_open() {
-    QAction* dirAction = qobject_cast<QAction*>(sender());
+    auto dirAction = qobject_cast<QAction*>(sender());
     CHECK(nullptr != dirAction, );
 
     QString url = dirAction->data().toString();
@@ -610,7 +610,7 @@ void TVTreeItem::detachFromTask() {
     }
 
     for (int i = 0; i < childCount(); i++) {
-        TVTreeItem* ci = static_cast<TVTreeItem*>(child(i));
+        auto ci = static_cast<TVTreeItem*>(child(i));
         ci->detachFromTask();
     }
     task = nullptr;

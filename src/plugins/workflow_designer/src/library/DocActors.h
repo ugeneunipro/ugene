@@ -86,7 +86,7 @@ public:
         : ReadDocPrompterBase(p) {
     }
     virtual ActorDocument* createDescription(Actor* a) {
-        ReadDocPrompter* doc = static_cast<ReadDocPrompter*>(ReadDocPrompterBase::createDescription(a));
+        auto doc = static_cast<ReadDocPrompter*>(ReadDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         return doc;
     }
@@ -109,7 +109,7 @@ public:
         : WriteDocPrompterBase(p) {
     }
     virtual ActorDocument* createDescription(Actor* a) {
-        WriteDocPrompter* doc = static_cast<WriteDocPrompter*>(WriteDocPrompterBase::createDescription(a));
+        auto doc = static_cast<WriteDocPrompter*>(WriteDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         doc->slot = this->slot;
         return doc;

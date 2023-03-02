@@ -331,7 +331,7 @@ QVariant WorkflowProcessItem::itemChange(GraphicsItemChange change, const QVaria
         case ItemPositionHasChanged: {
             updatePorts();
 
-            WorkflowScene* sc = qobject_cast<WorkflowScene*>(scene());
+            auto sc = qobject_cast<WorkflowScene*>(scene());
             if (sc != nullptr) {
                 if (!sc->views().isEmpty()) {
                     foreach (QGraphicsView* view, sc->views()) {
@@ -355,7 +355,7 @@ QVariant WorkflowProcessItem::itemChange(GraphicsItemChange change, const QVaria
             WorkflowScene* ws = getWorkflowScene();
             if (ws) {
                 ItemViewStyle* viewStyle = styles.value(ItemStyles::EXTENDED);
-                ExtendedProcStyle* extStyle = qgraphicsitem_cast<ExtendedProcStyle*>(viewStyle);
+                auto extStyle = qgraphicsitem_cast<ExtendedProcStyle*>(viewStyle);
                 assert(extStyle);
                 WorkflowView* view = ws->getController();
                 if (view) {
@@ -508,7 +508,7 @@ WorkflowPortItem* WorkflowPortItem::findNearbyBindingCandidate(const QPointF& po
     WorkflowPortItem* candidate = nullptr;
     qreal distance = R * 2;
     foreach (QGraphicsItem* it, scene()->items(neighbourhood, Qt::IntersectsItemBoundingRect)) {
-        WorkflowPortItem* next = qgraphicsitem_cast<WorkflowPortItem*>(it);
+        auto next = qgraphicsitem_cast<WorkflowPortItem*>(it);
         if (next) {
             if (bindCandidates.contains(next)) {
                 QLineF l(pos, next->headToScene());
@@ -599,7 +599,7 @@ void WorkflowPortItem::setOrientation(qreal angle) {
         setRotation(-norm);
     }
     if (oldOrientation != orientation) {
-        WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
+        auto sc = qobject_cast<WorkflowScene*>(owner->scene());
         if (sc != nullptr) {
             sc->setModified(true);
             sc->update();
@@ -646,7 +646,7 @@ static bool checkTypes(Port* p1, Port* p2) {
 WorkflowPortItem* WorkflowPortItem::checkBindCandidate(const QGraphicsItem* it) const {
     switch (it->type()) {
         case WorkflowProcessItemType: {
-            const WorkflowProcessItem* receiver = static_cast<const WorkflowProcessItem*>(it);
+            auto receiver = static_cast<const WorkflowProcessItem*>(it);
             // try best matches first
             foreach (WorkflowPortItem* otherPit, receiver->getPortItems()) {
                 if (port->canBind(otherPit->getPort()) && checkTypes(port, otherPit->getPort())) {
@@ -721,7 +721,7 @@ static QList<WorkflowPortItem*> getCandidates(WorkflowPortItem* port) {
     QList<WorkflowPortItem*> l;
     foreach (QGraphicsItem* it, port->scene()->items()) {
         if (it->type() == WorkflowPortItemType) {
-            WorkflowPortItem* next = qgraphicsitem_cast<WorkflowPortItem*>(it);
+            auto next = qgraphicsitem_cast<WorkflowPortItem*>(it);
             if (port->getPort()->canBind(next->getPort()) && checkTypes(next->getPort(), port->getPort()) && !WorkflowUtils::isPathExist(port->getPort(), next->getPort())) {
                 l.append(next);
             }
@@ -935,7 +935,7 @@ void WorkflowPortItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
                 WorkflowBusItem* dit;
                 if (otherPit && (dit = ctl->tryBind(this, otherPit))) {
                     scene()->clearSelection();
-                    IntegralBusPort* bp = qobject_cast<IntegralBusPort*>(dit->getInPort()->getPort());
+                    auto bp = qobject_cast<IntegralBusPort*>(dit->getInPort()->getPort());
                     if (bp) {
                         bp->setupBusMap();
                     }
@@ -1198,7 +1198,7 @@ WorkflowHighlightItem::WorkflowHighlightItem(WorkflowProcessItem* owner)
 }
 
 QRectF WorkflowHighlightItem::boundingRect() const {
-    WorkflowProcessItem* owner = dynamic_cast<WorkflowProcessItem*>(parentItem());
+    auto owner = dynamic_cast<WorkflowProcessItem*>(parentItem());
     const QRectF parentBoundary = owner->getStyleById(owner->getStyle())->boundingRect();
     const qreal sizeFactor = HALVED_MAXIMUM_SIZE_RELATION_TO_PROCESS_ITEM_SIZE * countOfAnimationStepsLeft / INIT_ANIMATION_STEPS_NUMBER;
 

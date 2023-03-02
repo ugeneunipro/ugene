@@ -195,8 +195,8 @@ QWidget* MWDockManagerImpl::toggleDock(const QString& widgetObjName) {
 }
 
 void MWDockManagerImpl::sl_toggleDock() {
-    QAction* a = qobject_cast<QAction*>(sender());
-    QLabel* l = qobject_cast<QLabel*>(a->parent());
+    auto a = qobject_cast<QAction*>(sender());
+    auto l = qobject_cast<QLabel*>(a->parent());
     DockData* d = findDockByLabel(l);
     toggleDock(d);
 }
@@ -317,14 +317,14 @@ void MWDockManagerImpl::sl_dockVisibilityChanged(bool visible) {
     if (mw->isMinimized() || mainWindowIsHidden) {
         return;
     }
-    QDockWidget* dock = qobject_cast<QDockWidget*>(sender());
+    auto dock = qobject_cast<QDockWidget*>(sender());
     DockData* dd = findDockByDockWidget(dock);
     assert(dd != nullptr);
     closeDock(dd);
 }
 
 void MWDockManagerImpl::sl_widgetDestroyed() {
-    QWidget* w = qobject_cast<QWidget*>(sender());
+    auto w = qobject_cast<QWidget*>(sender());
     foreach (DockData* d, docks) {
         if (d->wrapWidget->w == w) {
             destroyDockData(d);
@@ -374,7 +374,7 @@ bool MWDockManagerImpl::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::MouseButtonRelease) {
         QMouseEvent* me = (QMouseEvent*)event;
         if (me->button() == Qt::LeftButton) {
-            QLabel* label = qobject_cast<QLabel*>(obj);
+            auto label = qobject_cast<QLabel*>(obj);
             SAFE_POINT(nullptr != label, "Can't cast obj to QLabel *", false);
             DockData* data = findDockByLabel(label);
             assert(data);

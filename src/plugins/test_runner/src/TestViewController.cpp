@@ -228,7 +228,7 @@ TVTestItem* TestViewController::findTestViewItemRecursive(GTestRef* testRef, TVI
             }
         } else {
             assert(item->isSuite());
-            TVTestItem* rezult = findTestViewItemRecursive(testRef, static_cast<TVTSItem*>(item));
+            auto rezult = findTestViewItemRecursive(testRef, static_cast<TVTSItem*>(item));
             if (rezult)
                 return rezult;
         }

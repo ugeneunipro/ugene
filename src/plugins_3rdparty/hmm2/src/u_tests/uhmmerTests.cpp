@@ -201,7 +201,7 @@ void GTest_uHMMERSearch::prepare() {
         return;
     }
     assert(obj != NULL);
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == NULL) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;

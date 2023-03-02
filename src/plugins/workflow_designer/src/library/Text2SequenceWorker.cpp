@@ -205,7 +205,7 @@ Worker* Text2SequenceWorkerFactory::createWorker(Actor* a) {
  *******************************/
 QString Text2SequencePrompter::composeRichDoc() {
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_TEXT_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_TEXT_PORT_ID()));
     Actor* txtProducer = input->getProducer(BaseSlots::TEXT_SLOT().getId());
     QString txtProducetStr = tr(" from <u>%1</u>").arg(txtProducer ? txtProducer->getLabel() : unsetStr);
 

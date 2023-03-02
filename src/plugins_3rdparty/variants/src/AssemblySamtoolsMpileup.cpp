@@ -131,7 +131,7 @@ QList<Task*> CallVariantsTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(doc != nullptr, tr("No document loaded"), res);
         doc->setDocumentOwnsDbiResources(false);
         foreach (GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
-            VariantTrackObject* varObj = dynamic_cast<VariantTrackObject*>(go);
+            auto varObj = dynamic_cast<VariantTrackObject*>(go);
             CHECK_EXT(nullptr != varObj, taskLog.error(tr("Incorrect variant track object in %1").arg(doc->getURLString())), res);
 
             QVariantMap m;

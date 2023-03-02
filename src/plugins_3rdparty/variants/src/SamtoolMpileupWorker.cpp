@@ -121,7 +121,7 @@ public:
     }
 
     virtual bool validate(const Configuration* cfg, NotificationsList& notificationList) const {
-        const IntegralBusPort* vport = static_cast<const IntegralBusPort*>(cfg);
+        auto vport = static_cast<const IntegralBusPort*>(cfg);
         assert(vport);
 
         StrStrMap bm = vport->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
@@ -683,14 +683,14 @@ QString CallVariantsPrompter::composeRichDoc() {
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     Port* refPort = target->getPort(BasePorts::IN_SEQ_PORT_ID());
     if (refPort->isEnabled()) {
-        Actor* seqProducer = qobject_cast<IntegralBusPort*>(refPort)->getProducer(BaseSlots::URL_SLOT().getId());
+        auto seqProducer = qobject_cast<IntegralBusPort*>(refPort)->getProducer(BaseSlots::URL_SLOT().getId());
         reference = seqProducer ? seqProducer->getLabel() : unsetStr;
     } else {
         reference = getHyperlink(REF_URL, getURL(REF_URL));
     }
     QString seqName = tr("For reference sequence from <u>%1</u>,").arg(reference);
 
-    Actor* assemblyProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
+    auto assemblyProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ASSEMBLY_PORT_ID()))->getProducer(BaseSlots::URL_SLOT().getId());
     QString assemblyName = tr("with assembly data provided by <u>%1</u>").arg(assemblyProducer ? assemblyProducer->getLabel() : unsetStr);
 
     QString doc = tr("%1 call variants %2.")
@@ -713,7 +713,7 @@ void CallVariantsWorker::initDatasetMode() {
     Port* port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
     SAFE_POINT(nullptr != port, "Internal error during CallVariantsWorker initializing: assembly port is NULL!", );
 
-    IntegralBusPort* bus = dynamic_cast<IntegralBusPort*>(port);
+    auto bus = dynamic_cast<IntegralBusPort*>(port);
     SAFE_POINT(nullptr != bus, "Internal error during CallVariantsWorker initializing: assembly bus is NULL!", );
 
     QList<Actor*> producers = bus->getProducers(BaseSlots::DATASET_SLOT().getId());
@@ -808,7 +808,7 @@ Task* CallVariantsWorker::tick() {
 }
 
 void CallVariantsWorker::sl_taskFinished() {
-    CallVariantsTask* t = qobject_cast<CallVariantsTask*>(sender());
+    auto t = qobject_cast<CallVariantsTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }
@@ -1012,12 +1012,12 @@ QWidget* ScientificDoubleDelegate::createEditor(QWidget* parent, const QStyleOpt
 
 void ScientificDoubleDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
     QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    PropertyWidget* widget = static_cast<PropertyWidget*>(editor);
+    auto widget = static_cast<PropertyWidget*>(editor);
     widget->setValue(value);
 }
 
 void ScientificDoubleDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
-    PropertyWidget* widget = static_cast<PropertyWidget*>(editor);
+    auto widget = static_cast<PropertyWidget*>(editor);
     model->setData(index, widget->value(), ConfigurationEditor::ItemValueRole);
 }
 

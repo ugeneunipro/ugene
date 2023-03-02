@@ -171,7 +171,7 @@ QString HMMReadPrompter::composeRichDoc() {
 }
 
 QString HMMWritePrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(HMM_IN_PORT_ID));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(HMM_IN_PORT_ID));
     Actor* producer = input->getProducer(HMM2_SLOT_ID);
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerStr = producer ? producer->getLabel() : unsetStr;
@@ -228,7 +228,7 @@ Task* HMMReader::tick() {
 }
 
 void HMMReader::sl_taskFinished() {
-    HMMReadTask* t = qobject_cast<HMMReadTask*>(sender());
+    auto t = qobject_cast<HMMReadTask*>(sender());
     if (t->getState() != Task::State_Finished)
         return;
     if (output) {

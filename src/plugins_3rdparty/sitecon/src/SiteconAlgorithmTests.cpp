@@ -100,7 +100,7 @@ void GTest_CalculateACGTContent::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -193,7 +193,7 @@ void GTest_CalculateDispersionAndAverage::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -278,7 +278,7 @@ void GTest_CalculateFirstTypeError::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
@@ -357,7 +357,7 @@ void GTest_CalculateSecondTypeError::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject* mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (mao == nullptr) {
         stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;

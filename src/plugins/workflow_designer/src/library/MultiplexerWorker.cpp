@@ -324,8 +324,8 @@ Worker* MultiplexerWorkerFactory::createWorker(Actor* a) {
 QString MultiplexerPrompter::composeRichDoc() {
     uint rule = getParameter(RULE_ID).toUInt();
 
-    IntegralBusPort* input1 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_1));
-    IntegralBusPort* input2 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_2));
+    auto input1 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_1));
+    auto input2 = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT_2));
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString inputName1 = unsetStr;

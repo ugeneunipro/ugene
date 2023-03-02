@@ -129,7 +129,7 @@ void HMM2QDActor::sl_onTaskFinished(Task*) {
 void HMM2QDActor::sl_evChanged(int i) {
     CHECK(NULL != proto->getEditor(), );
     PropertyDelegate* pd = proto->getEditor()->getDelegate(DOM_E_ATTR);
-    SpinBoxDelegate* evpd = qobject_cast<SpinBoxDelegate*>(pd);
+    auto evpd = qobject_cast<SpinBoxDelegate*>(pd);
     assert(evpd);
     if (i > 0) {
         evpd->setEditorProperty("prefix", "1e+");

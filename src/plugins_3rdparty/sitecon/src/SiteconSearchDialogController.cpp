@@ -169,7 +169,7 @@ bool SiteconSearchDialogController::eventFilter(QObject* obj, QEvent* ev) {
     if (obj == resultsTree && ev->type() == QEvent::KeyPress) {
         QKeyEvent* ke = (QKeyEvent*)ev;
         if (ke->key() == Qt::Key_Space) {
-            SiteconResultItem* item = static_cast<SiteconResultItem*>(resultsTree->currentItem());
+            auto item = static_cast<SiteconResultItem*>(resultsTree->currentItem());
             if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
@@ -260,7 +260,7 @@ void SiteconSearchDialogController::sl_onSaveAnnotations() {
     const QString& name = m.data->name;
     QList<SharedAnnotationData> list;
     for (int i = 0, n = resultsTree->topLevelItemCount(); i < n; ++i) {
-        SiteconResultItem* item = static_cast<SiteconResultItem*>(resultsTree->topLevelItem(i));
+        auto item = static_cast<SiteconResultItem*>(resultsTree->topLevelItem(i));
         SharedAnnotationData data = item->res.toAnnotation(name);
         U1AnnotationUtils::addDescriptionQualifier(data, m.description);
         list.append(data);
@@ -360,7 +360,7 @@ void SiteconSearchDialogController::importResults() {
 void SiteconSearchDialogController::sl_onResultActivated(QTreeWidgetItem* i, int col) {
     Q_UNUSED(col);
     assert(i);
-    SiteconResultItem* item = static_cast<SiteconResultItem*>(i);
+    auto item = static_cast<SiteconResultItem*>(i);
 
     ctx->getSequenceSelection()->setRegion(item->res.region);
 }

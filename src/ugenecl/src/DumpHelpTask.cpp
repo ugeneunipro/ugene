@@ -227,7 +227,7 @@ static void dumpSchemaCmdlineParameters(Schema* schema) {
 }
 
 QList<Task*> DumpHelpTask::onSubTaskFinished(Task* subTask) {
-    LoadWorkflowTask* loadTask = qobject_cast<LoadWorkflowTask*>(subTask);
+    auto loadTask = qobject_cast<LoadWorkflowTask*>(subTask);
     assert(loadTask != nullptr);
 
     const QSharedPointer<Schema> schema = loadTask->getSchema();

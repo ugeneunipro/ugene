@@ -227,7 +227,7 @@ void BreakpointManagerView::sl_breakpointAdded(const ActorId& actorId) {
             disableAllBreakpointsAction->setEnabled(true);
         }
     } else {
-        QCheckBox* stateController = dynamic_cast<QCheckBox*>(
+        auto stateController = dynamic_cast<QCheckBox*>(
             breakpointsList->itemWidget(actorConnections.key(actorId),
                                         BREAKPOINT_STATE_COLUMN_NUMBER));
         if (!stateController->isChecked()) {
@@ -251,7 +251,7 @@ void BreakpointManagerView::sl_newBreakpoint() {
     if (scene->selectedItems().size() != 0) {
         foreach (QGraphicsItem* item, scene->selectedItems()) {
             if (WorkflowProcessItemType == item->type()) {
-                WorkflowProcessItem* processItem = qgraphicsitem_cast<WorkflowProcessItem*>(item);
+                auto processItem = qgraphicsitem_cast<WorkflowProcessItem*>(item);
                 SAFE_POINT(nullptr != processItem, "WorkflowProcessItem is NULL!", );
                 if (processItem->isBreakpointInserted() && !processItem->isBreakpointEnabled()) {
                     processItem->toggleBreakpointState();
@@ -300,11 +300,11 @@ void BreakpointManagerView::sl_deleteAllBreakpoints() {
 }
 
 void BreakpointManagerView::sl_disableAllBreakpoints() {
-    QCheckBox* firstController = qobject_cast<QCheckBox*>(breakpointStateControls.begin().key());
+    auto firstController = qobject_cast<QCheckBox*>(breakpointStateControls.begin().key());
     Q_ASSERT(nullptr != firstController);
     const bool currentState = (Qt::Checked == firstController->checkState());
     foreach (QWidget* breakpointStateController, breakpointStateControls.keys()) {
-        QCheckBox* checkBox = qobject_cast<QCheckBox*>(breakpointStateController);
+        auto checkBox = qobject_cast<QCheckBox*>(breakpointStateController);
         Q_ASSERT(nullptr != checkBox);
         checkBox->setChecked(!currentState);
     }
@@ -339,7 +339,7 @@ void BreakpointManagerView::sl_breakpointsSelectionChanged() {
 
 void BreakpointManagerView::sl_breakpointStateChanged(int state) {
     QObject* activator = sender();
-    QWidget* stateAssigner = qobject_cast<QWidget*>(activator);
+    auto stateAssigner = qobject_cast<QWidget*>(activator);
     Q_ASSERT(nullptr != stateAssigner);
     QTreeWidgetItem* breakpointItem = breakpointStateControls[stateAssigner];
 
@@ -388,13 +388,13 @@ void BreakpointManagerView::sl_labelAddedToCurrentBreakpoint(QStringList newLabe
 }
 
 void BreakpointManagerView::sl_breakpointEnabled(const ActorId& actor) {
-    QCheckBox* stateAssigner = dynamic_cast<QCheckBox*>(getBreakpointStateController(actor));
+    auto stateAssigner = dynamic_cast<QCheckBox*>(getBreakpointStateController(actor));
     Q_ASSERT(nullptr != stateAssigner);
     stateAssigner->setChecked(true);
 }
 
 void BreakpointManagerView::sl_breakpointDisabled(const ActorId& actor) {
-    QCheckBox* stateAssigner = dynamic_cast<QCheckBox*>(getBreakpointStateController(actor));
+    auto stateAssigner = dynamic_cast<QCheckBox*>(getBreakpointStateController(actor));
     Q_ASSERT(nullptr != stateAssigner);
     stateAssigner->setChecked(false);
 }
@@ -402,7 +402,7 @@ void BreakpointManagerView::sl_breakpointDisabled(const ActorId& actor) {
 QWidget* BreakpointManagerView::getBreakpointStateController(const ActorId& actor) {
     QTreeWidgetItem* actorViewItem = actorConnections.key(actor, nullptr);
     Q_ASSERT(nullptr != actorViewItem);
-    QCheckBox* stateController = dynamic_cast<QCheckBox*>(breakpointStateControls.key(actorViewItem,
+    auto stateController = dynamic_cast<QCheckBox*>(breakpointStateControls.key(actorViewItem,
                                                                                       nullptr));
     Q_ASSERT(nullptr != stateController);
     return stateController;
@@ -564,7 +564,7 @@ void BreakpointManagerView::onBreakpointReached(ActorId actor) {
 bool BreakpointManagerView::eventFilter(QObject* /*object*/, QEvent* event) {
     CHECK(nullptr != event, false);
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        auto keyEvent = static_cast<QKeyEvent*>(event);
         CHECK(nullptr != keyEvent, false);
 
         bool shiftPressed = keyEvent->modifiers().testFlag(Qt::ShiftModifier);

@@ -103,7 +103,7 @@ static bool hasActiveDialogs(QObject* o) {
             return true;
         }
     }
-    QDialog* d = qobject_cast<QDialog*>(o);
+    auto d = qobject_cast<QDialog*>(o);
     if (d != nullptr && d->isVisible()) {
         // coreLog.trace(QString("Rejecting dialog %1").arg(o->metaObject()->className()));
         return true;
@@ -150,7 +150,7 @@ void DocumentUpdater::update() {
             removedDocs.append(doc);
         }
 
-        DbiDocumentFormat* dbiFormat = qobject_cast<DbiDocumentFormat*>(doc->getDocumentFormat());
+        auto dbiFormat = qobject_cast<DbiDocumentFormat*>(doc->getDocumentFormat());
         if (dbiFormat) {
             continue;
         }
@@ -360,11 +360,11 @@ void DocumentUpdater::sl_updateTaskStateChanged() {
 void DocumentUpdater::excludeDocumentsInTasks(const QList<Task*>& tasks, QList<Document*>& documents) {
     foreach (Task* task, tasks) {
         excludeDocumentsInTasks(task->getPureSubtasks(), documents);
-        SaveDocumentTask* saveTask = qobject_cast<SaveDocumentTask*>(task);
+        auto saveTask = qobject_cast<SaveDocumentTask*>(task);
         if (saveTask) {
             documents.removeAll(saveTask->getDocument());
         } else {
-            LoadDocumentTask* loadTask = qobject_cast<LoadDocumentTask*>(task);
+            auto loadTask = qobject_cast<LoadDocumentTask*>(task);
             if (loadTask) {
                 documents.removeAll(loadTask->getDocument(false));
             }
@@ -589,14 +589,14 @@ void ProjectViewImpl::initView() {
 
 bool ProjectViewImpl::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::Close) {
-        GObjectViewWindow* ov = qobject_cast<GObjectViewWindow*>(obj);
+        auto ov = qobject_cast<GObjectViewWindow*>(obj);
         assert(ov);
         if (ov->isPersistent()) {
             saveViewState(ov, GObjectViewState::APP_CLOSING_STATE_NAME);
         }
     } else if (w != nullptr && w->nameFilterEdit == obj) {
         if (event->type() == QEvent::KeyPress) {
-            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            auto keyEvent = static_cast<QKeyEvent*>(event);
             if (keyEvent->modifiers() == Qt::NoModifier && keyEvent->key() == Qt::Key_Escape) {
                 w->nameFilterEdit->clear();
             }
@@ -623,7 +623,7 @@ void ProjectViewImpl::saveViewState(GObjectViewWindow* v, const QString& stateNa
 }
 
 void ProjectViewImpl::sl_onMDIWindowAdded(MWMDIWindow* m) {
-    GObjectViewWindow* v = qobject_cast<GObjectViewWindow*>(m);
+    auto v = qobject_cast<GObjectViewWindow*>(m);
     if (v) {
         v->installEventFilter(this);
         connect(v, SIGNAL(si_persistentStateChanged(GObjectViewWindow*)), SLOT(sl_onViewPersistentStateChanged(GObjectViewWindow*)));
@@ -808,11 +808,11 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
 
     // check if object is already displayed in some view.
     QList<MWMDIWindow*> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
-    const GObjectSelection* objectsSelection = static_cast<const GObjectSelection*>(ms.findSelectionByType(GSelectionTypes::GOBJECTS));
+    auto objectsSelection = static_cast<const GObjectSelection*>(ms.findSelectionByType(GSelectionTypes::GOBJECTS));
     if (objectsSelection != nullptr) {
         QSet<GObject*> objectsInSelection = objectsSelection->getSelectedObjects().toSet();
         foreach (MWMDIWindow* w, windows) {
-            GObjectViewWindow* ov = qobject_cast<GObjectViewWindow*>(w);
+            auto ov = qobject_cast<GObjectViewWindow*>(w);
             if (ov == nullptr) {
                 continue;
             }
@@ -893,7 +893,7 @@ void ProjectViewImpl::buildAddToViewMenu(const MultiGSelection& ms, QMenu* m) {
     if (w == nullptr) {
         return;
     }
-    GObjectViewWindow* ow = qobject_cast<GObjectViewWindow*>(w);
+    auto ow = qobject_cast<GObjectViewWindow*>(w);
     if (ow == nullptr) {
         return;
     }
@@ -1014,7 +1014,7 @@ void ProjectViewImpl::buildViewMenu(QMenu& m) {
             const bool objectIsModifiable = (!obj->isStateLocked());
             if (obj->getGObjectType() == GObjectTypes::SEQUENCE && objectIsModifiable) {
                 seqobjFound = true;
-                U2SequenceObject* casted = qobject_cast<U2SequenceObject*>(obj);
+                auto casted = qobject_cast<U2SequenceObject*>(obj);
                 if (!casted->getAlphabet()->isNucleic()) {
                     allNucl = false;
                 }
@@ -1040,7 +1040,7 @@ void ProjectViewImpl::buildViewMenu(QMenu& m) {
 
 void ProjectViewImpl::sl_activateView() {
     QAction* action = (QAction*)sender();
-    OpenViewContext* c = static_cast<OpenViewContext*>(action->data().value<void*>());
+    auto c = static_cast<OpenViewContext*>(action->data().value<void*>());
     assert(!c->viewName.isEmpty());
     GObjectViewWindow* ov = GObjectViewUtils::findViewByName(c->viewName);
     if (ov != nullptr) {
@@ -1050,7 +1050,7 @@ void ProjectViewImpl::sl_activateView() {
 
 void ProjectViewImpl::sl_openNewView() {
     QAction* action = (QAction*)sender();
-    OpenViewContext* c = static_cast<OpenViewContext*>(action->data().value<void*>());
+    auto c = static_cast<OpenViewContext*>(action->data().value<void*>());
     SAFE_POINT(c->factory->canCreateView(c->selection), "Invalid object view factory!", );
     Task* openViewTask = c->factory->createViewTask(c->selection);
     if (nullptr != openViewTask) {
@@ -1061,7 +1061,7 @@ void ProjectViewImpl::sl_openNewView() {
 void ProjectViewImpl::sl_addToView() {
     // TODO: create specialized action classes instead of using ->data().value<void*>() casts
     QAction* action = (QAction*)sender();
-    AddToViewContext* ac = static_cast<AddToViewContext*>(action->data().value<void*>());
+    auto ac = static_cast<AddToViewContext*>(action->data().value<void*>());
     GObjectView* view = ac->view;
     if (view == nullptr) {
         return;
@@ -1078,7 +1078,7 @@ void ProjectViewImpl::sl_addToView() {
 
 void ProjectViewImpl::sl_openStateView() {
     QAction* action = (QAction*)sender();
-    OpenViewContext* c = static_cast<OpenViewContext*>(action->data().value<void*>());
+    auto c = static_cast<OpenViewContext*>(action->data().value<void*>());
     const GObjectViewState* state = c->state;
     assert(state);
 
@@ -1148,7 +1148,7 @@ void ProjectViewImpl::sl_onToggleCircular() {
     foreach (GObject* obj, objSelection->getSelectedObjects()) {
         const bool objectIsModifiable = (!obj->isStateLocked());
         if (objectIsModifiable && obj->getGObjectType() == GObjectTypes::SEQUENCE) {
-            U2SequenceObject* casted = qobject_cast<U2SequenceObject*>(obj);
+            auto casted = qobject_cast<U2SequenceObject*>(obj);
             SAFE_POINT(obj != nullptr, "casting to 'U2SequenceObject' failed", );
             casted->setCircular(toggleCircularAction->isChecked());
             projectTreeController->refreshObject(casted);

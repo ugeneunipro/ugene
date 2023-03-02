@@ -242,7 +242,7 @@ void AminoTranslationWorkerFactory::init() {
 }
 
 QString AminoTranslationPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -370,7 +370,7 @@ void AminoTranslationWorker::cleanup() {
 }
 
 void AminoTranslationWorker::sl_taskFinished() {
-    TranslateSequence2AminoTask* translate2AminoTask = qobject_cast<TranslateSequence2AminoTask*>(sender());
+    auto translate2AminoTask = qobject_cast<TranslateSequence2AminoTask*>(sender());
     if (translate2AminoTask->getState() != Task::State_Finished ||
         translate2AminoTask->isCanceled() || translate2AminoTask->hasError()) {
         return;

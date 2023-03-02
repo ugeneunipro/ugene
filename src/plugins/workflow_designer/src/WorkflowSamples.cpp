@@ -78,7 +78,7 @@ public:
 
         QStyleOptionViewItem opt = option;
         initStyleOption(&opt, index);
-        const QWidget* widget = qobject_cast<QWidget*>(parent());  // QStyledItemDelegatePrivate::widget(option);
+        auto widget = qobject_cast<QWidget*>(parent());  // QStyledItemDelegatePrivate::widget(option);
         QStyle* style = widget ? widget->style() : QApplication::style();
         opt.rect.setSize(widget->size());
         return style->sizeFromContents(QStyle::CT_ItemViewItem, &opt, QSize(), widget);

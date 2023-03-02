@@ -156,7 +156,7 @@ static void addToggleDashboardAction(QToolBar* toolBar, QAction* action) {
     toolBar->addWidget(spacer);
 
     toolBar->addAction(action);
-    QToolButton* b = dynamic_cast<QToolButton*>(toolBar->widgetForAction(action));
+    auto b = dynamic_cast<QToolButton*>(toolBar->widgetForAction(action));
     CHECK(nullptr != b, );
     b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     b->setAutoRaise(false);
@@ -196,7 +196,7 @@ DashboardManagerHelper::DashboardManagerHelper(QAction* _dmAction, WorkflowView*
 }
 
 void DashboardManagerHelper::sl_result(int result) {
-    DashboardsManagerDialog* d = qobject_cast<DashboardsManagerDialog*>(sender());
+    auto d = qobject_cast<DashboardsManagerDialog*>(sender());
     if (QDialog::Accepted == result) {
         DashboardInfoRegistry* dashboardInfoRegistry = AppContext::getDashboardInfoRegistry();
 
@@ -918,7 +918,7 @@ void WorkflowView::sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype* prot
     QList<WorkflowProcessItem*> deleteList;
     foreach (QGraphicsItem* i, scene->items()) {
         if (i->type() == WorkflowProcessItemType) {
-            WorkflowProcessItem* wItem = static_cast<WorkflowProcessItem*>(i);
+            auto wItem = static_cast<WorkflowProcessItem*>(i);
             if (wItem->getProcess()->getProto()->getId() == proto->getId()) {
                 deleteList << wItem;
             }
@@ -1060,7 +1060,7 @@ void WorkflowView::sl_setStyle() {
 }
 
 void WorkflowView::sl_changeScriptMode() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     if (a != nullptr) {
         if (a == scriptingActions[0]) {
             scriptingMode = false;
@@ -1090,7 +1090,7 @@ void WorkflowView::sl_toggleStyle() {
 void WorkflowView::sl_refreshActorDocs() {
     foreach (QGraphicsItem* it, scene->items()) {
         if (it->type() == WorkflowProcessItemType) {
-            Actor* a = qgraphicsitem_cast<WorkflowProcessItem*>(it)->getProcess();
+            auto a = qgraphicsitem_cast<WorkflowProcessItem*>(it)->getProcess();
             a->getDescription()->update(a->getValues());
         }
     }
@@ -1240,7 +1240,7 @@ void WorkflowView::setupContextMenu(QMenu* m) {
             }
             m->addSeparator();
             if (sel.size() == 1 && sel.first()->type() == WorkflowProcessItemType) {
-                WorkflowProcessItem* wit = qgraphicsitem_cast<WorkflowProcessItem*>(sel.first());
+                auto wit = qgraphicsitem_cast<WorkflowProcessItem*>(sel.first());
                 Actor* scriptActor = wit->getProcess();
                 AttributeScript* script = scriptActor->getScript();
                 if (script) {
@@ -1286,7 +1286,7 @@ void WorkflowView::sl_pickInfo(QListWidgetItem* info) {
     ActorId id = info->data(ACTOR_ID_REF).value<ActorId>();
     foreach (QGraphicsItem* it, scene->items()) {
         if (it->type() == WorkflowProcessItemType) {
-            WorkflowProcessItem* proc = static_cast<WorkflowProcessItem*>(it);
+            auto proc = static_cast<WorkflowProcessItem*>(it);
             if (proc->getProcess()->getId() != id) {
                 continue;
             }
@@ -1356,7 +1356,7 @@ void WorkflowView::sl_estimate() {
 }
 
 void WorkflowView::sl_estimationTaskFinished() {
-    SchemaEstimationTask* t = dynamic_cast<SchemaEstimationTask*>(sender());
+    auto t = dynamic_cast<SchemaEstimationTask*>(sender());
     CHECK(nullptr != t, );
     CHECK(t->isFinished(), );
     estimateAction->setEnabled(true);
@@ -1529,7 +1529,7 @@ void WorkflowView::sl_processOneMessage() {
     Q_ASSERT(debugInfo->isPaused());
     QList<QGraphicsItem*> selectedItems = scene->selectedItems();
     Q_ASSERT(1 == selectedItems.size());
-    WorkflowProcessItem* processItem = qgraphicsitem_cast<WorkflowProcessItem*>(selectedItems.first());
+    auto processItem = qgraphicsitem_cast<WorkflowProcessItem*>(selectedItems.first());
     debugInfo->requestForSingleStep(processItem->getProcess()->getId());
 }
 
@@ -1542,7 +1542,7 @@ void WorkflowView::sl_convertMessages2Documents(const Workflow::Link* bus,
 WorkflowProcessItem* WorkflowView::findItemById(ActorId actor) const {
     foreach (QGraphicsItem* item, scene->items()) {
         if (WorkflowProcessItemType == item->type()) {
-            WorkflowProcessItem* processItem = qgraphicsitem_cast<WorkflowProcessItem*>(item);
+            auto processItem = qgraphicsitem_cast<WorkflowProcessItem*>(item);
             Q_ASSERT(nullptr != processItem);
             if (actor == processItem->getProcess()->getId()) {
                 return processItem;
@@ -1778,7 +1778,7 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
     scene->connectConfigurationEditors();
 
     foreach (QGraphicsItem* it, scene->items()) {
-        WorkflowProcessItem* proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
+        auto proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
         if (nullptr != proc) {
             if (nullptr != pastedS.actorById(proc->getProcess()->getId())) {
                 it->setSelected(true);
@@ -1813,14 +1813,14 @@ void WorkflowView::sl_editItem() {
     if (list.size() == 1) {
         QGraphicsItem* it = list.at(0);
         if (it->type() == WorkflowProcessItemType) {
-            Actor* a = qgraphicsitem_cast<WorkflowProcessItem*>(it)->getProcess();
+            auto a = qgraphicsitem_cast<WorkflowProcessItem*>(it)->getProcess();
             propertyEditor->editActor(a, scene->getActors(WorkflowScene::All));
             return;
         }
         Port* p = nullptr;
 
         if (it->type() == WorkflowBusItemType) {
-            WorkflowBusItem* busItem = qgraphicsitem_cast<WorkflowBusItem*>(it);
+            auto busItem = qgraphicsitem_cast<WorkflowBusItem*>(it);
 
             if (debugInfo->isPaused()) {
                 investigationWidgets->setCurrentInvestigation(busItem->getBus());
@@ -1831,7 +1831,7 @@ void WorkflowView::sl_editItem() {
         }
         if (p) {
             if (qobject_cast<IntegralBusPort*>(p)) {
-                BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
+                auto ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
                 ed->setParent(p);
                 p->setEditor(ed);
             }
@@ -2258,7 +2258,7 @@ const Workflow::Metadata& WorkflowView::updateMeta() {
     for (QGraphicsItem* it : qAsConst(sceneItems)) {
         switch (it->type()) {
             case WorkflowProcessItemType: {
-                WorkflowProcessItem* proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
+                auto proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
                 ActorVisualData visual(proc->getProcess()->getId());
                 visual.setPos(proc->pos());
                 ItemViewStyle* style = proc->getStyleById(proc->getStyle());
@@ -2271,7 +2271,7 @@ const Workflow::Metadata& WorkflowView::updateMeta() {
                         visual.setFont(style->defaultFont());
                     }
                     if (ItemStyles::EXTENDED == style->getId()) {
-                        ExtendedProcStyle* eStyle = dynamic_cast<ExtendedProcStyle*>(style);
+                        auto eStyle = dynamic_cast<ExtendedProcStyle*>(style);
                         if (!eStyle->isAutoResized()) {
                             visual.setRect(eStyle->boundingRect());
                         }
@@ -2283,7 +2283,7 @@ const Workflow::Metadata& WorkflowView::updateMeta() {
                 meta.setActorVisualData(visual);
             } break;
             case WorkflowBusItemType: {
-                WorkflowBusItem* bus = qgraphicsitem_cast<WorkflowBusItem*>(it);
+                auto bus = qgraphicsitem_cast<WorkflowBusItem*>(it);
                 Port* src = bus->getBus()->source();
                 Port* dst = bus->getBus()->destination();
                 QPointF p = bus->getText()->pos();
@@ -2391,8 +2391,8 @@ void WorkflowScene::sl_deleteItem() {
     assert(!locked);
     QList<WorkflowProcessItem*> items;
     foreach (QGraphicsItem* it, selectedItems()) {
-        WorkflowProcessItem* proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
-        WorkflowBusItem* bus = qgraphicsitem_cast<WorkflowBusItem*>(it);
+        auto proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
+        auto bus = qgraphicsitem_cast<WorkflowBusItem*>(it);
         switch (it->type()) {
             case WorkflowProcessItemType:
                 items << proc;
@@ -2468,7 +2468,7 @@ void WorkflowScene::dropEvent(QGraphicsSceneDragDropEvent* event) {
         QList<QGraphicsItem*> targets = items(event->scenePos());
         bool done = false;
         foreach (QGraphicsItem* it, targets) {
-            WorkflowProcessItem* target = qgraphicsitem_cast<WorkflowProcessItem*>(it);
+            auto target = qgraphicsitem_cast<WorkflowProcessItem*>(it);
             if (target && lst.contains(target->getProcess()->getProto())) {
                 clearSelection();
                 QVariantMap params;
@@ -2676,13 +2676,13 @@ WorkflowBusItem* WorkflowScene::addFlow(WorkflowPortItem* from, WorkflowPortItem
 void WorkflowScene::connectConfigurationEditors() {
     foreach (QGraphicsItem* i, items()) {
         if (i->type() == WorkflowProcessItemType) {
-            Actor* proc = static_cast<WorkflowProcessItem*>(i)->getProcess();
+            auto proc = static_cast<WorkflowProcessItem*>(i)->getProcess();
             ConfigurationEditor* editor = proc->getEditor();
             if (nullptr != editor) {
                 connect(editor, SIGNAL(si_configurationChanged()), this, SIGNAL(configurationChanged()));
             }
-            GrouperEditor* g = dynamic_cast<GrouperEditor*>(editor);
-            MarkerEditor* m = dynamic_cast<MarkerEditor*>(editor);
+            auto g = dynamic_cast<GrouperEditor*>(editor);
+            auto m = dynamic_cast<MarkerEditor*>(editor);
             if (nullptr != g || nullptr != m) {
                 connect(editor, SIGNAL(si_configurationChanged()), controller, SLOT(sl_updateSchema()));
             }

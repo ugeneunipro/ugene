@@ -515,7 +515,7 @@ Worker* WriteAnnotationsWorkerFactory::createWorker(Actor* a) {
  ***************************/
 QString WriteAnnotationsPrompter::composeRichDoc() {
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID()));
     QString annName = getProducers(BasePorts::IN_ANNOTATIONS_PORT_ID(), BaseSlots::ANNOTATION_TABLE_SLOT().getId());
     annName = annName.isEmpty() ? unsetStr : annName;
 

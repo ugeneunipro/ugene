@@ -170,7 +170,7 @@ Task* SiteconBuildWorker::tick() {
 }
 
 void SiteconBuildWorker::sl_taskFinished() {
-    SiteconBuildTask* t = qobject_cast<SiteconBuildTask*>(sender());
+    auto t = qobject_cast<SiteconBuildTask*>(sender());
     if (t->isCanceled()) {
         return;
     }

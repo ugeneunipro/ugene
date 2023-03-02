@@ -432,7 +432,7 @@ static SharedDbiDataHandler getAlignment(Document* d, WorkflowContext* context, 
     GObject* obj = getObject(d, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
-    MultipleSequenceAlignmentObject* msaObj = static_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto msaObj = static_cast<MultipleSequenceAlignmentObject*>(obj);
     if (nullptr == msaObj) {
         os.setError(QObject::tr("Error with alignment object"));
         return SharedDbiDataHandler();
@@ -444,7 +444,7 @@ static SharedDbiDataHandler getAnnotations(Document* d, WorkflowContext* context
     GObject* obj = getObject(d, GObjectTypes::ANNOTATION_TABLE, os);
     CHECK_OP(os, SharedDbiDataHandler());
 
-    AnnotationTableObject* annsObj = static_cast<AnnotationTableObject*>(obj);
+    auto annsObj = static_cast<AnnotationTableObject*>(obj);
     if (nullptr == annsObj) {
         os.setError(QObject::tr("Error with annotations object"));
         return SharedDbiDataHandler();
@@ -455,7 +455,7 @@ static SharedDbiDataHandler getAnnotations(Document* d, WorkflowContext* context
 }  // namespace
 
 void ExternalProcessWorker::sl_onTaskFinishied() {
-    LaunchExternalToolTask* t = qobject_cast<LaunchExternalToolTask*>(sender());
+    auto t = qobject_cast<LaunchExternalToolTask*>(sender());
     CHECK(t->isFinished(), );
 
     if (inputs.isEmpty()) {
@@ -532,7 +532,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                 v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = qVariantFromValue<SharedDbiDataHandler>(annTableId);
             } else if (cfg.isAnnotatedSequence()) {
                 if (!d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).isEmpty()) {
-                    U2SequenceObject* seqObj = static_cast<U2SequenceObject*>(d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).first());
+                    auto seqObj = static_cast<U2SequenceObject*>(d->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded).first());
                     DNASequence seq = seqObj->getWholeSequence(os);
                     CHECK_OP_EXT(os, reportError(os.getError()), );
                     seq.alphabet = U2AlphabetUtils::getById(BaseDNAAlphabetIds::RAW());
@@ -546,7 +546,7 @@ void ExternalProcessWorker::sl_onTaskFinishied() {
                 }
             } else if (cfg.isText()) {
                 if (!d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).isEmpty()) {
-                    TextObject* obj = static_cast<TextObject*>(d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).first());
+                    auto obj = static_cast<TextObject*>(d->findGObjectByType(GObjectTypes::TEXT, UOF_LoadedAndUnloaded).first());
                     DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(cfg.type);
                     v[WorkflowUtils::getSlotDescOfDatatype(dataType).getId()] = qVariantFromValue<QString>(obj->getText());
                 }
@@ -755,7 +755,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
     foreach (const DataConfig& dataCfg, cfg->inputs) {
         QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
-            IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attributeId));
+            auto input = qobject_cast<IntegralBusPort*>(target->getPort(dataCfg.attributeId));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
             if (dataCfg.type == SEQ_WITH_ANNS) {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
@@ -770,7 +770,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
     foreach (const DataConfig& dataCfg, cfg->outputs) {
         QRegExp param(QString("\\$%1[^%2]|$").arg(dataCfg.attributeId).arg(WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE));
         if (doc.contains(param)) {
-            IntegralBusPort* output = qobject_cast<IntegralBusPort*>(target->getPort(OUT_PORT_ID));
+            auto output = qobject_cast<IntegralBusPort*>(target->getPort(OUT_PORT_ID));
             DataTypePtr dataType = WorkflowEnv::getDataTypeRegistry()->getById(dataCfg.type);
             if (dataCfg.type == SEQ_WITH_ANNS) {
                 dataType = BaseTypes::DNA_SEQUENCE_TYPE();
@@ -780,7 +780,7 @@ QString ExternalProcessWorkerPrompter::composeRichDoc() {
             if (!output->getLinks().isEmpty()) {
                 QList<Port*> ports = output->getLinks().keys();
                 for (Port* p : qAsConst(ports)) {
-                    IntegralBusPort* ibp = qobject_cast<IntegralBusPort*>(p);
+                    auto ibp = qobject_cast<IntegralBusPort*>(p);
                     Actor* dest = ibp->owner();
                     destinations += tr("<u>%1</u>").arg(dest ? dest->getLabel() : unsetStr) + ",";
                 }

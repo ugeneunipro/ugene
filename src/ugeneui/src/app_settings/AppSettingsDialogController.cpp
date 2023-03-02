@@ -131,7 +131,7 @@ void AppSettingsDialogController::registerPage(AppSettingsGUIPageController* pag
 
 AppSettingsTreeItem* AppSettingsDialogController::findPageItem(const QString& id) const {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        AppSettingsTreeItem* item = static_cast<AppSettingsTreeItem*>(tree->topLevelItem(i));
+        auto item = static_cast<AppSettingsTreeItem*>(tree->topLevelItem(i));
         if (item->pageController->getPageId() == id) {
             return item;
         }
@@ -146,7 +146,7 @@ void AppSettingsDialogController::accept() {
 
     turnPage(nullptr);  // make current state saved in item
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        AppSettingsTreeItem* item = static_cast<AppSettingsTreeItem*>(tree->topLevelItem(i));
+        auto item = static_cast<AppSettingsTreeItem*>(tree->topLevelItem(i));
         if (item->pageState != nullptr) {
             item->pageController->saveState(item->pageState);
         }
@@ -171,7 +171,7 @@ void AppSettingsDialogController::sl_setLockState(bool lockState) {
 
 void AppSettingsDialogController::sl_currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous) {
     Q_UNUSED(previous);
-    AppSettingsTreeItem* page = static_cast<AppSettingsTreeItem*>(current);
+    auto page = static_cast<AppSettingsTreeItem*>(current);
     if (page == currentPage) {
         return;
     }

@@ -163,7 +163,7 @@ void GTest_uMuscle::prepare() {
         return;
     }
     assert(obj != nullptr);
-    MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
+    auto ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (ma == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
@@ -251,8 +251,8 @@ Task::ReportResult GTest_CompareMAlignment::report() {
 
     int listSize = objs1.size();
     for (int i = 0; i < listSize; i++) {
-        MultipleSequenceAlignmentObject* ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
-        MultipleSequenceAlignmentObject* ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
+        auto ma1 = qobject_cast<MultipleSequenceAlignmentObject*>(objs1.at(i));
+        auto ma2 = qobject_cast<MultipleSequenceAlignmentObject*>(objs2.at(i));
         QList<MultipleSequenceAlignmentRow> alignedSeqs1 = ma1->getMsa()->getMsaRows();
         QList<MultipleSequenceAlignmentRow> alignedSeqs2 = ma2->getMsa()->getMsaRows();
         if (ma1->objectName() != ma2->objectName()) {
@@ -357,7 +357,7 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
     MultipleSequenceAlignment unalignedMA;
     unalignedMA->setAlphabet(aliObj->getAlphabet());
     foreach (GObject* obj, seqObjs) {
-        U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
+        auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
         QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
         CHECK_OP(stateInfo, );
         unalignedMA->addRow(dnaObj->getSequenceName(), seqData);
@@ -501,7 +501,7 @@ void GTest_Muscle_Load_Align_QScore::prepare() {
 
 MultipleSequenceAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObject*> dnaSeqs) {
     int seqCount = dnaSeqs.count();
-    U2SequenceObject* seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
+    auto seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
     MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
     for (int i = 0; i < seqCount; i++) {
         seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
@@ -559,7 +559,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        MuscleTask* localMuscle = qobject_cast<MuscleTask*>(subTask);
+        auto localMuscle = qobject_cast<MuscleTask*>(subTask);
         assert(nullptr != localMuscle);
         ma1->setMultipleAlignment(localMuscle->resultMA);
 
@@ -642,7 +642,7 @@ void Muscle_Load_Align_Compare_Task::prepare() {
 
 MultipleSequenceAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObject*> dnaSeqs) {
     int seqCount = dnaSeqs.count();
-    U2SequenceObject* seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
+    auto seq = qobject_cast<U2SequenceObject*>(dnaSeqs[0]);
     MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
     for (int i = 0; i < seqCount; i++) {
         seq = qobject_cast<U2SequenceObject*>(dnaSeqs[i]);
@@ -699,7 +699,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             setError(muscleTask->getError());
             return res;
         }
-        MuscleTask* localMuscle = qobject_cast<MuscleTask*>(subTask);
+        auto localMuscle = qobject_cast<MuscleTask*>(subTask);
         assert(nullptr != localMuscle);
         ma1->setMultipleAlignment(localMuscle->resultMA);
 

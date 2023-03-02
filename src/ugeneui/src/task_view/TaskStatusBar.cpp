@@ -144,13 +144,13 @@ void TaskStatusBar::sl_newReport(Task* task) {
 }
 
 void TaskStatusBar::sl_reportsCountChanged() {
-    TaskViewDockWidget* twd = qobject_cast<TaskViewDockWidget*>(sender());
+    auto twd = qobject_cast<TaskViewDockWidget*>(sender());
     nReports = twd->countAvailableReports();
     updateState();
 }
 
 void TaskStatusBar::sl_showReport() {
-    QAction* a = qobject_cast<QAction*>(sender());
+    auto a = qobject_cast<QAction*>(sender());
     QString str = a->data().toString();
 
     if (str.split("|").size() == 3) {
@@ -236,7 +236,7 @@ void TaskStatusBar::sl_taskStateChanged() {
     if (!tvConnected) {
         QWidget* w = AppContext::getMainWindow()->getDockManager()->findWidget(DOCK_TASK_VIEW);
         if (w != nullptr) {
-            TaskViewDockWidget* twd = qobject_cast<TaskViewDockWidget*>(w);
+            auto twd = qobject_cast<TaskViewDockWidget*>(w);
             nReports = twd->countAvailableReports();
             connect(twd, SIGNAL(si_reportsCountChanged()), SLOT(sl_reportsCountChanged()));
             tvConnected = true;
@@ -270,7 +270,7 @@ bool TaskStatusBar::eventFilter(QObject* o, QEvent* e) {
             nStack->showStack();
             return true;
         } else if (type == QEvent::ToolTip) {
-            QHelpEvent* hEvent = static_cast<QHelpEvent*>(e);
+            auto hEvent = static_cast<QHelpEvent*>(e);
             QToolTip::showText(hEvent->globalPos(), tr("%1 notification(s)").arg(notificationCountToString(nStack->count())));
             return true;
         }
@@ -286,7 +286,7 @@ void TaskStatusBar::mouseDoubleClickEvent(QMouseEvent* e) {
     if (taskToTrack != nullptr) {
         QWidget* w = AppContext::getMainWindow()->getDockManager()->activateDock(DOCK_TASK_VIEW);
         if (w != nullptr) {
-            TaskViewDockWidget* twd = qobject_cast<TaskViewDockWidget*>(w);
+            auto twd = qobject_cast<TaskViewDockWidget*>(w);
             twd->selectTask(taskToTrack);
         }
     }

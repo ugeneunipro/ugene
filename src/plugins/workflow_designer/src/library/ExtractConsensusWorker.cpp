@@ -74,7 +74,7 @@ Task* ExtractConsensusWorker::tick() {
 }
 
 void ExtractConsensusWorker::sl_taskFinished() {
-    ExtractConsensusTaskHelper* t = dynamic_cast<ExtractConsensusTaskHelper*>(sender());
+    auto t = dynamic_cast<ExtractConsensusTaskHelper*>(sender());
     CHECK(nullptr != t, );
     CHECK(t->isFinished() && !t->hasError(), );
     CHECK(!t->isCanceled(), );

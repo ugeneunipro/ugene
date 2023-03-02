@@ -186,7 +186,7 @@ void TextReader::processNextLine() {
 void TextWriter::data2doc(Document* doc, const QVariantMap& data) {
     QStringList list = data.value(BaseSlots::TEXT_SLOT().getId()).toStringList();
     QString text = list.join("\n");
-    TextObject* to = qobject_cast<TextObject*>(GObjectUtils::selectOne(doc->getObjects(), GObjectTypes::TEXT, UOF_LoadedOnly));
+    auto to = qobject_cast<TextObject*>(GObjectUtils::selectOne(doc->getObjects(), GObjectTypes::TEXT, UOF_LoadedOnly));
     if (!to) {
         U2OpStatus2Log os;
         to = TextObject::createInstance(text, QString("Text %1").arg(++ct), context->getDataStorage()->getDbiRef(), os);

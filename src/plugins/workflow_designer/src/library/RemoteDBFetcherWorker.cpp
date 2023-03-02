@@ -154,7 +154,7 @@ void RemoteDBFetcherWorker::cleanup() {
 }
 
 void RemoteDBFetcherWorker::sl_taskFinished() {
-    LoadRemoteDocumentTask* loadTask = qobject_cast<LoadRemoteDocumentTask*>(sender());
+    auto loadTask = qobject_cast<LoadRemoteDocumentTask*>(sender());
     assert(loadTask);
 
     if (loadTask->getState() != Task::State_Finished || loadTask->isCanceled() || loadTask->hasError()) {
@@ -185,7 +185,7 @@ void RemoteDBFetcherWorker::sl_taskFinished() {
 
         QList<SharedAnnotationData> ads;
         if (!annotations.isEmpty()) {
-            AnnotationTableObject* ato = qobject_cast<AnnotationTableObject*>(annotations.first());
+            auto ato = qobject_cast<AnnotationTableObject*>(annotations.first());
             foreach (Annotation* a, ato->getAnnotations()) {
                 ads << a->getData();
             }
@@ -391,7 +391,7 @@ void FetchSequenceByIdFromAnnotationWorker::init() {
 }
 
 QString FetchSequenceByIdFromAnnotationPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_ANNOTATIONS_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::ANNOTATION_TABLE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -445,7 +445,7 @@ void FetchSequenceByIdFromAnnotationWorker::cleanup() {
 }
 
 void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
-    LoadRemoteDocumentTask* loadTask = qobject_cast<LoadRemoteDocumentTask*>(sender());
+    auto loadTask = qobject_cast<LoadRemoteDocumentTask*>(sender());
     assert(loadTask);
 
     if (loadTask->getState() != Task::State_Finished || loadTask->isCanceled() || loadTask->hasError()) {
@@ -476,7 +476,7 @@ void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
 
         QList<SharedAnnotationData> ads;
         if (!annotations.isEmpty()) {
-            AnnotationTableObject* ato = qobject_cast<AnnotationTableObject*>(annotations.first());
+            auto ato = qobject_cast<AnnotationTableObject*>(annotations.first());
             foreach (Annotation* a, ato->getAnnotations()) {
                 ads << a->getData();
             }

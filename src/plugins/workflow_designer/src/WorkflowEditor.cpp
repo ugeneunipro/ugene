@@ -128,7 +128,7 @@ void WorkflowEditor::setEditable(bool editable) {
 }
 
 void WorkflowEditor::sl_updatePortTable() {
-    Actor* a = qobject_cast<Actor*>(sender());
+    auto a = qobject_cast<Actor*>(sender());
     CHECK(a != nullptr, );
 
     removePortTable(inputPortWidget);
@@ -138,7 +138,7 @@ void WorkflowEditor::sl_updatePortTable() {
 }
 
 void WorkflowEditor::sl_resizeSplitter(bool b) {
-    QWidget* w = qobject_cast<QWidget*>(sender());
+    auto w = qobject_cast<QWidget*>(sender());
     int ind = splitter->indexOf(w);
     if (ind != -1) {
         if (!b) {
@@ -187,7 +187,7 @@ void WorkflowEditor::createInputPortTable(Actor* a) {
         inputScrollArea->setVisible(true);
         inputHeight = 0;
         foreach (Port* p, enabledPorts) {
-            BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
+            auto ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
             ed->setParent(p);
             p->setEditor(ed);
             QWidget* w = ed->getWidget();
@@ -221,7 +221,7 @@ void WorkflowEditor::createOutputPortTable(Actor* a) {
         outputScrollArea->setVisible(true);
         outputHeight = 0;
         foreach (Port* p, enabledPorts) {
-            BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
+            auto ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
             ed->setParent(p);
             p->setEditor(ed);
             QWidget* w = ed->getWidget();
@@ -451,7 +451,7 @@ void WorkflowEditor::editPort(Port* p) {
         inputPortBox->setVisible(false);
         outputPortBox->setVisible(false);
 
-        BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
+        auto ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
         ed->setParent(p);
         p->setEditor(ed);
         paramHeight = ed->getOptimalHeight();
@@ -558,7 +558,7 @@ void WorkflowEditor::sl_linkActivated(const QString& url) {
     }
     table->setCurrentIndex(modelIndex);
     QWidget* w = table->indexWidget(modelIndex);
-    PropertyWidget* pw = dynamic_cast<PropertyWidget*>(w);
+    auto pw = dynamic_cast<PropertyWidget*>(w);
     CHECK(nullptr != pw, );
     pw->activate();
 }
@@ -591,7 +591,7 @@ void SpecialParametersPanel::editActor(Actor* a, const QList<Actor*>& allActors)
     foreach (const QString& attrId, a->getParameters().keys()) {
         Attribute* attr = a->getParameter(attrId);
         CHECK(nullptr != attr, );
-        URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(attr);
+        auto urlAttr = dynamic_cast<URLAttribute*>(attr);
         if (nullptr == urlAttr) {
             continue;
         }
@@ -609,7 +609,7 @@ void SpecialParametersPanel::editActor(Actor* a, const QList<Actor*>& allActors)
 }
 
 void SpecialParametersPanel::sl_datasetsChanged() {
-    AttributeDatasetsController* ctrl = dynamic_cast<AttributeDatasetsController*>(sender());
+    auto ctrl = dynamic_cast<AttributeDatasetsController*>(sender());
     CHECK(nullptr != ctrl, );
     CHECK(controllers.values().contains(ctrl), );
     QString attrId = controllers.key(ctrl);
@@ -627,7 +627,7 @@ void SpecialParametersPanel::sl_datasetRenamed(QPair<QString, QString>& oldNewNa
     for (Actor* actor : qAsConst(allActors)) {
         const QStringList keys = actor->getParameters().keys();
         for (const QString& key : qAsConst(keys)) {
-            URLAttribute* urlAttr = dynamic_cast<URLAttribute*>(actor->getParameter(key));
+            auto urlAttr = dynamic_cast<URLAttribute*>(actor->getParameter(key));
             if (urlAttr == nullptr) {
                 continue;
             }

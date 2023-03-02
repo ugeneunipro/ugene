@@ -60,7 +60,7 @@ QList<Task*> WMQDTask::onSubTaskFinished(Task* subTask) {
                                                          r.startPos);
         }
     } else {
-        WeightMatrixSingleSearchTask* t = qobject_cast<WeightMatrixSingleSearchTask*>(subTask);
+        auto t = qobject_cast<WeightMatrixSingleSearchTask*>(subTask);
         assert(t);
         res << t->takeResults();
     }
@@ -156,7 +156,7 @@ Task* QDWMActor::getAlgorithmTask(const QVector<U2Region>& location) {
 }
 
 void QDWMActor::sl_onAlgorithmTaskFinished(Task* t) {
-    WMQDTask* wmqdt = qobject_cast<WMQDTask*>(t);
+    auto wmqdt = qobject_cast<WMQDTask*>(t);
     assert(wmqdt);
     QList<WeightMatrixSearchResult> res = wmqdt->takeResults();
     foreach (const WeightMatrixSearchResult& r, res) {

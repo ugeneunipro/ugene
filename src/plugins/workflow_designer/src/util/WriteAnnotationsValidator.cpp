@@ -36,7 +36,7 @@ bool WriteAnnotationsValidator::validate(const Actor* actor, NotificationsList& 
         FAIL("Input port is NULL", false);
     }
 
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(port);
+    auto input = qobject_cast<IntegralBusPort*>(port);
     if (input == nullptr) {
         notificationList << WorkflowNotification(tr("IntegralBusPort is NULL"), actor->getId(), WorkflowNotification::U2_ERROR);
         FAIL("IntegralBusPort is NULL", false);

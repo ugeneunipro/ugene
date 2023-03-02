@@ -16,7 +16,7 @@ PairwiseAlignmentHirschbergTaskFactory::~PairwiseAlignmentHirschbergTaskFactory(
 }
 
 AbstractAlignmentTask* PairwiseAlignmentHirschbergTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
-    PairwiseAlignmentTaskSettings* pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings*>(_settings);
+    auto pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings*>(_settings);
     SAFE_POINT(pairwiseSettings != NULL,
                "Pairwise alignment: incorrect settings",
                NULL);
