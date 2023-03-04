@@ -35,7 +35,7 @@ BamReader::AlignmentReader::AlignmentReader(BamReader* _reader, int _id, int _bl
     : id(_id), blockSize(_blockSize), r(_reader) {
 }
 
-int BamReader::AlignmentReader::getId() {
+int BamReader::AlignmentReader::getId() const {
     return id;
 }
 
@@ -78,214 +78,171 @@ bool BamReader::AlignmentReader::readNumber(char type, QVariant& value, int& byt
 Alignment BamReader::AlignmentReader::read() {
     Alignment alignment;
     alignment.setReferenceId(id);
-    {
-        int position = r->readInt32();
-        if (position < -1) {
-            throw InvalidFormatException(BAMDbiPlugin::tr("Invalid read position: %1").arg(position));
-        }
-        alignment.setPosition(position);
+
+    // 0-based leftmost coordinate (= POS-1).
+    int position = r->readInt32();
+    if (position < -1) {
+        throw InvalidFormatException(BAMDbiPlugin::tr("Invalid read position: %1").arg(position));
     }
-    int nameLength = 0;
-    {
-        quint32 value = r->readUint32();
-        alignment.setBin(value >> 16);
-        alignment.setMapQuality((value >> 8) & 0xff);
-        nameLength = value & 0xff;
+    alignment.setPosition(position);
+
+    // Length of read name below (= length(QNAME) + 1) .
+    int nameLength = r->readUint8();
+
+    // Mapping quality (=MAPQ).
+    int mapQuality = r->readUint8();
+    alignment.setMapQuality(mapQuality);
+
+    /** BAI index bin. */
+    int bin = r->readUint16();
+    alignment.setBin(bin);
+
+    // Number of operations in CIGAR,/
+    int cigarLength = r->readUint16();
+
+    // Bitwise flags (= FLAG)
+    quint16 flags = r->readUint32();
+    alignment.setFlags(ReadFlags(flags));
+
+    // Length of SEQ.
+    qint64 length = r->readUint32();
+
+    // Ref-ID of the next (mate) segment (−1 ≤ next-refID < n-ref).
+    int nextReferenceId = r->readInt32();
+    if (nextReferenceId < -1 || nextReferenceId >= r->header.getReferences().size()) {
+        throw InvalidFormatException(BAMDbiPlugin::tr("Invalid mate reference id: %1").arg(nextReferenceId));
     }
-    int cigarLength = 0;
-    {
-        quint32 value = r->readUint32();
-        {
-            qint64 flags = 0;
-            int flagsValue = value >> 16;
-            if (flagsValue & 0x1) {
-                flags |= Fragmented;
-            }
-            if (flagsValue & 0x2) {
-                flags |= FragmentsAligned;
-            }
-            if (flagsValue & 0x4) {
-                flags |= Unmapped;
-            }
-            if (flagsValue & 0x8) {
-                flags |= NextUnmapped;
-            }
-            if (flagsValue & 0x10) {
-                flags |= Reverse;
-            }
-            if (flagsValue & 0x20) {
-                flags |= NextReverse;
-            }
-            if (flagsValue & 0x40) {
-                flags |= FirstInTemplate;
-            }
-            if (flagsValue & 0x80) {
-                flags |= LastInTemplate;
-            }
-            if (flagsValue & 0x100) {
-                flags |= SecondaryAlignment;
-            }
-            if (flagsValue & 0x200) {
-                flags |= FailsChecks;
-            }
-            if (flagsValue & 0x400) {
-                flags |= Duplicate;
-            }
-            alignment.setFlags(flags);
-        }
-        cigarLength = value & 0xffff;
+    alignment.setNextReferenceId(nextReferenceId);
+    alignment.setNextReferenceName(r->referencesMap.key(nextReferenceId));
+
+    // 0-based leftmost pos of the next segment (= PNEXT-1) .
+    int nextPosition = r->readInt32();
+    if (nextPosition < -1) {
+        throw InvalidFormatException(BAMDbiPlugin::tr("Invalid mate position: %1").arg(nextPosition));
     }
-    int length = r->readInt32();
-    if (length < 0) {
-        throw InvalidFormatException(BAMDbiPlugin::tr("Invalid read length: %1").arg(length));
-    }
-    {
-        int nextReferenceId = r->readInt32();
-        if ((nextReferenceId < -1) || (nextReferenceId >= r->header.getReferences().size())) {
-            throw InvalidFormatException(BAMDbiPlugin::tr("Invalid mate reference id: %1").arg(nextReferenceId));
-        }
-        alignment.setNextReferenceId(nextReferenceId);
-        alignment.setNextReferenceName(r->referencesMap.key(nextReferenceId));
-    }
-    {
-        int nextPosition = r->readInt32();
-        if (nextPosition < -1) {
-            throw InvalidFormatException(BAMDbiPlugin::tr("Invalid mate position: %1").arg(nextPosition));
-        }
-        alignment.setNextPosition(nextPosition);
-    }
-    {
-        int templateLength = r->readInt32();
-        if (!(alignment.getFlags() & Fragmented)) {
-            if (0 != templateLength) {
-                throw InvalidFormatException(BAMDbiPlugin::tr("Invalid template length of a sigle-fragment template: %1").arg(templateLength));
-            }
-        }
-        alignment.setTemplateLength(templateLength);
-    }
+    alignment.setNextPosition(nextPosition);
+
+    // Template length (= TLEN) .
+    int templateLength = r->readInt32();
+    alignment.setTemplateLength(templateLength);
+
+    // Read name, NUL-terminated (QNAME with trailing ‘\0’).
     alignment.setName(r->readBytes(nameLength - 1));
-    r->readChar();
-    {
-        QList<Alignment::CigarOperation> cigar;
-        for (int index = 0; index < cigarLength; index++) {
-            quint32 value = r->readUint32();
-            Alignment::CigarOperation::Operation operation;
-            switch (value & 0xf) {
-                case 0:
-                    operation = Alignment::CigarOperation::AlignmentMatch;
-                    break;
-                case 1:
-                    operation = Alignment::CigarOperation::Insertion;
-                    break;
-                case 2:
-                    operation = Alignment::CigarOperation::Deletion;
-                    break;
-                case 3:
-                    operation = Alignment::CigarOperation::Skipped;
-                    break;
-                case 4:
-                    operation = Alignment::CigarOperation::SoftClip;
-                    break;
-                case 5:
-                    operation = Alignment::CigarOperation::HardClip;
-                    break;
-                case 6:
-                    operation = Alignment::CigarOperation::Padding;
-                    break;
-                case 7:
-                    operation = Alignment::CigarOperation::SequenceMatch;
-                    break;
-                case 8:
-                    operation = Alignment::CigarOperation::SequenceMismatch;
-                    break;
-                default:
-                    throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar operation code: %1").arg(value & 0xf));
-            }
-            int operatonLength = value >> 4;
-            cigar.append(Alignment::CigarOperation(operatonLength, operation));
+    r->readChar();  // Trailing '0'.
+
+    QList<Alignment::CigarOperation> cigar;
+    for (int index = 0; index < cigarLength; index++) {
+        quint32 value = r->readUint32();
+        Alignment::CigarOperation::Operation operation;
+        switch (value & 0xf) {
+            case 0:
+                operation = Alignment::CigarOperation::AlignmentMatch;
+                break;
+            case 1:
+                operation = Alignment::CigarOperation::Insertion;
+                break;
+            case 2:
+                operation = Alignment::CigarOperation::Deletion;
+                break;
+            case 3:
+                operation = Alignment::CigarOperation::Skipped;
+                break;
+            case 4:
+                operation = Alignment::CigarOperation::SoftClip;
+                break;
+            case 5:
+                operation = Alignment::CigarOperation::HardClip;
+                break;
+            case 6:
+                operation = Alignment::CigarOperation::Padding;
+                break;
+            case 7:
+                operation = Alignment::CigarOperation::SequenceMatch;
+                break;
+            case 8:
+                operation = Alignment::CigarOperation::SequenceMismatch;
+                break;
+            default:
+                throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar operation code: %1").arg(value & 0xf));
         }
-        {
-            // Validation of the CIGAR string.
-            int totalLength = 0;
-            CigarValidator validator(cigar);
-            validator.validate(&totalLength);
-            if (!cigar.isEmpty() && length != totalLength) {
-                cigar.clear();  // Ignore invalid cigar
-                // throw InvalidFormatException(BAMDbiPlugin::tr("Cigar length mismatch"));
-            }
-        }
-        alignment.setCigar(cigar);
+        int operationLength = value >> 4;
+        cigar.append(Alignment::CigarOperation(operationLength, operation));
     }
-    {
-        QByteArray sequence(length, '\0');
-        QByteArray packedSequence = r->readBytes((length + 1) / 2);
-        for (int index = 0; index < length; index++) {
-            int value = 0;
-            if (0 == (index % 2)) {
-                value = (packedSequence[index / 2] >> 4) & 0xf;
-            } else {
-                value = packedSequence[index / 2] & 0xf;
-            }
-            switch (value) {
-                case 0:
-                    sequence[index] = '=';
-                    break;
-                case 1:
-                    sequence[index] = 'A';
-                    break;
-                case 2:
-                    sequence[index] = 'C';
-                    break;
-                case 3:
-                    sequence[index] = 'M';
-                    break;
-                case 4:
-                    sequence[index] = 'G';
-                    break;
-                case 5:
-                    sequence[index] = 'R';
-                    break;
-                case 6:
-                    sequence[index] = 'S';
-                    break;
-                case 7:
-                    sequence[index] = 'V';
-                    break;
-                case 8:
-                    sequence[index] = 'T';
-                    break;
-                case 9:
-                    sequence[index] = 'W';
-                    break;
-                case 10:
-                    sequence[index] = 'Y';
-                    break;
-                case 11:
-                    sequence[index] = 'H';
-                    break;
-                case 12:
-                    sequence[index] = 'K';
-                    break;
-                case 13:
-                    sequence[index] = 'D';
-                    break;
-                case 14:
-                    sequence[index] = 'B';
-                    break;
-                case 15:
-                    sequence[index] = 'N';
-                    break;
-                default:
-                    assert(false);
-            }
-        }
-        alignment.setSequence(sequence);
+
+    // Validation of the CIGAR string.
+    int totalLength = 0;
+    CigarValidator validator(cigar);
+    validator.validate(&totalLength);
+    if (!cigar.isEmpty() && length != totalLength) {
+        cigar.clear();  // Ignore invalid cigar
+        // throw InvalidFormatException(BAMDbiPlugin::tr("Cigar length mismatch"));
     }
+    alignment.setCigar(cigar);
+
+    QByteArray sequence(length, '\0');
+    QByteArray packedSequence = r->readBytes((length + 1) / 2);
+    for (int index = 0; index < length; index++) {
+        int value = ((index % 2) == 0 ? packedSequence[index / 2] >> 4 : packedSequence[index / 2]) & 0xf;
+        switch (value) {
+            case 0:
+                sequence[index] = '=';
+                break;
+            case 1:
+                sequence[index] = 'A';
+                break;
+            case 2:
+                sequence[index] = 'C';
+                break;
+            case 3:
+                sequence[index] = 'M';
+                break;
+            case 4:
+                sequence[index] = 'G';
+                break;
+            case 5:
+                sequence[index] = 'R';
+                break;
+            case 6:
+                sequence[index] = 'S';
+                break;
+            case 7:
+                sequence[index] = 'V';
+                break;
+            case 8:
+                sequence[index] = 'T';
+                break;
+            case 9:
+                sequence[index] = 'W';
+                break;
+            case 10:
+                sequence[index] = 'Y';
+                break;
+            case 11:
+                sequence[index] = 'H';
+                break;
+            case 12:
+                sequence[index] = 'K';
+                break;
+            case 13:
+                sequence[index] = 'D';
+                break;
+            case 14:
+                sequence[index] = 'B';
+                break;
+            case 15:
+                sequence[index] = 'N';
+                break;
+            default:
+                assert(false);
+        }
+    }
+    alignment.setSequence(sequence);
+
     if (length > 0) {
         QByteArray quality = r->readBytes(length);
         bool hasQuality = false;
-        for (int index = 0; index < quality.size(); index++) {
-            if (0xff != (unsigned char)quality[index]) {
+        for (const auto& index : quality) {
+            if ((unsigned char)index != 0xff) {
                 hasQuality = true;
                 break;
             }
@@ -294,11 +251,11 @@ Alignment BamReader::AlignmentReader::read() {
             alignment.setQuality(SamtoolsAdapter::samtools2quality(quality));
         }
     }
-    {
-        int toRead = blockSize - 32 - nameLength - 4 * cigarLength - (length + 1) / 2 - length;
-        QList<U2AuxData> aux = SamtoolsAdapter::string2aux(r->readBytes(toRead));
-        alignment.setAuxData(aux);
-    }
+
+    int toRead = blockSize - 32 - nameLength - 4 * cigarLength - (length + 1) / 2 - length;
+    QList<U2AuxData> aux = SamtoolsAdapter::string2aux(r->readBytes(toRead));
+    alignment.setAuxData(aux);
+
     return alignment;
 }
 

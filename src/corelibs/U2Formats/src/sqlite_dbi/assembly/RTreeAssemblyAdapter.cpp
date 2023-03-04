@@ -138,9 +138,7 @@ void RTreeAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead>* it, U2Assembl
     while (it->hasNext()) {
         U2AssemblyRead read = it->next();
 
-        bool dnaExt = false;  // TODO
         qint64 flags = read->flags;
-        flags = flags | (dnaExt ? DnaExtAlphabet : 0);
 
         int readLen = read->readSequence.length();
         int effectiveReadLength = readLen + U2AssemblyUtils::getCigarExtraLength(read->cigar);

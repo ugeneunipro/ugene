@@ -126,40 +126,48 @@ public:
     int count;
 };
 
-/**
-    assembly read flags
-*/
+/** BAM read flags. */
 enum ReadFlag {
     None = 0,
-    Fragmented = 1 << 0,
-    FragmentsAligned = 1 << 1,
+    /** Read is paired in sequencing, no matter whether it is mapped in a pair . */
+    Paired = 1 << 0,
+    /** Read is mapped in a proper pair. */
+    ProperPair = 1 << 1,
+    /** Read itself is unmapped; Exclusive with ProperPair. */
     Unmapped = 1 << 2,
-    NextUnmapped = 1 << 3,
+    /** Next segment (mate) in the template unmapped. */
+    MateUnmapped = 1 << 3,
+    /** Read is mapped to the reverse strand: SEQ being reverse complemented.*/
     Reverse = 1 << 4,
-    NextReverse = 1 << 5,
+    /** Mate is mapped to the reverse strand : SEQ of the next segment in the template being reversed. */
+    MateReverse = 1 << 5,
+    /** The first segment in the template (read1). */
     FirstInTemplate = 1 << 6,
+    /** The last segment in the template (read2, mate). */
     LastInTemplate = 1 << 7,
-    SecondaryAlignment = 1 << 8,
-    FailsChecks = 1 << 9,
+    /** Not a primary, but a secondary alignment. */
+    Secondary = 1 << 8,
+    /** Not passing quality controls. */
+    QcFail = 1 << 9,
+    /** Optical or PCR duplicate. */
     Duplicate = 1 << 10,
-    DnaExtAlphabet = 1 << 16
+    /** Supplementary alignment */
+    Supplementary = 1 << 11,
 };
+
+Q_DECLARE_FLAGS(ReadFlags, ReadFlag)
 
 /**
     Utility class to work with flags
  */
 class ReadFlagsUtils {
 public:
-    static bool isExtendedAlphabet(qint64 flags) {
-        return flags & DnaExtAlphabet;
-    }
-
     static bool isComplementaryRead(qint64 flags) {
         return flags & Reverse;
     }
 
     static bool isPairedRead(qint64 flags) {
-        return flags & Fragmented;
+        return flags & Paired;
     }
 
     static bool isUnmappedRead(qint64 flags) {

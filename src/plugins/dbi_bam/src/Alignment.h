@@ -61,7 +61,7 @@ public:
     int getPosition() const;
     int getBin() const;
     int getMapQuality() const;
-    qint64 getFlags() const;
+    const ReadFlags& getFlags() const;
     int getNextReferenceId() const;
     QByteArray getNextReferenceName() const;
     int getNextPosition() const;
@@ -75,7 +75,7 @@ public:
     void setPosition(int position);
     void setBin(int bin);
     void setMapQuality(int mapQuality);
-    void setFlags(qint64 flags);
+    void setFlags(const ReadFlags& flags);
     void setNextReferenceId(int nextReferenceId);
     void setNextReferenceName(const QByteArray& nextReferenceName);
     void setNextPosition(int nextPosition);
@@ -94,7 +94,7 @@ private:
     int position;
     int bin;
     int mapQuality;
-    qint64 flags;
+    ReadFlags flags;
     int nextReferenceId;
     QByteArray nextReferenceName;
     int nextPosition;

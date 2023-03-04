@@ -578,11 +578,6 @@ Mevcut dosyaya veri eklemek için &apos;Ekle&apos;ye basın.</translation>
         <translation>Geçersiz okuma konumu: %1</translation>
     </message>
     <message>
-        <location filename="../src/Reader.cpp" line="140"/>
-        <source>Invalid read length: %1</source>
-        <translation>Geçersiz okuma uzunluğu: %1</translation>
-    </message>
-    <message>
         <location filename="../src/Reader.cpp" line="145"/>
         <source>Invalid mate reference id: %1</source>
         <translation>Geçersiz eş referans kimliği: %1</translation>

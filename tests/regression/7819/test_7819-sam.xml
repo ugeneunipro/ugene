@@ -1,0 +1,21 @@
+<!-- Convert SAM file received from the bug's BAM to UGENEDB. Conversion must be finished with no errors. -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!bam/bam-with-missed-mate.bam"
+            out="!tmp_data_dir!bam-with-missed-mate.sam"
+            out_format="sam"
+    />
+
+    <check-temp-file url="bam-with-missed-mate.sam" exists="1"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!tmp_data_dir!bam-with-missed-mate.sam"
+            out="!tmp_data_dir!bam-with-missed-mate.ugenedb"
+            out_format="usqlite"
+    />
+
+    <check-temp-file url="bam-with-missed-mate.ugenedb" exists="1"/>
+
+</multi-test>

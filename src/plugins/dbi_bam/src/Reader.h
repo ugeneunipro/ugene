@@ -52,7 +52,7 @@ public:
     class AlignmentReader {
     public:
         AlignmentReader(BamReader* reader, int id, int blockSize);
-        int getId();
+        int getId() const;
         Alignment read();
         void skip();
 
