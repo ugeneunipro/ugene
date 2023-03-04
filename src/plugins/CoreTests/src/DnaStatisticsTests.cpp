@@ -46,12 +46,12 @@ const QString GTest_DnaStatisticsTest::EXPECTED_LENGTH = "expected-length";
 const QString GTest_DnaStatisticsTest::EXPECTED_GC_CONTENT = "expected-gc-content";
 const QString GTest_DnaStatisticsTest::EXPECTED_MELTING_TEMP = "expected-melting-temp";
 
-const QString GTest_DnaStatisticsTest::EXPECTED_SS_MOLECULAR_WEIGHT = "expected-ss-melecular-weight";
+const QString GTest_DnaStatisticsTest::EXPECTED_SS_MOLECULAR_WEIGHT = "expected-ss-molecular-weight";
 const QString GTest_DnaStatisticsTest::EXPECTED_SS_EXTINCTION_COEFFICIENT = "expected-ss-extinction-coefficient";
 const QString GTest_DnaStatisticsTest::EXPECTED_SS_OD260_AMOUNT_OF_SUBSTANCE = "expected-ss-od260-amount-of-substance";
 const QString GTest_DnaStatisticsTest::EXPECTED_SS_OD260_MASS = "expected-ss-od260-mass";
 
-const QString GTest_DnaStatisticsTest::EXPECTED_DS_MOLECULAR_WEIGHT = "expected-ds-melecular-weight";
+const QString GTest_DnaStatisticsTest::EXPECTED_DS_MOLECULAR_WEIGHT = "expected-ds-molecular-weight";
 const QString GTest_DnaStatisticsTest::EXPECTED_DS_EXTINCTION_COEFFICIENT = "expected-ds-extinction-coefficient";
 const QString GTest_DnaStatisticsTest::EXPECTED_DS_OD260_AMOUNT_OF_SUBSTANCE = "expected-ds-od260-amount-of-substance";
 const QString GTest_DnaStatisticsTest::EXPECTED_DS_OD260_MASS = "expected-ds-od260-mass";
@@ -172,7 +172,7 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
 void GTest_DnaStatisticsTest::prepare() {
     U2SequenceObject* sequenceObject = nullptr;
     if (!docName.isEmpty()) {
-        Document* loadedDocument = getContext<Document>(this, docName);
+        auto loadedDocument = getContext<Document>(this, docName);
         CHECK_EXT(loadedDocument != nullptr, setError(QString("Document not found in context: %1").arg(docName)), );
 
         sequenceObject = qobject_cast<U2SequenceObject*>(loadedDocument->findGObjectByName(seqName));

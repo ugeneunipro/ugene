@@ -83,7 +83,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
       annotatedDnaViewName(annotatedDnaView->getName()),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
       temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(annotatedDnaViewName)) {
-    SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
+    SAFE_POINT(annotatedDnaView != nullptr, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
     initLayout();
@@ -98,14 +98,14 @@ SequenceInfo::~SequenceInfo() {
 }
 
 void SequenceInfo::initLayout() {
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    auto mainLayout = new QVBoxLayout();
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
 
     setLayout(mainLayout);
 
     // Common statistics
-    QWidget* statisticLabelContainer = new QWidget(this);
+    auto statisticLabelContainer = new QWidget(this);
     statisticLabelContainer->setLayout(new QHBoxLayout);
     statisticLabelContainer->layout()->setContentsMargins(0, 0, 0, 0);
 
@@ -193,9 +193,9 @@ QString getFormattedLongNumber(qint64 num) {
 
 void SequenceInfo::updateCharOccurLayout() {
     ADVSequenceObjectContext* activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
-    if (0 != activeSequenceContext) {
+    if (activeSequenceContext != nullptr) {
         const DNAAlphabet* activeSequenceAlphabet = activeSequenceContext->getAlphabet();
-        SAFE_POINT(0 != activeSequenceAlphabet, "An active sequence alphabet is NULL!", );
+        SAFE_POINT(activeSequenceAlphabet != nullptr, "An active sequence alphabet is NULL!", );
         if ((activeSequenceAlphabet->isNucleic()) || (activeSequenceAlphabet->isAmino())) {
             charOccurWidget->show();
         } else {
@@ -207,10 +207,10 @@ void SequenceInfo::updateCharOccurLayout() {
 
 void SequenceInfo::updateDinuclLayout() {
     ADVSequenceObjectContext* activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != activeSequenceContext, "A sequence context is NULL!", );
+    SAFE_POINT(activeSequenceContext != nullptr, "A sequence context is NULL!", );
 
     const DNAAlphabet* activeSequenceAlphabet = activeSequenceContext->getAlphabet();
-    SAFE_POINT(0 != activeSequenceAlphabet, "An active sequence alphabet is NULL!", );
+    SAFE_POINT(activeSequenceAlphabet != nullptr, "An active sequence alphabet is NULL!", );
 
     const QString alphabetId = activeSequenceAlphabet->getId();
     if ((alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) || (alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT())) {
@@ -398,7 +398,7 @@ void SequenceInfo::updateCodonsOccurrenceData(const QMap<QByteArray, qint64>& co
         // Prepare codons report & convert raw codons into amino acids.
         QList<QByteArray> codons = codonStatMap.keys();
         QHash<char, qint64> countPerAminoAcid;
-        bool tableColumnIndex = 0;  // Report is written using 2 columns.
+        int tableColumnIndex = 0;  // Report is written using 2 columns.
         for (const QByteArray& codon : qAsConst(codons)) {
             codonsHtml += tableColumnIndex == 0 ? "<tr>" : "";
             codonsHtml += QString("<td><b>") + QString::fromLatin1(codon) + QString(":&nbsp;&nbsp;</b></td>");
@@ -564,7 +564,7 @@ void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
 
 void SequenceInfo::updateCurrentRegions() {
     ADVSequenceObjectContext* seqContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(0 != seqContext, "A sequence context is NULL!", );
+    SAFE_POINT(seqContext != nullptr, "A sequence context is NULL!", );
 
     DNASequenceSelection* selection = seqContext->getSequenceSelection();
 
