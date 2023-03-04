@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <U2Algorithm/BaseTempCalc.h>
+#include <U2Algorithm/TmCalculator.h>
 #include <U2Algorithm/FindAlgorithmTask.h>
 
 #include <U2Core/GObjectReference.h>
@@ -43,7 +43,7 @@ struct InSilicoPcrTaskSettings {
     uint perfectMatch = 0;
     bool useAmbiguousBases = true;
     QString sequenceName;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 
     static constexpr qint64 MAX_SEQUENCE_LENGTH = 500 * 1024 * 1024;  // 500 Mb;
 };

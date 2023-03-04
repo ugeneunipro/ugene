@@ -83,7 +83,7 @@ uint PrimerGroupBox::getMismatches() const {
     return uint(value);
 }
 
-void PrimerGroupBox::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator) {
+void PrimerGroupBox::setTemperatureCalculator(const QSharedPointer<TmCalculator>& newTemperatureCalculator) {
     temperatureCalculator = newTemperatureCalculator;
     updateStatistics(getPrimer());
 }
@@ -139,10 +139,10 @@ void PrimerGroupBox::sl_activeSequenceChanged() {
 }
 
 QString PrimerGroupBox::getTmString(const QString& sequence) {
-    SAFE_POINT(temperatureCalculator != nullptr, L10N::nullPointerError("BaseTempCalc"), "");
+    SAFE_POINT(temperatureCalculator != nullptr, L10N::nullPointerError("TmCalculator"), "");
 
     double tm = temperatureCalculator->getMeltingTemperature(sequence.toLocal8Bit());
-    QString tmString = tm != BaseTempCalc::INVALID_TM ? PrimerStatistics::getDoubleStringValue(tm) + QString::fromLatin1("\x00B0") + "C" : tr("N/A");
+    QString tmString = tm != TmCalculator::INVALID_TM ? PrimerStatistics::getDoubleStringValue(tm) + QString::fromLatin1("\x00B0") + "C" : tr("N/A");
     return tr("Tm = ") + tmString;
 }
 

@@ -76,7 +76,7 @@ private:
     QList<QPair<Primer, Primer>> primers;
     QString reportUrl;
     QString primersUrl;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 };
 
 class InSilicoPcrWorker : public BaseThroughWorker {

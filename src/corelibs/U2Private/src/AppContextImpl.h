@@ -438,8 +438,8 @@ public:
         projectFilterTaskRegistry = value;
     }
 
-    void setTempCalcRegistry(TempCalcRegistry* value) {
-        SAFE_POINT(tcr == nullptr || value == nullptr, "TempCalcRegistry and tcr aren't nullptr", );
+    void setTmCalculatorRegistry(TmCalculatorRegistry* value) {
+        SAFE_POINT(tcr == nullptr || value == nullptr, "TmCalculatorRegistry and tcr aren't nullptr", );
         tcr = value;
     }
 
@@ -659,7 +659,7 @@ protected:
     DashboardInfoRegistry* _getDashboardInfoRegistry() const override {
         return dashboardInfoRegistry;
     }
-    TempCalcRegistry* _getTempCalcRegistry() const override {
+    TmCalculatorRegistry* _getTmCalculatorRegistry() const override {
         return tcr;
     }
 
@@ -737,7 +737,7 @@ private:
     StructuralAlignmentAlgorithmRegistry* saar;
     SubstMatrixRegistry* smr;
     TaskScheduler* ts;
-    TempCalcRegistry* tcr;
+    TmCalculatorRegistry* tcr;
     TestFramework* tf;
     U2DataPathRegistry* dpr;
     U2DbiRegistry* dbiRegistry;

@@ -48,7 +48,7 @@ InSilicoPcrTask::InSilicoPcrTask(InSilicoPcrTaskSettings* _settings)
       settings(_settings), forwardSearch(nullptr), reverseSearch(nullptr), minProductSize(0) {
     GCOUNTER(cvar, "InSilicoPcrTask");
     minProductSize = qMax(settings->forwardPrimer.length(), settings->reversePrimer.length());
-    SAFE_POINT_EXT(settings->temperatureCalculator != nullptr, setError(L10N::nullPointerError("BaseTempCalc")), );
+    SAFE_POINT_EXT(settings->temperatureCalculator != nullptr, setError(L10N::nullPointerError("TmCalculator")), );
 }
 
 namespace {

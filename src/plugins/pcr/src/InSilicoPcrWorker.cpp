@@ -23,7 +23,8 @@
 
 #include <QTextStream>
 
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorFactory.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -47,7 +48,7 @@
 
 #include "InSilicoPcrWorkflowTask.h"
 #include "PrimersGrouperWorker.h"
-#include "TempCalcDelegate.h"
+#include "TmCalculatorDelegate.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -145,7 +146,7 @@ void InSilicoPcrWorkerFactory::init() {
             delegates[EXTRACT_ANNOTATIONS_ATTR_ID] = new ComboBoxDelegate(values);
         }
         {
-            delegates[TEMPERATURE_SETTINGS_ID] = new TempCalcDelegate;
+            delegates[TEMPERATURE_SETTINGS_ID] = new TmCalculatorDelegate;
         }
     }
 
@@ -324,7 +325,7 @@ Task* InSilicoPcrWorker::onInputEnded() {
     reported = true;
     QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
     if (tmAlgorithmSettings.isEmpty()) {
-        tmAlgorithmSettings = AppContext::getTempCalcRegistry()->getDefaultTempCalcFactory()->createDefaultSettings();
+        tmAlgorithmSettings = AppContext::getTmCalculatorRegistry()->getDefaultTmCalculatorFactory()->createDefaultSettings();
     }
     return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID), tmAlgorithmSettings);
 }
@@ -370,10 +371,10 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
         pcrSettings->perfectMatch = getValue<int>(PERFECT_ATTR_ID);
         pcrSettings->sequenceName = seq->getSequenceName();
         QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
-        TempCalcRegistry* tmRegistry = AppContext::getTempCalcRegistry();
-        pcrSettings->temperatureCalculator = tmRegistry->createTempCalculator(tmAlgorithmSettings);
+        TmCalculatorRegistry* tmRegistry = AppContext::getTmCalculatorRegistry();
+        pcrSettings->temperatureCalculator = tmRegistry->createTmCalculator(tmAlgorithmSettings);
         CHECK(pcrSettings->temperatureCalculator != nullptr,
-              new FailTask(tr("Failed to find TM algorithm with id '%1'.").arg(tmAlgorithmSettings.value(BaseTempCalc::KEY_ID).toString())));
+              new FailTask(tr("Failed to find TM algorithm with id '%1'.").arg(tmAlgorithmSettings.value(TmCalculator::KEY_ID).toString())));
 
         Task* pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
         pcrTask->setProperty(PAIR_NUMBER_PROP_ID, i);
@@ -397,7 +398,7 @@ InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table,
       primers(primers),
       reportUrl(reportUrl),
       primersUrl(_primersUrl),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculator(tempSettings)) {
+      temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(tempSettings)) {
     SAFE_POINT(temperatureCalculator != nullptr, "temperatureCalculator is nullptr!", )
 }
 

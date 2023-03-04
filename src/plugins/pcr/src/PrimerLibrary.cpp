@@ -24,7 +24,8 @@
 #include <QDir>
 #include <QFileInfo>
 
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorFactory.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -32,8 +33,8 @@
 #include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 #include <U2Core/UdrDbi.h>
 #include <U2Core/UdrRecord.h>
 #include <U2Core/UdrSchemaRegistry.h>
@@ -129,17 +130,17 @@ void PrimerLibrary::initPrimerUdrs(U2OpStatus& os) {
 
     {
         QList<QPair<QByteArray, UdrSchema::DataType>> fields;
-        fields.append({ "name", UdrSchema::STRING });
-        fields.append({ "sequence", UdrSchema::STRING });
-        fields.append({ "GC", UdrSchema::DOUBLE });
-        fields.append({ "Tm", UdrSchema::DOUBLE });
+        fields.append({"name", UdrSchema::STRING});
+        fields.append({"sequence", UdrSchema::STRING});
+        fields.append({"GC", UdrSchema::DOUBLE});
+        fields.append({"Tm", UdrSchema::DOUBLE});
         registerUdrSchema(os, PRIMER_UDR_ID, fields);
         CHECK_OP(os, );
     }
     {
         QList<QPair<QByteArray, UdrSchema::DataType>> fields;
-        fields.append({ "parameter", UdrSchema::STRING });
-        fields.append({ "value", UdrSchema::STRING });
+        fields.append({"parameter", UdrSchema::STRING});
+        fields.append({"value", UdrSchema::STRING});
         registerUdrSchema(os, PRIMER_SETTINGS_UDR_ID, fields);
         CHECK_OP(os, );
     }
@@ -221,11 +222,11 @@ void PrimerLibrary::updateRawPrimer(Primer primer, U2OpStatus& os) {
     updatePrimer(primer, os);
 }
 
-const TempCalcSettings& PrimerLibrary::getTemperatureSettings() const {
+const QVariantMap& PrimerLibrary::getTemperatureSettings() const {
     return temperatureCalculator->getSettings();
 }
 
-void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator) {
+void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<TmCalculator>& newTemperatureCalculator) {
     temperatureCalculator = newTemperatureCalculator;
     auto settingsMap = temperatureCalculator->getSettings();
     U2OpStatusImpl os;
@@ -253,7 +254,7 @@ void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>&
         return;
     }
 
-    auto id = settingsMap.value(BaseTempCalc::KEY_ID);
+    auto id = settingsMap.value(TmCalculator::KEY_ID);
     auto idRecords = udrDbi->getRecords(PRIMER_SETTINGS_UDR_ID, os);
     CHECK_OP(os, );
 
@@ -277,8 +278,8 @@ void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>&
         } else {
             toRemove.append(UdrRecordId(PRIMER_SETTINGS_UDR_ID, record.getId().getRecordId()));
         }
-        CHECK_CONTINUE(recordParameter == BaseTempCalc::KEY_ID);
-        
+        CHECK_CONTINUE(recordParameter == TmCalculator::KEY_ID);
+
         auto recordValue = record.getString(VALUE_FILED, os);
         CHECK_CONTINUE(recordValue == id);
 
@@ -304,11 +305,10 @@ void PrimerLibrary::setTemperatureCalculator(const QSharedPointer<BaseTempCalc>&
             udrDbi->removeRecord(record, os);
             CHECK_OP(os, );
         }
-        settingsMap.remove(BaseTempCalc::KEY_ID);
+        settingsMap.remove(TmCalculator::KEY_ID);
         addAllFromSettingsMap(settingsMap, os);
         CHECK_OP(os, );
     }
-
 }
 
 void PrimerLibrary::setTmAndGcOfPrimer(Primer& primer) {
@@ -318,7 +318,7 @@ void PrimerLibrary::setTmAndGcOfPrimer(Primer& primer) {
         primer.tm = calc.getTm();
     } else {
         primer.gc = Primer::INVALID_GC;
-        primer.tm = BaseTempCalc::INVALID_TM;
+        primer.tm = TmCalculator::INVALID_TM;
     }
 }
 
@@ -347,19 +347,18 @@ void PrimerLibrary::initTemperatureCalculator() {
         CHECK_OP(os, );
 
         settings.insert(recordParameter, recordValue);
-        CHECK_CONTINUE(recordParameter == BaseTempCalc::KEY_ID);
+        CHECK_CONTINUE(recordParameter == TmCalculator::KEY_ID);
 
         calcId = recordValue;
     }
 
-    auto factory = AppContext::getTempCalcRegistry()->getById(calcId);
+    auto factory = AppContext::getTmCalculatorRegistry()->getById(calcId);
     if (factory != nullptr) {
         temperatureCalculator = factory->createCalculator(settings);
         initializedFromDb = true;
     } else {
-        temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculator();
+        temperatureCalculator = AppContext::getTmCalculatorRegistry()->createTmCalculator();
     }
-    
 }
 
 }  // namespace U2

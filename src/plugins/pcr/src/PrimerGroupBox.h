@@ -23,7 +23,7 @@
 
 #include "ui_PrimerGroupBox.h"
 
-#include <U2Algorithm/BaseTempCalc.h>
+#include <U2Algorithm/TmCalculator.h>
 
 namespace U2 {
 
@@ -40,7 +40,7 @@ public:
 
     QByteArray getPrimer() const;
     uint getMismatches() const;
-    void setTemperatureCalculator(const QSharedPointer<BaseTempCalc>& newTemperatureCalculator);
+    void setTemperatureCalculator(const QSharedPointer<TmCalculator>& newTemperatureCalculator);
 
 signals:
     void si_primerChanged();
@@ -65,7 +65,7 @@ private:
 
     FindAlgorithmTask* findPrimerTask;
     AnnotatedDNAView* annotatedDnaView;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 };
 
 }  // namespace U2

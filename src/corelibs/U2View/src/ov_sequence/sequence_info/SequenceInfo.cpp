@@ -26,8 +26,8 @@
 #include <QScopedPointer>
 #include <QVBoxLayout>
 
-#include <U2Algorithm/BaseTempCalc.h>
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculator.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
@@ -45,7 +45,7 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
-#include <U2View/TempCalcDialog.h>
+#include <U2View/TmCalculatorSelectorDialog.h>
 
 #include "CodonOccurTask.h"
 
@@ -82,7 +82,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView),
       annotatedDnaViewName(annotatedDnaView->getName()),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculator(annotatedDnaViewName)) {
+      temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(annotatedDnaViewName)) {
     SAFE_POINT(0 != annotatedDnaView, "AnnotatedDNAView is NULL!", );
 
     updateCurrentRegions();
@@ -94,7 +94,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
 }
 
 SequenceInfo::~SequenceInfo() {
-    AppContext::getTempCalcRegistry()->saveSettings(annotatedDnaViewName, temperatureCalculator->getSettings());
+    AppContext::getTmCalculatorRegistry()->saveSettings(annotatedDnaViewName, temperatureCalculator->getSettings());
 }
 
 void SequenceInfo::initLayout() {
@@ -271,7 +271,7 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
 
     if (alphabet->isNucleic()) {
         statsInfo += formTableRow(tr(CAPTION_SEQ_GC_CONTENT), getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
-        bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != BaseTempCalc::INVALID_TM;
+        bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != TmCalculator::INVALID_TM;
         QString meltingTmFormattedValue = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " °C", isValidMeltingTm);
         statsInfo += formTableRow(tr(CAPTION_SEQ_MELTING_TEMPERATURE), meltingTmFormattedValue, availableSpace, isValidMeltingTm);
 
@@ -553,7 +553,7 @@ bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
 
 void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
     if (link == tr(CAPTION_SEQ_MELTING_TEMPERATURE)) {
-        QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
+        QObjectScopedPointer<TmCalculatorSelectorDialog> dialog(new TmCalculatorSelectorDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
         int res = dialog->exec();
         CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 

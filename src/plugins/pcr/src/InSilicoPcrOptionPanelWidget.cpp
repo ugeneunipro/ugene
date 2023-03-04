@@ -23,7 +23,8 @@
 
 #include <QMessageBox>
 
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorFactory.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
@@ -41,7 +42,7 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
-#include <U2View/TempCalcWidget.h>
+#include <U2View/TmCalculatorSettingsWidget.h>
 
 #include "ExtractProductTask.h"
 #include "InSilicoPcrTask.h"
@@ -64,8 +65,8 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _an
       pcrTask(nullptr),
       resultTableShown(false),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaView->getName())),
-      tempCalcId(annotatedDnaView->getName() + ID_POSTFIX),
-      temperatureCalculator(AppContext::getTempCalcRegistry()->createTempCalculator(tempCalcId)) {
+      TmCalculatorId(annotatedDnaView->getName() + ID_POSTFIX),
+      temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(TmCalculatorId)) {
     GCOUNTER(cvar, "PCR options panel");
     setupUi(this);
     forwardPrimerBoxSubgroup->init(FORWARD_SUBGROUP_ID, tr("Forward primer"), forwardPrimerBox, true);
@@ -93,9 +94,9 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _an
     connect(productsTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(sl_onProductsSelectionChanged()));
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(sl_onProductDoubleClicked()));
     connect(detailsLinkLabel, SIGNAL(linkActivated(const QString&)), SLOT(sl_showDetails(const QString&)));
-    connect(temperatureWidget, &TempCalcWidget::si_settingsChanged, this, &InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged);
+    connect(temperatureWidget, &TmCalculatorSelectorWidget::si_settingsChanged, this, &InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged);
 
-    static const QString linkText = QString("<a href=\"%1\" style=\"color: %2\">%3</a>").arg(DETAILS_LINK).arg(Theme::linkColorLabelStr()).arg(tr("Show primers details"));
+    static const QString linkText = QString(R"(<a href="%1" style="color: %2">%3</a>)").arg(DETAILS_LINK).arg(Theme::linkColorLabelStr()).arg(tr("Show primers details"));
     detailsLinkLabel->setText(linkText);
     warningLabel->setStyleSheet(warningLabel->styleSheet() + "color: " + Theme::errorColorLabelStr());
     warningLabel->setAlignment(Qt::AlignLeft);
@@ -109,10 +110,10 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _an
 }
 
 InSilicoPcrOptionPanelWidget::~InSilicoPcrOptionPanelWidget() {
-    if (nullptr != pcrTask) {
+    if (pcrTask != nullptr) {
         pcrTask->cancel();
     }
-    AppContext::getTempCalcRegistry()->saveSettings(tempCalcId, temperatureCalculator->getSettings());
+    AppContext::getTmCalculatorRegistry()->saveSettings(TmCalculatorId, temperatureCalculator->getSettings());
 }
 
 AnnotatedDNAView* InSilicoPcrOptionPanelWidget::getDnaView() const {
@@ -162,9 +163,9 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     int perfectMatch = perfectSpinBox->value();
     SAFE_POINT(perfectMatch >= 0, "Negative perfect match", );
     ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
 
     auto settings = new InSilicoPcrTaskSettings;
     settings->forwardPrimer = forwardPrimerBox->getPrimer();
@@ -189,8 +190,8 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
 }
 
 void InSilicoPcrOptionPanelWidget::sl_onFindTaskFinished() {
-    CHECK(sender() == pcrTask, );
-    SAFE_POINT(nullptr != pcrTask, L10N::nullPointerError("InSilicoPcrTask"), );
+    CHECK(pcrTask == sender(), );
+    SAFE_POINT(pcrTask != nullptr, L10N::nullPointerError("InSilicoPcrTask"), );
     if (pcrTask->isCanceled() || pcrTask->hasError()) {
         disconnect(pcrTask, SIGNAL(si_stateChanged()));
         pcrTask = nullptr;
@@ -205,7 +206,7 @@ void InSilicoPcrOptionPanelWidget::sl_onFindTaskFinished() {
 
 void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask* task) {
     ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getSequenceContext(task->getSettings()->sequenceObject);
-    CHECK(nullptr != sequenceContext, );
+    CHECK(sequenceContext != nullptr, );
 
     productsTable->showProducts(task->getResults(), sequenceContext);
     setResultTableShown(true);
@@ -213,9 +214,9 @@ void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask* task) {
 
 void InSilicoPcrOptionPanelWidget::sl_extractProduct() {
     ADVSequenceObjectContext* sequenceContext = productsTable->productsContext();
-    SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
     ExtractProductSettings settings;
     settings.sequenceRef = sequenceContext->getSequenceRef();
     settings.annotationsExtraction = ExtractProductSettings::AnnotationsExtraction(annsComboBox->itemData(annsComboBox->currentIndex()).toInt());
@@ -240,7 +241,7 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
     if (tableChanged) {
         setResultTableShown(false);
     }
-    CHECK(nullptr != pcrTask, );
+    CHECK(pcrTask != nullptr, );
     bool taskChanged = GObjectReference(sequenceContext->getSequenceGObject()) == pcrTask->getSettings()->sequenceObject;
     if (taskChanged) {
         pcrTask->cancel();
@@ -248,7 +249,7 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
 }
 
 bool InSilicoPcrOptionPanelWidget::isDnaSequence(ADVSequenceObjectContext* sequenceContext) {
-    CHECK(nullptr != sequenceContext, false);
+    CHECK(sequenceContext != nullptr, false);
     const DNAAlphabet* alphabet = sequenceContext->getAlphabet();
     SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("Alphabet"), false);
     return alphabet->isDNA();
@@ -281,9 +282,9 @@ void InSilicoPcrOptionPanelWidget::sl_showDetails(const QString& link) {
 }
 
 void U2::InSilicoPcrOptionPanelWidget::sl_temperatureSettingsChanged() {
-    auto tempCalcSettings = temperatureWidget->getSettings();
-    auto id = tempCalcSettings.value(BaseTempCalc::KEY_ID).toString();
-    temperatureCalculator = AppContext::getTempCalcRegistry()->getById(id)->createCalculator(tempCalcSettings);
+    auto QVariantMap = temperatureWidget->getSettings();
+    auto id = QVariantMap.value(TmCalculator::KEY_ID).toString();
+    temperatureCalculator = AppContext::getTmCalculatorRegistry()->getById(id)->createCalculator(QVariantMap);
     forwardPrimerBox->setTemperatureCalculator(temperatureCalculator);
     reversePrimerBox->setTemperatureCalculator(temperatureCalculator);
 }

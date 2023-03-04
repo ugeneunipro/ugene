@@ -41,7 +41,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class ADVSequenceWidget;
 class AnnotatedDNAView;
-class BaseTempCalc;
+class TmCalculator;
 class LRegionsSelection;
 class ShowHideSubgroupWidget;
 class AnnotationSelection;
@@ -161,7 +161,7 @@ private:
 
     U2SavableWidget savableWidget;
 
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 
 };
 

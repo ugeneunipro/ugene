@@ -21,7 +21,7 @@
 
 #include "FindPrimerPairsWorker.h"
 
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/FailTask.h>
@@ -43,7 +43,7 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-#include "TempCalcDelegate.h"
+#include "TmCalculatorDelegate.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -89,8 +89,8 @@ Task* FindPrimerPairsWorker::tick() {
     if (!inPort->hasMessage() && inPort->isEnded()) {
         QString reportFileUrl = getValue<QString>(FindPrimerPairsWorkerFactory::OUT_FILE);
         auto tempSettings = getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID);
-        auto tempCalc = AppContext::getTempCalcRegistry()->createTempCalculator(getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID));
-        Task* t = new FindPrimersTask(reportFileUrl, data, tempCalc);
+        auto TmCalculator = AppContext::getTmCalculatorRegistry()->createTmCalculator(getValue<QVariantMap>(FindPrimerPairsWorkerFactory::TEMPERATURE_SETTINGS_ID));
+        Task* t = new FindPrimersTask(reportFileUrl, data, TmCalculator);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onTaskFinished(Task*)));
         return t;
     }
@@ -157,7 +157,7 @@ void FindPrimerPairsWorkerFactory::init() {
     tags.set("extensions", {"html"});
 
     delegates[OUT_FILE] = new URLDelegate(tags, "");
-    delegates[TEMPERATURE_SETTINGS_ID] = new TempCalcDelegate;
+    delegates[TEMPERATURE_SETTINGS_ID] = new TmCalculatorDelegate;
 
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new FindPrimerPairsPromter());
@@ -172,7 +172,7 @@ void FindPrimerPairsWorkerFactory::init() {
 /************************************************************************/
 /* FindPrimersTask */
 /************************************************************************/
-FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<BaseTempCalc>& _temperatureCalculator)
+FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<TmCalculator>& _temperatureCalculator)
     : Task(tr("FindPrimersTask"), TaskFlag_None),
       sequences(sequences),
       temperatureCalculator(_temperatureCalculator),

@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-class BaseTempCalc;
+class TmCalculator;
 
 namespace LocalWorkflow {
 
@@ -83,7 +83,7 @@ public:
 class FindPrimersTask : public Task {
     Q_OBJECT
 public:
-    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<BaseTempCalc>& temperatureCalculator);
+    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<TmCalculator>& temperatureCalculator);
 
     void run();
     QString getReport() const {
@@ -100,7 +100,7 @@ private:
 
 private:
     QList<DNASequence> sequences;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
     QString report;
     QString outputUrl;
     QStringList rows;

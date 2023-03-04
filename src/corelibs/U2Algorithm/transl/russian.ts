@@ -16,9 +16,9 @@
     </message>
 </context>
 <context>
-    <name>RoughTempCalcCmdFactory</name>
+    <name>RoughTmCalculatorCmdFactory</name>
     <message>
-        <location filename="../src/temperature/methods/RoughTempCalcCmdFactory.cpp" line="27"/>
+        <location filename="../src/temperature/rough/RoughTmCalculatorCmdFactory.cpp" line="27"/>
         <source>Rough</source>
         <translation>Приблизительный</translation>
     </message>

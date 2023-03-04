@@ -24,7 +24,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
@@ -35,7 +35,7 @@
 
 #include <U2Gui/HelpButton.h>
 
-#include <U2View/TempCalcDialog.h>
+#include <U2View/TmCalculatorSelectorDialog.h>
 
 #include "EditPrimerDialog.h"
 #include "PrimerLibrary.h"
@@ -148,7 +148,7 @@ void PrimerLibraryWidget::sl_openTemperatureSettings() {
     PrimerLibrary* library = PrimerLibrary::getInstance(os);
     CHECK_OP_UI(os, );
 
-    QObjectScopedPointer<TempCalcDialog> dialog(new TempCalcDialog(this, library->getTemperatureSettings()));
+    QObjectScopedPointer<TmCalculatorSelectorDialog> dialog(new TmCalculatorSelectorDialog(this, library->getTemperatureSettings()));
     int res = dialog->exec();
     CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 

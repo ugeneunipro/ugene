@@ -41,7 +41,12 @@ HEADERS += src/misc/BitsTable.h \
            src/registry/SplicedAlignmentTask.h \
            src/registry/SplicedAlignmentTaskRegistry.h \
            src/registry/SubstMatrixRegistry.h \
-           src/registry/TempCalcRegistry.h \
+           src/smith_waterman/SWMulAlignExternalPropTag.h \
+           src/smith_waterman/SWMulAlignResultNamesTag.h \
+           src/smith_waterman/SWMulAlignResultNamesTagsRegistry.h \
+           src/smith_waterman/SWMulAlignSeqPrefixTag.h \
+           src/smith_waterman/SWMulAlignSubseqPropTag.h \
+           src/smith_waterman/SWResultFilterRegistry.h \
            src/smith_waterman/SmithWatermanReportCallback.h \
            src/smith_waterman/SmithWatermanResult.h \
            src/smith_waterman/SmithWatermanResultFilters.h \
@@ -49,19 +54,14 @@ HEADERS += src/misc/BitsTable.h \
            src/smith_waterman/SmithWatermanTaskFactory.h \
            src/smith_waterman/SmithWatermanTaskFactoryRegistry.h \
            src/smith_waterman/SmithWatermanUtil.h \
-           src/smith_waterman/SWResultFilterRegistry.h \
-           src/smith_waterman/SWMulAlignExternalPropTag.h \
-           src/smith_waterman/SWMulAlignResultNamesTag.h \
-           src/smith_waterman/SWMulAlignResultNamesTagsRegistry.h \
-           src/smith_waterman/SWMulAlignSeqPrefixTag.h \
-           src/smith_waterman/SWMulAlignSubseqPropTag.h \
            src/structural_alignment/StructuralAlignmentAlgorithm.h \
            src/structural_alignment/StructuralAlignmentAlgorithmFactory.h \
            src/structural_alignment/StructuralAlignmentAlgorithmRegistry.h \
-           src/temperature/BaseTempCalc.h \
-           src/temperature/TempCalcFactory.h \
-           src/temperature/methods/RoughTempCalc.h \
-           src/temperature/methods/RoughTempCalcCmdFactory.h \
+           src/temperature/TmCalculator.h \
+           src/temperature/TmCalculatorFactory.h \
+           src/temperature/TmCalculatorRegistry.h \
+           src/temperature/rough/RoughTmCalculator.h \
+           src/temperature/rough/RoughTmCalculatorCmdFactory.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithm.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmDefault.h \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmRegistry.h \
@@ -69,7 +69,6 @@ HEADERS += src/misc/BitsTable.h \
            src/util_assembly_consensus/AssemblyConsensusUtils.h \
            src/util_assembly_consensus/BuiltInAssemblyConsensusAlgorithms.h \
            src/util_msa_consensus/BuiltInConsensusAlgorithms.h \
-           src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.h \
            src/util_msa_consensus/MSAConsensusAlgorithm.h \
            src/util_msa_consensus/MSAConsensusAlgorithmClustal.h \
            src/util_msa_consensus/MSAConsensusAlgorithmDefault.h \
@@ -77,17 +76,15 @@ HEADERS += src/misc/BitsTable.h \
            src/util_msa_consensus/MSAConsensusAlgorithmRegistry.h \
            src/util_msa_consensus/MSAConsensusAlgorithmStrict.h \
            src/util_msa_consensus/MSAConsensusUtils.h \
+           src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.h \
            src/util_msa_distance/BuiltInDistanceAlgorithms.h \
            src/util_msa_distance/MSADistanceAlgorithm.h \
            src/util_msa_distance/MSADistanceAlgorithmHamming.h \
-           src/util_msa_distance/MSADistanceAlgorithmSimilarity.h \
            src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.h \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.h \
+           src/util_msa_distance/MSADistanceAlgorithmSimilarity.h \
            src/util_msaedit/CreateSubalignmentTask.h \
            src/util_msaedit/MsaUtilTasks.h \
-           src/util_msaedit/color_schemes/percentage_idententity/colored/ColumnCharsCounter.h \
-           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColored.h \
-           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColoredFactory.h \
            src/util_msaedit/color_schemes/ColorSchemeUtils.h \
            src/util_msaedit/color_schemes/MsaColorScheme.h \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.h \
@@ -96,6 +93,9 @@ HEADERS += src/misc/BitsTable.h \
            src/util_msaedit/color_schemes/MsaColorSchemePercentageIdentity.h \
            src/util_msaedit/color_schemes/MsaColorSchemeStatic.h \
            src/util_msaedit/color_schemes/MsaColorSchemeWeakSimilarities.h \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/ColumnCharsCounter.h \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColored.h \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColoredFactory.h \
            src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.h \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeAgreements.h \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeConservation.h \
@@ -148,24 +148,24 @@ SOURCES += src/misc/BitsTable.cpp \
            src/registry/SplicedAlignmentTask.cpp \
            src/registry/SplicedAlignmentTaskRegistry.cpp \
            src/registry/SubstMatrixRegistry.cpp \
-           src/registry/TempCalcRegistry.cpp \
+           src/smith_waterman/SWMulAlignExternalPropTag.cpp \
+           src/smith_waterman/SWMulAlignResultNamesTagsRegistry.cpp \
+           src/smith_waterman/SWMulAlignSeqPrefixTag.cpp \
+           src/smith_waterman/SWMulAlignSubseqPropTag.cpp \
+           src/smith_waterman/SWResultFilterRegistry.cpp \
            src/smith_waterman/SmithWatermanReportCallback.cpp \
            src/smith_waterman/SmithWatermanResult.cpp \
            src/smith_waterman/SmithWatermanResultFilters.cpp \
            src/smith_waterman/SmithWatermanTaskFactoryRegistry.cpp \
            src/smith_waterman/SmithWatermanUtil.cpp \
-           src/smith_waterman/SWResultFilterRegistry.cpp \
-           src/smith_waterman/SWMulAlignExternalPropTag.cpp \
-           src/smith_waterman/SWMulAlignResultNamesTagsRegistry.cpp \
-           src/smith_waterman/SWMulAlignSeqPrefixTag.cpp \
-           src/smith_waterman/SWMulAlignSubseqPropTag.cpp \
            src/structural_alignment/StructuralAlignmentAlgorithm.cpp \
            src/structural_alignment/StructuralAlignmentAlgorithmFactory.cpp \
            src/structural_alignment/StructuralAlignmentAlgorithmRegistry.cpp \
-           src/temperature/BaseTempCalc.cpp \
-           src/temperature/TempCalcFactory.cpp \
-           src/temperature/methods/RoughTempCalc.cpp \
-           src/temperature/methods/RoughTempCalcCmdFactory.cpp \
+           src/temperature/TmCalculator.cpp \
+           src/temperature/TmCalculatorFactory.cpp \
+           src/temperature/TmCalculatorRegistry.cpp \
+           src/temperature/rough/RoughTmCalculator.cpp \
+           src/temperature/rough/RoughTmCalculatorCmdFactory.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithm.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmDefault.cpp \
            src/util_assembly_consensus/AssemblyConsensusAlgorithmRegistry.cpp \
@@ -173,7 +173,6 @@ SOURCES += src/misc/BitsTable.cpp \
            src/util_assembly_consensus/AssemblyConsensusUtils.cpp \
            src/util_assembly_consensus/BuiltInAssemblyConsensusAlgorithms.cpp \
            src/util_msa_consensus/BuiltInConsensusAlgorithms.cpp \
-           src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithm.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithmClustal.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithmDefault.cpp \
@@ -181,17 +180,15 @@ SOURCES += src/misc/BitsTable.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithmRegistry.cpp \
            src/util_msa_consensus/MSAConsensusAlgorithmStrict.cpp \
            src/util_msa_consensus/MSAConsensusUtils.cpp \
+           src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp \
            src/util_msa_distance/BuiltInDistanceAlgorithms.cpp \
            src/util_msa_distance/MSADistanceAlgorithm.cpp \
            src/util_msa_distance/MSADistanceAlgorithmHamming.cpp \
-           src/util_msa_distance/MSADistanceAlgorithmSimilarity.cpp \
            src/util_msa_distance/MSADistanceAlgorithmHammingRevCompl.cpp \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.cpp \
+           src/util_msa_distance/MSADistanceAlgorithmSimilarity.cpp \
            src/util_msaedit/CreateSubalignmentTask.cpp \
            src/util_msaedit/MsaUtilTasks.cpp \
-           src/util_msaedit/color_schemes/percentage_idententity/colored/ColumnCharsCounter.cpp \
-           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColored.cpp \
-           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColoredFactory.cpp \
            src/util_msaedit/color_schemes/ColorSchemeUtils.cpp \
            src/util_msaedit/color_schemes/MsaColorScheme.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.cpp \
@@ -200,6 +197,9 @@ SOURCES += src/misc/BitsTable.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemePercentageIdentity.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemeStatic.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemeWeakSimilarities.cpp \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/ColumnCharsCounter.cpp \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColored.cpp \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColoredFactory.cpp \
            src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeAgreements.cpp \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeConservation.cpp \

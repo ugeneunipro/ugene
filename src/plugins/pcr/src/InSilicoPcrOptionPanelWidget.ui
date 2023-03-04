@@ -66,7 +66,7 @@
        <widget class="U2::ShowHideSubgroupWidget" name="temperatureSubgroup" native="true"/>
       </item>
       <item>
-       <widget class="U2::TempCalcWidget" name="temperatureWidget" native="true"/>
+       <widget class="U2::TmCalculatorSelectorWidget" name="temperatureWidget" native="true"/>
       </item>
       <item>
        <widget class="QWidget" name="settingsWidget" native="true">
@@ -452,9 +452,9 @@ font-weight: 600;</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>U2::TempCalcWidget</class>
+   <class>U2::TmCalculatorSelectorWidget</class>
    <extends>QWidget</extends>
-   <header location="global">U2View/TempCalcWidget.h</header>
+   <header location="global">U2View/TmCalculatorSelectorWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

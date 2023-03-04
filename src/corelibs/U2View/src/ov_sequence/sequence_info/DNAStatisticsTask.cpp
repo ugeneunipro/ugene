@@ -21,7 +21,7 @@
 
 #include <math.h>
 
-#include <U2Algorithm/BaseTempCalc.h>
+#include <U2Algorithm/TmCalculator.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -44,7 +44,7 @@ DNAStatistics::DNAStatistics() {
 void DNAStatistics::clear() {
     length = 0;
     gcContent = 0;
-    meltingTemp = BaseTempCalc::INVALID_TM;
+    meltingTemp = TmCalculator::INVALID_TM;
 
     ssMolecularWeight = 0;
     ssExtinctionCoefficient = 0;
@@ -337,7 +337,7 @@ const QVector<double> DNAStatisticsTask::GC_RATIO_MAP = createGcRatioMap();
 DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
                                      const U2EntityRef seqRef,
                                      const QVector<U2Region>& regions,
-                                     const QSharedPointer<BaseTempCalc>& _temperatureCalculator)
+                                     const QSharedPointer<TmCalculator>& _temperatureCalculator)
     : BackgroundTask<DNAStatistics>(tr("Calculate sequence statistics"), TaskFlag_None),
       alphabet(alphabet),
       seqRef(seqRef),
@@ -491,7 +491,7 @@ void DNAStatisticsTask::computeStats() {
         result.dsExtinctionCoefficient *= (1 - hypochromicity);
 
         // Calculating melting temperature
-        result.meltingTemp = meltTempSeq.size() >= MELTING_TM_LENGTH_LIMIT ? BaseTempCalc::INVALID_TM : temperatureCalculator->getMeltingTemperature(meltTempSeq);
+        result.meltingTemp = meltTempSeq.size() >= MELTING_TM_LENGTH_LIMIT ? TmCalculator::INVALID_TM : temperatureCalculator->getMeltingTemperature(meltTempSeq);
 
         // Calculating nmole/OD260
         if (result.ssExtinctionCoefficient != 0) {

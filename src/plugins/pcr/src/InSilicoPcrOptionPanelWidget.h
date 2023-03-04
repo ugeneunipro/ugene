@@ -28,7 +28,7 @@ namespace U2 {
 
 class ADVSequenceObjectContext;
 class AnnotatedDNAView;
-class BaseTempCalc;
+class TmCalculator;
 class InSilicoPcrTask;
 class PrimerGroupBox;
 
@@ -36,7 +36,7 @@ class InSilicoPcrOptionPanelWidget : public QWidget, public Ui_InSilicoPcrOption
     Q_OBJECT
 public:
     InSilicoPcrOptionPanelWidget(AnnotatedDNAView* annotatedDnaView);
-    ~InSilicoPcrOptionPanelWidget();
+    ~InSilicoPcrOptionPanelWidget() override;
 
     AnnotatedDNAView* getDnaView() const;
 
@@ -67,8 +67,8 @@ private:
     bool resultTableShown;
     PcrOptionsPanelSavableTab savableWidget;
     // Required, because @annotatedDnaView is already dead in the destructor
-    QString tempCalcId;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QString TmCalculatorId;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 };
 
 }  // namespace U2

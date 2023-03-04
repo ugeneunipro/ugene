@@ -24,7 +24,7 @@
 #include <QDomElement>
 #include <QSharedPointer>
 
-#include <U2Algorithm/BaseTempCalc.h>
+#include <U2Algorithm/TmCalculator.h>
 
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
@@ -52,7 +52,7 @@ private:
     QString seqName;
     QString seq;
     QVector<U2Region> regions;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 
     // expected values
     DNAStatistics expectedStats;
@@ -70,7 +70,7 @@ private:
     static const QString REGIONS_ATTR;
     /**
      * Semicolon separated list of '=' separated pairs,
-     * where the first value is a key (see @TempCalcSettings and its heirs)
+     * where the first value is a key (see @QVariantMap and its heirs)
      * and the second value is the value of the corresponding parameter.
      */
     static const QString TEMPERATURE_CALCULATION_ATTR;

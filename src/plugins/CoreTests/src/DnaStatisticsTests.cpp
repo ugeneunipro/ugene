@@ -21,7 +21,7 @@
 
 #include "DnaStatisticsTests.h"
 
-#include <U2Algorithm/TempCalcRegistry.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
@@ -102,9 +102,9 @@ void GTest_DnaStatisticsTest::init(XMLTestFormat*, const QDomElement& element) {
             resultMap.insert(keyAndValue.first(), keyAndValue.last());
         }
         CHECK_EXT(!resultMap.isEmpty(), setError("No temperature settings"), );
-        CHECK_EXT(resultMap.keys().contains(BaseTempCalc::KEY_ID), setError("No ID were set"), );
+        CHECK_EXT(resultMap.keys().contains(TmCalculator::KEY_ID), setError("No ID were set"), );
 
-        temperatureCalculator = AppContext::getTempCalcRegistry()->createTempCalculator(resultMap);
+        temperatureCalculator = AppContext::getTmCalculatorRegistry()->createTmCalculator(resultMap);
         CHECK_EXT(temperatureCalculator != nullptr, setError("Can't set temperature settings: " + resultMap.value("id").toString()), );
     }
 

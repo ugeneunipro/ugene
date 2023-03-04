@@ -45,7 +45,7 @@ private:
     ExtractProductSettings productSettings;
     InSilicoPcrTask* pcrTask = nullptr;
     QList<ExtractProductTask*> productTasks;
-    QSharedPointer<BaseTempCalc> temperatureCalculator;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 };
 
 }  // namespace U2

@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, const QSharedPointer<BaseTempCalc>& temperatureCalculator, bool& isCriticalError) {
+QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, const QSharedPointer<TmCalculator>& temperatureCalculator, bool& isCriticalError) {
     QString message;
     isCriticalError = false;
     bool forwardIsValid = validate(forward);
@@ -90,7 +90,7 @@ const int PrimerStatisticsCalculator::RUNS_TOP = 4;
 const double PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD = -6.0;
 
 PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray& _sequence,
-                                                       const QSharedPointer<BaseTempCalc>& _temperatureCalculator,
+                                                       const QSharedPointer<TmCalculator>& _temperatureCalculator,
                                                        Direction _direction,
                                                        const qreal _energyThreshold)
     : sequence(_sequence), 
@@ -261,7 +261,7 @@ const QString RUNS_RANGE = QString("&lt;=%1 base runs").arg(PrimerStatisticsCalc
 const QString DIMERS_RANGE = QString("&Delta;G &gt;=%1 kcal/mol").arg(PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD);
 }  // namespace
 
-PrimersPairStatistics::PrimersPairStatistics(const QByteArray& _forward, const QByteArray& _reverse, const QSharedPointer<BaseTempCalc>& temperatureCalculator)
+PrimersPairStatistics::PrimersPairStatistics(const QByteArray& _forward, const QByteArray& _reverse, const QSharedPointer<TmCalculator>& temperatureCalculator)
     : forward(_forward, temperatureCalculator, PrimerStatisticsCalculator::Forward),
       reverse(_reverse, temperatureCalculator, PrimerStatisticsCalculator::Reverse) {
     initializationError = forward.getInitializationError().isEmpty() ? reverse.getInitializationError() : forward.getInitializationError();

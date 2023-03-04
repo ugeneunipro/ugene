@@ -90,12 +90,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorTasks.h \
            src/ov_msa/MaEditorUtils.h \
            src/ov_msa/MaEditorWgt.h \
+           src/ov_msa/MsaEditorMultilineWgt.h \
            src/ov_msa/MsaEditorNameList.h \
            src/ov_msa/MsaEditorSimilarityColumn.h \
            src/ov_msa/MsaEditorStatusBar.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/MsaEditorWgt.h \
-           src/ov_msa/MsaEditorMultilineWgt.h \
            src/ov_msa/MsaMultilineScrollArea.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MsaRowHeightController.h \
@@ -153,8 +153,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_phyltree/item/TvBranchItem.h \
            src/ov_phyltree/item/TvCircularBranchItem.h \
            src/ov_phyltree/item/TvNodeItem.h \
-           src/ov_phyltree/item/TvTextItem.h \
            src/ov_phyltree/item/TvRectangularBranchItem.h \
+           src/ov_phyltree/item/TvTextItem.h \
            src/ov_phyltree/item/TvUnrootedBranchItem.h \
            src/ov_phyltree/layout/TvCircularLayoutAlgorithm.h \
            src/ov_phyltree/layout/TvRectangularLayoutAlgorithm.h \
@@ -228,11 +228,11 @@ HEADERS += src/LicenseDialog.h \
            src/phyltree/PhyTreeDisplayOptionsWidget.h \
            src/phyltree/TextSettingsDialog.h \
            src/phyltree/TreeSettingsDialog.h \
-           src/temperature/methods/RoughTempCalcFactory.h \
-           src/temperature/methods/RoughTempCalcWidget.h \
-           src/temperature/BaseTempCalcWidget.h \
-           src/temperature/TempCalcDialog.h \
-           src/temperature/TempCalcWidget.h \
+           src/temperature/TmCalculatorSelectorDialog.h \
+           src/temperature/TmCalculatorSelectorWidget.h \
+           src/temperature/TmCalculatorSettingsWidget.h \
+           src/temperature/rough/RoughTmCalculatorFactory.h \
+           src/temperature/rough/RoughTmCalculatorSettingsWidget.h \
            src/util_dna_assembly/BuildIndexDialog.h \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.h \
            src/util_dna_assembly/DnaAssemblyDialog.h \
@@ -508,11 +508,11 @@ SOURCES += src/LicenseDialog.cpp \
            src/phyltree/PhyTreeDisplayOptionsWidget.cpp \
            src/phyltree/TextSettingsDialog.cpp \
            src/phyltree/TreeSettingsDialog.cpp \
-           src/temperature/methods/RoughTempCalcFactory.cpp \
-           src/temperature/methods/RoughTempCalcWidget.cpp \
-           src/temperature/BaseTempCalcWidget.cpp \
-           src/temperature/TempCalcDialog.cpp \
-           src/temperature/TempCalcWidget.cpp \
+           src/temperature/TmCalculatorSelectorDialog.cpp \
+           src/temperature/TmCalculatorSelectorWidget.cpp \
+           src/temperature/TmCalculatorSettingsWidget.cpp \
+           src/temperature/rough/RoughTmCalculatorFactory.cpp \
+           src/temperature/rough/RoughTmCalculatorSettingsWidget.cpp \
            src/util_dna_assembly/BuildIndexDialog.cpp \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.cpp \
            src/util_dna_assembly/DnaAssemblyDialog.cpp \

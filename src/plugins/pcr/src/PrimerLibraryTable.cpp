@@ -23,7 +23,7 @@
 
 #include <QPainter>
 
-#include <U2Algorithm/BaseTempCalc.h>
+#include <U2Algorithm/TmCalculator.h>
 
 #include <U2Core/L10n.h>
 #include <U2Core/PrimerStatistics.h>
@@ -138,7 +138,7 @@ QVariant PrimerLibraryModel::displayData(const QModelIndex& index) const {
         case 1:
             return primer.gc != Primer::INVALID_GC ? PrimerStatistics::getDoubleStringValue(primer.gc) : tr("N/A");
         case 2:
-            return primer.tm != BaseTempCalc::INVALID_TM ? PrimerStatistics::getDoubleStringValue(primer.tm) : tr("N/A");
+            return primer.tm != TmCalculator::INVALID_TM ? PrimerStatistics::getDoubleStringValue(primer.tm) : tr("N/A");
         case 3:
             return primer.sequence.length();
         case 4:

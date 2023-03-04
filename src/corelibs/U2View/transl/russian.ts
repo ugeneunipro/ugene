@@ -8225,17 +8225,17 @@ Please, load the corresponding plugins.</source>
     </message>
 </context>
 <context>
-    <name>U2::TempCalcDialog</name>
+    <name>U2::TmCalculatorSelectorDialog</name>
     <message>
-        <location filename="../src/temperature/TempCalcDialog.cpp" line="39"/>
+        <location filename="../src/temperature/TmCalculatorSelectorDialog.cpp" line="39"/>
         <source>Melting temperature</source>
         <translation>Температура плавления</translation>
     </message>
 </context>
 <context>
-    <name>U2::TempCalcWidget</name>
+    <name>U2::TmCalculatorSelectorWidget</name>
     <message>
-        <location filename="../src/temperature/TempCalcWidget.cpp" line="45"/>
+        <location filename="../src/temperature/TmCalculatorSelectorWidget.cpp" line="45"/>
         <source>Choose temperature calculation algorithm:</source>
         <translation>Выберите алгоритм расчета температуры:</translation>
     </message>

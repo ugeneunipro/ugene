@@ -2155,167 +2155,167 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     </message>
 </context>
 <context>
-    <name>Primer3TempCalcWidget</name>
+    <name>Primer3TmCalculatorSettingsWidget</name>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="14"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="20"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="30"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="20"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="30"/>
         <source>Concentration of DNA strands</source>
         <translation>Концентрация цепей ДНК</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="23"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="23"/>
         <source>DNA Concentration</source>
         <translation>Концентрация ДНК</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="36"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="36"/>
         <source> nM</source>
         <translation> нМ</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="49"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="59"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="49"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="59"/>
         <source>Concentration of monovalent cations</source>
         <translation>Концентрация одновалентных катионов</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="52"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="52"/>
         <source>Monovalent Concentration</source>
         <translation>Одновалентные катионы</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="62"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="88"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="114"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="62"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="88"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="114"/>
         <source> mM</source>
         <translation> мМ</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="75"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="85"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="75"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="85"/>
         <source>Concentration of divalent cations</source>
         <translation>Концентрация двухвалентных катионов</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="78"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="78"/>
         <source>Divalent Concentration</source>
         <translation>Двухвалентные катионы</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="101"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="111"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="101"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="111"/>
         <source>Concentration of deoxynycleotide triphosphate</source>
         <translation>Концентрация дезоксинуклеотидтрифосфата</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="104"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="104"/>
         <source>DNTP Concentration</source>
         <translation>Концентрация ДНТФ</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="127"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="137"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="127"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="137"/>
         <source>Concentration of DMSO</source>
         <translation>Концентрация диметилсульфоксида</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="130"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="130"/>
         <source>DMSO Concentration</source>
         <translation>Концентрация ДМСО</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="140"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="140"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="150"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="160"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="150"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="160"/>
         <source>Correction factor for DMSO</source>
         <translation>Фактор коррекции ДМСО</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="153"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="153"/>
         <source>DMSO Factor</source>
         <translation>Фактор ДМСО</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="176"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="186"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="176"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="186"/>
         <source>Concentration of formamide</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="179"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="179"/>
         <source>Formamide Concentration</source>
         <translation>Концентрация формамида</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="189"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="189"/>
         <source> mol/l</source>
         <translation> мол/л</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="199"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="209"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="199"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="209"/>
         <source>The maximum sequence length for using the nearest neighbor model. For sequences longer than this, uses the &quot;GC%&quot; formula</source>
         <translation>Максимальная длина последовательности, для расчета температуры плавления которой будет использоваться модель &quot;метода ближайшего соседа&quot;. Для последовательностей короче заданной будет использоваться формула, основанная на GC%</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="202"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="202"/>
         <source>NN Max Length</source>
         <translation>Максимальная длина МБС</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="212"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="212"/>
         <source> nt</source>
         <translation> нт</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="228"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="238"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="228"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="238"/>
         <source>Specifies the table of thermodynamic parameters and the method of melting temperature calculation</source>
         <translation>Задать таблицу термодинамических параметров и метод расчета температуры плавления</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="231"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="231"/>
         <source>Thermodynamic Table</source>
         <translation>Таблица терм. значений</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="248"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="248"/>
         <source>Breslauer</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="253"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="289"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="253"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="289"/>
         <source>SantaLucia</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="261"/>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="271"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="261"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="271"/>
         <source>Specifies salt correction formula for the melting temperature calculation</source>
         <translation>Задать формулу коррекции соли для расчета температуры плавления</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="264"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="264"/>
         <source>Salt Correction Formula</source>
         <translation>Коррекция соли</translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="284"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="284"/>
         <source>Schildkraut</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/temperature/Primer3TempCalcWidget.ui" line="294"/>
+        <location filename="../src/temperature/Primer3TmCalculatorSettingsWidget.ui" line="294"/>
         <source>Owczarzy</source>
         <translation></translation>
     </message>
