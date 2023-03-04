@@ -49,9 +49,9 @@ namespace U2 {
 namespace LocalWorkflow {
 
 /************************************************************************/
-/* FindPrimerPairsPromter */
+/* FindPrimerPairsPrompter */
 /************************************************************************/
-QString FindPrimerPairsPromter::composeRichDoc() {
+QString FindPrimerPairsPrompter::composeRichDoc() {
     QString res;
 
     auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
@@ -160,7 +160,7 @@ void FindPrimerPairsWorkerFactory::init() {
     delegates[TEMPERATURE_SETTINGS_ID] = new TmCalculatorDelegate;
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new FindPrimerPairsPromter());
+    proto->setPrompter(new FindPrimerPairsPrompter());
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -177,11 +177,11 @@ FindPrimersTask::FindPrimersTask(const QString& outputFileUrl, const QList<DNASe
       sequences(sequences),
       temperatureCalculator(_temperatureCalculator),
       outputUrl(outputFileUrl) {
-    SAFE_POINT(temperatureCalculator != nullptr, "FindPrimersTask: temperatureCalculator is null" ,)
+    SAFE_POINT(temperatureCalculator != nullptr, "FindPrimersTask: temperatureCalculator is null", )
 }
 
 void FindPrimersTask::run() {
-    CHECK(sequences.size() > 0, );
+    CHECK(!sequences.isEmpty(), );
 
     QList<DNASequence> correctPrimers;
     for (int i = 0; i < sequences.size(); i++) {
@@ -219,7 +219,7 @@ void FindPrimersTask::run() {
 }
 
 void FindPrimersTask::createReport() {
-    CHECK(rows.size() > 0, );
+    CHECK(!rows.isEmpty(), );
 
     report += "<!DOCTYPE html>\n";
     report += "<html>\n";
@@ -278,7 +278,7 @@ QString FindPrimersTask::createCell(const QString& value) {
 }
 
 QString FindPrimersTask::createColumn(const QString& name) {
-    return QString("<th width=\"30%\"/><p align=\"center\"><strong>%2</strong></p></th>").arg(name);
+    return QString(R"(<th width="30%"/><p align="center"><strong>%2</strong></p></th>)").arg(name);
 }
 
 }  // namespace U2

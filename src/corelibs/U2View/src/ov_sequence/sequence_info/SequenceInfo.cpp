@@ -26,7 +26,6 @@
 #include <QScopedPointer>
 #include <QVBoxLayout>
 
-#include <U2Algorithm/TmCalculator.h>
 #include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AnnotationSelection.h>

@@ -26,10 +26,11 @@
 #include <U2Core/IdRegistry.h>
 #include <U2Core/global.h>
 
+#include "TmCalculatorFactory.h"
+
 namespace U2 {
 
 class TmCalculator;
-class TmCalculatorFactory;
 
 /**
  * @TmCalculatorRegistry is a class to registering for all methods of temperature calculation

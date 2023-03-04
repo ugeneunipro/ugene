@@ -24,12 +24,9 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include <U2Algorithm/TmCalculatorRegistry.h>
-
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -39,15 +36,13 @@
 
 #include "EditPrimerDialog.h"
 #include "PrimerLibrary.h"
-#include "PrimerLibraryTable.h"
 #include "PrimerLibraryTableController.h"
 #include "export/ExportPrimersDialog.h"
 #include "import/ImportPrimersDialog.h"
-#include "import/ImportPrimersMultiTask.h"
 
 #define CHECK_OP_UI(os, result) \
-    if (os.hasError()) { \
-        QMessageBox::warning(this, QCoreApplication::translate("Global", "Error"), os.getError()); \
+    if ((os).hasError()) { \
+        QMessageBox::warning(this, QCoreApplication::translate("Global", "Error"), (os).getError()); \
     } \
     CHECK_OP(os, result);
 
@@ -173,7 +168,6 @@ void PrimerLibraryWidget::updateTemperatureValues() {
         library->updateRawPrimer(primer, os);
         CHECK_OP_UI(os, );
     }
-
 }
 
 }  // namespace U2
