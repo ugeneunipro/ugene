@@ -101,7 +101,7 @@ Alignment BamReader::AlignmentReader::read() {
     int cigarLength = r->readUint16();
 
     // Bitwise flags (= FLAG)
-    quint16 flags = r->readUint32();
+    quint16 flags = r->readUint16();
     alignment.setFlags(ReadFlags(flags));
 
     // Length of SEQ.
@@ -314,53 +314,44 @@ QByteArray BamReader::readBytes(qint64 size) {
 }
 
 qint32 BamReader::readInt32() {
-    char buffer[4];
-    readBytes(buffer, sizeof(buffer));
-    return (buffer[0] & 0xff) |
-           ((buffer[1] & 0xff) << 8) |
-           ((buffer[2] & 0xff) << 16) |
-           (buffer[3] << 24);
+    qint32 result;
+    readBytes((char*)&result, 4);
+    return result;
 }
 
 quint32 BamReader::readUint32() {
-    char buffer[4];
-    readBytes(buffer, sizeof(buffer));
-    return (buffer[0] & 0xff) |
-           ((buffer[1] & 0xff) << 8) |
-           ((buffer[2] & 0xff) << 16) |
-           ((buffer[3] & 0xff) << 24);
+    quint32 result;
+    readBytes((char*)&result, 4);
+    return result;
 }
 
 qint16 BamReader::readInt16() {
-    char buffer[2];
-    readBytes(buffer, sizeof(buffer));
-    return (buffer[0] & 0xff) |
-           (buffer[1] << 8);
+    qint16 result;
+    readBytes((char*)&result, 2);
+    return result;
 }
 
 quint16 BamReader::readUint16() {
-    char buffer[2];
-    readBytes(buffer, sizeof(buffer));
-    return (buffer[0] & 0xff) |
-           ((buffer[1] & 0xff) << 8);
+    quint16 result;
+    readBytes((char*)&result, 2);
+    return result;
 }
 
 qint8 BamReader::readInt8() {
-    char buffer[1];
-    readBytes(buffer, sizeof(buffer));
-    return buffer[0];
+    qint8 result;
+    readBytes((char*)&result, 1);
+    return result;
 }
 
 quint8 BamReader::readUint8() {
-    char buffer[1];
-    readBytes(buffer, sizeof(buffer));
-    return (buffer[0] & 0xff);
+    quint8 result;
+    readBytes((char*)&result, 1);
+    return result;
 }
 
 float BamReader::readFloat32() {
     quint32 bits = readUint32();
-    float* pointer = (float*)&bits;
-    return *pointer;
+    return *(float*)&bits;
 }
 
 char BamReader::readChar() {
@@ -373,11 +364,10 @@ QByteArray BamReader::readString() {
     QByteArray result;
     while (true) {
         char character = readChar();
-        if ('\0' != character) {
-            result.append(character);
-        } else {
+        if (character == '\0') {
             break;
         }
+        result.append(character);
     }
     return result;
 }
