@@ -21,6 +21,8 @@
 
 #include <SamtoolsAdapter.h>
 
+#include <QtEndian>
+
 #include <U2Core/Log.h>
 
 #include "BAMDbiPlugin.h"
@@ -316,25 +318,25 @@ QByteArray BamReader::readBytes(qint64 size) {
 qint32 BamReader::readInt32() {
     qint32 result;
     readBytes((char*)&result, 4);
-    return result;
+    return qFromLittleEndian(result);
 }
 
 quint32 BamReader::readUint32() {
     quint32 result;
     readBytes((char*)&result, 4);
-    return result;
+    return qFromLittleEndian(result);
 }
 
 qint16 BamReader::readInt16() {
     qint16 result;
     readBytes((char*)&result, 2);
-    return result;
+    return qFromLittleEndian(result);
 }
 
 quint16 BamReader::readUint16() {
     quint16 result;
     readBytes((char*)&result, 2);
-    return result;
+    return qFromLittleEndian(result);
 }
 
 qint8 BamReader::readInt8() {
