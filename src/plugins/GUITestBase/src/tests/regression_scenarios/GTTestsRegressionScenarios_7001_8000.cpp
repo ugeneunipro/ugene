@@ -164,6 +164,15 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7012) {
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", QStringList(), {{"Assembly", testDir + "_common_data/ugenedb/1.bam.ugenedb"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.checkMessage("Ignored incorrect value of attribute"), "Unexpected message in the log: Ignored incorrect value of attribute");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7014) {
     // The test checks 'Save subalignment' in the collapse (virtual groups) mode.
     GTFileDialog::openFile(os, testDir + "_common_data/nexus", "DQB1_exon4.nexus");
