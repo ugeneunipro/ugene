@@ -106,9 +106,9 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that tool is launched.
-    CHECK_SET_ERR(GTLogTracer::checkMessage("Launching IQ-TREE tool"), "No tool launch message found");
-    CHECK_SET_ERR(GTLogTracer::checkMessage("-seed 12345"), "No custom argument message found/-seed");
-    CHECK_SET_ERR(GTLogTracer::checkMessage("-mrate E,I,G,I+G"), "No custom argument message found/-mrate");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("Launching IQ-TREE tool"), "No tool launch message found");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("-seed 12345"), "No custom argument message found/-seed");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("-mrate E,I,G,I+G"), "No custom argument message found/-mrate");
     CHECK_SET_ERR(logTracer.getJoinedErrorString().isEmpty(), "Errors in the log: " + logTracer.getJoinedErrorString());
 
     // Check that tree view is opened.

@@ -2959,7 +2959,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(GTLogTracer::checkMessage("There is no header in the SAM file"), "No warnings about header");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("There is no header in the SAM file"), "No warnings about header");
     GTUtilsLog::checkNoErrorsInLog(os);
 }
 
@@ -3708,7 +3708,7 @@ GUI_TEST_CLASS_DEFINITION(test_3732) {
     GTUtilsProject::openMultiSequenceFileAsMalignment(os, testDir + "_common_data/scenarios/_regression/1688", "sr100.000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(logTracer.checkMessage("MemoryLocker - Not enough memory error, 41 megabytes are required"), "An expected error message not found");
+    CHECK_SET_ERR(logTracer.hasMessage("MemoryLocker - Not enough memory error, 41 megabytes are required"), "An expected error message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3736) {
@@ -4149,7 +4149,7 @@ GUI_TEST_CLASS_DEFINITION(test_3815) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: task has finished with error, no output file has been produced.
-    CHECK_SET_ERR(l.checkMessage("No sequences have been produced"), "No error");
+    CHECK_SET_ERR(l.hasMessage("No sequences have been produced"), "No error");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3816) {

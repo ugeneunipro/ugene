@@ -37,12 +37,17 @@ GTLogTracer::~GTLogTracer() {
     LogServer::getInstance()->removeListener(this);
 }
 
+/** Returns true if the message was produced by the GUI testing framework. */
+static bool isGuiTestSystemMessage(const QString& message) {
+    return message.contains("] GT_");
+}
+
 void GTLogTracer::onMessage(const LogMessage& msg) {
     if (msg.level == LogLevel_ERROR) {
         errorsList << msg.text;
     }
 
-    if (!expectedMessage.isEmpty() && !msg.text.contains("] GT_") && msg.text.contains(expectedMessage)) {
+    if (!expectedMessage.isEmpty() && !isGuiTestSystemMessage(msg.text) && msg.text.contains(expectedMessage)) {
         isExpectedMessageFound = true;
     }
 }
@@ -51,10 +56,10 @@ QList<LogMessage*> GTLogTracer::getMessages() {
     return LogCache::getAppGlobalInstance()->messages;
 }
 
-bool GTLogTracer::checkMessage(const QString& s) {
+bool GTLogTracer::hasMessage(const QString& substring) {
     QList<LogMessage*> messages = getMessages();
     for (LogMessage* message : qAsConst(messages)) {
-        if (message->text.contains(s, Qt::CaseInsensitive)) {
+        if (!isGuiTestSystemMessage(message->text) && message->text.contains(substring, Qt::CaseInsensitive)) {
             return true;
         }
     }
@@ -112,7 +117,7 @@ QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus& /*os*/, const GTLogTracer
 void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& message, int timeoutMillis) {
     for (int time = 0; time < timeoutMillis; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        if (logTracer.checkMessage(message)) {
+        if (logTracer.hasMessage(message)) {
             return;
         }
     }

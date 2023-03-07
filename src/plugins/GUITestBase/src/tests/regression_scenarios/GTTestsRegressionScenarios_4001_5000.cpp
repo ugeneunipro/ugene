@@ -271,7 +271,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
     //    Current state:
     //    Runtime error occurred(x86 version of UGENE)
     //    Windows hangs(x64 version)
-    GTLogTracer::checkMessage("Nothing to write");
+    GTLogTracer::hasMessage("Nothing to write");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4013) {
@@ -586,7 +586,7 @@ GUI_TEST_CLASS_DEFINITION(test_4065) {
     GTFileDialog::openFile(os, sandBoxDir + "example_bam.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool hasMessage = GTLogTracer::checkMessage("No bam index given");
+    bool hasMessage = GTLogTracer::hasMessage("No bam index given");
     CHECK_SET_ERR(false == hasMessage, "Error message is found. Bam index file not found.");
 }
 

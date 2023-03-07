@@ -2460,7 +2460,7 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
-    bool desiredMessage = logTracer.checkMessage("$oooo $oooo$oooo $oooo $oooo$oooo$oooo");
+    bool desiredMessage = logTracer.hasMessage("$oooo $oooo$oooo $oooo $oooo$oooo$oooo");
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
@@ -2980,7 +2980,7 @@ GUI_TEST_CLASS_DEFINITION(test_6580) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
-    bool desiredMessage = logTracer.checkMessage("-version -version-version -version -version-version-version");
+    bool desiredMessage = logTracer.hasMessage("-version -version-version -version -version-version-version");
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
@@ -5716,7 +5716,7 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
     GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.checkMessage("Needed amount of memory for this task is"), "No expected message in the log");
+    CHECK_SET_ERR(l.hasMessage("Needed amount of memory for this task is"), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6875) {

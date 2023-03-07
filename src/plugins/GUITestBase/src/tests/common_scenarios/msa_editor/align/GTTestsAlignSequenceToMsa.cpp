@@ -79,7 +79,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsProjectTreeView::click(os, "tub1.txt");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    bool hasMessage = GTLogTracer::checkMessage("Cannot remove document tub1.txt");
+    bool hasMessage = GTLogTracer::hasMessage("Cannot remove document tub1.txt");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -105,7 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsProjectTreeView::click(os, "3000_sequences.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    bool hasMessage = GTLogTracer::checkMessage("Cannot remove document 3000_sequences.aln");
+    bool hasMessage = GTLogTracer::hasMessage("Cannot remove document 3000_sequences.aln");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -128,7 +128,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 152, "Incorrect sequences count");
 
-    bool hasMessage = GTLogTracer::checkMessage("--addfragments");
+    bool hasMessage = GTLogTracer::hasMessage("--addfragments");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 
     checkAlignedRegion(os, QRect(QPoint(86, 17), QPoint(114, 23)), QString("CATGCCTTTGTAATAATCTTCTTTATAGT\n"

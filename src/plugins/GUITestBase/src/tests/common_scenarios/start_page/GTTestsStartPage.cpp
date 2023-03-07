@@ -45,8 +45,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTWidget::click(os, GTWidget::findWidget(os, "openFilesButton"));
     //    Expected state: File dialog is opened.
-    bool hasWindowsWarning = l.checkMessage("ShellExecute '#' failed");
-    bool hasUnixWarning = l.checkMessage("gvfs-open: #: error opening location");
+    bool hasWindowsWarning = l.hasMessage("ShellExecute '#' failed");
+    bool hasUnixWarning = l.hasMessage("gvfs-open: #: error opening location");
     CHECK_SET_ERR(!hasWindowsWarning, "Windows warning");
     CHECK_SET_ERR(!hasUnixWarning, "Unix warning");
 }

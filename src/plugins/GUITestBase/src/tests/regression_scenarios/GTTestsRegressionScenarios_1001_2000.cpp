@@ -1640,7 +1640,7 @@ GUI_TEST_CLASS_DEFINITION(test_1154) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "reference.ugenedb");
 
-    bool hasMessage = GTLogTracer::checkMessage("50% reads aligned.");
+    bool hasMessage = GTLogTracer::hasMessage("50% reads aligned.");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 }
 
@@ -5365,7 +5365,7 @@ GUI_TEST_CLASS_DEFINITION(test_1587) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.checkMessage("Unsupported document format"), "The image file has been processed by Workflow Designer");
+    CHECK_SET_ERR(l.hasMessage("Unsupported document format"), "The image file has been processed by Workflow Designer");
     CHECK_SET_ERR(outputFile.exists() && outputFile.size() > 0, "Workflow output file is invalid");
 }
 
@@ -7782,7 +7782,7 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CuffDiffIncorrectPath()));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
-    CHECK_SET_ERR(l.checkMessage("Cuffdiff validate task failed: Tool does not start."), "No error in the log!");
+    CHECK_SET_ERR(l.hasMessage("Cuffdiff validate task failed: Tool does not start."), "No error in the log!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {

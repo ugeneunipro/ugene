@@ -47,7 +47,8 @@ public:
 
     static QList<LogMessage*> getMessages();
 
-    static bool checkMessage(const QString& s);
+    /** Checks if there was any log message with the given substring (case insensitive). */
+    static bool hasMessage(const QString& substring);
 
     bool isExpectedMessageFound;
     QStringList errorsList;
@@ -61,7 +62,7 @@ public:
     static void checkContainsMessage(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, bool expected = true);
     static QStringList getErrors(HI::GUITestOpStatus& os, const GTLogTracer& logTracer);
 
-    /** Checks that there is no errors in log. Fails if there are erorrs. */
+    /** Checks that there is no errors in log. Fails if there are errors. */
     static void checkNoErrorsInLog(HI::GUITestOpStatus& os);
 
     /** Waits for the message to appear in the log with the given timeout. */

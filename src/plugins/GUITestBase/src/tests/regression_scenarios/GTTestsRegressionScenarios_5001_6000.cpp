@@ -486,7 +486,7 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
     // Expected: Error notification appears with a correct human-readable error. There is an error in log with memory requirements.
     GTUtilsNotifications::waitForNotification(os, true, "There is not enough memory to align these sequences with MUSCLE.");
     GTUtilsDialog::checkNoActiveWaiters(os);
-    CHECK_SET_ERR(l.checkMessage("Not enough resources for the task"), "No default error in log");
+    CHECK_SET_ERR(l.hasMessage("Not enough resources for the task"), "No default error in log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5090) {
@@ -1446,7 +1446,7 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.checkMessage("exited with code 1"), "No message about failed start of BWA MEM");
+    CHECK_SET_ERR(l.hasMessage("exited with code 1"), "No message about failed start of BWA MEM");
 
     GTToolbar::clickButtonByTooltipOnToolbar(os, "mwtoolbar_activemdi", "Show workflow");
 
@@ -1457,7 +1457,7 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.checkMessage("5 pairs are complete, 6 reads without a pair were found in files"), "No message about filtered reads");
+    CHECK_SET_ERR(l.hasMessage("5 pairs are complete, 6 reads without a pair were found in files"), "No message about filtered reads");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5417) {
@@ -3162,7 +3162,7 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::checkNoActiveWaiters(os, 10000);
 
-    CHECK_SET_ERR(logTracer.checkMessage("Document is already added to the project"), "Expected messge not found in the log");
+    CHECK_SET_ERR(logTracer.hasMessage("Document is already added to the project"), "Expected messge not found in the log");
 
     // Other objects
     QFile originalFile2(dataDir + "samples/CLUSTALW/COI.aln");
@@ -3183,7 +3183,7 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
     GTUtilsDialog::add(os, new ExportDocumentDialogFiller(os, sandBoxDir, "5730_COI.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
     GTUtilsProjectTreeView::callContextMenu(os, "HIV-1", "HIV-1.aln");
 
-    CHECK_SET_ERR(logTracer2.checkMessage("Document is already added to the project, it will be overritten."), "Expected messge not found in the log");
+    CHECK_SET_ERR(logTracer2.hasMessage("Document is already added to the project, it will be overritten."), "Expected messge not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5739) {

@@ -517,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.checkMessage("trimming was skipped"), "Could not find the message about skipped trimming");
+    CHECK_SET_ERR(l.hasMessage("trimming was skipped"), "Could not find the message about skipped trimming");
 }
 
 }  // namespace GUITest_common_scenarios_sanger

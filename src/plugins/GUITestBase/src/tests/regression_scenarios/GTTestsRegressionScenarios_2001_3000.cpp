@@ -3061,7 +3061,7 @@ GUI_TEST_CLASS_DEFINITION(test_2565) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionsPanel::runFindPatternWithHotKey("GCTAGCTTAAGTAACGCCACTTTT", os);
-    CHECK_SET_ERR(l.checkMessage(QString("Searching patterns in sequence task: No results found.")),
+    CHECK_SET_ERR(l.hasMessage(QString("Searching patterns in sequence task: No results found.")),
                   "No expected message in the log");
 }
 
@@ -5131,7 +5131,7 @@ GUI_TEST_CLASS_DEFINITION(test_2951) {
     // Expected: the result file contains only the first sequence from the input file; there is a message "test" in the script details log.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    bool printed = GTLogTracer::checkMessage("test message");
+    bool printed = GTLogTracer::hasMessage("test message");
     CHECK_SET_ERR(printed, "No message in the log");
 
     GTUtilsProject::openFile(os, outFile);

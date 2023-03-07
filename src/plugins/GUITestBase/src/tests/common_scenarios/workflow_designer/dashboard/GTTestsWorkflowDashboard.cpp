@@ -821,7 +821,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeText)
                       .arg(nodeText));
-    CHECK_SET_ERR(logTracer.checkMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
+    CHECK_SET_ERR(logTracer.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    8. Click to the "Copy command" button that is in the third-level node "ClustalO run".
     GTUtilsDashboard::clickCopyButton(os, clustaloRunNodeId);
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeText)
                       .arg(nodeText));
-    CHECK_SET_ERR(logTracer.checkMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
+    CHECK_SET_ERR(logTracer.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    10. Click to the "Copy command" button that is in the third-level node "ClustalW run".
     GTUtilsDashboard::clickCopyButton(os, clustalwRunNodeId);

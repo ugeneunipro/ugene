@@ -1577,7 +1577,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
-    GTLogTracer::checkMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
+    GTLogTracer::hasMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7448_2) {
@@ -2680,7 +2680,7 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
     GTUtilsTaskTreeView::cancelTask(os, taskName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // We can't put it in macro because it will be auto-triggered by log message from macro itself.
-    bool messageNotFound = !U2::GTLogTracer::checkMessage("QProcess: Destroyed while process");
+    bool messageNotFound = !U2::GTLogTracer::hasMessage("QProcess: Destroyed while process");
     CHECK_SET_ERR(messageNotFound, "Message about QProcess destructor found, but shouldn't be.");
 }
 
@@ -3239,7 +3239,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new WaitLogMessage()));
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
-    CHECK_SET_ERR(logTracer.checkMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
+    CHECK_SET_ERR(logTracer.hasMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
