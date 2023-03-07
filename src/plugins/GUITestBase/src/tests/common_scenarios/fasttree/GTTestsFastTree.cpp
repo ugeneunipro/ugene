@@ -108,10 +108,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that tool is launched.
-    CHECK_SET_ERR(GTLogTracer::checkMessage("Launching FastTree tool"), "No tool launch message found");
-    CHECK_SET_ERR(GTLogTracer::checkMessage("--gtr"), "No custom argument message found/--gtr");
-    CHECK_SET_ERR(GTLogTracer::checkMessage("-pseudo"), "No custom argument message found/-pseudo");
-    CHECK_SET_ERR(GTLogTracer::checkMessage("-pseudo"), "No custom argument message found/-pseudo");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("Launching FastTree tool"), "No tool launch message found");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("--gtr"), "No custom argument message found/--gtr");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("-pseudo"), "No custom argument message found/-pseudo");
+    CHECK_SET_ERR(GTLogTracer::hasMessage("-pseudo"), "No custom argument message found/-pseudo");
     CHECK_SET_ERR(logTracer.getJoinedErrorString().isEmpty(), "Errors in the log: " + logTracer.getJoinedErrorString());
 
     // Check that tree view is opened.
