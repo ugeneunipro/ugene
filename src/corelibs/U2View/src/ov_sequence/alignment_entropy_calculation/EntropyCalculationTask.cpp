@@ -72,9 +72,14 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         alignment = qobject_cast<MultipleSequenceAlignmentObject*>(objects.at(0));
         CHECK_EXT(alignment != nullptr, setError(tr("Cannot cast to MultipleSequenceAlignmentObject: %1").arg(alignmentFilePath)), res);
         rollSequenceName();
-        auto sequence = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getSequence(U2_REGION_MAX, stateInfo);
+        auto context = annotatedDNAView->getActiveSequenceContext();
+        SAFE_POINT_EXT(context != nullptr, setError(L10N::nullPointerError("Active sequence context")), res);
+        auto seqObject = context->getSequenceObject();
+        SAFE_POINT_EXT(seqObject != nullptr, setError(L10N::nullPointerError("Sequence object")), res);
+        auto sequence = seqObject->getSequence(U2_REGION_MAX, stateInfo);
+        CHECK_OP(stateInfo, res);
         sequence.setName(newSequenceName);
-        chainId = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getSequenceInfo().value("CHAIN_ID").toInt();
+        chainId = seqObject->getSequenceInfo().value("CHAIN_ID").toInt();
         addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, {sequence});
         CHECK_OP(stateInfo, res);
         res << addSequenceTask;
@@ -131,12 +136,19 @@ void EntropyCalculationTask::normalizeEntropy() {
 }
 
 void EntropyCalculationTask::writeEntropyToFile() {
-    QString filePath = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getDocument()->getURLString();
-    CHECK_EXT(QString::compare(filePath, saveToPath, Qt::CaseInsensitive), setError(tr("Files cannot have the same name")), );
+    auto context = annotatedDNAView->getActiveSequenceContext();
+    SAFE_POINT_EXT(context != nullptr, setError(L10N::nullPointerError("Active sequence context")), );
+    auto seqObject = context->getSequenceObject();
+    SAFE_POINT_EXT(seqObject != nullptr, setError(L10N::nullPointerError("Sequence object")), );
+    auto document = seqObject->getDocument();
+    SAFE_POINT_EXT(document != nullptr, setError(L10N::nullPointerError("Document")), );
+    QString filePath = document->getURLString();
+    CHECK_EXT(QString::compare(filePath, saveToPath, Qt::CaseInsensitive), 
+        setError(tr("Original and destination files cannot have the same name: %1. Please change the 'Save to' path.").arg(filePath)), );
     QFile readFile(filePath);
-    CHECK_EXT(readFile.open(QIODevice::ReadOnly), setError(tr("Cannot open file %1 for reading").arg(filePath)), );
+    CHECK_EXT(readFile.open(QIODevice::ReadOnly), setError(L10N::errorOpeningFileRead(filePath)), );
     QFile writeFile(saveToPath);
-    CHECK_EXT(writeFile.open(QIODevice::WriteOnly), setError(tr("Cannot open file %1 for writing").arg(saveToPath)), );
+    CHECK_EXT(writeFile.open(QIODevice::WriteOnly), setError(L10N::errorOpeningFileWrite(saveToPath)), );
     QTextStream in(&readFile);
     QTextStream out(&writeFile);
     QVector<double>::const_iterator it = entropyForEveryColumn.constBegin();
