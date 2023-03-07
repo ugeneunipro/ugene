@@ -182,6 +182,9 @@ qint64 AssemblyModel::getModelLength(U2OpStatus& os) {
         LOG_OP(os);
         if (attr.hasValidId()) {
             cachedModelLength = attr.value;
+            if (cachedModelLength <= 0) {
+                cachedModelLength = NO_VAL;
+            }
         }
         // If we can't get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
         if (cachedModelLength == NO_VAL) {
@@ -368,7 +371,7 @@ void AssemblyModel::onReferenceRemoved() {
     }
 }
 
-void AssemblyModel::removeCrossDatabaseReference(const U2DataId& refId) {
+void AssemblyModel::removeCrossDatabaseReference(const U2DataId& refId) const {
     CHECK(!refId.isEmpty(), );
     CHECK(U2Type::CrossDatabaseReference == U2DbiUtils::toType(refId), );
 
@@ -655,7 +658,7 @@ U2SequenceObject* AssemblyModel::getRefObj() const {
     return refObj;
 }
 
-bool AssemblyModel::isDbLocked(int timeout) {
+bool AssemblyModel::isDbLocked(int timeout) const {
     QMutex* mutex = dbiHandle.dbi->getDbMutex();
     CHECK(mutex != nullptr, false);
     if (mutex->tryLock(timeout)) {
