@@ -3239,11 +3239,6 @@ Dalları daraltmak için çift tıklayın</translation>
 <context>
     <name>U2::AssemblyModel</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="187"/>
-        <source>Ignored incorrect value of attribute %1: should be &gt; 0, got %2. Bad attribute removed!</source>
-        <translation>%1 özniteliğinin yanlış değeri yoksayıldı :&gt; 0 olmalı, %2 aldı. Kötü nitelik kaldırıldı!</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="278"/>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="299"/>
         <source>No active project found!</source>

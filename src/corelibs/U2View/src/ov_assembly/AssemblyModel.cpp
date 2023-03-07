@@ -182,18 +182,8 @@ qint64 AssemblyModel::getModelLength(U2OpStatus& os) {
         LOG_OP(os);
         if (attr.hasValidId()) {
             cachedModelLength = attr.value;
-            // Ignore incorrect attribute value and remove the corrupted attribute: auto-fix incorrectly converted ugenedb.
-            if (cachedModelLength <= 0) {
-                coreLog.details(tr("Ignored incorrect value of attribute %1: should be > 0, got %2. Bad attribute removed!")
-                                    .arg(QString(U2BaseAttributeName::reference_length))
-                                    .arg(cachedModelLength));
-                cachedModelLength = NO_VAL;
-                if (canWriteAttributes) {
-                    U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
-                }
-            }
         }
-        // If cannot get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
+        // If we can't get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
         if (cachedModelLength == NO_VAL) {
             qint64 refLen = hasReference() ? refObj->getSequenceLength() : 0;
             qint64 assLen = assemblyDbi->getMaxEndPos(assembly.id, os);

@@ -62,11 +62,14 @@ public:
 
     static QTabWidget* getTabWidget(HI::GUITestOpStatus& os);
 
-    static const QString getDashboardName(HI::GUITestOpStatus& os, int dashboardNumber);
+    static QString getDashboardName(HI::GUITestOpStatus& os, int dashboardNumber);
 
     static QStringList getInputFiles(HI::GUITestOpStatus& os);
 
     static QStringList getOutputFiles(HI::GUITestOpStatus& os);
+
+    /** Returns list of output file URLs: 1 per output file button. */
+    static QStringList getOutputFileUrls(HI::GUITestOpStatus& os);
 
     static void clickOutputFile(HI::GUITestOpStatus& os, const QString& outputFileName);
 
