@@ -22,6 +22,7 @@
 #include "EntropyCalculationTask.h"
 
 #include <QFileInfo>
+#include <QTextStream>
 
 #include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
@@ -57,6 +58,8 @@ void EntropyCalculationTask::prepare() {
 
 void EntropyCalculationTask::run() {
     calculateShannonEntropy();
+    normalizeEntropy();
+    writeEntropyToFile();
 }
 
 QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
@@ -71,21 +74,19 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         rollSequenceName();
         auto sequence = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getSequence(U2_REGION_MAX, stateInfo);
         sequence.setName(newSequenceName);
+        chainId = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getSequenceInfo().value("CHAIN_ID").toInt();
         addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, {sequence});
         CHECK_OP(stateInfo, res);
         res << addSequenceTask;
-    }
-    else if (subTask == addSequenceTask) {
+    } else if (subTask == addSequenceTask) {
         qint64 rowId = alignment->getMultipleAlignment()->getRow(newSequenceName)->getRowId();
         if (alignmentAlgorithm == "UGENE") {
             realignSequencesTask = new RealignSequencesInAlignmentTask(alignment, {rowId}, 
                 BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE);
-        }
-        else if (alignmentAlgorithm == "MAFFT") {
+        } else if (alignmentAlgorithm == "MAFFT") {
             //TODO
-        }
-        else if (alignmentAlgorithm == "MUSCLE") {
-            //TODO
+        } else if (alignmentAlgorithm == "MUSCLE") {
+            //TODO  
         }
         CHECK_OP(stateInfo, res);
         res << realignSequencesTask;
@@ -102,13 +103,11 @@ void EntropyCalculationTask::rollSequenceName() {
 }
 
 void EntropyCalculationTask::calculateShannonEntropy() {
-    QMap<qint64, double> entropyForEveryColumn;
     auto alignedSequence = alignment->getMultipleAlignment()->getRow(newSequenceName);
     int size = alignment->getMultipleAlignment()->getRowCount() - 1;
-
+    CHECK_EXT(size != 0, setError(tr("Alignment is empty!")) ,);
     for (int i = alignedSequence->getCoreRegion().startPos; i < alignedSequence->getCoreRegion().endPos(); i++) {
         CHECK_CONTINUE(!alignedSequence->isGap(i));
-        CHECK_EXT_CONTINUE(size != 0, entropyForEveryColumn[i] = 0);
         double columnEntropy = 0;
         QMap<char, qint64> counts;
         for (const auto& row : alignment->getRows()) {
@@ -120,8 +119,51 @@ void EntropyCalculationTask::calculateShannonEntropy() {
             double p = (double)aminoAcid / size;
             columnEntropy -= p * log(p);
         }
-        entropyForEveryColumn[i] = columnEntropy;
+        entropyForEveryColumn.append(columnEntropy);
     }
+}
+
+void EntropyCalculationTask::normalizeEntropy() {
+    double maxValue = *std::max_element(entropyForEveryColumn.constBegin(), entropyForEveryColumn.constEnd());
+    for (double& value : entropyForEveryColumn) {
+        value /= maxValue;
+    }
+}
+
+void EntropyCalculationTask::writeEntropyToFile() {
+    QString filePath = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getDocument()->getURLString();
+    CHECK_EXT(QString::compare(filePath, saveToPath, Qt::CaseInsensitive), setError(tr("Files cannot have the same name")), );
+    QFile readFile(filePath);
+    CHECK_EXT(readFile.open(QIODevice::ReadOnly), setError(tr("Cannot open file %1 for reading").arg(filePath)), );
+    QFile writeFile(saveToPath);
+    CHECK_EXT(writeFile.open(QIODevice::WriteOnly), setError(tr("Cannot open file %1 for writing").arg(saveToPath)), );
+    QTextStream in(&readFile);
+    QTextStream out(&writeFile);
+    QVector<double>::const_iterator it = entropyForEveryColumn.constBegin();
+    int currentChainIndex = 1;
+    int residueSequenceNumber = -1;
+    QString roundedEntropy;
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (line.startsWith("TER")) {
+            currentChainIndex++;
+        } else if ((line.startsWith("ATOM") || line.startsWith("HETATM")) && it != entropyForEveryColumn.constEnd() && currentChainIndex == chainId) {
+            int newResidueSeqNumber = line.mid(22, 4).trimmed().toInt();
+            if (newResidueSeqNumber != residueSequenceNumber) {
+                if (residueSequenceNumber != -1) {
+                    it++;
+                }
+                residueSequenceNumber = newResidueSeqNumber;
+                roundedEntropy = QString::number(*it, 'f', 2);
+            }
+            //entropy can have from 1 to 3 digits before decimal point, so we add spaces accordingly
+            //temperature factor: positions 60-65
+            line.replace(60, 6, roundedEntropy.prepend(QString(" ").repeated(6 - roundedEntropy.length())));
+        }
+        out << line << endl;
+    }
+    readFile.close();
+    writeFile.close();
 }
 
 }  // namespace U2

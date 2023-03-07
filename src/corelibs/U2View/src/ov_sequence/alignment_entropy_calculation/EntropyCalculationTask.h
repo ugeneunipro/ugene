@@ -44,6 +44,8 @@ public:
 private:
     void rollSequenceName();
     void calculateShannonEntropy();
+    void normalizeEntropy();
+    void writeEntropyToFile();
 
     LoadDocumentTask* loadDocumentTask = nullptr;
     AddSequenceObjectsToAlignmentTask* addSequenceTask = nullptr;
@@ -56,6 +58,8 @@ private:
     const QString alignmentAlgorithm;
     /*sequence name will change if the alignment contains a sequence with the same name*/
     QString newSequenceName = "template_name";
+    int chainId;
+    QVector<double> entropyForEveryColumn;
 };
 
 }  // namespace U2
