@@ -122,6 +122,7 @@
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
@@ -4197,6 +4198,18 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
     CHECK_SET_ERR(expansionSlider->value() == 100, "9. The expansion should be 100");
     QImage imageAfter4 = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7797) {
+    // Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Select from context menu Analyze->Analyze with Query Schema   menu item
+    GTUtilsDialog::waitForDialog(os, new AnalyzeWithQuerySchemaDialogFiller(os, dataDir + "samples/FASTA/empty.uql"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Analyze", "Analyze with query schema..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7806) {

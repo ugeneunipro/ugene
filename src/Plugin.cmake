@@ -22,7 +22,7 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${UGENE_PLUGIN_NAME}.qrc)
     qt5_add_resources(RCC_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/${UGENE_PLUGIN_NAME}.qrc)
 endif ()
 
-add_library(${UGENE_PLUGIN_NAME} SHARED ${SRCS} ${RCC_SRCS})
+add_library(${UGENE_PLUGIN_NAME} SHARED ${SRCS} ${RCC_SRCS} plugins/GUITestBase/src/runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.cpp plugins/GUITestBase/src/runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h)
 
 set(UGENE_PLUGIN_LIBS
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::PrintSupport Qt5::Test Qt5::ScriptTools

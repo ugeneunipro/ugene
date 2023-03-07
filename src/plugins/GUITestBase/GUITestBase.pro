@@ -136,6 +136,8 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h \
             src/runnables/ugene/plugins/pcr/PrimerLibrarySelectorFiller.h \
             src/runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.h \
+#   Runnables / UGENE / plugins / query
+            src/runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h \
 #   Runnables / UGENE / plugins / weight_matrix
             src/runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h \
             src/runnables/ugene/plugins/weight_matrix/PwmSearchDialogFiller.h \
@@ -420,6 +422,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.cpp \
             src/runnables/ugene/plugins/pcr/PrimerLibrarySelectorFiller.cpp \
             src/runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.cpp \
+#   Runnables / UGENE / plugins / query
+            src/runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.cpp \
 #   Runnables / UGENE / plugins / weight_matrix
             src/runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.cpp \
             src/runnables/ugene/plugins/weight_matrix/PwmSearchDialogFiller.cpp \
