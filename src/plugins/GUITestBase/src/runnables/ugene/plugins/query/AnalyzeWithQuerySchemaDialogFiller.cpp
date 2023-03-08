@@ -20,24 +20,26 @@
  */
 
 #include "AnalyzeWithQuerySchemaDialogFiller.h"
-#include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
-
-#include <QApplication>
 
 namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::AnalyzeWithQuerySchemaDialogFiller"
+
+AnalyzeWithQuerySchemaDialogFiller::AnalyzeWithQuerySchemaDialogFiller(HI::GUITestOpStatus& os, const QString& _fileWithQuery)
+    : Filler(os, "QDDialog"), fileWithQuery(_fileWithQuery) {
+}
+
 #define GT_METHOD_NAME "commonScenario"
 void AnalyzeWithQuerySchemaDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-
     GTLineEdit::setText(os, "queryFileEdit", fileWithQuery, dialog);
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2

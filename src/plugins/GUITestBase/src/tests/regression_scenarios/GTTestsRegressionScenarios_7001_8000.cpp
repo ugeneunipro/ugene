@@ -4228,11 +4228,12 @@ GUI_TEST_CLASS_DEFINITION(test_7797) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Select from context menu Analyze->Analyze with Query Schema   menu item
+    // Select from context menu Analyze->Analyze with Query Schema menu item
     GTUtilsDialog::waitForDialog(os, new AnalyzeWithQuerySchemaDialogFiller(os, dataDir + "samples/FASTA/empty.uql"));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Analyze", "Analyze with query schema..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    // Expected state: there is no crash.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7806) {
