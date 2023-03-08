@@ -1,7 +1,5 @@
 #@UGENE_WORKFLOW
-#This workflows allows one to extract a consensus sequence. In inputs a number of alignments and for each of them outputs consensus as a sequence. The consensus sequence is calculated according to the algorithm selected
-
-
+#This workflow is designed to extract a consensus sequence from a set of input alignments. The workflow takes in a specified number of alignments as input, and generates a consensus sequence for each alignment using a selected algorithm.
 
 workflow "New workflow"{
 
@@ -12,11 +10,13 @@ workflow "New workflow"{
             dataset:"Dataset 1";
         }
     }
+
     write-sequence {
         type:write-sequence;
         name:"Write Sequence";
         write-mode:0;
     }
+
     extract-msa-consensus-sequence {
         type:extract-msa-consensus-sequence;
         name:"Extract Consensus from Alignment as Sequence";

@@ -3260,11 +3260,6 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AssemblyModel</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="187"/>
-        <source>Ignored incorrect value of attribute %1: should be &gt; 0, got %2. Bad attribute removed!</source>
-        <translation>Ignored incorrect value of attribute %1: should be &gt; 0, got %2. Bad attribute removed!</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="278"/>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="299"/>
         <source>No active project found!</source>
