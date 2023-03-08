@@ -4003,6 +4003,36 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
                   "Some line of the multiline view must be hidden #2");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7730) {
+    // Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Open the OP's "Statistics" tab.
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::Statistics);
+
+    // In this tab click the ">" button
+    GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
+
+    // Сheck the "Show distances column" box
+    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
+    GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
+
+    // Сheck the "Exclude gaps" box.
+    auto excludeGapsCheckBox = GTWidget::findCheckBox(os, "excludeGapsCheckBox");
+    GTCheckBox::setChecked(os, excludeGapsCheckBox, true);
+
+    // Click "Wrap mode" button
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap mode");
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
+    // Сheck  "Count" checkboх
+    auto countRadioButton = GTWidget::findRadioButton(os, "countsButton");
+    GTRadioButton::click(os, countRadioButton);
+
+    // Expected: UGENE doesn't crash
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7740) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
