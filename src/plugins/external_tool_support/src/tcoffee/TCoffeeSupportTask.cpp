@@ -58,7 +58,7 @@ TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMs
       objRef(_objRef),
       settings(_settings),
       lock(nullptr) {
-    GCOUNTER(cvar, "TCoffeeSupportTask");
+    GCOUNTER(cvar, "ExternalTool_TCoffee");
     saveTemporaryDocumentTask = nullptr;
     loadTmpDocumentTask = nullptr;
     tCoffeeTask = nullptr;

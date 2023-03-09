@@ -51,7 +51,7 @@ namespace LocalWorkflow {
 
 CallVariantsTask::CallVariantsTask(const CallVariantsTaskSettings& _settings, DbiDataStorage* _store)
     : ExternalToolSupportTask(tr("Call variants for %1").arg(_settings.refSeqUrl), TaskFlag_NoRun), settings(_settings), loadTask(nullptr), mpileupTask(nullptr), storage(_store) {
-    GCOUNTER(cvar, "NGS:CallVariantsTask");
+    GCOUNTER(cvar, "ExternalTool_CallVariants");
     setMaxParallelSubtasks(1);
 }
 
@@ -160,6 +160,7 @@ const QString SamtoolsMpileupTask::VCFUTILS_ID = "USUPP_VCFUTILS";
 
 SamtoolsMpileupTask::SamtoolsMpileupTask(const CallVariantsTaskSettings& _settings)
     : ExternalToolSupportTask(tr("Samtool mpileup for %1 ").arg(_settings.refSeqUrl), TaskFlags(TaskFlag_None)), settings(_settings) {
+    GCOUNTER(cvar, "ExternalTool_Samtools");
 }
 
 void SamtoolsMpileupTask::prepare() {

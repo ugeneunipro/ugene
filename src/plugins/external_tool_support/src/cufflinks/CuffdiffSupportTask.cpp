@@ -25,6 +25,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -44,6 +45,7 @@ CuffdiffSupportTask::CuffdiffSupportTask(const CuffdiffSettings& _settings)
       settings(_settings),
       diffTask(nullptr) {
     SAFE_POINT_EXT(nullptr != settings.storage, setError(tr("Workflow data storage is NULL")), );
+    GCOUNTER(cvar, "ExternalTool_Cuff");
 }
 
 namespace {

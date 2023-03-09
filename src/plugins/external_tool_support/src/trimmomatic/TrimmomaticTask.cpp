@@ -43,7 +43,7 @@ TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings& settings)
     : ExternalToolSupportTask(tr("Improve reads with Trimmomatic"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       trimmomaticToolRunTask(nullptr) {
-    GCOUNTER(cvar, "TrimmomaticTask");
+    GCOUNTER(cvar, "ExternalTool_Trimmomatic");
 
     if (settings.pairedReadsInput) {
         SAFE_POINT_EXT(!settings.pairedOutputUrl1.isEmpty() && !settings.pairedOutputUrl2.isEmpty() &&

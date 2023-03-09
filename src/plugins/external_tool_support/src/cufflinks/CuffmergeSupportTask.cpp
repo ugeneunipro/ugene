@@ -26,6 +26,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrlUtils.h>
@@ -52,6 +53,7 @@ CuffmergeSupportTask::CuffmergeSupportTask(const CuffmergeSettings& _settings)
       loadResultTask(nullptr) {
     SAFE_POINT_EXT(settings.storage != nullptr, setError(tr("Workflow data storage is NULL")), );
     CHECK_EXT(!settings.annotationTables.isEmpty(), setError(tr("There are no annotations to process")), );
+    GCOUNTER(cvar, "ExternalTool_Cuff");
 }
 
 CuffmergeSupportTask::~CuffmergeSupportTask() {

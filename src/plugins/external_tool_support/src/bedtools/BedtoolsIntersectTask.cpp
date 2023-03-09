@@ -29,6 +29,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/SaveDocumentTask.h>
@@ -66,6 +67,7 @@ void BedtoolsIntersectLogParser::parseOutput(const QString& partOfLog) {
 BedtoolsIntersectTask::BedtoolsIntersectTask(const BedtoolsIntersectFilesSettings& settings)
     : ExternalToolSupportTask(tr("BedtoolsIntersect task"), TaskFlags_NR_FOSE_COSC),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_BedtoolsIntersect");
 }
 
 void BedtoolsIntersectTask::prepare() {

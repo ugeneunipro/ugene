@@ -49,7 +49,7 @@ IQTreeTaskContext::IQTreeTaskContext(const MultipleSequenceAlignment& _msa, cons
 
 IQTreeTask::IQTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), context(msa, settings) {
-    GCOUNTER(cvar, "IQTreeTask");
+    GCOUNTER(cvar, "ExternalTool_IQTree");
     setTaskName(tr("IQTree tree calculation"));
 
     auto prepareWorkDirTask = new PrepareIQTreeWorkDirTask(&context);

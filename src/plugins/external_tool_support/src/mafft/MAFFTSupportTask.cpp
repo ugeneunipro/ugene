@@ -62,7 +62,7 @@ MAFFTSupportTask::MAFFTSupportTask(const MultipleSequenceAlignment& _inputMsa, c
       loadTmpDocumentTask(nullptr),
       settings(_settings),
       lock(nullptr) {
-    GCOUNTER(cvar, "MAFFTSupportTask");
+    GCOUNTER(cvar, "ExternalTool_MAFFT");
     resultMA->setAlphabet(inputMsa->getAlphabet());
     resultMA->setName(inputMsa->getName());
 }
