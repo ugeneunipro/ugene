@@ -4228,8 +4228,9 @@ GUI_TEST_CLASS_DEFINITION(test_7797) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Select from context menu Analyze->Analyze with Query Schema menu item
-    GTUtilsDialog::waitForDialog(os, new AnalyzeWithQuerySchemaDialogFiller(os, testDir + "_common_data/query/empty.uql"));
+    // Select from context menu Analyze->Analyze with Query Schema menu item.
+    QString fullFilePath = QFileInfo(testDir + "_common_data/query/empty.uql").absoluteFilePath();
+    GTUtilsDialog::waitForDialog(os, new AnalyzeWithQuerySchemaDialogFiller(os, fullFilePath));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Analyze", "Analyze with query schema..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4249,7 +4250,7 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     GTFileDialog::openFile(os, sandBoxDir + "/test_7806/2/chrM.sam");
 
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
-    int size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
+    qint64 size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 

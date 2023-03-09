@@ -45,7 +45,11 @@ typedef QFlags<ADVGlobalActionFlag> ADVGlobalActionFlags;
 class U2VIEW_EXPORT ADVGlobalAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    ADVGlobalAction(AnnotatedDNAView* v, const QIcon& icon, const QString& text, int pos = 1000 * 1000, ADVGlobalActionFlags flags = ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_AddToAnalyseMenu | ADVGlobalActionFlag_SingleSequenceOnly);
+    ADVGlobalAction(AnnotatedDNAView* v,
+                    const QIcon& icon,
+                    const QString& text,
+                    int pos = 1000 * 1000,
+                    const ADVGlobalActionFlags& flags = ADVGlobalActionFlags(ADVGlobalActionFlag_AddToToolbar) | ADVGlobalActionFlag_AddToAnalyseMenu | ADVGlobalActionFlag_SingleSequenceOnly);
 
     void addAlphabetFilter(DNAAlphabetType t) {
         alphabetFilter.insert(t);
