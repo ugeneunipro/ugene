@@ -4230,7 +4230,7 @@ GUI_TEST_CLASS_DEFINITION(test_7797) {
 
     // Select from context menu Analyze->Analyze with Query Schema menu item.
     QString fullFilePath = QFileInfo(testDir + "_common_data/query/empty.uql").absoluteFilePath();
-    GTUtilsDialog::waitForDialog(os, new AnalyzeWithQuerySchemaDialogFiller(os, fullFilePath));
+    GTUtilsDialog::waitForDialog(os, new AnalyzeWithQuerySchemaDialogFiller(os, fullFilePath, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Analyze", "Analyze with query schema..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

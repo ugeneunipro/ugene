@@ -28,12 +28,13 @@ using namespace HI;
 
 class AnalyzeWithQuerySchemaDialogFiller : public Filler {
 public:
-    AnalyzeWithQuerySchemaDialogFiller(HI::GUITestOpStatus& os, const QString& fileWithQuery);
+    AnalyzeWithQuerySchemaDialogFiller(HI::GUITestOpStatus& os, const QString& fileWithQuery, bool expectBadSchema = false);
 
     void commonScenario() override;
 
 private:
-    const QString fileWithQuery;
+     QString fileWithQuery;
+     bool expectBadSchema = false;
 };
 
 }  // namespace U2

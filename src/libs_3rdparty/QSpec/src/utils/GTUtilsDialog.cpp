@@ -19,12 +19,13 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTUtilsDialog.h"
+
 #include <QApplication>
 #include <QDateTime>
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "GTUtilsDialog.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
 #include "utils/GTThread.h"
@@ -149,7 +150,9 @@ QList<GUIDialogWaiter*> GTUtilsDialog::waiterList = QList<GUIDialogWaiter*>();
 
 #define GT_METHOD_NAME "buttonBox"
 QDialogButtonBox* GTUtilsDialog::buttonBox(GUITestOpStatus& os, QWidget* dialog) {
-    return qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+    auto buttonBox = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+    GT_CHECK_RESULT(buttonBox != nullptr, "buttonBox is nullptr", nullptr);
+    return buttonBox;
 }
 #undef GT_METHOD_NAME
 

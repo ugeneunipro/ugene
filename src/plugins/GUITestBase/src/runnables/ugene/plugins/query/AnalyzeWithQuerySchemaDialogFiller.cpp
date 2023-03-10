@@ -23,20 +23,29 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
 
+#include "GTUtilsTaskTreeView.h"
 namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::AnalyzeWithQuerySchemaDialogFiller"
 
-AnalyzeWithQuerySchemaDialogFiller::AnalyzeWithQuerySchemaDialogFiller(HI::GUITestOpStatus& os, const QString& _fileWithQuery)
-    : Filler(os, "QDDialog"), fileWithQuery(_fileWithQuery) {
+AnalyzeWithQuerySchemaDialogFiller::AnalyzeWithQuerySchemaDialogFiller(HI::GUITestOpStatus& os, const QString& _fileWithQuery, bool _expectBadSchema)
+    : Filler(os, "QDDialog"), fileWithQuery(_fileWithQuery), expectBadSchema(_expectBadSchema) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void AnalyzeWithQuerySchemaDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     GTLineEdit::setText(os, "queryFileEdit", fileWithQuery, dialog);
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    if (expectBadSchema) {
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+        auto okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
+        CHECK_SET_ERR(okButton != nullptr, "Search button is not found");
+        CHECK_SET_ERR(!okButton->isEnabled(), "Search button must be disabled");
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+    } else {
+        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    }
 }
 #undef GT_METHOD_NAME
 
