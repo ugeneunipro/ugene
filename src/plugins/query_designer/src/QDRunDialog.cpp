@@ -288,8 +288,9 @@ QList<Task*> QDRunDialogTask::onSubTaskFinished(Task* subTask) {
 QDDialog::QDDialog(ADVSequenceObjectContext* _ctx)
     : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), advSequenceContext(_ctx) {
     setupUi(this);
-    hintHtml = hintEdit->toHtml();
     new HelpButton(this, buttonBox, "65930656");
+    hintHtml = tr("Query Designer preview area.<br><br><b>Hint:</b><br>Queries can be created by Query Designer tool.<br>To launch Query Designer use \"Tools/Query Designer\" menu.");
+    hintEdit->setHtml(hintHtml);
     searchButton = buttonBox->button(QDialogButtonBox::Ok);
     searchButton->setText(tr("Search"));
     searchButton->setEnabled(false);
