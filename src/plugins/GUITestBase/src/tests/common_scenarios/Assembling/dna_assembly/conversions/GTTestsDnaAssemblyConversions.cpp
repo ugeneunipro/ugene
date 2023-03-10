@@ -24,8 +24,6 @@
 #include <U2Core/U2IdTypes.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/ToolsMenu.h>
-
 #include "GTTestsDnaAssemblyConversions.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsTaskTreeView.h"
@@ -38,7 +36,7 @@ namespace U2 {
 namespace GUITest_dna_assembly_conversions {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    GTLogTracer l;
+    GTLogTracer lt;
     AlignShortReadsFiller::Parameters parameters(
         testDir + "_common_data/e_coli/",
         "NC_008253.gb",
@@ -59,13 +57,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     GTFile::check(os, "_common_data/e_coli/NC_008253.gb.fasta");
     GTFile::check(os, "_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    GTLogTracer l;
+    GTLogTracer lt;
     AlignShortReadsFiller::Parameters parameters(
         testDir + "_common_data/e_coli/",
         "NC_008253.gff",
@@ -85,7 +83,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     GTFile::check(os, "_common_data/e_coli/NC_008253.gff.fasta");
 }
 
@@ -95,7 +93,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Mapping tool} BWA
     //     {Reference sequence} _common_data/e_coli/NC_008253.fa
     //     {Short reads} _common_data/bam/scerevisiae.bam.bai
-    GTLogTracer l;
+    GTLogTracer lt;
     AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/e_coli/",
                                                  "NC_008253.gb",
                                                  testDir + "_common_data/bam/",
@@ -111,19 +109,19 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    GTLogTracer l;
+    GTLogTracer lt;
     AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/e_coli/", "NC_008253.gb", testDir + "_common_data/e_coli/", "e_coli_1000.gff");
 
     GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
 
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "resule.ugenedb"));
+    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "result.ugenedb"));
 
     // UGENE can hang up here
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     GTFile::check(os, "_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 

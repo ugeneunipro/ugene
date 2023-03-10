@@ -64,14 +64,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         GTFileDialog::openFile(os, alignmentFile);
         GTUtilsTaskTreeView::waitTaskFinished(os);
 
-        GTLogTracer logTracer("Launching FastTree tool");
+        GTLogTracer lt;
         GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new RunFastTreeScenario()));
         GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
         GTUtilsTaskTreeView::waitTaskFinished(os);
 
         // Check that tool is launched.
-        GTUtilsLog::checkContainsMessage(os, logTracer, true);
-        CHECK_SET_ERR(logTracer.getJoinedErrorString().isEmpty(), "Errors in the log: " + logTracer.getJoinedErrorString());
+        CHECK_SET_ERR(lt.hasMessage("Launching FastTree tool"), "Expected message not found");
+        CHECK_SET_ERR(lt.getJoinedErrorString().isEmpty(), "Errors in the log: " + lt.getJoinedErrorString());
 
         // Check that tree view is opened.
         GTUtilsMsaEditor::getTreeView(os);
@@ -84,7 +84,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     class RunFastTreeScenario : public CustomScenario {
     public:
@@ -108,11 +108,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that tool is launched.
-    CHECK_SET_ERR(GTLogTracer::hasMessage("Launching FastTree tool"), "No tool launch message found");
-    CHECK_SET_ERR(GTLogTracer::hasMessage("--gtr"), "No custom argument message found/--gtr");
-    CHECK_SET_ERR(GTLogTracer::hasMessage("-pseudo"), "No custom argument message found/-pseudo");
-    CHECK_SET_ERR(GTLogTracer::hasMessage("-pseudo"), "No custom argument message found/-pseudo");
-    CHECK_SET_ERR(logTracer.getJoinedErrorString().isEmpty(), "Errors in the log: " + logTracer.getJoinedErrorString());
+    CHECK_SET_ERR(lt.hasMessage("Launching FastTree tool"), "No tool launch message found");
+    CHECK_SET_ERR(lt.hasMessage("--gtr"), "No custom argument message found/--gtr");
+    CHECK_SET_ERR(lt.hasMessage("-pseudo"), "No custom argument message found/-pseudo");
+    CHECK_SET_ERR(lt.hasMessage("-pseudo"), "No custom argument message found/-pseudo");
+    CHECK_SET_ERR(lt.getJoinedErrorString().isEmpty(), "Errors in the log: " + lt.getJoinedErrorString());
 
     // Check that tree view is opened.
     GTUtilsMsaEditor::getTreeView(os);
