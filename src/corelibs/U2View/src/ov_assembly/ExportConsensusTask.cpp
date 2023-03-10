@@ -42,10 +42,13 @@ ExportConsensusTask::ExportConsensusTask(const ExportConsensusTaskSettings& sett
     : DocumentProviderTask("", TaskFlags_NR_FOSE_COSC),
       settings(settings_),
       consensusTask(nullptr) {
-    setTaskName(tr("Export consensus of assembly '%1' to '%2'")
-                    .arg(settings.model->getAssembly().visualName)
-                    .arg(QFileInfo(settings.fileName).fileName()));
-    setMaxParallelSubtasks(1);
+    if (settings.saveToFile) {
+        QString fileName = QFileInfo(settings.fileName).fileName();
+        setTaskName(tr("Export consensus of assembly '%1' to '%2'").arg(settings.model->getAssembly().visualName).arg(fileName));
+        SAFE_POINT(!fileName.isEmpty(), "No file provided for export: " + fileName, );
+    } else {
+        setTaskName(tr("Export consensus of assembly '%1'").arg(settings.model->getAssembly().visualName));
+    }
 }
 
 void ExportConsensusTask::prepare() {

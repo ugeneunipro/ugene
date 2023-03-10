@@ -98,18 +98,24 @@ ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getTabWidget"
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus& os) {
     return GTWidget::findTabWidget(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "findLoadSchemaButton"
 QToolButton* GTUtilsDashboard::findLoadSchemaButton(HI::GUITestOpStatus& os) {
     Dashboard* dashboard = findDashboard(os);
     return dashboard == nullptr ? nullptr : dashboard->findChild<QToolButton*>("loadSchemaButton");
 }
+#undef GT_METHOD_NAME
 
-const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus& os, int dashboardNumber) {
+#define GT_METHOD_NAME "getDashboardName"
+QString GTUtilsDashboard::getDashboardName(GUITestOpStatus& os, int dashboardNumber) {
     return GTTabWidget::getTabName(os, getTabWidget(os), dashboardNumber);
 }
+#undef GT_METHOD_NAME
 
 static QStringList getFileButtonLabels(QWidget* parentWidget) {
     QList<QToolButton*> buttons = parentWidget->findChildren<QToolButton*>();
@@ -120,18 +126,36 @@ static QStringList getFileButtonLabels(QWidget* parentWidget) {
     return labels;
 }
 
+#define GT_METHOD_NAME "getInputFiles"
 QStringList GTUtilsDashboard::getInputFiles(HI::GUITestOpStatus& os) {
     openTab(os, Input);
     auto dashboard = getDashboard(os);
     auto parametersWidget = GTWidget::findWidget(os, "ParametersDashboardWidget", dashboard);
     return getFileButtonLabels(parametersWidget);
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getOutputFiles"
 QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus& os) {
     auto dashboard = getDashboard(os);
     auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
     return getFileButtonLabels(outputFilesWidget);
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getOutputFileUrls"
+QStringList GTUtilsDashboard::getOutputFileUrls(HI::GUITestOpStatus& os) {
+    QStringList urls;
+    auto dashboard = getDashboard(os);
+    auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
+    QList<QToolButton*> buttons = outputFilesWidget->findChildren<QToolButton*>();
+    for (auto button : qAsConst(buttons)) {
+        QString typeAndUrl = button->property("file-url").toString();
+        urls << typeAndUrl.split("\n")[1];
+    }
+    return urls;
+}
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickOutputFile"
 void GTUtilsDashboard::clickOutputFile(GUITestOpStatus& os, const QString& outputFileName) {
@@ -142,12 +166,14 @@ void GTUtilsDashboard::clickOutputFile(GUITestOpStatus& os, const QString& outpu
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "hasNotifications"
 bool GTUtilsDashboard::hasNotifications(HI::GUITestOpStatus& os) {
     openTab(os, Overview);
     auto dashboard = getDashboard(os);
     auto notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", dashboard);
     return notificationsWidget->isVisible();
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNotificationTypeFromHtml"
 QString GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus& os, const QString& html) {

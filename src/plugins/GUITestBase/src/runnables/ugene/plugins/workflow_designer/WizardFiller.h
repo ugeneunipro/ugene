@@ -40,9 +40,8 @@ public:
     WizardFiller(HI::GUITestOpStatus& _os, QString name, CustomScenario* c)
         : Filler(_os, name, c) {
     }
-    void commonScenario() override;
 
-    static QToolButton* getExpandButton(HI::GUITestOpStatus& _os);
+    void commonScenario() override;
 
 private:
     QList<QStringList> inputFiles;

@@ -164,6 +164,29 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7012) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os,
+                                 new WizardFiller(os,
+                                                  "Extract Consensus Wizard",
+                                                  QStringList(),
+                                                  {{"Assembly", testDir + "_common_data/ugenedb/1.bam.ugenedb"}}));
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    bool hasUnexpectedLogMessage = GTLogTracer::checkMessage("Ignored incorrect value of attribute");
+    CHECK_SET_ERR(!hasUnexpectedLogMessage, "Found unexpected message in the log");
+
+    // Check that output file contains only empty FASTA entries.
+    QStringList fileUrls = GTUtilsDashboard::getOutputFileUrls(os);
+    CHECK_SET_ERR(fileUrls.length() == 1, "Incorrect number of output files: " + QString::number(fileUrls.length()));
+    QString fileContent = GTFile::readAll(os, fileUrls[0]);
+    QStringList lines = fileContent.split("\n");
+    for (const auto& line : qAsConst(lines)) {
+        CHECK_SET_ERR(line.startsWith(">") || line.isEmpty(), "Only FASTA header lines are expected: " + line);
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7014) {
     // The test checks 'Save subalignment' in the collapse (virtual groups) mode.
     GTFileDialog::openFile(os, testDir + "_common_data/nexus", "DQB1_exon4.nexus");
