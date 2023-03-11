@@ -60,7 +60,7 @@ class OptionsPanel;
 
 class CodonTableView;
 
-class U2VIEW_EXPORT AnnotatedDNAView : public GObjectView {
+class U2VIEW_EXPORT AnnotatedDNAView : public GObjectViewController {
     Q_OBJECT
     friend class DetViewSequenceEditor;  // TODO_SVEDIT: remove this
 public:
@@ -168,7 +168,7 @@ public:
     }
 
 protected:
-    QWidget* createWidget() override;
+    QWidget* createViewWidget(QWidget* parent) override;
     bool onObjectRemoved(GObject* o) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
     bool eventFilter(QObject*, QEvent*) override;

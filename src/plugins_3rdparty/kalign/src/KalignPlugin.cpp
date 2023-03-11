@@ -134,7 +134,7 @@ KalignMSAEditorContext::KalignMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void KalignMSAEditorContext::initViewContext(GObjectView* view) {
+void KalignMSAEditorContext::initViewContext(GObjectViewController* view) {
     auto msaed = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );

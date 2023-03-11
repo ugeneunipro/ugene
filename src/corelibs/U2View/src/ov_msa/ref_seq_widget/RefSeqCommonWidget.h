@@ -50,7 +50,7 @@ public:
     RefSeqCommonWidgetFactory(QList<QString> groups);
     virtual ~RefSeqCommonWidgetFactory();
 
-    virtual QWidget* createWidget(GObjectView* objView, const QVariantMap& options);
+    virtual QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options);
 };
 
 }  // namespace U2

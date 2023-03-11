@@ -134,7 +134,7 @@ void uHMMPlugin::sl_build() {
     if (w != NULL) {
         auto ow = qobject_cast<GObjectViewWindow*>(w);
         if (ow != NULL) {
-            GObjectView* ov = ow->getObjectView();
+            GObjectViewController* ov = ow->getObjectView();
             auto av = qobject_cast<MSAEditor*>(ov);
             if (av != NULL) {
                 MultipleSequenceAlignmentObject* maObj = av->getMaObject();
@@ -162,7 +162,7 @@ void uHMMPlugin::sl_search() {
     if (w != NULL) {
         auto ow = qobject_cast<GObjectViewWindow*>(w);
         if (ow != NULL) {
-            GObjectView* ov = ow->getObjectView();
+            GObjectViewController* ov = ow->getObjectView();
             auto av = qobject_cast<AnnotatedDNAView*>(ov);
             if (av != NULL) {
                 seqCtx = av->getActiveSequenceContext();
@@ -200,7 +200,7 @@ HMMMSAEditorContext::HMMMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void HMMMSAEditorContext::initViewContext(GObjectView* view) {
+void HMMMSAEditorContext::initViewContext(GObjectViewController* view) {
     auto msaed = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );
@@ -212,7 +212,7 @@ void HMMMSAEditorContext::initViewContext(GObjectView* view) {
     addViewAction(a);
 }
 
-void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     auto msaed = qobject_cast<MSAEditor*>(v);
     SAFE_POINT(NULL != msaed && NULL != m, "Invalid GObjectVeiw or QMenu", );
     CHECK(msaed->getMaObject() != NULL, );
@@ -243,7 +243,7 @@ HMMADVContext::HMMADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void HMMADVContext::initViewContext(GObjectView* view) {
+void HMMADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/hmm2/images/hmmer_16.png"), tr("Find HMM signals with HMMER2..."), 70);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));

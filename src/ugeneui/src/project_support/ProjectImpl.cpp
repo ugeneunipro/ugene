@@ -255,7 +255,7 @@ QString ProjectImpl::genNextObjectId() {
 }
 
 void ProjectImpl::sl_onViewRenamed(const QString& oldName) {
-    auto view = qobject_cast<GObjectView*>(sender());
+    auto view = qobject_cast<GObjectViewController*>(sender());
     updateGObjectViewStates(oldName, view->getName());
 }
 

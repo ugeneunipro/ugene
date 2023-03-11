@@ -47,7 +47,7 @@ class U2VIEW_EXPORT MsaEditorMultilineWgt : public MaEditorMultilineWgt {
     Q_OBJECT
 
 public:
-    MsaEditorMultilineWgt(MSAEditor* editor, bool multiline);
+    MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent, bool multiline);
 
     MSAEditor* getEditor() const;
     MaEditorOverviewArea* getOverview();

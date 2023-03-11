@@ -113,7 +113,7 @@ void OpenAssemblyBrowserTask::updateTitle(AssemblyBrowser* ab) {
     }
 }
 
-AssemblyBrowser* OpenAssemblyBrowserTask::openBrowserForObject(AssemblyObject* obj, QString viewName, bool persistent) {
+AssemblyBrowser* OpenAssemblyBrowserTask::openBrowserForObject(AssemblyObject* obj, const QString& viewName, bool persistent) {
     AssemblyBrowser* v = new AssemblyBrowser(viewName, obj);
     U2OpStatus2Notification os;
     if (!v->checkValid(os)) {

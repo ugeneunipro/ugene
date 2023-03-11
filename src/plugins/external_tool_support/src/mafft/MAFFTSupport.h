@@ -56,7 +56,7 @@ protected slots:
     void sl_align_with_MAFFT();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 }  // namespace U2

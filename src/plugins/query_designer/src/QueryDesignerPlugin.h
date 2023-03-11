@@ -50,7 +50,7 @@ public:
     QueryDesignerViewContext(QObject* p);
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private slots:
     void sl_showDialog();

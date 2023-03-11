@@ -75,12 +75,28 @@ void GObjectViewFactoryRegistry::unregisterGObjectViewFactory(GObjectViewFactory
     mapping.remove(f->getId());
 }
 
-GObjectViewFactory* GObjectViewFactoryRegistry::getFactoryById(GObjectViewFactoryId t) const {
-    return mapping.value(t, nullptr);
+GObjectViewFactory* GObjectViewFactoryRegistry::getFactoryById(const GObjectViewFactoryId& id) const {
+    return mapping.value(id, nullptr);
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// GObjectViewFactory
+
+GObjectViewFactory::GObjectViewFactory(const GObjectViewFactoryId& _id, const QString& name, QObject* parent)
+    : QObject(parent), id(_id), name(name) {
+}
+
+const GObjectViewFactoryId& GObjectViewFactory::getId() const {
+    return id;
+}
+
+const QString& GObjectViewFactory::getName() const {
+    return name;
+}
+
+bool GObjectViewFactory::supportsSavedStates() const {
+    return false;
+}
 
 bool GObjectViewFactory::isStateInSelection(const MultiGSelection&, const QVariantMap&) {
     return false;
@@ -92,11 +108,11 @@ Task* GObjectViewFactory::createViewTask(const QString&, const QVariantMap&) {
 
 //////////////////////////////////////////////////////////////////////////
 /// GObjectView
-GObjectView::GObjectView(GObjectViewFactoryId _factoryId, const QString& _viewName, QObject* prnt)
+GObjectViewController::GObjectViewController(const GObjectViewFactoryId& _factoryId, const QString& _viewName, QObject* prnt)
     : QObject(prnt) {
     factoryId = _factoryId;
     viewName = _viewName;
-    widget = nullptr;
+    viewWidget = nullptr;
     optionsPanel = nullptr;
     closeInterface = nullptr;
     closing = false;
@@ -111,7 +127,39 @@ GObjectView::GObjectView(GObjectViewFactoryId _factoryId, const QString& _viewNa
     }
 }
 
-bool GObjectView::canAddObject(GObject* obj) {
+const GObjectViewFactoryId& GObjectViewController::getFactoryId() const {
+    return factoryId;
+}
+
+const QString& GObjectViewController::getName() const {
+    return viewName;
+}
+
+const QList<GObject*>& GObjectViewController::getObjects() const {
+    return objects;
+}
+
+QVariantMap GObjectViewController::saveState() {
+    return QVariantMap();
+}
+
+void GObjectViewController::saveWidgetState() {
+}
+
+void GObjectViewController::addObjectHandler(GObjectViewObjectHandler* oh) {
+    objectHandlers.append(oh);
+}
+
+void GObjectViewController::removeObjectHandler(GObjectViewObjectHandler* oh) {
+    objectHandlers.removeOne(oh);
+}
+
+bool GObjectViewController::onCloseEvent() {
+    return true;
+}
+
+
+bool GObjectViewController::canAddObject(GObject* obj) {
     if (objects.contains(obj)) {
         // the 'obj' is already in the view.
         return false;
@@ -124,7 +172,7 @@ bool GObjectView::canAddObject(GObject* obj) {
     return false;
 }
 
-QString GObjectView::addObject(GObject* o) {
+QString GObjectViewController::addObject(GObject* o) {
     if (closing) {
         return tr("Can't add object: %1 to the closing view").arg(o->getGObjectName());
     }
@@ -152,7 +200,7 @@ QString GObjectView::addObject(GObject* o) {
     return QString();
 }
 
-void GObjectView::_removeObject(GObject* o) {
+void GObjectViewController::_removeObject(GObject* o) {
     o->disconnect(this);
     int i = objects.removeAll(o);
     assert(i == 1);
@@ -165,7 +213,7 @@ void GObjectView::_removeObject(GObject* o) {
     }
 }
 
-void GObjectView::removeObject(GObject* o) {
+void GObjectViewController::removeObject(GObject* o) {
     assert(!closing);
     _removeObject(o);
     if (closing) {
@@ -174,7 +222,7 @@ void GObjectView::removeObject(GObject* o) {
     }
 }
 
-void GObjectView::sl_onObjectRemovedFromDocument(GObject* o) {
+void GObjectViewController::sl_onObjectRemovedFromDocument(GObject* o) {
     if (objects.contains(o)) {
         _removeObject(o);
         if (closing) {
@@ -184,30 +232,30 @@ void GObjectView::sl_onObjectRemovedFromDocument(GObject* o) {
     }
 }
 
-bool GObjectView::onObjectRemoved(GObject* obj) {
+bool GObjectViewController::onObjectRemoved(GObject* obj) {
     for (GObjectViewObjectHandler* objectHandler : qAsConst(objectHandlers)) {
         objectHandler->onObjectRemoved(this, obj);
     }
     return false;
 }
 
-void GObjectView::onObjectAdded(GObject* obj) {
+void GObjectViewController::onObjectAdded(GObject* obj) {
     connect(obj, SIGNAL(si_nameChanged(const QString&)), SLOT(sl_onObjectNameChanged(const QString&)));
     for (GObjectViewObjectHandler* objectHandler : qAsConst(objectHandlers)) {
         objectHandler->onObjectAdded(this, obj);
     }
 }
 
-void GObjectView::onObjectRenamed(GObject*, const QString&) {
+void GObjectViewController::onObjectRenamed(GObject*, const QString&) {
     // Do nothing by default.
 }
 
-void GObjectView::sl_onDocumentAdded(Document* d) {
+void GObjectViewController::sl_onDocumentAdded(Document* d) {
     connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_onObjectRemovedFromDocument(GObject*)));
     connect(d, SIGNAL(si_loadedStateChanged()), SLOT(sl_onDocumentLoadedStateChanged()));
 }
 
-void GObjectView::sl_onDocumentRemoved(Document* d) {
+void GObjectViewController::sl_onDocumentRemoved(Document* d) {
     if (closing) {
         return;
     }
@@ -224,47 +272,50 @@ void GObjectView::sl_onDocumentRemoved(Document* d) {
     }
 }
 
-void GObjectView::sl_onDocumentLoadedStateChanged() {
+void GObjectViewController::sl_onDocumentLoadedStateChanged() {
 }
 
-void GObjectView::sl_onObjectNameChanged(const QString& oldName) {
+void GObjectViewController::sl_onObjectNameChanged(const QString& oldName) {
     CHECK(AppContext::getProject() != nullptr, );
     auto object = qobject_cast<GObject*>(sender());
     SAFE_POINT(object != nullptr, "Can't locate renamed object!", );
     onObjectRenamed(object, oldName);
 }
 
-QWidget* GObjectView::getWidget() {
-    if (widget == nullptr) {
-        assert(closeInterface != nullptr);
-        widget = createWidget();
-    }
-    return widget;
+QWidget* GObjectViewController::getWidget() const {
+    SAFE_POINT(viewWidget != nullptr, "getWidget is called before createWidget", nullptr);
+    return viewWidget;
 }
 
-OptionsPanel* GObjectView::getOptionsPanel() {
-    return 0;
+QWidget* GObjectViewController::createWidget(QWidget* parent) {
+    SAFE_POINT(viewWidget == nullptr, "createWidget is called when widget is already created", nullptr);
+    viewWidget = createViewWidget(parent);
+    return viewWidget;
 }
 
-void GObjectView::setClosingInterface(GObjectViewCloseInterface* i) {
+OptionsPanel* GObjectViewController::getOptionsPanel() {
+    return nullptr;
+}
+
+void GObjectViewController::setClosingInterface(GObjectViewCloseInterface* i) {
     closeInterface = i;
 }
 
-void GObjectView::buildStaticToolbar(QToolBar* tb) {
+void GObjectViewController::buildStaticToolbar(QToolBar* tb) {
     emit si_buildStaticToolbar(this, tb);
 }
 
-void GObjectView::buildMenu(QMenu* m, const QString& type) {
+void GObjectViewController::buildMenu(QMenu* m, const QString& type) {
     emit si_buildMenu(this, m, type);
 }
 
 // Returns true if view  contains this object
-bool GObjectView::containsObject(GObject* obj) const {
+bool GObjectViewController::containsObject(GObject* obj) const {
     return objects.contains(obj);
 }
 
 // Returns true if view  contains any objects from the document
-bool GObjectView::containsDocumentObjects(Document* doc) const {
+bool GObjectViewController::containsDocumentObjects(Document* doc) const {
     for (GObject* object : qAsConst(doc->getObjects())) {
         if (containsObject(object)) {
             return true;
@@ -273,10 +324,10 @@ bool GObjectView::containsDocumentObjects(Document* doc) const {
     return false;
 }
 
-void GObjectView::onAfterViewWindowInit() {
+void GObjectViewController::onAfterViewWindowInit() {
 }
 
-void GObjectView::setName(const QString& newName) {
+void GObjectViewController::setName(const QString& newName) {
     QString oldName = viewName;
     if (oldName == newName) {
         return;
@@ -286,23 +337,23 @@ void GObjectView::setName(const QString& newName) {
 }
 
 /** Registers a new actions provider to the view. */
-void GObjectView::registerActionProvider(GObjectViewActionsProvider* actionsProvider) {
+void GObjectViewController::registerActionProvider(GObjectViewActionsProvider* actionsProvider) {
     SAFE_POINT(actionsProvider != nullptr, "GObjectViewActionsProvider is null!", );
     SAFE_POINT(!actionsProviders.contains(actionsProvider), "GObjectViewActionsProvider is already registered!", );
     actionsProviders << actionsProvider;
 }
 
 /** Unregisters an actions provider from the view. */
-void GObjectView::unregisterActionProvider(GObjectViewActionsProvider* actionsProvider) {
+void GObjectViewController::unregisterActionProvider(GObjectViewActionsProvider* actionsProvider) {
     bool isFound = actionsProviders.removeOne(actionsProvider);
     SAFE_POINT(isFound, "unregisterActionProvider can't find a registered provider", );
 }
 
-void GObjectView::buildActionMenu(QMenu* menu, const QString& menuType) {
+void GObjectViewController::buildActionMenu(QMenu* menu, const QString& menuType) {
     buildActionMenu(menu, QStringList(menuType));
 }
 
-void GObjectView::buildActionMenu(QMenu* menu, const QList<QString>& menuTypes) {
+void GObjectViewController::buildActionMenu(QMenu* menu, const QList<QString>& menuTypes) {
     QVector<QList<GObjectViewAction*>> actionsByType;
     actionsByType.resize(menuTypes.size());
 
@@ -335,16 +386,16 @@ void GObjectView::buildActionMenu(QMenu* menu, const QList<QString>& menuTypes) 
 //////////////////////////////////////////////////////////////////////////
 /// GObjectViewWindow
 
-GObjectViewWindow::GObjectViewWindow(GObjectView* v, const QString& _viewName, bool _persistent)
-    : MWMDIWindow(_viewName), view(v), persistent(_persistent) {
-    v->setParent(this);
-    v->setClosingInterface(this);
-    // Get the GObject widget and options panel
-    QWidget* viewWidget = v->getWidget();
+GObjectViewWindow::GObjectViewWindow(GObjectViewController* viewController, const QString& _viewName, bool _persistent)
+    : MWMDIWindow(_viewName), view(viewController), persistent(_persistent) {
+    viewController->setParent(this);
+    viewController->setClosingInterface(this);
+
+    QWidget* viewWidget = viewController->createWidget(this);
     if (viewWidget == nullptr) {
         coreLog.error("Internal error: Object View widget is not initialized");
-        v->setClosingInterface(nullptr);
-        v->setParent(nullptr);
+        viewController->setClosingInterface(nullptr);
+        viewController->setParent(nullptr);
         return;
     }
     // Initialize the layout of the whole windows
@@ -352,26 +403,17 @@ GObjectViewWindow::GObjectViewWindow(GObjectView* v, const QString& _viewName, b
     windowLayout->setContentsMargins(0, 0, 0, 0);
     windowLayout->setSpacing(0);
 
-    QWidget* objectWidget = new QWidget(this);
-    // Initialize the layout of the object part only
-    QVBoxLayout* objectLayout = new QVBoxLayout(objectWidget);
-    objectLayout->setContentsMargins(0, 0, 0, 0);
-    objectLayout->setSpacing(0);
-
-    // Add the widget to the layout and "parent" it
-    objectLayout->addWidget(viewWidget);
-
-    OptionsPanel* optionsPanel = v->getOptionsPanel();
+    OptionsPanel* optionsPanel = viewController->getOptionsPanel();
     if (optionsPanel == nullptr) {
         // Set the layout of the whole window
-        windowLayout->addWidget(objectWidget);
+        windowLayout->addWidget(viewWidget);
     } else {
         OptionsPanelWidget* optionsPanelWidget = optionsPanel->getMainWidget();
         QSplitter* splitter = new QSplitter();
         splitter->setObjectName("OPTIONS_PANEL_SPLITTER");
         splitter->setOrientation(Qt::Horizontal);
         splitter->setChildrenCollapsible(false);
-        splitter->addWidget(objectWidget);
+        splitter->addWidget(viewWidget);
         splitter->addWidget(optionsPanelWidget->getOptionsWidget());
         splitter->setStretchFactor(0, 1);
         splitter->setStretchFactor(1, 0);
@@ -398,7 +440,7 @@ GObjectViewWindow::GObjectViewWindow(GObjectView* v, const QString& _viewName, b
     setWindowIcon(viewWidget->windowIcon());
 
     // Notify widget after it was registered as a window.
-    QTimer::singleShot(0, v, [v] { v->onAfterViewWindowInit(); });
+    QTimer::singleShot(0, viewController, [viewController] { viewController->onAfterViewWindowInit(); });
 }
 
 void GObjectViewWindow::setPersistent(bool v) {
@@ -524,7 +566,7 @@ QList<GObjectViewWindow*> GObjectViewUtils::getAllActiveViews() {
     return objectViewWindows;
 }
 
-QList<GObjectViewWindow*> GObjectViewUtils::findViewsByFactoryId(GObjectViewFactoryId id) {
+QList<GObjectViewWindow*> GObjectViewUtils::findViewsByFactoryId(const GObjectViewFactoryId& id) {
     QList<GObjectViewWindow*> resultWindowList;
     MainWindow* mainWindow = AppContext::getMainWindow();
     if (mainWindow == nullptr || mainWindow->getMDIManager() == nullptr) {
@@ -620,7 +662,7 @@ GObjectViewWindowContext::~GObjectViewWindowContext() {
         if (objectViewWindow == nullptr || (!id.isEmpty() && objectViewWindow->getViewFactoryId() != id)) {
             continue;
         }
-        GObjectView* objectView = objectViewWindow->getObjectView();
+        GObjectViewController* objectView = objectViewWindow->getObjectView();
         disconnectView(objectView);
     }
 }
@@ -630,14 +672,14 @@ void GObjectViewWindowContext::sl_windowAdded(MWMDIWindow* w) {
     if (objectViewWindow == nullptr || (!id.isEmpty() && objectViewWindow->getViewFactoryId() != id)) {
         return;
     }
-    GObjectView* objectView = objectViewWindow->getObjectView();
+    GObjectViewController* objectView = objectViewWindow->getObjectView();
     assert(!viewResources.contains(objectView));
 
     objectView->addObjectHandler(this);
 
     initViewContext(objectView);
 
-    connect(objectView, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
+    connect(objectView, SIGNAL(si_buildMenu(GObjectViewController*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectViewController*, QMenu*, const QString&)));
 }
 
 void GObjectViewWindowContext::sl_windowClosing(MWMDIWindow* w) {
@@ -645,11 +687,11 @@ void GObjectViewWindowContext::sl_windowClosing(MWMDIWindow* w) {
     if (objectViewWindow == nullptr || (!id.isEmpty() && objectViewWindow->getViewFactoryId() != id)) {
         return;
     }
-    GObjectView* objectView = objectViewWindow->getObjectView();
+    GObjectViewController* objectView = objectViewWindow->getObjectView();
     disconnectView(objectView);
 }
 
-void GObjectViewWindowContext::sl_buildMenu(GObjectView* v, QMenu* m, const QString& type) {
+void GObjectViewWindowContext::sl_buildMenu(GObjectViewController* v, QMenu* m, const QString& type) {
     if (type == GObjectViewMenuType::STATIC) {
         buildStaticMenu(v, m);
     } else if (type == GObjectViewMenuType::CONTEXT) {
@@ -659,19 +701,19 @@ void GObjectViewWindowContext::sl_buildMenu(GObjectView* v, QMenu* m, const QStr
     }
 }
 
-void GObjectViewWindowContext::buildStaticMenu(GObjectView* view, QMenu* menu) {
+void GObjectViewWindowContext::buildStaticMenu(GObjectViewController* view, QMenu* menu) {
     buildStaticOrContextMenu(view, menu);
 }
 
-void GObjectViewWindowContext::buildContextMenu(GObjectView* view, QMenu* menu) {
+void GObjectViewWindowContext::buildContextMenu(GObjectViewController* view, QMenu* menu) {
     buildStaticOrContextMenu(view, menu);
 }
 
-void GObjectViewWindowContext::buildStaticOrContextMenu(GObjectView*, QMenu*) {
+void GObjectViewWindowContext::buildStaticOrContextMenu(GObjectViewController*, QMenu*) {
     // No extra static/context menu items by default.
 }
 
-void GObjectViewWindowContext::buildActionMenu(GObjectView* view, QMenu* menu, const QString& menuType) {
+void GObjectViewWindowContext::buildActionMenu(GObjectViewController* view, QMenu* menu, const QString& menuType) {
     QList<GObjectViewAction*> viewActions = getViewActions(view);
     for (GObjectViewAction* action : viewActions) {
         if (action->isInMenu(menuType)) {
@@ -680,7 +722,7 @@ void GObjectViewWindowContext::buildActionMenu(GObjectView* view, QMenu* menu, c
     }
 }
 
-void GObjectViewWindowContext::disconnectView(GObjectView* v) {
+void GObjectViewWindowContext::disconnectView(GObjectViewController* v) {
     QList<QObject*> resourceObjectList = viewResources[v];
     for (QObject* resourceObject : qAsConst(resourceObjectList)) {
         resourceObject->deleteLater();  // deliver close signals, save view states first
@@ -689,7 +731,7 @@ void GObjectViewWindowContext::disconnectView(GObjectView* v) {
     v->removeObjectHandler(this);
 }
 
-void GObjectViewWindowContext::addViewResource(GObjectView* v, QObject* r) {
+void GObjectViewWindowContext::addViewResource(GObjectViewController* v, QObject* r) {
     assert(v != nullptr && (!id.isEmpty() || v->getFactoryId() == id));
 
     QList<QObject*> resources = viewResources[v];
@@ -702,7 +744,7 @@ void GObjectViewWindowContext::addViewAction(GObjectViewAction* a) {
     addViewResource(a->getObjectView(), a);
 }
 
-GObjectViewAction* GObjectViewWindowContext::findViewAction(GObjectView* v, const QString& actionName) const {
+GObjectViewAction* GObjectViewWindowContext::findViewAction(GObjectViewController* v, const QString& actionName) const {
     const QList<GObjectViewAction*> viewActionList = getViewActions(v);
     for (GObjectViewAction* viewAction : qAsConst(viewActionList)) {
         if (viewAction->objectName() == actionName) {
@@ -712,7 +754,7 @@ GObjectViewAction* GObjectViewWindowContext::findViewAction(GObjectView* v, cons
     return nullptr;
 }
 
-QList<GObjectViewAction*> GObjectViewWindowContext::getViewActions(GObjectView* v) const {
+QList<GObjectViewAction*> GObjectViewWindowContext::getViewActions(GObjectViewController* v) const {
     QList<GObjectViewAction*> actions;
     QList<QObject*> resourceObjectList = viewResources[v];
     for (QObject* resourceObject : qAsConst(resourceObjectList)) {
@@ -724,7 +766,7 @@ QList<GObjectViewAction*> GObjectViewWindowContext::getViewActions(GObjectView* 
     return actions;
 }
 
-void GObjectViewWindowContext::onObjectRemoved(GObjectView* v, GObject* obj) {
+void GObjectViewWindowContext::onObjectRemoved(GObjectViewController* v, GObject* obj) {
     GObjectViewObjectHandler::onObjectRemoved(v, obj);
     const QList<GObjectViewAction*> viewActionList = getViewActions(v);
     for (GObjectViewAction* action : qAsConst(viewActionList)) {
@@ -735,11 +777,11 @@ void GObjectViewWindowContext::onObjectRemoved(GObjectView* v, GObject* obj) {
 //////////////////////////////////////////////////////////////////////////
 // GObjectViewAction
 
-GObjectViewAction::GObjectViewAction(QObject* p, GObjectView* v, const QString& text, int order)
+GObjectViewAction::GObjectViewAction(QObject* p, GObjectViewController* v, const QString& text, int order)
     : QAction(text, p), view(v), actionOrder(order) {
 }
 
-GObjectView* GObjectViewAction::getObjectView() const {
+GObjectViewController* GObjectViewAction::getObjectView() const {
     return view;
 }
 
@@ -768,14 +810,14 @@ void GObjectViewAction::addToMenuWithOrder(QMenu* menu) {
     menu->addAction(this);
 }
 
-bool GObjectViewObjectHandler::canHandle(GObjectView*, GObject*) {
+bool GObjectViewObjectHandler::canHandle(GObjectViewController*, GObject*) {
     return false;
 }
 
-void GObjectViewObjectHandler::onObjectAdded(GObjectView*, GObject*) {
+void GObjectViewObjectHandler::onObjectAdded(GObjectViewController*, GObject*) {
 }
 
-void GObjectViewObjectHandler::onObjectRemoved(GObjectView*, GObject*) {
+void GObjectViewObjectHandler::onObjectRemoved(GObjectViewController*, GObject*) {
 }
 
 }  // namespace U2

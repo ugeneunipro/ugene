@@ -269,7 +269,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     sl_completeUpdate();
 }
 
-void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView* /*v*/, QToolBar* t) {
+void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* /*v*/, QToolBar* t) {
     if (scaleAction != nullptr) {
         t->addAction(scaleAction);
     } else {

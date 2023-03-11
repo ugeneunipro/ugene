@@ -85,12 +85,12 @@ void McaEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(resetZoomAction);
     tb->addSeparator();
 
-    GObjectView::buildStaticToolbar(tb);
+    GObjectViewController::buildStaticToolbar(tb);
 }
 
 void McaEditor::buildMenu(QMenu* menu, const QString& type) {
     if (type != MsaEditorMenuType::STATIC) {
-        GObjectView::buildMenu(menu, type);
+        GObjectViewController::buildMenu(menu, type);
         return;
     }
     addAlignmentMenu(menu);
@@ -101,7 +101,7 @@ void McaEditor::buildMenu(QMenu* menu, const QString& type) {
     menu->addAction(showConsensusTabAction);
     menu->addSeparator();
 
-    GObjectView::buildMenu(menu, type);
+    GObjectViewController::buildMenu(menu, type);
     GUIUtils::disableEmptySubmenus(menu);
 }
 
@@ -160,9 +160,9 @@ void McaEditor::sl_showConsensusTab() {
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
-QWidget* McaEditor::createWidget() {
-    Q_ASSERT(ui == nullptr);
-    ui = new McaEditorWgt(this);
+QWidget* McaEditor::createViewWidget(QWidget* parent) {
+    SAFE_POINT(ui == nullptr, "UI is already initialized", ui);
+    ui = new McaEditorWgt(this, parent);
 
     collapseModel->reset(getMaRowIds());
 

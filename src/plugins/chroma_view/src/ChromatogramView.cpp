@@ -362,7 +362,7 @@ void ChromatogramView::sl_removeChanges() {
     indexOfChangedChars.clear();
 }
 
-void ChromatogramView::sl_onObjectRemoved(GObjectView* view, GObject* obj) {
+void ChromatogramView::sl_onObjectRemoved(GObjectViewController* view, GObject* obj) {
     Q_UNUSED(view);
 
     CHECK(obj == editDNASeq, );

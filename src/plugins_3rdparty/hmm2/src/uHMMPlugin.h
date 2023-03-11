@@ -60,8 +60,8 @@ protected slots:
     void sl_build();
 
 protected:
-    void initViewContext(GObjectView* view) override;
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void initViewContext(GObjectViewController* view) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 };
 
 class HMMADVContext : public GObjectViewWindowContext {
@@ -73,7 +73,7 @@ protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 }  // namespace U2

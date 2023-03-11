@@ -205,7 +205,7 @@ void MSAEditor::sl_buildTree() {
 }
 
 bool MSAEditor::onObjectRemoved(GObject* obj) {
-    bool result = GObjectView::onObjectRemoved(obj);
+    bool result = GObjectViewController::onObjectRemoved(obj);
 
     for (int i = 0; i < getUI()->getChildrenCount(); i++) {
         obj->disconnect(getMaEditorWgt(i)->getSequenceArea());
@@ -267,7 +267,7 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(multilineViewAction);
     tb->addSeparator();
 
-    GObjectView::buildStaticToolbar(tb);
+    GObjectViewController::buildStaticToolbar(tb);
 }
 
 void MSAEditor::buildMenu(QMenu* m, const QString& type) {
@@ -306,7 +306,7 @@ void MSAEditor::buildMenu(QMenu* m, const QString& type) {
 }
 
 void MSAEditor::fillMenu(QMenu* m, const QString& type) {
-    GObjectView::buildMenu(m, type);
+    GObjectViewController::buildMenu(m, type);
 }
 
 void MSAEditor::addCopyPasteMenu(QMenu* m, int uiIndex) {
@@ -410,7 +410,7 @@ void MSAEditor::addAppearanceMenu(QMenu* m, int uiIndex) {
     appearanceMenu->addAction(multilineViewAction);
 }
 
-void MSAEditor::addColorsMenu(QMenu* m, int index) {
+void MSAEditor::addColorsMenu(QMenu* m, int index) const {
     QMenu* colorsSchemeMenu = m->addMenu(tr("Colors"));
     colorsSchemeMenu->menuAction()->setObjectName("Colors");
     colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
@@ -437,7 +437,7 @@ void MSAEditor::addColorsMenu(QMenu* m, int index) {
     m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), colorsSchemeMenu);
 }
 
-void MSAEditor::addHighlightingMenu(QMenu* m) {
+void MSAEditor::addHighlightingMenu(QMenu* m) const {
     QMenu* highlightSchemeMenu = new QMenu(tr("Highlighting"), nullptr);
 
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
@@ -484,18 +484,18 @@ void MSAEditor::addStatisticsMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
 }
 
-QWidget* MSAEditor::createWidget() {
-    Q_ASSERT(ui == nullptr);
+QWidget* MSAEditor::createViewWidget(QWidget* parent) {
+    SAFE_POINT(ui == nullptr, "UI is already created", ui);
 
     Settings* s = AppContext::getSettings();
-    bool sMultilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
 
     // Use false for multilineMode while creating widget
     multilineMode = false;
-    ui = new MsaEditorMultilineWgt(this, multilineMode);
+    ui = new MsaEditorMultilineWgt(this, parent, multilineMode);
     new MoveToObjectMaController(this, ui);
 
     // Now restore multiline mode from settings
+    bool sMultilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
     setMultilineMode(sMultilineMode);
     multilineViewAction->setChecked(sMultilineMode);
 

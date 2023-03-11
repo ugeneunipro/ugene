@@ -45,7 +45,7 @@ class PositionSelector;
 class AssemblyCellRendererFactoryRegistry;
 class OptionsPanel;
 
-class AssemblyBrowser : public GObjectView {
+class AssemblyBrowser : public GObjectViewController {
     Q_OBJECT
 public:
     AssemblyBrowser(QString viewName, AssemblyObject* o);
@@ -178,9 +178,9 @@ signals:
     void si_coverageReady();
 
 protected:
-    virtual QWidget* createWidget();
-    virtual bool eventFilter(QObject*, QEvent*);
-    virtual void onObjectRenamed(GObject* obj, const QString& oldName);
+    QWidget* createViewWidget(QWidget* parent) override;
+    bool eventFilter(QObject*, QEvent*) override;
+    void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
 private slots:
     void sl_onPosChangeRequest(int);
@@ -277,7 +277,7 @@ class AssemblyAnnotationsArea;
 class U2VIEW_EXPORT AssemblyBrowserUi : public QWidget {
     Q_OBJECT
 public:
-    AssemblyBrowserUi(AssemblyBrowser* browser);
+    AssemblyBrowserUi(AssemblyBrowser* browser, QWidget* parent);
 
     inline QSharedPointer<AssemblyModel> getModel() const {
         return browser->getModel();

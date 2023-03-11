@@ -42,14 +42,14 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class TreeViewerUI;
 class TvBranchItem;
 class TvNodeItem;
 class TvTextItem;
 class TvRectangularBranchItem;
 
-class TreeViewer : public GObjectView {
+class TreeViewer : public GObjectViewController {
     Q_OBJECT
 public:
     TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject);
@@ -89,7 +89,7 @@ public:
     }
 
 protected:
-    QWidget* createWidget() override;
+    QWidget* createViewWidget(QWidget* parent) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
 public:
@@ -147,7 +147,7 @@ class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
     friend class TreeViewer;
 
 public:
-    explicit TreeViewerUI(TreeViewer* treeViewer);
+    explicit TreeViewerUI(TreeViewer* treeViewer, QWidget* parent);
     ~TreeViewerUI() override;
 
     /** Returns option value by looking up first in 'selectionSettings and next in the 'setting'. */

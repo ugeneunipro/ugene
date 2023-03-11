@@ -37,7 +37,7 @@ MSAHighlightingFactory::MSAHighlightingFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget* MSAHighlightingFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
+QWidget* MSAHighlightingFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

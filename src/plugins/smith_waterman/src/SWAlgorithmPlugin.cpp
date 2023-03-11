@@ -110,7 +110,7 @@ SWAlgorithmADVContext::SWAlgorithmADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID), dialogConfig() {
 }
 
-void SWAlgorithmADVContext::initViewContext(GObjectView* view) {
+void SWAlgorithmADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     assert(av != nullptr);
     auto a = new ADVGlobalAction(av, QIcon(":core/images/sw.png"), tr("Find pattern [Smith-Waterman]..."), 15);

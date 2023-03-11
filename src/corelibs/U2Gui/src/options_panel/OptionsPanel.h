@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class OptionsPanelWidget;
 class OPWidgetFactory;
 
@@ -40,7 +40,7 @@ class U2GUI_EXPORT OptionsPanel : public QObject {
     Q_OBJECT
 public:
     /** Creates a new OptionsPanelWidget */
-    OptionsPanel(GObjectView*);
+    OptionsPanel(GObjectViewController*);
 
     /**
      * Normally, the OptionsPanelWidget is added to another widget and should be deleted
@@ -69,7 +69,7 @@ public slots:
     void sl_groupHeaderPressed(QString groupId);
 
 private:
-    GObjectView* objView;
+    GObjectViewController* objView;
 
     /** Shows the options widget */
     void openOptionsGroup(const QString& groupId, const QVariantMap& options = QVariantMap());

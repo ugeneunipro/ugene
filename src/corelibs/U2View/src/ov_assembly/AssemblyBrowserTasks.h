@@ -40,7 +40,7 @@ public:
     OpenAssemblyBrowserTask(Document* doc);
     virtual void open();
     static void updateTitle(AssemblyBrowser* ab);
-    static AssemblyBrowser* openBrowserForObject(AssemblyObject* obj, QString viewName, bool persistent);
+    static AssemblyBrowser* openBrowserForObject(AssemblyObject* obj, const QString& viewName, bool persistent);
 
 private:
     GObjectReference unloadedObjRef;
@@ -56,7 +56,7 @@ public:
 class UpdateAssemblyBrowserTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    UpdateAssemblyBrowserTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
+    UpdateAssemblyBrowserTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData)
         : ObjectViewTask(v, stateName, stateData) {
     }
 

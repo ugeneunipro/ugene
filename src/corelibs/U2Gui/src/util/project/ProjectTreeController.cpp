@@ -629,13 +629,13 @@ void ProjectTreeController::sl_windowDeactivated(MWMDIWindow* w) {
     }
 }
 
-void ProjectTreeController::sl_objectAddedToActiveView(GObjectView*, GObject* obj) {
+void ProjectTreeController::sl_objectAddedToActiveView(GObjectViewController*, GObject* obj) {
     SAFE_POINT(obj != nullptr, tr("No object to add to view"), );
     uiLog.trace(QString("Processing object add to active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);
 }
 
-void ProjectTreeController::sl_objectRemovedFromActiveView(GObjectView*, GObject* obj) {
+void ProjectTreeController::sl_objectRemovedFromActiveView(GObjectViewController*, GObject* obj) {
     SAFE_POINT(obj != nullptr, tr("No object to remove from view"), );
     uiLog.trace(QString("Processing object remove from active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);

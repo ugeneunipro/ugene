@@ -870,7 +870,7 @@ void AnnotationsTreeView::updateColumnContextActions(AVItem* item, int col) {
     }
 }
 
-void AnnotationsTreeView::sl_onBuildMenu(GObjectView*, QMenu* m, const QString& type) {
+void AnnotationsTreeView::sl_onBuildMenu(GObjectViewController*, QMenu* m, const QString& type) {
     if (type != GObjectViewMenuType::CONTEXT) {
         return;
     }

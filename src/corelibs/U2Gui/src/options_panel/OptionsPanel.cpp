@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-OptionsPanel::OptionsPanel(GObjectView* _objView)
+OptionsPanel::OptionsPanel(GObjectViewController* _objView)
     : objView(_objView) {
     widget = new OptionsPanelWidget();
 }

@@ -87,7 +87,7 @@ AnnotatorViewContext::AnnotatorViewContext(QObject* p, bool customAutoAnnotation
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID), customFeaturesAvailable(customAutoAnnotations) {
 }
 
-void AnnotatorViewContext::initViewContext(GObjectView* v) {
+void AnnotatorViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
     ADVGlobalAction* findRegionsAction = new ADVGlobalAction(av, QIcon(":annotator/images/regions.png"), tr("Find annotated regions..."), 30);
     connect(findRegionsAction, SIGNAL(triggered()), SLOT(sl_showCollocationDialog()));

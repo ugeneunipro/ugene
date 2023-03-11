@@ -94,7 +94,7 @@ const double AssemblyBrowser::ZOOM_MULT = 1.25;
 const double AssemblyBrowser::INITIAL_ZOOM_FACTOR = 1.;
 
 AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject* o)
-    : GObjectView(AssemblyBrowserFactory::ID, viewName), ui(nullptr),
+    : GObjectViewController(AssemblyBrowserFactory::ID, viewName), ui(nullptr),
       gobject(o), model(nullptr), zoomFactor(INITIAL_ZOOM_FACTOR), xOffsetInAssembly(0), yOffsetInAssembly(0), coverageReady(false),
       cellRendererRegistry(new AssemblyCellRendererFactoryRegistry(this)),
       zoomInAction(nullptr), zoomOutAction(nullptr), posSelectorAction(nullptr), posSelector(nullptr), showCoordsOnRulerAction(nullptr), saveScreenShotAction(nullptr),
@@ -155,9 +155,9 @@ bool AssemblyBrowser::checkValid(U2OpStatus& os) {
     return true;
 }
 
-QWidget* AssemblyBrowser::createWidget() {
+QWidget* AssemblyBrowser::createViewWidget(QWidget* parent) {
     optionsPanel = new OptionsPanel(this);
-    ui = new AssemblyBrowserUi(this);
+    ui = new AssemblyBrowserUi(this, parent);
 
     const QString objectName = "assembly_browser_" + getName();
     ui->setObjectName(objectName);
@@ -322,7 +322,7 @@ void AssemblyBrowser::buildStaticToolbar(QToolBar* staticToolBar) {
         staticToolBar->addAction(extractAssemblyRegionAction);
         staticToolBar->addAction(saveScreenShotAction);
     }
-    GObjectView::buildStaticToolbar(staticToolBar);
+    GObjectViewController::buildStaticToolbar(staticToolBar);
 }
 
 void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
@@ -331,7 +331,7 @@ void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
 }
 void AssemblyBrowser::buildMenu(QMenu* menu, const QString& type) {
     if (type != GObjectViewMenuType::STATIC) {
-        GObjectView::buildMenu(menu, type);
+        GObjectViewController::buildMenu(menu, type);
         return;
     }
     U2OpStatusImpl os;
@@ -343,7 +343,7 @@ void AssemblyBrowser::buildMenu(QMenu* menu, const QString& type) {
         menu->addAction(extractAssemblyRegionAction);
         menu->addAction(setReferenceAction);
     }
-    GObjectView::buildMenu(menu, type);
+    GObjectViewController::buildMenu(menu, type);
     GUIUtils::disableEmptySubmenus(menu);
 }
 
@@ -1106,8 +1106,8 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
 // AssemblyBrowserUi
 //==============================================================================
 
-AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_)
-    : browser(browser_), zoomableOverview(0),
+AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
+    : QWidget(parent), browser(browser_), zoomableOverview(0),
       referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true) {
     U2OpStatusImpl os;
     if (browser->getModel()->hasReads(os)) {  // has mapped reads -> show rich visualization

@@ -175,7 +175,7 @@ EnzymesADVContext::EnzymesADVContext(QObject* p, const QList<QAction*>& actions)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID), cloningActions(actions) {
 }
 
-void EnzymesADVContext::initViewContext(GObjectView* view) {
+void EnzymesADVContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":enzymes/images/enzymes.png"), tr("Find restriction sites..."), 50);
     a->setObjectName("Find restriction sites");
@@ -203,7 +203,7 @@ void EnzymesADVContext::sl_search() {
 // TODO: move definitions to core
 #define PRIMER_ANNOTATION_GROUP_NAME "pair"
 
-void EnzymesADVContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+void EnzymesADVContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
     SAFE_POINT(nullptr != av, "Invalid sequence view", );
     CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );

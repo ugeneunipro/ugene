@@ -164,7 +164,7 @@ void OpenSavedTreeViewerTask::updateRanges(const QVariantMap& stateData, TreeVie
 
 //////////////////////////////////////////////////////////////////////////
 // update
-UpdateTreeViewerTask::UpdateTreeViewerTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
+UpdateTreeViewerTask::UpdateTreeViewerTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData)
     : ObjectViewTask(v, stateName, stateData) {
 }
 

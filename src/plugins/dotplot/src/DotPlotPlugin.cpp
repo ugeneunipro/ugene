@@ -160,7 +160,7 @@ void DotPlotViewContext::sl_buildDotPlot() {
     showBuildDotPlotDialog(action->getObjectView());
 }
 
-void DotPlotViewContext::showBuildDotPlotDialog(GObjectView* ov) {
+void DotPlotViewContext::showBuildDotPlotDialog(GObjectViewController* ov) {
     auto dnaView = qobject_cast<AnnotatedDNAView*>(ov);
     CHECK(dnaView != nullptr, )
 
@@ -213,7 +213,7 @@ void DotPlotViewContext::sl_removeDotPlot() {
 #define BUILD_DOT_PLOT_ACTION_NAME "build_dotplot_action"
 
 // new view context is opened
-void DotPlotViewContext::initViewContext(GObjectView* v) {
+void DotPlotViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
     Q_ASSERT(av);
 
@@ -241,7 +241,7 @@ void DotPlotViewContext::initViewContext(GObjectView* v) {
 }
 
 // create if needed and return DotPlotSplitter in the dnaView
-DotPlotSplitter* DotPlotViewContext::getView(GObjectView* view, bool create) {
+DotPlotSplitter* DotPlotViewContext::getView(GObjectViewController* view, bool create) {
     DotPlotSplitter* dotPlotView = nullptr;
 
     // search for DotPlotSpliter in the view
@@ -267,7 +267,7 @@ DotPlotSplitter* DotPlotViewContext::getView(GObjectView* view, bool create) {
 }
 
 // context menu opened
-void DotPlotViewContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+void DotPlotViewContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
     foreach (QObject* r, resources) {
         auto dotPlotView = qobject_cast<DotPlotSplitter*>(r);
@@ -279,7 +279,7 @@ void DotPlotViewContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
 }
 
 // remove a splitter from the view
-void DotPlotViewContext::removeDotPlotView(GObjectView* view) {
+void DotPlotViewContext::removeDotPlotView(GObjectViewController* view) {
     QList<QObject*> resources = viewResources.value(view);
     foreach (QObject* r, resources) {
         auto dotPlotView = qobject_cast<DotPlotSplitter*>(r);
@@ -302,7 +302,7 @@ void DotPlotViewContext::sl_windowActivated(MWMDIWindow* w) {
     // check if we need to show DP dialog for this window
     auto ow = qobject_cast<GObjectViewWindow*>(w);
     CHECK(ow != nullptr, )
-    GObjectView* view = ow->getObjectView();
+    GObjectViewController* view = ow->getObjectView();
     if (view->property(SHOW_BUILD_DOT_PLOT_DIALOG_FLAG).toInt() != 1) {
         return;
     }

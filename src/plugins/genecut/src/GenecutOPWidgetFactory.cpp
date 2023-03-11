@@ -41,7 +41,7 @@ GenecutOPWidgetFactory::GenecutOPWidgetFactory()
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget* GenecutOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& ) {
+QWidget* GenecutOPWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& ) {
     auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 

@@ -69,7 +69,7 @@ DNAGraphPackViewContext::DNAGraphPackViewContext(QObject* p)
     //    graphFactories.append(new CumulativeSkewGraphFactory(CumulativeSkewGraphFactory::AT, this));
 }
 
-void DNAGraphPackViewContext::initViewContext(GObjectView* view) {
+void DNAGraphPackViewContext::initViewContext(GObjectViewController* view) {
     auto annotView = qobject_cast<AnnotatedDNAView*>(view);
     connect(annotView,
             SIGNAL(si_sequenceWidgetAdded(ADVSequenceWidget*)),

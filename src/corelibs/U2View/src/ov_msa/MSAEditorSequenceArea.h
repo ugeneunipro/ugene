@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class MsaColorScheme;
 class MsaColorSchemeFactory;
 class MsaColorSchemeRegistry;
@@ -160,8 +160,8 @@ protected:
     QSize minimumSizeHint() const override;
 
 private slots:
-    void sl_buildMenu(GObjectView* v, QMenu* m, const QString& menuType);
-    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
+    void sl_buildMenu(GObjectViewController* v, QMenu* m, const QString& menuType);
+    void sl_buildStaticToolbar(GObjectViewController* v, QToolBar* t);
     void sl_lockedStateChanged();
     void sl_addSeqFromFile();
     void sl_addSeqFromProject();

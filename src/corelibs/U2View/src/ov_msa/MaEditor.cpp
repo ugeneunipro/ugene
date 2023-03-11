@@ -65,7 +65,7 @@ const float MaEditor::zoomMult = 1.25;
 const double MaEditor::FONT_BOX_TO_CELL_BOX_MULTIPLIER = 1.25;
 
 MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj)
-    : GObjectView(factoryId, viewName),
+    : GObjectViewController(factoryId, viewName),
       ui(nullptr),
       resizeMode(ResizeMode_FontAndContent),
       minimumFontPointSize(6),
@@ -406,7 +406,7 @@ void MaEditor::sl_changeFont() {
     bool ok = false;
     GCounter::increment("Change of the characters font", getFactoryId());
     // QFontDialog::DontUseNativeDialog - no color selector, affects only Mac OS
-    QFont f = QFontDialog::getFont(&ok, font, widget, tr("Characters Font"), QFontDialog::DontUseNativeDialog);
+    QFont f = QFontDialog::getFont(&ok, font, viewWidget, tr("Characters Font"), QFontDialog::DontUseNativeDialog);
     if (!ok) {
         return;
     }
@@ -518,7 +518,7 @@ void MaEditor::setFont(const QFont& f) {
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, f.pointSize());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, f.italic());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, f.bold());
-    widget->update();
+    viewWidget->update();
 }
 
 void MaEditor::updateFontMetrics() {

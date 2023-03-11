@@ -85,7 +85,7 @@ Primer3ADVContext::Primer3ADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void Primer3ADVContext::initViewContext(GObjectView* v) {
+void Primer3ADVContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/primer3/images/primer3.png"), tr("Primer3..."), 95);
     a->setObjectName("primer3_action");

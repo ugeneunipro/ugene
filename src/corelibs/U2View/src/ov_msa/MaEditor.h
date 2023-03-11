@@ -104,7 +104,7 @@ enum class MaEditorRowOrderMode {
     Free
 };
 
-class U2VIEW_EXPORT MaEditor : public GObjectView {
+class U2VIEW_EXPORT MaEditor : public GObjectViewController {
     Q_OBJECT
     friend class OpenSavedMaEditorTask;
     friend class MaEditorState;
@@ -277,10 +277,9 @@ private slots:
     void resetColumnWidthCache();
 
 protected:
-    virtual QWidget* createWidget() = 0;
     virtual void initActions();
-    virtual void initZoom();
-    virtual void initFont();
+    void initZoom();
+    void initFont();
     void updateResizeMode();
 
     virtual void addCopyPasteMenu(QMenu* m, int uiIndex);

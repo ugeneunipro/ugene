@@ -50,7 +50,7 @@ private:
     void buildMenu(QMenu* menu);
 
 private slots:
-    void sl_buildMenu(GObjectView* view, QMenu* menu, const QString& type);
+    void sl_buildMenu(GObjectViewController* view, QMenu* menu, const QString& type);
 };
 
 }  // namespace U2

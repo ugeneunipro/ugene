@@ -100,7 +100,7 @@ QueryDesignerViewContext::QueryDesignerViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void QueryDesignerViewContext::initViewContext(GObjectView* view) {
+void QueryDesignerViewContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
     auto action = new ADVGlobalAction(av,
                                       QIcon(":query_designer/images/query_designer.png"),

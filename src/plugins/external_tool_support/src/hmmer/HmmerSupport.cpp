@@ -275,7 +275,7 @@ HmmerMsaEditorContext::HmmerMsaEditorContext(QObject* parent)
     : GObjectViewWindowContext(parent, MsaEditorFactory::ID) {
 }
 
-void HmmerMsaEditorContext::initViewContext(GObjectView* view) {
+void HmmerMsaEditorContext::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     CHECK(msaEditor->getMaObject() != nullptr, );
@@ -287,7 +287,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectView* view) {
     addViewAction(action);
 }
 
-void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectView* view, QMenu* menu) {
+void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     SAFE_POINT(menu != nullptr, "Menu is NULL", );
@@ -318,7 +318,7 @@ HmmerAdvContext::HmmerAdvContext(QObject* parent)
     : GObjectViewWindowContext(parent, AnnotatedDNAViewFactory::ID) {
 }
 
-void HmmerAdvContext::initViewContext(GObjectView* view) {
+void HmmerAdvContext::initViewContext(GObjectViewController* view) {
     auto adv = qobject_cast<AnnotatedDNAView*>(view);
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
 

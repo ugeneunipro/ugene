@@ -72,7 +72,7 @@
 namespace U2 {
 
 TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject)
-    : GObjectView(TreeViewerFactory::ID, viewName), phyObject(_phyObject) {
+    : GObjectViewController(TreeViewerFactory::ID, viewName), phyObject(_phyObject) {
     GCOUNTER(cvar, "PhylTreeViewer");
 
     createActions();
@@ -279,7 +279,7 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
 
 void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     if (type != GObjectViewMenuType::STATIC) {
-        GObjectView::buildMenu(m, type);
+        GObjectViewController::buildMenu(m, type);
         return;
     }
     // Tree Settings
@@ -327,13 +327,13 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
 
     m->addSeparator();
 
-    GObjectView::buildMenu(m, type);
+    GObjectViewController::buildMenu(m, type);
     GUIUtils::disableEmptySubmenus(m);
 }
 
-QWidget* TreeViewer::createWidget() {
+QWidget* TreeViewer::createViewWidget(QWidget* parent) {
     SAFE_POINT(ui == nullptr, "createWidget: UI is not null", ui);
-    ui = new TreeViewerUI(this);
+    ui = new TreeViewerUI(this, parent);
 
     optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
@@ -463,8 +463,8 @@ static void storeOptionValueInAppSettings(const TreeViewOption& option, const QV
     }
 }
 
-TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
-    : phyObject(_treeViewer->getPhyObject()),
+TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
+    : QGraphicsView(parent), phyObject(_treeViewer->getPhyObject()),
       treeViewer(_treeViewer) {
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
