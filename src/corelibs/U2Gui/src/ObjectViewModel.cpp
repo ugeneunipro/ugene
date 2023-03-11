@@ -387,7 +387,7 @@ void GObjectViewController::buildActionMenu(QMenu* menu, const QList<QString>& m
 /// GObjectViewWindow
 
 GObjectViewWindow::GObjectViewWindow(GObjectViewController* viewController, const QString& _viewName, bool _persistent)
-    : MWMDIWindow(_viewName), view(viewController), persistent(_persistent) {
+    : MWMDIWindow(_viewName), viewController(viewController), persistent(_persistent) {
     viewController->setParent(this);
     viewController->setClosingInterface(this);
 
@@ -457,22 +457,22 @@ void GObjectViewWindow::closeView() {
 }
 
 bool GObjectViewWindow::onCloseEvent() {
-    view->saveWidgetState();
-    return view->onCloseEvent();
+    viewController->saveWidgetState();
+    return viewController->onCloseEvent();
 }
 
 GObjectViewFactory* GObjectViewWindow::getViewFactory() const {
-    GObjectViewFactory* viewFactory = AppContext::getObjectViewFactoryRegistry()->getFactoryById(view->getFactoryId());
+    GObjectViewFactory* viewFactory = AppContext::getObjectViewFactoryRegistry()->getFactoryById(viewController->getFactoryId());
     SAFE_POINT(viewFactory != nullptr, "viewFactory is null!", nullptr)
     return viewFactory;
 }
 
 void GObjectViewWindow::setupMDIToolbar(QToolBar* tb) {
-    view->buildStaticToolbar(tb);
+    viewController->buildStaticToolbar(tb);
 }
 
 void GObjectViewWindow::setupViewMenu(QMenu* m) {
-    view->buildMenu(m, GObjectViewMenuType::STATIC);
+    viewController->buildMenu(m, GObjectViewMenuType::STATIC);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -778,11 +778,11 @@ void GObjectViewWindowContext::onObjectRemoved(GObjectViewController* v, GObject
 // GObjectViewAction
 
 GObjectViewAction::GObjectViewAction(QObject* p, GObjectViewController* v, const QString& text, int order)
-    : QAction(text, p), view(v), actionOrder(order) {
+    : QAction(text, p), viewController(v), actionOrder(order) {
 }
 
 GObjectViewController* GObjectViewAction::getObjectView() const {
-    return view;
+    return viewController;
 }
 
 int GObjectViewAction::getActionOrder() const {

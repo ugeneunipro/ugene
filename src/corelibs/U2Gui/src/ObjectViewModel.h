@@ -284,11 +284,11 @@ public:
     GObjectViewWindow(GObjectViewController* viewController, const QString& _viewName, bool _persistent = false);
 
     const QList<GObject*>& getObjects() const {
-        return view->getObjects();
+        return viewController->getObjects();
     }
 
     GObjectViewFactoryId getViewFactoryId() const {
-        return view->getFactoryId();
+        return viewController->getFactoryId();
     }
 
     bool isPersistent() const {
@@ -298,11 +298,11 @@ public:
     void setPersistent(bool v);
 
     QString getViewName() const {
-        return view->getName();
+        return viewController->getName();
     }
 
     GObjectViewController* getObjectView() const {
-        return view;
+        return viewController;
     }
 
     virtual void closeView();
@@ -321,7 +321,7 @@ signals:
     void si_windowClosed(GObjectViewWindow* viewWindow);
 
 protected:
-    GObjectViewController* view;
+    GObjectViewController* viewController;
     bool persistent;
 };
 
@@ -380,7 +380,7 @@ public:
     void setMenuTypes(const QList<QString>& menuTypes);
 
 private:
-    GObjectViewController* view;
+    GObjectViewController* viewController;
 
     // Action order can be used to set-up relative action position in GUI elements
     int actionOrder;
