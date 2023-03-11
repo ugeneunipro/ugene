@@ -31,7 +31,7 @@ namespace U2 {
 
 MsaEditorNameList::MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar)
     : MaEditorNameList(ui, nhBar) {
-    connect(editor, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
+    connect(editor, &GObjectViewController::si_buildMenu, this, &MsaEditorNameList::sl_buildMenu);
 }
 
 void MsaEditorNameList::sl_buildMenu(GObjectViewController*, QMenu* menu, const QString& menuType) {

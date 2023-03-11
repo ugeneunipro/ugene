@@ -83,8 +83,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
 
     initRenderer();
 
-    connect(editor, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
+    connect(editor, &GObjectViewController::si_buildMenu, this, &MSAEditorSequenceArea::sl_buildMenu);
+    connect(editor, &GObjectViewController::si_buildStaticToolbar, this, &MSAEditorSequenceArea::sl_buildStaticToolbar);
 
     selectionColor = Qt::black;
     editingEnabled = true;

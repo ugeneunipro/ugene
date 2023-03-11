@@ -65,7 +65,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, G
 
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
+    connect(editor, &MaEditor::si_buildStaticToolbar, this, &McaEditorSequenceArea::sl_buildStaticToolbar);
 
     traceActionsMenu = new QMenu(tr("Show/hide trace"), this);
     traceActionsMenu->setObjectName("traceActionsMenu");

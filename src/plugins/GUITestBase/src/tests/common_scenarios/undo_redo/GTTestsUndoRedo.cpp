@@ -56,7 +56,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {  // DIFFERENCE: lock document is checked
     // 1. Open document COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // 2. Insert seversl spaces somewhere
+    // 2. Insert several spaces.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     for (int i = 0; i < 6; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Space);

@@ -29,7 +29,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
-#include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -157,7 +156,6 @@ void GObjectViewController::removeObjectHandler(GObjectViewObjectHandler* oh) {
 bool GObjectViewController::onCloseEvent() {
     return true;
 }
-
 
 bool GObjectViewController::canAddObject(GObject* obj) {
     if (objects.contains(obj)) {
@@ -391,50 +389,50 @@ GObjectViewWindow::GObjectViewWindow(GObjectViewController* viewController, cons
     viewController->setParent(this);
     viewController->setClosingInterface(this);
 
-    QWidget* viewWidget = viewController->createWidget(this);
-    if (viewWidget == nullptr) {
-        coreLog.error("Internal error: Object View widget is not initialized");
-        viewController->setClosingInterface(nullptr);
-        viewController->setParent(nullptr);
-        return;
-    }
-    // Initialize the layout of the whole windows
-    QHBoxLayout* windowLayout = new QHBoxLayout();
-    windowLayout->setContentsMargins(0, 0, 0, 0);
-    windowLayout->setSpacing(0);
+    // Root scroll area.
+    auto rootLayout = new QHBoxLayout();
+    rootLayout->setContentsMargins(0, 0, 0, 0);
+    setLayout(rootLayout);
+
+    auto rootScrollArea = new QScrollArea(this);
+    rootScrollArea->setFrameStyle(QFrame::NoFrame);
+    rootScrollArea->setWidgetResizable(true);
+    rootLayout->addWidget(rootScrollArea);
+
+    // Scrollable content widget.
+    auto contentWidgetLayout = new QHBoxLayout(rootScrollArea);
+    contentWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    contentWidgetLayout->setSpacing(0);
+
+    auto contentWidget = new QWidget();
+    contentWidget->setObjectName("object_view_window_content_widget");
+    contentWidget->setLayout(contentWidgetLayout);
+    rootScrollArea->setWidget(contentWidget);
+
+    QWidget* viewWidget = nullptr;
 
     OptionsPanel* optionsPanel = viewController->getOptionsPanel();
     if (optionsPanel == nullptr) {
         // Set the layout of the whole window
-        windowLayout->addWidget(viewWidget);
+        viewWidget = viewController->createWidget(contentWidget);
+        SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
+        contentWidgetLayout->addWidget(viewWidget);
     } else {
         OptionsPanelWidget* optionsPanelWidget = optionsPanel->getMainWidget();
-        QSplitter* splitter = new QSplitter();
+        QSplitter* splitter = new QSplitter(contentWidget);
         splitter->setObjectName("OPTIONS_PANEL_SPLITTER");
         splitter->setOrientation(Qt::Horizontal);
         splitter->setChildrenCollapsible(false);
+        viewWidget = viewController->createWidget(splitter);
+        SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
         splitter->addWidget(viewWidget);
         splitter->addWidget(optionsPanelWidget->getOptionsWidget());
         splitter->setStretchFactor(0, 1);
         splitter->setStretchFactor(1, 0);
 
-        windowLayout->addWidget(splitter);
-        windowLayout->addWidget(optionsPanelWidget);
+        contentWidgetLayout->addWidget(splitter);
+        contentWidgetLayout->addWidget(optionsPanelWidget);
     }
-
-    QScrollArea* windowScrollArea = new QScrollArea();
-    windowScrollArea->setFrameStyle(QFrame::NoFrame);
-    windowScrollArea->setWidgetResizable(true);
-
-    auto windowContentWidget = new QWidget();
-    windowContentWidget->setObjectName("object_view_window_content_widget");
-    windowContentWidget->setLayout(windowLayout);
-    windowScrollArea->setWidget(windowContentWidget);
-
-    QHBoxLayout* l = new QHBoxLayout();
-    l->setContentsMargins(0, 0, 0, 0);
-    l->addWidget(windowScrollArea);
-    setLayout(l);
 
     // Set the icon
     setWindowIcon(viewWidget->windowIcon());
