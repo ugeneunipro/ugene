@@ -409,22 +409,19 @@ GObjectViewWindow::GObjectViewWindow(GObjectViewController* viewController, cons
     contentWidget->setLayout(contentWidgetLayout);
     rootScrollArea->setWidget(contentWidget);
 
-    QWidget* viewWidget = nullptr;
+    QWidget* viewWidget = viewController->createWidget(nullptr);
+    SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
 
     OptionsPanel* optionsPanel = viewController->getOptionsPanel();
     if (optionsPanel == nullptr) {
         // Set the layout of the whole window
-        viewWidget = viewController->createWidget(contentWidget);
-        SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
         contentWidgetLayout->addWidget(viewWidget);
     } else {
         OptionsPanelWidget* optionsPanelWidget = optionsPanel->getMainWidget();
-        QSplitter* splitter = new QSplitter(contentWidget);
+        auto splitter = new QSplitter(contentWidget);
         splitter->setObjectName("OPTIONS_PANEL_SPLITTER");
         splitter->setOrientation(Qt::Horizontal);
         splitter->setChildrenCollapsible(false);
-        viewWidget = viewController->createWidget(splitter);
-        SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
         splitter->addWidget(viewWidget);
         splitter->addWidget(optionsPanelWidget->getOptionsWidget());
         splitter->setStretchFactor(0, 1);
