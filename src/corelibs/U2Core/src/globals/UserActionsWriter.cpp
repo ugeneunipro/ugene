@@ -181,19 +181,19 @@ QString UserActionsWriter::getWidgetText(QMouseEvent* mouseEvent, QWidget* widge
 }
 
 void UserActionsWriter::logKeyEvent(QKeyEvent* keyEvent) {
-    SAFE_POINT(keyEvent != nullptr, "logKeyEvent: Key event is nul", );
+    SAFE_POINT(keyEvent != nullptr, "logKeyEvent: Key event is null", );
 
-    QString text = keyEvent->text();
-    QString s = keyNameByKeyCode.value(Qt::Key(keyEvent->key()));
+    QString eventName = keyEvent->text();
+    QString keyName = keyNameByKeyCode.value(Qt::Key(keyEvent->key()));
 
-    QString message = loggableEventNames.value(keyEvent->type()) + QString(" ");
+    QString message = loggableEventNames.value(keyEvent->type()) + " ";
     message.append(getActiveModalWidgetInfo());
     message.append(getKeyModifiersInfo(keyEvent));
 
-    if (!s.isEmpty()) {
-        message.append(QString("%1").arg(s));
-    } else if (!text.isEmpty()) {
-        message.append(text).append(QString(" code: %1").arg(keyEvent->key()));
+    if (!keyName.isEmpty()) {
+        message.append(QString("%1").arg(keyName));
+    } else if (!eventName.isEmpty()) {
+        message.append(eventName).append(QString(" code: %1").arg(keyEvent->key()));
     } else {
         message.append(QString("Undefined key, code: %1").arg(keyEvent->key()));
     }
@@ -289,7 +289,7 @@ QString UserActionsWriter::getKeyModifiersInfo(QKeyEvent* keyEvent) {
 
     QString message;
     if (modifiers.testFlag(Qt::ControlModifier) && key != Qt::Key_Control) {
-        return message += "ctrl + ";
+        message += "ctrl + ";
     }
     if (modifiers.testFlag(Qt::AltModifier) && key != Qt::Key_Alt) {
         message += "alt + ";

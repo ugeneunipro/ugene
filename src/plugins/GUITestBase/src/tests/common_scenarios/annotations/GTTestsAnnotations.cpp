@@ -747,7 +747,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(lt.hasMessage("Found unexpected message"), "No expected message in the log");
+    CHECK_SET_ERR(lt.hasMessage("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers"), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
