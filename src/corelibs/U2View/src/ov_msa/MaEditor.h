@@ -142,10 +142,6 @@ public:
 
     virtual MaEditorMultilineWgt* getMaEditorMultilineWgt() const = 0;
 
-    virtual OptionsPanel* getOptionsPanel() {
-        return optionsPanel;
-    }
-
     const QFont& getFont() const {
         return font;
     }

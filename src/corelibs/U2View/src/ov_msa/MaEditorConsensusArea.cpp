@@ -273,12 +273,7 @@ void MaEditorConsensusArea::sl_copyConsensusSequenceWithGaps() {
 }
 
 void MaEditorConsensusArea::sl_configureConsensusAction() {
-    OptionsPanel* optionsPanel = editor->getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when msageneraltab opening was initiated!", );
-
-    const QString& MSAGeneralTabFactoryId = MSAGeneralTabFactory::getGroupId();
-    optionsPanel->openGroupById(MSAGeneralTabFactoryId);
+    editor->getOptionsPanelController()->openGroupById(MSAGeneralTabFactory::getGroupId());
 }
 
 void MaEditorConsensusArea::sl_changeConsensusAlgorithm(const QString& algoId) {

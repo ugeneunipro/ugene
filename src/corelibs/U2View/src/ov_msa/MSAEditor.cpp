@@ -76,6 +76,7 @@ const QString MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT("msa_edit
 MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
       treeManager(this) {
+    optionsPanelController = new OptionsPanelController(this);
     selectionController = new MaEditorSelectionController(this);
     connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64>&)), SLOT(sl_rowsRemoved(const QList<qint64>&)));
 
@@ -563,7 +564,6 @@ void MSAEditor::initActions() {
     unsetReferenceSequenceAction->setObjectName("unset_reference");
     connect(unsetReferenceSequenceAction, SIGNAL(triggered()), SLOT(sl_unsetReferenceSeq()));
 
-    optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
 
     QList<OPFactoryFilterVisitorInterface*> filters;
@@ -571,7 +571,7 @@ void MSAEditor::initActions() {
 
     QList<OPWidgetFactory*> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactories) {
-        optionsPanel->addGroup(factory);
+        optionsPanelController->addGroup(factory);
     }
 
     connect(alignSelectedSequencesToAlignmentAction, &QAction::triggered, this, &MSAEditor::sl_alignSelectedSequencesToAlignment);
@@ -629,7 +629,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
 }
 
 void MSAEditor::sl_showTreeOP() {
-    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
+    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanelController->getMainWidget());
     if (opWidget == nullptr) {
         return;
     }
@@ -652,7 +652,7 @@ void MSAEditor::sl_showTreeOP() {
 }
 
 void MSAEditor::sl_hideTreeOP() {
-    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
+    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanelController->getMainWidget());
     if (opWidget == nullptr) {
         return;
     }
@@ -718,19 +718,13 @@ void MSAEditor::sl_alignNewSequencesToAlignment() {
 }
 
 void MSAEditor::sl_searchInSequences() {
-    auto optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when search in sequences was initiated!", );
     QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInSequences();
-    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
+    optionsPanelController->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
 void MSAEditor::sl_searchInSequenceNames() {
-    auto optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when search in sequence names was initiated!", );
     QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInNames();
-    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
+    optionsPanelController->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
 void MSAEditor::sl_alignSelectedSequencesToAlignment() {

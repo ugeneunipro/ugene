@@ -52,7 +52,7 @@ class TvRectangularBranchItem;
 class TreeViewer : public GObjectViewController {
     Q_OBJECT
 public:
-    TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject);
+    TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject, bool hasOptionsPanel = true);
 
     // from GObjectView
     void buildStaticToolbar(QToolBar* tb) override;
@@ -63,8 +63,6 @@ public:
     QVariantMap saveState() override;
 
     Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) override;
-
-    OptionsPanel* getOptionsPanel() override;
 
     PhyTreeObject* getPhyObject() const {
         return phyObject;

@@ -112,7 +112,6 @@ GObjectViewController::GObjectViewController(const GObjectViewFactoryId& _factor
     factoryId = _factoryId;
     viewName = _viewName;
     viewWidget = nullptr;
-    optionsPanel = nullptr;
     closeInterface = nullptr;
     closing = false;
 
@@ -291,10 +290,6 @@ QWidget* GObjectViewController::createWidget(QWidget* parent) {
     return viewWidget;
 }
 
-OptionsPanel* GObjectViewController::getOptionsPanel() {
-    return nullptr;
-}
-
 void GObjectViewController::setClosingInterface(GObjectViewCloseInterface* i) {
     closeInterface = i;
 }
@@ -314,12 +309,8 @@ bool GObjectViewController::containsObject(GObject* obj) const {
 
 // Returns true if view  contains any objects from the document
 bool GObjectViewController::containsDocumentObjects(Document* doc) const {
-    for (GObject* object : qAsConst(doc->getObjects())) {
-        if (containsObject(object)) {
-            return true;
-        }
-    }
-    return false;
+    const QList<GObject*>& docObjects = doc->getObjects();
+    return std::any_of(docObjects.begin(), docObjects.end(), [this](auto o) { return containsObject(o); });
 }
 
 void GObjectViewController::onAfterViewWindowInit() {
@@ -381,11 +372,16 @@ void GObjectViewController::buildActionMenu(QMenu* menu, const QList<QString>& m
     }
 }
 
+OptionsPanelController* GObjectViewController::getOptionsPanelController() const {
+    return optionsPanelController;
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// GObjectViewWindow
 
-GObjectViewWindow::GObjectViewWindow(GObjectViewController* viewController, const QString& _viewName, bool _persistent)
-    : MWMDIWindow(_viewName), viewController(viewController), persistent(_persistent) {
+GObjectViewWindow::GObjectViewWindow(GObjectViewController* _viewController, const QString& _viewName, bool _persistent)
+    : MWMDIWindow(_viewName), viewController(_viewController), persistent(_persistent) {
+    QWidget::setVisible(false); // Must be made visible after is added to the MDI context.
     viewController->setParent(this);
     viewController->setClosingInterface(this);
 
@@ -409,20 +405,23 @@ GObjectViewWindow::GObjectViewWindow(GObjectViewController* viewController, cons
     contentWidget->setLayout(contentWidgetLayout);
     rootScrollArea->setWidget(contentWidget);
 
-    QWidget* viewWidget = viewController->createWidget(nullptr);
-    SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
-
-    OptionsPanel* optionsPanel = viewController->getOptionsPanel();
-    if (optionsPanel == nullptr) {
+    QWidget* viewWidget;
+    if (viewController->optionsPanelController == nullptr) {
         // Set the layout of the whole window
+        viewWidget = viewController->createWidget(contentWidget);
+        SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
         contentWidgetLayout->addWidget(viewWidget);
     } else {
-        OptionsPanelWidget* optionsPanelWidget = optionsPanel->getMainWidget();
         auto splitter = new QSplitter(contentWidget);
         splitter->setObjectName("OPTIONS_PANEL_SPLITTER");
         splitter->setOrientation(Qt::Horizontal);
         splitter->setChildrenCollapsible(false);
+
+        viewWidget = viewController->createWidget(contentWidget);
+        SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
         splitter->addWidget(viewWidget);
+
+        OptionsPanelWidget* optionsPanelWidget = viewController->optionsPanelController->getMainWidget();
         splitter->addWidget(optionsPanelWidget->getOptionsWidget());
         splitter->setStretchFactor(0, 1);
         splitter->setStretchFactor(1, 0);
@@ -435,7 +434,7 @@ GObjectViewWindow::GObjectViewWindow(GObjectViewController* viewController, cons
     setWindowIcon(viewWidget->windowIcon());
 
     // Notify widget after it was registered as a window.
-    QTimer::singleShot(0, viewController, [viewController] { viewController->onAfterViewWindowInit(); });
+    QTimer::singleShot(0, viewController, [this] { viewController->onAfterViewWindowInit(); });
 }
 
 void GObjectViewWindow::setPersistent(bool v) {

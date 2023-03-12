@@ -53,6 +53,7 @@ McaEditor::McaEditor(const QString& viewName,
                      MultipleChromatogramAlignmentObject* obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
+    optionsPanelController = new OptionsPanelController(this);
     selectionController = new McaEditorSelectionController(this);
     initZoom();
     initFont();
@@ -147,17 +148,11 @@ void McaEditor::sl_showHideChromatograms(bool show) {
 }
 
 void McaEditor::sl_showGeneralTab() {
-    OptionsPanel* optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when msageneraltab opening was initiated", );
-    optionsPanel->openGroupById(McaGeneralTabFactory::getGroupId());
+    optionsPanelController->openGroupById(McaGeneralTabFactory::getGroupId());
 }
 
 void McaEditor::sl_showConsensusTab() {
-    OptionsPanel* optionsPanel = getOptionsPanel();
-    SAFE_POINT(nullptr != optionsPanel, "Internal error: options panel is NULL"
-                                        " when msaconsensustab opening was initiated", );
-    optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
+    optionsPanelController->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
 QWidget* McaEditor::createViewWidget(QWidget* parent) {
@@ -177,7 +172,6 @@ QWidget* McaEditor::createViewWidget(QWidget* parent) {
 
     initActions();
 
-    optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
 
     QList<OPFactoryFilterVisitorInterface*> filters;
@@ -185,7 +179,7 @@ QWidget* McaEditor::createViewWidget(QWidget* parent) {
 
     QList<OPWidgetFactory*> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactories) {
-        optionsPanel->addGroup(factory);
+        optionsPanelController->addGroup(factory);
     }
 
     qDeleteAll(filters);

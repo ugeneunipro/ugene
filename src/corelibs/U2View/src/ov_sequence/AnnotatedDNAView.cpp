@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <limits>
-
 #include <QAction>
 #include <QApplication>
 #include <QMenu>
@@ -88,6 +86,7 @@ namespace U2 {
 
 AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2SequenceObject*>& dnaObjects)
     : GObjectViewController(AnnotatedDNAViewFactory::ID, viewName) {
+    optionsPanelController = new OptionsPanelController(this);
     timerId = 0;
     hadExpandableSequenceWidgetsLastResize = false;
 
@@ -258,7 +257,6 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
     mainSplitter->setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).icon);
 
     // Init the Options Panel
-    optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
 
     QList<OPFactoryFilterVisitorInterface*> filters;
@@ -281,15 +279,11 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactoriesForSeqView) {
-        optionsPanel->addGroup(factory);
+        optionsPanelController->addGroup(factory);
     }
 
     qDeleteAll(filters);
     return mainSplitter;
-}
-
-OptionsPanel* AnnotatedDNAView::getOptionsPanel() {
-    return optionsPanel;
 }
 
 void AnnotatedDNAView::sl_splitterMoved(int, int) {
@@ -844,12 +838,8 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
 }
 
 void AnnotatedDNAView::sl_onFindPatternClicked() {
-    OptionsPanel* optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when pattern search has been initiated!", );
-
     const QString& findPatternGroupId = FindPatternWidgetFactory::getGroupId();
-    optionsPanel->openGroupById(findPatternGroupId);
+    optionsPanelController->openGroupById(findPatternGroupId);
 }
 
 void AnnotatedDNAView::sl_toggleHL() {

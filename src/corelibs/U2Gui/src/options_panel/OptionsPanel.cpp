@@ -34,22 +34,22 @@
 
 namespace U2 {
 
-OptionsPanel::OptionsPanel(GObjectViewController* _objView)
+OptionsPanelController::OptionsPanelController(GObjectViewController* _objView)
     : objView(_objView) {
     widget = new OptionsPanelWidget();
 }
 
-OptionsPanel::~OptionsPanel() {
+OptionsPanelController::~OptionsPanelController() {
     if (nullptr == widget->parentWidget()) {
         delete widget;
     }
 }
 
-OptionsPanelWidget* OptionsPanel::getMainWidget() {
+OptionsPanelWidget* OptionsPanelController::getMainWidget() {
     return widget;
 }
 
-void OptionsPanel::addGroup(OPWidgetFactory* factory) {
+void OptionsPanelController::addGroup(OPWidgetFactory* factory) {
     // Create a widget with icon at the right side
     OPGroupParameters groupParameters = factory->getOPGroupParameters();
     GroupHeaderImageWidget* headerImageWidget =
@@ -64,7 +64,7 @@ void OptionsPanel::addGroup(OPWidgetFactory* factory) {
     opWidgetFactories.append(factory);
 }
 
-void OptionsPanel::openGroupById(const QString& groupId, const QVariantMap& options) {
+void OptionsPanelController::openGroupById(const QString& groupId, const QVariantMap& options) {
     if (widget->getState() == OPMainWidgetState_Closed) {
         widget->openOptionsPanel();
     } else if (activeGroupId != groupId) {
@@ -73,7 +73,7 @@ void OptionsPanel::openGroupById(const QString& groupId, const QVariantMap& opti
     openOptionsGroup(groupId, options);
 }
 
-void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
+void OptionsPanelController::sl_groupHeaderPressed(QString groupId) {
     OPWidgetFactory* opWidgetFactory = findFactoryByGroupId(groupId);
     SAFE_POINT(nullptr != opWidgetFactory,
                QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId), );
@@ -99,7 +99,7 @@ void OptionsPanel::sl_groupHeaderPressed(QString groupId) {
     }
 }
 
-void OptionsPanel::openOptionsGroup(const QString& groupId, const QVariantMap& options) {
+void OptionsPanelController::openOptionsGroup(const QString& groupId, const QVariantMap& options) {
     GCounter::increment(QString("Opening tab: %1").arg(groupId), objView->getFactoryId());
     SAFE_POINT(!groupId.isEmpty(), "Empty 'groupId'!", );
 
@@ -141,7 +141,7 @@ void OptionsPanel::openOptionsGroup(const QString& groupId, const QVariantMap& o
     activeGroupId = groupId;
 }
 
-void OptionsPanel::closeOptionsGroup(const QString& groupId) {
+void OptionsPanelController::closeOptionsGroup(const QString& groupId) {
     if (activeGroupId != groupId || groupId.isEmpty()) {
         return;
     }
@@ -154,7 +154,7 @@ void OptionsPanel::closeOptionsGroup(const QString& groupId) {
     activeGroupId = "";
 }
 
-OPWidgetFactory* OptionsPanel::findFactoryByGroupId(const QString& groupId) {
+OPWidgetFactory* OptionsPanelController::findFactoryByGroupId(const QString& groupId) {
     foreach (OPWidgetFactory* factory, opWidgetFactories) {
         OPGroupParameters parameters = factory->getOPGroupParameters();
         if (parameters.getGroupId() == groupId) {
