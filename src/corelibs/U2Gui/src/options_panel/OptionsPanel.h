@@ -42,33 +42,33 @@ public:
     /** Creates a new OptionsPanelWidget */
     OptionsPanelController(GObjectViewController*);
 
-    /**
-     * Normally, the OptionsPanelWidget is added to another widget and should be deleted
-     * when this widget is deleted, but if this hasn't happened by some reason, then
-     * the destructor deletes the object.
-     */
-    ~OptionsPanelController();
-
-    /** Add a new options panel group instance and corresponding widgets*/
+    /** Add a new options panel group instance and corresponding widgets. */
     void addGroup(OPWidgetFactory* factory);
 
-    /** Returns the main Options Panel widget */
-    OptionsPanelWidget* getMainWidget();
+    /** Creates main (a panel with buttons) widget of the options panel.  */
+    OptionsPanelWidget* createWidget(QWidget* parent);
+
+    /**
+     * Returns inner (content) widget of the options panel.
+     * The widget is always defined (after createWidget call) but may be hidden if the options panel is collapsed.
+     */
+    QWidget* getContentWidget() const;
 
     /** Opens a group with the specified group id. */
     void openGroupById(const QString& groupId, const QVariantMap& options = QVariantMap());
 
     /** Returns id for currently opened tab. **/
-    QString getActiveGroupId() {
-        return activeGroupId;
-    }
+    const QString& getActiveGroupId() const;
 
 public slots:
     /** Catches signals that a group header has been pressed
         and implements the behavior of groups selection (only one group at a time can be opened) */
-    void sl_groupHeaderPressed(QString groupId);
+    void sl_groupHeaderPressed(const QString& groupId);
 
 private:
+    /** Instantiates group widgets. Used during createWidget() call. */
+    void instantiateGroups();
+
     GObjectViewController* objView;
 
     /** Shows the options widget */
@@ -84,7 +84,7 @@ private:
     QList<OPWidgetFactory*> opWidgetFactories;
 
     /** The widget that displays options groups */
-    OptionsPanelWidget* widget;
+    OptionsPanelWidget* widget = nullptr;
 
     /** IDs of the opened group */
     QString activeGroupId;

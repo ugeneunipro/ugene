@@ -86,7 +86,7 @@ void MsaEditorWgt::addTreeView(GObjectViewWindow* treeView) {
     auto mui = qobject_cast<MsaEditorMultilineWgt*>(getEditor()->getUI());
 
     if (mui->getPhylTreeWidget() == nullptr) {
-        MSAEditorMultiTreeViewer* multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
+        auto multiTreeViewer = new MSAEditorMultiTreeViewer(tr("Tree view"), getEditor());
 
         mui->addPhylTreeWidget(multiTreeViewer);
         multiTreeViewer->addTreeView(treeView);

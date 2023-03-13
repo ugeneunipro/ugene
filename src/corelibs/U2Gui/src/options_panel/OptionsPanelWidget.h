@@ -40,7 +40,7 @@ public:
     OptionsScrollArea(QWidget* parent = nullptr);
 
     /** Ensures that the scroll area would have an appropriate width */
-    virtual QSize sizeHint() const;
+    QSize sizeHint() const override;
 };
 
 /** Options Panel Widget state */
@@ -57,7 +57,7 @@ class U2GUI_EXPORT OptionsPanelWidget : public QFrame {
     Q_OBJECT
 public:
     /** Constructor. Initializes the layout and style of the widget */
-    OptionsPanelWidget();
+    OptionsPanelWidget(QWidget* parent);
 
     /** Creates a new header image widget and owns it by putting it into the layout. */
     GroupHeaderImageWidget* createHeaderImageWidget(const QString& groupId, const QPixmap& image);
@@ -70,16 +70,14 @@ public:
                                             const QString& title,
                                             const QString& documentationLink,
                                             QWidget* widget,
-                                            QList<QWidget*> commonWidgets);
+                                            const QList<QWidget*>& commonWidgets);
 
     /** Shows/hides the options scroll area widget (the left part of the OP) */
     void openOptionsPanel();
     void closeOptionsPanel();
 
     /** Specifies if the left part of the Options Panel is shown */
-    inline OPMainWidgetState getState() {
-        return opMainWidgetState;
-    }
+    OPMainWidgetState getState() const;
 
     /** Returns NULL if not found */
     GroupHeaderImageWidget* findHeaderWidgetByGroupId(const QString& groupId);
@@ -102,12 +100,10 @@ private:
 
 private:
     /** Layouts */
-    QVBoxLayout* optionsLayout;
-    QVBoxLayout* groupsLayout;
+    QVBoxLayout* optionsWidgetLayout = nullptr;
+    QVBoxLayout* groupsLayout = nullptr;
 
-    OptionsScrollArea* optionsScrollArea;
-
-    OPMainWidgetState opMainWidgetState;
+    OptionsScrollArea* optionsScrollArea = nullptr;
 
     QList<GroupHeaderImageWidget*> headerWidgets;
     QList<GroupOptionsWidget*> optionsWidgets;
