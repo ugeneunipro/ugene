@@ -110,6 +110,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
@@ -4252,6 +4253,25 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
     qint64 size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7830) {
+    // 1. Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Right button-> Statistics-> Generate distance matrix
+    // 3. Click "Generate"
+    GTUtilsDialog::add(os, new PopupChooser(os, { MSAE_MENU_STATISTICS, "Generate distance matrix" }, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, true, true, true));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+
+    // Expected: legend exists
+    QTextBrowser* v = GTUtilsMdi::activeWindow(os)->findChild<QTextBrowser*>();
+    QString text = v->toHtml();
+    CHECK_SET_ERR(text.contains("Legend"), text);
+
+
 }
 
 }  // namespace GUITest_regression_scenarios
