@@ -120,7 +120,7 @@ void ImportPrimersDialog::sl_contentChanged() {
 
 void ImportPrimersDialog::accept() {
     QList<Task*> tasks;
-    for (const QString& filePath : item2file) {
+    for (const QString& filePath : qAsConst(item2file)) {
         tasks << new ImportPrimersFromFileTask(filePath);
     }
     for (GObject* object : item2object) {

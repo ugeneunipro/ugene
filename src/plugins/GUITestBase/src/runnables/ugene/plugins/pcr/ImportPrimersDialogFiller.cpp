@@ -55,7 +55,7 @@ void ImportPrimersDialogFiller::commonScenario() {
         return;
     }
 
-    for (const QString& file : fileList) {
+    for (const QString& file : qAsConst(fileList)) {
         addFile(os, file);
     }
 
