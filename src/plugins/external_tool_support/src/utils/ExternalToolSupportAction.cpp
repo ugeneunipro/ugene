@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-ExternalToolSupportAction::ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolIds)
+ExternalToolSupportAction::ExternalToolSupportAction(QObject* p, GObjectViewController* v, const QString& _text, int order, const QStringList& _toolIds)
     : GObjectViewAction(p, v, _text, order),
       toolIds(_toolIds) {
     bool isAnyToolConfigured = checkTools(true);

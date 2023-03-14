@@ -60,7 +60,7 @@ protected slots:
     void sl_addAlignmentToAlignment();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private:
     /**

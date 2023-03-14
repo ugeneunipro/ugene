@@ -29,13 +29,11 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -115,7 +113,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     removeChanges = new QAction(tr("Undo changes"), this);
     connect(removeChanges, SIGNAL(triggered()), SLOT(sl_removeChanges()));
 
-    connect(dnaView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
+    connect(dnaView, &GObjectViewController::si_objectRemoved, this, &ChromatogramView::sl_onObjectRemoved);
     pack();
 
     addActionToLocalToolbar(showQVAction);
@@ -362,7 +360,7 @@ void ChromatogramView::sl_removeChanges() {
     indexOfChangedChars.clear();
 }
 
-void ChromatogramView::sl_onObjectRemoved(GObjectView* view, GObject* obj) {
+void ChromatogramView::sl_onObjectRemoved(GObjectViewController* view, GObject* obj) {
     Q_UNUSED(view);
 
     CHECK(obj == editDNASeq, );

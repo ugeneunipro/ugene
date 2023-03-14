@@ -48,7 +48,7 @@ protected slots:
     void sl_showDialog();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 class ORFMarkerTests {

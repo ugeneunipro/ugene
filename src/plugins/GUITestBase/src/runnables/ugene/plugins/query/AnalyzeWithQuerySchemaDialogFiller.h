@@ -21,49 +21,20 @@
 
 #pragma once
 
-#include <QMenu>
-#include <QPointer>
-#include <QToolBar>
-
-#include <U2Core/PluginModel.h>
-
-#include <U2Gui/ObjectViewModel.h>
-
-#include <U2View/ADVSequenceWidget.h>
-#include <U2View/GSequenceGraphView.h>
-#include <U2View/GraphMenu.h>
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
+using namespace HI;
 
-class MWMDIWindow;
-class GObjectViewController;
-class GSequenceGraphFactory;
-class GSequenceGraphData;
-class GraphAction;
-class DNAGraphPackViewContext;
-class ADVSingleSequenceWidget;
-
-class DNAGraphPackPlugin : public Plugin {
-    Q_OBJECT
+class AnalyzeWithQuerySchemaDialogFiller : public Filler {
 public:
-    DNAGraphPackPlugin();
+    AnalyzeWithQuerySchemaDialogFiller(HI::GUITestOpStatus& os, const QString& fileWithQuery, bool expectBadSchema = false);
+
+    void commonScenario() override;
 
 private:
-    DNAGraphPackViewContext* ctx;
-};
-
-class DNAGraphPackViewContext : public GObjectViewWindowContext {
-    Q_OBJECT
-public:
-    DNAGraphPackViewContext(QObject* parent);
-
-private:
-    QList<GSequenceGraphFactory*> graphFactories;
-
-    void initViewContext(GObjectViewController* view) override;
-
-private slots:
-    void sl_sequenceWidgetAdded(ADVSequenceWidget*);
+     QString fileWithQuery;
+     bool expectBadSchema = false;
 };
 
 }  // namespace U2

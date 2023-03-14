@@ -37,7 +37,7 @@ InSilicoPcrOPWidgetFactory::InSilicoPcrOPWidgetFactory()
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget* InSilicoPcrOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
+QWidget* InSilicoPcrOPWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& options) {
     Q_UNUSED(options);
 
     auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);

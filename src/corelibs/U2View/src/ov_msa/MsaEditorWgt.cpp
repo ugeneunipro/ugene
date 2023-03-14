@@ -39,9 +39,10 @@
 namespace U2 {
 
 MsaEditorWgt::MsaEditorWgt(MSAEditor* editor,
+                           QWidget* parent,
                            MaEditorOverviewArea* overview,
                            MaEditorStatusBar* statusbar)
-    : MaEditorWgt(editor),
+    : MaEditorWgt(editor, parent),
       similarityStatistics(nullptr) {
     overviewArea = overview;
     statusBar = statusbar;

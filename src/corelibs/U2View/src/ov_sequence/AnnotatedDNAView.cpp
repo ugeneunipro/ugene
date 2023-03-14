@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <limits>
-
 #include <QAction>
 #include <QApplication>
 #include <QMenu>
@@ -87,7 +85,8 @@
 namespace U2 {
 
 AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2SequenceObject*>& dnaObjects)
-    : GObjectView(AnnotatedDNAViewFactory::ID, viewName) {
+    : GObjectViewController(AnnotatedDNAViewFactory::ID, viewName) {
+    optionsPanelController = new OptionsPanelController(this);
     timerId = 0;
     hadExpandableSequenceWidgetsLastResize = false;
 
@@ -177,11 +176,11 @@ QAction* AnnotatedDNAView::createPasteAction() {
     return action;
 }
 
-QWidget* AnnotatedDNAView::createWidget() {
+QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
     GTIMER(c1, t1, "AnnotatedDNAView::createWidget");
-    assert(scrollArea == nullptr);
+    SAFE_POINT(viewWidget == nullptr, "Widget is already created", viewWidget);
 
-    mainSplitter = new QSplitter(Qt::Vertical);
+    mainSplitter = new QSplitter(Qt::Vertical, parent);
     mainSplitter->setObjectName("annotated_DNA_splitter");
     connect(mainSplitter, SIGNAL(splitterMoved(int, int)), SLOT(sl_splitterMoved(int, int)));
 
@@ -258,7 +257,6 @@ QWidget* AnnotatedDNAView::createWidget() {
     mainSplitter->setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::SEQUENCE).icon);
 
     // Init the Options Panel
-    optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
 
     QList<OPFactoryFilterVisitorInterface*> filters;
@@ -281,15 +279,11 @@ QWidget* AnnotatedDNAView::createWidget() {
 
     QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactoriesForSeqView) {
-        optionsPanel->addGroup(factory);
+        optionsPanelController->addGroup(factory);
     }
 
     qDeleteAll(filters);
     return mainSplitter;
-}
-
-OptionsPanel* AnnotatedDNAView::getOptionsPanel() {
-    return optionsPanel;
 }
 
 void AnnotatedDNAView::sl_splitterMoved(int, int) {
@@ -473,7 +467,7 @@ bool AnnotatedDNAView::onObjectRemoved(GObject* o) {
         }
     }
 
-    GObjectView::onObjectRemoved(o);
+    GObjectViewController::onObjectRemoved(o);
     return seqContexts.isEmpty();
 }
 
@@ -527,7 +521,7 @@ void AnnotatedDNAView::buildStaticToolbar(QToolBar* tb) {
         }
     }
 
-    GObjectView::buildStaticToolbar(tb);
+    GObjectViewController::buildStaticToolbar(tb);
 
     tb->addSeparator();
     syncViewManager->updateToolbar2(tb);
@@ -535,7 +529,7 @@ void AnnotatedDNAView::buildStaticToolbar(QToolBar* tb) {
 
 void AnnotatedDNAView::buildMenu(QMenu* m, const QString& type) {
     if (type != GObjectViewMenuType::STATIC) {
-        GObjectView::buildMenu(m, type);
+        GObjectViewController::buildMenu(m, type);
         return;
     }
     m->addAction(posSelectorAction);
@@ -551,7 +545,7 @@ void AnnotatedDNAView::buildMenu(QMenu* m, const QString& type) {
 
     annotationsView->adjustStaticMenu(m);
 
-    GObjectView::buildMenu(m, type);
+    GObjectViewController::buildMenu(m, type);
 }
 
 void AnnotatedDNAView::addAnalyseMenu(QMenu* m) {
@@ -651,7 +645,7 @@ void AnnotatedDNAView::saveWidgetState() {
 }
 
 bool AnnotatedDNAView::canAddObject(GObject* obj) {
-    if (GObjectView::canAddObject(obj)) {
+    if (GObjectViewController::canAddObject(obj)) {
         return true;
     }
     if (isChildWidgetObject(obj)) {
@@ -844,12 +838,8 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
 }
 
 void AnnotatedDNAView::sl_onFindPatternClicked() {
-    OptionsPanel* optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when pattern search has been initiated!", );
-
     const QString& findPatternGroupId = FindPatternWidgetFactory::getGroupId();
-    optionsPanel->openGroupById(findPatternGroupId);
+    optionsPanelController->openGroupById(findPatternGroupId);
 }
 
 void AnnotatedDNAView::sl_toggleHL() {
@@ -894,7 +884,7 @@ QString AnnotatedDNAView::addObject(GObject* o) {
             return tr("No sequence object found for annotations");
         }
     }
-    QString res = GObjectView::addObject(o);
+    QString res = GObjectViewController::addObject(o);
     if (!res.isEmpty()) {
         return res;
     }
@@ -1098,7 +1088,7 @@ void AnnotatedDNAView::addGraphs(ADVSequenceObjectContext* seqCtx) {
 }
 
 void AnnotatedDNAView::sl_onDocumentAdded(Document* d) {
-    GObjectView::sl_onDocumentAdded(d);
+    GObjectViewController::sl_onDocumentAdded(d);
     importDocAnnotations(d);
 }
 
@@ -1162,7 +1152,7 @@ void AnnotatedDNAView::createCodonTableAction() {
 void AnnotatedDNAView::sl_onDocumentLoadedStateChanged() {
     auto d = qobject_cast<Document*>(sender());
     importDocAnnotations(d);
-    GObjectView::sl_onDocumentLoadedStateChanged();
+    GObjectViewController::sl_onDocumentLoadedStateChanged();
 }
 
 QList<U2SequenceObject*> AnnotatedDNAView::getSequenceObjectsWithContexts() const {

@@ -115,7 +115,7 @@ void OpenSimpleTextObjectViewTask::open() {
 //////////////////////////////////////////////////////////////////////////
 // update view task
 
-UpdateSimpleTextObjectViewTask::UpdateSimpleTextObjectViewTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
+UpdateSimpleTextObjectViewTask::UpdateSimpleTextObjectViewTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData)
     : ObjectViewTask(v, stateName, stateData) {
 }
 

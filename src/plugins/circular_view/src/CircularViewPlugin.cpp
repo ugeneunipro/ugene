@@ -92,7 +92,7 @@ CircularViewSettings* CircularViewContext::getSettings(AnnotatedDNAView* view) {
     return viewSettings.value(view);
 }
 
-void CircularViewContext::initViewContext(GObjectView* v) {
+void CircularViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
     SAFE_POINT(!viewSettings.contains(av), "Unexpected sequence view", );
 
@@ -171,7 +171,7 @@ void CircularViewContext::sl_sequenceWidgetRemoved(ADVSequenceWidget* w) {
     }
 }
 
-CircularViewSplitter* CircularViewContext::getView(GObjectView* view, bool create) {
+CircularViewSplitter* CircularViewContext::getView(GObjectViewController* view, bool create) {
     CircularViewSplitter* circularView = nullptr;
     QList<QObject*> resources = viewResources.value(view);
     foreach (QObject* r, resources) {
@@ -195,7 +195,7 @@ CircularViewSplitter* CircularViewContext::getView(GObjectView* view, bool creat
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CircularViewContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+void CircularViewContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     bool empty = true;
     QList<QObject*> resources = viewResources.value(v);
     foreach (QObject* r, resources) {
@@ -223,7 +223,7 @@ void CircularViewContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
 }
 //////////////////////////////////////////////////////////////////////////
 
-void CircularViewContext::removeCircularView(GObjectView* view) {
+void CircularViewContext::removeCircularView(GObjectViewController* view) {
     QList<QObject*> resources = viewResources.value(view);
     foreach (QObject* r, resources) {
         auto circularView = qobject_cast<CircularViewSplitter*>(r);

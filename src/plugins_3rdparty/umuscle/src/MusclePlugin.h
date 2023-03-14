@@ -63,13 +63,13 @@ protected slots:
     void sl_alignSelectedSequences();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 class MuscleAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    MuscleAction(QObject* p, GObjectView* v, const QString& text, int order, bool isAlignSelectionAction = false);
+    MuscleAction(QObject* p, GObjectViewController* v, const QString& text, int order, bool isAlignSelectionAction = false);
 
     MSAEditor* getMSAEditor() const;
 };

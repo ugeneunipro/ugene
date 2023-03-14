@@ -83,8 +83,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
 
     initRenderer();
 
-    connect(editor, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
+    connect(editor, &GObjectViewController::si_buildMenu, this, &MSAEditorSequenceArea::sl_buildMenu);
+    connect(editor, &GObjectViewController::si_buildStaticToolbar, this, &MSAEditorSequenceArea::sl_buildStaticToolbar);
 
     selectionColor = Qt::black;
     editingEnabled = true;
@@ -214,7 +214,7 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     getEditor()->updateCollapseModel();
 }
 
-void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
+void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToolBar* t) {
     Q_UNUSED(v);
 
     MaEditorWgt* child0 = editor->getMaEditorMultilineWgt()->getUI(0);
@@ -231,7 +231,7 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     t->addSeparator();
 }
 
-void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& menuType) {
+void MSAEditorSequenceArea::sl_buildMenu(GObjectViewController*, QMenu* m, const QString& menuType) {
     if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
         return;
     }

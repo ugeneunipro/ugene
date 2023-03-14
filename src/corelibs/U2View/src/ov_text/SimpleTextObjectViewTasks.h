@@ -47,7 +47,7 @@ private:
 
 class UpdateSimpleTextObjectViewTask : public ObjectViewTask {
 public:
-    UpdateSimpleTextObjectViewTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
+    UpdateSimpleTextObjectViewTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData);
 
     virtual void update();
 };

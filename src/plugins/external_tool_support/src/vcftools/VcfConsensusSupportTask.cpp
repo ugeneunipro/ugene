@@ -29,6 +29,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/Counter.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -43,6 +44,7 @@ VcfConsensusSupportTask::VcfConsensusSupportTask(const GUrl& inputFA, const GUrl
       output(output),
       tabixTask(nullptr),
       vcfTask(nullptr) {
+    GCOUNTER(cvar, "ExternalTool_VCF");
 }
 
 void VcfConsensusSupportTask::prepare() {

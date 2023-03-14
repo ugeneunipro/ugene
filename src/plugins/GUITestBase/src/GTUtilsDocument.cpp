@@ -81,7 +81,7 @@ void GTUtilsDocument::checkDocument(HI::GUITestOpStatus& os, const QString& docu
     if (id.isEmpty()) {
         return;
     }
-    GObjectView* view = nullptr;
+    GObjectViewController* view = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && view == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         view = getDocumentGObjectView(os, document);
@@ -117,11 +117,11 @@ void GTUtilsDocument::removeDocument(HI::GUITestOpStatus& os, const QString& doc
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDocumentGObjectView"
-GObjectView* GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d) {
+GObjectViewController* GTUtilsDocument::getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d) {
     GT_CHECK_RESULT(d != nullptr, "Document* is NULL", nullptr);
 
-    QList<GObjectView*> gObjectViews = getAllGObjectViews();
-    foreach (GObjectView* view, gObjectViews) {
+    QList<GObjectViewController*> gObjectViews = getAllGObjectViews();
+    foreach (GObjectViewController* view, gObjectViews) {
         if (view->containsDocumentObjects(d)) {
             return view;
         }
@@ -208,15 +208,15 @@ void GTUtilsDocument::checkIfDocumentIsLocked(GUITestOpStatus& os, const QString
 }
 #undef GT_METHOD_NAME
 
-QList<GObjectView*> GTUtilsDocument::getAllGObjectViews() {
-    QList<GObjectView*> gObjectViews;
+QList<GObjectViewController*> GTUtilsDocument::getAllGObjectViews() {
+    QList<GObjectViewController*> gObjectViews;
 
     MWMDIManager* mwMDIManager = AppContext::getMainWindow()->getMDIManager();
     QList<MWMDIWindow*> windows = mwMDIManager->getWindows();
 
     foreach (MWMDIWindow* w, windows) {
         if (auto gObjectViewWindow = qobject_cast<GObjectViewWindow*>(w)) {
-            if (GObjectView* gObjectView = gObjectViewWindow->getObjectView()) {
+            if (GObjectViewController* gObjectView = gObjectViewWindow->getObjectView()) {
                 gObjectViews.append(gObjectView);
             }
         }

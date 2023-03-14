@@ -45,7 +45,7 @@ namespace U2 {
 
 /* TRANSLATOR U2::ObjectViewTask */
 
-ObjectViewTask::ObjectViewTask(GObjectView* _view, const QString& stateName, const QVariantMap& s)
+ObjectViewTask::ObjectViewTask(GObjectViewController* _view, const QString& stateName, const QVariantMap& s)
     : Task("", TaskFlag_NoRun), taskType(Type_Update), stateData(s), view(_view), stateIsIllegal(false) {
     assert(view != nullptr);
     const QString& vName = view->getName();
@@ -125,7 +125,7 @@ Document* ObjectViewTask::createDocumentAndAddToProject(const QString& docUrl, P
 //////////////////////////////////////////////////////////////////////////
 // AddToViewTask
 
-AddToViewTask::AddToViewTask(GObjectView* v, GObject* obj)
+AddToViewTask::AddToViewTask(GObjectViewController* v, GObject* obj)
     : Task(tr("Add object to view %1").arg(obj->getGObjectName()), TaskFlags_NR_FOSCOE),
       objView(v), viewName(v->getName()), objRef(obj), objDoc(obj->getDocument()) {
     assert(objDoc != nullptr);

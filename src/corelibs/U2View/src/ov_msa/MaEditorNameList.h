@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class MaEditor;
 class MaEditorSelection;
 class MaEditorWgt;

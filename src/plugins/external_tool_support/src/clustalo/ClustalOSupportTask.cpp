@@ -57,7 +57,7 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _input
       objRef(_objRef),
       settings(_settings),
       lock(nullptr) {
-    GCOUNTER(cvar, "ClustalOSupportTask");
+    GCOUNTER(cvar, "ExternalTool_ClustalOSupportTask");
     tmpDoc = nullptr;
     resultMsa->setName(inputMsa->getName());
     resultMsa->setAlphabet(inputMsa->getAlphabet());
@@ -72,6 +72,7 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment& _input
       settings(_settings),
       lock(nullptr),
       secondAlignmentFileUrl(_secondAlignmentFileUrl) {
+    GCOUNTER(cvar, "ExternalTool_ClustalOSupportTask");
 }
 
 ClustalOSupportTask::~ClustalOSupportTask() {

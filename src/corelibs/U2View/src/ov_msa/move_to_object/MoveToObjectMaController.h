@@ -31,7 +31,7 @@
 namespace U2 {
 
 class MaEditorContext;
-class GObjectView;
+class GObjectViewController;
 
 /** Implements set of actions to move data between different MA objects in project. */
 class MoveToObjectMaController : public QObject, public MaEditorContext {
@@ -47,7 +47,7 @@ private slots:
     void runMoveSelectedRowsToNewFileDialog();
 
     /** Adds 'moveSelectionToAnotherObjectAction' to the export menu. */
-    void buildMenu(GObjectView* view, QMenu* menu, const QString& menuType);
+    void buildMenu(GObjectViewController* view, QMenu* menu, const QString& menuType);
 
     /** Updates all  si_updateActions from MaEditor. */
     void updateActions();

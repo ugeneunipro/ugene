@@ -93,15 +93,17 @@ namespace U2 {
 const double AssemblyBrowser::ZOOM_MULT = 1.25;
 const double AssemblyBrowser::INITIAL_ZOOM_FACTOR = 1.;
 
-AssemblyBrowser::AssemblyBrowser(QString viewName, AssemblyObject* o)
-    : GObjectView(AssemblyBrowserFactory::ID, viewName), ui(nullptr),
+AssemblyBrowser::AssemblyBrowser(const QString& viewName, AssemblyObject* o)
+    : GObjectViewController(AssemblyBrowserFactory::ID, viewName), ui(nullptr),
       gobject(o), model(nullptr), zoomFactor(INITIAL_ZOOM_FACTOR), xOffsetInAssembly(0), yOffsetInAssembly(0), coverageReady(false),
       cellRendererRegistry(new AssemblyCellRendererFactoryRegistry(this)),
       zoomInAction(nullptr), zoomOutAction(nullptr), posSelectorAction(nullptr), posSelector(nullptr), showCoordsOnRulerAction(nullptr), saveScreenShotAction(nullptr),
       exportToSamAction(nullptr), setReferenceAction(nullptr), extractAssemblyRegionAction(nullptr), loadReferenceTask(nullptr) {
     GCOUNTER(cvar, "AssemblyBrowser");
+    optionsPanelController = new OptionsPanelController(this);
     initFont();
     setupActions();
+
 
     if (gobject) {
         objects.append(o);
@@ -155,9 +157,8 @@ bool AssemblyBrowser::checkValid(U2OpStatus& os) {
     return true;
 }
 
-QWidget* AssemblyBrowser::createWidget() {
-    optionsPanel = new OptionsPanel(this);
-    ui = new AssemblyBrowserUi(this);
+QWidget* AssemblyBrowser::createViewWidget(QWidget* parent) {
+    ui = new AssemblyBrowserUi(this, parent);
 
     const QString objectName = "assembly_browser_" + getName();
     ui->setObjectName(objectName);
@@ -184,10 +185,6 @@ QVariantMap AssemblyBrowser::saveState() {
 
 Task* AssemblyBrowser::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
     return new UpdateAssemblyBrowserTask(this, stateName, stateData);
-}
-
-OptionsPanel* AssemblyBrowser::getOptionsPanel() {
-    return optionsPanel;
 }
 
 bool AssemblyBrowser::eventFilter(QObject* o, QEvent* e) {
@@ -322,7 +319,7 @@ void AssemblyBrowser::buildStaticToolbar(QToolBar* staticToolBar) {
         staticToolBar->addAction(extractAssemblyRegionAction);
         staticToolBar->addAction(saveScreenShotAction);
     }
-    GObjectView::buildStaticToolbar(staticToolBar);
+    GObjectViewController::buildStaticToolbar(staticToolBar);
 }
 
 void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
@@ -331,7 +328,7 @@ void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
 }
 void AssemblyBrowser::buildMenu(QMenu* menu, const QString& type) {
     if (type != GObjectViewMenuType::STATIC) {
-        GObjectView::buildMenu(menu, type);
+        GObjectViewController::buildMenu(menu, type);
         return;
     }
     U2OpStatusImpl os;
@@ -343,7 +340,7 @@ void AssemblyBrowser::buildMenu(QMenu* menu, const QString& type) {
         menu->addAction(extractAssemblyRegionAction);
         menu->addAction(setReferenceAction);
     }
-    GObjectView::buildMenu(menu, type);
+    GObjectViewController::buildMenu(menu, type);
     GUIUtils::disableEmptySubmenus(menu);
 }
 
@@ -383,13 +380,13 @@ QList<CoveredRegion> AssemblyBrowser::getCoveredRegions() const {
     return QList<CoveredRegion>();
 }
 
-void AssemblyBrowser::setLocalCoverageCache(CoverageInfo coverage) {
+void AssemblyBrowser::setLocalCoverageCache(const CoverageInfo& coverage) {
     SAFE_POINT(coverage.region.length == coverage.coverageInfo.size(),
                "Coverage info with region not equal to coverage array size (not precise coverage) cannot be used as local coverage cache", );
     localCoverageCache = coverage;
 }
 
-bool AssemblyBrowser::isInLocalCoverageCache(qint64 position) {
+bool AssemblyBrowser::isInLocalCoverageCache(qint64 position) const {
     return localCoverageCache.region.contains(position);
 }
 
@@ -409,15 +406,15 @@ qint32 AssemblyBrowser::getCoverageAtPos(qint64 pos) {
     }
 }
 
-bool AssemblyBrowser::intersectsLocalCoverageCache(U2Region region) {
+bool AssemblyBrowser::intersectsLocalCoverageCache(const U2Region& region) const {
     return !localCoverageCache.region.isEmpty() && localCoverageCache.region.intersects(region);
 }
 
-bool AssemblyBrowser::isInLocalCoverageCache(U2Region region) {
+bool AssemblyBrowser::isInLocalCoverageCache(const U2Region& region) {
     return localCoverageCache.region.contains(region);
 }
 
-CoverageInfo AssemblyBrowser::extractFromLocalCoverageCache(U2Region region) {
+CoverageInfo AssemblyBrowser::extractFromLocalCoverageCache(const U2Region& region) {
     CoverageInfo ci;
     ci.region = region;
     ci.coverageInfo.resize(region.length);
@@ -1106,8 +1103,8 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
 // AssemblyBrowserUi
 //==============================================================================
 
-AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_)
-    : browser(browser_), zoomableOverview(0),
+AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_, QWidget* parent)
+    : QWidget(parent), browser(browser_), zoomableOverview(0),
       referenceArea(0), coverageGraph(0), ruler(0), readsArea(0), annotationsArea(0), nothingToVisualize(true) {
     U2OpStatusImpl os;
     if (browser->getModel()->hasReads(os)) {  // has mapped reads -> show rich visualization
@@ -1149,7 +1146,7 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser* browser_)
         mainLayout->addWidget(readsHBar);
 
         OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
-        OptionsPanel* optionsPanel = browser->getOptionsPanel();
+        OptionsPanelController* optionsPanel = browser->getOptionsPanelController();
 
         QList<OPFactoryFilterVisitorInterface*> filters;
         filters.append(new OPFactoryFilterVisitor(ObjViewType_AssemblyBrowser));

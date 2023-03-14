@@ -44,8 +44,6 @@
 #include <U2Core/DBXRefRegistry.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -146,7 +144,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
 
     restoreWidgetState();
 
-    connect(ctx, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_onBuildMenu(GObjectView*, QMenu*, const QString&)));
+    connect(ctx, &GObjectViewController::si_buildMenu, this, &AnnotationsTreeView::sl_onBuildMenu);
     connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject*)), SLOT(sl_onAnnotationObjectAdded(AnnotationTableObject*)));
     connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject*)), SLOT(sl_onAnnotationObjectRemoved(AnnotationTableObject*)));
     connect(ctx, SIGNAL(si_sequenceAdded(ADVSequenceObjectContext*)), SLOT(sl_sequenceAdded(ADVSequenceObjectContext*)));
@@ -870,7 +868,7 @@ void AnnotationsTreeView::updateColumnContextActions(AVItem* item, int col) {
     }
 }
 
-void AnnotationsTreeView::sl_onBuildMenu(GObjectView*, QMenu* m, const QString& type) {
+void AnnotationsTreeView::sl_onBuildMenu(GObjectViewController*, QMenu* m, const QString& type) {
     if (type != GObjectViewMenuType::CONTEXT) {
         return;
     }

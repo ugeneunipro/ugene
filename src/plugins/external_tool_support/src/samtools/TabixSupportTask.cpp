@@ -26,6 +26,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CopyFileTask.h>
+#include <U2Core/Counter.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -41,6 +42,7 @@ TabixSupportTask::TabixSupportTask(const GUrl& fileUrl, const GUrl& outputUrl)
       bgzipTask(nullptr),
       copyTask(nullptr),
       tabixTask(nullptr) {
+    GCOUNTER(cvar, "ExternalTool_Tabix");
 }
 
 void TabixSupportTask::prepare() {

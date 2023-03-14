@@ -614,8 +614,8 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow* w) {
     CHECK(ow != nullptr, );
     uiLog.trace(QString("Project view now listens object events in '%1' view").arg(ow->windowTitle()));
     markActiveView = ow->getObjectView();
-    connect(markActiveView, SIGNAL(si_objectAdded(GObjectView*, GObject*)), SLOT(sl_objectAddedToActiveView(GObjectView*, GObject*)));
-    connect(markActiveView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_objectRemovedFromActiveView(GObjectView*, GObject*)));
+    connect(markActiveView, &GObjectViewController::si_objectAdded, this, &ProjectTreeController::sl_objectAddedToActiveView);
+    connect(markActiveView, &GObjectViewController::si_objectRemoved, this, &ProjectTreeController::sl_objectRemovedFromActiveView);
     foreach (GObject* obj, ow->getObjects()) {
         updateObjectActiveStateVisual(obj);
     }
@@ -629,13 +629,13 @@ void ProjectTreeController::sl_windowDeactivated(MWMDIWindow* w) {
     }
 }
 
-void ProjectTreeController::sl_objectAddedToActiveView(GObjectView*, GObject* obj) {
+void ProjectTreeController::sl_objectAddedToActiveView(GObjectViewController*, GObject* obj) {
     SAFE_POINT(obj != nullptr, tr("No object to add to view"), );
     uiLog.trace(QString("Processing object add to active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);
 }
 
-void ProjectTreeController::sl_objectRemovedFromActiveView(GObjectView*, GObject* obj) {
+void ProjectTreeController::sl_objectRemovedFromActiveView(GObjectViewController*, GObject* obj) {
     SAFE_POINT(obj != nullptr, tr("No object to remove from view"), );
     uiLog.trace(QString("Processing object remove from active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);

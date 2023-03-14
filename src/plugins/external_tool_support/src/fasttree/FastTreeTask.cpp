@@ -49,7 +49,7 @@ FastTreeTaskContext::FastTreeTaskContext(const MultipleSequenceAlignment& _msa, 
 
 FastTreeTask::FastTreeTask(const MultipleSequenceAlignment& msa, const CreatePhyTreeSettings& settings)
     : PhyTreeGeneratorTask(msa, settings), context(msa, settings) {
-    GCOUNTER(cvar, "FastTreeTask");
+    GCOUNTER(cvar, "ExternalTool_FastTree");
     setTaskName(tr("FastTree tree calculation"));
 
     auto prepareWorkDirTask = new PrepareFastTreeWorkDirTask(&context);

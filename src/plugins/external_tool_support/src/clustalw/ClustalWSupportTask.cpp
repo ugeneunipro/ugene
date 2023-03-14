@@ -64,7 +64,7 @@ ClustalWSupportTask::ClustalWSupportTask(const MultipleSequenceAlignment& _input
       objRef(_objRef),
       settings(_settings),
       lock(nullptr) {
-    GCOUNTER(cvar, "ClustalWSupportTask");
+    GCOUNTER(cvar, "ExternalTool_ClustalW");
     saveTemporaryDocumentTask = nullptr;
     loadTemporyDocumentTask = nullptr;
     clustalWTask = nullptr;

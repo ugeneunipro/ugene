@@ -73,8 +73,7 @@ const QString QDRunDialog::OUTPUT_FILE_DIR_DOMAIN = "qd_run_dialog/output_file";
 
 QDRunDialog::QDRunDialog(QDScheme* _scheme, QWidget* parent, const QString& defaultIn, const QString& defaultOut)
     : QDialog(parent),
-      scheme(_scheme),
-      saveController(nullptr) {
+      scheme(_scheme) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930653");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
@@ -105,14 +104,14 @@ void QDRunDialog::sl_selectInputFile() {
     if (!dir.url.isEmpty()) {
         inFileEdit->setText(dir.url);
         auto view = qobject_cast<QueryViewController*>(parentWidget());
-        SAFE_POINT(nullptr != view, "View is NULL", );
+        SAFE_POINT(view != nullptr, "View is NULL", );
         view->setDefaultInFile(dir.url);
     }
 }
 
 void QDRunDialog::sl_outputFileChanged() {
     auto view = qobject_cast<QueryViewController*>(parentWidget());
-    SAFE_POINT(nullptr != view, "View is NULL", );
+    SAFE_POINT(view != nullptr, "View is NULL", );
     view->setDefaultOutFile(saveController->getSaveFileName());
 }
 
@@ -287,99 +286,98 @@ QList<Task*> QDRunDialogTask::onSubTaskFinished(Task* subTask) {
 /************************************************************************/
 
 QDDialog::QDDialog(ADVSequenceObjectContext* _ctx)
-    : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), ctx(_ctx), scheme(nullptr), txtDoc(nullptr) {
+    : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), advSequenceContext(_ctx) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930656");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
+    hintHtml = tr("Query Designer preview area.<br><br><b>Hint:</b><br>Queries can be created by Query Designer tool.<br>To launch Query Designer use \"Tools/Query Designer\" menu.");
+    hintEdit->setHtml(hintHtml);
+    searchButton = buttonBox->button(QDialogButtonBox::Ok);
+    searchButton->setText(tr("Search"));
+    searchButton->setEnabled(false);
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    rs = new RegionSelector(this, ctx->getSequenceLength(), false, ctx->getSequenceSelection());
-    rangeSelectorLayout->addWidget(rs);
-
+    regionSelector = new RegionSelector(this, advSequenceContext->getSequenceLength(), false, advSequenceContext->getSequenceSelection());
+    rangeSelectorLayout->addWidget(regionSelector);
     addAnnotationsWidget();
     connectGUI();
 }
 
 void QDDialog::addAnnotationsWidget() {
-    auto dnaso = qobject_cast<U2SequenceObject*>(ctx->getSequenceGObject());
+    auto sequenceObject = qobject_cast<U2SequenceObject*>(advSequenceContext->getSequenceGObject());
+
     CreateAnnotationModel acm;
-    acm.sequenceObjectRef = GObjectReference(dnaso);
+    acm.sequenceObjectRef = GObjectReference(sequenceObject);
     acm.hideAnnotationType = true;
     acm.hideAnnotationName = true;
     acm.hideLocation = true;
     acm.data->name = "Query_results";
     acm.useUnloadedObjects = true;
-    acm.sequenceLen = dnaso->getSequenceLength();
-    cawc = new CreateAnnotationWidgetController(acm, this);
-    QWidget* caw = cawc->getWidget();
-    QVBoxLayout* l = new QVBoxLayout();
-    l->setMargin(0);
-    l->addWidget(caw);
-    l->addStretch(1);
-    annotationsWidget->setLayout(l);
-    annotationsWidget->setMinimumSize(caw->layout()->minimumSize());
+    acm.sequenceLen = sequenceObject->getSequenceLength();
+
+    annotationWidgetController = new CreateAnnotationWidgetController(acm, this);
+    QWidget* annotationControllerWidget = annotationWidgetController->getWidget();
+
+    auto annotationsWidgetLayout = new QVBoxLayout();
+    annotationsWidgetLayout->setMargin(0);
+    annotationsWidgetLayout->addWidget(annotationControllerWidget);
+    annotationsWidget->setLayout(annotationsWidgetLayout);
 }
 
 void QDDialog::connectGUI() {
-    connect(tbSelectQuery, SIGNAL(clicked()), SLOT(sl_selectScheme()));
+    connect(tbSelectQuery, &QToolButton::clicked, this, &QDDialog::sl_selectScheme);
 
     QPushButton* okBtn = buttonBox->button(QDialogButtonBox::Ok);
-    connect(okBtn, SIGNAL(clicked()), SLOT(sl_okBtnClicked()));
+    connect(okBtn, &QPushButton::clicked, this, &QDDialog::sl_okBtnClicked);
+
+    connect(queryFileEdit, &QLineEdit::textChanged, this, &QDDialog::updateSchemaOnUrlUpdate);
 }
 
 void QDDialog::sl_selectScheme() {
-    delete scheme;
-    scheme = nullptr;
     LastUsedDirHelper dir(QUERY_DESIGNER_ID);
     dir.url = U2FileDialog::getOpenFileName(this, tr("Select query"), dir, QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
-    if (dir.url.isEmpty()) {
-        return;
-    }
+    CHECK(!dir.url.isEmpty(), );
     queryFileEdit->setText(dir.url);
+}
+
+void QDDialog::updateSchemaOnUrlUpdate() {
+    QString url = queryFileEdit->text();
+    CHECK(url != renderedSchemaUrl, );
+    renderedSchemaUrl = url;
+    hintEdit->setHtml(hintHtml);
+    searchButton->setEnabled(false);
+
+    QString content = IOAdapterUtils::readTextFile(url);
+    CHECK(!content.isEmpty(), );
 
     QDDocument doc;
-    QFile f(dir.url);
-    if (!f.open(QIODevice::ReadOnly)) {
-        return;
-    }
-    QByteArray data = f.readAll();
-    const QString& content = QString::fromUtf8(data);
-    f.close();
     bool res = doc.setContent(content);
-    if (!res) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Can not load %1").arg(dir.url));
-        return;
-    }
+    CHECK_EXT(res, QMessageBox::critical(this, L10N::errorTitle(), tr("Can not load %1").arg(url)), );
 
     QueryScene scene;
     QList<QDDocument*> docs = (QList<QDDocument*>() << &doc);
-    if (!QDSceneSerializer::doc2scene(&scene, docs)) {
-        QMessageBox::critical(this, L10N::errorTitle(), tr("Can not load %1").arg(dir.url));
-        return;
-    }
+    CHECK_EXT(QDSceneSerializer::doc2scene(&scene, docs), QMessageBox::critical(this, L10N::errorTitle(), tr("Can not load %1").arg(url)), );
 
-    scheme = new QDScheme;
+    delete scheme;
+    scheme = new QDScheme();
     QDSceneSerializer::doc2scheme(docs, scheme);
 
-    QPixmap pixmap = QDUtils::generateSnapShot(&doc, QRect());
-    QIcon icon(pixmap);
-    hintEdit->clear();
-
-    txtDoc = new QTextDocument(hintEdit);
-    QString html = "<html>"
-                   "<div align=\"center\">"
-                   "<img src=\"%1\"/>"
-                   "</div>"
-                   "</html>";
-    QString img("img://img");
-    html = html.arg(img);
-    qreal h = pixmap.height() * hintEdit->width() / pixmap.width();
-    qreal w = hintEdit->width();
-    txtDoc->addResource(QTextDocument::ImageResource, QUrl(img), icon.pixmap(w, h));
-
-    txtDoc->setHtml(html);
-
-    hintEdit->setDocument(txtDoc);
+    searchButton->setEnabled(!scheme->isEmpty());
+    // Render preview.
+    if (!scheme->isEmpty()) {
+        QPixmap pixmap = QDUtils::generateSnapShot(&doc, {});
+        if (pixmap.width() > 0 && pixmap.height() > 0) {
+            QIcon icon(pixmap);
+            auto textDocument = new QTextDocument(hintEdit);
+            QString html = "<div align=\"center\"><img src=\"%1\"/></div>";
+            QString img("img://img");
+            html = html.arg(img);
+            int renderedWidth = hintEdit->width();
+            int renderedHeight = qRound(pixmap.height() * (hintEdit->width() / (double)pixmap.width()));
+            textDocument->addResource(QTextDocument::ImageResource, QUrl(img), icon.pixmap(renderedWidth, renderedHeight));
+            textDocument->setHtml(html);
+            hintEdit->setDocument(textDocument);
+        }
+    }
 }
 
 void QDDialog::sl_okBtnClicked() {
@@ -393,27 +391,27 @@ void QDDialog::sl_okBtnClicked() {
         return;
     }
 
-    QString err = cawc->validate();
+    QString err = annotationWidgetController->validate();
     if (!err.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), err);
         return;
     }
 
     bool isRegionOk = false;
-    rs->getRegion(&isRegionOk);
+    regionSelector->getRegion(&isRegionOk);
     if (!isRegionOk) {
-        rs->showErrorMessage();
+        regionSelector->showErrorMessage();
         return;
     }
-    bool objectPrepared = cawc->prepareAnnotationObject();
+    bool objectPrepared = annotationWidgetController->prepareAnnotationObject();
     if (!objectPrepared) {
         QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
         return;
     }
-    const CreateAnnotationModel& m = cawc->getModel();
+    const CreateAnnotationModel& m = annotationWidgetController->getModel();
 
-    U2SequenceObject* seqObj = ctx->getSequenceObject();
-    SAFE_POINT(nullptr != seqObj, "NULL sequence object", );
+    U2SequenceObject* seqObj = advSequenceContext->getSequenceObject();
+    SAFE_POINT(seqObj != nullptr, "NULL sequence object", );
     U2OpStatusImpl os;
     DNASequence sequence = seqObj->getWholeSequence(os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );
@@ -427,8 +425,8 @@ void QDDialog::sl_okBtnClicked() {
     settings.annDescription = m.description;
     settings.scheme = scheme;
     settings.dnaSequence = sequence;
-    settings.viewName = ctx->getAnnotatedDNAView()->getName();
-    settings.region = rs->getRegion();
+    settings.viewName = advSequenceContext->getAnnotatedDNAView()->getName();
+    settings.region = regionSelector->getRegion();
 
     QDScheduler* t = new QDScheduler(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);

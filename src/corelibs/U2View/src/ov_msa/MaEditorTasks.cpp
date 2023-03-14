@@ -236,7 +236,7 @@ void OpenSavedMaEditorTask::updateRanges(const QVariantMap& stateData, MaEditor*
 
 //////////////////////////////////////////////////////////////////////////
 // update
-UpdateMaEditorTask::UpdateMaEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData)
+UpdateMaEditorTask::UpdateMaEditorTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData)
     : ObjectViewTask(v, stateName, stateData) {
 }
 

@@ -79,7 +79,7 @@ RefSeqCommonWidgetFactory::RefSeqCommonWidgetFactory(QList<QString> groupIds)
 RefSeqCommonWidgetFactory::~RefSeqCommonWidgetFactory() {
 }
 
-QWidget* RefSeqCommonWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
+QWidget* RefSeqCommonWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr, QString("NULL object view!"), nullptr);
 
     auto msa = qobject_cast<MSAEditor*>(objView);

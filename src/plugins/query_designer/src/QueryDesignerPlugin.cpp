@@ -62,8 +62,7 @@ QueryDesignerPlugin::QueryDesignerPlugin()
         services << new QueryDesignerService();
         viewCtx = new QueryDesignerViewContext(this);
         viewCtx->init();
-        AppContext::getObjectViewFactoryRegistry()
-            ->registerGObjectViewFactory(new QDViewFactory(this));
+        AppContext::getObjectViewFactoryRegistry()->registerGObjectViewFactory(new QDViewFactory(this));
     }
     registerLibFactories();
     AppContext::getDocumentFormatRegistry()->registerFormat(new QDDocFormat(this));
@@ -101,14 +100,14 @@ QueryDesignerViewContext::QueryDesignerViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void QueryDesignerViewContext::initViewContext(GObjectView* view) {
+void QueryDesignerViewContext::initViewContext(GObjectViewController* view) {
     auto av = qobject_cast<AnnotatedDNAView*>(view);
-    ADVGlobalAction* a = new ADVGlobalAction(av,
-                                             QIcon(":query_designer/images/query_designer.png"),
-                                             tr("Analyze with query schema..."),
-                                             50,
-                                             ADVGlobalActionFlag_AddToAnalyseMenu);
-    connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
+    auto action = new ADVGlobalAction(av,
+                                      QIcon(":query_designer/images/query_designer.png"),
+                                      tr("Analyze with query schema..."),
+                                      50,
+                                      ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu) | ADVGlobalActionFlag_AddToToolbar);
+    connect(action, &QAction::triggered, this, &QueryDesignerViewContext::sl_showDialog);
 }
 
 void QueryDesignerViewContext::sl_showDialog() {

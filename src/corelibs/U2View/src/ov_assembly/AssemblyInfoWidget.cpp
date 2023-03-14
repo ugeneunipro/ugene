@@ -126,7 +126,7 @@ AssemblyInfoWidgetFactory::AssemblyInfoWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget* AssemblyInfoWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
+QWidget* AssemblyInfoWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

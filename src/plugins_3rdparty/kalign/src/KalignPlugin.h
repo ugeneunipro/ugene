@@ -60,13 +60,13 @@ protected slots:
     void sl_align();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 class KalignAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    KalignAction(QObject* p, GObjectView* v, const QString& text, int order)
+    KalignAction(QObject* p, GObjectViewController* v, const QString& text, int order)
         : GObjectViewAction(p, v, text, order) {
     }
     MSAEditor* getMSAEditor() const;

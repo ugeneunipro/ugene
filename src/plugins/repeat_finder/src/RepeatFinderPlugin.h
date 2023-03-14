@@ -46,7 +46,7 @@ protected slots:
     void sl_showTandemDialog();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 }  // namespace U2

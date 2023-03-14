@@ -81,7 +81,7 @@ public:
 
 class UpdateTreeViewerTask : public ObjectViewTask {
 public:
-    UpdateTreeViewerTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
+    UpdateTreeViewerTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData);
     void update() override;
 };
 

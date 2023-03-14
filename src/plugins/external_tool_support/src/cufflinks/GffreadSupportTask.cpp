@@ -22,6 +22,7 @@
 #include "GffreadSupportTask.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/U2SafePoints.h>
@@ -32,6 +33,7 @@ namespace U2 {
 
 GffreadSupportTask::GffreadSupportTask(const GffreadSettings& _settings)
     : ExternalToolSupportTask(tr("Running Gffread task"), TaskFlags_NR_FOSE_COSC), settings(_settings) {
+    GCOUNTER(cvar, "ExternalTool_Cuff");
 }
 
 void GffreadSupportTask::prepare() {

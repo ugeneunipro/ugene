@@ -53,7 +53,7 @@ protected slots:
     void sl_showDialog();
 
 protected:
-    void initViewContext(GObjectView* v) override;
+    void initViewContext(GObjectViewController* v) override;
 };
 
 class Primer3Tests {

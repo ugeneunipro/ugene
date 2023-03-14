@@ -42,6 +42,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GAutoDeleteList.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
@@ -68,13 +69,21 @@
 #include "TreeViewerUtils.h"
 #include "phyltree/TextSettingsDialog.h"
 #include "phyltree/TreeSettingsDialog.h"
-
 namespace U2 {
 
-TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject)
-    : GObjectView(TreeViewerFactory::ID, viewName), phyObject(_phyObject) {
+TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject, bool hasOptionsPanel)
+    : GObjectViewController(TreeViewerFactory::ID, viewName), phyObject(_phyObject) {
     GCOUNTER(cvar, "PhylTreeViewer");
-
+    if (hasOptionsPanel) {
+        optionsPanelController = new OptionsPanelController(this);
+        OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
+        GAutoDeleteList<OPFactoryFilterVisitorInterface> filters;
+        filters.qlist.append(new OPFactoryFilterVisitor(ObjViewType_PhylogeneticTree));
+        QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters.qlist);
+        for (OPWidgetFactory* factory : qAsConst(opWidgetFactoriesForSeqView)) {
+            optionsPanelController->addGroup(factory);
+        }
+    }
     createActions();
 
     objects.append(phyObject);
@@ -118,10 +127,6 @@ void TreeViewer::setSettingsState(const QVariantMap& m) {
 
 Task* TreeViewer::updateViewTask(const QString& stateName, const QVariantMap& stateData) {
     return new UpdateTreeViewerTask(this, stateName, stateData);
-}
-
-OptionsPanel* TreeViewer::getOptionsPanel() {
-    return optionsPanel;
 }
 
 void TreeViewer::createActions() {
@@ -279,7 +284,7 @@ void TreeViewer::buildStaticToolbar(QToolBar* tb) {
 
 void TreeViewer::buildMenu(QMenu* m, const QString& type) {
     if (type != GObjectViewMenuType::STATIC) {
-        GObjectView::buildMenu(m, type);
+        GObjectViewController::buildMenu(m, type);
         return;
     }
     // Tree Settings
@@ -327,25 +332,13 @@ void TreeViewer::buildMenu(QMenu* m, const QString& type) {
 
     m->addSeparator();
 
-    GObjectView::buildMenu(m, type);
+    GObjectViewController::buildMenu(m, type);
     GUIUtils::disableEmptySubmenus(m);
 }
 
-QWidget* TreeViewer::createWidget() {
-    SAFE_POINT(ui == nullptr, "createWidget: UI is not null", ui);
-    ui = new TreeViewerUI(this);
-
-    optionsPanel = new OptionsPanel(this);
-    OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
-
-    QList<OPFactoryFilterVisitorInterface*> filters;
-    filters.append(new OPFactoryFilterVisitor(ObjViewType_PhylogeneticTree));
-
-    QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters);
-    for (OPWidgetFactory* factory : qAsConst(opWidgetFactoriesForSeqView)) {
-        optionsPanel->addGroup(factory);
-    }
-    qDeleteAll(filters);
+QWidget* TreeViewer::createViewWidget(QWidget* parent) {
+    SAFE_POINT(ui == nullptr, "View widget was already created", ui);
+    ui = new TreeViewerUI(this, parent);
     return ui;
 }
 
@@ -463,8 +456,8 @@ static void storeOptionValueInAppSettings(const TreeViewOption& option, const QV
     }
 }
 
-TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer)
-    : phyObject(_treeViewer->getPhyObject()),
+TreeViewerUI::TreeViewerUI(TreeViewer* _treeViewer, QWidget* parent)
+    : QGraphicsView(parent), phyObject(_treeViewer->getPhyObject()),
       treeViewer(_treeViewer) {
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);

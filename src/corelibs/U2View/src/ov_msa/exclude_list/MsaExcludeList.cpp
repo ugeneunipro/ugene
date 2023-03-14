@@ -67,7 +67,7 @@ MsaExcludeListContext::MsaExcludeListContext(QObject* parent)
 static const char* TOGGLE_EXCLUDE_LIST_ACTION_NAME = "exclude_list_toggle_action";
 static const char* MOVE_MSA_SELECTION_TO_EXCLUDE_LIST_ACTION_NAME = "exclude_list_move_from_msa_action";
 
-void MsaExcludeListContext::initViewContext(GObjectView* view) {
+void MsaExcludeListContext::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     msaEditor->registerActionProvider(this);
@@ -79,7 +79,7 @@ void MsaExcludeListContext::initViewContext(GObjectView* view) {
     toggleExcludeListAction->setObjectName(TOGGLE_EXCLUDE_LIST_ACTION_NAME);
     toggleExcludeListAction->setToolTip(tr("Show/Hide Exclude List view visibility"));
     connect(toggleExcludeListAction, &QAction::triggered, this, [this, msaEditor] { toggleExcludeListView(msaEditor); });
-    connect(view, &GObjectView::si_buildStaticToolbar, this, [toggleExcludeListAction](GObjectView*, QToolBar* toolBar) { toolBar->addAction(toggleExcludeListAction); });
+    connect(view, &GObjectViewController::si_buildStaticToolbar, this, [toggleExcludeListAction](GObjectViewController*, QToolBar* toolBar) { toolBar->addAction(toggleExcludeListAction); });
     addViewAction(toggleExcludeListAction);
 
     auto moveFromMsaAction = new GObjectViewAction(this, view, tr("Move to Exclude List"));
@@ -109,7 +109,7 @@ void MsaExcludeListContext::initViewContext(GObjectView* view) {
         CHECK(!msaObjectPtr.isNull(), );
         msaObjectPtr->disconnect(this);
     });
-    connect(view, &GObjectView::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectView*, QMenu* menu) {
+    connect(view, &GObjectViewController::si_buildMenu, this, [msaEditor, moveFromMsaAction](GObjectViewController*, QMenu* menu) {
         QMenu* copyMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_COPY);
         GUIUtils::insertActionAfter(copyMenu, msaEditor->getUI()->getUI(0)->cutSelectionAction, moveFromMsaAction);
     });

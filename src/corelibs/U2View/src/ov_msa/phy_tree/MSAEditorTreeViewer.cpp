@@ -41,7 +41,7 @@
 namespace U2 {
 
 MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject)
-    : TreeViewer(viewName, phyTreeObject) {
+    : TreeViewer(viewName, phyTreeObject, false) {
 }
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {
@@ -53,15 +53,14 @@ MSAEditorTreeViewer::~MSAEditorTreeViewer() {
     }
 }
 
-QWidget* MSAEditorTreeViewer::createWidget() {
+QWidget* MSAEditorTreeViewer::createViewWidget(QWidget* parent) {
     SAFE_POINT(ui == nullptr, QString("MSAEditorTreeViewer::createWidget error"), nullptr);
     SAFE_POINT(editor != nullptr, "MSAEditor must be set in createWidget!", nullptr);
 
-    auto view = new QWidget();
+    auto view = new QWidget(parent);
     view->setObjectName("msa_editor_tree_view_container_widget");
 
-    auto viewLayout = new QVBoxLayout();
-    msaTreeViewerUi = new MSAEditorTreeViewerUI(this);
+    msaTreeViewerUi = new MSAEditorTreeViewerUI(this, view);
     ui = msaTreeViewerUi;
 
     auto toolBar = new QToolBar(tr("MSAEditor tree toolbar"));
@@ -81,6 +80,7 @@ QWidget* MSAEditorTreeViewer::createWidget() {
     toolBar->addAction(refreshTreeAction);
     toolBar->addAction(syncModeAction);
 
+    auto viewLayout = new QVBoxLayout();
     viewLayout->setSpacing(0);
     viewLayout->setMargin(0);
     viewLayout->addWidget(toolBar);
@@ -108,10 +108,6 @@ const CreatePhyTreeSettings& MSAEditorTreeViewer::getCreatePhyTreeSettings() con
 
 const QString& MSAEditorTreeViewer::getParentAlignmentName() const {
     return alignmentName;
-}
-
-OptionsPanel* MSAEditorTreeViewer::getOptionsPanel() {
-    return nullptr;
 }
 
 void MSAEditorTreeViewer::setParentAlignmentName(const QString& _alignmentName) {
@@ -253,8 +249,8 @@ void MSAEditorTreeViewer::orderAlignmentByTree() {
 //---------------------------------------------
 // MSAEditorTreeViewerUI
 //---------------------------------------------
-MSAEditorTreeViewerUI::MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer)
-    : TreeViewerUI(treeViewer),
+MSAEditorTreeViewerUI::MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer, QWidget* parent)
+    : TreeViewerUI(treeViewer, parent),
       msaEditorTreeViewer(treeViewer) {
     setAlignment(Qt::AlignTop | Qt::AlignLeft);
 }

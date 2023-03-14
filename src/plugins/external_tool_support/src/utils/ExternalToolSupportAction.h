@@ -30,7 +30,7 @@ namespace U2 {
 class ExternalToolSupportAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolIds);
+    ExternalToolSupportAction(QObject* p, GObjectViewController* v, const QString& _text, int order, const QStringList& _toolIds);
     ExternalToolSupportAction(const QString& text, QObject* p, const QStringList& _toolIds);
 
     const QStringList getToolIds() const {

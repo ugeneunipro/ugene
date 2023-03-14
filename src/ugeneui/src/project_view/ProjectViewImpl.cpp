@@ -721,13 +721,13 @@ public:
 
 class AddToViewContext : public QObject {
 public:
-    AddToViewContext(QObject* p, GObjectView* v, QList<GObject*> objs)
+    AddToViewContext(QObject* p, GObjectViewController* v, QList<GObject*> objs)
         : QObject(p), view(v) {
         foreach (GObject* o, objs) {
             objects.append(o);
         }
     }
-    QPointer<GObjectView> view;
+    QPointer<GObjectViewController> view;
     QList<QPointer<GObject>> objects;
 };
 
@@ -1062,7 +1062,7 @@ void ProjectViewImpl::sl_addToView() {
     // TODO: create specialized action classes instead of using ->data().value<void*>() casts
     QAction* action = (QAction*)sender();
     auto ac = static_cast<AddToViewContext*>(action->data().value<void*>());
-    GObjectView* view = ac->view;
+    GObjectViewController* view = ac->view;
     if (view == nullptr) {
         return;
     }

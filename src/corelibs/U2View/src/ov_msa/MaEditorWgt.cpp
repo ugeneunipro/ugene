@@ -61,8 +61,8 @@ bool MaEditorWgtEventFilter::eventFilter(QObject* obj, QEvent* event) {
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-MaEditorWgt::MaEditorWgt(MaEditor* _editor)
-    : editor(_editor),
+MaEditorWgt::MaEditorWgt(MaEditor* _editor, QWidget* parent)
+    : QWidget(parent), editor(_editor),
       sequenceArea(nullptr),
       nameList(nullptr),
       consensusArea(nullptr),

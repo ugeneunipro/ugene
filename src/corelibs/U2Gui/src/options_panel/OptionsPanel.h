@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class OptionsPanelWidget;
 class OPWidgetFactory;
 
@@ -36,18 +36,18 @@ class OPWidgetFactory;
  * low-level implementation of the panel (including widgets, their styles, etc.)
  * To use this class add the Options Panel's main widget to a layout and add the required groups.
  */
-class U2GUI_EXPORT OptionsPanel : public QObject {
+class U2GUI_EXPORT OptionsPanelController : public QObject {
     Q_OBJECT
 public:
     /** Creates a new OptionsPanelWidget */
-    OptionsPanel(GObjectView*);
+    OptionsPanelController(GObjectViewController*);
 
     /**
      * Normally, the OptionsPanelWidget is added to another widget and should be deleted
      * when this widget is deleted, but if this hasn't happened by some reason, then
      * the destructor deletes the object.
      */
-    ~OptionsPanel();
+    ~OptionsPanelController();
 
     /** Add a new options panel group instance and corresponding widgets*/
     void addGroup(OPWidgetFactory* factory);
@@ -69,7 +69,7 @@ public slots:
     void sl_groupHeaderPressed(QString groupId);
 
 private:
-    GObjectView* objView;
+    GObjectViewController* objView;
 
     /** Shows the options widget */
     void openOptionsGroup(const QString& groupId, const QVariantMap& options = QVariantMap());

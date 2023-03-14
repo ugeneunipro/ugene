@@ -122,6 +122,7 @@
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
@@ -4223,6 +4224,20 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
     CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7797) {
+    // Open "samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Select from context menu Analyze->Analyze with Query Schema menu item.
+    QString fullFilePath = QFileInfo(testDir + "_common_data/query/empty.uql").absoluteFilePath();
+    GTUtilsDialog::waitForDialog(os, new AnalyzeWithQuerySchemaDialogFiller(os, fullFilePath, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Analyze", "Analyze with query schema..."}));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    // Expected state: there is no crash.
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7806) {
     QDir(sandBoxDir).mkdir("test_7806");
     QDir(sandBoxDir).mkdir("test_7806/1");
@@ -4236,7 +4251,7 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     GTFileDialog::openFile(os, sandBoxDir + "/test_7806/2/chrM.sam");
 
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
-    int size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
+    qint64 size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 

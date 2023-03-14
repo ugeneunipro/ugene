@@ -33,7 +33,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class ChromatogramViewRenderArea;
 class AnnotatedDNAView;
-class GObjectView;
+class GObjectViewController;
 class Task;
 
 struct ChromatogramViewSettings {
@@ -79,7 +79,7 @@ private slots:
     void sl_onSequenceObjectLoaded(Task*);
     void sl_clearEditableSequence();
     void sl_removeChanges();
-    void sl_onObjectRemoved(GObjectView*, GObject*);
+    void sl_onObjectRemoved(GObjectViewController*, GObject*);
     void sl_showHideTrace();
     void sl_showAllTraces();
 

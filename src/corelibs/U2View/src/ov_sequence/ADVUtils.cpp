@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QIcon& icon, const QString& text, int ps, ADVGlobalActionFlags fl)
+ADVGlobalAction::ADVGlobalAction(AnnotatedDNAView* v, const QIcon& icon, const QString& text, int ps, const ADVGlobalActionFlags& fl)
     : GObjectViewAction(v, v, text), pos(ps), flags(fl) {
     setIcon(icon);
     connect(v, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget*, ADVSequenceWidget*)), SLOT(sl_activeSequenceChanged()));
