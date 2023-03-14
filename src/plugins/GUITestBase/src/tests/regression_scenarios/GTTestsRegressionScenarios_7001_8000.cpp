@@ -4254,5 +4254,27 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7825) {
+    // 1. Open the attached sequence.
+    // 2. Open Primer3 dialog
+    // 3. Set "pick_discriminative_primers" task
+    // 4. Set Target region to 36, 163 (annotated region)
+    // 5. Set region to whole sequence
+    // 6. Go to Advance settings tab and click "Pick anyway"
+    // 7. Click "Pick"
+    // Expected: primers frame the annotation
+
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/7825/seq.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/regression/7825/settings.txt";
+    GTUtilsDialog::add(os, new PopupChooser(os, { "ADV_MENU_ANALYSE", "primer3_action" }));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {16, 35}, {199, 218} });
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
