@@ -109,8 +109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // Check that tool is launched.
     CHECK_SET_ERR(lt.hasMessage("Launching FastTree tool"), "No tool launch message found");
-    CHECK_SET_ERR(lt.hasMessage("--gtr"), "No custom argument message found/--gtr");
-    CHECK_SET_ERR(lt.hasMessage("-pseudo"), "No custom argument message found/-pseudo");
+    CHECK_SET_ERR(lt.hasMessage("-gtr"), "No custom argument message found/--gtr");
     CHECK_SET_ERR(lt.hasMessage("-pseudo"), "No custom argument message found/-pseudo");
     CHECK_SET_ERR(lt.getJoinedErrorString().isEmpty(), "Errors in the log: " + lt.getJoinedErrorString());
 

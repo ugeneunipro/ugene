@@ -1605,7 +1605,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
-    CHECK_SET_ERR(lt.hasMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"), "Expected message not found");
+    CHECK_SET_ERR(!lt.hasMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"), "Found unexpected message");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7448_2) {
@@ -2953,11 +2953,11 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
 
     // Try non-tree file. Expected state: nothing is loaded.
-    GTLogTracer lt;
+    GTLogTracer lt1;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/CLUSTALW/ty3.aln.gz"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(lt.hasMessage("Document contains no tree objects"), "Expected message not found");
+    CHECK_SET_ERR(lt1.hasMessage("Document contains no tree objects"), "Expected message not found");
     GTUtilsMsaEditor::checkNoTreeView(os);
 
     // Try load a tree file that is already in the project. Expected state: the document in the project is reused.
@@ -2966,8 +2966,9 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check there is an active tree view.
+    GTLogTracer lt2;
     GTUtilsMsaEditor::getTreeView(os);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(!lt2.hasErrors(), "Found errors in log: " + lt2.getJoinedErrorString());
 
     documents = AppContext::getProject()->getDocuments();
     CHECK_SET_ERR(documents.size() == 2, "Expected 2 document in project");

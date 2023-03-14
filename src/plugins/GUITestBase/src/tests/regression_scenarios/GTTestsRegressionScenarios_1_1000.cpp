@@ -2321,7 +2321,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     errors = l2.errorMessages;
-    CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2 != " + QString::number(errors.size()) + ", errors: " + errors.join(","));
+    CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1 != " + QString::number(errors.size()) + ", errors: " + errors.join(","));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0888) {

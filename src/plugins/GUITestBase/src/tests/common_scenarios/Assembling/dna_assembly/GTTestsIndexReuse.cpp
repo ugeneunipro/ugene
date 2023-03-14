@@ -209,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".4.bt2"), "index4 not created");
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
     CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
-    CHECK_SET_ERR(lt.hasMessage("Launching Bowtie build indexer tool"), "Expected message not found");
+    CHECK_SET_ERR(lt.hasMessage("Launching Bowtie 2 build indexer tool"), "Expected message not found");
 
     //    2. Repeat step 1.
     lt.clear();

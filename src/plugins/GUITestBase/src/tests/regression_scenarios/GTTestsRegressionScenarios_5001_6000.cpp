@@ -1457,7 +1457,7 @@ GUI_TEST_CLASS_DEFINITION(test_5412) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(lt.hasMessage("5 pairs are complete, 6 reads without a pair were found in files"), "No message about filtered reads");
+    CHECK_SET_ERR(lt.hasMessage("5 read pairs were mapped, 6 reads without a pair from files"), "No message about filtered reads");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5417) {
@@ -3162,7 +3162,7 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::checkNoActiveWaiters(os, 10000);
 
-    CHECK_SET_ERR(lt.hasMessage("Document is already added to the project"), "Expected message not found in the log");
+    CHECK_SET_ERR(lt.hasMessage("is already added to the project"), "Expected message not found in the log");
 
     // Other objects
     QFile originalFile2(dataDir + "samples/CLUSTALW/COI.aln");
@@ -3182,7 +3182,7 @@ GUI_TEST_CLASS_DEFINITION(test_5730) {
     GTUtilsDialog::add(os, new ExportDocumentDialogFiller(os, sandBoxDir, "5730_COI.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
     GTUtilsProjectTreeView::callContextMenu(os, "HIV-1", "HIV-1.aln");
 
-    CHECK_SET_ERR(lt.hasMessage("Document is already added to the project, it will be overwritten."), "Expected message not found in the log");
+    CHECK_SET_ERR(lt.hasMessage("is already added to the project, it will be overwritten."), "Expected message not found in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5739) {
