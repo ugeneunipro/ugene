@@ -137,7 +137,7 @@ class U2GUI_EXPORT GObjectViewController : public QObject {
     friend class GObjectViewWindow;
     Q_OBJECT
 public:
-    GObjectViewController(const GObjectViewFactoryId& factoryId, const QString& viewName, QObject* p = nullptr);
+    GObjectViewController(const GObjectViewFactoryId& factoryId, const QString& viewName, QObject* parent = nullptr);
 
     const GObjectViewFactoryId& getFactoryId() const;
 

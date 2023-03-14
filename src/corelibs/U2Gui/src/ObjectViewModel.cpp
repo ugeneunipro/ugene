@@ -107,8 +107,8 @@ Task* GObjectViewFactory::createViewTask(const QString&, const QVariantMap&) {
 
 //////////////////////////////////////////////////////////////////////////
 /// GObjectView
-GObjectViewController::GObjectViewController(const GObjectViewFactoryId& _factoryId, const QString& _viewName, QObject* prnt)
-    : QObject(prnt) {
+GObjectViewController::GObjectViewController(const GObjectViewFactoryId& _factoryId, const QString& _viewName, QObject* parent)
+    : QObject(parent) {
     factoryId = _factoryId;
     viewName = _viewName;
     viewWidget = nullptr;
@@ -381,7 +381,7 @@ OptionsPanelController* GObjectViewController::getOptionsPanelController() const
 
 GObjectViewWindow::GObjectViewWindow(GObjectViewController* _viewController, const QString& _viewName, bool _persistent)
     : MWMDIWindow(_viewName), viewController(_viewController), persistent(_persistent) {
-    QWidget::setVisible(false); // Must be made visible after is added to the MDI context.
+    QWidget::setVisible(false);  // Must be made visible after is added to the MDI context.
     viewController->setParent(this);
     viewController->setClosingInterface(this);
 
@@ -417,11 +417,11 @@ GObjectViewWindow::GObjectViewWindow(GObjectViewController* _viewController, con
         splitter->setOrientation(Qt::Horizontal);
         splitter->setChildrenCollapsible(false);
 
-        viewWidget = viewController->createWidget(contentWidget);
+        viewWidget = viewController->createWidget(splitter);
         SAFE_POINT(viewWidget != nullptr, "Internal error: Object View widget is not initialized", );
         splitter->addWidget(viewWidget);
 
-        OptionsPanelWidget* optionsPanelWidget = viewController->optionsPanelController->getMainWidget();
+        OptionsPanelWidget* optionsPanelWidget = viewController->optionsPanelController->createWidget(splitter);
         splitter->addWidget(optionsPanelWidget->getOptionsWidget());
         splitter->setStretchFactor(0, 1);
         splitter->setStretchFactor(1, 0);
