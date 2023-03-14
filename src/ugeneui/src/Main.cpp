@@ -264,8 +264,8 @@ static void initLogsCache(LogCacheExt& logsCache, const QStringList&) {
 static bool isQtWarningHiddenFromUi(const QString& text) {
     QStringList knownWarnings = {
         "libpng warning:",  // Some UGENE/QT icons may be not fully compatible with the current desktop.
-        "Sending TextCaretMoved",  // Virtual desktops has a11y issues.
-        "QTextCursor::setPosition: Position '",  // Virtual desktops has a11y issues.
+        "Sending TextCaretMoved",  // A11y issue on remote desktop.
+        "QTextCursor::setPosition: Position '",  // A11y issue on remote desktop.
     };
     return std::any_of(knownWarnings.begin(), knownWarnings.end(), [text](const auto& warningPrefix) { return text.startsWith(warningPrefix); });
 }
