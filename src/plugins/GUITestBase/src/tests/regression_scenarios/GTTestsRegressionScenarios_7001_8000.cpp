@@ -4261,17 +4261,16 @@ GUI_TEST_CLASS_DEFINITION(test_7830) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Right button-> Statistics-> Generate distance matrix
-    // 3. Click "Generate"
+    // 3. Click "Generate" (save to a new file)
     GTUtilsDialog::add(os, new PopupChooser(os, { MSAE_MENU_STATISTICS, "Generate distance matrix" }, GTGlobals::UseMouse));
-    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, true, true, true));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::SaveFormat::HTML, sandBoxDir + "test_7830.html"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected: legend exists
-    QTextBrowser* v = GTUtilsMdi::activeWindow(os)->findChild<QTextBrowser*>();
-    QString text = v->toHtml();
-    CHECK_SET_ERR(text.contains("Legend"), text);
-
-
+    // Expected: legend exists, and, in general, the generated report contains some expected part from "_common_data/regression/7830/test.html"
+    auto generated = GTFile::readAll(os, sandBoxDir + "test_7830.html");
+    auto expected = GTFile::readAll(os, testDir + "_common_data/regression/7830/test.html");
+    CHECK_SET_ERR(generated.contains(expected), "...");
 }
 
 }  // namespace GUITest_regression_scenarios
