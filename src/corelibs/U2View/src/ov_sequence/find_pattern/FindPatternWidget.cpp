@@ -1261,9 +1261,9 @@ void FindPatternWidget::updatePatternText(int previousAlgorithm) {
 
     // Set a new state.
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        textPattern->setPlaceholderText(patternRegExp);
+        textPattern->setPlainText(patternRegExp);
     } else {
-        textPattern->setPlaceholderText(patternString);
+        textPattern->setPlainText(patternString);
     }
     setCorrectPatternsString();
 }
