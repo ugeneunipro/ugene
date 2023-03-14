@@ -3057,12 +3057,10 @@ GUI_TEST_CLASS_DEFINITION(test_2565) {
     //    3. Insert the pattern "GCTAGCTTAAGTAACGCCACTTTT".
     //    4. Click "Search".
     //    Expected: the pattern is not found. Notification with this information appears.
-    GTLogTracer lt;
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionsPanel::runFindPatternWithHotKey("GCTAGCTTAAGTAACGCCACTTTT", os);
-    CHECK_SET_ERR(lt.hasMessage(QString("Searching patterns in sequence task: No results found.")),
-                  "No expected message in the log");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/0"), "Results string does not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2566) {

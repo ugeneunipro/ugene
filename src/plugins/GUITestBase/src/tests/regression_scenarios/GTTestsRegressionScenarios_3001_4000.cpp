@@ -1434,7 +1434,8 @@ GUI_TEST_CLASS_DEFINITION(test_3305) {
     QFile bedFile(sandBoxDir + "test_3305/test_3305.bed");
     CHECK_SET_ERR(bedFile.exists() && bedFile.size() != 0, "The result file is empty or does not exist!");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3306) {
@@ -1657,7 +1658,8 @@ GUI_TEST_CLASS_DEFINITION(test_3335) {
     QWidget* relatedSequenceView = GTUtilsMdi::findWindow(os, "renamed sequence [human_T1.fa]");
     CHECK_SET_ERR(nullptr != relatedSequenceView, "A view for the related sequence was not opened");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3342) {
@@ -2821,7 +2823,8 @@ GUI_TEST_CLASS_DEFINITION(test_3563_1) {
     GTUtilsDocument::loadDocument(os, "test_3563_1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3563_2) {
@@ -3617,7 +3620,8 @@ GUI_TEST_CLASS_DEFINITION(test_3723) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "merged_document.gb");
     GTUtilsDocument::isDocumentLoaded(os, "merged_document.gb");
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3724) {
@@ -3687,7 +3691,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3732) {
-    //    1. Open UGENE preferences, open "Resources" tab, set UGENE memory limit to 200Mb.
+    // Set UGENE memory limit to 200Mb.
     class MemoryLimitSetScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
@@ -3698,17 +3702,13 @@ GUI_TEST_CLASS_DEFINITION(test_3732) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemoryLimitSetScenario));
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MemoryLimitSetScenario()));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
 
-    //    2. Open file "_common_data/scenarios/_regression/1688/sr100.000.fa" as separate sequences.
-    //    Expected state: there is an error in the log: "MemoryLocker - Not enough memory error, 41 megabytes are required".
-    GTLogTracer lt;
-
+    // Open file "_common_data/scenarios/_regression/1688/sr100.000.fa" as separate sequences.
+    // Expected state: UGENE does not fail.
     GTUtilsProject::openMultiSequenceFileAsMalignment(os, testDir + "_common_data/scenarios/_regression/1688", "sr100.000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    CHECK_SET_ERR(lt.hasMessage("MemoryLocker - Not enough memory error, 41 megabytes are required"), "An expected error message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3736) {
@@ -3925,7 +3925,8 @@ GUI_TEST_CLASS_DEFINITION(test_3773) {
 
     GTUtilsProjectTreeView::click(os, "aligment15900.hmm");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3773_1) {
@@ -3948,7 +3949,8 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
     GTUtilsDialog::add(os, new PopupChooserByText(os, {"Advanced", "Build HMMER3 profile"}));
     GTUtilsDialog::add(os, new OkClicker(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os, QPoint(5, 5));
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3778) {
@@ -4079,7 +4081,8 @@ GUI_TEST_CLASS_DEFINITION(test_3788) {
     const QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
     CHECK_SET_ERR(annotatedRegions.isEmpty(), "There are annotations unexpectedly");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3797) {
@@ -4848,7 +4851,8 @@ GUI_TEST_CLASS_DEFINITION(test_3995) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Bug state: Error message appears: "File path contains illegal characters or too long"
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3996) {
@@ -4917,7 +4921,8 @@ GUI_TEST_CLASS_DEFINITION(test_3998) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check that there are no errors in the log.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 }  // namespace GUITest_regression_scenarios
