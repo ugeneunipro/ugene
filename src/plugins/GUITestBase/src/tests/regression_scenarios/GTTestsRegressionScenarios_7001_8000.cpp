@@ -4109,6 +4109,7 @@ GUI_TEST_CLASS_DEFINITION(test_7789) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
 
     GTUtilsOptionPanelPhyTree::openTab(os);
 
