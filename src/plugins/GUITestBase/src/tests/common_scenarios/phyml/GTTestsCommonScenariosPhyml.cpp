@@ -297,7 +297,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     // Expected state: the tool is launched, there is '-o lr' option in the launch parameters.
     CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found");
-    CHECK_SET_ERR(!lt.hasMessage("-o lr"), "Found unexpected message");
+    CHECK_SET_ERR(lt.hasMessage("-o lr"), "Expected message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -340,7 +340,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     // Expected state: the tool is launched, there is '-o tlr' option in the launch parameters.
     CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found");
-    CHECK_SET_ERR(!lt.hasMessage("-o tlr"), "Found unexpected message");
+    CHECK_SET_ERR(lt.hasMessage("-o tlr"), "Expected message not found");
 }
 
 }  // namespace GUITest_common_scenarios_phyml
