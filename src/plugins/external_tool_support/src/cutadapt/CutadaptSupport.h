@@ -30,6 +30,8 @@ class CutadaptSupport : public ExternalTool {
 public:
     CutadaptSupport();
 
+    QString checkPaths(const QStringList& arguments) const override;
+
     static const QString ET_CUTADAPT;
     static const QString ET_CUTADAPT_ID;
     static const QString ADAPTERS_DIR_NAME;

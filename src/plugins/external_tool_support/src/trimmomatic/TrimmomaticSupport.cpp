@@ -22,6 +22,7 @@
 #include "TrimmomaticSupport.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include "TrimmomaticStep.h"
 #include "java/JavaSupport.h"
@@ -59,6 +60,16 @@ TrimmomaticSupport::TrimmomaticSupport()
 
 TrimmomaticSupport::~TrimmomaticSupport() {
     LocalWorkflow::TrimmomaticStepsRegistry::releaseInstance();
+}
+
+QString TrimmomaticSupport::checkPaths(const QStringList& arguments) const {
+    QStringList errors;
+    if (isOsWindows()) {
+        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
+        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
+        errors.removeAll("");
+    }
+    return errors.isEmpty() ? "" : errors.first();
 }
 
 void TrimmomaticSupport::initTrimmomaticSteps() {

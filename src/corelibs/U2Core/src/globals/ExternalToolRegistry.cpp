@@ -135,6 +135,10 @@ void ExternalTool::performAdditionalChecks(const QString& /*toolPath*/) {
     // do nothing
 }
 
+QString ExternalTool::checkPaths(const QStringList& arguments) const {
+    return QString();
+}
+
 ExternalToolValidation ExternalTool::getToolValidation() {
     ExternalToolValidation result(toolRunnerProgram, executableFileName, validationArguments, validMessage, errorDescriptions);
     return result;

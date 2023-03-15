@@ -71,6 +71,16 @@ MrBayesSupport::MrBayesSupport()
     registry->registerPhyTreeGenerator(new MrBayesAdapter(), MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY);
 }
 
+QString MrBayesSupport::checkPaths(const QStringList& arguments) const {
+    QStringList errors;
+    if (isOsWindows()) {
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSpaces());
+        errors.removeAll("");
+    }
+    return errors.isEmpty() ? "" : errors.first();
+}
+
 ////////////////////////////////////////
 // MrBayesAdapter
 

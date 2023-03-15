@@ -68,6 +68,13 @@ MAFFTSupport::MAFFTSupport()
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignSelectionToAlignment));
 }
 
+QString MAFFTSupport::checkPaths(const QStringList& arguments) const {
+    if (isOsWindows()) {
+        return ExternalToolSupportUtils::checkTemporaryFolderSpaces();
+    }
+    return "";
+}
+
 void MAFFTSupport::sl_runWithExtFileSpecify() {
     // Check that Clustal and temporary folder path defined
     if (path.isEmpty()) {

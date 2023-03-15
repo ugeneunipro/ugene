@@ -32,6 +32,8 @@ class BlastSupport : public ExternalTool {
 public:
     BlastSupport(const QString& id);
 
+    QString checkPaths(const QStringList& arguments) const override;
+
     static const QString ET_BLASTN_ID;
     static const QString ET_BLASTP_ID;
     static const QString ET_BLASTX_ID;

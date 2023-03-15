@@ -68,6 +68,30 @@ TCoffeeSupport::TCoffeeSupport()
     toolKitName = "T-Coffee";
 }
 
+QString TCoffeeSupport::checkPaths(const QStringList& arguments) const {
+    QStringList errors;
+    if (isOsWindows()) {
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSpaces());
+    }
+    if (isOsLinux()) {
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
+
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSpaces());
+        errors.append(ExternalToolSupportUtils::checkToolLocationSpaces(this));
+        errors.append(ExternalToolSupportUtils::checkArgumentPathSpaces(arguments));
+    }
+    if (isOsMac()) {
+        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
+        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
+
+        errors.append(ExternalToolSupportUtils::checkToolLocationSpaces(this));
+        errors.append(ExternalToolSupportUtils::checkArgumentPathSpaces(arguments));
+    }
+    errors.removeAll(QString(""));
+
+    return errors.isEmpty() ? "" : errors.first();
+}
+
 void TCoffeeSupport::sl_runWithExtFileSpecify() {
     // Check that T-Coffee and temporary folder path defined
     if (path.isEmpty()) {

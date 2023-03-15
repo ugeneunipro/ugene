@@ -22,6 +22,7 @@
 #include "SamToolsExtToolSupport.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -55,6 +56,13 @@ SamToolsExtToolSupport::SamToolsExtToolSupport()
     toolKitName = "SAMtools";
 
     muted = true;
+}
+
+QString SamToolsExtToolSupport::checkPaths(const QStringList& arguments) const {
+    if (isOsWindows()) {
+        return ExternalToolSupportUtils::checkToolLocationSymbols(this);
+    }
+    return "";
 }
 
 }  // namespace U2

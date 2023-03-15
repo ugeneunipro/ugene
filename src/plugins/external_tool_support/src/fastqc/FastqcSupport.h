@@ -30,6 +30,8 @@ class FastQCSupport : public ExternalTool {
 public:
     FastQCSupport();
 
+    QString checkPaths(const QStringList& arguments) const override;
+
     static ExternalTool* getJava();
 
     static const QString ET_FASTQC;

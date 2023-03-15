@@ -22,6 +22,7 @@
 #include "Bowtie2Support.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -79,6 +80,17 @@ Bowtie2Support::Bowtie2Support(const QString& id)
                          " extracts information from a Bowtie index about what kind"
                          " of index it is and what reference sequence were used to build it.");
     }
+}
+
+QString Bowtie2Support::checkPaths(const QStringList& arguments) const {
+    QStringList errors;
+    if (isOsWindows()) {
+        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
+        errors.append(ExternalToolSupportUtils::checkIndexDirSymbols());
+        errors.removeAll(QString(""));
+    }
+    return errors.isEmpty() ? "" : errors.first();
 }
 
 }  // namespace U2

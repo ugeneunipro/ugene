@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DataPathRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -63,6 +64,17 @@ FastQCSupport::FastQCSupport()
     CHECK(java != nullptr, );
     connect(java, SIGNAL(si_pathChanged()), SLOT(sl_javaPathChanged()));
     sl_javaPathChanged();
+}
+
+QString FastQCSupport::checkPaths(const QStringList& arguments) const {
+    QStringList errors;
+    if (isOsWindows()) {
+        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
+        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
+        errors.removeAll("");
+    }
+    return errors.isEmpty() ? "" : errors.first();
 }
 
 void FastQCSupport::sl_javaPathChanged() {

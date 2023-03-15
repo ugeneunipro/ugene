@@ -128,6 +128,19 @@ BlastSupport::BlastSupport(const QString& id)
     toolKitName = "BLAST";
 }
 
+QString BlastSupport::checkPaths(const QStringList& arguments) const {
+    QStringList errors;
+    if (isOsWindows()) {
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
+        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
+        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSpaces());
+    }
+    errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
+    errors.append(ExternalToolSupportUtils::checkArgumentPathSpaces(arguments));
+    errors.removeAll("");
+    return errors.isEmpty() ? "" : errors.first();
+}
+
 bool BlastSupport::checkBlastTool(const QString& toolId) {
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
     SAFE_POINT(tool != nullptr, "Blast tool not found: " + toolId, false);

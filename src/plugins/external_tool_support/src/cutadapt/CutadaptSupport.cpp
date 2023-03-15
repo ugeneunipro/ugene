@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DataPathRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "python/PythonSupport.h"
@@ -58,6 +59,16 @@ CutadaptSupport::CutadaptSupport()
 
     toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
     dependencies << PythonSupport::ET_PYTHON_ID;
+}
+
+QString CutadaptSupport::checkPaths(const QStringList& arguments) const {
+    QStringList errors;
+    if (isOsWindows()) {
+        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
+        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
+        errors.removeAll("");
+    }
+    return errors.isEmpty() ? "" : errors.first();
 }
 
 }  // namespace U2

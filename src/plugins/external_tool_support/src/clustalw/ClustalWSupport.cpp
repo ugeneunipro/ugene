@@ -68,6 +68,13 @@ ClustalWSupport::ClustalWSupport()
     toolKitName = "ClustalW";
 }
 
+QString ClustalWSupport::checkPaths(const QStringList& arguments) const {
+    if (isOsWindows()) {
+        return ExternalToolSupportUtils::checkTemporaryFolderSymbols();
+    }
+    return "";
+}
+
 void ClustalWSupport::sl_runWithExtFileSpecify() {
     // Check that Clustal and temporary folder path defined
     if (path.isEmpty()) {

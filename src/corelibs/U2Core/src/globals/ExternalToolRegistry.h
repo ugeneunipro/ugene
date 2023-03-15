@@ -80,6 +80,7 @@ public:
 
     virtual void extractAdditionalParameters(const QString& output);
     virtual void performAdditionalChecks(const QString& toolPath);
+    virtual QString checkPaths(const QStringList& arguments) const;
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const;

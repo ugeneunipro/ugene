@@ -24,6 +24,7 @@
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2View/CreatePhyTreeWidget.h>
 
@@ -46,6 +47,13 @@ FastTreeSupport::FastTreeSupport()
 
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new FastTreeAdapter(), FastTreeSupport::ET_FAST_TREE_ALGORITHM_NAME_AND_KEY);
+}
+
+QString FastTreeSupport::checkPaths(const QStringList& arguments) const {
+    if (isOsWindows()) {
+        return ExternalToolSupportUtils::checkTemporaryFolderSymbols();
+    }
+    return "";
 }
 
 ////////////////////////////////////////
