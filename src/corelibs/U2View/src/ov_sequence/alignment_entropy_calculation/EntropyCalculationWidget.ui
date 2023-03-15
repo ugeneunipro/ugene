@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>156</height>
+    <height>178</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -97,6 +97,16 @@
        </layout>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="addToProjectCheckBox">
+     <property name="text">
+      <string>Add to project</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>

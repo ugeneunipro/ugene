@@ -19,40 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENTROPY_CALCULATION_WIDGET_H_
-#define _U2_ENTROPY_CALCULATION_WIDGET_H_
+#ifndef _U2_ENTROPY_CALCULATION_AND_ADD_TO_PROJECT_TASK_H
+#define _U2_ENTROPY_CALCULATION_AND_ADD_TO_PROJECT_TASK_H
 
-#include "EntropyCalculationAndAddToProjectTask.h"
-#include "ui_EntropyCalculationWidget.h"
+#include "EntropyCalculationTask.h"
+
+#include <U2Core/Task.h>
 
 namespace U2 {
-class AnnotatedDNAView;
-class SaveDocumentController;
-
-class EntropyCalculationWidget : public QWidget, private Ui_EntropyCalculationWidget {
+class U2VIEW_EXPORT EntropyCalculationAndAddToProjectTask : public Task {
     Q_OBJECT
-
-public:
-    EntropyCalculationWidget(AnnotatedDNAView*);
-
-private slots:
-    void sl_onFileSelectorClicked();
-    void sl_onRunButtonClicked();
-    void sl_onTextChanged();
+public :
+    EntropyCalculationAndAddToProjectTask(AnnotatedDNAView* annotatedDNAView,
+        const QString& alignmentFilePath,
+        const QString& saveToPath,
+        const QString& alignmentAlgorithm,
+        bool addToProject);
+    void prepare();
+    void run();
+    QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
-    void initLayout();
-    void initSaveController();
-    void connectSlots();
+    EntropyCalculationTask* entropyCalculationTask = nullptr;
 
-    AnnotatedDNAView* annotatedDnaView;
-    SaveDocumentController* saveController;
-
-    static const QString MUSCLE;
-    static const QString MAFFT;
-    static const QString UGENE;
+    AnnotatedDNAView* annotatedDNAView;
+    const QString alignmentFilePath;
+    const QString saveToPath;
+    const QString alignmentAlgorithm;
+    const bool addToProject;
 };
 
 }  // namespace U2
 
-#endif // _U2_ENTROPY_CALCULATION_WIDGET_H_
+#endif  // _U2_ENTROPY_CALCULATION_AND_ADD_TO_PROJECT_TASK_H
+

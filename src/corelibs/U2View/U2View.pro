@@ -193,6 +193,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/SearchQualifierDialog.h \
            src/ov_sequence/SequenceObjectContext.h \
            src/ov_sequence/WindowStepSelectorWidget.h \
+           src/ov_sequence/alignment_entropy_calculation/EntropyCalculationAndAddToProjectTask.h \
            src/ov_sequence/alignment_entropy_calculation/EntropyCalculationTask.h \
            src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidget.h \
            src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidgetFactory.h \
@@ -477,6 +478,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/SearchQualifierDialog.cpp \
            src/ov_sequence/SequenceObjectContext.cpp \
            src/ov_sequence/WindowStepSelectorWidget.cpp \
+           src/ov_sequence/alignment_entropy_calculation/EntropyCalculationAndAddToProjectTask.cpp \
            src/ov_sequence/alignment_entropy_calculation/EntropyCalculationTask.cpp \
            src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidget.cpp \
            src/ov_sequence/alignment_entropy_calculation/EntropyCalculationWidgetFactory.cpp \

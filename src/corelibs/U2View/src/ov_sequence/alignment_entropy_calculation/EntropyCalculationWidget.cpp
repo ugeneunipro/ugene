@@ -93,7 +93,8 @@ void EntropyCalculationWidget::sl_onFileSelectorClicked() {
 }
 
 void EntropyCalculationWidget::sl_onRunButtonClicked() {
-    auto loadTask = new EntropyCalculationTask(annotatedDnaView, alignmentLineEdit->text(), saveToLineEdit->text(), algorithmComboBox->currentText());
+    auto loadTask = new EntropyCalculationAndAddToProjectTask(annotatedDnaView, alignmentLineEdit->text(), saveToLineEdit->text(), 
+        algorithmComboBox->currentText(), addToProjectCheckBox->isChecked());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 
