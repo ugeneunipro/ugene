@@ -192,11 +192,11 @@ void GenomeAlignerIndexTask::reformatSequence() {
     while (seqReader.hasNext()) {
         objCount++;
         const DNASequence* seq = seqReader.getNextSequenceObject();
-        if (nullptr == seq) {
+        if (seq == nullptr) {
             setError("Reference object type must be a sequence, but not a multiple alignment");
             return;
         }
-        if (nullptr == seq->alphabet) {
+        if (seq->alphabet == nullptr) {
             setError("Cannot define an alphabet for the reference sequence");
             return;
         }

@@ -74,7 +74,7 @@ public:
     U2AssemblyCoverageImportInfo coverageInfo;
 
     virtual void onReadImported() {
-        if (nullptr != parentInfo) {
+        if (parentInfo != nullptr) {
             parentInfo->onReadImported();
         }
     }

@@ -377,7 +377,7 @@ void GTest_RemoveColumnsOfGaps::init(XMLTestFormat* /* tf */, const QDomElement&
 
 void GTest_RemoveColumnsOfGaps::prepare() {
     Document* doc = getContext<Document>(this, inputDocCtxName);
-    if (nullptr == doc) {
+    if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(inputDocCtxName));
         return;
     }
@@ -389,14 +389,14 @@ void GTest_RemoveColumnsOfGaps::prepare() {
     }
 
     GObject* obj = list.first();
-    if (nullptr == obj) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     assert(nullptr != obj);
 
     auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if (nullptr == maObj) {
+    if (maObj == nullptr) {
         stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
         return;
     }

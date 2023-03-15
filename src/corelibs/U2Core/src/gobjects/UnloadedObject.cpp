@@ -53,7 +53,7 @@ void UnloadedObject::setLoadedObjectType(const GObjectType& lot) {
 }
 
 UnloadedObjectInfo::UnloadedObjectInfo(GObject* obj) {
-    CHECK(nullptr != obj, );
+    CHECK(obj != nullptr, );
 
     name = obj->getGObjectName();
     hints = obj->getGHintsMap();

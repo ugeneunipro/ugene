@@ -291,7 +291,7 @@ void WorkflowPaletteElements::setContent(ActorPrototypeRegistry* reg) {
                 !NameFilterLayout::filterMatched(nameFilter, it.key().getDisplayName())) {
                 continue;
             }
-            if (nullptr == category) {
+            if (category == nullptr) {
                 category = new QTreeWidgetItem(this);
                 category->setText(0, it.key().getDisplayName());
                 category->setData(0, Qt::UserRole, it.key().getId());

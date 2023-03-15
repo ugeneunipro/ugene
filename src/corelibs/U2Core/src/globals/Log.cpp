@@ -57,7 +57,7 @@ QStringList LogServer::getCategories() const {
 void LogServer::addListener(LogListener* listner) {
     QMutexLocker l(&listenerMutex);
 
-    SAFE_POINT(nullptr != listner, "Internal error during adding a log listner: NULL listner!", );
+    SAFE_POINT(listner != nullptr, "Internal error during adding a log listner: NULL listner!", );
     SAFE_POINT(!listeners.contains(listner),
                "Internal error during adding a log listner: the listener is already added!", );
     listeners.append(listner);

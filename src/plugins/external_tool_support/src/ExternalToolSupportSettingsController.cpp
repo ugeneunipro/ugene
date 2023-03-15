@@ -282,7 +282,7 @@ void ExternalToolSupportSettingsPageWidget::sl_externalToolIsAboutToBeRemoved(co
     QTreeWidgetItem* item = externalToolsItems.value(id, nullptr);
     if (nullptr != item) {
         QTreeWidgetItem* parentItem = item->parent();
-        if (nullptr == parentItem) {
+        if (parentItem == nullptr) {
             parentItem = item->treeWidget()->invisibleRootItem();
         }
         parentItem->takeChild(parentItem->indexOfChild(item));

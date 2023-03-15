@@ -402,7 +402,7 @@ GObject* Document::findGObjectByNameInDb(const QString& name) const {
     SAFE_POINT_OP(os, nullptr);
 
     U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(nullptr != oDbi, "Invalid database connection", nullptr);
+    SAFE_POINT(oDbi != nullptr, "Invalid database connection", nullptr);
 
     QScopedPointer<U2DbiIterator<U2DataId>> iter(oDbi->getObjectsByVisualName(name, U2Type::Unknown, os));
     SAFE_POINT_OP(os, nullptr);
@@ -410,7 +410,7 @@ GObject* Document::findGObjectByNameInDb(const QString& name) const {
     while (iter->hasNext()) {
         const U2DataId objId = iter->next();
         GObject* obj = getObjectById(objId);
-        if (nullptr != obj) {
+        if (obj != nullptr) {
             return obj;
         }
     }
@@ -475,13 +475,13 @@ class DocumentChildEventsHelper {
 public:
     DocumentChildEventsHelper(Document* doc)
         : doc(doc) {
-        if (nullptr != doc) {
+        if (doc != nullptr) {
             doc->d_ptr->receiveChildEvents = false;
         }
     }
 
     ~DocumentChildEventsHelper() {
-        if (nullptr != doc) {
+        if (doc != nullptr) {
             doc->d_ptr->receiveChildEvents = true;
         }
     }

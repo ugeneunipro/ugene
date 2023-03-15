@@ -263,7 +263,7 @@ QList<SharedAnnotationData> U1AnnotationUtils::finalizeUnfinishedRegion(bool isU
 void U1AnnotationUtils::addAnnotations(QList<GObject*>& objects, const QList<SharedAnnotationData>& annList, const GObjectReference& sequenceRef, AnnotationTableObject* annotationsObject, const QVariantMap& hints) {
     U2OpStatusImpl os;
     if (!annList.isEmpty()) {
-        if (nullptr == annotationsObject) {
+        if (annotationsObject == nullptr) {
             U2DbiRef dbiRef;
             if (hints.contains(DocumentFormat::DBI_REF_HINT)) {
                 dbiRef = hints.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
@@ -289,7 +289,7 @@ void U1AnnotationUtils::addAnnotations(QList<GObject*>& objects, const QList<Sha
 QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceObject* so,
                                                               const QList<GObject*>& anns) {
     QList<GObject*> aos;
-    if (nullptr != so->getDocument()) {
+    if (so->getDocument() != nullptr) {
         aos = GObjectUtils::findObjectsRelatedToObjectByRole(so, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, anns, UOF_LoadedOnly);
     } else {
         aos = anns;

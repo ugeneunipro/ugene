@@ -29,7 +29,7 @@ const QString SArrayIndexSerializer::SARRAY_HEADER("#UGENE suffix array index\n"
 const QString SArrayIndexSerializer::SARRAY_PARAMETERS("#file \"%1\", sequence's length = %2, w = %3, gap offset = %4\n");
 
 void SArrayIndexSerializer::serialize(const SArrayIndex* index, const QString& indexFileName, const QString& refFileName) {
-    assert(nullptr != index);
+    assert(index != nullptr);
     QFile file(indexFileName);
     if (indexFileName.isEmpty() || !file.open(QIODevice::WriteOnly)) {
         return;
@@ -57,7 +57,7 @@ void SArrayIndexSerializer::serialize(const SArrayIndex* index, const QString& i
 
     writeArray(file, buff, index->sArray, index->arrLen);
 
-    if (nullptr != index->bitMask) {
+    if (index->bitMask != nullptr) {
         writeArray(file, buff, index->bitMask, index->arrLen);
         writeArray(file, buff, index->l1bitMask, index->L1_SIZE);
     }

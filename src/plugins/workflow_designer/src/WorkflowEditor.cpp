@@ -592,7 +592,7 @@ void SpecialParametersPanel::editActor(Actor* a, const QList<Actor*>& allActors)
         Attribute* attr = a->getParameter(attrId);
         CHECK(nullptr != attr, );
         auto urlAttr = dynamic_cast<URLAttribute*>(attr);
-        if (nullptr == urlAttr) {
+        if (urlAttr == nullptr) {
             continue;
         }
         sets[attrId] = urlAttr->getAttributePureValue().value<QList<Dataset>>();

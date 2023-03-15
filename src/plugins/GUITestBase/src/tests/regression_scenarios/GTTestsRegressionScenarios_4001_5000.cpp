@@ -4636,7 +4636,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     CHECK_SET_ERR(1 == sequenceWidgetsNumber, QString("Expected 1 sequence widget, got %2").arg(sequenceWidgetsNumber));
     GTGlobals::FindOptions findOptions(false);
     auto dotplotWidget = GTWidget::findWidget(os, "dotplot widget", GTUtilsMdi::activeWindow(os), findOptions);
-    CHECK_SET_ERR(nullptr == dotplotWidget, "A dotplot widget unexpectedly found");
+    CHECK_SET_ERR(dotplotWidget == nullptr, "A dotplot widget unexpectedly found");
 
     //    6. Select all documents in project. Press delete.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "Save dot-plot data before closing?"));
@@ -4651,10 +4651,10 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
 
     findOptions.matchPolicy = Qt::MatchContains;
     QWidget* sarsMdi = GTUtilsMdi::findWindow(os, sarsMdiTitle, findOptions);
-    CHECK_SET_ERR(nullptr == sarsMdi, "'sars.gb' Sequence View is not closed");
+    CHECK_SET_ERR(sarsMdi == nullptr, "'sars.gb' Sequence View is not closed");
 
     QWidget* murineMdi = GTUtilsMdi::findWindow(os, murineMdiTitle, findOptions);
-    CHECK_SET_ERR(nullptr == murineMdi, "'murine.gb' Sequence View is not closed");
+    CHECK_SET_ERR(murineMdi == nullptr, "'murine.gb' Sequence View is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4783) {
@@ -4821,7 +4821,7 @@ GUI_TEST_CLASS_DEFINITION(test_4803_1) {
     // bug state : tab is colsed, but tree view is empty, and tree settings on options panel still present.Any change of tree settings causes crash
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Close tab"}));
     GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
-    CHECK_SET_ERR(nullptr == GTWidget::findTabWidget(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
+    CHECK_SET_ERR(GTWidget::findTabWidget(os, "MsaEditorTreeTab", nullptr, {false}) == nullptr, "Msa editor tree tab widget is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_2) {
@@ -4874,7 +4874,7 @@ GUI_TEST_CLASS_DEFINITION(test_4803_3) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Close tab"}));
     GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "MsaEditorTreeTab"), 0, Qt::RightButton);
 
-    CHECK_SET_ERR(nullptr == GTWidget::findTabWidget(os, "MsaEditorTreeTab", nullptr, {false}), "Msa editor tree tab widget is not closed");
+    CHECK_SET_ERR(GTWidget::findTabWidget(os, "MsaEditorTreeTab", nullptr, {false}) == nullptr, "Msa editor tree tab widget is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_4) {

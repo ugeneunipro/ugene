@@ -163,7 +163,7 @@ QList<Annotation*> AnnotationTableObject::getAnnotationsByName(const QString& na
 namespace {
 
 bool annotationIntersectsRange(const Annotation* a, const U2Region& range, bool contains) {
-    SAFE_POINT(nullptr != a, L10N::nullPointerError("annotation"), false);
+    SAFE_POINT(a != nullptr, L10N::nullPointerError("annotation"), false);
     if (!contains) {
         foreach (const U2Region& r, a->getRegions()) {
             if (r.intersects(range)) {

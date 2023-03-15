@@ -568,7 +568,7 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus& os, QTreeView
             CHECK_SET_ERR(object == nullptr || Qt::NoItemFlags == model->flags(index) || acceptableTypes.contains(object->getGObjectType()), "Object has unexpected type");
 
         if (object == nullptr) {
-            checkObjectTypes(os, treeView, acceptableTypes, nullptr == proxyModel ? index : proxyModel->mapFromSource(index));
+            checkObjectTypes(os, treeView, acceptableTypes, proxyModel == nullptr ? index : proxyModel->mapFromSource(index));
             CHECK_OP_BREAK(os);
         }
     }

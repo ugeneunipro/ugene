@@ -158,7 +158,7 @@ void ImportDocumentToDatabaseTask::propagateObjectsRelations(QStringList& errors
             }
 
             GObject* srcRelationTargetObject = document->getObjectById(relation.ref.entityRef.entityId);
-            if (nullptr == srcRelationTargetObject) {
+            if (srcRelationTargetObject == nullptr) {
                 errors << tr("Can't set object relation: target object is not found in the source document (%1)").arg(relation.ref.objName);
                 continue;
             }

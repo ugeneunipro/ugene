@@ -56,10 +56,10 @@ void DbiConnection::open(const U2DbiRef& ref, U2OpStatus& os) {
 namespace {
 U2DbiPool* getDbiPool(U2OpStatus& os) {
     U2DbiRegistry* dbiReg = AppContext::getDbiRegistry();
-    CHECK_EXT(nullptr != dbiReg, os.setError("DBI registry is not initialized"), nullptr);
+    CHECK_EXT(dbiReg != nullptr, os.setError("DBI registry is not initialized"), nullptr);
 
     U2DbiPool* pool = dbiReg->getGlobalDbiPool();
-    CHECK_EXT(nullptr != pool, os.setError("DBI pool is not initialized"), nullptr);
+    CHECK_EXT(pool != nullptr, os.setError("DBI pool is not initialized"), nullptr);
     return pool;
 }
 }  // namespace
