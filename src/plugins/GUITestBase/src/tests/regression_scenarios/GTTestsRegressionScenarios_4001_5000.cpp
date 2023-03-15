@@ -985,8 +985,6 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
         void run(HI::GUITestOpStatus& os) override {
             // Expected: the dialog is modal, the "OK" button is disabled.
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            CHECK_SET_ERR(GTUtilsDialog::buttonBox(os, dialog) != nullptr, "ButtonBox is NULL");
-
             QWidget* okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(okButton != nullptr, "Export button is NULL");
             CHECK_SET_ERR(!okButton->isEnabled(), "Export button is unexpectedly enabled");
@@ -3284,7 +3282,7 @@ GUI_TEST_CLASS_DEFINITION(test_4557) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QString product = GTUtilsSequenceView::getSequenceAsString(os);

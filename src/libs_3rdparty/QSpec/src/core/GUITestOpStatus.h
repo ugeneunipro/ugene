@@ -30,11 +30,12 @@ namespace HI {
 
 class HI_EXPORT GUITestOpStatus {
 public:
-    GUITestOpStatus() {
-    }
-
     virtual void setError(const QString& err) {
-        error = err;
+        if (!error.isEmpty()) {
+            qWarning("Can't override error! Current error: %s, new error: %s", error.toLocal8Bit().constData(), err.toLocal8Bit().constData());
+        } else {
+            error = err;
+        }
         throw this;
     }
 

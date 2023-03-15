@@ -32,19 +32,15 @@
 #include <QDir>
 #include <QGuiApplication>
 #include <QProcess>
-#include <QTreeView>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
-#include <U2Core/Task.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "PosteriorActions.h"
-#include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
-#include "utils/GTUtilsMac.h"
 
 namespace U2 {
 namespace GUITest_posterior_actions {
@@ -77,13 +73,19 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Clear the clipboard
 
     QWidget* popupWidget = QApplication::activePopupWidget();
-    while (popupWidget != nullptr) {
+    for (int i = 0; popupWidget != nullptr; i++) {
+        if (i > 0) {
+            GTGlobals::sleep(100);
+        }
         GTWidget::close(os, popupWidget);
         popupWidget = QApplication::activePopupWidget();
     }
 
     QWidget* modalWidget = QApplication::activeModalWidget();
-    while (modalWidget != nullptr) {
+    for (int i = 0; modalWidget != nullptr; i++) {
+        if (i > 0) {
+            GTGlobals::sleep(100);
+        }
         GTWidget::close(os, modalWidget);
         modalWidget = QApplication::activeModalWidget();
     }

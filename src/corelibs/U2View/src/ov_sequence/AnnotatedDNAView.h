@@ -56,7 +56,7 @@ class ADVObjectHandler;
 class ADVGlobalAction;
 class AutoAnnotationObject;
 class AutoAnnotationsUpdater;
-class OptionsPanel;
+class OptionsPanelController;
 
 class CodonTableView;
 
@@ -74,8 +74,6 @@ public:
     Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) override;
 
     QVariantMap saveState() override;
-
-    OptionsPanel* getOptionsPanel() override;
 
     // view content
     const QList<ADVSequenceObjectContext*>& getSequenceContexts() const {

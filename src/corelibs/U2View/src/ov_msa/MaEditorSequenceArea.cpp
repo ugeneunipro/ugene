@@ -748,9 +748,8 @@ void MaEditorSequenceArea::sl_changeHighlightScheme() {
     QString msaHighlightingId = msaHighlightingFactory.getOPGroupParameters().getGroupId();
 
     CHECK(ui->getEditor(), );
-    CHECK(ui->getEditor()->getOptionsPanel(), );
 
-    if (!factory->isRefFree() && refSeq == -1 && ui->getEditor()->getOptionsPanel()->getActiveGroupId() != msaHighlightingId) {
+    if (!factory->isRefFree() && refSeq == -1 && ui->getEditor()->getOptionsPanelController()->getActiveGroupId() != msaHighlightingId) {
         QMessageBox::warning(ui, tr("No reference sequence selected"), tr("Reference sequence for current highlighting scheme is not selected. Use context menu or Highlighting tab on Options panel to select it"));
     }
 
