@@ -3052,7 +3052,7 @@ GUI_TEST_CLASS_DEFINITION(test_0999_1) {
             //        {Paste sequence here} - AAAAAD
             //        {Custom settings} - checked
             //        {Replace unknown symbols with} - z
-            GTPlainTextEdit::setPlainText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAAAD");
+            GTPlainTextEdit::setText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAAAD");
             GTGroupBox::setChecked(os, "groupBox", dialog);
             GTRadioButton::click(os, GTWidget::findRadioButton(os, "replaceRB", dialog));
             GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), "z");
@@ -3083,7 +3083,7 @@ GUI_TEST_CLASS_DEFINITION(test_0999_2) {
             //        {Custom settings} - checked
             //        {Replace unknown symbols with} - T
             //        {Document Location} - %any valid filepath%
-            GTPlainTextEdit::setPlainText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAZZZZZZAAA");
+            GTPlainTextEdit::setText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAZZZZZZAAA");
             GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, "groupBox", dialog));
             GTRadioButton::click(os, GTWidget::findRadioButton(os, "replaceRB", dialog));
             GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), "T");

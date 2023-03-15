@@ -93,7 +93,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "FastTree");
 
             auto paramsEditor = GTWidget::findPlainTextEdit(os, "extraParametersTextEdit");
-            GTPlainTextEdit::setPlainText(os, paramsEditor, "-gtr");
+            GTPlainTextEdit::setText(os, paramsEditor, "-gtr");
 
             GTCheckBox::setChecked(os, "useFastestCheckBox", dialog);
             GTCheckBox::setChecked(os, "usePseudoCountsCheckBox", dialog);

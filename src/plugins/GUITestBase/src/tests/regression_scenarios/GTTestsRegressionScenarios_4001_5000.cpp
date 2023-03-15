@@ -5736,7 +5736,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
 
     // Expected state: the pattern enter field becomes red.
 
-    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
+    auto editPatterns = GTWidget::findPlainTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 

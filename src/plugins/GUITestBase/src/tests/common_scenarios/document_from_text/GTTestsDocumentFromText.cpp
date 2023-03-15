@@ -1307,7 +1307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
             //    >seq_name3
             //    TTTT
             const QString data = ">seq_name1\n>seq_name2\nCCCC\n>seq_name3\nTTTT";
-            GTPlainTextEdit::setPlainText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), data);
+            GTPlainTextEdit::setText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), data);
 
             GTLineEdit::setText(os, GTWidget::findLineEdit(os, "filepathEdit", dialog), sandBoxDir + "test_0018.fa");
 

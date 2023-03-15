@@ -2643,7 +2643,7 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
             CHECK_SET_ERR(!ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not unchecked by default");
 
             // Set values to widgets, check that text is changed.
-            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-custom c1 -m 1 -bb 2 --custom c2 c3 -alrt 3");
+            GTPlainTextEdit::setText(os, extraParametersTextEdit, "-custom c1 -m 1 -bb 2 --custom c2 c3 -alrt 3");
             GTLineEdit::setText(os, substModelEdit, "LM");
             GTLineEdit::setText(os, ultrafastBootstrapEdit, "1000");
             GTLineEdit::setText(os, alrtEdit, "1001");
@@ -2659,7 +2659,7 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
             CHECK_SET_ERR(!ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not unchecked");
 
             // Set text with parameters and check the widgets are updated
-            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-m TEST -bb 1000 -alrt 1002 -asr");
+            GTPlainTextEdit::setText(os, extraParametersTextEdit, "-m TEST -bb 1000 -alrt 1002 -asr");
             CHECK_SET_ERR(substModelEdit->text() == "TEST", "substModelEdit is not updated");
             CHECK_SET_ERR(ultrafastBootstrapEdit->text() == "1000", "ultrafastBootstrapEdit is not updated");
             CHECK_SET_ERR(alrtEdit->text() == "1002", "alrtEdit is not updated");

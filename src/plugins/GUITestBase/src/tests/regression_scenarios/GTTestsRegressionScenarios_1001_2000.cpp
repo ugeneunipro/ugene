@@ -2674,7 +2674,7 @@ GUI_TEST_CLASS_DEFINITION(test_1259) {
     GTKeyboardDriver::keySequence("H");
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
-    auto textEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto textEdit = GTWidget::findPlainTextEdit(os, "textPattern");
     QString text = textEdit->toPlainText();
     CHECK_SET_ERR(text == ">S\n", "Wrong pattern: " + text);
 }

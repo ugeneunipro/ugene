@@ -31,7 +31,7 @@ namespace HI {
 class HI_EXPORT GTPlainTextEdit {
 public:
     /** Sets new text to the 'textEdit'. */
-    static void setPlainText(GUITestOpStatus& os, QPlainTextEdit* textEdit, const QString& text);
+    static void setText(GUITestOpStatus& os, QPlainTextEdit* textEdit, const QString& text);
 
     /** Clears 'textEdit'. */
     static void clear(GUITestOpStatus& os, QPlainTextEdit* textEdit);

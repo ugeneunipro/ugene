@@ -29,9 +29,9 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTTextEdit"
 
-#define GT_METHOD_NAME ""
+#define GT_METHOD_NAME "setText"
 void GTTextEdit::setText(GUITestOpStatus& os, QTextEdit* textEdit, const QString& text) {
-    GT_CHECK(textEdit != NULL, "plainTextEdit is NULL");
+    GT_CHECK(textEdit != nullptr, "textEdit is NULL");
 
     if (textEdit->toPlainText() == text) {
         return;
@@ -47,8 +47,7 @@ void GTTextEdit::setText(GUITestOpStatus& os, QTextEdit* textEdit, const QString
 
 #define GT_METHOD_NAME "getText"
 QString GTTextEdit::getText(GUITestOpStatus& os, QTextEdit* textEdit) {
-    Q_UNUSED(os);
-    GT_CHECK_RESULT(NULL != textEdit, "Text edit is NULL", "");
+    GT_CHECK_RESULT(textEdit != nullptr, "textEdit is NULL", "");
     return textEdit->toPlainText();
 }
 #undef GT_METHOD_NAME
@@ -72,7 +71,7 @@ void GTTextEdit::clear(GUITestOpStatus& os, QTextEdit* textEdit) {
     GTGlobals::sleep(1000);
 
     QString s = textEdit->toPlainText();
-    GT_CHECK(s.isEmpty() == true, "Can't clear text, textEdit is not empty");
+    GT_CHECK(s.isEmpty(), "Can't clear text, textEdit is not empty");
 }
 #undef GT_METHOD_NAME
 

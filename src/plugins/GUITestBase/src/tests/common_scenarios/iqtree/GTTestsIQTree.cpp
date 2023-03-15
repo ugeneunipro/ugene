@@ -92,7 +92,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             GTComboBox::selectItemByText(os, "algorithmBox", dialog, "IQ-TREE");
 
             auto paramsEditor = GTWidget::findPlainTextEdit(os, "extraParametersTextEdit");
-            GTPlainTextEdit::setPlainText(os, paramsEditor, "-seed\n12345 -m\"ra\"te \"E,I,G,I+G\"");
+            GTPlainTextEdit::setText(os, paramsEditor, "-seed\n12345 -m\"ra\"te \"E,I,G,I+G\"");
 
             // Set output file name.
             GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "GUITest_common_scenarios_iqtree_test_0002.nwk", dialog);

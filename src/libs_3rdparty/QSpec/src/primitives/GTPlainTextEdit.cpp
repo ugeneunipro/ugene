@@ -30,8 +30,8 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTPlainTextEdit"
 
-#define GT_METHOD_NAME "setPlainText"
-void GTPlainTextEdit::setPlainText(GUITestOpStatus& os, QPlainTextEdit* textEdit, const QString& text) {
+#define GT_METHOD_NAME "setText"
+void GTPlainTextEdit::setText(GUITestOpStatus& os, QPlainTextEdit* textEdit, const QString& text) {
     GT_CHECK(textEdit != nullptr, "textEdit is NULL");
     GT_CHECK(!textEdit->isReadOnly(), "textEdit is read-only: " + textEdit->objectName());
     if (textEdit->toPlainText() == text) {
