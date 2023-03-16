@@ -6255,7 +6255,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_3) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     QWidget* wgt = QApplication::focusWidget();
-    auto edit = qobject_cast<QTextEdit*>(wgt);
+    auto edit = qobject_cast<QPlainTextEdit*>(wgt);
     CHECK_SET_ERR(edit != nullptr, "Text edit is not in focus");
 }
 

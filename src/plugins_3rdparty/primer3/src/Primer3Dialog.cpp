@@ -47,34 +47,34 @@
 namespace U2 {
 
 const QMap<task, QString> Primer3Dialog::TASK_ENUM_STRING_MAP = {
-                        {task::generic, "generic"},
-                        {task::pick_sequencing_primers,"pick_sequencing_primers"},
-                        {task::pick_primer_list, "pick_primer_list"},
-                        {task::check_primers, "check_primers"},
-                        {task::pick_cloning_primers, "pick_cloning_primers"},
-                        {task::pick_discriminative_primers, "pick_discriminative_primers"}
-    };
+    {task::generic, "generic"},
+    {task::pick_sequencing_primers, "pick_sequencing_primers"},
+    {task::pick_primer_list, "pick_primer_list"},
+    {task::check_primers, "check_primers"},
+    {task::pick_cloning_primers, "pick_cloning_primers"},
+    {task::pick_discriminative_primers, "pick_discriminative_primers"}};
 
 const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
-                        { "SEQUENCE_PRIMER",
-                          "SEQUENCE_INTERNAL_OLIGO",
-                          "SEQUENCE_PRIMER_REVCOMP",
-                          "SEQUENCE_OVERHANG_LEFT",
-                          "SEQUENCE_OVERHANG_RIGHT",
-                          "SEQUENCE_TARGET",
-                          "SEQUENCE_OVERLAP_JUNCTION_LIST",
-                          "SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST",
-                          "SEQUENCE_EXCLUDED_REGION",
-                          "SEQUENCE_PRIMER_PAIR_OK_REGION_LIST",
-                          "SEQUENCE_INCLUDED_REGION",
-                          "SEQUENCE_INTERNAL_EXCLUDED_REGION",
-                          "SEQUENCE_START_CODON_SEQUENCE",
-                          "PRIMER_MUST_MATCH_FIVE_PRIME",
-                          "PRIMER_MUST_MATCH_THREE_PRIME",
-                          "PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME",
-                          "PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME",
-                          "PRIMER_PRODUCT_SIZE_RANGE",
-    };
+    {
+        "SEQUENCE_PRIMER",
+        "SEQUENCE_INTERNAL_OLIGO",
+        "SEQUENCE_PRIMER_REVCOMP",
+        "SEQUENCE_OVERHANG_LEFT",
+        "SEQUENCE_OVERHANG_RIGHT",
+        "SEQUENCE_TARGET",
+        "SEQUENCE_OVERLAP_JUNCTION_LIST",
+        "SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST",
+        "SEQUENCE_EXCLUDED_REGION",
+        "SEQUENCE_PRIMER_PAIR_OK_REGION_LIST",
+        "SEQUENCE_INCLUDED_REGION",
+        "SEQUENCE_INTERNAL_EXCLUDED_REGION",
+        "SEQUENCE_START_CODON_SEQUENCE",
+        "PRIMER_MUST_MATCH_FIVE_PRIME",
+        "PRIMER_MUST_MATCH_THREE_PRIME",
+        "PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME",
+        "PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME",
+        "PRIMER_PRODUCT_SIZE_RANGE",
+};
 
 const QRegularExpression Primer3Dialog::MUST_MATCH_END_REGEX("^([nagctrywsmkbhdvNAGCTRYWSMKBHDV]){5}$");
 const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^([a-zA-Z]){3}$");
@@ -285,7 +285,7 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
             }
             res << v;
         }
-        
+
         result << res;
     }
     *outputList = result;
@@ -336,7 +336,7 @@ void Primer3Dialog::reset() {
     edit_SEQUENCE_INTERNAL_OLIGO->setText(defaultSettings.getInternalInput());
     edit_SEQUENCE_OVERHANG_LEFT->setText(defaultSettings.getOverhangLeft());
     edit_SEQUENCE_OVERHANG_RIGHT->setText(defaultSettings.getOverhangRight());
-    
+
     {
         QString qualityString;
         bool first = true;
@@ -514,7 +514,7 @@ bool Primer3Dialog::doDataExchange() {
                 QMessageBox::critical(this, windowTitle(), tr("The \"Include region\" should be the only one"));
                 return false;
             } else if (list.size() == 1) {
-                const auto & region = list.first();
+                const auto& region = list.first();
                 settings->setIncludedRegion(region.startPos, region.length);
             }
         } else {
@@ -636,26 +636,26 @@ bool Primer3Dialog::doDataExchange() {
 
     settings->setTaskByName(edit_PRIMER_TASK->currentText());
     switch (settings->getTask()) {
-    case pick_discriminative_primers:
-        if (settings->getSeqArgs()->tar2.count != 1) {
-            QMessageBox::critical(this, windowTitle(), tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
+        case pick_discriminative_primers:
+            if (settings->getSeqArgs()->tar2.count != 1) {
+                QMessageBox::critical(this, windowTitle(), tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
+                return false;
+            }
+        case pick_cloning_primers:
+        case generic:
+        case pick_sequencing_primers:
+        case pick_primer_list:
+        case check_primers:
+            if (!(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() ||
+                  checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
+                  checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked())) {
+                QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be enabled."));
+                return false;
+            }
+            break;
+        default:
+            showInvalidInputMessage(edit_PRIMER_TASK, tr("Primer3 task"));
             return false;
-        }
-    case pick_cloning_primers:
-    case generic:
-    case pick_sequencing_primers:
-    case pick_primer_list:
-    case check_primers:
-        if (!(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() ||
-            checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
-            checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked())) {
-            QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be enabled."));
-            return false;
-        }
-        break;
-    default:
-        showInvalidInputMessage(edit_PRIMER_TASK, tr("Primer3 task"));
-        return false;
     }
 
     {
@@ -690,10 +690,9 @@ bool Primer3Dialog::doDataExchange() {
                 QMessageBox::critical(this, windowTitle(), tr("The priming sequence is too long, please, decrease the region"));
                 return false;
             }
-            
+
             const auto& includedRegion = settings->getIncludedRegion();
-            int fbs = settings->getFirstBaseIndex();
-            int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+            int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos : 0;
             if (includedRegionOffset < 0) {
                 QMessageBox::critical(this, windowTitle(), tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0"));
                 return false;
@@ -701,8 +700,10 @@ bool Primer3Dialog::doDataExchange() {
 
             if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
                 QMessageBox::critical(this, windowTitle(), tr("The priming sequence is out of range.\n"
-                                                              "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
-                                                              "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings->getFirstBaseIndex()));
+                                                              "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\""
+                                                              "or mark the sequence as circular")
+                                                               .arg(sequenceRangeRegion.endPos())
+                                                               .arg(context->getSequenceLength()));
                 return false;
             }
 
@@ -789,12 +790,12 @@ void Primer3Dialog::sl_saveSettings() {
     if (!qualityText.isEmpty()) {
         stream << "SEQUENCE_QUALITY=" << qualityText << endl;
     }
-    
+
     stream << "PRIMER_TASK=" << edit_PRIMER_TASK->currentText() << endl;
 
     stream << "PRIMER_TM_FORMULA=" << combobox_PRIMER_TM_FORMULA->currentIndex() << endl;
     stream << "PRIMER_SALT_CORRECTIONS=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << endl;
-    
+
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
     for (const auto& lib : qAsConst(repeatLibraries)) {
@@ -834,7 +835,7 @@ void Primer3Dialog::sl_loadSettings() {
     bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);
     QStringList changedLineEdits;
-    while(!stream.atEnd()) {
+    while (!stream.atEnd()) {
         auto line = stream.readLine();
         auto par = line.split('=');
         CHECK_CONTINUE(!(primerMinThreePrimeIsUsed && (par.first() == "PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE" || par.first() == "PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE")));
@@ -947,7 +948,7 @@ void Primer3Dialog::sl_loadSettings() {
             }
             if (!found) {
                 algoLog.error(tr("PRIMER_MISPRIMING_LIBRARY value should points to the file from the \"%1\" directory")
-                    .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
+                                  .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
             }
         } else if (par.first() == "PRIMER_INTERNAL_MISHYB_LIBRARY") {
             bool found = false;
@@ -960,11 +961,12 @@ void Primer3Dialog::sl_loadSettings() {
             }
             if (!found) {
                 algoLog.error(tr("PRIMER_INTERNAL_MISHYB_LIBRARY value should points to the file from the \"%1\" directory")
-                    .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
+                                  .arg(QFileInfo(repeatLibraries.last().second).absoluteDir().absoluteFilePath("")));
             }
         } else if (par.first() == "PRIMER_MIN_THREE_PRIME_DISTANCE") {
             auto res = QMessageBox::question(nullptr, line, tr("PRIMER_MIN_THREE_PRIME_DISTANCE is unused in the UGENE GUI interface. "
-                "We may either skip it or set PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE and PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE to %1. Do you want to set?").arg(par.last()));
+                                                               "We may either skip it or set PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE and PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE to %1. Do you want to set?")
+                                                                .arg(par.last()));
             if (res == QMessageBox::StandardButton::Yes) {
                 bool ok = false;
                 int v = par.last().toInt(&ok);

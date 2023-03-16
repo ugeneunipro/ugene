@@ -38,7 +38,6 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTableView.h>
-#include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -1551,7 +1550,7 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
                   QString("Illegal second result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Enter illegal 'M' character: check that there is a warning and no results in the list.
-    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto patternEdit = GTWidget::findPlainTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
     GTKeyboardDriver::keyClick('M');

@@ -2591,7 +2591,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
     // 3. Input a pattern that contains a character of the extended DNA alphabet, e.g. "ACWT".
 
     QWidget* patternInputLine = QApplication::focusWidget();
-    CHECK_SET_ERR(nullptr != patternInputLine && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
+    CHECK_SET_ERR(patternInputLine != nullptr && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
 
     GTKeyboardDriver::keySequence("ACWT");
 
@@ -2599,7 +2599,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
 
     // 5. Expected/current result: the search field background is red.
-    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
+    auto editPatterns = GTWidget::findPlainTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
@@ -5051,7 +5051,7 @@ GUI_TEST_CLASS_DEFINITION(test_6749_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result; red background and warning "Input value contains characters that do not match the active alphabet!"
-    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
+    auto editPatterns = GTWidget::findPlainTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
