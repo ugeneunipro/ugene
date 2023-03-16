@@ -4272,7 +4272,7 @@ GUI_TEST_CLASS_DEFINITION(test_7830) {
     // Expected: legend exists, and, in general, the generated report contains some expected part from "_common_data/regression/7830/test.html"
     auto generated = GTFile::readAll(os, sandBoxDir + "test_7830.html");
     auto expected = GTFile::readAll(os, testDir + "_common_data/regression/7830/test.html");
-    CHECK_SET_ERR(generated.contains(expected), "...");
+    CHECK_SET_ERR(generated.contains(expected), "Distance matfix report does not contain expected text");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7827) {
