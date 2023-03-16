@@ -4263,7 +4263,7 @@ GUI_TEST_CLASS_DEFINITION(test_7842) {
     // 4. Try select both sequences: it should not be possible because ProjectTreeItemSelector will be instantiated with 'allowMultipleSelection=false'.
     // Expected: only one sequence could be selected, only one "Create Fragment" dialog has appeared, only one fragment added
 
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
