@@ -95,7 +95,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "api/GTSequenceReadingModeDialogUtils.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -4261,19 +4260,19 @@ GUI_TEST_CLASS_DEFINITION(test_7842) {
     // 1. Open "GenBank/murine.gb" and "GenBank/sars.gb"
     // 2. Click right button->Cloning->Construct molecule...
     // 3. Click "From project..."
-    // 4. Choose both sequences
+    // 4. Try select both sequences: it should not be possible because ProjectTreeItemSelector will be instantiated with 'allowMultipleSelection=false'.
     // Expected: only one sequence could be selected, only one "Create Fragment" dialog has appeared, only one fragment added
 
-    GTUtilsDialog::waitForDialog(os, new GTSequenceReadingModeDialogUtils(os));
-    GTFileDialog::openFileList(os, dataDir + "samples/GenBank", { "murine.gb", "sars.gb" });
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
-            GTUtilsDialog::waitForDialog(os, new CreateFragmentDialogFiller(os));
-            GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, { { "sars.gb", { "NC_004718" } }, { "murine.gb", { "NC_001363" } } } ));
+            GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, {{"sars.gb", {"NC_004718"}}, {"murine.gb", {"NC_001363"}}}));
+            GTUtilsDialog::add(os, new CreateFragmentDialogFiller(os));
             GTWidget::click(os, GTWidget::findWidget(os, "fromProjectButton"));
 
             auto fragmentListWidget = GTWidget::findListWidget(os, "fragmentListWidget", dialog);
@@ -4284,8 +4283,7 @@ GUI_TEST_CLASS_DEFINITION(test_7842) {
     };
 
     GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, { "Tools", "Cloning", "Construct molecule..." });
-
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Construct molecule..."});
 }
 
 }  // namespace GUITest_regression_scenarios
