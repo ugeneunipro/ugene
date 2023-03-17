@@ -38,7 +38,7 @@ SelectorActors::SelectorActors() {
 SelectorActors::SelectorActors(ElementSelectorWidget* _widget, const QList<Actor*>& allActors, U2OpStatus& os)
     : widget(_widget) {
     srcActor = WorkflowUtils::actorById(allActors, widget->getActorId());
-    if (nullptr == srcActor) {
+    if (srcActor == nullptr) {
         os.setError(QObject::tr("Unknown actor id: %1").arg(widget->getActorId()));
         return;
     }

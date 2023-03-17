@@ -124,7 +124,7 @@ AppFileStorage::AppFileStorage()
 
 void AppFileStorage::init(U2OpStatus& os) {
     UserAppsSettings* settings = AppContext::getAppSettings()->getUserAppsSettings();
-    CHECK_EXT(nullptr != settings, os.setError("NULL user application settings"), );
+    CHECK_EXT(settings != nullptr, os.setError("NULL user application settings"), );
 
     storageDir = settings->getFileStorageDir();
 
@@ -140,7 +140,7 @@ void AppFileStorage::init(U2OpStatus& os) {
 }
 
 AppFileStorage::~AppFileStorage() {
-    if (nullptr != storage) {
+    if (storage != nullptr) {
         U2OpStatusImpl os;
         storage->shutdown(os);
         if (os.isCoR()) {

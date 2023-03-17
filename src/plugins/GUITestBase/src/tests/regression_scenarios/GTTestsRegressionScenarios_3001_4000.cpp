@@ -2069,17 +2069,17 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
     CHECK_OP_SET_ERR(os, "Failed to open circular view!");
 
     auto circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, {false});
-    CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
+    CHECK_SET_ERR(circularView2 == nullptr, "Unexpected circular view is opened!");
 
     // 3. Press "Toggle circular views" button
 
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
 
     circularView1 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0", nullptr, {false});
-    CHECK_SET_ERR(nullptr == circularView1, "Unexpected circular view is opened!");
+    CHECK_SET_ERR(circularView1 == nullptr, "Unexpected circular view is opened!");
 
     circularView2 = GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_1", nullptr, {false});
-    CHECK_SET_ERR(nullptr == circularView2, "Unexpected circular view is opened!");
+    CHECK_SET_ERR(circularView2 == nullptr, "Unexpected circular view is opened!");
     // 4. Press "Toggle circular views" again
     GTWidget::click(os, GTWidget::findWidget(os, "globalToggleViewAction_widget"));
 
@@ -3777,7 +3777,7 @@ GUI_TEST_CLASS_DEFINITION(test_3749) {
             GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 10));
             GTMouseDriver::click();
             QWidget* contextMenu = QApplication::activePopupWidget();
-            CHECK_SET_ERR(nullptr == contextMenu, "There is an unexpected context menu");
+            CHECK_SET_ERR(contextMenu == nullptr, "There is an unexpected context menu");
         }
     };
 

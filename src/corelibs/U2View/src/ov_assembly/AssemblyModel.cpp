@@ -303,7 +303,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi* dbi, const U2Assembly& assm) {
                     connect(refDoc, SIGNAL(si_loadedStateChanged()), SLOT(sl_referenceDocLoadedStateChanged()));
                 } else {  // no document at project -> create doc, add it to project and load it
                     t = createLoadReferenceAndAddToProjectTask(crossRef);
-                    if (nullptr == t) {
+                    if (t == nullptr) {
                         QString refUrl = crossRef.dataRef.dbiRef.dbiId;
                         QString refName = crossRef.dataRef.entityId;
 
@@ -383,7 +383,7 @@ namespace {
 bool isAssemblyDoc(const Document* doc, const U2Assembly& assembly) {
     CHECK(nullptr != doc, false);
     foreach (const GObject* obj, doc->findGObjectByType(GObjectTypes::ASSEMBLY)) {
-        if (nullptr == obj) {
+        if (obj == nullptr) {
             continue;
         }
         const U2EntityRef& ent = obj->getEntityRef();

@@ -100,7 +100,7 @@ Workflow::ActorPrototype* ScriptWorkerSerializer::string2actor(const QString dat
 
     Workflow::ActorPrototype* proto = Workflow::IncludedProtoFactory::getScriptProto(inputTypes, outputTypes, attrs, newActorName, actorDesc, actorFilePath, isAliasName);
 
-    if (nullptr == proto) {
+    if (proto == nullptr) {
         error = QObject::tr("UGENE external error. Please, try again");
         return nullptr;
     }

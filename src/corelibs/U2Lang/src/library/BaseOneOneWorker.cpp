@@ -55,7 +55,7 @@ Task* BaseOneOneWorker::tick() {
         return tickTask;
     } else if (input->isEnded()) {
         Task* lastTickTask = onInputEnded();
-        if (nullptr == lastTickTask) {
+        if (lastTickTask == nullptr) {
             output->setEnded();
             setDone();
         } else {

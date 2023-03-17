@@ -173,7 +173,7 @@ void addAnnotations(const QList<SharedAnnotationData>& annList, QList<GObject*>&
                 ato = dynamic_cast<AnnotationTableObject*>(ob);
             }
         }
-        if (nullptr == ato) {
+        if (ato == nullptr) {
             QVariantMap objectHints;
             objectHints.insert(DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
             ato = new AnnotationTableObject(atoName, dbiRef, objectHints);
@@ -399,7 +399,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             }
 
             // if annotation joined, don't rewrite it data
-            if (nullptr == existingAnnotation) {
+            if (existingAnnotation == nullptr) {
                 if (newJoined) {
                     joinedAnnotations.insert(id, ad);
                 }
@@ -413,7 +413,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                         ato = dynamic_cast<AnnotationTableObject*>(ob);
                     }
                 }
-                if (nullptr == ato) {
+                if (ato == nullptr) {
                     CHECK_OBJECT_COUNT();
                     QVariantMap objectHints;
                     objectHints.insert(DBI_FOLDER_HINT, hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));

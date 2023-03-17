@@ -122,7 +122,7 @@ QString U2DbiUtils::text(const U2DataId& id) {
 
 QString U2DbiUtils::ref2Url(const U2DbiRef& dbiRef) {
     U2DbiFactory* dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(dbiRef.dbiFactoryId);
-    SAFE_POINT(nullptr != dbiFactory, QString("Invalid database type: %1").arg(dbiRef.dbiFactoryId), "");
+    SAFE_POINT(dbiFactory != nullptr, QString("Invalid database type: %1").arg(dbiRef.dbiFactoryId), "");
     return dbiFactory->id2Url(dbiRef.dbiId).getURLString();
 }
 
@@ -292,7 +292,7 @@ DbiOperationsBlock::DbiOperationsBlock(const U2DbiRef& _dbiRef, U2OpStatus& os)
 }
 
 DbiOperationsBlock::~DbiOperationsBlock() {
-    if (nullptr != connection->dbi) {
+    if (connection->dbi != nullptr) {
         connection->dbi->stopOperationBlock(os);
     }
     delete connection;

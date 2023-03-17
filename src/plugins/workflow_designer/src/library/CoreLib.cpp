@@ -362,7 +362,7 @@ void CoreLib::initUsersWorkers() {
 
         QString error;
         ActorPrototype* proto = ScriptWorkerSerializer::string2actor(content, QString(), error, url);
-        if (nullptr == proto) {
+        if (proto == nullptr) {
             coreLog.error(error);
             return;
         }

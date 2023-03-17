@@ -111,7 +111,7 @@ DataTypePtr WorkflowContext::getOutSlotType(const QString& slotStr) {
     assert(2 == tokens.size());
 
     Actor* proc = procMap.value(tokens[0], nullptr);
-    if (nullptr == proc) {
+    if (proc == nullptr) {
         return DataTypePtr();
     }
 

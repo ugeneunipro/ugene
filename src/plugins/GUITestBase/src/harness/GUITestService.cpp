@@ -163,7 +163,7 @@ void GUITestService::registerAllTestsTaskNoIgnored() {
 }
 
 Task* GUITestService::createTestLauncherTask(int suiteNumber, bool noIgnored) const {
-    SAFE_POINT(nullptr == testLauncher, "", nullptr);
+    SAFE_POINT(testLauncher == nullptr, "", nullptr);
 
     Task* task = new GUITestLauncher(suiteNumber, noIgnored);
     return task;

@@ -325,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_6062) {
 
     QTableWidget* inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
     CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
-    CHECK_SET_ERR(nullptr == inputPortTable2, "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(inputPortTable2 == nullptr, "Table for the second input port unexpectedly found");
 
     innerOs.reset();
 
@@ -352,7 +352,7 @@ GUI_TEST_CLASS_DEFINITION(test_6062) {
 
     inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
     CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
-    CHECK_SET_ERR(nullptr == inputPortTable2, "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(inputPortTable2 == nullptr, "Table for the second input port unexpectedly found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6066) {
@@ -1542,7 +1542,7 @@ GUI_TEST_CLASS_DEFINITION(test_6277) {
     auto table = GTWidget::findTreeWidget(os, "OP_ANNOT_HIGHLIGHT_TREE");
 
     QScrollBar* scrollBar = table->verticalScrollBar();
-    const int scrollBarWidth = nullptr == scrollBar ? 0 : (scrollBar->isVisible() ? scrollBar->width() : 0);
+    const int scrollBarWidth = scrollBar == nullptr ? 0 : (scrollBar->isVisible() ? scrollBar->width() : 0);
 
     // These numbers are defined in the widget stylesheet in AnnotHighlightTree.cpp
     const int MARGIN_LEFT = 5;

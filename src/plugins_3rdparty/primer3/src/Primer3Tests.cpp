@@ -743,8 +743,8 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
 }
 
 bool GTest_Primer3::checkPrimer(const PrimerSingle* primer, const PrimerSingle* expectedPrimer, QString prefix, bool internalOligo) {
-    if (nullptr == primer) {
-        if (nullptr == expectedPrimer) {
+    if (primer == nullptr) {
+        if (expectedPrimer == nullptr) {
             return true;
         } else {
             stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2,%3, but Actual:NULL")
@@ -754,7 +754,7 @@ bool GTest_Primer3::checkPrimer(const PrimerSingle* primer, const PrimerSingle* 
             return false;
         }
     }
-    if (nullptr == expectedPrimer) {
+    if (expectedPrimer == nullptr) {
         stateInfo.setError(GTest::tr("%1 is incorrect. Expected:NULL, but Actual:%2,%3")
                                .arg(prefix)
                                .arg(primer->getStart())

@@ -101,7 +101,7 @@ U2EntityRef ExtractAssemblyCoverageWorker::takeAssembly(U2OpStatus& os) {
 
     const SharedDbiDataHandler dbiId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     const AssemblyObject* obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
-    if (nullptr == obj) {
+    if (obj == nullptr) {
         os.setError(tr("Error with assembly object"));
         return U2EntityRef();
     }

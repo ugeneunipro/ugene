@@ -48,7 +48,7 @@ const QString MARKERS("markers");
 
 void parseOldMarker(Actor* proc, ParsedPairs& pairs) {
     auto markerAttr = dynamic_cast<MarkerAttribute*>(proc->getParameter(Constants::MARKER));
-    if (nullptr == markerAttr) {
+    if (markerAttr == nullptr) {
         throw ReadFailed(QObject::tr("%1 actor has not markers attribute").arg(proc->getId()));
     }
 

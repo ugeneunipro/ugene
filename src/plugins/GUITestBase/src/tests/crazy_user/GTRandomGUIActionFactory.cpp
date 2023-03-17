@@ -55,7 +55,7 @@ GTAbstractGUIAction* GTRandomGUIActionFactory::create(QObject* obj) {
             break;
         }
     }
-    if (nullptr == action) {
+    if (action == nullptr) {
         uiLog.trace("Not found GUIAction");
     }
     uiLog.trace("-----------------------");

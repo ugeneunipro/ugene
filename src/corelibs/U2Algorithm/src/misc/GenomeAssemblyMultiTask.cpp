@@ -79,7 +79,7 @@ QList<Task*> GenomeAssemblyMultiTask::onSubTaskFinished(Task* subTask) {
         } else {
             QString message = tr("Assembly cannot be performed.");
             coreLog.info(message);
-            if (nullptr != AppContext::getMainWindow()) {
+            if (AppContext::getMainWindow() != nullptr) {
                 QMessageBox::information(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), message);
             }
         }

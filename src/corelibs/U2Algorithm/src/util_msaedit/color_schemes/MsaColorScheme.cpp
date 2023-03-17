@@ -235,7 +235,7 @@ void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
     QList<MsaColorSchemeCustomFactory*> factoriesToRemove = customColorers;
     foreach (const ColorSchemeData& scheme, ColorSchemeUtils::getSchemas()) {
         MsaColorSchemeCustomFactory* customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
-        if (nullptr == customSchemeFactory) {
+        if (customSchemeFactory == nullptr) {
             addCustomScheme(scheme);
             schemesListChanged = true;
         } else {

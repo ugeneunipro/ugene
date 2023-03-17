@@ -332,35 +332,30 @@ void ConstructMoleculeDialog::sl_onItemClicked(QTreeWidgetItem* item, int column
 
 void ConstructMoleculeDialog::sl_onAddFromProjectButtonClicked() {
     ProjectTreeControllerModeSettings settings;
+    settings.allowMultipleSelection = false;
     settings.objectTypesToShow.insert(GObjectTypes::SEQUENCE);
     QScopedPointer<U2SequenceObjectConstraints> seqConstraints(new U2SequenceObjectConstraints());
     seqConstraints->alphabetType = DNAAlphabet_NUCL;
     settings.objectConstraints.insert(seqConstraints.data());
-
     QList<GObject*> objects = ProjectTreeItemSelectorDialog::selectObjects(settings, this);
+    CHECK(!objects.isEmpty(), );
+    SAFE_POINT(objects.size() == 1, QString("Incorrect selected objects size, expected: 1, current: %1").arg(objects.size()), );
 
-    if (!objects.isEmpty()) {
-        foreach (GObject* obj, objects) {
-            if (obj->isUnloaded()) {
-                continue;
-            }
-            auto seqObj = qobject_cast<U2SequenceObject*>(obj);
+    auto obj = objects.first();
+    CHECK(!obj->isUnloaded(), );
 
-            if (seqObj) {
-                QObjectScopedPointer<CreateFragmentDialog> dlg = new CreateFragmentDialog(seqObj, U2Region(0, seqObj->getSequenceLength()), this);
-                dlg->exec();
-                CHECK(!dlg.isNull(), );
+    auto seqObj = qobject_cast<U2SequenceObject*>(obj);
+    CHECK(seqObj != nullptr, );
 
-                if (dlg->result() == QDialog::Accepted) {
-                    DNAFragment frag = dlg->getFragment();
-                    QString fragItem = QString("%1 (%2) %3").arg(frag.getSequenceName()).arg(frag.getSequenceDocName()).arg(frag.getName());
-                    fragments.append(frag);
-                    fragmentListWidget->addItem(fragItem);
-                    break;
-                }
-            }
-        }
-    }
+    QObjectScopedPointer<CreateFragmentDialog> dlg = new CreateFragmentDialog(seqObj, U2Region(0, seqObj->getSequenceLength()), this);
+    dlg->exec();
+    CHECK(!dlg.isNull(), );
+    CHECK(dlg->result() == QDialog::Accepted, );
+
+    DNAFragment frag = dlg->getFragment();
+    QString fragItem = QString("%1 (%2) %3").arg(frag.getSequenceName()).arg(frag.getSequenceDocName()).arg(frag.getName());
+    fragments.append(frag);
+    fragmentListWidget->addItem(fragItem);
 }
 
 }  // namespace U2

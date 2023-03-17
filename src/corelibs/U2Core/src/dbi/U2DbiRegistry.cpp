@@ -153,8 +153,8 @@ U2DbiRef U2DbiRegistry::getSessionTmpDbiRef(U2OpStatus& os) {
 QString U2DbiRegistry::shutdownSessionDbi(U2OpStatus& os) {
     QMutexLocker l(&lock);
     CHECK_EXT(sessionDbiInitDone, os.setError("Session dbi is not initialized"), "");
-    CHECK_EXT(nullptr != sessionDbiConnection, os.setError("No session dbi connection"), "");
-    CHECK_EXT(nullptr != sessionDbiConnection->dbi, os.setError("No opened dbi"), "");
+    CHECK_EXT(sessionDbiConnection != nullptr, os.setError("No session dbi connection"), "");
+    CHECK_EXT(sessionDbiConnection->dbi != nullptr, os.setError("No opened dbi"), "");
 
     QString url = sessionDbiConnection->dbi->getDbiRef().dbiId;
     delete sessionDbiConnection;
@@ -179,7 +179,7 @@ QString createNewDatabase(const QString& alias, U2OpStatus& os) {
 
 QString getDatabaseFromCMDLine(U2OpStatus& os) {
     CMDLineRegistry* cmdlineReg = AppContext::getCMDLineRegistry();
-    SAFE_POINT_EXT(nullptr != cmdlineReg, os.setError("NULL cmdline registry"), "");
+    SAFE_POINT_EXT(cmdlineReg != nullptr, os.setError("NULL cmdline registry"), "");
     if (!cmdlineReg->hasParameter(CMDLineCoreOptions::SESSION_DB)) {
         os.setError("The session database path is not supplied through the cmd line argument");
         return "";
@@ -197,7 +197,7 @@ bool useDatabaseFromCMDLine(const QString& alias) {
     }
 
     CMDLineRegistry* cmdlineReg = AppContext::getCMDLineRegistry();
-    SAFE_POINT(nullptr != cmdlineReg, "NULL cmdline registry", false);
+    SAFE_POINT(cmdlineReg != nullptr, "NULL cmdline registry", false);
     if (!cmdlineReg->hasParameter(CMDLineCoreOptions::SESSION_DB)) {
         return false;
     }
@@ -277,7 +277,7 @@ U2DbiPool::~U2DbiPool() {
 
 U2Dbi* U2DbiPool::createDbi(const U2DbiRef& ref, bool create, U2OpStatus& os, const QHash<QString, QString>& properties) {
     U2DbiFactory* dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(ref.dbiFactoryId);
-    CHECK_EXT(nullptr != dbiFactory, os.setError(tr("Invalid database type: %1").arg(ref.dbiFactoryId)), nullptr);
+    CHECK_EXT(dbiFactory != nullptr, os.setError(tr("Invalid database type: %1").arg(ref.dbiFactoryId)), nullptr);
     U2Dbi* result = dbiFactory->createDbi();
 
     const QString url = dbiFactory->id2Url(ref.dbiId).getURLString();
@@ -290,7 +290,7 @@ U2Dbi* U2DbiPool::createDbi(const U2DbiRef& ref, bool create, U2OpStatus& os, co
 }
 
 void U2DbiPool::deallocateDbi(U2Dbi* dbi, U2OpStatus& os) {
-    SAFE_POINT(nullptr != dbi, "Invalid DBI reference detected!", );
+    SAFE_POINT(dbi != nullptr, "Invalid DBI reference detected!", );
     dbi->shutdown(os);
     delete dbi;
     SAFE_POINT_OP(os, );
@@ -324,7 +324,7 @@ U2Dbi* U2DbiPool::openDbi(const U2DbiRef& ref, bool createDatabase, U2OpStatus& 
             dbi = createDbi(ref, createDatabase, os, properties);
             CHECK_OP(os, nullptr);
         }
-        SAFE_POINT_EXT(nullptr != dbi, os.setError("Invalid DBI detected"), nullptr);
+        SAFE_POINT_EXT(dbi != nullptr, os.setError("Invalid DBI detected"), nullptr);
         dbiById[id] = dbi;
         dbiCountersById[id] = 1;
     }
@@ -403,7 +403,7 @@ void U2DbiPool::sl_checkDbiPoolExpiration() {
 
     // collect DBI references from all used documents
     QList<U2DbiRef> dbiRefsInUse;
-    if (nullptr != proj) {
+    if (proj != nullptr) {
         foreach (Document* doc, proj->getDocuments()) {
             const U2DbiRef ref = doc->getDbiRef();
             if (!dbiRefsInUse.contains(ref)) {
@@ -485,7 +485,7 @@ const QString DBI_ID_DELIMETER = "|";
 
 QString getDbiUrlByRef(const U2DbiRef& ref, U2OpStatus& os) {
     U2DbiFactory* dbiFactory = AppContext::getDbiRegistry()->getDbiFactoryById(ref.dbiFactoryId);
-    SAFE_POINT_EXT(nullptr != dbiFactory, os.setError(QString("Invalid database type: %1").arg(ref.dbiFactoryId)), QString());
+    SAFE_POINT_EXT(dbiFactory != nullptr, os.setError(QString("Invalid database type: %1").arg(ref.dbiFactoryId)), QString());
     return dbiFactory->id2Url(ref.dbiId).getURLString();
 }
 

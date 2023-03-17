@@ -192,9 +192,9 @@ void PrimerSingle::setSelfEndStruct(const QString& selfEndStruct) {
 
 // PrimerPair
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
-    : leftPrimer((nullptr == primerPair.left) ? nullptr : new PrimerSingle(*primerPair.left, oligo_type::OT_LEFT, offset)),
-      rightPrimer((nullptr == primerPair.right) ? nullptr : new PrimerSingle(*primerPair.right, oligo_type::OT_RIGHT, offset)),
-      internalOligo((nullptr == primerPair.intl) ? nullptr : new PrimerSingle(*primerPair.intl, oligo_type::OT_INTL, offset)),
+    : leftPrimer((primerPair.left == nullptr) ? nullptr : new PrimerSingle(*primerPair.left, oligo_type::OT_LEFT, offset)),
+      rightPrimer((primerPair.right == nullptr) ? nullptr : new PrimerSingle(*primerPair.right, oligo_type::OT_RIGHT, offset)),
+      internalOligo((primerPair.intl == nullptr) ? nullptr : new PrimerSingle(*primerPair.intl, oligo_type::OT_INTL, offset)),
       complAny(primerPair.compl_any),
       complEnd(primerPair.compl_end),
       productSize(primerPair.product_size),
@@ -271,15 +271,15 @@ double PrimerPair::getProductTm() const {
 }
 
 void PrimerPair::setLeftPrimer(PrimerSingle* leftPrimer) {
-    this->leftPrimer.reset((nullptr == leftPrimer) ? nullptr : new PrimerSingle(*leftPrimer));
+    this->leftPrimer.reset((leftPrimer == nullptr) ? nullptr : new PrimerSingle(*leftPrimer));
 }
 
 void PrimerPair::setRightPrimer(PrimerSingle* rightPrimer) {
-    this->rightPrimer.reset((nullptr == rightPrimer) ? nullptr : new PrimerSingle(*rightPrimer));
+    this->rightPrimer.reset((rightPrimer == nullptr) ? nullptr : new PrimerSingle(*rightPrimer));
 }
 
 void PrimerPair::setInternalOligo(PrimerSingle* internalOligo) {
-    this->internalOligo.reset((nullptr == internalOligo) ? nullptr : new PrimerSingle(*internalOligo));
+    this->internalOligo.reset((internalOligo == nullptr) ? nullptr : new PrimerSingle(*internalOligo));
 }
 
 void PrimerPair::setComplAny(double newComplAny) {

@@ -63,7 +63,7 @@ MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentDataType& _t
     MaStateCheck check(this);
     Q_UNUSED(check);
 
-    SAFE_POINT(nullptr == alphabet || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );  // TODO: check the condition, it is strange
+    SAFE_POINT(alphabet == nullptr || !name.isEmpty(), "Incorrect parameters in MultipleAlignmentData ctor", );  // TODO: check the condition, it is strange
 
     setName(name);
     for (int i = 0, n = rows.size(); i < n; i++) {

@@ -86,6 +86,7 @@
 #include "GTUtilsOptionsPanelPhyTree.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
+#include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsQueryDesigner.h"
@@ -116,11 +117,14 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/CreateFragmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -4251,6 +4255,57 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
     qint64 size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7827) {
+    // 1. Open samples/PDB/1CF7.PDB
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open Primer Library
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    // 3. Click "Import primer(s)"
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, {}, { { "1CF7.PDB", { "1CF7 chain A sequence", "1CF7 chain B sequence", "1CF7 chain C sequence", "1CF7 chain D sequence" } } }));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
+
+    // Expected: two sequences imported as primers, two declined because of alphabet
+    GTUtilsNotifications::checkNotificationReportText(os, { "A sequence: <span style=\" color:#a6392e;\">error",
+                                                           "B sequence: <span style=\" color:#a6392e;\">error",
+                                                           "C sequence: <span style=\" color:#008000;\">success",
+                                                           "D sequence: <span style=\" color:#008000;\">success" });
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7842) {
+    // 1. Open "GenBank/murine.gb" and "GenBank/sars.gb"
+    // 2. Click right button->Cloning->Construct molecule...
+    // 3. Click "From project..."
+    // 4. Try select both sequences: it should not be possible because ProjectTreeItemSelector will be instantiated with 'allowMultipleSelection=false'.
+    // Expected: only one sequence could be selected, only one "Create Fragment" dialog has appeared, only one fragment added
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, {{"sars.gb", {"NC_004718"}}, {"murine.gb", {"NC_001363"}}}));
+            GTUtilsDialog::add(os, new CreateFragmentDialogFiller(os));
+            GTWidget::click(os, GTWidget::findWidget(os, "fromProjectButton"));
+
+            auto fragmentListWidget = GTWidget::findListWidget(os, "fragmentListWidget", dialog);
+            CHECK_SET_ERR(fragmentListWidget->count() == 1, QString("Unexpected fragments size, expected: 1, current: %1").arg(fragmentListWidget->count()));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Construct molecule..."});
 }
 
 }  // namespace GUITest_regression_scenarios

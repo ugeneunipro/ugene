@@ -4938,7 +4938,7 @@ GUI_TEST_CLASS_DEFINITION(test_2923) {
 
     GTKeyboardDriver::keyClick('w', Qt::ControlModifier);
     QWidget* mdi = GTUtilsMdi::activeWindow(os, {false});
-    CHECK_SET_ERR(nullptr == mdi, "Sequence view is not closed");
+    CHECK_SET_ERR(mdi == nullptr, "Sequence view is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2924) {

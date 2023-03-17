@@ -89,7 +89,7 @@ Handle<Value> topologicalSortedGraph(const Arguments& args) {
         return scope.Close(Undefined());
     }
     ScriptContext* scriptContext = NodeApiUtils::getScriptContext();
-    if (nullptr == scriptContext) {
+    if (scriptContext == nullptr) {
         return scope.Close(Undefined());
     }
     QMap<int, QList<Actor*>> topologicalSortedGraph = scriptContext->getTopologicalSortedGraph();
@@ -121,10 +121,10 @@ Handle<Value> tick(const Arguments& args) {
     }
     const String::Utf8Value actorId(args[0]->ToString());
     ScriptContext* scriptContext = NodeApiUtils::getScriptContext();
-    if (nullptr == scriptContext) {
+    if (scriptContext == nullptr) {
         return scope.Close(Undefined());
     }
-    if (nullptr == scriptContext->getActorById(*actorId)) {
+    if (scriptContext->getActorById(*actorId) == nullptr) {
         ThrowException(Exception::TypeError(String::New(ACTOR_NOT_FOUND_MESSAGE)));
         return scope.Close(Undefined());
     }
@@ -138,7 +138,7 @@ Handle<Value> debugStatus(const Arguments& args) {
         return scope.Close(Undefined());
     }
     ScriptContext* scriptContext = NodeApiUtils::getScriptContext();
-    if (nullptr == scriptContext) {
+    if (scriptContext == nullptr) {
         return scope.Close(Undefined());
     }
     Handle<Value> wrappedDebugInfo;

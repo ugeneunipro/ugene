@@ -325,10 +325,10 @@ inline bool operator==(const MultipleChromatogramAlignmentRow& ptr1, const Multi
     return *ptr1 == *ptr2;
 }
 inline bool operator==(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRowData* ptr2) {
-    return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
+    return ptr2 == nullptr ? ptr1->isDefault() : (*ptr1 == *ptr2);
 }
 inline bool operator==(const MultipleChromatogramAlignmentRowData* ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
-    return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
+    return ptr1 == nullptr ? ptr2->isDefault() : (*ptr1 == *ptr2);
 }
 inline bool operator!=(const MultipleChromatogramAlignmentRow& ptr1, const MultipleChromatogramAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);

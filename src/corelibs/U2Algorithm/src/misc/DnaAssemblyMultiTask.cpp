@@ -79,7 +79,7 @@ QList<Task*> DnaAssemblyMultiTask::onSubTaskFinished(Task* subTask) {
         } else {
             QString message = tr("The short reads can't be mapped to the reference sequence!");
             coreLog.info(message);
-            if (nullptr != AppContext::getMainWindow()) {
+            if (AppContext::getMainWindow() != nullptr) {
                 QMessageBox::information(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), message);
             }
         }

@@ -189,7 +189,7 @@ void GTest_UHMM3Search::setAndCheckArgs() {
     outputDir = env->getVar("TEMP_DATA_DIR") + "/" + outputDir;
 
     Document* seqDoc = getContext<Document>(this, seqDocCtxName);
-    if (nullptr == seqDoc) {
+    if (seqDoc == nullptr) {
         stateInfo.setError(QString("context %1 not found").arg(seqDocCtxName));
         return;
     }
