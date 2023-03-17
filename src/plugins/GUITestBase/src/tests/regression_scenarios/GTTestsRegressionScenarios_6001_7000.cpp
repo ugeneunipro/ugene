@@ -3644,6 +3644,7 @@ GUI_TEST_CLASS_DEFINITION(test_6649) {
 
     auto annsComboBox = GTWidget::findComboBox(os, "annsComboBox");
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
