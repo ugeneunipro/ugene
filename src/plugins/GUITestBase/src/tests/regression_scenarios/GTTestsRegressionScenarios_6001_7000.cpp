@@ -706,6 +706,7 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
 
     // 5. Press "Extract product"
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
