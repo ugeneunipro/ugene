@@ -254,7 +254,7 @@ static void findInAmino_subst(FindAlgorithmResultsListener* rl,
                               int maxErr,
                               int& stopFlag,
                               int& percentsCompleted) {
-    SAFE_POINT(nullptr != complTT && nullptr != aminoTT && aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(), "Invalid alphabet supplied!", );
+    SAFE_POINT(complTT != nullptr && nullptr != aminoTT && aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(), "Invalid alphabet supplied!", );
 
     int seqLen = QByteArray(seq).size();
     int patternLenInNucl = 3 * patternLen;
@@ -659,7 +659,7 @@ static void find_subst(FindAlgorithmResultsListener* rl,
                        int maxErr,
                        int& stopFlag,
                        int& percentsCompleted) {
-    SAFE_POINT(nullptr == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
+    SAFE_POINT(complTT == nullptr || complTT->isOne2One(), "Invalid translation supplied!", );
 
     if (aminoTT != nullptr) {
         findInAmino_subst(rl, aminoTT, complTT, strand, seq, range, searchIsCircular, pattern, patternLen, maxErr, stopFlag, percentsCompleted);
@@ -671,7 +671,7 @@ static void find_subst(FindAlgorithmResultsListener* rl,
     char* complPattern = nullptr;
     QByteArray tmp;
     if (isComplement(strand)) {
-        SAFE_POINT(nullptr != complTT, "Invalid translation supplied!", );
+        SAFE_POINT(complTT != nullptr, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
         TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
@@ -756,7 +756,7 @@ void FindAlgorithm::find(
     int& stopFlag,
     int& percentsCompleted) {
     Q_UNUSED(seqLen);
-    SAFE_POINT(nullptr == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
+    SAFE_POINT(complTT == nullptr || complTT->isOne2One(), "Invalid translation supplied!", );
     SAFE_POINT(patternLen > maxErr, "Invalid maximum error count supplied!", );
 
     if (range.endPos() > seqLen) {
@@ -803,7 +803,7 @@ void FindAlgorithm::find(
     char* complPattern = nullptr;
     QByteArray tmp;
     if (isComplement(strand)) {
-        SAFE_POINT(nullptr != newComplTT, "Invalid translation supplied!", );
+        SAFE_POINT(newComplTT != nullptr, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
         TextUtils::translate(newComplTT->getOne2OneMapper(), pattern, patternLen, complPattern);

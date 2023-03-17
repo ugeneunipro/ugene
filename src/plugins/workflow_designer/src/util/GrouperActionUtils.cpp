@@ -268,7 +268,7 @@ Sequence2MSAPerformer::Sequence2MSAPerformer(const QString& outSlot, const Group
 bool Sequence2MSAPerformer::applyAction(const QVariant& newData) {
     SharedDbiDataHandler seqId = newData.value<SharedDbiDataHandler>();
     QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-    if (nullptr == seqObj.data()) {
+    if (seqObj.data() == nullptr) {
         return false;
     }
 

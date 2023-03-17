@@ -130,14 +130,14 @@ protected:
 };
 
 class GObjectViewCloseInterface;
-class OptionsPanel;
+class OptionsPanelController;
 class GObjectViewWindow;
 
 class U2GUI_EXPORT GObjectViewController : public QObject {
     friend class GObjectViewWindow;
     Q_OBJECT
 public:
-    GObjectViewController(const GObjectViewFactoryId& factoryId, const QString& viewName, QObject* p = nullptr);
+    GObjectViewController(const GObjectViewFactoryId& factoryId, const QString& viewName, QObject* parent = nullptr);
 
     const GObjectViewFactoryId& getFactoryId() const;
 
@@ -146,9 +146,6 @@ public:
     void setName(const QString& name);
 
     QWidget* getWidget() const;
-
-    /** Returns the options panel object, or 0 if it is not defined */
-    virtual OptionsPanel* getOptionsPanel();
 
     const QList<GObject*>& getObjects() const;
 
@@ -189,6 +186,8 @@ public:
     /** Unregisters an actions provider from the view. */
     void unregisterActionProvider(GObjectViewActionsProvider* actionsProvider);
 
+    OptionsPanelController* getOptionsPanelController() const;
+
 protected:
     /** if 'true' is returned -> view will be closed */
     virtual bool onObjectRemoved(GObject* o);
@@ -198,8 +197,9 @@ protected:
     /** Handles object rename event. Does nothing by default. */
     virtual void onObjectRenamed(GObject* obj, const QString& oldName);
 
-protected:
     virtual void _removeObject(GObject* o);
+
+    /** Creates a new view widget. Called only once. */
     virtual QWidget* createViewWidget(QWidget* parent) = 0;
 
     /**
@@ -250,8 +250,8 @@ protected:
     GObjectViewCloseInterface* closeInterface;
     bool closing;
     QList<GObjectViewObjectHandler*> objectHandlers;
-    OptionsPanel* optionsPanel;
     QList<GObjectViewActionsProvider*> actionsProviders;
+    OptionsPanelController* optionsPanelController = nullptr;
 };
 
 class U2GUI_EXPORT GObjectViewActionsProvider {

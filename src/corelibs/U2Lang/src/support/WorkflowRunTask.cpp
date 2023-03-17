@@ -57,10 +57,10 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
                              TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport),
       rmap(remap), flows(sh.getFlows()) {
     GCOUNTER(cvar, "WorkflowRunTask");
-    if (nullptr == debugInfo) {
+    if (debugInfo == nullptr) {
         debugInfo = new WorkflowDebugStatus;
     }
-    if (nullptr == debugInfo->parent()) {
+    if (debugInfo->parent() == nullptr) {
         debugInfo->setParent(this);
     }
 

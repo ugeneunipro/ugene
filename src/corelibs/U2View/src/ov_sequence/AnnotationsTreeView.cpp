@@ -329,7 +329,7 @@ AVAnnotationItem* AnnotationsTreeView::findAnnotationItem(const AVGroupItem* gro
 
 AVAnnotationItem* AnnotationsTreeView::findAnnotationItem(AnnotationGroup* g, Annotation* a) const {
     AVGroupItem* groupItem = findGroupItem(g);
-    if (nullptr == groupItem) {
+    if (groupItem == nullptr) {
         return nullptr;
     }
     return findAnnotationItem(groupItem, a);
@@ -466,7 +466,7 @@ void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection*, 
     foreach (Annotation* a, removed) {
         AnnotationGroup* g = a->getGroup();
         AVAnnotationItem* item = findAnnotationItem(g, a);
-        if (nullptr == item) {
+        if (item == nullptr) {
             continue;
         }
         if (item->isSelected()) {
@@ -478,7 +478,7 @@ void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection*, 
     foreach (Annotation* a, added) {
         AnnotationGroup* g = a->getGroup();
         AVAnnotationItem* item = findAnnotationItem(g, a);
-        if (nullptr == item) {
+        if (item == nullptr) {
             continue;
         }
         if (!item->isSelected()) {
@@ -724,7 +724,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
 }
 
 void AnnotationsTreeView::sl_onGroupCreated(AnnotationGroup* g) {
-    CHECK(nullptr == findGroupItem(g), );
+    CHECK(findGroupItem(g) == nullptr, );
     AVGroupItem* pg = g->getParentGroup() == nullptr ? nullptr : findGroupItem(g->getParentGroup());
     buildGroupTree(pg, g);
     pg->updateVisual();
@@ -732,7 +732,7 @@ void AnnotationsTreeView::sl_onGroupCreated(AnnotationGroup* g) {
 
 void AnnotationsTreeView::sl_onGroupRemoved(AnnotationGroup* parent, AnnotationGroup* g) {
     AVGroupItem* pg = findGroupItem(parent);
-    if (nullptr == pg) {
+    if (pg == nullptr) {
         return;
     }
 
@@ -994,7 +994,7 @@ void AnnotationsTreeView::sl_pasteFinished(Task* _pasteTask) {
     }
 
     auto pasteTask = qobject_cast<PasteTask*>(_pasteTask);
-    if (nullptr == pasteTask || pasteTask->isCanceled()) {
+    if (pasteTask == nullptr || pasteTask->isCanceled()) {
         return;
     }
     const QList<Document*>& docs = pasteTask->getDocuments();

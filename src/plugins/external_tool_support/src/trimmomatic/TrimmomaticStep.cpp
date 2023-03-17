@@ -42,7 +42,7 @@ const QString& TrimmomaticStepFactory::getId() const {
 }
 
 TrimmomaticStepsRegistry* TrimmomaticStepsRegistry::getInstance() {
-    if (nullptr == instance) {
+    if (instance == nullptr) {
         instance.reset(new TrimmomaticStepsRegistry());
     }
     return instance.data();

@@ -102,7 +102,7 @@ Task* TextReader::tick() {
             return resultTask;
         }
     }
-    if (!urls->hasNext() && (nullptr == io || !io->isOpen())) {
+    if (!urls->hasNext() && (io == nullptr || !io->isOpen())) {
         ch->setEnded();
         setDone();
     }
@@ -279,7 +279,7 @@ static U2SequenceObject* getSeqObj(const QVariantMap& data, WorkflowContext* con
     }
     SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
     U2SequenceObject* seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
-    if (nullptr == seqObj) {
+    if (seqObj == nullptr) {
         os.setError("Fasta writer: NULL sequence object");
     }
     return seqObj;
@@ -664,13 +664,13 @@ void GFFWriter::data2document(Document* doc, const QVariantMap& data, WorkflowCo
                 QList<GObject*> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dna, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, doc->getObjects(), UOF_LoadedOnly);
                 att = relAnns.isEmpty() ? nullptr : qobject_cast<AnnotationTableObject*>(relAnns.first());
             }
-            if (nullptr == att) {
+            if (att == nullptr) {
                 if (annotationName.isEmpty()) {
                     int featuresNum = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE).size();
                     annotationName = QString("unknown features %1").arg(featuresNum);
                 }
                 att = qobject_cast<AnnotationTableObject*>(doc->findGObjectByName(annotationName));
-                if (nullptr == att) {
+                if (att == nullptr) {
                     doc->addObject(att = new AnnotationTableObject(annotationName, context->getDataStorage()->getDbiRef()));
                     if (nullptr != dna) {
                         att->addObjectRelation(dna, ObjectRole_Sequence);
@@ -695,7 +695,7 @@ SeqWriter::SeqWriter(Actor* a, const DocumentFormatId& fid)
 }
 
 void SeqWriter::data2doc(Document* doc, const QVariantMap& data) {
-    if (nullptr == format) {
+    if (format == nullptr) {
         return;
     }
     DocumentFormatId fid = format->getFormatId();

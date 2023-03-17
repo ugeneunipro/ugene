@@ -100,7 +100,7 @@ void ExportObjectUtils::exportAnnotations(const AnnotationTableObject* aObj, con
 }
 
 void ExportObjectUtils::exportObject2Document(GObject* object, const QString& url, bool tracePath) {
-    if (nullptr == object || object->isUnloaded()) {
+    if (object == nullptr || object->isUnloaded()) {
         return;
     }
     QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(object, QApplication::activeWindow(), url);
@@ -153,7 +153,7 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
     U2OpStatusImpl os;
     Document* srcDoc = dialog->getSourceDoc();
     Document* dstDoc = nullptr;
-    if (nullptr == srcDoc) {
+    if (srcDoc == nullptr) {
         dstDoc = df->createNewLoadedDocument(iof, dstUrl, os);
         dstDoc->addObject(dialog->getSourceObject());
     } else {

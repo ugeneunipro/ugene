@@ -138,7 +138,7 @@ void PVRowsManager::removeAnnotation(Annotation* a) {
 
 int PVRowsManager::getAnnotationRowIdx(Annotation* a) const {
     PVRowData* row = rowByAnnotation.value(a, nullptr);
-    if (nullptr == row) {
+    if (row == nullptr) {
         return -1;
     } else {
         return rows.indexOf(row);

@@ -228,7 +228,7 @@ void WorkflowTabView::sl_dashboardsChanged(const QStringList& dashboardIds) {
     foreach (const QString& dashboardId, dashboardsMap.keys()) {
         const DashboardInfo dashboardInfo = dashboardInfoRegistry->getById(dashboardId);
         Dashboard* dashboard = dashboardsMap[dashboardId];
-        if (nullptr == dashboard) {
+        if (dashboard == nullptr) {
             if (dashboardInfo.opened) {
                 // Currently the dashboards that become visible are added to the end
                 appendDashboard(new Dashboard(dashboardInfo.path, this));

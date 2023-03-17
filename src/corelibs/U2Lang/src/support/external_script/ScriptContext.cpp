@@ -33,7 +33,7 @@ ScriptContext::~ScriptContext() {
 }
 
 void ScriptContext::setWorkflowScheduler(ScriptableScheduler* newScheduler) {
-    Q_ASSERT(nullptr == newScheduler || nullptr == scheduler);
+    Q_ASSERT(newScheduler == nullptr || nullptr == scheduler);
     scheduler = newScheduler;
 }
 

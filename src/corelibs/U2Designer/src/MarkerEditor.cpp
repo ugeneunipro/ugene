@@ -52,7 +52,7 @@ QWidget* MarkerEditor::getWidget() {
 }
 
 QWidget* MarkerEditor::createGUI() {
-    if (nullptr == markerModel) {
+    if (markerModel == nullptr) {
         return nullptr;
     }
 
@@ -146,7 +146,7 @@ MarkerGroupListCfgModel::MarkerGroupListCfgModel(QObject* parent, QList<Marker*>
 QVariant MarkerGroupListCfgModel::data(const QModelIndex& index, int role) const {
     if (Qt::DisplayRole == role || Qt::ToolTipRole == role) {
         Marker* m = *(markers.begin() + index.row());
-        if (nullptr == m) {
+        if (m == nullptr) {
             return QVariant();
         }
 

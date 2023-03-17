@@ -61,7 +61,7 @@ bool StreamSequenceReader::hasNext() {
                 errorMessage = taskInfo.getError();
             }
             currentSeq.reset(newSeq);
-            if (nullptr == newSeq) {
+            if (newSeq == nullptr) {
                 ++currentReaderIndex;
             } else {
                 lookupPerformed = true;

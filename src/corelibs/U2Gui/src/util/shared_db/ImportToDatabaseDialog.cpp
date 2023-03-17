@@ -406,7 +406,7 @@ void ImportToDatabaseDialog::addObject(GObject* object, QTreeWidgetItem* parent)
 
     QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList() << objectText << dstFolder);
 
-    if (nullptr == parent) {
+    if (parent == nullptr) {
         treeItem2Object[newItem] = object;
         setObjectTooltip(newItem);
         parent = getHeaderItem(OBJECT_AND_DOCUMENT);

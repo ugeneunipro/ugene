@@ -43,8 +43,8 @@ namespace U2 {
 
 Annotation::Annotation(const U2DataId& featureId, const SharedAnnotationData& data, AnnotationGroup* parentGroup, AnnotationTableObject* parentObject)
     : U2Entity(featureId), parentObject(parentObject), data(data), group(parentGroup) {
-    SAFE_POINT(nullptr != parentGroup, L10N::nullPointerError("Annotation group"), );
-    SAFE_POINT(nullptr != parentObject, L10N::nullPointerError("Annotation table object"), );
+    SAFE_POINT(parentGroup != nullptr, L10N::nullPointerError("Annotation group"), );
+    SAFE_POINT(parentObject != nullptr, L10N::nullPointerError("Annotation table object"), );
     SAFE_POINT(hasValidId(), "Invalid DB reference", );
 }
 
@@ -274,7 +274,7 @@ AnnotationGroup* Annotation::getGroup() const {
 
 void Annotation::setGroup(AnnotationGroup* newGroup) {
     CHECK(newGroup != group, );
-    SAFE_POINT(nullptr != newGroup, L10N::nullPointerError("annotation group"), );
+    SAFE_POINT(newGroup != nullptr, L10N::nullPointerError("annotation group"), );
     SAFE_POINT(parentObject == newGroup->getGObject(), "Illegal object!", );
 
     U2OpStatusImpl os;
@@ -306,12 +306,12 @@ QString Annotation::findFirstQualifierValue(const QString& name) const {
 }
 
 bool Annotation::annotationLessThan(Annotation* first, Annotation* second) {
-    SAFE_POINT(nullptr != first && nullptr != second, "Invalid annotation detected", false);
+    SAFE_POINT(first != nullptr && nullptr != second, "Invalid annotation detected", false);
 
     AnnotationGroup* firstGroup = first->getGroup();
-    SAFE_POINT(nullptr != firstGroup, L10N::nullPointerError("annotation group"), false);
+    SAFE_POINT(firstGroup != nullptr, L10N::nullPointerError("annotation group"), false);
     AnnotationGroup* secondGroup = second->getGroup();
-    SAFE_POINT(nullptr != secondGroup, L10N::nullPointerError("annotation group"), false);
+    SAFE_POINT(secondGroup != nullptr, L10N::nullPointerError("annotation group"), false);
 
     return firstGroup->getName() < secondGroup->getName();
 }

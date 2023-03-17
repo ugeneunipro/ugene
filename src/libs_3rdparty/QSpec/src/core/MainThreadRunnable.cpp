@@ -61,7 +61,7 @@ void MainThreadRunnable::doRequest() {
 }
 
 void MainThreadRunnable::run() {
-    if (Q_UNLIKELY(NULL == scenario)) {
+    if (scenario == nullptr) {
         os.setError("Scenario is NULL");
         return;
     }
@@ -69,7 +69,8 @@ void MainThreadRunnable::run() {
 }
 
 void MainThreadRunnable::runInMainThread(GUITestOpStatus& os, CustomScenario* scenario) {
-    if (Q_UNLIKELY(NULL == scenario)) {
+    CHECK_NO_OS_ERROR();
+    if (scenario == nullptr) {
         os.setError("Custom scenario is NULL");
         return;
     }
@@ -77,8 +78,7 @@ void MainThreadRunnable::runInMainThread(GUITestOpStatus& os, CustomScenario* sc
     mainThreadRunnable.doRequest();
 }
 
-MainThreadRunnableObject::MainThreadRunnableObject()
-    : QObject(NULL) {
+MainThreadRunnableObject::MainThreadRunnableObject() {
 }
 
 void MainThreadRunnableObject::sl_requestAsked(MainThreadRunnable* runnable) {

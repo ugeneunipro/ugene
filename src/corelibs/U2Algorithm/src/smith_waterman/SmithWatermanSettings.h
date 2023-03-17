@@ -114,7 +114,7 @@ struct SmithWatermanSettings {
     static QHash<SWResultView, const char*>& getResultViewNames(const char* newResultName = nullptr, SWResultView key = static_cast<SWResultView>(0)) {
         static QHash<SWResultView, const char*> resultViewNames;
 
-        if (nullptr != newResultName && static_cast<SWResultView>(0) != key) {
+        if (newResultName != nullptr && static_cast<SWResultView>(0) != key) {
             if (!resultViewNames.contains(key)) {
                 resultViewNames[key] = newResultName;
             }

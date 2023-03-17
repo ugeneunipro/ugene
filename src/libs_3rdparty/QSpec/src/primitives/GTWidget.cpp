@@ -100,6 +100,7 @@ void GTWidget::setFocus(GUITestOpStatus& os, QWidget* w) {
 
 #define GT_METHOD_NAME "findWidget"
 QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    CHECK_NO_OS_ERROR(nullptr);
     QPointer<QWidget> parentWidgetPtr(parentWidget);
     QWidget* widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -111,7 +112,7 @@ QWidget* GTWidget::findWidget(GUITestOpStatus& os, const QString& objectName, QW
 #ifdef _DEBUG
         if (matchedWidgets.size() >= 2)
 #endif
-        GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
+            GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
             break;
@@ -244,14 +245,14 @@ QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
 
-QPoint GTWidget::getWidgetVisibleCenter(QWidget *widget) {
+QPoint GTWidget::getWidgetVisibleCenter(QWidget* widget) {
     return widget->mapFromGlobal(getWidgetVisibleCenterGlobal(widget));
 }
 
 QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
     QRect rect = widget->rect();
     QRect gRect(widget->mapToGlobal(rect.topLeft()), rect.size());
-    QWidget *parent = widget->parentWidget();
+    QWidget* parent = widget->parentWidget();
     while (parent) {
         QRect pRect = parent->rect();
         QRect gParentRect(widget->mapToGlobal(pRect.topLeft()), pRect.size());
@@ -308,20 +309,18 @@ void GTWidget::close(GUITestOpStatus& os, QWidget* widget) {
 
     class Scenario : public CustomScenario {
     public:
-        Scenario(QWidget* widget)
-            : widget(widget) {
+        Scenario(QWidget* _widget)
+            : widget(_widget) {
         }
 
-        void run(GUITestOpStatus& os) {
-            CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
+        void run(GUITestOpStatus&) override {
             widget->close();
             GTGlobals::sleep(100);
         }
 
     private:
-        QWidget* widget;
+        QWidget* widget = nullptr;
     };
-
     GTThread::runInMainThread(os, new Scenario(widget));
 }
 #undef GT_METHOD_NAME
@@ -425,7 +424,7 @@ QImage GTWidget::createSubImage(GUITestOpStatus& os, const QImage& image, const 
 #ifdef _DEBUG
     if (!image.rect().contains(rect))
 #endif
-    GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect: " + GTUtilsText::rectToString(rect), QImage());
+        GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect: " + GTUtilsText::rectToString(rect), QImage());
     int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
     return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
 }

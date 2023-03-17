@@ -41,7 +41,7 @@
 namespace U2 {
 
 MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject)
-    : TreeViewer(viewName, phyTreeObject) {
+    : TreeViewer(viewName, phyTreeObject, false) {
 }
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {
@@ -108,10 +108,6 @@ const CreatePhyTreeSettings& MSAEditorTreeViewer::getCreatePhyTreeSettings() con
 
 const QString& MSAEditorTreeViewer::getParentAlignmentName() const {
     return alignmentName;
-}
-
-OptionsPanel* MSAEditorTreeViewer::getOptionsPanel() {
-    return nullptr;
 }
 
 void MSAEditorTreeViewer::setParentAlignmentName(const QString& _alignmentName) {

@@ -248,8 +248,8 @@ void WorkflowDesignerService::serviceStateChangedCallback(ServiceState, bool ena
         return;
     }
     if (isEnabled()) {
-        SAFE_POINT(nullptr == designerAction, "Illegal WD service state", );
-        SAFE_POINT(nullptr == newWorkflowAction, "Illegal WD service state", );
+        SAFE_POINT(designerAction == nullptr, "Illegal WD service state", );
+        SAFE_POINT(newWorkflowAction == nullptr, "Illegal WD service state", );
 
         if (!AppContext::getPluginSupport()->isAllPluginsLoaded()) {
             connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_startWorkflowPlugin()));

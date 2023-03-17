@@ -43,8 +43,6 @@ public:
 
     const QString& getParentAlignmentName() const;
 
-    OptionsPanel* getOptionsPanel() override;
-
     void setCreatePhyTreeSettings(const CreatePhyTreeSettings& newBuildSettings);
 
     void setParentAlignmentName(const QString& _alignmentName);

@@ -101,7 +101,7 @@ SmithWatermanDialog::SmithWatermanDialog(QWidget* w, ADVSequenceObjectContext* c
     }
 
     tagsRegistry = AppContext::getSWMulAlignResultNamesTagsRegistry();
-    if (nullptr == tagsRegistry) {
+    if (tagsRegistry == nullptr) {
         coreLog.error(tr("No result names tag registry found."));
         QDialog::done(-1);
         return;

@@ -370,7 +370,7 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString& 
     }
 
     QSharedPointer<SQLiteQuery> q;
-    if (nullptr == trans) {
+    if (trans == nullptr) {
         q = QSharedPointer<SQLiteReadQuery>(new SQLiteReadQuery(fullQuery, db, os));
     } else {
         q = trans->getPreparedQuery(fullQuery, db, os);

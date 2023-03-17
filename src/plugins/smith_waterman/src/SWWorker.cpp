@@ -348,7 +348,7 @@ Task* SWWorker::tick() {
     while (patternPort->hasMessage()) {
         SharedDbiDataHandler ptrnId = patternPort->get().getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> ptrnObj(StorageUtils::getSequenceObject(context->getDataStorage(), ptrnId));
-        if (nullptr == ptrnObj.data()) {
+        if (ptrnObj.data() == nullptr) {
             return nullptr;
         }
         U2OpStatusImpl os;
@@ -376,7 +376,7 @@ Task* SWWorker::tick() {
         // sequence
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (nullptr == seqObj.data()) {
+        if (seqObj.data() == nullptr) {
             return nullptr;
         }
         U2OpStatusImpl os;

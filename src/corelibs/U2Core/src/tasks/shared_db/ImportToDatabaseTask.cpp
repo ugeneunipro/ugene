@@ -166,7 +166,7 @@ QString ImportToDatabaseTask::sayAboutImportedDocuments() const {
 
     foreach (ImportDocumentToDatabaseTask* documentSubtask, documentSubtasks) {
         Document* document = documentSubtask->getSourceDocument();
-        if (nullptr == document) {
+        if (document == nullptr) {
             continue;
         }
 
@@ -257,7 +257,7 @@ QString ImportToDatabaseTask::sayAboutSkippedDocuments() const {
 
     foreach (ImportDocumentToDatabaseTask* documentSubtask, documentSubtasks) {
         Document* document = documentSubtask->getSourceDocument();
-        if (nullptr == document) {
+        if (document == nullptr) {
             continue;
         }
 

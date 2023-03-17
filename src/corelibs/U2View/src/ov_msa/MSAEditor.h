@@ -221,9 +221,9 @@ protected:
     void addAppearanceMenu(QMenu* m, int uiIndex);
     void addColorsMenu(QMenu* m, int index) const;
     void addHighlightingMenu(QMenu* m) const;
-    void addNavigationMenu(QMenu* m);
-    void addTreeMenu(QMenu* m);
-    void addAdvancedMenu(QMenu* m);
+    void addNavigationMenu(QMenu* m) const;
+    void addTreeMenu(QMenu* m) const;
+    void addAdvancedMenu(QMenu* m) const;
     void addStatisticsMenu(QMenu* m);
 
     void updateActions() override;

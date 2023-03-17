@@ -136,7 +136,7 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, getTree_Null) {
     objRef.entityId = "some id";
 
     PhyTreeObject object("object", objRef);
-    CHECK_TRUE(nullptr == object.getTree().data(), "tree");
+    CHECK_TRUE(object.getTree().data() == nullptr, "tree");
 }
 
 IMPLEMENT_TEST(PhyTreeObjectUnitTests, setTree) {

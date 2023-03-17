@@ -86,7 +86,7 @@ void DocumentFolders::removeFolder(const QString& path) {
 
     while (!foldersToRemove.isEmpty()) {
         Folder* folder = getFolder(foldersToRemove.takeLast());
-        if (nullptr == folder) {
+        if (folder == nullptr) {
             continue;
         }
         const QString folderPath = folder->getFolderPath();

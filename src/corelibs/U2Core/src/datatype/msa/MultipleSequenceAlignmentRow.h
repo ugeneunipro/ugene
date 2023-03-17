@@ -272,10 +272,10 @@ inline bool operator==(const MultipleSequenceAlignmentRow& ptr1, const MultipleS
     return *ptr1 == *ptr2;
 }
 inline bool operator==(const MultipleSequenceAlignmentRow& ptr1, const MultipleSequenceAlignmentRowData* ptr2) {
-    return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
+    return ptr2 == nullptr ? ptr1->isDefault() : (*ptr1 == *ptr2);
 }
 inline bool operator==(const MultipleSequenceAlignmentRowData* ptr1, const MultipleSequenceAlignmentRow& ptr2) {
-    return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
+    return ptr1 == nullptr ? ptr2->isDefault() : (*ptr1 == *ptr2);
 }
 inline bool operator!=(const MultipleSequenceAlignmentRow& ptr1, const MultipleSequenceAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);

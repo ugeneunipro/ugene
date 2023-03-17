@@ -243,6 +243,7 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
         return;
     }
     w->setParent(mdiArea);
+    w->setVisible(true);
     QMdiSubWindow* qw = mdiArea->addSubWindow(w);
     qw->setWindowTitle(w->windowTitle());
     QIcon icon = w->windowIcon();
@@ -279,7 +280,7 @@ QList<MWMDIWindow*> MWMDIManagerImpl::getWindows() const {
 
 bool MWMDIManagerImpl::closeMDIWindow(MWMDIWindow* w) {
     MDIItem* i = getMDIItem(w);
-    if (nullptr == i)
+    if (i == nullptr)
         return false;
     return i->qw->close();
 }
