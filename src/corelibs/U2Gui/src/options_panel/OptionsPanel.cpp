@@ -36,32 +36,35 @@ namespace U2 {
 
 OptionsPanelController::OptionsPanelController(GObjectViewController* _objView)
     : objView(_objView) {
-    widget = new OptionsPanelWidget();
 }
 
-OptionsPanelController::~OptionsPanelController() {
-    if (nullptr == widget->parentWidget()) {
-        delete widget;
-    }
+OptionsPanelWidget* OptionsPanelController::createWidget(QWidget* parent) {
+    SAFE_POINT(widget == nullptr, "Widget is already created", widget);
+    widget = new OptionsPanelWidget(parent);
+    instantiateGroups();
+    return widget;
 }
 
-OptionsPanelWidget* OptionsPanelController::getMainWidget() {
+QWidget* OptionsPanelController::getContentWidget() const {
     return widget;
 }
 
 void OptionsPanelController::addGroup(OPWidgetFactory* factory) {
-    // Create a widget with icon at the right side
-    OPGroupParameters groupParameters = factory->getOPGroupParameters();
-    GroupHeaderImageWidget* headerImageWidget =
-        widget->createHeaderImageWidget(groupParameters.getGroupId(), groupParameters.getIcon());
+    SAFE_POINT(widget == nullptr, "Add group can only be called before the widget is created", );
+    opWidgetFactories << factory;
+}
 
-    headerImageWidget->setObjectName(groupParameters.getGroupId());
+void OptionsPanelController::instantiateGroups() {
+    for (auto factory : qAsConst(opWidgetFactories)) {
+        // Create a widget with icon at the right side
+        OPGroupParameters groupParameters = factory->getOPGroupParameters();
+        const QString& groupId = groupParameters.getGroupId();
+        GroupHeaderImageWidget* headerImageWidget = widget->createHeaderImageWidget(groupId, groupParameters.getIcon());
+        headerImageWidget->setObjectName(groupId);
 
-    // Listen for signals from the header image widget
-    connect(headerImageWidget, SIGNAL(si_groupHeaderPressed(QString)), this, SLOT(sl_groupHeaderPressed(QString)));
-
-    // Add the factory
-    opWidgetFactories.append(factory);
+        // Listen for signals from the header image widget
+        connect(headerImageWidget, &GroupHeaderImageWidget::si_groupHeaderPressed, this, &OptionsPanelController::sl_groupHeaderPressed);
+    }
 }
 
 void OptionsPanelController::openGroupById(const QString& groupId, const QVariantMap& options) {
@@ -73,9 +76,13 @@ void OptionsPanelController::openGroupById(const QString& groupId, const QVarian
     openOptionsGroup(groupId, options);
 }
 
-void OptionsPanelController::sl_groupHeaderPressed(QString groupId) {
+const QString& OptionsPanelController::getActiveGroupId() const {
+    return activeGroupId;
+}
+
+void OptionsPanelController::sl_groupHeaderPressed(const QString& groupId) {
     OPWidgetFactory* opWidgetFactory = findFactoryByGroupId(groupId);
-    SAFE_POINT(nullptr != opWidgetFactory,
+    SAFE_POINT(opWidgetFactory != nullptr,
                QString("Internal error: can't open a group with ID '%1' on the Options Panel.").arg(groupId), );
 
     // Implement the logic of the groups opening/closing
@@ -127,7 +134,7 @@ void OptionsPanelController::openOptionsGroup(const QString& groupId, const QVar
 
     QList<QWidget*> commonWidgets;
     foreach (OPCommonWidgetFactory* commonWidgetFactory, opCommonWidgetFactories) {
-        SAFE_POINT(nullptr != commonWidgetFactory, "NULL OP common widget factory!", );
+        SAFE_POINT(commonWidgetFactory != nullptr, "NULL OP common widget factory!", );
         QWidget* commonWidget = commonWidgetFactory->createWidget(objView, options);
         commonWidgets.append(commonWidget);
     }
@@ -136,7 +143,7 @@ void OptionsPanelController::openOptionsGroup(const QString& groupId, const QVar
     QWidget* mainWidget = opWidgetFactory->createWidget(objView, options);
     widget->createOptionsWidget(groupId, parameters.getTitle(), parameters.getDocumentationPage(), mainWidget, commonWidgets);
     headerWidget->setHeaderSelected();
-    // Re-apply options in case if they were overriden by SavableTab.
+    // Re-apply options in case if they were overridden by SavableTab.
     opWidgetFactory->applyOptionsToWidget(mainWidget, options);
     activeGroupId = groupId;
 }
@@ -147,7 +154,7 @@ void OptionsPanelController::closeOptionsGroup(const QString& groupId) {
     }
 
     GroupHeaderImageWidget* headerWidget = widget->findHeaderWidgetByGroupId(groupId);
-    SAFE_POINT(nullptr != headerWidget, QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
+    SAFE_POINT(headerWidget != nullptr, QString("Internal error: can't find a header widget for group '%1'").arg(groupId), );
 
     widget->deleteOptionsWidget(groupId);
     headerWidget->setHeaderDeselected();

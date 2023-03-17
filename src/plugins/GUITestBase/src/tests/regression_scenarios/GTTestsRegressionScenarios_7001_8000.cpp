@@ -87,6 +87,7 @@
 #include "GTUtilsOptionsPanelPhyTree.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
+#include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsQueryDesigner.h"
@@ -122,6 +123,7 @@
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -4269,11 +4271,27 @@ GUI_TEST_CLASS_DEFINITION(test_7825) {
 
     Primer3DialogFiller::Primer3Settings settings;
     settings.filePath = testDir + "_common_data/regression/7825/settings.txt";
-    GTUtilsDialog::add(os, new PopupChooser(os, { "ADV_MENU_ANALYSE", "primer3_action" }));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
     GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {16, 35}, {199, 218} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", {{16, 35}, {199, 218}});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7827) {
+    // 1. Open samples/PDB/1CF7.PDB
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open Primer Library
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    // 3. Click "Import primer(s)"
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, {}, {{"1CF7.PDB", {"1CF7 chain A sequence", "1CF7 chain B sequence", "1CF7 chain C sequence", "1CF7 chain D sequence"}}}));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
+
+    // Expected: two sequences imported as primers, two declined because of alphabet
+    GTUtilsNotifications::checkNotificationReportText(os, {"A sequence: <span style=\" color:#a6392e;\">error", "B sequence: <span style=\" color:#a6392e;\">error", "C sequence: <span style=\" color:#008000;\">success", "D sequence: <span style=\" color:#008000;\">success"});
 }
 
 }  // namespace GUITest_regression_scenarios
