@@ -250,6 +250,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //  TODO
 
     // 7. Click the extract button.
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
 
     // Expected: two new files are opened "pIB2-SEC13_2-133.gb" and "pIB2-SEC13_2-3775.gb".
