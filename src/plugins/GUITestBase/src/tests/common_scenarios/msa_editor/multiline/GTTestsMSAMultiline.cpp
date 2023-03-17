@@ -331,6 +331,7 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0002) {
     //    Open data/samples/CLUSTALW/HIV-1.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
