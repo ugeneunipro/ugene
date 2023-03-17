@@ -41,7 +41,7 @@ SQLiteDbi* MsaSQLiteSpecificTestData::sqliteDbi = nullptr;
 const QString MsaSQLiteSpecificTestData::TEST_MSA_NAME = "Test alignment";
 
 void MsaSQLiteSpecificTestData::init() {
-    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(sqliteDbi == nullptr, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_MSA_DB_URL, false);
@@ -75,7 +75,7 @@ void MsaSQLiteSpecificTestData::shutdown() {
 }
 
 SQLiteDbi* MsaSQLiteSpecificTestData::getSQLiteDbi() {
-    if (nullptr == sqliteDbi) {
+    if (sqliteDbi == nullptr) {
         init();
     }
     return sqliteDbi;

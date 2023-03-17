@@ -3418,7 +3418,7 @@ GUI_TEST_CLASS_DEFINITION(test_1342) {
 
             activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             QAction* dataReadersAction = GTMenu::getMenuItem(os, activePopupMenu, "Data Readers", true);
-            CHECK_SET_ERR(nullptr == dataReadersAction, "Data Readers item is unexpectly found");
+            CHECK_SET_ERR(dataReadersAction == nullptr, "Data Readers item is unexpectly found");
 
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -4994,7 +4994,7 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
             GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
             GTMouseDriver::click();
             QWidget* contextMenu = QApplication::activePopupWidget();
-            CHECK_SET_ERR(nullptr == contextMenu, "There is an unexpected context menu");
+            CHECK_SET_ERR(contextMenu == nullptr, "There is an unexpected context menu");
         }
     };
 
@@ -5027,7 +5027,7 @@ GUI_TEST_CLASS_DEFINITION(test_1554) {
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
     GTMouseDriver::click(Qt::LeftButton);
     contextMenu = QApplication::activePopupWidget();
-    CHECK_SET_ERR(nullptr == contextMenu, "There is an unexpected context menu");
+    CHECK_SET_ERR(contextMenu == nullptr, "There is an unexpected context menu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1560) {
@@ -6271,7 +6271,7 @@ GUI_TEST_CLASS_DEFINITION(test_1673_4) {
 
     // Expected result: "Search in Sequence" tab has been opened, other tabs have been closed
     auto prevButton = GTWidget::findWidget(os, "prevAnnotationButton", nullptr, {false});
-    CHECK_SET_ERR(nullptr == prevButton, "Annotations options panel is not closed");
+    CHECK_SET_ERR(prevButton == nullptr, "Annotations options panel is not closed");
     GTWidget::findWidget(os, "FindPatternWidget");
     CHECK_SET_ERR(GTWidget::findWidget(os, "textPattern")->hasFocus(), "Find pattern field has no focus");
 }

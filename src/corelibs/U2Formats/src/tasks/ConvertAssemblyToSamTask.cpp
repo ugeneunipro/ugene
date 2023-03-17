@@ -70,7 +70,7 @@ void ConvertAssemblyToSamTask::run() {
     // Init assembly objects
     QSharedPointer<DbiConnection> dbiHandle;
 
-    if (nullptr == handle) {
+    if (handle == nullptr) {
         if (assemblyEntityRef.isValid()) {
             dbiHandle = QSharedPointer<DbiConnection>(
                 new DbiConnection(assemblyEntityRef.dbiRef,

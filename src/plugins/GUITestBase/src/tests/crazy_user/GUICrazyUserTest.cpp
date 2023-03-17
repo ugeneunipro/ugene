@@ -36,9 +36,9 @@ namespace GUITest_crazy_user {
 
 void GTCrazyUserMonitor::checkActiveWidget() {
     QWidget* widget = QApplication::activePopupWidget();
-    if (nullptr == widget || 0 == qrand() % 20) {
+    if (widget == nullptr || 0 == qrand() % 20) {
         widget = QApplication::activeModalWidget();
-        if (nullptr == widget) {
+        if (widget == nullptr) {
             widget = QApplication::activeWindow();
         }
     }

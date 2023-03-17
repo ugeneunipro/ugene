@@ -40,8 +40,8 @@ U2MsaDbi* MsaDbiUtilsTestUtils::msaDbi = nullptr;
 U2SequenceDbi* MsaDbiUtilsTestUtils::sequenceDbi = nullptr;
 
 void MsaDbiUtilsTestUtils::init() {
-    SAFE_POINT(nullptr == msaDbi, "msaDbi has been already initialized!", );
-    SAFE_POINT(nullptr == sequenceDbi, "sequenceDbi has been already initialized!", );
+    SAFE_POINT(msaDbi == nullptr, "msaDbi has been already initialized!", );
+    SAFE_POINT(sequenceDbi == nullptr, "sequenceDbi has been already initialized!", );
 
     bool ok = dbiProvider.init(MSA_DB_URL, true);
     SAFE_POINT(ok, "Dbi provider failed to initialize in MsaTestData::init()!", );
@@ -67,14 +67,14 @@ void MsaDbiUtilsTestUtils::shutdown() {
 }
 
 U2MsaDbi* MsaDbiUtilsTestUtils::getMsaDbi() {
-    if (nullptr == msaDbi) {
+    if (msaDbi == nullptr) {
         init();
     }
     return msaDbi;
 }
 
 U2SequenceDbi* MsaDbiUtilsTestUtils::getSequenceDbi() {
-    if (nullptr == sequenceDbi) {
+    if (sequenceDbi == nullptr) {
         init();
     }
     return sequenceDbi;

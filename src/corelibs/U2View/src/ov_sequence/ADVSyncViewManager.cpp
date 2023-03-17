@@ -283,7 +283,7 @@ void ADVSyncViewManager::sl_lock() {
 
     if (buttonClicked) {
         QAction* checkedAction = lockActionGroup->checkedAction();
-        if (nullptr == checkedAction) {
+        if (checkedAction == nullptr) {
             toggleCheckedAction(m);
         } else {
             checkedAction->toggle();

@@ -38,7 +38,7 @@ MultipleChromatogramAlignment::MultipleChromatogramAlignment()
 
 MultipleChromatogramAlignment::MultipleChromatogramAlignment(const MultipleAlignment& ma)
     : MultipleAlignment(ma) {
-    SAFE_POINT(nullptr != maData.dynamicCast<MultipleChromatogramAlignmentData>(), "Can't cast MultipleAlignment to MultipleChromatogramAlignment", );
+    SAFE_POINT(maData.dynamicCast<MultipleChromatogramAlignmentData>() != nullptr, "Can't cast MultipleAlignment to MultipleChromatogramAlignment", );
 }
 
 MultipleChromatogramAlignment::MultipleChromatogramAlignment(MultipleChromatogramAlignmentData* mcaData)

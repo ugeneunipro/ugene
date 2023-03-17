@@ -112,7 +112,7 @@ QList<Task*> CuffdiffSupportTask::onSubTaskFinished(Task* subTask) {
         saveTasks.removeOne(subTask);
     }
     if (saveTasks.isEmpty()) {
-        if (nullptr == diffTask) {
+        if (diffTask == nullptr) {
             tasks << createCuffdiffTask();
         } else {
             addOutFiles();

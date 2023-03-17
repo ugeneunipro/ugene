@@ -58,7 +58,7 @@ const QList<PortMapping>& SelectorValue::getMappings() const {
 
 void SelectorValue::validate(Actor* actor, U2OpStatus& os) const {
     ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(replaceProtoId);
-    if (nullptr == proto) {
+    if (proto == nullptr) {
         os.setError(QObject::tr("Unknown actor prototype: %1").arg(replaceProtoId));
         return;
     }
@@ -89,7 +89,7 @@ void SelectorValue::validate(Actor* actor, U2OpStatus& os) const {
 
 Port* SelectorValue::validateSrcPort(const PortMapping& mapping, Actor* actor, U2OpStatus& os) const {
     Port* result = actor->getPort(mapping.getSrcId());
-    if (nullptr == result) {
+    if (result == nullptr) {
         os.setError(QObject::tr("The actor does not contain a port with this id: %1").arg(mapping.getSrcId()));
     }
     return result;
@@ -104,7 +104,7 @@ PortDescriptor* SelectorValue::validateDstPort(const PortMapping& mapping,
             result = desc;
         }
     }
-    if (nullptr == result) {
+    if (result == nullptr) {
         os.setError(QObject::tr("The actor prototype does not contain a port with this id: %1").arg(mapping.getDstId()));
     }
     return result;

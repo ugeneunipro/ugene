@@ -308,7 +308,7 @@ Task* AminoTranslationWorker::tick() {
 
         QSharedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
 
-        if (nullptr == seqObj.data()) {
+        if (seqObj.data() == nullptr) {
             algoLog.trace("Sequence is not found");
             return nullptr;
         }

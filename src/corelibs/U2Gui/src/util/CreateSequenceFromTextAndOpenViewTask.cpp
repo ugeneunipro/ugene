@@ -51,7 +51,7 @@ CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(con
 
 void CreateSequenceFromTextAndOpenViewTask::prepare() {
     Project* project = AppContext::getProject();
-    if (nullptr == project) {
+    if (project == nullptr) {
         openProjectTask = AppContext::getProjectLoader()->createNewProjectTask();
         CHECK_EXT(nullptr != openProjectTask, setError(tr("Can't create a project")), );
         addSubTask(openProjectTask);
