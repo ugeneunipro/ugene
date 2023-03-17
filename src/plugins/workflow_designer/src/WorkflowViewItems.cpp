@@ -475,7 +475,7 @@ void WorkflowProcessItem::toggleBreakpoint() {
     if (!hasBreakpoint) {
         hasEnabledBreakpoint = false;
     } else {
-        if (nullptr == highlighting) {
+        if (highlighting == nullptr) {
             highlighting = new WorkflowHighlightItem(this);
         }
         hasEnabledBreakpoint = true;

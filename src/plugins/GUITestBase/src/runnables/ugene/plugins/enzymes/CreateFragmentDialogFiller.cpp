@@ -22,13 +22,7 @@
 #include "CreateFragmentDialogFiller.h"
 #include <primitives/GTWidget.h>
 
-#include <QApplication>
-
 namespace U2 {
-
-CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus& os)
-    : Filler(os, "CreateFragmentDialog") {
-}
 
 CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
     : Filler(os, "CreateFragmentDialog", scenario) {
@@ -38,7 +32,6 @@ CreateFragmentDialogFiller::CreateFragmentDialogFiller(HI::GUITestOpStatus& os, 
 #define GT_METHOD_NAME "commonScenario"
 void CreateFragmentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME

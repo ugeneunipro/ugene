@@ -63,7 +63,7 @@ void WriteAlignedReadsSubTask::run() {
                     continue;
                 }
 
-                if (nullptr == revCompl && read->haveResult()) {
+                if (revCompl == nullptr && read->haveResult()) {
                     seqWriter->write(read, read->firstResult());
                     readsAligned++;
                 } else if (nullptr != revCompl) {

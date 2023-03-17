@@ -32,7 +32,7 @@ CredentialsAsker::~CredentialsAsker() {
 
 void CredentialsAsker::saveCredentials(const QString& resourceUrl, const QString& password, bool remember) {
     PasswordStorage* storage = AppContext::getPasswordStorage();
-    CHECK(nullptr != storage, );
+    CHECK(storage != nullptr, );
 
     storage->addEntry(resourceUrl, password, remember);
 }

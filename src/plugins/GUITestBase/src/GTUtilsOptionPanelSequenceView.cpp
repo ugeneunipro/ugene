@@ -36,7 +36,6 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include "GTUtilsNotifications.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelSequenceView.h"
@@ -283,8 +282,6 @@ void GTUtilsOptionPanelSequenceView::pressExtractProduct(HI::GUITestOpStatus& os
     auto extractProduct = GTWidget::findPushButton(os, "extractProductButton");
     GT_CHECK(extractProduct->isEnabled(), "Extract Product buttons is unexpectedly disabled");
 
-    // Wait until notification is closed to avoid overlapping the "extractProductButton" button by notification
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractProduct);
 }
 #undef GT_METHOD_NAME

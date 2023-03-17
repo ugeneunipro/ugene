@@ -47,7 +47,7 @@ QWidget* GrouperEditor::getWidget() {
 }
 
 QWidget* GrouperEditor::createGUI() {
-    if (nullptr == grouperModel) {
+    if (grouperModel == nullptr) {
         return nullptr;
     }
 
@@ -74,7 +74,7 @@ void GrouperEditor::setConfiguration(Actor* actor) {
         }
     }
 
-    if (nullptr == gAttr) {
+    if (gAttr == nullptr) {
         return;
     }
 

@@ -69,7 +69,7 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant& influencingValue
     }
 
     QString extension;
-    if (nullptr == newFormat) {
+    if (newFormat == nullptr) {
         extension = newFormatId;
     } else {
         extension = newFormat->getSupportedDocumentFileExtensions().first();
@@ -95,11 +95,11 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant& influencingValue
     bool foundExt = false;
     if (0 == QString::compare(lastSuffix, "csv", Qt::CaseInsensitive)) {
         foundExt = true;
-    } else if (nullptr == currentFormat) {
+    } else if (currentFormat == nullptr) {
         foundExt = (lastSuffix == currentFormatId);
     } else {
         QStringList extensions(currentFormat->getSupportedDocumentFileExtensions());
-        if (nullptr == newFormat) {
+        if (newFormat == nullptr) {
             extensions << newFormatId;
         } else {
             extensions << newFormat->getSupportedDocumentFileExtensions();

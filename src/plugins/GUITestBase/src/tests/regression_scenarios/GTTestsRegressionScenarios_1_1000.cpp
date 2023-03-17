@@ -1824,7 +1824,7 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
     GTThread::waitForMainThread();
 
     restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget", nullptr, {false});
-    CHECK_SET_ERR(nullptr == restrictionMapTreeWidget, "Restriction map widget is visible unexpectedly");
+    CHECK_SET_ERR(restrictionMapTreeWidget == nullptr, "Restriction map widget is visible unexpectedly");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0839) {

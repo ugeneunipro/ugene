@@ -122,7 +122,7 @@ Task* ExportPhredQualityWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         U2SequenceObject* seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
-        if (nullptr == seqObj) {
+        if (seqObj == nullptr) {
             return nullptr;
         }
 

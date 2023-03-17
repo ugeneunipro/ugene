@@ -163,10 +163,10 @@ DocumentUtils::Detection DocumentUtils::detectFormat(const GUrl& url, QString& r
 
     DocumentFormat* format = formats.first().format;
     DocumentImporter* importer = formats.first().importer;
-    if (nullptr != format) {
+    if (format != nullptr) {
         resultId = format->getFormatId();
         return FORMAT;
-    } else if (nullptr != importer) {
+    } else if (importer != nullptr) {
         resultId = importer->getId();
         return IMPORTER;
     } else {
@@ -196,7 +196,7 @@ bool DocumentUtils::canAddGObjectsToDocument(Document* doc, const GObjectType& t
 bool DocumentUtils::canRemoveGObjectFromDocument(GObject* obj) {
     Document* doc = obj->getDocument();
 
-    if (nullptr == doc || !doc->isLoaded() || doc->isStateLocked()) {
+    if (doc == nullptr || !doc->isLoaded() || doc->isStateLocked()) {
         return false;
     }
 

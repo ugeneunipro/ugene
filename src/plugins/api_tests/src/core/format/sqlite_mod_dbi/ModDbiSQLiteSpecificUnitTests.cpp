@@ -49,7 +49,7 @@ SQLiteDbi* ModSQLiteSpecificTestData::sqliteDbi = nullptr;
 const QString ModSQLiteSpecificTestData::TEST_MSA_NAME = "Test alignment";
 
 void ModSQLiteSpecificTestData::init() {
-    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(sqliteDbi == nullptr, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_MSA_DB_URL, false);
@@ -96,7 +96,7 @@ void ModSQLiteSpecificTestData::cleanUpAllModSteps() {
 }
 
 SQLiteDbi* ModSQLiteSpecificTestData::getSQLiteDbi() {
-    if (nullptr == sqliteDbi) {
+    if (sqliteDbi == nullptr) {
         init();
     }
     return sqliteDbi;

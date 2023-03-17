@@ -250,7 +250,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //  TODO
 
     // 7. Click the extract button.
-    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+
     // Expected: two new files are opened "pIB2-SEC13_2-133.gb" and "pIB2-SEC13_2-3775.gb".
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "pIB2-SEC13_2-133.gb");
@@ -443,7 +444,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
     // 7. Click "Export product(s)".
-    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    auto extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
@@ -456,7 +459,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::selectItemByIndex(os, annsComboBox, 0);
 
     // 9. Click "Export product(s)".
-    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are 4 annotations in the exported document: 2 primers, center 51..150 and middle 1..200. Middle has the warning qualifier.
@@ -469,7 +474,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTComboBox::selectItemByIndex(os, annsComboBox, 2);
 
     // 11. Click "Export product(s)".
-    GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
+    extractPB = GTWidget::findWidget(os, "extractProductButton");
+    GTUtilsNotifications::waitAllNotificationsClosed(os);
+    GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there are only 2 primers annotations in the exported document.

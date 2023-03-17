@@ -101,7 +101,7 @@ void OpenSimpleTextObjectViewTask::open() {
         const QString viewName = GObjectViewUtils::genUniqueViewName(doc, to);
         SimpleTextObjectView* v = new SimpleTextObjectView(viewName, to, stateData);
         GObjectViewWindow* w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
-        if (nullptr == v->parent()) {
+        if (v->parent() == nullptr) {
             stateInfo.setError("Could not open view");
             delete v;
             delete w;

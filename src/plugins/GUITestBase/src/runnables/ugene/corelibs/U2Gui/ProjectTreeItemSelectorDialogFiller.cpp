@@ -37,12 +37,21 @@ using namespace HI;
 
 #define GT_CLASS_NAME "ProjectTreeItemSelectorDialogFiller"
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, const QString& documentName, const QString& objectName, const QSet<GObjectType>& acceptableTypes, SelectionMode mode, int expectedDocCount)
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os,
+                                                                         const QString& documentName,
+                                                                         const QString& objectName,
+                                                                         const QSet<GObjectType>& acceptableTypes,
+                                                                         SelectionMode mode,
+                                                                         int expectedDocCount)
     : Filler(os, "ProjectTreeItemSelectorDialogBase"), acceptableTypes(acceptableTypes), mode(mode), expectedDocCount(expectedDocCount) {
     itemsToSelect.insert(documentName, {objectName});
 }
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& itemsToSelect, const QSet<GObjectType>& acceptableTypes, SelectionMode mode, int expectedDocCount)
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os,
+                                                                         const QMap<QString, QStringList>& itemsToSelect,
+                                                                         const QSet<GObjectType>& acceptableTypes,
+                                                                         SelectionMode mode,
+                                                                         int expectedDocCount)
     : Filler(os, "ProjectTreeItemSelectorDialogBase"), itemsToSelect(itemsToSelect), acceptableTypes(acceptableTypes), mode(mode),
       expectedDocCount(expectedDocCount) {
 }

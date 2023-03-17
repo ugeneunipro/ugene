@@ -88,7 +88,7 @@ DefaultConvertFileTask::DefaultConvertFileTask(const GUrl& sourceUrl, const QStr
 
 void DefaultConvertFileTask::prepare() {
     loadTask = LoadDocumentTask::getDefaultLoadDocTask(sourceURL);
-    if (nullptr == loadTask) {
+    if (loadTask == nullptr) {
         coreLog.info(QString("Cannot load file %1").arg(sourceURL.getURLString()));
         return;
     }

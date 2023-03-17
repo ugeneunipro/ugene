@@ -197,7 +197,7 @@ WorkerState LastReadyScheduler::getWorkerState(const ActorId& id) {
 }
 
 bool LastReadyScheduler::cancelCurrentTaskIfAllowed() {
-    if (nullptr == lastTask) {
+    if (lastTask == nullptr) {
         return false;
     }
     if (!lastTask->isFinished() && canLastTaskBeCanceled) {

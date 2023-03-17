@@ -60,7 +60,7 @@ QList<Marker*>& MarkerAttribute::getMarkers() {
 
 bool MarkerAttribute::contains(const QString& markerId) const {
     foreach (Marker* marker, markers) {
-        if (nullptr == marker) {
+        if (marker == nullptr) {
             continue;
         }
         if (marker->getName() == markerId) {

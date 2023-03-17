@@ -450,7 +450,7 @@ bool SAMFormat::storeAlignedRead(int offset, const DNASequence& read, IOAdapter*
     static const QString rowDataNotCigar = "%1" + TAB + flag + TAB + "%2" + TAB + "%3" + TAB + mapq + TAB + "%4M" + TAB + mrnm + TAB + mpos + TAB + isize + TAB + "%5" + TAB + "%6" + "\n";
     static const QString rowDataCigar = "%1" + TAB + flag + TAB + "%2" + TAB + "%3" + TAB + mapq + TAB + "%4" + TAB + mrnm + TAB + mpos + TAB + isize + TAB + "%5" + TAB + "%6" + "\n";
 
-    if (nullptr == io || !io->isOpen()) {
+    if (io == nullptr || !io->isOpen()) {
         return false;
     }
     io->setFormatMode(IOAdapter::TextMode);

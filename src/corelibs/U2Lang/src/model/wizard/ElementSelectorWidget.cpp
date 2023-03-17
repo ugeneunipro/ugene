@@ -84,7 +84,7 @@ Workflow::Actor* ElementSelectorWidget::validateActorId(QList<Workflow::Actor*> 
             break;
         }
     }
-    if (nullptr == result) {
+    if (result == nullptr) {
         os.setError(QObject::tr("The workflow does not contain an element with this id: %1").arg(actorId));
     }
     return result;
