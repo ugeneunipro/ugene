@@ -70,7 +70,7 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     settings->setSequence(dnaSeq.seq);
 
     U2Region seqRange(0, dnaSeq.length());
-    settings->setIncludedRegion(seqRange.startPos, seqRange.length);
+    settings->setIncludedRegion(seqRange.startPos + settings->getFirstBaseIndex(), seqRange.length);
 
     QList<U2Region> list;
     const QString& excludedRegsStr = cfg->getParameter(EXCLUDED_REGIONS_ATTR)->getAttributeValueWithoutScript<QString>();

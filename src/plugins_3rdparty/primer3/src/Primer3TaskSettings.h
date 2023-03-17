@@ -92,6 +92,8 @@ public:
     U2Region getIncludedRegion() const;
     QVector<int> getSequenceQuality() const;
 
+    int getFirstBaseIndex() const;
+
     bool isShowDebugging() const;
     bool isFormatOutput() const;
     bool isExplain() const;

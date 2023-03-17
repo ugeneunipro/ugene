@@ -762,11 +762,11 @@ bool GTest_Primer3::checkPrimer(const PrimerSingle* primer, const PrimerSingle* 
         return false;
     }
     {
-        if ((primer->getStart() != expectedPrimer->getStart()) ||
+        if ((primer->getStart() + settings->getFirstBaseIndex() != expectedPrimer->getStart()) ||
             (primer->getLength() != expectedPrimer->getLength())) {
             stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2,%3, but Actual:%4,%5")
                                    .arg(prefix)
-                                   .arg(expectedPrimer->getStart())
+                                   .arg(expectedPrimer->getStart() + settings->getFirstBaseIndex())
                                    .arg(expectedPrimer->getLength())
                                    .arg(primer->getStart())
                                    .arg(primer->getLength()));

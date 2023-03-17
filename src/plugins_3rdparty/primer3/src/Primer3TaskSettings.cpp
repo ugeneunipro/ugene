@@ -246,6 +246,10 @@ QVector<int> Primer3TaskSettings::getSequenceQuality() const {
     return result;
 }
 
+int Primer3TaskSettings::getFirstBaseIndex() const {
+    return primerSettings->first_base_index;
+}
+
 bool Primer3TaskSettings::isShowDebugging() const {
     return showDebugging;
 }

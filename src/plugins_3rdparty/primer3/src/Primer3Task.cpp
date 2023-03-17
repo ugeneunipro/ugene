@@ -387,7 +387,7 @@ Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
 
     const auto& sequenceRange = settings->getSequenceRange();
     const auto& includedRegion = settings->getIncludedRegion();
-    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos : 0;
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - settings->getFirstBaseIndex() : 0;
     offset = sequenceRange.startPos + includedRegionOffset;
 
     settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
@@ -603,14 +603,15 @@ void Primer3SWTask::prepare() {
     int sequenceSize = settings->getSequenceSize();
 
     const auto& includedRegion = settings->getIncludedRegion();
-    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos : 0;
+    int fbs = settings->getFirstBaseIndex();
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
     CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
 
     if (sequenceRange.endPos() > sequenceSize + includedRegionOffset) {
         SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
 
         QByteArray seq = settings->getSequence();
-        seq.append(seq.left(sequenceRange.endPos() - sequenceSize));
+        seq.append(seq.left(sequenceRange.endPos() - sequenceSize - fbs));
         settings->setSequence(seq);
     }
 
@@ -702,7 +703,7 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
                 for (const U2Region& r : regions) {
                     totalLen += r.length;
                 }
-                settings->setIncludedRegion(regions.first().startPos, totalLen);
+                settings->setIncludedRegion(regions.first().startPos + settings->getFirstBaseIndex(), totalLen);
             }
             settings->setExonRegions(regions);
             // reset target and excluded regions regions
