@@ -35,7 +35,7 @@ MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow()
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleAlignmentRow& maRow)
     : MultipleAlignmentRow(maRow) {
-    SAFE_POINT(nullptr != maRowData.dynamicCast<MultipleSequenceAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
+    SAFE_POINT(maRowData.dynamicCast<MultipleSequenceAlignmentRowData>() != nullptr, "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignmentData* msaData)

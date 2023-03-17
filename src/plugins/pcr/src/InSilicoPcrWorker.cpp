@@ -189,7 +189,7 @@ Task* InSilicoPcrWorker::createPrepareTask(U2OpStatus& os) const {
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
     LoadDocumentTask* task = LoadDocumentTask::getDefaultLoadDocTask(primersUrl, hints);
-    if (nullptr == task) {
+    if (task == nullptr) {
         os.setError(tr("Can not read the primers file: ") + primersUrl);
     }
     return task;

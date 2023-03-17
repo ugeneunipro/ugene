@@ -710,7 +710,7 @@ URLListController::URLListController(DatasetsController* parent, Dataset* _set)
 }
 
 URLListWidget* URLListController::getWidget() {
-    if (nullptr == widget) {
+    if (widget == nullptr) {
         createWidget();
     }
     return widget;

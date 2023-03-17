@@ -37,7 +37,7 @@
 namespace U2 {
 
 ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject* object)
-    : Task(tr("Import primer from the shared database object: %1").arg(nullptr == object ? "N/A" : object->getGObjectName()),
+    : Task(tr("Import primer from the shared database object: %1").arg(object == nullptr ? "N/A" : object->getGObjectName()),
            TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
       validator(this) {
     SAFE_POINT_EXT(nullptr != object, setError(L10N::nullPointerError("an input object")), );
@@ -66,7 +66,7 @@ void ImportPrimerFromObjectTask::run() {
 }
 
 QString ImportPrimerFromObjectTask::generateReport() const {
-    const QString docName = (nullptr == sequenceObject->getDocument() ? tr("Without document") : sequenceObject->getDocument()->getName());
+    const QString docName = (sequenceObject->getDocument() == nullptr ? tr("Without document") : sequenceObject->getDocument()->getName());
     QString report = QString("<b>%1</b> %2: <font color='%3'>%4</font>").arg(docName).arg(sequenceObject->getGObjectName());
     if (isCanceled()) {
         return report.arg(Theme::errorColorLabelHtmlStr()).arg(tr("cancelled"));

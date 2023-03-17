@@ -1017,7 +1017,7 @@ void AssemblyBrowser::loadReferenceFromFile() {
     bool loadInProgress = false;
     if (ProjectUtils::hasUnloadedDocument(url)) {
         loadReferenceTask = ProjectUtils::findLoadTask(url);
-        if (nullptr == loadReferenceTask) {
+        if (loadReferenceTask == nullptr) {
             loadReferenceTask = new LoadUnloadedDocumentTask(ProjectUtils::findDocument(url));
         } else {
             loadInProgress = true;

@@ -86,7 +86,7 @@ WorkflowInvestigationWidgetsController::~WorkflowInvestigationWidgetsController(
 
 bool WorkflowInvestigationWidgetsController::eventFilter(QObject* watched, QEvent* event) {
     if (QEvent::Paint == event->type() && nullptr != investigationView && watched == dynamic_cast<QObject*>(investigationView->viewport())) {
-        if (nullptr == investigationView->model() && nullptr != investigatedLink) {
+        if (investigationView->model() == nullptr && nullptr != investigatedLink) {
             createInvestigationModel();
             investigationView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
             adjustInvestigationColumnWidth(investigationView);

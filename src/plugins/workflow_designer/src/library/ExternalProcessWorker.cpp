@@ -98,7 +98,7 @@ static U2SequenceObject* toSequence(const QVariantMap& data, WorkflowContext* co
     }
     SharedDbiDataHandler seqId = data[slot].value<SharedDbiDataHandler>();
     U2SequenceObject* seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
-    if (nullptr == seqObj) {
+    if (seqObj == nullptr) {
         os.setError(QObject::tr("Error with sequence object"));
     }
     return seqObj;
@@ -127,7 +127,7 @@ static MultipleSequenceAlignmentObject* toAlignment(const QVariantMap& data, Wor
     }
     SharedDbiDataHandler msaId = data[slot].value<SharedDbiDataHandler>();
     MultipleSequenceAlignmentObject* msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
-    if (nullptr == msaObj) {
+    if (msaObj == nullptr) {
         os.setError(QObject::tr("Error with alignment object"));
     }
     return msaObj;
@@ -156,7 +156,7 @@ static QString generateAndCreateURL(const QString& extention, const QString& nam
 
 static DocumentFormat* getFormat(const DataConfig& dataCfg, U2OpStatus& os) {
     DocumentFormat* f = AppContext::getDocumentFormatRegistry()->getFormatById(dataCfg.format);
-    if (nullptr == f) {
+    if (f == nullptr) {
         os.setError(QObject::tr("Unknown document format: %1").arg(dataCfg.format));
     }
     return f;
@@ -433,7 +433,7 @@ static SharedDbiDataHandler getAlignment(Document* d, WorkflowContext* context, 
     CHECK_OP(os, SharedDbiDataHandler());
 
     auto msaObj = static_cast<MultipleSequenceAlignmentObject*>(obj);
-    if (nullptr == msaObj) {
+    if (msaObj == nullptr) {
         os.setError(QObject::tr("Error with alignment object"));
         return SharedDbiDataHandler();
     }
@@ -445,7 +445,7 @@ static SharedDbiDataHandler getAnnotations(Document* d, WorkflowContext* context
     CHECK_OP(os, SharedDbiDataHandler());
 
     auto annsObj = static_cast<AnnotationTableObject*>(obj);
-    if (nullptr == annsObj) {
+    if (annsObj == nullptr) {
         os.setError(QObject::tr("Error with annotations object"));
         return SharedDbiDataHandler();
     }

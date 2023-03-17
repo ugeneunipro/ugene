@@ -168,7 +168,7 @@ void FMatrix::calculate(const QByteArray& seq1, const QByteArray& seq2) {
 }
 
 void FMatrix::cleanup() {
-    if (nullptr == f) {
+    if (f == nullptr) {
         return;
     }
     delete f;

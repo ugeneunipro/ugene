@@ -205,7 +205,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
     const bool exportedObjectsFound = (1 == os->getSelectedObjects().size()) &&
                                       (1 == SelectionUtils::findObjects(GObjectTypes::TEXT, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::VARIANT_TRACK, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::PHYLOGENETIC_TREE, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, &ms, UOF_LoadedOnly).size());
     if (exportedObjectsFound) {
-        if (nullptr == sub) {
+        if (sub == nullptr) {
             sub = new QMenu(tr("Export/Import"));
         }
         sub->addAction(exportObjectAction);
@@ -324,7 +324,7 @@ void ExportProjectViewItemsContoller::sl_saveCorrespondingSequence() {
         }
     }
 
-    if (nullptr == seqObj) {
+    if (seqObj == nullptr) {
         QMessageBox::information(nullptr, tr(MESSAGE_BOX_INFO_TITLE), tr("There is no associated sequence found."));
         return;
     }

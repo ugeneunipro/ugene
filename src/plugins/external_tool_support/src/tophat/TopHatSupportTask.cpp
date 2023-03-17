@@ -177,7 +177,7 @@ SaveDocumentTask* TopHatSupportTask::createSaveTask(const QString& url, QPointer
     foreach (Workflow::SharedDbiDataHandler seqId, seqs) {
         U2SequenceObject* seqObj(Workflow::StorageUtils::getSequenceObject(settings.storage(), seqId));
 
-        if (nullptr == seqObj) {
+        if (seqObj == nullptr) {
             stateInfo.setError(tr("An unexpected error has occurred during preparing the TopHat task!"));
             taskLog.trace(tr("Preparing TopHatSupportTask internal error: unable to get a sequence object!"));
             return nullptr;

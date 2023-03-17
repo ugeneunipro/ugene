@@ -2361,7 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     QWidget* viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
                       !viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is visible");
 
@@ -2386,7 +2386,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
                       !viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is visible");
 
@@ -2888,7 +2888,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
-    CHECK_SET_ERR(nullptr == viewSwitchButton || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
+    CHECK_SET_ERR(viewSwitchButton == nullptr || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
     QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView2, "Dashboards view is nullptr");

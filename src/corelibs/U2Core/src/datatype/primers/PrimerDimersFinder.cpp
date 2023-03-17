@@ -75,7 +75,7 @@ BaseDimersFinder::BaseDimersFinder(const QByteArray& forwardPrimer, const QByteA
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     DNATranslation* dnaTranslation = tr->lookupTranslation(BaseDNATranslationIds::NUCL_DNA_DEFAULT_COMPLEMENT);
 
-    if (nullptr != dnaTranslation) {
+    if (dnaTranslation != nullptr) {
         int bufSize = reversePrimer.size();
         reverseComplementSequence.resize(bufSize);
         reverseComplementSequence.fill(0);

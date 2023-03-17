@@ -69,7 +69,7 @@ SQLiteDbi::SQLiteDbi()
 }
 
 SQLiteDbi::~SQLiteDbi() {
-    SAFE_POINT(nullptr == db->handle, "Invalid DB handle detected!", );
+    SAFE_POINT(db->handle == nullptr, "Invalid DB handle detected!", );
 
     delete udrDbi;
     delete objectDbi;

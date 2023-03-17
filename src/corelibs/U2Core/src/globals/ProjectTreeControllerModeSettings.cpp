@@ -150,7 +150,7 @@ bool ProjectTreeControllerModeSettings::isTypeShown(const GObjectType& t) const 
 }
 
 bool ProjectTreeControllerModeSettings::isObjectFilterActive() const {
-    return !tokensToShow.isEmpty() || !objectConstraints.isEmpty() || !excludeObjectList.isEmpty() || !objectTypesToShow.isEmpty() || nullptr != objectFilter;
+    return !tokensToShow.isEmpty() || !objectConstraints.isEmpty() || !excludeObjectList.isEmpty() || !objectTypesToShow.isEmpty() || objectFilter != nullptr;
 }
 
 }  // namespace U2

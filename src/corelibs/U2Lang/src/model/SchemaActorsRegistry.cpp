@@ -51,7 +51,7 @@ Schema* SchemaActorsRegistry::unregisterSchema(const QString& protoId) {
 Schema* SchemaActorsRegistry::getSchema(const QString& protoId) {
     QMutexLocker lock(&mutex);
     Schema* schema = schemas.value(protoId, nullptr);
-    if (nullptr == schema) {
+    if (schema == nullptr) {
         return nullptr;
     }
     Schema* copy = new Schema();
