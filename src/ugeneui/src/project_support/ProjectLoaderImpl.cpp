@@ -331,7 +331,7 @@ void prepareDocTab(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_Pr
     CHECK(docProviders.isEmpty(), );
     foreach (const AD2P_DocumentInfo& info, docsInfo) {
         const DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(info.formatId);
-        if (nullptr == df) {
+        if (df == nullptr) {
             continue;
         }
         const GObjectType t = df->getSupportedObjectTypes().toList().first();
@@ -533,7 +533,7 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                 }
                 coreLog.info(tr("The document is already loaded and added to project: %1").arg(url.fileName()));
             } else if (!doc->isLoaded() && AppContext::getProjectView()) {
-                if (nullptr == ProjectUtils::findLoadTask(url.getURLString())) {
+                if (ProjectUtils::findLoadTask(url.getURLString()) == nullptr) {
                     AppContext::getTaskScheduler()->registerTopLevelTask(new LoadUnloadedDocumentAndOpenViewTask(doc));
                 } else {
                     coreLog.details(tr("The document with the same URL is already loading"));

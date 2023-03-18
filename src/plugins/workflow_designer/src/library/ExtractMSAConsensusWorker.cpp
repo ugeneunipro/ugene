@@ -104,7 +104,7 @@ MultipleSequenceAlignment ExtractMSAConsensusWorker::takeMsa(U2OpStatus& os) {
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()].value<SharedDbiDataHandler>();
     const MultipleSequenceAlignmentObject* obj = StorageUtils::getMsaObject(context->getDataStorage(), dbiId);
-    if (nullptr == obj) {
+    if (obj == nullptr) {
         os.setError(tr("Error with msa object"));
         return MultipleSequenceAlignment();
     }
@@ -228,7 +228,7 @@ MSAConsensusAlgorithm* ExtractMSAConsensusTaskHelper::createAlgorithm() {
     SAFE_POINT_EXT(nullptr != reg, setError("NULL registry"), nullptr);
 
     MSAConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
-    if (nullptr == f) {
+    if (f == nullptr) {
         setError(ExtractMSAConsensusTaskHelper::tr("Unknown consensus algorithm: ") + algoId);
         return nullptr;
     }

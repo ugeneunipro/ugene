@@ -26,7 +26,6 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
-#include <QTextEdit>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>

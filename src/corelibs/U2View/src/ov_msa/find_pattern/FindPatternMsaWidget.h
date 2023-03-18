@@ -115,8 +115,6 @@ private:
     /** Returns true if the alignment alphabet is Amino. */
     bool isAmino() const;
 
-    int getMaxError(const QString& pattern) const;
-
     /** Assigns valid viewRowIndex value to all results & resorts them based on the view position. */
     void resortResultsByViewState();
 

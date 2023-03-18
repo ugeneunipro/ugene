@@ -29,11 +29,11 @@ namespace U2 {
 
 SaveDocumentStreamingTask::SaveDocumentStreamingTask(Document* d, IOAdapter* i)
     : Task(tr("Save document"), TaskFlags(TaskFlag_None)), lock(nullptr), doc(d), io(i) {
-    if (nullptr == doc) {
+    if (doc == nullptr) {
         stateInfo.setError(L10N::badArgument("doc"));
         return;
     }
-    if (nullptr == io || !io->isOpen()) {
+    if (io == nullptr || !io->isOpen()) {
         stateInfo.setError(L10N::badArgument("IO adapter"));
         return;
     }
@@ -42,7 +42,7 @@ SaveDocumentStreamingTask::SaveDocumentStreamingTask(Document* d, IOAdapter* i)
 }
 
 SaveDocumentStreamingTask::~SaveDocumentStreamingTask() {
-    assert(nullptr == lock);
+    assert(lock == nullptr);
 }
 
 void SaveDocumentStreamingTask::prepare() {

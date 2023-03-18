@@ -71,7 +71,7 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
     const int totalDocObjectsNumber = doc->getObjects().size();
     foreach (const U2DataId& annTableId, annNames.keys()) {
         GObject* annTable = doc->getObjectById(annTableId);
-        if (nullptr == annTable) {
+        if (annTable == nullptr) {
             coreLog.error("Annotation table object not found in the document");
             continue;
         }

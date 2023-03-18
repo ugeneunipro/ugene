@@ -262,7 +262,7 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
             GTLineEdit::setText(os, l.first, l.second);
         }
         if (widgets2click.plainText.first != nullptr) {
-            GTPlainTextEdit::setPlainText(os, widgets2click.plainText.first, widgets2click.plainText.second);
+            GTPlainTextEdit::setText(os, widgets2click.plainText.first, widgets2click.plainText.second);
         }
     }
 }

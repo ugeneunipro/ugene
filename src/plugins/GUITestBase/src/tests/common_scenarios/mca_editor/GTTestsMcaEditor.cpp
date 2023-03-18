@@ -124,6 +124,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         }
     };
 
+    GTLogTracer lt;
+
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
@@ -155,9 +157,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         CHECK_SET_ERR(isNameFound, QString("Name %1 is missing").arg(rowName));
     }
 
-    // No Errors in the Log
-    QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
-    CHECK_SET_ERR(errors.isEmpty(), QString("Some errors found"));
+    // No Errors in the log.
+    CHECK_SET_ERR(!lt.hasErrors(), QString("Some errors found: " + lt.getJoinedErrorString()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -228,15 +229,15 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
     };
 
+    GTLogTracer lt;
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state : No Еrrors in the Log
+    // Expected state : No Errors in the Log
     // Be sure that file <path>/Sanger.ugenedb is created on the disk
-    QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
-    CHECK_SET_ERR(errors.isEmpty(), QString("Some errors found"));
+    CHECK_SET_ERR(!lt.hasErrors(), QString("Some errors found: " + lt.getJoinedErrorString()));
 
     // 9. Open <path> / "Sanger.ugenedb" in the project
     GTFileDialog::openFile(os, sandBoxDir + "Sanger.ugenedb");
@@ -267,13 +268,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         CHECK_SET_ERR(checkCurrentName, QString("Name %1 is missing").arg(rowName));
     }
 
-    // No Еrrors in the Log
-    errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
-    CHECK_SET_ERR(errors.isEmpty(), QString("Some errors found"));
+    // No Errors in the Log
+    CHECK_SET_ERR(!lt.hasErrors(), QString("Some errors found: " + lt.getJoinedErrorString()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     //    1. Select "Tools>Workflow Designer"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -391,8 +391,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     const QStringList actualReverseComplementReadsNames = GTUtilsMcaEditor::getReverseComplementReadsNames(os);
     CHECK_SET_ERR(expectedReverseComplementReadsNames == actualReverseComplementReadsNames.toSet(), "Reverse complement reads names are incorrect");
 
-    //                    No Еrrors in the Log
-    GTUtilsLog::check(os, logTracer);
+    // No Errors in the Log
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in the log: " + lt.getJoinedErrorString());
 
     //    9. Close active view
     GTUtilsMdi::closeActiveWindow(os);
@@ -450,13 +450,13 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         }
     };
 
-    GTLogTracer trace;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error:The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet.
-    GTUtilsLog::checkContainsError(os, trace, QString("The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."));
+    CHECK_SET_ERR(lt.hasError("The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."), "Expected error is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -528,13 +528,13 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     };
 
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTLogTracer trace;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
-    GTUtilsLog::checkContainsError(os, trace, QString("Task {Map Sanger reads to reference} finished with error: The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."));
+    CHECK_SET_ERR(lt.hasError("Task {Map Sanger reads to reference} finished with error: The input reference sequence 'seq6' contains characters that don't belong to DNA alphabet."), "Expected error not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -606,13 +606,13 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     };
 
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTLogTracer trace;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
-    GTUtilsLog::checkContainsError(os, trace, QString("Task {Map Sanger reads to reference} finished with error: More than one sequence in the reference file:"));
+    CHECK_SET_ERR(lt.hasError("Task {Map Sanger reads to reference} finished with error: More than one sequence in the reference file:"), "Expected error is not found.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
@@ -659,13 +659,13 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         }
     };
 
-    GTLogTracer trace;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error: More than one sequence in the reference file:  <path>/alphabets/standard_dna_rna_amino_1000.fa
-    GTUtilsLog::checkContainsError(os, trace, QString("More than one sequence in the reference file:"));
+    CHECK_SET_ERR(lt.hasError("More than one sequence in the reference file:"), "Expected error is not found.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
@@ -737,13 +737,13 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     };
 
     // 1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTLogTracer trace;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
-    GTUtilsLog::checkContainsError(os, trace, QString("Task {Map Sanger reads to reference} finished with error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."));
+    CHECK_SET_ERR(lt.hasError("Task {Map Sanger reads to reference} finished with error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."), "Expected error is not found.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -790,13 +790,13 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
         }
     };
 
-    GTLogTracer trace;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Error: The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet.
-    GTUtilsLog::checkContainsError(os, trace, QString("The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."));
+    CHECK_SET_ERR(lt.hasError("The input reference sequence 'seq3' contains characters that don't belong to DNA alphabet."), "Expected error is not found.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {

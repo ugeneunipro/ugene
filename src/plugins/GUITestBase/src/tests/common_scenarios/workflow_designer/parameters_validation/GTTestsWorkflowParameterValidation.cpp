@@ -199,7 +199,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    GTLogTracer l;
+    GTLogTracer lt;
     QDir d(testDir + "_common_data/scenarios/sandbox/permDir");
     bool sucsess = d.mkpath(d.absolutePath());
     CHECK_SET_ERR(sucsess, QString("Can't create a new folder: '%1'").arg(d.absolutePath()));

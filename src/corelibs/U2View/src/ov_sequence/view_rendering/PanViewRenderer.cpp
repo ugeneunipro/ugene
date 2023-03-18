@@ -412,7 +412,7 @@ void PanViewRenderer::drawCustomRulers(GraphUtils::RulerConfig c, QPainter& p, c
 }
 
 const QString PanViewRenderer::getText(const PVRowData* rData) const {
-    const QString text = (nullptr == rData) ? U2::PanView::tr("empty") : rData->key + " (" + QString::number(rData->annotations.size()) + ")";
+    const QString text = (rData == nullptr) ? U2::PanView::tr("empty") : rData->key + " (" + QString::number(rData->annotations.size()) + ")";
     return text;
 }
 

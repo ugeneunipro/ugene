@@ -22,7 +22,6 @@
 #include "GSequenceLineView.h"
 
 #include <QApplication>
-#include <QTextEdit>
 #include <QVBoxLayout>
 
 #include <U2Core/AppContext.h>

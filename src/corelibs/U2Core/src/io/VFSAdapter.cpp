@@ -58,7 +58,7 @@ bool VFSAdapter::open(const GUrl& _url, IOAdapterMode m) {
         return false;
     }
     VirtualFileSystem* vfs = vfsReg->getFileSystemById(urlArgs[0]);
-    if (nullptr == vfs) {
+    if (vfs == nullptr) {
         return false;  // no such vfs registered
     }
 

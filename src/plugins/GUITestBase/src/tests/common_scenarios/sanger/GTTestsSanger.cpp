@@ -27,10 +27,8 @@
 #include <primitives/GTMenu.h>
 #include <primitives/GTWidget.h>
 
-#include <QApplication>
 #include <QCheckBox>
 #include <QFileInfo>
-#include <QLineEdit>
 
 #include "GTTestsSanger.h"
 #include "GTUtilsDashboard.h"
@@ -50,7 +48,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_sanger {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    GTLogTracer l;
+    GTLogTracer lt;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
@@ -64,7 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -99,7 +97,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         AlignToReferenceBlastDialogFiller::Settings settings;
     };
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
@@ -110,11 +108,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    GTLogTracer l;
+    GTLogTracer lt;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
@@ -127,7 +125,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, l, "None of the reads satisfy minimum similarity criteria.");
+    CHECK_SET_ERR(lt.hasError("None of the reads satisfy minimum similarity criteria."), "Expected error is not found");
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
 
     settings.minIdentity = 30;
@@ -140,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
@@ -165,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsProjectTreeView::checkItem(os, "sanger_test_0004_1");
 
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
@@ -466,7 +464,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    GTLogTracer l;
+    GTLogTracer lt;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/dataset5/Reference.fna";
@@ -478,7 +476,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 
     settings.minIdentity = 70;
 
@@ -492,7 +490,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    GTLogTracer l;
+    GTLogTracer lt;
 
     AlignToReferenceBlastDialogFiller::Settings settings;
     settings.referenceUrl = testDir + "_common_data/sanger/dataset4/reference.gb";
@@ -517,7 +515,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.checkMessage("trimming was skipped"), "Could not find the message about skipped trimming");
+    CHECK_SET_ERR(lt.hasMessage("trimming was skipped"), "Could not find the message about skipped trimming");
 }
 
 }  // namespace GUITest_common_scenarios_sanger

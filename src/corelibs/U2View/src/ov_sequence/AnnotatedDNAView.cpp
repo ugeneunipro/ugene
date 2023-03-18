@@ -1349,7 +1349,7 @@ void AnnotatedDNAView::updateAutoAnnotations() {
 
 void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
     auto t = qobject_cast<Task*>(sender());
-    if (nullptr == t) {
+    if (t == nullptr) {
         return;
     }
 

@@ -294,7 +294,7 @@ QString FindPrompter::composeRichDoc() {
 
     QString patternStr;
     Actor* patternProd = input->getProducer(BaseSlots::TEXT_SLOT().getId());
-    if (nullptr == patternProd) {
+    if (patternProd == nullptr) {
         QString pattern = getHyperlink(PATTERN_ATTR, getRequiredParam(PATTERN_ATTR));
         patternStr = tr("<u>%1</u> pattern(s)").arg(pattern);
     } else {
@@ -367,7 +367,7 @@ Task* FindWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (nullptr == seqObj.data()) {
+        if (seqObj.data() == nullptr) {
             return nullptr;
         }
         U2OpStatusImpl os;

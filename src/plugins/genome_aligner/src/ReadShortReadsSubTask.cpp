@@ -150,7 +150,7 @@ void ReadShortReadsSubTask::run() {
             return;
         }
         SearchQuery* query = seqReader->read();
-        if (nullptr == query) {
+        if (query == nullptr) {
             if (!seqReader->isEnd()) {
                 setError("Short-reads object type must be a sequence, but not a multiple alignment");
                 readingFinishedWakeAll();

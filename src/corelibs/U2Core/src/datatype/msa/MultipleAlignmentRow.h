@@ -73,7 +73,7 @@ Derived MultipleAlignmentRow::dynamicCast() const {
 template<class Derived>
 Derived MultipleAlignmentRow::dynamicCast(U2OpStatus& os) const {
     Derived derived(*this);
-    if (nullptr == derived.maRowData) {
+    if (derived.maRowData == nullptr) {
         assert(false);
         os.setError("Can't cast MultipleAlignmentRow to a derived class");
     }
@@ -194,10 +194,10 @@ inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignment
     return *ptr1 == *ptr2;
 }
 inline bool operator==(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRowData* ptr2) {
-    return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
+    return ptr2 == nullptr ? ptr1->isDefault() : (*ptr1 == *ptr2);
 }
 inline bool operator==(const MultipleAlignmentRowData* ptr1, const MultipleAlignmentRow& ptr2) {
-    return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
+    return ptr1 == nullptr ? ptr2->isDefault() : (*ptr1 == *ptr2);
 }
 inline bool operator!=(const MultipleAlignmentRow& ptr1, const MultipleAlignmentRow& ptr2) {
     return !(ptr1 == ptr2);

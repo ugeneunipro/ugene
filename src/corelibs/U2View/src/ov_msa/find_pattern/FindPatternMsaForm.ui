@@ -48,7 +48,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="textPattern">
+    <widget class="QPlainTextEdit" name="textPattern">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -69,15 +69,6 @@
      </property>
      <property name="focusPolicy">
       <enum>Qt::StrongFocus</enum>
-     </property>
-     <property name="tabChangesFocus">
-      <bool>true</bool>
-     </property>
-     <property name="undoRedoEnabled">
-      <bool>false</bool>
-     </property>
-     <property name="acceptRichText">
-      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -301,9 +292,6 @@
           <height>0</height>
          </size>
         </property>
-        <property name="sizeAdjustPolicy">
-         <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-        </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -369,9 +357,6 @@
             <width>16777215</width>
             <height>16777215</height>
            </size>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToMinimumContentsLength</enum>
           </property>
          </widget>
         </item>

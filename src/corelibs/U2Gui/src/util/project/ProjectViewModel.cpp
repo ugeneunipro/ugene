@@ -785,7 +785,7 @@ GObject* ProjectViewModel::toObject(const QModelIndex& index) {
 
 Document* ProjectViewModel::getObjectDocument(GObject* obj) const {
     Document* result = obj->getDocument();
-    if (nullptr == result) {
+    if (result == nullptr) {
         return qobject_cast<Document*>(sender());
     }
     return result;
@@ -1195,7 +1195,7 @@ void ProjectViewModel::sl_documentImported() {
         insertFolder(doc, resultPath);
     }
     foreach (GObject* importedObj, task->getImportedObjects()) {
-        if (nullptr == doc->getObjectById(importedObj->getEntityRef().entityId)) {
+        if (doc->getObjectById(importedObj->getEntityRef().entityId) == nullptr) {
             doc->addObject(importedObj);
             insertObject(doc, importedObj, resultPath);
         } else {  // object has been already detected on a previous merging phase

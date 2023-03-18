@@ -290,7 +290,7 @@ void WizardController::assignParameters() {
         U2OpStatus2Log os;
         AttributeInfo info = AttributeInfo::fromString(attrId, os);
         Attribute* attr = getAttribute(info);
-        if (nullptr == attr) {
+        if (attr == nullptr) {
             continue;
         }
         attr->setAttributeValue(values[attrId]);
@@ -316,15 +316,15 @@ void WizardController::saveDelegateTags() {
         U2OpStatus2Log os;
         AttributeInfo info = AttributeInfo::fromString(attrId, os);
         DelegateTags* tags = propertyControllers[attrId]->tags();
-        if (nullptr == tags) {
+        if (tags == nullptr) {
             continue;
         }
         Actor* actor = WorkflowUtils::actorById(currentActors, info.actorId);
-        if (nullptr == actor->getEditor()) {
+        if (actor->getEditor() == nullptr) {
             continue;
         }
         PropertyDelegate* delegate = actor->getEditor()->getDelegate(info.attrId);
-        if (nullptr == delegate) {
+        if (delegate == nullptr) {
             continue;
         }
         delegate->tags()->set(*tags);

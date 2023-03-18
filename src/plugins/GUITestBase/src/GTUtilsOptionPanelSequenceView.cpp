@@ -24,6 +24,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTWidget.h>
@@ -77,17 +78,17 @@ const QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequ
 #define GT_METHOD_NAME "enterPattern"
 
 void GTUtilsOptionPanelSequenceView::enterPattern(HI::GUITestOpStatus& os, const QString& pattern, bool useCopyPaste) {
-    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto patternEdit = GTWidget::findPlainTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
     if (!patternEdit->toPlainText().isEmpty()) {
-        GTTextEdit::clear(os, patternEdit);
+        GTPlainTextEdit::clear(os, patternEdit);
     }
     if (useCopyPaste) {
         GTClipboard::setText(os, pattern);
         GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     } else {
-        GTTextEdit::setText(os, patternEdit, pattern);
+        GTPlainTextEdit::setText(os, patternEdit, pattern);
     }
 }
 
