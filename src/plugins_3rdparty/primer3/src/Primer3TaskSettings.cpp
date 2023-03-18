@@ -49,6 +49,18 @@ Primer3TaskSettings::Primer3TaskSettings() {
     primerSettings = p3_create_global_settings_default_version_1();
     seqArgs = create_seq_arg();
     isCircular = false;
+    // UGENE numerates sequence characters in a human-readable mode - the first character has index 1, like this:
+    // Index number:       1234...
+    // Sequence character: ACGT...
+    //
+    // Primer3 numerates characters (by default) in a programming mode - the first character has index 0:
+    // Index number:       0123...
+    // Sequence character: ACGT...
+    //
+    // It causes one character shift is the result (UGENE-7825)
+    // But Primer3 has a special parameter to set a number to start indexing with - FIRST_BASE_INDEX (default value = 0)
+    // By settings this parameter to 1 we make Primer3 index characters from number 1
+    primerSettings->first_base_index = 1;
 
     initMaps();
 }
@@ -112,7 +124,7 @@ QByteArray Primer3TaskSettings::getSequence() const {
 
 int Primer3TaskSettings::getSequenceSize() const {
     CHECK(seqArgs->sequence != nullptr, 0);
-    
+
     return strlen(seqArgs->sequence);
 }
 
