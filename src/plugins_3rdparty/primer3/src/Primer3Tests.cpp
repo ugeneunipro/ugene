@@ -26,7 +26,8 @@
 namespace U2 {
 
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
-    settings = new Primer3TaskSettings;
+    settings = new Primer3TaskSettings();
+    settings->getPrimerSettings()->first_base_index = 0;  // Default mode for XML tests.
     settings->setIncludedRegion(U2Region(0, -1));
 
     QString buf;
@@ -271,7 +272,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
         if (!buf.isEmpty()) {
             settings->setTaskByName(buf);
         }
-        //21
+        // 21
         buf = elInput.attribute("SEQUENCE_QUALITY");
         if (!buf.isEmpty()) {
             QVector<int> qualityVecor;
@@ -362,7 +363,10 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
 
         if (pairsCount > 0 && (pairsCount != leftCount || pairsCount != rightCount || (internalCount != 0 && pairsCount != rightCount))) {
             stateInfo.setError(GTest::tr("Incorrect results num. Pairs: %1, left: %2, right: %3, inernal: %4")
-                .arg(pairsCount).arg(leftCount).arg(rightCount).arg(internalCount));
+                                   .arg(pairsCount)
+                                   .arg(leftCount)
+                                   .arg(rightCount)
+                                   .arg(internalCount));
             return;
         }
 
@@ -577,20 +581,20 @@ Task::ReportResult GTest_Primer3::report() {
             QString suffix = "PRIMER_";
             bool internalOligo = false;
             switch (expectedrimer.getType()) {
-            case OT_LEFT:
-                suffix += "LEFT_" + QString::number(i);
-                leftCount++;
-                break;
-            case OT_RIGHT:
-                suffix += "RIGHT_" + QString::number(i - leftCount);
-                rightCount++;
-                break;
-            case OT_INTL:
-                suffix += "INTERNAL_" + QString::number(i - leftCount - rightCount);
-                internalOligo = true;
-                break;
+                case OT_LEFT:
+                    suffix += "LEFT_" + QString::number(i);
+                    leftCount++;
+                    break;
+                case OT_RIGHT:
+                    suffix += "RIGHT_" + QString::number(i - leftCount);
+                    rightCount++;
+                    break;
+                case OT_INTL:
+                    suffix += "INTERNAL_" + QString::number(i - leftCount - rightCount);
+                    internalOligo = true;
+                    break;
             }
-            if (!checkPrimer(&currentPrimer , &expectedrimer, suffix, internalOligo)) {
+            if (!checkPrimer(&currentPrimer, &expectedrimer, suffix, internalOligo)) {
                 return ReportResult_Finished;
             }
         }
@@ -737,7 +741,6 @@ bool GTest_Primer3::checkPrimerPair(const PrimerPair& primerPair, const PrimerPa
         stateInfo.setError(GTest::tr("PRIMER_PAIR%1_COMPL_END_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(suffix).arg(expectedPrimerPair.getComplEndStruct()).arg(primerPair.getComplEndStruct()));
         return false;
     }
-
 
     return true;
 }
