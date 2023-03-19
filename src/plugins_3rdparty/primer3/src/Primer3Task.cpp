@@ -605,7 +605,7 @@ void Primer3SWTask::prepare() {
     const auto& includedRegion = settings->getIncludedRegion();
     int fbs = settings->getFirstBaseIndex();
     int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
-    CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
+    CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
 
     if (sequenceRange.endPos() > sequenceSize + includedRegionOffset) {
         SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
