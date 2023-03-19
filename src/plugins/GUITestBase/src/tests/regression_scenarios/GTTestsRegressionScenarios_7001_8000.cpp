@@ -1812,7 +1812,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new DigestScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Cloning", "Digest into fragments..."}));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the task finished with an error: Conserved annotation misc_feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
