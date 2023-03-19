@@ -3747,6 +3747,8 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
 
     GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_4674_2");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::General);
 
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
