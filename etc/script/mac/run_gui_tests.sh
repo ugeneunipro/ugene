@@ -68,6 +68,6 @@ export UGENE_SAVE_DATA_DIR="${UGENE_SAVE_DATA_DIR}"
 export UGENE_SNPEFF_DB_LIST="${UGENE_SAVE_DATA_DIR}/SnpEff_DB.list"
 export UGENE_PRIMER_LIBRARY_PATH="${UGENE_SAVE_DATA_DIR}/primer_library.ugenedb"
 
-/opt/homebrew/bin/gstdbuf -oL "${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE}" | tee "output.txt"
+"${UGENE_DIR}/ugeneui" --ini-file="${UGENE_MASTER_USER_INI}" --gui-test-suite="${UGENE_GUI_TEST_SUITE}" | tee "output.txt"
 
 echo "##teamcity[blockClosed name='Running tests']"
