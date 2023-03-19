@@ -44,8 +44,6 @@ public:
     QMdiSubWindow* qw;
 };
 
-typedef QList<MDIItem*> MDIItems;
-
 class MWMDIManagerImpl : public MWMDIManager {
     Q_OBJECT
 public:
@@ -54,22 +52,20 @@ public:
         prepareGUI();
     }
 
-    ~MWMDIManagerImpl();
+    void addMDIWindow(MWMDIWindow* w) override;
 
-    virtual void addMDIWindow(MWMDIWindow* w);
+    bool closeMDIWindow(MWMDIWindow* w) override;
 
-    virtual bool closeMDIWindow(MWMDIWindow* w);
+    QList<MWMDIWindow*> getWindows() const override;
 
-    virtual QList<MWMDIWindow*> getWindows() const;
+    MWMDIWindow* getWindowById(int id) const override;
 
-    virtual MWMDIWindow* getWindowById(int id) const;
+    void activateWindow(MWMDIWindow* w) override;
 
-    virtual void activateWindow(MWMDIWindow* w);
-
-    virtual MWMDIWindow* getActiveWindow() const;
+    MWMDIWindow* getActiveWindow() const override;
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private slots:
     void sl_setActiveSubWindow(QWidget*);
@@ -96,7 +92,7 @@ private:
 
     MainWindow* mw;
     FixedMdiArea* mdiArea;
-    MDIItems items;
+    QList<MDIItem*> items;
 
     QAction* closeAct;
     QAction* closeAllAct;
