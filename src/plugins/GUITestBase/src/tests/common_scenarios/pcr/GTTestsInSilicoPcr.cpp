@@ -448,7 +448,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     // 7. Click "Export product(s)".
     auto extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -461,10 +460,10 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 0);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
 
     // 9. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -475,11 +474,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 10. Choose "None" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 2);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
 
     // 11. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
