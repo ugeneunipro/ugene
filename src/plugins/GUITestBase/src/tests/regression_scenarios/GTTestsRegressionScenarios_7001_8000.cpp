@@ -4256,6 +4256,31 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7824) {
+    // 1. Open 1.gb.
+    // 2. Double click any annotation
+    // Expected: the corresponding sequence has been selected
+    // 
+    // 3. Click right button on the same annotation
+    // Expected: the corresponding sequence is still selected
+    // Current: sequence selection is gone, only annotation selection left
+
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)"));
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B"));
+    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "B"), -1, Qt::RightButton);
+    GTKeyboardDriver::keyPress(Qt::Key_Escape);
+    QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 1, "Selection size should be 1, but actual size is " + QString::number(selection.size()));
+    CHECK_SET_ERR(selection.first() == U2Region(29, 91),
+                  QString("Selection doesn't match with 'B' annotation it is (%1, %2) instead of (29, 91).")
+                      .arg(QString::number(selection.first().startPos))
+                      .arg(QString::number(selection.first().length))
+                  );
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7827) {
     // 1. Open samples/PDB/1CF7.PDB
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
