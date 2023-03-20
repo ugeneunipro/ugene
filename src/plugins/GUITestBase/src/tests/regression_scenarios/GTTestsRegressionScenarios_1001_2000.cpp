@@ -4953,6 +4953,8 @@ GUI_TEST_CLASS_DEFINITION(test_1548) {
     // Build tree for the alignment
     GTUtilsMsaEditor::buildPhylogeneticTree(os, testDir + "_common_data/scenarios/sandbox/1548.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::General);
 
     // Ensure that the "Sync" mode is ON and 'Mecopoda_elongata_Sumatra' and 'Mecopoda_elongata_Ishigaki_J' are in the correct order.
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
