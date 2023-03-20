@@ -4633,6 +4633,8 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new CustomBuildTreeDialogFiller()));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::General);
 
     // Expected: the tree appears synchronized with the MSA Editor.
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
