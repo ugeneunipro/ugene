@@ -287,7 +287,7 @@ void AssemblyVariantRowManager::sl_trackRemoved(VariantTrackObject* objToRemove)
         QLayoutItem* it = vertLayout->itemAt(i);
         QWidget* w = it->widget();
         auto row = dynamic_cast<AssemblyVariantRow*>(w);
-        if (nullptr == row) {
+        if (row == nullptr) {
             continue;
         }
         VariantTrackObject* trackObj = row->getTrackObject();

@@ -138,7 +138,7 @@ void GTest_AnnotatorSearch::prepare() {
         return;
     }
     AnnotationTableObject* ao = getContext<AnnotationTableObject>(this, seqName);
-    if (nullptr == ao) {
+    if (ao == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(seqName));
         return;
     }

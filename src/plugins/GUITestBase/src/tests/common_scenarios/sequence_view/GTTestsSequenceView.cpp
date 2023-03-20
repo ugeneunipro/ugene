@@ -2177,7 +2177,7 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
     // Expected: the menu disappears.
-    CHECK_SET_ERR(nullptr == QApplication::activePopupWidget(), "Menu is shown");
+    CHECK_SET_ERR(QApplication::activePopupWidget() == nullptr, "Menu is shown");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0076) {

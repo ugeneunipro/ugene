@@ -655,7 +655,7 @@ GUI_TEST_CLASS_DEFINITION(test_0605) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0610) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     //    1. Open any MSA, i.e. samples/ClustalW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -665,18 +665,18 @@ GUI_TEST_CLASS_DEFINITION(test_0610) {
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(1, 1));
 
     //    3. Click on white area below sequences (there will be no selection)
-    // this step is depreceated: it will cause selecting a symbol in the last row.
+    // this step is deprecated: it will cause selecting a symbol in the last row.
     GTUtilsMSAEditorSequenceArea::cancelSelection(os);
 
-    //    4.  Modify MSA: aligh with any algorithm
-    //    Expected state: UGENE not crased
+    //    4.  Modify MSA: align with any algorithm
+    //    Expected state: UGENE not crashed
     GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(os, new KalignDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0627) {
@@ -878,11 +878,11 @@ GUI_TEST_CLASS_DEFINITION(test_0677) {
     // 2. Check the box 'Import unmapped reads' and import the file.
     // Expected state: UGENE not crashed
 
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_0677/test_0677.ugenedb", "", "", true));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/", "1.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 GUI_TEST_CLASS_DEFINITION(test_0678) {
     // 1. Open samples/PDB/1CF7.pdb
@@ -1712,7 +1712,7 @@ GUI_TEST_CLASS_DEFINITION(test_0814) {
         QString name;
     };
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 
@@ -1824,7 +1824,7 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
     GTThread::waitForMainThread();
 
     restrictionMapTreeWidget = GTWidget::findWidget(os, "restrictionMapTreeWidget", nullptr, {false});
-    CHECK_SET_ERR(nullptr == restrictionMapTreeWidget, "Restriction map widget is visible unexpectedly");
+    CHECK_SET_ERR(restrictionMapTreeWidget == nullptr, "Restriction map widget is visible unexpectedly");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0839) {
@@ -2307,7 +2307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList errors = GTUtilsLog::getErrors(os, l1);
+    QStringList errors = l1.errorMessages;
     CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1 != " + QString::number(errors.size()) + ", errors: " + errors.join(","));
 
     // Cleanup.
@@ -2320,12 +2320,12 @@ GUI_TEST_CLASS_DEFINITION(test_0886) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    errors = GTUtilsLog::getErrors(os, l2);
-    CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2 != " + QString::number(errors.size()) + ", errors: " + errors.join(","));
+    errors = l2.errorMessages;
+    CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1 != " + QString::number(errors.size()) + ", errors: " + errors.join(","));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0888) {
-    //    1. Open WD sampel scheme "Convert seq/qual pair to Fastq"
+    //    1. Open WD sample scheme "Convert seq/qual pair to Fastq"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "Convert seq/qual pair to FASTQ");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -2914,7 +2914,7 @@ GUI_TEST_CLASS_DEFINITION(test_0967_3) {
 GUI_TEST_CLASS_DEFINITION(test_0969) {
     // 1. Open any scheme file and do nothing with the opened scene (do not change).
     // 2. Click on 'Load scheme' or 'New scheme' button.
-    // Expected state: WD don't asks to save the current scene
+    // Expected state: WD doesn't ask to save the current scene
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addSample(os, "call variants");
@@ -3052,7 +3052,7 @@ GUI_TEST_CLASS_DEFINITION(test_0999_1) {
             //        {Paste sequence here} - AAAAAD
             //        {Custom settings} - checked
             //        {Replace unknown symbols with} - z
-            GTPlainTextEdit::setPlainText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAAAD");
+            GTPlainTextEdit::setText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAAAD");
             GTGroupBox::setChecked(os, "groupBox", dialog);
             GTRadioButton::click(os, GTWidget::findRadioButton(os, "replaceRB", dialog));
             GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), "z");
@@ -3083,7 +3083,7 @@ GUI_TEST_CLASS_DEFINITION(test_0999_2) {
             //        {Custom settings} - checked
             //        {Replace unknown symbols with} - T
             //        {Document Location} - %any valid filepath%
-            GTPlainTextEdit::setPlainText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAZZZZZZAAA");
+            GTPlainTextEdit::setText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), "AAAZZZZZZAAA");
             GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, "groupBox", dialog));
             GTRadioButton::click(os, GTWidget::findRadioButton(os, "replaceRB", dialog));
             GTLineEdit::setText(os, GTWidget::findLineEdit(os, "symbolToReplaceEdit", dialog), "T");
@@ -3164,7 +3164,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::checkContainsError(os, lt1, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
+    CHECK_SET_ERR(lt1.hasError("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"), "Expected error not found");
 
     //    5. Repeat steps 2, 3, then choose another algorithm in dialog.
     //    6. Press "Start prediction".
@@ -3181,7 +3181,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::checkContainsError(os, lt2, QString("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"));
+    CHECK_SET_ERR(lt2.hasError("Task {Secondary structure predict} finished with error: The size of sequence is less then minimal allowed size (5 residues)"), "Expected error not found");
 }
 
 }  // namespace GUITest_regression_scenarios

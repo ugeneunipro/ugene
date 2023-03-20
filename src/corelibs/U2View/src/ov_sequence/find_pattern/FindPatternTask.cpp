@@ -23,7 +23,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CreateAnnotationTask.h>
-#include <U2Core/GenbankFeatures.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -146,14 +145,10 @@ const QList<SharedAnnotationData>& FindPatternListTask::getResults() const {
     return results;
 }
 
-bool FindPatternListTask::hasNoResults() const {
-    return noResults;
-}
-
 void FindPatternListTask::prepare() {
-    foreach (const NamePattern& pattern, patterns) {
+    for (const NamePattern& pattern : qAsConst(patterns)) {
         if (pattern.second.isEmpty()) {
-            uiLog.error(tr("Empty pattern"));
+            uiLog.details(tr("Empty pattern: %1").arg(pattern.first));
             continue;
         }
         FindAlgorithmTaskSettings subTaskSettings = settings;

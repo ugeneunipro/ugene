@@ -398,7 +398,7 @@ bool MemoryLocker::tryAcquire(qint64 bytes) {
             lockedMB = needMB;
         } else {
             errorMessage = QString("MemoryLocker - Not enough memory error, %1 megabytes are required").arg(needMB);
-            if (nullptr != os) {
+            if (os != nullptr) {
                 os->setError(errorMessage);
             }
         }

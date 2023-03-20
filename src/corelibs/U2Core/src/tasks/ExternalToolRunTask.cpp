@@ -416,7 +416,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
         ScriptingToolRegistry* stregister = AppContext::getScriptingToolRegistry();
         SAFE_POINT_EXT(nullptr != stregister, os.setError("No scripting tool registry"), result);
         ScriptingTool* stool = stregister->getById(toolRunnerProgram);
-        if (nullptr == stool || stool->getPath().isEmpty()) {
+        if (stool == nullptr || stool->getPath().isEmpty()) {
             os.setError(QString("The tool %1 that runs %2 is not installed. Please set the path of the tool in the External Tools settings").arg(toolRunnerProgram).arg(toolName));
             return result;
         }

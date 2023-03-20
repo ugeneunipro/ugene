@@ -45,7 +45,7 @@ SQLiteDbi* SQLiteObjectDbiTestData::sqliteDbi = nullptr;
 SQLiteObjectDbi* SQLiteObjectDbiTestData::sqliteObjectDbi = nullptr;
 
 void SQLiteObjectDbiTestData::init() {
-    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(sqliteDbi == nullptr, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_OBJ_DB_URL, false);
@@ -89,35 +89,35 @@ void SQLiteObjectDbiTestData::shutdown() {
 }
 
 SQLiteDbi* SQLiteObjectDbiTestData::getSQLiteDbi() {
-    if (nullptr == sqliteDbi) {
+    if (sqliteDbi == nullptr) {
         init();
     }
     return sqliteDbi;
 }
 
 SQLiteObjectDbi* SQLiteObjectDbiTestData::getSQLiteObjectDbi() {
-    if (nullptr == sqliteObjectDbi) {
+    if (sqliteObjectDbi == nullptr) {
         init();
     }
     return sqliteObjectDbi;
 }
 
 U2AttributeDbi* SQLiteObjectDbiTestData::getAttributeDbi() {
-    if (nullptr == attributeDbi) {
+    if (attributeDbi == nullptr) {
         init();
     }
     return attributeDbi;
 }
 
 U2MsaDbi* SQLiteObjectDbiTestData::getMsaDbi() {
-    if (nullptr == msaDbi) {
+    if (msaDbi == nullptr) {
         init();
     }
     return msaDbi;
 }
 
 U2SequenceDbi* SQLiteObjectDbiTestData::getSequenceDbi() {
-    if (nullptr == sequenceDbi) {
+    if (sequenceDbi == nullptr) {
         init();
     }
     return sequenceDbi;

@@ -166,7 +166,7 @@ bool Schema::recursiveExpand(QList<QString>& schemaIds) {
         }
 
         Schema* schema = WorkflowEnv::getSchemaActorsRegistry()->getSchema(proto->getId());
-        if (nullptr == schema) {
+        if (schema == nullptr) {
             return false;
         }
 

@@ -2769,7 +2769,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="698"/>
-        <source>Incorrect summ &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
+        <source>Incorrect sum &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2873,7 +2873,7 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
     <name>U2::Primer3SWTask</name>
     <message>
         <location filename="../src/Primer3Task.cpp" line="608"/>
-        <source>Incorrect summ &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
+        <source>Incorrect sum &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

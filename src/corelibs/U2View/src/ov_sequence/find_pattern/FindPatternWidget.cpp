@@ -25,6 +25,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMovie>
+#include <QPlainTextEdit>
 
 #include <U2Algorithm/FindAlgorithmTask.h>
 
@@ -160,9 +161,9 @@ private:
  * Both QTextEdit and QPlainTextEdit have very bad performance when long lines of text (sequences) are used
  * and may cause an app freeze.
  */
-class FindPatternTextEdit : public QTextEdit {
+class FindPatternTextEdit : public QPlainTextEdit {
 public:
-    FindPatternTextEdit(QTextEdit* originalEdit) {
+    FindPatternTextEdit(QPlainTextEdit* originalEdit) {
         // Copy all important fields from the original edit. These fields can be set in QtDesigner.
         setObjectName(originalEdit->objectName());
         setSizePolicy(originalEdit->sizePolicy());
@@ -180,12 +181,12 @@ protected:
     }
 
     bool canInsertFromMimeData(const QMimeData* source) const override {
-        return isSafeToAddExtraTextSize(source->text().length()) && QTextEdit::canInsertFromMimeData(source);
+        return isSafeToAddExtraTextSize(source->text().length()) && QPlainTextEdit::canInsertFromMimeData(source);
     }
 
     void insertFromMimeData(const QMimeData* source) override {
         if (isSafeToAddExtraTextSize(source->text().length())) {
-            QTextEdit::insertFromMimeData(source);
+            QPlainTextEdit::insertFromMimeData(source);
             return;
         }
         QString notificationMessage = FindPatternWidget::tr("The pattern is too long. Use 'Load pattern from file' option.");
@@ -193,7 +194,7 @@ protected:
     }
 };
 
-FindPatternEventFilter::FindPatternEventFilter(QTextEdit* textEdit)
+FindPatternEventFilter::FindPatternEventFilter(QPlainTextEdit* textEdit)
     : QObject(textEdit) {
     textEdit->installEventFilter(this);
 }
@@ -826,7 +827,7 @@ void FindPatternWidget::setCorrectPatternsString() {
     }
     QString textPatternByWalker = walker.getString();
     if (textPatternByUser != textPatternByWalker) {
-        textPattern->setText(textPatternByWalker);
+        textPattern->setPlainText(textPatternByWalker);
         cursorInTextEdit.setPosition(walker.getCursor());
         textPattern->setTextCursor(cursorInTextEdit);
     }
@@ -1260,9 +1261,9 @@ void FindPatternWidget::updatePatternText(int previousAlgorithm) {
 
     // Set a new state.
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        textPattern->setText(patternRegExp);
+        textPattern->setPlainText(patternRegExp);
     } else {
-        textPattern->setText(patternString);
+        textPattern->setPlainText(patternString);
     }
     setCorrectPatternsString();
 }
@@ -1397,7 +1398,7 @@ void FindPatternWidget::showCurrentResult() const {
     const QVector<U2Region>& regions = findResult->getRegions();
     CHECK(!regions.isEmpty(), );
     activeContext->getSequenceSelection()->setSelectedRegions(regions);
-    int centerPos = regions.first().center() + 1;
+    qint64 centerPos = regions.first().center() + 1;
     annotatedDnaView->sl_onPosChangeRequest(centerPos);
 }
 

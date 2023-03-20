@@ -51,7 +51,7 @@ public:
     virtual GTAbstractGUIAction* clone() const = 0;
 
     const QString objectClassName() const {
-        return nullptr == obj ? "" : obj->metaObject()->className();
+        return obj == nullptr ? "" : obj->metaObject()->className();
     }
     static bool lessThan(const GTAbstractGUIAction* lv, const GTAbstractGUIAction* rv) {
         return lv->priority > rv->priority;

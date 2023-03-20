@@ -76,13 +76,13 @@ private:
 };
 
 void copyReadsUnrelatedAttributes(const U2DataId& srcObjId, const U2DataId& dstObjId, U2AttributeDbi* srcAttributeDbi, U2AttributeDbi* dstAttributeDbi, U2OpStatus& os) {
-    CHECK_EXT(nullptr != srcAttributeDbi, os.setError("NULL source attribute dbi"), );
-    CHECK_EXT(nullptr != dstAttributeDbi, os.setError("NULL destination attribute dbi"), );
+    CHECK_EXT(srcAttributeDbi != nullptr, os.setError("NULL source attribute dbi"), );
+    CHECK_EXT(dstAttributeDbi != nullptr, os.setError("NULL destination attribute dbi"), );
 
     U2Dbi* dstDbi = dstAttributeDbi->getRootDbi();
     U2Dbi* srcDbi = srcAttributeDbi->getRootDbi();
-    CHECK_EXT(nullptr != srcDbi, os.setError("NULL source root dbi"), );
-    CHECK_EXT(nullptr != dstDbi, os.setError("NULL destination root dbi"), );
+    CHECK_EXT(srcDbi != nullptr, os.setError("NULL source root dbi"), );
+    CHECK_EXT(dstDbi != nullptr, os.setError("NULL destination root dbi"), );
 
     if (!dstDbi->getFeatures().contains(U2DbiFeature_WriteAttributes)) {
         os.setError("Destination dbi does not support writing");
@@ -145,13 +145,13 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject* const src
 
     U2ObjectDbi* dstObjectDbi = dstCon.dbi->getObjectDbi();
     U2ObjectDbi* srcObjectDbi = srcCon.dbi->getObjectDbi();
-    SAFE_POINT_EXT(nullptr != dstObjectDbi, os.setError("NULL destination object dbi"), U2EntityRef());
-    SAFE_POINT_EXT(nullptr != srcObjectDbi, os.setError("NULL source object dbi"), U2EntityRef());
+    SAFE_POINT_EXT(dstObjectDbi != nullptr, os.setError("NULL destination object dbi"), U2EntityRef());
+    SAFE_POINT_EXT(srcObjectDbi != nullptr, os.setError("NULL source object dbi"), U2EntityRef());
 
     U2AssemblyDbi* dstAssemblyDbi = dstCon.dbi->getAssemblyDbi();
     U2AssemblyDbi* srcAssemblyDbi = srcCon.dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(nullptr != dstAssemblyDbi, os.setError("NULL destination assembly dbi"), U2EntityRef());
-    SAFE_POINT_EXT(nullptr != srcAssemblyDbi, os.setError("NULL source assembly dbi"), U2EntityRef());
+    SAFE_POINT_EXT(dstAssemblyDbi != nullptr, os.setError("NULL destination assembly dbi"), U2EntityRef());
+    SAFE_POINT_EXT(srcAssemblyDbi != nullptr, os.setError("NULL source assembly dbi"), U2EntityRef());
 
     // prepare reads
     CHECK_OP(os, U2EntityRef());

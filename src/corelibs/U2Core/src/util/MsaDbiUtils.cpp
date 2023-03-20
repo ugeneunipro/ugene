@@ -303,12 +303,12 @@ DbiConnection* MaDbiUtils::getCheckedConnection(const U2DbiRef& dbiRef, U2OpStat
     QScopedPointer<DbiConnection> con(new DbiConnection(dbiRef, os));
     CHECK_OP(os, nullptr);
 
-    if (nullptr == con->dbi) {
+    if (con->dbi == nullptr) {
         os.setError("NULL root dbi");
         return nullptr;
     }
 
-    if (nullptr == con->dbi->getMsaDbi()) {
+    if (con->dbi->getMsaDbi() == nullptr) {
         os.setError("NULL MSA dbi");
         return nullptr;
     }

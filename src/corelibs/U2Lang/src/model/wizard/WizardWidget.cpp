@@ -372,7 +372,7 @@ void TophatSamplesWidget::validate(const QList<Actor*>& actors, U2OpStatus& os) 
         if (a->getId() == datasetsProvider) {
             Attribute* attr = a->getParameter(BaseAttributes::URL_IN_ATTRIBUTE().getId());
             auto datasetAttr = dynamic_cast<URLAttribute*>(attr);
-            if (nullptr == datasetAttr) {
+            if (datasetAttr == nullptr) {
                 os.setError(QObject::tr("The actor has not the dataset attribute"));
             }
             return;

@@ -100,7 +100,7 @@ U2EntityRef ExtractConsensusWorker::takeAssembly(U2OpStatus& os) {
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     const AssemblyObject* obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
-    if (nullptr == obj) {
+    if (obj == nullptr) {
         os.setError(tr("Error with assembly object"));
         return U2EntityRef();
     }
@@ -179,7 +179,7 @@ AssemblyConsensusAlgorithm* ExtractConsensusTaskHelper::createAlgorithm() {
     SAFE_POINT_EXT(nullptr != reg, setError("NULL registry"), nullptr);
 
     AssemblyConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
-    if (nullptr == f) {
+    if (f == nullptr) {
         setError(tr("Unknown consensus algorithm: ") + algoId);
         return nullptr;
     }

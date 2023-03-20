@@ -67,7 +67,7 @@ public:
 private:
     void reset();
     bool doDataExchange();
-    void showInvalidInputMessage(QWidget* field, QString fieldLabel);
+    void showInvalidInputMessage(QWidget* field, const QString& fieldLabel);
 
 private slots:
     void sl_resetClicked();

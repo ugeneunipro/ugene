@@ -194,7 +194,7 @@ Task::ReportResult GTest_FindEnzymes::report() {
     foreach (const QString& enzymeId, resultsPerEnzyme.keys()) {
         QList<U2Region> regions = resultsPerEnzyme.values(enzymeId);
         AnnotationGroup* ag = aObj->getRootGroup()->getSubgroup(enzymeId, false);
-        if (nullptr == ag) {
+        if (ag == nullptr) {
             stateInfo.setError(QString("Group not found %1").arg(enzymeId));
             break;
         }

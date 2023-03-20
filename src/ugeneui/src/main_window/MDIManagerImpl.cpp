@@ -22,7 +22,6 @@
 #include "MDIManagerImpl.h"
 
 #include <QAction>
-#include <QHBoxLayout>
 #include <QMenu>
 #include <QSet>
 #include <QShortcut>
@@ -44,9 +43,6 @@ static QString getWindowName(MDIItem* mdiItem) {
         return "<no window>";
     }
     return mdiItem->w->windowTitle();
-}
-
-MWMDIManagerImpl::~MWMDIManagerImpl() {
 }
 
 void MWMDIManagerImpl::prepareGUI() {
@@ -95,33 +91,32 @@ void MWMDIManagerImpl::prepareGUI() {
     cascadeAct->setStatusTip(tr("Cascade windows"));
     connect(cascadeAct, SIGNAL(triggered()), mdiArea, SLOT(cascadeSubWindows()));
 
-#ifdef Q_OS_DARWIN
-    QKeySequence nextActKeySequence(Qt::CTRL + (Qt::Key)'`');
-    QKeySequence nextActKeySequenceAdditional(Qt::META + Qt::Key_Tab);
-    QKeySequence prevActKeySequence(Qt::CTRL + Qt::SHIFT + (Qt::Key)'`');
-    QKeySequence prevActKeySequenceAdditional(Qt::META + Qt::SHIFT + Qt::Key_Tab);
+    QKeySequence nextWindowKeySequence;
+    QKeySequence prevWindowKeySequence;
+    if (isOsMac()) {
+        nextWindowKeySequence = QKeySequence(Qt::CTRL + (Qt::Key)'`');
+        prevWindowKeySequence = QKeySequence(Qt::CTRL + Qt::SHIFT + (Qt::Key)'`');
 
-    QShortcut* additionalNextShortcut = new QShortcut(nextActKeySequenceAdditional, mdiArea);
-    connect(additionalNextShortcut, SIGNAL(activated()), mdiArea, SLOT(activateNextSubWindow()));
+        auto additionalNextShortcut = new QShortcut(QKeySequence(Qt::META + Qt::Key_Tab), mdiArea);
+        connect(additionalNextShortcut, &QShortcut::activated, mdiArea, &QMdiArea::activateNextSubWindow);
 
-    QShortcut* additionalPrevShortcut = new QShortcut(prevActKeySequenceAdditional, mdiArea);
-    connect(additionalPrevShortcut, SIGNAL(activated()), mdiArea, SLOT(activatePreviousSubWindow()));
-
-#else
-    QKeySequence nextActKeySequence(Qt::CTRL + Qt::Key_Tab);
-    QKeySequence prevActKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab);
-#endif
+        auto additionalPrevShortcut = new QShortcut(QKeySequence(Qt::META + Qt::SHIFT + Qt::Key_Tab), mdiArea);
+        connect(additionalPrevShortcut, &QShortcut::activated, mdiArea, &QMdiArea::activatePreviousSubWindow);
+    } else {
+        nextWindowKeySequence = QKeySequence(Qt::CTRL + Qt::Key_Tab);
+        prevWindowKeySequence = QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab);
+    }
 
     nextAct = new QAction(QIcon(":ugene/images/window_next.png"), tr("Next window"), this);
     nextAct->setObjectName("Next window");
     nextAct->setStatusTip(tr("Next window"));
-    nextAct->setShortcut(nextActKeySequence);
+    nextAct->setShortcut(nextWindowKeySequence);
     connect(nextAct, SIGNAL(triggered()), mdiArea, SLOT(activateNextSubWindow()));
 
     previousAct = new QAction(QIcon(":ugene/images/window_prev.png"), tr("Previous window"), this);
     previousAct->setObjectName("Previous window");
     previousAct->setStatusTip(tr("Previous window"));
-    previousAct->setShortcut(prevActKeySequence);
+    previousAct->setShortcut(prevWindowKeySequence);
     connect(previousAct, SIGNAL(triggered()), mdiArea, SLOT(activatePreviousSubWindow()));
 
     separatorAct = new QAction("-", this);
@@ -237,11 +232,7 @@ MDIItem* MWMDIManagerImpl::getCurrentMDIItem() const {
 }
 
 void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
-    bool contains = getWindowById(w->getId()) != nullptr;
-    if (contains) {
-        assert(0);  // must never happen
-        return;
-    }
+    SAFE_POINT(getWindowById(w->getId()) == nullptr, "MDI window is already registered", );
     w->setParent(mdiArea);
     w->setVisible(true);
     QMdiSubWindow* qw = mdiArea->addSubWindow(w);
@@ -251,9 +242,10 @@ void MWMDIManagerImpl::addMDIWindow(MWMDIWindow* w) {
         icon = QIcon(":/ugene/images/ugene_16.png");
     }
     qw->setWindowIcon(icon);
-    // qw->setAttribute(Qt::WA_NativeWindow);
-    MDIItem* i = new MDIItem(w, qw);
-    items.append(i);
+    if (isOsMac()) {
+        qw->setAttribute(Qt::WA_NativeWindow);
+    }
+    items.append(new MDIItem(w, qw));
     qw->installEventFilter(this);
 
     uiLog.trace(QString("Adding window: '%1'").arg(w->windowTitle()));
@@ -280,7 +272,7 @@ QList<MWMDIWindow*> MWMDIManagerImpl::getWindows() const {
 
 bool MWMDIManagerImpl::closeMDIWindow(MWMDIWindow* w) {
     MDIItem* i = getMDIItem(w);
-    if (nullptr == i)
+    if (i == nullptr)
         return false;
     return i->qw->close();
 }
@@ -401,23 +393,6 @@ void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow* w) {
     uiLog.trace(QString("Switching active MDI window from '%1' to '%2'").arg(getWindowName(mdiContentOwner)).arg(getWindowName(mdiItem)));
     // clear old windows menu/tb content
     clearMDIContent(false);
-
-#ifdef Q_OS_DARWIN
-    // A workaround for UGENE-6315 (QTBUG-67895): background widgets are drawn over the foreground widget on macOS with the native style
-    if (QMdiArea::TabbedView == mdiArea->viewMode()) {
-        foreach (MDIItem* item, items) {
-            if (item != mdiItem && nullptr != item && nullptr != item->w && nullptr != item->qw) {
-                item->w->hide();
-                item->qw->setWindowFlags(item->qw->windowFlags() | Qt::FramelessWindowHint);
-            }
-        }
-
-        if (nullptr != mdiItem && nullptr != mdiItem->w && nullptr != mdiItem->qw) {
-            mdiItem->qw->setWindowFlags(mdiItem->qw->windowFlags() & (~Qt::FramelessWindowHint));
-            mdiItem->w->show();
-        }
-    }
-#endif
 
     // add new content to menu/tb
     QToolBar* tb = mw->getToolbar(MWTOOLBAR_ACTIVEMDI);

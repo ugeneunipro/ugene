@@ -557,7 +557,7 @@ void URLWidget::sl_browse() {
         return;
     }
     RunFileSystem* rfs = getRFS();
-    if (nullptr == rfs) {
+    if (rfs == nullptr) {
         urlLine->sl_onBrowse();
     } else {
         QObjectScopedPointer<OutputFileDialog> d = new OutputFileDialog(rfs, urlLine->isPath, urlLine->getCompletionFillerInstance(), this);

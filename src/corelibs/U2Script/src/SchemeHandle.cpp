@@ -169,7 +169,7 @@ U2SCRIPT_EXPORT U2ErrorType createSas(const wchar_t* _algorithmType, const wchar
 
 U2SCRIPT_EXPORT U2ErrorType launchScheme(SchemeHandle _scheme, int* outputFilesCount, wchar_t*** outputFileNames) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    if (nullptr == scheme) {
+    if (scheme == nullptr) {
         return U2_INVALID_SCHEME;
     }
     QString pathToScheme;
@@ -183,14 +183,14 @@ U2SCRIPT_EXPORT U2ErrorType launchScheme(SchemeHandle _scheme, int* outputFilesC
         CHECK(U2_OK == result, result);
         const int countOfFiles = outputFiles.size();
         *outputFileNames = (wchar_t**)malloc(countOfFiles * sizeof(wchar_t**));
-        if (nullptr == *outputFileNames) {
+        if (*outputFileNames == nullptr) {
             throw std::bad_alloc();
         }
         for (int i = 0; i < countOfFiles; ++i) {
             const int pathLength = outputFiles[i].size() + 1;
             (*outputFileNames)[i] = (wchar_t*)malloc(pathLength * sizeof(wchar_t));
             // handle failed memory allocation
-            if (nullptr == (*outputFileNames)[i]) {
+            if ((*outputFileNames)[i] == nullptr) {
                 for (int j = 0; j < i; ++j) {
                     free((*outputFileNames)[i]);
                 }

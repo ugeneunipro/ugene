@@ -74,7 +74,7 @@ QByteArray IOAdapterUtils::readFileHeader(const GUrl& url, int size) {
 
 QByteArray IOAdapterUtils::readFileHeader(IOAdapter* io, int sz) {
     QByteArray data;
-    if (nullptr == io || !io->isOpen()) {
+    if (io == nullptr || !io->isOpen()) {
         return data;
     }
     data.resize(sz);
@@ -93,7 +93,7 @@ QByteArray IOAdapterUtils::readFileHeader(IOAdapter* io, int sz) {
 IOAdapter* IOAdapterUtils::open(const GUrl& url, U2OpStatus& os, IOAdapterMode mode, IOAdapterFactory* _iof) {
     IOAdapterFactory* iof = _iof;
 
-    if (nullptr == iof || (iof->getAdapterId() != BaseIOAdapters::LOCAL_FILE && iof->getAdapterId() != BaseIOAdapters::GZIPPED_LOCAL_FILE)) {
+    if (iof == nullptr || (iof->getAdapterId() != BaseIOAdapters::LOCAL_FILE && iof->getAdapterId() != BaseIOAdapters::GZIPPED_LOCAL_FILE)) {
         IOAdapterId ioId = IOAdapterUtils::url2io(url);
         iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     }

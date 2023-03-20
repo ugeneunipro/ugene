@@ -37,12 +37,12 @@ bool NodeApiUtils::isArgumentCountCorrect(int actualCount, int requiredCount) {
     if (nullptr != errorText) {
         ThrowException(Exception::TypeError(String::New(errorText)));
     }
-    return (nullptr == errorText);
+    return (errorText == nullptr);
 }
 
 ScriptContext* NodeApiUtils::getScriptContext() {
     ScriptContext* scriptContext = AppContext::getScriptContext();
-    if (nullptr == scriptContext) {
+    if (scriptContext == nullptr) {
         ThrowException(Exception::TypeError(String::New(CONTEXT_IS_NOT_INITIALIZED)));
     }
     return scriptContext;

@@ -192,7 +192,7 @@ ExportSelectedSeqRegionsTask::ExportSelectedSeqRegionsTask(U2SequenceObject* seq
     CHECK(isSeqObjectValid(seqObject, stateInfo), );
 
     foreach (AnnotationTableObject* aObj, connectedAts) {
-        if (nullptr == aObj) {
+        if (aObj == nullptr) {
             stateInfo.setError(tr("Invalid annotation table detected"));
             return;
         } else {

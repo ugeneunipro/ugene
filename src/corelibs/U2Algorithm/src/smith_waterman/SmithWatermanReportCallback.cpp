@@ -137,12 +137,12 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
     CHECK_OP(os, );
 
     U2MsaDbi* msaDbi = sourceMsaConnection.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "Invalid MSA DBI detected!", );
+    SAFE_POINT(msaDbi != nullptr, "Invalid MSA DBI detected!", );
     const U2AlphabetId alphabetId = msaDbi->getMsaObject(sourceMsaRef.entityId, os).alphabet;
     CHECK_OP(os, );
     alphabet = U2AlphabetUtils::getById(alphabetId);
     aminoTT = nullptr;
-    SAFE_POINT(nullptr != alphabet, "Invalid alphabet detected!", );
+    SAFE_POINT(alphabet != nullptr, "Invalid alphabet detected!", );
 }
 
 SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
@@ -160,13 +160,13 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
     }
 
     U2MsaDbi* msaDbi = sourceMsaConnection.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "Invalid MSA DBI detected!", );
+    SAFE_POINT(msaDbi != nullptr, "Invalid MSA DBI detected!", );
     const U2AlphabetId alphabetId = msaDbi->getMsaObject(sourceMsaRef.entityId, os).alphabet;
     if (os.isCoR()) {
         return;
     }
     alphabet = U2AlphabetUtils::getById(alphabetId);
-    SAFE_POINT(nullptr != alphabet, "Invalid alphabet detected!", );
+    SAFE_POINT(alphabet != nullptr, "Invalid alphabet detected!", );
     aminoTT = nullptr;
 }
 
@@ -284,7 +284,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     CHECK_OP(stateInfo, tr("SmithWatermanReportCallback failed to create new MA document."));
 
     U2SequenceDbi* seqDbi = sourceMsaConnection.dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != seqDbi, "Invalid sequence DBI detected!", QString());
+    SAFE_POINT(seqDbi != nullptr, "Invalid sequence DBI detected!", QString());
 
     U2Sequence firstSequence = seqDbi->getSequenceObject(firstSequenceRef.entityId, os);
     CHECK_OP(os, tr("Failed to get the sequence object."));
@@ -343,7 +343,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     SAFE_POINT(!(0 == pairAlignSeqs.ptrnSubseq.startPos && 0 == pairAlignSeqs.ptrnSubseq.length) && !(0 == pairAlignSeqs.refSubseq.startPos && pairAlignSeqs.refSubseq.length == 0), "Invalid SW algorithm result detected!", QString());
 
     U2SequenceDbi* seqDbi = sourceMsaConnection.dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != seqDbi, "Invalid sequence DBI detected!", QString());
+    SAFE_POINT(seqDbi != nullptr, "Invalid sequence DBI detected!", QString());
 
     U2Sequence firstSequence = seqDbi->getSequenceObject(firstSequenceRef.entityId, os);
     CHECK_OP(os, tr("Failed to get the sequence object."));
@@ -372,7 +372,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
     U2MsaDbi* msaDbi = sourceMsaConnection.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "Invalid MSA DBI detected!", QString());
+    SAFE_POINT(msaDbi != nullptr, "Invalid MSA DBI detected!", QString());
 
     QList<U2MsaRow> rows = msaDbi->getRows(sourceMsaRef.entityId, os);
     CHECK_OP(os, tr("Failed to get msa from dbi"));
@@ -476,14 +476,14 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QVector<U2MsaGap>& refSeq
 }
 
 void SmithWatermanReportCallbackMAImpl::changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject) {
-    if (nullptr != curProject->findDocumentByURL(GUrl(givenUrl))) {
+    if (curProject->findDocumentByURL(GUrl(givenUrl)) != nullptr) {
         for (size_t i = 1;; i++) {
             QString tmpUrl = givenUrl;
             QRegExp dotWithExtensionRegExp("\\.{1,1}[^\\.]*$|^[^\\.]*$");
             dotWithExtensionRegExp.lastIndexIn(tmpUrl);
             tmpUrl.replace(dotWithExtensionRegExp.capturedTexts().last(),
                            "(" + QString::number(i) + ")" + dotWithExtensionRegExp.capturedTexts().last());
-            if (nullptr == curProject->findDocumentByURL(GUrl(tmpUrl))) {
+            if (curProject->findDocumentByURL(GUrl(tmpUrl)) == nullptr) {
                 givenUrl = tmpUrl;
                 break;
             }

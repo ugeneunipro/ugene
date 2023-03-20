@@ -1414,7 +1414,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "pairwise_alignment_test_0009.aln";
     const QString dirName = "pairwise_alignment_test_0009";
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
@@ -1441,7 +1441,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
     setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
     const QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error.contains(expected), QString("enexpected error: %1").arg(error));
@@ -1450,7 +1450,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "pairwise_alignment_test_0010.aln";
     const QString dirName = "pairwise_alignment_test_0010";
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
@@ -1474,7 +1474,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
     setOutputPath(os, dirPath, fileName, false);
     align(os);
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
     const QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
@@ -1896,7 +1896,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "export_consensus_test_0002.aln";
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -1920,7 +1920,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
     //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     //    Expected state: error in log: Task {Save document} finished with error: No permission to write to 'COI_transl.aln' file.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
     QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error.contains(expected), QString("Unexpected error: %1").arg(error));
@@ -1929,7 +1929,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "export_consensus_test_0003.aln";
     const QString dirName = "export_consensus_test_0003";
     //    1. Open data/samples/CLUSTALW/COI.aln
@@ -1953,7 +1953,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
     GTThread::waitForMainThread();
 
     //    Expected state: notification is shown that folder is read-only.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     QString expected = QString("Task {Export consensus} finished with error: Folder is read-only: %1").arg(QFileInfo(filePath).absolutePath());
     CHECK_SET_ERR(error == expected, QString("Unexpected error: '%1', expected: '%2'").arg(error).arg(expected));
 }

@@ -39,7 +39,7 @@ MultipleSequenceAlignment::MultipleSequenceAlignment(const QString& name, const 
 
 MultipleSequenceAlignment::MultipleSequenceAlignment(const MultipleAlignment& ma)
     : MultipleAlignment(ma) {
-    SAFE_POINT(nullptr != maData.dynamicCast<MultipleSequenceAlignmentData>(), "Can't cast MultipleAlignment to MultipleSequenceAlignment", );
+    SAFE_POINT(maData.dynamicCast<MultipleSequenceAlignmentData>() != nullptr, "Can't cast MultipleAlignment to MultipleSequenceAlignment", );
 }
 
 MultipleSequenceAlignment::MultipleSequenceAlignment(MultipleSequenceAlignmentData* msaData)

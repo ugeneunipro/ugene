@@ -54,28 +54,28 @@ QStringList LogServer::getCategories() const {
     return result;
 }
 
-void LogServer::addListener(LogListener* listner) {
+void LogServer::addListener(LogListener* listener) {
     QMutexLocker l(&listenerMutex);
 
-    SAFE_POINT(nullptr != listner, "Internal error during adding a log listner: NULL listner!", );
-    SAFE_POINT(!listeners.contains(listner),
-               "Internal error during adding a log listner: the listener is already added!", );
-    listeners.append(listner);
+    SAFE_POINT(listener != nullptr, "Internal error:  log listener is NULL!", );
+    SAFE_POINT(!listeners.contains(listener),
+               "Internal error during adding a log listener: the listener is already added!", );
+    listeners.append(listener);
 }
 
 void LogServer::removeListener(LogListener* listener) {
     QMutexLocker l(&listenerMutex);
 
     int numOfListenersRemoved = listeners.removeAll(listener);
-    SAFE_POINT(1 == numOfListenersRemoved, QString("Internal error during removing a log listener:"
+    SAFE_POINT(numOfListenersRemoved == 1, QString("Internal error during removing a log listener:"
                                                    " unexpected number '%1' of listeners!")
                                                .arg(numOfListenersRemoved), );
 }
 
 void LogServer::message(const LogMessage& m) {
     QMutexLocker l(&listenerMutex);
-    foreach (LogListener* listner, listeners) {
-        listner->onMessage(m);
+    for (LogListener* listener : qAsConst(listeners)) {
+        listener->onMessage(m);
     }
 }
 
@@ -85,8 +85,6 @@ void LogServer::message(const LogMessage& m, LogListener* listener) {
 }
 
 Logger::Logger(const QString& category1) {
-    static int test = 0;
-    test++;
     categoryNames << category1;
     init();
 }
@@ -147,8 +145,8 @@ void Logger::log(LogLevel level, const QString& message, const QString& category
     log(level, message, QStringList(category));
 }
 
-void Logger::log(LogLevel level, const QString& message, const QStringList& categoryies) {
-    LogMessage m(categoryies, level, message);
+void Logger::log(LogLevel level, const QString& message, const QStringList& categories) {
+    LogMessage m(categories, level, message);
     LogServer::getInstance()->message(m);
 }
 
