@@ -125,7 +125,7 @@ private:
 
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
-    QString formTableRow(const QString& caption, const QString& value, int availableSpace, bool addHyperlink = false) const;
+    QString formTableRow(const QString& caption, const QString& value, int availableSpace, bool addSettingsButton = false) const;
 
     StatisticsCache<DNAStatistics>* getCommonStatisticsCache() const;
     StatisticsCache<CharactersOccurrence>* getCharactersOccurrenceCache() const;

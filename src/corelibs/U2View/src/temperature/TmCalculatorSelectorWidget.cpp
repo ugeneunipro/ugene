@@ -33,6 +33,8 @@
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2View/DNAStatisticsTask.h>
+
 #include "TmCalculatorSettingsWidget.h"
 
 namespace U2 {
@@ -43,11 +45,17 @@ TmCalculatorSelectorWidget::TmCalculatorSelectorWidget(QWidget* parent)
       swSettings(new QStackedWidget(this)) {
     setObjectName("TmCalculatorSettingsWidget");
     cbAlgorithm->setObjectName("cbAlgorithm");
-    auto label = new QLabel(tr("Choose temperature calculation algorithm:"), this);
+
+    QLabel* lengthHintLabel = new QLabel(tr("Hint: UGENE computes Tm for sequence regions from %1 up to %2 bp")
+                                             .arg(DNAStatisticsTask::TM_MIN_LENGTH_LIMIT)
+                                             .arg(DNAStatisticsTask::TM_MAX_LENGTH_LIMIT));
+    lengthHintLabel->setStyleSheet("QLabel{font-size: 12px; padding-top: 5px; padding-bottom: 5px; color: #333333;}");
+
     auto layout = new QVBoxLayout(this);
-    layout->addWidget(label);
+    layout->addWidget(new QLabel(tr("Choose temperature calculation algorithm:"), this));
     layout->addWidget(cbAlgorithm);
     layout->addWidget(swSettings);
+    layout->addWidget(lengthHintLabel);
     auto factories = AppContext::getTmCalculatorRegistry()->getAllEntries();
     for (auto factory : qAsConst(factories)) {
         auto settingsWidget = factory->createSettingsWidget(this);
