@@ -35,7 +35,8 @@ public:
         General,
         Highlighting,
         PairwiseAlignment,
-        TreeSettings,
+        AddTree,
+        TreeOptions,
         ExportConsensus,
         Statistics,
         Search
@@ -82,7 +83,7 @@ public:
     static QString getReference(HI::GUITestOpStatus& os);
     static int getLength(HI::GUITestOpStatus& os);
     static int getHeight(HI::GUITestOpStatus& os);
-    static void copySelection(HI::GUITestOpStatus& os, const CopyFormat format = CopyFormat::CLUSTALW);
+    static void copySelection(HI::GUITestOpStatus& os, const CopyFormat& format = CopyFormat::CLUSTALW);
 
     static void setColorScheme(HI::GUITestOpStatus& os, const QString& colorSchemeName, GTGlobals::UseMethod method = GTGlobals::UseKeyBoard);
     static QString getColorScheme(HI::GUITestOpStatus& os);
