@@ -34,8 +34,6 @@ class TCoffeeSupport : public ExternalTool {
 public:
     TCoffeeSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     GObjectViewWindowContext* getViewContext() const {
         return viewCtx;
     }

@@ -51,13 +51,6 @@
 
 namespace U2 {
 
-QString SpideySupport::checkPaths(const QStringList& arguments) const {
-    if (isOsWindows()) {
-        return ExternalToolSupportUtils::checkTemporaryFolderSymbols();
-    }
-    return "";
-}
-
 const QString SpideySupport::ET_SPIDEY = "Spidey";
 const QString SpideySupport::ET_SPIDEY_ID = "USUPP_SPIDEY";
 const QString SpideySupport::SPIDEY_TMP_DIR = "spidey";
@@ -87,6 +80,9 @@ SpideySupport::SpideySupport()
     toolKitName = "spidey";
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
+    }
 }
 
 void SpideySupport::sl_validationStatusChanged(bool isValid) {

@@ -62,13 +62,9 @@ BedtoolsSupport::BedtoolsSupport(const QString& path)
         U2DataPath* dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
-}
-
-QString BedtoolsSupport::checkPaths(const QStringList& arguments) const {
     if (isOsWindows()) {
-        return ExternalToolSupportUtils::checkArgumentPathSymbols(arguments);
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments;
     }
-    return "";
 }
 
 void BedtoolsSupport::sl_validationStatusChanged(bool /*newStatus*/) {

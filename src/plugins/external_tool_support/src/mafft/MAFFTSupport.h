@@ -34,8 +34,6 @@ class MAFFTSupport : public ExternalTool {
 public:
     MAFFTSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     GObjectViewWindowContext* getViewContext() const {
         return viewCtx;
     }

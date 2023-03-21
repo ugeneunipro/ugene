@@ -35,8 +35,6 @@ public:
         return viewCtx;
     }
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_SPIDEY;
     static const QString ET_SPIDEY_ID;
     static const QString SPIDEY_TMP_DIR;

@@ -32,8 +32,6 @@ class SnpEffSupport : public ExternalTool {
 public:
     SnpEffSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     QStringList getToolRunnerAdditionalOptions() const;
 
     static SnpEffDatabaseListModel* databaseModel;

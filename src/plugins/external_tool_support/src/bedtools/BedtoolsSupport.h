@@ -30,8 +30,6 @@ class BedtoolsSupport : public ExternalTool {
 public:
     BedtoolsSupport(const QString& path = "");
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_BEDTOOLS_ID;
     static const QString GENOMES_DATA_NAME;
     static const QString GENOMES_DIR_NAME;

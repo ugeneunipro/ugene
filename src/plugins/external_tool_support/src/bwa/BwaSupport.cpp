@@ -49,17 +49,11 @@ BwaSupport::BwaSupport()
                      "against a long reference sequence such as the human genome.");
     versionRegExp = QRegExp("Version: (\\d+\\.\\d+\\.\\d+-r\\d+)");
     toolKitName = "BWA";
-}
-
-QString BwaSupport::checkPaths(const QStringList& arguments) const {
-    QStringList errors;
     if (isOsWindows()) {
-        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
-        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
-        errors.append(ExternalToolSupportUtils::checkIndexDirSymbols());
-        errors.removeAll(QString(""));
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
+                   << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
+                   << ExternalTool::PathChecksEnum::CheckNonLatinIndexPath;
     }
-    return errors.isEmpty() ? "" : errors.first();
 }
 
 }  // namespace U2

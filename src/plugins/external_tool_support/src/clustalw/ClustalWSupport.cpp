@@ -66,13 +66,9 @@ ClustalWSupport::ClustalWSupport()
     description = tr("<i>ClustalW</i> is a free sequence alignment software for DNA or proteins.");
     versionRegExp = QRegExp("CLUSTAL (\\d+\\.\\d+) Multiple Sequence Alignments");
     toolKitName = "ClustalW";
-}
-
-QString ClustalWSupport::checkPaths(const QStringList& arguments) const {
     if (isOsWindows()) {
-        return ExternalToolSupportUtils::checkTemporaryFolderSymbols();
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
     }
-    return "";
 }
 
 void ClustalWSupport::sl_runWithExtFileSpecify() {

@@ -56,20 +56,14 @@ TrimmomaticSupport::TrimmomaticSupport()
     dependencies << JavaSupport::ET_JAVA_ID;
 
     initTrimmomaticSteps();
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinToolPath
+                   << ExternalTool::PathChecksEnum::CheckNonLatinArguments;
+    }
 }
 
 TrimmomaticSupport::~TrimmomaticSupport() {
     LocalWorkflow::TrimmomaticStepsRegistry::releaseInstance();
-}
-
-QString TrimmomaticSupport::checkPaths(const QStringList& arguments) const {
-    QStringList errors;
-    if (isOsWindows()) {
-        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
-        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
-        errors.removeAll("");
-    }
-    return errors.isEmpty() ? "" : errors.first();
 }
 
 void TrimmomaticSupport::initTrimmomaticSteps() {

@@ -30,8 +30,6 @@ class BwaSupport : public ExternalTool {
 public:
     BwaSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_BWA;
     static const QString ET_BWA_ID;
 };

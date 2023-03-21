@@ -24,6 +24,7 @@
 #include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
@@ -136,7 +137,37 @@ void ExternalTool::performAdditionalChecks(const QString& /*toolPath*/) {
 }
 
 QString ExternalTool::checkPaths(const QStringList& arguments) const {
-    return QString();
+    QString error;
+    for (auto check : qAsConst(pathChecks)) {
+        switch (check) {
+            case ExternalTool::PathChecksEnum::CheckNonLatinArguments:
+                error = ExternalToolSupportUtils::checkArgumentPathLatinSymbols(arguments);
+                break;
+            case ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder:
+                error = ExternalToolSupportUtils::checkTemporaryFolderLatinSymbols();
+                break;
+            case ExternalTool::PathChecksEnum::CheckNonLatinToolPath:
+                error = ExternalToolSupportUtils::checkToolLocationLatinSymbols(this);
+                break;
+            case ExternalTool::PathChecksEnum::CheckNonLatinIndexPath:
+                error = ExternalToolSupportUtils::checkIndexDirLatinSymbols();
+                break;
+            case ExternalTool::PathChecksEnum::CheckSpacesArguments:
+                error = ExternalToolSupportUtils::checkArgumentPathSpaces(arguments);
+                break;
+            case ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder:
+                error = ExternalToolSupportUtils::checkTemporaryFolderSpaces();
+                break;
+            case ExternalTool::PathChecksEnum::CheckSpacesToolPath:
+                error = ExternalToolSupportUtils::checkToolLocationSpaces(this);
+                break;
+        }
+        if (!error.isEmpty()) {
+            error = error.arg(getName());
+            break;
+        }
+    }
+    return error;
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {

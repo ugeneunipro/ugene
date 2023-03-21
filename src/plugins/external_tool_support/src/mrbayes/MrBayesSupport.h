@@ -35,8 +35,6 @@ class MrBayesSupport : public ExternalTool {
 public:
     MrBayesSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_MRBAYES_ID;
     static const QString ET_MRBAYES_ALGORITHM_NAME_AND_KEY;
     static const QString MRBAYES_TMP_DIR;

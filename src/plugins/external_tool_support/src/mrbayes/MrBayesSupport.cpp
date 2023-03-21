@@ -69,16 +69,10 @@ MrBayesSupport::MrBayesSupport()
     // register the method
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new MrBayesAdapter(), MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY);
-}
-
-QString MrBayesSupport::checkPaths(const QStringList& arguments) const {
-    QStringList errors;
     if (isOsWindows()) {
-        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
-        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSpaces());
-        errors.removeAll("");
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
+                   << ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder;
     }
-    return errors.isEmpty() ? "" : errors.first();
 }
 
 ////////////////////////////////////////

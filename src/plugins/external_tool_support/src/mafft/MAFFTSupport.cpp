@@ -66,13 +66,9 @@ MAFFTSupport::MAFFTSupport()
     AlignmentAlgorithmsRegistry* registry = AppContext::getAlignmentAlgorithmsRegistry();
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignNewSequencesToAlignment));
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignSelectionToAlignment));
-}
-
-QString MAFFTSupport::checkPaths(const QStringList& arguments) const {
     if (isOsWindows()) {
-        return ExternalToolSupportUtils::checkTemporaryFolderSpaces();
+        pathChecks << ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder;
     }
-    return "";
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify() {

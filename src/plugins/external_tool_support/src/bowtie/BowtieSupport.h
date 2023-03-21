@@ -30,8 +30,6 @@ class BowtieSupport : public ExternalTool {
 public:
     BowtieSupport(const QString& id);
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_BOWTIE_BUILD_ID;
     static const QString ET_BOWTIE_ID;
 };

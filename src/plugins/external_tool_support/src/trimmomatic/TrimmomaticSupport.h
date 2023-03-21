@@ -31,8 +31,6 @@ public:
     TrimmomaticSupport();
     ~TrimmomaticSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_TRIMMOMATIC;
     static const QString ET_TRIMMOMATIC_ID;
 

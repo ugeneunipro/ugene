@@ -30,8 +30,6 @@ class VcfConsensusSupport : public ExternalTool {
 public:
     VcfConsensusSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_VCF_CONSENSUS;
     static const QString ET_VCF_CONSENSUS_ID;
     static const QString VCF_CONSENSUS_TMP_DIR;

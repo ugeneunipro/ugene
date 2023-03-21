@@ -59,16 +59,10 @@ CutadaptSupport::CutadaptSupport()
 
     toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
     dependencies << PythonSupport::ET_PYTHON_ID;
-}
-
-QString CutadaptSupport::checkPaths(const QStringList& arguments) const {
-    QStringList errors;
     if (isOsWindows()) {
-        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
-        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
-        errors.removeAll("");
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
+                   << ExternalTool::PathChecksEnum::CheckNonLatinToolPath;
     }
-    return errors.isEmpty() ? "" : errors.first();
 }
 
 }  // namespace U2

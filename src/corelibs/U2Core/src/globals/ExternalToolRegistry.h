@@ -80,7 +80,8 @@ public:
 
     virtual void extractAdditionalParameters(const QString& output);
     virtual void performAdditionalChecks(const QString& toolPath);
-    virtual QString checkPaths(const QStringList& arguments) const;
+    /* Check external tool for path compatibility. */
+    QString checkPaths(const QStringList& arguments) const;
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const;
@@ -140,6 +141,18 @@ protected:
     bool isModuleTool;  // a module tool is a part of another external tool
     bool isCustomTool;  // the tool is described in a user-written config file and imported to UGENE
     bool isRunnerTool;  // the tool could be used as script-runner
+
+    enum class PathChecksEnum {
+        CheckNonLatinArguments,
+        CheckNonLatinTemporaryFolder,
+        CheckNonLatinToolPath,
+        CheckNonLatinIndexPath,
+        CheckSpacesArguments,
+        CheckSpacesTemporaryFolder,
+        CheckSpacesToolPath
+    };
+
+    QList<PathChecksEnum> pathChecks;
 
 };  // ExternalTool
 

@@ -54,13 +54,9 @@ IQTreeSupport::IQTreeSupport()
     // register the method
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new IQTreeAdapter(), IQTreeSupport::ET_IQTREE_ALGORITHM_NAME_AND_KEY);
-}
-
-QString IQTreeSupport::checkPaths(const QStringList& arguments) const {
     if (isOsWindows()) {
-        return ExternalToolSupportUtils::checkTemporaryFolderSymbols();
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
     }
-    return "";
 }
 
 ////////////////////////////////////////

@@ -56,13 +56,9 @@ SamToolsExtToolSupport::SamToolsExtToolSupport()
     toolKitName = "SAMtools";
 
     muted = true;
-}
-
-QString SamToolsExtToolSupport::checkPaths(const QStringList& arguments) const {
     if (isOsWindows()) {
-        return ExternalToolSupportUtils::checkToolLocationSymbols(this);
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinToolPath;
     }
-    return "";
 }
 
 }  // namespace U2

@@ -64,17 +64,11 @@ FastQCSupport::FastQCSupport()
     CHECK(java != nullptr, );
     connect(java, SIGNAL(si_pathChanged()), SLOT(sl_javaPathChanged()));
     sl_javaPathChanged();
-}
-
-QString FastQCSupport::checkPaths(const QStringList& arguments) const {
-    QStringList errors;
     if (isOsWindows()) {
-        errors.append(ExternalToolSupportUtils::checkArgumentPathSymbols(arguments));
-        errors.append(ExternalToolSupportUtils::checkToolLocationSymbols(this));
-        errors.append(ExternalToolSupportUtils::checkTemporaryFolderSymbols());
-        errors.removeAll("");
+        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
+                   << ExternalTool::PathChecksEnum::CheckNonLatinToolPath
+                   << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
     }
-    return errors.isEmpty() ? "" : errors.first();
 }
 
 void FastQCSupport::sl_javaPathChanged() {

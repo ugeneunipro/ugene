@@ -31,8 +31,6 @@ class SamToolsExtToolSupport : public ExternalTool {
 public:
     SamToolsExtToolSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString ET_SAMTOOLS_EXT;
     static const QString ET_SAMTOOLS_EXT_ID;
 };

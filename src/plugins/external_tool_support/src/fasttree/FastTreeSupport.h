@@ -32,8 +32,6 @@ class FastTreeSupport : public ExternalTool {
 public:
     FastTreeSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString FAST_TREE_ID;
     static const QString ET_FAST_TREE_ALGORITHM_NAME_AND_KEY;
 };

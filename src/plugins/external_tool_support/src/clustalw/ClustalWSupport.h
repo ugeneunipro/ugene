@@ -34,8 +34,6 @@ class ClustalWSupport : public ExternalTool {
 public:
     ClustalWSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     GObjectViewWindowContext* getViewContext() const {
         return viewCtx;
     }

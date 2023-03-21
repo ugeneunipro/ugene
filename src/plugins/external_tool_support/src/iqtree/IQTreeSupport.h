@@ -32,8 +32,6 @@ class IQTreeSupport : public ExternalTool {
 public:
     IQTreeSupport();
 
-    QString checkPaths(const QStringList& arguments) const override;
-
     static const QString IQTREE_ID;
     static const QString ET_IQTREE_ALGORITHM_NAME_AND_KEY;
 };
