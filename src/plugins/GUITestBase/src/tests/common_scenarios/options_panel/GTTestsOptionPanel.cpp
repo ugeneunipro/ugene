@@ -333,7 +333,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>200 nt</td></tr>"
                         "<tr><td>GC content: </td><td>44.50%</td></tr>" +
-                        GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("79.78") +
+                        GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("83.70") +
                         "<tr><td colspan=2><b>ssDNA:</b></td></tr>"
                         "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Molecular weight: </td><td>61909.78 Da</td></tr>"
                         "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Extinction coefficient: </td><td>1987400 l/(mol * cm)</td></tr>"
@@ -364,7 +364,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     QString s = "Length: </td><td>199 950 nt";
     QString s1 = "GC content: </td><td>38.84%";
-    QString s2 = "Melting temperature: </td><td>N/A";
+    QString s2 = "Melting temperature: </td><td style=\"vertical-align:top;\">N/A";
 
     // ssDNA
     QString s3 = "Molecular weight: </td><td>61730845.26 Da";
@@ -426,7 +426,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     QString s = "Length: </td><td>199 950 nt";
     QString s1 = "GC content: </td><td>38.84%";
-    QString s2 = "Melting temperature: </td><td>N/A";
+    QString s2 = "Melting temperature: </td><td style=\"vertical-align:top;\">N/A";
 
     // ssDNA
     QString s3 = "Molecular weight: </td><td>61730845.26 Da";
@@ -502,8 +502,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTWidget::click(os, w1);
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 nt</td></tr>"
-                "<tr><td>GC content: </td><td>49.29%</td></tr>"
-                "<tr><td>Melting temperature: </td><td>N/A</td></tr>"
+                "<tr><td>GC content: </td><td>49.29%</td></tr>" +
+                GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("79.80") +
                 "<tr><td colspan=2><b>ssDNA:</b></td></tr>"
                 "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Molecular weight: </td><td>21572.21 Da</td></tr>"
                 "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Extinction coefficient: </td><td>656800 l/(mol * cm)</td></tr>"

@@ -490,7 +490,7 @@ void DNAStatisticsTask::computeStats() {
         result.dsExtinctionCoefficient *= (1 - hypochromicity);
 
         // Calculating melting temperature.
-        result.meltingTemp = meltTempSeq.size() < TM_MIN_LENGTH_LIMIT || meltTempSeq.size() > TM_MAX_LENGTH_LIMIT
+        result.meltingTemp = meltTempSeq.size() < TM_MIN_LENGTH_LIMIT || result.length > TM_MAX_LENGTH_LIMIT
                                  ? TmCalculator::INVALID_TM
                                  : temperatureCalculator->getMeltingTemperature(meltTempSeq);
 
