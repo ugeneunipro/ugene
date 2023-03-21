@@ -251,9 +251,9 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxOpenAnotherProject(os));
 
     // 2. Do menu {File->Open}. Open project _common_data\scenario\project\proj2.uprj
-    // Expected state: dialog with text "Open project in new window" has appear
+    // Expected state: dialog with text "Open project in new window" has appeared
 
-    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");  // TODO: ask Shutov what to do
+    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
 
     /*
     this test just checking appearing of dialog not its behavior
@@ -394,11 +394,11 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
     const QString firstAnnFileName = "1.gb";
     const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    const QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
@@ -425,7 +425,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -436,11 +436,11 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     QWidget* coi = GTUtilsMdi::findWindow(os, "COI [COI.aln]");
     CHECK_SET_ERR(fasta->windowIcon().cacheKey() != coi->windowIcon().cacheKey(), "Icons must not be equals");
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -448,7 +448,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {

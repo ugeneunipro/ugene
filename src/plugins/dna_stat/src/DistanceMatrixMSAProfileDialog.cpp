@@ -250,25 +250,26 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                     setError(tr("There is not enough memory to show this distance matrix in UGENE. You can save it to an HTML file and open it with a web browser."));
                     return res;
                 }
-
-                // legend:
-                resultText += "<br><br>\n";
-                resultText += "<table><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
-                if (isSimilarity) {
-                    resultText += "<td bgcolor=" + colors[4] + ">10%</td>\n";
-                    resultText += "<td bgcolor=" + colors[3] + ">25%</td>\n";
-                    resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
-                    resultText += "<td bgcolor=" + colors[1] + ">70%</td>\n";
-                    resultText += "<td bgcolor=" + colors[0] + ">90%</td>\n";
-                } else {
-                    resultText += "<td bgcolor=" + colors[0] + ">10%</td>\n";
-                    resultText += "<td bgcolor=" + colors[1] + ">25%</td>\n";
-                    resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
-                    resultText += "<td bgcolor=" + colors[3] + ">70%</td>\n";
-                    resultText += "<td bgcolor=" + colors[4] + ">90%</td>\n";
-                }
-                resultText += "</tr></table><br>\n";
             }
+
+            // legend:
+            resultText += "<br><br>\n";
+            resultText += "<table><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
+            if (isSimilarity) {
+                resultText += "<td bgcolor=" + colors[4] + ">10%</td>\n";
+                resultText += "<td bgcolor=" + colors[3] + ">25%</td>\n";
+                resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
+                resultText += "<td bgcolor=" + colors[1] + ">70%</td>\n";
+                resultText += "<td bgcolor=" + colors[0] + ">90%</td>\n";
+            } else {
+                resultText += "<td bgcolor=" + colors[0] + ">10%</td>\n";
+                resultText += "<td bgcolor=" + colors[1] + ">25%</td>\n";
+                resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
+                resultText += "<td bgcolor=" + colors[3] + ">70%</td>\n";
+                resultText += "<td bgcolor=" + colors[4] + ">90%</td>\n";
+            }
+            resultText += "</tr></table><br>\n";
+
             resultText += "</body>\n<html>\n";
         } else {
             f = new QFile(s.outURL);

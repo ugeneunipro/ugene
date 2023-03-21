@@ -28,11 +28,8 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "base_dialogs/DefaultDialogFiller.h"
 #include "base_dialogs/GTFileDialog.h"
 #include "base_dialogs/MessageBoxFiller.h"
-#include "drivers/GTKeyboardDriver.h"
-#include "primitives/GTComboBox.h"
 #include "primitives/GTLineEdit.h"
 #include "primitives/GTMenu.h"
 #include "primitives/GTToolbar.h"
@@ -176,10 +173,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     //  4. Wait for workflow finished
     GTUtilsTaskTreeView::waitTaskFinished(os, 120000);
     //  Expected state: There should be an error about unsupported format in the log
-    GTUtilsLog::checkContainsError(os, lt, dashboardErrMsg);
+    CHECK_SET_ERR(lt.hasError(dashboardErrMsg), "Expected error is not found");
     //  There should be a notification about this error in the dashboard
-    CHECK_SET_ERR(hasDashboardNotification(dashboardErrMsg),
-                  "Expected dashboard notification \"" + dashboardErrMsg + "\"");
+    CHECK_SET_ERR(hasDashboardNotification(dashboardErrMsg), "Expected dashboard notification \"" + dashboardErrMsg + "\"");
 
     //  5. Return to workflow and call the Extract consensus wizard
     GTUtilsWorkflowDesigner::returnToWorkflow(os);

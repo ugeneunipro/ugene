@@ -726,7 +726,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //    3. Try to export it to GTF format
     //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers");
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -747,7 +747,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log: " + l.expectedMessage);
+    CHECK_SET_ERR(lt.hasMessage("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers"), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
@@ -758,8 +758,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     //    3. Try to export it to GTF format
     //    Expected state: info message - "GTF format is not strict - some annotations do not have "gene_id" and/or "transcript_id" qualifiers"
 
-    GTLogTracer l("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers");
-
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -779,7 +778,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log");
+    CHECK_SET_ERR(lt.hasMessage("GTF format is not strict - some annotations do not have 'gene_id' and/or 'transcript_id' qualifiers"), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_3) {
@@ -791,7 +790,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     //    3. Export it to GTF format
     //    Expected state: no errors in the log
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -813,7 +812,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EXPORT, "action_export_annotations"}));
     GTUtilsDialog::add(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_1) {

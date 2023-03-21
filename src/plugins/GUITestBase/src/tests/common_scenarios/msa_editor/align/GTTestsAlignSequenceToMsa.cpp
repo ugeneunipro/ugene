@@ -64,7 +64,7 @@ static void checkAlignedRegion(HI::GUITestOpStatus& os, const QRect& selectionRe
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Try to delete the MSA object during aligning
     // Expected state: the sequences are locked and can not be deleted
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -79,18 +79,15 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsProjectTreeView::click(os, "tub1.txt");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    bool hasMessage = GTLogTracer::checkMessage("Cannot remove document tub1.txt");
-    CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
-
+    CHECK_SET_ERR(lt.hasMessage("Cannot remove document tub1.txt"), "The expected message is not found in the log");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3086, "Incorrect sequences count");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Try to delete the MSA object during aligning
     // Expected state: the MSA object is locked and can not be deleted
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "3000_sequences.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -105,18 +102,15 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsProjectTreeView::click(os, "3000_sequences.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    bool hasMessage = GTLogTracer::checkMessage("Cannot remove document 3000_sequences.aln");
-    CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
-
+    CHECK_SET_ERR(lt.hasMessage("Cannot remove document 3000_sequences.aln"), "The expected message is not found in the log");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 3086, "Incorrect sequences count");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Align short sequences with default settings(on platforms with MAFFT)
     // Expected state: MAFFT alignment started and finished successfully with using option --addfragments
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -128,8 +122,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 152, "Incorrect sequences count");
 
-    bool hasMessage = GTLogTracer::checkMessage("--addfragments");
-    CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
+    CHECK_SET_ERR(lt.hasMessage("--addfragments"), "The expected message is not found in the log");
 
     checkAlignedRegion(os, QRect(QPoint(86, 17), QPoint(114, 23)), QString("CATGCCTTTGTAATAATCTTCTTTATAGT\n"
                                                                            "-----------------------------\n"
@@ -238,7 +231,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Do not select anything in the project. Click the button. Add a sequence in GenBank format.
     // Expected state: The sequence was added to the alignment and aligned.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -253,7 +246,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Do not select anything in the project. Click the button. Add several ABI files.
     // Expected state: The sequences were added to the alignment and aligned
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -269,7 +262,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     // Do not select anything in the project. Click the button. Add sequences in ClustalW format. Uncheck several sequences in the appeared dialog.
     // Expected state: Only checked sequences were added to the alignment.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/", "TUB.msf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
