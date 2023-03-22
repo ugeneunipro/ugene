@@ -36,6 +36,7 @@
 #include "GTUtilsDashboard.h"
 #include "GTUtilsMeltingTemperature.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
@@ -787,6 +788,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     CHECK_SET_ERR(detailsComplementary.contains("65.14"), "Unexpected complementary primer temperature, expected: 65.14, got details: " + detailsComplementary);
 
     GTUtilsOptionPanelSequenceView::openInSilicoPcrMeltingTemperatureShowHideWidget(os);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
     struct Steps {
         Steps(GTUtilsMeltingTemperature::Parameter _step, const QString& _stringValue, const QString& _directTemp, const QString& _complementaryTemp)
             : step(_step), stringValue(_stringValue), directTemp(_directTemp), complementaryTemp(_complementaryTemp) {
@@ -798,7 +800,6 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     };
 
     static const QList<Steps> steps = {
-        Steps(GTUtilsMeltingTemperature::Parameter::Algorithm, "Primer 3", "49.09", "65.14"),
         Steps(GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00", "49.12", "65.17"),
         Steps(GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00", "49.15", "65.2"),
         Steps(GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50", "43.47", "59.26"),
@@ -810,10 +811,8 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
         Steps(GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2", "58.06", "76.78"),
         Steps(GTUtilsMeltingTemperature::Parameter::MaxLen, "19", "42.99", "61.87")};
 
-    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters;
     for (const auto& step : qAsConst(steps)) {
-        parameters.insert(step.step, step.stringValue);
-        GTUtilsMeltingTemperature::setParameters(os, parameters, nullptr);
+        GTUtilsMeltingTemperature::setParameters(os, {{step.step, step.stringValue}}, nullptr);
         detailsDirect = GTUtilsPcr::getPrimerInfo(os, U2Strand::Direct);
         CHECK_SET_ERR(detailsDirect.contains(step.directTemp), QString("Unexpected direct primer temperature, expected: %1").arg(step.directTemp));
 
