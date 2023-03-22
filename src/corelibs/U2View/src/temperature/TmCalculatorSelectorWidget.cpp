@@ -39,17 +39,19 @@
 
 namespace U2 {
 
-TmCalculatorSelectorWidget::TmCalculatorSelectorWidget(QWidget* parent)
-    : QWidget(parent),
-      cbAlgorithm(new QComboBox(this)),
-      swSettings(new QStackedWidget(this)) {
+TmCalculatorSelectorWidget::TmCalculatorSelectorWidget(QWidget* parent, bool showLimitsHint)
+    : QWidget(parent) {
     setObjectName("TmCalculatorSettingsWidget");
+    swSettings = new QStackedWidget(this);
+
+    cbAlgorithm = new QComboBox(this);
     cbAlgorithm->setObjectName("cbAlgorithm");
 
     QLabel* lengthHintLabel = new QLabel(tr("Hint: UGENE computes Tm for sequence regions from %1 up to %2 bp")
                                              .arg(DNAStatisticsTask::TM_MIN_LENGTH_LIMIT)
                                              .arg(DNAStatisticsTask::TM_MAX_LENGTH_LIMIT));
     lengthHintLabel->setStyleSheet("QLabel{font-size: 12px; padding-top: 5px; padding-bottom: 5px; color: #333333;}");
+    lengthHintLabel->setVisible(showLimitsHint);
 
     auto layout = new QVBoxLayout(this);
     layout->addWidget(new QLabel(tr("Choose temperature calculation algorithm:"), this));
@@ -61,10 +63,8 @@ TmCalculatorSelectorWidget::TmCalculatorSelectorWidget(QWidget* parent)
         auto settingsWidget = factory->createSettingsWidget(this);
         cbAlgorithm->addItem(factory->visualName, factory->getId());
         swSettings->addWidget(settingsWidget);
-        settingsWidget->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         connect(settingsWidget, &TmCalculatorSettingsWidget::si_settingsChanged, this, &TmCalculatorSelectorWidget::si_settingsChanged);
     }
-    swSettings->currentWidget()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), swSettings, &QStackedWidget::setCurrentIndex);
     connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TmCalculatorSelectorWidget::si_settingsChanged);
@@ -72,13 +72,11 @@ TmCalculatorSelectorWidget::TmCalculatorSelectorWidget(QWidget* parent)
         // setSizePolicy() and adjustSize() are required for widget resizing on @settingsWidget widget changed
         for (int i = 0; i < swSettings->count(); i++) {
             CHECK_CONTINUE(i != index);
-
             swSettings->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         }
         auto currentWidget = swSettings->widget(index);
         SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), );
-
-        currentWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        currentWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
         swSettings->adjustSize();
         adjustSize();
         parentWidget()->adjustSize();
