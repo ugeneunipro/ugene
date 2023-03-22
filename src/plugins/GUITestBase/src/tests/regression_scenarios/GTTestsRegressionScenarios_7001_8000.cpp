@@ -4283,6 +4283,14 @@ GUI_TEST_CLASS_DEFINITION(test_7824) {
                       .arg(QString::number(selection.first().startPos))
                       .arg(QString::number(selection.first().length))
                   );
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C_group  (0, 1)"));
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C"));
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B_joined"));
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 4, "Selection size should be 4, but actual size is " + QString::number(selection.size()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7825) {
