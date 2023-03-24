@@ -4275,7 +4275,7 @@ GUI_TEST_CLASS_DEFINITION(test_7824) {
     GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)"));
     GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B"));
     GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "B"), -1, Qt::RightButton);
-    GTKeyboardDriver::keyPress(Qt::Key_Escape);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(selection.size() == 1, "Selection size should be 1, but actual size is " + QString::number(selection.size()));
     CHECK_SET_ERR(selection.first() == U2Region(29, 91),
@@ -4284,9 +4284,13 @@ GUI_TEST_CLASS_DEFINITION(test_7824) {
                       .arg(QString::number(selection.first().length))
                   );
     GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C_group  (0, 1)"));
+    QPoint cCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "C");    
+    QPoint bjCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C"));
-    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B_joined"));
+    GTMouseDriver::moveTo(cCenter);
+    GTMouseDriver::doubleClick();
+    GTMouseDriver::moveTo(bjCenter);
+    GTMouseDriver::doubleClick();
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     selection = GTUtilsSequenceView::getSelection(os);

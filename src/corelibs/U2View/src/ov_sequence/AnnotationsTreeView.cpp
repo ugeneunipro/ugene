@@ -1844,8 +1844,6 @@ void AnnotationsTreeView::annotationDoubleClicked(AVAnnotationItem* item, const 
 
     QList<U2Region> regionsToSelect = selectedRegions;
     const QVector<U2Region> regions = sequenceSelection->getSelectedRegions();
-    U2Region selectedRegion = selectedRegions.size() == 1 ? selectedRegions.first() : U2Region();
-    bool clearSelection = !(regions.size() == 1 && regions.first() == selectedRegion);
     for (const U2Region& reg : qAsConst(regions)) {
         for (const U2Region& selectedRegion : qAsConst(selectedRegions)) {
             if (reg.intersects(selectedRegion)) {
