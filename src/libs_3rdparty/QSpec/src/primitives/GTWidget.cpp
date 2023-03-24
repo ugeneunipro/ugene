@@ -76,25 +76,11 @@ void GTWidget::moveToAndClick(const QPoint& point) {
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(GUITestOpStatus& os, QWidget* w) {
     GT_CHECK(w != nullptr, "widget is NULL");
-
-#ifdef Q_OS_DARWIN
-    GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(1, true);
-#endif
-
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
-
-#ifdef Q_OS_DARWIN  // TODO: workaround for MacOS gui tests
-    if (!qobject_cast<QComboBox*>(w) &&
-        !qobject_cast<QDoubleSpinBox*>(w)) {
-        GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
-    }
-#else
     if (!qobject_cast<QComboBox*>(w)) {
         GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
     }
-#endif
 }
 #undef GT_METHOD_NAME
 

@@ -77,7 +77,7 @@ bool DnaAssemblyAlgorithmMainWidget::requiredToolsAreOk() const {
     SAFE_POINT(nullptr != extToolRegistry, L10N::nullPointerError("External tool subsystem"), false);
     foreach (const QString& toolId, requiredExtToolIds) {
         ExternalTool* tool = extToolRegistry->getById(toolId);
-        if (nullptr == tool || tool->getPath().isEmpty()) {
+        if (tool == nullptr || tool->getPath().isEmpty()) {
             missedExtTools.append(extToolRegistry->getToolNameById(toolId));
         }
     }

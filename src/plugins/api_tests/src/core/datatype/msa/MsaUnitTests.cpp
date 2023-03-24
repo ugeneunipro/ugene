@@ -104,7 +104,7 @@ IMPLEMENT_TEST(MsaUnitTests, name_setName) {
 /** Tests alphabet */
 IMPLEMENT_TEST(MsaUnitTests, alphabet_ctor) {
     MultipleSequenceAlignment almnt = MsaTestUtils::initTestAlignment();
-    if (nullptr == almnt->getAlphabet()) {
+    if (almnt->getAlphabet() == nullptr) {
         SetError("NULL alphabet");
     }
     CHECK_EQUAL(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), almnt->getAlphabet()->getId(), "alphabet ID");
@@ -117,7 +117,7 @@ IMPLEMENT_TEST(MsaUnitTests, alphabet_setAlphabet) {
     const DNAAlphabet* newAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     almnt->setAlphabet(newAlphabet);
 
-    if (nullptr == almnt->getAlphabet() || nullptr == newAlphabet) {
+    if (almnt->getAlphabet() == nullptr || nullptr == newAlphabet) {
         SetError("NULL alphabet");
     }
     CHECK_EQUAL(newAlphabet->getId(), almnt->getAlphabet()->getId(), "new alignment ID");

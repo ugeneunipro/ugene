@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <QPlainTextEdit>
+
 #include <U2Core/AnnotationData.h>
 #include <U2Core/U2Region.h>
 
@@ -58,7 +60,7 @@ enum RegionSelectionIndex {
 class FindPatternEventFilter : public QObject {
     Q_OBJECT
 public:
-    FindPatternEventFilter(QTextEdit* textEdit);
+    FindPatternEventFilter(QPlainTextEdit* textEdit);
 
 signals:
     void si_enterPressed();

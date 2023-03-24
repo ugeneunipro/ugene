@@ -190,7 +190,7 @@ QToolBar* BreakpointManagerView::initToolBar() {
 }
 
 void BreakpointManagerView::initBreakpointsList() {
-    Q_ASSERT(nullptr == breakpointsList);
+    Q_ASSERT(breakpointsList == nullptr);
 
     breakpointsList = new QTreeWidget(this);
     breakpointsList->setObjectName("breakpoints list");

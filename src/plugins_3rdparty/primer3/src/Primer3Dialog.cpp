@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <cfloat>
-
 #include <QMessageBox>
 #include <QSettings>
 #include <QTextStream>
@@ -422,9 +420,7 @@ static U2Range<int> parseExonRange(const QString& text, bool& ok) {
 }
 
 bool Primer3Dialog::doDataExchange() {
-    if (settings != nullptr) {
-        delete settings;
-    }
+    delete settings;
     settings = new Primer3TaskSettings;
 
     if (spanIntronExonBox->isChecked()) {
@@ -695,7 +691,7 @@ bool Primer3Dialog::doDataExchange() {
             int fbs = settings->getFirstBaseIndex();
             int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
             if (includedRegionOffset < 0) {
-                QMessageBox::critical(this, windowTitle(), tr("Incorrect summ \"Included Region Start + First Base Index\" - should be more or equal than 0"));
+                QMessageBox::critical(this, windowTitle(), tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0"));
                 return false;
             }
 
@@ -715,7 +711,7 @@ bool Primer3Dialog::doDataExchange() {
     return true;
 }
 
-void Primer3Dialog::showInvalidInputMessage(QWidget* field, QString fieldLabel) {
+void Primer3Dialog::showInvalidInputMessage(QWidget* field, const QString& fieldLabel) {
     tabWidget->setCurrentWidget(field->parentWidget());
     field->setFocus(Qt::OtherFocusReason);
     QMessageBox::critical(this, windowTitle(), tr("The field '%1' has invalid value").arg(fieldLabel));

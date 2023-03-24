@@ -28,6 +28,7 @@
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTextEdit.h>
@@ -40,7 +41,6 @@
 #include <QAbstractItemModel>
 #include <QApplication>
 #include <QDir>
-#include <QListWidget>
 #include <QTreeView>
 
 #include <U2Core/UserApplicationsSettings.h>
@@ -52,7 +52,6 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "runnables/qt/EscapeClicker.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
@@ -87,7 +86,7 @@ void openFileOpenSearchTabAndSetPattern(HI::GUITestOpStatus& os, const QString& 
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
-    GTTextEdit::setText(os, GTWidget::findTextEdit(os, "textPattern"), pattern);
+    GTPlainTextEdit::setText(os, GTWidget::findPlainTextEdit(os, "textPattern"), pattern);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -645,7 +644,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //    Test default group name on sequence without annotation table in an options panel widget.
 
     //    1. Open "data/samples/FASTA/human_T1.fa".
-    //    2. Open "Search in Sequence" options panel tab. Set any pattern. Open "Annotation paramaters" group.
+    //    2. Open "Search in Sequence" options panel tab. Set any pattern. Open "Annotation parameters" group.
     openFileOpenSearchTabAndSetPattern(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
 
@@ -3177,8 +3176,8 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
         QString annotationName;
 
     public:
-        Scenario(QString annotationName)
-            : annotationName(annotationName) {
+        Scenario(const QString& _annotationName)
+            : annotationName(_annotationName) {
         }
         void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
@@ -3189,10 +3188,10 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
             CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled");
 
             auto cbExistingTable = GTWidget::findComboBox(os, "cbExistingTable");
-            CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disnabled");
+            CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled");
 
             auto tbBrowseExistingTable = GTWidget::findToolButton(os, "tbBrowseExistingTable");
-            CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disnabled");
+            CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled");
 
             CHECK_SET_ERR(rbExistingTable->isChecked(), "rbExistingTable is unexpectedly unchecked");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

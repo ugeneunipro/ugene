@@ -83,7 +83,7 @@ QList<Task*> CuffmergeSupportTask::onSubTaskFinished(Task* subTask) {
     }
 
     QList<Task*> newSubTasks;
-    if (writeTasks.isEmpty() && nullptr == mergeTask) {
+    if (writeTasks.isEmpty() && mergeTask == nullptr) {
         newSubTasks << createCuffmergeTask();
     }
 

@@ -210,7 +210,7 @@ void StateLockableTreeItem::setParentStateLockItem(StateLockableTreeItem* newPar
                "Add-child modification is not allowed for new parent item!", );
     SAFE_POINT(parentStateLockItem == nullptr || parentStateLockItem->isModificationAllowed(StateLockModType_AddChild),
                "Add-child modification is not allowed for old parent item!", );
-    SAFE_POINT((nullptr == newParent) || (newParent->thread() == thread()),
+    SAFE_POINT((newParent == nullptr) || (newParent->thread() == thread()),
                "Parent item has a different thread", );
 
     StateLockableTreeItem* oldParent = parentStateLockItem;
@@ -337,7 +337,7 @@ QList<StateLock*> StateLockableTreeItem::findLocks(StateLockableTreeItemBranchFl
 
 StateLocker::StateLocker(StateLockableItem* lockableItem, StateLock* lock)
     : lockableItem(lockableItem),
-      lock(nullptr == lock ? lock = new StateLock() : lock) {
+      lock(lock == nullptr ? lock = new StateLock() : lock) {
     SAFE_POINT(nullptr != lockableItem, L10N::nullPointerError("StateLockableItem"), );
     SAFE_POINT(nullptr != lock, L10N::nullPointerError("StateLock"), );
     lockableItem->lockState(lock);

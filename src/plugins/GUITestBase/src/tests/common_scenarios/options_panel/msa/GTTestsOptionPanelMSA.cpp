@@ -1414,7 +1414,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "pairwise_alignment_test_0009.aln";
     const QString dirName = "pairwise_alignment_test_0009";
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
@@ -1441,7 +1441,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
     setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
     const QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error.contains(expected), QString("enexpected error: %1").arg(error));
@@ -1450,7 +1450,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "pairwise_alignment_test_0010.aln";
     const QString dirName = "pairwise_alignment_test_0010";
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
@@ -1474,7 +1474,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
     setOutputPath(os, dirPath, fileName, false);
     align(os);
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
     const QString expected = QString("Task {Pairwise alignment task} finished with error: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error == expected, QString("enexpected error: %1").arg(error));
@@ -1487,7 +1487,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "Open tree" button. Select data/samples/CLUSTALW/COI.nwk in file dialog
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick", "COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
@@ -1500,7 +1500,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default"));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
@@ -1517,7 +1517,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open tree settings option panel tab. build tree
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1568,17 +1568,20 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     GTUtilsProjectTreeView::toggleView(os);  // Close project view to make all actions on toolbar available.
 
     // Open tree settings option panel tab. build tree.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto treeView = GTWidget::findWidget(os, "treeView");
-    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
     GTWidget::click(os, syncModeButton);
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeOptions);
+    auto treeView = GTWidget::findWidget(os, "treeView");
+    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
 
     // Capture 2 variants of  'Phylogram', 'Default', 'Cladogram' images.
     GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
@@ -1620,7 +1623,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open tree settings option panel tab. build tree
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1731,7 +1734,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Open tree settings option panel tab. build tree.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
 
@@ -1802,22 +1805,26 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
+    GTUtilsProjectTreeView::toggleView(os);  // Close opened project tree view to make all icons on the toolbar visible with no overflow.
+
     // Open tree settings option panel tab. Build a tree.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Disable sync mode to allow resize of the view.
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
-    GTUtilsProjectTreeView::toggleView(os);  // Close opened project tree view to make all icons on the toolbar visible with no overflow.
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
 
     GTWidget::click(os, syncModeButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QGraphicsScene* scene = treeView->scene();
@@ -1844,7 +1851,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab. build tree
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTThread::waitForMainThread();
@@ -1896,7 +1903,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "export_consensus_test_0002.aln";
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -1920,7 +1927,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
     //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     //    Expected state: error in log: Task {Save document} finished with error: No permission to write to 'COI_transl.aln' file.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
     QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
     CHECK_SET_ERR(error.contains(expected), QString("Unexpected error: %1").arg(error));
@@ -1929,7 +1936,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
-    GTLogTracer l;
+    GTLogTracer lt;
     const QString fileName = "export_consensus_test_0003.aln";
     const QString dirName = "export_consensus_test_0003";
     //    1. Open data/samples/CLUSTALW/COI.aln
@@ -1953,7 +1960,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
     GTThread::waitForMainThread();
 
     //    Expected state: notification is shown that folder is read-only.
-    QString error = l.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     QString expected = QString("Task {Export consensus} finished with error: Folder is read-only: %1").arg(QFileInfo(filePath).absolutePath());
     CHECK_SET_ERR(error == expected, QString("Unexpected error: '%1', expected: '%2'").arg(error).arg(expected));
 }
@@ -2281,7 +2288,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
@@ -2337,7 +2344,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);

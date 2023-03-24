@@ -58,7 +58,7 @@ void FeaturesTableObjectTestData::init() {
 }
 
 U2FeatureDbi* FeaturesTableObjectTestData::getFeatureDbi() {
-    if (nullptr == featureDbi) {
+    if (featureDbi == nullptr) {
         init();
     }
     return featureDbi;

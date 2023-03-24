@@ -230,7 +230,7 @@ FSItem* RunFileSystem::find(const QStringList& path, bool& found) {
         }
 
         FSItem* item = FSItem::getItem(current->children(), name);
-        if (nullptr == item) {
+        if (item == nullptr) {
             found = false;
             break;
         }
@@ -244,7 +244,7 @@ FSItem* RunFileSystem::createPath(const QStringList& path, U2OpStatus& os) {
     QString pathStr = root->name();
     foreach (const QString& dirName, path) {
         FSItem* item = FSItem::getItem(current->children(), dirName);
-        if (nullptr == item) {
+        if (item == nullptr) {
             item = new FSItem(dirName, true);
             current->addChild(item);
         }

@@ -259,7 +259,7 @@ Task* HmmerSearchWorker::tick() {
         }
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (nullptr == seqObj) {
+        if (seqObj == nullptr) {
             return nullptr;
         }
 

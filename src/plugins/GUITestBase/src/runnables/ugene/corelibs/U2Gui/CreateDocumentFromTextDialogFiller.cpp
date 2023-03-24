@@ -91,7 +91,7 @@ void CreateDocumentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
-    GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
+    GTPlainTextEdit::setText(os, plainText, pasteDataHere);
     GTGlobals::sleep();
 
     if (customSettings) {
@@ -157,7 +157,7 @@ void CancelCreateDocumentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
-    GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
+    GTPlainTextEdit::setText(os, plainText, pasteDataHere);
 
     if (customSettings) {
         GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, "groupBox", dialog), true);

@@ -325,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_6062) {
 
     QTableWidget* inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
     CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
-    CHECK_SET_ERR(nullptr == inputPortTable2, "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(inputPortTable2 == nullptr, "Table for the second input port unexpectedly found");
 
     innerOs.reset();
 
@@ -352,7 +352,7 @@ GUI_TEST_CLASS_DEFINITION(test_6062) {
 
     inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
     CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
-    CHECK_SET_ERR(nullptr == inputPortTable2, "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(inputPortTable2 == nullptr, "Table for the second input port unexpectedly found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6066) {
@@ -640,10 +640,10 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
 
     // 4. Run this workflow.
     // Expected state : there are no errors during execution.
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6135) {
@@ -706,6 +706,7 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
 
     // 5. Press "Extract product"
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTUtilsOptionPanelSequenceView::pressExtractProduct(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1253,9 +1254,9 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Genbank/NC_014267.1.gb");
 
     // Run the workflow and wait for the expected message.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
-    GTUtilsLog::checkMessageWithWait(os, logTracer, "GET https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
+    GTUtilsLog::checkMessageWithWait(os, lt, "GET https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
@@ -1270,7 +1271,7 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
     // Expected state : UGENE offers to reload the modified file.
     // Accept the offering.
     // Expected state: the file reloading failed, an error message in the log appears.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "was modified. Do you want to reload"));
 
     QFile file(sandboxFastqFile);
@@ -1283,7 +1284,7 @@ GUI_TEST_CLASS_DEFINITION(test_6238) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Failed to detect file format"));
     GTUtilsDialog::checkNoActiveWaiters(os, 10000);
 
-    GTUtilsLog::checkContainsError(os, logTracer, "Failed to detect");
+    CHECK_SET_ERR(lt.hasError("Failed to detect"), "Expected error not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6240) {
@@ -1542,7 +1543,7 @@ GUI_TEST_CLASS_DEFINITION(test_6277) {
     auto table = GTWidget::findTreeWidget(os, "OP_ANNOT_HIGHLIGHT_TREE");
 
     QScrollBar* scrollBar = table->verticalScrollBar();
-    const int scrollBarWidth = nullptr == scrollBar ? 0 : (scrollBar->isVisible() ? scrollBar->width() : 0);
+    const int scrollBarWidth = scrollBar == nullptr ? 0 : (scrollBar->isVisible() ? scrollBar->width() : 0);
 
     // These numbers are defined in the widget stylesheet in AnnotHighlightTree.cpp
     const int MARGIN_LEFT = 5;
@@ -2026,13 +2027,14 @@ GUI_TEST_CLASS_DEFINITION(test_6475_2) {
     GTUtilsWorkflowDesigner::setDatasetInputFiles(os, QStringList({testDir + "_common_data/fasta/fa2.fa", testDir + "_common_data/fasta/fa3.fa"}));
 
     //    4. Run the workflow.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
     //    Expected state: the workflow finishes soon without errors.
     GTUtilsTaskTreeView::waitTaskFinished(os, 30000);
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6481_1) {
@@ -2455,12 +2457,12 @@ GUI_TEST_CLASS_DEFINITION(test_6490) {
     GTUtilsWorkflowDesigner::click(os, "test_6490");
 
     //    6. Launch the workflow.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
-    bool desiredMessage = logTracer.checkMessage("$oooo $oooo$oooo $oooo $oooo$oooo$oooo");
+    bool desiredMessage = lt.hasMessage("$oooo $oooo$oooo $oooo $oooo$oooo$oooo");
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
@@ -2591,7 +2593,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
     // 3. Input a pattern that contains a character of the extended DNA alphabet, e.g. "ACWT".
 
     QWidget* patternInputLine = QApplication::focusWidget();
-    CHECK_SET_ERR(nullptr != patternInputLine && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
+    CHECK_SET_ERR(patternInputLine != nullptr && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
 
     GTKeyboardDriver::keySequence("ACWT");
 
@@ -2599,7 +2601,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
     GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
 
     // 5. Expected/current result: the search field background is red.
-    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
+    auto editPatterns = GTWidget::findPlainTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
@@ -2975,12 +2977,12 @@ GUI_TEST_CLASS_DEFINITION(test_6580) {
     GTUtilsWorkflowDesigner::click(os, "test_6580");
 
     //    6. Launch the workflow.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: the workflow execution finishes, there is an log string `-version -version-version -version -version-version-version`.
-    bool desiredMessage = logTracer.checkMessage("-version -version-version -version -version-version-version");
+    bool desiredMessage = lt.hasMessage("-version -version-version -version -version-version-version");
     CHECK_SET_ERR(desiredMessage, "No expected message in the log");
 }
 
@@ -3327,7 +3329,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
     GTUtilsMSAEditorSequenceArea::hasSequencesWithNames(os, {"seq1", "seq3", "seq5"});
 
     // Also, an error it the log appears:The following sequence(s) were not aligned as they do not contain meaningful characters: "seq2", "seq4".
-    GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
+    CHECK_SET_ERR(lt.hasError("The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\"."), "Expected error not found");
 
     // The "Undo" button is enabled
     CHECK_SET_ERR(GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is disabled, but shouldn't be");
@@ -3353,7 +3355,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
     GTUtilsMSAEditorSequenceArea::hasSequencesWithNames(os, {"seq1", "seq3", "seq5"});
 
     // Also, an error it the log appears:The following sequence(s) were not aligned as they do not contain meaningful characters: "seq2", "seq4".
-    GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
+    CHECK_SET_ERR(lt.hasError("The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\"."), "Expected error not found");
 
     // The "Undo" button is enabled
     CHECK_SET_ERR(GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is disabled, but shouldn't be");
@@ -3380,7 +3382,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_3) {
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceCountBefore).arg(sequenceCountAfter));
 
     // Also, an error it the log appears: The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".
-    GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
+    CHECK_SET_ERR(lt.hasError("The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\"."), "Expected error not found");
 
     // The "Undo" button is disabled
     CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The Undo button is enabled, but shouldn't be");
@@ -3409,7 +3411,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
 
     // Also, an error it the log appears: The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".
-    GTUtilsLog::checkContainsError(os, lt, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
+    CHECK_SET_ERR(lt.hasError("The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\"."), "Expected error not found");
 
     // The "Undo" button is disabled
     CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
@@ -3436,7 +3438,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
 
     // but the error notification is the following: Data from the "empty-file.fa" file can't be alignment to the "COI" alignment - the file is empty.
-    GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
+    CHECK_SET_ERR(lt.hasError("Task {Load sequences and add to alignment task} finished with error: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty."), "Expected error not found");
 
     // The "Undo" button is disabled
     CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enabled, but shouldn't be");
@@ -3463,7 +3465,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
 
     // but the error notification is the following: Data from the "empty-file.fa" file can't be alignment to the "COI" alignment - the file format is invalid.
-    GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
+    CHECK_SET_ERR(lt.hasError("Task {Load sequences and add to alignment task} finished with error: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid."), "Expected error not found");
 
     // The "Undo" button is disabled
     CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enabled, but shouldn't be");
@@ -3490,7 +3492,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
 
     // but the error notification is the following: Data from the "empty-file.fa" file can't be alignment to the "COI" alignment - the file format is invalid.
-    GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
+    CHECK_SET_ERR(lt.hasError("Task {Load sequences and add to alignment task} finished with error: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid."), "Expected error not found");
 
     // The "Undo" button is disabled
     CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
@@ -3644,6 +3646,7 @@ GUI_TEST_CLASS_DEFINITION(test_6649) {
 
     auto annsComboBox = GTWidget::findComboBox(os, "annsComboBox");
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -5051,7 +5054,7 @@ GUI_TEST_CLASS_DEFINITION(test_6749_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result; red background and warning "Input value contains characters that do not match the active alphabet!"
-    auto editPatterns = GTWidget::findTextEdit(os, "textPattern");
+    auto editPatterns = GTWidget::findPlainTextEdit(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
     CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
@@ -5157,7 +5160,7 @@ GUI_TEST_CLASS_DEFINITION(test_6752) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 GUI_TEST_CLASS_DEFINITION(test_6754) {
-    GTLogTracer l;
+    GTLogTracer lt;
 
     // 1. open document samples/CLUSTALW/COI.aln
     GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -5170,7 +5173,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
 
     // 4. There are no errors in the log
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6758_1) {
@@ -5233,7 +5236,7 @@ GUI_TEST_CLASS_DEFINITION(test_6758_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6759) {
-    GTLogTracer l;
+    GTLogTracer lt;
 
     // The test just check that there are no crash hile rotating circular view
     //    1. Open sequence
@@ -5279,7 +5282,7 @@ GUI_TEST_CLASS_DEFINITION(test_6759) {
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 360 - 39);
     GTScrollBar::moveSliderWithMouseToValue(os, horScroll, 0);
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     // 1. Open /data/samples/fasta/human_T1.fa
@@ -5622,7 +5625,7 @@ GUI_TEST_CLASS_DEFINITION(test_6847) {
     MWMDIWindow* mdiWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
     GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsLog::checkContainsError(os, lt, "No sequences detected in the pasted content.");
+    CHECK_SET_ERR(lt.hasError("No sequences detected in the pasted content."), "Expected error not found");
     GTWidget::click(os, GTAction::button(os, editMode));
 }
 GUI_TEST_CLASS_DEFINITION(test_6860) {
@@ -5711,12 +5714,12 @@ GUI_TEST_CLASS_DEFINITION(test_6872) {
     // 2. Set human_T1.fa as input files on first and second wizard pages.
     // 3. Run schema.
     // Expected state: workflow stopped work with "Not enouch memory to finish the task." error message in the log.
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new FillTrimAndMapWizardWithHumanT1()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and map Sanger reads");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.checkMessage("Needed amount of memory for this task is"), "No expected message in the log");
+    CHECK_SET_ERR(lt.hasMessage("Needed amount of memory for this task is"), "No expected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6875) {
@@ -6114,7 +6117,7 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     // Fill it and run
     // Expected result: no errors
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -6140,7 +6143,7 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Raw DNA-Seq data processing..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     // Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
     // There should be no notifications.
@@ -6664,7 +6667,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "1..1", annotationPath));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    GTLogTracer log("Task {Shutdown} canceled");
+    GTLogTracer lt;
 
     // 7.1. Close UGENE.
     // 7.2. Click "Yes", then "Save", then "Cancel".
@@ -6675,11 +6678,11 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     //      Expected state: 1) The log has "Task {Shutdown} canceled" message;
     //                      2) Project tree has "annot.gb" document;
     //                      3) Annotations tree has "annot.gb" item.
-    GTUtilsLog::checkContainsMessage(os, log);
+    CHECK_SET_ERR(lt.hasMessage("Task {Shutdown} canceled"), "Expected message not found");
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
 
-    GTLogTracer log1("Task {Shutdown} canceled");
+    lt.clear();
 
     // 8.1. Close UGENE.
     // 8.2. Click "Yes", then "Cancel".
@@ -6687,18 +6690,18 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
     GTMenu::clickMainMenuItem(os, {"File", "Exit"});
     //      Expected state: similar.
-    GTUtilsLog::checkContainsMessage(os, log1);
+    CHECK_SET_ERR(lt.hasMessage("Task {Shutdown} canceled"), "Expected message not found");
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
 
-    GTLogTracer log2("Task {Shutdown} canceled");
+    lt.clear();
 
     // 9.1. Close UGENE.
     // 9.2. Click "Cancel".
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Cancel"));
     GTMenu::clickMainMenuItem(os, {"File", "Exit"});
     //      Expected state: similar.
-    GTUtilsLog::checkContainsMessage(os, log2);
+    CHECK_SET_ERR(lt.hasMessage("Task {Shutdown} canceled"), "Expected message not found");
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 1)");
 
@@ -6716,7 +6719,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
         }
     };
 
-    GTLogTracer log3("Task {Shutdown} canceled");
+    lt.clear();
 
     // 11. Close UGENE.
     // 12. Click "No", then "Cancel"
@@ -6724,7 +6727,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Clicker()));
     GTMenu::clickMainMenuItem(os, {"File", "Exit"});
     //     Expected state: similar.
-    GTUtilsLog::checkContainsMessage(os, log3);
+    CHECK_SET_ERR(lt.hasMessage("Task {Shutdown} canceled"), "Expected message not found");
     GTUtilsProjectTreeView::getItemCenter(os, "annot.gb");
     GTUtilsProjectTreeView::getItemCenter(os, "annot1.gb");
     GTUtilsAnnotationsTreeView::findItem(os, "Annotations [annot.gb] *");

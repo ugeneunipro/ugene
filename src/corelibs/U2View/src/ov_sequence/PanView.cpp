@@ -24,7 +24,6 @@
 #include <QDialog>
 #include <QGridLayout>
 #include <QPainter>
-#include <QTextEdit>
 
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationSettings.h>

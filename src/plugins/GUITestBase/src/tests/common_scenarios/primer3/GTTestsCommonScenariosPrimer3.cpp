@@ -23,13 +23,11 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
-#include <primitives/PopupChooser.h>
 
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "GTTestsCommonScenariosPrimer3.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsSequenceView.h"
 
 namespace U2 {
 namespace GUITest_common_scenarios_primer3 {
@@ -217,7 +215,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {22, 42}, {292, 314} });
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 2  (0, 2)", { {24, 44}, {292, 314} });
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 3  (0, 2)", { {22, 42}, {265, 289} });

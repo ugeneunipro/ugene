@@ -757,7 +757,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    4. Launch the workflow.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
     //    5. Wait the workflow execution finish.
@@ -821,7 +821,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeText)
                       .arg(nodeText));
-    CHECK_SET_ERR(logTracer.checkMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
+    CHECK_SET_ERR(lt.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    8. Click to the "Copy command" button that is in the third-level node "ClustalO run".
     GTUtilsDashboard::clickCopyButton(os, clustaloRunNodeId);
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeText)
                       .arg(nodeText));
-    CHECK_SET_ERR(logTracer.checkMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
+    CHECK_SET_ERR(lt.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    10. Click to the "Copy command" button that is in the third-level node "ClustalW run".
     GTUtilsDashboard::clickCopyButton(os, clustalwRunNodeId);
@@ -2361,7 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     QWidget* viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
                       !viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is visible");
 
@@ -2386,7 +2386,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
                       !viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is visible");
 
@@ -2888,7 +2888,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
-    CHECK_SET_ERR(nullptr == viewSwitchButton || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
+    CHECK_SET_ERR(viewSwitchButton == nullptr || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
     QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView2, "Dashboards view is nullptr");

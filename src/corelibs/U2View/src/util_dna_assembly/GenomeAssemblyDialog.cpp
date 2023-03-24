@@ -360,7 +360,7 @@ void GenomeAssemblyDialog::addGuiExtension() {
     // insert new extension widget
     GenomeAssemblyAlgorithmEnv* env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
 
-    if (nullptr == env) {
+    if (env == nullptr) {
         adjustSize();
         return;
     }

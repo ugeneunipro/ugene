@@ -266,7 +266,7 @@ void GTFFormat::load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& db
                 break;
             }
         }
-        if (nullptr == annotTable) {
+        if (annotTable == nullptr) {
             if (objectsCountLimit > 0 && objects.size() >= objectsCountLimit) {
                 os.setError(tr("File \"%1\" contains too many annotation tables to be displayed. "
                                "However, you can process these data using pipelines built with Workflow Designer.")

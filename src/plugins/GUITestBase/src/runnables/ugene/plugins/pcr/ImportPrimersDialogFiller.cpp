@@ -36,9 +36,12 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportPrimersDialogFiller"
 
-ImportPrimersDialogFiller::ImportPrimersDialogFiller(HI::GUITestOpStatus& os, const QStringList& fileList)
+ImportPrimersDialogFiller::ImportPrimersDialogFiller(HI::GUITestOpStatus& os,
+                                                     const QStringList& _fileList,
+                                                     const QMap<QString, QStringList>& _objectNameList)
     : Filler(os, "ImportPrimersDialog"),
-      fileList(fileList) {
+      fileList(_fileList),
+      objectNameList(_objectNameList) {
 }
 
 ImportPrimersDialogFiller::ImportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
@@ -47,14 +50,16 @@ ImportPrimersDialogFiller::ImportPrimersDialogFiller(HI::GUITestOpStatus& os, Cu
 
 #define GT_METHOD_NAME "commonScenario"
 void ImportPrimersDialogFiller::commonScenario() {
-    if (fileList.isEmpty()) {
+    if (fileList.isEmpty() && objectNameList.isEmpty()) {
         GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         return;
     }
 
-    foreach (const QString& file, fileList) {
+    for (const QString& file : qAsConst(fileList)) {
         addFile(os, file);
     }
+
+    addObjects(os, objectNameList);
 
     GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
 }
@@ -68,17 +73,8 @@ void ImportPrimersDialogFiller::addFile(HI::GUITestOpStatus& os, const QString& 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addObject"
-void ImportPrimersDialogFiller::addObjects(HI::GUITestOpStatus& os, const QString& databaseName, const QStringList& objectNames) {
-    QMap<QString, QStringList> objects;
-    objects[databaseName] = objectNames;
-    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, objects, QSet<GObjectType>() << GObjectTypes::SEQUENCE, ProjectTreeItemSelectorDialogFiller::Separate));
-    GTWidget::click(os, GTWidget::findWidget(os, "pbAddObject", getDialog(os)));
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "addObject"
 void ImportPrimersDialogFiller::addObjects(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& databaseAndObjectNames) {
-    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, databaseAndObjectNames, QSet<GObjectType>() << GObjectTypes::SEQUENCE, ProjectTreeItemSelectorDialogFiller::Separate));
+    GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, databaseAndObjectNames, QSet<GObjectType>() << GObjectTypes::SEQUENCE, ProjectTreeItemSelectorDialogFiller::Separate));
     GTWidget::click(os, GTWidget::findWidget(os, "pbAddObject", getDialog(os)));
 }
 #undef GT_METHOD_NAME

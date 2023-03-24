@@ -35,7 +35,8 @@ public:
         General,
         Highlighting,
         PairwiseAlignment,
-        TreeSettings,
+        AddTree,
+        TreeOptions,
         ExportConsensus,
         Statistics,
         Search
@@ -74,15 +75,15 @@ public:
     /** Checks that the tab is opened and returns the inner tab widget .*/
     static QWidget* checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab);
 
-    static void addReference(HI::GUITestOpStatus& os, QString seqName, AddRefMethod method = Button);
-    static void addFirstSeqToPA(HI::GUITestOpStatus& os, QString seqName, AddRefMethod method = Button);
-    static void addSecondSeqToPA(HI::GUITestOpStatus& os, QString seqName, AddRefMethod method = Button);
+    static void addReference(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method = Button);
+    static void addFirstSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method = Button);
+    static void addSecondSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method = Button);
     static QString getSeqFromPAlineEdit(HI::GUITestOpStatus& os, int num);
     static void removeReference(HI::GUITestOpStatus& os);
     static QString getReference(HI::GUITestOpStatus& os);
     static int getLength(HI::GUITestOpStatus& os);
     static int getHeight(HI::GUITestOpStatus& os);
-    static void copySelection(HI::GUITestOpStatus& os, const CopyFormat format = CopyFormat::CLUSTALW);
+    static void copySelection(HI::GUITestOpStatus& os, const CopyFormat& format = CopyFormat::CLUSTALW);
 
     static void setColorScheme(HI::GUITestOpStatus& os, const QString& colorSchemeName, GTGlobals::UseMethod method = GTGlobals::UseKeyBoard);
     static QString getColorScheme(HI::GUITestOpStatus& os);
@@ -113,12 +114,12 @@ public:
     static QString getExportConsensusOutputFormat(HI::GUITestOpStatus& os);
 
     // functions for accessing "Find pattern" options elements
-    static void enterPattern(HI::GUITestOpStatus& os, QString pattern, bool useCopyPaste = false);
+    static void enterPattern(HI::GUITestOpStatus& os, const QString& pattern, bool useCopyPaste = false);
     static QString getPattern(HI::GUITestOpStatus& os);
-    static void setAlgorithm(HI::GUITestOpStatus& os, QString algorithm);
+    static void setAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm);
     static void setMatchPercentage(HI::GUITestOpStatus& os, int percentage);
     static void setCheckedRemoveOverlappedResults(HI::GUITestOpStatus& os, bool checkedState = true);
-    static void checkResultsText(HI::GUITestOpStatus& os, QString expectedText);
+    static void checkResultsText(HI::GUITestOpStatus& os, const QString& expectedText);
     static void setRegionType(HI::GUITestOpStatus& os, const QString& regionType);
     static void setRegion(HI::GUITestOpStatus& os, int from, int to);
     static void setSearchContext(HI::GUITestOpStatus& os, const QString& context);
@@ -138,7 +139,7 @@ public:
 private:
     static QWidget* getWidget(HI::GUITestOpStatus& os, const QString& widgetName, int number);
 
-    static void addSeqToPA(HI::GUITestOpStatus& os, QString seqName, AddRefMethod method, int number);
+    static void addSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method, int number);
 
     static QMap<Tabs, QString> initNames();
     static QMap<Tabs, QString> initInnerWidgetNames();

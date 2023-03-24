@@ -38,7 +38,6 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTTableView.h>
-#include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -87,6 +86,7 @@
 #include "GTUtilsOptionsPanelPhyTree.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsPhyTree.h"
+#include "GTUtilsPrimerLibrary.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsQueryDesigner.h"
@@ -110,6 +110,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/DNASequenceGeneratorDialogFiller.h"
@@ -117,11 +118,14 @@
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
+#include "runnables/ugene/plugins/enzymes/CreateFragmentDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -166,6 +170,7 @@ GUI_TEST_CLASS_DEFINITION(test_7003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7012) {
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os,
                                  new WizardFiller(os,
@@ -175,7 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_7012) {
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    bool hasUnexpectedLogMessage = GTLogTracer::checkMessage("Ignored incorrect value of attribute");
+    bool hasUnexpectedLogMessage = lt.hasMessage("Ignored incorrect value of attribute");
     CHECK_SET_ERR(!hasUnexpectedLogMessage, "Found unexpected message in the log");
 
     // Check that output file contains only empty FASTA entries.
@@ -504,13 +509,14 @@ GUI_TEST_CLASS_DEFINITION(test_7128) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFile::removeDir(mafftDirToRemove);
     GTUtilsDialog::waitForDialog(os, new MAFFTSupportRunDialogFiller(os, new MAFFTSupportRunDialogFiller::Parameters()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_ALIGN, "Align with MAFFT"}));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 
-    GTUtilsLog::checkContainsError(os, logTracer, QString("External tool '%1' doesn't exist").arg(QFileInfo(mafftPathToRemove).absoluteFilePath()));
+    QString expectedError = QString("External tool '%1' doesn't exist").arg(QFileInfo(mafftPathToRemove).absoluteFilePath());
+    CHECK_SET_ERR(lt.hasError(expectedError), "Expected error is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7151) {
@@ -621,7 +627,7 @@ GUI_TEST_CLASS_DEFINITION(test_7154) {
 
 GUI_TEST_CLASS_DEFINITION(test_7161) {
     class ItemPopupChooserByPosition : public PopupChooser {
-        // for some reason PopupChooser don not work properly, so we choose item by position
+        // for some reason PopupChooser does not work properly, so we choose item by position
     public:
         ItemPopupChooserByPosition(HI::GUITestOpStatus& os, int _pos)
             : PopupChooser(os, {}), pos(_pos) {
@@ -927,11 +933,11 @@ GUI_TEST_CLASS_DEFINITION(test_7279) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "test_7279.nwk", 2, 99.99));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(logTracer.getJoinedErrorString().contains("Failed to compute distance matrix: distance matrix contains infinite values"),
+    CHECK_SET_ERR(lt.getJoinedErrorString().contains("Failed to compute distance matrix: distance matrix contains infinite values"),
                   "Expected error message is not found");
 }
 
@@ -1317,12 +1323,12 @@ GUI_TEST_CLASS_DEFINITION(test_7405) {
     model.referenceUrl = "/some-wrong-url";
     model.length = 100 * 1000 * 1000;
 
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new DNASequenceGeneratorDialogFiller(os, model));
     GTMenu::clickMainMenuItem(os, {"Tools", "Random sequence generator..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString error = logTracer.getJoinedErrorString();
+    QString error = lt.getJoinedErrorString();
     CHECK_SET_ERR(error.contains(model.referenceUrl), "Expected error message is not found");
 }
 
@@ -1343,7 +1349,8 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
     CHECK_SET_ERR(sequence.length() == 1, "Invalid sequence length: " + QString::number(sequence.length()));
     char c = sequence[0].toLatin1();
     CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + sequence[0]);
-    GTUtilsLog::check(os, lt);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    ;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7410) {
@@ -1551,7 +1558,7 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
                   QString("Illegal second result coordinates: " + GTUtilsText::rectToString(selectedRect)));
 
     // Enter illegal 'M' character: check that there is a warning and no results in the list.
-    auto patternEdit = GTWidget::findTextEdit(os, "textPattern");
+    auto patternEdit = GTWidget::findPlainTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
     GTKeyboardDriver::keyClick('M');
@@ -1579,6 +1586,7 @@ GUI_TEST_CLASS_DEFINITION(test_7447) {
 
 GUI_TEST_CLASS_DEFINITION(test_7448_1) {
     // Check that "Export sequence of selected annotations..." does not generate error messages.
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1601,7 +1609,7 @@ GUI_TEST_CLASS_DEFINITION(test_7448_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: there is no log message "Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"
-    GTLogTracer::checkMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries");
+    CHECK_SET_ERR(!lt.hasMessage("Sequences of the selected annotations can't be exported. At least one of the annotations is out of boundaries"), "Found unexpected message");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7448_2) {
@@ -1810,11 +1818,11 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new DigestScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Cloning", "Digest into fragments..."}));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the task finished with an error: Conserved annotation misc_feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
-    GTUtilsLog::checkContainsError(os, lt, "Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.");
+    CHECK_SET_ERR(lt.hasError("Conserved annotation Misc. Feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites."), "Expected error not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7456) {
@@ -1994,7 +2002,7 @@ GUI_TEST_CLASS_DEFINITION(test_7473_2) {
 
     GTUtilsDocument::checkIfDocumentIsLocked(os, "CBS.sto", true);
 
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "buildTreeButton"));
@@ -2643,7 +2651,7 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
             CHECK_SET_ERR(!ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not unchecked by default");
 
             // Set values to widgets, check that text is changed.
-            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-custom c1 -m 1 -bb 2 --custom c2 c3 -alrt 3");
+            GTPlainTextEdit::setText(os, extraParametersTextEdit, "-custom c1 -m 1 -bb 2 --custom c2 c3 -alrt 3");
             GTLineEdit::setText(os, substModelEdit, "LM");
             GTLineEdit::setText(os, ultrafastBootstrapEdit, "1000");
             GTLineEdit::setText(os, alrtEdit, "1001");
@@ -2659,7 +2667,7 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
             CHECK_SET_ERR(!ancestralReconstructionCheckBox->isChecked(), "ancestralReconstructionCheckBox is not unchecked");
 
             // Set text with parameters and check the widgets are updated
-            GTPlainTextEdit::setPlainText(os, extraParametersTextEdit, "-m TEST -bb 1000 -alrt 1002 -asr");
+            GTPlainTextEdit::setText(os, extraParametersTextEdit, "-m TEST -bb 1000 -alrt 1002 -asr");
             CHECK_SET_ERR(substModelEdit->text() == "TEST", "substModelEdit is not updated");
             CHECK_SET_ERR(ultrafastBootstrapEdit->text() == "1000", "ultrafastBootstrapEdit is not updated");
             CHECK_SET_ERR(alrtEdit->text() == "1002", "alrtEdit is not updated");
@@ -2682,6 +2690,7 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
     // 3. Start building tree with Likelihood algorithm
     // 4. Cancel Tree building task
     // Expected state: no message about QProcess destructor in details log
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2704,7 +2713,7 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
     GTUtilsTaskTreeView::cancelTask(os, taskName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // We can't put it in macro because it will be auto-triggered by log message from macro itself.
-    bool messageNotFound = !U2::GTLogTracer::checkMessage("QProcess: Destroyed while process");
+    bool messageNotFound = !lt.hasMessage("QProcess: Destroyed while process");
     CHECK_SET_ERR(messageNotFound, "Message about QProcess destructor found, but shouldn't be.");
 }
 
@@ -2821,12 +2830,12 @@ GUI_TEST_CLASS_DEFINITION(test_7582) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new RunBuildTreeScenario()));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsMsaEditor::getTreeView(os);  // Check that tree view was opened.
-    CHECK_SET_ERR(!logTracer.hasErrors(), "Found error in the log: " + logTracer.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Found error in the log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7584) {
@@ -2891,8 +2900,8 @@ GUI_TEST_CLASS_DEFINITION(test_7609) {
     // No crash.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/non_unique_row_names.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
-    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsMsaEditor::removeRows(os, 0, 0);
     GTUtilsMsaEditor::removeRows(os, 0, 0);
 }
@@ -2920,7 +2929,7 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
         QString pdfFilePath;
     };
 
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new Filler(os, "ImageExportForm", new ExportImageScenario(pdfFilePath)));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"bioStruct3DExportImageAction"}));
@@ -2928,7 +2937,7 @@ GUI_TEST_CLASS_DEFINITION(test_7611) {
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     qint64 pdfFileSize = GTFile::getSize(os, pdfFilePath);
     CHECK_SET_ERR(pdfFileSize > 1000 * 1000, "Invalid PDF file size: " + QString::number(pdfFileSize));
 }
@@ -2945,25 +2954,25 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     // Try non-tree file. Expected state: nothing is loaded.
-    GTLogTracer logTracer1("Document contains no tree objects");
+    GTLogTracer lt1;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/CLUSTALW/ty3.aln.gz"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsMessage(os, logTracer1);
+    CHECK_SET_ERR(lt1.hasMessage("Document contains no tree objects"), "Expected message not found");
     GTUtilsMsaEditor::checkNoTreeView(os);
 
     // Try load a tree file that is already in the project. Expected state: the document in the project is reused.
-    GTLogTracer logTracer2;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/samples/Newick/COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check there is an active tree view.
+    GTLogTracer lt2;
     GTUtilsMsaEditor::getTreeView(os);
-    GTUtilsLog::check(os, logTracer2);  // Check there is no error in the log.
+    CHECK_SET_ERR(!lt2.hasErrors(), "Found errors in log: " + lt2.getJoinedErrorString());
 
     documents = AppContext::getProject()->getDocuments();
     CHECK_SET_ERR(documents.size() == 2, "Expected 2 document in project");
@@ -2992,7 +3001,7 @@ GUI_TEST_CLASS_DEFINITION(test_7617) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7623) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     // Select "Tools>Workflow Designer"
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
@@ -3021,7 +3030,7 @@ GUI_TEST_CLASS_DEFINITION(test_7623) {
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Map Sanger Reads to Reference", new Scenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Trim and Map Sanger reads");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, logTracer, "All input reads contain gaps or Ns only, abort");
+    CHECK_SET_ERR(lt.hasError("All input reads contain gaps or Ns only, abort"), "Expected error not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7629) {
@@ -3039,12 +3048,12 @@ GUI_TEST_CLASS_DEFINITION(test_7629) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 3. Paste it to project filter
     // Expected: no crash, here is info message in log and warning message box
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The search pattern is too long. Pattern was truncated to 1000 symbols."));
     auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
     GTLineEdit::setText(os, nameFilterEdit, GTClipboard::text(os), true, true);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkMessageWithWait(os, logTracer, "The search pattern is too long. Pattern was truncated to 1000 symbols.", 90000);
+    GTUtilsLog::checkMessageWithWait(os, lt, "The search pattern is too long. Pattern was truncated to 1000 symbols.", 90000);
 
     // 4. Copy region with acceptable length 1000 symbols
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 1000));
@@ -3258,12 +3267,12 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
         }
     };
 
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTGlobals::sleep(750);  // need pause to redraw/update ui, sometimes test can't preform next action
     GTUtilsMdi::activateWindow(os, "COI [COI.aln]");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new WaitLogMessage()));
     GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from file..."});
-    CHECK_SET_ERR(logTracer.checkMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
+    CHECK_SET_ERR(lt.hasMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
@@ -3482,7 +3491,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsProjectTreeView::toggleView(os);
 
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "/samples/Newick/COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3757,7 +3766,7 @@ GUI_TEST_CLASS_DEFINITION(test_7714) {
     // Open the file 1.bam.
     // Check the box "Deselect all", "Import unmapped reads" and import the file.
     // Expected state: UGENE not crashed
-    GTLogTracer l;
+    GTLogTracer lt;
     qint64 expectedReads = 10;
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7714/test_7714.ugenedb", "", "", true, true));
@@ -3776,7 +3785,7 @@ GUI_TEST_CLASS_DEFINITION(test_7714) {
     qint64 assemblyReads2 = GTUtilsAssemblyBrowser::getReadsCount(os);
     CHECK_SET_ERR(assemblyReads2 == expectedReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads2));
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7715) {
@@ -3796,9 +3805,7 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     //     Expected: no size messages in the log.
     // Click "Remove all gaps".
     //     Expected: no size messages in the log.
-    GTLogTracer ltConnect("QObject::connect(U2::MaEditorWgt, U2::MaGraphOverview): invalid nullptr parameter");
-    GTLogTracer ltSize("QWidget::setMinimumSize: (msa_editor_sequence_area/U2::MSAEditorSequenceArea) Negative sizes");
-    GTLogTracer ltSizeNameList("QWidget::setMinimumSize: (msa_editor_name_list/U2::MsaEditorNameList) Negative sizes");
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsMSAEditorSequenceArea::click(os);
@@ -3818,9 +3825,8 @@ GUI_TEST_CLASS_DEFINITION(test_7715) {
     GTUtilsMsaEditor::setMultilineMode(os, true);
     GTMenu::clickMainMenuItem(os, {"Actions", "Edit", "Remove all gaps"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsMessage(os, ltConnect, false);
-    GTUtilsLog::checkContainsMessage(os, ltSize, false);
-    GTUtilsLog::checkContainsMessage(os, ltSizeNameList, false);
+    CHECK_SET_ERR(!lt.hasMessage("QObject::connect"), "Found unexpected message/1");
+    CHECK_SET_ERR(!lt.hasMessage("QWidget::setMinimumSize)"), "Found unexpected message/2");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7720) {
@@ -4070,7 +4076,7 @@ GUI_TEST_CLASS_DEFINITION(test_7753) {
             GTUtilsDialog::clickButtonBox(os, GTWidget::getActiveModalWidget(os), QDialogButtonBox::Ok);
         }
     };
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     QString sandboxFilePath = sandBoxDir + "test_7753/chrM.sorted.bam";
     QDir().mkpath(sandBoxDir + "test_7753");
     GTFile::copy(os, dataDir + "samples/Assembly/chrM.sorted.bam", sandboxFilePath);
@@ -4078,7 +4084,7 @@ GUI_TEST_CLASS_DEFINITION(test_7753) {
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, new DeleteFileBeforeImport()));
     GTFileDialog::openFile(os, sandboxFilePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::checkContainsError(os, logTracer, QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath()));
+    CHECK_SET_ERR(lt.hasError(QString("File %1 does not exists. Document was removed.").arg(QFileInfo(sandboxFilePath).absoluteFilePath())), "Expected error not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7770) {
@@ -4109,6 +4115,7 @@ GUI_TEST_CLASS_DEFINITION(test_7789) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
 
     GTUtilsOptionPanelPhyTree::openTab(os);
 
@@ -4252,6 +4259,92 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
     qint64 size = GTFile::getSize(os, sandBoxDir + "/test_7806/2/chrM.fa");
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7825) {
+    // 1. Open the attached sequence.
+    // 2. Open Primer3 dialog
+    // 3. Set "pick_discriminative_primers" task
+    // 4. Set Target region to 36, 163 (annotated region)
+    // 5. Set region to whole sequence
+    // 6. Go to Advance settings tab and click "Pick anyway"
+    // 7. Click "Pick"
+    // Expected: primers frame the annotation
+
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/7825/seq.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/regression/7825/settings.txt";
+    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "primer3_action"}));
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", {{16, 35}, {199, 218}});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7827) {
+    // 1. Open samples/PDB/1CF7.PDB
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open Primer Library
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    // 3. Click "Import primer(s)"
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, {}, {{"1CF7.PDB", {"1CF7 chain A sequence", "1CF7 chain B sequence", "1CF7 chain C sequence", "1CF7 chain D sequence"}}}));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
+
+    // Expected: two sequences imported as primers, two declined because of alphabet
+    GTUtilsNotifications::checkNotificationReportText(os, {"A sequence: <span style=\" color:#a6392e;\">error", "B sequence: <span style=\" color:#a6392e;\">error", "C sequence: <span style=\" color:#008000;\">success", "D sequence: <span style=\" color:#008000;\">success"});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7830) {
+    // 1. Open COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Right button-> Statistics-> Generate distance matrix
+    // 3. Click "Generate" (save to a new file)
+    GTUtilsDialog::add(os, new PopupChooser(os, {MSAE_MENU_STATISTICS, "Generate distance matrix"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(os, new DistanceMatrixDialogFiller(os, DistanceMatrixDialogFiller::SaveFormat::HTML, sandBoxDir + "test_7830.html"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: legend exists, and, in general, the generated report contains some expected part from "_common_data/regression/7830/test.html"
+    auto generated = GTFile::readAll(os, sandBoxDir + "test_7830.html");
+    auto expected = GTFile::readAll(os, testDir + "_common_data/regression/7830/test.html");
+    CHECK_SET_ERR(generated.contains(expected), "Distance matfix report does not contain expected text");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7842) {
+    // 1. Open "GenBank/murine.gb" and "GenBank/sars.gb"
+    // 2. Click right button->Cloning->Construct molecule...
+    // 3. Click "From project..."
+    // 4. Try select both sequences: it should not be possible because ProjectTreeItemSelector will be instantiated with 'allowMultipleSelection=false'.
+    // Expected: only one sequence could be selected, only one "Create Fragment" dialog has appeared, only one fragment added
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    class Scenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, {{"sars.gb", {"NC_004718"}}, {"murine.gb", {"NC_001363"}}}));
+            GTUtilsDialog::add(os, new CreateFragmentDialogFiller(os));
+            GTWidget::click(os, GTWidget::findWidget(os, "fromProjectButton"));
+
+            auto fragmentListWidget = GTWidget::findListWidget(os, "fragmentListWidget", dialog);
+            CHECK_SET_ERR(fragmentListWidget->count() == 1, QString("Unexpected fragments size, expected: 1, current: %1").arg(fragmentListWidget->count()));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Construct molecule..."});
 }
 
 }  // namespace GUITest_regression_scenarios

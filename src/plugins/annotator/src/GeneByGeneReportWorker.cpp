@@ -86,7 +86,7 @@ Task* GeneByGeneReportWorker::tick() {
 
         SharedDbiDataHandler seqId = data.value(SEQ_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (nullptr == seqObj.data()) {
+        if (seqObj.data() == nullptr) {
             return nullptr;
         }
         DNASequence seq = seqObj->getWholeSequence(os);

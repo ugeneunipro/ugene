@@ -75,7 +75,7 @@ void BaseDocWriter::init() {
 void BaseDocWriter::takeParameters(U2OpStatus& os) {
     Attribute* dataStorageAttr = actor->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
 
-    const QString storage = (nullptr == dataStorageAttr) ? BaseAttributes::LOCAL_FS_DATA_STORAGE() : dataStorageAttr->getAttributeValue<QString>(context);
+    const QString storage = (dataStorageAttr == nullptr) ? BaseAttributes::LOCAL_FS_DATA_STORAGE() : dataStorageAttr->getAttributeValue<QString>(context);
     if (BaseAttributes::LOCAL_FS_DATA_STORAGE() == storage) {
         dataStorage = LocalFs;
 
@@ -84,7 +84,7 @@ void BaseDocWriter::takeParameters(U2OpStatus& os) {
             QString formatId = formatAttr->getAttributeValue<QString>(context);
             format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         }
-        if (nullptr == format) {
+        if (format == nullptr) {
             os.setError(tr("Document format not set"));
             return;
         }
@@ -126,7 +126,7 @@ QString BaseDocWriter::getDefaultFileName() const {
 
 bool BaseDocWriter::ifGroupByDatasets() const {
     Attribute* a = actor->getParameter(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE().getId());
-    if (nullptr == a) {
+    if (a == nullptr) {
         return false;
     }
     return a->getAttributeValue<bool>(context);
@@ -134,7 +134,7 @@ bool BaseDocWriter::ifGroupByDatasets() const {
 
 QString BaseDocWriter::getSuffix() const {
     Attribute* a = actor->getParameter(BaseAttributes::URL_SUFFIX().getId());
-    if (nullptr == a) {
+    if (a == nullptr) {
         return "";
     }
     return a->getAttributeValue<QString>(context);
@@ -379,7 +379,7 @@ QSet<GObject*> BaseDocWriter::getObjectsToWriteBaseImpl(const QVariantMap& data)
 Task* BaseDocWriter::createWriteToSharedDbTask(const QVariantMap& data) {
     QList<Task*> tasks;
     foreach (GObject* obj, getObjectsToWriteBaseImpl(data)) {
-        if (nullptr == obj) {
+        if (obj == nullptr) {
             reportError(tr("Unable to fetch data from a message"));
             continue;
         }

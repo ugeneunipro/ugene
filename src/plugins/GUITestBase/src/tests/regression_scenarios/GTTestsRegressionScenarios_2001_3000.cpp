@@ -225,12 +225,12 @@ GUI_TEST_CLASS_DEFINITION(test_2009) {
         }
     };
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new BWAInactivation()));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
     //    4) Look at UGENE log
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
     //    Expected state: UGENE doesn't write any error to log
 }
 
@@ -966,11 +966,11 @@ GUI_TEST_CLASS_DEFINITION(test_2140) {
     // 3. Click "convert"
     // Expected state: UGENE not crashes. Error message is written to log
 
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ConvertAssemblyToSAMDialogFiller(os, dataDir + "samples/FASTA/", "human_T1.fa"));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Convert UGENE assembly database to SAM..."});
 
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2144) {
@@ -1038,7 +1038,7 @@ GUI_TEST_CLASS_DEFINITION(test_2152) {
     // 4. Run the scheme
     // Expected state: the dashboard appears, the WD task has been finished without errors.
 
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Read File URL(s)");
@@ -1063,7 +1063,7 @@ GUI_TEST_CLASS_DEFINITION(test_2152) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2156) {
@@ -1391,7 +1391,7 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
 
     //    Expected: the t-coffee task started and finished well.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, lt);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2314) {
@@ -1492,7 +1492,7 @@ GUI_TEST_CLASS_DEFINITION(test_2270) {
     GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "cmdline/", "snp.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, lt);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2281) {
@@ -1978,7 +1978,7 @@ GUI_TEST_CLASS_DEFINITION(test_2364) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2373) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     //    1. Open "COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -2001,7 +2001,7 @@ GUI_TEST_CLASS_DEFINITION(test_2373) {
     GTMouseDriver::moveTo(GTUtilsMsaEditor::getSequenceNameRect(os, "Mecopoda_elongata__Ishigaki__J").center() + QPoint(0, 20));
     GTMouseDriver::click();
 
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2374) {
@@ -2027,16 +2027,16 @@ GUI_TEST_CLASS_DEFINITION(test_2375) {
     //    2. Fill the import dialog with valid data. Begin the importing.
     //    Expected state: importing fails, UGENE doesn't crash.
     QString destUrl = testDir + "_common_data/scenarios/sandbox/test_2375.ugenedb";
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, destUrl));
     GTFileDialog::openFile(os, testDir + "_common_data/sam/", "broken_invalid_cigar.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(logTracer.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2377) {
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     const QString assemblyReaderName = "Read NGS Reads Assembly";
@@ -2062,19 +2062,19 @@ GUI_TEST_CLASS_DEFINITION(test_2377) {
 
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
 
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2378) {
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, testDir + "_common_data/scenarios/sandbox/test_2378.ugenedb"));
     GTFileDialog::openFile(os, testDir + "_common_data/sam/", "scerevisiae.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2378_1) {
-    GTLogTracer l;
+    GTLogTracer lt;
     // 1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -2095,7 +2095,7 @@ GUI_TEST_CLASS_DEFINITION(test_2378_1) {
 
     // 4. Run scheme
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2379) {
@@ -2161,7 +2161,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382) {
     // 1. Open "_common_data/ace/capres4.ace".
     // 2. "Import ACE file" dialog appeared. Press ok.
     // Expected state: export succeeded, assembly is displayed.
-    GTLogTracer l;
+    GTLogTracer lt;
 
     QString sandboxDir = testDir + "_common_data/scenarios/sandbox/";
     QString assDocName = "test_2382.ugenedb";
@@ -2169,7 +2169,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382) {
     GTUtilsProject::openFile(os, testDir + "_common_data/ace/capres4.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 
     GTUtilsProjectTreeView::findIndex(os, assDocName);
 }
@@ -2178,7 +2178,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382_1) {
     // 1. Open "_common_data/ace/test_new_.cap.ace".
     // 2. "Import ACE file" dialog appeared. Press ok.
     // Expected state: export succeeded, assembly is displayed.
-    GTLogTracer l;
+    GTLogTracer lt;
 
     QString sandboxDir = testDir + "_common_data/scenarios/sandbox/";
     QString assDocName = "test_2382_1.ugenedb";
@@ -2186,7 +2186,7 @@ GUI_TEST_CLASS_DEFINITION(test_2382_1) {
     GTUtilsProject::openFile(os, testDir + "_common_data/ace/test_new.cap.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 
     GTUtilsProjectTreeView::findIndex(os, assDocName);
 }
@@ -2399,7 +2399,7 @@ GUI_TEST_CLASS_DEFINITION(test_2406) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2407) {
-    GTLogTracer l;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "10000_sequences.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2419,7 +2419,7 @@ GUI_TEST_CLASS_DEFINITION(test_2407) {
 
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2410) {
@@ -2594,7 +2594,7 @@ GUI_TEST_CLASS_DEFINITION(test_2449) {
 
 GUI_TEST_CLASS_DEFINITION(test_2451) {
     //    1. Open Workflow designer
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //    2. Open sample {Alignment->Align sequences with MUSCLE}
     GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE");
@@ -2620,7 +2620,7 @@ GUI_TEST_CLASS_DEFINITION(test_2451) {
 
     //    Expected state: Scheme successfully performed
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2459) {
@@ -2650,7 +2650,7 @@ GUI_TEST_CLASS_DEFINITION(test_2459) {
 GUI_TEST_CLASS_DEFINITION(test_2460) {
     // 1. Open "COI.aln".
 
-    GTLogTracer l;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -2666,7 +2666,7 @@ GUI_TEST_CLASS_DEFINITION(test_2460) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: Kalign task finishes with error. Redo button is disabled.
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 
     QAbstractButton* redo = GTAction::button(os, "msa_action_redo");
     CHECK_SET_ERR(redo != nullptr, "There is no REDO button");
@@ -2820,23 +2820,23 @@ GUI_TEST_CLASS_DEFINITION(test_2498) {
 GUI_TEST_CLASS_DEFINITION(test_2506) {
     // 1. Open file _common_data/vcf_consensus/vcf_cons_out_damaged_1.vcf
     // Expected state: error message appears.
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, testDir + "_common_data/vcf_consensus/", "vcf_cons_out_damaged_1.vcf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2506_1) {
     // 1. Open file _common_data/vcf_consensus/vcf_cons_out_damaged_2.vcf
     // Expected state: error message appears.
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, testDir + "_common_data/vcf_consensus/", "vcf_cons_out_damaged_2.vcf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2513) {
@@ -3057,17 +3057,15 @@ GUI_TEST_CLASS_DEFINITION(test_2565) {
     //    3. Insert the pattern "GCTAGCTTAAGTAACGCCACTTTT".
     //    4. Click "Search".
     //    Expected: the pattern is not found. Notification with this information appears.
-    GTLogTracer l;
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionsPanel::runFindPatternWithHotKey("GCTAGCTTAAGTAACGCCACTTTT", os);
-    CHECK_SET_ERR(l.checkMessage(QString("Searching patterns in sequence task: No results found.")),
-                  "No expected message in the log");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/0"), "Results string does not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2566) {
     // 1. Open "samples/Genbank/murine.gb".
-    GTLogTracer l;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3095,12 +3093,12 @@ GUI_TEST_CLASS_DEFINITION(test_2566) {
     CHECK_SET_ERR(matchPercentage == 97, "Entered and actual values don't match");
 
     // Expected state: the task finished successfully.
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2567) {
     // 1. Open "samples/Genbank/murine.gb".
-    GTLogTracer l;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3124,7 +3122,7 @@ GUI_TEST_CLASS_DEFINITION(test_2567) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the task finished successfully.
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2568) {
@@ -3199,7 +3197,7 @@ GUI_TEST_CLASS_DEFINITION(test_2569) {
 
 GUI_TEST_CLASS_DEFINITION(test_2577) {
     // 1. Open {data/samples/CLUSTALW/COI.aln}.
-    GTLogTracer l;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -3265,10 +3263,10 @@ GUI_TEST_CLASS_DEFINITION(test_2579) {
         }
     };
 
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new MafftInactivation()));
     GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 GUI_TEST_CLASS_DEFINITION(test_2581) {
     // 1. Open file "_common_data/scenarios/msa/ma2_gapped_same_names.aln"
@@ -3276,7 +3274,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581) {
     // Expected state: the "Align with MUSCLE" dialog has appeared
     // 3. Press the "Align" button
     // Expected state: after a few seconds alignment has finished, UGENE does not crash
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -3288,7 +3286,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_1) {
@@ -3298,7 +3296,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_1) {
     // 3. Press the "Align" button
     // Expected state: after a few seconds alignment has finished, UGENE does not crash
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -3310,7 +3308,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_2) {
@@ -3355,7 +3353,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_4) {
     // 3. Press the "Align" button
     // Expected state: after a few seconds alignment has finished, UGENE does not crash
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -3367,7 +3365,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_4) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_5) {
@@ -3377,7 +3375,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_5) {
     // 3. Press the "Align" button
     // Expected state: after a few seconds alignment has finished, UGENE does not crash
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
@@ -3389,7 +3387,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_5) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2583) {
@@ -3425,7 +3423,7 @@ GUI_TEST_CLASS_DEFINITION(test_2583) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2605) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     // 1. Open file _common_data/fasta/multy_fa.fa as multiple alignment
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
@@ -3435,8 +3433,8 @@ GUI_TEST_CLASS_DEFINITION(test_2605) {
     GTUtilsDialog::add(os, new ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/2605.aln", {"SEQUENCE_1"}, 6, 237));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0));
 
-    // Expected state: export successfull, no any messages in log like "There is no sequence objects in given file, unable to convert it in multiple alignment"
-    CHECK_SET_ERR(!logTracer.hasErrors(), "Errors in log: " + logTracer.getJoinedErrorString());
+    // Expected state: export is successful, no any messages in log like "There is no sequence objects in given file, unable to convert it in multiple alignment"
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2612) {
@@ -3474,7 +3472,7 @@ GUI_TEST_CLASS_DEFINITION(test_2619) {
 GUI_TEST_CLASS_DEFINITION(test_2622) {
     // 1. Open "_common_data/fasta/multy_fa.fa".
     // 2. Choose "Merge sequences ..." with 100 bases.
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 100));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
@@ -3494,13 +3492,13 @@ GUI_TEST_CLASS_DEFINITION(test_2622) {
 
     // UGENE does not hang.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2622_1) {
     // 1. Open "_common_data/fasta/multy_fa.fa".
     // 2. Choose "Merge sequences ..." with 100 bases.
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Merge, 100));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/multy_fa.fa");
@@ -3527,7 +3525,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622_1) {
 
     // UGENE does not hang and all results are 1 bp length (100 results).
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 
     auto resultLabel = GTWidget::findLabel(os, "resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: 1/100", "Unexpected find algorithm results");
@@ -3608,9 +3606,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     //    2. Select "tuxedo" sample
     //    3. Set proper input data
-    QString expected = "tophat2/tophat -p 94 --output-dir";
-
-    GTLogTracer logTracer(expected);
+    GTLogTracer lt;
     QMap<QString, QVariant> map;
     map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
     map.insert("Bowtie index basename", "e_coli");
@@ -3625,7 +3621,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // Expected state: tophat launched with argument -p
-    GTUtilsLog::checkContainsMessage(os, logTracer);
+    CHECK_SET_ERR(lt.hasMessage("tophat2/tophat -p 94 --output-dir"), "Expected message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2651) {
@@ -3635,7 +3631,7 @@ GUI_TEST_CLASS_DEFINITION(test_2651) {
     // 3. Click Search
     // 4. Select three results and download them
     // 5. Close the dialog
-    GTLogTracer l;
+    GTLogTracer lt;
 
     QList<int> resultNumbersToSelect = {0, 1, 2};
     QVariant variantNumbers = QVariant::fromValue<QList<int>>(resultNumbersToSelect);
@@ -3681,7 +3677,7 @@ GUI_TEST_CLASS_DEFINITION(test_2651) {
     QModelIndex thirdIndex = GTUtilsProjectTreeView::findIndex(os, "AB797201 features", {false});
     CHECK_SET_ERR(!thirdIndex.isValid(), "The \"AB797201 features\" item has not been deleted");
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2656) {
@@ -3693,7 +3689,7 @@ GUI_TEST_CLASS_DEFINITION(test_2656) {
 
     //    Bug: UGENE crashes
     //    Expected: an error message is shown
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3723,7 +3719,7 @@ GUI_TEST_CLASS_DEFINITION(test_2656) {
     GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2662) {
@@ -4039,7 +4035,7 @@ GUI_TEST_CLASS_DEFINITION(test_2737) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2737_1) {
-    GTLogTracer l;
+    GTLogTracer lt;
     // 1. Open "murine.gb";
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4054,7 +4050,7 @@ GUI_TEST_CLASS_DEFINITION(test_2737_1) {
     }
 
     // Expected state: no errors in the log
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2754) {
@@ -4227,7 +4223,7 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
 
     GTFile::copy(os, testDir + "_common_data/cmdline/_proto/translateTest.usa", dataDir + "/workflow_samples/users/translateTest.usa");
 
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/cmdline/custom-script-worker-functions/translateTest/translateTest.uwl");
@@ -4245,7 +4241,7 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 GUI_TEST_CLASS_DEFINITION(test_2778) {
     // 1. Use main menu : tools->align to reference->align short reads
@@ -4257,7 +4253,7 @@ GUI_TEST_CLASS_DEFINITION(test_2778) {
 
     // Expected state : the task should be finished without errors.
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(testDir + "_common_data/genome_aligner/",
                                                                "chrY.fa",
@@ -4272,7 +4268,7 @@ GUI_TEST_CLASS_DEFINITION(test_2778) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2784) {
@@ -4304,7 +4300,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     // Expected state : Alignment task has started.After some time it finishes without errors
     // and alignment gets changed somehow.The "Undo" button becomes active
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, lt);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 0), QPoint(43, 17));
@@ -4565,7 +4561,7 @@ GUI_TEST_CLASS_DEFINITION(test_2866) {
     //    Expected state: message box with "These files have the incompatible format" has appeared
     //    3. Click "Yes"
     //    Expected state: UGENE assembles reads without errors and the "Import SAM File" dialog has appeared
-    GTLogTracer l;
+    GTLogTracer lt;
 
     AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/e_coli/",
                                                  "NC_008253.gff",
@@ -4580,7 +4576,7 @@ GUI_TEST_CLASS_DEFINITION(test_2866) {
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2884) {
@@ -4623,7 +4619,7 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Run "Phylip Neighbor Joining" with default parameters.
     // Expected state: tree view has been appeared.
     GTWidget::findWidget(os, "treeView");
-    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::TreeSettings);  // close project tree view to get more space.
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::TreeOptions);  // close project tree view to get more space.
 
     // Press refresh tree button on the tree's toolbar.
     // Expected state: "Calculating Phylogenetic Tree" task has been started.
@@ -4759,7 +4755,7 @@ GUI_TEST_CLASS_DEFINITION(test_2900) {
 
 GUI_TEST_CLASS_DEFINITION(test_2903) {
     //    1. Open the attached file
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, testDir + "_common_data/regression/2903", "unknown_virus.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4785,7 +4781,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
     // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
     GTUtilsTaskTreeView::cancelTask(os, blastTaskName, false);
 
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());;
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2907) {
@@ -4938,7 +4934,7 @@ GUI_TEST_CLASS_DEFINITION(test_2923) {
 
     GTKeyboardDriver::keyClick('w', Qt::ControlModifier);
     QWidget* mdi = GTUtilsMdi::activeWindow(os, {false});
-    CHECK_SET_ERR(nullptr == mdi, "Sequence view is not closed");
+    CHECK_SET_ERR(mdi == nullptr, "Sequence view is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2924) {
@@ -5042,11 +5038,11 @@ GUI_TEST_CLASS_DEFINITION(test_2931) {
     GTUtilsProject::openFile(os, dataDir + "samples/ACE/K26.ace");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ConvertAssemblyToSAMDialogFiller(os, sandBoxDir, "test_2931"));
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Convert UGENE assembly database to SAM..."});
 
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2945) {
@@ -5097,6 +5093,7 @@ GUI_TEST_CLASS_DEFINITION(test_2945) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2951) {
+    GTLogTracer lt;
     // 1. Open WD.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -5131,7 +5128,7 @@ GUI_TEST_CLASS_DEFINITION(test_2951) {
     // Expected: the result file contains only the first sequence from the input file; there is a message "test" in the script details log.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    bool printed = GTLogTracer::checkMessage("test message");
+    bool printed = lt.hasMessage("test message");
     CHECK_SET_ERR(printed, "No message in the log");
 
     GTUtilsProject::openFile(os, outFile);
@@ -5149,7 +5146,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_1) {
     //    4. Repeat 1,2.
     //    Expected: UGENE does not crash.
 
-    GTLogTracer l;
+    GTLogTracer lt;
     ADVSingleSequenceWidget* seqWidget =
         GTUtilsProject::openFileExpectSequence(os,
                                                testDir + "_common_data/scenarios/_regression/2924",
@@ -5171,7 +5168,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_1) {
     CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2962_2) {
@@ -5181,7 +5178,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_2) {
     //    Expected state: the circular view is toggled it is possible.
     //    Current state: UGENE crashes.
 
-    GTLogTracer l;
+    GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/DNA.fa");
@@ -5194,7 +5191,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_2) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsCv::commonCvBtn::click(os);
 
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2971) {
@@ -5220,15 +5217,15 @@ GUI_TEST_CLASS_DEFINITION(test_2971) {
 
 GUI_TEST_CLASS_DEFINITION(test_2972) {
     //    1. Open "samples/FASTA/human_T1.fa".
-    GTLogTracer l;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click the menu Tools -> HMMER tools -> HMM3 -> Search with HMM3 phmmer.
     GTUtilsDialog::waitForDialog(os, new UHMM3PhmmerDialogFiller(os, dataDir + "samples/Newick/COI.nwk"));
     GTMenu::clickMainMenuItem(os, {"Tools", "HMMER tools", "Search with phmmer..."});
 
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
-    QString error = l.getJoinedErrorString();
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
+    QString error = lt.getJoinedErrorString();
     QString expectedError = isOsWindows()
                                 ? "Task {Search with phmmer} finished with error: Subtask {PHMMER search tool} is failed"
                                 : "is empty or misformatted";
@@ -5300,7 +5297,7 @@ GUI_TEST_CLASS_DEFINITION(test_2987) {
     //      "Save sequences under annotations" - checked
     //      and click the "Ok" button.
     //      Expected state: annotations are successfully exported.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "RAW2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -5331,7 +5328,7 @@ GUI_TEST_CLASS_DEFINITION(test_2991) {
 
 GUI_TEST_CLASS_DEFINITION(test_2998) {
     // 1. Open human_T1.fa
-    GTLogTracer l;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -5340,7 +5337,7 @@ GUI_TEST_CLASS_DEFINITION(test_2998) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the task is finished without errors.
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 }  // namespace GUITest_regression_scenarios

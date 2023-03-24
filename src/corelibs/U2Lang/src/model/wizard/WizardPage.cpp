@@ -37,7 +37,7 @@ WizardPage::~WizardPage() {
 }
 
 void WizardPage::validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const {
-    if (nullptr == content) {
+    if (content == nullptr) {
         os.setError(QObject::tr("NULL page content"));
         return;
     }
@@ -146,11 +146,11 @@ void DefaultPageContent::accept(TemplatedPageVisitor* visitor) {
 }
 
 void DefaultPageContent::validate(const QList<Workflow::Actor*>& actors, U2OpStatus& os) const {
-    if (nullptr == logoArea) {
+    if (logoArea == nullptr) {
         os.setError(QObject::tr("NULL logo area"));
         return;
     }
-    if (nullptr == paramsArea) {
+    if (paramsArea == nullptr) {
         os.setError(QObject::tr("NULL parameters area"));
         return;
     }

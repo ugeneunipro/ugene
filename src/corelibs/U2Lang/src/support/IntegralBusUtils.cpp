@@ -242,7 +242,7 @@ const QString& CandidatesSplitter::getId() const {
 /************************************************************************/
 CandidatesSplitterRegistry* CandidatesSplitterRegistry::_instance = nullptr;
 CandidatesSplitterRegistry* CandidatesSplitterRegistry::instance() {
-    if (nullptr == _instance) {
+    if (_instance == nullptr) {
         _instance = new CandidatesSplitterRegistry();
     }
     return _instance;

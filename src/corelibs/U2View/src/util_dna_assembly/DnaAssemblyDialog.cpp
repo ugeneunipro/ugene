@@ -344,7 +344,7 @@ void DnaAssemblyDialog::addGuiExtension() {
     // insert new extension widget
     DnaAssemblyAlgorithmEnv* env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
 
-    if (nullptr == env) {
+    if (env == nullptr) {
         adjustSize();
         return;
     }

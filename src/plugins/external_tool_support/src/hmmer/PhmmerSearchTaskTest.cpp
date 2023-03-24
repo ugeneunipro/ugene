@@ -169,7 +169,7 @@ void GTest_UHMM3Phmmer::setSearchTaskSettings(PhmmerSearchSettings& settings, co
 }
 
 void GTest_UHMM3Phmmer::prepare() {
-    assert(!hasError() && nullptr == phmmerTask);
+    assert(!hasError() && phmmerTask == nullptr);
     setAndCheckArgs();
     if (hasError()) {
         return;

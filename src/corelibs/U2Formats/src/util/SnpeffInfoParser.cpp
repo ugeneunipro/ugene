@@ -53,7 +53,7 @@ QList<QList<U2Qualifier>> SnpeffInfoParser::parse(U2OpStatus& os, const QString&
         }
 
         InfoPartParser* partParser = partParsers.value(splittedKeyValuePair.first(), nullptr);
-        if (nullptr == partParser) {
+        if (partParser == nullptr) {
             // This INFO part is not added by SnpEff
             continue;
         }

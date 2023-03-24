@@ -570,7 +570,7 @@ void FindPatternMsaWidget::setCorrectPatternsString() {
         }
 
         if (textPattern->toPlainText() != walker.getString()) {
-            textPattern->setText(walker.getString());
+            textPattern->setPlainText(walker.getString());
             cursorInTextEdit.setPosition(walker.getCursor());
             textPattern->setTextCursor(cursorInTextEdit);
         }
@@ -667,13 +667,6 @@ U2Region FindPatternMsaWidget::getSearchRegion() const {
     return resultRegion;
 }
 
-int FindPatternMsaWidget::getMaxError(const QString& pattern) const {
-    if (selectedAlgorithm == FindAlgorithmPatternSettings_Exact) {
-        return 0;
-    }
-    return int((float)(1 - float(spinMatch->value()) / 100) * pattern.length());
-}
-
 QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus& os) const {
     QString inputText = textPattern->toPlainText();
     QList<NamePattern> nameList = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
@@ -754,11 +747,8 @@ void FindPatternMsaWidget::sl_searchModeChanged() {
 }
 
 void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
-    auto findTask = static_cast<FindPatternMsaTask*>(sender());
-    CHECK(findTask != nullptr, );
-    if (findTask != searchTask) {
-        return;
-    }
+    auto findTask = qobject_cast<FindPatternMsaTask*>(sender());
+    CHECK(findTask != nullptr && findTask == searchTask, );
     if (!findTask->isFinished() && !findTask->isCanceled() && !findTask->hasError()) {
         return;
     }
@@ -854,9 +844,9 @@ void FindPatternMsaWidget::updatePatternText(int previousAlgorithm) {
 
     // Set a new state.
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        textPattern->setText(patternRegExp);
+        textPattern->setPlainText(patternRegExp);
     } else {
-        textPattern->setText(patternString);
+        textPattern->setPlainText(patternString);
     }
     setCorrectPatternsString();
 }

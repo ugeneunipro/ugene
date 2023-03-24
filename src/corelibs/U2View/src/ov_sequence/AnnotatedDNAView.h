@@ -23,7 +23,6 @@
 
 #include <QPointer>
 #include <QSplitter>
-#include <QTextEdit>
 
 #include <U2Core/Annotation.h>
 #include <U2Core/Task.h>

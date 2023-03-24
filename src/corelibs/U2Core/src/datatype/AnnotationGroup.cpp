@@ -40,7 +40,7 @@ AnnotationGroup::AnnotationGroup()
 
 AnnotationGroup::AnnotationGroup(const U2DataId& featureId, const QString& name, AnnotationGroup* parentGroup, AnnotationTableObject* parentObject)
     : U2Entity(featureId), parentObject(parentObject), name(name), parentGroup(parentGroup) {
-    SAFE_POINT(nullptr != parentObject && hasValidId(), "Invalid feature table detected", );
+    SAFE_POINT(parentObject != nullptr && hasValidId(), "Invalid feature table detected", );
 }
 
 AnnotationGroup::~AnnotationGroup() {
@@ -154,7 +154,7 @@ void AnnotationGroup::removeAnnotations(const QList<Annotation*>& anns) {
 
     QList<U2DataId> annotationsIds;
     foreach (Annotation* a, anns) {
-        SAFE_POINT(nullptr != a && a->getGroup() == this, "Unexpected annotation group", );
+        SAFE_POINT(a != nullptr && a->getGroup() == this, "Unexpected annotation group", );
         annotationsIds.append(a->id);
     }
     U2FeatureUtils::removeFeatures(annotationsIds, parentObject->getEntityRef().dbiRef, os);
@@ -209,9 +209,9 @@ void AnnotationGroup::setName(const QString& newName) {
 }
 
 QString AnnotationGroup::getGroupPath() const {
-    if (nullptr == parentGroup) {
+    if (parentGroup == nullptr) {
         return QString();
-    } else if (nullptr == parentGroup->getParentGroup()) {
+    } else if (parentGroup->getParentGroup() == nullptr) {
         return name;
     } else {
         return parentGroup->getGroupPath() + GROUP_PATH_SEPARATOR + name;
@@ -241,7 +241,7 @@ AnnotationGroup* AnnotationGroup::getSubgroup(const QString& path, bool create) 
         }
     }
 
-    if (nullptr == subgroup && create) {
+    if (subgroup == nullptr && create) {
         U2OpStatusImpl os;
         const U2DbiRef dbiRef = parentObject->getEntityRef().dbiRef;
         const U2Feature subgroupFeature = U2FeatureUtils::exportAnnotationGroupToFeature(subgroupName,
@@ -256,7 +256,7 @@ AnnotationGroup* AnnotationGroup::getSubgroup(const QString& path, bool create) 
 
         parentObject->emit_onGroupCreated(subgroup);
     }
-    if (separatorFirstPosition <= 0 || nullptr == subgroup) {
+    if (separatorFirstPosition <= 0 || subgroup == nullptr) {
         return subgroup;
     }
     return subgroup->getSubgroup(path.mid(separatorFirstPosition + 1), create);
@@ -285,7 +285,7 @@ Annotation* AnnotationGroup::findAnnotationById(const U2DataId& featureId) const
     } else {
         foreach (AnnotationGroup* g, subgroups) {
             Annotation* result = g->findAnnotationById(featureId);
-            if (nullptr != result) {
+            if (result != nullptr) {
                 return result;
             }
         }
@@ -302,7 +302,7 @@ AnnotationGroup* AnnotationGroup::findSubgroupById(const U2DataId& featureId) co
         }
 
         AnnotationGroup* result = g->findSubgroupById(featureId);
-        if (nullptr != result) {
+        if (result != nullptr) {
             return result;
         }
     }
@@ -344,7 +344,7 @@ bool AnnotationGroup::isParentOf(AnnotationGroup* g) const {
 }
 
 bool AnnotationGroup::isRootGroup() const {
-    return nullptr == parentGroup;
+    return parentGroup == nullptr;
 }
 
 bool AnnotationGroup::isTopLevelGroup() const {

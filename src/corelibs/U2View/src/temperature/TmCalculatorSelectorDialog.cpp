@@ -40,7 +40,7 @@ TmCalculatorSelectorDialog::TmCalculatorSelectorDialog(QWidget* parent, const QV
     setObjectName("MeltingTemperatureCalculationDialog");
     setWindowTitle(tr("Melting temperature"));
     setLayout(new QVBoxLayout);
-    selectorWidget = new TmCalculatorSelectorWidget(this);
+    selectorWidget = new TmCalculatorSelectorWidget(this, true);
     selectorWidget->init(currentSettings);
     layout()->addWidget(selectorWidget);
     auto dbb = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, this);

@@ -236,7 +236,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    1. Open file samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
+    GTLogTracer lt;
 
     //    2. Click on "Build tree" button on toolbar
     //    Expected state: "Create Phylogenetic Tree" dialog appears
@@ -253,7 +253,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    {Path to file:} _common_data/scenarios/sandbox/COI.nwk
 
     //    4. Click  OK button
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
     //    Expected state: no crash, phylogenetic tree not appears
     //    Error message in the log: "Calculated weight matrix is invalid"
 }
@@ -1075,6 +1075,9 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     }
 
     GTUtilsPhyTree::clickZoomFitButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
+
     int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
     CHECK_SET_ERR(sceneWidth == originalFitWidth, "Unexpected scene width on fit zoom: " + QString::number(sceneWidth) + ", expected: " + QString::number(originalFitWidth));
 

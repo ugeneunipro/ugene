@@ -439,7 +439,7 @@ void EditMarkerDialog::accept() {
         QString message;
         QString valueString;
         QVariantList newVals;
-        if (nullptr == editWidget) {
+        if (editWidget == nullptr) {
             newVals << MarkerUtils::REST_OPERATION;
         } else {
             newVals = editWidget->getValues();

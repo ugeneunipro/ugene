@@ -353,7 +353,8 @@ quint8 BamReader::readUint8() {
 
 float BamReader::readFloat32() {
     quint32 bits = readUint32();
-    return *(float*)&bits;
+    float* valuePointer = (float*)&bits;
+    return *valuePointer;
 }
 
 char BamReader::readChar() {

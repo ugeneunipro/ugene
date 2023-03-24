@@ -159,7 +159,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
         sequence.length = dnaSeq.length();
 
         const DNAAlphabet* alphabet = dnaSeq.alphabet;
-        if (nullptr == alphabet) {
+        if (alphabet == nullptr) {
             alphabet = U2AlphabetUtils::findBestAlphabet(dnaSeq.constData(), dnaSeq.length());
         }
         SAFE_POINT(nullptr != alphabet, "Failed to get alphabet for a sequence!", QList<U2Sequence>());
