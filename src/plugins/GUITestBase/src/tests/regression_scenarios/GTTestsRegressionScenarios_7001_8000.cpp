@@ -1818,7 +1818,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os, new DigestScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Cloning", "Digest into fragments..."}));
-    GTMenu::showContextMenu(os, GTUtilsSequenceView::getSeqWidgetByNumber(os));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: the task finished with an error: Conserved annotation misc_feature (2646..3236) is disrupted by the digestion. Try changing the restriction sites.
@@ -2002,7 +2002,7 @@ GUI_TEST_CLASS_DEFINITION(test_7473_2) {
 
     GTUtilsDocument::checkIfDocumentIsLocked(os, "CBS.sto", true);
 
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "buildTreeButton"));
@@ -2900,8 +2900,8 @@ GUI_TEST_CLASS_DEFINITION(test_7609) {
     // No crash.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/non_unique_row_names.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
-    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsMsaEditor::removeRows(os, 0, 0);
     GTUtilsMsaEditor::removeRows(os, 0, 0);
 }
@@ -2954,7 +2954,7 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     // Try non-tree file. Expected state: nothing is loaded.
     GTLogTracer lt1;
@@ -3491,7 +3491,7 @@ GUI_TEST_CLASS_DEFINITION(test_7668) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsProjectTreeView::toggleView(os);
 
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "/samples/Newick/COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4115,6 +4115,7 @@ GUI_TEST_CLASS_DEFINITION(test_7789) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/newick/COXII CDS tree.newick");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
 
     GTUtilsOptionPanelPhyTree::openTab(os);
 

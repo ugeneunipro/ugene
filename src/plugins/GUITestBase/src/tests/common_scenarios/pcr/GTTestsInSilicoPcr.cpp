@@ -26,7 +26,6 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTTextEdit.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
@@ -35,9 +34,9 @@
 #include "GTTestsInSilicoPcr.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDashboard.h"
-
 #include "GTUtilsMeltingTemperature.h"
 #include "GTUtilsOptionPanelSequenceView.h"
+#include "GTUtilsOptionsPanel.h"
 #include "GTUtilsPcr.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
@@ -250,6 +249,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //  TODO
 
     // 7. Click the extract button.
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
 
     // Expected: two new files are opened "pIB2-SEC13_2-133.gb" and "pIB2-SEC13_2-3775.gb".
@@ -443,9 +443,10 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     auto annsComboBox = GTWidget::findComboBox(os, "annsComboBox");
     GTComboBox::selectItemByIndex(os, annsComboBox, 1);
 
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
+
     // 7. Click "Export product(s)".
     auto extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -456,11 +457,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 8. Choose "All annotations" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 0);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
 
     // 9. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -471,11 +473,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     // 10. Choose "None" annotation extraction.
     GTUtilsProjectTreeView::doubleClickItem(os, "begin-end.gb");
     GTUtilsMdi::checkWindowIsActive(os, "begin-end");
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
     GTComboBox::selectItemByIndex(os, annsComboBox, 2);
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
 
     // 11. Click "Export product(s)".
     extractPB = GTWidget::findWidget(os, "extractProductButton");
-    GTUtilsNotifications::waitAllNotificationsClosed(os);
     GTWidget::click(os, extractPB);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -783,43 +786,42 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTUtilsOptionPanelSequenceView::setReversePrimer(os, "CGCTTCCTTCAGGAGCTCTTTTAGGG");
 
     auto detailsDirect = GTUtilsPcr::getPrimerInfo(os, U2Strand::Direct);
-    CHECK_SET_ERR(detailsDirect.contains("41.53"), "Unexpected direct primer temperature, expected: 41.53");
+    CHECK_SET_ERR(detailsDirect.contains("49.09"), "Unexpected direct primer temperature, expected: 49.09, got details: " + detailsDirect);
 
     auto detailsComplementary = GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary);
-    CHECK_SET_ERR(detailsComplementary.contains("61.12"), "Unexpected complementary primer temperature, expected: 61.12");
+    CHECK_SET_ERR(detailsComplementary.contains("65.14"), "Unexpected complementary primer temperature, expected: 65.14, got details: " + detailsComplementary);
 
     GTUtilsOptionPanelSequenceView::openInSilicoPcrMeltingTemperatureShowHideWidget(os);
+    GTUtilsOptionsPanel::resizeToMaximum(os);
     struct Steps {
-        Steps(GTUtilsMeltingTemperature::Parameter _step, const QString& _stringValue, const QString& _directTemp, const QString& _complementaryTemp) :
-            step(_step), stringValue(_stringValue), directTemp(_directTemp), complementaryTemp(_complementaryTemp) {}
+        Steps(GTUtilsMeltingTemperature::Parameter _step, const QString& _stringValue, const QString& _directTemp, const QString& _complementaryTemp)
+            : step(_step), stringValue(_stringValue), directTemp(_directTemp), complementaryTemp(_complementaryTemp) {
+        }
         GTUtilsMeltingTemperature::Parameter step;
         QString stringValue;
         QString directTemp;
         QString complementaryTemp;
     };
 
-    static const QList<Steps> steps = { Steps(GTUtilsMeltingTemperature::Parameter::Algorithm, "Primer 3", "49.09", "65.14"),
-    Steps(GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00", "49.12", "65.17"),
-    Steps(GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00", "49.15", "65.2"),
-    Steps(GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50", "43.47", "59.26"),
-    Steps(GTUtilsMeltingTemperature::Parameter::DntpConc, "0", "48.2", "64.2"),
-    Steps(GTUtilsMeltingTemperature::Parameter::DmsoConc, "1", "47.6", "63.6"),
-    Steps(GTUtilsMeltingTemperature::Parameter::DmsoFactor, "1.6", "46.6", "62.6"),
-    Steps(GTUtilsMeltingTemperature::Parameter::FormamideConc, "1", "43.83", "59.97"),
-    Steps(GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0", "58.34", "75.27"),
-    Steps(GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2", "58.06", "76.78"),
-    Steps(GTUtilsMeltingTemperature::Parameter::MaxLen, "19", "42.99", "61.87") };
+    static const QList<Steps> steps = {
+        Steps(GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00", "49.12", "65.17"),
+        Steps(GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00", "49.15", "65.2"),
+        Steps(GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50", "43.47", "59.26"),
+        Steps(GTUtilsMeltingTemperature::Parameter::DntpConc, "0", "48.2", "64.2"),
+        Steps(GTUtilsMeltingTemperature::Parameter::DmsoConc, "1", "47.6", "63.6"),
+        Steps(GTUtilsMeltingTemperature::Parameter::DmsoFactor, "1.6", "46.6", "62.6"),
+        Steps(GTUtilsMeltingTemperature::Parameter::FormamideConc, "1", "43.83", "59.97"),
+        Steps(GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0", "58.34", "75.27"),
+        Steps(GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2", "58.06", "76.78"),
+        Steps(GTUtilsMeltingTemperature::Parameter::MaxLen, "19", "42.99", "61.87")};
 
-    QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters;
     for (const auto& step : qAsConst(steps)) {
-        parameters.insert(step.step, step.stringValue);
-        GTUtilsMeltingTemperature::setParameters(os, parameters, nullptr);
+        GTUtilsMeltingTemperature::setParameters(os, {{step.step, step.stringValue}}, nullptr);
         detailsDirect = GTUtilsPcr::getPrimerInfo(os, U2Strand::Direct);
         CHECK_SET_ERR(detailsDirect.contains(step.directTemp), QString("Unexpected direct primer temperature, expected: %1").arg(step.directTemp));
 
         detailsComplementary = GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary);
         CHECK_SET_ERR(detailsComplementary.contains(step.complementaryTemp), QString("Unexpected complementary primer temperature, expected: %1").arg(step.complementaryTemp));
-
     }
 }
 
@@ -842,7 +844,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus& os) override {
-
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
         }
     };
@@ -856,17 +857,17 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsWorkflowDesigner::click(os, "In Silico PCR");
     GTUtilsWorkflowDesigner::setParameter(os, "Primers URL", testDir + "_common_data/cmdline/pcr/pcr_check_ambiguous_primers.fa", GTUtilsWorkflowDesigner::valueType::lineEditWithFileSelector);
     QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters = {
-        {GTUtilsMeltingTemperature::Parameter::Algorithm, "Primer 3" },
-        { GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00" },
-        { GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00" },
-        { GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50" },
-        { GTUtilsMeltingTemperature::Parameter::DntpConc, "0" },
-        { GTUtilsMeltingTemperature::Parameter::DmsoConc, "1" },
-        { GTUtilsMeltingTemperature::Parameter::DmsoFactor, "1.6" },
-        { GTUtilsMeltingTemperature::Parameter::FormamideConc, "1" },
-        { GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0" },
-        { GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2" },
-        { GTUtilsMeltingTemperature::Parameter::MaxLen, "33"} };
+        {GTUtilsMeltingTemperature::Parameter::Algorithm, "Primer 3"},
+        {GTUtilsMeltingTemperature::Parameter::DnaConc, "51.00"},
+        {GTUtilsMeltingTemperature::Parameter::MonovalentConc, "51.00"},
+        {GTUtilsMeltingTemperature::Parameter::DivalentConc, "0.50"},
+        {GTUtilsMeltingTemperature::Parameter::DntpConc, "0"},
+        {GTUtilsMeltingTemperature::Parameter::DmsoConc, "1"},
+        {GTUtilsMeltingTemperature::Parameter::DmsoFactor, "1.6"},
+        {GTUtilsMeltingTemperature::Parameter::FormamideConc, "1"},
+        {GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0"},
+        {GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2"},
+        {GTUtilsMeltingTemperature::Parameter::MaxLen, "33"}};
     GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
     GTUtilsWorkflowDesigner::setParameter(os, "Temperature settings", "", GTUtilsWorkflowDesigner::customDialogSelector);
 

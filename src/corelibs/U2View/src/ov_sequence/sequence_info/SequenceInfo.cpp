@@ -272,7 +272,7 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
         statsInfo += formTableRow(tr(CAPTION_SEQ_GC_CONTENT), getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
         bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != TmCalculator::INVALID_TM;
         QString meltingTmFormattedValue = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " °C", isValidMeltingTm);
-        statsInfo += formTableRow(tr(CAPTION_SEQ_MELTING_TEMPERATURE), meltingTmFormattedValue, availableSpace, isValidMeltingTm);
+        statsInfo += formTableRow(tr(CAPTION_SEQ_MELTING_TEMPERATURE), meltingTmFormattedValue, availableSpace, true);
 
         const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
         statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(ssCaption) + "</b></td></tr>";
@@ -696,16 +696,16 @@ void SequenceInfo::sl_updateCodonOccurData() {
     updateCodonsOccurrenceData(getCodonsOccurrenceCache()->getStatistics());
 }
 
-QString SequenceInfo::formTableRow(const QString& caption, const QString& value, int availableSpace, bool addHyperlink) const {
+QString SequenceInfo::formTableRow(const QString& caption, const QString& value, int availableSpace, bool addSettingsButton) const {
     QString result;
 
     QFontMetrics metrics = statisticLabel->fontMetrics();
     QString settingsLink;
-    if (addHyperlink) {
+    if (addSettingsButton) {
         settingsLink = QString(R"(&nbsp;&nbsp;<a href="%1"><img src=":core/images/gear.svg" width=16 height=16;"></a>)")
                            .arg(caption);
     }
-    result = "<tr><td>" + tr("%1").arg(caption) + ": </td><td" + (addHyperlink ? " style=\"vertical-align:top;\">" : ">") +
+    result = "<tr><td>" + tr("%1").arg(caption) + ": </td><td" + (addSettingsButton ? " style=\"vertical-align:top;\">" : ">") +
              metrics.elidedText(value, Qt::ElideRight, availableSpace) + settingsLink + "</td></tr>";
     return result;
 }

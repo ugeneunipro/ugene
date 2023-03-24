@@ -31,6 +31,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -89,6 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "msa_editor_tree_test_0002", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
     QStringList byTreeSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");

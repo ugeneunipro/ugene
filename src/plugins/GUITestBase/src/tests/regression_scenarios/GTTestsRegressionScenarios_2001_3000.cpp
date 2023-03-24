@@ -4619,7 +4619,7 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Run "Phylip Neighbor Joining" with default parameters.
     // Expected state: tree view has been appeared.
     GTWidget::findWidget(os, "treeView");
-    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::TreeSettings);  // close project tree view to get more space.
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::TreeOptions);  // close project tree view to get more space.
 
     // Press refresh tree button on the tree's toolbar.
     // Expected state: "Calculating Phylogenetic Tree" task has been started.

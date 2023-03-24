@@ -38,7 +38,7 @@ namespace U2 {
 class U2VIEW_EXPORT TmCalculatorSelectorWidget : public QWidget {
     Q_OBJECT
 public:
-    TmCalculatorSelectorWidget(QWidget* parent);
+    TmCalculatorSelectorWidget(QWidget* parent, bool showLimitsHint = false);
 
     /**
      * Initialize widget with @currentSettings

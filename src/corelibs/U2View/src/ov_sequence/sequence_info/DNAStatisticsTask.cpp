@@ -335,7 +335,7 @@ const QVector<int> DNAStatisticsTask::PROTEIN_CHARGES_MAP = createChargeMap();
 const QVector<double> DNAStatisticsTask::GC_RATIO_MAP = createGcRatioMap();
 
 DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
-                                     const U2EntityRef seqRef,
+                                     const U2EntityRef& seqRef,
                                      const QVector<U2Region>& regions,
                                      const QSharedPointer<TmCalculator>& _temperatureCalculator)
     : BackgroundTask<DNAStatistics>(tr("Calculate sequence statistics"), TaskFlag_None),
@@ -375,7 +375,6 @@ void DNAStatisticsTask::computeStats() {
 
     // Max size to avoid cache overflow
     static constexpr int MAX_SIZE = 1024 * 1024;
-    static constexpr int MELTING_TM_LENGTH_LIMIT = 10 * 1000;  // Maximum sequence length to estimate melting temperature.
     QByteArray meltTempSeq;
     for (const U2Region& region : qAsConst(regions)) {
         QList<U2Region> blocks = U2Region::split(region, MAX_SIZE);
@@ -386,8 +385,8 @@ void DNAStatisticsTask::computeStats() {
             const QByteArray seqBlock = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             CHECK_OP(os, );
 
-            if (meltTempSeq.size() < MELTING_TM_LENGTH_LIMIT) {
-                meltTempSeq.append(seqBlock, qMin(MELTING_TM_LENGTH_LIMIT - meltTempSeq.size(), seqBlock.size()));
+            if (meltTempSeq.size() < TM_MAX_LENGTH_LIMIT) {
+                meltTempSeq.append(seqBlock, qMin(TM_MAX_LENGTH_LIMIT - meltTempSeq.size(), seqBlock.size()));
             }
             const char* sequenceData = seqBlock.constData();
 
@@ -401,7 +400,7 @@ void DNAStatisticsTask::computeStats() {
                         dinucleotidesCount[previousChar][character]++;
                     }
                 }
-                if (U2Msa::GAP_CHAR != character) {
+                if (character != U2Msa::GAP_CHAR) {
                     previousChar = character;
                 }
             }
@@ -446,7 +445,7 @@ void DNAStatisticsTask::computeStats() {
         } else if (alphabet->isDNA()) {
             molecularWeightMap = &DNA_MOLECULAR_WEIGHT_MAP;
         }
-        SAFE_POINT_EXT(nullptr != molecularWeightMap, os.setError("An unknown alphabet"), );
+        SAFE_POINT_EXT(molecularWeightMap != nullptr, os.setError("An unknown alphabet"), );
 
         for (int i = 0, n = charactersCount.size(); i < n; ++i) {
             result.ssMolecularWeight += charactersCount[i] * molecularWeightMap->at(i);
@@ -490,8 +489,10 @@ void DNAStatisticsTask::computeStats() {
 
         result.dsExtinctionCoefficient *= (1 - hypochromicity);
 
-        // Calculating melting temperature
-        result.meltingTemp = meltTempSeq.size() >= MELTING_TM_LENGTH_LIMIT ? TmCalculator::INVALID_TM : temperatureCalculator->getMeltingTemperature(meltTempSeq);
+        // Calculating melting temperature.
+        result.meltingTemp = meltTempSeq.size() < TM_MIN_LENGTH_LIMIT || result.length > TM_MAX_LENGTH_LIMIT
+                                 ? TmCalculator::INVALID_TM
+                                 : temperatureCalculator->getMeltingTemperature(meltTempSeq);
 
         // Calculating nmole/OD260
         if (result.ssExtinctionCoefficient != 0) {

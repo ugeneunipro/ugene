@@ -1487,7 +1487,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "Open tree" button. Select data/samples/CLUSTALW/COI.nwk in file dialog
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick", "COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
@@ -1500,7 +1500,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default"));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
@@ -1517,7 +1517,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open tree settings option panel tab. build tree
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1568,17 +1568,20 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0004) {
     GTUtilsProjectTreeView::toggleView(os);  // Close project view to make all actions on toolbar available.
 
     // Open tree settings option panel tab. build tree.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    auto treeView = GTWidget::findWidget(os, "treeView");
-    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
     GTWidget::click(os, syncModeButton);
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeOptions);
+    auto treeView = GTWidget::findWidget(os, "treeView");
+    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
 
     // Capture 2 variants of  'Phylogram', 'Default', 'Cladogram' images.
     GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
@@ -1620,7 +1623,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open tree settings option panel tab. build tree
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1731,7 +1734,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Open tree settings option panel tab. build tree.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
 
@@ -1802,22 +1805,26 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
+    GTUtilsProjectTreeView::toggleView(os);  // Close opened project tree view to make all icons on the toolbar visible with no overflow.
+
     // Open tree settings option panel tab. Build a tree.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Disable sync mode to allow resize of the view.
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
-    GTUtilsProjectTreeView::toggleView(os);  // Close opened project tree view to make all icons on the toolbar visible with no overflow.
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
 
     GTWidget::click(os, syncModeButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
     auto treeView = GTWidget::findGraphicsView(os, "treeView");
     QGraphicsScene* scene = treeView->scene();
@@ -1844,7 +1851,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab. build tree
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
     GTThread::waitForMainThread();
@@ -2281,7 +2288,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);
@@ -2337,7 +2344,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open tree settings option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
     //    3. Press "build tree" button.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTUtilsMsaEditor::clickBuildTreeButton(os);

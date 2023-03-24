@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
-    QString roughMeltTemp = GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("79.78");
+    QString roughMeltTemp = GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("83.70");
     CHECK_SET_ERR(statisticsLabel->text().contains(roughMeltTemp), QString("No expected string: %1").arg(roughMeltTemp));
 
     QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters;

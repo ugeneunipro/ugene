@@ -1075,6 +1075,9 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     }
 
     GTUtilsPhyTree::clickZoomFitButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
+
     int sceneWidth = GTUtilsPhyTree::getSceneWidth(os);
     CHECK_SET_ERR(sceneWidth == originalFitWidth, "Unexpected scene width on fit zoom: " + QString::number(sceneWidth) + ", expected: " + QString::number(originalFitWidth));
 

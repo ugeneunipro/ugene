@@ -1100,6 +1100,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(QPoint(treeGlobalTopLeft.x() + 100, treeGlobalTopLeft.y() + annotationTreeWidget->height()));
     GTMouseDriver::release();
+    GTThread::waitForMainThread();
 
     QSize endSize = chromaView->size();
     CHECK_SET_ERR(startSize != endSize, "chromatogram_view is not resized");

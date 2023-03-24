@@ -53,7 +53,8 @@ QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::initNames() {
     result.insert(General, "OP_MSA_GENERAL");
     result.insert(Highlighting, "OP_MSA_HIGHLIGHTING");
     result.insert(PairwiseAlignment, "OP_PAIRALIGN");
-    result.insert(TreeSettings, "OP_MSA_ADD_TREE_WIDGET");
+    result.insert(AddTree, "OP_MSA_ADD_TREE_WIDGET");
+    result.insert(TreeOptions, "OP_MSA_TREES_WIDGET");
     result.insert(ExportConsensus, "OP_EXPORT_CONSENSUS");
     result.insert(Statistics, "OP_SEQ_STATISTICS_WIDGET");
     result.insert(Search, "OP_MSA_FIND_PATTERN_WIDGET");
@@ -65,7 +66,8 @@ QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::initInnerWidge
     result.insert(General, "MsaGeneralTab");
     result.insert(Highlighting, "HighlightingOptionsPanelWidget");
     result.insert(PairwiseAlignment, "PairwiseAlignmentOptionsPanelWidget");
-    result.insert(TreeSettings, "AddTreeWidget");
+    result.insert(AddTree, "AddTreeWidget");
+    result.insert(TreeOptions, "TreeOptionsWidget");
     result.insert(ExportConsensus, "ExportConsensusWidget");
     result.insert(Statistics, "SequenceStatisticsOptionsPanelTab");
     result.insert(Search, "FindPatternMsaWidget");
@@ -96,9 +98,8 @@ QWidget* GTUtilsOptionPanelMsa::openTab(HI::GUITestOpStatus& os, Tabs tab) {
 
 #define GT_METHOD_NAME "closeTab"
 void GTUtilsOptionPanelMsa::closeTab(HI::GUITestOpStatus& os, Tabs tab) {
-    if (isTabOpened(os, tab)) {
-        toggleTab(os, tab);
-    }
+    checkTabIsOpened(os, tab);
+    toggleTab(os, tab);
 }
 #undef GT_METHOD_NAME
 
@@ -177,7 +178,7 @@ int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "copySelection"
-void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFormat format) {
+void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFormat& format) {
     openTab(os, General);
     auto copyType = GTWidget::findComboBox(os, "copyType");
 
@@ -210,10 +211,8 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFor
         case CopyFormat::Rich_text:
             stringFormat = "Rich text (HTML)";
             break;
-
         default:
-            GT_CHECK_RESULT(false, "Unexpected format", );
-            break;
+            GT_FAIL("Unexpected format", );
     }
     GTComboBox::selectItemByText(os, copyType, stringFormat);
 

@@ -4634,6 +4634,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new CustomBuildTreeDialogFiller()));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
     // Expected: the tree appears synchronized with the MSA Editor.
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
@@ -4943,7 +4944,7 @@ GUI_TEST_CLASS_DEFINITION(test_1537) {
 
 GUI_TEST_CLASS_DEFINITION(test_1548) {
     // Open file "data/samples/CLUSTALW/COI.aln"
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     QStringList originalNameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
@@ -4954,6 +4955,7 @@ GUI_TEST_CLASS_DEFINITION(test_1548) {
     // Build tree for the alignment
     GTUtilsMsaEditor::buildPhylogeneticTree(os, testDir + "_common_data/scenarios/sandbox/1548.nwk");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::TreeOptions);
 
     // Ensure that the "Sync" mode is ON and 'Mecopoda_elongata_Sumatra' and 'Mecopoda_elongata_Ishigaki_J' are in the correct order.
     QAbstractButton* syncModeButton = GTAction::button(os, "sync_msa_action");
@@ -5825,7 +5827,7 @@ GUI_TEST_CLASS_DEFINITION(test_1631) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open "Tree Settings" options panel tab.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     //    3. Click "Open tree" button.
     //    4. Select "data/samples/Newick/COI.nwk".

@@ -300,7 +300,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
         MemorySetter(int _memValue)
             : memValue(_memValue) {
         }
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
 
@@ -344,7 +344,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
         MemorySetter(int memValue)
             : memValue(memValue) {
         }
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resources);
 
@@ -643,7 +643,7 @@ GUI_TEST_CLASS_DEFINITION(test_5199) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmComboBox", dialog), "PsiPred");
             GTUtilsDialog::waitForDialog(os, new LicenseAgreementDialogFiller(os));
@@ -766,7 +766,7 @@ GUI_TEST_CLASS_DEFINITION(test_5220) {
     //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
 
     QDir().mkdir(QFileInfo(sandBoxDir + "test_5220/COI.nwk").dir().absolutePath());
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_5220/COI.nwk", 0, 0, true));
@@ -834,7 +834,7 @@ GUI_TEST_CLASS_DEFINITION(test_5231) {
 
     // 2. Run Smith-waterman search using:
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // pattern: "ATCGAT"; note that pattern length is 6.
             GTTextEdit::setText(os, GTWidget::findTextEdit(os, "teditPattern", dialog), "K*KTPPVGGKLA*VTP");
@@ -1071,7 +1071,7 @@ GUI_TEST_CLASS_DEFINITION(test_5335) {
     //    2. Click "Find ORFs" button on the toolbar.
     class PartialSearchScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    3. Set region to 1..4. Accept the dialog.
             GTLineEdit::setText(os, "end_edit_line", "4", dialog);
@@ -1357,7 +1357,7 @@ GUI_TEST_CLASS_DEFINITION(test_5377) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findWidget(os, "takeAllButton"));
 
@@ -1394,7 +1394,7 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "5371.bam.ugenedb"));
-    GTFileDialogUtils* ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, GTGlobals::UseKey, GTFileDialogUtils::CopyPaste);
+    auto ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, GTGlobals::UseKey, GTFileDialogUtils::CopyPaste);
     GTUtilsDialog::waitForDialog(os, ob);
     ob->openFileDialog();
 
@@ -1561,7 +1561,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
@@ -1591,7 +1591,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
 
     class custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTUtilsWizard::setInputFiles(os, {{QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()}});
 
@@ -1630,7 +1630,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
 
     class custom : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -1691,7 +1691,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_1) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
             GTComboBox::checkCurrentValue(os, GTWidget::findComboBox(os, "formatsBox", dialog), "GenBank");
@@ -1748,7 +1748,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_2) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
             GTComboBox::checkCurrentValue(os, GTWidget::findComboBox(os, "formatsBox", dialog), "GenBank");
@@ -1793,7 +1793,7 @@ GUI_TEST_CLASS_DEFINITION(test_5447_3) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state: an "Export Annotations" dialog opens, "GenBank" format is selected, there is an "Add to project" checkbox, it is enabled and checked.
             GTComboBox::checkCurrentValue(os, GTWidget::findComboBox(os, "formatsBox", dialog), "GenBank");
@@ -1903,7 +1903,7 @@ GUI_TEST_CLASS_DEFINITION(test_5495) {
     // 2) Select 100..10 region of the sequence
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto startEdit = GTWidget::findLineEdit(os, "startEdit", dialog);
             auto endEdit = GTWidget::findLineEdit(os, "endEdit", dialog);
@@ -1964,7 +1964,7 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "/_common_data/cmdline/external-tool-support/blastall/sars_middle.nhr"));
             GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
@@ -2048,7 +2048,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_2) {
     // 2. Open context menu in sequence area
     // 3. Click "Statistick->Generate Distance Matrix"
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 4. Set combo box value "Hamming dissimilarity"
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algoCombo", dialog), "Hamming dissimilarity");
@@ -2097,7 +2097,7 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
     // 2. Open context menu in sequence area
     // 3. Click "Statistick->Generate Distance Matrix"
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // 4. Set combo box value "Hamming dissimilarity"
             GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algoCombo", dialog), "Hamming dissimilarity");
@@ -2154,7 +2154,7 @@ GUI_TEST_CLASS_DEFINITION(test_5588) {
 
 GUI_TEST_CLASS_DEFINITION(test_5594_1) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -2190,7 +2190,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -2220,7 +2220,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_5594_2) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -2256,7 +2256,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_2) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -2292,7 +2292,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_5594_3) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -2328,7 +2328,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_3) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -2360,7 +2360,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_5594_4) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -2396,7 +2396,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_4) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -2457,7 +2457,7 @@ GUI_TEST_CLASS_DEFINITION(test_5604) {
 
 GUI_TEST_CLASS_DEFINITION(test_5622) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -2493,7 +2493,7 @@ GUI_TEST_CLASS_DEFINITION(test_5622) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -2644,9 +2644,9 @@ GUI_TEST_CLASS_DEFINITION(test_5659) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            auto comboBox = dialog->findChild<QComboBox*>();
             CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
 
             QStringList formats = GTComboBox::getValues(os, comboBox);
@@ -2713,7 +2713,7 @@ GUI_TEST_CLASS_DEFINITION(test_5665) {
     // 2. Document context menu -> Export / Import -> Export sequences.
     // Expected: "Export selected sequences" dialog appears.
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto filepathLineEdit = GTWidget::findLineEdit(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, filepathLineEdit, dataDir + "long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_.fa");
@@ -2793,7 +2793,7 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
 
 GUI_TEST_CLASS_DEFINITION(test_5714_1) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -2829,7 +2829,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_1) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -2880,7 +2880,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_5714_2) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -2916,7 +2916,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_2) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -2967,7 +2967,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_5714_3) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -3003,7 +3003,7 @@ GUI_TEST_CLASS_DEFINITION(test_5714_3) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -3306,7 +3306,7 @@ GUI_TEST_CLASS_DEFINITION(test_5750) {
 
 GUI_TEST_CLASS_DEFINITION(test_5751) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -3342,7 +3342,7 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -3450,7 +3450,7 @@ GUI_TEST_CLASS_DEFINITION(test_5752) {
 
 GUI_TEST_CLASS_DEFINITION(test_5753) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -3486,7 +3486,7 @@ GUI_TEST_CLASS_DEFINITION(test_5753) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -3581,7 +3581,7 @@ GUI_TEST_CLASS_DEFINITION(test_5755) {
 
 GUI_TEST_CLASS_DEFINITION(test_5758) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             QString expected = "80";
@@ -3617,7 +3617,7 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -3728,7 +3728,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
 
 GUI_TEST_CLASS_DEFINITION(test_5769_1) {
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
             CHECK_SET_ERR(minReadIdentity == 80, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
@@ -3838,7 +3838,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_2) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(os, readDir, reads);
+            auto ob = new GTFileDialogUtils_list(os, readDir, reads);
             GTUtilsDialog::waitForDialog(os, ob);
 
             GTWidget::click(os, GTWidget::findPushButton(os, "addReadButton"));
@@ -3992,7 +3992,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
@@ -4038,7 +4038,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_2) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
@@ -4082,7 +4082,7 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             //    3. Select "PhyML Maximum Likelihood" tree building method.
@@ -4297,7 +4297,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
 
     class customWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             // 4. Select input MSA "samples/APR/DNA.apr"
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));
 
@@ -4523,7 +4523,7 @@ GUI_TEST_CLASS_DEFINITION(test_5851) {
 
     class SetTempDirPathScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             AppSettingsDialogFiller::setTemporaryDirPath(os, sandBoxDir + "test_5851/t e m p");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
@@ -4540,7 +4540,7 @@ GUI_TEST_CLASS_DEFINITION(test_5851) {
     //    4. After the task finish open the report.
     //    Expected state: there is an error message in the report: "The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the "Temporary files" parameter on the "Directories" tab of the UGENE Application Settings.".
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             AlignToReferenceBlastDialogFiller::setReference(os, testDir + "_common_data/sanger/reference.gb", dialog);
 
@@ -4732,7 +4732,7 @@ GUI_TEST_CLASS_DEFINITION(test_5903) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTKeyboardDriver::keyClick('p');
             GTKeyboardDriver::keyClick('r');
@@ -4809,7 +4809,7 @@ GUI_TEST_CLASS_DEFINITION(test_5947) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto startLineEdit = GTWidget::findLineEdit(os, "start_edit_line", dialog);
             GTLineEdit::setText(os, startLineEdit, "10");
