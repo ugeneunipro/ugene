@@ -3763,7 +3763,7 @@ GUI_TEST_CLASS_DEFINITION(test_0073) {
     GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     //    Use context menu on object: {Open view -> Open new view: Alignment editor}
-    GTUtilsDialog::add(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::add(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
     //    Expected: view is opened, document is loaded
     GTUtilsMdi::findWindow(os, "COI [COI.aln]");

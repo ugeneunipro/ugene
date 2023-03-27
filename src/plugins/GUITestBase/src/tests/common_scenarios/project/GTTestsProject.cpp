@@ -509,7 +509,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
     // select sequence object
     GTUtilsProjectTreeView::click(os, "murine.gb");
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
 }
 
@@ -525,7 +525,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsProjectTreeView::click(os, "NC_001363");
     GTUtilsProjectTreeView::click(os, "NC_004718");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::NotExists, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "NC_001363", Qt::RightButton);
 }
 
@@ -541,7 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     GTUtilsProjectTreeView::click(os, "sars.gb");
     GTUtilsProjectTreeView::click(os, "murine.gb");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::NotExists, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
 }
 
@@ -551,7 +551,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
 
     // select 1 file
     GTUtilsProjectTreeView::click(os, "sars.gb");
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
 }
 
@@ -575,7 +575,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
 
     // check for first document
@@ -611,7 +611,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "test_3637_1.ugenedb", Qt::RightButton);
 
     // check for first document

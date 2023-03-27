@@ -251,7 +251,7 @@ void ProjectTreeController::sl_updateSelection() {
 }
 
 void ProjectTreeController::updateAddObjectAction() {
-    QSet<Document*> docsItemsInSelection = getDocsInSelection(false);
+    QSet<Document*> docsItemsInSelection = getDocumentSelectionDerivedFromObjects();
     bool singleDocumentIsChosen = docsItemsInSelection.size() == 1;
     bool canAddObjectToDocument = true;
     for (Document* d : qAsConst(docsItemsInSelection)) {
@@ -300,7 +300,7 @@ void ProjectTreeController::sl_updateActions() {
         }
     }
 
-    bool hasSelectedDocs = !getDocsInSelection(false).isEmpty();
+    bool hasSelectedDocs = !getDocumentSelection()->isEmpty();
 
     bool canRemoveItems = (selectedModifiableObjectsExist && canRemoveObjectFromDocument) ||
                           hasSelectedDocs || (selectedModifiableFoldersExist);
@@ -314,7 +314,8 @@ void ProjectTreeController::sl_updateActions() {
 void ProjectTreeController::updateLoadDocumentActions() {
     bool hasUnloadedDocumentInSelection = false;
     bool hasLoadedDocumentInSelection = false;
-    foreach (Document* doc, getDocsInSelection(false)) {
+    QList<Document*> selectedDocuments = getDocumentSelection()->getSelectedDocuments();
+    for (Document* doc : qAsConst(selectedDocuments)) {
         if (!doc->isLoaded()) {
             hasUnloadedDocumentInSelection = true;
             break;
@@ -329,11 +330,11 @@ void ProjectTreeController::updateLoadDocumentActions() {
 }
 
 void ProjectTreeController::updateReadOnlyFlagActions() {
-    QSet<Document*> docsItemsInSelection = getDocsInSelection(false);
-    bool singleDocumentIsChosen = docsItemsInSelection.size() == 1;
+    QList<Document*> selectedDocuments = getDocumentSelection()->getSelectedDocuments();
+    bool singleDocumentIsChosen = selectedDocuments.size() == 1;
 
     if (singleDocumentIsChosen) {
-        Document* doc = docsItemsInSelection.toList().first();
+        Document* doc = selectedDocuments.first();
         bool docHasUserModLock = doc->hasUserModLock();
         addReadonlyFlagAction->setEnabled(!docHasUserModLock && !doc->isStateLocked());
         removeReadonlyFlagAction->setEnabled(doc->isLoaded() && docHasUserModLock);
@@ -389,7 +390,7 @@ void ProjectTreeController::sl_documentContentChanged(Document*) {
 }
 
 void ProjectTreeController::sl_onAddObjectToSelectedDocument() {
-    QSet<Document*> selectedDocuments = getDocsInSelection(true);
+    QSet<Document*> selectedDocuments = getDocumentSelectionDerivedFromObjects();
     SAFE_POINT(selectedDocuments.size() == 1, "No document selected", );
     Document* doc = selectedDocuments.values().first();
 
@@ -413,7 +414,7 @@ void ProjectTreeController::sl_onAddObjectToSelectedDocument() {
 }
 
 void ProjectTreeController::sl_onLoadSelectedDocuments() {
-    QSet<Document*> docsInSelection = getDocsInSelection(true);
+    QSet<Document*> docsInSelection = getDocumentSelectionDerivedFromObjects();
     QList<Document*> docsToLoad;
     foreach (Document* doc, docsInSelection) {
         if (!doc->isLoaded() && LoadUnloadedDocumentTask::findActiveLoadingTask(doc) == nullptr) {
@@ -425,7 +426,7 @@ void ProjectTreeController::sl_onLoadSelectedDocuments() {
 
 void ProjectTreeController::sl_onUnloadSelectedDocuments() {
     QList<Document*> docsToUnload;
-    QSet<Document*> docsInSelection = getDocsInSelection(true);
+    QSet<Document*> docsInSelection = getDocumentSelectionDerivedFromObjects();
 
     QMap<Document*, StateLock*> locks;
     foreach (Document* doc, docsInSelection) {
@@ -548,16 +549,16 @@ void ProjectTreeController::sl_onProjectItemRenamed(const QModelIndex& index) {
 }
 
 void ProjectTreeController::sl_onToggleReadonly() {
-    QSet<Document*> docsInSelection = getDocsInSelection(true);
+    QSet<Document*> docsInSelection = getDocumentSelectionDerivedFromObjects();
     CHECK(docsInSelection.size() == 1, );
     Document* doc = docsInSelection.toList().first();
     doc->setUserModLock(!doc->hasUserModLock());
 }
 
 void ProjectTreeController::sl_onRemoveSelectedItems() {
-    bool deriveDocsFromObjs = settings.groupMode != ProjectTreeGroupMode_ByDocument;
-
-    QList<Document*> selectedDocs = getDocsInSelection(deriveDocsFromObjs).values();
+    QList<Document*> selectedDocs = settings.groupMode != ProjectTreeGroupMode_ByDocument
+                                        ? getDocumentSelectionDerivedFromObjects().toList()
+                                        : getDocumentSelection()->getSelectedDocuments();
     QList<Folder> selectedFolders = getSelectedFolders();
     QList<GObject*> selectedObjects = objectSelection.getSelectedObjects();
 
@@ -579,7 +580,7 @@ void ProjectTreeController::sl_onLockedStateChanged() {
 }
 
 void ProjectTreeController::sl_onImportToDatabase() {
-    QSet<Document*> selectedDocuments = getDocsInSelection(true);
+    QSet<Document*> selectedDocuments = getDocumentSelectionDerivedFromObjects();
     QList<Folder> selectedFolders = getSelectedFolders();
     bool folderIsSelected = (1 == selectedFolders.size());
 
@@ -796,14 +797,13 @@ void ProjectTreeController::runLoadDocumentTasks(const QList<Document*>& docs) c
     }
 }
 
-QSet<Document*> ProjectTreeController::getDocsInSelection(bool deriveFromObjects) const {
+QSet<Document*> ProjectTreeController::getDocumentSelectionDerivedFromObjects() const {
     QSet<Document*> result = documentSelection.getSelectedDocuments().toSet();
-    if (deriveFromObjects) {
-        foreach (GObject* obj, objectSelection.getSelectedObjects()) {
-            Document* doc = obj->getDocument();
-            SAFE_POINT(doc != nullptr, "NULL document", result);
-            result << doc;
-        }
+    QList<GObject*> selectedObjects = objectSelection.getSelectedObjects();
+    for (GObject* obj : qAsConst(selectedObjects)) {
+        Document* doc = obj->getDocument();
+        SAFE_POINT(doc != nullptr, "NULL document", result);
+        result << doc;
     }
     return result;
 }

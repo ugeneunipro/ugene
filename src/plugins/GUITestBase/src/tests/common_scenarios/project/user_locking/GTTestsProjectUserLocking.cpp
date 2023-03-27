@@ -138,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "1.gb");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
 
