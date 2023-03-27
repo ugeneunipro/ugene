@@ -12,7 +12,7 @@ echo "TEAMCITY_WORK_DIR: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}'"
 
 if [ -z "${UGENE_USE_DIRECT_API_TO_OPEN_FILES}" ]; then export UGENE_USE_DIRECT_API_TO_OPEN_FILES="1"; fi
 if [ -z "${UGENE_USE_MASTER_USER_INI}" ]; then export UGENE_USE_MASTER_USER_INI="1"; fi
-if [ -z "${UGENE_GUI_TEST_SUITE}" ]; then export UGENE_GUI_TEST_SUITE="1"; fi
+if [ -z "${UGENE_GUI_TEST_SUITE}" ]; then export UGENE_GUI_TEST_SUITE="suite.txt"; fi
 
 # Data/files dirs prefixes.
 UGENE_WORKFLOW_OUTPUT_DIR="${TEAMCITY_WORK_DIR}/workflow_output"
