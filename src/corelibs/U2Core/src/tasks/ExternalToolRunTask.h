@@ -164,12 +164,12 @@ public:
      */
     static QString checkArgumentPathLatinSymbols(const QStringList& args);
     static QString checkTemporaryDirLatinSymbols();
-    static QString checkToolLocationLatinSymbols(const ExternalTool* tool);
+    static QString checkToolPathLatinSymbols(const ExternalTool* tool);
     static QString checkIndexDirLatinSymbols();
 
     static QString checkArgumentPathSpaces(const QStringList& args);
     static QString checkTemporaryDirSpaces();
-    static QString checkToolLocationSpaces(const ExternalTool* tool);
+    static QString checkToolPathSpaces(const ExternalTool* tool);
 };
 
 class U2CORE_EXPORT ExternalToolLogParser : public QObject {

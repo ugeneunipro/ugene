@@ -68,16 +68,13 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
     CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(tool->getName())), );
     CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
     
-    const QString error = tool->checkPaths(arguments);
-    if (!error.isEmpty()) {
-        stateInfo.setError(error);
-        return;
-    }
-    
-    toolName = tool->getName();
-    coreLog.trace("Creating run task for: " + toolName);
-    if (logParser != nullptr) {
-        logParser->setParent(this);
+    tool->checkPaths(arguments, stateInfo);
+    if (!stateInfo.hasError()) {
+        toolName = tool->getName();
+        coreLog.trace("Creating run task for: " + toolName);
+        if (logParser != nullptr) {
+            logParser->setParent(this);
+        }        
     }
 }
 
@@ -412,9 +409,8 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     result.arguments = arguments;
 
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    const QString error = tool->checkPaths(arguments);
-    if (!error.isEmpty()) {
-        os.setError(error);
+    tool->checkPaths(arguments, os);
+    if (os.hasError()) {
         return result;
     }
     CHECK_EXT(nullptr != tool, os.setError(tr("A tool with the ID %1 is absent").arg(toolId)), result);
@@ -601,45 +597,46 @@ QVariantMap ExternalToolSupportUtils::getScoresGapDependencyMap() {
     return map;
 }
 
+bool checkHasNonLatin1Symbols(const QString& str) {
+    QByteArray tolatin1(str.toLatin1());
+    return QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != str;
+}
+
 QString ExternalToolSupportUtils::checkArgumentPathLatinSymbols(const QStringList& args) {
     for (const QString& path : qAsConst(args)) {
-        if (!path.isEmpty()) {
-            QByteArray tolatin1(path.toLatin1());
-            if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
-                return tr("One of the arguments passed to \"%1\" external tool is not in Latin alphabet."
-                          " Make sure that the input and output files and folders"
-                          " are located in the paths which contain only Latin characters. Current problem path is: ") + path;
-            }
+        if (!path.isEmpty() && checkHasNonLatin1Symbols(path)) {
+            return tr("One of the arguments passed to \"%1\" external tool is not in Latin alphabet."
+                      " Make sure that the input and output files and folders"
+                      " are located in the paths which contain only Latin characters. Current problem path is: \"") +
+                   path + "\"";
         }
     }
     return "";
 }
 
 QString ExternalToolSupportUtils::checkTemporaryDirLatinSymbols() {
-    const QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
-    QByteArray tolatin1(path.toLatin1());
-    if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
+    QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    if (checkHasNonLatin1Symbols(path)) {
         return tr("Your \"Temporary files\" directory contains non-latin symbols, \"%1\" external tool can't correct process it."
                   " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") + path;
     }
     return "";
 }
 
-QString ExternalToolSupportUtils::checkToolLocationLatinSymbols(const ExternalTool* tool) {
-    const QString path = tool->getPath();
+QString ExternalToolSupportUtils::checkToolPathLatinSymbols(const ExternalTool* tool) {
+    QString path = tool->getPath();
     QByteArray tolatin1(path.toLatin1());
     if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
         tr("\"%1\" external tool located in path which contains non-latin symbols."
-                  " Please change it location to path which contains only latin symbols,  set the new path in"
-                  " Preferences on the External tools and try again. Current problem path is: ") + path;
+           " Please change it location to path which contains only latin symbols, set the new path in"
+           " Preferences on the External tools and try again. Current problem path is: ") + path;
     }
     return "";
 }
 
 QString ExternalToolSupportUtils::checkIndexDirLatinSymbols() {
-    const QString path = AppContext::getSettings()->getValue(SETTINGS_ROOT + INDEX_DIR, "", true).toString();
-    QByteArray tolatin1(path.toLatin1());
-    if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
+    QString path = AppContext::getSettings()->getValue(SETTINGS_ROOT + INDEX_DIR, "", true).toString();
+    if (checkHasNonLatin1Symbols(path)) {
         return tr("Your \"Build indexes\" directory contains non-latin symbols, \"%1\" external tool can't correct process it."
                   " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") +
                path;
@@ -651,8 +648,8 @@ QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& arg
     for (const QString& path : qAsConst(args)) {
         if (path.contains(" ")) {
             return tr("One of the arguments passed to \"%1\" external tool contains spaces."
-                        " Make sure that the input and output files and folders"
-                        " are located in the paths which contain no spaces. Current problem path is: ") +
+                      " Make sure that the input and output files and folders"
+                      " are located in the paths which contain no spaces. Current problem path is: ") +
                 path;
         }
     }
@@ -660,7 +657,7 @@ QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& arg
 }
 
 QString ExternalToolSupportUtils::checkTemporaryDirSpaces() {
-    const QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (path.contains(" ")) {
         return tr("Your \"Temporary files\" directory contains spaces, \"%1\" external tool can't correct process it."
                   " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") + 
@@ -669,12 +666,12 @@ QString ExternalToolSupportUtils::checkTemporaryDirSpaces() {
     return "";
 }
 
-QString ExternalToolSupportUtils::checkToolLocationSpaces(const ExternalTool* tool) {
-    const QString path = tool->getPath();
-    if (path.trimmed() != path) {
+QString ExternalToolSupportUtils::checkToolPathSpaces(const ExternalTool* tool) {
+    QString path = tool->getPath();
+    if (path.contains(" ")) {
         return tr("\"%1\" external tool located in path which contains spaces symbols."
                   " Please change it location to path which contains no spaces,  set the new path in"
-                                    " Preferences on the External tools and try again. Current problem path is: ") +
+                  " Preferences on the External tools and try again. Current problem path is: ") +
                path;
     }
     return "";

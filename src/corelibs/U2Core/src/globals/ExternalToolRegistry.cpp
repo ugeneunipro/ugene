@@ -136,7 +136,7 @@ void ExternalTool::performAdditionalChecks(const QString& /*toolPath*/) {
     // do nothing
 }
 
-QString ExternalTool::checkPaths(const QStringList& arguments) const {
+void ExternalTool::checkPaths(const QStringList& arguments, U2OpStatus& os) const {
     QString error;
     for (auto check : qAsConst(pathChecks)) {
         switch (check) {
@@ -147,7 +147,7 @@ QString ExternalTool::checkPaths(const QStringList& arguments) const {
                 error = ExternalToolSupportUtils::checkTemporaryDirLatinSymbols();
                 break;
             case ExternalTool::PathChecks::NonLatinToolPath:
-                error = ExternalToolSupportUtils::checkToolLocationLatinSymbols(this);
+                error = ExternalToolSupportUtils::checkToolPathLatinSymbols(this);
                 break;
             case ExternalTool::PathChecks::NonLatinIndexPath:
                 error = ExternalToolSupportUtils::checkIndexDirLatinSymbols();
@@ -159,15 +159,15 @@ QString ExternalTool::checkPaths(const QStringList& arguments) const {
                 error = ExternalToolSupportUtils::checkTemporaryDirSpaces();
                 break;
             case ExternalTool::PathChecks::SpacesToolPath:
-                error = ExternalToolSupportUtils::checkToolLocationSpaces(this);
+                error = ExternalToolSupportUtils::checkToolPathSpaces(this);
                 break;
         }
         if (!error.isEmpty()) {
             error = error.arg(getName());
+            os.setError(error);
             break;
         }
     }
-    return error;
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {

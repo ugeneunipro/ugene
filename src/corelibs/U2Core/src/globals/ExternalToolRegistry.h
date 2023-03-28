@@ -29,6 +29,7 @@
 #include <QVariant>
 
 #include <U2Core/StrPackUtils.h>
+#include <U2Core/U2OpStatus.h>
 
 namespace U2 {
 
@@ -81,7 +82,7 @@ public:
     virtual void extractAdditionalParameters(const QString& output);
     virtual void performAdditionalChecks(const QString& toolPath);
     /* Check external tool for path compatibility. */
-    QString checkPaths(const QStringList& arguments) const;
+    void checkPaths(const QStringList& arguments, U2OpStatus &os) const;
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const;
