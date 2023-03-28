@@ -292,8 +292,8 @@ void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
 void EnzymesSelectorWidget::updateStatus() {
     QString checkedNamesListString;
     int nChecked = gatherCheckedNamesListString(checkedNamesListString);
-    if (checkedNamesListString.size() > 50'000) {
-        checkedEnzymesEdit->setPlainText(tr("Too many sites selected to show, click \"Save selection\" to export them to the separate file"));
+    if (nChecked > 1000) {
+        checkedEnzymesEdit->setPlainText(tr("%1 sites selected. Click \"Save selection\" to export them to the separate file").arg(nChecked));
     } else {
         checkedEnzymesEdit->setPlainText(checkedNamesListString);
     }
@@ -387,11 +387,7 @@ void EnzymesSelectorWidget::sl_saveSelectionToFile() {
     LastUsedDirHelper dir;
     dir.url = U2FileDialog::getSaveFileName(this, tr("Select enzymes selection"), dir.dir);
     if (!dir.url.isEmpty()) {
-        QString urlToSave = dir.url;
-        if (!urlToSave.endsWith(".txt")) {
-            urlToSave += ".txt";
-        }
-        QFile data(urlToSave);
+        QFile data(dir.url);
         if (!data.open(QFile::WriteOnly)) {
             QMessageBox::critical(this, tr("Save selection"), tr("Failed to open %1 for writing").arg(dir.url));
             return;

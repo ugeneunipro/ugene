@@ -997,65 +997,87 @@ To start ligation create a project or open an existing.</source>
         <translation>Хотите ли вы работать с новой базой ферментов рестрикции?</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="296"/>
         <source>Too many sites selected to show, click &quot;Save selection&quot; to export them to the separate file</source>
-        <translation>Слишком много сайтов выделено для отображения, нажмите &quot;Сохранить выделенное&quot; для экспорта в отдельный файл</translation>
+        <translation type="vanished">Слишком много сайтов выделено для отображения, нажмите &quot;Сохранить выделенное&quot; для экспорта в отдельный файл</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="296"/>
+        <source>%1 sites selected. Click &quot;Save selection&quot; to export them to the separate file</source>
+        <translation>Выбрано сайтов: %1. Нажмите &quot;Сохранить выделенное&quot; для экспорта в отдельный файл</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="306"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="501"/>
         <source>Select enzyme database file</source>
-        <translation type="vanished">Выбор базы ферментов рестрикции</translation>
+        <translation>Выбор базы ферментов рестрикции</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="342"/>
         <source>Minimum length</source>
-        <translation type="vanished">Минимальная длина</translation>
+        <translation>Минимальная длина</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="342"/>
         <source>Enter minimum length of recognition sites</source>
-        <translation type="vanished">Введите минимальную длину сайта распознавания</translation>
+        <translation>Введите минимальную длину сайта распознавания</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="383"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="392"/>
         <source>Save selection</source>
-        <translation type="vanished">Сохранить выделение</translation>
+        <translation>Сохранить выделение</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="383"/>
         <source>Can not save empty selection!</source>
-        <translation type="vanished">Невозможно сохранить пустое выделение!</translation>
+        <translation>Невозможно сохранить пустое выделение!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="388"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="451"/>
         <source>Select enzymes selection</source>
-        <translation type="vanished">Выбрать ферменты</translation>
+        <translation>Выбрать ферменты</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="392"/>
         <source>Failed to open %1 for writing</source>
-        <translation type="vanished">Невозможно открыть %1 для записи</translation>
+        <translation>Невозможно открыть %1 для записи</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="404"/>
         <source>Error!</source>
-        <translation type="vanished">Проблема!</translation>
+        <translation>Проблема!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="404"/>
         <source>No enzyme selected!</source>
-        <translation type="vanished">Фермент не выбран!</translation>
+        <translation>Фермент не выбран!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="409"/>
         <source>Selected enzyme has no ID!</source>
-        <translation type="vanished">Выбранный фермент не имеет идентификатора!</translation>
+        <translation>Выбранный фермент не имеет идентификатора!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="455"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="470"/>
         <source>Load selection</source>
-        <translation type="vanished">Загрузить выделение</translation>
+        <translation>Загрузить выделение</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="455"/>
         <source>Failed to open selection file %1</source>
-        <translation type="vanished">Невозможно открыть файл %1</translation>
+        <translation>Невозможно открыть файл %1</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="470"/>
         <source>Enzymes selection is empty!</source>
-        <translation type="vanished">Выделение пусто!</translation>
+        <translation>Выделение пусто!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="494"/>
         <source>Failed to load %1 from selection.</source>
-        <translation type="vanished">Невозможно загрузить %1 из выделения.</translation>
+        <translation>Невозможно загрузить %1 из выделения.</translation>
     </message>
 </context>
 <context>
@@ -1069,40 +1091,49 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::FindEnzymesDialog</name>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="511"/>
         <source>OK</source>
-        <translation type="vanished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="512"/>
         <source>Cancel</source>
-        <translation type="vanished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="540"/>
         <source>Total number of enzymes: %1, selected %2</source>
-        <translation type="vanished">Число ферментов в базе: %1, выбрано %2</translation>
+        <translation>Число ферментов в базе: %1, выбрано %2</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="547"/>
         <source>Invalid &apos;Search&apos; region!</source>
-        <translation type="vanished">Invalid &apos;Search&apos; region!</translation>
+        <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="555"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="575"/>
         <source>Error!</source>
-        <translation type="vanished">Проблема!</translation>
+        <translation>Проблема!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="575"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
-        <translation type="vanished">Минимальное значение должно быть меньше либо равно максимального!</translation>
+        <translation>Минимальное значение должно быть меньше либо равно максимального!</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="580"/>
         <source>Too many results to render. Please reduce the search region or number of selected enzymes.</source>
-        <translation type="vanished">Слишком много результатов для отрисовки. Необходимо уменьшить регион поиска или число искомых ферментов.</translation>
+        <translation>Слишком много результатов для отрисовки. Необходимо уменьшить регион поиска или число искомых ферментов.</translation>
     </message>
     <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="581"/>
         <source>Warning!</source>
-        <translation type="vanished">Предупреждение!</translation>
+        <translation>Предупреждение!</translation>
     </message>
 </context>
 <context>
