@@ -1876,12 +1876,12 @@ Now you can type ugene in command line to start UGENE.</translation>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="954"/>
         <source>Open view</source>
-        <translation>Открыть окно</translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="955"/>
         <source>Add to view</source>
-        <translation>Добавить в окно</translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="1103"/>

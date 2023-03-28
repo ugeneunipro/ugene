@@ -832,10 +832,10 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
         return res;
     }
 
-    // check if new view can be created
+    // Check if a new view can be created.
     if (f->canCreateView(ms)) {
         auto action = new QAction(tr("Open new view: %1").arg(f->getName()), actionsParent);
-        action->setObjectName("Open New View");
+        action->setObjectName("action_open_view");
         auto c = new OpenViewContext(action, ms, f);
         action->setData(QVariant::fromValue((void*)c));
         connect(action, SIGNAL(triggered()), SLOT(sl_openNewView()));

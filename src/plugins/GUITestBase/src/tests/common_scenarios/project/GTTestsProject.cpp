@@ -525,7 +525,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsProjectTreeView::click(os, "NC_001363");
     GTUtilsProjectTreeView::click(os, "NC_004718");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::Exists, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "NC_001363", Qt::RightButton);
 }
 
@@ -541,7 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     GTUtilsProjectTreeView::click(os, "sars.gb");
     GTUtilsProjectTreeView::click(os, "murine.gb");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::Exists, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
 }
 
@@ -892,9 +892,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     // check document format dialog cancelling
     class CustomScenarioCancel : public CustomScenario {
     public:
-        CustomScenarioCancel() {
-        }
-        virtual void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -928,9 +926,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
     // check adding document with 2 sequences in short reads mode
     class CheckPathScenario : public CustomScenario {
     public:
-        CheckPathScenario() {
-        }
-        virtual void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto treeWidget = GTWidget::findTreeWidget(os, "shortReadsTable", dialog);
             QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
