@@ -57,7 +57,7 @@ SamToolsExtToolSupport::SamToolsExtToolSupport()
 
     muted = true;
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinToolPath;
+        pathChecks << ExternalTool::PathChecks::NonLatinToolPath;
     }
 }
 

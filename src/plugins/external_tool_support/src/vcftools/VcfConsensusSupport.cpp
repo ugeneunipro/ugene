@@ -56,12 +56,12 @@ VcfConsensusSupport::VcfConsensusSupport()
     toolRunnerProgram = PerlSupport::ET_PERL_ID;
     dependencies << PerlSupport::ET_PERL_ID << TabixSupport::ET_TABIX_ID;
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckNonLatinToolPath
-                   << ExternalTool::PathChecksEnum::CheckSpacesToolPath
-                   << ExternalTool::PathChecksEnum::CheckNonLatinArguments
-                   << ExternalTool::PathChecksEnum::CheckSpacesArguments;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::SpacesToolPath
+                   << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::SpacesArguments;
     }
 }
 

@@ -63,8 +63,8 @@ SnpEffSupport::SnpEffSupport()
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
-                   << ExternalTool::PathChecksEnum::CheckNonLatinToolPath;
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinToolPath;
     }
 }
 

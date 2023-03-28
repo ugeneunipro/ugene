@@ -55,7 +55,7 @@ IQTreeSupport::IQTreeSupport()
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new IQTreeAdapter(), IQTreeSupport::ET_IQTREE_ALGORITHM_NAME_AND_KEY);
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
     }
 }
 

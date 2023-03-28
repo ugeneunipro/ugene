@@ -66,10 +66,10 @@ BowtieSupport::BowtieSupport(const QString& id)
     toolKitName = "Bowtie";
 
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
-                   << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckNonLatinToolPath
-                   << ExternalTool::PathChecksEnum::CheckNonLatinIndexPath;
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::NonLatinIndexPath;
     }
 }
 

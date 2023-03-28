@@ -57,8 +57,8 @@ TrimmomaticSupport::TrimmomaticSupport()
 
     initTrimmomaticSteps();
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinToolPath
-                   << ExternalTool::PathChecksEnum::CheckNonLatinArguments;
+        pathChecks << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::NonLatinArguments;
     }
 }
 

@@ -81,10 +81,10 @@ Bowtie2Support::Bowtie2Support(const QString& id)
                          " of index it is and what reference sequence were used to build it.");
     }
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
-                   << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckNonLatinToolPath
-                   << ExternalTool::PathChecksEnum::CheckNonLatinIndexPath;
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::NonLatinIndexPath;
     }
 }
 

@@ -66,12 +66,12 @@ TCoffeeSupport::TCoffeeSupport()
     description = tr("<i>T-Coffee</i> is a multiple sequence alignment package.");
     versionRegExp = QRegExp("PROGRAM: T-COFFEE Version_(\\d+\\.\\d+)");
     toolKitName = "T-Coffee";
-    pathChecks << ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder;
+    pathChecks << ExternalTool::PathChecks::SpacesTemporaryDirPath;
     if (isOsLinux()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckSpacesToolPath
-                   << ExternalTool::PathChecksEnum::CheckSpacesArguments;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesToolPath
+                   << ExternalTool::PathChecks::SpacesArguments;
     }
     if (isOsMac()) {
         //Fill me after UGENE-7831 fix

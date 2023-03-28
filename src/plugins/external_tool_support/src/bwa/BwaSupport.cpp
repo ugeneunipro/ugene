@@ -50,9 +50,9 @@ BwaSupport::BwaSupport()
     versionRegExp = QRegExp("Version: (\\d+\\.\\d+\\.\\d+-r\\d+)");
     toolKitName = "BWA";
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
-                   << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckNonLatinIndexPath;
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinIndexPath;
     }
 }
 

@@ -60,8 +60,8 @@ CutadaptSupport::CutadaptSupport()
     toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
     dependencies << PythonSupport::ET_PYTHON_ID;
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments
-                   << ExternalTool::PathChecksEnum::CheckNonLatinToolPath;
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinToolPath;
     }
 }
 

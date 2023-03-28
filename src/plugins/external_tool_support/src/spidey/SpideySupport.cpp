@@ -81,7 +81,7 @@ SpideySupport::SpideySupport()
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
     }
 }
 

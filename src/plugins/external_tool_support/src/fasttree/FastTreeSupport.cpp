@@ -48,7 +48,7 @@ FastTreeSupport::FastTreeSupport()
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new FastTreeAdapter(), FastTreeSupport::ET_FAST_TREE_ALGORITHM_NAME_AND_KEY);
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
     }
 }
 

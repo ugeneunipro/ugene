@@ -65,7 +65,7 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
       listener(nullptr),
       parseOutputFile(parseOutputFile) {
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool is absent")), );
+    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(tool->getName())), );
     CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
     
     const QString error = tool->checkPaths(arguments);
@@ -615,7 +615,7 @@ QString ExternalToolSupportUtils::checkArgumentPathLatinSymbols(const QStringLis
     return "";
 }
 
-QString ExternalToolSupportUtils::checkTemporaryFolderLatinSymbols() {
+QString ExternalToolSupportUtils::checkTemporaryDirLatinSymbols() {
     const QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     QByteArray tolatin1(path.toLatin1());
     if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
@@ -649,21 +649,19 @@ QString ExternalToolSupportUtils::checkIndexDirLatinSymbols() {
 
 QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& args) {
     for (const QString& path : qAsConst(args)) {
-        if (!path.isEmpty()) {
-            if (path.trimmed() != path) {
-                return tr("One of the arguments passed to \"%1\" external tool contains spaces."
-                          " Make sure that the input and output files and folders"
-                          " are located in the paths which contain no spaces. Current problem path is: ") +
-                    path;
-            }
+        if (path.contains(" ")) {
+            return tr("One of the arguments passed to \"%1\" external tool contains spaces."
+                        " Make sure that the input and output files and folders"
+                        " are located in the paths which contain no spaces. Current problem path is: ") +
+                path;
         }
     }
     return "";
 }
 
-QString ExternalToolSupportUtils::checkTemporaryFolderSpaces() {
+QString ExternalToolSupportUtils::checkTemporaryDirSpaces() {
     const QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
-    if (path.trimmed() != path) {
+    if (path.contains(" ")) {
         return tr("Your \"Temporary files\" directory contains spaces, \"%1\" external tool can't correct process it."
                   " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") + 
                path;

@@ -67,7 +67,7 @@ MAFFTSupport::MAFFTSupport()
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignNewSequencesToAlignment));
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignSelectionToAlignment));
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder;
+        pathChecks << ExternalTool::PathChecks::SpacesTemporaryDirPath;
     }
 }
 

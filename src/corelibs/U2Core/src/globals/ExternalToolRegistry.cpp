@@ -140,25 +140,25 @@ QString ExternalTool::checkPaths(const QStringList& arguments) const {
     QString error;
     for (auto check : qAsConst(pathChecks)) {
         switch (check) {
-            case ExternalTool::PathChecksEnum::CheckNonLatinArguments:
+            case ExternalTool::PathChecks::NonLatinArguments:
                 error = ExternalToolSupportUtils::checkArgumentPathLatinSymbols(arguments);
                 break;
-            case ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder:
-                error = ExternalToolSupportUtils::checkTemporaryFolderLatinSymbols();
+            case ExternalTool::PathChecks::NonLatinTemporaryDirPath:
+                error = ExternalToolSupportUtils::checkTemporaryDirLatinSymbols();
                 break;
-            case ExternalTool::PathChecksEnum::CheckNonLatinToolPath:
+            case ExternalTool::PathChecks::NonLatinToolPath:
                 error = ExternalToolSupportUtils::checkToolLocationLatinSymbols(this);
                 break;
-            case ExternalTool::PathChecksEnum::CheckNonLatinIndexPath:
+            case ExternalTool::PathChecks::NonLatinIndexPath:
                 error = ExternalToolSupportUtils::checkIndexDirLatinSymbols();
                 break;
-            case ExternalTool::PathChecksEnum::CheckSpacesArguments:
+            case ExternalTool::PathChecks::SpacesArguments:
                 error = ExternalToolSupportUtils::checkArgumentPathSpaces(arguments);
                 break;
-            case ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder:
-                error = ExternalToolSupportUtils::checkTemporaryFolderSpaces();
+            case ExternalTool::PathChecks::SpacesTemporaryDirPath:
+                error = ExternalToolSupportUtils::checkTemporaryDirSpaces();
                 break;
-            case ExternalTool::PathChecksEnum::CheckSpacesToolPath:
+            case ExternalTool::PathChecks::SpacesToolPath:
                 error = ExternalToolSupportUtils::checkToolLocationSpaces(this);
                 break;
         }

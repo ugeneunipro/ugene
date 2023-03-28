@@ -126,14 +126,14 @@ BlastSupport::BlastSupport(const QString& id)
         FAIL("Unsupported blast tool: " + id, );
     }
     toolKitName = "BLAST";
-    pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments 
-               << ExternalTool::PathChecksEnum::CheckSpacesArguments;
+    pathChecks << ExternalTool::PathChecks::NonLatinArguments 
+               << ExternalTool::PathChecks::SpacesArguments;
     if (isOsLinux() || isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder
-                   << ExternalTool::PathChecksEnum::CheckSpacesTemporaryFolder;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesTemporaryDirPath;
     }
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinToolPath;
+        pathChecks << ExternalTool::PathChecks::NonLatinToolPath;
     }
 }
 

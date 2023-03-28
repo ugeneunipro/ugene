@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2023 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -142,17 +142,17 @@ protected:
     bool isCustomTool;  // the tool is described in a user-written config file and imported to UGENE
     bool isRunnerTool;  // the tool could be used as script-runner
 
-    enum class PathChecksEnum {
-        CheckNonLatinArguments,
-        CheckNonLatinTemporaryFolder,
-        CheckNonLatinToolPath,
-        CheckNonLatinIndexPath,
-        CheckSpacesArguments,
-        CheckSpacesTemporaryFolder,
-        CheckSpacesToolPath
+    enum class PathChecks {
+        NonLatinArguments, /* Tool start command line: externalTool -human_T1.da -p C:/User/student/目錄/output.fa  */
+        NonLatinTemporaryDirPath, /* Environment variable: TMP=C:/User/temp/目錄/ */
+        NonLatinToolPath, /* Tool location: C:/tools/tool/目錄/ */
+        NonLatinIndexPath, /* Setting->Preferences->Directories->Build inexes: C:/indexes/目錄/ */
+        SpacesArguments, /* Tool start command line: externalTool -human_T1.da -p C:/User/student/S P A C E S/output.fa  */
+        SpacesTemporaryDirPath, /* Environment variable: TMP=C:/User/temp/S P A C E S/ */
+        SpacesToolPath /* Tool location: C:/tools/tool/S P A C E S/ */
     };
 
-    QList<PathChecksEnum> pathChecks;
+    QList<PathChecks> pathChecks;
 
 };  // ExternalTool
 

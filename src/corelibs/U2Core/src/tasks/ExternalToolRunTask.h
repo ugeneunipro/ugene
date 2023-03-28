@@ -162,14 +162,13 @@ public:
     /*
      * Path checking
      */
-    //TODO rename us
     static QString checkArgumentPathLatinSymbols(const QStringList& args);
-    static QString checkTemporaryFolderLatinSymbols();
+    static QString checkTemporaryDirLatinSymbols();
     static QString checkToolLocationLatinSymbols(const ExternalTool* tool);
     static QString checkIndexDirLatinSymbols();
 
     static QString checkArgumentPathSpaces(const QStringList& args);
-    static QString checkTemporaryFolderSpaces();
+    static QString checkTemporaryDirSpaces();
     static QString checkToolLocationSpaces(const ExternalTool* tool);
 };
 

@@ -65,7 +65,7 @@ ClustalOSupport::ClustalOSupport()
     versionRegExp = QRegExp("Clustal Omega - (\\d+\\.\\d+\\.\\d+).*");
     toolKitName = "ClustalO";
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
     }
 }
 

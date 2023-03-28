@@ -67,7 +67,7 @@ ClustalWSupport::ClustalWSupport()
     versionRegExp = QRegExp("CLUSTAL (\\d+\\.\\d+) Multiple Sequence Alignments");
     toolKitName = "ClustalW";
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinTemporaryFolder;
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
     }
 }
 

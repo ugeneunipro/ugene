@@ -63,7 +63,7 @@ BedtoolsSupport::BedtoolsSupport(const QString& path)
         dpr->registerEntry(dp);
     }
     if (isOsWindows()) {
-        pathChecks << ExternalTool::PathChecksEnum::CheckNonLatinArguments;
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments;
     }
 }
 
