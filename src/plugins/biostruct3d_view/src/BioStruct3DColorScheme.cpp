@@ -73,12 +73,14 @@ void BioStruct3DColorSchemeRegistry::registerFactories() {
     REGISTER_FACTORY(SecStructColorScheme);
     REGISTER_FACTORY(ChemicalElemColorScheme);
     REGISTER_FACTORY(SimpleColorScheme);
+    REGISTER_FACTORY(AlignmentEntropyColorScheme);
 }
 
 const QString ChainsColorScheme::schemeName(QObject::tr("Molecular Chains"));
 const QString ChemicalElemColorScheme::schemeName(QObject::tr("Chemical Elements"));
 const QString SecStructColorScheme::schemeName(QObject::tr("Secondary Structure"));
 const QString SimpleColorScheme::schemeName(QObject::tr("Simple colors"));
+const QString AlignmentEntropyColorScheme::schemeName(QObject::tr("Alignment entropy"));
 
 /*class BioStruct3DColorScheme */
 
@@ -294,6 +296,41 @@ SimpleColorScheme::SimpleColorScheme(const BioStruct3DObject* biostruct)
     createColors();
     static int idx = 0;
     defaultAtomColor = colors[(idx++) % colors.size()];
+}
+
+/* class AlignmentEntropyColorScheme : public BioStruct3DColorScheme */
+QVector<int> AlignmentEntropyColorScheme::entropyChainIds;
+
+AlignmentEntropyColorScheme::AlignmentEntropyColorScheme(const BioStruct3DObject* biostruct)
+    : BioStruct3DColorScheme(biostruct) {
+
+    QList<SharedAtom> allAtoms = biostruct->getBioStruct3D().getAllAtoms();
+    QList<SharedAtom>::const_iterator it;
+    int currentChainIndex;
+    int prevChainIndex = allAtoms.constFirst()->chainIndex;
+    bool isEntropy = 1;
+    for (it = allAtoms.constBegin(); it != allAtoms.constEnd(); it++) {
+        currentChainIndex = (*it)->chainIndex;
+        if (currentChainIndex != prevChainIndex || it == --allAtoms.constEnd()) {
+            if (isEntropy) {
+                entropyChainIds.append(prevChainIndex);
+            }
+            prevChainIndex = currentChainIndex;
+            isEntropy = 1;
+        }
+        CHECK_CONTINUE(isEntropy == 1);
+        if ((*it)->temperature >= 1) {
+            isEntropy = 0;
+        }
+    }
+}
+
+Color4f AlignmentEntropyColorScheme::getSchemeAtomColor(const SharedAtom& atom) const {
+    if (entropyChainIds.contains(atom->chainIndex)) {
+        return Color4f(QColor(atom->temperature * 255, 0, (1 - atom->temperature) * 255));
+    } else {
+        return Color4f((QColor(0x00, 0xff, 0x00)));
+    }
 }
 
 }  // namespace U2

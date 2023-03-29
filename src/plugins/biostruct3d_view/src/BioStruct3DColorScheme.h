@@ -170,6 +170,17 @@ public:
     COLOR_SCHEME_FACTORY(SimpleColorScheme)
 };  // class SimpleColorScheme
 
+class AlignmentEntropyColorScheme : public BioStruct3DColorScheme {
+    AlignmentEntropyColorScheme(const BioStruct3DObject* biostruct);
+    virtual Color4f getSchemeAtomColor(const SharedAtom& atom) const;
+
+private:
+    static QVector<int> entropyChainIds;
+
+public:
+    COLOR_SCHEME_FACTORY(AlignmentEntropyColorScheme)
+};  // class AlignmentEntropyColorScheme
+
 }  // namespace U2
 
 #endif  //_U2_BIOSTRUCT3D_COLORSCHEME_H_
