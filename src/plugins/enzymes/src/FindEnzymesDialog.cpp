@@ -240,7 +240,7 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     loadedEnzymes = enzymes;
 }
 
-int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesListString) {
+int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesListString) const {
     int checked = 0;
     QStringList checkedNamesList;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
