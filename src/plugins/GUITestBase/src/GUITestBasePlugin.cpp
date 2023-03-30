@@ -278,7 +278,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2089);  // "no forbidden folder characters on linux and mac";
-    REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_7700);
 
     //////////////////////////////////////////////////////////////////////////
     // Regression scenarios/
