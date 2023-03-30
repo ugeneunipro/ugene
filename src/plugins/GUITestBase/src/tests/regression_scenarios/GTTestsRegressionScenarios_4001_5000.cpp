@@ -3282,6 +3282,8 @@ GUI_TEST_CLASS_DEFINITION(test_4557) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Settings"));
+
     GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
