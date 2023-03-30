@@ -449,6 +449,37 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "top_primers  (0, 2)", { {610, 629}, {1089, 1108} });
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0022) {
+    // Open sequence
+    // Run Primer 3 with overhangs
+    // Expected: overhangs marked as annotations
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "overhang.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/input/test_0022.txt";
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {15, 35}, {57, 76} });
+    auto seq = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_seq", "top_primers");
+    auto strand = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_strand", "top_primers");
+    auto type = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_type", "top_primers");
+    CHECK_SET_ERR(seq == "TCACCCAC", QString("Expected left_end_seq: TCACCCAC, current: %1").arg(seq));
+    CHECK_SET_ERR(strand == "direct", QString("Expected left_end_strand: direct, current: %1").arg(seq));
+    CHECK_SET_ERR(type == "sticky", QString("Expected left_end_type: sticky, current: %1").arg(seq));
+
+    GTUtilsAnnotationsTreeView::deleteItem(os, "top_primers");
+    seq = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "top_primers");
+    strand = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_strand", "top_primers");
+    type = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_type", "top_primers");
+    CHECK_SET_ERR(seq == "TAAGGATTT", QString("Expected right_end_seq: TAAGGATTT, current: %1").arg(seq));
+    CHECK_SET_ERR(strand == "rev-compl", QString("Expected right_end_strand: rev-compl, current: %1").arg(seq));
+    CHECK_SET_ERR(type == "sticky", QString("Expected right_end_type: sticky, current: %1").arg(seq));
+}
+
 
 }  // namespace GUITest_common_scenarios_phyml
 }  // namespace U2

@@ -26,7 +26,7 @@
 namespace U2 {
 
 Primer3TmCalculatorFactory::Primer3TmCalculatorFactory()
-    : TmCalculatorFactory("primer3-tm-algorithm", tr("Primer 3"), -1) {  // TODO: Make Primer3 default once issues are fixed.
+    : TmCalculatorFactory("primer3-tm-algorithm", tr("Primer 3"), 1) {  // Weight = 1 adds more priority to Primer3 algorithm than the default one.
 }
 
 QSharedPointer<TmCalculator> Primer3TmCalculatorFactory::createCalculator(const QVariantMap& settings) const {

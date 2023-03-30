@@ -5290,7 +5290,7 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // 2. Open additional a second copy of the sequence view
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open view", "Open new view: Sequence View"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open In", "Open new view: Sequence View"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "human_T1.fa");
 
     // 3. Open /data/samples/gff/5prime_utr_intron_A20.gff

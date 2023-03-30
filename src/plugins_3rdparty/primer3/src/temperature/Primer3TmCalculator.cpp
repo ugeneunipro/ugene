@@ -23,6 +23,8 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <U2View/DNAStatisticsTask.h>
+
 #include "primer3_core/oligotm.h"
 
 namespace U2 {
@@ -43,6 +45,9 @@ Primer3TmCalculator::Primer3TmCalculator(const QVariantMap& settings)
 }
 
 double Primer3TmCalculator::getMeltingTemperature(const QByteArray& sequence) {
+    if (sequence.length() < DNAStatisticsTask::TM_MIN_LENGTH_LIMIT || sequence.length() > DNAStatisticsTask::TM_MAX_LENGTH_LIMIT) {
+        return INVALID_TM;
+    }
     auto result = seqtm(sequence,
                         settings.value(KEY_DNA_CONC, DNA_CONC_DEFAULT).toDouble(),
                         settings.value(KEY_SALT_CONC, SALT_CONC_DEFAULT).toDouble(),

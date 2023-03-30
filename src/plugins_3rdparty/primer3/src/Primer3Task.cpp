@@ -868,6 +868,22 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     if (areDoubleValuesEqual(primer.getHairpin(), ALIGN_SCORE_UNDEF)) {
         annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer.getHairpin())));
     }
+    auto primerType = primer.getType();
+    if (primerType == oligo_type::OT_LEFT) {
+        auto overhangLeft = settings->getOverhangLeft();
+        if (!overhangLeft.isEmpty()) {
+            annotationData->qualifiers.append(U2Qualifier("left_end_strand", "direct"));
+            annotationData->qualifiers.append(U2Qualifier("left_end_type", "sticky"));
+            annotationData->qualifiers.append(U2Qualifier("left_end_seq", overhangLeft));
+        }
+    } else if (primerType == oligo_type::OT_RIGHT) {
+        auto overhangRight = settings->getOverhangRight();
+        if (!overhangRight.isEmpty()) {
+            annotationData->qualifiers.append(U2Qualifier("right_end_strand", "rev-compl"));
+            annotationData->qualifiers.append(U2Qualifier("right_end_type", "sticky"));
+            annotationData->qualifiers.append(U2Qualifier("right_end_seq", overhangRight));
+        }
+    }
 
     return annotationData;
 }

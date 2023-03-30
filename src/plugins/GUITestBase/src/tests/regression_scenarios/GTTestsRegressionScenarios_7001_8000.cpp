@@ -4261,6 +4261,43 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7824) {
+    // 1. Open 1.gb.
+    // 2. Double click any annotation
+    // Expected: the corresponding sequence has been selected
+    // 
+    // 3. Click right button on the same annotation
+    // Expected: the corresponding sequence is still selected
+    // Current: sequence selection is gone, only annotation selection left
+
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "1.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)"));
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "B"));
+    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "B"), -1, Qt::RightButton);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    QVector<U2Region> selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 1, "Selection size should be 1, but actual size is " + QString::number(selection.size()));
+    CHECK_SET_ERR(selection.first() == U2Region(29, 91),
+                  QString("Selection doesn't match with 'B' annotation it is (%1, %2) instead of (29, 91).")
+                      .arg(QString::number(selection.first().startPos))
+                      .arg(QString::number(selection.first().length))
+                  );
+    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C_group  (0, 1)"));
+    QPoint cCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "C");    
+    QPoint bjCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined");
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTMouseDriver::moveTo(cCenter);
+    GTMouseDriver::doubleClick();
+    GTMouseDriver::moveTo(bjCenter);
+    GTMouseDriver::doubleClick();
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    selection = GTUtilsSequenceView::getSelection(os);
+    CHECK_SET_ERR(selection.size() == 4, "Selection size should be 4, but actual size is " + QString::number(selection.size()));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7825) {
     // 1. Open the attached sequence.
     // 2. Open Primer3 dialog

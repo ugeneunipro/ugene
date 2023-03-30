@@ -57,7 +57,9 @@ public:
     void refreshObject(GObject* object);
     QAction* getLoadSeletectedDocumentsAction() const;
     void updateSettings(const ProjectTreeControllerModeSettings& settings);
-    QSet<Document*> getDocsInSelection(bool deriveFromObjects) const;
+
+    /** Returns a set that contains all selected documents plus documents with a selected objects. */
+    QSet<Document*> getDocumentSelectionDerivedFromObjects() const;
 
 private slots:
     void sl_onDocumentAdded(Document* doc);

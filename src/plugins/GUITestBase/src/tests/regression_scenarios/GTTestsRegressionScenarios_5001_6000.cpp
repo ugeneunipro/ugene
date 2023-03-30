@@ -910,7 +910,7 @@ GUI_TEST_CLASS_DEFINITION(test_5252) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Open an additional view for the sequence.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open view", "Open new view: Sequence View"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open In", "Open new view: Sequence View"}));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4460,7 +4460,7 @@ GUI_TEST_CLASS_DEFINITION(test_5842) {
 
     GTLogTracer lt;
     // 3. Open the view from the context menu.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "alignment.ugenedb", Qt::RightButton);
 
     // Expected state: the view is opened without errors.

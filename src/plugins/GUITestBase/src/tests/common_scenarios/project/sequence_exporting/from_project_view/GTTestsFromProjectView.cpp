@@ -27,7 +27,6 @@
 #include <utils/GTThread.h>
 
 #include <U2View/AnnotatedDNAViewFactory.h>
-#include <U2View/MaEditorFactory.h>
 
 #include "GTGlobals.h"
 #include "GTTestsFromProjectView.h"
@@ -222,7 +221,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::add(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, false));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
     GTThread::waitForMainThread();
 
@@ -254,7 +253,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
 
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
@@ -281,7 +280,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
 
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "Open New View"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "Zychia_baranovi", Qt::RightButton);
 
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);

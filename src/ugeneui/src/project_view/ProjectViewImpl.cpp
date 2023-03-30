@@ -56,7 +56,6 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/OpenViewTask.h>
-#include <U2Gui/ProjectUtils.h>
 #include <U2Gui/ReloadDocumentsTask.h>
 
 #include <U2View/ADVSingleSequenceWidget.h>
@@ -79,7 +78,7 @@ static const char* NOTIFICATION_TITLE = "File Modification Detected";
 
 DocumentUpdater::DocumentUpdater(QObject* p)
     : QObject(p) {
-    QTimer* timer = new QTimer(this);
+    auto timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(sl_update()));
     timer->start(UPDATER_TIMEOUT);
     recursion = false;
@@ -392,8 +391,8 @@ void DocumentUpdater::reloadDocuments(QList<Document*> docs2Reload) {
         }
     }
 
-    ReloadDocumentsTask* reloadTask = new ReloadDocumentsTask(docs2Reload);
-    Task* updateViewTask = new Task(tr("Restore state task"), TaskFlag_NoRun);
+    auto reloadTask = new ReloadDocumentsTask(docs2Reload);
+    auto updateViewTask = new Task(tr("Restore state task"), TaskFlag_NoRun);
 
     foreach (GObjectViewState* state, states) {
         GObjectViewWindow* view = GObjectViewUtils::findViewByName(state->getViewName());
@@ -440,15 +439,6 @@ static void saveGroupMode(ProjectTreeGroupMode m) {
 // ProjectViewImpl
 ProjectViewImpl::ProjectViewImpl()
     : ProjectView(tr("ProjectView"), tr("ProjectView service provides basic project visualization and manipulation functionality")) {
-    w = nullptr;
-    projectTreeController = nullptr;
-    objectViewController = nullptr;
-    saveSelectedDocsAction = nullptr;
-    relocateDocumentAction = nullptr;
-    toggleCircularAction = nullptr;
-    openContainingFolder = nullptr;
-    saveProjectOnClose = false;
-
     // todo: move it somewhere else -> object views could be openend without project view service active
     registerBuiltInObjectViews();
 }
@@ -497,9 +487,9 @@ void ProjectViewImpl::enable() {
     exportDocumentAction->setIcon(QIcon(":ugene/images/save_copy.png"));
     connect(exportDocumentAction, SIGNAL(triggered()), SLOT(sl_exportDocument()));
 
-    openContainingFolder = new QAction(tr("Open containing folder"), w);
-    openContainingFolder->setObjectName("Open containing folder");
-    connect(openContainingFolder, SIGNAL(triggered()), SLOT(sl_onOpenContainingFolder()));
+    openContainingFolderAction = new QAction(tr("Open containing folder"), w);
+    openContainingFolderAction->setObjectName("openContainingFolderAction");
+    connect(openContainingFolderAction, &QAction::triggered, this, &ProjectViewImpl::sl_onOpenContainingFolder);
 
     initView();
 
@@ -830,8 +820,8 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
             if (!contains) {
                 continue;
             }
-            QAction* action = new QAction(tr("Activate view: %1").arg(ov->getViewName()), actionsParent);
-            OpenViewContext* c = new OpenViewContext(action, ov->getViewName());
+            auto action = new QAction(tr("Activate view: %1").arg(ov->getViewName()), actionsParent);
+            auto c = new OpenViewContext(action, ov->getViewName());
             action->setData(QVariant::fromValue((void*)c));
             connect(action, SIGNAL(triggered()), SLOT(sl_activateView()));
             res.append(action);
@@ -842,11 +832,11 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
         return res;
     }
 
-    // check if new view can be created
+    // Check if a new view can be created.
     if (f->canCreateView(ms)) {
-        QAction* action = new QAction(tr("Open new view: %1").arg(f->getName()), actionsParent);
-        action->setObjectName("Open New View");
-        OpenViewContext* c = new OpenViewContext(action, ms, f);
+        auto action = new QAction(tr("Open new view: %1").arg(f->getName()), actionsParent);
+        action->setObjectName("action_open_view");
+        auto c = new OpenViewContext(action, ms, f);
         action->setData(QVariant::fromValue((void*)c));
         connect(action, SIGNAL(triggered()), SLOT(sl_openNewView()));
         res.append(action);
@@ -859,8 +849,8 @@ QList<QAction*> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory* f, co
     // check saved state can be activated
     QList<GObjectViewState*> viewStates = GObjectViewUtils::selectStates(f, ms, AppContext::getProject()->getGObjectViewStates());
     foreach (GObjectViewState* s, viewStates) {
-        QAction* action = new QAction(tr("Open saved view '%1' with a state '%2'").arg(s->getViewName()).arg(s->getStateName()), actionsParent);
-        OpenViewContext* c = new OpenViewContext(action, s, f);
+        auto action = new QAction(tr("Open saved view '%1' with a state '%2'").arg(s->getViewName()).arg(s->getStateName()), actionsParent);
+        auto c = new OpenViewContext(action, s, f);
         action->setData(QVariant::fromValue((void*)c));
         connect(action, SIGNAL(triggered()), SLOT(sl_openStateView()));
         res.append(action);
@@ -907,8 +897,8 @@ void ProjectViewImpl::buildAddToViewMenu(const MultiGSelection& ms, QMenu* m) {
             return;
         }
     }
-    QAction* action = new QAction(tr("Add to view: %1").arg(ow->getViewName()), m);
-    AddToViewContext* ac = new AddToViewContext(action, ow->getObjectView(), objects);
+    auto action = new QAction(tr("Add to view: %1").arg(ow->getViewName()), m);
+    auto ac = new AddToViewContext(action, ow->getObjectView(), objects);
     action->setData(QVariant::fromValue((void*)ac));
     action->setObjectName("action_add_view");
     connect(action, SIGNAL(triggered()), SLOT(sl_addToView()));
@@ -951,8 +941,8 @@ void ProjectViewImpl::buildRelocateMenu(QMenu* m) {
 }
 
 void ProjectViewImpl::buildViewMenu(QMenu& m) {
-    QMenu* openViewMenu = new QMenu(tr("Open view"), &m);
-    QMenu* addToViewMenu = new QMenu(tr("Add to view"), &m);
+    auto openInMenu = new QMenu(tr("Open In"), &m);
+    auto addToViewMenu = new QMenu(tr("Add to view"), &m);
 
     const DocumentSelection* docsSelection = getDocumentSelection();
     const GObjectSelection* objsSelection = getGObjectSelection();
@@ -968,8 +958,8 @@ void ProjectViewImpl::buildViewMenu(QMenu& m) {
         multiSelection.addSelection(docsSelection);
     }
 
-    buildOpenViewMenu(multiSelection, openViewMenu);
-    openViewMenu->menuAction()->setObjectName("Open View");
+    buildOpenViewMenu(multiSelection, openInMenu);
+    openInMenu->menuAction()->setObjectName("openInMenu");
 
     buildAddToViewMenu(multiSelection, addToViewMenu);
     addToViewMenu->menuAction()->setObjectName("submenu_add_view");
@@ -982,9 +972,9 @@ void ProjectViewImpl::buildViewMenu(QMenu& m) {
         submenusWereAdded = true;
     }
 
-    openViewMenu->setDisabled(openViewMenu->isEmpty());
-    if (openViewMenu->isEnabled()) {
-        m.insertMenu(m.actions().first(), openViewMenu);
+    openInMenu->setDisabled(openInMenu->isEmpty());
+    if (openInMenu->isEnabled()) {
+        m.insertMenu(m.actions().first(), openInMenu);
         submenusWereAdded = true;
     }
     if (submenusWereAdded) {
@@ -1029,17 +1019,15 @@ void ProjectViewImpl::buildViewMenu(QMenu& m) {
         }
     }
 
-    Document* docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : nullptr;
-    if (docToOpen != nullptr) {
-        GUrl docUrl = docToOpen->getURL();
-        if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
-            m.addAction(openContainingFolder);
-        }
+    QSet<Document*> implicitDocumentSelection = projectTreeController->getDocumentSelectionDerivedFromObjects();
+    if (std::any_of(implicitDocumentSelection.begin(), implicitDocumentSelection.end(), [](auto d) { return d->getURL().isLocalFile(); })) {
+        openInMenu->addSeparator();
+        openInMenu->addAction(openContainingFolderAction);
     }
 }
 
 void ProjectViewImpl::sl_activateView() {
-    QAction* action = (QAction*)sender();
+    auto action = (QAction*)sender();
     auto c = static_cast<OpenViewContext*>(action->data().value<void*>());
     assert(!c->viewName.isEmpty());
     GObjectViewWindow* ov = GObjectViewUtils::findViewByName(c->viewName);
@@ -1049,7 +1037,7 @@ void ProjectViewImpl::sl_activateView() {
 }
 
 void ProjectViewImpl::sl_openNewView() {
-    QAction* action = (QAction*)sender();
+    auto action = (QAction*)sender();
     auto c = static_cast<OpenViewContext*>(action->data().value<void*>());
     SAFE_POINT(c->factory->canCreateView(c->selection), "Invalid object view factory!", );
     Task* openViewTask = c->factory->createViewTask(c->selection);
@@ -1060,7 +1048,7 @@ void ProjectViewImpl::sl_openNewView() {
 
 void ProjectViewImpl::sl_addToView() {
     // TODO: create specialized action classes instead of using ->data().value<void*>() casts
-    QAction* action = (QAction*)sender();
+    auto action = (QAction*)sender();
     auto ac = static_cast<AddToViewContext*>(action->data().value<void*>());
     GObjectViewController* view = ac->view;
     if (view == nullptr) {
@@ -1077,7 +1065,7 @@ void ProjectViewImpl::sl_addToView() {
 }
 
 void ProjectViewImpl::sl_openStateView() {
-    QAction* action = (QAction*)sender();
+    auto action = (QAction*)sender();
     auto c = static_cast<OpenViewContext*>(action->data().value<void*>());
     const GObjectViewState* state = c->state;
     assert(state);
@@ -1157,12 +1145,17 @@ void ProjectViewImpl::sl_onToggleCircular() {
 }
 
 void ProjectViewImpl::sl_onOpenContainingFolder() {
-    Document* docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : nullptr;
-    if (docToOpen != nullptr) {
-        GUrl docUrl = docToOpen->getURL();
-        if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
-            QUrl url = docToOpen->getURL().isLocalFile() ? QUrl::fromLocalFile(docToOpen->getURL().dirPath()) : QUrl(docToOpen->getURL().dirPath());
-            QDesktopServices::openUrl(url);
+    QSet<Document*> docToOpen = projectTreeController->getDocumentSelectionDerivedFromObjects();
+    int nOpened = 0;
+    int maxToOpen = 10;  // Limit number of opened folders, so user is not overflown with new File Manager's windows.
+    for (Document* doc : qAsConst(docToOpen)) {
+        const GUrl& url = doc->getURL();
+        if (url.isLocalFile()) {
+            QDesktopServices::openUrl(url.dirPath());
+            nOpened++;
+            if (nOpened == maxToOpen) {
+                break;
+            }
         }
     }
 }
