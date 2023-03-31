@@ -3793,7 +3793,7 @@ GUI_TEST_CLASS_DEFINITION(test_4676_1) {
     GTUtilsMdi::click(os, GTGlobals::Close);
 
     // Open the view again.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
     // Expected state: undo action is enabled.
@@ -3824,7 +3824,7 @@ GUI_TEST_CLASS_DEFINITION(test_4676_2) {
     GTUtilsMdi::click(os, GTGlobals::Close);
 
     // Open the view again.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
     // Expected state: redo action is enabled.

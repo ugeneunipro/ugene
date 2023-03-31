@@ -154,18 +154,18 @@ private:
     void registerBuiltInObjectViews();
     void unregisterBuiltInObjectViews();
 
-    QAction* saveSelectedDocsAction;
-    QAction* relocateDocumentAction;
-    QAction* exportDocumentAction;
-    QAction* toggleCircularAction;
-    QAction* openContainingFolder;
+    QAction* saveSelectedDocsAction = nullptr;
+    QAction* relocateDocumentAction = nullptr;
+    QAction* exportDocumentAction = nullptr;
+    QAction* toggleCircularAction = nullptr;
+    QAction* openContainingFolderAction = nullptr;
 
-    bool saveProjectOnClose;
+    bool saveProjectOnClose = false;
 
-    ProjectViewWidget* w;
-    ProjectViewWidgetFactory* f;
-    ProjectTreeController* projectTreeController;
-    ObjectViewTreeController* objectViewController;
+    ProjectViewWidget* w = nullptr;
+    ProjectViewWidgetFactory* f = nullptr;
+    ProjectTreeController* projectTreeController = nullptr;
+    ObjectViewTreeController* objectViewController = nullptr;
 };
 
 class EnableProjectViewTask : public Task {

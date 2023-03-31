@@ -1789,7 +1789,9 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool controlOfShiftPressed = km.testFlag(Qt::ControlModifier) || km.testFlag(Qt::ShiftModifier);
     if (!controlOfShiftPressed) {
-        sequenceSelection->clear();
+        if (sequenceSelection->getSelectedRegions().toList() != item->annotation->getRegions().toList()) {
+            sequenceSelection->clear();
+        }
         foreach (AVAnnotationItem* key, selectedAnnotations.keys()) {
             selectedAnnotation.remove(key);
         }

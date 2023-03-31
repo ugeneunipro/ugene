@@ -5290,7 +5290,7 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // 2. Open additional a second copy of the sequence view
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open view", "Open new view: Sequence View"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Open In", "Open new view: Sequence View"}, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "human_T1.fa");
 
     // 3. Open /data/samples/gff/5prime_utr_intron_A20.gff
@@ -6440,12 +6440,13 @@ GUI_TEST_CLASS_DEFINITION(test_6968) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // Select all sites.
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", dialog));
+            GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
     GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, QStringList(), new SelectAllScenario()));
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ignore));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 

@@ -430,100 +430,99 @@
         <translation>Выбранные ферменты:</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="154"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="135"/>
         <source>Load enzymes database</source>
         <translation>Load enzymes database</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="157"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="138"/>
         <source>Open enzymes </source>
         <translation>Открыть ферменты </translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="167"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="148"/>
         <source>Export enzymes</source>
         <translation>Экспортировать ферменты</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="224"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="205"/>
         <source>Load selection</source>
         <translation>Загрузить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="234"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="215"/>
         <source>Save selection</source>
         <translation>Сохранить выделенное</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="164"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="145"/>
         <source>Export current selection as new database</source>
         <translation>Экспортировать текущее выделение как базу данных</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="181"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="162"/>
         <source>Select all enzymes in database</source>
         <translation>Выделить все ферменты в базе данных</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="221"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="202"/>
         <source>Hint: selection file should contain enzymes&apos; names separtated by whitespaces or commas</source>
         <translation>Подсказка: выделенный файл должен содержать имена ферментов, разделенных пробелами или запятыми</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="231"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="212"/>
         <source>Save selected enzymes list to a text file</source>
         <translation>Сохранить список выделенных ферментов в текстовый файл</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="184"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="165"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="126"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="191"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="172"/>
         <source>Empty selection</source>
         <translation>Пустое выделение</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="194"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="175"/>
         <source>Select None</source>
         <translation>Очистить выборку</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="201"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="182"/>
         <source>Select enzymes by length of recognition sequence</source>
         <translation>Выбрать ферменты по длине выбранной последовательности</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="204"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="185"/>
         <source>Select by length</source>
         <translation>Выбрать по длине</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="211"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="192"/>
         <source>Invert current selection</source>
         <translation>Инвертировать текущее выделение</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="214"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="195"/>
         <source>Invert selection</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesSelectorWidget.ui" line="248"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="229"/>
         <source>REBASE Info</source>
         <translation>REBASE Инфо</translation>
     </message>
@@ -588,7 +587,7 @@ p, li { white-space: pre-wrap; }
         <translation>Выберите фрагменты, составляющие новую молекулу.</translation>
     </message>
     <message>
-        <location filename="../src/ConstructMoleculeDialog.cpp" line="273"/>
+        <location filename="../src/ConstructMoleculeDialog.cpp" line="276"/>
         <source>Set new molecule file name</source>
         <translation>Задайте имя файла</translation>
     </message>
@@ -998,76 +997,85 @@ To start ligation create a project or open an existing.</source>
         <translation>Хотите ли вы работать с новой базой ферментов рестрикции?</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="294"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="488"/>
+        <source>Too many sites selected to show, click &quot;Save selection&quot; to export them to the separate file</source>
+        <translation type="vanished">Слишком много сайтов выделено для отображения, нажмите &quot;Сохранить выделенное&quot; для экспорта в отдельный файл</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="296"/>
+        <source>%1 sites selected. Click &quot;Save selection&quot; to export them to the separate file</source>
+        <translation>Выбрано сайтов: %1. Нажмите &quot;Сохранить выделенное&quot; для экспорта в отдельный файл</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.cpp" line="306"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="501"/>
         <source>Select enzyme database file</source>
         <translation>Выбор базы ферментов рестрикции</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="330"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="342"/>
         <source>Minimum length</source>
         <translation>Минимальная длина</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="330"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="342"/>
         <source>Enter minimum length of recognition sites</source>
         <translation>Введите минимальную длину сайта распознавания</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="370"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="379"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="383"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="392"/>
         <source>Save selection</source>
         <translation>Сохранить выделение</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="370"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="383"/>
         <source>Can not save empty selection!</source>
         <translation>Невозможно сохранить пустое выделение!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="375"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="438"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="388"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="451"/>
         <source>Select enzymes selection</source>
         <translation>Выбрать ферменты</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="379"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="392"/>
         <source>Failed to open %1 for writing</source>
         <translation>Невозможно открыть %1 для записи</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="391"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="404"/>
         <source>Error!</source>
         <translation>Проблема!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="391"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="404"/>
         <source>No enzyme selected!</source>
         <translation>Фермент не выбран!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="396"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="409"/>
         <source>Selected enzyme has no ID!</source>
         <translation>Выбранный фермент не имеет идентификатора!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="442"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="457"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="455"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="470"/>
         <source>Load selection</source>
         <translation>Загрузить выделение</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="442"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="455"/>
         <source>Failed to open selection file %1</source>
         <translation>Невозможно открыть файл %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="457"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="470"/>
         <source>Enzymes selection is empty!</source>
         <translation>Выделение пусто!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="481"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="494"/>
         <source>Failed to load %1 from selection.</source>
         <translation>Невозможно загрузить %1 из выделения.</translation>
     </message>
@@ -1083,47 +1091,47 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::FindEnzymesDialog</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="498"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="511"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="499"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="512"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="527"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="540"/>
         <source>Total number of enzymes: %1, selected %2</source>
         <translation>Число ферментов в базе: %1, выбрано %2</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="534"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="547"/>
         <source>Invalid &apos;Search&apos; region!</source>
         <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="542"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="555"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="562"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="575"/>
         <source>Error!</source>
         <translation>Проблема!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="562"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="575"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Минимальное значение должно быть меньше либо равно максимального!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="567"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="580"/>
         <source>Too many results to render. Please reduce the search region or number of selected enzymes.</source>
         <translation>Слишком много результатов для отрисовки. Необходимо уменьшить регион поиска или число искомых ферментов.</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="568"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="581"/>
         <source>Warning!</source>
         <translation>Предупреждение!</translation>
     </message>
