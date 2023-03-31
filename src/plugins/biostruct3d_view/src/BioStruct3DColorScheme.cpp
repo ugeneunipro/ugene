@@ -80,7 +80,7 @@ const QString ChainsColorScheme::schemeName(QObject::tr("Molecular Chains"));
 const QString ChemicalElemColorScheme::schemeName(QObject::tr("Chemical Elements"));
 const QString SecStructColorScheme::schemeName(QObject::tr("Secondary Structure"));
 const QString SimpleColorScheme::schemeName(QObject::tr("Simple colors"));
-const QString AlignmentEntropyColorScheme::schemeName(QObject::tr("Alignment entropy"));
+const QString AlignmentEntropyColorScheme::schemeName(QObject::tr("Alignment Entropy"));
 
 /*class BioStruct3DColorScheme */
 
@@ -94,7 +94,7 @@ Color4f BioStruct3DColorScheme::getAtomColor(const SharedAtom& atom) const {
     Color4f c;
 
     if (isInSelection(atom)) {
-        c = selectionColor;
+        c = getSelectionColor(atom);
     } else {
         c = getSchemeAtomColor(atom);
         if (!selection.isEmpty() && unselectedShading > 0.0) {  // dim unselected
@@ -124,6 +124,10 @@ bool BioStruct3DColorScheme::isInSelection(const SharedAtom& atom) const {
 
 Color4f BioStruct3DColorScheme::getSchemeAtomColor(const SharedAtom&) const {
     return defaultAtomColor;
+}
+
+Color4f BioStruct3DColorScheme::getSelectionColor(const SharedAtom& atom) const {
+    return selectionColor;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -304,23 +308,18 @@ QVector<int> AlignmentEntropyColorScheme::entropyChainIds;
 AlignmentEntropyColorScheme::AlignmentEntropyColorScheme(const BioStruct3DObject* biostruct)
     : BioStruct3DColorScheme(biostruct) {
 
-    QList<SharedAtom> allAtoms = biostruct->getBioStruct3D().getAllAtoms();
-    QList<SharedAtom>::const_iterator it;
-    int currentChainIndex;
-    int prevChainIndex = allAtoms.constFirst()->chainIndex;
-    bool isEntropy = 1;
-    for (it = allAtoms.constBegin(); it != allAtoms.constEnd(); it++) {
-        currentChainIndex = (*it)->chainIndex;
-        if (currentChainIndex != prevChainIndex || it == --allAtoms.constEnd()) {
-            if (isEntropy) {
-                entropyChainIds.append(prevChainIndex);
+    bool isEntropy = true;
+    BioStruct3D biostruct3D = biostruct->getBioStruct3D();
+    for (const SharedMolecule& sm : qAsConst(biostruct3D.moleculeMap)) {
+        for (const Molecule3DModel& model : qAsConst(sm->models)) {
+            for (const SharedAtom& atom : qAsConst(model.atoms)) {
+                if (atom->temperature > 1) {
+                    isEntropy = false;
+                }
             }
-            prevChainIndex = currentChainIndex;
-            isEntropy = 1;
         }
-        CHECK_CONTINUE(isEntropy == 1);
-        if ((*it)->temperature >= 1) {
-            isEntropy = 0;
+        if (isEntropy) {
+            entropyChainIds.append(biostruct3D.getIndexByChainId(sm->chainId));
         }
     }
 }
@@ -330,6 +329,14 @@ Color4f AlignmentEntropyColorScheme::getSchemeAtomColor(const SharedAtom& atom) 
         return Color4f(QColor(atom->temperature * 255, 0, (1 - atom->temperature) * 255));
     } else {
         return Color4f((QColor(0x00, 0xff, 0x00)));
+    }
+}
+
+Color4f AlignmentEntropyColorScheme::getSelectionColor(const SharedAtom& atom) const {
+    if (entropyChainIds.contains(atom->chainIndex)) {
+        return Color4f(QColor(atom->temperature * 255, 100, (1 - atom->temperature) * 255));
+    } else {
+        return selectionColor;
     }
 }
 

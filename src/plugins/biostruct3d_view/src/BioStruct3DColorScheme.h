@@ -108,6 +108,7 @@ public:
 
 protected:
     virtual Color4f getSchemeAtomColor(const SharedAtom& atom) const;
+    virtual Color4f getSelectionColor(const SharedAtom& atom) const;
 
 protected:
     Color4f defaultAtomColor;
@@ -172,7 +173,8 @@ public:
 
 class AlignmentEntropyColorScheme : public BioStruct3DColorScheme {
     AlignmentEntropyColorScheme(const BioStruct3DObject* biostruct);
-    virtual Color4f getSchemeAtomColor(const SharedAtom& atom) const;
+    Color4f getSchemeAtomColor(const SharedAtom& atom) const override;
+    Color4f getSelectionColor(const SharedAtom& atom) const override;
 
 private:
     static QVector<int> entropyChainIds;
