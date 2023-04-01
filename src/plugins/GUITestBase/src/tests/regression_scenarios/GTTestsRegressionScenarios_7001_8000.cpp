@@ -1888,9 +1888,11 @@ GUI_TEST_CLASS_DEFINITION(test_7463) {
     GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
-    GTUtilsNotifications::waitForNotification(os);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::findLabelByText(os, "The workflow task has been finished", GTUtilsDashboard::getDashboard(os));
+
     auto tab = GTTabWidget::getTabBar(os, GTUtilsDashboard::getTabWidget(os));
+    GTWidget::click(os, tab->tabButton(tab->currentIndex(), QTabBar::RightSide));
     GTWidget::click(os, tab->tabButton(tab->currentIndex(), QTabBar::RightSide));
 }
 
