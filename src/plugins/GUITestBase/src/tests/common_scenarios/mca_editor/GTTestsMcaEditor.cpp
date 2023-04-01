@@ -3238,7 +3238,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsOptionPanelMca::openTab(os, GTUtilsOptionPanelMca::General);
+    GTUtilsProjectTreeView::toggleView(os);
 
     //    Expected state: Line: - / 16; RefPos: - / 11878; ReadPos: - / -.
     QString rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
