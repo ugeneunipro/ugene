@@ -6440,12 +6440,13 @@ GUI_TEST_CLASS_DEFINITION(test_6968) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             // Select all sites.
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", dialog));
+            GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
     GTUtilsDialog::add(os, new FindEnzymesDialogFiller(os, QStringList(), new SelectAllScenario()));
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ignore));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 

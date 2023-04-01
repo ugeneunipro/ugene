@@ -221,6 +221,10 @@ GUI_TEST_CLASS_DEFINITION(test_1003) {
     public:
         void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/archive/2013_08_01.bairoch.gz"));
+            GTWidget::click(os, GTWidget::findWidget(os, "enzymesFileButton", dialog));
+
             auto enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
 
@@ -2477,7 +2481,7 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
     // 1. Open human_T1.fa.
     // 2. Use menu {Analyze->Find restriction sites}.
     // 3. Press "Enzymes file.."
-    // 4. Select file "data\enzymes\2013_08_01.bairoch.gz".
+    // 4. Select file "_common_data\archive\2013_08_01.bairoch.gz".
     // Expected state: total number of enzymes is 4862(Enzymes with unknown sequence field are removed from list)
 
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
@@ -2487,6 +2491,8 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
     public:
         virtual void run(HI::GUITestOpStatus& os) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/archive/2013_08_01.bairoch.gz"));
+            GTWidget::click(os, GTWidget::findWidget(os, "enzymesFileButton", dialog));
             auto totalNumberOfEnzymesLabel = GTWidget::findLabel(os, "statusLabel");
             QString labelText = totalNumberOfEnzymesLabel->text();
             QString s = QString("4862");

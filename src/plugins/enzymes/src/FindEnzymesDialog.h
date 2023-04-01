@@ -74,6 +74,7 @@ private:
     void saveFile(const QString& url);
     void setEnzymesList(const QList<SEnzymeData>& enzymes);
     void updateStatus();
+    int gatherCheckedNamesListString(QString& checkedNamesList) const;
 
     EnzymeGroupTreeItem* findGroupItem(const QString& s, bool create);
 

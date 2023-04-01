@@ -77,6 +77,6 @@ public:
     QSet<QString> enzymes;
 };
 
-#define DEFAULT_ENZYMES_FILE QString("2013_08_01.bairoch.gz")
+#define DEFAULT_ENZYMES_FILE QString("2023_02_25.bairoch.gz")
 
 }  // namespace U2
