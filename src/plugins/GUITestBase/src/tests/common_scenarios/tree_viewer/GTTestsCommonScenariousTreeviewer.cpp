@@ -1057,6 +1057,9 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
     int original100Width = GTUtilsPhyTree::getSceneWidth(os);
     GTUtilsPhyTree::clickZoomFitButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
+    GTUtilsPhyTree::clickZoomFitButton(os);
+
     int originalFitWidth = GTUtilsPhyTree::getSceneWidth(os);
 
     int prevStepWidth = originalFitWidth;
