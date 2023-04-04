@@ -170,7 +170,7 @@ bool GUITestLauncher::initTestList() {
         if (labelList.contains(UGUITestLabels::Nightly)) {
             // TODO: make configurable via ENV.
             testSuiteCount = isOsWindows() ? 3
-                             : isOsMac()   ? 4
+                             : isOsMac()   ? 3
                              : isOsLinux() ? 5
                                            : 1;
         }
