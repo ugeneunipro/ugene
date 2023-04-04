@@ -480,6 +480,46 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     CHECK_SET_ERR(type == "sticky", QString("Expected right_end_type: sticky, current: %1").arg(seq));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0023) {
+    // Open sequence
+    // Set incorrect values for all possible parameters
+    //
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "human.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/input/test_0023.txt";
+    settings.loadManually = false;
+    settings.rtPcrDesign = true;
+    settings.exonRangeLine = "qwerty";
+    settings.hasValidationErrors = true;
+    settings.validationErrorsText = "19 parameter(s) have an incorrect value(s), pay attention on red widgets.";
+    settings.errorWidgetsNames = QStringList{ "edit_SEQUENCE_PRIMER",
+                                              "edit_SEQUENCE_INTERNAL_OLIGO",
+                                              "edit_SEQUENCE_PRIMER_REVCOMP",
+                                              "edit_SEQUENCE_OVERHANG_LEFT" ,
+                                              "edit_SEQUENCE_OVERHANG_RIGHT" ,
+                                              "edit_SEQUENCE_TARGET" ,
+                                              "edit_SEQUENCE_OVERLAP_JUNCTION_LIST" ,
+                                              "edit_SEQUENCE_EXCLUDED_REGION" ,
+                                              "edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST" ,
+                                              "edit_SEQUENCE_INCLUDED_REGION" ,
+                                              "edit_PRIMER_MUST_MATCH_FIVE_PRIME" ,
+                                              "edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME" ,
+                                              "edit_PRIMER_MUST_MATCH_THREE_PRIME" ,
+                                              "edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME" ,
+                                              "edit_PRIMER_PRODUCT_SIZE_RANGE" ,
+                                              "edit_SEQUENCE_INTERNAL_EXCLUDED_REGION" ,
+                                              "edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST",
+                                              "edit_SEQUENCE_QUALITY",
+                                              "edit_exonRange" };
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+}
+
 
 }  // namespace GUITest_common_scenarios_phyml
 }  // namespace U2
