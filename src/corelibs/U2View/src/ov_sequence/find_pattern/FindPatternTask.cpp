@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CreateAnnotationTask.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -120,16 +121,13 @@ void FindPatternTask::prepare() {
 
 FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings& settings, const QList<NamePattern>& patterns, bool removeOverlaps, int match)
     : Task(tr("Searching patterns in sequence task"), TaskFlags_NR_FOSE_COSC), settings(settings), removeOverlaps(removeOverlaps),
-      match(match), noResults(true), patterns(patterns) {
+      match(match), patterns(patterns) {
 }
 
 QList<Task*> FindPatternListTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     auto task = qobject_cast<FindPatternTask*>(subTask);
-    SAFE_POINT(nullptr != task, "Failed to cast FindPatternTask!", QList<Task*>());
-    if (!task->hasNoResults()) {
-        noResults = false;
-    }
+    SAFE_POINT(task != nullptr, "Failed to cast FindPatternTask!", QList<Task*>());
     results.append(task->getResults());
     return res;
 }
@@ -156,6 +154,11 @@ void FindPatternListTask::prepare() {
         subTaskSettings.maxErr = getMaxError(subTaskSettings.pattern);
         subTaskSettings.name = pattern.first;
         subTaskSettings.countTask = false;
+
+        bool isCaseSensitiveAlphabet= subTaskSettings.sequenceAlphabet == nullptr || subTaskSettings.sequenceAlphabet->isCaseSensitive();
+        if (!isCaseSensitiveAlphabet) {
+            subTaskSettings.pattern = subTaskSettings.pattern.toUpper();
+        }
         addSubTask(new FindPatternTask(subTaskSettings, removeOverlaps));
     }
 }

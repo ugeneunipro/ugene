@@ -5358,14 +5358,10 @@ GUI_TEST_CLASS_DEFINITION(test_6797_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6798) {
-    // Open 'human_T1.fa'
-    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA/human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // Open Find Pattern bar on the Options Panel
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
-
-    // Check "Load pattern from file" radiobutton
     GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
 
     // Select file "pattern_with_uppercase_letter.txt with content "TTGT"
