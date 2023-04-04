@@ -383,7 +383,7 @@ void TophatSamples::sl_remove() {
     }
 
     QListWidget* list = getListWidget(0);
-    CHECK(nullptr != list, );
+    CHECK(list != nullptr, );
     list->addItems(insertToFirst);
 
     updateArrows();
@@ -404,7 +404,7 @@ void TophatSamples::sl_selectionChanged() {
     CHECK(selectedList->selectedItems().size() > 0, );
 
     QWidget* sampleWidget = selectedList->parentWidget();
-    CHECK(nullptr != sampleWidget, );
+    CHECK(sampleWidget != nullptr, );
     CHECK(order.contains(sampleWidget), );
 
     selectSample(order.indexOf(sampleWidget));
@@ -414,7 +414,7 @@ void TophatSamples::sl_selectionChanged() {
 void TophatSamples::selectSample(int selectedPos) {
     for (int pos = 0; pos < order.size(); pos++) {
         QListWidget* list = getListWidget(pos);
-        SAFE_POINT(nullptr != list, "NULL list widget", );
+        SAFE_POINT(list != nullptr, "NULL list widget", );
         if (pos != selectedPos) {
             list->clearSelection();
             list->setCurrentRow(-1);

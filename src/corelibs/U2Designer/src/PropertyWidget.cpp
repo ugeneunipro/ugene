@@ -575,7 +575,7 @@ void URLWidget::sl_browse() {
 
 void URLWidget::sl_finished() {
     RunFileSystem* rfs = getRFS();
-    if (nullptr != rfs) {
+    if (rfs != nullptr) {
         QString result = urlLine->text();
         if ((result != initialValue) && RFSUtils::isCorrectUrl(result)) {
             if (rfs->canAdd(result, urlLine->isPath)) {
@@ -592,7 +592,7 @@ void URLWidget::sl_finished() {
 }
 
 RunFileSystem* URLWidget::getRFS() {
-    CHECK(nullptr != schemaConfig, nullptr);
+    CHECK(schemaConfig != nullptr, nullptr);
     return schemaConfig->getRFS();
 }
 
@@ -612,13 +612,13 @@ static const QString FILE_TAG("file");
 QString NoFileURLWidget::finalyze(const QString& url, DelegateTags* tags) {
     QFileInfo info(url);
     if (url.isEmpty() || info.isDir() || info.isRelative() || !info.exists()) {
-        if (nullptr != tags) {
+        if (tags != nullptr) {
             tags->set(FILE_TAG, "");
         }
         return url;
     }
 
-    if (nullptr != tags) {
+    if (tags != nullptr) {
         tags->set(FILE_TAG, info.fileName());
     }
     return info.dir().absolutePath();

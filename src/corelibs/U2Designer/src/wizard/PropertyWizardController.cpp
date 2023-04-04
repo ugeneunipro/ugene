@@ -74,7 +74,7 @@ InUrlDatasetsController::~InUrlDatasetsController() {
 }
 
 QWidget* InUrlDatasetsController::createGUI(U2OpStatus& /*os*/) {
-    if (nullptr != dsc) {
+    if (dsc != nullptr) {
         delete dsc;
     }
     QList<Dataset> sets;
@@ -88,7 +88,7 @@ QWidget* InUrlDatasetsController::createGUI(U2OpStatus& /*os*/) {
     }
     auto attr = dynamic_cast<URLAttribute*>(attribute());
     SAFE_POINT(attr != nullptr, "Unexpected attribute value", nullptr);
-    const QSet<GObjectType> compatibleObjTypes = nullptr != attr ? attr->getCompatibleObjectTypes() : QSet<GObjectType>();
+    const QSet<GObjectType> compatibleObjTypes = attr != nullptr ? attr->getCompatibleObjectTypes() : QSet<GObjectType>();
     dsc = new AttributeDatasetsController(sets, compatibleObjTypes);
     connect(dsc, SIGNAL(si_attributeChanged()), SLOT(sl_datasetsChanged()));
     return dsc->getWigdet();
@@ -143,12 +143,12 @@ PropertyWidget* DefaultPropertyController::createPropertyWidget(U2OpStatus& os) 
     PropertyDelegate* delegate = nullptr;
     {
         ConfigurationEditor* editor = actor->getEditor();
-        if (nullptr != editor) {
+        if (editor != nullptr) {
             delegate = editor->getDelegate(widget->getAttributeId());
         }
     }
 
-    if (nullptr != delegate) {
+    if (delegate != nullptr) {
         if (noDelegate) {
             result = new DefaultPropertyWidget();
         } else {

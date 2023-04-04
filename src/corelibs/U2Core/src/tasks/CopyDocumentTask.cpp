@@ -89,7 +89,7 @@ QList<Task*> CopyDocumentTask::onSubTaskFinished(Task* subTask) {
         }
         if (addToProject) {
             Project* p = AppContext::getProject();
-            if (nullptr != p) {
+            if (p != nullptr) {
                 dstDoc->setModified(true);
                 p->addDocument(dstDoc);
             }
@@ -110,13 +110,13 @@ void CopyDocumentTask::sl_onCopySaved() {
 
 CloneObjectsTask::CloneObjectsTask(Document* _srcDoc, Document* _dstDoc)
     : Task("Clone objects", TaskFlag_None), srcDoc(_srcDoc), dstDoc(_dstDoc) {
-    CHECK_EXT(nullptr != srcDoc, stateInfo.setError("NULL source document"), );
-    CHECK_EXT(nullptr != dstDoc, stateInfo.setError("NULL destination document"), );
+    CHECK_EXT(srcDoc != nullptr, stateInfo.setError("NULL source document"), );
+    CHECK_EXT(dstDoc != nullptr, stateInfo.setError("NULL destination document"), );
 }
 
 void CloneObjectsTask::run() {
     DocumentFormat* df = dstDoc->getDocumentFormat();
-    CHECK_EXT(nullptr != df, stateInfo.setError("NULL document format"), );
+    CHECK_EXT(df != nullptr, stateInfo.setError("NULL document format"), );
 
     QList<GObject*> objs = srcDoc->getObjects();
     foreach (GObject* srcObj, objs) {

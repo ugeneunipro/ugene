@@ -60,13 +60,13 @@ void ImportToDatabaseTask::sortSubtasks() const {
         auto fileSubtask = qobject_cast<ImportFileToDatabaseTask*>(subtask.data());
         auto objectSubtask = qobject_cast<ImportObjectToDatabaseTask*>(subtask.data());
 
-        if (nullptr != dirSubtask) {
+        if (dirSubtask != nullptr) {
             dirSubtasks << dirSubtask;
-        } else if (nullptr != documentSubtask) {
+        } else if (documentSubtask != nullptr) {
             documentSubtasks << documentSubtask;
-        } else if (nullptr != fileSubtask) {
+        } else if (fileSubtask != nullptr) {
             fileSubtasks << fileSubtask;
-        } else if (nullptr != objectSubtask) {
+        } else if (objectSubtask != nullptr) {
             objectSubtasks << objectSubtask;
         }
     }
@@ -196,7 +196,7 @@ QString ImportToDatabaseTask::sayAboutImportedObjects() const {
         }
 
         GObject* object = objectSubtask->getSourceObject();
-        if (nullptr != object) {
+        if (object != nullptr) {
             result += object->getGObjectName() + "<br>";
         }
     }
@@ -287,7 +287,7 @@ QString ImportToDatabaseTask::sayAboutSkippedObjects() const {
         }
 
         GObject* object = objectSubtask->getSourceObject();
-        if (nullptr != object) {
+        if (object != nullptr) {
             result += object->getGObjectName() + "<br>";
         }
     }

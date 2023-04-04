@@ -48,7 +48,7 @@ QWidget* PairedDatasetsController::createGUI(U2OpStatus& os) {
     QList<Dataset> sets1 = value1.value<QList<Dataset>>();
     QList<Dataset> sets2 = value2.value<QList<Dataset>>();
 
-    if (nullptr != dsc) {
+    if (dsc != nullptr) {
         delete dsc;
     }
     dsc = new PairedReadsController(sets1, sets2, info1.hints[AttributeInfo::LABEL].toString(), info2.hints[AttributeInfo::LABEL].toString());

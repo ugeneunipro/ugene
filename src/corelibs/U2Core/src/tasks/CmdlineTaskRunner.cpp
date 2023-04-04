@@ -272,7 +272,7 @@ void CmdlineTaskRunner::prepare() {
 }
 
 Task::ReportResult CmdlineTaskRunner::report() {
-    CHECK(nullptr != process, ReportResult_Finished);
+    CHECK(process != nullptr, ReportResult_Finished);
     if (hasError()) {
         return ReportResult_Finished;
     }

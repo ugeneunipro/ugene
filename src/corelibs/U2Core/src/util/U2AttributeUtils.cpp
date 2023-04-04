@@ -108,13 +108,13 @@ U2StringAttribute getAttribute<U2StringAttribute>(U2AttributeDbi* adbi, const U2
 }
 
 void U2AttributeUtils::copyObjectAttributes(const U2DataId& srcObjId, const U2DataId& dstObjId, U2AttributeDbi* srcAttributeDbi, U2AttributeDbi* dstAttributeDbi, U2OpStatus& os) {
-    CHECK_EXT(nullptr != srcAttributeDbi, os.setError("NULL source attribute dbi"), );
-    CHECK_EXT(nullptr != dstAttributeDbi, os.setError("NULL destination attribute dbi"), );
+    CHECK_EXT(srcAttributeDbi != nullptr, os.setError("NULL source attribute dbi"), );
+    CHECK_EXT(dstAttributeDbi != nullptr, os.setError("NULL destination attribute dbi"), );
 
     U2Dbi* dstDbi = dstAttributeDbi->getRootDbi();
     U2Dbi* srcDbi = srcAttributeDbi->getRootDbi();
-    CHECK_EXT(nullptr != srcDbi, os.setError("NULL source root dbi"), );
-    CHECK_EXT(nullptr != dstDbi, os.setError("NULL destination root dbi"), );
+    CHECK_EXT(srcDbi != nullptr, os.setError("NULL source root dbi"), );
+    CHECK_EXT(dstDbi != nullptr, os.setError("NULL destination root dbi"), );
 
     if (!dstDbi->getFeatures().contains(U2DbiFeature_WriteAttributes)) {
         os.setError("Destination dbi does not support writing");

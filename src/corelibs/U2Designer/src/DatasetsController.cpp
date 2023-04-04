@@ -97,7 +97,7 @@ public:
     }
 
     virtual void visit(DirectoryItem* item) {
-        SAFE_POINT(nullptr != dirUrl, "NULL folder url", );
+        SAFE_POINT(dirUrl != nullptr, "NULL folder url", );
         dirUrl->setIncludeFilter(item->getIncludeFilter());
         dirUrl->setExcludeFilter(item->getExcludeFilter());
         dirUrl->setRecursive(item->isRecursive());
@@ -110,7 +110,7 @@ public:
     }
 
     virtual void visit(DbFolderItem* item) {
-        SAFE_POINT(nullptr != dbFolderUrl, "NULL folder url", );
+        SAFE_POINT(dbFolderUrl != nullptr, "NULL folder url", );
         dbFolderUrl->setRecursive(item->isRecursive());
     }
 
@@ -237,7 +237,7 @@ void AttributeDatasetsController::deleteDataset(int dsNum) {
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
     Dataset* dSet = sets.at(dsNum);
-    SAFE_POINT(nullptr != dSet, "NULL dataset", );
+    SAFE_POINT(dSet != nullptr, "NULL dataset", );
 
     sets.removeOne(dSet);
 
@@ -265,7 +265,7 @@ void AttributeDatasetsController::renameDataset(int dsNum, const QString& newNam
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
     Dataset* dSet = sets.at(dsNum);
-    SAFE_POINT(nullptr != dSet, "NULL dataset", );
+    SAFE_POINT(dSet != nullptr, "NULL dataset", );
     QPair<QString, QString> oldNewNames(dSet->getName(), newName);
     checkName(newName, os, dSet->getName());
     CHECK_OP(os, );
@@ -471,7 +471,7 @@ void PairedReadsController::onUrlAdded(URLListController* ctrl, URLContainer* ur
     CHECK(QFile::exists(mateUrl), );
 
     URLListController* targetCtrl = pairedCtrl(ctrl);
-    CHECK(nullptr != targetCtrl, );
+    CHECK(targetCtrl != nullptr, );
     CHECK(!targetCtrl->dataset()->contains(mateUrl), );
 
     bool add = askAboutAdding(mateUrl);
@@ -739,7 +739,7 @@ void URLListController::addItemWidget(URLContainer* url) {
 
 void URLListController::updateUrl(UrlItem* item) {
     URLContainer* url = urlMap[item];
-    SAFE_POINT(nullptr != url, "NULL url container", );
+    SAFE_POINT(url != nullptr, "NULL url container", );
 
     URLContainerUpdater updater(item);
     url->accept(&updater);
@@ -748,7 +748,7 @@ void URLListController::updateUrl(UrlItem* item) {
 
 void URLListController::replaceUrl(int pos, int newPos) {
     URLContainer* url = getUrl(pos);
-    CHECK(nullptr != url, );
+    CHECK(url != nullptr, );
 
     SAFE_POINT(newPos >= 0 && newPos < set->getUrls().size(),
                "New url position is out of range", );
@@ -774,7 +774,7 @@ void URLListController::addUrl(const QString& url, U2OpStatus& os) {
 
 void URLListController::deleteUrl(int pos) {
     URLContainer* url = getUrl(pos);
-    CHECK(nullptr != url, );
+    CHECK(url != nullptr, );
 
     set->removeUrl(url);
     delete url;
@@ -784,7 +784,7 @@ void URLListController::deleteUrl(int pos) {
 URLContainer* URLListController::getUrl(int pos) {
     SAFE_POINT(pos < set->getUrls().size(), "Urls: out of range", nullptr);
     URLContainer* url = set->getUrls().at(pos);
-    SAFE_POINT(nullptr != url, "NULL url container", nullptr);
+    SAFE_POINT(url != nullptr, "NULL url container", nullptr);
     return url;
 }
 

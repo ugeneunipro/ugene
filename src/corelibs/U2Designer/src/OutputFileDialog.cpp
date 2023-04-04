@@ -55,7 +55,7 @@ OutputFileDialog::OutputFileDialog(RunFileSystem* _rfs, bool _saveDir, Completio
         setWindowTitle(tr("Save a folder"));
     } else {
         setWindowTitle(tr("Save a file"));
-        if (nullptr != filler) {
+        if (filler != nullptr) {
             new BaseCompleter(filler, nameEdit);
         }
         nameEdit->setValidator(new QRegExpValidator(QRegExp("[^" + BAD_CHARS + "]+"), this));
@@ -98,7 +98,7 @@ FSItem* OutputFileDialog::selectedItem() const {
 
 QString OutputFileDialog::selectedPath() const {
     FSItem* item = selectedItem();
-    SAFE_POINT(nullptr != item, "NULL item", "");
+    SAFE_POINT(item != nullptr, "NULL item", "");
 
     if (!saveDir && !item->isDir()) {
         item = item->parent();
@@ -109,7 +109,7 @@ QString OutputFileDialog::selectedPath() const {
 
 void OutputFileDialog::sl_selectionChanged() {
     FSItem* item = selectedItem();
-    SAFE_POINT(nullptr != item, "NULL item", );
+    SAFE_POINT(item != nullptr, "NULL item", );
 
     if (!item->isDir()) {
         nameEdit->setText(item->name());
@@ -119,7 +119,7 @@ void OutputFileDialog::sl_selectionChanged() {
 
 void OutputFileDialog::sl_textChanged() {
     FSItem* item = selectedItem();
-    SAFE_POINT(nullptr != item, "NULL item", );
+    SAFE_POINT(item != nullptr, "NULL item", );
 
     if (!item->isDir()) {
         QModelIndexList idxs = selectionModel->selectedIndexes();
@@ -141,7 +141,7 @@ void OutputFileDialog::sl_addDir() {
         QModelIndex index = idxs.first();
 
         FSItem* item = model->toItem(index);
-        SAFE_POINT(nullptr != item, "NULL item", );
+        SAFE_POINT(item != nullptr, "NULL item", );
         if (!item->isDir()) {
             index = index.parent();
         }

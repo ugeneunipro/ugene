@@ -234,7 +234,7 @@ ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(QProcess* _process, Externa
 void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
     QMutexLocker locker(&logMutex);
 
-    CHECK(nullptr != process, );
+    CHECK(process != nullptr, );
     if (process->readChannel() == QProcess::StandardError) {
         process->setReadChannel(QProcess::StandardOutput);
     }
@@ -243,7 +243,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
         // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseOutput(line);
-        if (nullptr != listener) {
+        if (listener != nullptr) {
             listener->addNewLogMessage(line, ExternalToolListener::OUTPUT_LOG);
         }
         numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
@@ -254,7 +254,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
 void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
     QMutexLocker locker(&logMutex);
 
-    CHECK(nullptr != process, );
+    CHECK(process != nullptr, );
     if (process->readChannel() == QProcess::StandardOutput) {
         process->setReadChannel(QProcess::StandardError);
     }
@@ -263,7 +263,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
         // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseErrOutput(line);
-        if (nullptr != listener) {
+        if (listener != nullptr) {
             listener->addNewLogMessage(line, ExternalToolListener::ERROR_LOG);
         }
         numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
@@ -413,7 +413,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     if (os.hasError()) {
         return result;
     }
-    CHECK_EXT(nullptr != tool, os.setError(tr("A tool with the ID %1 is absent").arg(toolId)), result);
+    CHECK_EXT(tool != nullptr, os.setError(tr("A tool with the ID %1 is absent").arg(toolId)), result);
 
     const QString toolName = tool->getName();
     if (tool->getPath().isEmpty()) {
@@ -425,7 +425,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
 
     if (!toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry* stregister = AppContext::getScriptingToolRegistry();
-        SAFE_POINT_EXT(nullptr != stregister, os.setError("No scripting tool registry"), result);
+        SAFE_POINT_EXT(stregister != nullptr, os.setError("No scripting tool registry"), result);
         ScriptingTool* stool = stregister->getById(toolRunnerProgram);
         if (stool == nullptr || stool->getPath().isEmpty()) {
             os.setError(QString("The tool %1 that runs %2 is not installed. Please set the path of the tool in the External Tools settings").arg(toolRunnerProgram).arg(toolName));
@@ -469,7 +469,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     const QString commandWithArguments = GUrlUtils::getQuotedString(result.program) + ExternalToolSupportUtils::prepareArgumentsForCmdLine(result.arguments);
     algoLog.details(tr("Launching %1 tool: %2").arg(toolName).arg(commandWithArguments));
 
-    if (nullptr != listener) {
+    if (listener != nullptr) {
         listener->setToolName(toolName);
         listener->addNewLogMessage(commandWithArguments, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }

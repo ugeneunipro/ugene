@@ -310,7 +310,7 @@ QWidget* ComboBoxWithUrlsDelegate::createEditor(QWidget* parent,
 void ComboBoxWithUrlsDelegate::sl_valueChanged(const QString& newVal) {
     emit si_valueChanged(newVal);
     auto editor = qobject_cast<QWidget*>(sender());
-    SAFE_POINT(nullptr != editor, "Invalid editor", );
+    SAFE_POINT(editor != nullptr, "Invalid editor", );
     emit commitData(editor);
 }
 
@@ -350,7 +350,7 @@ QWidget* ComboBoxEditableDelegate::createEditor(QWidget* parent,
 void ComboBoxEditableDelegate::sl_valueChanged(const QString& newVal) {
     emit si_valueChanged(newVal);
     auto editor = qobject_cast<QWidget*>(sender());
-    SAFE_POINT(nullptr != editor, "Invalid editor", );
+    SAFE_POINT(editor != nullptr, "Invalid editor", );
     emit commitData(editor);
 }
 
@@ -914,7 +914,7 @@ LineEditWithValidatorDelegate::LineEditWithValidatorDelegate(const QRegularExpre
 QWidget* LineEditWithValidatorDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const {
     QScopedPointer<IgnoreUpDownPropertyWidget> editor(new IgnoreUpDownPropertyWidget(NO_LIMIT, parent));
     QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");
-    SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", nullptr);
+    SAFE_POINT(lineEdit != nullptr, "Line edit is nullptr", nullptr);
 
     lineEdit->setValidator(new QRegularExpressionValidator(regExp, lineEdit));
     connect(editor.data(), SIGNAL(si_valueChanged(const QVariant&)), SLOT(sl_valueChanged()));
@@ -941,7 +941,7 @@ void LineEditWithValidatorDelegate::sl_valueChanged() {
     CHECK(editor != nullptr, );
 
     QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");
-    SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", );
+    SAFE_POINT(lineEdit != nullptr, "Line edit is nullptr", );
 
     const int cursorPos = lineEdit->cursorPosition();
 

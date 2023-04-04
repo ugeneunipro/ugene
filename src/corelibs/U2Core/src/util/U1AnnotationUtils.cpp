@@ -390,7 +390,7 @@ QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject* ao, cons
     DNATranslation* res = nullptr;
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
 
-    if (nullptr != ao && nullptr != al) {
+    if (ao != nullptr && al != nullptr) {
         if (al->isNucleic()) {
             foreach (Annotation* ann, ao->getAnnotationsByName("CDS")) {
                 QList<U2Qualifier> ql;
@@ -398,7 +398,7 @@ QString U1AnnotationUtils::guessAminoTranslation(AnnotationTableObject* ao, cons
                 if (!ql.isEmpty()) {
                     const QString guess = "NCBI-GenBank #" + ql.first().value;
                     res = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO, guess);
-                    if (nullptr != res) {
+                    if (res != nullptr) {
                         return guess;
                     }
                 }
@@ -618,9 +618,9 @@ void FixAnnotationsUtils::fixAnnotations() {
 
 QMap<QString, QList<SharedAnnotationData>> FixAnnotationsUtils::fixAnnotation(Annotation* an, bool& annIsRemoved) {
     QMap<QString, QList<SharedAnnotationData>> result;
-    SAFE_POINT(nullptr != an, L10N::nullPointerError("Annotation"), result);
+    SAFE_POINT(an != nullptr, L10N::nullPointerError("Annotation"), result);
     AnnotationTableObject* ato = an->getGObject();
-    SAFE_POINT(nullptr != ato, L10N::nullPointerError("Annotation table object"), result);
+    SAFE_POINT(ato != nullptr, L10N::nullPointerError("Annotation table object"), result);
 
     QList<QVector<U2Region>> newRegions = U1AnnotationUtils::fixLocationsForReplacedRegion(regionToReplace,
                                                                                            sequence2Insert.seq.length(),
@@ -728,7 +728,7 @@ U2Qualifier FixAnnotationsUtils::getFixedTranslationQualifier(const SharedAnnota
     CHECK(!translationQuals.empty(), U2Qualifier());
 
     DNATranslation* aminoTranslation = GObjectUtils::findAminoTT(seqObj, false);
-    SAFE_POINT(nullptr != aminoTranslation, L10N::nullPointerError("Amino translation"), U2Qualifier());
+    SAFE_POINT(aminoTranslation != nullptr, L10N::nullPointerError("Amino translation"), U2Qualifier());
 
     QString completeTranslation;
     foreach (const U2Region& r, ad->getRegions()) {

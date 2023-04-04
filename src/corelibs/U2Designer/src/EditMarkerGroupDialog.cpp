@@ -459,7 +459,7 @@ void EditMarkerDialog::accept() {
         }
     }
 
-    if (nullptr != editWidget) {
+    if (editWidget != nullptr) {
         values = editWidget->getValues();
     }
     name = markerNameEdit->text().trimmed();

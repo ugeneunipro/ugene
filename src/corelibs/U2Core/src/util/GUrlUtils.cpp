@@ -77,9 +77,9 @@ bool GUrlUtils::containSpaces(const QString& string) {
 GUrl GUrlUtils::changeFileExt(const GUrl& url, const DocumentFormatId& newFormatId) {
     CHECK(url.isLocalFile(), GUrl());
     DocumentFormatRegistry* dfRegistry = AppContext::getDocumentFormatRegistry();
-    CHECK(nullptr != dfRegistry, GUrl());
+    CHECK(dfRegistry != nullptr, GUrl());
     DocumentFormat* newFormat = dfRegistry->getFormatById(newFormatId);
-    CHECK(nullptr != newFormat, GUrl());
+    CHECK(newFormat != nullptr, GUrl());
 
     const QString dirPath = url.dirPath();
     const QString baseFileName = url.baseFileName();
@@ -370,10 +370,10 @@ QString GUrlUtils::createDirectory(const QString& path, const QString& suffix, U
 namespace {
 QString getDotExtension(const DocumentFormatId& formatId) {
     DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(nullptr != dfr, "NULL document format registry", "");
+    SAFE_POINT(dfr != nullptr, "NULL document format registry", "");
 
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-    CHECK(nullptr != format, "");
+    CHECK(format != nullptr, "");
 
     QStringList results = format->getSupportedDocumentFileExtensions();
     CHECK(!results.isEmpty(), "");

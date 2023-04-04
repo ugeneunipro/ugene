@@ -65,7 +65,7 @@ DeleteObjectsTask::DeleteObjectsTask(const QList<GObject*>& objs)
     tpm = Progress_Manual;
 
     foreach (GObject* obj, objs) {
-        CHECK_EXT(nullptr != obj, stateInfo.setError("Invalid object detected!"), );
+        CHECK_EXT(obj != nullptr, stateInfo.setError("Invalid object detected!"), );
         const U2EntityRef& objRef = obj->getEntityRef();
         if (!dbiRef2Objs.contains(objRef.dbiRef)) {
             dbiRef2Objs.insert(objRef.dbiRef, QList<U2DataId>());
@@ -97,7 +97,7 @@ DeleteFoldersTask::DeleteFoldersTask(const QList<Folder>& folders)
     tpm = Progress_Manual;
     foreach (const Folder& folder, folders) {
         Document* doc = folder.getDocument();
-        CHECK_EXT(nullptr != doc, stateInfo.setError("Invalid document detected!"), );
+        CHECK_EXT(doc != nullptr, stateInfo.setError("Invalid document detected!"), );
         const U2DbiRef dbiRef = doc->getDbiRef();
         CHECK_EXT(dbiRef.isValid(), stateInfo.setError("Invalid DBI reference detected!"), );
         dbi2Path.insert(doc->getDbiRef(), folder.getFolderPath());
