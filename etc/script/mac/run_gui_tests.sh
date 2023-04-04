@@ -13,6 +13,7 @@ echo "TEAMCITY_WORK_DIR: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}'"
 if [ -z "${UGENE_USE_DIRECT_API_TO_OPEN_FILES}" ]; then export UGENE_USE_DIRECT_API_TO_OPEN_FILES="1"; fi
 if [ -z "${UGENE_USE_MASTER_USER_INI}" ]; then export UGENE_USE_MASTER_USER_INI="1"; fi
 if [ -z "${UGENE_GUI_TEST_SUITE}" ]; then export UGENE_GUI_TEST_SUITE="suite.txt"; fi
+if [ -n "${UGENE_GUI_TEST_SUITE_NUMBER}" ]; then export UGENE_GUI_TEST_SUITE="${UGENE_GUI_TEST_SUITE_NUMBER}"; fi
 
 # Data/files dirs prefixes.
 UGENE_WORKFLOW_OUTPUT_DIR="${TEAMCITY_WORK_DIR}/workflow_output"
@@ -63,7 +64,7 @@ echo "##teamcity[blockClosed name='Copying test data']"
 export UGENE_MASTER_USER_INI="${TEAMCITY_WORK_DIR}/ugene-master.ini"
 
 export UGENE_TESTS_PATH="${TEAMCITY_WORK_DIR}/test/"
-export UGENE_DATA_PATH="${TEAMCITY_WORK_DIR}/data/"
+export UGENE_DATA_PATH="${UGENE_DIR}/data/"
 export UGENE_SAVE_DATA_DIR="${UGENE_SAVE_DATA_DIR}"
 export UGENE_SNPEFF_DB_LIST="${UGENE_SAVE_DATA_DIR}/SnpEff_DB.list"
 export UGENE_PRIMER_LIBRARY_PATH="${UGENE_SAVE_DATA_DIR}/primer_library.ugenedb"
