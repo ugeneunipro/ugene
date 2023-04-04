@@ -412,7 +412,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
 
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
