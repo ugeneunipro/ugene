@@ -82,7 +82,7 @@ bool DbiDataStorage::init() {
 }
 
 U2DbiRef DbiDataStorage::getDbiRef() {
-    assert(nullptr != dbiHandle);
+    assert(dbiHandle != nullptr);
     return dbiHandle->getDbiRef();
 }
 
@@ -134,7 +134,7 @@ U2Object* DbiDataStorage::getObject(const SharedDbiDataHandler& handler, const U
 }
 
 SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence& dnaSeq) {
-    assert(nullptr != dbiHandle);
+    assert(dbiHandle != nullptr);
 
     U2OpStatusImpl os;
     U2EntityRef ent = U2SequenceUtils::import(os, dbiHandle->getDbiRef(), dnaSeq);
@@ -149,8 +149,8 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence& dnaSeq) {
 }
 
 SharedDbiDataHandler DbiDataStorage::putSequence(const U2SequenceObject* sequenceObject) {
-    SAFE_POINT(nullptr != dbiHandle, "Invalid DBI handle", SharedDbiDataHandler());
-    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence object"), SharedDbiDataHandler());
+    SAFE_POINT(dbiHandle != nullptr, "Invalid DBI handle", SharedDbiDataHandler());
+    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence object"), SharedDbiDataHandler());
 
     U2OpStatusImpl os;
 
@@ -168,7 +168,7 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const U2SequenceObject* sequenc
 }
 
 SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignment& al) {
-    assert(nullptr != dbiHandle);
+    assert(dbiHandle != nullptr);
 
     U2OpStatus2Log os;
     MultipleSequenceAlignment copiedAlignment = al->getCopy();
@@ -184,7 +184,7 @@ SharedDbiDataHandler DbiDataStorage::putAlignment(const MultipleSequenceAlignmen
 }
 
 SharedDbiDataHandler DbiDataStorage::putAnnotationTable(const QList<SharedAnnotationData>& anns, const QString annTableName) {
-    SAFE_POINT(nullptr != dbiHandle, "Invalid DBI handle!", SharedDbiDataHandler());
+    SAFE_POINT(dbiHandle != nullptr, "Invalid DBI handle!", SharedDbiDataHandler());
 
     AnnotationTableObject obj(annTableName, dbiHandle->getDbiRef());
     U2OpStatusImpl os;
@@ -202,8 +202,8 @@ SharedDbiDataHandler DbiDataStorage::putAnnotationTable(const QList<SharedAnnota
 }
 
 SharedDbiDataHandler DbiDataStorage::putAnnotationTable(AnnotationTableObject* annTable) {
-    SAFE_POINT(nullptr != dbiHandle, "Invalid DBI handle!", SharedDbiDataHandler());
-    SAFE_POINT(nullptr != annTable, L10N::nullPointerError("annotation table object"), SharedDbiDataHandler());
+    SAFE_POINT(dbiHandle != nullptr, "Invalid DBI handle!", SharedDbiDataHandler());
+    SAFE_POINT(annTable != nullptr, L10N::nullPointerError("annotation table object"), SharedDbiDataHandler());
 
     U2OpStatusImpl os;
 
@@ -290,20 +290,20 @@ void DbiDataStorage::openDbi(const U2DbiRef& dbiRef, U2OpStatus& os) {
 /* StorageUtils */
 /************************************************************************/
 U2SequenceObject* StorageUtils::getSequenceObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
-    CHECK(nullptr != handler.constData(), nullptr);
+    CHECK(handler.constData() != nullptr, nullptr);
     // QScopedPointer<U2Sequence> seqDbi(dynamic_cast<U2Sequence*>(storage->getObject(handler, U2Type::Sequence)));
     QScopedPointer<U2Sequence> seqDbi(dynamic_cast<U2Sequence*>(storage->getObject(handler, 1)));
-    CHECK(nullptr != seqDbi.data(), nullptr);
+    CHECK(seqDbi.data() != nullptr, nullptr);
 
     U2EntityRef ent(handler->getDbiRef(), seqDbi->id);
     return new U2SequenceObject(seqDbi->visualName, ent);
 }
 
 VariantTrackObject* StorageUtils::getVariantTrackObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
-    CHECK(nullptr != handler.constData(), nullptr);
+    CHECK(handler.constData() != nullptr, nullptr);
     // QScopedPointer<U2VariantTrack> track(dynamic_cast<U2VariantTrack*>(storage->getObject(handler, U2Type::VariantTrack)));
     QScopedPointer<U2VariantTrack> track(dynamic_cast<U2VariantTrack*>(storage->getObject(handler, 5)));
-    CHECK(nullptr != track.data(), nullptr);
+    CHECK(track.data() != nullptr, nullptr);
 
     U2EntityRef trackRef(handler->getDbiRef(), track->id);
     QString objName = track->sequenceName;
@@ -312,10 +312,10 @@ VariantTrackObject* StorageUtils::getVariantTrackObject(DbiDataStorage* storage,
 }
 
 AssemblyObject* StorageUtils::getAssemblyObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
-    CHECK(nullptr != handler.constData(), nullptr);
+    CHECK(handler.constData() != nullptr, nullptr);
     // QScopedPointer<U2Assembly> assembly(dynamic_cast<U2Assembly*>(storage->getObject(handler, U2Type::Assembly)));
     QScopedPointer<U2Assembly> assembly(dynamic_cast<U2Assembly*>(storage->getObject(handler, 4)));
-    CHECK(nullptr != assembly.data(), nullptr);
+    CHECK(assembly.data() != nullptr, nullptr);
 
     U2EntityRef assemblyRef(handler->getDbiRef(), assembly->id);
     QString objName = assembly->visualName;
@@ -324,10 +324,10 @@ AssemblyObject* StorageUtils::getAssemblyObject(DbiDataStorage* storage, const S
 }
 
 MultipleSequenceAlignmentObject* StorageUtils::getMsaObject(DbiDataStorage* storage, const SharedDbiDataHandler& handler) {
-    CHECK(nullptr != handler.constData(), nullptr);
+    CHECK(handler.constData() != nullptr, nullptr);
     // QScopedPointer<U2Ma> msa(dynamic_cast<U2Ma*>(storage->getObject(handler, U2Type::Msa)));
     QScopedPointer<U2Msa> msa(dynamic_cast<U2Msa*>(storage->getObject(handler, 2)));
-    CHECK(nullptr != msa.data(), nullptr);
+    CHECK(msa.data() != nullptr, nullptr);
 
     U2EntityRef msaRef(handler->getDbiRef(), msa->id);
     QString objName = msa->visualName;
@@ -373,7 +373,7 @@ QList<SharedAnnotationData> StorageUtils::getAnnotationTable(DbiDataStorage* sto
         // U2Object *dbObject = storage->getObject(annTableId, U2Type::AnnotationTable);
         U2Object* dbObject = storage->getObject(annTableId, 10);
         QScopedPointer<U2AnnotationTable> table(dynamic_cast<U2AnnotationTable*>(dbObject));
-        SAFE_POINT(nullptr != table, "Invalid annotation table object referenced!", result);
+        SAFE_POINT(table != nullptr, "Invalid annotation table object referenced!", result);
 
         U2EntityRef tableRef(annTableId->getDbiRef(), table->id);
         QString objName = table->visualName;
@@ -406,7 +406,7 @@ QList<SharedDbiDataHandler> StorageUtils::getAnnotationTableHandlers(const QVari
 
     foreach (const QVariant& varObj, objectList) {
         const SharedDbiDataHandler annTableId = varObj.value<SharedDbiDataHandler>();
-        SAFE_POINT(nullptr != annTableId.constData(), "Invalid annotation table object reference!", result);
+        SAFE_POINT(annTableId.constData() != nullptr, "Invalid annotation table object reference!", result);
         result << annTableId;
     }
 
@@ -418,7 +418,7 @@ QString StorageUtils::getText(DbiDataStorage* storage, const QVariant& data) {
         SharedDbiDataHandler handler = data.value<SharedDbiDataHandler>();
         // QScopedPointer<U2RawData> rawData(dynamic_cast<U2RawData*>(storage->getObject(handler, RawData)));
         QScopedPointer<U2RawData> rawData(dynamic_cast<U2RawData*>(storage->getObject(handler, 102)));
-        CHECK(nullptr != rawData.data(), "");
+        CHECK(rawData.data() != nullptr, "");
 
         U2EntityRef objRef(storage->getDbiRef(), rawData->id);
         TextObject textObj(rawData->visualName, objRef);

@@ -506,7 +506,7 @@ void addFeatureKeys(const QList<U2FeatureKey>& keys, const U2DataId& featureId, 
     CHECK_OP(os, );
 
     if (fullQueryPresents) {
-        SAFE_POINT(nullptr != fullQuery.data(), "Invalid database query detected", );
+        SAFE_POINT(fullQuery.data() != nullptr, "Invalid database query detected", );
         for (int currentFullQuery = 0; currentFullQuery < fullBindQueryCount && !os.isCoR(); ++currentFullQuery) {
             const int firstBindingPos = residualBindQueryCount + currentFullQuery * maximumBoundKeysNumber;
             const int lastBindingPos = residualBindQueryCount + (currentFullQuery + 1) * maximumBoundKeysNumber;
@@ -684,7 +684,7 @@ void SQLiteFeatureDbi::removeFeaturesByParent(const U2DataId& parentId, U2OpStat
 namespace {
 
 void executeDeleteFeaturesByParentsQuery(const QList<U2DataId>& parentIds, DbRef* db, U2OpStatus& os) {
-    SAFE_POINT(nullptr != db, "Invalid database handler", );
+    SAFE_POINT(db != nullptr, "Invalid database handler", );
 
     QString idsList = "(";
     for (int i = 1, n = parentIds.count(); i <= n; i++) {

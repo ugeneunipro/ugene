@@ -223,7 +223,7 @@ ModificationAction* SQLiteUdrDbi::getModificationAction(const U2DataId& id) {
 /************************************************************************/
 void SQLiteUdrDbi::initSqlSchema(U2OpStatus& os) {
     UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), );
+    SAFE_POINT_EXT(udrRegistry != nullptr, os.setError("NULL UDR registry"), );
 
     foreach (const UdrSchemaId& id, udrRegistry->getRegisteredSchemas()) {
         const UdrSchema* schema = udrSchema(id, os);
@@ -234,7 +234,7 @@ void SQLiteUdrDbi::initSqlSchema(U2OpStatus& os) {
 }
 
 void SQLiteUdrDbi::initSchema(const UdrSchema* schema, U2OpStatus& os) {
-    CHECK_EXT(nullptr != schema, os.setError("NULL schema"), );
+    CHECK_EXT(schema != nullptr, os.setError("NULL schema"), );
     createTable(schema, os);
     CHECK_OP(os, );
 
@@ -273,10 +273,10 @@ void SQLiteUdrDbi::createIndex(const UdrSchemaId& schemaId, const QStringList& f
 /************************************************************************/
 const UdrSchema* SQLiteUdrDbi::udrSchema(const UdrSchemaId& schemaId, U2OpStatus& os) {
     UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), nullptr);
+    SAFE_POINT_EXT(udrRegistry != nullptr, os.setError("NULL UDR registry"), nullptr);
 
     const UdrSchema* schema = udrRegistry->getSchemaById(schemaId);
-    SAFE_POINT_EXT(nullptr != schema, os.setError("NULL UDR schema"), nullptr);
+    SAFE_POINT_EXT(schema != nullptr, os.setError("NULL UDR schema"), nullptr);
     return schema;
 }
 

@@ -35,7 +35,7 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 
 static bool isFilteredByMASequenceName(const MultipleAlignmentObject* maObj, const ProjectTreeControllerModeSettings& settings) {
-    CHECK(nullptr != maObj, false);
+    CHECK(maObj != nullptr, false);
     for (int i = 0, n = maObj->getRowCount(); i < n; ++i) {
         if (settings.nameFilterAcceptsString(maObj->getRow(i)->getName())) {
             return true;
@@ -66,7 +66,7 @@ McaReferenceNameFilterTask::McaReferenceNameFilterTask(const ProjectTreeControll
 
 bool McaReferenceNameFilterTask::filterAcceptsObject(GObject* obj) {
     auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
-    CHECK(nullptr != mcaObj, false);
+    CHECK(mcaObj != nullptr, false);
     U2SequenceObject* refObj = mcaObj->getReferenceObj();
     if (refObj != nullptr && settings.nameFilterAcceptsString(refObj->getSequenceName())) {
         return true;

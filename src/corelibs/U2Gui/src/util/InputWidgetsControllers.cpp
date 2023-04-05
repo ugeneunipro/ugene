@@ -77,7 +77,7 @@ void InputWidgetController::setEmitCommandLineOptionForDefaultFlag(bool flag) {
 }
 
 void InputWidgetController::setWidgetEnabled(bool isEnabled) {
-    if (nullptr != baseWidget) {
+    if (baseWidget != nullptr) {
         baseWidget->setEnabled(isEnabled);
     }
 }
@@ -299,7 +299,7 @@ InputWidgetController* WidgetControllersContainer::addWidgetController(QLineEdit
 }
 
 InputWidgetController* WidgetControllersContainer::addWidget(InputWidgetController* inputWidget) {
-    SAFE_POINT(nullptr != inputWidget, "Null pointer argument 'inputWidget' in function addWidgetController()", nullptr);
+    SAFE_POINT(inputWidget != nullptr, "Null pointer argument 'inputWidget' in function addWidgetController()", nullptr);
     widgetControllers.append(inputWidget);
     return inputWidget;
 }

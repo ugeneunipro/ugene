@@ -86,7 +86,7 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, 
             seq = dynamic_cast<U2SequenceObject*>(seqs.first());
         }
     }
-    SAFE_POINT(nullptr != seq, "Vector NTI entry storing: NULL sequence object", );
+    SAFE_POINT(seq != nullptr, "Vector NTI entry storing: NULL sequence object", );
 
     if (objectsMap.contains(GObjectTypes::ANNOTATION_TABLE)) {
         anns = objectsMap[GObjectTypes::ANNOTATION_TABLE];
@@ -141,7 +141,7 @@ void VectorNtiSequenceFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, 
 
     // write annotations
     if (!anns.isEmpty()) {
-        SAFE_POINT_EXT(nullptr != seq->getAlphabet(), os.setError(L10N::nullPointerError("sequence alphabet")), );
+        SAFE_POINT_EXT(seq->getAlphabet() != nullptr, os.setError(L10N::nullPointerError("sequence alphabet")), );
         const bool isAmino = seq->getAlphabet()->isAmino();
         writeAnnotations(io, anns, isAmino, os);
         CHECK_OP(os, );

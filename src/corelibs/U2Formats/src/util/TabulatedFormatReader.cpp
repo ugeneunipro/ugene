@@ -31,7 +31,7 @@ namespace U2 {
 TabulatedFormatReader::TabulatedFormatReader(U2OpStatus& os, IOAdapter* ioAdapter)
     : ioAdapter(ioAdapter),
       currentLine(0) {
-    CHECK_EXT(nullptr != ioAdapter, os.setError(L10N::nullPointerError("IO adapter")), );
+    CHECK_EXT(ioAdapter != nullptr, os.setError(L10N::nullPointerError("IO adapter")), );
     CHECK_EXT(ioAdapter->isOpen(), os.setError(tr("IO adapter is not opened")), );
 
     readNextLine();

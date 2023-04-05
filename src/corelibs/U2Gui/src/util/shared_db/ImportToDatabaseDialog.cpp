@@ -88,7 +88,7 @@ void ImportToDatabaseDialog::sl_itemChanged(QTreeWidgetItem* item, int column) {
 
 void ImportToDatabaseDialog::sl_customContextMenuRequested(const QPoint& position) {
     QTreeWidgetItem* item = ui->twOrders->currentItem();
-    CHECK(nullptr != item, );
+    CHECK(item != nullptr, );
     CHECK(isEssential(item), );
 
     ui->twOrders->setCurrentItem(item);
@@ -107,7 +107,7 @@ void ImportToDatabaseDialog::sl_customContextMenuRequested(const QPoint& positio
 
 void ImportToDatabaseDialog::sl_resetOptions() {
     QTreeWidgetItem* item = ui->twOrders->currentItem();
-    CHECK(nullptr != item, );
+    CHECK(item != nullptr, );
 
     const ImportToDatabaseOptions oldOptions = privateOptions.take(item);
     updateItemsState(oldOptions, commonOptions);
@@ -155,7 +155,7 @@ void ImportToDatabaseDialog::sl_optionsClicked() {
 
 void ImportToDatabaseDialog::sl_editOptions() {
     QTreeWidgetItem* item = ui->twOrders->currentItem();
-    CHECK(nullptr != item, );
+    CHECK(item != nullptr, );
 
     ImportToDatabaseOptions currentOptions = privateOptions.value(item, commonOptions);
     QObjectScopedPointer<ItemToImportEditDialog> editDialog = new ItemToImportEditDialog(item->text(COLUMN_ITEM_TEXT), item->text(COLUMN_FOLDER), currentOptions, this);
@@ -181,7 +181,7 @@ void ImportToDatabaseDialog::sl_removeClicked() {
 
 void ImportToDatabaseDialog::sl_taskFinished() {
     auto task = qobject_cast<Task*>(sender());
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(task->isFinished(), );
 }
 
@@ -258,7 +258,7 @@ void ImportToDatabaseDialog::updateItemState(QTreeWidgetItem* item, const Import
 }
 
 void ImportToDatabaseDialog::markItem(QTreeWidgetItem* item, bool mark) {
-    CHECK(nullptr != item, );
+    CHECK(item != nullptr, );
 
     QFont fontItemText = item->font(COLUMN_ITEM_TEXT);
     fontItemText.setBold(mark);
@@ -375,7 +375,7 @@ void ImportToDatabaseDialog::addObjectsAndDocuments(const QList<Document*>& docs
 }
 
 void ImportToDatabaseDialog::addDocument(Document* document) {
-    CHECK(nullptr != document, );
+    CHECK(document != nullptr, );
 
     QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList() << document->getName() << baseFolder);
     newItem->setIcon(COLUMN_ITEM_TEXT, QIcon(":/core/images/document.png"));
@@ -391,14 +391,14 @@ void ImportToDatabaseDialog::addDocument(Document* document) {
 }
 
 void ImportToDatabaseDialog::addObject(GObject* object, QTreeWidgetItem* parent) {
-    CHECK(nullptr != object, );
-    CHECK(nullptr != object->getDocument(), );
+    CHECK(object != nullptr, );
+    CHECK(object->getDocument() != nullptr, );
 
     const QString objectText = "[" + GObjectTypes::getTypeInfo(object->getGObjectType()).treeSign + "] " + object->getGObjectName();
 
     QString dstFolder = baseFolder;
-    if (nullptr != parent &&
-        nullptr != treeItem2Document.value(parent, nullptr) &&
+    if (parent != nullptr &&
+        treeItem2Document.value(parent, nullptr) != nullptr &&
         commonOptions.createSubfolderForEachDocument) {
         dstFolder = baseFolder + U2ObjectDbi::PATH_SEP + treeItem2Document[parent]->getName();
         dstFolder = U2DbiUtils::makeFolderCanonical(dstFolder);
@@ -432,7 +432,7 @@ void ImportToDatabaseDialog::removeItems(QList<QTreeWidgetItem*> itemList) {
     QSet<QTreeWidgetItem*> parents;
     QSet<QTreeWidgetItem*> removedItems;
     foreach (QTreeWidgetItem* item, itemList) {
-        if (nullptr != item->parent()) {
+        if (item->parent() != nullptr) {
             parents << item->parent();
         }
 
@@ -453,7 +453,7 @@ void ImportToDatabaseDialog::removeItems(QList<QTreeWidgetItem*> itemList) {
 
 QList<QTreeWidgetItem*> ImportToDatabaseDialog::removeRecursively(QTreeWidgetItem* item) {
     QList<QTreeWidgetItem*> removedItems;
-    CHECK(nullptr != item, removedItems);
+    CHECK(item != nullptr, removedItems);
 
     for (int i = 0; i < item->childCount(); i++) {
         removedItems << removeRecursively(item->child(i));

@@ -199,7 +199,7 @@ public:
         if (obj->isUnloaded()) {
             return !allowUnloaded;
         }
-        SAFE_POINT(nullptr != qobject_cast<AnnotationTableObject*>(obj), "Invalid annotation table object!", false);
+        SAFE_POINT(qobject_cast<AnnotationTableObject*>(obj) != nullptr, "Invalid annotation table object!", false);
         return obj->isStateLocked();
     }
     bool allowUnloaded;

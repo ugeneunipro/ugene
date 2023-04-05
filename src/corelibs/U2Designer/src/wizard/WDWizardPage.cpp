@@ -41,7 +41,7 @@ void WDWizardPage::initializePage() {
 
 static QAbstractButton* getRunButton(QWizard* w) {
     QAbstractButton* runButton = w->button(QWizard::CustomButton1);
-    CHECK(nullptr != runButton, nullptr);
+    CHECK(runButton != nullptr, nullptr);
     CHECK(!runButton->text().isEmpty(), nullptr);
     return runButton;
 }
@@ -51,7 +51,7 @@ void WDWizardPage::showEvent(QShowEvent* event) {
         setupDialogSize();
     }
     QAbstractButton* runButton = getRunButton(wizard());
-    if (nullptr != runButton) {
+    if (runButton != nullptr) {
         runButton->setVisible(isFinalPage());
     }
     QWizardPage::showEvent(event);

@@ -118,11 +118,11 @@ void ProjectTreeItemSelectorDialog::selectObjectsAndFolders(const ProjectTreeCon
     CHECK(!d.isNull(), );
 
     if (rc == QDialog::Accepted) {
-        SAFE_POINT(nullptr != d->controller, "Invalid project tree controller", );
+        SAFE_POINT(d->controller != nullptr, "Invalid project tree controller", );
         folderList << d->controller->getSelectedFolders();  // add folders selected by a user
 
         const GObjectSelection* os = d->controller->getGObjectSelection();
-        SAFE_POINT(nullptr != os, "Invalid object selection", );
+        SAFE_POINT(os != nullptr, "Invalid object selection", );
         foreach (GObject* obj, os->getSelectedObjects()) {
             bool objectIsAlreadySelected = false;
             for (const Folder& selectedFolder : qAsConst(folderList)) {
@@ -147,7 +147,7 @@ Folder ProjectTreeItemSelectorDialog::selectFolder(QWidget* parent) {
     CHECK(!d.isNull(), Folder());
 
     if (rc == QDialog::Accepted) {
-        SAFE_POINT(nullptr != d->controller, "Invalid project tree controller", Folder());
+        SAFE_POINT(d->controller != nullptr, "Invalid project tree controller", Folder());
         const QList<Folder> folders = d->controller->getSelectedFolders();
         if (!folders.isEmpty()) {
             return folders.first();

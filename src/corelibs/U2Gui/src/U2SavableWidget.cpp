@@ -43,7 +43,7 @@ namespace U2 {
 
 U2SavableWidget::U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
     : wrappedWidget(wrappedWidget), contextWindow(contextWindow), widgetStateSaved(false) {
-    SAFE_POINT(nullptr != wrappedWidget, L10N::nullPointerError("wrapped widget"), );
+    SAFE_POINT(wrappedWidget != nullptr, L10N::nullPointerError("wrapped widget"), );
 }
 
 U2SavableWidget::~U2SavableWidget() {
@@ -194,8 +194,8 @@ QSet<QWidget*> U2SavableWidget::getCompoundChildren() const {
 
 bool U2SavableWidget::childCanBeSaved(QWidget* child) const {
     const QString widgetName = child->objectName();
-    return ((nullptr != qobject_cast<QLineEdit*>(child) && qobject_cast<QFontComboBox*>(child->parent()) == nullptr && widgetName != "qt_spinbox_lineedit")  // skip fake line edit inside a spin box
-            || nullptr != qobject_cast<QTextEdit*>(child) || nullptr != qobject_cast<QComboBox*>(child) || (nullptr != qobject_cast<QAbstractButton*>(child) && qobject_cast<QAbstractButton*>(child)->isCheckable()) || (nullptr != qobject_cast<QGroupBox*>(child) && qobject_cast<QGroupBox*>(child)->isCheckable()) || nullptr != qobject_cast<QSpinBox*>(child) || nullptr != qobject_cast<QDoubleSpinBox*>(child) || nullptr != qobject_cast<QSlider*>(child) || nullptr != qobject_cast<QTableWidget*>(child) || nullptr != qobject_cast<ShowHideSubgroupWidget*>(child)) &&
+    return ((qobject_cast<QLineEdit*>(child) != nullptr && qobject_cast<QFontComboBox*>(child->parent()) == nullptr && widgetName != "qt_spinbox_lineedit")  // skip fake line edit inside a spin box
+            || qobject_cast<QTextEdit*>(child) != nullptr || nullptr != qobject_cast<QComboBox*>(child) || (nullptr != qobject_cast<QAbstractButton*>(child) && qobject_cast<QAbstractButton*>(child)->isCheckable()) || (nullptr != qobject_cast<QGroupBox*>(child) && qobject_cast<QGroupBox*>(child)->isCheckable()) || nullptr != qobject_cast<QSpinBox*>(child) || nullptr != qobject_cast<QDoubleSpinBox*>(child) || nullptr != qobject_cast<QSlider*>(child) || nullptr != qobject_cast<QTableWidget*>(child) || nullptr != qobject_cast<ShowHideSubgroupWidget*>(child)) &&
            !widgetName.isEmpty();
 }
 

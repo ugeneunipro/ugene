@@ -155,7 +155,7 @@ void PDWFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& f
 Document* PDWFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     U2SequenceObject* seqObj = nullptr;
     AnnotationTableObject* annObj = nullptr;
-    CHECK_EXT(nullptr != io && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QList<GObject*> objects;
 
     load(io, dbiRef, fs, io->getURL(), objects, os, seqObj, annObj);
@@ -165,7 +165,7 @@ Document* PDWFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, con
     QString lockReason = QObject::tr("The document is not created by UGENE");
     Document* doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
 
-    if (nullptr != seqObj && nullptr != annObj) {
+    if (seqObj != nullptr && annObj != nullptr) {
         annObj->addObjectRelation(seqObj, ObjectRole_Sequence);
     }
     return doc;

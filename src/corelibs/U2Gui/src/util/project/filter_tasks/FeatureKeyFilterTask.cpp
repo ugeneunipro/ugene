@@ -50,7 +50,7 @@ void FeatureKeyFilterTask::run() {
 }
 
 void FeatureKeyFilterTask::filterDocument(Document* doc) {
-    SAFE_POINT_EXT(nullptr != doc, stateInfo.setError(L10N::nullPointerError("document")), );
+    SAFE_POINT_EXT(doc != nullptr, stateInfo.setError(L10N::nullPointerError("document")), );
     CHECK(doc->isLoaded(), );
 
     const U2DbiRef dbiRef = doc->getDbiRef();
@@ -58,9 +58,9 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
     if (!dbiRef2AnnotationTables.contains(dbiRef)) {
         DbiConnection connection(dbiRef, stateInfo);
         CHECK_OP(stateInfo, );
-        SAFE_POINT_EXT(nullptr != connection.dbi, stateInfo.setError(L10N::nullPointerError("Database connection")), );
+        SAFE_POINT_EXT(connection.dbi != nullptr, stateInfo.setError(L10N::nullPointerError("Database connection")), );
         U2FeatureDbi* featureDbi = connection.dbi->getFeatureDbi();
-        SAFE_POINT_EXT(nullptr != featureDbi, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );
+        SAFE_POINT_EXT(featureDbi != nullptr, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );
 
         dbiRef2AnnotationTables[dbiRef] = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo);
         SAFE_POINT_OP(stateInfo, );

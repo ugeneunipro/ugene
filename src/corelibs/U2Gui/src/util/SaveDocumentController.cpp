@@ -214,7 +214,7 @@ void SaveDocumentController::sl_formatChanged(const QString& newFormat) {
 }
 
 void SaveDocumentController::sl_compressToggled(bool enable) {
-    CHECK(nullptr != conf.compressCheckbox && conf.compressCheckbox->isEnabled(), );
+    CHECK(conf.compressCheckbox != nullptr && conf.compressCheckbox->isEnabled(), );
     QString path = conf.fileNameEdit->text();
     if (enable) {
         addGzExtension(path);
@@ -234,7 +234,7 @@ void SaveDocumentController::init() {
     connect(conf.fileNameEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_fileNameChanged(const QString&)));
     connect(conf.fileNameEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_fileNameChanged(const QString&)));
 
-    if (nullptr != conf.compressCheckbox) {
+    if (conf.compressCheckbox != nullptr) {
         connect(conf.compressCheckbox, SIGNAL(toggled(bool)), SLOT(sl_compressToggled(bool)));
     }
 
@@ -282,14 +282,14 @@ void SaveDocumentController::initFormatComboBox() {
 }
 
 bool SaveDocumentController::cutGzExtension(QString& path) const {
-    CHECK(nullptr != conf.compressCheckbox, false);
+    CHECK(conf.compressCheckbox != nullptr, false);
     CHECK(path.endsWith(".gz"), false);
     path.chop(QString(".gz").length());
     return true;
 }
 
 void SaveDocumentController::addGzExtension(QString& path) const {
-    CHECK(nullptr != conf.compressCheckbox && conf.compressCheckbox->isChecked() && conf.compressCheckbox->isEnabled(), );
+    CHECK(conf.compressCheckbox != nullptr && conf.compressCheckbox->isChecked() && conf.compressCheckbox->isEnabled(), );
     CHECK(!path.endsWith(".gz"), );
     path += ".gz";
 }
@@ -337,7 +337,7 @@ void SaveDocumentController::setPath(const QString& path, const QSet<QString>& e
 
 void SaveDocumentController::setFormat(const QString& formatId) {
     SAFE_POINT(!formatsInfo.getFormatNameById(formatId).isEmpty(), QString("Format '%1' not found in the model"), );
-    if (nullptr != conf.formatCombo) {
+    if (conf.formatCombo != nullptr) {
         conf.formatCombo->setCurrentText(formatsInfo.getFormatNameById(formatId));
     } else {
         sl_formatChanged(formatsInfo.getFormatNameById(formatId));

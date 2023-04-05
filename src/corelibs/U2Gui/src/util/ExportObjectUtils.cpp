@@ -94,7 +94,7 @@ void ExportObjectUtils::exportAnnotations(const AnnotationTableObject* aObj, con
     } else {
         t = saveAnnotationsTask(d->filePath(), d->fileFormat(), annotations, d->addToProject());
     }
-    SAFE_POINT(nullptr != t, "Invalid task detected!", );
+    SAFE_POINT(t != nullptr, "Invalid task detected!", );
 
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
@@ -140,14 +140,14 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
     bool addToProject = dialog->getAddToProjectFlag();
 
     IOAdapterRegistry* ioar = AppContext::getIOAdapterRegistry();
-    SAFE_POINT(nullptr != ioar, "Invalid I/O environment!", );
+    SAFE_POINT(ioar != nullptr, "Invalid I/O environment!", );
     IOAdapterFactory* iof = ioar->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
-    CHECK_EXT(nullptr != iof,
+    CHECK_EXT(iof != nullptr,
               coreLog.error(QObject::tr("Unable to create I/O factory for ") + dstUrl), );
     DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
     DocumentFormatId formatId = dialog->getDocumentFormatId();
     DocumentFormat* df = dfr->getFormatById(formatId);
-    CHECK_EXT(nullptr != df,
+    CHECK_EXT(df != nullptr,
               coreLog.error(QObject::tr("Unknown document format I/O factory: ") + formatId), );
 
     U2OpStatusImpl os;
@@ -177,11 +177,11 @@ Task* ExportObjectUtils::saveAnnotationsTask(const QString& filepath, const Docu
     }
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(
         IOAdapterUtils::url2io(filepath));
-    CHECK_EXT(nullptr != iof,
+    CHECK_EXT(iof != nullptr,
               coreLog.error(QObject::tr("Unable to create I/O factory for ") + filepath),
               nullptr);
     DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
-    CHECK_EXT(nullptr != df,
+    CHECK_EXT(df != nullptr,
               coreLog.error(QObject::tr("Unknown document format I/O factory: ") + format),
               nullptr);
     U2OpStatus2Log os;

@@ -74,10 +74,10 @@ void ExportAnnotations2CSVTask::run() {
 
     IOAdapterId ioAdapterId = IOAdapterUtils::url2io(url);
     IOAdapterRegistry* ioRegistry = AppContext::getIOAdapterRegistry();
-    CHECK_EXT(nullptr != ioRegistry,
+    CHECK_EXT(ioRegistry != nullptr,
               stateInfo.setError(tr("Invalid I/O environment!").arg(url)), );
     IOAdapterFactory* ioAdapterFactory = ioRegistry->getIOAdapterFactoryById(ioAdapterId);
-    CHECK_EXT(nullptr != ioAdapterFactory,
+    CHECK_EXT(ioAdapterFactory != nullptr,
               stateInfo.setError(tr("No IO adapter found for URL: %1").arg(url)), );
     ioAdapter.reset(ioAdapterFactory->createIOAdapter());
 

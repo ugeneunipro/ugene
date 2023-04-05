@@ -207,7 +207,7 @@ void CreateAnnotationFullWidget::setDescription(const QString& description) {
 
 QString CreateAnnotationFullWidget::getAnnotationTypeString() const {
     QListWidgetItem* currentItem = lwAnnotationType->currentItem();
-    SAFE_POINT(nullptr != currentItem, "Annotation type is not selected", "");
+    SAFE_POINT(currentItem != nullptr, "Annotation type is not selected", "");
     return currentItem->text();
 }
 

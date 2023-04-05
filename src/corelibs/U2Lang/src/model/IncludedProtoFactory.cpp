@@ -34,7 +34,7 @@ void IncludedProtoFactory::init(IncludedProtoFactory* protoMaker) {
 }
 
 ActorPrototype* IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute*> attrs, const QString& name, const QString& description, const QString& actorFilePath, bool isAliasName) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_getScriptProto(input, output, attrs, name, description, actorFilePath, isAliasName);
     } else {
         return nullptr;
@@ -42,7 +42,7 @@ ActorPrototype* IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, Q
 }
 
 ActorPrototype* IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig* cfg) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_getExternalToolProto(cfg);
     } else {
         return nullptr;
@@ -50,7 +50,7 @@ ActorPrototype* IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig
 }
 
 ActorPrototype* IncludedProtoFactory::getSchemaActorProto(Schema* schema, const QString& name, const QString& actorFilePath) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_getSchemaActorProto(schema, name, actorFilePath);
     } else {
         return nullptr;

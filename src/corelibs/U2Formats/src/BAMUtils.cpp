@@ -713,11 +713,11 @@ static qint64 getSequenceLength(U2Dbi* dbi, const U2DataId& objectId, U2OpStatus
     qint64 seqLength = -1;
 
     U2AssemblyDbi* assemblyDbi = dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(nullptr != assemblyDbi, os.setError("NULL assembly DBI"), seqLength);
+    SAFE_POINT_EXT(assemblyDbi != nullptr, os.setError("NULL assembly DBI"), seqLength);
 
     U2AttributeDbi* attributeDbi = dbi->getAttributeDbi();
     bool useMaxPos = true;
-    if (nullptr != attributeDbi) {
+    if (attributeDbi != nullptr) {
         U2IntegerAttribute attr = U2AttributeUtils::findIntegerAttribute(attributeDbi, objectId, U2BaseAttributeName::reference_length, os);
         CHECK_OP(os, seqLength);
         if (attr.hasValidId()) {
@@ -734,7 +734,7 @@ static qint64 getSequenceLength(U2Dbi* dbi, const U2DataId& objectId, U2OpStatus
 }
 
 static void createHeader(bam_header_t* header, const QList<GObject*>& objects, U2OpStatus& os) {
-    CHECK_EXT(nullptr != header, os.setError("NULL header"), );
+    CHECK_EXT(header != nullptr, os.setError("NULL header"), );
 
     header->n_targets = objects.size();
     header->target_name = new char*[header->n_targets];
@@ -746,7 +746,7 @@ static void createHeader(bam_header_t* header, const QList<GObject*>& objects, U
     int objIdx = 0;
     foreach (GObject* obj, objects) {
         auto assemblyObj = dynamic_cast<AssemblyObject*>(obj);
-        SAFE_POINT_EXT(nullptr != assemblyObj, os.setError("NULL assembly object"), );
+        SAFE_POINT_EXT(assemblyObj != nullptr, os.setError("NULL assembly object"), );
 
         DbiConnection con(obj->getEntityRef().dbiRef, os);
         CHECK_OP(os, );
@@ -782,7 +782,7 @@ static QMap<QString, int> getNumMap(const QList<GObject*>& objects, U2OpStatus& 
     int i = 0;
     foreach (GObject* obj, objects) {
         auto assemblyObj = dynamic_cast<AssemblyObject*>(obj);
-        SAFE_POINT_EXT(nullptr != assemblyObj, os.setError("NULL assembly object"), result);
+        SAFE_POINT_EXT(assemblyObj != nullptr, os.setError("NULL assembly object"), result);
 
         QString name = assemblyObj->getGObjectName();
         result[name] = i;
@@ -794,13 +794,13 @@ static QMap<QString, int> getNumMap(const QList<GObject*>& objects, U2OpStatus& 
 static void writeObjectsWithSamtools(samfile_t* out, const QList<GObject*>& objects, U2OpStatus& os, const U2Region& desiredRegion) {
     foreach (GObject* obj, objects) {
         auto assemblyObj = dynamic_cast<AssemblyObject*>(obj);
-        SAFE_POINT_EXT(nullptr != assemblyObj, os.setError("NULL assembly object"), );
+        SAFE_POINT_EXT(assemblyObj != nullptr, os.setError("NULL assembly object"), );
 
         DbiConnection con(assemblyObj->getEntityRef().dbiRef, os);
         CHECK_OP(os, );
 
         U2AssemblyDbi* dbi = con.dbi->getAssemblyDbi();
-        SAFE_POINT_EXT(nullptr != dbi, os.setError("NULL assembly DBI"), );
+        SAFE_POINT_EXT(dbi != nullptr, os.setError("NULL assembly DBI"), );
 
         U2DataId assemblyId = assemblyObj->getEntityRef().entityId;
         qint64 maxPos = dbi->getMaxEndPos(assemblyId, os);

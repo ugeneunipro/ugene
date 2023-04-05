@@ -66,17 +66,17 @@ QVariant ProjectViewModel::data(const QModelIndex& index, int role) const {
     switch (itemType(index)) {
         case DOCUMENT: {
             Document* doc = toDocument(index);
-            SAFE_POINT(nullptr != doc, "NULL document", QVariant());
+            SAFE_POINT(doc != nullptr, "NULL document", QVariant());
             return data(doc, role);
         }
         case FOLDER: {
             Folder* folder = toFolder(index);
-            SAFE_POINT(nullptr != folder, "NULL folder", QVariant());
+            SAFE_POINT(folder != nullptr, "NULL folder", QVariant());
             return data(folder, role);
         }
         case OBJECT: {
             GObject* obj = toObject(index);
-            SAFE_POINT(nullptr != obj, "NULL object", QVariant());
+            SAFE_POINT(obj != nullptr, "NULL object", QVariant());
             return data(obj, role);
         }
         default:
@@ -113,7 +113,7 @@ bool ProjectViewModel::setData(const QModelIndex& index, const QVariant& value, 
 }
 
 QModelIndex ProjectViewModel::setObjectData(GObject* obj, const QString& newName) {
-    SAFE_POINT(nullptr != obj, "Invalid object detected", QModelIndex());
+    SAFE_POINT(obj != nullptr, "Invalid object detected", QModelIndex());
     CHECK(newName != obj->getGObjectName(), QModelIndex());
     obj->setGObjectName(newName);
 
@@ -125,10 +125,10 @@ QModelIndex ProjectViewModel::setObjectData(GObject* obj, const QString& newName
 }
 
 QModelIndex ProjectViewModel::setFolderData(Folder* folder, const QString& newName) {
-    SAFE_POINT(nullptr != folder, "Invalid folder detected", QModelIndex());
+    SAFE_POINT(folder != nullptr, "Invalid folder detected", QModelIndex());
 
     Document* doc = folder->getDocument();
-    SAFE_POINT(nullptr != doc, "Invalid document detected", QModelIndex());
+    SAFE_POINT(doc != nullptr, "Invalid document detected", QModelIndex());
     const QString parentPath = folder->getParentPath();
     const QString newPath = U2ObjectDbi::ROOT_FOLDER == parentPath ? parentPath + newName : parentPath + U2ObjectDbi::PATH_SEP + newName;
 
@@ -148,7 +148,7 @@ QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex& pare
     switch (itemType(parent)) {
         case DOCUMENT: {
             Document* doc = toDocument(parent);
-            SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
+            SAFE_POINT(doc != nullptr, "NULL document", QModelIndex());
             QList<Folder*> subFolders = folders[doc]->getSubFolders(U2ObjectDbi::ROOT_FOLDER);
             QList<GObject*> subObjects = folders[doc]->getObjects(U2ObjectDbi::ROOT_FOLDER);
             if (row < subFolders.size()) {
@@ -159,7 +159,7 @@ QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex& pare
         }
         case FOLDER: {
             Folder* folder = toFolder(parent);
-            SAFE_POINT(nullptr != folder, "NULL folder", QModelIndex());
+            SAFE_POINT(folder != nullptr, "NULL folder", QModelIndex());
             QList<Folder*> subFolders = folders[folder->getDocument()]->getSubFolders(folder->getFolderPath());
             QList<GObject*> subObjects = folders[folder->getDocument()]->getObjects(folder->getFolderPath());
             if (row < subFolders.size()) {
@@ -182,16 +182,16 @@ QModelIndex ProjectViewModel::parent(const QModelIndex& index) const {
         }
         case FOLDER: {
             Folder* folder = toFolder(index);
-            SAFE_POINT(nullptr != folder, "NULL folder", QModelIndex());
+            SAFE_POINT(folder != nullptr, "NULL folder", QModelIndex());
 
             return getIndexForPath(folder->getDocument(), DocumentFolders::getParentFolder(folder->getFolderPath()));
         }
         case OBJECT: {
             GObject* obj = toObject(index);
-            SAFE_POINT(nullptr != obj, "NULL object", QModelIndex());
+            SAFE_POINT(obj != nullptr, "NULL object", QModelIndex());
 
             Document* doc = getObjectDocument(obj);
-            SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
+            SAFE_POINT(doc != nullptr, "NULL document", QModelIndex());
 
             QString parentPath = folders[doc]->getObjectFolder(obj);
             return getIndexForPath(doc, parentPath);
@@ -209,12 +209,12 @@ int ProjectViewModel::rowCount(const QModelIndex& parent) const {
     switch (itemType(parent)) {
         case DOCUMENT: {
             Document* doc = toDocument(parent);
-            SAFE_POINT(nullptr != doc, "NULL document", 0);
+            SAFE_POINT(doc != nullptr, "NULL document", 0);
             return getChildrenCount(doc, U2ObjectDbi::ROOT_FOLDER);
         }
         case FOLDER: {
             Folder* folder = toFolder(parent);
-            SAFE_POINT(nullptr != folder, "NULL folder", 0);
+            SAFE_POINT(folder != nullptr, "NULL folder", 0);
             return getChildrenCount(folder->getDocument(), folder->getFolderPath());
         }
         case OBJECT: {
@@ -232,7 +232,7 @@ Qt::ItemFlags ProjectViewModel::flags(const QModelIndex& index) const {
     switch (itemType(index)) {
         case DOCUMENT: {
             Document* doc = toDocument(index);
-            SAFE_POINT(nullptr != doc, "NULL document", result);
+            SAFE_POINT(doc != nullptr, "NULL document", result);
             if (isDropEnabled(doc)) {
                 result |= Qt::ItemIsDropEnabled;
             }
@@ -241,7 +241,7 @@ Qt::ItemFlags ProjectViewModel::flags(const QModelIndex& index) const {
         }
         case FOLDER: {
             Folder* folder = toFolder(index);
-            SAFE_POINT(nullptr != folder, "NULL folder", result);
+            SAFE_POINT(folder != nullptr, "NULL folder", result);
             Document* doc = folder->getDocument();
             if (isDropEnabled(doc)) {
                 result |= Qt::ItemIsDropEnabled;
@@ -254,7 +254,7 @@ Qt::ItemFlags ProjectViewModel::flags(const QModelIndex& index) const {
         }
         case OBJECT: {
             GObject* obj = toObject(index);
-            SAFE_POINT(nullptr != obj, "NULL object", result);
+            SAFE_POINT(obj != nullptr, "NULL object", result);
             Document* doc = obj->getDocument();
             if ((GObjectTypes::UNLOADED == obj->getGObjectType()) && !settings.allowSelectUnloaded) {
                 result &= ~QFlags<Qt::ItemFlag>(Qt::ItemIsEnabled);
@@ -321,7 +321,7 @@ bool ProjectViewModel::dropMimeData(const QMimeData* data, Qt::DropAction /*acti
     Folder target = getDropFolder(parent);
     const QString folderPath = target.getFolderPath();
     Document* targetDoc = target.getDocument();
-    SAFE_POINT(nullptr != targetDoc, "NULL document", false);
+    SAFE_POINT(targetDoc != nullptr, "NULL document", false);
     CHECK(!targetDoc->isStateLocked(), false);
     SAFE_POINT(row == -1, "Wrong insertion row", false);
 
@@ -422,7 +422,7 @@ void ProjectViewModel::excludeFromFolderIgnoreFilter(Document* doc, const QSet<Q
 }
 
 void ProjectViewModel::moveObject(Document* doc, GObject* obj, const QString& newFolderPath) {
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     const QString oldFolderPath = folders[doc]->getObjectFolder(obj);
@@ -460,7 +460,7 @@ void ProjectViewModel::moveObject(Document* doc, GObject* obj, const QString& ne
 
 QList<GObject*> ProjectViewModel::getFolderObjects(Document* doc, const QString& path) const {
     QList<GObject*> result;
-    SAFE_POINT(nullptr != doc, "NULL document", result);
+    SAFE_POINT(doc != nullptr, "NULL document", result);
     SAFE_POINT(folders.contains(doc), "Unknown document", result);
 
     QStringList subFolders = folders[doc]->getAllSubFolders(path);
@@ -494,7 +494,7 @@ void rollNewFolderPath(QString& originalPath, U2ObjectDbi* oDbi, U2OpStatus& os)
 }  // namespace
 
 void ProjectViewModel::createFolder(Document* doc, QString& path) {
-    CHECK(nullptr != doc && folders.contains(doc), );
+    CHECK(doc != nullptr && folders.contains(doc), );
 
     U2OpStatus2Log os;
     DbiOperationsBlock opBlock(doc->getDbiRef(), os);
@@ -550,7 +550,7 @@ int ProjectViewModel::beforeInsertDocument(Document* /*doc*/) {
 }
 
 int ProjectViewModel::beforeInsertPath(Document* doc, const QString& path) {
-    SAFE_POINT(nullptr != doc, "NULL document", -1);
+    SAFE_POINT(doc != nullptr, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
     CHECK(isFolderVisible(doc), -1);
 
@@ -582,7 +582,7 @@ int ProjectViewModel::beforeRemoveDocument(Document* doc) {
 }
 
 int ProjectViewModel::beforeRemovePath(Document* doc, const QString& path) {
-    SAFE_POINT(nullptr != doc, "NULL document", -1);
+    SAFE_POINT(doc != nullptr, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
     CHECK(isFolderVisible(doc), -1);
 
@@ -609,7 +609,7 @@ void ProjectViewModel::afterRemove(int row) {
 }
 
 bool ProjectViewModel::renameFolder(Document* doc, const QString& oldPath, const QString& newPath) {
-    CHECK(nullptr != doc && folders.contains(doc) && folders[doc]->hasFolder(oldPath), false);
+    CHECK(doc != nullptr && folders.contains(doc) && folders[doc]->hasFolder(oldPath), false);
 
     QString resultNewPath = newPath;
     // 1. update content in DB
@@ -663,20 +663,20 @@ void ProjectViewModel::moveObjectsBetweenFolderTrees(Document* doc, const QStrin
 }
 
 QModelIndex ProjectViewModel::getIndexForDoc(Document* doc) const {
-    SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
+    SAFE_POINT(doc != nullptr, "NULL document", QModelIndex());
     int row = docRow(doc);
     SAFE_POINT(-1 != row, "Out of range row", QModelIndex());
     return createIndex(row, 0, doc);
 }
 
 QModelIndex ProjectViewModel::getIndexForPath(Document* doc, const QString& path) const {
-    SAFE_POINT(nullptr != doc, "NULL document", QModelIndex());
+    SAFE_POINT(doc != nullptr, "NULL document", QModelIndex());
 
     if (U2ObjectDbi::ROOT_FOLDER == path) {
         return getIndexForDoc(doc);
     } else {
         Folder* folder = folders[doc]->getFolder(path);
-        SAFE_POINT(nullptr != folder, "NULL folder", QModelIndex());
+        SAFE_POINT(folder != nullptr, "NULL folder", QModelIndex());
         int row = folderRow(folder);
         SAFE_POINT(-1 != row, "Out of range row", QModelIndex());
         return createIndex(row, 0, folder);
@@ -699,7 +699,7 @@ Document* ProjectViewModel::findDocument(const U2DbiRef& dbiRef) const {
 }
 
 void ProjectViewModel::insertFolder(Document* doc, const QString& path) {
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
     CHECK(!folders[doc]->hasFolder(path), );
 
@@ -724,7 +724,7 @@ void ProjectViewModel::insertFolder(Document* doc, const QString& path) {
 }
 
 void ProjectViewModel::removeFolder(Document* doc, const QString& path) {
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     CHECK(!path.isEmpty(), );
@@ -732,7 +732,7 @@ void ProjectViewModel::removeFolder(Document* doc, const QString& path) {
     CHECK(folders[doc]->hasFolder(path), );
 
     Folder* folder = folders[doc]->getFolder(path);
-    SAFE_POINT(nullptr != folder, "NULL folder", );
+    SAFE_POINT(folder != nullptr, "NULL folder", );
     int row = beforeRemovePath(doc, path);
     folders[doc]->removeFolder(path);
     afterRemove(row);
@@ -753,13 +753,13 @@ void ProjectViewModel::removeObject(Document* doc, GObject* obj) {
 
 ProjectViewModel::Type ProjectViewModel::itemType(const QModelIndex& index) {
     QObject* obj = toQObject(index);
-    SAFE_POINT(nullptr != obj, "NULL QObject", DOCUMENT);
+    SAFE_POINT(obj != nullptr, "NULL QObject", DOCUMENT);
 
-    if (nullptr != qobject_cast<Document*>(obj)) {
+    if (qobject_cast<Document*>(obj) != nullptr) {
         return DOCUMENT;
-    } else if (nullptr != qobject_cast<Folder*>(obj)) {
+    } else if (qobject_cast<Folder*>(obj) != nullptr) {
         return FOLDER;
-    } else if (nullptr != qobject_cast<GObject*>(obj)) {
+    } else if (qobject_cast<GObject*>(obj) != nullptr) {
         return OBJECT;
     }
     FAIL("Unexpected data type", DOCUMENT);
@@ -767,7 +767,7 @@ ProjectViewModel::Type ProjectViewModel::itemType(const QModelIndex& index) {
 
 QObject* ProjectViewModel::toQObject(const QModelIndex& index) {
     void* ptr = index.internalPointer();
-    SAFE_POINT(nullptr != ptr, "Internal error. No index data", nullptr);
+    SAFE_POINT(ptr != nullptr, "Internal error. No index data", nullptr);
     return static_cast<QObject*>(ptr);
 }
 
@@ -801,7 +801,7 @@ QModelIndex ProjectViewModel::getTopLevelItemIndex(int row, int column) const {
 }
 
 int ProjectViewModel::getChildrenCount(Document* doc, const QString& path) const {
-    SAFE_POINT(nullptr != doc, "NULL document", 0);
+    SAFE_POINT(doc != nullptr, "NULL document", 0);
     SAFE_POINT(folders.contains(doc), "Unknown document", 0);
     SAFE_POINT(folders[doc]->hasFolder(path), "Unknown folder path", 0);
 
@@ -811,7 +811,7 @@ int ProjectViewModel::getChildrenCount(Document* doc, const QString& path) const
 }
 
 QList<Folder*> ProjectViewModel::getSubfolders(Document* doc, const QString& path) const {
-    SAFE_POINT(nullptr != doc, "NULL document", QList<Folder*>());
+    SAFE_POINT(doc != nullptr, "NULL document", QList<Folder*>());
     SAFE_POINT(folders.contains(doc), "Unknown document", QList<Folder*>());
     SAFE_POINT(folders[doc]->hasFolder(path), "Unknown folder path", QList<Folder*>());
 
@@ -835,7 +835,7 @@ bool ProjectViewModel::hasObject(Document* doc, GObject* obj) const {
 int ProjectViewModel::folderRow(Folder* subFolder) const {
     SAFE_POINT(U2ObjectDbi::ROOT_FOLDER != subFolder->getFolderPath(), "Unexpected folder path", -1);
     Document* doc = subFolder->getDocument();
-    SAFE_POINT(nullptr != doc, "NULL document", -1);
+    SAFE_POINT(doc != nullptr, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
 
     QString parentPath = DocumentFolders::getParentFolder(subFolder->getFolderPath());
@@ -845,7 +845,7 @@ int ProjectViewModel::folderRow(Folder* subFolder) const {
 
 int ProjectViewModel::objectRow(GObject* obj) const {
     Document* doc = getObjectDocument(obj);
-    SAFE_POINT(nullptr != doc, "NULL document", -1);
+    SAFE_POINT(doc != nullptr, "NULL document", -1);
     SAFE_POINT(folders.contains(doc), "Unknown document", -1);
 
     QString parentPath = folders[doc]->getObjectFolder(obj);
@@ -1037,7 +1037,7 @@ QVariant ProjectViewModel::getObjectDecorationData(GObject* obj, bool itemIsEnab
     }
 
     const GObjectTypeInfo& ti = GObjectTypes::getTypeInfo(obj->getGObjectType());
-    const QIcon& icon = (nullptr != obj->getGObjectModLock(GObjectModLock_IO) ? ti.lockedIcon : ti.icon);
+    const QIcon& icon = (obj->getGObjectModLock(GObjectModLock_IO) != nullptr ? ti.lockedIcon : ti.icon);
     return getIcon(icon, itemIsEnabled);
 }
 
@@ -1051,13 +1051,13 @@ QVariant ProjectViewModel::getObjectTextColorData(GObject* obj) const {
 
 bool ProjectViewModel::isActive(Document* doc) {
     GObjectViewWindow* w = GObjectViewUtils::getActiveObjectViewWindow();
-    CHECK(nullptr != w, false);
+    CHECK(w != nullptr, false);
     return w->getObjectView()->containsDocumentObjects(doc);
 }
 
 bool ProjectViewModel::isActive(GObject* obj) {
     GObjectViewWindow* w = GObjectViewUtils::getActiveObjectViewWindow();
-    CHECK(nullptr != w, false);
+    CHECK(w != nullptr, false);
     return w->getObjectView()->containsObject(obj);
 }
 
@@ -1069,7 +1069,7 @@ QIcon ProjectViewModel::getIcon(const QIcon& icon, bool enabled) {
 }
 
 bool ProjectViewModel::isWritableDoc(const Document* doc) {
-    CHECK(nullptr != doc, false);
+    CHECK(doc != nullptr, false);
     return !doc->isStateLocked();
 }
 
@@ -1078,7 +1078,7 @@ bool ProjectViewModel::isDropEnabled(const Document*) {
 }
 
 bool ProjectViewModel::isAcceptableFolder(Document* targetDoc, const QString& targetFolderPath, const Folder& folder) {
-    CHECK(nullptr != folder.getDocument(), false);
+    CHECK(folder.getDocument() != nullptr, false);
 
     if (folder.getDocument() == targetDoc) {
         QString srcPath = folder.getFolderPath();
@@ -1111,7 +1111,7 @@ void ProjectViewModel::disconnectDocument(Document* doc) {
     }
 
     Task* t = LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
-    CHECK(nullptr != t, );
+    CHECK(t != nullptr, );
     t->disconnect(this);
     t->cancel();
 }
@@ -1130,14 +1130,14 @@ Folder ProjectViewModel::getDropFolder(const QModelIndex& index) const {
             break;
         case FOLDER: {
             Folder* folder = toFolder(index);
-            SAFE_POINT(nullptr != folder, "NULL folder", Folder());
+            SAFE_POINT(folder != nullptr, "NULL folder", Folder());
             doc = folder->getDocument();
             path = folder->getFolderPath();
             break;
         }
         case OBJECT: {
             GObject* obj = toObject(index);
-            SAFE_POINT(nullptr != obj, "NULL object", Folder());
+            SAFE_POINT(obj != nullptr, "NULL object", Folder());
             doc = obj->getDocument();
             path = getObjectFolder(doc, obj);
             break;
@@ -1182,12 +1182,12 @@ void ProjectViewModel::dropDocument(Document* doc, Document* targetDoc, const QS
 
 void ProjectViewModel::sl_documentImported() {
     auto task = dynamic_cast<ImportDocumentToDatabaseTask*>(sender());
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(task->isFinished(), );
     CHECK(!task->getStateInfo().isCoR(), );
 
     Document* doc = findDocument(task->getDstDbiRef());
-    CHECK(nullptr != doc, );
+    CHECK(doc != nullptr, );
 
     const QString resultPath = task->getDstFolder();
 
@@ -1207,15 +1207,15 @@ void ProjectViewModel::sl_documentImported() {
 
 void ProjectViewModel::sl_objectImported() {
     auto task = dynamic_cast<ImportObjectToDatabaseTask*>(sender());
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(task->isFinished(), );
     CHECK(!task->getStateInfo().isCoR(), );
 
     Document* doc = findDocument(task->getDbiRef());
-    CHECK(nullptr != doc, );
+    CHECK(doc != nullptr, );
 
     GObject* newObj = task->takeResult();
-    CHECK(nullptr != newObj, );
+    CHECK(newObj != nullptr, );
 
     doc->addObject(newObj);
     insertObject(doc, newObj, task->getFolder());
@@ -1224,7 +1224,7 @@ void ProjectViewModel::sl_objectImported() {
 
 void ProjectViewModel::sl_objectAdded(GObject* obj) {
     Document* doc = getObjectDocument(obj);
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     connectGObject(obj);
@@ -1240,7 +1240,7 @@ void ProjectViewModel::sl_objectAdded(GObject* obj) {
 
 void ProjectViewModel::sl_objectRemoved(GObject* obj) {
     Document* doc = getObjectDocument(obj);
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     removeObject(doc, obj);
@@ -1249,7 +1249,7 @@ void ProjectViewModel::sl_objectRemoved(GObject* obj) {
 
 void ProjectViewModel::sl_documentModifiedStateChanged() {
     auto doc = qobject_cast<Document*>(sender());
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     QModelIndex idx = getIndexForDoc(doc);
@@ -1259,7 +1259,7 @@ void ProjectViewModel::sl_documentModifiedStateChanged() {
 
 void ProjectViewModel::sl_documentLoadedStateChanged() {
     auto doc = qobject_cast<Document*>(sender());
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     if (doc->isLoaded()) {
@@ -1280,7 +1280,7 @@ void ProjectViewModel::sl_documentLoadedStateChanged() {
 
 void ProjectViewModel::sl_lockedStateChanged() {
     auto doc = qobject_cast<Document*>(sender());
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     if (settings.readOnlyFilter != TriState_Unknown) {
@@ -1299,7 +1299,7 @@ void ProjectViewModel::sl_lockedStateChanged() {
 
 void ProjectViewModel::sl_documentURLorNameChanged() {
     auto doc = qobject_cast<Document*>(sender());
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     SAFE_POINT(folders.contains(doc), "Unknown document", );
 
     QModelIndex idx = getIndexForDoc(doc);
@@ -1309,7 +1309,7 @@ void ProjectViewModel::sl_documentURLorNameChanged() {
 
 void ProjectViewModel::sl_objectModifiedStateChanged() {
     auto obj = qobject_cast<GObject*>(sender());
-    SAFE_POINT(nullptr != obj, "NULL object", );
+    SAFE_POINT(obj != nullptr, "NULL object", );
     QModelIndex idx = getIndexForObject(obj);
     emit dataChanged(idx, idx);
     emit si_modelChanged();

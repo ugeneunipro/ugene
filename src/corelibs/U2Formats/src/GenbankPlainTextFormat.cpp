@@ -457,13 +457,13 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, Q
         SAFE_POINT(1 >= seqs.size(), "Genbank entry storing: sequence objects count error", );
         if (1 == seqs.size()) {
             seq = dynamic_cast<U2SequenceObject*>(seqs.first());
-            SAFE_POINT(nullptr != seq, "Genbank entry storing: NULL sequence object", );
+            SAFE_POINT(seq != nullptr, "Genbank entry storing: NULL sequence object", );
         }
     }
     if (objectsMap.contains(GObjectTypes::ANNOTATION_TABLE)) {
         anns = objectsMap[GObjectTypes::ANNOTATION_TABLE];
     }
-    SAFE_POINT(nullptr != seq || !anns.isEmpty(), "Store entry: nothing to write", );
+    SAFE_POINT(seq != nullptr || !anns.isEmpty(), "Store entry: nothing to write", );
 
     // reading header attribute
     QString locusFromAttributes;
@@ -808,7 +808,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter* io, const QList<GObject
     QList<Annotation*> sortedAnnotations;
     foreach (GObject* o, aos) {
         auto ao = qobject_cast<AnnotationTableObject*>(o);
-        CHECK_EXT(nullptr != ao, si.setError(tr("Invalid annotation table!")), );
+        CHECK_EXT(ao != nullptr, si.setError(tr("Invalid annotation table!")), );
         sortedAnnotations += ao->getAnnotations();
     }
 

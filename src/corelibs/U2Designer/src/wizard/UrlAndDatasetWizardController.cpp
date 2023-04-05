@@ -50,7 +50,7 @@ QWidget* UrlAndDatasetWizardController::createGUI(U2OpStatus& os) {
     QList<Dataset> urls = value1.value<QList<Dataset>>();
     QList<Dataset> sets = value2.value<QList<Dataset>>();
 
-    if (nullptr != dsc) {
+    if (dsc != nullptr) {
         delete dsc;
     }
     dsc = new UrlAndDatasetController(urls, sets, info1.hints[AttributeInfo::LABEL].toString(), info2.hints[AttributeInfo::LABEL].toString());

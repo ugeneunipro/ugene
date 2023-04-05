@@ -128,9 +128,9 @@ QString SeqPasterWidgetController::addSequence(const QString& name, QString data
     if (ui->groupBox->isChecked()) {
         alph = U2AlphabetUtils::getById((ui->alphabetBox->itemData(ui->alphabetBox->currentIndex())).toString());
     } else {
-        alph = nullptr != preferred ? preferred : U2AlphabetUtils::findBestAlphabet(seq);
+        alph = preferred != nullptr ? preferred : U2AlphabetUtils::findBestAlphabet(seq);
     }
-    CHECK(nullptr != alph, tr("Alphabet not detected"));
+    CHECK(alph != nullptr, tr("Alphabet not detected"));
 
     bool replace = ui->replaceRB->isChecked();
     if (replace) {
