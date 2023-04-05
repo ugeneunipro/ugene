@@ -134,6 +134,9 @@ public:
 
     virtual void addGObjectViewState(GObjectViewState* s) = 0;
 
+    /** Updates state name by name. The state must already exist. */
+    virtual void updateGObjectViewState(const GObjectViewState& updatedState) = 0;
+
     virtual void removeGObjectViewState(GObjectViewState* s) = 0;
 
     virtual void makeClean() = 0;
@@ -161,6 +164,8 @@ signals:
     void si_documentRemoved(Document* d);
 
     void si_objectViewStateAdded(GObjectViewState*);
+
+    void si_objectViewStateChanged(GObjectViewState*);
 
     void si_objectViewStateRemoved(GObjectViewState*);
 };

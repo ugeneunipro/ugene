@@ -56,28 +56,33 @@ ObjectViewTreeController::ObjectViewTreeController(QTreeWidget* w)
     activateViewAction->setObjectName(ACTION_ACTIVATE_VIEW);
     activateViewAction->setShortcut(QKeySequence(Qt::Key_Space));
     activateViewAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(activateViewAction, SIGNAL(triggered()), SLOT(sl_activateView()));
+    connect(activateViewAction, &QAction::triggered, this, &ObjectViewTreeController::sl_activateView);
 
     addStateAction = new QAction(tr("Add bookmark"), this);
     addStateAction->setObjectName(ACTION_ADD_BOOKMARK);
     addStateAction->setIcon(QIcon(":core/images/bookmark_add.png"));
-    connect(addStateAction, SIGNAL(triggered()), SLOT(sl_addState()));
+    connect(addStateAction, &QAction::triggered, this, &ObjectViewTreeController::sl_addState);
+
+    updateStateAction = new QAction(tr("Update bookmark"), this);
+    updateStateAction->setObjectName(ACTION_UPDATE_BOOKMARK);
+    connect(updateStateAction, &QAction::triggered, this, &ObjectViewTreeController::sl_updateState);
 
     removeStateAction = new QAction(tr("Remove bookmark"), this);
     removeStateAction->setObjectName(ACTION_REMOVE_BOOKMARK);
     removeStateAction->setIcon(QIcon(":core/images/bookmark_remove.png"));
     removeStateAction->setShortcut(QKeySequence(Qt::Key_Delete));
     removeStateAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(removeStateAction, SIGNAL(triggered()), SLOT(sl_removeState()));
+    connect(removeStateAction, &QAction::triggered, this, &ObjectViewTreeController::sl_removeState);
 
     renameStateAction = new QAction(tr("Rename bookmark"), this);
     renameStateAction->setObjectName(ACTION_RENAME_BOOKMARK);
     renameStateAction->setIcon(QIcon(":core/images/bookmark_edit.png"));
     renameStateAction->setShortcut(QKeySequence(Qt::Key_F2));
     renameStateAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(renameStateAction, SIGNAL(triggered()), SLOT(sl_renameState()));
+    connect(renameStateAction, &QAction::triggered, this, &ObjectViewTreeController::sl_renameState);
 
     tree->addAction(activateViewAction);
+    tree->addAction(updateStateAction);
     tree->addAction(removeStateAction);
     tree->addAction(renameStateAction);
 
@@ -222,6 +227,7 @@ void ObjectViewTreeController::updateActions() {
 
     activateViewAction->setEnabled(hasActiveView || stateToOpen != nullptr);
     addStateAction->setEnabled(canAddStates);
+    updateStateAction->setEnabled(si != nullptr);
     removeStateAction->setEnabled(si != nullptr || (vi != nullptr && vi->childCount() > 0));
     renameStateAction->setEnabled(si != nullptr);
 }
@@ -321,6 +327,7 @@ void ObjectViewTreeController::sl_onContextMenuRequested(const QPoint& pos) {
     }
 
     popup.addAction(addStateAction);
+    popup.addAction(updateStateAction);
     popup.addAction(renameStateAction);
     popup.addAction(removeStateAction);
 
@@ -389,6 +396,24 @@ void ObjectViewTreeController::sl_addState() {
     AppContext::getProject()->addGObjectViewState(s);
 
     vi->setExpanded(true);
+}
+
+void ObjectViewTreeController::sl_updateState() {
+    GCOUNTER(cvar, "Bookmarks::Update Bookmark");
+
+    OVTViewItem* vi = activeViewItem();
+    SAFE_POINT(vi != nullptr, QString("Can't find view item to add state!"), );
+    SAFE_POINT(vi->viewWindow != nullptr, QString("View window is NULL: %1").arg(vi->viewName), );
+    SAFE_POINT(vi->viewWindow->isPersistent(), "Window is not persistent: " + vi->viewName, );
+
+    OVTStateItem* si = currentStateItem();
+    SAFE_POINT(si != nullptr, QString("Can't find state item to rename!"), );
+    QString stateName = si->text(0);
+
+    QString viewName = vi->viewWindow->getViewName();
+    QVariantMap state = vi->viewWindow->getObjectView()->saveState();
+    GObjectViewState newState(vi->viewWindow->getViewFactoryId(), vi->viewWindow->getViewName(), stateName, state);
+    AppContext::getProject()->updateGObjectViewState(newState);
 }
 
 void ObjectViewTreeController::makeViewTransient(GObjectViewWindow* w) {

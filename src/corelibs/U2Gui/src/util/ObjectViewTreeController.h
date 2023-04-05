@@ -39,16 +39,6 @@ class U2GUI_EXPORT ObjectViewTreeController : public QObject {
 public:
     ObjectViewTreeController(QTreeWidget* w);
 
-    QAction* getAddStateAction() const {
-        return addStateAction;
-    }
-    QAction* getRenameStateAction() const {
-        return renameStateAction;
-    }
-    QAction* getRemoveStateAction() const {
-        return removeStateAction;
-    }
-
     const QIcon& getActiveBookmarkIcon() const {
         return bookmarkActiveIcon;
     }
@@ -73,6 +63,7 @@ private slots:
 
     void sl_activateView();
     void sl_addState();
+    void sl_updateState();
     void sl_removeState();
     void sl_renameState();
 
@@ -97,12 +88,13 @@ private:
     void removeState(GObjectViewState* s);
 
 private:
-    QTreeWidget* tree;
+    QTreeWidget* tree = nullptr;
 
-    QAction* activateViewAction;
-    QAction* addStateAction;
-    QAction* removeStateAction;
-    QAction* renameStateAction;
+    QAction* activateViewAction = nullptr;
+    QAction* addStateAction = nullptr;
+    QAction* updateStateAction = nullptr;
+    QAction* removeStateAction = nullptr;
+    QAction* renameStateAction = nullptr;
 
     QIcon bookmarkStateIcon;
     QIcon bookmarkActiveIcon;
@@ -131,10 +123,10 @@ class OVTViewItem : public OVTItem {
 public:
     OVTViewItem(GObjectViewWindow* view, ObjectViewTreeController* c);
     OVTViewItem(const QString& viewName, ObjectViewTreeController* c);
-    virtual bool isViewItem() const {
+    bool isViewItem() const override {
         return true;
     }
-    virtual void updateVisual();
+    void updateVisual() override;
     virtual void markAsActive(bool _isActive);
     virtual bool isActiveItem() {
         return isActive;
@@ -150,10 +142,10 @@ private:
 class OVTStateItem : public OVTItem {
 public:
     OVTStateItem(GObjectViewState* state, OVTViewItem* parent, ObjectViewTreeController* c);
-    virtual bool isStateItem() const {
+    bool isStateItem() const override {
         return true;
     }
-    virtual void updateVisual();
+    void updateVisual() override;
     GObjectViewState* state;
 };
 

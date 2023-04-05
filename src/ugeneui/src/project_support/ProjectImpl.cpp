@@ -205,9 +205,27 @@ void ProjectImpl::addState(GObjectViewState* s) {
 }
 
 void ProjectImpl::addGObjectViewState(GObjectViewState* s) {
-    assert(GObjectViewUtils::findStateInList(s->getViewName(), s->getStateName(), objectViewStates) == nullptr);
+    GObjectViewState* existingState = GObjectViewUtils::findStateInList(s->getViewName(), s->getStateName(), objectViewStates);
+    SAFE_POINT(existingState == nullptr, "State with the same name already exists: " + s->getViewName() + ":" + s->getStateName(), );
     addState(s);
     emit si_objectViewStateAdded(s);
+}
+
+void ProjectImpl::updateGObjectViewState(const GObjectViewState& updatedState) {
+    const QString& viewName = updatedState.getViewName();
+    const QString& stateName = updatedState.getStateName();
+    const QVariantMap& stateData = updatedState.getStateData();
+
+    GObjectViewState* state = GObjectViewUtils::findStateInList(viewName, stateName, objectViewStates);
+    SAFE_POINT(state != nullptr, "State not found: " + viewName + ":" + stateName, );
+    SAFE_POINT(state->getViewFactoryId() == updatedState.getViewFactoryId(),
+               "State factory does not match: " + state->getViewFactoryId() + " vs " + updatedState.getViewFactoryId(), );
+
+    CHECK(stateData != state->getStateData(), );
+    state->setStateData(stateData);
+
+    emit si_objectViewStateChanged(state);
+    setModified(true);
 }
 
 void ProjectImpl::removeGObjectViewState(GObjectViewState* s) {

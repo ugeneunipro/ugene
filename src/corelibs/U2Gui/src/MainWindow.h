@@ -112,6 +112,7 @@ class QMainWindow;
 #define ACTION_BOOKMARK_TREE_VIEW "action_bookmark_tree_view"
 #define ACTION_ACTIVATE_VIEW "action_activate_view"
 #define ACTION_ADD_BOOKMARK "action_add_bookmark"
+#define ACTION_UPDATE_BOOKMARK "action_update_bookmark"
 #define ACTION_RENAME_BOOKMARK "action_rename_bookmark"
 #define ACTION_REMOVE_BOOKMARK "action_remove_bookmark"
 
