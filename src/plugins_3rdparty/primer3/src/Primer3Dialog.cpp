@@ -770,7 +770,7 @@ bool Primer3Dialog::doDataExchange() {
             }
         }
         widgetStates.insert(edit_PRIMER_PRODUCT_SIZE_RANGE, ok);
-        if (!alreadyHasError) {
+        if (!ok && !alreadyHasError) {
             errors.append(getWidgetTemplateError(edit_PRIMER_PRODUCT_SIZE_RANGE));
         }
     }
