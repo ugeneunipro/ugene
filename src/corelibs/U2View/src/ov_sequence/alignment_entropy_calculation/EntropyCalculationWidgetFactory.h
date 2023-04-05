@@ -33,7 +33,7 @@ class U2VIEW_EXPORT EntropyCalculationWidgetFactory : public OPWidgetFactory {
 public:
     EntropyCalculationWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

@@ -41,7 +41,7 @@ EntropyCalculationWidgetFactory::EntropyCalculationWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget* EntropyCalculationWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
+QWidget* EntropyCalculationWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr, L10N::nullPointerError("GObjectView"), nullptr);
 
     AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
@@ -57,6 +57,10 @@ OPGroupParameters EntropyCalculationWidgetFactory::getOPGroupParameters() {
 
 const QString& EntropyCalculationWidgetFactory::getGroupId() {
     return GROUP_ID;
+}
+
+bool EntropyCalculationWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
+    return (OPWidgetFactory::passFiltration(filter) && filter->has3DObject());
 }
 
 }  // namespace U2

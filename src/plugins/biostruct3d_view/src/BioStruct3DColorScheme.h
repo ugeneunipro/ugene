@@ -176,7 +176,7 @@ class AlignmentEntropyColorScheme : public BioStruct3DColorScheme {
     Color4f getSelectionColor(const SharedAtom& atom) const override;
 
 private:
-    static QVector<int> entropyChainIds;
+    QVector<int> entropyChainIds;
 
 public:
     COLOR_SCHEME_FACTORY(AlignmentEntropyColorScheme)

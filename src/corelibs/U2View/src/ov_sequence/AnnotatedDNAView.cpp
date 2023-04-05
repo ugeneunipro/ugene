@@ -34,6 +34,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
+#include <U2Core/BioStruct3DObject.h>
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -264,6 +265,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
     ADVSequenceObjectContext* ctx;
     QList<DNAAlphabetType> alphabets;
 
+    bool has3DObj = false;
     for (int i = 0; i < seqViews.size(); i++) {
         if (seqViews[i] != nullptr) {
             ctx = seqViews[i]->getActiveSequenceContext();
@@ -272,10 +274,25 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
                 if (alphabet) {
                     alphabets.append(alphabet->getType());
                 }
+                if (!has3DObj) {
+                    auto seqObj = ctx->getSequenceObject();
+                    SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("U2SequenceObject"), nullptr);
+
+                    auto curDoc = seqObj->getDocument();
+                    SAFE_POINT(curDoc != nullptr, L10N::nullPointerError("Current document is NULL"), nullptr);
+
+                    auto objects = curDoc->getObjects();
+                    for (auto obj : objects) {
+                        auto bio3DObj = qobject_cast<BioStruct3DObject*>(obj);
+                        CHECK_CONTINUE(bio3DObj != nullptr);
+                        has3DObj = true;
+                    }
+
+                }
             }
         }
     }
-    filters.append(new OPFactoryFilterVisitor(ObjViewType_SequenceView, alphabets));
+    filters.append(new OPFactoryFilterVisitor(ObjViewType_SequenceView, alphabets, has3DObj));
 
     QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactoriesForSeqView) {
