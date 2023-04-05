@@ -117,6 +117,12 @@ public:
         } \
     }
 
+#define CHECK_NO_OS_ERROR(result) \
+    if (os.hasError()) { \
+        os.setError(QString("Can't continue when os.hasError. Location: %1:%2").arg(__FILE__).arg(__LINE__)); \
+        return result;\
+    }
+
 /** Unconditionally marks active test as failed. Prints 'errorMessage' into the log. */
 #define GT_FAIL(errorMessage, result) \
     GT_DEBUG_MESSAGE(false, errorMessage, result); \

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GET_SEQUENCE_BY_ID_
-#define GET_SEQUENCE_BY_ID_
+#pragma once
 
 #include "ui_GetSequenceByIdDialog.h"
 
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

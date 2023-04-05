@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_SEQUENCE_VIEW_ITEMS_H_
-#define _U2_EXPORT_SEQUENCE_VIEW_ITEMS_H_
+#pragma once
 
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2Region.h>
@@ -44,9 +43,9 @@ public:
     void init() override;
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 
 private:
     AnnotatedDNAView* av;
@@ -100,5 +99,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

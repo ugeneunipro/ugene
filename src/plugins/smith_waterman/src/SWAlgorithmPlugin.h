@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SW_ALGORITHM_PLUGIN_H_
-#define _U2_SW_ALGORITHM_PLUGIN_H_
+#pragma once
 
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
@@ -61,7 +60,7 @@ protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private:
     SWDialogConfig dialogConfig;
@@ -74,5 +73,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  //_U2_SW_ALGORITHM_PLUGIN_H_

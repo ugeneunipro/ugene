@@ -126,7 +126,7 @@ QDEnzymesActorPrototype::QDEnzymesActorPrototype() {
 /* EnzymesSelectorDialogHandler                                         */
 /************************************************************************/
 QString EnzymesSelectorDialogHandler::getSelectedString(QDialog* dlg) {
-    EnzymesSelectorDialog* enzDlg = qobject_cast<EnzymesSelectorDialog*>(dlg);
+    auto enzDlg = qobject_cast<EnzymesSelectorDialog*>(dlg);
     assert(enzDlg);
     return enzDlg->getSelectedString();
 }

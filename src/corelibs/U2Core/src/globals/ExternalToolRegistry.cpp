@@ -24,6 +24,7 @@
 #include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
@@ -133,6 +134,40 @@ void ExternalTool::extractAdditionalParameters(const QString& /*output*/) {
 
 void ExternalTool::performAdditionalChecks(const QString& /*toolPath*/) {
     // do nothing
+}
+
+void ExternalTool::checkPaths(const QStringList& arguments, U2OpStatus& os) const {
+    QString error;
+    for (auto check : qAsConst(pathChecks)) {
+        switch (check) {
+            case ExternalTool::PathChecks::NonLatinArguments:
+                error = ExternalToolSupportUtils::checkArgumentPathLatinSymbols(arguments);
+                break;
+            case ExternalTool::PathChecks::NonLatinTemporaryDirPath:
+                error = ExternalToolSupportUtils::checkTemporaryDirLatinSymbols();
+                break;
+            case ExternalTool::PathChecks::NonLatinToolPath:
+                error = ExternalToolSupportUtils::checkToolPathLatinSymbols(this);
+                break;
+            case ExternalTool::PathChecks::NonLatinIndexPath:
+                error = ExternalToolSupportUtils::checkIndexDirLatinSymbols();
+                break;
+            case ExternalTool::PathChecks::SpacesArguments:
+                error = ExternalToolSupportUtils::checkArgumentPathSpaces(arguments);
+                break;
+            case ExternalTool::PathChecks::SpacesTemporaryDirPath:
+                error = ExternalToolSupportUtils::checkTemporaryDirSpaces();
+                break;
+            case ExternalTool::PathChecks::SpacesToolPath:
+                error = ExternalToolSupportUtils::checkToolPathSpaces(this);
+                break;
+        }
+        if (!error.isEmpty()) {
+            error = error.arg(getName());
+            os.setError(error);
+            break;
+        }
+    }
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {

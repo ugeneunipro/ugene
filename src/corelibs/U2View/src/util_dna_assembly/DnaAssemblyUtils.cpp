@@ -354,14 +354,14 @@ void DnaAssemblyTaskWithConversions::prepare() {
 
 QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
-    FilterUnpairedReadsTask* filterTask = qobject_cast<FilterUnpairedReadsTask*>(subTask);
+    auto filterTask = qobject_cast<FilterUnpairedReadsTask*>(subTask);
     if (filterTask != nullptr) {
         settings.shortReadSets = filterTask->getFilteredReadList();
     }
     CHECK(!subTask->hasError(), result);
     CHECK(!hasError(), result);
 
-    ConvertFileTask* convertTask = qobject_cast<ConvertFileTask*>(subTask);
+    auto convertTask = qobject_cast<ConvertFileTask*>(subTask);
     if (nullptr != convertTask) {
         SAFE_POINT_EXT(conversionTasksCount > 0, setError("Conversions task count error"), result);
         if (convertTask->getSourceURL() == settings.refSeqUrl) {

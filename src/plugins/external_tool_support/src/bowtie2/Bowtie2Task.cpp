@@ -24,6 +24,7 @@
 
 #include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
 
 #include <U2Formats/BgzipTask.h>
@@ -38,6 +39,7 @@ Bowtie2BuildIndexTask::Bowtie2BuildIndexTask(const QString& referencePath, const
     : ExternalToolSupportTask("Build Bowtie2 index", TaskFlags_NR_FOSE_COSC),
       referencePath(referencePath),
       indexPath(indexPath) {
+    GCOUNTER(cvar, "ExternalTool_Bowtie2");
 }
 
 void Bowtie2BuildIndexTask::prepare() {
@@ -63,6 +65,7 @@ void Bowtie2BuildIndexTask::prepare() {
 Bowtie2AlignTask::Bowtie2AlignTask(const DnaAssemblyToRefTaskSettings& settings)
     : ExternalToolSupportTask("Bowtie2 reads assembly", TaskFlags_NR_FOSE_COSC),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_Bowtie2");
 }
 
 void Bowtie2AlignTask::prepare() {

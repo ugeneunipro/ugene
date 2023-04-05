@@ -116,9 +116,9 @@ QList<SEnzymeData> EnzymesSelectorWidget::getSelectedEnzymes() {
     QList<SEnzymeData> selectedEnzymes;
     lastSelection.clear();
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         for (int j = 0, m = gi->childCount(); j < m; j++) {
-            EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(gi->child(j));
+            auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
             if (item->checkState(0) == Qt::Checked) {
                 selectedEnzymes.append(item->enzyme);
                 lastSelection.insert(item->enzyme->id);
@@ -174,9 +174,9 @@ void EnzymesSelectorWidget::saveFile(const QString& url) {
     QSet<QString> enzymes;
 
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         for (int j = 0, m = gi->childCount(); j < m; j++) {
-            EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(gi->child(j));
+            auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
             if (item->checkState(0) == Qt::Checked) {
                 enzymes.insert(item->enzyme->id);
             }
@@ -218,7 +218,7 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
         gi->addChild(item);
     }
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         gi->updateVisual();
     }
     if (tree->topLevelItemCount() > 0 && tree->topLevelItem(0)->childCount() < 10) {
@@ -240,9 +240,25 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     loadedEnzymes = enzymes;
 }
 
+int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesListString) const {
+    int checked = 0;
+    QStringList checkedNamesList;
+    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        checked += gi->checkedEnzymes.size();
+        foreach(const EnzymeTreeItem * ci, gi->checkedEnzymes) {
+            checkedNamesList.append(ci->enzyme->id);
+        }
+    }
+    checkedNamesList.sort();
+    checkedNamesListString = checkedNamesList.join(",");
+
+    return checked;
+}
+
 EnzymeGroupTreeItem* EnzymesSelectorWidget::findGroupItem(const QString& s, bool create) {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         if (gi->s == s) {
             return gi;
         }
@@ -257,11 +273,11 @@ EnzymeGroupTreeItem* EnzymesSelectorWidget::findGroupItem(const QString& s, bool
 
 void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; ++i) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         int numHiddenItems = 0;
         int itemCount = gi->childCount();
         for (int j = 0; j < itemCount; ++j) {
-            EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(gi->child(j));
+            auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
             if (item->enzyme->id.contains(filterText, Qt::CaseInsensitive)) {
                 item->setHidden(false);
             } else {
@@ -274,17 +290,13 @@ void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
 }
 
 void EnzymesSelectorWidget::updateStatus() {
-    int nChecked = 0;
-    QStringList checkedNamesList;
-    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
-        nChecked += gi->checkedEnzymes.size();
-        foreach (const EnzymeTreeItem* ci, gi->checkedEnzymes) {
-            checkedNamesList.append(ci->enzyme->id);
-        }
+    QString checkedNamesListString;
+    int nChecked = gatherCheckedNamesListString(checkedNamesListString);
+    if (nChecked > 1000) {
+        checkedEnzymesEdit->setPlainText(tr("%1 sites selected. Click \"Save selection\" to export them to the separate file").arg(nChecked));
+    } else {
+        checkedEnzymesEdit->setPlainText(checkedNamesListString);
     }
-    checkedNamesList.sort();
-    checkedEnzymesEdit->setPlainText(checkedNamesList.join(","));
 
     emit si_selectionModified(totalEnzymes, nChecked);
 }
@@ -300,9 +312,9 @@ void EnzymesSelectorWidget::sl_openEnzymesFile() {
 void EnzymesSelectorWidget::sl_selectAll() {
     ignoreItemChecks = true;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         for (int j = 0, m = gi->childCount(); j < m; j++) {
-            EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(gi->child(j));
+            auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
             item->setCheckState(0, Qt::Checked);
         }
         gi->updateVisual();
@@ -314,9 +326,9 @@ void EnzymesSelectorWidget::sl_selectAll() {
 void EnzymesSelectorWidget::sl_selectNone() {
     ignoreItemChecks = true;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         for (int j = 0, m = gi->childCount(); j < m; j++) {
-            EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(gi->child(j));
+            auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
             item->setCheckState(0, Qt::Unchecked);
         }
         gi->updateVisual();
@@ -332,9 +344,9 @@ void EnzymesSelectorWidget::sl_selectByLength() {
         minLength = len;
         ignoreItemChecks = true;
         for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-            EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+            auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
             for (int j = 0, m = gi->childCount(); j < m; j++) {
-                EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(gi->child(j));
+                auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
                 if (item->enzyme->seq.length() < len) {
                     item->setCheckState(0, Qt::Unchecked);
                 } else {
@@ -351,7 +363,7 @@ void EnzymesSelectorWidget::sl_selectByLength() {
 void EnzymesSelectorWidget::sl_inverseSelection() {
     ignoreItemChecks = true;
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         for (int j = 0, m = gi->childCount(); j < m; j++) {
             EnzymeTreeItem* item = static_cast<EnzymeTreeItem*>(gi->child(j));
             Qt::CheckState oldState = item->checkState(0);
@@ -364,7 +376,8 @@ void EnzymesSelectorWidget::sl_inverseSelection() {
 }
 
 void EnzymesSelectorWidget::sl_saveSelectionToFile() {
-    QString selectionData = checkedEnzymesEdit->toPlainText();
+    QString selectionData;
+    gatherCheckedNamesListString(selectionData);
 
     if (selectionData.size() == 0) {
         QMessageBox::warning(this, tr("Save selection"), tr("Can not save empty selection!"));
@@ -565,10 +578,8 @@ void FindEnzymesDialog::accept() {
 
     if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(advSequenceContext->getSequenceLength(), selectedEnzymes.size())) {
         QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
-        int ret = QMessageBox::question(this, tr("Warning!"), message, QMessageBox::Cancel | QMessageBox::Ignore);
-        if (ret == QMessageBox::Cancel) {
-            return;
-        }
+        QMessageBox::critical(this, tr("Error!"), message, QMessageBox::Ok);
+        return;
     }
 
     saveSettings();

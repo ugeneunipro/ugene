@@ -127,6 +127,8 @@ workflow "In silico PCR"{
                         }
                         in-silico-pcr.use-ambiguous-bases {
                         }
+                        in-silico-pcr.temperature-settings {
+                        }
                     }
                 }
             }

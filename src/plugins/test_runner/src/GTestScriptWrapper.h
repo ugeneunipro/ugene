@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEST_SCRIPT_WRAPPER_H_
-#define _U2_TEST_SCRIPT_WRAPPER_H_
+#pragma once
 
 #include <QObject>
 #include <QScriptValue>
@@ -50,5 +49,3 @@ public:
     static void setQTest(QScriptEngine* curEng);
 };
 }  // namespace U2
-
-#endif

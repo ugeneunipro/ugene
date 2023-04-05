@@ -37,7 +37,7 @@ SequenceAccFilterTask::SequenceAccFilterTask(const ProjectTreeControllerModeSett
 }
 
 bool SequenceAccFilterTask::filterAcceptsObject(GObject* obj) {
-    U2SequenceObject* seqObject = qobject_cast<U2SequenceObject*>(obj);
+    auto seqObject = qobject_cast<U2SequenceObject*>(obj);
     CHECK(nullptr != seqObject, false);
     return settings.nameFilterAcceptsString(seqObject->getSequenceInfo()[DNAInfo::ACCESSION].toString());
 }

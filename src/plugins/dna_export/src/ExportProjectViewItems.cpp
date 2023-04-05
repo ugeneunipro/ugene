@@ -205,7 +205,7 @@ void ExportProjectViewItemsContoller::addExportImportMenu(QMenu& m) {
     const bool exportedObjectsFound = (1 == os->getSelectedObjects().size()) &&
                                       (1 == SelectionUtils::findObjects(GObjectTypes::TEXT, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::VARIANT_TRACK, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::PHYLOGENETIC_TREE, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::ASSEMBLY, &ms, UOF_LoadedOnly).size() || 1 == SelectionUtils::findObjects(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, &ms, UOF_LoadedOnly).size());
     if (exportedObjectsFound) {
-        if (nullptr == sub) {
+        if (sub == nullptr) {
             sub = new QMenu(tr("Export/Import"));
         }
         sub->addAction(exportObjectAction);
@@ -324,7 +324,7 @@ void ExportProjectViewItemsContoller::sl_saveCorrespondingSequence() {
         }
     }
 
-    if (nullptr == seqObj) {
+    if (seqObj == nullptr) {
         QMessageBox::information(nullptr, tr(MESSAGE_BOX_INFO_TITLE), tr("There is no associated sequence found."));
         return;
     }
@@ -539,7 +539,7 @@ void ExportProjectViewItemsContoller::sl_exportChromatogramToSCF() {
         return;
     }
     GObject* obj = set.first();
-    DNAChromatogramObject* chromaObj = qobject_cast<DNAChromatogramObject*>(obj);
+    auto chromaObj = qobject_cast<DNAChromatogramObject*>(obj);
     assert(chromaObj != nullptr);
 
     QObjectScopedPointer<ExportChromatogramDialog> d = new ExportChromatogramDialog(QApplication::activeWindow(), chromaObj->getDocument()->getURL());
@@ -576,7 +576,7 @@ void ExportProjectViewItemsContoller::sl_exportAnnotations() {
     }
 
     GObject* obj = set.first();
-    AnnotationTableObject* aObj = qobject_cast<AnnotationTableObject*>(obj);
+    auto aObj = qobject_cast<AnnotationTableObject*>(obj);
     SAFE_POINT(nullptr != aObj, "Invalid annotation table detected!", );
     if (!aObj->getAnnotations().isEmpty()) {
         SAFE_POINT(nullptr != aObj->getDocument(), "Invalid document detected!", );
@@ -610,7 +610,7 @@ void ExportProjectViewItemsContoller::sl_exportSequenceQuality() {
         if (gObj->getDocument()->getDocumentFormatId() != BaseDocumentFormats::FASTQ) {
             continue;
         }
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(gObj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(gObj);
         ExportQualityScoresConfig cfg;
         cfg.dstFilePath = lod.url;
         Task* exportTask = new ExportPhredQualityScoresTask(seqObj, cfg);

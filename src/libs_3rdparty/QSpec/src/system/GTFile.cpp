@@ -413,7 +413,7 @@ QByteArray GTFile::readAll(GUITestOpStatus& os, const QString& filePath) {
     Q_UNUSED(os);
     QFile file(filePath);
     bool opened = file.open(QFile::ReadOnly);
-    GT_CHECK_RESULT(opened, "Can't open file for read", "");
+    GT_CHECK_RESULT(opened, "Can't open file for read: '" + filePath + "'", "");
 
     return file.readAll();
 }

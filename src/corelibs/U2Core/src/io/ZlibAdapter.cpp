@@ -178,8 +178,8 @@ bool GzipUtil::skip(const GZipIndexAccessPoint& here, qint64 offset) {
     int ret = 0;
     char discard[GZipIndex::WINSIZE];
 
-    LocalFileAdapter* localIO = qobject_cast<LocalFileAdapter*>(io);
-    if (nullptr == localIO) {
+    auto localIO = qobject_cast<LocalFileAdapter*>(io);
+    if (localIO == nullptr) {
         return false;
     }
     bool ok = localIO->skip(here.in - (here.bits ? 1 : 0));
@@ -328,7 +328,7 @@ bool ZlibAdapter::skip(qint64 nBytes) {
 }
 
 bool ZlibAdapter::skip(const GZipIndexAccessPoint& point, qint64 offset) {
-    if (nullptr == z) {
+    if (z == nullptr) {
         return false;
     }
     if (!point.window.size() || 0 > offset) {

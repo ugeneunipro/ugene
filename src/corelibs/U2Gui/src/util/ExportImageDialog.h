@@ -80,7 +80,7 @@ public slots:
     void accept();
 
 private slots:
-    void sl_onFormatsBoxItemChanged(const QString& format);
+    void sl_onFormatsBoxItemChanged(const QString& newFormat);
 
     void sl_showMessage(const QString& message);
     void sl_disableExport(bool disable);

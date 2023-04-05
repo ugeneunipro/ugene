@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H
-#define _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -31,7 +30,7 @@ namespace U2 {
 class ExternalToolSupportAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolIds);
+    ExternalToolSupportAction(QObject* p, GObjectViewController* v, const QString& _text, int order, const QStringList& _toolIds);
     ExternalToolSupportAction(const QString& text, QObject* p, const QStringList& _toolIds);
 
     const QStringList getToolIds() const {
@@ -52,4 +51,3 @@ private:
 };
 
 }  // namespace U2
-#endif  // _U2_EXTERNAL_TOOL_SUPPORT_ACTION_H

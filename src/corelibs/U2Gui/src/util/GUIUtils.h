@@ -24,6 +24,8 @@
 #include <QAction>
 #include <QList>
 #include <QMenu>
+#include <QAbstractSlider>
+#include <QLabel>
 #include <QTreeWidgetItem>
 
 #include <U2Core/global.h>
@@ -77,6 +79,15 @@ public:
      */
     static constexpr int MAX_SAFE_PIXMAP_WIDTH = 10 * 1000;
     static constexpr int MAX_SAFE_PIXMAP_HEIGHT = 10 * 1000;
+};
+
+/** Resets QSlider value on double clicks. Uses the slider as a parent and is auto-deleted with a slider. */
+class U2GUI_EXPORT ResetSliderOnDoubleClickBehavior : public QObject {
+public:
+    ResetSliderOnDoubleClickBehavior(QAbstractSlider* slider, QLabel* relatedLabel = nullptr);
+    bool eventFilter(QObject*, QEvent* event) override;
+
+    int defaultValue = 0;
 };
 
 }  // namespace U2

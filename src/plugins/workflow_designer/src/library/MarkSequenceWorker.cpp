@@ -76,7 +76,7 @@ Task* MarkSequenceWorker::tick() {
         QVariantMap data = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = data.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (nullptr == seqObj.data()) {
+        if (seqObj.data() == nullptr) {
             return nullptr;
         }
         U2OpStatusImpl os;
@@ -91,7 +91,7 @@ Task* MarkSequenceWorker::tick() {
             anns << QVariant::fromValue(ad);
         }
 
-        MarkerAttribute* attr = dynamic_cast<MarkerAttribute*>(actor->getParameter(MARKER_ATTR_ID));
+        auto attr = dynamic_cast<MarkerAttribute*>(actor->getParameter(MARKER_ATTR_ID));
         QVariantMap m;
         foreach (Marker* marker, attr->getMarkers()) {
             QString res;

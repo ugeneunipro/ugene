@@ -69,7 +69,7 @@ Task::ReportResult GTest_DNASequenceSize::report() {
         return ReportResult_Finished;
     }
 
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -102,7 +102,7 @@ Task::ReportResult GTest_DNASequenceAlphabet::report() {
         return ReportResult_Finished;
     }
 
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(name));
         return ReportResult_Finished;
@@ -150,7 +150,7 @@ Task::ReportResult GTest_DNASequencePart::report() {
         return ReportResult_Finished;
     }
 
-    U2SequenceObject* objSequence = qobject_cast<U2SequenceObject*>(obj);
+    auto objSequence = qobject_cast<U2SequenceObject*>(obj);
     if (objSequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -203,7 +203,7 @@ Task::ReportResult GTest_DNASequenceAlphabetType::report() {
         return ReportResult_Finished;
     }
 
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
@@ -235,7 +235,7 @@ Task::ReportResult GTest_DNASequenceAlphabetId::report() {
         return ReportResult_Finished;
     }
 
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;

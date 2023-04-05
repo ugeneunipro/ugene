@@ -232,7 +232,7 @@ QList<QTreeWidgetItem*> GTTreeWidget::findItems(GUITestOpStatus& os, QTreeWidget
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTTreeWidget::click(GUITestOpStatus& os, QTreeWidgetItem* item, int column) {
+void GTTreeWidget::click(GUITestOpStatus& os, QTreeWidgetItem* item, int column, Qt::MouseButton button) {
     GT_CHECK(item != nullptr, "item is NULL");
     GTTreeWidget::scrollToItem(os, item);
 
@@ -247,11 +247,11 @@ void GTTreeWidget::click(GUITestOpStatus& os, QTreeWidgetItem* item, int column)
     }
 
     GTMouseDriver::moveTo(point);
-    GTMouseDriver::click();
+    GTMouseDriver::click(button);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "click"
+#define GT_METHOD_NAME "doubleClick"
 void GTTreeWidget::doubleClick(GUITestOpStatus& os, QTreeWidgetItem* item, int column) {
     GT_CHECK(item != nullptr, "item is NULL");
     GTTreeWidget::scrollToItem(os, item);

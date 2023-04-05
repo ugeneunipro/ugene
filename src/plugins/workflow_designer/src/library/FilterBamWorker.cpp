@@ -22,6 +22,7 @@
 #include "FilterBamWorker.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
@@ -64,7 +65,7 @@ static const QString FLAG_ID("flag");
 /* FilterBamPrompter */
 /************************************************************************/
 QString FilterBamPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -262,7 +263,7 @@ void FilterBamWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    SamtoolsViewFilterTask* filterTask = dynamic_cast<SamtoolsViewFilterTask*>(task);
+    auto filterTask = dynamic_cast<SamtoolsViewFilterTask*>(task);
 
     if (nullptr != filterTask) {
         return filterTask->getResult();
@@ -354,6 +355,7 @@ const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
 SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting& settings)
     : ExternalToolSupportTask(tr("Samtool view (filter) for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)), settings(settings), resultUrl("") {
+    GCOUNTER(cvar, "ExternalTool_Samtools");
 }
 
 void SamtoolsViewFilterTask::prepare() {

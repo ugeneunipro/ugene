@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CHROMATOGRAM_VIEW_H_
-#define _U2_CHROMATOGRAM_VIEW_H_
+#pragma once
 
 #include <U2Core/DNAChromatogram.h>
 #include <U2Core/GObject.h>
@@ -34,7 +33,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class ChromatogramViewRenderArea;
 class AnnotatedDNAView;
-class GObjectView;
+class GObjectViewController;
 class Task;
 
 struct ChromatogramViewSettings {
@@ -80,7 +79,7 @@ private slots:
     void sl_onSequenceObjectLoaded(Task*);
     void sl_clearEditableSequence();
     void sl_removeChanges();
-    void sl_onObjectRemoved(GObjectView*, GObject*);
+    void sl_onObjectRemoved(GObjectViewController*, GObject*);
     void sl_showHideTrace();
     void sl_showAllTraces();
 
@@ -155,5 +154,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

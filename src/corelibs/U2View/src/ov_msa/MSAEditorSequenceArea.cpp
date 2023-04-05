@@ -83,8 +83,8 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt* _ui, GScrollBar* hb, G
 
     initRenderer();
 
-    connect(editor, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
+    connect(editor, &GObjectViewController::si_buildMenu, this, &MSAEditorSequenceArea::sl_buildMenu);
+    connect(editor, &GObjectViewController::si_buildStaticToolbar, this, &MSAEditorSequenceArea::sl_buildStaticToolbar);
 
     selectionColor = Qt::black;
     editingEnabled = true;
@@ -172,7 +172,7 @@ bool MSAEditorSequenceArea::hasAminoAlphabet() {
 
 QSize MSAEditorSequenceArea::sizeHint() const {
     QSize s = QWidget::sizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height() + 2);
     }
     return s;
@@ -180,7 +180,7 @@ QSize MSAEditorSequenceArea::sizeHint() const {
 
 QSize MSAEditorSequenceArea::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         int viewRowCount = editor->getCollapseModel()->getViewRowCount();
         int numSequences = editor->getNumSequences();
         int newHeight = (editor->getRowHeight() + 0) *
@@ -202,7 +202,7 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent* fe) {
 }
 
 void MSAEditorSequenceArea::wheelEvent(QWheelEvent* we) {
-    if (!editor->getMultilineMode()) {
+    if (!editor->isMultilineMode()) {
         MaEditorSequenceArea::wheelEvent(we);
     }
 }
@@ -214,7 +214,7 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     getEditor()->updateCollapseModel();
 }
 
-void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
+void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToolBar* t) {
     Q_UNUSED(v);
 
     MaEditorWgt* child0 = editor->getMaEditorMultilineWgt()->getUI(0);
@@ -231,7 +231,7 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView* v, QToolBar* t) {
     t->addSeparator();
 }
 
-void MSAEditorSequenceArea::sl_buildMenu(GObjectView*, QMenu* m, const QString& menuType) {
+void MSAEditorSequenceArea::sl_buildMenu(GObjectViewController*, QMenu* m, const QString& menuType) {
     if (editor->getMaEditorMultilineWgt()->getActiveChild() != ui) {
         return;
     }
@@ -583,7 +583,7 @@ void MSAEditorSequenceArea::sl_pasteTaskFinished(Task* _pasteTask) {
 }
 
 void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task* task) {
-    AddSequencesFromDocumentsToAlignmentTask* addSeqTask = qobject_cast<AddSequencesFromDocumentsToAlignmentTask*>(task);
+    auto addSeqTask = qobject_cast<AddSequencesFromDocumentsToAlignmentTask*>(task);
     CHECK(addSeqTask != nullptr, );
     const MaModificationInfo& mi = addSeqTask->getMaModificationInfo();
     if (!mi.rowListChanged) {
@@ -635,7 +635,7 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
     QList<DNASequence> objectsToAdd;
     U2OpStatus2Log os;
     foreach (GObject* obj, objects) {
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         if (seqObj) {
             objectsToAdd.append(seqObj->getWholeSequence(os));
             SAFE_POINT_OP(os, );

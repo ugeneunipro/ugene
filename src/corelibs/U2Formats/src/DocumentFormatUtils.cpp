@@ -115,14 +115,14 @@ QList<AnnotationSettings*> DocumentFormatUtils::predefinedSettings() {
 QList<DNASequence> DocumentFormatUtils::toSequences(const GObject* obj) {
     QList<DNASequence> res;
     SAFE_POINT(obj != nullptr, "Gobject is NULL", res);
-    const U2SequenceObject* seqObj = qobject_cast<const U2SequenceObject*>(obj);
+    auto seqObj = qobject_cast<const U2SequenceObject*>(obj);
     U2OpStatus2Log os;
     if (seqObj != nullptr) {
         res << seqObj->getWholeSequence(os);
         CHECK_OP_EXT(os, res.removeLast(), res);
         return res;
     }
-    const MultipleSequenceAlignmentObject* maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
+    auto maObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
     CHECK(maObj != nullptr, res);  // MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet* al = maObj->getAlphabet();
     qint64 alLen = maObj->getMsa()->getLength();
@@ -163,7 +163,7 @@ void DocumentFormatUtils::updateFormatHints(QList<GObject*>& objects, QVariantMa
         }
     }
     if (sequences.size() == 1) {
-        U2SequenceObject* so = qobject_cast<U2SequenceObject*>(sequences.first());
+        auto so = qobject_cast<U2SequenceObject*>(sequences.first());
         int len = so->getSequenceLength();
         fs[DocumentReadingMode_SequenceMergingFinalSizeHint] = len;
     }

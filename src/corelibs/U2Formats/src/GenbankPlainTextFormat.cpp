@@ -417,7 +417,7 @@ void GenbankPlainTextFormat::storeDocument(Document* doc, IOAdapter* io, U2OpSta
     QList<GObject*> anns = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
 
     while (!seqs.isEmpty() || !anns.isEmpty()) {
-        U2SequenceObject* so = seqs.isEmpty() ? nullptr : static_cast<U2SequenceObject*>(seqs.takeFirst());
+        auto so = seqs.isEmpty() ? nullptr : static_cast<U2SequenceObject*>(seqs.takeFirst());
         QList<GObject*> aos;
         if (so) {
             if (!anns.isEmpty()) {
@@ -807,7 +807,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter* io, const QList<GObject
 
     QList<Annotation*> sortedAnnotations;
     foreach (GObject* o, aos) {
-        AnnotationTableObject* ao = qobject_cast<AnnotationTableObject*>(o);
+        auto ao = qobject_cast<AnnotationTableObject*>(o);
         CHECK_EXT(nullptr != ao, si.setError(tr("Invalid annotation table!")), );
         sortedAnnotations += ao->getAnnotations();
     }

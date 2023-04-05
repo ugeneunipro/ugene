@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEST_VIEW_CONTROLLER_H_
-#define _U2_TEST_VIEW_CONTROLLER_H_
+#pragma once
 
 #include <QMainWindow>
 #include <QTime>
@@ -205,5 +204,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

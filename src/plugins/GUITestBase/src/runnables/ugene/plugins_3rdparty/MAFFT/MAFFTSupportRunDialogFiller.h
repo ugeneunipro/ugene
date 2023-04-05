@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_
-#define _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_
+#pragma once
 
 #include <base_dialogs/GTFileDialog.h>
 #include <utils/GTUtilsDialog.h>
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_GUI_MAFFT_SUPPORT_RUN_DIALOG_FILLER_H_

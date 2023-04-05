@@ -581,11 +581,6 @@ To append data to existing file press &apos;Append&apos;.</source>
         <translation>Invalid read position: %1</translation>
     </message>
     <message>
-        <location filename="../src/Reader.cpp" line="140"/>
-        <source>Invalid read length: %1</source>
-        <translation>Invalid read length: %1</translation>
-    </message>
-    <message>
         <location filename="../src/Reader.cpp" line="145"/>
         <source>Invalid mate reference id: %1</source>
         <translation>Invalid mate reference id: %1</translation>

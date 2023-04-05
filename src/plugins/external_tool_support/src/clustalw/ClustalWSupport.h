@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CLUSTALW_SUPPORT_H
-#define _U2_CLUSTALW_SUPPORT_H
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -57,8 +56,7 @@ protected slots:
     void sl_align();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 }  // namespace U2
-#endif  // _U2_CLUSTALW_SUPPORT_H

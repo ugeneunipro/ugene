@@ -34,7 +34,7 @@ namespace U2 {
 
 class Document;
 class GObject;
-class GObjectView;
+class GObjectViewController;
 class GObjectViewAction;
 class GObjectViewActionsProvider;
 class GObjectViewFactory;
@@ -52,7 +52,7 @@ public:
 
     void unregisterGObjectViewFactory(GObjectViewFactory* f);
 
-    GObjectViewFactory* getFactoryById(GObjectViewFactoryId id) const;
+    GObjectViewFactory* getFactoryById(const GObjectViewFactoryId& id) const;
 
     QList<GObjectViewFactory*> getAllFactories() const {
         return mapping.values();
@@ -66,8 +66,8 @@ class GObjectReference;
 class U2GUI_EXPORT GObjectViewState : public QObject {
     Q_OBJECT
 public:
-    GObjectViewState(GObjectViewFactoryId factoryId, const QString& viewName, const QString& stateName, const QVariantMap& stateData, QObject* parent = nullptr)
-        : QObject(parent), factoryId(factoryId), viewName(viewName), stateName(stateName), stateData(stateData) {
+    GObjectViewState(const GObjectViewFactoryId& _factoryId, const QString& viewName, const QString& stateName, const QVariantMap& stateData, QObject* parent = nullptr)
+        : QObject(parent), factoryId(_factoryId), viewName(viewName), stateName(stateName), stateData(stateData) {
     }
 
     GObjectViewFactoryId getViewFactoryId() const {
@@ -108,23 +108,15 @@ class U2GUI_EXPORT GObjectViewFactory : public QObject {
 public:
     static const GObjectViewFactoryId SIMPLE_TEXT_FACTORY;
 
-    GObjectViewFactory(GObjectViewFactoryId id, const QString& name, QObject* parent = nullptr)
-        : QObject(parent), id(id), name(name) {
-    }
+    GObjectViewFactory(const GObjectViewFactoryId& id, const QString& name, QObject* parent = nullptr);
 
-    GObjectViewFactoryId getId() const {
-        return id;
-    }
+    const GObjectViewFactoryId& getId() const;
 
-    QString getName() const {
-        return name;
-    }
+    const QString& getName() const;
 
     virtual bool canCreateView(const MultiGSelection& multiSelection) = 0;
 
-    virtual bool supportsSavedStates() const {
-        return false;
-    }
+    virtual bool supportsSavedStates() const;
 
     virtual bool isStateInSelection(const MultiGSelection& multiSelection, const QVariantMap& stateData);
 
@@ -138,33 +130,24 @@ protected:
 };
 
 class GObjectViewCloseInterface;
-class OptionsPanel;
+class OptionsPanelController;
 class GObjectViewWindow;
 
-class U2GUI_EXPORT GObjectView : public QObject {
+class U2GUI_EXPORT GObjectViewController : public QObject {
     friend class GObjectViewWindow;
     Q_OBJECT
 public:
-    GObjectView(GObjectViewFactoryId factoryId, const QString& viewName, QObject* p = nullptr);
+    GObjectViewController(const GObjectViewFactoryId& factoryId, const QString& viewName, QObject* parent = nullptr);
 
-    GObjectViewFactoryId getFactoryId() const {
-        return factoryId;
-    }
+    const GObjectViewFactoryId& getFactoryId() const;
 
-    const QString& getName() const {
-        return viewName;
-    }
+    const QString& getName() const;
 
     void setName(const QString& name);
 
-    QWidget* getWidget();
+    QWidget* getWidget() const;
 
-    /** Returns the options panel object, or 0 if it is not defined */
-    virtual OptionsPanel* getOptionsPanel();
-
-    const QList<GObject*>& getObjects() const {
-        return objects;
-    }
+    const QList<GObject*>& getObjects() const;
 
     // Returns true if view  contains this object
     bool containsObject(GObject* obj) const;
@@ -172,9 +155,7 @@ public:
     // Returns true if view  contains any objects from the document
     bool containsDocumentObjects(Document* doc) const;
 
-    virtual QVariantMap saveState() {
-        return QVariantMap();
-    }
+    virtual QVariantMap saveState();
 
     virtual Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) = 0;
 
@@ -191,26 +172,21 @@ public:
 
     virtual void removeObject(GObject* o);
 
-    virtual void saveWidgetState() {
-    }
+    virtual void saveWidgetState();
 
-    virtual void addObjectHandler(GObjectViewObjectHandler* oh) {
-        objectHandlers.append(oh);
-    }
+    virtual void addObjectHandler(GObjectViewObjectHandler* oh);
 
-    virtual void removeObjectHandler(GObjectViewObjectHandler* oh) {
-        objectHandlers.removeOne(oh);
-    }
+    virtual void removeObjectHandler(GObjectViewObjectHandler* oh);
 
-    virtual bool onCloseEvent() {
-        return true;
-    }
+    virtual bool onCloseEvent();
 
     /** Registers a new actions provider to the view. */
     void registerActionProvider(GObjectViewActionsProvider* actionsProvider);
 
     /** Unregisters an actions provider from the view. */
     void unregisterActionProvider(GObjectViewActionsProvider* actionsProvider);
+
+    OptionsPanelController* getOptionsPanelController() const;
 
 protected:
     /** if 'true' is returned -> view will be closed */
@@ -221,9 +197,10 @@ protected:
     /** Handles object rename event. Does nothing by default. */
     virtual void onObjectRenamed(GObject* obj, const QString& oldName);
 
-protected:
     virtual void _removeObject(GObject* o);
-    virtual QWidget* createWidget() = 0;
+
+    /** Creates a new view widget. Called only once. */
+    virtual QWidget* createViewWidget(QWidget* parent) = 0;
 
     /**
      * Adds all actions with the given menu types into the menu.
@@ -241,16 +218,19 @@ protected:
      */
     virtual void onAfterViewWindowInit();
 
+private:
+    QWidget* createWidget(QWidget* parent);
+
 signals:
     /**
      * Emitted when menu of the given type is about to be shown.
      * A client should add related menu items to the menu.
      */
-    void si_buildMenu(GObjectView* v, QMenu* m, const QString& type);
+    void si_buildMenu(GObjectViewController* v, QMenu* m, const QString& type);
 
-    void si_buildStaticToolbar(GObjectView* v, QToolBar* tb);
-    void si_objectAdded(GObjectView* v, GObject* obj);
-    void si_objectRemoved(GObjectView* v, GObject* obj);
+    void si_buildStaticToolbar(GObjectViewController* v, QToolBar* tb);
+    void si_objectAdded(GObjectViewController* v, GObject* obj);
+    void si_objectRemoved(GObjectViewController* v, GObject* obj);
     void si_nameChanged(const QString& oldName);
 
 protected slots:
@@ -264,20 +244,20 @@ protected slots:
 protected:
     GObjectViewFactoryId factoryId;
     QString viewName;
-    QWidget* widget;
+    QWidget* viewWidget;
     QList<GObject*> objects;
     QList<GObject*> requiredObjects;
     GObjectViewCloseInterface* closeInterface;
     bool closing;
     QList<GObjectViewObjectHandler*> objectHandlers;
-    OptionsPanel* optionsPanel;
     QList<GObjectViewActionsProvider*> actionsProviders;
+    OptionsPanelController* optionsPanelController = nullptr;
 };
 
 class U2GUI_EXPORT GObjectViewActionsProvider {
 public:
     /** Returns list of actions available to the view. */
-    virtual QList<GObjectViewAction*> getViewActions(GObjectView* view) const = 0;
+    virtual QList<GObjectViewAction*> getViewActions(GObjectViewController* view) const = 0;
 };
 
 /** Constants for known GObject view menu types. */
@@ -301,14 +281,14 @@ class U2GUI_EXPORT GObjectViewWindow : public MWMDIWindow, public GObjectViewClo
     Q_OBJECT
 
 public:
-    GObjectViewWindow(GObjectView* view, const QString& _viewName, bool _persistent = false);
+    GObjectViewWindow(GObjectViewController* viewController, const QString& _viewName, bool _persistent = false);
 
     const QList<GObject*>& getObjects() const {
-        return view->getObjects();
+        return viewController->getObjects();
     }
 
     GObjectViewFactoryId getViewFactoryId() const {
-        return view->getFactoryId();
+        return viewController->getFactoryId();
     }
 
     bool isPersistent() const {
@@ -318,11 +298,11 @@ public:
     void setPersistent(bool v);
 
     QString getViewName() const {
-        return view->getName();
+        return viewController->getName();
     }
 
-    GObjectView* getObjectView() const {
-        return view;
+    GObjectViewController* getObjectView() const {
+        return viewController;
     }
 
     virtual void closeView();
@@ -341,7 +321,7 @@ signals:
     void si_windowClosed(GObjectViewWindow* viewWindow);
 
 protected:
-    GObjectView* view;
+    GObjectViewController* viewController;
     bool persistent;
 };
 
@@ -358,7 +338,7 @@ public:
 
     static QList<GObjectViewWindow*> getAllActiveViews();
 
-    static QList<GObjectViewWindow*> findViewsByFactoryId(GObjectViewFactoryId id);
+    static QList<GObjectViewWindow*> findViewsByFactoryId(const GObjectViewFactoryId& id);
 
     static QList<GObjectViewWindow*> findViewsWithObject(GObject* obj);
 
@@ -385,9 +365,9 @@ public:
 class U2GUI_EXPORT GObjectViewAction : public QAction {
     Q_OBJECT
 public:
-    GObjectViewAction(QObject* p, GObjectView* v, const QString& text, int order = GObjectViewAction_DefaultOrder);
+    GObjectViewAction(QObject* p, GObjectViewController* v, const QString& text, int order = GObjectViewAction_DefaultOrder);
 
-    GObjectView* getObjectView() const;
+    GObjectViewController* getObjectView() const;
 
     int getActionOrder() const;
 
@@ -400,7 +380,7 @@ public:
     void setMenuTypes(const QList<QString>& menuTypes);
 
 private:
-    GObjectView* view;
+    GObjectViewController* viewController;
 
     // Action order can be used to set-up relative action position in GUI elements
     int actionOrder;
@@ -421,13 +401,13 @@ public:
      * Checks if the handler can 'handle' the object.
      * If there is at least one handler that returns 'yes', the object can be added to the view.
      */
-    virtual bool canHandle(GObjectView* view, GObject* obj);
+    virtual bool canHandle(GObjectViewController* view, GObject* obj);
 
     /** Called when an object is added to the view. */
-    virtual void onObjectAdded(GObjectView* view, GObject* obj);
+    virtual void onObjectAdded(GObjectViewController* view, GObject* obj);
 
     /** Called when an object is removed from the view. */
-    virtual void onObjectRemoved(GObjectView* view, GObject* obj);
+    virtual void onObjectRemoved(GObjectViewController* view, GObject* obj);
 };
 
 class U2GUI_EXPORT GObjectViewWindowContext : public QObject, public GObjectViewObjectHandler, public GObjectViewActionsProvider {
@@ -438,35 +418,35 @@ public:
     virtual ~GObjectViewWindowContext();
     virtual void init();
 
-    QList<GObjectViewAction*> getViewActions(GObjectView* view) const override;
+    QList<GObjectViewAction*> getViewActions(GObjectViewController* view) const override;
 
-    void onObjectRemoved(GObjectView* v, GObject* obj) override;
+    void onObjectRemoved(GObjectViewController* v, GObject* obj) override;
 
 protected:
     /// init context associated with 'view'
-    virtual void initViewContext(GObjectView* view) = 0;
-    void addViewResource(GObjectView* view, QObject* r);
+    virtual void initViewContext(GObjectViewController* view) = 0;
+    void addViewResource(GObjectViewController* view, QObject* r);
     void addViewAction(GObjectViewAction* a);
-    GObjectViewAction* findViewAction(GObjectView* v, const QString& actionName) const;
+    GObjectViewAction* findViewAction(GObjectViewController* v, const QString& actionName) const;
 
 protected slots:
     virtual void sl_windowAdded(MWMDIWindow*);
     virtual void sl_windowClosing(MWMDIWindow*);
 
-    virtual void sl_buildMenu(GObjectView* view, QMenu* menu, const QString& type);
+    virtual void sl_buildMenu(GObjectViewController* view, QMenu* menu, const QString& type);
 
 protected:
     /**
      * Populates static global application menu with actions added by the class instance.
      * This method is called when the view builds GObjectViewMenuType::Static menu.
      */
-    virtual void buildStaticMenu(GObjectView* view, QMenu* menu);
+    virtual void buildStaticMenu(GObjectViewController* view, QMenu* menu);
 
     /**
      * Populates context popup menu with actions added by the class instance.
      * This method is called when the view builds GObjectViewMenuType::Context menu.
      */
-    virtual void buildContextMenu(GObjectView* view, QMenu* menu);
+    virtual void buildContextMenu(GObjectViewController* view, QMenu* menu);
 
     /**
      * Populates menu with type specific actions.
@@ -474,7 +454,7 @@ protected:
      * The method is never called for the generic 'GObjectViewMenuType::Context' or 'GObjectViewMenuType::Static' menu types:
      *  use 'buildContextMenu' or 'buildStaticMenu' for that types.
      */
-    virtual void buildActionMenu(GObjectView* view, QMenu* menu, const QString& menuType);
+    virtual void buildActionMenu(GObjectViewController* view, QMenu* menu, const QString& menuType);
 
     /**
      * Builds both 'GObjectViewMenuType::Static' and 'GObjectViewMenuType::Context' menus.
@@ -484,11 +464,11 @@ protected:
      *
      * This method is never called for menu types other than 'GObjectViewMenuType::Static' and 'GObjectViewMenuType::Context'.
      */
-    virtual void buildStaticOrContextMenu(GObjectView* view, QMenu* menu);
+    virtual void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu);
 
-    virtual void disconnectView(GObjectView* v);
+    virtual void disconnectView(GObjectViewController* v);
 
-    QMap<GObjectView*, QList<QObject*>> viewResources;
+    QMap<GObjectViewController*, QList<QObject*>> viewResources;
     GObjectViewFactoryId id;
 };
 

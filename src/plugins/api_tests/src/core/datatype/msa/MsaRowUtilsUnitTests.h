@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_ROW_UTILS_UNIT_TESTS_H_
-#define _U2_MSA_ROW_UTILS_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -37,5 +36,3 @@ DECLARE_METATYPE(MsaRowUtilsUnitTests, getGappedSubsequence_noGaps)
 DECLARE_METATYPE(MsaRowUtilsUnitTests, getGappedSubsequence_leadingGap)
 DECLARE_METATYPE(MsaRowUtilsUnitTests, getGappedSubsequence_midGap)
 DECLARE_METATYPE(MsaRowUtilsUnitTests, getGappedSubsequence_multiGaps)
-
-#endif

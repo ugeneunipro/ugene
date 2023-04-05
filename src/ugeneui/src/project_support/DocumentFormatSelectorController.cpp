@@ -47,7 +47,7 @@ bool LabelClickProvider::eventFilter(QObject* object, QEvent* event) {
     CHECK(label == object, false);
 
     CHECK(QEvent::MouseButtonPress == event->type(), false);
-    QMouseEvent* mouseEvent = dynamic_cast<QMouseEvent*>(event);
+    auto mouseEvent = dynamic_cast<QMouseEvent*>(event);
     CHECK(nullptr != event, false);
     CHECK(Qt::LeftButton == mouseEvent->button(), false);
 
@@ -204,7 +204,7 @@ QString DocumentFormatSelectorController::score2Text(int score) {
 }
 
 void DocumentFormatSelectorController::sl_moreFormatInfo() {
-    QToolButton* tb = qobject_cast<QToolButton*>(sender());
+    auto tb = qobject_cast<QToolButton*>(sender());
     SAFE_POINT(tb != nullptr, "Failed to derive selected format info!", );
     int idx = moreButtons.indexOf(tb);
     const FormatDetectionResult& dr = formatDetectionResults[idx];

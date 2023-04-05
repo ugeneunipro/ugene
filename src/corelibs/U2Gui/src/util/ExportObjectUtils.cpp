@@ -82,7 +82,7 @@ void ExportObjectUtils::exportAnnotations(const AnnotationTableObject* aObj, con
                 if (seqDoc != nullptr && seqDoc->isLoaded()) {
                     GObject* obj = seqDoc->findGObjectByName(rel.ref.objName);
                     if (obj != nullptr && obj->getGObjectType() == GObjectTypes::SEQUENCE) {
-                        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+                        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
                         U2OpStatusImpl os;
                         seqData = seqObj->getWholeSequenceData(os);
                         CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
@@ -100,7 +100,7 @@ void ExportObjectUtils::exportAnnotations(const AnnotationTableObject* aObj, con
 }
 
 void ExportObjectUtils::exportObject2Document(GObject* object, const QString& url, bool tracePath) {
-    if (nullptr == object || object->isUnloaded()) {
+    if (object == nullptr || object->isUnloaded()) {
         return;
     }
     QObjectScopedPointer<ExportDocumentDialogController> dialog = new ExportDocumentDialogController(object, QApplication::activeWindow(), url);
@@ -153,7 +153,7 @@ void ExportObjectUtils::export2Document(const QObjectScopedPointer<ExportDocumen
     U2OpStatusImpl os;
     Document* srcDoc = dialog->getSourceDoc();
     Document* dstDoc = nullptr;
-    if (nullptr == srcDoc) {
+    if (srcDoc == nullptr) {
         dstDoc = df->createNewLoadedDocument(iof, dstUrl, os);
         dstDoc->addObject(dialog->getSourceObject());
     } else {

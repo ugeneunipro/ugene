@@ -89,7 +89,7 @@ Task* SimpleTextObjectViewFactory::createViewTask(const QString& viewName, const
 /// Simple Text View
 
 SimpleTextObjectView::SimpleTextObjectView(const QString& name, TextObject* to, const QVariantMap& _state)
-    : GObjectView(SimpleTextObjectViewFactory::ID, name), textObject(to), openState(_state), selection(to) {
+    : GObjectViewController(SimpleTextObjectViewFactory::ID, name), textObject(to), openState(_state), selection(to) {
     GCOUNTER(cvar, "SimpleTextView");
     textEdit = nullptr;
     firstShow = true;
@@ -98,9 +98,9 @@ SimpleTextObjectView::SimpleTextObjectView(const QString& name, TextObject* to, 
     requiredObjects.append(to);
 }
 
-QWidget* SimpleTextObjectView::createWidget() {
-    assert(textEdit == nullptr);
-    textEdit = new QPlainTextEdit();
+QWidget* SimpleTextObjectView::createViewWidget(QWidget* parent) {
+    SAFE_POINT(textEdit == nullptr, "Widget is already created", textEdit);
+    textEdit = new QPlainTextEdit(parent);
     textEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
     textEdit->setWordWrapMode(QTextOption::NoWrap);
     try {

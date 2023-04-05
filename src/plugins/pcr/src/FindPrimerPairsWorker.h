@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_PRIMER_PAIRS_WORKER_H_
-#define _U2_FIND_PRIMER_PAIRS_WORKER_H_
+#pragma once
 
 #include <U2Core/DNASequence.h>
 #include <U2Core/MultipleSequenceAlignment.h>
@@ -30,16 +29,19 @@
 #include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
+
+class TmCalculator;
+
 namespace LocalWorkflow {
 
-class FindPrimerPairsPromter : public PrompterBase<FindPrimerPairsPromter> {
+class FindPrimerPairsPrompter : public PrompterBase<FindPrimerPairsPrompter> {
     Q_OBJECT
 public:
-    FindPrimerPairsPromter(Actor* p = 0)
-        : PrompterBase<FindPrimerPairsPromter>(p) {};
+    FindPrimerPairsPrompter(Actor* p = nullptr)
+        : PrompterBase<FindPrimerPairsPrompter>(p) {};
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class FindPrimerPairsWorker : public BaseWorker {
@@ -48,9 +50,9 @@ public:
     FindPrimerPairsWorker(Actor* p)
         : BaseWorker(p), inPort(nullptr), outPort(nullptr) {};
 
-    virtual void init();
-    virtual Task* tick();
-    virtual void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private:
     IntegralBus* inPort;
@@ -66,10 +68,12 @@ class FindPrimerPairsWorkerFactory : public DomainFactory {
 public:
     const static QString ACTOR_ID;
     const static QString OUT_FILE;
+    const static QString TEMPERATURE_SETTINGS_ID;
+
     FindPrimerPairsWorkerFactory()
         : DomainFactory(ACTOR_ID) {};
     static void init();
-    virtual Worker* createWorker(Actor* a) {
+    Worker* createWorker(Actor* a) override {
         return new FindPrimerPairsWorker(a);
     }
 };
@@ -79,9 +83,9 @@ public:
 class FindPrimersTask : public Task {
     Q_OBJECT
 public:
-    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences);
+    FindPrimersTask(const QString& outputFileUrl, const QList<DNASequence>& sequences, const QSharedPointer<TmCalculator>& temperatureCalculator);
 
-    void run();
+    void run() override;
     QString getReport() const {
         return report;
     }
@@ -96,11 +100,10 @@ private:
 
 private:
     QList<DNASequence> sequences;
+    QSharedPointer<TmCalculator> temperatureCalculator;
     QString report;
     QString outputUrl;
     QStringList rows;
 };
 
 }  // namespace U2
-
-#endif

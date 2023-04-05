@@ -222,13 +222,13 @@ QList<Task*> ReadAssemblyTask::onSubTaskFinished(Task* subTask) {
 }
 
 void ReadAssemblyTask::run() {
-    if (nullptr == format && nullptr == doc) {
+    if (format == nullptr && nullptr == doc) {
         return;
     }
 
     QScopedPointer<Document> docPtr(nullptr);
     bool useGC = true;
-    if (nullptr == doc) {
+    if (doc == nullptr) {
         useGC = false;
         ioLog.info(tr("Reading assembly from %1 [%2]").arg(url).arg(format->getFormatName()));
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
@@ -269,7 +269,7 @@ void ReadAssemblyTask::run() {
         return;
     }
     foreach (GObject* go, assemblies) {
-        AssemblyObject* assemblyObj = dynamic_cast<AssemblyObject*>(go);
+        auto assemblyObj = dynamic_cast<AssemblyObject*>(go);
         CHECK_EXT(nullptr != assemblyObj, taskLog.error(tr("Incorrect assembly object in %1").arg(url)), );
 
         SharedDbiDataHandler handler = ctx->getDataStorage()->getDataHandler(assemblyObj->getEntityRef(), useGC);

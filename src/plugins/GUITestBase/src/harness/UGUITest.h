@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_UGUI_TEST_H_
-#define _U2_UGUI_TEST_H_
+#pragma once
 
 #include <GTGlobals.h>
 #include <core/GUITest.h>
@@ -124,5 +123,3 @@ public:
     void className::run(HI::GUITestOpStatus& os)
 
 }  // namespace U2
-
-#endif

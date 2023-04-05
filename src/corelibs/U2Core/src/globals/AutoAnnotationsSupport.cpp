@@ -216,7 +216,7 @@ void AutoAnnotationObject::handleUpdate(const QList<AutoAnnotationsUpdater*>& up
 }
 
 void AutoAnnotationObject::sl_updateTaskFinished() {
-    Task* task = qobject_cast<Task*>(sender());
+    auto task = qobject_cast<Task*>(sender());
     SAFE_POINT(task != nullptr, L10N::nullPointerError("Auto-annotation update task"), );
 
     CHECK(task->isFinished(), );

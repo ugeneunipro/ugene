@@ -39,7 +39,7 @@ SQLiteDbi* SequenceSQLiteSpecificTestData::sqliteDbi = nullptr;
 const QString SequenceSQLiteSpecificTestData::TEST_SEQUENCE_NAME = "Test sequence";
 
 void SequenceSQLiteSpecificTestData::init() {
-    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(sqliteDbi == nullptr, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_SEQUENCE_DB_URL, false);
@@ -73,7 +73,7 @@ void SequenceSQLiteSpecificTestData::shutdown() {
 }
 
 SQLiteDbi* SequenceSQLiteSpecificTestData::getSQLiteDbi() {
-    if (nullptr == sqliteDbi) {
+    if (sqliteDbi == nullptr) {
         init();
     }
     return sqliteDbi;

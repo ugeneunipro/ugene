@@ -184,7 +184,7 @@ void TaskStatusBarCon::sl_taskStateChanged(Task* t) {
     if (t->isFinished()) {
         return;
     }
-    WorkflowRunTask* workflowTask = qobject_cast<WorkflowRunTask*>(t);
+    auto workflowTask = qobject_cast<WorkflowRunTask*>(t);
     if (workflowTask == nullptr) {  // track progress only for workflow tasks
         return;
     }

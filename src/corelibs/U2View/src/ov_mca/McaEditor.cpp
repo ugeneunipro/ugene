@@ -53,6 +53,7 @@ McaEditor::McaEditor(const QString& viewName,
                      MultipleChromatogramAlignmentObject* obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
+    optionsPanelController = new OptionsPanelController(this);
     selectionController = new McaEditorSelectionController(this);
     initZoom();
     initFont();
@@ -85,12 +86,12 @@ void McaEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(resetZoomAction);
     tb->addSeparator();
 
-    GObjectView::buildStaticToolbar(tb);
+    GObjectViewController::buildStaticToolbar(tb);
 }
 
 void McaEditor::buildMenu(QMenu* menu, const QString& type) {
     if (type != MsaEditorMenuType::STATIC) {
-        GObjectView::buildMenu(menu, type);
+        GObjectViewController::buildMenu(menu, type);
         return;
     }
     addAlignmentMenu(menu);
@@ -101,7 +102,7 @@ void McaEditor::buildMenu(QMenu* menu, const QString& type) {
     menu->addAction(showConsensusTabAction);
     menu->addSeparator();
 
-    GObjectView::buildMenu(menu, type);
+    GObjectViewController::buildMenu(menu, type);
     GUIUtils::disableEmptySubmenus(menu);
 }
 
@@ -147,22 +148,16 @@ void McaEditor::sl_showHideChromatograms(bool show) {
 }
 
 void McaEditor::sl_showGeneralTab() {
-    OptionsPanel* optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when msageneraltab opening was initiated", );
-    optionsPanel->openGroupById(McaGeneralTabFactory::getGroupId());
+    optionsPanelController->openGroupById(McaGeneralTabFactory::getGroupId());
 }
 
 void McaEditor::sl_showConsensusTab() {
-    OptionsPanel* optionsPanel = getOptionsPanel();
-    SAFE_POINT(nullptr != optionsPanel, "Internal error: options panel is NULL"
-                                        " when msaconsensustab opening was initiated", );
-    optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
+    optionsPanelController->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
-QWidget* McaEditor::createWidget() {
-    Q_ASSERT(ui == nullptr);
-    ui = new McaEditorWgt(this);
+QWidget* McaEditor::createViewWidget(QWidget* parent) {
+    SAFE_POINT(ui == nullptr, "UI is already initialized", ui);
+    ui = new McaEditorWgt(this, parent);
 
     collapseModel->reset(getMaRowIds());
 
@@ -177,7 +172,6 @@ QWidget* McaEditor::createWidget() {
 
     initActions();
 
-    optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
 
     QList<OPFactoryFilterVisitorInterface*> filters;
@@ -185,7 +179,7 @@ QWidget* McaEditor::createWidget() {
 
     QList<OPWidgetFactory*> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactories) {
-        optionsPanel->addGroup(factory);
+        optionsPanelController->addGroup(factory);
     }
 
     qDeleteAll(filters);

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __CIGAR_VALIDATOR_H__
-#define __CIGAR_VALIDATOR_H__
+#pragma once
 
 #include "Alignment.h"
 
@@ -50,5 +49,3 @@ private:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif

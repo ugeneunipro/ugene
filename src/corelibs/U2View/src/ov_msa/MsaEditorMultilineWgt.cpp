@@ -47,8 +47,8 @@ void MsaSizeUtil::updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QW
     }
 }
 
-MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, bool multiline)
-    : MaEditorMultilineWgt(editor),
+MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent, bool multiline)
+    : MaEditorMultilineWgt(editor, parent),
       multiTreeViewer(nullptr),
       treeViewer(nullptr) {
     initActions();
@@ -75,7 +75,9 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, bool multiline)
 MaEditorWgt* MsaEditorMultilineWgt::createChild(MaEditor* editor,
                                                 MaEditorOverviewArea* overviewArea,
                                                 MaEditorStatusBar* statusBar) {
-    return new MsaEditorWgt(qobject_cast<MSAEditor*>(editor), overviewArea, statusBar);
+    auto msaEditor = qobject_cast<MSAEditor*>(editor);
+    SAFE_POINT(msaEditor != nullptr, "Not MSAEditor!", nullptr);
+    return new MsaEditorWgt(msaEditor, this, overviewArea, statusBar);
 }
 
 void MsaEditorMultilineWgt::deleteChild(int index) {
@@ -174,7 +176,7 @@ void MsaEditorMultilineWgt::updateChildren() {
         // TODO:ichebyki
         // Need complex save/update for phyl-tree
         // Then, we will able to reuse tree view
-        MSAEditorMultiTreeViewer* treeViewer = qobject_cast<MsaEditorWgt*>(uiChild[0])->getMultiTreeViewer();
+        auto treeViewer = qobject_cast<MsaEditorWgt*>(uiChild[0])->getMultiTreeViewer();
         if (treeViewer != nullptr) {
             MsaEditorTreeTab* treeTabWidget = treeViewer->getCurrentTabWidget();
             if (treeTabWidget != nullptr) {

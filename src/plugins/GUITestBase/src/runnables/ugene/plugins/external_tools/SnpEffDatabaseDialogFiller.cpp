@@ -48,7 +48,7 @@ void SnpEffDatabaseDialogFiller::commonScenario() {
     GTLineEdit::setText(os, "lineEdit", dbName, dialog, false, true);
     GTGlobals::sleep();
 
-    QTableView* table = dynamic_cast<QTableView*>(GTWidget::findWidget(os, "tableView"));
+    auto table = dynamic_cast<QTableView*>(GTWidget::findWidget(os, "tableView"));
     GT_CHECK(table, "tableView is NULL");
 
     QAbstractItemModel* model = table->model();

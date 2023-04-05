@@ -29,13 +29,11 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
-#include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -115,7 +113,7 @@ ChromatogramView::ChromatogramView(QWidget* p, ADVSequenceObjectContext* v, GSeq
     removeChanges = new QAction(tr("Undo changes"), this);
     connect(removeChanges, SIGNAL(triggered()), SLOT(sl_removeChanges()));
 
-    connect(dnaView, SIGNAL(si_objectRemoved(GObjectView*, GObject*)), SLOT(sl_onObjectRemoved(GObjectView*, GObject*)));
+    connect(dnaView, &GObjectViewController::si_objectRemoved, this, &ChromatogramView::sl_onObjectRemoved);
     pack();
 
     addActionToLocalToolbar(showQVAction);
@@ -138,7 +136,7 @@ void ChromatogramView::pack() {
 
 void ChromatogramView::setRenderAreaHeight(int k) {
     // k = chromaMax
-    ChromatogramViewRenderArea* cvra = static_cast<ChromatogramViewRenderArea*>(renderArea);
+    auto cvra = static_cast<ChromatogramViewRenderArea*>(renderArea);
     cvra->setAreaHeight(k);
     completeUpdate();
 }
@@ -318,7 +316,7 @@ void ChromatogramView::sl_onAddExistingSequenceObject() {
 }
 
 void ChromatogramView::sl_onSequenceObjectLoaded(Task* t) {
-    LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
+    auto lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
     GObject* go = GObjectUtils::selectObjectByReference(lut->getConfig().checkObjRef,
                                                         lut->getDocument()->getObjects(),
                                                         UOF_LoadedOnly);
@@ -362,7 +360,7 @@ void ChromatogramView::sl_removeChanges() {
     indexOfChangedChars.clear();
 }
 
-void ChromatogramView::sl_onObjectRemoved(GObjectView* view, GObject* obj) {
+void ChromatogramView::sl_onObjectRemoved(GObjectViewController* view, GObject* obj) {
     Q_UNUSED(view);
 
     CHECK(obj == editDNASeq, );
@@ -382,7 +380,7 @@ QAction* ChromatogramView::createToggleTraceAction(const QString& actionName) {
 }
 
 void ChromatogramView::sl_showHideTrace() {
-    QAction* traceAction = qobject_cast<QAction*>(sender());
+    auto traceAction = qobject_cast<QAction*>(sender());
 
     if (!traceAction) {
         return;
@@ -465,7 +463,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice* pd) {
     static const qreal dividerTraceOrBaseCallsLines = 2;
     static const qreal dividerBoolShowBaseCallsChars = 1.5;
 
-    ChromatogramView* chromaView = qobject_cast<ChromatogramView*>(view);
+    auto chromaView = qobject_cast<ChromatogramView*>(view);
 
     const U2Region& visible = view->getVisibleRange();
     assert(!visible.isEmpty());
@@ -680,7 +678,7 @@ void ChromatogramViewRenderArea::drawOriginalBaseCalls(qreal x, qreal y, qreal w
         kLinearTransformBaseCallsOfEdited = kLinearTransformBaseCalls;
         bLinearTransformBaseCallsOfEdited = bLinearTransformBaseCalls;
     }
-    ChromatogramView* cview = qobject_cast<ChromatogramView*>(view);
+    auto cview = qobject_cast<ChromatogramView*>(view);
     for (int i = int(visible.startPos); i < visible.endPos(); i++) {
         QColor color = getBaseColor(ba[i]);
         p.setPen(color);

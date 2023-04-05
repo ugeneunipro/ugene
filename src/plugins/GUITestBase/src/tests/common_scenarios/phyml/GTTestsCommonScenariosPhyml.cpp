@@ -38,7 +38,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_phyml {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //# Test "Optimise" options: no options
+    // # Test "Optimise" options: no options
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -46,8 +46,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 2. Click the "Build Tree" button on the toolbar.
 
-    GTLogTracer logTracerTool("Launching PhyML Maximum Likelihood tool");
-    GTLogTracer logTracerParameter("-o ");
+    GTLogTracer lt;
 
     class Scenario : public CustomScenario {
     public:
@@ -78,12 +77,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the tool is launched, there is no '-o' option in the launch parameters (or there can be '-o n' option, which means "none").
-    GTUtilsLog::checkContainsMessage(os, logTracerTool, true);
-    GTUtilsLog::checkContainsMessage(os, logTracerParameter, false);
+    CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found/1");
+    CHECK_SET_ERR(!lt.hasMessage("-o "), "Found unexpected message");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    //# Test "Optimise" options: check "Optimise tree topology" option.
+    // # Test "Optimise" options: check "Optimise tree topology" option.
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -91,12 +90,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // 2. Click the "Build Tree" button on the toolbar.
 
-    GTLogTracer logTracerTool("Launching PhyML Maximum Likelihood tool");
-    GTLogTracer logTracerParameter("-o tl");
+    GTLogTracer lt;
 
     class Scenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus& os) {
+        void run(GUITestOpStatus& os) override {
             QWidget* const dialog = GTWidget::getActiveModalWidget(os);
 
             // 3. Select the "PhyML Maximum Likelihood" algorithm.
@@ -171,12 +169,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the tool is launched, there is '-o tl' option in the launch parameters.
-    GTUtilsLog::checkContainsMessage(os, logTracerTool, true);
-    GTUtilsLog::checkContainsMessage(os, logTracerParameter, true);
+    CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found");
+    CHECK_SET_ERR(lt.hasMessage("-o tl"), "Expected message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    //# Test "Optimise" options: "Optimise branch lengths" option.
+    // # Test "Optimise" options: "Optimise branch lengths" option.
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -184,8 +182,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     // 2. Click the "Build Tree" button on the toolbar.
 
-    GTLogTracer logTracerTool("Launching PhyML Maximum Likelihood tool");
-    GTLogTracer logTracerParameter("-o l");
+    GTLogTracer lt;
 
     class Scenario : public CustomScenario {
     public:
@@ -214,12 +211,12 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the tool is launched, there is '-o l' option in the launch parameters.
-    GTUtilsLog::checkContainsMessage(os, logTracerTool, true);
-    GTUtilsLog::checkContainsMessage(os, logTracerParameter, true);
+    CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found");
+    CHECK_SET_ERR(lt.hasMessage("-o l"), "Expected message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    //# Test "Optimise" options: "Optimise substitution rate" option.
+    // # Test "Optimise" options: "Optimise substitution rate" option.
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -227,8 +224,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     // 2. Click the "Build Tree" button on the toolbar.
 
-    GTLogTracer logTracerTool("Launching PhyML Maximum Likelihood tool");
-    GTLogTracer logTracerParameter("-o r");
+    GTLogTracer lt;
 
     class Scenario : public CustomScenario {
     public:
@@ -257,12 +253,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the tool is launched, there is '-o r' option in the launch parameters.
-    GTUtilsLog::checkContainsMessage(os, logTracerTool, true);
-    GTUtilsLog::checkContainsMessage(os, logTracerParameter, true);
+    CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found");
+    CHECK_SET_ERR(lt.hasMessage("-o r"), "Expected message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //# Test "Optimise" options: "Optimise branch lengths" and "Optimise substitution rate" options.
+    // # Test "Optimise" options: "Optimise branch lengths" and "Optimise substitution rate" options.
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -270,8 +266,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     // 2. Click the "Build Tree" button on the toolbar.
 
-    GTLogTracer logTracerTool("Launching PhyML Maximum Likelihood tool");
-    GTLogTracer logTracerParameter("-o lr");
+    GTLogTracer lt;
 
     class Scenario : public CustomScenario {
     public:
@@ -301,12 +296,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the tool is launched, there is '-o lr' option in the launch parameters.
-    GTUtilsLog::checkContainsMessage(os, logTracerTool, true);
-    GTUtilsLog::checkContainsMessage(os, logTracerParameter, true);
+    CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found");
+    CHECK_SET_ERR(lt.hasMessage("-o lr"), "Expected message not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //# Test "Optimise" options: "Optimise tree topology" and "Optimise substitution rate" options.
+    // # Test "Optimise" options: "Optimise tree topology" and "Optimise substitution rate" options.
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
@@ -314,8 +309,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     // 2. Click the "Build Tree" button on the toolbar.
 
-    GTLogTracer logTracerTool("Launching PhyML Maximum Likelihood tool");
-    GTLogTracer logTracerParameter("-o tlr");
+    GTLogTracer lt;
 
     class Scenario : public CustomScenario {
     public:
@@ -345,8 +339,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: the tool is launched, there is '-o tlr' option in the launch parameters.
-    GTUtilsLog::checkContainsMessage(os, logTracerTool, true);
-    GTUtilsLog::checkContainsMessage(os, logTracerParameter, true);
+    CHECK_SET_ERR(lt.hasMessage("Launching PhyML Maximum Likelihood tool"), "Expected message not found");
+    CHECK_SET_ERR(lt.hasMessage("-o tlr"), "Expected message not found");
 }
 
 }  // namespace GUITest_common_scenarios_phyml

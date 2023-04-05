@@ -75,7 +75,7 @@ RepeatFinderPlugin::RepeatFinderPlugin()
 
     // tests
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
@@ -96,8 +96,8 @@ RepeatViewContext::RepeatViewContext(QObject* p)
     : GObjectViewWindowContext(p, AnnotatedDNAViewFactory::ID) {
 }
 
-void RepeatViewContext::initViewContext(GObjectView* v) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+void RepeatViewContext::initViewContext(GObjectViewController* v) {
+    auto av = qobject_cast<AnnotatedDNAView*>(v);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":repeat_finder/images/repeats.png"), tr("Find repeats..."), 40);
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     a->setObjectName("find_repeats_action");
@@ -110,8 +110,8 @@ void RepeatViewContext::initViewContext(GObjectView* v) {
 
 void RepeatViewContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(a);
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     ADVSequenceObjectContext* sctx = av->getActiveSequenceContext();
     assert(sctx != nullptr && sctx->getAlphabet()->isNucleic());
 
@@ -121,8 +121,8 @@ void RepeatViewContext::sl_showDialog() {
 
 void RepeatViewContext::sl_showTandemDialog() {
     QAction* a = (QAction*)sender();
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(a);
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     ADVSequenceObjectContext* sctx = av->getActiveSequenceContext();
     assert(sctx != nullptr && sctx->getAlphabet()->isNucleic());
 

@@ -127,7 +127,7 @@ bool Task::propagateSubtaskError() {
         return true;
     }
     Task* badChild = getSubtaskWithErrors();
-    if (nullptr != badChild) {
+    if (badChild != nullptr) {
         stateInfo.setError(badChild->getError());
     }
     return stateInfo.hasError();

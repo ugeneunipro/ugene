@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENZYMES_PLUGIN_H_
-#define _U2_ENZYMES_PLUGIN_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 
@@ -59,13 +58,11 @@ protected slots:
     void sl_createPCRProduct();
 
 protected:
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
     QList<QAction*> cloningActions;
 };
 
 }  // namespace U2
-
-#endif

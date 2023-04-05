@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_GRAPHPACK_PLUGIN_H_
-#define _U2_DNA_GRAPHPACK_PLUGIN_H_
+#pragma once
 
 #include <QMenu>
 #include <QPointer>
@@ -37,7 +36,7 @@
 namespace U2 {
 
 class MWMDIWindow;
-class GObjectView;
+class GObjectViewController;
 class GSequenceGraphFactory;
 class GSequenceGraphData;
 class GraphAction;
@@ -61,12 +60,10 @@ public:
 private:
     QList<GSequenceGraphFactory*> graphFactories;
 
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private slots:
     void sl_sequenceWidgetAdded(ADVSequenceWidget*);
 };
 
 }  // namespace U2
-
-#endif

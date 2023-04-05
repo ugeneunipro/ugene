@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef PAIRALIGNMENTSTRINGS_H
-#define PAIRALIGNMENTSTRINGS_H
+#pragma once
 
 #include <U2Core/U2Region.h>
 
@@ -45,5 +44,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

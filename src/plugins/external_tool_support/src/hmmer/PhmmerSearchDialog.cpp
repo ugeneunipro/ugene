@@ -83,7 +83,7 @@ void PhmmerSearchDialog::init(U2SequenceObject* seqObj) {
 
     QWidget* firstTab = mainTabWidget->widget(0);
     assert(nullptr != firstTab);
-    QVBoxLayout* curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
+    auto curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
     assert(nullptr != curLayout);
     curLayout->insertWidget(ANNOTATIONS_WIDGET_LOCATION, annotationsWidgetController->getWidget());
 

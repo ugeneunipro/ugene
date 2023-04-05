@@ -60,7 +60,7 @@ class MSAEditorMultiTreeViewer;
 class U2VIEW_EXPORT MaEditorMultilineWgt : public QWidget {
     Q_OBJECT
 public:
-    explicit MaEditorMultilineWgt(MaEditor* editor);
+    explicit MaEditorMultilineWgt(MaEditor* editor, QWidget* parent);
 
     /** Returns MA editor instance. The instance is always defined and is never null. */
     MaEditor* getEditor() const;

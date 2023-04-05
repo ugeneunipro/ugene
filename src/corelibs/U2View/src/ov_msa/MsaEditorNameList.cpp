@@ -31,10 +31,10 @@ namespace U2 {
 
 MsaEditorNameList::MsaEditorNameList(MaEditorWgt* ui, QScrollBar* nhBar)
     : MaEditorNameList(ui, nhBar) {
-    connect(editor, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
+    connect(editor, &GObjectViewController::si_buildMenu, this, &MsaEditorNameList::sl_buildMenu);
 }
 
-void MsaEditorNameList::sl_buildMenu(GObjectView*, QMenu* menu, const QString& menuType) {
+void MsaEditorNameList::sl_buildMenu(GObjectViewController*, QMenu* menu, const QString& menuType) {
     if (menuType == MsaEditorMenuType::CONTEXT || menuType == MsaEditorMenuType::STATIC) {
         buildMenu(menu);
     }
@@ -61,7 +61,7 @@ MSAEditor* MsaEditorNameList::getEditor() const {
 
 QSize MsaEditorNameList::sizeHint() const {
     QSize s = QWidget::sizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         return QSize(s.width(), minimumSizeHint().height());
     }
     return s;
@@ -69,7 +69,7 @@ QSize MsaEditorNameList::sizeHint() const {
 
 QSize MsaEditorNameList::minimumSizeHint() const {
     QSize s = QWidget::minimumSizeHint();
-    if (editor->getMultilineMode()) {
+    if (editor->isMultilineMode()) {
         int viewRowCount = editor->getCollapseModel()->getViewRowCount();
         int numSequences = editor->getNumSequences();
         int newHeight = (editor->getRowHeight() + 0) *

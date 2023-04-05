@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QD_RUN_DIALOG_H_
-#define _U2_QD_RUN_DIALOG_H_
+#pragma once
 
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
@@ -46,7 +45,8 @@ public:
     QDRunDialogTask(QDScheme* scheme, const QString& inUri, const QString& outUri, bool addToProject);
 
 protected:
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+
 private slots:
     void sl_updateProgress();
 
@@ -55,15 +55,15 @@ private:
     void setupQuery();
 
 private:
-    QDScheme* scheme;
+    QDScheme* scheme = nullptr;
     QString inUri;
     QString output;
-    bool addToProject;
-    Task* openProjTask;
-    DocumentProviderTask* loadTask;
-    QDScheduler* scheduler;
-    Document* docWithSequence;
-    AnnotationTableObject* annObj;
+    bool addToProject = false;
+    Task* openProjTask = nullptr;
+    DocumentProviderTask* loadTask = nullptr;
+    QDScheduler* scheduler = nullptr;
+    Document* docWithSequence = nullptr;
+    AnnotationTableObject* annObj = nullptr;
 };
 
 class QueryViewController;
@@ -71,7 +71,9 @@ class QueryViewController;
 class QDRunDialog : public QDialog, public Ui_RunQueryDlg {
     Q_OBJECT
 public:
-    QDRunDialog(QDScheme* _scheme, QWidget* parent, const QString& defaultIn = QString(), const QString& defaultOut = QString());
+    QDRunDialog(QDScheme* scheme, QWidget* parent, const QString& defaultIn = "", const QString& defaultOut = "");
+
+    static const QString OUTPUT_FILE_DIR_DOMAIN;
 
 private slots:
     void sl_run();
@@ -81,10 +83,8 @@ private slots:
 private:
     void initSaveController(const QString& defaultOut);
 
-    QDScheme* scheme;
-    SaveDocumentController* saveController;
-
-    static const QString OUTPUT_FILE_DIR_DOMAIN;
+    QDScheme* scheme = nullptr;
+    SaveDocumentController* saveController = nullptr;
 };
 
 class ADVSequenceObjectContext;
@@ -98,18 +98,21 @@ public:
 private:
     void addAnnotationsWidget();
     void connectGUI();
+
 private slots:
     void sl_selectScheme();
     void sl_okBtnClicked();
 
 private:
-    ADVSequenceObjectContext* ctx;
-    CreateAnnotationWidgetController* cawc;
-    QDScheme* scheme;
-    QTextDocument* txtDoc;
-    RegionSelector* rs;
+    void updateSchemaOnUrlUpdate();
+
+    ADVSequenceObjectContext* advSequenceContext = nullptr;
+    CreateAnnotationWidgetController* annotationWidgetController = nullptr;
+    QDScheme* scheme = nullptr;
+    RegionSelector* regionSelector = nullptr;
+    QString renderedSchemaUrl;
+    QString hintHtml;
+    QPushButton* searchButton = nullptr;
 };
 
 }  // namespace U2
-
-#endif

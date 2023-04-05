@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_IMPL_H_
-#define _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_IMPL_H_
+#pragma once
 
 #include <U2Lang/WorkflowDebugMessageParser.h>
 
@@ -51,5 +50,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_WORKFLOW_DEBUG_MESSAGE_PARSER_IMPL_H_

@@ -54,7 +54,7 @@ QList<GObject*> GObjectUtils::select(const QList<GObject*>& objs, GObjectType t,
         if ((t.isEmpty() && (f == UOF_LoadedAndUnloaded || !isUnloaded)) || o->getGObjectType() == t) {
             res.append(o);
         } else if (f == UOF_LoadedAndUnloaded && isUnloaded) {
-            UnloadedObject* uo = qobject_cast<UnloadedObject*>(o);
+            auto uo = qobject_cast<UnloadedObject*>(o);
             if (uo->getLoadedObjectType() == t) {
                 res.append(o);
             }
@@ -107,19 +107,19 @@ QList<GObject*> GObjectUtils::selectRelationsFromParentDoc(const GObject* obj, c
     QList<GObject*> result;
 
     Document* parentDoc = obj->getDocument();
-    SAFE_POINT(nullptr != parentDoc, "Invalid parent document detected", result);
+    SAFE_POINT(parentDoc != nullptr, "Invalid parent document detected", result);
 
     U2OpStatus2Log os;
     DbiConnection con(parentDoc->getDbiRef(), os);
     U2ObjectRelationsDbi* relationsDbi = con.dbi->getObjectRelationsDbi();
-    SAFE_POINT(nullptr != relationsDbi, "Invalid object relations DBI", result);
+    SAFE_POINT(relationsDbi != nullptr, "Invalid object relations DBI", result);
 
     const QList<U2ObjectRelation> relations = relationsDbi->getObjectRelations(obj->getEntityRef().entityId, os);
     CHECK_OP(os, result);
     foreach (const U2ObjectRelation& relation, relations) {
         if (type == relation.referencedType && relationRole == relation.relationRole) {
             GObject* referenceObj = parentDoc->getObjectById(relation.referencedObject);
-            if (nullptr != referenceObj) {
+            if (referenceObj != nullptr) {
                 result.append(referenceObj);
             } else {
                 os.setError(QString("Reference object with ID '%1' and name '%2' not found in the document")
@@ -203,7 +203,7 @@ QList<GObject*> GObjectUtils::findObjectsRelatedToObjectByRole(const GObjectRefe
             if ((resultObjType.isEmpty() && !isUnloaded) || o->getGObjectType() == resultObjType) {
                 loadedObjs.insert(o);
             } else if (isUnloaded) {
-                UnloadedObject* uo = qobject_cast<UnloadedObject*>(o);
+                auto uo = qobject_cast<UnloadedObject*>(o);
                 if (uo->getLoadedObjectType() == resultObjType) {
                     unloadedObjs.insert(o);
                 }
@@ -336,7 +336,7 @@ bool GObjectUtils::hasType(GObject* obj, const GObjectType& type) {
     if (obj->getGObjectType() != GObjectTypes::UNLOADED) {
         return false;
     }
-    UnloadedObject* uo = qobject_cast<UnloadedObject*>(obj);
+    auto uo = qobject_cast<UnloadedObject*>(obj);
     return uo->getLoadedObjectType() == type;
 }
 

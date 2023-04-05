@@ -64,7 +64,7 @@ MaGraphOverview::MaGraphOverview(MaEditor* _editor, QWidget* _ui)
         sl_redraw();
     });
 
-    MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(_ui);
+    auto mui = qobject_cast<MaEditorMultilineWgt*>(_ui);
     CHECK(mui != nullptr, );
 
     connect(editor->getMaObject(), &MultipleAlignmentObject::si_alignmentChanged, this, [this]() {
@@ -152,7 +152,7 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
         // X position is defined by the first visible child
         qint64 screenWidth = 0;
         int screenPositionX = -1;
-        MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+        auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
         if (mui->getMultilineMode()) {
             screenPositionX = mui->getUI(0)->getScrollController()->getScreenPosition().x();
             screenWidth = mui->getUI(0)->getSequenceArea()->width() * mui->getChildrenCount();
@@ -214,7 +214,7 @@ void MaGraphOverview::sl_highlightingChanged() {
 
 void MaGraphOverview::updateHighlightingSchemes() {
     if (state.method == MaGraphCalculationMethod::Highlighting) {
-        MaEditorMultilineWgt* mui = qobject_cast<MaEditorMultilineWgt*>(ui);
+        auto mui = qobject_cast<MaEditorMultilineWgt*>(ui);
         CHECK(mui != nullptr, );
         MaEditorSequenceArea* sequenceArea = mui->getUI(0)->getSequenceArea();
         MsaHighlightingScheme* highlightingScheme = sequenceArea->getCurrentHighlightingScheme();

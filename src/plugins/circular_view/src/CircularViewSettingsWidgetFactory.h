@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_FACTORY_H_
-#define _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_FACTORY_H_
+#pragma once
 
 #include <U2Gui/OPWidgetFactory.h>
 
@@ -34,7 +33,7 @@ class CircularViewSettingsWidgetFactory : public OPWidgetFactory {
 public:
     CircularViewSettingsWidgetFactory(CircularViewContext* context);
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
@@ -49,5 +48,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CIRCULAR_VIEW_SETTINGS_WIDGET_FACTORY_H_

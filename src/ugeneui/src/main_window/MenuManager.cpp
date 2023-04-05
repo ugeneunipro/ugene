@@ -117,7 +117,7 @@ static void touchMenu(QMenu* menu) {
 
 bool MWMenuManagerImpl::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::ActionAdded || event->type() == QEvent::ActionRemoved) {
-        QMenu* menu = qobject_cast<QMenu*>(obj);
+        auto menu = qobject_cast<QMenu*>(obj);
         assert(menu != nullptr);
         // coreLog.trace("aaa:EventFilter (Menu Manager)");
 #ifndef Q_OS_DARWIN

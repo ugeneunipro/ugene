@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ANAGLYPH_RENDERER_H_
-#define _U2_ANAGLYPH_RENDERER_H_
+#pragma once
 
 #include <QColor>
 
@@ -107,5 +106,3 @@ inline void AnaglyphRenderer::checkGlError(const char* file, int line) {
 }
 
 }  // namespace U2
-
-#endif  // #ifndef _U2_ANAGLYPH_RENDERER_H_

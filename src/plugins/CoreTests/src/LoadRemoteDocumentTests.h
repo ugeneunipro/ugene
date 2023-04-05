@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_LOAD_REMOTE_DOCUMENT_TEST_H_
-#define _U2_LOAD_REMOTE_DOCUMENT_TEST_H_
+#pragma once
 
 #include <U2Test/GTest.h>
 #include <U2Test/XMLTestUtils.h>
@@ -50,5 +49,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_LOAD_REMOTE_DOCUMENT_TEST_H_

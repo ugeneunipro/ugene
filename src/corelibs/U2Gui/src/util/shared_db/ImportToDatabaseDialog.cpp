@@ -180,7 +180,7 @@ void ImportToDatabaseDialog::sl_removeClicked() {
 }
 
 void ImportToDatabaseDialog::sl_taskFinished() {
-    Task* task = qobject_cast<Task*>(sender());
+    auto task = qobject_cast<Task*>(sender());
     CHECK(nullptr != task, );
     CHECK(task->isFinished(), );
 }
@@ -406,7 +406,7 @@ void ImportToDatabaseDialog::addObject(GObject* object, QTreeWidgetItem* parent)
 
     QTreeWidgetItem* newItem = new QTreeWidgetItem(QStringList() << objectText << dstFolder);
 
-    if (nullptr == parent) {
+    if (parent == nullptr) {
         treeItem2Object[newItem] = object;
         setObjectTooltip(newItem);
         parent = getHeaderItem(OBJECT_AND_DOCUMENT);

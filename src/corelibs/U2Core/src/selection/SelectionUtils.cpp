@@ -79,14 +79,14 @@ QList<GObject*> SelectionUtils::findObjectsKeepOrder(GObjectType t, const GSelec
     QList<GObject*> res;
     GSelectionType stype = s->getSelectionType();
     if (stype == GSelectionTypes::DOCUMENTS) {
-        const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
+        auto ds = qobject_cast<const DocumentSelection*>(s);
         foreach (Document* d, ds->getSelectedDocuments()) {
             const QList<GObject*>& objs = d->getObjects();
             QList<GObject*> tmp = GObjectUtils::select(objs, t, f);
             res += tmp;
         }
     } else if (stype == GSelectionTypes::GOBJECTS) {
-        const GObjectSelection* os = qobject_cast<const GObjectSelection*>(s);
+        auto os = qobject_cast<const GObjectSelection*>(s);
         const QList<GObject*>& objs = os->getSelectedObjects();
         res = GObjectUtils::select(objs, t, f);
     }
@@ -107,7 +107,7 @@ QSet<Document*> SelectionUtils::findDocumentsWithObjects(GObjectType t, const GS
     if (st == GSelectionTypes::DOCUMENTS) {
         DocumentFormatConstraints c;
         c.supportedObjectTypes += t;
-        const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
+        auto ds = qobject_cast<const DocumentSelection*>(s);
         const QList<Document*>& docs = ds->getSelectedDocuments();
         foreach (Document* d, docs) {
             if (!d->getObjects().isEmpty()) {
@@ -135,13 +135,13 @@ bool SelectionUtils::isDocumentInSelection(const Document* doc, const MultiGSele
     foreach (const GSelection* s, ms.getSelections()) {
         GSelectionType st = s->getSelectionType();
         if (st == GSelectionTypes::DOCUMENTS) {
-            const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
+            auto ds = qobject_cast<const DocumentSelection*>(s);
             const QList<Document*>& docs = ds->getSelectedDocuments();
             if (docs.contains((Document* const&)doc)) {  // TODO? why cast
                 return true;
             }
         } else if (st == GSelectionTypes::GOBJECTS && deriveDocsFromObjectSelection) {
-            const GObjectSelection* os = qobject_cast<const GObjectSelection*>(s);
+            auto os = qobject_cast<const GObjectSelection*>(s);
             const QList<GObject*>& objects = os->getSelectedObjects();
             for (GObject* o : qAsConst(objects)) {
                 if (o->getDocument() == doc) {
@@ -157,7 +157,7 @@ QList<Document*> SelectionUtils::getSelectedDocs(const MultiGSelection& ms) {
     foreach (const GSelection* s, ms.getSelections()) {
         GSelectionType st = s->getSelectionType();
         if (st == GSelectionTypes::DOCUMENTS) {
-            const DocumentSelection* ds = qobject_cast<const DocumentSelection*>(s);
+            auto ds = qobject_cast<const DocumentSelection*>(s);
             return ds->getSelectedDocuments();
         }
     }
@@ -168,7 +168,7 @@ QList<GObject*> SelectionUtils::getSelectedObjects(const MultiGSelection& ms) {
     foreach (const GSelection* s, ms.getSelections()) {
         GSelectionType st = s->getSelectionType();
         if (st == GSelectionTypes::GOBJECTS) {
-            const GObjectSelection* os = qobject_cast<const GObjectSelection*>(s);
+            auto os = qobject_cast<const GObjectSelection*>(s);
             return os->getSelectedObjects();
         }
     }

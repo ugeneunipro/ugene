@@ -890,10 +890,10 @@ void ExternalToolSelectComboBox::hidePopup() {
 }
 
 void ExternalToolSelectComboBox::modifyMenuAccordingToData(const QString& data) {
-    GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
+    auto cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
     SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
 
-    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    auto standardModel = qobject_cast<QStandardItemModel*>(model());
     SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
 
     if (data == SHOW_ALL_TOOLS) {
@@ -911,10 +911,10 @@ void ExternalToolSelectComboBox::modifyMenuAccordingToData(const QString& data) 
 }
 
 void ExternalToolSelectComboBox::addSupportedToolsPopupMenu() {
-    GroupedComboBoxDelegate* cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
+    auto cbDelegate = qobject_cast<GroupedComboBoxDelegate*>(itemDelegate());
     SAFE_POINT(nullptr != cbDelegate, "GroupedComboBoxDelegate not found", );
 
-    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    auto standardModel = qobject_cast<QStandardItemModel*>(model());
     SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
 
     cbDelegate->addParentItem(standardModel, tr("Supported tools"), false);
@@ -944,7 +944,7 @@ void ExternalToolSelectComboBox::initPopupMenu() {
     GroupedComboBoxDelegate* cbDelegate = new GroupedComboBoxDelegate();
     setItemDelegate(cbDelegate);
 
-    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    auto standardModel = qobject_cast<QStandardItemModel*>(model());
     SAFE_POINT(nullptr != standardModel, "Can't cast combobox model to a QStandardItemModel", );
 
     if (!customTools.isEmpty()) {

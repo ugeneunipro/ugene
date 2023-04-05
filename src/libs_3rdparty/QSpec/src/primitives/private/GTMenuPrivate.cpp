@@ -42,9 +42,9 @@ void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus& os, const QStringList& it
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
     qWarning("clickMainMenuItem is going to click menu: '%s'", itemPath.join(" -> ").toLocal8Bit().constData());
 
-    QStringList cuttedItemPath = itemPath;
-    QString menuName = cuttedItemPath.takeFirst();
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, cuttedItemPath, method, matchFlag));
+    QStringList cutItemPath = itemPath;
+    QString menuName = cutItemPath.takeFirst();
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, cutItemPath, method, matchFlag));
     showMainMenu(os, menuName, method);
 }
 #undef GT_METHOD_NAME
@@ -56,9 +56,9 @@ void GTMenuPrivate::checkMainMenuItemState(GUITestOpStatus& os, const QStringLis
 #ifdef Q_OS_DARWIN
     GTMenuPrivateMac::checkMainMenuItemState(os, itemPath, expectedState);
 #else
-    QStringList cuttedItemPath = itemPath;
-    const QString menuName = cuttedItemPath.takeFirst();
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, cuttedItemPath, expectedState, GTGlobals::UseMouse));
+    QStringList cutItemPath = itemPath;
+    const QString menuName = cutItemPath.takeFirst();
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, cutItemPath, expectedState, GTGlobals::UseMouse));
     showMainMenu(os, menuName, GTGlobals::UseMouse);
     GTGlobals::sleep(100);
 #endif
@@ -104,30 +104,22 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus& os, const QString& menuName, G
     GT_CHECK_RESULT(resultList.count() < 2, QString("There are %1 actions with this text").arg(resultList.count()), );
 
     QAction* menu = resultList.takeFirst();
-
-    QPoint pos;
-    QPoint gPos;
-    QString menuText;
-    int key = 0;
-    int key_pos = 0;
-
     switch (m) {
-        case GTGlobals::UseMouse:
+        case GTGlobals::UseMouse: {
             GT_CHECK_RESULT(mainWindow != nullptr, "mainWindow is null!", );
-            pos = mainWindow->menuBar()->actionGeometry(menu).center();
-            gPos = mainWindow->menuBar()->mapToGlobal(pos);
-
+            QPoint pos = mainWindow->menuBar()->actionGeometry(menu).center();
+            QPoint gPos = mainWindow->menuBar()->mapToGlobal(pos);
             GTMouseDriver::click(gPos);
             break;
-
-        case GTGlobals::UseKey:
-            menuText = menu->text();
-            key_pos = menuText.indexOf('&');
-            key = (menuText.at(key_pos + 1)).toLatin1();
-
+        }
+        case GTGlobals::UseKey: {
+            QString menuText = menu->text();
+            int hotkeyIndex = menuText.indexOf('&') + 1;
+            GT_CHECK_RESULT(hotkeyIndex > 0, "Menu has no hotkey: " + menuText, );
+            int key = menuText.at(hotkeyIndex).toLatin1();
             GTKeyboardDriver::keyClick(key, Qt::AltModifier);
             break;
-
+        }
         default:
             break;
     }

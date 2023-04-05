@@ -131,7 +131,7 @@ QWidget* AssemblySettingsWidget::createReadsSettings() {
 }
 
 void AssemblySettingsWidget::sl_cellRendererChanged() {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     int index = ui->getReadsArea()->getCellRendererActions().indexOf(action);
     SAFE_POINT(index >= 0, "cell renderer action not found", );
     readsHighlightCombo->setCurrentIndex(index);
@@ -187,7 +187,7 @@ QWidget* AssemblySettingsWidget::createConsensusSettings() {
 }
 
 void AssemblySettingsWidget::sl_consensusAlgorithmChanged() {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     int index = ui->getConsensusArea()->getAlgorithmActions().indexOf(action);
     SAFE_POINT(index >= 0, "consensus algorithm action not found", );
     algorithmCombo->setCurrentIndex(index);
@@ -235,12 +235,12 @@ AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;
 }
 
-QWidget* AssemblySettingsWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
+QWidget* AssemblySettingsWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    AssemblyBrowser* assemblyBrowser = qobject_cast<AssemblyBrowser*>(objView);
+    auto assemblyBrowser = qobject_cast<AssemblyBrowser*>(objView);
     SAFE_POINT(assemblyBrowser != nullptr,
                QString("Internal error: unable to cast object view to Assembly Browser for group '%1'.").arg(GROUP_ID),
                nullptr);

@@ -23,6 +23,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/Counter.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -37,6 +38,7 @@ HmmerBuildFromFileTask::HmmerBuildFromFileTask(const HmmerBuildSettings& setting
       settings(settings),
       msaUrl(msaUrl) {
     SAFE_POINT_EXT(!msaUrl.isEmpty(), tr("Msa URL is empty"), );
+    GCOUNTER(cvar, "ExternalTool_HMMER");
 }
 
 const QString& HmmerBuildFromFileTask::getHmmProfileUrl() const {

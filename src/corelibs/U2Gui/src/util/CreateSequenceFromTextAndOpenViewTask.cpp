@@ -51,7 +51,7 @@ CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(con
 
 void CreateSequenceFromTextAndOpenViewTask::prepare() {
     Project* project = AppContext::getProject();
-    if (nullptr == project) {
+    if (project == nullptr) {
         openProjectTask = AppContext::getProjectLoader()->createNewProjectTask();
         CHECK_EXT(nullptr != openProjectTask, setError(tr("Can't create a project")), );
         addSubTask(openProjectTask);
@@ -106,7 +106,7 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
     CHECK_OP(stateInfo, );
 
     foreach (Task* task, importTasks) {
-        ImportSequenceFromRawDataTask* importTask = qobject_cast<ImportSequenceFromRawDataTask*>(task);
+        auto importTask = qobject_cast<ImportSequenceFromRawDataTask*>(task);
         document->addObject(new U2SequenceObject(importTask->getSequenceName(), importTask->getEntityRef()));
     }
 

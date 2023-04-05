@@ -157,7 +157,7 @@ void U2SavableWidget::setChildValue(const QString& childId, const QVariant& valu
     } else if (qobject_cast<QTextEdit*>(child) != nullptr) {
         qobject_cast<QTextEdit*>(child)->setText(value.toString());
     } else if (qobject_cast<QComboBox*>(child) != nullptr) {
-        QComboBox* cb = qobject_cast<QComboBox*>(child);
+        auto cb = qobject_cast<QComboBox*>(child);
         if (cb->count() == 0) {
             return;
         } else if (cb->count() <= value.toInt()) {
@@ -194,7 +194,7 @@ QSet<QWidget*> U2SavableWidget::getCompoundChildren() const {
 
 bool U2SavableWidget::childCanBeSaved(QWidget* child) const {
     const QString widgetName = child->objectName();
-    return ((nullptr != qobject_cast<QLineEdit*>(child) && nullptr == qobject_cast<QFontComboBox*>(child->parent()) && widgetName != "qt_spinbox_lineedit")  // skip fake line edit inside a spin box
+    return ((nullptr != qobject_cast<QLineEdit*>(child) && qobject_cast<QFontComboBox*>(child->parent()) == nullptr && widgetName != "qt_spinbox_lineedit")  // skip fake line edit inside a spin box
             || nullptr != qobject_cast<QTextEdit*>(child) || nullptr != qobject_cast<QComboBox*>(child) || (nullptr != qobject_cast<QAbstractButton*>(child) && qobject_cast<QAbstractButton*>(child)->isCheckable()) || (nullptr != qobject_cast<QGroupBox*>(child) && qobject_cast<QGroupBox*>(child)->isCheckable()) || nullptr != qobject_cast<QSpinBox*>(child) || nullptr != qobject_cast<QDoubleSpinBox*>(child) || nullptr != qobject_cast<QSlider*>(child) || nullptr != qobject_cast<QTableWidget*>(child) || nullptr != qobject_cast<ShowHideSubgroupWidget*>(child)) &&
            !widgetName.isEmpty();
 }

@@ -81,7 +81,7 @@ Task::ReportResult GTest_DNATranslation3to1Test::report() {
         return ReportResult_Finished;
     }
 
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;

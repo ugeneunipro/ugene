@@ -22,6 +22,7 @@
 #include "RmdupBamWorker.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
@@ -66,7 +67,7 @@ static const QString TREAT_READS_ID("treat_reads");
 /* RmdupBamPrompter */
 /************************************************************************/
 QString RmdupBamPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -199,7 +200,7 @@ void RmdupBamWorker::cleanup() {
 
 namespace {
 QString getTargetUrl(Task* task) {
-    SamtoolsRmdupTask* rmdupTask = dynamic_cast<SamtoolsRmdupTask*>(task);
+    auto rmdupTask = dynamic_cast<SamtoolsRmdupTask*>(task);
 
     if (nullptr != rmdupTask) {
         return rmdupTask->getResult();
@@ -278,6 +279,7 @@ const QString SamtoolsRmdupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
 SamtoolsRmdupTask::SamtoolsRmdupTask(const BamRmdupSetting& settings)
     : ExternalToolSupportTask(tr("Samtool rmdup for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)), settings(settings), resultUrl("") {
+    GCOUNTER(cvar, "ExternalTool_Samtools");
 }
 
 void SamtoolsRmdupTask::prepare() {

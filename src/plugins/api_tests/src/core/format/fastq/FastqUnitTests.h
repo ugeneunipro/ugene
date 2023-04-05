@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FASTQ_UNIT_TESTS_H_
-#define _U2_FASTQ_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -50,5 +49,3 @@ DECLARE_METATYPE(FasqUnitTests, checkRawData);
 DECLARE_METATYPE(FasqUnitTests, checkRawDataInvalidHeaderStartWith);
 DECLARE_METATYPE(FasqUnitTests, checkRawDataInvalidQualityHeaderStartWith);
 DECLARE_METATYPE(FasqUnitTests, checkRawDataMultiple);
-
-#endif

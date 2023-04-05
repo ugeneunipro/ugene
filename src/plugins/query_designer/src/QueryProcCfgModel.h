@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_QUERY_PROC_CFG_MODEL_H_
-#define _U2_QUERY_PROC_CFG_MODEL_H_
+#pragma once
 
 #include <QAbstractTableModel>
 
@@ -165,5 +164,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

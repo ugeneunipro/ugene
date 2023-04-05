@@ -49,7 +49,7 @@ U2UseCommonUserModStep::U2UseCommonUserModStep(const U2EntityRef& entity, U2OpSt
     // Open connection
     con.reset(new DbiConnection(entity.dbiRef, os));
     CHECK_OP(os, );
-    CHECK_EXT(nullptr != con->dbi, os.setError("NULL root dbi"), );
+    CHECK_EXT(con->dbi != nullptr, os.setError("NULL root dbi"), );
     dbi = con->dbi;
     init(os);
 }
@@ -62,7 +62,7 @@ U2UseCommonUserModStep::U2UseCommonUserModStep(U2Dbi* _dbi, const U2DataId& _mas
 void U2UseCommonUserModStep::init(U2OpStatus& os) {
     // No mutexes are needed because start/end of
     // user mod steps are made only in main thread
-    CHECK_EXT(nullptr != dbi, os.setError("NULL dbi!"), );
+    CHECK_EXT(dbi != nullptr, os.setError("NULL dbi!"), );
 
     dbi->getModDbi()->startCommonUserModStep(masterObjId, os);
     if (!os.hasError()) {

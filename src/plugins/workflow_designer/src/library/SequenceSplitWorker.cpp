@@ -62,7 +62,7 @@ const static QString GAP_LENGTH_ATTR("merge-gap-length");
 const static QString SPLIT_ATTR("split-joined-annotations");
 
 QString SequenceSplitPromter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString seqProducerText = tr("from <u>%1</u>").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
@@ -182,7 +182,7 @@ void SequenceSplitWorker::sl_onTaskFinished(Task*) {
     QVariantMap channelContext = outPort->getContext();
     int metadataId = outPort->getContextMetadataId();
     foreach (Task* t, ssTasks) {
-        ExtractAnnotatedRegionTask* ssT = qobject_cast<ExtractAnnotatedRegionTask*>(t);
+        auto ssT = qobject_cast<ExtractAnnotatedRegionTask*>(t);
         SAFE_POINT(ssT, "Finished task 'ExtractAnnotatedRegionTask' is NULL", );
         int seqCount = 1;
         QList<DNASequence> sequences = ssT->getResultedSequences();

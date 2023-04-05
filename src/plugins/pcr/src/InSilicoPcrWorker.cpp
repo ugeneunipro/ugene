@@ -23,6 +23,9 @@
 
 #include <QTextStream>
 
+#include <U2Algorithm/TmCalculatorFactory.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
+
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -45,6 +48,7 @@
 
 #include "InSilicoPcrWorkflowTask.h"
 #include "PrimersGrouperWorker.h"
+#include "TmCalculatorDelegate.h"
 
 namespace U2 {
 namespace LocalWorkflow {
@@ -59,6 +63,7 @@ const QString PERFECT_ATTR_ID = "perfect-match";
 const QString MAX_PRODUCT_ATTR_ID = "max-product";
 const QString USE_AMBIGUOUS_BASES_ID = "use-ambiguous-bases";
 const QString EXTRACT_ANNOTATIONS_ATTR_ID = "extract-annotations";
+const QString TEMPERATURE_SETTINGS_ID = "temperature-settings";
 
 const char* PAIR_NUMBER_PROP_ID = "pair-number";
 }  // namespace
@@ -100,6 +105,7 @@ void InSilicoPcrWorkerFactory::init() {
         Descriptor maxProductDesc(MAX_PRODUCT_ATTR_ID, InSilicoPcrWorker::tr("Max product size"), InSilicoPcrWorker::tr("Maximum size of amplified region."));
         Descriptor useAmbiguousBases(USE_AMBIGUOUS_BASES_ID, InSilicoPcrWorker::tr("Use ambiguous bases"), InSilicoPcrWorker::tr("Search for ambiguous bases (as \"N\") if checked."));
         Descriptor annotationsDesc(EXTRACT_ANNOTATIONS_ATTR_ID, InSilicoPcrWorker::tr("Extract annotations"), InSilicoPcrWorker::tr("Extract annotations within a product region."));
+        Descriptor temperatureDesc(TEMPERATURE_SETTINGS_ID, InSilicoPcrWorker::tr("Temperature settings"), InSilicoPcrWorker::tr("Set up temperature calculation method."));
 
         attributes << new Attribute(primersDesc, BaseTypes::STRING_TYPE(), true);
         attributes << new Attribute(reportDesc, BaseTypes::STRING_TYPE(), true, "report.html");
@@ -108,6 +114,7 @@ void InSilicoPcrWorkerFactory::init() {
         attributes << new Attribute(maxProductDesc, BaseTypes::NUM_TYPE(), false, 5000);
         attributes << new Attribute(useAmbiguousBases, BaseTypes::BOOL_TYPE(), false, true);
         attributes << new Attribute(annotationsDesc, BaseTypes::NUM_TYPE(), false, ExtractProductSettings::Inner);
+        attributes << new Attribute(temperatureDesc, BaseTypes::MAP_TYPE(), false);
     }
     QMap<QString, PropertyDelegate*> delegates;
     {
@@ -138,6 +145,9 @@ void InSilicoPcrWorkerFactory::init() {
             values[InSilicoPcrWorker::tr("None")] = ExtractProductSettings::None;
             delegates[EXTRACT_ANNOTATIONS_ATTR_ID] = new ComboBoxDelegate(values);
         }
+        {
+            delegates[TEMPERATURE_SETTINGS_ID] = new TmCalculatorDelegate;
+        }
     }
 
     Descriptor desc(ACTOR_ID, InSilicoPcrWorker::tr("In Silico PCR"), InSilicoPcrWorker::tr("Simulates PCR for input sequences and primer pairs. Creates the table with the PCR statistics."));
@@ -158,7 +168,7 @@ InSilicoPcrPrompter::InSilicoPcrPrompter(Actor* a)
 }
 
 QString InSilicoPcrPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     SAFE_POINT(nullptr != input, "No input port", "");
     const Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
@@ -179,14 +189,14 @@ Task* InSilicoPcrWorker::createPrepareTask(U2OpStatus& os) const {
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(context->getDataStorage()->getDbiRef());
     LoadDocumentTask* task = LoadDocumentTask::getDefaultLoadDocTask(primersUrl, hints);
-    if (nullptr == task) {
+    if (task == nullptr) {
         os.setError(tr("Can not read the primers file: ") + primersUrl);
     }
     return task;
 }
 
 void InSilicoPcrWorker::onPrepared(Task* task, U2OpStatus& os) {
-    LoadDocumentTask* loadTask = qobject_cast<LoadDocumentTask*>(task);
+    auto loadTask = qobject_cast<LoadDocumentTask*>(task);
     CHECK_EXT(nullptr != loadTask, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     QScopedPointer<Document> doc(loadTask->takeDocument());
@@ -220,7 +230,7 @@ void InSilicoPcrWorker::fetchPrimers(const QList<GObject*>& objects, U2OpStatus&
 
 Primer InSilicoPcrWorker::createPrimer(GObject* object, bool& skipped, U2OpStatus& os) {
     Primer result;
-    U2SequenceObject* primerSeq = qobject_cast<U2SequenceObject*>(object);
+    auto primerSeq = qobject_cast<U2SequenceObject*>(object);
     CHECK_EXT(nullptr != primerSeq, os.setError(L10N::nullPointerError("Primer sequence")), result);
 
     if (primerSeq->getSequenceLength() > Primer::MAX_LEN) {
@@ -237,25 +247,25 @@ Primer InSilicoPcrWorker::createPrimer(GObject* object, bool& skipped, U2OpStatu
 
 QList<Message> InSilicoPcrWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> result;
-    InSilicoPcrReportTask* reportTask = qobject_cast<InSilicoPcrReportTask*>(task);
+    auto reportTask = qobject_cast<InSilicoPcrReportTask*>(task);
     if (nullptr != reportTask) {
         monitor()->addOutputFile(getValue<QString>(REPORT_ATTR_ID), actor->getId(), true);
         return result;
     }
 
-    MultiTask* multiTask = qobject_cast<MultiTask*>(task);
+    auto multiTask = qobject_cast<MultiTask*>(task);
     CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("MultiTask")), result);
 
     InSilicoPcrReportTask::TableRow tableRow;
     foreach (Task* t, multiTask->getTasks()) {
-        InSilicoPcrWorkflowTask* pcrTask = qobject_cast<InSilicoPcrWorkflowTask*>(t);
+        auto pcrTask = qobject_cast<InSilicoPcrWorkflowTask*>(t);
         CHECK_EXT(nullptr != multiTask, os.setError(L10N::nullPointerError("InSilicoPcrTask")), result);
 
         int pairNumber = pcrTask->property(PAIR_NUMBER_PROP_ID).toInt();
         SAFE_POINT_EXT(pairNumber >= 0 && pairNumber < primers.size(), os.setError(L10N::internalError("Out of range")), result);
 
-        InSilicoPcrTaskSettings settings = pcrTask->getPcrSettings();
-        tableRow.sequenceName = settings.sequenceName;
+        const InSilicoPcrTaskSettings* settings = pcrTask->getPcrSettings();
+        tableRow.sequenceName = settings->sequenceName;
         QList<InSilicoPcrWorkflowTask::Result> pcrResults = pcrTask->takeResult();
         tableRow.productsNumber[pairNumber] = pcrResults.size();
 
@@ -271,7 +281,7 @@ QList<Message> InSilicoPcrWorker::fetchResult(Task* task, U2OpStatus& os) {
             QVariantMap data;
             data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = sequence;
             data[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = annotations;
-            int metadataId = createMetadata(settings, pcrResult.product.region, pairNumber);
+            int metadataId = createMetadata(settings->sequence.length(), pcrResult.product.region, pairNumber);
             result << Message(output->getBusType(), data, metadataId);
         }
     }
@@ -299,10 +309,10 @@ QVariant InSilicoPcrWorker::fetchAnnotations(Document* doc) {
     return qVariantFromValue<SharedDbiDataHandler>(annsId);
 }
 
-int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings& settings, const U2Region& productRegion, int pairNumber) {
+int InSilicoPcrWorker::createMetadata(int sequenceLength, const U2Region& productRegion, int pairNumber) {
     MessageMetadata oldMetadata = context->getMetadataStorage().get(output->getContextMetadataId());
     QString primerName = primers[pairNumber].first.name;
-    QString suffix = "_" + ExtractProductTask::getProductName(primerName, settings.sequence.length(), productRegion, true);
+    QString suffix = "_" + ExtractProductTask::getProductName(primerName, sequenceLength, productRegion, true);
     QString newUrl = GUrlUtils::insertSuffix(oldMetadata.getFileUrl(), suffix);
 
     MessageMetadata metadata(newUrl, oldMetadata.getDatasetName());
@@ -313,7 +323,11 @@ int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings& settings, c
 Task* InSilicoPcrWorker::onInputEnded() {
     CHECK(!reported, nullptr);
     reported = true;
-    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID));
+    QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
+    if (tmAlgorithmSettings.isEmpty()) {
+        tmAlgorithmSettings = AppContext::getTmCalculatorRegistry()->getDefaultTmCalculatorFactory()->createDefaultSettings();
+    }
+    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID), tmAlgorithmSettings);
 }
 
 Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
@@ -341,21 +355,27 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
     productSettings.targetDbiRef = context->getDataStorage()->getDbiRef();
     productSettings.annotationsExtraction = ExtractProductSettings::AnnotationsExtraction(getValue<int>(EXTRACT_ANNOTATIONS_ATTR_ID));
 
-    InSilicoPcrTaskSettings pcrSettings;
-    pcrSettings.sequence = seq->getWholeSequenceData(os);
-    CHECK_OP(os, nullptr);
-    pcrSettings.isCircular = seq->isCircular();
-    pcrSettings.forwardMismatches = getValue<int>(MISMATCHES_ATTR_ID);
-    pcrSettings.reverseMismatches = pcrSettings.forwardMismatches;
-    pcrSettings.maxProductSize = getValue<int>(MAX_PRODUCT_ATTR_ID);
-    pcrSettings.useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
-    pcrSettings.perfectMatch = getValue<int>(PERFECT_ATTR_ID);
-    pcrSettings.sequenceName = seq->getSequenceName();
-
     QList<Task*> tasks;
     for (int i = 0; i < primers.size(); i++) {
-        pcrSettings.forwardPrimer = primers[i].first.sequence.toLocal8Bit();
-        pcrSettings.reversePrimer = primers[i].second.sequence.toLocal8Bit();
+        auto pcrSettings = new InSilicoPcrTaskSettings;
+        pcrSettings->sequence = seq->getWholeSequenceData(os);
+        CHECK_OP(os, nullptr);
+
+        pcrSettings->isCircular = seq->isCircular();
+        pcrSettings->forwardPrimer = primers[i].first.sequence.toLocal8Bit();
+        pcrSettings->reversePrimer = primers[i].second.sequence.toLocal8Bit();
+        pcrSettings->forwardMismatches = getValue<int>(MISMATCHES_ATTR_ID);
+        pcrSettings->reverseMismatches = pcrSettings->forwardMismatches;
+        pcrSettings->maxProductSize = getValue<int>(MAX_PRODUCT_ATTR_ID);
+        pcrSettings->useAmbiguousBases = getValue<bool>(USE_AMBIGUOUS_BASES_ID);
+        pcrSettings->perfectMatch = getValue<int>(PERFECT_ATTR_ID);
+        pcrSettings->sequenceName = seq->getSequenceName();
+        QVariantMap tmAlgorithmSettings = getValue<QVariantMap>(TEMPERATURE_SETTINGS_ID);
+        TmCalculatorRegistry* tmRegistry = AppContext::getTmCalculatorRegistry();
+        pcrSettings->temperatureCalculator = tmRegistry->createTmCalculator(tmAlgorithmSettings);
+        CHECK(pcrSettings->temperatureCalculator != nullptr,
+              new FailTask(tr("Failed to find TM algorithm with id '%1'.").arg(tmAlgorithmSettings.value(TmCalculator::KEY_ID).toString())));
+
         Task* pcrTask = new InSilicoPcrWorkflowTask(pcrSettings, productSettings);
         pcrTask->setProperty(PAIR_NUMBER_PROP_ID, i);
         tasks << pcrTask;
@@ -369,11 +389,21 @@ Task* InSilicoPcrWorker::createTask(const Message& message, U2OpStatus& os) {
 /************************************************************************/
 /* InSilicoPcrReportTask */
 /************************************************************************/
-InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table, const QList<QPair<Primer, Primer>>& primers, const QString& reportUrl, const QString& _primersUrl)
-    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), primers(primers), reportUrl(reportUrl), primersUrl(_primersUrl) {
+InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow>& table,
+                                             const QList<QPair<Primer, Primer>>& primers,
+                                             const QString& reportUrl,
+                                             const QString& _primersUrl,
+                                             const QVariantMap& tempSettings)
+    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table),
+      primers(primers),
+      reportUrl(reportUrl),
+      primersUrl(_primersUrl),
+      temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(tempSettings)) {
+    SAFE_POINT(temperatureCalculator != nullptr, "temperatureCalculator is nullptr!", )
 }
 
 void InSilicoPcrReportTask::run() {
+    CHECK(temperatureCalculator != nullptr, );
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(reportUrl, stateInfo, IOAdapterMode_Write));
     CHECK_OP(stateInfo, );
     const QString report = createReport();
@@ -420,7 +450,7 @@ QString InSilicoPcrReportTask::primerDetails() {
     QByteArray result;
     for (int i = 0; i < primers.size(); i++) {
         QPair<Primer, Primer> pair = primers[i];
-        PrimersPairStatistics calc(pair.first.sequence.toLocal8Bit(), pair.second.sequence.toLocal8Bit());
+        PrimersPairStatistics calc(pair.first.sequence.toLocal8Bit(), pair.second.sequence.toLocal8Bit(), temperatureCalculator);
         if (!calc.getInitializationError().isEmpty()) {
             setError(tr("An error '%1' has occurred during processing file with primers '%2'").arg(calc.getInitializationError()).arg(primersUrl));
             return "";

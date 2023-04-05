@@ -33,6 +33,7 @@
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -46,44 +47,26 @@
 
 namespace U2 {
 
-static inline QVBoxLayout* initLayout(QWidget* w) {
-    auto layout = new QVBoxLayout;
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(5);
-
-    w->setLayout(layout);
-    return layout;
-}
-
 TreeOptionsWidget::TreeOptionsWidget(MSAEditor* msaEditor)
     : editor(msaEditor),
       savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
     SAFE_POINT(editor != nullptr, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
-    setObjectName("TreeOptionsWidget");
-
-    contentWidget = new QWidget();
-    setupUi(contentWidget);
-
-    initColorButtonsStyle();
-    createGroups();
-
-    initializeOptionsMap();
-    createGeneralSettingsWidgets();
-    updateAllWidgets();
-    connectSlots();
-
-    savableTab.disableSavingForWidgets(getSaveDisabledWidgets());
-    U2WidgetStateStorage::restoreWidgetState(savableTab);
+    init();
 }
 
 TreeOptionsWidget::TreeOptionsWidget(TreeViewer* tree)
     : treeViewer(tree->getTreeViewerUI()),
       savableTab(this, GObjectViewUtils::findViewByName(tree->getName())) {
     SAFE_POINT(treeViewer != nullptr, "Invalid parameter were passed into constructor TreeOptionsWidget", );
+    init();
+}
+
+void TreeOptionsWidget::init() {
     setObjectName("TreeOptionsWidget");
 
-    contentWidget = new QWidget();
-    setupUi(contentWidget);
+    setupUi(this);
+    new ResetSliderOnDoubleClickBehavior(curvatureSlider, curvatureLabel);
+    new ResetSliderOnDoubleClickBehavior(breadthScaleAdjustmentSlider, breadthScaleAdjustmentLabel);
 
     initColorButtonsStyle();
     createGroups();
@@ -95,10 +78,6 @@ TreeOptionsWidget::TreeOptionsWidget(TreeViewer* tree)
 
     savableTab.disableSavingForWidgets(getSaveDisabledWidgets());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
-}
-
-TreeOptionsWidget::~TreeOptionsWidget() {
-    delete contentWidget;
 }
 
 void TreeOptionsWidget::initColorButtonsStyle() {
@@ -109,8 +88,14 @@ void TreeOptionsWidget::initColorButtonsStyle() {
 }
 
 void TreeOptionsWidget::createGroups() {
-    QVBoxLayout* mainLayout = initLayout(this);
+    auto mainLayout = verticalLayout;
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
+
+    // Clean the layout. We will re-populate it with groups below.
+    for (int i = mainLayout->count(); --i >= 0;) {
+        mainLayout->removeItem(mainLayout->itemAt(i));
+    }
 
     generalOpGroup = new ShowHideSubgroupWidget("TREE_GENERAL_OP", tr("General"), treeLayoutWidget, true);
     mainLayout->addWidget(generalOpGroup);
@@ -148,8 +133,8 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
             treeViewCombo->setCurrentIndex(value.toInt());
             scalebarGroup->setEnabled(static_cast<TreeType>(value.toInt()) == PHYLOGRAM);
             break;
-        case TREE_LAYOUT: {
-            auto layout = static_cast<TreeLayout>(value.toInt());
+        case TREE_LAYOUT_TYPE: {
+            auto layout = static_cast<TreeLayoutType>(value.toInt());
             layoutCombo->setCurrentIndex(layout);
             breadthScaleAdjustmentSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
             curvatureSlider->setEnabled(layout == RECTANGULAR_LAYOUT);
@@ -177,6 +162,9 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
             break;
         case SHOW_NODE_SHAPE:
             showNodeShapeCheck->setChecked(value.toBool());
+            break;
+        case SHOW_TIP_SHAPE:
+            showTipShapeCheck->setChecked(value.toBool());
             break;
         case NODE_COLOR:
         case NODE_RADIUS:
@@ -226,13 +214,14 @@ void TreeOptionsWidget::initializeOptionsMap() {
     optionsMap[alignLabelsCheck->objectName()] = ALIGN_LEAF_NODE_LABELS;
     optionsMap[showNodeLabelsCheck->objectName()] = SHOW_INNER_NODE_LABELS;
     optionsMap[showNodeShapeCheck->objectName()] = SHOW_NODE_SHAPE;
+    optionsMap[showTipShapeCheck->objectName()] = SHOW_TIP_SHAPE;
 
     optionsMap[lineWeightSpinBox->objectName()] = BRANCH_THICKNESS;
     optionsMap[breadthScaleAdjustmentSlider->objectName()] = BREADTH_SCALE_ADJUSTMENT_PERCENT;
     optionsMap[curvatureSlider->objectName()] = BRANCH_CURVATURE;
 
     optionsMap[treeViewCombo->objectName()] = BRANCHES_TRANSFORMATION_TYPE;
-    optionsMap[layoutCombo->objectName()] = TREE_LAYOUT;
+    optionsMap[layoutCombo->objectName()] = TREE_LAYOUT_TYPE;
 }
 
 void TreeOptionsWidget::connectSlots() {
@@ -259,6 +248,7 @@ void TreeOptionsWidget::connectSlots() {
 
     // Nodes.
     connect(showNodeShapeCheck, &QCheckBox::stateChanged, this, &TreeOptionsWidget::sl_valueChanged);
+    connect(showTipShapeCheck, &QCheckBox::stateChanged, this, &TreeOptionsWidget::sl_valueChanged);
 
     // Scalebar settings widgets
     connect(scaleSpinBox, SIGNAL(valueChanged(double)), SLOT(sl_valueChanged()));
@@ -320,7 +310,7 @@ TreeViewerUI* TreeOptionsWidget::getTreeViewer() const {
     if (treeViewer != nullptr) {
         return treeViewer;
     }
-    MsaEditorMultilineWgt* mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
+    auto mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
     MSAEditorTreeViewer* currentTree = mui->getCurrentTree();
     return currentTree != nullptr
                ? currentTree->getTreeViewerUI()
@@ -377,20 +367,17 @@ void TreeOptionsWidget::updateButtonColor(QPushButton* button, const QColor& new
 AddTreeWidget::AddTreeWidget(MSAEditor* msaEditor)
     : editor(msaEditor), openTreeButton(nullptr), buildTreeButton(nullptr), addTreeHint(nullptr) {
     setObjectName("AddTreeWidget");
-    QVBoxLayout* mainLayout = initLayout(this);
-    mainLayout->setSpacing(0);
+    auto mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(0, 10, 8, 0);
 
-    addTreeHint = new QLabel(tr("There are no displayed trees so settings are hidden."), this);
-    addTreeHint->setWordWrap(true);
-
+    addTreeHint = new QLabel(tr("No active trees found."), this);
     mainLayout->addWidget(addTreeHint);
 
-    auto buttonLayout = new QHBoxLayout();
-    buttonLayout->setContentsMargins(0, 5, 0, 0);
+    mainLayout->addSpacing(10);
 
+    auto buttonLayout = new QHBoxLayout();
     openTreeButton = new QPushButton(QIcon(":ugene/images/advanced_open.png"), tr("Open tree"), this);
-    openTreeButton->setFixedWidth(102);
-    openTreeButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    openTreeButton->setMinimumWidth(102);
     buttonLayout->addWidget(openTreeButton);
     openTreeButton->setObjectName("openTreeButton");
 
@@ -398,7 +385,7 @@ AddTreeWidget::AddTreeWidget(MSAEditor* msaEditor)
     buttonLayout->addSpacerItem(horizontalSpacer);
 
     buildTreeButton = new QPushButton(QIcon(":core/images/phylip.png"), tr("Build tree"), this);
-    buildTreeButton->setFixedWidth(102);
+    buildTreeButton->setMinimumWidth(102);
     buttonLayout->addWidget(buildTreeButton);
     buildTreeButton->setObjectName("buildTreeButton");
     buildTreeButton->setEnabled(msaEditor->buildTreeAction->isEnabled());

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
-#define _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#pragma once
 
 #include <U2Core/Primer.h>
 #include <U2Core/PrimerValidator.h>
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_

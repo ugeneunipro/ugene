@@ -62,6 +62,10 @@ SnpEffSupport::SnpEffSupport()
     dependencies << JavaSupport::ET_JAVA_ID;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinToolPath;
+    }
 }
 
 QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
@@ -81,7 +85,7 @@ void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
 }
 
 void SnpEffSupport::sl_databaseListIsReady() {
-    SnpEffDatabaseListTask* task = dynamic_cast<SnpEffDatabaseListTask*>(sender());
+    auto task = dynamic_cast<SnpEffDatabaseListTask*>(sender());
     SAFE_POINT(task != nullptr, "SnpEffDatabaseListTask is NULL: wrong sender", );
     if (task->isCanceled() || task->hasError() || !task->isFinished()) {
         return;

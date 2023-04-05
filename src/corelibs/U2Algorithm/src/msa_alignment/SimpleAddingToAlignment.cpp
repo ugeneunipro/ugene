@@ -64,7 +64,7 @@ void SimpleAddToAlignmentTask::prepare() {
 }
 
 QList<Task*> SimpleAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
-    BestPositionFindTask* findTask = qobject_cast<BestPositionFindTask*>(subTask);
+    auto findTask = qobject_cast<BestPositionFindTask*>(subTask);
     sequencePositions[findTask->getSequenceId()] = findTask->getPosition();
     return QList<Task*>();
 }

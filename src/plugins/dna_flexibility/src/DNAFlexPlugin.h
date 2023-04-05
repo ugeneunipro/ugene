@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_FLEX_PLUGIN_H_
-#define _U2_DNA_FLEX_PLUGIN_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 
@@ -53,9 +52,7 @@ private slots:
 private:
     GSequenceGraphFactory* graphFactory;
 
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 }  // namespace U2
-
-#endif

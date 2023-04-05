@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BOWTIE2_SETTINGS_WIDGET_H
-#define _U2_BOWTIE2_SETTINGS_WIDGET_H
+#pragma once
 
 #include <U2View/DnaAssemblyGUIExtension.h>
 
@@ -61,5 +60,3 @@ class Bowtie2GUIExtensionsFactory : public DnaAssemblyGUIExtensionsFactory {
 };
 
 }  // namespace U2
-
-#endif  // _U2_BOWTIE2_SETTINGS_WIDGET_H

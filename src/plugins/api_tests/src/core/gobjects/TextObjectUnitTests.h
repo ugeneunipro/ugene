@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_TEXT_OBJECT_UNIT_TESTS_H_
-#define _U2_TEXT_OBJECT_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -80,5 +79,3 @@ DECLARE_METATYPE(TextObjectUnitTests, clone);
 DECLARE_METATYPE(TextObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(TextObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(TextObjectUnitTests, remove);
-
-#endif  // _U2_TEXT_OBJECT_UNIT_TESTS_H_

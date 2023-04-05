@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_ABSTRACT_GUI_ACTION_H_
-#define _U2_GT_ABSTRACT_GUI_ACTION_H_
+#pragma once
 
 #include <U2Core/U2OpStatusUtils.h>
 
@@ -52,7 +51,7 @@ public:
     virtual GTAbstractGUIAction* clone() const = 0;
 
     const QString objectClassName() const {
-        return nullptr == obj ? "" : obj->metaObject()->className();
+        return obj == nullptr ? "" : obj->metaObject()->className();
     }
     static bool lessThan(const GTAbstractGUIAction* lv, const GTAbstractGUIAction* rv) {
         return lv->priority > rv->priority;
@@ -75,5 +74,3 @@ typedef QMap<QString, const GTAbstractGUIAction*> GTAbstractGUIActionMap;
 }  // namespace GUITest_crazy_user
 
 }  // namespace U2
-
-#endif

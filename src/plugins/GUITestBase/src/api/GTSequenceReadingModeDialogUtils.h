@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTSEQUENCEREADINGMODEDIALOGUTILS_H
-#define GTSEQUENCEREADINGMODEDIALOGUTILS_H
+#pragma once
 
 #include <QSpinBox>
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // GTSEQUENCEREADINGMODEDIALOGUTILS_H

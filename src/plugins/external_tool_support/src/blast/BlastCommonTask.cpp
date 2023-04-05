@@ -59,7 +59,7 @@ static const QString QUERY_SEQUENCE_NAME_PREFIX = "query-";
 BlastCommonTask::BlastCommonTask(const BlastTaskSettings& _settings)
     : ExternalToolSupportTask(tr("Run NCBI Blast task"), TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
-    GCOUNTER(cvar, "BlastCommonTask");
+    GCOUNTER(cvar, "ExternalTool_BlastCommonTask");
     for (const QByteArray& querySequence : qAsConst(settings.querySequences)) {
         querySequences << (settings.isSequenceCircular ? U2PseudoCircularization::createSequenceWithCircularOverlaps(querySequence) : querySequence);
     }

@@ -122,7 +122,7 @@ HmmerBuildPrompter::HmmerBuildPrompter(Actor* p)
 }
 
 QString HmmerBuildPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* msaProducer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
 
     QString msaName = (msaProducer ? tr("For each MSA from <u>%1</u>,").arg(msaProducer->getLabel()) : "");
@@ -187,7 +187,7 @@ Task* HmmerBuildWorker::tick() {
 }
 
 void HmmerBuildWorker::sl_taskFinished(Task* task) {
-    HmmerBuildFromMsaTask* buildTask = qobject_cast<HmmerBuildFromMsaTask*>(task);
+    auto buildTask = qobject_cast<HmmerBuildFromMsaTask*>(task);
     SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;

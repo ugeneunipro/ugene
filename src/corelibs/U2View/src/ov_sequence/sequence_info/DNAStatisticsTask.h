@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QMap>
+#include <QSharedPointer>
 #include <QVector>
 
 #include <U2Core/BackgroundTaskRunner.h>
@@ -34,6 +35,7 @@ using MononucleotidesExtinctionCoefficientsMap = QVector<int>;
 using DinucleotidesExtinctionCoefficientsMap = QVector<QVector<int>>;
 
 class DNAAlphabet;
+class TmCalculator;
 class U2SequenceDbi;
 
 struct U2VIEW_EXPORT DNAStatistics {
@@ -61,7 +63,13 @@ struct U2VIEW_EXPORT DNAStatistics {
 class U2VIEW_EXPORT DNAStatisticsTask : public BackgroundTask<DNAStatistics> {
     Q_OBJECT
 public:
-    DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef seqRef, const QVector<U2Region>& regions);
+    DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef& seqRef, const QVector<U2Region>& regions, const QSharedPointer<TmCalculator>& temperatureCalculator);
+
+    /** Minimum sequence length to estimate melting temperature. */
+    static constexpr int TM_MIN_LENGTH_LIMIT = 8;
+
+    /** Maximum sequence length to estimate melting temperature. */
+    static constexpr int TM_MAX_LENGTH_LIMIT = 10 * 1000;
 
 private:
     void run() override;
@@ -69,6 +77,7 @@ private:
     const DNAAlphabet* alphabet;
     U2EntityRef seqRef;
     QVector<U2Region> regions;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 
     QVector<qint64> charactersCount;
     QVector<qint64> rcCharactersCount;

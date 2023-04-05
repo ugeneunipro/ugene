@@ -169,7 +169,7 @@ const QMap<int, QColor> ChainsColorScheme::getChainColors(const BioStruct3DObjec
     if (nullptr != biostructObj->getDocument()) {
         QList<GObject*> aObjs = GObjectUtils::selectRelationsFromParentDoc(biostructObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_AnnotationTable);
         for (GObject* obj : qAsConst(aObjs)) {
-            AnnotationTableObject* ao = qobject_cast<AnnotationTableObject*>(obj);
+            auto ao = qobject_cast<AnnotationTableObject*>(obj);
             SAFE_POINT(nullptr != ao, "Invalid annotation table!", colorMap);
 
             foreach (Annotation* a, ao->getAnnotationsByName(BioStruct3D::MoleculeAnnotationTag)) {
@@ -218,7 +218,7 @@ const QMap<QString, QColor> SecStructColorScheme::getSecStructAnnotationColors(c
     if (doc) {
         QList<GObject*> targetAnnotations = GObjectUtils::selectRelationsFromParentDoc(biostruct, GObjectTypes::ANNOTATION_TABLE, ObjectRole_AnnotationTable);
         for (GObject* obj : qAsConst(targetAnnotations)) {
-            AnnotationTableObject* ao = qobject_cast<AnnotationTableObject*>(obj);
+            auto ao = qobject_cast<AnnotationTableObject*>(obj);
             SAFE_POINT(ao != nullptr, "Invalid annotation table!", colors);
 
             foreach (Annotation* a, ao->getAnnotationsByName(BioStruct3D::SecStructAnnotationTag)) {

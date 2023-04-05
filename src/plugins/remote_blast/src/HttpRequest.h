@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HTTP_REQUEST_H_
-#define _HTTP_REQUEST_H_
+#pragma once
 
 #include <QBuffer>
 #include <QCoreApplication>
@@ -79,5 +78,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

@@ -369,7 +369,7 @@ void BioStruct3DGLWidget::sl_onSequenceSelectionChanged(LRegionsSelection* s, co
     if (!isVisible())
         return;
 
-    DNASequenceSelection* selection = qobject_cast<DNASequenceSelection*>(s);
+    auto selection = qobject_cast<DNASequenceSelection*>(s);
     const U2SequenceObject* seqObj = selection->getSequenceObject();
     assert(seqObj);
 
@@ -1068,7 +1068,7 @@ void BioStruct3DGLWidget::sl_resetAlignment() {
 
 void BioStruct3DGLWidget::sl_onAlignmentDone(Task* task) {
     if (!task->hasError()) {
-        StructuralAlignmentTask* saTask = qobject_cast<StructuralAlignmentTask*>(task);
+        auto saTask = qobject_cast<StructuralAlignmentTask*>(task);
         assert(saTask && "Task should have type StructuralAlignmentTask");
 
         StructuralAlignment result = saTask->getResult();

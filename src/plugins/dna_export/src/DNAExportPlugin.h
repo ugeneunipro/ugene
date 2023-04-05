@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DNA_EXPORT_PLUGIN_H_
-#define _U2_DNA_EXPORT_PLUGIN_H_
+#pragma once
 
 #include <U2Core/PluginModel.h>
 #include <U2Core/ServiceModel.h>
@@ -56,5 +55,3 @@ protected:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DNA_EXPORT_PLUGIN_H_

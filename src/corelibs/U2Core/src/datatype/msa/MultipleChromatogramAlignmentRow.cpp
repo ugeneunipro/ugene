@@ -43,7 +43,7 @@ MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow()
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleAlignmentRow& maRow)
     : MultipleAlignmentRow(maRow) {
-    SAFE_POINT(nullptr != maRowData.dynamicCast<MultipleChromatogramAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleChromatogramAlignmentRow", );
+    SAFE_POINT(maRowData.dynamicCast<MultipleChromatogramAlignmentRowData>() != nullptr, "Can't cast MultipleAlignmentRow to MultipleChromatogramAlignmentRow", );
 }
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentData* mcaData)

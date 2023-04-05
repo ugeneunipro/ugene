@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_
-#define _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -83,5 +82,3 @@ DECLARE_METATYPE(BioStruct3DObjectUnitTests, clone);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(BioStruct3DObjectUnitTests, remove);
-
-#endif  // _U2_BIO_STRUCT_3D_OBJECT_UNIT_TESTS_H_

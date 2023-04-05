@@ -184,7 +184,7 @@ void ExternalToolManagerImpl::sl_onToolValidationTaskFinished(Task* task) {
 }
 
 void ExternalToolManagerImpl::sl_onToolStatusChanged(bool isValid) {
-    ExternalTool* tool = qobject_cast<ExternalTool*>(sender());
+    auto tool = qobject_cast<ExternalTool*>(sender());
     SAFE_POINT(tool != nullptr, "Unexpected message sender", );
 
     toolStateMap.insert(tool->getId(), isValid ? Valid : NotValid);

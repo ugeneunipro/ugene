@@ -70,7 +70,7 @@ static const QString ANYWHERE_URL("anywhere-url");
 /* CutAdaptFastqPrompter */
 /************************************************************************/
 QString CutAdaptFastqPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BaseNGSWorker::INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -218,7 +218,7 @@ Task* CutAdaptFastqWorker::getTask(const BaseNGSSetting& settings) const {
 // CutAdaptFastqTask
 CutAdaptFastqTask::CutAdaptFastqTask(const BaseNGSSetting& settings)
     : BaseNGSTask(settings) {
-    GCOUNTER(cvar, "NGS:FASTQCutAdaptTask");
+    GCOUNTER(cvar, "ExternalTool_Cutadapt");
 }
 
 void CutAdaptFastqTask::prepareStep() {

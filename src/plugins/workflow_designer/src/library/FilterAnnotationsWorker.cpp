@@ -84,7 +84,7 @@ Task* FilterAnnotationsWorker::tick() {
 }
 
 void FilterAnnotationsWorker::sl_taskFinished(Task* t) {
-    FilterAnnotationsTask* task = dynamic_cast<FilterAnnotationsTask*>(t);
+    auto task = dynamic_cast<FilterAnnotationsTask*>(t);
     CHECK(nullptr != task, );
     CHECK(!task->getStateInfo().isCoR(), );
 

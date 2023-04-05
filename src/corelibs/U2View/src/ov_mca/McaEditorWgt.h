@@ -36,7 +36,7 @@ class McaReferenceCharController;
 class U2VIEW_EXPORT McaEditorWgt : public MaEditorWgt {
     Q_OBJECT
 public:
-    McaEditorWgt(McaEditor* editor);
+    McaEditorWgt(McaEditor* editor, QWidget* parent);
 
     McaEditor* getEditor() const;
     McaEditorConsensusArea* getConsensusArea() const;

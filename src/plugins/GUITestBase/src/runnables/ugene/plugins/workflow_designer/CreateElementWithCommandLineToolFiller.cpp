@@ -130,7 +130,7 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
         GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(ColumnName::Value), row));
         GTMouseDriver::doubleClick();
 
-        QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
+        auto box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString fullValue = formatToArgumentValue(type.second);
         GTComboBox::selectItemByText(os, box, fullValue);
         if (isOsWindows()) {

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IN_SILICO_PCR_OP_WIDGET_FACTORY_H_
-#define _U2_IN_SILICO_PCR_OP_WIDGET_FACTORY_H_
+#pragma once
 
 #include <U2Gui/OPWidgetFactory.h>
 
@@ -31,7 +30,7 @@ class InSilicoPcrOPWidgetFactory : public OPWidgetFactory {
 public:
     InSilicoPcrOPWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
@@ -42,5 +41,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_IN_SILICO_PCR_OP_WIDGET_FACTORY_H_

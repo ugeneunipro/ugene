@@ -166,7 +166,7 @@ static ORFAlgorithmStrand getStrand(const QString& s) {
  * ORFPrompter
  *****************************/
 QString ORFPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -298,7 +298,7 @@ Task* ORFWorker::tick() {
 }
 
 void ORFWorker::sl_taskFinished() {
-    ORFFindTask* t = qobject_cast<ORFFindTask*>(sender());
+    auto t = qobject_cast<ORFFindTask*>(sender());
     if (t->getState() != Task::State_Finished || t->isCanceled() || t->hasError()) {
         return;
     }

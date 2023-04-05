@@ -260,9 +260,9 @@ static StrandOption getStrand(const QString& s) {
  * SWPrompter
  **************************/
 QString SWPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
     Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
-    IntegralBusPort* patternPort = qobject_cast<IntegralBusPort*>(target->getPort(PATTERN_PORT));
+    auto patternPort = qobject_cast<IntegralBusPort*>(target->getPort(PATTERN_PORT));
     Actor* ptrnProducer = patternPort->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
 
@@ -348,7 +348,7 @@ Task* SWWorker::tick() {
     while (patternPort->hasMessage()) {
         SharedDbiDataHandler ptrnId = patternPort->get().getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> ptrnObj(StorageUtils::getSequenceObject(context->getDataStorage(), ptrnId));
-        if (nullptr == ptrnObj.data()) {
+        if (ptrnObj.data() == nullptr) {
             return nullptr;
         }
         U2OpStatusImpl os;
@@ -376,7 +376,7 @@ Task* SWWorker::tick() {
         // sequence
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (nullptr == seqObj.data()) {
+        if (seqObj.data() == nullptr) {
             return nullptr;
         }
         U2OpStatusImpl os;
@@ -516,7 +516,7 @@ Task* SWWorker::tick() {
 
 void SWWorker::sl_taskFinished(Task* t) {
     QList<SharedAnnotationData> annData;
-    MultiTask* multiSw = qobject_cast<MultiTask*>(t);
+    auto multiSw = qobject_cast<MultiTask*>(t);
     SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     QList<Task*> subs = multiSw->getTasks();
     SAFE_POINT(!subs.isEmpty(), "Invalid task is encountered", );

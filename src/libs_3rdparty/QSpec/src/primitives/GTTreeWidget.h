@@ -69,7 +69,7 @@ public:
                                              int column = 0,
                                              const GTGlobals::FindOptions& options = {});
 
-    static void click(GUITestOpStatus& os, QTreeWidgetItem* item, int column = -1);  //  column == -1 - item center
+    static void click(GUITestOpStatus& os, QTreeWidgetItem* item, int column = -1, Qt::MouseButton button = Qt::LeftButton);  //  column == -1 - item center
     static void doubleClick(GUITestOpStatus& os, QTreeWidgetItem* item, int column = -1);
 
     // Returns item level, 0 - top level item

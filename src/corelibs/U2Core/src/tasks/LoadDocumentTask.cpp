@@ -166,7 +166,7 @@ LoadUnloadedDocumentTask* LoadUnloadedDocumentTask::findActiveLoadingTask(Docume
     QString res = getResourceName(d);
     QList<Task*> tasks = AppContext::getResourceTracker()->getResourceUsers(res);
     foreach (Task* t, tasks) {
-        LoadUnloadedDocumentTask* lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
+        auto lut = qobject_cast<LoadUnloadedDocumentTask*>(t);
         if (lut != nullptr) {
             return lut;
         }

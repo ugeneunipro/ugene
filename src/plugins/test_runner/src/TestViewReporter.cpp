@@ -105,15 +105,15 @@ static QString generateStatusBarColumn(int data, bool noTestRun) {
 static QList<TVTestItem*> getFailedTests(TVTSItem* Root) {
     QList<TVTestItem*> html;
     for (int i = 0; i < Root->childCount(); i++) {
-        TVItem* item = static_cast<TVItem*>(Root->child(i));
+        auto item = static_cast<TVItem*>(Root->child(i));
         if (item->isTest()) {
-            TVTestItem* tItem = static_cast<TVTestItem*>(item);
+            auto tItem = static_cast<TVTestItem*>(item);
             if (tItem->testState->isFailed()) {
                 html.append(tItem);
             }
         } else {
             assert(item->isSuite());
-            TVTSItem* tItem = static_cast<TVTSItem*>(item);
+            auto tItem = static_cast<TVTSItem*>(item);
             html += getFailedTests(tItem);
         }
     }
@@ -213,9 +213,9 @@ static QString generateErrorsListBlock(QTreeWidget* tree) {
     int idGen = 1;
     QString html = "<br><br>";
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+        auto item = static_cast<TVItem*>(tree->topLevelItem(i));
         assert(item->isSuite());
-        TVTSItem* suiteItem = static_cast<TVTSItem*>(item);
+        auto suiteItem = static_cast<TVTSItem*>(item);
         QList<TVTestItem*> failedTests = getFailedTests(suiteItem);
         if (!failedTests.isEmpty()) {
             html += "<table>";
@@ -256,9 +256,9 @@ QString TestViewReporter::generateHtmlReport(QTreeWidget* tree, int runTime) {
         int totalExcluded = 0;
         QString perSuiteStatsHtml;
         for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-            TVItem* item = static_cast<TVItem*>(tree->topLevelItem(i));
+            auto item = static_cast<TVItem*>(tree->topLevelItem(i));
             assert(item->isSuite());
-            TVTSItem* tItem = static_cast<TVTSItem*>(item);
+            auto tItem = static_cast<TVTSItem*>(item);
 
             int passed = 0, failed = 0, notRun = 0;
             int excluded = 0;

@@ -132,13 +132,13 @@ void GTest_AnnotatorSearch::prepare() {
         return;
     }
     assert(obj != nullptr);
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
     }
     AnnotationTableObject* ao = getContext<AnnotationTableObject>(this, seqName);
-    if (nullptr == ao) {
+    if (ao == nullptr) {
         stateInfo.setError(QString("context not found %1").arg(seqName));
         return;
     }
@@ -222,7 +222,7 @@ void GTest_CustomAutoAnnotation::prepare() {
         return;
     }
     assert(obj != nullptr);
-    U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
+    auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
     if (dnaObj == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;
@@ -335,7 +335,7 @@ void GTest_GeneByGeneApproach::prepare() {
         return;
     }
     assert(obj != nullptr);
-    U2SequenceObject* mySequence = qobject_cast<U2SequenceObject*>(obj);
+    auto mySequence = qobject_cast<U2SequenceObject*>(obj);
     if (mySequence == nullptr) {
         stateInfo.setError(QString("error can't cast to sequence from GObject"));
         return;

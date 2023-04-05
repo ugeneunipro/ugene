@@ -422,7 +422,7 @@ namespace BALL
 		if (!bound_()) return 0;
 
 		// iterate over all loglines and count the lines of interest
-		LogStream*	non_const_this = const_cast<LogStream*>(this);
+		auto non_const_this = const_cast<LogStream*>(this);
 		vector<LogStreamBuf::Logline>::iterator	it = non_const_this->rdbuf()->loglines_.begin();
 		Size	count = 0;
 
@@ -480,7 +480,7 @@ namespace BALL
 	{
 		std::list<int>	list_indices;
 		Position pos = 0;
-		LogStreamBuf* log = const_cast<LogStream*>(this)->rdbuf();
+		auto log = const_cast<LogStream*>(this)->rdbuf();
 
 		while (pos < log->loglines_.size() && 
 					 log->loglines_[pos].time < earliest)
@@ -548,7 +548,7 @@ namespace BALL
 
 	bool LogStream::bound_() const
 	{
-		LogStream*	non_const_this = const_cast<LogStream*>(this);
+		auto non_const_this = const_cast<LogStream*>(this);
 
 		return (non_const_this->rdbuf() != 0);
 	}

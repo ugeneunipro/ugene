@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_PRIMERS_DIALOG_FILLER_H_
-#define _U2_IMPORT_PRIMERS_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -29,20 +28,19 @@ using namespace HI;
 
 class ImportPrimersDialogFiller : public Filler {
 public:
-    ImportPrimersDialogFiller(HI::GUITestOpStatus& os, const QStringList& fileList);
+    ImportPrimersDialogFiller(HI::GUITestOpStatus& os, const QStringList& fileList, const QMap<QString, QStringList>& objectNameList);
     ImportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
     static void addFile(HI::GUITestOpStatus& os, const QString& filePath);
-    static void addObjects(HI::GUITestOpStatus& os, const QString& databaseName, const QStringList& objectNames);
     static void addObjects(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& databaseAndObjectNames);
     static QWidget* getDialog(HI::GUITestOpStatus& os);
 
 private:
     const QStringList fileList;
+    // key - document name, value - object names
+    const QMap<QString, QStringList> objectNameList;
 };
 
 }  // namespace U2
-
-#endif  // _U2_IMPORT_PRIMERS_DIALOG_FILLER_H_

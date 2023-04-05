@@ -92,7 +92,7 @@ ExternalProcessConfig* IncludedProtoFactory::unregisterExternalToolWorker(const 
 bool IncludedProtoFactory::isRegistered(const QString& actorName) {
     ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(actorName);
 
-    if (nullptr == proto) {
+    if (proto == nullptr) {
         return false;
     } else {
         return true;

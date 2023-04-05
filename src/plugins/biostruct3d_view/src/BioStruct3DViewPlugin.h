@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BIOSTRUCT3D_VIEW_PLUGIN_H_
-#define _U2_BIOSTRUCT3D_VIEW_PLUGIN_H_
+#pragma once
 
 #include <QAction>
 #include <QMap>
@@ -47,22 +46,22 @@ private:
 
 class BioStruct3DViewContext : public GObjectViewWindowContext {
     Q_OBJECT
-    QMap<GObjectView*, BioStruct3DSplitter*> splitterMap;
+    QMap<GObjectViewController*, BioStruct3DSplitter*> splitterMap;
 
 public:
     BioStruct3DViewContext(QObject* p);
 
-    bool canHandle(GObjectView* v, GObject* o) override;
+    bool canHandle(GObjectViewController* v, GObject* o) override;
 
-    void onObjectAdded(GObjectView* v, GObject* obj) override;
-    void onObjectRemoved(GObjectView* v, GObject* obj) override;
+    void onObjectAdded(GObjectViewController* v, GObject* obj) override;
+    void onObjectRemoved(GObjectViewController* v, GObject* obj) override;
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
-    void unregister3DView(GObjectView* view, BioStruct3DSplitter* view3d);
+    void unregister3DView(GObjectViewController* view, BioStruct3DSplitter* view3d);
 
-    QAction* getClose3DViewAction(GObjectView* view);
+    QAction* getClose3DViewAction(GObjectViewController* view);
 
 protected slots:
     void sl_close3DView();
@@ -70,5 +69,3 @@ protected slots:
 };
 
 }  // namespace U2
-
-#endif

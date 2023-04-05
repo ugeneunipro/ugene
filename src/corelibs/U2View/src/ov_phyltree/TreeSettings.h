@@ -34,7 +34,7 @@ enum TreeType {
     CLADOGRAM
 };
 
-enum TreeLayout {
+enum TreeLayoutType {
     RECTANGULAR_LAYOUT,
     CIRCULAR_LAYOUT,
     UNROOTED_LAYOUT
@@ -43,7 +43,7 @@ enum TreeLayout {
 enum TreeViewOption {
     BRANCHES_TRANSFORMATION_TYPE,
 
-    TREE_LAYOUT,
+    TREE_LAYOUT_TYPE,
 
     /*
      * Affects breadth of the tree:
@@ -73,6 +73,8 @@ enum TreeViewOption {
      * If false: the shape is visible only for selected nodes or on hover over the node area.
      */
     SHOW_NODE_SHAPE,
+    /** Same as SHOW_NODE_SHAPE but for tips (leafs). */
+    SHOW_TIP_SHAPE,
     NODE_COLOR,
     NODE_RADIUS,
 
@@ -88,7 +90,9 @@ enum TreeViewOption {
     /** Aligns leaf node labels (sequence/species names). */
     ALIGN_LEAF_NODE_LABELS,
 
+    /** Distance-units length of the legend line. */
     SCALEBAR_RANGE,
+
     SCALEBAR_FONT_SIZE,
     SCALEBAR_LINE_WIDTH,
 

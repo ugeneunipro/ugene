@@ -23,10 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceUtils.h>
-#include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
-#include <U2Core/Primer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -34,7 +31,7 @@
 
 namespace U2 {
 
-QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, bool& isCriticalError) {
+QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, const QSharedPointer<TmCalculator>& temperatureCalculator, bool& isCriticalError) {
     QString message;
     isCriticalError = false;
     bool forwardIsValid = validate(forward);
@@ -56,38 +53,9 @@ QString PrimerStatistics::checkPcrPrimersPair(const QByteArray& forward, const Q
         return message;
     }
 
-    PrimersPairStatistics calc(forward, reverse);
+    PrimersPairStatistics calc(forward, reverse, temperatureCalculator);
     message = calc.getFirstError();
     return message;
-}
-
-double PrimerStatistics::getMeltingTemperature(const QByteArray& sequence) {
-    CHECK(validate(sequence), Primer::INVALID_TM);
-    PrimerStatisticsCalculator calc(sequence);
-    return calc.getTm();
-}
-
-double PrimerStatistics::getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer) {
-    if (PrimerStatistics::validate(initialPrimer)) {
-        return PrimerStatistics::getMeltingTemperature(initialPrimer);
-    }
-    if (PrimerStatistics::validate(alternativePrimer)) {
-        return PrimerStatistics::getMeltingTemperature(alternativePrimer);
-    }
-    return Primer::INVALID_TM;
-}
-
-double PrimerStatistics::getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer) {
-    CHECK(validate(product) == true, Primer::INVALID_TM);
-
-    double forwardTm = getMeltingTemperature(forwardPrimer, product.left(forwardPrimer.length()));
-    CHECK(forwardTm != Primer::INVALID_TM, Primer::INVALID_TM);
-    double reverseTm = getMeltingTemperature(reversePrimer, DNASequenceUtils::reverseComplement(product.right(reversePrimer.length())));
-    CHECK(reverseTm != Primer::INVALID_TM, Primer::INVALID_TM);
-
-    double primersTm = (forwardTm + reverseTm) / 2;
-    double productTm = getMeltingTemperature(product);
-    return 0.3 * primersTm + 0.7 * productTm - 14.9;
 }
 
 bool PrimerStatistics::validate(const QByteArray& primer) {
@@ -121,11 +89,16 @@ const int PrimerStatisticsCalculator::CLAMP_BOTTOM = 1;
 const int PrimerStatisticsCalculator::RUNS_TOP = 4;
 const double PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD = -6.0;
 
-PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray& sequence,
-                                                       Direction direction,
+PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray& _sequence,
+                                                       const QSharedPointer<TmCalculator>& _temperatureCalculator,
+                                                       Direction _direction,
                                                        const qreal _energyThreshold)
-    : sequence(sequence), direction(direction), energyThreshold(_energyThreshold),
+    : sequence(_sequence), 
+      temperatureCalculator(_temperatureCalculator), 
+      direction(_direction), 
+      energyThreshold(_energyThreshold),
       nA(0), nC(0), nG(0), nT(0), maxRun(0) {
+    SAFE_POINT(temperatureCalculator != nullptr, "PrimerStatisticsCalculator:temperatureCalculator is null" ,)
     CHECK(!sequence.isEmpty(), );
 
     int currentRun = 0;
@@ -176,12 +149,7 @@ double PrimerStatisticsCalculator::getGC() const {
 }
 
 double PrimerStatisticsCalculator::getTm() const {
-    CHECK(nA + nT + nG + nC > 0, 0.0);
-    if (sequence.length() < 14) {
-        return (nA + nT) * 2 + (nG + nC) * 4;
-    }
-
-    return 64.9 + 41 * (nG + nC - 16.4) / double(nA + nT + nG + nC);
+    return temperatureCalculator->getMeltingTemperature(sequence);
 }
 
 int PrimerStatisticsCalculator::getGCClamp() const {
@@ -293,9 +261,9 @@ const QString RUNS_RANGE = QString("&lt;=%1 base runs").arg(PrimerStatisticsCalc
 const QString DIMERS_RANGE = QString("&Delta;G &gt;=%1 kcal/mol").arg(PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD);
 }  // namespace
 
-PrimersPairStatistics::PrimersPairStatistics(const QByteArray& _forward, const QByteArray& _reverse)
-    : forward(_forward, PrimerStatisticsCalculator::Forward),
-      reverse(_reverse, PrimerStatisticsCalculator::Reverse) {
+PrimersPairStatistics::PrimersPairStatistics(const QByteArray& _forward, const QByteArray& _reverse, const QSharedPointer<TmCalculator>& temperatureCalculator)
+    : forward(_forward, temperatureCalculator, PrimerStatisticsCalculator::Forward),
+      reverse(_reverse, temperatureCalculator, PrimerStatisticsCalculator::Reverse) {
     initializationError = forward.getInitializationError().isEmpty() ? reverse.getInitializationError() : forward.getInitializationError();
     if (!initializationError.isEmpty()) {
         return;
@@ -324,10 +292,10 @@ QString PrimersPairStatistics::getFirstError() const {
 }
 
 #define CREATE_COLUMN(name, width, center) \
-    result += QString("<th width=\"%1%\"/><p %2><strong>%3</strong></p></th>").arg(width).arg(center ? "align=\"center\"" : "align=\"left\"").arg(name);
+    result += QString("<th width=\"%1%\"/><p %2><strong>%3</strong></p></th>").arg(width).arg((center) ? "align=\"center\"" : "align=\"left\"").arg(name);
 
 #define CREATE_CELL(value, good, center) \
-    result += QString("<td %1 %2>%3</td>").arg(good ? "" : " style=\"color: red;\"").arg(center ? " align=\"center\"" : "").arg(value);
+    result += QString("<td %1 %2>%3</td>").arg((good) ? "" : " style=\"color: red;\"").arg((center) ? " align=\"center\"" : "").arg(value);
 
 #define CREATE_ROW(criteria, range, value1, value2, good1, good2) \
     result += "<tr>"; \

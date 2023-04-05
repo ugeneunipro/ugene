@@ -255,7 +255,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
     std::sort(expectedResults.begin(), expectedResults.end());
 
     // check all subtasks
-    FindRepeatsTask* sub = qobject_cast<FindRepeatsTask*>(getSubtasks()[0].data());
+    auto sub = qobject_cast<FindRepeatsTask*>(getSubtasks()[0].data());
     QVector<RFResult> calcResults = sub->getResults();
     if (expectedResults.size() != calcResults.size()) {
         stateInfo.setError(QString("Results count not matched, num = %1, expected = %2, alg = %3")
@@ -379,7 +379,7 @@ void GTest_FindTandemRepeatsTask::run() {
     }
 
     // check all subtasks
-    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
+    auto sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     if (expectedResults.size() != calcResults.size()) {
         QString results("First results are:\n");
@@ -529,7 +529,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
     std::sort(expectedResults.begin(), expectedResults.end());
 
     // check all subtasks
-    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
+    auto sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     QMutableListIterator<Tandem> cIt(calcResults);
     QMutableListIterator<Tandem> eIt(expectedResults);

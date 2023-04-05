@@ -57,7 +57,7 @@ TopHatSupportTask::TopHatSupportTask(const TopHatSettings& _settings)
       tmpDocSaved(false),
       tmpDocPairedSaved(false),
       bowtieIndexTask(nullptr) {
-    GCOUNTER(cvar, "NGS:TopHatTask");
+    GCOUNTER(cvar, "ExternalTool_TopHat");
 }
 
 TopHatSupportTask::~TopHatSupportTask() {
@@ -177,7 +177,7 @@ SaveDocumentTask* TopHatSupportTask::createSaveTask(const QString& url, QPointer
     foreach (Workflow::SharedDbiDataHandler seqId, seqs) {
         U2SequenceObject* seqObj(Workflow::StorageUtils::getSequenceObject(settings.storage(), seqId));
 
-        if (nullptr == seqObj) {
+        if (seqObj == nullptr) {
             stateInfo.setError(tr("An unexpected error has occurred during preparing the TopHat task!"));
             taskLog.trace(tr("Preparing TopHatSupportTask internal error: unable to get a sequence object!"));
             return nullptr;
@@ -324,7 +324,7 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task* subTask) {
         readAssemblyOutputTask = factory->createTask(outputFiles.value(ACCEPTED_HITS), QVariantMap(), settings.workflowContext());
         result.append(readAssemblyOutputTask);
     } else if (subTask == readAssemblyOutputTask) {
-        Workflow::ReadDocumentTask* readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
+        auto readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
         SAFE_POINT(nullptr != readDocTask, "Internal error during parsing TopHat output: NULL read document task!", result);
 
         QList<Workflow::SharedDbiDataHandler> acceptedHitsResults;

@@ -50,7 +50,7 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpSt
 
     for (Document* doc : qAsConst(docs)) {
         for (GObject* seqObj : doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
-            U2SequenceObject* casted = qobject_cast<U2SequenceObject*>(seqObj);
+            auto casted = qobject_cast<U2SequenceObject*>(seqObj);
             if (casted == nullptr) {
                 continue;
             }
@@ -63,7 +63,7 @@ QList<DNASequence> PasteUtils::getSequences(const QList<Document*>& docs, U2OpSt
         }
         const QList<GObject*> msaObjectList = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         for (GObject* msaObj : qAsConst(msaObjectList)) {
-            MultipleSequenceAlignmentObject* casted = qobject_cast<MultipleSequenceAlignmentObject*>(msaObj);
+            auto casted = qobject_cast<MultipleSequenceAlignmentObject*>(msaObj);
             if (casted == nullptr) {
                 continue;
             }

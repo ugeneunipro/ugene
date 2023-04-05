@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUSTOM_PATTERN_ANNOTATION_TASK_H_
-#define _U2_CUSTOM_PATTERN_ANNOTATION_TASK_H_
+#pragma once
 
 #include <QSharedPointer>
 
@@ -118,5 +117,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_CUSTOM_PATTERN_ANNOTATION_TASK_H_

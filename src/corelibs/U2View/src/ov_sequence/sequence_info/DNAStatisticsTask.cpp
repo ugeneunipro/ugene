@@ -21,6 +21,9 @@
 
 #include <math.h>
 
+#include <U2Algorithm/TmCalculator.h>
+
+#include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/U2DbiUtils.h>
@@ -41,7 +44,7 @@ DNAStatistics::DNAStatistics() {
 void DNAStatistics::clear() {
     length = 0;
     gcContent = 0;
-    meltingTemp = 0;
+    meltingTemp = TmCalculator::INVALID_TM;
 
     ssMolecularWeight = 0;
     ssExtinctionCoefficient = 0;
@@ -332,12 +335,14 @@ const QVector<int> DNAStatisticsTask::PROTEIN_CHARGES_MAP = createChargeMap();
 const QVector<double> DNAStatisticsTask::GC_RATIO_MAP = createGcRatioMap();
 
 DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
-                                     const U2EntityRef seqRef,
-                                     const QVector<U2Region>& regions)
+                                     const U2EntityRef& seqRef,
+                                     const QVector<U2Region>& regions,
+                                     const QSharedPointer<TmCalculator>& _temperatureCalculator)
     : BackgroundTask<DNAStatistics>(tr("Calculate sequence statistics"), TaskFlag_None),
       alphabet(alphabet),
       seqRef(seqRef),
       regions(regions),
+      temperatureCalculator(_temperatureCalculator),
       charactersCount(MAP_SIZE, 0),
       rcCharactersCount(MAP_SIZE, 0),
       dinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0)),
@@ -368,14 +373,21 @@ void DNAStatisticsTask::computeStats() {
         return;
     }
 
+    // Max size to avoid cache overflow
+    static constexpr int MAX_SIZE = 1024 * 1024;
+    QByteArray meltTempSeq;
     for (const U2Region& region : qAsConst(regions)) {
-        QList<U2Region> blocks = U2Region::split(region, 1024 * 1024);
+        QList<U2Region> blocks = U2Region::split(region, MAX_SIZE);
         for (const U2Region& block : qAsConst(blocks)) {
             if (isCanceled() || hasError()) {
                 break;
             }
             const QByteArray seqBlock = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
             CHECK_OP(os, );
+
+            if (meltTempSeq.size() < TM_MAX_LENGTH_LIMIT) {
+                meltTempSeq.append(seqBlock, qMin(TM_MAX_LENGTH_LIMIT - meltTempSeq.size(), seqBlock.size()));
+            }
             const char* sequenceData = seqBlock.constData();
 
             int previousChar = U2Msa::GAP_CHAR;
@@ -388,7 +400,7 @@ void DNAStatisticsTask::computeStats() {
                         dinucleotidesCount[previousChar][character]++;
                     }
                 }
-                if (U2Msa::GAP_CHAR != character) {
+                if (character != U2Msa::GAP_CHAR) {
                     previousChar = character;
                 }
             }
@@ -433,7 +445,7 @@ void DNAStatisticsTask::computeStats() {
         } else if (alphabet->isDNA()) {
             molecularWeightMap = &DNA_MOLECULAR_WEIGHT_MAP;
         }
-        SAFE_POINT_EXT(nullptr != molecularWeightMap, os.setError("An unknown alphabet"), );
+        SAFE_POINT_EXT(molecularWeightMap != nullptr, os.setError("An unknown alphabet"), );
 
         for (int i = 0, n = charactersCount.size(); i < n; ++i) {
             result.ssMolecularWeight += charactersCount[i] * molecularWeightMap->at(i);
@@ -477,16 +489,10 @@ void DNAStatisticsTask::computeStats() {
 
         result.dsExtinctionCoefficient *= (1 - hypochromicity);
 
-        // Calculating melting temperature
-        const qint64 nA = charactersCount['A'];
-        const qint64 nC = charactersCount['C'];
-        const qint64 nG = charactersCount['G'];
-        const qint64 nT = charactersCount['T'];
-        if (totalLength < 15) {
-            result.meltingTemp = (nA + nT) * 2 + (nG + nC) * 4;
-        } else if (nA + nT + nG + nC != 0) {
-            result.meltingTemp = 64.9 + 41 * (nG + nC - 16.4) / static_cast<double>(nA + nT + nG + nC);
-        }
+        // Calculating melting temperature.
+        result.meltingTemp = meltTempSeq.size() < TM_MIN_LENGTH_LIMIT || result.length > TM_MAX_LENGTH_LIMIT
+                                 ? TmCalculator::INVALID_TM
+                                 : temperatureCalculator->getMeltingTemperature(meltTempSeq);
 
         // Calculating nmole/OD260
         if (result.ssExtinctionCoefficient != 0) {

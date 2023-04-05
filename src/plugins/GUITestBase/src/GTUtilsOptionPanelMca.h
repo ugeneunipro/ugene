@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_OPTION_PANEL_MCA_H_
-#define _U2_GT_UTILS_OPTION_PANEL_MCA_H_
+#pragma once
 
 #include <GTGlobals.h>
 
@@ -75,5 +74,3 @@ public:
     static void showAlternativeMutations(HI::GUITestOpStatus& os, bool show, int value = 75, bool withSpinbox = true, QWidget* parent = nullptr);
 };
 }  // namespace U2
-
-#endif  // _U2_GT_UTILS_OPTION_PANEL_MCA_H_

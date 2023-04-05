@@ -23,6 +23,7 @@
 
 #include <QCheckBox>
 #include <QSvgGenerator>
+#include <QThread>
 
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -30,7 +31,6 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
-#include <U2View/MaEditorWgt.h>
 
 #include "ov_msa/BaseWidthController.h"
 #include "ov_msa/MSASelectSubalignmentDialog.h"
@@ -40,12 +40,12 @@
 
 namespace U2 {
 
-MSAImageExportTask::MSAImageExportTask(MaEditorWgt* ui,
-                                       const MSAImageExportSettings& msaSettings,
+MSAImageExportTask::MSAImageExportTask(MaEditorWgt* _ui,
+                                       const MSAImageExportSettings& _msaSettings,
                                        const ImageExportTaskSettings& settings)
     : ImageExportTask(settings),
-      ui(ui),
-      msaSettings(msaSettings) {
+      ui(_ui),
+      msaSettings(_msaSettings) {
     SAFE_POINT_EXT(ui != nullptr, setError(tr("MSA Editor UI is NULL")), );
 }
 
@@ -56,7 +56,7 @@ void MSAImageExportTask::paintSequencesNames(QPainter& painter) {
     namesArea->drawNames(painter, msaSettings.seqIdx);
 }
 
-void MSAImageExportTask::paintConsensus(QPainter& painter) {
+void MSAImageExportTask::paintConsensusAndRuler(QPainter& painter, const U2Region& region) {
     CHECK(msaSettings.includeConsensus || msaSettings.includeRuler, );
     MaEditorConsensusArea* consensusArea = ui->getConsensusArea();
     SAFE_POINT_EXT(consensusArea != nullptr, setError(tr("MSA Consensus area is NULL")), );
@@ -70,23 +70,12 @@ void MSAImageExportTask::paintConsensus(QPainter& painter) {
         consensusSettings.visibleElements |= MSAEditorConsElement_RULER;
     }
 
-    consensusArea->drawContent(painter, msaSettings.seqIdx, msaSettings.region, consensusSettings);
+    consensusArea->drawContent(painter, msaSettings.seqIdx, region, consensusSettings);
 }
 
-void MSAImageExportTask::paintRuler(QPainter& painter) {
-    CHECK(msaSettings.includeRuler, );
-    MaEditorConsensusArea* consensusArea = ui->getConsensusArea();
-    SAFE_POINT_EXT(consensusArea != nullptr, setError(tr("MSA Consensus area is NULL")), );
-
-    MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
-    consensusSettings.visibleElements = MSAEditorConsElement_RULER;
-
-    consensusArea->drawContent(painter, msaSettings.seqIdx, msaSettings.region, consensusSettings);
-}
-
-bool MSAImageExportTask::paintContent(QPainter& painter) {
+bool MSAImageExportTask::paintSequenceArea(QPainter& painter, const U2Region& region) {
     MaEditorSequenceArea* seqArea = ui->getSequenceArea();
-    return seqArea->drawContent(painter, msaSettings.region, msaSettings.seqIdx, 0, 0);
+    return seqArea->drawContent(painter, region, msaSettings.seqIdx, 0, 0);
 }
 
 MSAImageExportToBitmapTask::MSAImageExportToBitmapTask(MaEditorWgt* ui,
@@ -100,23 +89,16 @@ MSAImageExportToBitmapTask::MSAImageExportToBitmapTask(MaEditorWgt* ui,
 void MSAImageExportToBitmapTask::run() {
     SAFE_POINT_EXT(settings.isBitmapFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToBitmapTask")), );
-
     SAFE_POINT_EXT(ui->getEditor() != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
+    SAFE_POINT_EXT(QCoreApplication::instance()->thread() == QThread::currentThread(), setError("MSAImageExportToBitmapTask: not a main thread!"), );
 
-    // TODO: unsafe access to UI model from another thread. Use U2EntityRef or move the task to the main thread.
     MultipleAlignmentObject* mObj = ui->getEditor()->getMaObject();
     SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
-    StateLock* lock = new StateLock();
-    mObj->lockState(lock);
 
     bool exportAll = msaSettings.exportAll;
-
     bool ok = (exportAll && mObj->getLength() > 0 && mObj->getRowCount() > 0) || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
-    if (!ok) {
-        mObj->unlockState(lock);
-        setError(tr("Nothing to export"));
-        return;
-    }
+    CHECK_EXT(ok, setError(tr("Nothing to export")), );
+
     if (exportAll) {
         msaSettings.region = U2Region(0, mObj->getLength());
         QList<int> seqIdx;
@@ -134,53 +116,62 @@ void MSAImageExportToBitmapTask::run() {
         visibleConsensusElements |= MSAEditorConsElement_RULER;
     }
 
-    QPixmap sequencesPixmap(ui->getSequenceArea()->getCanvasSize(msaSettings.seqIdx, msaSettings.region));
-    QPixmap namesPixmap = msaSettings.includeSeqNames ? QPixmap(ui->getEditorNameList()->getCanvasSize(msaSettings.seqIdx)) : QPixmap();
-    QPixmap consensusPixmap = visibleConsensusElements ? QPixmap(ui->getConsensusArea()->getCanvasSize(msaSettings.region, visibleConsensusElements)) : QPixmap();
+    int basesPerLine = msaSettings.basesPerLine > 0 ? msaSettings.basesPerLine : (int)msaSettings.region.length;
+    QList<U2Region> multilineRegions = U2Region::split(msaSettings.region, basesPerLine);
+    QPixmap multilinePixmap;
+    for (const auto& region : qAsConst(multilineRegions)) {
+        QPixmap sequencesPixmap(ui->getSequenceArea()->getCanvasSize(msaSettings.seqIdx, region));
+        QPixmap namesPixmap = msaSettings.includeSeqNames ? QPixmap(ui->getEditorNameList()->getCanvasSize(msaSettings.seqIdx)) : QPixmap();
+        QPixmap consensusPixmap = visibleConsensusElements ? QPixmap(ui->getConsensusArea()->getCanvasSize(region, visibleConsensusElements)) : QPixmap();
 
-    sequencesPixmap.fill(Qt::white);
-    namesPixmap.fill(Qt::white);
-    consensusPixmap.fill(Qt::white);
+        sequencesPixmap.fill(Qt::white);
+        namesPixmap.fill(Qt::white);
+        consensusPixmap.fill(Qt::white);
 
-    QPainter sequencesPainter(&sequencesPixmap);
-    QPainter namesPainter;
-    if (msaSettings.includeSeqNames) {
-        namesPainter.begin(&namesPixmap);
+        QPainter sequencesPainter(&sequencesPixmap);
+        QPainter namesPainter;
+        if (msaSettings.includeSeqNames) {
+            namesPainter.begin(&namesPixmap);
+        }
+        QPainter consensusPainter;
+        if (visibleConsensusElements) {
+            consensusPainter.begin(&consensusPixmap);
+        }
+
+        ok = paintSequenceArea(sequencesPainter, region);
+        CHECK_EXT(ok, setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
+
+        paintSequencesNames(namesPainter);
+        paintConsensusAndRuler(consensusPainter, region);
+
+        multilinePixmap = mergePixmaps(multilinePixmap, sequencesPixmap, namesPixmap, consensusPixmap);
     }
-    QPainter consensusPainter;
-    if (visibleConsensusElements) {
-        consensusPainter.begin(&consensusPixmap);
-    }
-
-    ok = paintContent(sequencesPainter);
-    if (!ok) {
-        mObj->unlockState(lock);
-        setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName));
-        return;
-    }
-
-    paintSequencesNames(namesPainter);
-    paintConsensus(consensusPainter);
-    mObj->unlockState(lock);
-
-    QPixmap pixmap = mergePixmaps(sequencesPixmap, namesPixmap, consensusPixmap);
-    CHECK_EXT(!pixmap.isNull(),
+    CHECK_EXT(!multilinePixmap.isNull(),
               setError(tr("Alignment is too big. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
-    CHECK_EXT(pixmap.save(settings.fileName, qPrintable(settings.format), settings.imageQuality),
+    CHECK_EXT(multilinePixmap.save(settings.fileName, qPrintable(settings.format), settings.imageQuality),
               setError(tr("Cannot save the file. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 }
 
-QPixmap MSAImageExportToBitmapTask::mergePixmaps(const QPixmap& sequencesPixmap,
+/** Gap between pages in multiline mode in pixels. */
+static const int multilineVerticalSpacing = 30;
+
+QPixmap MSAImageExportToBitmapTask::mergePixmaps(const QPixmap& multilinePixmap,
+                                                 const QPixmap& sequencesPixmap,
                                                  const QPixmap& namesPixmap,
                                                  const QPixmap& consensusPixmap) {
-    CHECK(namesPixmap.width() + sequencesPixmap.width() < IMAGE_SIZE_LIMIT &&
-              consensusPixmap.height() + +sequencesPixmap.height() < IMAGE_SIZE_LIMIT,
-          QPixmap());
-    QPixmap pixmap = QPixmap(namesPixmap.width() + sequencesPixmap.width(),
-                             consensusPixmap.height() + sequencesPixmap.height());
+    int newPixmapWidth = qMax(namesPixmap.width() + sequencesPixmap.width(), multilinePixmap.width());
+    CHECK(newPixmapWidth < IMAGE_SIZE_LIMIT, multilinePixmap);  // Too wide.
 
-    pixmap.fill(Qt::white);
-    QPainter p(&pixmap);
+    int verticalSpacing = multilinePixmap.height() == 0 ? 0 : multilineVerticalSpacing;
+    int newPixmapHeight = multilinePixmap.height() + verticalSpacing + consensusPixmap.height() + sequencesPixmap.height();  // Too high.
+    CHECK(newPixmapHeight < IMAGE_SIZE_LIMIT, multilinePixmap);
+
+    QPixmap newPixmap = QPixmap(newPixmapWidth, newPixmapHeight);
+
+    newPixmap.fill(Qt::white);
+    QPainter p(&newPixmap);
+    p.drawPixmap(multilinePixmap.rect(), multilinePixmap);
+    p.translate(0, multilinePixmap.height() + verticalSpacing);
 
     p.translate(namesPixmap.width(), 0);
     p.drawPixmap(consensusPixmap.rect(), consensusPixmap);
@@ -190,29 +181,24 @@ QPixmap MSAImageExportToBitmapTask::mergePixmaps(const QPixmap& sequencesPixmap,
     p.drawPixmap(sequencesPixmap.rect(), sequencesPixmap);
     p.end();
 
-    return pixmap;
+    return newPixmap;
 }
 
 MSAImageExportToSvgTask::MSAImageExportToSvgTask(MaEditorWgt* ui,
                                                  const MSAImageExportSettings& msaSettings,
                                                  const ImageExportTaskSettings& settings)
-    : MSAImageExportTask(ui,
-                         msaSettings,
-                         settings) {
+    : MSAImageExportTask(ui, msaSettings, settings) {
 }
 
 void MSAImageExportToSvgTask::run() {
     SAFE_POINT_EXT(settings.isSVGFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToSvgTask")), );
 
-    // TODO: unsafe access to UI model from another thread. Use U2EntityRef or move the task to the main thread.
+    SAFE_POINT_EXT(QCoreApplication::instance()->thread() == QThread::currentThread(), setError("MSAImageExportToBitmapTask: not a main thread!"), );
     MaEditor* editor = ui->getEditor();
     SAFE_POINT_EXT(editor != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
     MultipleAlignmentObject* mObj = editor->getMaObject();
     SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
-
-    StateLocker stateLocker(mObj);
-    Q_UNUSED(stateLocker);
 
     int ok = msaSettings.exportAll || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
     SAFE_POINT_EXT(ok, setError(tr("Nothing to export")), );
@@ -238,33 +224,49 @@ void MSAImageExportToSvgTask::run() {
         visibleConsensusElements |= MSAEditorConsElement_RULER;
     }
 
-    const int namesWidth = nameListArea->width();
-    const int consensusHeight = consArea->getCanvasSize(msaSettings.region, visibleConsensusElements).height();
+    int namesWidth = nameListArea->width();
+    int consensusHeight = consArea->getCanvasSize(msaSettings.region, visibleConsensusElements).height();
 
-    const int width = msaSettings.includeSeqNames * namesWidth +
-                      editor->getColumnWidth() * (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length);
-    const int height = msaSettings.includeConsensus * consensusHeight +
-                       (msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(msaSettings.seqIdx));
+    int basesPerLine = msaSettings.basesPerLine > 0 ? msaSettings.basesPerLine : (int)msaSettings.region.length;
+    QList<U2Region> multilineRegions = U2Region::split(msaSettings.region, basesPerLine);
+
+    qint64 width = (msaSettings.includeSeqNames ? namesWidth : 0) + editor->getColumnWidth() * basesPerLine;
+    int lineHeight = (msaSettings.includeConsensus ? consensusHeight : 0) +
+                     (msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(msaSettings.seqIdx));
+    qint64 height = lineHeight * multilineRegions.length() + multilineVerticalSpacing * (multilineRegions.length() - 1);
     SAFE_POINT_EXT(qMax(width, height) < IMAGE_SIZE_LIMIT, setError(tr("The image size is too big.") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 
-    generator.setSize(QSize(width, height));
-    generator.setViewBox(QRect(0, 0, width, height));
+    generator.setSize(QSize((int)width, (int)height));
+    generator.setViewBox(QRect(0, 0, (int)width, (int)height));
     generator.setTitle(tr("SVG %1").arg(mObj->getGObjectName()));
     generator.setDescription(tr("SVG image of multiple alignment created by Unipro UGENE"));
 
     QPainter p;
     p.begin(&generator);
-
-    if ((msaSettings.includeConsensus || msaSettings.includeRuler) && (msaSettings.includeSeqNames)) {
-        // fill an empty space in top left corner with white color
-        p.fillRect(QRect(0, 0, namesWidth, msaSettings.includeConsensus * consensusHeight), Qt::white);
+    p.fillRect(QRect(0, 0, (int)width, (int)height), Qt::white);
+    for (const auto& region : qAsConst(multilineRegions)) {
+        // Draw consensus & ruler.
+        if (msaSettings.includeConsensus || msaSettings.includeRuler) {
+            int consensusOffsetX = msaSettings.includeSeqNames ? namesWidth : 0;
+            p.translate(consensusOffsetX, 0);
+            paintConsensusAndRuler(p, region);
+            p.translate(-consensusOffsetX, consensusHeight);
+        }
+        // Draw names.
+        if (msaSettings.includeSeqNames) {
+            paintSequencesNames(p);
+        }
+        // Draw sequences.
+        if (msaSettings.includeSeqNames) {
+            p.translate(namesWidth, 0);
+        }
+        paintSequenceArea(p, region);
+        if (msaSettings.includeSeqNames) {
+            p.translate(-namesWidth, 0);
+        }
+        // Shift to the next page vertically.
+        p.translate(0, int(lineHeight + multilineVerticalSpacing));
     }
-    p.translate(msaSettings.includeSeqNames * namesWidth, 0);
-    paintConsensus(p);
-    p.translate(-1 * msaSettings.includeSeqNames * namesWidth, msaSettings.includeConsensus * consensusHeight);
-    paintSequencesNames(p);
-    p.translate(msaSettings.includeSeqNames * namesWidth, 0);
-    paintContent(p);
     p.end();
 }
 
@@ -302,10 +304,10 @@ void MSAImageExportController::sl_showSelectRegionDialog() {
     checkRegionToExport();
 }
 
-void MSAImageExportController::sl_regionChanged() {
-    bool customRegionIsSelected = (settingsUi->comboBox->currentIndex() == 1);
-    msaSettings.exportAll = !customRegionIsSelected;
-    if (customRegionIsSelected && msaSettings.region.isEmpty()) {
+void MSAImageExportController::sl_regionTypeChanged(int regionType) {
+    bool isCustomRegion = regionType == 1;
+    msaSettings.exportAll = !isCustomRegion;
+    if (isCustomRegion && msaSettings.region.isEmpty()) {
         sl_showSelectRegionDialog();
     } else {
         checkRegionToExport();
@@ -313,45 +315,50 @@ void MSAImageExportController::sl_regionChanged() {
 }
 
 void MSAImageExportController::initSettingsWidget() {
-    settingsUi = new Ui_MSAExportSettings;
+    settingsUi = new Ui_MSAExportSettings();
     settingsWidget = new QWidget();
     settingsUi->setupUi(settingsWidget);
 
-    connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
-    connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
+    connect(settingsUi->selectRegionButton, &QPushButton::clicked, this, &MSAImageExportController::sl_showSelectRegionDialog);
+    connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionTypeChanged(int)));  // Can't use function pointer until QT_DISABLE_DEPRECATED_BEFORE < 5.15.
+
+    settingsUi->multilineModeCheckbox->setChecked(ui->getEditor()->isMultilineMode());
+    settingsUi->multilineWidthSpinbox->setValue(ui->getSequenceArea()->getNumVisibleBases());
 
     const QList<QRect>& selectedRects = ui->getEditor()->getSelection().getRectList();
-    CHECK(!selectedRects.isEmpty(), );
-    msaSettings.region = U2Region(selectedRects[0].x(), selectedRects[0].width());
-    msaSettings.seqIdx.clear();
-    MaCollapseModel* model = ui->getEditor()->getCollapseModel();
-    for (const QRect& selectedRect : qAsConst(selectedRects)) {
-        for (qint64 viewRowIndex = selectedRect.y(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
-            int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
-            msaSettings.seqIdx.append(maRowIndex);
+    if (!selectedRects.isEmpty()) {
+        msaSettings.region = U2Region(selectedRects[0].x(), selectedRects[0].width());
+        MaCollapseModel* model = ui->getEditor()->getCollapseModel();
+        for (const QRect& selectedRect : qAsConst(selectedRects)) {
+            for (int viewRowIndex = selectedRect.y(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
+                int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
+                msaSettings.seqIdx.append(maRowIndex);
+            }
         }
     }
 }
 
-Task* MSAImageExportController::getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
+void MSAImageExportController::flushUiStateToSettings() const {
     msaSettings.includeConsensus = settingsUi->exportConsensus->isChecked();
     msaSettings.includeRuler = settingsUi->exportRuler->isChecked();
     msaSettings.includeSeqNames = settingsUi->exportSeqNames->isChecked();
+    msaSettings.basesPerLine = settingsUi->multilineModeCheckbox->isChecked() ? settingsUi->multilineWidthSpinbox->value() : 0;
     updateSeqIdx();
+}
 
+Task* MSAImageExportController::getExportToBitmapTask(const ImageExportTaskSettings& settings) const {
+    flushUiStateToSettings();
     return new MSAImageExportToBitmapTask(ui, msaSettings, settings);
 }
 
 Task* MSAImageExportController::getExportToSvgTask(const ImageExportTaskSettings& settings) const {
-    msaSettings.includeConsensus = settingsUi->exportConsensus->isChecked();
-    msaSettings.includeRuler = settingsUi->exportRuler->isChecked();
-    msaSettings.includeSeqNames = settingsUi->exportSeqNames->isChecked();
+    flushUiStateToSettings();
     updateSeqIdx();
 
     return new MSAImageExportToSvgTask(ui, msaSettings, settings);
 }
 
-void MSAImageExportController::sl_onFormatChanged(const QString& newFormat) {
+void MSAImageExportController::sl_onFormatChanged(const DocumentFormatId& newFormat) {
     format = newFormat;
     checkRegionToExport();
 }
@@ -369,12 +376,10 @@ void MSAImageExportController::checkRegionToExport() {
     emit si_showMessage(disableMessage);
 }
 
-namespace {
-// 400000 characters convert to 200 mb file in SVG format
-const qint64 MaxSvgCharacters = 400000;
-// SVG renderer can crash on regions large than 40000000
-const qint64 MaxSvgImageSize = 40000000;
-}  // namespace
+// 400000 characters convert to 200 mb file in SVG format.
+static constexpr qint64 MaxSvgCharacters = 400'000;
+// SVG renderer can crash on regions larger than 40mb.
+static constexpr qint64 MaxSvgImageSize = 40'000'000;
 
 bool MSAImageExportController::fitsInLimits() const {
     MaEditor* editor = ui->getEditor();
@@ -393,7 +398,7 @@ bool MSAImageExportController::fitsInLimits() const {
 bool MSAImageExportController::canExportToSvg() const {
     MaEditor* editor = ui->getEditor();
     SAFE_POINT(editor != nullptr, L10N::nullPointerError("MSAEditor"), false);
-    int charactersNumber = msaSettings.exportAll ? (editor->getNumSequences() * editor->getAlignmentLen()) : (msaSettings.region.length * msaSettings.seqIdx.size());
+    qint64 charactersNumber = msaSettings.exportAll ? (editor->getNumSequences() * editor->getAlignmentLen()) : (msaSettings.region.length * msaSettings.seqIdx.size());
     return charactersNumber < MaxSvgCharacters;
 }
 
@@ -401,7 +406,7 @@ void MSAImageExportController::updateSeqIdx() const {
     CHECK(msaSettings.exportAll, );
     MaCollapseModel* model = ui->getEditor()->getCollapseModel();
     msaSettings.seqIdx.clear();
-    for (qint64 i = 0; i < ui->getEditor()->getNumSequences(); i++) {
+    for (int i = 0; i < ui->getEditor()->getNumSequences(); i++) {
         if (model->getViewRowIndexByMaRowIndex(i, true) != -1) {
             msaSettings.seqIdx.append(i);
         }

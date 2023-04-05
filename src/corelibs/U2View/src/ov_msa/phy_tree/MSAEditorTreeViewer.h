@@ -43,8 +43,6 @@ public:
 
     const QString& getParentAlignmentName() const;
 
-    OptionsPanel* getOptionsPanel() override;
-
     void setCreatePhyTreeSettings(const CreatePhyTreeSettings& newBuildSettings);
 
     void setParentAlignmentName(const QString& _alignmentName);
@@ -70,7 +68,7 @@ public:
     void orderAlignmentByTree();
 
 protected:
-    QWidget* createWidget() override;
+    QWidget* createViewWidget(QWidget* parent) override;
 
 private slots:
 
@@ -133,7 +131,7 @@ class U2VIEW_EXPORT MSAEditorTreeViewerUI : public TreeViewerUI {
     Q_OBJECT
 
 public:
-    MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer);
+    MSAEditorTreeViewerUI(MSAEditorTreeViewer* treeViewer, QWidget* parent);
 
     /**
      * Return virtual grouping state for MSA that corresponds to the current tree state.

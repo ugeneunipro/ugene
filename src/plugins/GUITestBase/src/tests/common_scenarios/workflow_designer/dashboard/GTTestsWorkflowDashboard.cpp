@@ -757,7 +757,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    4. Launch the workflow.
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow(os);
 
     //    5. Wait the workflow execution finish.
@@ -821,7 +821,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeText)
                       .arg(nodeText));
-    CHECK_SET_ERR(logTracer.checkMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
+    CHECK_SET_ERR(lt.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    8. Click to the "Copy command" button that is in the third-level node "ClustalO run".
     GTUtilsDashboard::clickCopyButton(os, clustaloRunNodeId);
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeText)
                       .arg(nodeText));
-    CHECK_SET_ERR(logTracer.checkMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
+    CHECK_SET_ERR(lt.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    10. Click to the "Copy command" button that is in the third-level node "ClustalW run".
     GTUtilsDashboard::clickCopyButton(os, clustalwRunNodeId);
@@ -2004,7 +2004,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
     CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
@@ -2137,7 +2137,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
     CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
@@ -2334,7 +2334,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2361,7 +2361,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     QWidget* viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
                       !viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is visible");
 
@@ -2386,7 +2386,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
                       !viewSwitchButton2->isVisible(),
                   "'Go to Dashboards' is visible");
 
@@ -2415,7 +2415,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2612,7 +2612,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2802,7 +2802,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -2888,7 +2888,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
-    CHECK_SET_ERR(nullptr == viewSwitchButton || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
+    CHECK_SET_ERR(viewSwitchButton == nullptr || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
     QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
     CHECK_SET_ERR(nullptr != dashboardsView2, "Dashboards view is nullptr");
@@ -2956,7 +2956,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3029,7 +3029,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //   Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3354,7 +3354,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -3693,7 +3693,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));
@@ -4031,7 +4031,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    QAbstractButton* viewSwitchButton = qobject_cast<QAbstractButton*>(
+    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
         GTToolbar::getWidgetForActionTooltip(os,
                                              GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
                                              "Show dashboard"));

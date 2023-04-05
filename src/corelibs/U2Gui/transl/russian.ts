@@ -3247,7 +3247,7 @@ Text edit was cleared.</source>
     <message>
         <location filename="../src/ToolsMenu.cpp" line="179"/>
         <source>Primer</source>
-        <translation>Олигонуклеотиды</translation>
+        <translation>Праймеры</translation>
     </message>
     <message>
         <location filename="../src/ToolsMenu.cpp" line="185"/>

@@ -22,7 +22,9 @@
 #include "SQLiteUdrDbi.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/L10n.h>
 #include <U2Core/RawDataUdrSchema.h>
+#include <U2Core/U2SqlHelpers.h>
 #include <U2Core/U2DbiPackUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UdrSchemaRegistry.h>
@@ -197,6 +199,19 @@ OutputStream* SQLiteUdrDbi::createOutputStream(const UdrRecordId& recordId, int 
     CHECK_OP(os, nullptr);
 
     return new SQLiteBlobOutputStream(db, tableName(recordId.getSchemaId()).toLatin1(), field.getName(), recordId.getRecordId(), (int)size, os);
+}
+
+void SQLiteUdrDbi::createTable(const UdrSchemaId& schemaId, U2OpStatus& os) {
+    CHECK(!SQLiteUtils::isTableExists(tableName(schemaId), db, os), );
+    CHECK_OP(os, );
+
+    UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
+    SAFE_POINT_EXT(udrRegistry != nullptr, os.setError(L10N::nullPointerError("UdrSchemaRegistry")), );
+
+    const UdrSchema* schema = udrRegistry->getSchemaById(schemaId);
+    SAFE_POINT_EXT(schema != nullptr, os.setError(L10N::nullPointerError("UdrSchema")), );
+    
+    createTable(schema, os);
 }
 
 ModificationAction* SQLiteUdrDbi::getModificationAction(const U2DataId& id) {

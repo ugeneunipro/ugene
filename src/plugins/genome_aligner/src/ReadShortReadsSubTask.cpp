@@ -122,7 +122,7 @@ void ReadShortReadsSubTask::dropToAlignContext() {
 void ReadShortReadsSubTask::run() {
     stateInfo.setProgress(0);
     GTIMER(cvar, tvar, "ReadSubTask");
-    GenomeAlignerTask* parent = static_cast<GenomeAlignerTask*>(getParentTask());
+    auto parent = static_cast<GenomeAlignerTask*>(getParentTask());
     if (!alignContext.bestMode) {
         parent->pWriteTask->flush();
     }
@@ -150,7 +150,7 @@ void ReadShortReadsSubTask::run() {
             return;
         }
         SearchQuery* query = seqReader->read();
-        if (nullptr == query) {
+        if (query == nullptr) {
             if (!seqReader->isEnd()) {
                 setError("Short-reads object type must be a sequence, but not a multiple alignment");
                 readingFinishedWakeAll();

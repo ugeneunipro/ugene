@@ -196,7 +196,7 @@ QString PWMatrixReadPrompter::composeRichDoc() {
 }
 
 QString PWMatrixWritePrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(WMATRIX_IN_PORT_ID));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(WMATRIX_IN_PORT_ID));
     SAFE_POINT(nullptr != input, "NULL input port", "");
     QString from = getProducersOrUnset(WMATRIX_IN_PORT_ID, PWMatrixWorkerFactory::WMATRIX_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
@@ -224,7 +224,7 @@ Task* PWMatrixReader::tick() {
 }
 
 void PWMatrixReader::sl_taskFinished() {
-    PWMatrixReadTask* t = qobject_cast<PWMatrixReadTask*>(sender());
+    auto t = qobject_cast<PWMatrixReadTask*>(sender());
     if (t->getState() != Task::State_Finished)
         return;
     if (output) {
@@ -418,7 +418,7 @@ QString PFMatrixReadPrompter::composeRichDoc() {
 }
 
 QString PFMatrixWritePrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(FMATRIX_IN_PORT_ID));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(FMATRIX_IN_PORT_ID));
     SAFE_POINT(nullptr != input, "NULL input port", "");
     QString from = getProducersOrUnset(FMATRIX_IN_PORT_ID, PFMatrixWorkerFactory::FMATRIX_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
@@ -446,7 +446,7 @@ Task* PFMatrixReader::tick() {
 }
 
 void PFMatrixReader::sl_taskFinished() {
-    PFMatrixReadTask* t = qobject_cast<PFMatrixReadTask*>(sender());
+    auto t = qobject_cast<PFMatrixReadTask*>(sender());
     if (t->getState() != Task::State_Finished)
         return;
     if (output) {

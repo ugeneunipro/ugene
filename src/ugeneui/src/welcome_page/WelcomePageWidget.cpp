@@ -297,7 +297,7 @@ void WelcomePageWidget::sl_openQuickStart() {
 }
 
 void WelcomePageWidget::sl_openRecentFile() {
-    HoverQLabel* label = qobject_cast<HoverQLabel*>(sender());
+    auto label = qobject_cast<HoverQLabel*>(sender());
     SAFE_POINT(label != nullptr, "sl_openRecentFile sender is not HoverQLabel", );
     QString url = label->property(PATH_PROPERTY).toString();
     AppContext::getProjectLoader()->runOpenRecentFileOrProjectTask(url);

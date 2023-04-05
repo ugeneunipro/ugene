@@ -97,7 +97,7 @@ private:
 
 class UpdateMaEditorTask : public ObjectViewTask {
 public:
-    UpdateMaEditorTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
+    UpdateMaEditorTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData);
 
     virtual void update();
 };

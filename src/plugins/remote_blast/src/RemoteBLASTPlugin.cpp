@@ -81,7 +81,7 @@ RemoteBLASTPlugin::RemoteBLASTPlugin()
     AppContext::getCDSFactoryRegistry()->registerFactory(new RemoteCDSearchFactory(), CDSearchFactoryRegistry::RemoteSearch);
 
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
@@ -98,8 +98,8 @@ RemoteBLASTViewContext::RemoteBLASTViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void RemoteBLASTViewContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+void RemoteBLASTViewContext::initViewContext(GObjectViewController* view) {
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":/remote_blast/images/remote_db_request.png"), tr("Query NCBI BLAST database..."), 60);
     a->setObjectName("Query NCBI BLAST database");
     connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
@@ -116,8 +116,8 @@ void RemoteBLASTViewContext::initViewContext(GObjectView* view) {
 
 void RemoteBLASTViewContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(a);
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(a);
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();

@@ -231,7 +231,7 @@ class MicrodumpWriter {
 
   // Stages the buffer content hex-encoded in the current line buffer.
   void LogAppend(const void* buf, size_t length) {
-    const uint8_t* ptr = reinterpret_cast<const uint8_t*>(buf);
+    auto ptr = reinterpret_cast<const uint8_t*>(buf);
     for (size_t i = 0; i < length; ++i, ++ptr)
       LogAppend(*ptr);
   }

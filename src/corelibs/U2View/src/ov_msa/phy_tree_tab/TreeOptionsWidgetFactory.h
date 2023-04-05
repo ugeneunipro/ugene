@@ -30,7 +30,7 @@ class U2VIEW_EXPORT MSATreeOptionsWidgetFactory : public OPWidgetFactory {
 public:
     MSATreeOptionsWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
@@ -45,7 +45,7 @@ class U2VIEW_EXPORT TreeOptionsWidgetFactory : public OPWidgetFactory {
 public:
     TreeOptionsWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 
@@ -60,7 +60,7 @@ class U2VIEW_EXPORT AddTreeWidgetFactory : public OPWidgetFactory {
 public:
     AddTreeWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

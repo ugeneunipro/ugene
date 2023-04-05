@@ -133,7 +133,7 @@ FormatCheckResult RawDNASequenceFormat::checkRawTextData(const QString& dataPref
 void RawDNASequenceFormat::storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) {
     QList<GObject*> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK(objects.size() == 1, );
-    auto* sequenceObject = qobject_cast<U2SequenceObject*>(objects.first());
+    auto sequenceObject = qobject_cast<U2SequenceObject*>(objects.first());
     SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence object"), );
     QByteArray seqData = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );

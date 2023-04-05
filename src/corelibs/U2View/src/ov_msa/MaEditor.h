@@ -104,7 +104,7 @@ enum class MaEditorRowOrderMode {
     Free
 };
 
-class U2VIEW_EXPORT MaEditor : public GObjectView {
+class U2VIEW_EXPORT MaEditor : public GObjectViewController {
     Q_OBJECT
     friend class OpenSavedMaEditorTask;
     friend class MaEditorState;
@@ -141,10 +141,6 @@ public:
     virtual MaEditorWgt* getMaEditorWgt(int) const = 0;
 
     virtual MaEditorMultilineWgt* getMaEditorMultilineWgt() const = 0;
-
-    virtual OptionsPanel* getOptionsPanel() {
-        return optionsPanel;
-    }
 
     const QFont& getFont() const {
         return font;
@@ -230,7 +226,7 @@ public:
     virtual void initActionsAndSignals() {};
     virtual void initChildrenActionsAndSignals() {};
 
-    virtual bool getMultilineMode() const;
+    virtual bool isMultilineMode() const;
     virtual bool setMultilineMode(bool newmode);
 
 signals:
@@ -270,18 +266,16 @@ protected slots:
     void sl_gotoSelectedRead();
 
     virtual void sl_multilineViewAction() {
-        SAFE_POINT(false, "The function sl_multilineViewAction() must be overrided", );
-        return;
+        SAFE_POINT(false, "The function sl_multilineViewAction() must be overriden", );
     };
 
 private slots:
     void resetColumnWidthCache();
 
 protected:
-    virtual QWidget* createWidget() = 0;
     virtual void initActions();
-    virtual void initZoom();
-    virtual void initFont();
+    void initZoom();
+    void initFont();
     void updateResizeMode();
 
     virtual void addCopyPasteMenu(QMenu* m, int uiIndex);

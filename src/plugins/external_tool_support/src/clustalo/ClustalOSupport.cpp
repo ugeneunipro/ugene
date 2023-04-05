@@ -64,6 +64,9 @@ ClustalOSupport::ClustalOSupport()
     description = tr("<i>Clustal Omega</i> is a free sequence alignment software for proteins.");
     versionRegExp = QRegExp("Clustal Omega - (\\d+\\.\\d+\\.\\d+).*");
     toolKitName = "ClustalO";
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
+    }
 }
 
 void ClustalOSupport::sl_runWithExtFileSpecify() {
@@ -116,8 +119,8 @@ ClustalOSupportContext::ClustalOSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void ClustalOSupportContext::initViewContext(GObjectView* view) {
-    MSAEditor* msaEditor = qobject_cast<MSAEditor*>(view);
+void ClustalOSupportContext::initViewContext(GObjectViewController* view) {
+    auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
     msaEditor->registerActionProvider(this);

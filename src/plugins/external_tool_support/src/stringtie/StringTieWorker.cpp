@@ -138,7 +138,7 @@ void StringTieWorker::cleanup() {
 }
 
 void StringTieWorker::sl_taskFinished() {
-    StringTieTask* t = qobject_cast<StringTieTask*>(sender());
+    auto t = qobject_cast<StringTieTask*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }

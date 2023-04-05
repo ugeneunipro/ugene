@@ -42,31 +42,27 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class TreeViewerUI;
 class TvBranchItem;
 class TvNodeItem;
 class TvTextItem;
 class TvRectangularBranchItem;
 
-class TreeViewer : public GObjectView {
+class TreeViewer : public GObjectViewController {
     Q_OBJECT
 public:
-    TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject);
+    TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject, bool hasOptionsPanel = true);
 
     // from GObjectView
     void buildStaticToolbar(QToolBar* tb) override;
     void buildMenu(QMenu* m, const QString& type) override;
-
-    void buildMSAEditorStaticToolbar(QToolBar* tb);
 
     void createActions();
 
     QVariantMap saveState() override;
 
     Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) override;
-
-    OptionsPanel* getOptionsPanel() override;
 
     PhyTreeObject* getPhyObject() const {
         return phyObject;
@@ -84,12 +80,14 @@ public:
 
     void setSettingsState(const QVariantMap& m);
 
+    void onAfterViewWindowInit() override;
+
     TreeViewerUI* getTreeViewerUI() {
         return ui;
     }
 
 protected:
-    QWidget* createWidget() override;
+    QWidget* createViewWidget(QWidget* parent) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
 public:
@@ -98,8 +96,6 @@ public:
     QAction* circularLayoutAction = nullptr;
     QAction* unrootedLayoutAction = nullptr;
 
-    QAction* branchesSettingsAction = nullptr;
-
     QAction* nameLabelsAction = nullptr;
     QAction* showNodeLabelsAction = nullptr;
     QAction* distanceLabelsAction = nullptr;
@@ -107,8 +103,9 @@ public:
     QAction* alignTreeLabelsAction = nullptr;
 
     QAction* zoomInAction = nullptr;
-    QAction* resetZoomAction = nullptr;
     QAction* zoomOutAction = nullptr;
+    QAction* zoom100Action = nullptr;
+    QAction* zoomFitAction = nullptr;
 
     QAction* printAction = nullptr;
     QAction* saveVisibleViewToFileAction = nullptr;
@@ -134,13 +131,21 @@ protected:
     TreeViewerUI* ui = nullptr;
 };
 
+/** Serialized tree state. Used to restore states like collapse/selection on tree re-layouts. */
+class U2VIEW_EXPORT TvTreeState {
+public:
+    bool isRootSelected = false;
+    const PhyBranch* selectionRootBranch = nullptr;
+    QSet<const PhyBranch*> collapsedBranches;
+};
+
 class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
     Q_OBJECT
     Q_DISABLE_COPY(TreeViewerUI)
     friend class TreeViewer;
 
 public:
-    explicit TreeViewerUI(TreeViewer* treeViewer);
+    explicit TreeViewerUI(TreeViewer* treeViewer, QWidget* parent);
     ~TreeViewerUI() override;
 
     /** Returns option value by looking up first in 'selectionSettings and next in the 'setting'. */
@@ -152,15 +157,11 @@ public:
     /** Returns current settings adjusted by 'selectionSettings'. */
     OptionsMap getSelectionSettings() const;
 
-    TreeLayout getTreeLayout() const;
+    TreeLayoutType getTreeLayoutType() const;
 
     bool isRectangularLayoutMode() const {
-        return getTreeLayout() == RECTANGULAR_LAYOUT;
+        return getTreeLayoutType() == RECTANGULAR_LAYOUT;
     }
-
-    bool isOnlyLeafSelected() const;
-
-    void updateRect();
 
     /** Returns current root item of the tree. */
     TvBranchItem* getRoot() const;
@@ -173,8 +174,11 @@ public:
     /** Makes 1 zoom-out step, until minimum zoom limit is reached. */
     void zoomOut();
 
-    /** Resets zoom. Fits the tree into view. */
-    void resetZoom();
+    /** Resets zoom to 100%. */
+    void zoomTo100();
+
+    /** Adjusts zoom so the tree fits into the view. */
+    void zoomFit();
 
     /** Updates single option. */
     void updateOption(const TreeViewOption& option, const QVariant& newValue);
@@ -188,24 +192,14 @@ protected:
     void mousePressEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
 
-    virtual void setTreeLayout(const TreeLayout& newLayout);
-
-    void setZoomLevel(double newZoomLevel);
-
-    void defaultZoom();
-
-    /** Fits current scene into the view, so the whole tree is visible. Does not change aspect ratio. **/
-    void fitIntoView();
+    /** Sets zoom to the given level. Unchecks 'zoomFitAreaAction' if 'cancelFitToViewMode' is true. */
+    void setZoomLevel(double newZoomLevel, bool cancelFitToViewMode = true);
 
     /**
      * Recomputes scene layout and triggers redraw.
      * Updates legend, scene rect, label alignment and other UI properties.
-     * If 'fitSceneToView' is true calls fitInView() for the result scene.
      */
-    virtual void updateScene(bool fitSceneToView);
-
-    /** Updates parameter of rect-layout branches using current settings. */
-    void updateRectLayoutBranches();
+    virtual void updateScene();
 
 signals:
     /** Emitted when option is changed: either due to selection change or an explicit option update. */
@@ -221,15 +215,9 @@ private slots:
     void sl_contTriggered(bool on);
     void sl_showNameLabelsTriggered(bool on);
     void sl_showDistanceLabelsTriggered(bool on);
-    void sl_rectangularLayoutTriggered();
-    void sl_circularLayoutTriggered();
-    void sl_unrootedLayoutTriggered();
     void sl_textSettingsTriggered();
     void sl_treeSettingsTriggered();
     void sl_rerootTriggered();
-
-    void sl_setSettingsTriggered();
-    void sl_branchSettings();
 
 private:
     /**
@@ -246,8 +234,7 @@ private:
      */
     void saveOptionToSettings(const TreeViewOption& option, const QVariant& value);
 
-    void updateDistanceToViewScale();
-    void rebuildTreeLayout();
+    double getScalebarDistanceRange() const;
 
     /** Copies whole tree image to clipboard. */
     void copyWholeTreeImageToClipboard();
@@ -264,42 +251,32 @@ private:
     /** Returns list of fixed size elements: the elements that do not change their on screen dimensions regardless of the current zoom level. */
     QList<QGraphicsItem*> getFixedSizeItems() const;
 
-    void setNewTreeLayout(TvBranchItem* newRoot, const TreeLayout& treeLayout);
+    void applyNewTreeLayout(TvBranchItem* newRoot, TvRectangularBranchItem* newRectRoot, const TreeLayoutType& layoutType);
 
     enum LabelType {
         LabelType_SequenceName = 1,
         LabelType_Distance = 2
     };
-    typedef QFlags<LabelType> LabelTypes;
 
     void paint(QPainter& painter);
-    void showLabels(LabelTypes labelTypes);
+
+    /** Updates 'visible' state for labels based on the current options. */
+    void updateLabelsVisibility();
+
     // Scalebar
-    void addLegend();
     void updateLegend();
-
-    void collapseSelected();
-
-    void updateLayout();
 
     /** Updates 'selectionSettings' every time selection is changed. */
     void updateSettingsOnSelectionChange();
 
-    void recalculateRectangularLayout();
     bool isSelectedCollapsed();
 
-    void updateActionsState();
-
-    /** Returns average branch distance in the tree. */
-    double getAverageBranchDistance() const;
+    void updateActions();
 
     void updateLabelsAlignment();
 
-    /** Recalculates and assign 'steps to leaf' properties to every branch item in the rect-layout tree. */
-    void updateStepsToLeafOnBranches();
-
-    void changeTreeLayout(const TreeLayout& newTreeLayout);
-    void changeNamesDisplay();
+    /** Calculates new tree layout of the given type and sets it to as active on the scene. */
+    void switchTreeLayout(const TreeLayoutType& newLayoutType);
 
     /** Updates settings for selected items only. If there is no selection updates setting for all items. */
     void updateTextOptionOnSelectedItems();
@@ -313,6 +290,15 @@ private:
     void changeLabelsAlignment();
 
     void initializeSettings();
+
+    /** Recomputes branch geometry: width, height, curvature. */
+    void updateBranchGeometry(TvRectangularBranchItem* rootBranch) const;
+
+    /** Saves current scene state into 'treeState'. */
+    void saveSelectionAndCollapseStates();
+
+    /** Restores scene state from the current 'treeState'. */
+    void restoreSelectionAndCollapseStates();
 
 public:
     PhyTreeObject* const phyObject = nullptr;
@@ -328,8 +314,6 @@ protected:
     QPoint lastMousePressPos;
 
 private:
-    double maxNameWidth = 0;
-
     /**
      * Scale of the view. Changed on zoom-in/zoom-out.
      * ZoomLevel = 1 is equal to the Fit-Into-View mode (when window is resized zoom level does not change, but on-screen size of elements changes.
@@ -339,8 +323,8 @@ private:
     /** Used to compute on-screen length of every branch: length = distance * distanceToScreenScale. */
     double distanceToViewScale = 1;
 
+    /** Legend item. Not null only in 'PHYLOGRAM' mode. */
     QGraphicsLineItem* legendItem = nullptr;
-    TvTextItem* scalebarTextItem = nullptr;
     QMenu* buttonPopup = nullptr;
 
     /** Settings for the whole view. Saved & restored on view creation and applied to all new elements by default. */
@@ -348,6 +332,11 @@ private:
 
     /** Settings override for the currently selected items. Contains only option that override 'settings' for the current selection. */
     OptionsMap selectionSettingsDelta;
-};
 
+    /** Current visible labels state on the scene. May be different from the state in options when is stale. */
+    QFlags<LabelType> visibleLabelTypes;
+
+    /** Snapshot of the collapsed/selected properties. Used to restore state on layout change. */
+    TvTreeState treeState;
+};
 }  // namespace U2

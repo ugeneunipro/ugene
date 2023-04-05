@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_CONVERT_ASSEMBLY_TO_SAM_DIALOG_FILLER_H
-#define _U2_GT_CONVERT_ASSEMBLY_TO_SAM_DIALOG_FILLER_H
+#pragma once
 
 #include <base_dialogs/GTFileDialog.h>
 
@@ -45,5 +44,3 @@ private:
     const QString databaseFileName;
 };
 }  // namespace U2
-
-#endif  // _U2_GT_CONVERT_ASSEMBLY_TO_SAM_DIALOG_FILLER_H

@@ -95,7 +95,7 @@ Task::ReportResult FindExonRegionsTask::report() {
     }
 
     foreach (GObject* a, relAnns) {
-        AnnotationTableObject* att = qobject_cast<AnnotationTableObject*>(a);
+        auto att = qobject_cast<AnnotationTableObject*>(a);
         QList<Annotation*> anns = att->getAnnotations();
         for (Annotation* ann : qAsConst(anns)) {
             if (ann->getName() == exonAnnName) {

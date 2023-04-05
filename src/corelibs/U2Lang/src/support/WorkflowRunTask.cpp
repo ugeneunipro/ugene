@@ -57,10 +57,10 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
                              TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport),
       rmap(remap), flows(sh.getFlows()) {
     GCOUNTER(cvar, "WorkflowRunTask");
-    if (nullptr == debugInfo) {
+    if (debugInfo == nullptr) {
         debugInfo = new WorkflowDebugStatus;
     }
-    if (nullptr == debugInfo->parent()) {
+    if (debugInfo->parent() == nullptr) {
         debugInfo->setParent(this);
     }
 
@@ -91,7 +91,7 @@ inline bool isValidFile(const QString& link, const qint64& processStartTime) {
 QList<WorkerState> WorkflowRunTask::getState(Actor* actor) {
     QList<WorkerState> ret;
     foreach (const QPointer<Task>& t, getSubtasks()) {
-        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
+        auto rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
         ret << rt->getState(actor->getId());
     }
     return ret;
@@ -100,7 +100,7 @@ QList<WorkerState> WorkflowRunTask::getState(Actor* actor) {
 int WorkflowRunTask::getMsgNum(const Link* l) {
     int ret = 0;
     foreach (const QPointer<Task>& t, getSubtasks()) {
-        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
+        auto rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
         ret += rt->getMsgNum(l);
     }
     return ret;

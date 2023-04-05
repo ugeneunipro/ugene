@@ -50,7 +50,7 @@ namespace LocalWorkflow {
 QString PrimersGrouperPromter::composeRichDoc() {
     QString res;
 
-    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
@@ -195,13 +195,13 @@ bool PrimerGrouperTask::isCompatiblePairs(int firstPairIndex, int secondPairInde
     PrimersPair firstPair = primerPairs.at(firstPairIndex);
     PrimersPair secondPair = primerPairs.at(secondPairIndex);
 
-    PrimersPairStatistics forwardCalc(firstPair.first.constData(), secondPair.first.constData());
-    PrimersPairStatistics reverseCalc(firstPair.second.constData(), secondPair.second.constData());
+    HeteroDimersFinder forwardCalc(firstPair.first.constData(), secondPair.first.constData());
+    HeteroDimersFinder reverseCalc(firstPair.second.constData(), secondPair.second.constData());
 
-    PrimersPairStatistics crossCalc1(firstPair.first.constData(), secondPair.second.constData());
-    PrimersPairStatistics crossCalc2(firstPair.second.constData(), secondPair.first.constData());
+    HeteroDimersFinder crossCalc1(firstPair.first.constData(), secondPair.second.constData());
+    HeteroDimersFinder crossCalc2(firstPair.second.constData(), secondPair.first.constData());
 
-    return !forwardCalc.isHeteroDimers() && !reverseCalc.isHeteroDimers() && !crossCalc1.isHeteroDimers() && !crossCalc2.isHeteroDimers();
+    return !forwardCalc.getResult().canBeFormed && !reverseCalc.getResult().canBeFormed && !crossCalc1.getResult().canBeFormed && !crossCalc2.getResult().canBeFormed;
 }
 
 void PrimerGrouperTask::findCompatibleGroups() {

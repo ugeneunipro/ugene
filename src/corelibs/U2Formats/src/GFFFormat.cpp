@@ -173,7 +173,7 @@ void addAnnotations(const QList<SharedAnnotationData>& annList, QList<GObject*>&
                 ato = dynamic_cast<AnnotationTableObject*>(ob);
             }
         }
-        if (nullptr == ato) {
+        if (ato == nullptr) {
             QVariantMap objectHints;
             objectHints.insert(DocumentFormat::DBI_FOLDER_HINT, hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
             ato = new AnnotationTableObject(atoName, dbiRef, objectHints);
@@ -399,7 +399,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
             }
 
             // if annotation joined, don't rewrite it data
-            if (nullptr == existingAnnotation) {
+            if (existingAnnotation == nullptr) {
                 if (newJoined) {
                     joinedAnnotations.insert(id, ad);
                 }
@@ -413,7 +413,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                         ato = dynamic_cast<AnnotationTableObject*>(ob);
                     }
                 }
-                if (nullptr == ato) {
+                if (ato == nullptr) {
                     CHECK_OBJECT_COUNT();
                     QVariantMap objectHints;
                     objectHints.insert(DBI_FOLDER_HINT, hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
@@ -608,7 +608,7 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
         cleanRow.append(".");
     }
     for (GObject* ato : qAsConst(atos)) {
-        AnnotationTableObject* annotationTable = dynamic_cast<AnnotationTableObject*>(ato);
+        auto annotationTable = dynamic_cast<AnnotationTableObject*>(ato);
         QList<Annotation*> aList = annotationTable->getAnnotations();
         // retrieving known IDs
         for (Annotation* ann : qAsConst(aList)) {
@@ -689,7 +689,7 @@ void GFFFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
             return;
         }
         foreach (GObject* s, sequences) {
-            U2SequenceObject* dnaso = qobject_cast<U2SequenceObject*>(s);
+            auto dnaso = qobject_cast<U2SequenceObject*>(s);
             QList<U2Region> lowerCaseRegs = U1AnnotationUtils::getRelatedLowerCaseRegions(dnaso, atos);
             QString fastaHeader = dnaso->getGObjectName();
             int tagSize = QString(SEQUENCE_TAG).size(), headerSize = fastaHeader.size();

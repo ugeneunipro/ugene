@@ -224,7 +224,7 @@ void MafftAddToAlignmentTask::run() {
             return;
         }
         stateInfo.setProgress(70 + 30 * posInMsa / objectsCount);
-        U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
+        auto sequenceObject = qobject_cast<U2SequenceObject*>(object);
         bool rowWasAdded = true;
         if (!rowNames.contains(sequenceObject->getSequenceName())) {
             // inserting new rows
@@ -311,7 +311,7 @@ bool MafftAddToAlignmentTask::useMemsaveOption() const {
 }
 
 AbstractAlignmentTask* MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
-    AlignSequencesToAlignmentTaskSettings* addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings*>(_settings);
+    auto addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings*>(_settings);
     SAFE_POINT(addSettings != nullptr,
                "Add sequences to alignment: incorrect settings",
                nullptr);

@@ -95,8 +95,8 @@ BioStruct3DViewContext::BioStruct3DViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void BioStruct3DViewContext::initViewContext(GObjectView* v) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+void BioStruct3DViewContext::initViewContext(GObjectViewController* v) {
+    auto av = qobject_cast<AnnotatedDNAView*>(v);
     U2SequenceObject* dna = av->getActiveSequenceContext()->getSequenceObject();
 
     QList<GObject*> allBiostructs = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::BIOSTRUCTURE_3D);
@@ -109,7 +109,7 @@ void BioStruct3DViewContext::initViewContext(GObjectView* v) {
 
     QList<ADVSequenceWidget*> seqWidgets = av->getSequenceWidgets();
     foreach (ADVSequenceWidget* w, seqWidgets) {
-        ADVSingleSequenceWidget* aw = qobject_cast<ADVSingleSequenceWidget*>(w);
+        auto aw = qobject_cast<ADVSingleSequenceWidget*>(w);
         if (aw != nullptr) {
             aw->setDetViewCollapsed(true);
             aw->setOverviewCollapsed(true);
@@ -120,21 +120,21 @@ void BioStruct3DViewContext::initViewContext(GObjectView* v) {
     }
 }
 
-bool BioStruct3DViewContext::canHandle(GObjectView* v, GObject* o) {
+bool BioStruct3DViewContext::canHandle(GObjectViewController* v, GObject* o) {
     Q_UNUSED(v);
     bool res = qobject_cast<BioStruct3DObject*>(o) != nullptr;
     return res;
 }
 
-void BioStruct3DViewContext::onObjectAdded(GObjectView* view, GObject* obj) {
+void BioStruct3DViewContext::onObjectAdded(GObjectViewController* view, GObject* obj) {
     // todo: add sequence & all objects associated with sequence to the view?
 
-    BioStruct3DObject* obj3d = qobject_cast<BioStruct3DObject*>(obj);
+    auto obj3d = qobject_cast<BioStruct3DObject*>(obj);
     if (obj3d == nullptr || view == nullptr) {
         return;
     }
 
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
     BioStruct3DSplitter* splitter = nullptr;
     if (splitterMap.contains(view)) {
         splitter = splitterMap.value(view);
@@ -147,8 +147,8 @@ void BioStruct3DViewContext::onObjectAdded(GObjectView* view, GObject* obj) {
     splitterMap.insert(view, splitter);
 }
 
-void BioStruct3DViewContext::onObjectRemoved(GObjectView* v, GObject* obj) {
-    BioStruct3DObject* obj3d = qobject_cast<BioStruct3DObject*>(obj);
+void BioStruct3DViewContext::onObjectRemoved(GObjectViewController* v, GObject* obj) {
+    auto obj3d = qobject_cast<BioStruct3DObject*>(obj);
     if (obj3d == nullptr) {
         return;
     }
@@ -160,19 +160,19 @@ void BioStruct3DViewContext::onObjectRemoved(GObjectView* v, GObject* obj) {
     }
 }
 
-void BioStruct3DViewContext::unregister3DView(GObjectView* view, BioStruct3DSplitter* splitter) {
+void BioStruct3DViewContext::unregister3DView(GObjectViewController* view, BioStruct3DSplitter* splitter) {
     assert(splitter->getChildWidgets().isEmpty());
     splitter->close();
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
     av->unregisterSplitWidget(splitter);
     splitterMap.remove(view);
     splitter->deleteLater();
 }
 
-QAction* BioStruct3DViewContext::getClose3DViewAction(GObjectView* view) {
+QAction* BioStruct3DViewContext::getClose3DViewAction(GObjectViewController* view) {
     QList<QObject*> resources = viewResources.value(view);
     foreach (QObject* r, resources) {
-        GObjectViewAction* a = qobject_cast<GObjectViewAction*>(r);
+        auto a = qobject_cast<GObjectViewAction*>(r);
         if (a != nullptr) {
             return a;
         }
@@ -184,8 +184,8 @@ QAction* BioStruct3DViewContext::getClose3DViewAction(GObjectView* view) {
 }
 
 void BioStruct3DViewContext::sl_close3DView() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
-    GObjectView* ov = action->getObjectView();
+    auto action = qobject_cast<GObjectViewAction*>(sender());
+    GObjectViewController* ov = action->getObjectView();
     QList<GObject*> objects = ov->getObjects();
     foreach (GObject* obj, objects) {
         if (obj->getGObjectType() == GObjectTypes::BIOSTRUCTURE_3D) {
@@ -195,9 +195,9 @@ void BioStruct3DViewContext::sl_close3DView() {
 }
 
 void BioStruct3DViewContext::sl_windowClosing(MWMDIWindow* w) {
-    GObjectViewWindow* gvw = qobject_cast<GObjectViewWindow*>(w);
+    auto gvw = qobject_cast<GObjectViewWindow*>(w);
     if (gvw) {
-        GObjectView* view = gvw->getObjectView();
+        GObjectViewController* view = gvw->getObjectView();
         // safe to remove: splitter will be deleted with ADV
         splitterMap.remove(view);
     }

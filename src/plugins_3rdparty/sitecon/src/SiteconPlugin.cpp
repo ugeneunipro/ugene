@@ -71,7 +71,7 @@ SiteconPlugin::SiteconPlugin()
 
     LocalWorkflow::SiteconWorkerFactory::init();
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/sitecon_models";
@@ -111,8 +111,8 @@ SiteconADVContext::SiteconADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void SiteconADVContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+void SiteconADVContext::initViewContext(GObjectViewController* view) {
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":sitecon/images/sitecon.png"), tr("Find TFBS with SITECON..."), 80);
     a->setObjectName("SITECON");
     a->addAlphabetFilter(DNAAlphabet_NUCL);
@@ -120,8 +120,8 @@ void SiteconADVContext::initViewContext(GObjectView* view) {
 }
 
 void SiteconADVContext::sl_search() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
+    auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());

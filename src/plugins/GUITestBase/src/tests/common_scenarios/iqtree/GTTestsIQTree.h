@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_TESTS_IQTREE_H_
-#define _U2_GT_TESTS_IQTREE_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -37,5 +36,3 @@ GUI_TEST_CLASS_DECLARATION(test_0002)
 
 }  // namespace GUITest_common_scenarios_iqtree
 }  // namespace U2
-
-#endif  // _U2_GT_TESTS_IQTREE_H_

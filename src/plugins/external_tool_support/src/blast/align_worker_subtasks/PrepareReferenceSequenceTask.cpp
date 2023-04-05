@@ -81,7 +81,7 @@ QList<Task*> PrepareReferenceSequenceTask::onSubTaskFinished(Task* subTask) {
         CHECK_EXT(!objects.isEmpty(), setError(tr("No reference sequence in the file: ") + referenceUrl), newSubTasks);
         CHECK_EXT(objects.size() == 1, setError(tr("More than one sequence in the reference file: ") + referenceUrl), newSubTasks);
 
-        U2SequenceObject* referenceObject = qobject_cast<U2SequenceObject*>(objects.first());
+        auto referenceObject = qobject_cast<U2SequenceObject*>(objects.first());
         SAFE_POINT_EXT(referenceObject != nullptr, setError(tr("Unable to cast gobject to sequence object")), newSubTasks);
         CHECK_EXT(referenceObject->getAlphabet()->isDNA(), setError(tr("The input reference sequence '%1' contains characters that don't belong to DNA alphabet.").arg(referenceObject->getSequenceName())), newSubTasks);
 

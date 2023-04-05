@@ -23,7 +23,7 @@ MsaMultilineScrollArea::MsaMultilineScrollArea(MaEditor* maEditor, MaEditorMulti
 }
 
 bool MsaMultilineScrollArea::eventFilter(QObject* obj, QEvent* event) {
-    if (obj == this && maEditor->getMultilineMode() && event->type() == QEvent::KeyPress) {
+    if (obj == this && maEditor->isMultilineMode() && event->type() == QEvent::KeyPress) {
         auto kEvent = static_cast<QKeyEvent*>(event);
         bool isShiftPressed = kEvent->modifiers().testFlag(Qt::ShiftModifier);
         bool isCtrlPressed = kEvent->modifiers().testFlag(Qt::ControlModifier);
@@ -82,6 +82,11 @@ void MsaMultilineScrollArea::scrollVert(const MultilineScrollController::Directi
                                         bool byStep,
                                         bool wheel) {
     GScrollBar* globalVBar = maEditorUi->getScrollController()->getVerticalScrollBar();
+    if (globalVBar->minimum() == globalVBar->maximum()) {
+        globalVBar->setValue(globalVBar->minimum());
+        return;
+    }
+
     maEditorUi->setUpdatesEnabled(false);
 
     if (directions.testFlag(MultilineScrollController::SliderMoved)) {
@@ -135,7 +140,11 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
     }
 
     if (direction > 0) {
-        if ((currAreaScroll + step) < maxAreaScroll) {
+        if (currGlobalScroll == maxGlobalScroll) {
+            newAreaScroll = maxAreaScroll;
+            vbar->setValue(newAreaScroll);
+            return;
+        } else if ((currAreaScroll + step) < maxAreaScroll) {
             newAreaScroll += step;
             newGlobalScroll += step;
         } else {
@@ -146,6 +155,9 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
                 newFirstVisibleBase = (fullLength / length + (fullLength % length ? 1 : 0)) *
                                           length -
                                       length * maEditorUi->getChildrenCount();
+                if (newFirstVisibleBase < 0) {
+                    newFirstVisibleBase = 0;
+                }
             } else {
                 newFirstVisibleBase = newGlobalScroll / lineHeight * length;
                 newAreaScroll = newGlobalScroll - (newGlobalScroll / lineHeight) * lineHeight;
@@ -202,7 +214,7 @@ void MsaMultilineScrollArea::moveVSlider(int currPos,
 }
 
 void MsaMultilineScrollArea::wheelEvent(QWheelEvent* event) {
-    if (maEditor->getMultilineMode()) {
+    if (maEditor->isMultilineMode()) {
         int inverted = event->inverted() ? -1 : 1;
         int direction = event->angleDelta().isNull()
                             ? 0

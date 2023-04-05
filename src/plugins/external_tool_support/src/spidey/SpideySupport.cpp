@@ -80,6 +80,9 @@ SpideySupport::SpideySupport()
     toolKitName = "spidey";
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
+    }
 }
 
 void SpideySupport::sl_validationStatusChanged(bool isValid) {
@@ -100,8 +103,8 @@ SpideySupportContext::SpideySupportContext(QObject* p)
     : GObjectViewWindowContext(p, AnnotatedDNAViewFactory::ID) {
 }
 
-void SpideySupportContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(view);
+void SpideySupportContext::initViewContext(GObjectViewController* view) {
+    auto dnaView = qobject_cast<AnnotatedDNAView*>(view);
     assert(dnaView != nullptr);
     if (dnaView->getActiveSequenceContext() == nullptr) {
         return;
@@ -116,7 +119,7 @@ void SpideySupportContext::initViewContext(GObjectView* view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_Spidey()));
 }
 
-void SpideySupportContext::buildStaticOrContextMenu(GObjectView* view, QMenu* m) {
+void SpideySupportContext::buildStaticOrContextMenu(GObjectViewController* view, QMenu* m) {
     QList<GObjectViewAction*> actions = getViewActions(view);
     QMenu* alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
     SAFE_POINT(alignMenu != nullptr, "alignMenu", );
@@ -161,11 +164,11 @@ void SpideySupportContext::sl_align_with_Spidey() {
         return;
     }
 
-    U2SequenceObject* rnaObj = qobject_cast<U2SequenceObject*>(objects.first());
+    auto rnaObj = qobject_cast<U2SequenceObject*>(objects.first());
 
-    ADVGlobalAction* action = qobject_cast<ADVGlobalAction*>(sender());
+    auto action = qobject_cast<ADVGlobalAction*>(sender());
     assert(action != nullptr);
-    AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto dnaView = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     U2SequenceObject* dnaObj = dnaView->getActiveSequenceContext()->getSequenceObject();
 
     if (rnaObj && dnaObj) {

@@ -65,8 +65,8 @@ DNAStatMSAEditorContext::DNAStatMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void DNAStatMSAEditorContext::initViewContext(GObjectView* v) {
-    MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
+void DNAStatMSAEditorContext::initViewContext(GObjectViewController* v) {
+    auto msaed = qobject_cast<MSAEditor*>(v);
     if (msaed != nullptr && !msaed->getMaObject())
         return;
 
@@ -77,8 +77,8 @@ void DNAStatMSAEditorContext::initViewContext(GObjectView* v) {
     addViewAction(profileAction);
 }
 
-void DNAStatMSAEditorContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
-    MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
+void DNAStatMSAEditorContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
+    auto msaed = qobject_cast<MSAEditor*>(v);
     if (msaed != nullptr && !msaed->getMaObject())
         return;
 
@@ -91,8 +91,8 @@ void DNAStatMSAEditorContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m)
 }
 
 void DNAStatMSAEditorContext::sl_showMSAProfileDialog() {
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(sender());
-    MSAEditor* msaEd = qobject_cast<MSAEditor*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(sender());
+    auto msaEd = qobject_cast<MSAEditor*>(viewAction->getObjectView());
     QObjectScopedPointer<DNAStatMSAProfileDialog> d = new DNAStatMSAProfileDialog(msaEd->getWidget(), msaEd);
     if (msaEd->getAlignmentLen() >= GRID_PROFILE_LENGTH_LIMIT) {
         d->showAlignmentIsTooBigWarning();
@@ -106,8 +106,8 @@ DistanceMatrixMSAEditorContext::DistanceMatrixMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void DistanceMatrixMSAEditorContext::initViewContext(GObjectView* v) {
-    MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
+void DistanceMatrixMSAEditorContext::initViewContext(GObjectViewController* v) {
+    auto msaed = qobject_cast<MSAEditor*>(v);
     if (msaed != nullptr && !msaed->getMaObject())
         return;
 
@@ -117,8 +117,8 @@ void DistanceMatrixMSAEditorContext::initViewContext(GObjectView* v) {
     addViewAction(profileAction);
 }
 
-void DistanceMatrixMSAEditorContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
-    MSAEditor* msaed = qobject_cast<MSAEditor*>(v);
+void DistanceMatrixMSAEditorContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
+    auto msaed = qobject_cast<MSAEditor*>(v);
     if (msaed != nullptr && !msaed->getMaObject())
         return;
 
@@ -131,8 +131,8 @@ void DistanceMatrixMSAEditorContext::buildStaticOrContextMenu(GObjectView* v, QM
 }
 
 void DistanceMatrixMSAEditorContext::sl_showDistanceMatrixDialog() {
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(sender());
-    MSAEditor* msaEd = qobject_cast<MSAEditor*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(sender());
+    auto msaEd = qobject_cast<MSAEditor*>(viewAction->getObjectView());
     QObjectScopedPointer<DistanceMatrixMSAProfileDialog> d = new DistanceMatrixMSAProfileDialog(msaEd->getWidget(), msaEd);
     d->exec();
 }

@@ -69,7 +69,7 @@ QTreeWidgetItem* GTUtilsAnnotHighlightingTreeView::findItem(HI::GUITestOpStatus&
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
 
     for (int i = 0; i < treeWidget->topLevelItemCount(); i++) {
-        AnnotHighlightTreeItem* vi = static_cast<AnnotHighlightTreeItem*>(treeWidget->topLevelItem(i));
+        auto vi = static_cast<AnnotHighlightTreeItem*>(treeWidget->topLevelItem(i));
         if (vi->getName() == itemName) {
             return vi;
         }
@@ -86,7 +86,7 @@ QString GTUtilsAnnotHighlightingTreeView::getSelectedItem(HI::GUITestOpStatus& o
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
 
     for (int i = 0; i < treeWidget->topLevelItemCount(); i++) {
-        AnnotHighlightTreeItem* vi = static_cast<AnnotHighlightTreeItem*>(treeWidget->topLevelItem(i));
+        auto vi = static_cast<AnnotHighlightTreeItem*>(treeWidget->topLevelItem(i));
         if (vi->isSelected()) {
             return vi->getName();
         }

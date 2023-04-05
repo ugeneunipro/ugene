@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef RF_SARRAYTANDEMFINDER_H
-#define RF_SARRAYTANDEMFINDER_H
+#pragma once
 
 #include <QMap>
 #include <QMutex>
@@ -230,5 +229,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // RF_SARRAYTANDEMFINDER_H

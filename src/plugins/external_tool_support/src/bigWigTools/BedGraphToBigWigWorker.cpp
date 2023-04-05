@@ -73,7 +73,7 @@ const QString BedGraphToBigWigFactory::ACTOR_ID("bgtbw-bam");
 /* BedGraphToBigWigPrompter */
 /************************************************************************/
 QString BedGraphToBigWigPrompter::composeRichDoc() {
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BedGraphToBigWigWorker::INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BedGraphToBigWigWorker::INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString producerName = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
@@ -234,7 +234,7 @@ void BedGraphToBigWigWorker::cleanup() {
 
 namespace {
 QString getTargetTaskUrl(Task* task) {
-    BedGraphToBigWigTask* curtask = dynamic_cast<BedGraphToBigWigTask*>(task);
+    auto curtask = dynamic_cast<BedGraphToBigWigTask*>(task);
 
     if (nullptr != curtask) {
         return curtask->getResult();

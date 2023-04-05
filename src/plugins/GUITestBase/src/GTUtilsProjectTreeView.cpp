@@ -463,7 +463,7 @@ void GTUtilsProjectTreeView::checkFilteredGroup(HI::GUITestOpStatus& os,
     const int filteredItemsCount = group.model()->rowCount(group);
     CHECK_SET_ERR(filteredItemsCount > 0, "No project items have been filtered");
     for (int i = 0; i < filteredItemsCount; ++i) {
-        const QString childName = group.child(i, 0).data().toString();
+        QString childName = group.model()->index(i, 0, group).data().toString();
         bool notSkipGroup = true;
         foreach (const QString& checkToSkip, skipGroupIfContains) {
             if (childName.contains(checkToSkip, Qt::CaseInsensitive)) {
@@ -568,7 +568,7 @@ void GTUtilsProjectTreeView::checkObjectTypes(HI::GUITestOpStatus& os, QTreeView
             CHECK_SET_ERR(object == nullptr || Qt::NoItemFlags == model->flags(index) || acceptableTypes.contains(object->getGObjectType()), "Object has unexpected type");
 
         if (object == nullptr) {
-            checkObjectTypes(os, treeView, acceptableTypes, nullptr == proxyModel ? index : proxyModel->mapFromSource(index));
+            checkObjectTypes(os, treeView, acceptableTypes, proxyModel == nullptr ? index : proxyModel->mapFromSource(index));
             CHECK_OP_BREAK(os);
         }
     }

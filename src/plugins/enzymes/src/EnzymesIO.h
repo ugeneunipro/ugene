@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENZYMES_IO_H_
-#define _U2_ENZYMES_IO_H_
+#pragma once
 
 #include <QList>
 #include <QObject>
@@ -78,8 +77,6 @@ public:
     QSet<QString> enzymes;
 };
 
-#define DEFAULT_ENZYMES_FILE QString("2013_08_01.bairoch.gz")
+#define DEFAULT_ENZYMES_FILE QString("2023_02_25.bairoch.gz")
 
 }  // namespace U2
-
-#endif

@@ -25,7 +25,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "Primer3TaskSettings.h"
-
 #include "primer3_core/libprimer3.h"
 
 namespace U2 {
@@ -49,6 +48,11 @@ Primer3TaskSettings::Primer3TaskSettings() {
     primerSettings = p3_create_global_settings_default_version_1();
     seqArgs = create_seq_arg();
     isCircular = false;
+
+    // All Primer3 GUI tools use default settings with first_base_index = 1.
+    // Primer3Plus: https://www.bioinformatics.nl/cgi-bin/primer3plus/primer3plus.cgi
+    // Primer3Web: https://primer3.ut.ee/
+    primerSettings->first_base_index = 1;
 
     initMaps();
 }
@@ -112,7 +116,7 @@ QByteArray Primer3TaskSettings::getSequence() const {
 
 int Primer3TaskSettings::getSequenceSize() const {
     CHECK(seqArgs->sequence != nullptr, 0);
-    
+
     return strlen(seqArgs->sequence);
 }
 
@@ -159,7 +163,7 @@ QList<QList<int>> Primer3TaskSettings::getOkRegion() const {
           << seqArgs->ok_regions.right_pairs[i][1];
         result.append(v);
     }
-    return result;//
+    return result;  //
 }
 
 int Primer3TaskSettings::getMinProductSize() const {
@@ -506,7 +510,7 @@ void Primer3TaskSettings::initMaps() {
     intProperties.insert("PRIMER_INTERNAL_MIN_5_PRIME_OVERLAP_OF_JUNCTION", &primerSettings->o_args.min_5_prime_overlap_of_junction);
     intProperties.insert("PRIMER_INTERNAL_MIN_THREE_PRIME_DISTANCE", &primerSettings->min_internal_three_prime_distance);
     intProperties.insert("PRIMER_PRODUCT_OPT_SIZE", &primerSettings->product_opt_size);
-    //boolean
+    // boolean
     intProperties.insert("PRIMER_PICK_LEFT_PRIMER", &primerSettings->pick_left_primer);
     intProperties.insert("PRIMER_PICK_RIGHT_PRIMER", &primerSettings->pick_right_primer);
     intProperties.insert("PRIMER_PICK_INTERNAL_OLIGO", &primerSettings->pick_internal_oligo);
@@ -632,7 +636,6 @@ void Primer3TaskSettings::initMaps() {
     doubleProperties.insert("PRIMER_INTERNAL_WT_BOUND_GT", &primerSettings->o_args.weights.bound_gt);
     doubleProperties.insert("PRIMER_WT_BOUND_LT", &primerSettings->p_args.weights.bound_lt);
     doubleProperties.insert("PRIMER_WT_BOUND_GT", &primerSettings->p_args.weights.bound_gt);
-
 }
 
 }  // namespace U2

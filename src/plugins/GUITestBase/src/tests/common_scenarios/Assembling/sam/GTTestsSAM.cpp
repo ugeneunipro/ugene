@@ -45,11 +45,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //    Expected: the warning is not shown.
     // 3. Click "Import".
     //    Expected: the import task is started and finished with the error that PDB reference is not supported.
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", dataDir + "samples/PDB", "1CF7.PDB"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -61,11 +61,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Expected: the warning is not shown.
     // 3. Click "Import".
     // Expected: the import task is started and finished with the error that reference format is unknown.
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", testDir + "_common_data/bam/", "small.bam.sorted.bam.bai"));
     GTFileDialog::openFile(os, testDir + "_common_data/sam/", "out.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -79,11 +79,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 3. Click "Import".
     //    1) Expected: the import task is started and finished successfully.
     //    2) Assembly browser is opened with the imported assembly.
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, "", dataDir + "samples/Assembly", "chrM.fa"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 }  // namespace GUITest_SAM

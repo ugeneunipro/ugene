@@ -19,10 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PCR_GROUP_BOX_H_
-#define _U2_PCR_GROUP_BOX_H_
+#pragma once
 
 #include "ui_PrimerGroupBox.h"
+
+#include <U2Algorithm/TmCalculator.h>
 
 namespace U2 {
 
@@ -39,6 +40,7 @@ public:
 
     QByteArray getPrimer() const;
     uint getMismatches() const;
+    void setTemperatureCalculator(const QSharedPointer<TmCalculator>& newTemperatureCalculator);
 
 signals:
     void si_primerChanged();
@@ -54,7 +56,7 @@ private slots:
     void sl_activeSequenceChanged();
 
 private:
-    static QString getTmString(const QString& sequence);
+    QString getTmString(const QString& sequence);
 
     void findPrimerAlternatives(const QString& primer);
     void cancelFindPrimerTask();
@@ -63,8 +65,7 @@ private:
 
     FindAlgorithmTask* findPrimerTask;
     AnnotatedDNAView* annotatedDnaView;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 };
 
 }  // namespace U2
-
-#endif  // _U2_PCR_GROUP_BOX_H_

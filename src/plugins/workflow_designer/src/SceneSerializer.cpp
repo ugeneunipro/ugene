@@ -93,7 +93,7 @@ void SceneSerializer::saveItems(const QList<QGraphicsItem*>& items, QDomElement&
 static void initProcMap(QMap<ActorId, WorkflowProcessItem*>& procMap, WorkflowScene* scene) {
     foreach (QGraphicsItem* item, scene->items()) {
         if (item->type() == WorkflowProcessItemType) {
-            WorkflowProcessItem* wit = qgraphicsitem_cast<WorkflowProcessItem*>(item);
+            auto wit = qgraphicsitem_cast<WorkflowProcessItem*>(item);
             procMap[wit->getProcess()->getId()] = wit;
         }
     }
@@ -130,9 +130,9 @@ QString SceneSerializer::xml2scene(const QDomElement& projectElement, WorkflowSc
         actorMap[id] = proc;
         proc->setLabel(procElement.attribute(NAME_ATTR));
         if (nullptr != proto->getEditor()) {
-            ActorConfigurationEditor* actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
+            auto actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
             if (nullptr != actorEd) {
-                ActorConfigurationEditor* editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
+                auto editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);
             }
@@ -154,9 +154,9 @@ QString SceneSerializer::xml2scene(const QDomElement& projectElement, WorkflowSc
     foreach (Actor* proc, actorMap) {
         ActorPrototype* proto = proc->getProto();
         if (nullptr != proto->getEditor()) {
-            ActorConfigurationEditor* actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
+            auto actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
             if (nullptr != actorEd) {
-                ActorConfigurationEditor* editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
+                auto editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);
             }

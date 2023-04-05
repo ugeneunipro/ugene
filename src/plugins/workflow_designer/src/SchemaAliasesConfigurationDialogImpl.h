@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WCFG_SCHEMA_ALIASES_DIALOG_CONTROLLER_H_
-#define _U2_WCFG_SCHEMA_ALIASES_DIALOG_CONTROLLER_H_
+#pragma once
 
 #include <U2Lang/Schema.h>
 
@@ -60,5 +59,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif  // _U2_WCFG_SCHEMA_ALIASES_DIALOG_CONTROLLER_H_

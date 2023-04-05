@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _RF_SUFFIX_ARRAY_H_
-#define _RF_SUFFIX_ARRAY_H_
+#pragma once
 
 #include <ctime>
 
@@ -70,5 +69,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

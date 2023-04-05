@@ -159,7 +159,7 @@ void EventFilter::generateMouseMessage() {
 void EventFilter::getInfo(QWidget* w) {
     CHECK(w != nullptr, );
     setBufferObject(w);
-    QMenu* menu = qobject_cast<QMenu*>(w);
+    auto menu = qobject_cast<QMenu*>(w);
     if (menu != nullptr) {
         CHECK(m != nullptr, )
         QAction* menuAct = menu->actionAt(menu->mapFromGlobal(m->globalPos()));
@@ -172,7 +172,7 @@ void EventFilter::getInfo(QWidget* w) {
         }
     }
 
-    QMenuBar* menuBar = qobject_cast<QMenuBar*>(w);
+    auto menuBar = qobject_cast<QMenuBar*>(w);
     if (menuBar != nullptr) {
         CHECK(m != nullptr, )
         QAction* menuBarAct = menuBar->actionAt(menuBar->mapFromGlobal(m->globalPos()));
@@ -187,7 +187,7 @@ void EventFilter::getInfo(QWidget* w) {
 
     className = w->metaObject()->className();
     objName = w->objectName();
-    QToolButton* toolButton = qobject_cast<QToolButton*>(w);
+    auto toolButton = qobject_cast<QToolButton*>(w);
     if (toolButton != nullptr && toolButton->defaultAction()) {
         actionName = toolButton->defaultAction()->objectName();
         text = toolButton->defaultAction()->text();
@@ -207,31 +207,31 @@ QString EventFilter::generateCode(QWidget* w) {
 
     focusWidget = w;
 
-    QMenuBar* menuBar = qobject_cast<QMenuBar*>(w);
+    auto menuBar = qobject_cast<QMenuBar*>(w);
     if (menuBar != nullptr) {
         result.append(menuBarCode(menuBar));
         return result;
     }
 
-    QMenu* menu = qobject_cast<QMenu*>(w);
+    auto menu = qobject_cast<QMenu*>(w);
     if (menu != nullptr) {
         result.append(menuCode(menu));
         return result;
     }
 
-    QCheckBox* check = qobject_cast<QCheckBox*>(w);
+    auto check = qobject_cast<QCheckBox*>(w);
     if (check) {
         result.append(checkBoxCode(check));
         return result;
     }
 
-    QRadioButton* radio = qobject_cast<QRadioButton*>(w);
+    auto radio = qobject_cast<QRadioButton*>(w);
     if (radio) {
         result.append(radioButtonCode(radio));
         return result;
     }
 
-    QToolButton* toolButton = qobject_cast<QToolButton*>(w);
+    auto toolButton = qobject_cast<QToolButton*>(w);
     if (toolButton) {
         result.append(toolButtonCode(toolButton));
         return result;
@@ -248,31 +248,31 @@ QString EventFilter::setValuesWhenFocusGone(QWidget* w) {
     CHECK(w != nullptr, "");
     QString result("");
 
-    QSpinBox* spin = qobject_cast<QSpinBox*>(w);
+    auto spin = qobject_cast<QSpinBox*>(w);
     if (spin != nullptr) {
-        result.append(QString("QSpinBox* spin = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(spin->objectName()));
+        result.append(QString("auto spin = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(spin->objectName()));
         result.append(QString("CHECK_SET_ERR(spin != NULL, \"%1 not found!\");\n").arg(spin->objectName()));
         result.append(QString("GTSpinBox::setValue(os, spin , %1 , GTGlobals::UseKeyBoard);\n\n").arg(spin->value()));
         focusWidget = nullptr;
         return result;
     }
 
-    QDoubleSpinBox* doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
+    auto doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
     if (doubleSpin != nullptr) {
-        result.append(QString("QDoubleSpinBox* spin = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(doubleSpin->objectName()));
+        result.append(QString("auto spin = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(doubleSpin->objectName()));
         result.append(QString("CHECK_SET_ERR(spin != NULL, \"%1 not found!\");\n").arg(doubleSpin->objectName()));
         result.append(QString("QDoubleSpinBox::setValue(os, spin , %1 , GTGlobals::UseKeyBoard);\n\n").arg(doubleSpin->value()));
         focusWidget = nullptr;
         return result;
     }
 
-    QComboBox* combo = qobject_cast<QComboBox*>(w);
+    auto combo = qobject_cast<QComboBox*>(w);
     if (combo) {
         QString name = w->objectName();
         if (name == "qt_scrollarea_viewport") {
             return "";
         }
-        result.append(QString("QComboBox* combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(combo->objectName()));
+        result.append(QString("auto combo = qobject_cast<QComboBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(combo->objectName()));
         result.append(QString("CHECK_SET_ERR(combo != NULL, \"%1 not found!\");\n").arg(combo->objectName()));
         result.append(QString("GTComboBox::selectItemByText(os, combo , \"%1\");\n\n").arg(combo->currentText()));
         focusWidget = nullptr;
@@ -325,7 +325,7 @@ QString EventFilter::checkBoxCode(QCheckBox* check) const {
     QString result("");
     CHECK(check != nullptr, "");
 
-    result.append(QString("QCheckBox* check = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(check->objectName()));
+    result.append(QString("auto check = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, \"%1\"));\n").arg(check->objectName()));
     result.append(QString("CHECK_SET_ERR(check != NULL, \"%1 not found!\");\n").arg(check->objectName()));
     result.append(QString("GTCheckBox::setChecked(os, check, %1);\n\n").arg(!check->isChecked()));
 
@@ -356,7 +356,7 @@ QString EventFilter::toolButtonCode(QToolButton* toolButton) const {
 
         if (toolButton->defaultAction()->menu() != nullptr) {
             result.append(QString("GTGlobals::sleep(200)"));
-            result.append(QString("QMenu* menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());\n\n"));
+            result.append(QString("auto menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());\n\n"));
         }
     }
     return result;
@@ -389,7 +389,7 @@ QString EventFilter::contextMenuCode(QWidget* w) const {
 QString EventFilter::generateFillerHeader() {
     QString result;
     result.append("\n\nHEADER\n\n");
-    QDialog* dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
+    auto dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
     QString fillerName = dialog->objectName() + "Filler";
 
     result.append("#include \"GTUtilsDialog.h\"\n"
@@ -427,7 +427,7 @@ QString EventFilter::generateFillerHeader() {
 QString EventFilter::generateFillerSource() const {
     QString result;
     result.append("\n\nSOURCE\n\n");
-    QDialog* dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
+    auto dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
     QString fillerName = dialog->objectName() + "Filler";
 
     result.append(QString("#include \"%1.h\"\n"
@@ -708,7 +708,7 @@ QString EventFilter::widgetsProcessingCode(QWidget* widget) const {
 }
 
 QString EventFilter::widgetsProcessingCode(QCheckBox* checkBox) const {
-    return QString("    QCheckBox* %1 = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
+    return QString("    auto %1 = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    GT_CHECK(%1, \"%1 is NULL\");\n"
                    "    GTCheckBox::setChecked(os, %1, parameters->%2);\n\n")
         .arg(checkBox->objectName())
@@ -716,14 +716,14 @@ QString EventFilter::widgetsProcessingCode(QCheckBox* checkBox) const {
 }
 
 QString EventFilter::widgetsProcessingCode(QGroupBox* groupBox) const {
-    return QString("    QGroupBox* %1 = qobject_cast<QGroupBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
+    return QString("    auto %1 = qobject_cast<QGroupBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    %1->setChecked(parameters->%2);\n\n")
         .arg(groupBox->objectName())
         .arg(GROUP_BOX_VAR(groupBox->objectName()));
 }
 
 QString EventFilter::widgetsProcessingCode(QComboBox* combo) const {
-    return QString("    QComboBox* %1 = qobject_cast<QComboBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
+    return QString("    auto %1 = qobject_cast<QComboBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    GT_CHECK(%1, \"%1 is NULL\");\n"
                    "    GTComboBox::selectItemByText(os, %1, parameters->%2);\n\n")
         .arg(combo->objectName())
@@ -731,7 +731,7 @@ QString EventFilter::widgetsProcessingCode(QComboBox* combo) const {
 }
 
 QString EventFilter::widgetsProcessingCode(QLineEdit* line) const {
-    return QString("    QLineEdit* %1 = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
+    return QString("    auto %1 = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    GT_CHECK(%1, \"%1 is NULL\");\n"
                    "    GTLineEdit::setText(os, %1, parameters->%2);\n\n")
         .arg(line->objectName())
@@ -739,7 +739,7 @@ QString EventFilter::widgetsProcessingCode(QLineEdit* line) const {
 }
 
 QString EventFilter::widgetsProcessingCode(QSpinBox* spinBox) const {
-    return QString("    QSpinBox* %1 = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
+    return QString("    auto %1 = qobject_cast<QSpinBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    GT_CHECK(%1, \"%1 is NULL\")\n;"
                    "    GTSpinBox::setValue(os, %1, parameters->%2);\n\n")
         .arg(spinBox->objectName())
@@ -747,7 +747,7 @@ QString EventFilter::widgetsProcessingCode(QSpinBox* spinBox) const {
 }
 
 QString EventFilter::widgetsProcessingCode(QDoubleSpinBox* spinBox) const {
-    return QString("    QDoubleSpinBox* %1 = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
+    return QString("    auto %1 = qobject_cast<QDoubleSpinBox*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    GT_CHECK(%1, \"%1 is NULL\")\n;"
                    "    GTDoubleSpinBox::setValue(os, %1, parameters->%2);\n\n")
         .arg(spinBox->objectName())
@@ -771,7 +771,7 @@ QString EventFilter::widgetsProcessingCode(QPushButton* push) const {
 }
 
 QString EventFilter::widgetsProcessingCode(QRadioButton* radio) const {
-    return QString("    QRadioButton* %1 = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
+    return QString("    auto %1 = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, \"%1\", dialog));\n"
                    "    GT_CHECK(%1, \"%1 not found\");\n"
                    "    GTRadioButton::click(os, %1);\n\n")
         .arg(radio->objectName());

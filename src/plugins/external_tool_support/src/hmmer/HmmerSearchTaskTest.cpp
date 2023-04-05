@@ -189,7 +189,7 @@ void GTest_UHMM3Search::setAndCheckArgs() {
     outputDir = env->getVar("TEMP_DATA_DIR") + "/" + outputDir;
 
     Document* seqDoc = getContext<Document>(this, seqDocCtxName);
-    if (nullptr == seqDoc) {
+    if (seqDoc == nullptr) {
         stateInfo.setError(QString("context %1 not found").arg(seqDocCtxName));
         return;
     }
@@ -216,7 +216,7 @@ QList<Task*> GTest_UHMM3Search::onSubTaskFinished(Task* sub) {
     if (searchTask != sub) {
         return res;
     }
-    OutputCollector* collector = dynamic_cast<OutputCollector*>(searchTask->getListener(0));
+    auto collector = dynamic_cast<OutputCollector*>(searchTask->getListener(0));
     if (collector != nullptr) {
         QString hmmSearchLog = collector->getLog();
         // TODO: check non empty log and file existence after writing

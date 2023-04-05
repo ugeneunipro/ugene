@@ -272,7 +272,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter& writer, const QMap<GObjectType, 
     const QList<GObject*>& objectList = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(objectList.size() == 1, "MSFFormat::storeTextEntry can store only 1 object per file. Got: " + QString::number(objectList.size()), );
 
-    auto* obj = dynamic_cast<MultipleSequenceAlignmentObject*>(objectList.first());
+    auto obj = dynamic_cast<MultipleSequenceAlignmentObject*>(objectList.first());
     SAFE_POINT(obj != nullptr, "MSF entry storing: the object is not an alignment", );
 
     const MultipleSequenceAlignment& msa = obj->getMultipleAlignment();

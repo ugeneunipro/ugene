@@ -60,7 +60,7 @@ void InsertSequenceFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
-    GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
+    GTPlainTextEdit::setText(os, plainText, pasteDataHere);
 
     QString radioButtonName;
     switch (regionResolvingMode) {

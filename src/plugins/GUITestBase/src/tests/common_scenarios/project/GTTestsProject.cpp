@@ -251,9 +251,9 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxOpenAnotherProject(os));
 
     // 2. Do menu {File->Open}. Open project _common_data\scenario\project\proj2.uprj
-    // Expected state: dialog with text "Open project in new window" has appear
+    // Expected state: dialog with text "Open project in new window" has appeared
 
-    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");  // TODO: ask Shutov what to do
+    GTFileDialog::openFileWithDialog(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
 
     /*
     this test just checking appearing of dialog not its behavior
@@ -394,11 +394,11 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
     const QString firstAnnFileName = "1.gb";
     const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFaleName = "2.gb";
+    const QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFaleName);
+    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
 
@@ -425,7 +425,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -436,11 +436,11 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     QWidget* coi = GTUtilsMdi::findWindow(os, "COI [COI.aln]");
     CHECK_SET_ERR(fasta->windowIcon().cacheKey() != coi->windowIcon().cacheKey(), "Icons must not be equals");
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
-    GTLogTracer logTracer;
+    GTLogTracer lt;
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -448,7 +448,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsDialog::checkNoActiveWaiters(os);
 
-    GTUtilsLog::check(os, logTracer);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {
@@ -509,7 +509,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
     // select sequence object
     GTUtilsProjectTreeView::click(os, "murine.gb");
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
 }
 
@@ -525,7 +525,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTUtilsProjectTreeView::click(os, "NC_001363");
     GTUtilsProjectTreeView::click(os, "NC_004718");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::Exists, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "NC_001363", Qt::RightButton);
 }
 
@@ -541,7 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     GTUtilsProjectTreeView::click(os, "sars.gb");
     GTUtilsProjectTreeView::click(os, "murine.gb");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::NotExists, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::Exists, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
 }
 
@@ -551,7 +551,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
 
     // select 1 file
     GTUtilsProjectTreeView::click(os, "sars.gb");
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Open containing folder"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"openInMenu", "openContainingFolderAction"}, PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
 }
 
@@ -575,7 +575,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "BL060C3.ace", Qt::RightButton);
 
     // check for first document
@@ -611,7 +611,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     while (GTUtilsMdi::activeWindow(os, {false}) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click(os, "test_3637_1.ugenedb", Qt::RightButton);
 
     // check for first document
@@ -892,9 +892,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     // check document format dialog cancelling
     class CustomScenarioCancel : public CustomScenario {
     public:
-        CustomScenarioCancel() {
-        }
-        virtual void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -928,9 +926,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
     // check adding document with 2 sequences in short reads mode
     class CheckPathScenario : public CustomScenario {
     public:
-        CheckPathScenario() {
-        }
-        virtual void run(HI::GUITestOpStatus& os) {
+        void run(HI::GUITestOpStatus& os) override {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             auto treeWidget = GTWidget::findTreeWidget(os, "shortReadsTable", dialog);
             QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());

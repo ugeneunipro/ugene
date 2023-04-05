@@ -36,12 +36,12 @@ McaGeneralTabFactory::McaGeneralTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget* McaGeneralTabFactory::createWidget(GObjectView* objView, const QVariantMap& /*options*/) {
+QWidget* McaGeneralTabFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
 
-    McaEditor* msa = qobject_cast<McaEditor*>(objView);
+    auto msa = qobject_cast<McaEditor*>(objView);
     SAFE_POINT(msa != nullptr,
                QString("Internal error: unable to cast object view to McaEditor for group '%1'.").arg(GROUP_ID),
                nullptr);

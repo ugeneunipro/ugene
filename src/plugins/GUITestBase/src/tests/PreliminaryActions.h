@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRELIMINARY_ACTIONS_H_
-#define _U2_PRELIMINARY_ACTIONS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -45,5 +44,3 @@ GUI_TEST_CLASS_DECLARATION(pre_action_0005)
 
 }  // namespace GUITest_preliminary_actions
 }  // namespace U2
-
-#endif  // _U2_PRELIMINARY_ACTIONS_H_

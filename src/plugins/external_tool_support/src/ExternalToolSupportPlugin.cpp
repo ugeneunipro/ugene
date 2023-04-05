@@ -392,7 +392,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     dnaAssemblyRegistry->registerAlgorithm(new DnaAssemblyAlgorithmEnv(Bowtie2Task::taskName, new Bowtie2TaskFactory(), new Bowtie2GUIExtensionsFactory(), true /*Index*/, false /*Dbi*/, true /*Paired-reads*/, referenceFormats, readsFormats));
 
     GTestFormatRegistry* testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
     xmlTestFormat->registerTestFactories(BowtieTests::createTestFactories());
     xmlTestFormat->registerTestFactories(Bowtie2Tests::createTestFactories());
     xmlTestFormat->registerTestFactories(BwaTests::createTestFactories());

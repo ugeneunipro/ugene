@@ -182,18 +182,11 @@ qint64 AssemblyModel::getModelLength(U2OpStatus& os) {
         LOG_OP(os);
         if (attr.hasValidId()) {
             cachedModelLength = attr.value;
-            // Ignore incorrect attribute value and remove the corrupted attribute: auto-fix incorrectly converted ugenedb.
             if (cachedModelLength <= 0) {
-                coreLog.details(tr("Ignored incorrect value of attribute %1: should be > 0, got %2. Bad attribute removed!")
-                                    .arg(QString(U2BaseAttributeName::reference_length))
-                                    .arg(cachedModelLength));
                 cachedModelLength = NO_VAL;
-                if (canWriteAttributes) {
-                    U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
-                }
             }
         }
-        // If cannot get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
+        // If we can't get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
         if (cachedModelLength == NO_VAL) {
             qint64 refLen = hasReference() ? refObj->getSequenceLength() : 0;
             qint64 assLen = assemblyDbi->getMaxEndPos(assembly.id, os);
@@ -280,7 +273,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi* dbi, const U2Assembly& assm) {
                 Document* refDoc = prj->findDocumentByURL(U2DbiUtils::ref2Url(dbiHandle.dbi->getDbiRef()));
                 SAFE_POINT(refDoc != nullptr, tr("No reference document found in the project"), );
 
-                U2SequenceObject* refObj = qobject_cast<U2SequenceObject*>(refDoc->getObjectById(assembly.referenceId));
+                auto refObj = qobject_cast<U2SequenceObject*>(refDoc->getObjectById(assembly.referenceId));
                 SAFE_POINT(refObj != nullptr, tr("No reference object found in the project"), );
 
                 setReference(refObj);
@@ -310,7 +303,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi* dbi, const U2Assembly& assm) {
                     connect(refDoc, SIGNAL(si_loadedStateChanged()), SLOT(sl_referenceDocLoadedStateChanged()));
                 } else {  // no document at project -> create doc, add it to project and load it
                     t = createLoadReferenceAndAddToProjectTask(crossRef);
-                    if (nullptr == t) {
+                    if (t == nullptr) {
                         QString refUrl = crossRef.dataRef.dbiRef.dbiId;
                         QString refName = crossRef.dataRef.entityId;
 
@@ -378,7 +371,7 @@ void AssemblyModel::onReferenceRemoved() {
     }
 }
 
-void AssemblyModel::removeCrossDatabaseReference(const U2DataId& refId) {
+void AssemblyModel::removeCrossDatabaseReference(const U2DataId& refId) const {
     CHECK(!refId.isEmpty(), );
     CHECK(U2Type::CrossDatabaseReference == U2DbiUtils::toType(refId), );
 
@@ -390,7 +383,7 @@ namespace {
 bool isAssemblyDoc(const Document* doc, const U2Assembly& assembly) {
     CHECK(nullptr != doc, false);
     foreach (const GObject* obj, doc->findGObjectByType(GObjectTypes::ASSEMBLY)) {
-        if (nullptr == obj) {
+        if (obj == nullptr) {
             continue;
         }
         const U2EntityRef& ent = obj->getEntityRef();
@@ -444,7 +437,7 @@ void AssemblyModel::sl_docAdded(Document* d) {
 
 // when load-unload document
 void AssemblyModel::sl_referenceDocLoadedStateChanged() {
-    Document* doc = qobject_cast<Document*>(sender());
+    auto doc = qobject_cast<Document*>(sender());
     SAFE_POINT(doc, "Reference document is NULL!", );
 
     if (doc->isLoaded()) {
@@ -601,7 +594,7 @@ void AssemblyModel::addTrackObject(VariantTrackObject* trackObj) {
 }
 
 void AssemblyModel::sl_trackObjRemoved(GObject* o) {
-    VariantTrackObject* trackObj = qobject_cast<VariantTrackObject*>(o);
+    auto trackObj = qobject_cast<VariantTrackObject*>(o);
     if (nullptr != trackObj) {
         trackObjList.removeOne(trackObj);
         emit si_trackRemoved(trackObj);
@@ -665,7 +658,7 @@ U2SequenceObject* AssemblyModel::getRefObj() const {
     return refObj;
 }
 
-bool AssemblyModel::isDbLocked(int timeout) {
+bool AssemblyModel::isDbLocked(int timeout) const {
     QMutex* mutex = dbiHandle.dbi->getDbMutex();
     CHECK(mutex != nullptr, false);
     if (mutex->tryLock(timeout)) {

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALIGN_TO_REFERENCE_BLAST_WORKER_H_
-#define _U2_ALIGN_TO_REFERENCE_BLAST_WORKER_H_
+#pragma once
 
 #include <U2Lang/BaseDatasetWorker.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -128,5 +127,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _U2_ALIGN_TO_REFERENCE_BLAST_WORKER_H_

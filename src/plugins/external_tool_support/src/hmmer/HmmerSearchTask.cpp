@@ -54,7 +54,7 @@ HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings& settings)
       parseTask(nullptr),
       removeWorkingDir(false),
       hmm2Mode(false) {
-    GCOUNTER(cvar, "HMMER Search");
+    GCOUNTER(cvar, "ExternalTool_HMMER");
     SAFE_POINT_EXT(settings.validate(), setError("Settings are invalid"), );
 }
 

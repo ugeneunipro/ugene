@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENZYMES_DIALOG_H_
-#define _U2_ENZYMES_DIALOG_H_
+#pragma once
 
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -75,6 +74,7 @@ private:
     void saveFile(const QString& url);
     void setEnzymesList(const QList<SEnzymeData>& enzymes);
     void updateStatus();
+    int gatherCheckedNamesListString(QString& checkedNamesList) const;
 
     EnzymeGroupTreeItem* findGroupItem(const QString& s, bool create);
 
@@ -126,5 +126,3 @@ public:
 #define ANY_VALUE -1
 
 }  // namespace U2
-
-#endif

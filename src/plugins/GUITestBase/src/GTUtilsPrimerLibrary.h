@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _GTUTILS_PRIMER_LIBRARY_H_
-#define _GTUTILS_PRIMER_LIBRARY_H_
+#pragma once
 
 #include <GTGlobals.h>
 
@@ -38,7 +37,8 @@ public:
                   Remove,
                   Import,
                   Export,
-                  Close };
+                  Close,
+                  Temperature};
     static QWidget* openLibrary(HI::GUITestOpStatus& os);
     static void clickButton(HI::GUITestOpStatus& os, Button button);
     static QAbstractButton* getButton(HI::GUITestOpStatus& os, Button button);
@@ -57,5 +57,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _GTUTILS_PRIMER_LIBRARY_H_

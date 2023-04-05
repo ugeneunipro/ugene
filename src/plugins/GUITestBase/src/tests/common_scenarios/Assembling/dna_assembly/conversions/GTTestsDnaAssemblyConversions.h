@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUITEST_DNA_ASSEMBLY_CONVERSIONS_H_
-#define _U2_GUITEST_DNA_ASSEMBLY_CONVERSIONS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -39,5 +38,3 @@ GUI_TEST_CLASS_DECLARATION(test_0004)
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_dna_assembly_conversions
 }  // namespace U2
-
-#endif  // _U2_GUITEST_DNA_ASSEMBLY_CONVERSIONS_H_

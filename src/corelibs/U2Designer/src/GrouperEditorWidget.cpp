@@ -223,7 +223,7 @@ void GrouperEditorWidget::sl_onEditButtonClicked() {
         return;
     }
     QModelIndex leftIdx = selected.first();
-    QModelIndex rightIdx = leftIdx.child(leftIdx.row(), 1);
+    QModelIndex rightIdx = leftIdx.model()->index(leftIdx.row(), 1, leftIdx);
 
     auto model = dynamic_cast<GrouperSlotsCfgModel*>(grouperModel);
     SAFE_POINT(model != nullptr, "GrouperSlotsCfgModel is null", );

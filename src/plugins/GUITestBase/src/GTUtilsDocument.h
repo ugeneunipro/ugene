@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_DOCUMENT_UTILS_H_
-#define _U2_GUI_DOCUMENT_UTILS_H_
+#pragma once
 
 #include <U2Core/U2IdTypes.h>
 
@@ -29,7 +28,7 @@
 namespace U2 {
 using namespace HI;
 
-class GObjectView;
+class GObjectViewController;
 class Document;
 
 class GTUtilsDocument {
@@ -59,12 +58,10 @@ public:
     static void checkIfDocumentIsLocked(HI::GUITestOpStatus& os, const QString& documentName, bool isLocked);
 
 protected:
-    static GObjectView* getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d);
+    static GObjectViewController* getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d);
 
 private:
-    static QList<GObjectView*> getAllGObjectViews();
+    static QList<GObjectViewController*> getAllGObjectViews();
 };
 
 }  // namespace U2
-
-#endif

@@ -98,9 +98,9 @@ namespace {
 
 MultipleSequenceAlignmentObject* prepareSequenceHeadersList(const QList<GObject*>& list, bool useGenbankHeader, QList<U2SequenceObject*>& dnaList, QList<QString>& nameList) {
     foreach (GObject* obj, list) {
-        U2SequenceObject* dnaObj = qobject_cast<U2SequenceObject*>(obj);
+        auto dnaObj = qobject_cast<U2SequenceObject*>(obj);
         if (dnaObj == nullptr) {
-            if (MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj)) {
+            if (auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj)) {
                 return maObj;
             }
             continue;

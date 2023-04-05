@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ETS_TASK_LOCAL_STORAGE_
-#define _ETS_TASK_LOCAL_STORAGE_
+#pragma once
 
 #include <QThreadStorage>
 
@@ -51,5 +50,3 @@ private:
     static QThreadStorage<ETSContextTLSRef*> tls;
 };
 }  // namespace U2
-
-#endif

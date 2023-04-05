@@ -70,7 +70,7 @@ public:
     template<class T>
     static T* getContext(const GTest* test, const QString& name) {
         QObject* o = test->getContext(name);
-        T* res = qobject_cast<T*>(o);
+        auto res = qobject_cast<T*>(o);
         return res;
     }
 

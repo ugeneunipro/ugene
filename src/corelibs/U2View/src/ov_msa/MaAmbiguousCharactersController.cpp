@@ -141,7 +141,7 @@ QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection di
 }
 
 void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direction, const QPoint& startPosition) const {
-    if (nullptr == cachedIterator) {
+    if (cachedIterator == nullptr) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,
                                             maEditor->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));

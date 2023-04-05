@@ -24,6 +24,7 @@
 #include "samtools/TabixSupport.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -54,6 +55,14 @@ VcfConsensusSupport::VcfConsensusSupport()
 
     toolRunnerProgram = PerlSupport::ET_PERL_ID;
     dependencies << PerlSupport::ET_PERL_ID << TabixSupport::ET_TABIX_ID;
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::SpacesToolPath
+                   << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::SpacesArguments;
+    }
 }
 
 }  // namespace U2

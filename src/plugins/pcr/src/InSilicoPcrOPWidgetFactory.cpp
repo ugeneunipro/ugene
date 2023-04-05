@@ -37,13 +37,13 @@ InSilicoPcrOPWidgetFactory::InSilicoPcrOPWidgetFactory()
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget* InSilicoPcrOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
+QWidget* InSilicoPcrOPWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& options) {
     Q_UNUSED(options);
 
-    AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
+    auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 
-    InSilicoPcrOptionPanelWidget* opWidget = new InSilicoPcrOptionPanelWidget(annotatedDnaView);
+    auto opWidget = new InSilicoPcrOptionPanelWidget(annotatedDnaView);
     opWidget->setObjectName("InSilicoPcrOptionPanelWidget");
     return opWidget;
 }

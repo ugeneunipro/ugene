@@ -183,7 +183,7 @@ void MaSangerOverview::resizeEvent(QResizeEvent* event) {
 }
 
 bool MaSangerOverview::eventFilter(QObject* object, QEvent* event) {
-    QPaintEvent* paintEvent = dynamic_cast<QPaintEvent*>(event);
+    auto paintEvent = dynamic_cast<QPaintEvent*>(event);
     CHECK(nullptr != paintEvent, MaOverview::eventFilter(object, event));
     if (object == renderArea) {
         QPainter painter(renderArea);

@@ -128,7 +128,7 @@ void MainWindowDragNDrop::dropEvent(QDropEvent* event) {
         }
     } else {
         if (event->mimeData()->hasFormat(DocumentMimeData::MIME_TYPE)) {
-            const DocumentMimeData* docData = static_cast<const DocumentMimeData*>(event->mimeData());
+            auto docData = static_cast<const DocumentMimeData*>(event->mimeData());
 
             DocumentSelection ds;
             ds.setSelection(QList<Document*>() << docData->objPtr);
@@ -214,7 +214,7 @@ bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
     CHECK(nullptr != event, false);
     CHECK(event->type() == QEvent::KeyPress, false);
 
-    QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+    auto keyEvent = dynamic_cast<QKeyEvent*>(event);
     CHECK(nullptr != keyEvent, false);
 
     if (keyEvent->matches(QKeySequence::Paste)) {
@@ -275,7 +275,7 @@ void MainWindowImpl::sl_exitAction() {
 }
 
 void MainWindowImpl::sl_aboutAction() {
-    QWidget* p = qobject_cast<QWidget*>(getQMainWindow());
+    auto p = qobject_cast<QWidget*>(getQMainWindow());
     QObjectScopedPointer<AboutDialogController> d = new AboutDialogController(visitWebAction, p);
     d->exec();
 }

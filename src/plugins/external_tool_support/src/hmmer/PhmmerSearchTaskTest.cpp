@@ -169,7 +169,7 @@ void GTest_UHMM3Phmmer::setSearchTaskSettings(PhmmerSearchSettings& settings, co
 }
 
 void GTest_UHMM3Phmmer::prepare() {
-    assert(!hasError() && nullptr == phmmerTask);
+    assert(!hasError() && phmmerTask == nullptr);
     setAndCheckArgs();
     if (hasError()) {
         return;
@@ -185,7 +185,7 @@ void GTest_UHMM3Phmmer::prepare() {
 QList<Task*> GTest_UHMM3Phmmer::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if (subTask == phmmerTask) {
-        OutputCollector* collector = dynamic_cast<OutputCollector*>(phmmerTask->getListener(0));
+        auto collector = dynamic_cast<OutputCollector*>(phmmerTask->getListener(0));
         if (collector != nullptr) {
             QString hmmSearchLog = collector->getLog();
             // TODO: check non empty log and file existence after writing

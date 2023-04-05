@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUFFLINKS_WORKER_H
-#define _U2_CUFFLINKS_WORKER_H
+#pragma once
 
 #include <U2Lang/Descriptor.h>
 #include <U2Lang/LocalDomain.h>
@@ -94,5 +93,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif

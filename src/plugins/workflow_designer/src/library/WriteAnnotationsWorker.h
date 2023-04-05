@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef __WRITE_ANNOTATIONS_WORKER_H_
-#define __WRITE_ANNOTATIONS_WORKER_H_
+#pragma once
 
 #include <U2Core/SaveDocumentTask.h>
 
@@ -98,5 +97,3 @@ public:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // __WRITE_ANNOTATIONS_WORKER_H_

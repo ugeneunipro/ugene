@@ -28,6 +28,7 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/ExportSequencesTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -37,7 +38,6 @@
 
 #include <U2Gui/GUIUtils.h>
 
-#include <U2View/ExportSequencesTask.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorSelection.h>
@@ -56,14 +56,14 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject* 
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void ExportAlignmentViewItemsController::initViewContext(GObjectView* v) {
+void ExportAlignmentViewItemsController::initViewContext(GObjectViewController* v) {
     auto msaEditor = qobject_cast<MSAEditor*>(v);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     auto msaExportContext = new MSAExportContext(msaEditor);
     addViewResource(msaEditor, msaExportContext);
 }
 
-void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
     assert(resources.size() == 1);
     QObject* r = resources.first();

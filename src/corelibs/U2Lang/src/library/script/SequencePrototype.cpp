@@ -113,7 +113,7 @@ SequenceScriptClass::SequenceScriptClass(QScriptEngine* engine)
 }
 
 QScriptValue SequenceScriptClass::constructor(QScriptContext* ctx, QScriptEngine* /*engine*/) {
-    SequenceScriptClass* sClass = qscriptvalue_cast<SequenceScriptClass*>(ctx->callee().data());
+    auto sClass = qscriptvalue_cast<SequenceScriptClass*>(ctx->callee().data());
     if (!sClass) {
         return QScriptValue();
     }

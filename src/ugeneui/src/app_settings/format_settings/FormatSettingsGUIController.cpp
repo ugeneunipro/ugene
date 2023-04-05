@@ -43,7 +43,7 @@ AppSettingsGUIPageState* FormatSettingsGUIPageController::getSavedState() {
 }
 
 void FormatSettingsGUIPageController::saveState(AppSettingsGUIPageState* _state) {
-    FormatSettingsGUIPageState* state = qobject_cast<FormatSettingsGUIPageState*>(_state);
+    auto state = qobject_cast<FormatSettingsGUIPageState*>(_state);
     FormatAppsSettings* s = AppContext::getAppSettings()->getFormatAppsSettings();
     CaseAnnotationsMode prevMode = s->getCaseAnnotationsMode();
     s->setCaseAnnotationsMode(state->caseMode);
@@ -80,7 +80,7 @@ FormatSettingsGUIPageWidget::FormatSettingsGUIPageWidget(FormatSettingsGUIPageCo
 }
 
 void FormatSettingsGUIPageWidget::setState(AppSettingsGUIPageState* s) {
-    FormatSettingsGUIPageState* state = qobject_cast<FormatSettingsGUIPageState*>(s);
+    auto state = qobject_cast<FormatSettingsGUIPageState*>(s);
 
     int caseModeIdx = caseCombo->findText(caseAnnsModeNames.value(state->caseMode), Qt::MatchFixedString);
     if (caseModeIdx != -1) {

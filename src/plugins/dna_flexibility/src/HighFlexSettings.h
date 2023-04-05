@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_HIGH_FLEX_SETTINGS_H_
-#define _U2_HIGH_FLEX_SETTINGS_H_
+#pragma once
 
 #include <QString>
 
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

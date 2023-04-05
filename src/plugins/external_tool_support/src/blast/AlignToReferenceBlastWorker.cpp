@@ -363,6 +363,9 @@ SharedDbiDataHandler AlignToReferenceBlastTask::getAnnotations() const {
 }
 
 QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedReads() const {
+    if (stateInfo.isCoR()) {
+        return {};
+    }
     SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, QPair<int, bool>>> acceptedReads;
     const QList<AlignToReferenceResult>& alignmentResults = blastTask->getAlignmentResults();
@@ -376,6 +379,9 @@ QList<QPair<QString, QPair<int, bool>>> AlignToReferenceBlastTask::getAcceptedRe
 }
 
 QList<QPair<QString, int>> AlignToReferenceBlastTask::getDiscardedReads() const {
+    if (stateInfo.isCoR()) {
+        return {};
+    }
     SAFE_POINT(blastTask != nullptr, "Task is not finished!", {});
     QList<QPair<QString, int>> discardedReads;
     const QList<AlignToReferenceResult>& alignmentResults = blastTask->getAlignmentResults();

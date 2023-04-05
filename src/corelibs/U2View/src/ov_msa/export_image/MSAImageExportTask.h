@@ -34,38 +34,17 @@ namespace U2 {
 
 class MaEditorWgt;
 
-class MSAImageExportSettings {
-public:
-    MSAImageExportSettings(bool exportAll = true,
-                           bool includeSeqNames = false,
-                           bool includeConsensus = false,
-                           bool includeRuler = true)
-        : exportAll(exportAll),
-          includeSeqNames(includeSeqNames),
-          includeConsensus(includeConsensus),
-          includeRuler(includeRuler) {
-    }
-
-    MSAImageExportSettings(const U2Region& region,
-                           const QList<int>& seqIdx,
-                           bool includeSeqNames = false,
-                           bool includeConsensus = false,
-                           bool includeRuler = true)
-        : exportAll(false),
-          region(region),
-          seqIdx(seqIdx),
-          includeSeqNames(includeSeqNames),
-          includeConsensus(includeConsensus),
-          includeRuler(includeRuler) {
-    }
-
-    bool exportAll;
+struct MSAImageExportSettings {
+    bool exportAll = true;
     U2Region region;
     QList<int> seqIdx;
 
-    bool includeSeqNames;
-    bool includeConsensus;
-    bool includeRuler;
+    bool includeSeqNames = false;
+    bool includeConsensus = false;
+    bool includeRuler = true;
+
+    /** When defined and > region.length the export image will contain a multi-line rendered MSA. */
+    int basesPerLine = 0;
 };
 
 class MSAImageExportTask : public ImageExportTask {
@@ -78,11 +57,10 @@ public:
 
 protected:
     void paintSequencesNames(QPainter& painter);
-    void paintConsensus(QPainter& painter);
-    void paintRuler(QPainter& painter);
-    bool paintContent(QPainter& painter);
+    void paintConsensusAndRuler(QPainter& painter, const U2Region& region);
+    bool paintSequenceArea(QPainter& painter, const U2Region& region);
 
-    MaEditorWgt* ui;
+    MaEditorWgt* ui = nullptr;
     MSAImageExportSettings msaSettings;
 };
 
@@ -92,12 +70,18 @@ public:
     MSAImageExportToBitmapTask(MaEditorWgt* ui,
                                const MSAImageExportSettings& msaSettings,
                                const ImageExportTaskSettings& settings);
-    void run();
+    void run() override;
 
 private:
-    QPixmap mergePixmaps(const QPixmap& sequencesPixmap,
-                         const QPixmap& namesPixmap,
-                         const QPixmap& consensusPixmap);
+    /**
+     * Appends a new line built from 'sequencePixmap', 'namesPixmap' and 'consensusPixmap' to 'multilinePixmap'
+     * and return a new multiline pixmap.
+     */
+    QPixmap mergePixmaps(
+        const QPixmap& multilinePixmap,
+        const QPixmap& sequencesPixmap,
+        const QPixmap& namesPixmap,
+        const QPixmap& consensusPixmap);
 };
 
 class MSAImageExportToSvgTask : public MSAImageExportTask {
@@ -106,38 +90,39 @@ public:
     MSAImageExportToSvgTask(MaEditorWgt* ui,
                             const MSAImageExportSettings& msaSettings,
                             const ImageExportTaskSettings& settings);
-    void run();
+    void run() override;
 };
 
 class MSAImageExportController : public ImageExportController {
     Q_OBJECT
 public:
     MSAImageExportController(MaEditorWgt* ui);
-    ~MSAImageExportController();
+    ~MSAImageExportController() override;
 
 public slots:
     void sl_showSelectRegionDialog();
-    void sl_regionChanged();
+    void sl_regionTypeChanged(int newRegionIndex);
 
 protected:
-    void initSettingsWidget();
+    void initSettingsWidget() final override;
 
-    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const;
-    Task* getExportToSvgTask(const ImageExportTaskSettings&) const;
+    Task* getExportToBitmapTask(const ImageExportTaskSettings& settings) const override;
+    Task* getExportToSvgTask(const ImageExportTaskSettings&) const override;
 
 private slots:
-    void sl_onFormatChanged(const QString&);
+    void sl_onFormatChanged(const DocumentFormatId&) override;
 
 private:
+    void flushUiStateToSettings() const;
     void checkRegionToExport();
     bool fitsInLimits() const;
     bool canExportToSvg() const;
     void updateSeqIdx() const;
 
-    MaEditorWgt* ui;
+    MaEditorWgt* ui = nullptr;
     Ui_MSAExportSettings* settingsUi;
     mutable MSAImageExportSettings msaSettings;
-    QString format;
+    DocumentFormatId format;
 };
 
 }  // namespace U2

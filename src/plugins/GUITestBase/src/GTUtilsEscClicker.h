@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTUTILS_ESC_CLICKER_H_
-#define GTUTILS_ESC_CLICKER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -38,5 +37,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // GTUTILS_ESC_CLICKER_H_

@@ -261,7 +261,7 @@ void ReloadDocumentTask::restoreObjectRelationsForObject(GObject* obj, const QLi
 
     foreach (const GObjectRelation& relation, relations) {
         Document* relatedDoc = currentProj->findDocumentByURL(relation.ref.docUrl);
-        if (nullptr == relatedDoc) {
+        if (relatedDoc == nullptr) {
             continue;
         }
         GObject* relatedObj = relatedDoc->findGObjectByName(relation.ref.objName);

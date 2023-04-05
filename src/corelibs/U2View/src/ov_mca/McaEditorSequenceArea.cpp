@@ -65,7 +65,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, G
 
     showAllTraces = new QAction(tr("Show all"), this);
     connect(showAllTraces, SIGNAL(triggered()), SLOT(sl_showAllTraces()));
-    connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView*, QToolBar*)), SLOT(sl_buildStaticToolbar(GObjectView*, QToolBar*)));
+    connect(editor, &MaEditor::si_buildStaticToolbar, this, &McaEditorSequenceArea::sl_buildStaticToolbar);
 
     traceActionsMenu = new QMenu(tr("Show/hide trace"), this);
     traceActionsMenu->setObjectName("traceActionsMenu");
@@ -129,7 +129,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt* ui, GScrollBar* hb, G
     addAction(ambiguousCharactersController->getPreviousAction());
     addAction(ambiguousCharactersController->getNextAction());
 
-    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    auto r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     scaleBar->setValue(r->getScaleBarValue());
     connect(scaleBar, SIGNAL(valueChanged(int)), SLOT(sl_setRenderAreaHeight(int)));
 
@@ -224,7 +224,7 @@ void McaEditorSequenceArea::sl_backgroundSelectionChanged() {
 
 void McaEditorSequenceArea::sl_showHideTrace() {
     GCounter::increment("Selection of a 'Show / hide trace' item", editor->getFactoryId());
-    QAction* traceAction = qobject_cast<QAction*>(sender());
+    auto traceAction = qobject_cast<QAction*>(sender());
 
     if (!traceAction) {
         return;
@@ -260,7 +260,7 @@ void McaEditorSequenceArea::sl_showAllTraces() {
 
 void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     // k = chromaMax
-    SequenceWithChromatogramAreaRenderer* r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
+    auto r = qobject_cast<SequenceWithChromatogramAreaRenderer*>(renderer);
     int currentAreaHeight = r->getAreaHeight();
     if (currentAreaHeight != k) {
         GCounter::increment(k > currentAreaHeight ? "Increase peaks height" : "Decrease peaks height", editor->getFactoryId());
@@ -269,7 +269,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
     sl_completeUpdate();
 }
 
-void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView* /*v*/, QToolBar* t) {
+void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* /*v*/, QToolBar* t) {
     if (scaleAction != nullptr) {
         t->addAction(scaleAction);
     } else {

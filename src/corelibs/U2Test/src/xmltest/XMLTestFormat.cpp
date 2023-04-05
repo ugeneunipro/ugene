@@ -39,7 +39,7 @@ XMLTestFactory::~XMLTestFactory() {
 #ifdef TEST_FACTORIES_AUTO_CLEANUP
     GTestFormatRegistry* testFormatRegistry = AppContext::getTestFramework()->getTestFormatRegistry();
     if (testFormatRegistry != nullptr) {
-        XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
+        auto xmlTestFormat = qobject_cast<XMLTestFormat*>(testFormatRegistry->findFormat("XML"));
         if (xmlTestFormat != nullptr) {
             xmlTestFormat->unregisterTestFactory(this);
         }

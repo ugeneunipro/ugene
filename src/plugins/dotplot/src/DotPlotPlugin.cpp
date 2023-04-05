@@ -82,7 +82,7 @@ DotPlotViewContext::DotPlotViewContext(QObject* p)
 
 // wizard finished loading needed files for dotplot
 void DotPlotViewContext::sl_loadTaskStateChanged(Task* task) {
-    DotPlotLoadDocumentsTask* loadTask = qobject_cast<DotPlotLoadDocumentsTask*>(task);
+    auto loadTask = qobject_cast<DotPlotLoadDocumentsTask*>(task);
     if (!loadTask || !loadTask->isFinished()) {
         return;
     }
@@ -155,13 +155,13 @@ static U2SequenceObject* getSequenceByFile(QString file) {
 
 // called from the context menu
 void DotPlotViewContext::sl_buildDotPlot() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
     CHECK(action != nullptr, )
     showBuildDotPlotDialog(action->getObjectView());
 }
 
-void DotPlotViewContext::showBuildDotPlotDialog(GObjectView* ov) {
-    AnnotatedDNAView* dnaView = qobject_cast<AnnotatedDNAView*>(ov);
+void DotPlotViewContext::showBuildDotPlotDialog(GObjectViewController* ov) {
+    auto dnaView = qobject_cast<AnnotatedDNAView*>(ov);
     CHECK(dnaView != nullptr, )
 
     DotPlotWidget* dotPlot = new DotPlotWidget(dnaView);
@@ -183,7 +183,7 @@ void DotPlotViewContext::showBuildDotPlotDialog(GObjectView* ov) {
 
 // DotPlotWidget said we should remove it from the splitter
 void DotPlotViewContext::sl_removeDotPlot() {
-    DotPlotWidget* dotPlot = qobject_cast<DotPlotWidget*>(sender());
+    auto dotPlot = qobject_cast<DotPlotWidget*>(sender());
     if (!dotPlot) {
         return;
     }
@@ -213,8 +213,8 @@ void DotPlotViewContext::sl_removeDotPlot() {
 #define BUILD_DOT_PLOT_ACTION_NAME "build_dotplot_action"
 
 // new view context is opened
-void DotPlotViewContext::initViewContext(GObjectView* v) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(v);
+void DotPlotViewContext::initViewContext(GObjectViewController* v) {
+    auto av = qobject_cast<AnnotatedDNAView*>(v);
     Q_ASSERT(av);
 
     // add the dotplot menu item to an analyze menu
@@ -241,7 +241,7 @@ void DotPlotViewContext::initViewContext(GObjectView* v) {
 }
 
 // create if needed and return DotPlotSplitter in the dnaView
-DotPlotSplitter* DotPlotViewContext::getView(GObjectView* view, bool create) {
+DotPlotSplitter* DotPlotViewContext::getView(GObjectViewController* view, bool create) {
     DotPlotSplitter* dotPlotView = nullptr;
 
     // search for DotPlotSpliter in the view
@@ -255,7 +255,7 @@ DotPlotSplitter* DotPlotViewContext::getView(GObjectView* view, bool create) {
 
     // create new DotPlotSplitter
     if (create) {
-        AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+        auto av = qobject_cast<AnnotatedDNAView*>(view);
         Q_ASSERT(av);
 
         dotPlotView = new DotPlotSplitter(av);
@@ -267,10 +267,10 @@ DotPlotSplitter* DotPlotViewContext::getView(GObjectView* view, bool create) {
 }
 
 // context menu opened
-void DotPlotViewContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+void DotPlotViewContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
     foreach (QObject* r, resources) {
-        DotPlotSplitter* dotPlotView = qobject_cast<DotPlotSplitter*>(r);
+        auto dotPlotView = qobject_cast<DotPlotSplitter*>(r);
         if (dotPlotView && !dotPlotView->isEmpty()) {
             dotPlotView->buildPopupMenu(m);
             return;
@@ -279,14 +279,14 @@ void DotPlotViewContext::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
 }
 
 // remove a splitter from the view
-void DotPlotViewContext::removeDotPlotView(GObjectView* view) {
+void DotPlotViewContext::removeDotPlotView(GObjectViewController* view) {
     QList<QObject*> resources = viewResources.value(view);
     foreach (QObject* r, resources) {
-        DotPlotSplitter* dotPlotView = qobject_cast<DotPlotSplitter*>(r);
+        auto dotPlotView = qobject_cast<DotPlotSplitter*>(r);
 
         if (dotPlotView) {
             assert(dotPlotView->isEmpty());
-            AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+            auto av = qobject_cast<AnnotatedDNAView*>(view);
             Q_ASSERT(av);
 
             av->unregisterSplitWidget(dotPlotView);
@@ -300,9 +300,9 @@ void DotPlotViewContext::removeDotPlotView(GObjectView* view) {
 
 void DotPlotViewContext::sl_windowActivated(MWMDIWindow* w) {
     // check if we need to show DP dialog for this window
-    GObjectViewWindow* ow = qobject_cast<GObjectViewWindow*>(w);
+    auto ow = qobject_cast<GObjectViewWindow*>(w);
     CHECK(ow != nullptr, )
-    GObjectView* view = ow->getObjectView();
+    GObjectViewController* view = ow->getObjectView();
     if (view->property(SHOW_BUILD_DOT_PLOT_DIALOG_FLAG).toInt() != 1) {
         return;
     }

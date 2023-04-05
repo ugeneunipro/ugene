@@ -25,6 +25,7 @@
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMovie>
+#include <QPlainTextEdit>
 
 #include <U2Algorithm/FindAlgorithmTask.h>
 
@@ -160,9 +161,9 @@ private:
  * Both QTextEdit and QPlainTextEdit have very bad performance when long lines of text (sequences) are used
  * and may cause an app freeze.
  */
-class FindPatternTextEdit : public QTextEdit {
+class FindPatternTextEdit : public QPlainTextEdit {
 public:
-    FindPatternTextEdit(QTextEdit* originalEdit) {
+    FindPatternTextEdit(QPlainTextEdit* originalEdit) {
         // Copy all important fields from the original edit. These fields can be set in QtDesigner.
         setObjectName(originalEdit->objectName());
         setSizePolicy(originalEdit->sizePolicy());
@@ -180,12 +181,12 @@ protected:
     }
 
     bool canInsertFromMimeData(const QMimeData* source) const override {
-        return isSafeToAddExtraTextSize(source->text().length()) && QTextEdit::canInsertFromMimeData(source);
+        return isSafeToAddExtraTextSize(source->text().length()) && QPlainTextEdit::canInsertFromMimeData(source);
     }
 
     void insertFromMimeData(const QMimeData* source) override {
         if (isSafeToAddExtraTextSize(source->text().length())) {
-            QTextEdit::insertFromMimeData(source);
+            QPlainTextEdit::insertFromMimeData(source);
             return;
         }
         QString notificationMessage = FindPatternWidget::tr("The pattern is too long. Use 'Load pattern from file' option.");
@@ -193,7 +194,7 @@ protected:
     }
 };
 
-FindPatternEventFilter::FindPatternEventFilter(QTextEdit* textEdit)
+FindPatternEventFilter::FindPatternEventFilter(QPlainTextEdit* textEdit)
     : QObject(textEdit) {
     textEdit->installEventFilter(this);
 }
@@ -201,7 +202,7 @@ FindPatternEventFilter::FindPatternEventFilter(QTextEdit* textEdit)
 bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
     const QEvent::Type eventType = event->type();
     if (eventType == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = dynamic_cast<QKeyEvent*>(event);
+        auto keyEvent = dynamic_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
             if (keyEvent->modifiers().testFlag(Qt::ShiftModifier)) {
                 emit si_shiftEnterPressed();
@@ -215,7 +216,7 @@ bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
             }
         }
     } else if (eventType == QEvent::Show) {
-        QWidget* watched = dynamic_cast<QWidget*>(obj);
+        auto watched = dynamic_cast<QWidget*>(obj);
         if (nullptr != watched) {
             watched->setFocus();
         }
@@ -826,7 +827,7 @@ void FindPatternWidget::setCorrectPatternsString() {
     }
     QString textPatternByWalker = walker.getString();
     if (textPatternByUser != textPatternByWalker) {
-        textPattern->setText(textPatternByWalker);
+        textPattern->setPlainText(textPatternByWalker);
         cursorInTextEdit.setPosition(walker.getCursor());
         textPattern->setTextCursor(cursorInTextEdit);
     }
@@ -1099,7 +1100,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern>& patterns) 
 }
 
 void FindPatternWidget::sl_loadPatternTaskStateChanged() {
-    LoadPatternsFileTask* loadTask = qobject_cast<LoadPatternsFileTask*>(sender());
+    auto loadTask = qobject_cast<LoadPatternsFileTask*>(sender());
     CHECK(loadTask != nullptr, );
     CHECK(loadTask->isFinished() && !loadTask->isCanceled(), );
     CHECK(!loadTask->hasError(), );
@@ -1123,7 +1124,7 @@ bool compareByRegionStartPos(const SharedAnnotationData& r1, const SharedAnnotat
 }
 
 void FindPatternWidget::sl_findPatternTaskStateChanged() {
-    FindPatternListTask* findTask = qobject_cast<FindPatternListTask*>(sender());
+    auto findTask = qobject_cast<FindPatternListTask*>(sender());
     CHECK(findTask != nullptr, );
     if (findTask != searchTask) {
         return;
@@ -1148,7 +1149,7 @@ void FindPatternWidget::sl_findPatternTaskStateChanged() {
             checkState();
             // Activate the first search result.
             if (currentResultIndex >= 0) {
-                ADVSingleSequenceWidget* seqWdgt = qobject_cast<ADVSingleSequenceWidget*>(annotatedDnaView->getActiveSequenceWidget());
+                auto seqWdgt = qobject_cast<ADVSingleSequenceWidget*>(annotatedDnaView->getActiveSequenceWidget());
                 if (seqWdgt != nullptr) {
                     if (seqWdgt->getDetView() != nullptr && !seqWdgt->getDetView()->isEditMode()) {
                         showCurrentResult();
@@ -1260,9 +1261,9 @@ void FindPatternWidget::updatePatternText(int previousAlgorithm) {
 
     // Set a new state.
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        textPattern->setText(patternRegExp);
+        textPattern->setPlainText(patternRegExp);
     } else {
-        textPattern->setText(patternString);
+        textPattern->setPlainText(patternString);
     }
     setCorrectPatternsString();
 }
@@ -1397,7 +1398,7 @@ void FindPatternWidget::showCurrentResult() const {
     const QVector<U2Region>& regions = findResult->getRegions();
     CHECK(!regions.isEmpty(), );
     activeContext->getSequenceSelection()->setSelectedRegions(regions);
-    int centerPos = regions.first().center() + 1;
+    qint64 centerPos = regions.first().center() + 1;
     annotatedDnaView->sl_onPosChangeRequest(centerPos);
 }
 
@@ -1448,7 +1449,7 @@ void FindPatternWidget::stopCurrentSearchTask() {
 }
 
 void FindPatternWidget::setUpTabOrder() const {
-    CreateAnnotationWidgetController* annotationWidget = qobject_cast<CreateAnnotationWidgetController*>(createAnnotationController);
+    auto annotationWidget = qobject_cast<CreateAnnotationWidgetController*>(createAnnotationController);
     SAFE_POINT(annotationWidget != nullptr, "Bad casting to CreateAnnotationWidgetController", );
 
     QWidget::setTabOrder(nextPushButton, boxAlgorithm);

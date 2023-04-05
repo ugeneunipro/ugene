@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GENECUT_OP_WIDGET_H_
-#define _U2_GENECUT_OP_WIDGET_H_
+#pragma once
 
 //#include "PCRPrimerDesignForDNAAssemblyOPSavableTab.h"
 #include "ui_GenecutOPWidget.h"
@@ -119,6 +118,7 @@ private:
 
     static const QString JSON_EMAIL;
     static const QString JSON_PASSWORD;
+    static const QString JSON_NEWS_SUBSCRIPTION;
     static const QString JSON_ROLE;
     static const QString JSON_ACCESS_TOKEN;
     static const QString JSON_REFRESH_TOKEN;
@@ -147,5 +147,3 @@ private:
 
 
 }    // namespace U2
-
-#endif    // _U2_GENECUT_OP_WIDGET_H_

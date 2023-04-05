@@ -100,13 +100,13 @@ void ImportAnnotationsWorker::addTaskAnnotations(const QVariant& data, Task* t) 
 
 static QList<SharedAnnotationData> getAnnsFromDoc(Document* doc) {
     QList<SharedAnnotationData> ret;
-    if (nullptr == doc) {
+    if (doc == nullptr) {
         return ret;
     }
     QList<GObject*> objs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     for (GObject* obj : qAsConst(objs)) {
-        AnnotationTableObject* annObj = qobject_cast<AnnotationTableObject*>(obj);
-        if (nullptr == annObj) {
+        auto annObj = qobject_cast<AnnotationTableObject*>(obj);
+        if (annObj == nullptr) {
             continue;
         }
         foreach (Annotation* a, annObj->getAnnotations()) {
@@ -117,16 +117,16 @@ static QList<SharedAnnotationData> getAnnsFromDoc(Document* doc) {
 }
 
 void ImportAnnotationsWorker::sl_docsLoaded(Task* ta) {
-    MultiTask* t = qobject_cast<MultiTask*>(ta);
-    if (nullptr == t || t->hasError()) {
+    auto t = qobject_cast<MultiTask*>(ta);
+    if (t == nullptr || t->hasError()) {
         return;
     }
 
     QList<SharedAnnotationData> anns = annsMap.value(t);
     QList<Task*> loadSubs = t->getTasks();
     foreach (Task* s, loadSubs) {
-        LoadDocumentTask* sub = qobject_cast<LoadDocumentTask*>(s);
-        if (nullptr == sub || sub->hasError()) {
+        auto sub = qobject_cast<LoadDocumentTask*>(s);
+        if (sub == nullptr || sub->hasError()) {
             continue;
         }
         anns.append(getAnnsFromDoc(sub->getDocument()));

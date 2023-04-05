@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
+#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -41,25 +42,15 @@ static QStringList getFileNames(QWidget* parent,
                                 const QFileDialog::Options& options,
                                 const QFileDialog::AcceptMode& acceptMode,
                                 const QFileDialog::FileMode& fileMode) {
-    QFileDialog fileDialog(parent, caption, dir, filter);
+    QObjectScopedPointer<QFileDialog> fileDialog(new QFileDialog(parent, caption, dir, filter));
     if (!selectedFilter.isEmpty()) {
-        fileDialog.selectNameFilter(selectedFilter);
+        fileDialog->selectNameFilter(selectedFilter);
     }
-    fileDialog.setOptions(options);
-    fileDialog.setFileMode(fileMode);
-    fileDialog.setAcceptMode(acceptMode);
-    auto deleteConnection = QObject::connect(parent, &QWidget::destroyed, [&]() {
-        fileDialog.setParent(nullptr);
-        fileDialog.close();
-    });
-
-    QStringList result;
-    if (fileDialog.exec() == QFileDialog::Accepted) {
-        result = fileDialog.selectedFiles();
-    }
-    QObject::disconnect(deleteConnection);
-
-    return result;
+    fileDialog->setOptions(options);
+    fileDialog->setFileMode(fileMode);
+    fileDialog->setAcceptMode(acceptMode);
+    CHECK(fileDialog->exec() == QFileDialog::Accepted, {});
+    return fileDialog->selectedFiles();
 }
 
 static QString getFileName(QWidget* parent,

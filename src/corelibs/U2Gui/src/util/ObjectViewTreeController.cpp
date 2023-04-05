@@ -149,7 +149,7 @@ OVTStateItem* ObjectViewTreeController::addState(GObjectViewState* s) {
 void ObjectViewTreeController::removeState(GObjectViewState* s) {
     OVTStateItem* si = findStateItem(s);
     SAFE_POINT(si != nullptr, QString("Failed to find state item to remove: %1 -> %2").arg(s->getViewName()).arg(s->getStateName()), );
-    OVTViewItem* vi = static_cast<OVTViewItem*>(si->parent());
+    auto vi = static_cast<OVTViewItem*>(si->parent());
     delete si;
     if (vi->childCount() == 0) {
         if (vi->viewWindow == nullptr) {
@@ -167,7 +167,7 @@ OVTItem* ObjectViewTreeController::currentItem() const {
 
 OVTViewItem* ObjectViewTreeController::currentViewItem(bool deriveFromState) const {
     OVTItem* i = currentItem();
-    OVTViewItem* vi = (i != nullptr && i->isViewItem()) ? static_cast<OVTViewItem*>(i) : nullptr;
+    auto vi = (i != nullptr && i->isViewItem()) ? static_cast<OVTViewItem*>(i) : nullptr;
     if (vi == nullptr && deriveFromState) {
         OVTStateItem* si = currentStateItem();
         if (si != nullptr) {
@@ -187,7 +187,7 @@ OVTViewItem* ObjectViewTreeController::activeViewItem() const {
         return nullptr;
     }
     for (int i = 0; i < tree->topLevelItemCount(); i++) {
-        OVTViewItem* vi = static_cast<OVTViewItem*>(tree->topLevelItem(i));
+        auto vi = static_cast<OVTViewItem*>(tree->topLevelItem(i));
         if (vi->viewWindow == w) {
             return vi;
         }
@@ -227,7 +227,7 @@ void ObjectViewTreeController::updateActions() {
 }
 
 void ObjectViewTreeController::sl_onMdiWindowAdded(MWMDIWindow* w) {
-    GObjectViewWindow* vw = qobject_cast<GObjectViewWindow*>(w);
+    auto vw = qobject_cast<GObjectViewWindow*>(w);
     if (vw == nullptr) {
         return;
     }
@@ -236,7 +236,7 @@ void ObjectViewTreeController::sl_onMdiWindowAdded(MWMDIWindow* w) {
 }
 
 void ObjectViewTreeController::sl_onMdiWindowClosing(MWMDIWindow* w) {
-    GObjectViewWindow* wv = qobject_cast<GObjectViewWindow*>(w);
+    auto wv = qobject_cast<GObjectViewWindow*>(w);
     if (wv == nullptr) {
         return;
     }
@@ -253,10 +253,10 @@ void ObjectViewTreeController::sl_onMdiWindowClosing(MWMDIWindow* w) {
 }
 
 void ObjectViewTreeController::sl_onMdiWindowActivated(MWMDIWindow* w) {
-    GObjectViewWindow* wv = qobject_cast<GObjectViewWindow*>(w);
+    auto wv = qobject_cast<GObjectViewWindow*>(w);
 
     for (int i = 0; i < tree->topLevelItemCount(); i++) {
-        OVTViewItem* vi = static_cast<OVTViewItem*>(tree->topLevelItem(i));
+        auto vi = static_cast<OVTViewItem*>(tree->topLevelItem(i));
         bool isActiveItem = (vi->viewWindow == wv && wv != nullptr);
         vi->markAsActive(isActiveItem);
     }
@@ -289,7 +289,7 @@ void ObjectViewTreeController::sl_onViewPersistentStateChanged(GObjectViewWindow
 
 OVTViewItem* ObjectViewTreeController::findViewItem(const QString& name) {
     for (int i = 0; i < tree->topLevelItemCount(); i++) {
-        OVTViewItem* vi = static_cast<OVTViewItem*>(tree->topLevelItem(i));
+        auto vi = static_cast<OVTViewItem*>(tree->topLevelItem(i));
         if (vi->viewName == name) {
             return vi;
         }
@@ -303,7 +303,7 @@ OVTStateItem* ObjectViewTreeController::findStateItem(GObjectViewState* s) {
         return nullptr;
     }
     for (int i = 0; i < vi->childCount(); i++) {
-        OVTStateItem* si = static_cast<OVTStateItem*>(vi->child(i));
+        auto si = static_cast<OVTStateItem*>(vi->child(i));
         if (si->state == s) {
             return si;
         }
@@ -409,7 +409,7 @@ void ObjectViewTreeController::sl_removeState() {
         int childs = vi->childCount();
         assert(childs > 0);
         for (int i = 0; i < childs; i++) {
-            OVTStateItem* si2 = static_cast<OVTStateItem*>(vi->child(0));
+            auto si2 = static_cast<OVTStateItem*>(vi->child(0));
             p->removeGObjectViewState(si2->state);
         }
     }
@@ -429,15 +429,15 @@ void ObjectViewTreeController::sl_renameState() {
 void ObjectViewTreeController::sl_onItemChanged(QTreeWidgetItem* i, int c) {
     assert(c == 0);
     Q_UNUSED(c);
-    OVTItem* oi = static_cast<OVTItem*>(i);
+    auto oi = static_cast<OVTItem*>(i);
     if (oi->isViewItem()) {
-        OVTViewItem* vi = static_cast<OVTViewItem*>(oi);
+        auto vi = static_cast<OVTViewItem*>(oi);
         assert(vi->text(0).endsWith(vi->viewName));
         Q_UNUSED(vi);
         return;
     }
     assert(oi->isStateItem());
-    OVTStateItem* si = static_cast<OVTStateItem*>(oi);
+    auto si = static_cast<OVTStateItem*>(oi);
     QString newName = si->text(0);
     GObjectViewState* state = GObjectViewUtils::findStateByName(si->state->getViewName(), newName);
     if (state == si->state) {

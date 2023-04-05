@@ -62,8 +62,7 @@ QueryDesignerPlugin::QueryDesignerPlugin()
         services << new QueryDesignerService();
         viewCtx = new QueryDesignerViewContext(this);
         viewCtx->init();
-        AppContext::getObjectViewFactoryRegistry()
-            ->registerGObjectViewFactory(new QDViewFactory(this));
+        AppContext::getObjectViewFactoryRegistry()->registerGObjectViewFactory(new QDViewFactory(this));
     }
     registerLibFactories();
     AppContext::getDocumentFormatRegistry()->registerFormat(new QDDocFormat(this));
@@ -76,7 +75,7 @@ QueryDesignerPlugin::QueryDesignerPlugin()
 
     // tests
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
@@ -101,19 +100,19 @@ QueryDesignerViewContext::QueryDesignerViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void QueryDesignerViewContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
-    ADVGlobalAction* a = new ADVGlobalAction(av,
-                                             QIcon(":query_designer/images/query_designer.png"),
-                                             tr("Analyze with query schema..."),
-                                             50,
-                                             ADVGlobalActionFlag_AddToAnalyseMenu);
-    connect(a, SIGNAL(triggered()), SLOT(sl_showDialog()));
+void QueryDesignerViewContext::initViewContext(GObjectViewController* view) {
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
+    auto action = new ADVGlobalAction(av,
+                                      QIcon(":query_designer/images/query_designer.png"),
+                                      tr("Analyze with query schema..."),
+                                      50,
+                                      ADVGlobalActionFlags(ADVGlobalActionFlag_AddToAnalyseMenu) | ADVGlobalActionFlag_AddToToolbar);
+    connect(action, &QAction::triggered, this, &QueryDesignerViewContext::sl_showDialog);
 }
 
 void QueryDesignerViewContext::sl_showDialog() {
-    GObjectViewAction* viewAction = qobject_cast<GObjectViewAction*>(sender());
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+    auto viewAction = qobject_cast<GObjectViewAction*>(sender());
+    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
     assert(av);
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     QObjectScopedPointer<QDDialog> d = new QDDialog(seqCtx);
@@ -142,7 +141,7 @@ bool QueryDesignerService::closeViews() {
     MWMDIManager* wm = AppContext::getMainWindow()->getMDIManager();
     assert(wm);
     foreach (MWMDIWindow* w, wm->getWindows()) {
-        QueryViewController* view = qobject_cast<QueryViewController*>(w);
+        auto view = qobject_cast<QueryViewController*>(w);
         if (view) {
             if (!AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(view)) {
                 return false;

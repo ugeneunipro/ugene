@@ -137,7 +137,7 @@ Worker* Alignment2SequenceWorkerFactory::createWorker(Actor* a) {
  *******************************/
 QString Alignment2SequencePrompter::composeRichDoc() {
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* producer = input->getProducer(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId());
     QString source = tr(" from <u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
     return tr("Split alignment%1 into sequences.").arg(source);

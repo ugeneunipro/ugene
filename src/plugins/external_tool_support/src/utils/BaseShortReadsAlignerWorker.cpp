@@ -210,7 +210,7 @@ bool BaseShortReadsAlignerWorker::isReady() const {
 }
 
 void BaseShortReadsAlignerWorker::sl_taskFinished() {
-    DnaAssemblyTaskWithConversions* t = qobject_cast<DnaAssemblyTaskWithConversions*>(sender());
+    auto t = qobject_cast<DnaAssemblyTaskWithConversions*>(sender());
     if (!t->isFinished() || t->hasError() || t->isCanceled()) {
         return;
     }
@@ -420,13 +420,13 @@ QList<PortDescriptor*> BaseShortReadsAlignerWorkerFactory::getPortDescriptors() 
 QString ShortReadsAlignerPrompter::composeRichDoc() {
     QString res = "";
 
-    Actor* readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
+    auto readsProducer = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_DESCR))->getProducer(READS_URL_SLOT_ID);
     Port* pairedPort = target->getPort(IN_PORT_DESCR_PAIRED);
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString readsUrl = readsProducer ? readsProducer->getLabel() : unsetStr;
     if (pairedPort->isEnabled()) {
-        IntegralBusPort* pairedBus = qobject_cast<IntegralBusPort*>(pairedPort);
+        auto pairedBus = qobject_cast<IntegralBusPort*>(pairedPort);
         Actor* pairedReadsProducer = pairedBus->getProducer(READS_PAIRED_URL_SLOT_ID);
         QString pairedReadsUrl = pairedReadsProducer ? pairedReadsProducer->getLabel() : unsetStr;
         res.append(tr("Aligns upstream oriented reads from <u>%1</u> and downstream oriented reads from <u>%2</u> ").arg(readsUrl).arg(pairedReadsUrl));

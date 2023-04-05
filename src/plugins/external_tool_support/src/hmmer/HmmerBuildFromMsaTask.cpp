@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/Counter.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -44,6 +45,7 @@ HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings& settings,
       hmmerTask(nullptr),
       removeWorkingDir(false) {
     SAFE_POINT_EXT(!settings.profileUrl.isEmpty(), setError(tr("HMM profile URL is empty")), );
+    GCOUNTER(cvar, "ExternalTool_HMMER");
 }
 
 const QString& HmmerBuildFromMsaTask::getHmmUrl() const {

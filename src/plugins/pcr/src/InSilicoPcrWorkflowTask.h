@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IN_SILICO_PCR_WORKFLOW_TASK_H_
-#define _U2_IN_SILICO_PCR_WORKFLOW_TASK_H_
+#pragma once
 
 #include "ExtractProductTask.h"
 
@@ -34,20 +33,19 @@ public:
         Document* doc;
         InSilicoPcrProduct product;
     };
-    InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings& pcrSettings, const ExtractProductSettings& productSettings);
+    InSilicoPcrWorkflowTask(InSilicoPcrTaskSettings* pcrSettings, const ExtractProductSettings& productSettings);
 
     QList<Result> takeResult();
-    const InSilicoPcrTaskSettings& getPcrSettings() const;
+    const InSilicoPcrTaskSettings* getPcrSettings() const;
 
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
     ExtractProductSettings productSettings;
-    InSilicoPcrTask* pcrTask;
+    InSilicoPcrTask* pcrTask = nullptr;
     QList<ExtractProductTask*> productTasks;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 };
 
 }  // namespace U2
-
-#endif  // _U2_IN_SILICO_PCR_WORKFLOW_TASK_H_

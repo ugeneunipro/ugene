@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>238</width>
-    <height>839</height>
+    <height>886</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -249,6 +249,7 @@
               <widget class="QToolButton" name="boldAttrButton">
                <property name="font">
                 <font>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -279,6 +280,7 @@
               <widget class="QToolButton" name="underlineAttrButton">
                <property name="font">
                 <font>
+                 <weight>50</weight>
                  <italic>false</italic>
                  <bold>false</bold>
                  <underline>true</underline>
@@ -312,13 +314,6 @@
       </sizepolicy>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Color</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QPushButton" name="branchesColorButton">
         <property name="sizePolicy">
@@ -332,6 +327,13 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="curvatureLabel">
+        <property name="text">
+         <string>Curvature</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="1">
        <widget class="QSpinBox" name="lineWeightSpinBox">
         <property name="minimum">
@@ -342,55 +344,10 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="breadthScaleAdjustmentLabel">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Expansion </string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="lineWeightLabel">
-        <property name="text">
-         <string>Line width</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="curvatureLabel">
-        <property name="text">
-         <string>Curvature</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSlider" name="breadthScaleAdjustmentSlider">
-        <property name="styleSheet">
-         <string notr="true">min-height: 24px</string>
-        </property>
-        <property name="minimum">
-         <number>50</number>
-        </property>
-        <property name="maximum">
-         <number>300</number>
-        </property>
-        <property name="pageStep">
-         <number>50</number>
-        </property>
-        <property name="sliderPosition">
-         <number>100</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="invertedAppearance">
-         <bool>false</bool>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::NoTicks</enum>
-        </property>
-        <property name="tickInterval">
-         <number>3</number>
+         <string>Color</string>
         </property>
        </widget>
       </item>
@@ -428,6 +385,51 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lineWeightLabel">
+        <property name="text">
+         <string>Line width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSlider" name="breadthScaleAdjustmentSlider">
+        <property name="styleSheet">
+         <string notr="true">min-height: 24px</string>
+        </property>
+        <property name="minimum">
+         <number>50</number>
+        </property>
+        <property name="maximum">
+         <number>300</number>
+        </property>
+        <property name="pageStep">
+         <number>50</number>
+        </property>
+        <property name="sliderPosition">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="invertedAppearance">
+         <bool>false</bool>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::NoTicks</enum>
+        </property>
+        <property name="tickInterval">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="breadthScaleAdjustmentLabel">
+        <property name="text">
+         <string>Expansion </string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -437,7 +439,14 @@
       <item>
        <widget class="QCheckBox" name="showNodeShapeCheck">
         <property name="text">
-         <string>Show nodes</string>
+         <string>Node shapes</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="showTipShapeCheck">
+        <property name="text">
+         <string>Tip shapes</string>
         </property>
        </widget>
       </item>

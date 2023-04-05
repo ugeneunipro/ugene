@@ -61,11 +61,11 @@ void GraphAction::sl_handleGraphAction() {
     if (isChecked()) {
         SAFE_POINT(view == nullptr, "Graph view is checked, but not available!", );
         // Getting the menu action
-        GraphMenuAction* menuAction = qobject_cast<GraphMenuAction*>(parent());
+        auto menuAction = qobject_cast<GraphMenuAction*>(parent());
         SAFE_POINT(menuAction != nullptr, "GraphMenuAction is not available (while handling an action)!", );
 
         // Creating graphs
-        ADVSingleSequenceWidget* sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(menuAction->seqWidget);
+        auto sequenceWidget = qobject_cast<ADVSingleSequenceWidget*>(menuAction->seqWidget);
         if (sequenceWidget->getSequenceLength() > MAX_SEQUENCE_LENGTH_TO_ALLOW_GRAPHS) {
             QMessageBox::warning(sequenceWidget->window(), L10N::warningTitle(), tr("Sequence size is too large to calculate graphs!"));
             this->setChecked(false);
@@ -171,7 +171,7 @@ void GraphMenuAction::addGraphAction(ADVSequenceObjectContext* ctx, GraphAction*
 void GraphMenuAction::sl_closeAllGraphs() {
     QList<QAction*> allActions = menu->actions();
     foreach (QAction* a, allActions) {
-        GraphAction* graphAction = qobject_cast<GraphAction*>(a);
+        auto graphAction = qobject_cast<GraphAction*>(a);
         if (graphAction != nullptr && graphAction->isChecked()) {
             graphAction->trigger();
         }

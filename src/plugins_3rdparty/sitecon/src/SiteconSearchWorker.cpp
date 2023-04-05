@@ -148,8 +148,8 @@ static int getStrand(const QString& s) {
 }
 
 QString SiteconSearchPrompter::composeRichDoc() {
-    Actor* modelProducer = qobject_cast<IntegralBusPort*>(target->getPort(MODEL_PORT))->getProducer(SiteconWorkerFactory::SITECON_SLOT.getId());
-    Actor* seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    auto modelProducer = qobject_cast<IntegralBusPort*>(target->getPort(MODEL_PORT))->getProducer(SiteconWorkerFactory::SITECON_SLOT.getId());
+    auto seqProducer = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()))->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
 
     QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
     QString seqName = tr("For each sequence from <u>%1</u>,").arg(seqProducer ? seqProducer->getLabel() : unsetStr);
@@ -292,7 +292,7 @@ void SiteconSearchWorker::sl_taskFinished(Task* t) {
         return;
     }
     foreach (const QPointer<Task>& sub, t->getSubtasks()) {
-        SiteconSearchTask* sst = qobject_cast<SiteconSearchTask*>(sub.data());
+        auto sst = qobject_cast<SiteconSearchTask*>(sub.data());
         res += SiteconSearchResult::toTable(sst->takeResults(), resultName);
         sst->cleanup();
     }

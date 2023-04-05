@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DYN_TABLE_TESTS_H_
-#define _U2_DYN_TABLE_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -40,5 +39,3 @@ DECLARE_TEST(DynTableTests, insDelMode_deletion);
 DECLARE_TEST(DynTableTests, insDelMode_insertion);
 
 }  // namespace U2
-
-#endif

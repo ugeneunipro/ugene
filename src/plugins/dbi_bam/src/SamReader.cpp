@@ -36,9 +36,7 @@ const int SamReader::LOCAL_READ_BUFFER_SIZE = 100000;
 
 Alignment SamReader::parseAlignmentString(QByteArray line) {
     Alignment alignment;
-
     if (line.isEmpty()) {
-        assert(0);
         throw InvalidFormatException(BAMDbiPlugin::tr("Unexpected empty string"));
     }
     QByteArray recordTag;
@@ -59,45 +57,11 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
     }
     {
         bool ok = false;
-        int flagsValue = tokens[1].toInt(&ok);
+        quint16 flagsValue = tokens[1].toUShort(&ok);
         if (!ok) {
             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid FLAG value: %1").arg(QString(tokens[1])));
         }
-        qint64 flags = 0;
-        if (flagsValue & 0x1) {
-            flags |= Fragmented;
-        }
-        if (flagsValue & 0x2) {
-            flags |= FragmentsAligned;
-        }
-        if (flagsValue & 0x4) {
-            flags |= Unmapped;
-        }
-        if (flagsValue & 0x8) {
-            flags |= NextUnmapped;
-        }
-        if (flagsValue & 0x10) {
-            flags |= Reverse;
-        }
-        if (flagsValue & 0x20) {
-            flags |= NextReverse;
-        }
-        if (flagsValue & 0x40) {
-            flags |= FirstInTemplate;
-        }
-        if (flagsValue & 0x80) {
-            flags |= LastInTemplate;
-        }
-        if (flagsValue & 0x100) {
-            flags |= SecondaryAlignment;
-        }
-        if (flagsValue & 0x200) {
-            flags |= FailsChecks;
-        }
-        if (flagsValue & 0x400) {
-            flags |= Duplicate;
-        }
-        alignment.setFlags(flags);
+        alignment.setFlags(ReadFlags(flagsValue));
     }
     {
         QByteArray& rname = tokens[2];
@@ -182,8 +146,8 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
                     default:
                         throw InvalidFormatException(BAMDbiPlugin::tr("Invalid cigar operation code: %1").arg(res[i].op));
                 }
-                int operatonLength = res[i].count;
-                cigar.append(Alignment::CigarOperation(operatonLength, operation));
+                int operationLength = res[i].count;
+                cigar.append(Alignment::CigarOperation(operationLength, operation));
             }
             alignment.setCigar(cigar);
         }
@@ -222,11 +186,6 @@ Alignment SamReader::parseAlignmentString(QByteArray line) {
         int templateLength = tokens[8].toInt(&ok);
         if (!ok) {
             throw InvalidFormatException(BAMDbiPlugin::tr("Invalid template length value: %1").arg(QString(tokens[8])));
-        }
-        if (!(alignment.getFlags() & Fragmented)) {
-            if (0 != templateLength) {
-                throw InvalidFormatException(BAMDbiPlugin::tr("Invalid template length of a single-fragment template: %1").arg(templateLength));
-            }
         }
         alignment.setTemplateLength(templateLength);
     }

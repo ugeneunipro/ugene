@@ -122,7 +122,7 @@ void WorkflowSettingsPageWidget::sl_getColor() {
 
 bool WorkflowSettingsPageWidget::eventFilter(QObject*, QEvent* event) {
     if (event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent* e = static_cast<QMouseEvent*>(event);
+        auto e = static_cast<QMouseEvent*>(event);
         if (e->button() == Qt::LeftButton) {
             sl_getColor();
         }
@@ -131,7 +131,7 @@ bool WorkflowSettingsPageWidget::eventFilter(QObject*, QEvent* event) {
 }
 
 void WorkflowSettingsPageWidget::setState(AppSettingsGUIPageState* s) {
-    WorkflowSettingsPageState* state = qobject_cast<WorkflowSettingsPageState*>(s);
+    auto state = qobject_cast<WorkflowSettingsPageState*>(s);
     gridBox->setChecked(state->showGrid);
     snapBox->setChecked(state->snap2grid);
     lockBox->setChecked(state->lockRun);

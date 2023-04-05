@@ -459,7 +459,7 @@ QStringList FpkmTrackingFormat::writeHeader(QList<GObject*> annotTables, Documen
             << COVERAGE_COLUMN;
 
     for (GObject* annotTable : qAsConst(annotTables)) {
-        AnnotationTableObject* annTable = dynamic_cast<AnnotationTableObject*>(annotTable);
+        auto annTable = dynamic_cast<AnnotationTableObject*>(annotTable);
         QList<Annotation*> annotationsList = annTable->getAnnotations();
 
         for (Annotation* annot : qAsConst(annotationsList)) {
@@ -538,7 +538,7 @@ void FpkmTrackingFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus&
         }
 
         // Get the annotations
-        AnnotationTableObject* annTable = dynamic_cast<AnnotationTableObject*>(annotTable);
+        auto annTable = dynamic_cast<AnnotationTableObject*>(annotTable);
         QList<Annotation*> annotationsList = annTable->getAnnotations();
 
         for (Annotation* annot : qAsConst(annotationsList)) {

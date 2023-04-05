@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_RUNNABLES_WIZARD_FILLER_H_
-#define _U2_GT_RUNNABLES_WIZARD_FILLER_H_
+#pragma once
 
 #include <QPushButton>
 #include <QToolButton>
@@ -41,9 +40,8 @@ public:
     WizardFiller(HI::GUITestOpStatus& _os, QString name, CustomScenario* c)
         : Filler(_os, name, c) {
     }
-    void commonScenario() override;
 
-    static QToolButton* getExpandButton(HI::GUITestOpStatus& _os);
+    void commonScenario() override;
 
 private:
     QList<QStringList> inputFiles;
@@ -51,5 +49,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

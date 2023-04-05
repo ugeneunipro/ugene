@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/Counter.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrlUtils.h>
@@ -122,6 +123,7 @@ QStringList SnpEffParser::initStringsToIgnore() {
 // SnpEffTask
 SnpEffTask::SnpEffTask(const SnpEffSetting& settings)
     : ExternalToolSupportTask(QString("snpEff for %1").arg(settings.inputUrl), TaskFlags_FOSE_COSC), settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_Snpeff");
 }
 
 void SnpEffTask::prepare() {

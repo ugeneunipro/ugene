@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DataPathRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "python/PythonSupport.h"
@@ -58,6 +59,10 @@ CutadaptSupport::CutadaptSupport()
 
     toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
     dependencies << PythonSupport::ET_PYTHON_ID;
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinToolPath;
+    }
 }
 
 }  // namespace U2

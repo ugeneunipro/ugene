@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BAM_INDEX_H_
-#define _U2_BAM_INDEX_H_
+#pragma once
 
 #include <QList>
 
@@ -74,5 +73,3 @@ private:
 
 }  // namespace BAM
 }  // namespace U2
-
-#endif  // _U2_BAM_INDEX_H_

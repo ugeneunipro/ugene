@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUITEST_SAM_H_
-#define _U2_GUITEST_SAM_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -37,5 +36,3 @@ GUI_TEST_CLASS_DECLARATION(test_0004)
 #undef GUI_TEST_SUITE
 }  // namespace GUITest_SAM
 }  // namespace U2
-
-#endif  // _U2_GUITEST_SAM_H_

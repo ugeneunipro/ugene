@@ -30,8 +30,10 @@ class TvRectangularLayoutAlgorithm {
 public:
     TvRectangularLayoutAlgorithm() = delete;
 
-    static TvRectangularBranchItem* buildTreeLayout(const PhyNode* phyRoot);
+    /** Builds new TvTree* hierarchy with no layout coordinates. */
+    static TvRectangularBranchItem* buildTvTreeHierarchy(const PhyNode* phyRoot);
 
+    /** Recalculates tree layout in-place. Checks isCollapsed() state on branches. */
     static void recalculateTreeLayout(TvRectangularBranchItem* rootBranchItem, const PhyNode* rootPhyNode);
 };
 

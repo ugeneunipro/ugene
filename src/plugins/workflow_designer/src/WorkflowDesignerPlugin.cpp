@@ -248,8 +248,8 @@ void WorkflowDesignerService::serviceStateChangedCallback(ServiceState, bool ena
         return;
     }
     if (isEnabled()) {
-        SAFE_POINT(nullptr == designerAction, "Illegal WD service state", );
-        SAFE_POINT(nullptr == newWorkflowAction, "Illegal WD service state", );
+        SAFE_POINT(designerAction == nullptr, "Illegal WD service state", );
+        SAFE_POINT(newWorkflowAction == nullptr, "Illegal WD service state", );
 
         if (!AppContext::getPluginSupport()->isAllPluginsLoaded()) {
             connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_startWorkflowPlugin()));
@@ -303,7 +303,7 @@ bool WorkflowDesignerService::closeViews() {
     MWMDIManager* wm = AppContext::getMainWindow()->getMDIManager();
     assert(wm);
     foreach (MWMDIWindow* w, wm->getWindows()) {
-        WorkflowView* view = qobject_cast<WorkflowView*>(w);
+        auto view = qobject_cast<WorkflowView*>(w);
         if (view) {
             if (!AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(view)) {
                 return false;

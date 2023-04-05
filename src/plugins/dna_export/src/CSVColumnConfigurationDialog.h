@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CSV_COLUMN_CONFIGURATION_DIALOG_H_
-#define _U2_CSV_COLUMN_CONFIGURATION_DIALOG_H_
+#pragma once
 
 #include "CSVColumnConfiguration.h"
 
@@ -44,5 +43,3 @@ private slots:
 };
 
 }  // namespace U2
-
-#endif

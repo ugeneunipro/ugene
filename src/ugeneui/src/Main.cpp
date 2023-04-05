@@ -27,7 +27,10 @@
 #endif  // Q_OS_WIN
 
 #ifdef Q_OS_DARWIN
+#    include <QOperatingSystemVersion>
+
 #    include "app_settings/ResetSettingsMac.h"
+
 #endif
 
 #include <QApplication>
@@ -57,6 +60,7 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 #include <U2Algorithm/StructuralAlignmentAlgorithmRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
+#include <U2Algorithm/TmCalculatorRegistry.h>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppFileStorage.h>
@@ -129,6 +133,7 @@
 #include <U2View/McaReadsTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
+#include <U2View/RoughTmCalculatorFactory.h>
 #include <U2View/SeqStatisticsWidgetFactory.h>
 #include <U2View/SequenceInfoFactory.h>
 #include <U2View/TreeOptionsWidgetFactory.h>
@@ -256,8 +261,18 @@ static void initLogsCache(LogCacheExt& logsCache, const QStringList&) {
         logsCache.setFileOutputEnabled(ls.outputFile);
     }
 }
-void guiTestMessageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg) {
-    Q_UNUSED(context)
+
+static bool isQtWarningHiddenFromUi(const QString& text) {
+    QStringList knownWarnings = {
+        "libpng warning:",  // Some UGENE/QT icons may be not fully compatible with the current desktop.
+        "Sending TextCaretMoved",  // A11y issue on remote desktop.
+        "QTextCursor::setPosition: Position '",  // A11y issue on remote desktop.
+    };
+    return std::any_of(knownWarnings.begin(), knownWarnings.end(), [text](const auto& warningPrefix) { return text.startsWith(warningPrefix); });
+}
+
+static void guiTestMessageOutput(QtMsgType type, const QMessageLogContext&, const QString& msg) {
+    CHECK(!isQtWarningHiddenFromUi(msg), );
     switch (type) {
         case QtDebugMsg:
             uiLog.trace(msg);
@@ -276,6 +291,7 @@ void guiTestMessageOutput(QtMsgType type, const QMessageLogContext& context, con
             break;
     }
 }
+
 static void initOptionsPanels() {
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
     OPCommonWidgetFactoryRegistry* opCommonWidgetFactoryRegistry = AppContext::getOPCommonWidgetFactoryRegistry();
@@ -341,6 +357,12 @@ static void initProjectFilterTaskRegistry() {
     registry->registerTaskFactory(new FeatureKeyFilterTaskFactory);
 }
 
+static void initTemperatureCalculators() {
+    auto tcr = AppContext::getTmCalculatorRegistry();
+
+    tcr->registerEntry(new RoughTmCalculatorFactory);
+}
+
 class GApplication : public QApplication {
 public:
     GApplication(int& argc, char** argv)
@@ -382,7 +404,8 @@ static QString findKey(const QStringList& envList, const QString& key) {
 
 #ifdef Q_OS_DARWIN
 static void fixMacFonts() {
-    if (QSysInfo::MacintoshVersion > QSysInfo::MV_10_8) {
+    QOperatingSystemVersion osVersion = QOperatingSystemVersion::current();
+    if (osVersion.majorVersion() >= 10 && osVersion.minorVersion() >= 8) {
         // fix Mac OS X 10.9 (mavericks) font issue
         // https://bugreports.qt-project.org/browse/QTBUG-32789
         // the solution is taken from http://successfulsoftware.net/2013/10/23/fixing-qt-4-for-mac-os-x-10-9-mavericks/
@@ -771,6 +794,10 @@ int main(int argc, char** argv) {
     auto dashboardInfoRegistry = new DashboardInfoRegistry;
     appContext->setDashboardInfoRegistry(dashboardInfoRegistry);
 
+    auto tcr = new TmCalculatorRegistry;
+    appContext->setTmCalculatorRegistry(tcr);
+    initTemperatureCalculators();
+
     Workflow::WorkflowEnv::init(new Workflow::WorkflowEnvImpl());
     Workflow::WorkflowEnv::getDomainRegistry()->registerEntry(new LocalWorkflow::LocalDomainFactory());
 
@@ -873,6 +900,9 @@ int main(int argc, char** argv) {
 
     appContext->setDashboardInfoRegistry(nullptr);
     delete dashboardInfoRegistry;
+
+    appContext->setTmCalculatorRegistry(nullptr);
+    delete tcr;
 
     appContext->setPasteFactory(nullptr);
     delete pasteFactory;

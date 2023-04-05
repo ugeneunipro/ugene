@@ -29,13 +29,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/ExportSequencesTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "ov_msa/ExportSequencesTask.h"
 #include "ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.h"
 
 namespace U2 {

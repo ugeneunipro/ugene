@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_SPIDEY_SUPPORT_H_
-#define _U2_SPIDEY_SUPPORT_H_
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -55,10 +54,9 @@ protected slots:
     void sl_align_with_Spidey();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 };
 
 }  // namespace U2
-#endif  // _U2_SPIDEY_SUPPORT_H_

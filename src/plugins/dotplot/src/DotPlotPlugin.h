@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOTPLOT_PLUGIN_H_
-#define _U2_DOTPLOT_PLUGIN_H_
+#pragma once
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -50,12 +49,12 @@ public:
     DotPlotViewContext(QObject* p);
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
     void createSplitter();
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
-    DotPlotSplitter* getView(GObjectView* view, bool create);
-    void removeDotPlotView(GObjectView* view);
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
+    DotPlotSplitter* getView(GObjectViewController* view, bool create);
+    void removeDotPlotView(GObjectViewController* view);
 
 private slots:
     void sl_buildDotPlot();
@@ -66,7 +65,7 @@ private slots:
     void sl_windowActivated(MWMDIWindow* w);
 
 private:
-    void showBuildDotPlotDialog(GObjectView* v);
+    void showBuildDotPlotDialog(GObjectViewController* v);
 
     bool createdByWizard;
     QString firstFile;
@@ -87,5 +86,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -128,8 +128,8 @@ void MsaSchemeComboBoxController<Factory, Registry>::fillCbWithGrouping() {
 template<class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Factory*> rawSchemesFactories, const QString& groupName) {
     CHECK(!rawSchemesFactories.isEmpty(), );
-    GroupedComboBoxDelegate* schemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(comboBox->itemDelegate());
-    QStandardItemModel* schemeModel = qobject_cast<QStandardItemModel*>(comboBox->model());
+    auto schemeDelegate = qobject_cast<GroupedComboBoxDelegate*>(comboBox->itemDelegate());
+    auto schemeModel = qobject_cast<QStandardItemModel*>(comboBox->model());
     CHECK(schemeDelegate != nullptr, );
     CHECK(schemeModel != nullptr, );
     schemeDelegate->addParentItem(schemeModel, groupName);

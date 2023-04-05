@@ -187,7 +187,7 @@ public:
 template<class T>
 T BaseWorker::getValue(const QString& paramId) const {
     Attribute* attr = actor->getParameter(paramId);
-    if (nullptr == attr) {
+    if (attr == nullptr) {
         return T();
     }
     return attr->getAttributeValue<T>(context);
@@ -196,7 +196,7 @@ T BaseWorker::getValue(const QString& paramId) const {
 template<>
 inline QString BaseWorker::getValue(const QString& paramId) const {
     Attribute* attr = actor->getParameter(paramId);
-    if (nullptr == attr) {
+    if (attr == nullptr) {
         return "";
     }
     QString value = attr->getAttributeValue<QString>(context);

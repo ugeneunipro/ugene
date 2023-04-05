@@ -96,7 +96,7 @@ void StringtieGeneAbundanceReportWorker::cleanup() {
 }
 
 void StringtieGeneAbundanceReportWorker::sl_taskSucceeded(Task* task) {
-    StringtieGeneAbundanceReportTask* geneAbudanceReportTask = qobject_cast<StringtieGeneAbundanceReportTask*>(task);
+    auto geneAbudanceReportTask = qobject_cast<StringtieGeneAbundanceReportTask*>(task);
     SAFE_POINT(nullptr != geneAbudanceReportTask, "StringTieGeneAbundanceReportTask is NULL", );
 
     const QString geneAbudanceReportUrl = geneAbudanceReportTask->getReportUrl();

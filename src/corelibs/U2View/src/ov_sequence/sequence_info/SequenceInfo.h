@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QSharedPointer>
 #include <QWidget>
 
 #include <U2Core/BackgroundTaskRunner.h>
@@ -40,6 +41,7 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class ADVSequenceWidget;
 class AnnotatedDNAView;
+class TmCalculator;
 class LRegionsSelection;
 class ShowHideSubgroupWidget;
 class AnnotationSelection;
@@ -49,6 +51,7 @@ class U2VIEW_EXPORT SequenceInfo : public QWidget {
     Q_OBJECT
 public:
     SequenceInfo(AnnotatedDNAView*);
+    ~SequenceInfo();
 
 private slots:
     void sl_onSelectionChanged(LRegionsSelection*, const QVector<U2Region>&, const QVector<U2Region>&);
@@ -75,6 +78,8 @@ private slots:
 
     bool eventFilter(QObject* object, QEvent* event);
 
+    void statisticLabelLinkActivated(const QString& link);
+
 private:
     /** Initializes the whole layout of the widget */
     void initLayout();
@@ -86,7 +91,7 @@ private:
     void updateCodonOccurLayout();
 
     void updateData();
-    void updateCommonStatisticsData();
+    void updateCommonStatisticsData(bool forceUpdate = false);
     void updateCommonStatisticsData(const DNAStatistics& commonStatistics);
     void updateCharactersOccurrenceData();
     void updateCharactersOccurrenceData(const CharactersOccurrence& charactersOccurrence);
@@ -120,14 +125,17 @@ private:
 
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
-    QString formTableRow(const QString& caption, const QString& value, int availableSpace) const;
+    QString formTableRow(const QString& caption, const QString& value, int availableSpace, bool addSettingsButton = false) const;
 
     StatisticsCache<DNAStatistics>* getCommonStatisticsCache() const;
     StatisticsCache<CharactersOccurrence>* getCharactersOccurrenceCache() const;
     StatisticsCache<DinucleotidesOccurrence>* getDinucleotidesOccurrenceCache() const;
     StatisticsCache<QMap<QByteArray, qint64>>* getCodonsOccurrenceCache() const;
 
-    AnnotatedDNAView* annotatedDnaView;
+    QPointer<AnnotatedDNAView> annotatedDnaView;
+    // This field is required because we need to save some settings in the destructor,
+    // but @annotatedDnaView is dead up to this time
+    QString annotatedDnaViewName;
 
     ShowHideSubgroupWidget* statsWidget = nullptr;
     QLabel* statisticLabel = nullptr;
@@ -153,32 +161,8 @@ private:
 
     U2SavableWidget savableWidget;
 
-    static const int COMMON_STATISTICS_TABLE_CELLSPACING;
-    static const QString CAPTION_SEQ_REGION_LENGTH;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 
-    static const QString CAPTION_SUFFIX_DS_DNA;
-    static const QString CAPTION_SUFFIX_SS_DNA;
-    static const QString CAPTION_SUFFIX_DS_RNA;
-    static const QString CAPTION_SUFFIX_SS_RNA;
-
-    // nucl
-    static const QString CAPTION_SEQ_GC_CONTENT;
-    static const QString CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT;
-    static const QString CAPTION_SEQ_EXTINCTION_COEFFICIENT;
-    static const QString CAPTION_SEQ_MELTING_TEMPERATURE;
-
-    static const QString CAPTION_SEQ_NMOLE_OD;
-    static const QString CAPTION_SEQ_MG_OD;
-
-    // amino
-    static const QString CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT;
-    static const QString CAPTION_SEQ_ISOELECTIC_POINT;
-
-    static const QString CHAR_OCCUR_GROUP_ID;
-    static const QString DINUCL_OCCUR_GROUP_ID;
-    static const QString CODON_OCCUR_GROUP_ID;
-    static const QString AMINO_ACID_OCCUR_GROUP_ID;
-    static const QString STAT_GROUP_ID;
 };
 
 }  // namespace U2

@@ -23,7 +23,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CreateAnnotationTask.h>
-#include <U2Core/GenbankFeatures.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -48,7 +47,7 @@ QList<Task*> FindPatternTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == findAlgorithmTask) {
-        FindAlgorithmTask* task = qobject_cast<FindAlgorithmTask*>(findAlgorithmTask);
+        auto task = qobject_cast<FindAlgorithmTask*>(findAlgorithmTask);
         SAFE_POINT(task, "Failed to cast FindAlgorithTask!", QList<Task*>());
 
         QList<FindAlgorithmResult> resultz = task->popResults();
@@ -126,7 +125,7 @@ FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings& settin
 
 QList<Task*> FindPatternListTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
-    FindPatternTask* task = qobject_cast<FindPatternTask*>(subTask);
+    auto task = qobject_cast<FindPatternTask*>(subTask);
     SAFE_POINT(nullptr != task, "Failed to cast FindPatternTask!", QList<Task*>());
     if (!task->hasNoResults()) {
         noResults = false;
@@ -146,14 +145,10 @@ const QList<SharedAnnotationData>& FindPatternListTask::getResults() const {
     return results;
 }
 
-bool FindPatternListTask::hasNoResults() const {
-    return noResults;
-}
-
 void FindPatternListTask::prepare() {
-    foreach (const NamePattern& pattern, patterns) {
+    for (const NamePattern& pattern : qAsConst(patterns)) {
         if (pattern.second.isEmpty()) {
-            uiLog.error(tr("Empty pattern"));
+            uiLog.details(tr("Empty pattern: %1").arg(pattern.first));
             continue;
         }
         FindAlgorithmTaskSettings subTaskSettings = settings;

@@ -117,7 +117,7 @@ QList<Task*> CustomPatternAnnotationTask::onSubTaskFinished(Task* subTask) {
         return subTasks;
     }
 
-    SArrayBasedFindTask* task = static_cast<SArrayBasedFindTask*>(subTask);
+    auto task = static_cast<SArrayBasedFindTask*>(subTask);
     const QList<int>& results = task->getResults();
     PatternInfo info = taskFeatureNames.take(task);
 

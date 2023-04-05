@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PHY_TREE_OBJECT_UNIT_TESTS_H_
-#define _U2_PHY_TREE_OBJECT_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -80,5 +79,3 @@ DECLARE_METATYPE(PhyTreeObjectUnitTests, clone);
 DECLARE_METATYPE(PhyTreeObjectUnitTests, clone_NullDbi);
 DECLARE_METATYPE(PhyTreeObjectUnitTests, clone_NullObj);
 DECLARE_METATYPE(PhyTreeObjectUnitTests, remove);
-
-#endif  // _U2_PHY_TREE_OBJECT_UNIT_TESTS_H_

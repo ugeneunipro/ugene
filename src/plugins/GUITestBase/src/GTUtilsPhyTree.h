@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GT_UTILS_PHY_TREE_H_
-#define _U2_GT_UTILS_PHY_TREE_H_
+#pragma once
 
 #include <U2View/TreeViewer.h>
 #include <U2View/TvNodeItem.h>
@@ -67,14 +66,20 @@ public:
     /** Zooms in (positive steps) or zooms out (negative steps) using mouse wheel. */
     static void zoomWithMouseWheel(HI::GUITestOpStatus& os, int steps);
 
-    /** Clicks zoom-in button once. */
+    /** Zooms in (positive steps) or zooms out (negative steps) using mouse wheel. */
+    static void zoomWithMouseWheel(HI::GUITestOpStatus& os, QWidget* treeViewer, int steps);
+
+    /** Clicks zoom-in button. */
     static void clickZoomInButton(HI::GUITestOpStatus& os);
 
-    /** Clicks zoom-out button once. */
+    /** Clicks zoom-out button. */
     static void clickZoomOutButton(HI::GUITestOpStatus& os);
 
-    /** Clicks reset zoom button once. */
-    static void clickResetZoomButton(HI::GUITestOpStatus& os);
+    /** Clicks fit-to-view zoom button. */
+    static void clickZoomFitButton(HI::GUITestOpStatus& os);
+
+    /** Clicks zoom to 100% button. */
+    static void clickZoom100Button(HI::GUITestOpStatus& os);
 
     /** Returns current on-screen scene width. */
     static int getSceneWidth(HI::GUITestOpStatus& os);
@@ -108,11 +113,15 @@ public:
     static TvBranchItem* getRootBranch(HI::GUITestOpStatus& os);
     static TvRectangularBranchItem* getRootRectangularBranch(HI::GUITestOpStatus& os);
 
+    /** Sets branch color. */
+    static void setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b);
+
+    /** Returns percentage of the widget area filled with the given color. */
+    static double getColorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName);
+
 private:
     static QList<TvRectangularBranchItem*> getSubtreeOrderedRectangularBranches(HI::GUITestOpStatus& os, TvRectangularBranchItem* rootBranch);
     static bool rectangularBranchLessThan(TvRectangularBranchItem* first, TvRectangularBranchItem* second);
 };
 
 }  // namespace U2
-
-#endif  // _U2_GT_UTILS_PHY_TREE_H_

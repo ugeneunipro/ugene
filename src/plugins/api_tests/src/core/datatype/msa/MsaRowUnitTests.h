@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_ROW_UNIT_TESTS_H_
-#define _U2_MSA_ROW_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -456,5 +455,3 @@ DECLARE_METATYPE(MsaRowUnitTests, replaceChars_nothingToReplace)
 DECLARE_METATYPE(MsaRowUnitTests, replaceChars_tildasToGapsNoGaps)
 DECLARE_METATYPE(MsaRowUnitTests, replaceChars_tildasToGapsWithGaps)
 DECLARE_METATYPE(MsaRowUnitTests, replaceChars_trailingGaps)
-
-#endif

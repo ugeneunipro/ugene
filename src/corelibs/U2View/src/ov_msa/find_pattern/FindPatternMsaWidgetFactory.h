@@ -25,14 +25,14 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 
 class U2VIEW_EXPORT FindPatternMsaWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
     FindPatternMsaWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

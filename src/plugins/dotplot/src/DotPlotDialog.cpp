@@ -118,7 +118,7 @@ void DotPlotDialog::updateSequenceSelectors() {
     // sequences in the project
     QList<GObject*> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
     foreach (GObject* obj, sequenceObjects) {
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         QString name = seqObj->getGObjectName();
 
         xAxisCombo->addItem(name);
@@ -188,8 +188,8 @@ void DotPlotDialog::accept() {
     SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx), );
     SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx), );
 
-    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
-    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
+    auto objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    auto objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     if (!isObjectInADV(objX)) {
         adv->addObject(objX);
@@ -220,8 +220,8 @@ void DotPlotDialog::sl_minLenHeuristics() {
     SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx), );
     SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx), );
 
-    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
-    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
+    auto objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    auto objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     qint64 xSeqLen = objX->getSequenceLength();
     qint64 ySeqLen = objY->getSequenceLength();
@@ -333,7 +333,7 @@ void DotPlotDialog::sl_loadSequenceButton() {
 }
 
 void DotPlotDialog::sl_loadTaskStateChanged(Task* t) {
-    DotPlotLoadDocumentsTask* loadTask = qobject_cast<DotPlotLoadDocumentsTask*>(t);
+    auto loadTask = qobject_cast<DotPlotLoadDocumentsTask*>(t);
     if (loadTask == nullptr) {
         return;
     }

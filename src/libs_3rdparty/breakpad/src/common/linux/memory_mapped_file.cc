@@ -78,7 +78,7 @@ bool MemoryMappedFile::Map(const char* path, size_t offset) {
   }
 
   // Strangely file size can be negative, but we check above that it is not.
-  size_t file_len = static_cast<size_t>(st.st_size);
+  auto file_len = static_cast<size_t>(st.st_size);
   // If the file does not extend beyond the offset, simply use an empty
   // MemoryRange and return true. Don't bother to call mmap()
   // even though mmap() can handle an empty file on some platforms.

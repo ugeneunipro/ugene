@@ -43,7 +43,7 @@ public:
         Type_Update
     };
 
-    ObjectViewTask(GObjectView* view, const QString& stateName, const QVariantMap& s = QVariantMap());
+    ObjectViewTask(GObjectViewController* view, const QString& stateName, const QVariantMap& s = QVariantMap());
 
     ObjectViewTask(GObjectViewFactoryId fid, const QString& viewName = QString(), const QVariantMap& s = QVariantMap());
 
@@ -62,7 +62,7 @@ public:
 protected:
     Type taskType;
     QVariantMap stateData;
-    QPointer<GObjectView> view;
+    QPointer<GObjectViewController> view;
     QString viewName;
     bool stateIsIllegal;
     QStringList objectsNotFound;
@@ -77,10 +77,10 @@ protected:
 class U2GUI_EXPORT AddToViewTask : public Task {
     Q_OBJECT
 public:
-    AddToViewTask(GObjectView* v, GObject* obj);
+    AddToViewTask(GObjectViewController* v, GObject* obj);
     ReportResult report();
 
-    QPointer<GObjectView> objView;
+    QPointer<GObjectViewController> objView;
     QString viewName;
     GObjectReference objRef;
     QPointer<Document> objDoc;

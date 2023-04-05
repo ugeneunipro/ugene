@@ -73,7 +73,7 @@ QList<DNAFragment> DNAFragment::findAvailableFragments() {
 QList<DNAFragment> DNAFragment::findAvailableFragments(const QList<GObject*>& aObjects, const QList<GObject*>& sObjects) {
     QList<DNAFragment> fragments;
     for (GObject* obj : qAsConst(aObjects)) {
-        AnnotationTableObject* aObj = qobject_cast<AnnotationTableObject*>(obj);
+        auto aObj = qobject_cast<AnnotationTableObject*>(obj);
         assert(aObj != nullptr);
         foreach (Annotation* a, aObj->getAnnotations()) {
             if (isDNAFragment(a)) {
@@ -97,7 +97,7 @@ QList<DNAFragment> DNAFragment::findAvailableFragments(const QList<GObject*>& aO
                 fragment.annotatedFragment = a->getData();
                 fragment.dnaObj = dnaObj;
                 for (GObject* relAnn : qAsConst(relatedAnns)) {
-                    AnnotationTableObject* related = qobject_cast<AnnotationTableObject*>(relAnn);
+                    auto related = qobject_cast<AnnotationTableObject*>(relAnn);
                     fragment.relatedAnnotations.append(related);
                 }
                 fragments.append(fragment);

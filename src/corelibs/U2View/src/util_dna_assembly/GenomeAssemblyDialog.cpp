@@ -283,7 +283,7 @@ QList<AssemblyReads> GenomeAssemblyDialog::getReads() {
     for (int i = 0; i < numProperties; i++) {
         AssemblyReads read;
         QTreeWidgetItem* item = propertiesReadsTable->topLevelItem(i);
-        ReadPropertiesItem* pitem = dynamic_cast<ReadPropertiesItem*>(item);
+        auto pitem = dynamic_cast<ReadPropertiesItem*>(item);
         if (pitem) {
             //            read.libNumber = pitem->getNumber();
             //            read.libType = pitem->getType();
@@ -360,7 +360,7 @@ void GenomeAssemblyDialog::addGuiExtension() {
     // insert new extension widget
     GenomeAssemblyAlgorithmEnv* env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
 
-    if (nullptr == env) {
+    if (env == nullptr) {
         adjustSize();
         return;
     }
@@ -403,7 +403,7 @@ void GenomeAssemblyDialog::sl_onLibraryTypeChanged() {
     int size = propertiesReadsTable->topLevelItemCount();
     for (int i = 0; i < size; i++) {
         QTreeWidgetItem* item = propertiesReadsTable->topLevelItem(i);
-        ReadPropertiesItem* pitem = dynamic_cast<ReadPropertiesItem*>(item);
+        auto pitem = dynamic_cast<ReadPropertiesItem*>(item);
         if (pitem) {
             pitem->setLibraryType(libraryType);
         }

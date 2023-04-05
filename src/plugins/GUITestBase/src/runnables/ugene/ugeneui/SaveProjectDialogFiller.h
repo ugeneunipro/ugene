@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef SAVEPROJECTDIALOGFILLER_H
-#define SAVEPROJECTDIALOGFILLER_H
+#pragma once
 
 #include <QDialogButtonBox>
 
@@ -40,4 +39,3 @@ private:
     QDialogButtonBox::StandardButton b;
 };
 }  // namespace U2
-#endif  // SAVEPROJECTDIALOGFILLER_H

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_COLLOCATION_DIALOG_CONTROLLER_H_
-#define _U2_COLLOCATION_DIALOG_CONTROLLER_H_
+#pragma once
 
 #include <QDialog>
 #include <QMutex>
@@ -113,5 +112,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

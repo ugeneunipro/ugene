@@ -332,8 +332,8 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>200 nt</td></tr>"
-                        "<tr><td>GC content: </td><td>44.50%</td></tr>"
-                        "<tr><td>Melting temperature: </td><td>79.78 &#176;C</td></tr>"
+                        "<tr><td>GC content: </td><td>44.50%</td></tr>" +
+                        GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("83.70") +
                         "<tr><td colspan=2><b>ssDNA:</b></td></tr>"
                         "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Molecular weight: </td><td>61909.78 Da</td></tr>"
                         "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Extinction coefficient: </td><td>1987400 l/(mol * cm)</td></tr>"
@@ -362,36 +362,36 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
 
-    QString s = QString("Length: </td><td>199 950 nt");
-    QString s1 = QString("GC content: </td><td>38.84%");
-    QString s2 = QString("Melting temperature: </td><td>80.82 &#176;C");
+    QString s = "Length: </td><td>199 950 nt";
+    QString s1 = "GC content: </td><td>38.84%";
+    QString s2 = "Melting temperature: </td><td style=\"vertical-align:top;\">N/A";
 
     // ssDNA
-    QString s3 = QString("Molecular weight: </td><td>61730845.26 Da");
-    QString s4 = QString("Extinction coefficient: </td><td>1954366300 l/(mol * cm)");
-    QString s5 = QString("nmole/OD<sub>260</sub>: </td><td>0.00");
-    QString s6 = QString("g/OD<sub>260</sub>: </td><td>31.59");
+    QString s3 = "Molecular weight: </td><td>61730845.26 Da";
+    QString s4 = "Extinction coefficient: </td><td>1954366300 l/(mol * cm)";
+    QString s5 = "nmole/OD<sub>260</sub>: </td><td>0.00";
+    QString s6 = "g/OD<sub>260</sub>: </td><td>31.59";
 
     // dsDNA
-    QString s7 = QString("Molecular weight: </td><td>123527891.93 Da");
-    QString s8 = QString("Extinction coefficient: </td><td>3136291737 l/(mol * cm)");
-    QString s9 = QString("nmole/OD<sub>260</sub>: </td><td>0.00");
-    QString s10 = QString("g/OD<sub>260</sub>: </td><td>39.39");
+    QString s7 = "Molecular weight: </td><td>123527891.93 Da";
+    QString s8 = "Extinction coefficient: </td><td>3136291737 l/(mol * cm)";
+    QString s9 = "nmole/OD<sub>260</sub>: </td><td>0.00";
+    QString s10 = "g/OD<sub>260</sub>: </td><td>39.39";
 
     GTUtilsOptionsPanel::resizeToMaximum(os);
     QString labelText = statisticsLabel->text();
 
-    CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
-    CHECK_SET_ERR(labelText.contains(s1), QString("label text: %1. It does not contais %2").arg(labelText).arg(s1));
-    CHECK_SET_ERR(labelText.contains(s2), QString("label text: %1. It does not contais %2").arg(labelText).arg(s2));
-    CHECK_SET_ERR(labelText.contains(s3), QString("label text: %1. It does not contais %2").arg(labelText).arg(s3));
-    CHECK_SET_ERR(labelText.contains(s4), QString("label text: %1. It does not contais %2").arg(labelText).arg(s4));
-    CHECK_SET_ERR(labelText.contains(s5), QString("label text: %1. It does not contais %2").arg(labelText).arg(s5));
-    CHECK_SET_ERR(labelText.contains(s6), QString("label text: %1. It does not contais %2").arg(labelText).arg(s6));
-    CHECK_SET_ERR(labelText.contains(s7), QString("label text: %1. It does not contais %2").arg(labelText).arg(s7));
-    CHECK_SET_ERR(labelText.contains(s8), QString("label text: %1. It does not contais %2").arg(labelText).arg(s8));
-    CHECK_SET_ERR(labelText.contains(s9), QString("label text: %1. It does not contais %2").arg(labelText).arg(s9));
-    CHECK_SET_ERR(labelText.contains(s10), QString("label text: %1. It does not contais %2").arg(labelText).arg(s10));
+    CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contain %2").arg(labelText).arg(s));
+    CHECK_SET_ERR(labelText.contains(s1), QString("label text: %1. It does not contain %2").arg(labelText).arg(s1));
+    CHECK_SET_ERR(labelText.contains(s2), QString("label text: %1. It does not contain %2").arg(labelText).arg(s2));
+    CHECK_SET_ERR(labelText.contains(s3), QString("label text: %1. It does not contain %2").arg(labelText).arg(s3));
+    CHECK_SET_ERR(labelText.contains(s4), QString("label text: %1. It does not contain %2").arg(labelText).arg(s4));
+    CHECK_SET_ERR(labelText.contains(s5), QString("label text: %1. It does not contain %2").arg(labelText).arg(s5));
+    CHECK_SET_ERR(labelText.contains(s6), QString("label text: %1. It does not contain %2").arg(labelText).arg(s6));
+    CHECK_SET_ERR(labelText.contains(s7), QString("label text: %1. It does not contain %2").arg(labelText).arg(s7));
+    CHECK_SET_ERR(labelText.contains(s8), QString("label text: %1. It does not contain %2").arg(labelText).arg(s8));
+    CHECK_SET_ERR(labelText.contains(s9), QString("label text: %1. It does not contain %2").arg(labelText).arg(s9));
+    CHECK_SET_ERR(labelText.contains(s10), QString("label text: %1. It does not contain %2").arg(labelText).arg(s10));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -424,33 +424,33 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsOptionsPanel::resizeToMaximum(os);
     QString labelText = statisticsLabel->text();
 
-    QString s = QString("Length: </td><td>199 950 nt");
-    QString s1 = QString("GC content: </td><td>38.84%");
-    QString s2 = QString("Melting temperature: </td><td>80.82 &#176;C");
+    QString s = "Length: </td><td>199 950 nt";
+    QString s1 = "GC content: </td><td>38.84%";
+    QString s2 = "Melting temperature: </td><td style=\"vertical-align:top;\">N/A";
 
     // ssDNA
-    QString s3 = QString("Molecular weight: </td><td>61730845.26 Da");
-    QString s4 = QString("Extinction coefficient: </td><td>1954366300 l/(mol * cm)");
-    QString s5 = QString("nmole/OD<sub>260</sub>: </td><td>0.00");
-    QString s6 = QString("g/OD<sub>260</sub>: </td><td>31.59");
+    QString s3 = "Molecular weight: </td><td>61730845.26 Da";
+    QString s4 = "Extinction coefficient: </td><td>1954366300 l/(mol * cm)";
+    QString s5 = "nmole/OD<sub>260</sub>: </td><td>0.00";
+    QString s6 = "g/OD<sub>260</sub>: </td><td>31.59";
 
     // dsDNA
-    QString s7 = QString("Molecular weight: </td><td>123527891.93 Da");
-    QString s8 = QString("Extinction coefficient: </td><td>3136291737 l/(mol * cm)");
-    QString s9 = QString("nmole/OD<sub>260</sub>: </td><td>0.00");
-    QString s10 = QString("g/OD<sub>260</sub>: </td><td>39.39");
+    QString s7 = "Molecular weight: </td><td>123527891.93 Da";
+    QString s8 = "Extinction coefficient: </td><td>3136291737 l/(mol * cm)";
+    QString s9 = "nmole/OD<sub>260</sub>: </td><td>0.00";
+    QString s10 = "g/OD<sub>260</sub>: </td><td>39.39";
 
-    CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contais %2").arg(labelText).arg(s));
-    CHECK_SET_ERR(labelText.contains(s1), QString("label text: %1. It does not contais %2").arg(labelText).arg(s1));
-    CHECK_SET_ERR(labelText.contains(s2), QString("label text: %1. It does not contais %2").arg(labelText).arg(s2));
-    CHECK_SET_ERR(labelText.contains(s3), QString("label text: %1. It does not contais %2").arg(labelText).arg(s3));
-    CHECK_SET_ERR(labelText.contains(s4), QString("label text: %1. It does not contais %2").arg(labelText).arg(s4));
-    CHECK_SET_ERR(labelText.contains(s5), QString("label text: %1. It does not contais %2").arg(labelText).arg(s5));
-    CHECK_SET_ERR(labelText.contains(s6), QString("label text: %1. It does not contais %2").arg(labelText).arg(s6));
-    CHECK_SET_ERR(labelText.contains(s7), QString("label text: %1. It does not contais %2").arg(labelText).arg(s7));
-    CHECK_SET_ERR(labelText.contains(s8), QString("label text: %1. It does not contais %2").arg(labelText).arg(s8));
-    CHECK_SET_ERR(labelText.contains(s9), QString("label text: %1. It does not contais %2").arg(labelText).arg(s9));
-    CHECK_SET_ERR(labelText.contains(s10), QString("label text: %1. It does not contais %2").arg(labelText).arg(s10));
+    CHECK_SET_ERR(labelText.contains(s), QString("label text: %1. It does not contain %2").arg(labelText).arg(s));
+    CHECK_SET_ERR(labelText.contains(s1), QString("label text: %1. It does not contain %2").arg(labelText).arg(s1));
+    CHECK_SET_ERR(labelText.contains(s2), QString("label text: %1. It does not contain %2").arg(labelText).arg(s2));
+    CHECK_SET_ERR(labelText.contains(s3), QString("label text: %1. It does not contain %2").arg(labelText).arg(s3));
+    CHECK_SET_ERR(labelText.contains(s4), QString("label text: %1. It does not contain %2").arg(labelText).arg(s4));
+    CHECK_SET_ERR(labelText.contains(s5), QString("label text: %1. It does not contain %2").arg(labelText).arg(s5));
+    CHECK_SET_ERR(labelText.contains(s6), QString("label text: %1. It does not contain %2").arg(labelText).arg(s6));
+    CHECK_SET_ERR(labelText.contains(s7), QString("label text: %1. It does not contain %2").arg(labelText).arg(s7));
+    CHECK_SET_ERR(labelText.contains(s8), QString("label text: %1. It does not contain %2").arg(labelText).arg(s8));
+    CHECK_SET_ERR(labelText.contains(s9), QString("label text: %1. It does not contain %2").arg(labelText).arg(s9));
+    CHECK_SET_ERR(labelText.contains(s10), QString("label text: %1. It does not contain %2").arg(labelText).arg(s10));
 
     // select sequence region
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 40);
@@ -502,8 +502,8 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTWidget::click(os, w1);
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 nt</td></tr>"
-                "<tr><td>GC content: </td><td>49.29%</td></tr>"
-                "<tr><td>Melting temperature: </td><td>75.36 &#176;C</td></tr>"
+                "<tr><td>GC content: </td><td>49.29%</td></tr>" +
+                GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("79.80") +
                 "<tr><td colspan=2><b>ssDNA:</b></td></tr>"
                 "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Molecular weight: </td><td>21572.21 Da</td></tr>"
                 "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Extinction coefficient: </td><td>656800 l/(mol * cm)</td></tr>"
@@ -517,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                 "</table>")
             .arg(QChar(0x3BC));
 
-    CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
+    CHECK_SET_ERR(statisticsLabel->text() == s, QString("Statistics is wrong, current: %1").arg(statisticsLabel->text()));
 
     auto w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     GTWidget::click(os, w2);
@@ -646,7 +646,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTWidget::click(os, boldButton);
     CHECK_SET_ERR(qobject_cast<QPushButton*>(boldButton)->isChecked(), "Bold button is not checked");
 
-    QFontComboBox* fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
+    auto fontComboBox = qobject_cast<QFontComboBox*>(GTWidget::findWidget(os, "fontComboBox"));
     CHECK_SET_ERR(fontComboBox != nullptr, "Font comboBox is NULL");
     if (isOsLinux()) {
         GTComboBox::selectItemByText(os, fontComboBox, "Serif");

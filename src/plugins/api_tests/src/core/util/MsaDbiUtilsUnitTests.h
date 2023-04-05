@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_DBI_UTILS_UNIT_TESTS_H_
-#define _U2_MSA_DBI_UTILS_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -213,5 +212,3 @@ DECLARE_METATYPE(MsaDbiUtilsUnitTests, updateMsa_newSequence);
 DECLARE_METATYPE(MsaDbiUtilsUnitTests, updateMsa_additionalRows);
 DECLARE_METATYPE(MsaDbiUtilsUnitTests, updateMsa_removeRows);
 DECLARE_METATYPE(MsaDbiUtilsUnitTests, updateMsa_clear);
-
-#endif  // _U2_MSA_DBI_UTILS_UNIT_TESTS_H_

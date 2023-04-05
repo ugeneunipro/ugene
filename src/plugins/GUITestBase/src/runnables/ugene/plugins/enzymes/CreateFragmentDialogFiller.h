@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_FRAGMENT_DIALOG_FILLER_H_
-#define _U2_CREATE_FRAGMENT_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -29,12 +28,9 @@ using namespace HI;
 
 class CreateFragmentDialogFiller : public Filler {
 public:
-    CreateFragmentDialogFiller(HI::GUITestOpStatus& os);
-    CreateFragmentDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    CreateFragmentDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
 
-    void commonScenario();
+    void commonScenario() override;
 };
 
 }  // namespace U2
-
-#endif  // _U2_CREATE_FRAGMENT_DIALOG_FILLER_H_

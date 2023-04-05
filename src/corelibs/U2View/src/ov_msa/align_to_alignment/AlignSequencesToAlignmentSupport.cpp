@@ -47,7 +47,7 @@ AlignSequencesToAlignmentSupport::AlignSequencesToAlignmentSupport(QObject* pare
     : GObjectViewWindowContext(parent, MsaEditorFactory::ID) {
 }
 
-void AlignSequencesToAlignmentSupport::initViewContext(GObjectView* view) {
+void AlignSequencesToAlignmentSupport::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "View is not MSAEditor!", );
     CHECK(msaEditor->getMaObject() != nullptr, );

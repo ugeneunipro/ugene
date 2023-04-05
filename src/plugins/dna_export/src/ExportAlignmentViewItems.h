@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_ALIGNMENT_VIEW_ITEMS_H_
-#define _U2_EXPORT_ALIGNMENT_VIEW_ITEMS_H_
+#pragma once
 
 #include <U2Core/U2Region.h>
 
@@ -41,9 +40,9 @@ public:
     ExportAlignmentViewItemsController(QObject* p);
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 };
 
 class MSAExportContext : public QObject {
@@ -66,5 +65,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

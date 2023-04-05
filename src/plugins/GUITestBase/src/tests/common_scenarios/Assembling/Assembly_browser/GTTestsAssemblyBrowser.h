@@ -20,8 +20,7 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef U2_GUITEST_ASSEMBLY_BROWSER_H_
-#define U2_GUITEST_ASSEMBLY_BROWSER_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -69,5 +68,3 @@ GUI_TEST_CLASS_DECLARATION(test_0038)
 }  // namespace GUITest_Assembly_browser
 
 }  // namespace U2
-
-#endif  // GTTESTSMSAEDITOR_H

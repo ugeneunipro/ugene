@@ -59,7 +59,7 @@ QString RenameChomosomeInVariationPrompter::composeRichDoc() {
     const QStringList prefixesToReplace = getHyperlink(TO_REPLACE_ATTR, getRequiredParam(TO_REPLACE_ATTR)).split(SEPARATOR, QString::SkipEmptyParts);
     const QString prefixReplaceWith = getHyperlink(REPLACE_WITH_ATTR, getRequiredParam(REPLACE_WITH_ATTR));
 
-    IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
+    auto input = qobject_cast<IntegralBusPort*>(target->getPort(INPUT_PORT));
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     const QString producerName = tr("<u>%1</u>").arg(producer ? producer->getLabel() : unsetStr);
 
@@ -84,7 +84,7 @@ RenameChomosomeInVariationWorker::RenameChomosomeInVariationWorker(Actor* actor)
 
 QList<Message> RenameChomosomeInVariationWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> messages;
-    RenameChromosomeInVariationFileTask* renameTask = qobject_cast<RenameChromosomeInVariationFileTask*>(task);
+    auto renameTask = qobject_cast<RenameChromosomeInVariationFileTask*>(task);
     SAFE_POINT_EXT(nullptr != renameTask, os.setError(tr("An unexpected task type")), messages);
 
     const QString resultFileUrl = renameTask->getDstFileUrl();

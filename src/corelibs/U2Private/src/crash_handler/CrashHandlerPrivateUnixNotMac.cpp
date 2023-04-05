@@ -122,7 +122,7 @@ bool CrashHandlerPrivateUnixNotMac::breakpadCallback(const google_breakpad::Mini
         dumpPath = QString::fromLocal8Bit(descriptor.path());
     }
 
-    CrashHandlerPrivateUnixNotMac* privateHandler = static_cast<CrashHandlerPrivateUnixNotMac*>(context);
+    auto privateHandler = static_cast<CrashHandlerPrivateUnixNotMac*>(context);
     privateHandler->dumpWasSuccessfullySaved = succeeded;
 
     handleException(privateHandler->lastExceptionText, dumpPath);
@@ -133,8 +133,8 @@ bool CrashHandlerPrivateUnixNotMac::breakpadCallback(const google_breakpad::Mini
 bool CrashHandlerPrivateUnixNotMac::crashContextCallback(const void* crash_context,
                                                          size_t /*crash_context_size*/,
                                                          void* context) {
-    CrashHandlerPrivateUnixNotMac* privateHandler = static_cast<CrashHandlerPrivateUnixNotMac*>(context);
-    const google_breakpad::ExceptionHandler::CrashContext* crashContext = static_cast<const google_breakpad::ExceptionHandler::CrashContext*>(crash_context);
+    auto privateHandler = static_cast<CrashHandlerPrivateUnixNotMac*>(context);
+    auto crashContext = static_cast<const google_breakpad::ExceptionHandler::CrashContext*>(crash_context);
     privateHandler->lastExceptionText = getExceptionText(crashContext);
     return false;
 }

@@ -38,7 +38,7 @@ UdrSchemaRegistry::~UdrSchemaRegistry() {
 
 void UdrSchemaRegistry::registerSchema(const UdrSchema* schema, U2OpStatus& os) {
     QMutexLocker lock(&mutex);
-    CHECK_EXT(nullptr != schema, os.setError("NULL schema"), );
+    CHECK_EXT(schema != nullptr, os.setError("NULL schema"), );
     CHECK_EXT(isCorrectName(schema->getId()), os.setError("Incorrect schema id"), );
     CHECK_EXT(!schemas.contains(schema->getId()), os.setError("Duplicate schema id"), );
 

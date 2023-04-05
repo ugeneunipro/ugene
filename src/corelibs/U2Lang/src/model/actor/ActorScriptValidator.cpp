@@ -60,7 +60,7 @@ ValidationContext::ValidationContext(QScriptEngine& engine, const Actor* actor)
 
 QScriptValue ValidationContext::attributeValue(const QString& attrId) {
     Attribute* attr = actor->getParameter(attrId);
-    if (nullptr == attr) {
+    if (attr == nullptr) {
         engine.evaluate("throw \"" + tr("Wrong attribute id: ") + attrId + "\"");
         return QScriptValue::NullValue;
     }

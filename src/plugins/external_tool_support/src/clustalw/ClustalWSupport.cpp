@@ -66,6 +66,9 @@ ClustalWSupport::ClustalWSupport()
     description = tr("<i>ClustalW</i> is a free sequence alignment software for DNA or proteins.");
     versionRegExp = QRegExp("CLUSTAL (\\d+\\.\\d+) Multiple Sequence Alignments");
     toolKitName = "ClustalW";
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
+    }
 }
 
 void ClustalWSupport::sl_runWithExtFileSpecify() {
@@ -118,7 +121,7 @@ ClustalWSupportContext::ClustalWSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void ClustalWSupportContext::initViewContext(GObjectView* view) {
+void ClustalWSupportContext::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
@@ -160,7 +163,7 @@ void ClustalWSupportContext::sl_align() {
     CHECK_OP(os, );
 
     // Call run ClustalW align dialog
-    AlignMsaAction* action = qobject_cast<AlignMsaAction*>(sender());
+    auto action = qobject_cast<AlignMsaAction*>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
     MSAEditor* msaEditor = action->getMsaEditor();
     MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();

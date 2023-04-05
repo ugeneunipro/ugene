@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKFLOW_DOC_ACTORS_H_
-#define _U2_WORKFLOW_DOC_ACTORS_H_
+#pragma once
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/global.h>
@@ -87,7 +86,7 @@ public:
         : ReadDocPrompterBase(p) {
     }
     virtual ActorDocument* createDescription(Actor* a) {
-        ReadDocPrompter* doc = static_cast<ReadDocPrompter*>(ReadDocPrompterBase::createDescription(a));
+        auto doc = static_cast<ReadDocPrompter*>(ReadDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         return doc;
     }
@@ -110,7 +109,7 @@ public:
         : WriteDocPrompterBase(p) {
     }
     virtual ActorDocument* createDescription(Actor* a) {
-        WriteDocPrompter* doc = static_cast<WriteDocPrompter*>(WriteDocPrompterBase::createDescription(a));
+        auto doc = static_cast<WriteDocPrompter*>(WriteDocPrompterBase::createDescription(a));
         doc->spec = this->spec;
         doc->slot = this->slot;
         return doc;
@@ -148,5 +147,3 @@ private:
 
 }  // namespace Workflow
 }  // namespace U2
-
-#endif

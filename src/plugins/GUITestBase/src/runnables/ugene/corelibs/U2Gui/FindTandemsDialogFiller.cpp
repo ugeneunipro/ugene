@@ -47,7 +47,7 @@ void FindTandemsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     if (button == Cancel) {
-        QAbstractButton* cancelButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget(os, "cancelButton", dialog));
+        auto cancelButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget(os, "cancelButton", dialog));
         GTWidget::click(os, cancelButton);
         return;
     }

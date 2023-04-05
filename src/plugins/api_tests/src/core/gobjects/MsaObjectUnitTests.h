@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _MSA_OBEJCT_UNIT_TESTS_H_
-#define _MSA_OBEJCT_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -63,5 +62,3 @@ DECLARE_METATYPE(MsaObjectUnitTests, setMAlignment);
 DECLARE_METATYPE(MsaObjectUnitTests, deleteGap_trailingGaps);
 DECLARE_METATYPE(MsaObjectUnitTests, deleteGap_regionWithNonGapSymbols);
 DECLARE_METATYPE(MsaObjectUnitTests, deleteGap_gapRegion);
-
-#endif

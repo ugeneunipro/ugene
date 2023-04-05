@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_POSTERIOR_CHECKS_H_
-#define _U2_POSTERIOR_CHECKS_H_
+#pragma once
 
 #include <harness/UGUITestBase.h>
 
@@ -40,5 +39,3 @@ POSTERIOR_CHECK_DECLARATION(post_check_0001)
 
 }  // namespace GUITest_posterior_checks
 }  // namespace U2
-
-#endif  // _U2_POSTERIOR_CHECKS_H_

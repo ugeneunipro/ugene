@@ -106,7 +106,7 @@ QList<QPair<QString, QString>> QDRepeatActor::saveConfiguration() const {
         }
     }
 
-    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(paramConstraints.first());
+    auto dc = static_cast<QDDistanceConstraint*>(paramConstraints.first());
     int minDist = dc->getMin();
     int maxDist = dc->getMax();
 
@@ -207,7 +207,7 @@ Task* QDRepeatActor::getAlgorithmTask(const QVector<U2Region>& location) {
     settings.filter = RepeatsFilterAlgorithm(cfg->getParameter(NESTED_ATTR)->getAttributeValueWithoutScript<int>());
     settings.excludeTandems = cfg->getParameter(TANMEDS_ATTR)->getAttributeValueWithoutScript<bool>();
 
-    QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(paramConstraints.first());
+    auto dc = static_cast<QDDistanceConstraint*>(paramConstraints.first());
     settings.minDist = dc->getMin();
     settings.maxDist = dc->getMax();
 

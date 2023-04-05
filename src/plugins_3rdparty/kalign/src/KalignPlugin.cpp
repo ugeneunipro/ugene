@@ -82,7 +82,7 @@ KalignPlugin::KalignPlugin()
     // Kalign Test
 
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat* xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
+    auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
     assert(xmlTestFormat != NULL);
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
@@ -117,13 +117,13 @@ KalignPlugin::~KalignPlugin() {
 }
 
 MSAEditor* KalignAction::getMSAEditor() const {
-    MSAEditor* e = qobject_cast<MSAEditor*>(getObjectView());
+    auto e = qobject_cast<MSAEditor*>(getObjectView());
     SAFE_POINT(e != NULL, "Can't get an appropriate MSA Editor", NULL);
     return e;
 }
 
 void KalignAction::sl_updateState() {
-    StateLockableItem* item = qobject_cast<StateLockableItem*>(sender());
+    auto item = qobject_cast<StateLockableItem*>(sender());
     SAFE_POINT(item != NULL, "Unexpected sender: expect StateLockableItem", );
     MSAEditor* msaEditor = getMSAEditor();
     CHECK(msaEditor != NULL, );
@@ -134,8 +134,8 @@ KalignMSAEditorContext::KalignMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void KalignMSAEditorContext::initViewContext(GObjectView* view) {
-    MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
+void KalignMSAEditorContext::initViewContext(GObjectViewController* view) {
+    auto msaed = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );
     msaed->registerActionProvider(this);
@@ -156,7 +156,7 @@ void KalignMSAEditorContext::initViewContext(GObjectView* view) {
 }
 
 void KalignMSAEditorContext::sl_align() {
-    KalignAction* action = qobject_cast<KalignAction*>(sender());
+    auto action = qobject_cast<KalignAction*>(sender());
     assert(action != NULL);
     MSAEditor* ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject* obj = ed->getMaObject();

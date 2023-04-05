@@ -246,12 +246,12 @@ bool URLListWidget::eventFilter(QObject* obj, QEvent* event) {
     if (event->type() == QEvent::ContextMenu) {
         CHECK(1 == ui->itemsArea->selectedItems().size(), false);
 
-        QContextMenuEvent* e = static_cast<QContextMenuEvent*>(event);
+        auto e = static_cast<QContextMenuEvent*>(event);
         QListWidgetItem* item = ui->itemsArea->itemAt(e->pos());
         CHECK(nullptr != item, false);
         CHECK(item->isSelected(), false);
 
-        UrlItem* urlItem = static_cast<UrlItem*>(item);
+        auto urlItem = static_cast<UrlItem*>(item);
         CHECK(nullptr != urlItem, false);
 
         QWidget* options = urlItem->getOptionsWidget();

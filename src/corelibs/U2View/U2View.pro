@@ -65,7 +65,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/DeleteGapsDialog.h \
            src/ov_msa/DrawHelper.h \
            src/ov_msa/ExportHighlightedDialogController.h \
-           src/ov_msa/ExportSequencesTask.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
            src/ov_msa/MSAEditorConsensusCache.h \
@@ -91,12 +90,12 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MaEditorTasks.h \
            src/ov_msa/MaEditorUtils.h \
            src/ov_msa/MaEditorWgt.h \
+           src/ov_msa/MsaEditorMultilineWgt.h \
            src/ov_msa/MsaEditorNameList.h \
            src/ov_msa/MsaEditorSimilarityColumn.h \
            src/ov_msa/MsaEditorStatusBar.h \
            src/ov_msa/MsaEditorUserModStepController.h \
            src/ov_msa/MsaEditorWgt.h \
-           src/ov_msa/MsaEditorMultilineWgt.h \
            src/ov_msa/MsaMultilineScrollArea.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MsaRowHeightController.h \
@@ -154,8 +153,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_phyltree/item/TvBranchItem.h \
            src/ov_phyltree/item/TvCircularBranchItem.h \
            src/ov_phyltree/item/TvNodeItem.h \
-           src/ov_phyltree/item/TvTextItem.h \
            src/ov_phyltree/item/TvRectangularBranchItem.h \
+           src/ov_phyltree/item/TvTextItem.h \
            src/ov_phyltree/item/TvUnrootedBranchItem.h \
            src/ov_phyltree/layout/TvCircularLayoutAlgorithm.h \
            src/ov_phyltree/layout/TvRectangularLayoutAlgorithm.h \
@@ -228,12 +227,16 @@ HEADERS += src/LicenseDialog.h \
            src/ov_text/SimpleTextObjectView.h \
            src/ov_text/SimpleTextObjectViewTasks.h \
            src/phyltree/BaseSettingsDialog.h \
-           src/phyltree/BranchSettingsDialog.h \
            src/phyltree/CreatePhyTreeDialogController.h \
            src/phyltree/CreatePhyTreeWidget.h \
            src/phyltree/PhyTreeDisplayOptionsWidget.h \
            src/phyltree/TextSettingsDialog.h \
            src/phyltree/TreeSettingsDialog.h \
+           src/temperature/TmCalculatorSelectorDialog.h \
+           src/temperature/TmCalculatorSelectorWidget.h \
+           src/temperature/TmCalculatorSettingsWidget.h \
+           src/temperature/rough/RoughTmCalculatorFactory.h \
+           src/temperature/rough/RoughTmCalculatorSettingsWidget.h \
            src/util_dna_assembly/BuildIndexDialog.h \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.h \
            src/util_dna_assembly/DnaAssemblyDialog.h \
@@ -277,7 +280,6 @@ FORMS += src/LicenseDialog.ui \
          src/ov_sequence/annot_highlight/AnnotHighlightSettings.ui \
          src/ov_sequence/find_pattern/FindPatternForm.ui \
          src/ov_sequence/image_export/SequenceImageExportSettingsWidget.ui \
-         src/phyltree/BranchSettingsDialog.ui \
          src/phyltree/CreatePhyTreeDialog.ui \
          src/phyltree/PhyTreeDisplayOptionsWidget.ui \
          src/phyltree/TextSettingsDialog.ui \
@@ -354,7 +356,6 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/DeleteGapsDialog.cpp \
            src/ov_msa/DrawHelper.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
-           src/ov_msa/ExportSequencesTask.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
            src/ov_msa/MSAEditorConsensusCache.cpp \
@@ -511,12 +512,16 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_text/SimpleTextObjectView.cpp \
            src/ov_text/SimpleTextObjectViewTasks.cpp \
            src/phyltree/BaseSettingsDialog.cpp \
-           src/phyltree/BranchSettingsDialog.cpp \
            src/phyltree/CreatePhyTreeDialogController.cpp \
            src/phyltree/CreatePhyTreeWidget.cpp \
            src/phyltree/PhyTreeDisplayOptionsWidget.cpp \
            src/phyltree/TextSettingsDialog.cpp \
            src/phyltree/TreeSettingsDialog.cpp \
+           src/temperature/TmCalculatorSelectorDialog.cpp \
+           src/temperature/TmCalculatorSelectorWidget.cpp \
+           src/temperature/TmCalculatorSettingsWidget.cpp \
+           src/temperature/rough/RoughTmCalculatorFactory.cpp \
+           src/temperature/rough/RoughTmCalculatorSettingsWidget.cpp \
            src/util_dna_assembly/BuildIndexDialog.cpp \
            src/util_dna_assembly/ConvertAssemblyToSamDialog.cpp \
            src/util_dna_assembly/DnaAssemblyDialog.cpp \

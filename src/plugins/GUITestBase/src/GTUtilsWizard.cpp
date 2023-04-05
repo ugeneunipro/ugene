@@ -28,10 +28,8 @@
 #include <primitives/GTWidget.h>
 #include <utils/GTThread.h>
 
-#include <QApplication>
 #include <QDir>
 #include <QFileInfo>
-#include <QLabel>
 #include <QScrollArea>
 #include <QWizard>
 
@@ -100,7 +98,7 @@ void GTUtilsWizard::setInputFiles(HI::GUITestOpStatus& os, const QList<QStringLi
 #define GT_METHOD_NAME "setAllParameters"
 void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus& os, QMap<QString, QVariant> map) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK(wizard, "activeModalWidget is not wizard");
 
     QWidget* nextButton;
@@ -134,7 +132,7 @@ void GTUtilsWizard::setAllParameters(HI::GUITestOpStatus& os, QMap<QString, QVar
 #define GT_METHOD_NAME "setParameter"
 void GTUtilsWizard::setParameter(HI::GUITestOpStatus& os, const QString& parameterName, const QVariant& parameterValue) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK(wizard, "activeModalWidget is not wizard");
 
     expandWizardParameterIfNeeded(os, parameterName, dialog);
@@ -152,26 +150,26 @@ void GTUtilsWizard::setParameter(HI::GUITestOpStatus& os, const QString& paramet
 #define GT_METHOD_NAME "getParameter"
 QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus& os, const QString& parameterName) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not wizard", {});
 
     expandWizardParameterIfNeeded(os, parameterName, dialog);
 
     auto w = GTWidget::findWidget(os, parameterName + " widget", dialog);
 
-    QComboBox* combo = qobject_cast<QComboBox*>(w);
+    auto combo = qobject_cast<QComboBox*>(w);
     if (combo != nullptr) {
         return QVariant(combo->currentText());
     }
-    QSpinBox* spin = qobject_cast<QSpinBox*>(w);
+    auto spin = qobject_cast<QSpinBox*>(w);
     if (spin != nullptr) {
         return QVariant(spin->value());
     }
-    QDoubleSpinBox* doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
+    auto doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
     if (doubleSpin != nullptr) {
         return QVariant(doubleSpin->value());
     }
-    QLineEdit* line = qobject_cast<QLineEdit*>(w);
+    auto line = qobject_cast<QLineEdit*>(w);
     if (line != nullptr) {
         return QVariant(line->text());
     }
@@ -181,12 +179,12 @@ QVariant GTUtilsWizard::getParameter(HI::GUITestOpStatus& os, const QString& par
 
 #define GT_METHOD_NAME "setValue"
 void GTUtilsWizard::setValue(HI::GUITestOpStatus& os, QWidget* w, QVariant value) {
-    QComboBox* combo = qobject_cast<QComboBox*>(w);
+    auto combo = qobject_cast<QComboBox*>(w);
     if (combo != nullptr) {
         GTComboBox::selectItemByText(os, combo, value.toString());
         return;
     }
-    QSpinBox* spin = qobject_cast<QSpinBox*>(w);
+    auto spin = qobject_cast<QSpinBox*>(w);
     if (spin != nullptr) {
         bool ok;
         int val = value.toInt(&ok);
@@ -194,7 +192,7 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus& os, QWidget* w, QVariant value
         GTSpinBox::setValue(os, spin, val, GTGlobals::UseKeyBoard);
         return;
     }
-    QDoubleSpinBox* doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
+    auto doubleSpin = qobject_cast<QDoubleSpinBox*>(w);
     if (doubleSpin != nullptr) {
         bool ok;
         int val = value.toDouble(&ok);
@@ -202,7 +200,7 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus& os, QWidget* w, QVariant value
         GTDoubleSpinbox::setValue(os, doubleSpin, val, GTGlobals::UseKeyBoard);
         return;
     }
-    QLineEdit* line = qobject_cast<QLineEdit*>(w);
+    auto line = qobject_cast<QLineEdit*>(w);
     if (line != nullptr) {
         GTLineEdit::setText(os, line, value.toString());
         return;
@@ -215,7 +213,6 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus& os, QWidget* w, QVariant value
 void GTUtilsWizard::clickButton(HI::GUITestOpStatus& os, WizardButton button) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     QWidget* buttonWidget = GTWidget::findButtonByText(os, buttonMap.key(button), dialog);
-    GTGlobals::sleep(500);
     GTWidget::click(os, buttonWidget);
 }
 #undef GT_METHOD_NAME
@@ -223,7 +220,7 @@ void GTUtilsWizard::clickButton(HI::GUITestOpStatus& os, WizardButton button) {
 #define GT_METHOD_NAME "getPageTitle"
 QString GTUtilsWizard::getPageTitle(HI::GUITestOpStatus& os) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    QWizard* wizard = qobject_cast<QWizard*>(dialog);
+    auto wizard = qobject_cast<QWizard*>(dialog);
     GT_CHECK_RESULT(wizard, "activeModalWidget is not wizard", QString());
 
     auto pageTitle = GTWidget::findLabel(os, "pageTitle", wizard->currentPage());

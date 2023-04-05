@@ -63,7 +63,7 @@ void ProduceSchemaImageLinkTask::prepare() {
 }
 
 QList<Task*> ProduceSchemaImageLinkTask::onSubTaskFinished(Task* subTask) {
-    LoadWorkflowTask* loadTask = qobject_cast<LoadWorkflowTask*>(subTask);
+    auto loadTask = qobject_cast<LoadWorkflowTask*>(subTask);
     assert(loadTask != nullptr);
 
     QList<Task*> res;

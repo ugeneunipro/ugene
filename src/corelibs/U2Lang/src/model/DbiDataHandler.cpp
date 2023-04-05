@@ -51,7 +51,7 @@ DbiDataHandler& DbiDataHandler::operator=(const DbiDataHandler&) {
 }
 
 bool DbiDataHandler::equals(const DbiDataHandler* other) const {
-    if (nullptr == other) {
+    if (other == nullptr) {
         return false;
     }
 

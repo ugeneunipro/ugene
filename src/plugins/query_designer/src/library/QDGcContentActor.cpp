@@ -200,7 +200,7 @@ Task* QDFindGcRegionsActor::getAlgorithmTask(const QVector<U2Region>& location) 
 }
 
 void QDFindGcRegionsActor::sl_onTaskFinished(Task* t) {
-    FindGcRegionsTask* fprt = qobject_cast<FindGcRegionsTask*>(t);
+    auto fprt = qobject_cast<FindGcRegionsTask*>(t);
     QList<SharedAnnotationData> annotations = fprt->getResultAsAnnotations();
     foreach (SharedAnnotationData d, annotations) {
         if (d->location->regions.first().length > getMaxResultLen()) {

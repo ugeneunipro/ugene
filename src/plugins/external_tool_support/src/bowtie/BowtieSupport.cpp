@@ -22,6 +22,7 @@
 #include "BowtieSupport.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
@@ -63,6 +64,13 @@ BowtieSupport::BowtieSupport(const QString& id)
                      "genome (2.9 GB for paired-end).");
     versionRegExp = QRegExp("version (\\d+\\.\\d+\\.\\d+)");
     toolKitName = "Bowtie";
+
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::NonLatinIndexPath;
+    }
 }
 
 }  // namespace U2

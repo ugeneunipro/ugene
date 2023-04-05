@@ -108,7 +108,7 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
     AppContext::getTaskScheduler()->registerTopLevelTask(muscleTask);
 }
 
-MuscleAction::MuscleAction(QObject* p, GObjectView* v, const QString& text, int order, bool isAlignSelectionAction)
+MuscleAction::MuscleAction(QObject* p, GObjectViewController* v, const QString& text, int order, bool isAlignSelectionAction)
     : GObjectViewAction(p, v, text, order) {
     setIcon(QIcon(":umuscle/images/muscle_16.png"));
 
@@ -121,7 +121,7 @@ MuscleAction::MuscleAction(QObject* p, GObjectView* v, const QString& text, int 
 }
 
 MSAEditor* MuscleAction::getMSAEditor() const {
-    MSAEditor* e = qobject_cast<MSAEditor*>(getObjectView());
+    auto e = qobject_cast<MSAEditor*>(getObjectView());
     SAFE_POINT(e != nullptr, "Can't get an appropriate MSA Editor", nullptr);
     return e;
 }
@@ -130,7 +130,7 @@ MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
+void MuscleMSAEditorContext::initViewContext(GObjectViewController* view) {
     view->registerActionProvider(this);
 
     auto alignAction = new MuscleAction(this, view, tr("Align with MUSCLE…"), 1000);
@@ -201,7 +201,7 @@ void MuscleMSAEditorContext::sl_align() {
 }
 
 void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
-    MuscleAction* action = qobject_cast<MuscleAction*>(sender());
+    auto action = qobject_cast<MuscleAction*>(sender());
     SAFE_POINT(action != nullptr, "Not a MuscleAction!", );
     MSAEditor* msaEditor = action->getMSAEditor();
     MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();
@@ -222,7 +222,7 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
 }
 
 void MuscleMSAEditorContext::sl_alignProfileToProfile() {
-    MuscleAction* action = qobject_cast<MuscleAction*>(sender());
+    auto action = qobject_cast<MuscleAction*>(sender());
     SAFE_POINT(action != nullptr, "sl_alignProfileToProfile: not a MuscleAction", );
     MSAEditor* ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject* obj = ed->getMaObject();
@@ -243,7 +243,7 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
 }
 
 void MuscleMSAEditorContext::sl_alignSelectedSequences() {
-    MuscleAction* action = qobject_cast<MuscleAction*>(sender());
+    auto action = qobject_cast<MuscleAction*>(sender());
     SAFE_POINT(action != nullptr, "Not a MuscleAction!", );
     MSAEditor* msaEditor = action->getMSAEditor();
     MultipleSequenceAlignmentObject* msaObject = msaEditor->getMaObject();

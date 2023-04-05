@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_
-#define _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_
+#pragma once
 
 #include "PcrOptionsPanelSavableTab.h"
 #include "ui_InSilicoPcrOptionPanelWidget.h"
@@ -29,6 +28,7 @@ namespace U2 {
 
 class ADVSequenceObjectContext;
 class AnnotatedDNAView;
+class TmCalculator;
 class InSilicoPcrTask;
 class PrimerGroupBox;
 
@@ -36,7 +36,7 @@ class InSilicoPcrOptionPanelWidget : public QWidget, public Ui_InSilicoPcrOption
     Q_OBJECT
 public:
     InSilicoPcrOptionPanelWidget(AnnotatedDNAView* annotatedDnaView);
-    ~InSilicoPcrOptionPanelWidget();
+    ~InSilicoPcrOptionPanelWidget() override;
 
     AnnotatedDNAView* getDnaView() const;
 
@@ -55,18 +55,20 @@ private slots:
     void sl_onProductsSelectionChanged();
     void sl_onProductDoubleClicked();
     void sl_showDetails(const QString& link);
+    void sl_temperatureSettingsChanged();
 
 private:
     static bool isDnaSequence(ADVSequenceObjectContext* sequenceContext);
     void showResults(InSilicoPcrTask* task);
 
 private:
-    AnnotatedDNAView* annotatedDnaView;
+    QPointer<AnnotatedDNAView> annotatedDnaView;
     InSilicoPcrTask* pcrTask;
     bool resultTableShown;
     PcrOptionsPanelSavableTab savableWidget;
+    // Required, because @annotatedDnaView is already dead in the destructor
+    QString TmCalculatorId;
+    QSharedPointer<TmCalculator> temperatureCalculator;
 };
 
 }  // namespace U2
-
-#endif  // _U2_IN_SILICO_PCR_OPTION_PANEL_WIDGET_H_

@@ -47,8 +47,8 @@ namespace U2 {
 
 #define TOP_INDENT 10
 
-McaEditorWgt::McaEditorWgt(McaEditor* editor)
-    : MaEditorWgt(editor) {
+McaEditorWgt::McaEditorWgt(McaEditor* editor, QWidget* parent)
+    : MaEditorWgt(editor, parent) {
     rowHeightController = new McaRowHeightController(this);
     refCharController = new McaReferenceCharController(this, editor);
 
@@ -75,7 +75,7 @@ McaEditorWgt::McaEditorWgt(McaEditor* editor)
 
     enableCollapsingOfSingleRowGroups = true;
 
-    McaEditorConsensusArea* mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consensusArea);
+    auto mcaConsArea = qobject_cast<McaEditorConsensusArea*>(consensusArea);
     SAFE_POINT(mcaConsArea != nullptr, "Failed to cast consensus area to MCA consensus area", );
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");

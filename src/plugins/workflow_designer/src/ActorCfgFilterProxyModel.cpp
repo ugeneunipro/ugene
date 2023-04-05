@@ -33,7 +33,7 @@ ActorCfgFilterProxyModel::ActorCfgFilterProxyModel(QObject* p)
 }
 
 bool ActorCfgFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& /*sourceParent*/) const {
-    ActorCfgModel* srcModel = qobject_cast<ActorCfgModel*>(sourceModel());
+    auto srcModel = qobject_cast<ActorCfgModel*>(sourceModel());
     SAFE_POINT(nullptr != srcModel, "Invalid actor configuration model", true);
 
     Attribute* attr = srcModel->getAttributeByRow(sourceRow);
@@ -43,7 +43,7 @@ bool ActorCfgFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex
 }
 
 bool ActorCfgFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex& /*sourceParent*/) const {
-    ActorCfgModel* srcModel = qobject_cast<ActorCfgModel*>(sourceModel());
+    auto srcModel = qobject_cast<ActorCfgModel*>(sourceModel());
     SAFE_POINT(nullptr != srcModel, "Invalid actor configuration model", true);
 
     return srcModel->getScriptMode() || sourceColumn < 2;

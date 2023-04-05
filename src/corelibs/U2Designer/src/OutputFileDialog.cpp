@@ -356,7 +356,7 @@ QModelIndex RFSTreeModel::addDir(const QModelIndex& index, const QString& dirNam
     beginInsertRows(index, pos, pos);
     item->addChild(newItem);
     endInsertRows();
-    return index.child(pos, 0);
+    return index.model()->index(pos, 0, index);
 }
 
 }  // namespace U2

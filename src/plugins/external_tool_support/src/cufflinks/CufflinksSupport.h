@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CUFFLINKS_SUPPORT_H
-#define _U2_CUFFLINKS_SUPPORT_H
+#pragma once
 
 #include <U2Core/ExternalToolRegistry.h>
 
@@ -49,5 +48,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

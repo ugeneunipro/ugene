@@ -79,7 +79,7 @@ Task::ReportResult ShiftSequenceStartTask::report() {
     for (Document* document : qAsConst(documentsToUpdate)) {
         QList<GObject*> annotationTablesList = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         for (GObject* object : qAsConst(annotationTablesList)) {
-            AnnotationTableObject* annotationTableObject = qobject_cast<AnnotationTableObject*>(object);
+            auto annotationTableObject = qobject_cast<AnnotationTableObject*>(object);
             if (annotationTableObject->hasObjectRelation(sequenceObject, ObjectRole_Sequence)) {
                 foreach (Annotation* annotation, annotationTableObject->getAnnotations()) {
                     const U2Location& location = annotation->getLocation();

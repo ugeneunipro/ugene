@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MSA_IMPORTER_EXPORTER_UNIT_TESTS_H_
-#define _U2_MSA_IMPORTER_EXPORTER_UNIT_TESTS_H_
+#pragma once
 
 #include <unittest.h>
 
@@ -47,5 +46,3 @@ DECLARE_TEST(MsaImporterExporterUnitTests, importExportAlignment);
 }  // namespace U2
 
 DECLARE_METATYPE(MsaImporterExporterUnitTests, importExportAlignment);
-
-#endif

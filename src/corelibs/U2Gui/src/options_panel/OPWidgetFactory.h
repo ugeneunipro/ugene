@@ -106,7 +106,7 @@ public:
     OPWidgetFactory();
     virtual ~OPWidgetFactory();
 
-    virtual QWidget* createWidget(GObjectView* objView, const QVariantMap& options) = 0;
+    virtual QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) = 0;
 
     virtual OPGroupParameters getOPGroupParameters() = 0;
 
@@ -121,7 +121,7 @@ protected:
     }
 
 protected:
-    GObjectView* objView;
+    GObjectViewController* objView;
     ObjectViewType objectViewOfWidget;
 };
 
@@ -131,7 +131,7 @@ public:
     OPCommonWidgetFactory(QList<QString> groupIds);
     virtual ~OPCommonWidgetFactory();
 
-    virtual QWidget* createWidget(GObjectView* objView, const QVariantMap& options) = 0;
+    virtual QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) = 0;
 
     bool isInGroup(QString groupId) {
         return groupIds.contains(groupId);

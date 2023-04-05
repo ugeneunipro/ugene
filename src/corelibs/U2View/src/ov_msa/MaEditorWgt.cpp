@@ -61,8 +61,8 @@ bool MaEditorWgtEventFilter::eventFilter(QObject* obj, QEvent* event) {
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-MaEditorWgt::MaEditorWgt(MaEditor* _editor)
-    : editor(_editor),
+MaEditorWgt::MaEditorWgt(MaEditor* _editor, QWidget* parent)
+    : QWidget(parent), editor(_editor),
       sequenceArea(nullptr),
       nameList(nullptr),
       consensusArea(nullptr),
@@ -215,7 +215,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     mainSplitter->setStretchFactor(0, 2);
 
     if (addOverviewArea) {
-        MsaEditorWgt* wgt = qobject_cast<MsaEditorWgt*>(this);
+        auto wgt = qobject_cast<MsaEditorWgt*>(this);
         if (wgt == nullptr) {
             mainSplitter->addWidget(overviewArea);
             mainSplitter->setCollapsible(1, false);

@@ -103,16 +103,16 @@ WeightMatrixADVContext::WeightMatrixADVContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void WeightMatrixADVContext::initViewContext(GObjectView* view) {
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(view);
+void WeightMatrixADVContext::initViewContext(GObjectViewController* view) {
+    auto av = qobject_cast<AnnotatedDNAView*>(view);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":weight_matrix/images/weight_matrix.png"), tr("Find TFBS with matrices..."), 80);
     a->addAlphabetFilter(DNAAlphabet_NUCL);
     connect(a, SIGNAL(triggered()), SLOT(sl_search()));
 }
 
 void WeightMatrixADVContext::sl_search() {
-    GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
-    AnnotatedDNAView* av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
+    auto action = qobject_cast<GObjectViewAction*>(sender());
+    auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());

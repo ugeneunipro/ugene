@@ -73,7 +73,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.h \
-            src/runnables/ugene/corelibs/U2View/ov_msa/BranchSettingsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h \
@@ -81,6 +80,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h \
+            src/runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h \
             src/runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h \
 #   Runnables / UGENE / plugins_3rdparty
 #   Runnables / UGENE / plugins_3rdparty / kalign
@@ -91,6 +91,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h \
+            src/runnables/ugene/plugins_3rdparty/sitecon/SiteconBuildDialogFiller.h \
 #   Runnables / UGENE / plugins
 #   Runnables / UGENE / plugins / annotator
             src/runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h \
@@ -135,6 +136,8 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h \
             src/runnables/ugene/plugins/pcr/PrimerLibrarySelectorFiller.h \
             src/runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.h \
+#   Runnables / UGENE / plugins / query
+            src/runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h \
 #   Runnables / UGENE / plugins / weight_matrix
             src/runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h \
             src/runnables/ugene/plugins/weight_matrix/PwmSearchDialogFiller.h \
@@ -167,6 +170,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/GTUtilsMcaEditorSequenceArea.h \
             src/GTUtilsMcaEditorStatusWidget.h \
             src/GTUtilsMdi.h \
+            src/GTUtilsMeltingTemperature.h \
             src/GTUtilsMsaEditor.h \
             src/GTUtilsMsaEditorSequenceArea.h \
             src/GTUtilsNotifications.h \
@@ -355,7 +359,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportCoverageDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_assembly/ExtractAssemblyRegionDialogFiller.cpp \
-            src/runnables/ugene/corelibs/U2View/ov_msa/BranchSettingsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.cpp \
@@ -363,6 +366,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.cpp \
+            src/runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.cpp \
 #   Runnables / UGENE / plugins_3rdparty
 #   Runnables / UGENE / plugins_3rdparty / kalign
@@ -373,6 +377,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.cpp \
             src/runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.cpp \
+            src/runnables/ugene/plugins_3rdparty/sitecon/SiteconBuildDialogFiller.cpp \
 #   Runnables / UGENE / plugins
 #   Runnables / UGENE / plugins / annotator
             src/runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.cpp \
@@ -417,6 +422,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.cpp \
             src/runnables/ugene/plugins/pcr/PrimerLibrarySelectorFiller.cpp \
             src/runnables/ugene/plugins/pcr/PrimersDetailsDialogFiller.cpp \
+#   Runnables / UGENE / plugins / query
+            src/runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.cpp \
 #   Runnables / UGENE / plugins / weight_matrix
             src/runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.cpp \
             src/runnables/ugene/plugins/weight_matrix/PwmSearchDialogFiller.cpp \
@@ -449,6 +456,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/GTUtilsMcaEditorSequenceArea.cpp \
             src/GTUtilsMcaEditorStatusWidget.cpp \
             src/GTUtilsMdi.cpp \
+            src/GTUtilsMeltingTemperature.cpp \
             src/GTUtilsMsaEditor.cpp \
             src/GTUtilsMsaEditorSequenceArea.cpp \
             src/GTUtilsNotifications.cpp \

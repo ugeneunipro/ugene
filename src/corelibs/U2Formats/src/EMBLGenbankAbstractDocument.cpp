@@ -174,7 +174,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
 
             QVariantMap hints;
             hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-            if (Q_UNLIKELY(merge && nullptr == mergedAnnotations)) {
+            if (Q_UNLIKELY(merge && mergedAnnotations == nullptr)) {
                 mergedAnnotations.reset(new AnnotationTableObject(annotationName, dbiRef, hints));
             }
             annotationsObject = merge ? mergedAnnotations.data() : new AnnotationTableObject(annotationName, dbiRef, hints);

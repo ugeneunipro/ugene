@@ -184,14 +184,14 @@ void ProjectImpl::sl_onStateModified(GObjectViewState*) {
 }
 
 void ProjectImpl::sl_onMdiWindowAdded(MWMDIWindow* w) {
-    GObjectViewWindow* vw = qobject_cast<GObjectViewWindow*>(w);
+    auto vw = qobject_cast<GObjectViewWindow*>(w);
     if (vw != nullptr) {
         connect(vw->getObjectView(), SIGNAL(si_nameChanged(const QString&)), SLOT(sl_onViewRenamed(const QString&)));
     }
 }
 
 void ProjectImpl::sl_onMdiWindowClosing(MWMDIWindow* w) {
-    GObjectViewWindow* vw = qobject_cast<GObjectViewWindow*>(w);
+    auto vw = qobject_cast<GObjectViewWindow*>(w);
     if (vw != nullptr) {
         vw->getObjectView()->disconnect(this);
     }
@@ -232,7 +232,7 @@ void ProjectImpl::sl_onObjectRemoved(GObject* obj) {
 }
 
 void ProjectImpl::sl_onObjectRelationChanged(const QList<GObjectRelation>& previousRelations) {
-    GObject* senderObject = qobject_cast<GObject*>(sender());
+    auto senderObject = qobject_cast<GObject*>(sender());
     CHECK(senderObject != nullptr, )
     QSet<GObjectRelation> relationsSet = senderObject->getObjectRelations().toSet();
     relationsSet.unite(previousRelations.toSet());
@@ -255,7 +255,7 @@ QString ProjectImpl::genNextObjectId() {
 }
 
 void ProjectImpl::sl_onViewRenamed(const QString& oldName) {
-    GObjectView* view = qobject_cast<GObjectView*>(sender());
+    auto view = qobject_cast<GObjectViewController*>(sender());
     updateGObjectViewStates(oldName, view->getName());
 }
 
@@ -269,7 +269,7 @@ void ProjectImpl::updateGObjectViewStates(const QString& oldViewName, const QStr
 }
 
 void ProjectImpl::sl_onObjectRenamed(const QString& oldName) {
-    GObject* obj = qobject_cast<GObject*>(sender());
+    auto obj = qobject_cast<GObject*>(sender());
     GObjectReference from(obj->getDocument()->getURLString(), oldName, obj->getGObjectType());
     GObjectReference to(obj);
     updateObjectRelations(from, to);

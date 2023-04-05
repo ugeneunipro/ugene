@@ -79,7 +79,7 @@ void HMMSearchDialogController::init(const U2SequenceObject* seqObj) {
     createController = new CreateAnnotationWidgetController(cm, this);
 
     QWidget* w = createController->getWidget();
-    QVBoxLayout* l = qobject_cast<QVBoxLayout*>(layout());
+    auto l = qobject_cast<QVBoxLayout*>(layout());
     l->insertWidget(1, w);
     algoCombo->addItem(tr("SSE optimized"), HMMSearchAlgo_SSEOptimized);
     algoCombo->addItem(tr("Conservative"), HMMSearchAlgo_Conservative);
@@ -177,7 +177,7 @@ void HMMSearchDialogController::sl_okClicked() {
 }
 
 void HMMSearchDialogController::sl_onStateChanged() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     assert(searchTask != NULL);
     if (searchTask != t || t->getState() != Task::State_Finished) {
         return;

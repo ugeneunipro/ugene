@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ASSEMBLY_TO_SEQUENCES_WORKER_
-#define _ASSEMBLY_TO_SEQUENCES_WORKER_
+#pragma once
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
@@ -88,5 +87,3 @@ protected:
 
 }  // namespace LocalWorkflow
 }  // namespace U2
-
-#endif  // _ASSEMBLY_TO_SEQUENCES_WORKER_

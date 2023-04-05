@@ -124,7 +124,7 @@ void MoveToObjectMaController::updateActions() {
     moveSelectionToNewFileAction->setEnabled(isMoveOk);
 }
 
-void MoveToObjectMaController::buildMenu(GObjectView*, QMenu* menu, const QString&) {
+void MoveToObjectMaController::buildMenu(GObjectViewController*, QMenu* menu, const QString&) {
     QMenu* exportMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "exportMenu is null", );
     QAction* menuAction = exportMenu->addMenu(buildMoveSelectionToAnotherObjectMenu());

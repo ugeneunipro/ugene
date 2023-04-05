@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _MSA_OBJECT_TESTS_H_
-#define _MSA_OBJECT_TESTS_H_
+#pragma once
 
 #include <U2Test/XMLTestUtils.h>
 
@@ -47,5 +46,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _MSA_OBJECT_TESTS_H_

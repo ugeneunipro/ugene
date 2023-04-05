@@ -72,6 +72,7 @@ const QString GenecutOPWidget::API_REQUEST_GET_RESULT = "getReport";
 const QString GenecutOPWidget::API_REQUEST_DEL_RESULT = "delReport";
 const QString GenecutOPWidget::JSON_EMAIL = "email";
 const QString GenecutOPWidget::JSON_PASSWORD = "password";
+const QString GenecutOPWidget::JSON_NEWS_SUBSCRIPTION = "newsSubscription";
 const QString GenecutOPWidget::JSON_ROLE = "role";
 const QString GenecutOPWidget::JSON_ACCESS_TOKEN = "accessToken";
 const QString GenecutOPWidget::JSON_REFRESH_TOKEN = "refreshToken";
@@ -180,6 +181,7 @@ void GenecutOPWidget::sl_loginClicked() {
     adapter->addHeader(QNetworkRequest::ContentTypeHeader, HEADER_VALUE);
     adapter->addDataValue(JSON_EMAIL, leEmail->text());
     adapter->addDataValue(JSON_PASSWORD, lePasword->text());
+    adapter->addDataValue(JSON_NEWS_SUBSCRIPTION, cbNews->isChecked() ? "on" : "off");
     adapter->addDataValue(JSON_LANG_ID, L10N::getActiveLanguageCode());
     QString url(apiServer + API_REQUEST_API_SUFFIX + API_REQUEST_TYPE + "/" + API_REQUEST_LOGIN);
     SAFE_POINT(adapter->open(url), QString("HttpFileAdapter unexpectedly wasn't opened, url: %1").arg(url), );

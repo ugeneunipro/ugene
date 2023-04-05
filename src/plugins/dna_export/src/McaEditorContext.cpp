@@ -46,7 +46,7 @@ void McaEditorContext::sl_exportMca2Msa() {
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
 
-void McaEditorContext::initViewContext(GObjectView* view) {
+void McaEditorContext::initViewContext(GObjectViewController* view) {
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(view);
     SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
     CHECK(nullptr != mcaEditor->getMaObject(), );
@@ -56,7 +56,7 @@ void McaEditorContext::initViewContext(GObjectView* view) {
     addViewAction(action);
 }
 
-void McaEditorContext::buildStaticOrContextMenu(GObjectView* view, QMenu* menu) {
+void McaEditorContext::buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) {
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(view);
     SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
     SAFE_POINT(nullptr != menu, "Menu is NULL", );

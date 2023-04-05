@@ -69,6 +69,10 @@ MrBayesSupport::MrBayesSupport()
     // register the method
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new MrBayesAdapter(), MrBayesSupport::ET_MRBAYES_ALGORITHM_NAME_AND_KEY);
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesTemporaryDirPath;
+    }
 }
 
 ////////////////////////////////////////

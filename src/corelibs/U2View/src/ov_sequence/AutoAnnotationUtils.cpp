@@ -116,7 +116,7 @@ void AutoAnnotationsADVAction::updateMenu() {
 }
 
 void AutoAnnotationsADVAction::sl_toggle(bool toggled) {
-    QAction* action = qobject_cast<QAction*>(sender());
+    auto action = qobject_cast<QAction*>(sender());
     if (action == nullptr) {
         return;
     }
@@ -210,7 +210,7 @@ QAction* AutoAnnotationUtils::findAutoAnnotationsToggleAction(ADVSequenceObjectC
         if (advAction == nullptr) {
             continue;
         }
-        AutoAnnotationsADVAction* aaAction = qobject_cast<AutoAnnotationsADVAction*>(advAction);
+        auto aaAction = qobject_cast<AutoAnnotationsADVAction*>(advAction);
         assert(aaAction != nullptr);
         QList<QAction*> toggleActions = aaAction->getToggleActions();
         for (QAction* tAction : qAsConst(toggleActions)) {
@@ -271,7 +271,7 @@ QList<QAction*> AutoAnnotationUtils::getAutoAnnotationToggleActions(ADVSequenceO
         if (advAction == nullptr) {
             continue;
         }
-        AutoAnnotationsADVAction* aaAction = qobject_cast<AutoAnnotationsADVAction*>(advAction);
+        auto aaAction = qobject_cast<AutoAnnotationsADVAction*>(advAction);
         assert(aaAction != nullptr);
         res = aaAction->getToggleActions();
 

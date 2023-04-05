@@ -427,7 +427,7 @@ EditMarkerDialog::EditMarkerDialog(bool isNew, const QString& type, const QStrin
             default:
                 assert(0);
         }
-        QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(this->layout());
+        auto layout = qobject_cast<QVBoxLayout*>(this->layout());
         layout->insertWidget(1, editWidget);
     }
 }
@@ -439,7 +439,7 @@ void EditMarkerDialog::accept() {
         QString message;
         QString valueString;
         QVariantList newVals;
-        if (nullptr == editWidget) {
+        if (editWidget == nullptr) {
             newVals << MarkerUtils::REST_OPERATION;
         } else {
             newVals = editWidget->getValues();

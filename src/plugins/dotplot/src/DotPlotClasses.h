@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_DOT_PLOT_CLASSES_H_
-#define _U2_DOT_PLOT_CLASSES_H_
+#pragma once
 
 #include <QMessageBox>
 #include <QMutex>
@@ -117,5 +116,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif  // _U2_DOT_PLOT_CLASSES_H_

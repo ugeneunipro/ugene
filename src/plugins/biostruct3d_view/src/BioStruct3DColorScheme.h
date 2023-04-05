@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BIOSTRUCT3D_COLORSCHEME_H
-#define _U2_BIOSTRUCT3D_COLORSCHEME_H
+#pragma once
 
 #include <QColor>
 #include <QHash>
@@ -184,5 +183,3 @@ public:
 };  // class AlignmentEntropyColorScheme
 
 }  // namespace U2
-
-#endif  //_U2_BIOSTRUCT3D_COLORSCHEME_H_

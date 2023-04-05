@@ -520,7 +520,7 @@ void CreateScriptElementDialog::sl_cancelClicked() {
 }
 
 void CreateScriptElementDialog::sl_okClicked() {
-    CfgListModel* inputPorts = static_cast<CfgListModel*>(inputList->model());
+    auto inputPorts = static_cast<CfgListModel*>(inputList->model());
     QList<QString> typeIds = inputPorts->getItems();
     DataTypeRegistry* dtr = WorkflowEnv::getDataTypeRegistry();
     assert(dtr);
@@ -535,7 +535,7 @@ void CreateScriptElementDialog::sl_okClicked() {
         input << ptr;
     }
 
-    CfgListModel* outputPorts = static_cast<CfgListModel*>(outputList->model());
+    auto outputPorts = static_cast<CfgListModel*>(outputList->model());
     typeIds = outputPorts->getItems();
     assert(dtr);
     output.clear();
@@ -549,7 +549,7 @@ void CreateScriptElementDialog::sl_okClicked() {
         output << ptr;
     }
 
-    CfgTableModel* attrTableModel = static_cast<CfgTableModel*>(attributeTable->model());
+    auto attrTableModel = static_cast<CfgTableModel*>(attributeTable->model());
     QList<CfgListItem*> attributes = attrTableModel->getItems();
     attrs.clear();
     for (CfgListItem* item : qAsConst(attributes)) {
@@ -658,7 +658,7 @@ QDomDocument CreateScriptElementDialog::saveXml() {
     QDomElement actor = xml.createElement(ACTOR_ELEMENT);
     xml.appendChild(actor);
 
-    CfgListModel* inputPorts = static_cast<CfgListModel*>(inputList->model());
+    auto inputPorts = static_cast<CfgListModel*>(inputList->model());
     QList<QString> typeIds = inputPorts->getItems();
     QDomElement inputPort = xml.createElement(INPUT_PORT_ELEMENT);
     actor.appendChild(inputPort);
@@ -668,7 +668,7 @@ QDomDocument CreateScriptElementDialog::saveXml() {
         inputPort.appendChild(slot);
     }
 
-    CfgListModel* outputPorts = static_cast<CfgListModel*>(outputList->model());
+    auto outputPorts = static_cast<CfgListModel*>(outputList->model());
     typeIds = outputPorts->getItems();
     QDomElement outputPort = xml.createElement(OUTPUT_PORT_ELEMENT);
     actor.appendChild(outputPort);
@@ -678,7 +678,7 @@ QDomDocument CreateScriptElementDialog::saveXml() {
         outputPort.appendChild(slot);
     }
 
-    CfgTableModel* attrTableModel = static_cast<CfgTableModel*>(attributeTable->model());
+    auto attrTableModel = static_cast<CfgTableModel*>(attributeTable->model());
     QList<CfgListItem*> attributes = attrTableModel->getItems();
     QDomElement attribute = xml.createElement(ATTRIBUTE_ELEMENT);
     actor.appendChild(attribute);

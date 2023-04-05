@@ -128,7 +128,7 @@ void SiteconBuildDialogController::sl_okButtonClicked() {
 }
 
 void SiteconBuildDialogController::sl_onStateChanged() {
-    Task* t = qobject_cast<Task*>(sender());
+    auto t = qobject_cast<Task*>(sender());
     assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
@@ -215,30 +215,26 @@ void SiteconBuildTask::run() {
     assert(ma->getLength() == settings.windowSize);
 
     SiteconAlgorithm::calculateACGTContent(ma, settings);
+    CHECK(!stateInfo.isCoR(), );
+
     settings.numSequencesInAlignment = ma->getRowCount();
     m.settings = settings;
-    stateInfo.setDescription(tr("Calculating average and dispersion matrixes"));
+    stateInfo.setDescription(tr("Calculating average and dispersion matrices"));
     m.matrix = SiteconAlgorithm::calculateDispersionAndAverage(ma, settings, stateInfo);
-    if (stateInfo.hasError() || isCanceled()) {
-        return;
-    }
+    CHECK(!stateInfo.isCoR(), );
+
     stateInfo.setDescription(tr("Calculating weights"));
     SiteconAlgorithm::calculateWeights(ma, m.matrix, m.settings, false, stateInfo);
-    if (stateInfo.hasError() || isCanceled()) {
-        return;
-    }
+    CHECK(!stateInfo.isCoR(), );
+
     stateInfo.progress += 5;
     stateInfo.setDescription(tr("Calibrating first type error"));
     m.err1 = SiteconAlgorithm::calculateFirstTypeError(ma, settings, stateInfo);
-    if (stateInfo.hasError() || isCanceled()) {
-        return;
-    }
+    CHECK(!stateInfo.isCoR(), );
+
     stateInfo.progress += 10;
     stateInfo.setDescription(tr("Calibrating second type error"));
     m.err2 = SiteconAlgorithm::calculateSecondTypeError(m.matrix, settings, stateInfo);
-    if (stateInfo.hasError() || isCanceled()) {
-        return;
-    }
 }
 
 SiteconBuildToFileTask::SiteconBuildToFileTask(const QString& inFile, const QString& _outFile, const SiteconBuildSettings& s)
@@ -281,7 +277,7 @@ QList<Task*> SiteconBuildToFileTask::onSubTaskFinished(Task* subTask) {
         if (mobjs.isEmpty()) {
             stateInfo.setError(tr("No alignment found"));
         } else {
-            MultipleSequenceAlignmentObject* mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
+            auto mobj = qobject_cast<MultipleSequenceAlignmentObject*>(mobjs.first());
             const MultipleSequenceAlignment msa = mobj->getMultipleAlignment();
             QString baseName = mobj->getDocument()->getURL().baseFileName();
             buildTask = new SiteconBuildTask(settings, msa, baseName);

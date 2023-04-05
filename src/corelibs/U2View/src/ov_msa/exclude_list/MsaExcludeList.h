@@ -54,7 +54,7 @@ public:
     QAction* getMoveMsaSelectionToExcludeListAction(MSAEditor* msaEditor);
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private:
     void toggleExcludeListView(MSAEditor* msaEditor);

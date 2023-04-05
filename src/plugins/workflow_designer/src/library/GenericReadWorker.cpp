@@ -149,7 +149,7 @@ void GenericDocReader::cleanup() {
 }
 
 void GenericDocReader::sl_taskFinished() {
-    NoFailTaskWrapper* wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
+    auto wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     SAFE_POINT(nullptr != wrapper, "NULL wrapper task", );
     Task* t = wrapper->originalTask();
     CHECK(t->isFinished(), );
@@ -172,7 +172,7 @@ void GenericMSAReader::init() {
 }
 
 void GenericMSAReader::onTaskFinished(Task* task) {
-    LoadMSATask* t = qobject_cast<LoadMSATask*>(task);
+    auto t = qobject_cast<LoadMSATask*>(task);
     foreach (const QVariant& msaHandler, t->results) {
         QVariantMap m;
         m[BaseSlots::URL_SLOT().getId()] = t->url;
@@ -294,7 +294,7 @@ Task* GenericSeqReader::createReadTask(const QString& url, const QString& datase
 }
 
 void GenericSeqReader::onTaskFinished(Task* task) {
-    LoadSeqTask* t = qobject_cast<LoadSeqTask*>(task);
+    auto t = qobject_cast<LoadSeqTask*>(task);
     int limit = cfg[GenericSeqActorProto::LIMIT_ATTR].toInt();
     int currentCount = 0;
     QString datasetName = t->cfg.value(BaseSlots::DATASET_SLOT().getId(), "").toString();

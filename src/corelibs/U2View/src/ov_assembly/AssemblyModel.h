@@ -103,7 +103,7 @@ public:
     bool checkPermissions(QFile::Permission permission, bool showDialog = true) const;
     void dissociateReference();
 
-    bool isDbLocked(int timeout = 0);
+    bool isDbLocked(int timeout = 0) const;
 
 private:
     /**
@@ -114,7 +114,7 @@ private:
     void startLoadReferenceTask(Task* t);
     Task* createLoadReferenceAndAddToProjectTask(const U2CrossDatabaseReference& ref);
     void onReferenceRemoved();
-    void removeCrossDatabaseReference(const U2DataId& refId);
+    void removeCrossDatabaseReference(const U2DataId& refId) const;
 
 signals:
     void si_referenceChanged();

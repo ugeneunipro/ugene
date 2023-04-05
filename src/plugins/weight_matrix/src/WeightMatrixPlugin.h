@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WEIGHTMATRIX_PLUGIN_H_
-#define _U2_WEIGHTMATRIX_PLUGIN_H_
+#pragma once
 
 #include <QMenu>
 
@@ -54,7 +53,7 @@ protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 class WeightMatrixAlgorithmTests {
@@ -63,5 +62,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

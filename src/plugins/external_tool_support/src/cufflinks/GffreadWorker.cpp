@@ -74,7 +74,7 @@ Task* GffreadWorker::tick() {
 }
 
 void GffreadWorker::sl_taskFinished() {
-    GffreadSupportTask* t = dynamic_cast<GffreadSupportTask*>(sender());
+    auto t = dynamic_cast<GffreadSupportTask*>(sender());
     CHECK(t->isFinished() && !t->hasError(), );
 
     if (t->isCanceled()) {
@@ -233,7 +233,7 @@ Worker* GffreadWorkerFactory::createWorker(Actor* a) {
 /* Prompter */
 /************************************************************************/
 QString GffreadPrompter::composeRichDoc() {
-    IntegralBusPort* in = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_ID));
+    auto in = qobject_cast<IntegralBusPort*>(target->getPort(IN_PORT_ID));
     SAFE_POINT(nullptr != in, "NULL input port", "");
     QString genome = getProducersOrUnset(IN_PORT_ID, GENOME_URL_SLOT_ID);
     QString transc = getProducersOrUnset(IN_PORT_ID, TRANSCRIPTS_URL_SLOT_ID);

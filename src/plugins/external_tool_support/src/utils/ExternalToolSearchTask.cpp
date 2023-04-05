@@ -148,7 +148,7 @@ ExternalToolsSearchTask::ExternalToolsSearchTask(const QList<Task*>& _tasks)
 
 QList<Task*> ExternalToolsSearchTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> subTasks;
-    ExternalToolSearchTask* searchTask = qobject_cast<ExternalToolSearchTask*>(subTask);
+    auto searchTask = qobject_cast<ExternalToolSearchTask*>(subTask);
     bool muted = false;
 
     if (searchTask) {

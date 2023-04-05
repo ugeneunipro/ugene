@@ -69,7 +69,7 @@ void ItemViewStyle::selectBGColor() {
     QColor res = QColorDialog::getColor(bgColor, owner->scene()->views().first());
     if (res.isValid()) {
         bgColor = res;
-        WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
+        auto sc = qobject_cast<WorkflowScene*>(owner->scene());
         if (sc != nullptr) {
             sc->setModified(true);
         }
@@ -81,7 +81,7 @@ void ItemViewStyle::selectFont() {
     QFont res = QFontDialog::getFont(&ok, defFont, owner->scene()->views().first(), tr("Characters Font"), QFontDialog::DontUseNativeDialog);
     if (ok) {
         defFont = res;
-        WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
+        auto sc = qobject_cast<WorkflowScene*>(owner->scene());
         if (sc != nullptr) {
             sc->setModified(true);
         }
@@ -310,7 +310,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem* watched, QEvent* event) 
     switch (event->type()) {
         case QEvent::GraphicsSceneHoverEnter:
         case QEvent::GraphicsSceneHoverMove: {
-            QGraphicsSceneHoverEvent* he = dynamic_cast<QGraphicsSceneHoverEvent*>(event);
+            auto he = dynamic_cast<QGraphicsSceneHoverEvent*>(event);
             ret = updateCursor(he->pos());
         } break;
         case QEvent::GraphicsSceneMouseRelease:
@@ -325,7 +325,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem* watched, QEvent* event) 
             break;
         case QEvent::GraphicsSceneMouseMove:
             if (resizing && event->spontaneous()) {
-                QGraphicsSceneMouseEvent* me = (dynamic_cast<QGraphicsSceneMouseEvent*>(event));
+                auto me = (dynamic_cast<QGraphicsSceneMouseEvent*>(event));
                 WorkflowSettings::setSnap2Grid(false);
                 QPointF newPos;
                 if ((me->buttons() & Qt::LeftButton)) {
@@ -369,7 +369,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem* watched, QEvent* event) 
 
                         qreal minHeight = R + MARGIN * 2;
 
-                        WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
+                        auto sc = qobject_cast<WorkflowScene*>(owner->scene());
                         if (b2.height() < minHeight || newPos.y() < sc->sceneRect().top()) {
                             return true;
                         }
@@ -390,7 +390,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem* watched, QEvent* event) 
 
                     setFixedBounds(b2);
 
-                    WorkflowScene* sc = qobject_cast<WorkflowScene*>(owner->scene());
+                    auto sc = qobject_cast<WorkflowScene*>(owner->scene());
                     if (sc != nullptr) {
                         sc->setModified(true);
                     }
@@ -618,9 +618,9 @@ bool DescriptionItem::sceneEvent(QEvent* event) {
     switch (event->type()) {
         case QEvent::GraphicsSceneHoverMove:
         case QEvent::GraphicsSceneHoverEnter: {
-            ExtendedProcStyle* owner = qgraphicsitem_cast<ExtendedProcStyle*>(parentItem());
+            auto owner = qgraphicsitem_cast<ExtendedProcStyle*>(parentItem());
             if (owner->resizing) {
-                QGraphicsSceneHoverEvent* he = static_cast<QGraphicsSceneHoverEvent*>(event);
+                auto he = static_cast<QGraphicsSceneHoverEvent*>(event);
                 const QPointF& p = mapToParent(he->pos());
                 owner->updateCursor(p);
             }
@@ -640,7 +640,7 @@ void DescriptionItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event) {
         return;
     }
 
-    ItemViewStyle* style = qgraphicsitem_cast<ItemViewStyle*>(parentItem());
+    auto style = qgraphicsitem_cast<ItemViewStyle*>(parentItem());
     WorkflowProcessItem const* procItem = style->getOwner();
     Actor* actor = procItem->getProcess();
     WorkflowScene* ws = procItem->getWorkflowScene();

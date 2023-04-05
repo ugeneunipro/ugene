@@ -52,7 +52,7 @@ CAP3SupportTask::CAP3SupportTask(const CAP3SupportTaskSettings& _settings)
       cap3Task(nullptr),
       copyResultTask(nullptr),
       settings(_settings) {
-    GCOUNTER(cvar, "CAP3SupportTask");
+    GCOUNTER(cvar, "ExternalTool_CAP3");
     setMaxParallelSubtasks(1);
 }
 

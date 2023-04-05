@@ -254,7 +254,7 @@ void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus& os, 
 void GTUtilsSequenceView::openSequenceView(HI::GUITestOpStatus& os, const QString& sequenceName) {
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, sequenceName);
     GTMouseDriver::moveTo(itemPos);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"openInMenu", "action_open_view"}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 }
 #undef GT_METHOD_NAME

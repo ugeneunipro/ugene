@@ -21,9 +21,14 @@ HEADERS += src/Primer3Dialog.h \
 		   src/primer3_core/win/getopt.h \
 		   src/primer3_core/win/mman.h \
 		   src/primer3_core/win/unistd.h \
+		   src/temperature/Primer3TmCalculator.h \
+		   src/temperature/Primer3TmCalculatorFactory.h \
+		   src/temperature/Primer3TmCalculatorSettingsWidget.h \
 		   src/FindExonRegionsTask.h
 	
-FORMS += src/Primer3Dialog.ui
+FORMS += src/Primer3Dialog.ui \
+         src/temperature/Primer3TmCalculatorSettingsWidget.ui
+          
 SOURCES += src/Primer3Dialog.cpp \
            src/Primer3Plugin.cpp \
            src/Primer3TaskSettings.cpp \
@@ -41,6 +46,9 @@ SOURCES += src/Primer3Dialog.cpp \
 		   src/primer3_core/thal.c \
 		   src/primer3_core/thal_parameters.c \
 		   src/primer3_core/libprimer3.cc \
+		   src/temperature/Primer3TmCalculator.cpp \
+		   src/temperature/Primer3TmCalculatorFactory.cpp \
+		   src/temperature/Primer3TmCalculatorSettingsWidget.cpp \
 		   src/FindExonRegionsTask.cpp
 RESOURCES += primer3.qrc
 TRANSLATIONS += transl/russian.ts

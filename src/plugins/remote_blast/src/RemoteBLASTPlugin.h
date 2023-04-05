@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_REMOTE_QUERY_PLUGIN_H_
-#define _U2_REMOTE_QUERY_PLUGIN_H_
+#pragma once
 
 #include <U2Core/AppContext.h>
 #include <U2Core/PluginModel.h>
@@ -53,7 +52,7 @@ public:
     RemoteBLASTViewContext(QObject* p);
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private slots:
     void sl_showDialog();
@@ -65,5 +64,3 @@ public:
 };
 
 }  // namespace U2
-
-#endif

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_MCA_EDITOR_CONTEXT_H_
-#define _U2_MCA_EDITOR_CONTEXT_H_
+#pragma once
 
 #include <U2Gui/ObjectViewModel.h>
 
@@ -35,10 +34,8 @@ private slots:
     void sl_exportMca2Msa();
 
 private:
-    void initViewContext(GObjectView* view) override;
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void initViewContext(GObjectViewController* view) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 };
 
 }  // namespace U2
-
-#endif  // _U2_MCA_EDITOR_CONTEXT_H_

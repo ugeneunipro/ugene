@@ -42,7 +42,7 @@ QueryViewAdapter::QueryViewAdapter(QDScheme* scheme, const QPointF& topLeftCorne
         constraints << a->getParamConstraints();
     }
     foreach (QDConstraint* c, constraints) {
-        QDDistanceConstraint* dc = static_cast<QDDistanceConstraint*>(c);
+        auto dc = static_cast<QDDistanceConstraint*>(c);
         if (dc) {
             QDElement* src = unitMap.value(dc->getSource());
             QDElement* dst = unitMap.value(dc->getDestination());

@@ -40,7 +40,7 @@ U2FeatureDbi* FeatureTestData::subgroupDbi = nullptr;
 U2SequenceDbi* FeatureTestData::sequenceDbi = nullptr;
 
 void FeatureTestData::init() {
-    SAFE_POINT(nullptr == featureDbi, "featuresDbi has been already initialized!", );
+    SAFE_POINT(featureDbi == nullptr, "featuresDbi has been already initialized!", );
 
     bool ok = dbiProvider.init(featureDbiUrl, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in FeaturesTestData::init()!", );
@@ -52,7 +52,7 @@ void FeatureTestData::init() {
     sequenceDbi = dbi->getSequenceDbi();
     SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
 
-    SAFE_POINT(nullptr == subgroupDbi, "subgroupDbi has been already initialized!", );
+    SAFE_POINT(subgroupDbi == nullptr, "subgroupDbi has been already initialized!", );
 
     ok = subgroupsDbiProvider.init(subgroupDbiUrl, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in FeaturesTestData::init()!", );
@@ -82,21 +82,21 @@ void FeatureTestData::shutdown() {
 }
 
 U2FeatureDbi* FeatureTestData::getFeatureDbi() {
-    if (nullptr == featureDbi) {
+    if (featureDbi == nullptr) {
         init();
     }
     return featureDbi;
 }
 
 U2FeatureDbi* FeatureTestData::getSubgroupDbi() {
-    if (nullptr == subgroupDbi) {
+    if (subgroupDbi == nullptr) {
         init();
     }
     return subgroupDbi;
 }
 
 U2SequenceDbi* FeatureTestData::getSequenceDbi() {
-    if (nullptr == sequenceDbi) {
+    if (sequenceDbi == nullptr) {
         init();
     }
     return sequenceDbi;

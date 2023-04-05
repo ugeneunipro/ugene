@@ -81,7 +81,7 @@ Handle<Value> DebugStatusWrap::newObject(const Arguments& args) {
     if (!NodeApiUtils::isArgumentCountCorrect(args.Length(), 1)) {
         return scope.Close(Undefined());
     }
-    WorkflowDebugStatus* debugStatus = reinterpret_cast<WorkflowDebugStatus*>(args[0]->IntegerValue());
+    auto debugStatus = reinterpret_cast<WorkflowDebugStatus*>(args[0]->IntegerValue());
     DebugStatusWrap* obj = new DebugStatusWrap(debugStatus);
     obj->Wrap(args.This());
     return args.This();

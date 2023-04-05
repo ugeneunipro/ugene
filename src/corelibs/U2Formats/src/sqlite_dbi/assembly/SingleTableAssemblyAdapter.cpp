@@ -25,7 +25,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SqlHelpers.h>
 
-#include "../SQLiteDbi.h"
 #include "../SQLiteObjectDbi.h"
 
 namespace U2 {
@@ -172,10 +171,7 @@ void SingleTableAssemblyAdapter::addReads(U2DbiIterator<U2AssemblyRead>* it, U2A
     SQLiteWriteQuery insertQ(q.arg(readsTable), db, os);
     while (it->hasNext() && !os.isCoR()) {
         U2AssemblyRead read = it->next();
-        bool dnaExt = false;  // TODO:
         qint64 flags = read->flags;
-        flags = flags | (dnaExt ? DnaExtAlphabet : 0);
-
         if (rangeMode) {  // effective read length must be precomputed in this mode
             assert(read->effectiveLen >= minReadLength && read->effectiveLen < maxReadLength);
         } else {
