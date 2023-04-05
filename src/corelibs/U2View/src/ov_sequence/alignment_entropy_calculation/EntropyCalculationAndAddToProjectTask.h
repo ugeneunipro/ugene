@@ -33,7 +33,6 @@ public :
     EntropyCalculationAndAddToProjectTask(AnnotatedDNAView* annotatedDNAView,
         const QString& alignmentFilePath,
         const QString& saveToPath,
-        const QString& alignmentAlgorithm,
         bool addToProject);
     void prepare();
     void run();
@@ -45,7 +44,6 @@ private:
     AnnotatedDNAView* annotatedDNAView;
     const QString alignmentFilePath;
     const QString saveToPath;
-    const QString alignmentAlgorithm;
     const bool addToProject;
 };
 

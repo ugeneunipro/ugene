@@ -38,13 +38,11 @@
 namespace U2 {
 EntropyCalculationTask::EntropyCalculationTask(AnnotatedDNAView* _annotatedDNAView, 
                                                const QString& _alignmentFilePath, 
-                                               const QString& _saveToPath, 
-                                               const QString& _alignmentAlgorithm)
+                                               const QString& _saveToPath)
     : Task(tr("Alignment entropy calculation"), TaskFlags_FOSE_COSC), 
     annotatedDNAView(_annotatedDNAView),
     alignmentFilePath(_alignmentFilePath), 
-    saveToPath(_saveToPath),
-    alignmentAlgorithm(_alignmentAlgorithm) {
+    saveToPath(_saveToPath) {
 }
 
 void EntropyCalculationTask::prepare() {
@@ -85,14 +83,8 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         res << addSequenceTask;
     } else if (subTask == addSequenceTask) {
         qint64 rowId = alignment->getMultipleAlignment()->getRow(newSequenceName)->getRowId();
-        if (alignmentAlgorithm == "UGENE") {
-            realignSequencesTask = new RealignSequencesInAlignmentTask(alignment, {rowId}, 
-                BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE);
-        } else if (alignmentAlgorithm == "MAFFT") {
-            //TODO
-        } else if (alignmentAlgorithm == "MUSCLE") {
-            //TODO  
-        }
+        realignSequencesTask = new RealignSequencesInAlignmentTask(alignment, {rowId}, 
+            BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE);
         CHECK_OP(stateInfo, res);
         res << realignSequencesTask;
     }

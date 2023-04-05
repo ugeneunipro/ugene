@@ -39,6 +39,8 @@ public:
 
     static const QString& getGroupId();
 
+    bool passFiltration(OPFactoryFilterVisitorInterface* filter) override;
+
 private:
     static const QString GROUP_ID;
     static const QString GROUP_ICON_STR;

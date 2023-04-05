@@ -66,16 +66,6 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="algorithmLabel">
-        <property name="text">
-         <string>Alignment algorithm</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="algorithmComboBox"/>
-      </item>
-      <item>
        <widget class="QLabel" name="saveToLabel">
         <property name="text">
          <string>Save to</string>

@@ -28,18 +28,16 @@ namespace U2 {
 EntropyCalculationAndAddToProjectTask::EntropyCalculationAndAddToProjectTask(AnnotatedDNAView * _annotatedDNAView,
                                                                               const QString& _alignmentFilePath,
                                                                               const QString& _saveToPath,
-                                                                              const QString& _alignmentAlgorithm,
                                                                               bool _addToProject)
     : Task(tr("Alignment entropy calculation and adding to project"), TaskFlags_FOSE_COSC),
       annotatedDNAView(_annotatedDNAView),
       alignmentFilePath(_alignmentFilePath),
       saveToPath(_saveToPath),
-      alignmentAlgorithm(_alignmentAlgorithm),
       addToProject(_addToProject) {
 }
 
 void EntropyCalculationAndAddToProjectTask::prepare() {
-    entropyCalculationTask = new EntropyCalculationTask(annotatedDNAView, alignmentFilePath, saveToPath, alignmentAlgorithm);
+    entropyCalculationTask = new EntropyCalculationTask(annotatedDNAView, alignmentFilePath, saveToPath);
     addSubTask(entropyCalculationTask);
     CHECK_OP(stateInfo, );
 }
