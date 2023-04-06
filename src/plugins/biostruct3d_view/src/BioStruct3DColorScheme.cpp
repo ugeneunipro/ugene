@@ -303,7 +303,6 @@ SimpleColorScheme::SimpleColorScheme(const BioStruct3DObject* biostruct)
 }
 
 /* class AlignmentEntropyColorScheme : public BioStruct3DColorScheme */
-QVector<int> AlignmentEntropyColorScheme::entropyChainIds;
 
 AlignmentEntropyColorScheme::AlignmentEntropyColorScheme(const BioStruct3DObject* biostruct)
     : BioStruct3DColorScheme(biostruct) {
@@ -325,18 +324,21 @@ AlignmentEntropyColorScheme::AlignmentEntropyColorScheme(const BioStruct3DObject
 }
 
 Color4f AlignmentEntropyColorScheme::getSchemeAtomColor(const SharedAtom& atom) const {
-    if (entropyChainIds.contains(atom->chainIndex)) {
-        return Color4f(QColor(atom->temperature * 255, 0, (1 - atom->temperature) * 255));
-    } else {
-        return Color4f((QColor(0x00, 0xff, 0x00)));
-    }
+    return getSelectionOrSchemeColor(atom, 0, false);
 }
 
 Color4f AlignmentEntropyColorScheme::getSelectionColor(const SharedAtom& atom) const {
+    return getSelectionOrSchemeColor(atom, 100, true);
+}
+
+Color4f AlignmentEntropyColorScheme::getSelectionOrSchemeColor(const SharedAtom& atom, int green, bool isSelection) const {
     if (entropyChainIds.contains(atom->chainIndex)) {
-        return Color4f(QColor(atom->temperature * 255, 100, (1 - atom->temperature) * 255));
-    } else {
+        SAFE_POINT(atom->temperature <= 1 && atom->temperature >= 0, "Atom temperature is less than 0 or greater than 1", Color4f());
+        return Color4f(QColor(atom->temperature * 255, green, (1 - atom->temperature) * 255));
+    } else if (isSelection) {
         return selectionColor;
+    } else {
+        return Color4f((QColor(0x00, 0xff, 0x00)));
     }
 }
 

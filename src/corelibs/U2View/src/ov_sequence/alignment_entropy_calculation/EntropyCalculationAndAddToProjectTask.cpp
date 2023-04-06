@@ -48,6 +48,7 @@ void EntropyCalculationAndAddToProjectTask::run() {
 QList<Task*> EntropyCalculationAndAddToProjectTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if (subTask == entropyCalculationTask) {
+        CHECK_OP(stateInfo, res);
         if (addToProject) {
             Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(saveToPath);
             CHECK_OP(stateInfo, res);

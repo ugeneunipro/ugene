@@ -279,7 +279,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
                     SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("U2SequenceObject"), nullptr);
 
                     auto curDoc = seqObj->getDocument();
-                    SAFE_POINT(curDoc != nullptr, L10N::nullPointerError("Current document is NULL"), nullptr);
+                    SAFE_POINT(curDoc != nullptr, L10N::nullPointerError("Document"), nullptr);
 
                     auto objects = curDoc->getObjects();
                     for (auto obj : objects) {
