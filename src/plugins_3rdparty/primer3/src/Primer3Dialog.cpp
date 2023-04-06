@@ -658,7 +658,7 @@ bool Primer3Dialog::doDataExchange() {
         {
             auto internalOligo = edit_SEQUENCE_INTERNAL_OLIGO->text().toLatin1();
             checkSequenceAlphabet(internalOligo, tr("Internal oligo"), edit_SEQUENCE_INTERNAL_OLIGO);
-            settings->setLeftInput(internalOligo);
+            settings->setInternalInput(internalOligo);
 
         }
     } else {
