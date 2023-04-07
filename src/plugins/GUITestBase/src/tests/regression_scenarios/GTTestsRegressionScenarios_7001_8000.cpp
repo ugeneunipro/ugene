@@ -69,6 +69,7 @@
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
@@ -4195,7 +4196,7 @@ GUI_TEST_CLASS_DEFINITION(test_7824) {
     // 1. Open 1.gb.
     // 2. Double click any annotation
     // Expected: the corresponding sequence has been selected
-    // 
+    //
     // 3. Click right button on the same annotation
     // Expected: the corresponding sequence is still selected
     // Current: sequence selection is gone, only annotation selection left
@@ -4212,10 +4213,9 @@ GUI_TEST_CLASS_DEFINITION(test_7824) {
     CHECK_SET_ERR(selection.first() == U2Region(29, 91),
                   QString("Selection doesn't match with 'B' annotation it is (%1, %2) instead of (29, 91).")
                       .arg(QString::number(selection.first().startPos))
-                      .arg(QString::number(selection.first().length))
-                  );
+                      .arg(QString::number(selection.first().length)));
     GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C_group  (0, 1)"));
-    QPoint cCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "C");    
+    QPoint cCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "C");
     QPoint bjCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::moveTo(cCenter);
@@ -4312,6 +4312,56 @@ GUI_TEST_CLASS_DEFINITION(test_7842) {
 
     GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Construct molecule..."});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7850) {
+    // Open document samples\CLUSTALW\COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Create bookmark "start bookmark"
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
+
+    int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
+    int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+    QWidget* mdiWindow = GTUtilsMdi::activeWindow(os);
+
+    // Scroll msa to the middle.
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTMenu::showContextMenu(os, mdiWindow);
+
+    // Expected state: clicking on start bookmark will recall corresponding start MSA position
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
+    int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+    CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
+
+    // Scroll msa to the middle.
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTMenu::showContextMenu(os, mdiWindow);
+
+    int middleRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
+    int middleLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+
+    // Update start bookmark
+    GTUtilsBookmarksTreeView::updateBookmark(os, "start bookmark");
+
+    // Scroll msa to the start.
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTMenu::showContextMenu(os, mdiWindow);
+
+    // Expected state: clicking on start bookmark will recall updated (middle) MSA position
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    int updatedRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os);
+    int updatedLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+    CHECK_SET_ERR(updatedRO == middleRO && updatedLO == middleLO, QString("updated bookmark offsets aren't equal to the expected middle offsets: expected %1, current %2").arg(middleRO).arg(updatedRO));
 }
 
 }  // namespace GUITest_regression_scenarios
