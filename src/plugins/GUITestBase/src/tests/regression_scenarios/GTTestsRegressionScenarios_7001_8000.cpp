@@ -4319,7 +4319,6 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "my bookmark");
-    QWidget* mdiWindow = GTUtilsMdi::activeWindow(os);
 
     // Scroll MSA to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
