@@ -128,7 +128,11 @@ void Primer3DialogFiller::commonScenario() {
     }
 
     if (settings.notRun) {
-        GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        if (isOsMac()) {
+            dialog->close();
+        } else {
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
         return;
     }
 

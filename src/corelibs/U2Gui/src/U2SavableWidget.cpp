@@ -41,9 +41,11 @@ Q_DECLARE_METATYPE(QVector<QVector<QString>>)
 
 namespace U2 {
 
-U2SavableWidget::U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
+U2SavableWidget::U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow, const QStringList& _excludeWidgetIds)
     : wrappedWidget(wrappedWidget), contextWindow(contextWindow), widgetStateSaved(false) {
     SAFE_POINT(wrappedWidget != nullptr, L10N::nullPointerError("wrapped widget"), );
+
+    appendExcludeWidgets(_excludeWidgetIds);
 }
 
 U2SavableWidget::~U2SavableWidget() {
@@ -76,7 +78,7 @@ QSet<QString> U2SavableWidget::getChildIds() const {
 
 bool U2SavableWidget::childValueIsAcceptable(const QString& childId, const QVariant& value) const {
     Q_UNUSED(value);
-    return childExists(childId);
+    return childExists(childId) && !isExcluded(childId);
 }
 
 namespace {
@@ -188,8 +190,28 @@ MWMDIWindow* U2SavableWidget::getContextWindow() const {
     return contextWindow;
 }
 
+void U2SavableWidget::appendExcludeWidgets(const QStringList& excludeWidgetIds) {
+    for (const auto& excludeWgtId : qAsConst(excludeWidgetIds)) {
+        auto excludeWgt = getChildWidgetById(excludeWgtId);
+        SAFE_POINT(excludeWgt != nullptr, QString("Widget %1 not found").arg(excludeWgtId), );
+
+        excludeWidgets << excludeWgt;
+    }
+}
+
 QSet<QWidget*> U2SavableWidget::getCompoundChildren() const {
     return QSet<QWidget*>();
+}
+
+bool U2SavableWidget::isExcluded(const QString& childId) const {
+    auto wgt = getChildWidgetById(childId);
+    for (auto excludeWgt : qAsConst(excludeWidgets)) {
+        CHECK_CONTINUE(excludeWgt == wgt || excludeWgt->findChild<QWidget*>(childId) != nullptr);
+
+        return true;
+    }
+
+    return false;
 }
 
 bool U2SavableWidget::childCanBeSaved(QWidget* child) const {

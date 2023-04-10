@@ -26,6 +26,7 @@
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/RegionSelector.h>
+#include <U2Gui/U2SavableWidget.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 
@@ -85,6 +86,8 @@ private:
     Primer3TaskSettings* settings = nullptr;
     RegionSelector* rs = nullptr;
     ADVSequenceObjectContext* context = nullptr;
+
+    U2SavableWidget savableWidget;
 
     const Primer3TaskSettings defaultSettings;
 

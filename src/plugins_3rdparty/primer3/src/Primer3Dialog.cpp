@@ -39,6 +39,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
+#include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/AnnotatedDNAView.h>
 
@@ -81,7 +82,8 @@ const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^
 
 Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
-      context(context) {
+      context(context),
+      savableWidget(this, GObjectViewUtils::findViewByName(context->getAnnotatedDNAView()->getName())) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
 
@@ -103,13 +105,16 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
         createAnnotationModel.hideAnnotationName = false;
         createAnnotationModel.hideLocation = true;
         createAnnotationWidgetController = new CreateAnnotationWidgetController(createAnnotationModel, this);
-        annotationWidgetLayout->addWidget(createAnnotationWidgetController->getWidget());
+        auto annWgt = createAnnotationWidgetController->getWidget();
+        annWgt->setObjectName("primer3AnnWgt");
+        annotationWidgetLayout->addWidget(annWgt);
     }
 
     if (!context->getSequenceSelection()->getSelectedRegions().isEmpty()) {
         selection = context->getSequenceSelection()->getSelectedRegions().first();
     }
     rs = new RegionSelector(this, context->getSequenceLength(), false, context->getSequenceSelection(), true);
+    rs->setObjectName("primer3RegionSelector");
     rangeSelectorLayout->addWidget(rs);
 
     repeatLibraries.append(QPair<QString, QByteArray>(tr("NONE"), ""));
@@ -142,6 +147,9 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     }
 
     reset();
+
+    savableWidget.appendExcludeWidgets({ "primer3RegionSelector", "primer3AnnWgt" });
+    U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
 Primer3Dialog::~Primer3Dialog() {

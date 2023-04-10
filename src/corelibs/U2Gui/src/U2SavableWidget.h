@@ -34,7 +34,7 @@ class MWMDIWindow;
 
 class U2GUI_EXPORT U2SavableWidget {
 public:
-    U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow = nullptr);
+    U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow = nullptr, const QStringList& excludeWidgetIds = {});
     virtual ~U2SavableWidget();
 
     virtual QString getWidgetId() const;
@@ -44,6 +44,7 @@ public:
     virtual void setChildValue(const QString& childId, const QVariant& value);
 
     MWMDIWindow* getContextWindow() const;
+    void appendExcludeWidgets(const QStringList& excludeWidgetIds);
 
 protected:
     virtual bool childCanBeSaved(QWidget* child) const;
@@ -51,10 +52,16 @@ protected:
     virtual bool childExists(const QString& childId) const;
     virtual QWidget* getChildWidgetById(const QString& childId) const;
     virtual QSet<QWidget*> getCompoundChildren() const;
+    bool isExcluded(const QString& childId) const;
 
     QWidget* wrappedWidget;
     MWMDIWindow* contextWindow;
     bool widgetStateSaved;
+    /*
+     * Widgets, which state shouldn't be saved.
+     * This behaviour works for the widget and all it's children
+     */
+    QList<QWidget*> excludeWidgets;
 };
 
 }  // namespace U2
