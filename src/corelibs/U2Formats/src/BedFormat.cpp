@@ -396,8 +396,8 @@ bool parseTrackLine(const QString& trackLine, QString& trackName, QString& track
 }
 
 void BedFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
-    SAFE_POINT(nullptr != doc, "Internal error: NULL document was provided to BEDFormat::storeDocument!", );
-    SAFE_POINT(nullptr != io, "Internal error: NULL IO adapter was provided to BEDFormat::storeDocument!", );
+    SAFE_POINT(doc != nullptr, "Internal error: NULL document was provided to BEDFormat::storeDocument!", );
+    SAFE_POINT(io != nullptr, "Internal error: NULL IO adapter was provided to BEDFormat::storeDocument!", );
 
     ioLog.trace(tr("Starting BED saving: '%1'").arg(doc->getURLString()));
 

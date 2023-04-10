@@ -31,9 +31,11 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -283,7 +285,7 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
             }
             res << v;
         }
-        
+
         result << res;
     }
     *outputList = result;
@@ -334,7 +336,7 @@ void Primer3Dialog::reset() {
     edit_SEQUENCE_INTERNAL_OLIGO->setText(defaultSettings.getInternalInput());
     edit_SEQUENCE_OVERHANG_LEFT->setText(defaultSettings.getOverhangLeft());
     edit_SEQUENCE_OVERHANG_RIGHT->setText(defaultSettings.getOverhangRight());
-    
+
     {
         QString qualityString;
         bool first = true;
@@ -423,6 +425,9 @@ bool Primer3Dialog::doDataExchange() {
     delete settings;
     settings = new Primer3TaskSettings;
 
+    QMap<QWidget*, bool> widgetStates;
+    QStringList errors;
+
     if (spanIntronExonBox->isChecked()) {
         SpanIntronExonBoundarySettings s;
         s.enabled = true;
@@ -434,14 +439,17 @@ bool Primer3Dialog::doDataExchange() {
         s.overlapExonExonBoundary = spanJunctionBox->isChecked();
 
         bool ok = false;
-        s.exonRange = parseExonRange(exonRangeEdit->text().trimmed(), ok);
+        s.exonRange = parseExonRange(edit_exonRange->text().trimmed(), ok);
+        widgetStates.insert(edit_exonRange, ok);
         if (!ok) {
-            showInvalidInputMessage(exonRangeEdit, "Exon range");
-            return false;
+            errors.append(getWidgetTemplateError(edit_exonRange));
         }
 
         settings->setSpanIntronExonBoundarySettings(s);
+    } else {
+        widgetStates.insert(edit_exonRange, true);
     }
+
     const auto& intProps = settings->getIntPropertyList();
     for (const auto& key : qAsConst(intProps)) {
         QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
@@ -467,160 +475,234 @@ bool Primer3Dialog::doDataExchange() {
         }
     }
 
+    // Main
     {
         QList<U2Region> list;
-        if (parseIntervalList(edit_SEQUENCE_TARGET->text(), ",", &list)) {
+        bool ok = parseIntervalList(edit_SEQUENCE_TARGET->text(), ",", &list);
+        widgetStates.insert(edit_SEQUENCE_TARGET, ok);
+        if (ok) {
             settings->setTarget(list);
         } else {
-            showInvalidInputMessage(edit_SEQUENCE_TARGET, tr("Targets"));
-            return false;
+            errors.append(getWidgetTemplateError(edit_SEQUENCE_TARGET));
         }
     }
     {
         QList<int> list;
-        if (parseIntList(edit_SEQUENCE_OVERLAP_JUNCTION_LIST->text(), &list)) {
+        bool ok = parseIntList(edit_SEQUENCE_OVERLAP_JUNCTION_LIST->text(), &list);
+        widgetStates.insert(edit_SEQUENCE_OVERLAP_JUNCTION_LIST, ok);
+        if (ok) {
             settings->setOverlapJunctionList(list);
         } else {
-            showInvalidInputMessage(edit_SEQUENCE_OVERLAP_JUNCTION_LIST, tr("Overlap Junction List"));
-            return false;
-        }
-    }
-    {
-        QList<int> list;
-        if (parseIntList(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST->text(), &list)) {
-            settings->setInternalOverlapJunctionList(list);
-        } else {
-            showInvalidInputMessage(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST, tr("Internal Oligo Overlap Positions"));
-            return false;
+            errors.append(getWidgetTemplateError(edit_SEQUENCE_OVERLAP_JUNCTION_LIST));
         }
     }
     {
         QList<U2Region> list;
-        if (parseIntervalList(edit_SEQUENCE_EXCLUDED_REGION->text(), ",", &list)) {
+        bool ok = parseIntervalList(edit_SEQUENCE_EXCLUDED_REGION->text(), ",", &list);
+        widgetStates.insert(edit_SEQUENCE_EXCLUDED_REGION, ok);
+        if (ok) {
             settings->setExcludedRegion(list);
         } else {
-            showInvalidInputMessage(edit_SEQUENCE_EXCLUDED_REGION, tr("Excluded Regions"));
-            return false;
-        }
-    }
-    {
-        QList<U2Region> list;
-        if (parseIntervalList(edit_SEQUENCE_INCLUDED_REGION->text(), ",", &list)) {
-            if (list.size() > 1) {
-                QMessageBox::critical(this, windowTitle(), tr("The \"Include region\" should be the only one"));
-                return false;
-            } else if (list.size() == 1) {
-                const auto & region = list.first();
-                settings->setIncludedRegion(region.startPos, region.length);
-            }
-        } else {
-            showInvalidInputMessage(edit_SEQUENCE_INCLUDED_REGION, tr("Include Regions"));
-            return false;
+            errors.append(getWidgetTemplateError(edit_SEQUENCE_EXCLUDED_REGION));
         }
     }
     {
         QList<QList<int>> list;
-        if (parseOkRegions(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text(), &list)) {
+        bool ok = parseOkRegions(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->text(), &list);
+        widgetStates.insert(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST, ok);
+        if (ok) {
             settings->setOkRegion(list);
         } else {
-            showInvalidInputMessage(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST, tr("Pair OK Region List"));
-            return false;
+            errors.append(getWidgetTemplateError(edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST));
         }
     }
     {
+        QList<U2Region> list;
+        bool ok = parseIntervalList(edit_SEQUENCE_INCLUDED_REGION->text(), ",", &list);
+        if (ok) {
+            if (list.size() > 1) {
+                errors.append(tr("The \"Include region\" should be the only one"));
+                ok = false;
+            } else if (list.size() == 1) {
+                const auto& region = list.first();
+                settings->setIncludedRegion(region.startPos, region.length);
+            }
+        } else {
+            errors.append(getWidgetTemplateError(edit_SEQUENCE_INCLUDED_REGION));
+        }
+        widgetStates.insert(edit_SEQUENCE_INCLUDED_REGION, ok);
+    }
+    {
         QString text = edit_SEQUENCE_START_CODON_SEQUENCE->text();
+        bool ok = true;
         if (!text.isEmpty()) {
             if (MUST_MATCH_START_CODON_SEQUENCE_REGEX.match(text).hasMatch()) {
                 settings->setStartCodonSequence(text.toLocal8Bit());
             } else {
-                showInvalidInputMessage(edit_SEQUENCE_START_CODON_SEQUENCE, tr("Start Codon Sequence"));
-                return false;
+                ok = false;
+                errors.append(getWidgetTemplateError(edit_SEQUENCE_START_CODON_SEQUENCE));
             }
         }
+        widgetStates.insert(edit_SEQUENCE_START_CODON_SEQUENCE, ok);
     }
     {
         QString text = edit_PRIMER_MUST_MATCH_FIVE_PRIME->text();
+        bool ok = true;
         if (!text.isEmpty()) {
             if (MUST_MATCH_END_REGEX.match(text).hasMatch()) {
                 settings->setPrimerMustMatchFivePrime(text.toLocal8Bit());
             } else {
-                showInvalidInputMessage(edit_PRIMER_MUST_MATCH_FIVE_PRIME, tr("Five Matches on Primer's 5'"));
-                return false;
+                ok = false;
+                errors.append(getWidgetTemplateError(edit_PRIMER_MUST_MATCH_FIVE_PRIME));
             }
         }
+        widgetStates.insert(edit_PRIMER_MUST_MATCH_FIVE_PRIME, ok);
     }
     {
         QString text = edit_PRIMER_MUST_MATCH_THREE_PRIME->text();
+        bool ok = true;
         if (!text.isEmpty()) {
             if (MUST_MATCH_END_REGEX.match(text).hasMatch()) {
                 settings->setPrimerMustMatchThreePrime(text.toLocal8Bit());
             } else {
-                showInvalidInputMessage(edit_PRIMER_MUST_MATCH_THREE_PRIME, tr("Five Matches on Primer's 3'"));
-                return false;
+                ok = false;
+                errors.append(getWidgetTemplateError(edit_PRIMER_MUST_MATCH_THREE_PRIME));
             }
+        }
+        widgetStates.insert(edit_PRIMER_MUST_MATCH_THREE_PRIME, ok);
+    }
+    // Internal
+    {
+        QList<U2Region> list;
+        bool ok = parseIntervalList(edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->text(), ",", &list);
+        widgetStates.insert(edit_SEQUENCE_INTERNAL_EXCLUDED_REGION, ok);
+        if (ok) {
+            settings->setInternalOligoExcludedRegion(list);
+        } else {
+            errors.append(getWidgetTemplateError(edit_SEQUENCE_INTERNAL_EXCLUDED_REGION));
+        }
+    }
+    {
+        QList<int> list;
+        bool ok = parseIntList(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST->text(), &list);
+        widgetStates.insert(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST, ok);
+        if (ok) {
+            settings->setInternalOverlapJunctionList(list);
+        } else {
+            errors.append(getWidgetTemplateError(edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST));
         }
     }
     {
         QString text = edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->text();
+        bool ok = true;
         if (!text.isEmpty()) {
             if (!text.isEmpty() && MUST_MATCH_END_REGEX.match(text).hasMatch()) {
                 settings->setInternalPrimerMustMatchFivePrime(text.toLocal8Bit());
             } else {
-                showInvalidInputMessage(edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME, tr("Five Matches on Internal Oligo's  5'"));
-                return false;
+                ok = false;
+                errors.append(getWidgetTemplateError(edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME));
             }
         }
+        widgetStates.insert(edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME, ok);
     }
     {
         QString text = edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->text();
+        bool ok = true;
         if (!text.isEmpty()) {
             if (!text.isEmpty() && MUST_MATCH_END_REGEX.match(text).hasMatch()) {
                 settings->setInternalPrimerMustMatchThreePrime(text.toLocal8Bit());
             } else {
-                showInvalidInputMessage(edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME, tr("Five Matches on Internal Oligo's 3'"));
-                return false;
+                ok = false;
+                errors.append(getWidgetTemplateError(edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME));
             }
         }
+        widgetStates.insert(edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME, ok);
     }
 
+    auto checkSequenceAlphabet = [&errors, &widgetStates](const QByteArray& sequence, const QString& parameterName, QLineEdit* wgt) {
+        static const QString INCORRECT_ALPHABET_ERROR_TEMPLATE
+            = QT_TR_NOOP(tr("%1 parameter has incorrect alphabet, should be DNA"));
+        bool res = true;
+        if (!sequence.isEmpty()) {
+            auto alphabet = U2AlphabetUtils::findAllAlphabets(sequence).first();
+            bool isSimpleDna = alphabet->isNucleic() && alphabet->isDefault();
+            if (!isSimpleDna) {
+                res = false;
+                errors.append("Left sequence has incorrect alphabet, should be be simple DNA");
+            }
+        }
+        widgetStates.insert(wgt, res);
+    };
+
     if (checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked()) {
-        settings->setLeftInput(edit_SEQUENCE_PRIMER->text().toLatin1());
-        settings->setLeftOverhang(edit_SEQUENCE_OVERHANG_LEFT->text().toLatin1());
+        {
+            auto leftSequence = edit_SEQUENCE_PRIMER->text().toLatin1();
+            checkSequenceAlphabet(leftSequence, tr("Left primer"), edit_SEQUENCE_PRIMER);
+            settings->setLeftInput(leftSequence);
+        }
+
+        {
+            auto leftOverhang = edit_SEQUENCE_OVERHANG_LEFT->text().toLatin1();
+            checkSequenceAlphabet(leftOverhang, tr("Left 5' overhang"), edit_SEQUENCE_OVERHANG_LEFT);
+            settings->setLeftOverhang(leftOverhang);
+
+        }
     } else {
         settings->setLeftInput("");
+        widgetStates.insert(edit_SEQUENCE_PRIMER, true);
         settings->setLeftOverhang("");
+        widgetStates.insert(edit_SEQUENCE_OVERHANG_LEFT, true);
     }
+
     if (checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked()) {
-        settings->setInternalInput(edit_SEQUENCE_INTERNAL_OLIGO->text().toLatin1());
+        {
+            auto internalOligo = edit_SEQUENCE_INTERNAL_OLIGO->text().toLatin1();
+            checkSequenceAlphabet(internalOligo, tr("Internal oligo"), edit_SEQUENCE_INTERNAL_OLIGO);
+            settings->setInternalInput(internalOligo);
+
+        }
     } else {
         settings->setInternalInput("");
+        widgetStates.insert(edit_SEQUENCE_INTERNAL_OLIGO, true);
     }
+
     if (checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
-        settings->setRightInput(edit_SEQUENCE_PRIMER_REVCOMP->text().toLatin1());
-        settings->setRightOverhang(edit_SEQUENCE_OVERHANG_RIGHT->text().toLatin1());
+        {
+            auto rightSequence = edit_SEQUENCE_PRIMER_REVCOMP->text().toLatin1();
+            checkSequenceAlphabet(rightSequence, tr("Right primer"), edit_SEQUENCE_PRIMER_REVCOMP);
+            settings->setRightInput(rightSequence);
+        }
+
+        {
+            auto rightOverhang = edit_SEQUENCE_OVERHANG_RIGHT->text().toLatin1();
+            checkSequenceAlphabet(rightOverhang, tr("Right 5' overhang"), edit_SEQUENCE_OVERHANG_RIGHT);
+            settings->setRightOverhang(rightOverhang);
+        }
     } else {
         settings->setRightInput("");
+        widgetStates.insert(edit_SEQUENCE_PRIMER_REVCOMP, true);
         settings->setRightOverhang("");
+        widgetStates.insert(edit_SEQUENCE_OVERHANG_RIGHT, true);
     }
 
     {
         QVector<int> qualityList;
         QStringList stringList = edit_SEQUENCE_QUALITY->toPlainText().split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        bool ok = true;
         for (const QString& string : qAsConst(stringList)) {
-            bool ok = false;
-            int value = string.toInt(&ok);
-            if (!ok) {
-                showInvalidInputMessage(edit_SEQUENCE_QUALITY, tr("Sequence Quality"));
-                return false;
+            bool isInt = false;
+            int value = string.toInt(&isInt);
+            if (!isInt) {
+                ok = false;
             }
             qualityList.append(value);
         }
-        if (!qualityList.isEmpty() && (qualityList.size() != (rs->getRegion().length)))  // todo add check on wrong region
-        {
-            QMessageBox::critical(this, windowTitle(), tr("Sequence quality list length must be equal to the sequence length"));
-            return false;
+        if (!qualityList.isEmpty() && (qualityList.size() != (rs->getRegion().length))) { // todo add check on wrong region
+            ok = false;
+            errors.append(tr("Sequence quality list length must be equal to the sequence length"));
         }
         settings->setSequenceQuality(qualityList);
+        widgetStates.insert(edit_SEQUENCE_QUALITY, ok);
     }
 
     settings->setIntProperty("PRIMER_TM_FORMULA", combobox_PRIMER_TM_FORMULA->currentIndex());
@@ -634,8 +716,8 @@ bool Primer3Dialog::doDataExchange() {
     switch (settings->getTask()) {
     case pick_discriminative_primers:
         if (settings->getSeqArgs()->tar2.count != 1) {
-            QMessageBox::critical(this, windowTitle(), tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
-            return false;
+            widgetStates.insert(edit_SEQUENCE_TARGET, false);
+            errors.append(tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
         }
     case pick_cloning_primers:
     case generic:
@@ -645,13 +727,11 @@ bool Primer3Dialog::doDataExchange() {
         if (!(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() ||
             checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
             checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked())) {
-            QMessageBox::critical(this, windowTitle(), tr("At least one primer on the \"Main\" settings page should be enabled."));
-            return false;
+            errors.append(tr("At least one primer on the \"Main\" settings page should be enabled."));
         }
         break;
     default:
-        showInvalidInputMessage(edit_PRIMER_TASK, tr("Primer3 task"));
-        return false;
+        FAIL("Invalid Primer3 task", false);
     }
 
     {
@@ -665,56 +745,99 @@ bool Primer3Dialog::doDataExchange() {
 
     {
         QList<U2Region> list;
-        if (parseIntervalList(edit_PRIMER_PRODUCT_SIZE_RANGE->text(), "-", &list, IntervalDefinition::Start_End)) {
+        bool ok = parseIntervalList(edit_PRIMER_PRODUCT_SIZE_RANGE->text(), "-", &list, IntervalDefinition::Start_End);
+        bool alreadyHasError = false;
+        if (ok) {
             if (list.isEmpty()) {
-                QMessageBox::critical(this, windowTitle(), tr("Primer Size Ranges should have at least one range"));
-                return false;
+                errors.append(tr("Primer Size Ranges should have at least one range"));
+                ok = false;
+                alreadyHasError = true;
+            } else {
+                settings->setProductSizeRange(list);
+                bool isRegionOk = false;
+                U2Region sequenceRangeRegion = rs->getRegion(&isRegionOk);
+                if (!isRegionOk) {
+                    rs->showErrorMessage();
+                    return false;
+                }
+                if (!settings->isIncludedRegionValid(sequenceRangeRegion)) {
+                    errors.append(tr("Sequence range region is too small for current product size ranges"));
+                    ok = false;
+                    alreadyHasError = true;
+                } else {
+                    settings->setSequenceRange(sequenceRangeRegion);
+                }
             }
-
-            settings->setProductSizeRange(list);
-            bool isRegionOk = false;
-            U2Region sequenceRangeRegion = rs->getRegion(&isRegionOk);
-            if (!isRegionOk) {
-                rs->showErrorMessage();
-                return false;
-            }
-            if (!settings->isIncludedRegionValid(sequenceRangeRegion)) {
-                QMessageBox::critical(this, windowTitle(), tr("Sequence range region is too small for current product size ranges"));
-                return false;
-            }
-            if (sequenceRangeRegion.length > MAXIMUM_ALLOWED_SEQUENCE_LENGTH) {
-                QMessageBox::critical(this, windowTitle(), tr("The priming sequence is too long, please, decrease the region"));
-                return false;
-            }
-            
-            const auto& includedRegion = settings->getIncludedRegion();
-            int fbs = settings->getFirstBaseIndex();
-            int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
-            if (includedRegionOffset < 0) {
-                QMessageBox::critical(this, windowTitle(), tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0"));
-                return false;
-            }
-
-            if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
-                QMessageBox::critical(this, windowTitle(), tr("The priming sequence is out of range.\n"
-                                                              "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
-                                                              "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings->getFirstBaseIndex()));
-                return false;
-            }
-
-            settings->setSequenceRange(sequenceRangeRegion);
-        } else {
-            showInvalidInputMessage(edit_PRIMER_PRODUCT_SIZE_RANGE, tr("Product Size Ranges"));
-            return false;
+        }
+        widgetStates.insert(edit_PRIMER_PRODUCT_SIZE_RANGE, ok);
+        if (!ok && !alreadyHasError) {
+            errors.append(getWidgetTemplateError(edit_PRIMER_PRODUCT_SIZE_RANGE));
         }
     }
-    return true;
+    {
+        U2Region sequenceRangeRegion = rs->getRegion();
+        bool ok = true;
+        if (sequenceRangeRegion.length > MAXIMUM_ALLOWED_SEQUENCE_LENGTH) {
+            errors.append(tr("The priming sequence is too long, please, decrease the region"));
+            ok = false;
+        }
+        widgetStates.insert(rs, ok);
+    }
+    {
+        const auto& includedRegion = settings->getIncludedRegion();
+        int fbs = settings->getFirstBaseIndex();
+        int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+        if (includedRegionOffset < 0) {
+            errors.append(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0"));
+        }
+        U2Region sequenceRangeRegion = rs->getRegion();
+        if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
+            errors.append(tr("The priming sequence is out of range.\n"
+                "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
+                "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings->getFirstBaseIndex()));
+        }
+    }
+
+    return updateErrorState(widgetStates, errors);
 }
 
-void Primer3Dialog::showInvalidInputMessage(QWidget* field, const QString& fieldLabel) {
-    tabWidget->setCurrentWidget(field->parentWidget());
-    field->setFocus(Qt::OtherFocusReason);
-    QMessageBox::critical(this, windowTitle(), tr("The field '%1' has invalid value").arg(fieldLabel));
+bool Primer3Dialog::updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors) {
+    const auto& widgets = widgetStates.keys();
+    for (auto wgt : qAsConst(widgets)) {
+        GUIUtils::setWidgetWarningStyle(wgt, !widgetStates.value(wgt));
+    }
+    CHECK(!errors.isEmpty(), true);
+
+    QString generalErrorString = tr("%1 parameter(s) have an incorrect value(s), pay attention on red widgets. ").arg(errors.size());
+    if (errors.size() <= 3) {
+        generalErrorString += tr("The following errors are possible: \n\n");
+        generalErrorString += errors.join("\n\n");
+    }
+    generalErrorString += tr("\n\nClick OK to continue calculation, but the incorrect values will be ignored.");
+
+    auto result = QMessageBox::question(this, windowTitle(), generalErrorString, QMessageBox::StandardButton::Ok, QMessageBox::StandardButton::Cancel);
+    return result == QMessageBox::StandardButton::Ok;
+}
+
+QString Primer3Dialog::getWidgetTemplateError(QWidget* wgt, const QString& errorWgtLabe) const {
+    static const QString ERROR_TEMPLATE
+        = QT_TR_NOOP(tr("The \"%1\" parameter has incorrect value, please"
+        ", read the tooltip of this parameter to find out how the correct one looks like."));
+
+    auto name = errorWgtLabe;
+    if (name.isEmpty()) {
+        auto labelWidgetName = wgt->objectName().replace("edit_", "label_");
+        auto parentWgt = wgt->parentWidget();
+        auto wgtLabel = parentWgt->findChild<QLabel*>(labelWidgetName);
+        SAFE_POINT(wgtLabel != nullptr, "No label was found", QString());
+
+        name = wgtLabel->text();
+        if (name.endsWith(":")) {
+            name = name.left(name.size() - 1);
+        }
+    }
+
+    return ERROR_TEMPLATE.arg(name);
 }
 
 void Primer3Dialog::sl_pickClicked() {
@@ -785,12 +908,12 @@ void Primer3Dialog::sl_saveSettings() {
     if (!qualityText.isEmpty()) {
         stream << "SEQUENCE_QUALITY=" << qualityText << endl;
     }
-    
+
     stream << "PRIMER_TASK=" << edit_PRIMER_TASK->currentText() << endl;
 
     stream << "PRIMER_TM_FORMULA=" << combobox_PRIMER_TM_FORMULA->currentIndex() << endl;
     stream << "PRIMER_SALT_CORRECTIONS=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << endl;
-    
+
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
     for (const auto& lib : qAsConst(repeatLibraries)) {
@@ -982,15 +1105,15 @@ void Primer3Dialog::sl_resetClicked() {
 
 void Primer3Dialog::sl_taskChanged(const QString& text) {
     auto setSequenceParametersEnabled = [&](bool target, bool junctionList, bool pairOk, bool excludedRegion, bool includedRegion) {
-        label_TARGET->setEnabled(target);
+        label_SEQUENCE_TARGET->setEnabled(target);
         edit_SEQUENCE_TARGET->setEnabled(target);
-        label_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
+        label_SEQUENCE_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
         edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
-        label_PAIR_OK->setEnabled(pairOk);
+        label_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setEnabled(pairOk);
         edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setEnabled(pairOk);
-        label_EXCLUDED_REGION->setEnabled(excludedRegion);
+        label_SEQUENCE_EXCLUDED_REGION->setEnabled(excludedRegion);
         edit_SEQUENCE_EXCLUDED_REGION->setEnabled(excludedRegion);
-        label_INCLUDED_REGION->setEnabled(includedRegion);
+        label_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
         edit_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
     };
 

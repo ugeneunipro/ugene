@@ -61,11 +61,11 @@ void SaveDocumentStreamingTask::run() {
 }
 
 Task::ReportResult SaveDocumentStreamingTask::report() {
-    if (nullptr != doc) {
+    if (doc != nullptr) {
         doc->makeClean();
         doc->unlockState(lock);
     }
-    if (nullptr != lock) {
+    if (lock != nullptr) {
         delete lock;
         lock = nullptr;
     }

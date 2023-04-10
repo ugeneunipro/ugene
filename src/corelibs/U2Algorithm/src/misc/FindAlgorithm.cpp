@@ -254,7 +254,7 @@ static void findInAmino_subst(FindAlgorithmResultsListener* rl,
                               int maxErr,
                               int& stopFlag,
                               int& percentsCompleted) {
-    SAFE_POINT(complTT != nullptr && nullptr != aminoTT && aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(), "Invalid alphabet supplied!", );
+    SAFE_POINT(complTT != nullptr && aminoTT != nullptr && aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(), "Invalid alphabet supplied!", );
 
     int seqLen = QByteArray(seq).size();
     int patternLenInNucl = 3 * patternLen;

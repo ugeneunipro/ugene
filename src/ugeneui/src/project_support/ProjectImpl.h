@@ -76,9 +76,11 @@ public:
         return objectViewStates;
     }
 
-    virtual void addGObjectViewState(GObjectViewState* s);
+    void addGObjectViewState(GObjectViewState* s) override;
 
-    virtual void removeGObjectViewState(GObjectViewState* s);
+    void updateGObjectViewState(const GObjectViewState& updatedState) override;
+
+    void removeGObjectViewState(GObjectViewState* s) override;
 
     virtual void makeClean();
 

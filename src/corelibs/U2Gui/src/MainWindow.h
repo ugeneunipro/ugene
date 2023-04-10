@@ -53,32 +53,23 @@ class QMainWindow;
 // actions
 #define ACTION__EXIT "action__exit"
 #define ACTION__ABOUT "action__about"
-#define ACTION__LOGVIEW "action__logview"
 #define ACTION__PLUGINS_VIEW "action__plugins"
 
 #define ACTION_PROJECTSUPPORT__NEW_PROJECT "action_projectsupport__new_project"
 #define ACTION_PROJECTSUPPORT__OPEN_PROJECT "action_projectsupport__open_project"
 #define ACTION_PROJECTSUPPORT__PASTE "action_projectsupport__paste"
 #define ACTION_PROJECTSUPPORT__OPEN_AS "action_projectsupport__open_as"
-#define ACTION_PROJECTSUPPORT__SAVE_PROJECT "action_projectsupport__save_project"
-#define ACTION_PROJECTSUPPORT__SAVE_AS_PROJECT "action_projectsupport__save_as_project"
-#define ACTION_PROJECTSUPPORT__CLOSE_PROJECT "action_projectsupport__close_project"
 #define ACTION_PROJECTSUPPORT__RECENT_PROJECTS_MENU "action_projectsupport__recent_projects_menu"
 #define ACTION_PROJECTSUPPORT__EXPORT_PROJECT "action_projectsupport__export_project"
 #define ACTION_PROJECTSUPPORT__ACCESS_REMOTE_DB "action_projectsupport__access_remote_db"
-#define ACTION_PROJECTSUPPORT__ACCESS_SHARED_DB "action_projectsupport__access_shared_db"
 #define ACTION_PROJECTSUPPORT__SEARCH_GENBANK "action_projectsupport__search_genbank"
 #define ACTION_PROJECTSUPPORT__NEW_SECTION_SEPARATOR "action_projectsupport__new_section_separator"
 
 #define ACTION_PROJECT__ADD_MENU "action_project__add_menu"
 #define ACTION_PROJECT__ADD_OBJECT "action_project__add_object"
-#define ACTION_PROJECT__REMOVE_MENU "action_project__remove_menu"
 #define ACTION_PROJECT__REMOVE_SELECTED "action_project__remove_selected_action"
-#define ACTION_PROJECT__ADD_NEW_DOCUMENT "action_project__add_new_document"
-#define ACTION_PROJECT__ADD_EXISTING_DOCUMENT "action_project__add_existing_document"
 #define ACTION_PROJECT__UNLOAD_SELECTED "action_project__unload_selected_action"
 #define ACTION_PROJECT__IMPORT_TO_DATABASE "action_project__import_to_database"
-#define ACTION_PROJECT__CREATE_FOLDER "action_project__create_folder"
 #define ACTION_PROJECT__SAVE_DOCUMENT "action_project__save_document"
 
 #define PROJECT_MENU_SEPARATOR_1 "project_menu_separator_1"
@@ -99,7 +90,6 @@ class QMainWindow;
 
 #define ACTION_EXPORT_OBJECT "export object"
 
-#define ACTION_EDIT_SEQUENCE "edit sequences"
 #define ACTION_EDIT_SEQUENCE_SETTINGS "action_edit_sequences_settings"
 #define ACTION_EDIT_INSERT_SUBSEQUENCE "action_edit_insert_sub_sequences"
 #define ACTION_EDIT_REMOVE_SUBSEQUENCE "action_edit_remove_sub_sequences"
@@ -112,6 +102,7 @@ class QMainWindow;
 #define ACTION_BOOKMARK_TREE_VIEW "action_bookmark_tree_view"
 #define ACTION_ACTIVATE_VIEW "action_activate_view"
 #define ACTION_ADD_BOOKMARK "action_add_bookmark"
+#define ACTION_UPDATE_BOOKMARK "action_update_bookmark"
 #define ACTION_RENAME_BOOKMARK "action_rename_bookmark"
 #define ACTION_REMOVE_BOOKMARK "action_remove_bookmark"
 
@@ -154,7 +145,7 @@ class U2GUI_EXPORT MWMDIWindow : public QWidget {
 
 public:
     MWMDIWindow(const QString& _windowName);
-    ~MWMDIWindow();
+    ~MWMDIWindow() override;
 
     virtual void setupMDIToolbar(QToolBar*) {
     }

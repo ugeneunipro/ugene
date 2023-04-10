@@ -41,6 +41,9 @@ public:
     static QString getSelectedItem(GUITestOpStatus& os);
 
     static void addBookmark(GUITestOpStatus& os, const QString& viewName, const QString& bookmarkName = QString());
+
+    // updates bookmark state
+    static void updateBookmark(GUITestOpStatus& os, const QString& bookmarkName);
     static void deleteBookmark(GUITestOpStatus& os, const QString& bookmarkName);
 
     static void clickBookmark(GUITestOpStatus& os, const QString& bookmarkName);

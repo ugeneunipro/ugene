@@ -49,6 +49,12 @@ public:
         bool pickInternal = false;
         // If there are some validation errors expected set true
         bool hasValidationErrors = false;
+        // Subsequence of the validateion error text
+        QString validationErrorsText;
+        // Continue calculation even if errors exists
+        bool continueIfError = false;
+        // Red color of this widgets will be checked
+        QStringList errorWidgetsNames;
         // Set true if you need to enable "RT-PCR" design on the corresponding tab
         bool rtPcrDesign = false;
         // Value to exon range on the "RT-PCR" tab

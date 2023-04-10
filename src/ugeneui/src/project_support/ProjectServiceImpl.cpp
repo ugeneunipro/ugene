@@ -141,24 +141,22 @@ Task::ReportResult ProjectServiceEnableTask::report() {
     assert(psi->saveAction == nullptr && psi->closeProjectAction == nullptr);
 
     psi->saveAction = new QAction(QIcon(":ugene/images/project_save.png"), tr("&Save all"), psi);
-    psi->saveAction->setObjectName(ACTION_PROJECTSUPPORT__SAVE_PROJECT);
+    psi->saveAction->setObjectName("saveProjectAction");
     psi->saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     psi->saveAction->setShortcutContext(Qt::WindowShortcut);
-    connect(psi->saveAction, SIGNAL(triggered()), psi, SLOT(sl_save()));
+    connect(psi->saveAction, &QAction::triggered, psi, &ProjectServiceImpl::sl_save);
 
     psi->saveAsAction = new QAction(tr("Save project &as..."), psi);
-    psi->saveAsAction->setObjectName(ACTION_PROJECTSUPPORT__SAVE_AS_PROJECT);
-    connect(psi->saveAsAction, SIGNAL(triggered()), psi, SLOT(sl_saveAs()));
+    psi->saveAsAction->setObjectName("saveProjectAsAction");
+    connect(psi->saveAsAction, &QAction::triggered, psi, &ProjectServiceImpl::sl_saveAs);
 
     psi->closeProjectAction = new QAction(tr("&Close project"), psi);
-    psi->closeProjectAction->setObjectName(ACTION_PROJECTSUPPORT__CLOSE_PROJECT);
-    psi->closeProjectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
-    psi->closeProjectAction->setShortcutContext(Qt::WindowShortcut);
-    connect(psi->closeProjectAction, SIGNAL(triggered()), psi, SLOT(sl_closeProject()));
+    psi->closeProjectAction->setObjectName("closeProjectAction");
+    connect(psi->closeProjectAction, &QAction::triggered, psi, &ProjectServiceImpl::sl_closeProject);
 
     psi->exportProjectAction = new QAction(tr("Export project..."), psi);
-    psi->exportProjectAction->setObjectName(ACTION_PROJECTSUPPORT__EXPORT_PROJECT);
-    connect(psi->exportProjectAction, SIGNAL(triggered()), psi, SLOT(sl_exportProject()));
+    psi->exportProjectAction->setObjectName("exportProjectAction");
+    connect(psi->exportProjectAction, &QAction::triggered, psi, &ProjectServiceImpl::sl_exportProject);
 
     psi->projectActionsSeparator = new QAction("", psi);
     psi->projectActionsSeparator->setSeparator(true);

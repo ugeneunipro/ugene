@@ -30,13 +30,13 @@
 namespace U2 {
 
 ImportObjectToDatabaseTask::ImportObjectToDatabaseTask(GObject* object, const U2DbiRef& dstDbiRef, const QString& dstFolder)
-    : Task(tr("Import object %1 to database").arg(nullptr != object ? object->getGObjectName() : ""), TaskFlag_None),
+    : Task(tr("Import object %1 to database").arg(object != nullptr ? object->getGObjectName() : ""), TaskFlag_None),
       object(object),
       dstDbiRef(dstDbiRef),
       dstFolder(dstFolder),
       dstObject(nullptr) {
     GCOUNTER(cvar, "ImportObjectToDatabaseTask");
-    CHECK_EXT(nullptr != object, setError(tr("Invalid object to import")), );
+    CHECK_EXT(object != nullptr, setError(tr("Invalid object to import")), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
     tpm = Progress_Manual;
 }
@@ -44,9 +44,9 @@ ImportObjectToDatabaseTask::ImportObjectToDatabaseTask(GObject* object, const U2
 void ImportObjectToDatabaseTask::run() {
     DbiConnection con(dstDbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(nullptr != con.dbi, setError(QString("Error! No DBI")), );
+    SAFE_POINT_EXT(con.dbi != nullptr, setError(QString("Error! No DBI")), );
     U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
-    SAFE_POINT_EXT(nullptr != oDbi, setError(QString("Error! No object DBI")), );
+    SAFE_POINT_EXT(oDbi != nullptr, setError(QString("Error! No object DBI")), );
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_FOLDER_HINT] = U2DbiUtils::makeFolderCanonical(dstFolder);

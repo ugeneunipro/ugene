@@ -61,7 +61,7 @@ LabeledPropertyWidget::LabeledPropertyWidget(const QString& labelText, PropertyW
 }
 
 void LabeledPropertyWidget::setLabelWidth(int width) {
-    SAFE_POINT(nullptr != label, "NULL label", );
+    SAFE_POINT(label != nullptr, "NULL label", );
     label->setFixedWidth(width);
 }
 

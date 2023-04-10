@@ -46,14 +46,14 @@ CreateSequenceFromTextAndOpenViewTask::CreateSequenceFromTextAndOpenViewTask(con
       importedSequences(0),
       document(nullptr) {
     format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-    SAFE_POINT_EXT(nullptr != format, setError(QString("An unknown document format: %1").arg(formatId)), );
+    SAFE_POINT_EXT(format != nullptr, setError(QString("An unknown document format: %1").arg(formatId)), );
 }
 
 void CreateSequenceFromTextAndOpenViewTask::prepare() {
     Project* project = AppContext::getProject();
     if (project == nullptr) {
         openProjectTask = AppContext::getProjectLoader()->createNewProjectTask();
-        CHECK_EXT(nullptr != openProjectTask, setError(tr("Can't create a project")), );
+        CHECK_EXT(openProjectTask != nullptr, setError(tr("Can't create a project")), );
         addSubTask(openProjectTask);
     } else {
         prepareImportSequenceTasks();
@@ -97,7 +97,7 @@ QList<Task*> CreateSequenceFromTextAndOpenViewTask::prepareImportSequenceTasks()
 
 Document* CreateSequenceFromTextAndOpenViewTask::createEmptyDocument() {
     IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(saveToPath));
-    SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError("IO adapter factory is NULL"), nullptr);
+    SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError("IO adapter factory is NULL"), nullptr);
     return format->createNewLoadedDocument(ioAdapterFactory, saveToPath, stateInfo);
 }
 
@@ -111,7 +111,7 @@ void CreateSequenceFromTextAndOpenViewTask::addDocument() {
     }
 
     Project* project = AppContext::getProject();
-    SAFE_POINT(nullptr != project, "Project is NULL", );
+    SAFE_POINT(project != nullptr, "Project is NULL", );
     project->addDocument(document);
 }
 

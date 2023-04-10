@@ -75,7 +75,7 @@ void EditBreakpointLabelsDialog::initExistingLabelsList(const QStringList& exist
 void EditBreakpointLabelsDialog::sl_labelApplianceStateChanged(int state) {
     QObject* activator = sender();
     auto labelApplianceController = qobject_cast<QCheckBox*>(activator);
-    Q_ASSERT(nullptr != labelApplianceController);
+    Q_ASSERT(labelApplianceController != nullptr);
 
     switch (state) {
         case Qt::Checked:

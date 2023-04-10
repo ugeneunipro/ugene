@@ -24,7 +24,6 @@
 #include <QDir>
 #include <QRegularExpression>
 
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CmdlineTaskRunner.h>
@@ -38,11 +37,6 @@
 
 #ifdef Q_OS_WIN
 #    include <windows.h>
-#endif
-
-#ifdef Q_OS_UNIX
-#    include <signal.h>
-#    include <unistd.h>
 #endif
 
 namespace U2 {
@@ -65,7 +59,7 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
       listener(nullptr),
       parseOutputFile(parseOutputFile) {
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(tool->getName())), );
+    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(toolId)), );
     CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
     
     tool->checkPaths(arguments, stateInfo);
@@ -234,7 +228,7 @@ ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(QProcess* _process, Externa
 void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
     QMutexLocker locker(&logMutex);
 
-    CHECK(nullptr != process, );
+    CHECK(process != nullptr, );
     if (process->readChannel() == QProcess::StandardError) {
         process->setReadChannel(QProcess::StandardOutput);
     }
@@ -243,7 +237,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
         // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseOutput(line);
-        if (nullptr != listener) {
+        if (listener != nullptr) {
             listener->addNewLogMessage(line, ExternalToolListener::OUTPUT_LOG);
         }
         numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
@@ -254,7 +248,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
 void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
     QMutexLocker locker(&logMutex);
 
-    CHECK(nullptr != process, );
+    CHECK(process != nullptr, );
     if (process->readChannel() == QProcess::StandardOutput) {
         process->setReadChannel(QProcess::StandardError);
     }
@@ -263,7 +257,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
         // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseErrOutput(line);
-        if (nullptr != listener) {
+        if (listener != nullptr) {
             listener->addNewLogMessage(line, ExternalToolListener::ERROR_LOG);
         }
         numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
@@ -413,7 +407,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     if (os.hasError()) {
         return result;
     }
-    CHECK_EXT(nullptr != tool, os.setError(tr("A tool with the ID %1 is absent").arg(toolId)), result);
+    CHECK_EXT(tool != nullptr, os.setError(tr("A tool with the ID %1 is absent").arg(toolId)), result);
 
     const QString toolName = tool->getName();
     if (tool->getPath().isEmpty()) {
@@ -425,7 +419,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
 
     if (!toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry* stregister = AppContext::getScriptingToolRegistry();
-        SAFE_POINT_EXT(nullptr != stregister, os.setError("No scripting tool registry"), result);
+        SAFE_POINT_EXT(stregister != nullptr, os.setError("No scripting tool registry"), result);
         ScriptingTool* stool = stregister->getById(toolRunnerProgram);
         if (stool == nullptr || stool->getPath().isEmpty()) {
             os.setError(QString("The tool %1 that runs %2 is not installed. Please set the path of the tool in the External Tools settings").arg(toolRunnerProgram).arg(toolName));
@@ -469,7 +463,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     const QString commandWithArguments = GUrlUtils::getQuotedString(result.program) + ExternalToolSupportUtils::prepareArgumentsForCmdLine(result.arguments);
     algoLog.details(tr("Launching %1 tool: %2").arg(toolName).arg(commandWithArguments));
 
-    if (nullptr != listener) {
+    if (listener != nullptr) {
         listener->setToolName(toolName);
         listener->addNewLogMessage(commandWithArguments, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
@@ -624,7 +618,7 @@ QString ExternalToolSupportUtils::checkTemporaryDirLatinSymbols() {
 }
 
 QString ExternalToolSupportUtils::checkToolPathLatinSymbols(const ExternalTool* tool) {
-    QString path = tool->getPath();
+    const QString& path = tool->getPath();
     QByteArray tolatin1(path.toLatin1());
     if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
         tr("\"%1\" external tool located in path which contains non-latin symbols."
@@ -667,7 +661,7 @@ QString ExternalToolSupportUtils::checkTemporaryDirSpaces() {
 }
 
 QString ExternalToolSupportUtils::checkToolPathSpaces(const ExternalTool* tool) {
-    QString path = tool->getPath();
+    const QString& path = tool->getPath();
     if (path.contains(" ")) {
         return tr("\"%1\" external tool located in path which contains spaces symbols."
                   " Please change it location to path which contains no spaces,  set the new path in"

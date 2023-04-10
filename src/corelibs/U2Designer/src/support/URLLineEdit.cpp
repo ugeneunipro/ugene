@@ -75,7 +75,7 @@ public:
 
         const QString fileFormat = DelegateTags::getString(widget->tags(), "format");
         DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
-        CHECK(nullptr != format, false);
+        CHECK(format != nullptr, false);
 
         QStringList formats = format->getSupportedDocumentFileExtensions();
         CHECK(formats.size() > 0, false);
@@ -138,14 +138,14 @@ URLLineEdit::URLLineEdit(const QString& type,
       isPath(isPath),
       saveFile(saveFile),
       parent(_parent) {
-    if (saveFile && nullptr != parent) {
+    if (saveFile && parent != nullptr) {
         new BaseCompleter(new FilenameCompletionFiller(parent), this);
     }
     setPlaceholderText(DelegateTags::getString(parent->tags(), DelegateTags::PLACEHOLDER_TEXT));
 }
 
 CompletionFiller* URLLineEdit::getCompletionFillerInstance() {
-    if (saveFile && nullptr != parent) {
+    if (saveFile && parent != nullptr) {
         return new FilenameCompletionFiller(parent);
     }
     return nullptr;
@@ -161,7 +161,7 @@ void URLLineEdit::sl_onBrowseWithAdding() {
 
 void URLLineEdit::browse(bool addFiles) {
     QString FileFilter;
-    if (nullptr != parent) {
+    if (parent != nullptr) {
         FileFilter = DelegateTags::getString(parent->tags(), DelegateTags::FILTER);
     }
     LastUsedDirHelper lod(type);
@@ -235,11 +235,11 @@ void URLLineEdit::keyPressEvent(QKeyEvent* event) {
 
 void URLLineEdit::checkExtension(QString& name) {
     QString fileFormat;
-    if (nullptr != parent) {
+    if (parent != nullptr) {
         fileFormat = DelegateTags::getString(parent->tags(), DelegateTags::FORMAT);
     }
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
-    if (nullptr != format && !name.isEmpty()) {
+    if (format != nullptr && !name.isEmpty()) {
         QString newName(name);
         GUrl url(newName);
         QString lastSuffix = url.lastFileSuffix();

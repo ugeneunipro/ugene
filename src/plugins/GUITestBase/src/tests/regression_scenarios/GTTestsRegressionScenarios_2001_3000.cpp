@@ -2260,11 +2260,7 @@ GUI_TEST_CLASS_DEFINITION(test_2401) {
     // Expected: the file is imported without errors, the assembly is opened.
     // 4. Close the project.
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    if (isOsMac()) {
-        GTMenu::clickMainMenuItem(os, {"File", "Close project"});
-    } else {
-        GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
-    }
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
 
     // 5. Open the file "_common_data/ace/ace_test_11_(error).ace".
     // 6. Set the same ugenedb path for import: "_common_data/scenarios/sandbox/2401.ugenedb".

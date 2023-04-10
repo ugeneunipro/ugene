@@ -218,7 +218,7 @@ Unipro UGENE.app/Contents/MacOS/data/cmdline/snp.uwl
 Unipro UGENE.app/Contents/MacOS/data/custom_annotations
 Unipro UGENE.app/Contents/MacOS/data/custom_annotations/plasmid_features.txt
 Unipro UGENE.app/Contents/MacOS/data/enzymes
-Unipro UGENE.app/Contents/MacOS/data/enzymes/2013_08_01.bairoch.gz
+Unipro UGENE.app/Contents/MacOS/data/enzymes/2023_02_25.bairoch.gz
 Unipro UGENE.app/Contents/MacOS/data/genome_lengths
 Unipro UGENE.app/Contents/MacOS/data/genome_lengths/danRer7.genome
 Unipro UGENE.app/Contents/MacOS/data/genome_lengths/ecoli.genome

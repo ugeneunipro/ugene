@@ -21,7 +21,6 @@
 
 #include "GTTestsProjectRelations.h"
 #include <base_dialogs/GTFileDialog.h>
-#include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <system/GTFile.h>
 
@@ -32,6 +31,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "primitives/GTMenu.h"
 
 namespace U2 {
 
@@ -47,12 +47,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
-    const QString fileName = "proj4.uprj";
-    const QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
-    const QString firstAnnFileName = "1.gb";
-    const QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
-    const QString secondAnnFileName = "2.gb";
+    QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
+    QString fileName = "proj4.uprj";
+    QString firstAnn = testDir + "_common_data/scenarios/project/1.gb";
+    QString firstAnnFileName = "1.gb";
+    QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
+    QString secondAnnFileName = "2.gb";
 
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
@@ -69,7 +69,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::doubleClick();
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
 
-    GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
+    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

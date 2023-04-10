@@ -61,21 +61,21 @@ DbiClassPrototype::~DbiClassPrototype() {
 }
 
 QScriptValue DbiClassPrototype::getId() {
-    CHECK(nullptr != thisData(), QScriptValue::NullValue);
+    CHECK(thisData() != nullptr, QScriptValue::NullValue);
     Workflow::SharedDbiDataHandler id = thisData()->getId();
-    SCRIPT_CHECK(nullptr != id.constData(), context(), "Invalid data id. Was it released?", QScriptValue::NullValue);
+    SCRIPT_CHECK(id.constData() != nullptr, context(), "Invalid data id. Was it released?", QScriptValue::NullValue);
 
     return engine()->newVariant(qVariantFromValue(id));
 }
 
 void DbiClassPrototype::release() {
-    CHECK(nullptr != thisData(), );
+    CHECK(thisData() != nullptr, );
     thisData()->release();
 }
 
 ScriptDbiData* DbiClassPrototype::thisData() const {
     auto result = qscriptvalue_cast<ScriptDbiData*>(thisObject().data());
-    SCRIPT_CHECK(nullptr != result, context(), "No this object", nullptr);
+    SCRIPT_CHECK(result != nullptr, context(), "No this object", nullptr);
     return result;
 }
 
@@ -85,9 +85,9 @@ WorkflowScriptEngine* DbiClassPrototype::workflowEngine() const {
 
 Workflow::DbiDataStorage* DbiClassPrototype::dataStorage() const {
     WorkflowScriptEngine* we = workflowEngine();
-    CHECK(nullptr != we, nullptr);
+    CHECK(we != nullptr, nullptr);
     Workflow::WorkflowContext* wc = we->getWorkflowContext();
-    CHECK(nullptr != wc, nullptr);
+    CHECK(wc != nullptr, nullptr);
     return wc->getDataStorage();
 }
 

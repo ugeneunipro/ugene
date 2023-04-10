@@ -162,7 +162,7 @@ public:
     }
     void visit(AttributeWidget* aw) {
         Attribute* attr = wc->getAttribute(aw->getInfo());
-        CHECK(nullptr != attr, );
+        CHECK(attr != nullptr, );
         wc->setAttributeValue(aw->getInfo(), attr->getDefaultPureValue());
     }
     void visit(WidgetsArea* wa) {
@@ -181,14 +181,14 @@ public:
     void visit(PairedReadsWidget* prw) {
         foreach (const AttributeInfo& info, prw->getInfos()) {
             Attribute* attr = wc->getAttribute(info);
-            CHECK(nullptr != attr, );
+            CHECK(attr != nullptr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
     void visit(UrlAndDatasetWidget* udw) {
         foreach (const AttributeInfo& info, udw->getInfos()) {
             Attribute* attr = wc->getAttribute(info);
-            CHECK(nullptr != attr, );
+            CHECK(attr != nullptr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
@@ -198,11 +198,11 @@ public:
     }
     void visit(BowtieWidget* bw) {
         Attribute* dirAttr = wc->getAttribute(bw->idxDir);
-        CHECK(nullptr != dirAttr, );
+        CHECK(dirAttr != nullptr, );
         wc->setAttributeValue(bw->idxDir, dirAttr->getDefaultPureValue());
 
         Attribute* nameAttr = wc->getAttribute(bw->idxName);
-        CHECK(nullptr != nameAttr, );
+        CHECK(nameAttr != nullptr, );
         wc->setAttributeValue(bw->idxName, nameAttr->getDefaultPureValue());
     }
 
@@ -238,7 +238,7 @@ private:
 
 void WizardController::defaults(QWizardPage* wPage) {
     WizardPage* page = findPage(wPage);
-    CHECK(nullptr != page, );
+    CHECK(page != nullptr, );
     TemplatedPageContent* content = page->getContent();
 
     PageDefaulter defaulter(this);
@@ -270,7 +270,7 @@ void WizardController::sl_pageChanged(int num) {
 }
 
 bool WizardController::eventFilter(QObject* watched, QEvent* event) {
-    CHECK(nullptr != event, false);
+    CHECK(event != nullptr, false);
 
     if (event->type() == QEvent::Close) {  // if close button is pressed
         rejected = true;
@@ -433,9 +433,9 @@ void WizardController::replaceCurrentActor(const QString& actorId, const QString
         WIZARD_SAFE_POINT(false, QObject::tr("Unknown actors selector: %1").arg(actorId), );
     }
     Actor* currentA = WorkflowUtils::actorById(currentActors, actorId);
-    WIZARD_SAFE_POINT(nullptr != currentA, QObject::tr("Unknown actor id: %1").arg(actorId), );
+    WIZARD_SAFE_POINT(currentA != nullptr, QObject::tr("Unknown actor id: %1").arg(actorId), );
     Actor* newA = selectors[actorId].getActor(selectorValue);
-    WIZARD_SAFE_POINT(nullptr != newA, QObject::tr("Unknown actors selector value id: %1").arg(selectorValue), );
+    WIZARD_SAFE_POINT(newA != nullptr, QObject::tr("Unknown actors selector value id: %1").arg(selectorValue), );
 
     int idx = currentActors.indexOf(currentA);
     currentActors.replace(idx, newA);
@@ -501,7 +501,7 @@ QVariant WizardController::getAttributeValue(const AttributeInfo& info) const {
         return values[info.toString()];
     }
     Attribute* attr = getAttribute(info);
-    CHECK(nullptr != attr, QVariant());
+    CHECK(attr != nullptr, QVariant());
 
     return attr->getAttributePureValue();
 }
@@ -603,7 +603,7 @@ void WidgetCreator::visit(WidgetsArea* wa) {
 #endif
         WidgetCreator wcr(wc, labelSize);
         w->accept(&wcr);
-        if (nullptr != wcr.getResult()) {
+        if (wcr.getResult() != nullptr) {
             if (!wcr.hasFullWidth()) {
                 wcr.getResult()->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
             } else {
@@ -773,7 +773,7 @@ void PageContentCreator::visit(DefaultPageContent* content) {
     {  // create logo
         WidgetCreator logoWC(wc);
         content->getLogoArea()->accept(&logoWC);
-        if (nullptr != logoWC.getResult()) {
+        if (logoWC.getResult() != nullptr) {
             paramsHeight = logoWC.getResult()->height();
             paramsWidth -= logoWC.getResult()->width();
             layout->addWidget(logoWC.getResult());
@@ -788,8 +788,8 @@ void PageContentCreator::visit(DefaultPageContent* content) {
     {  // create parameters
         WidgetCreator paramsWC(wc);
         content->getParamsArea()->accept(&paramsWC);
-        if (nullptr != paramsWC.getResult()) {
-            if (nullptr != paramsWC.getLayout() && !paramsWC.hasFullWidth()) {
+        if (paramsWC.getResult() != nullptr) {
+            if (paramsWC.getLayout() != nullptr && !paramsWC.hasFullWidth()) {
                 QSpacerItem* spacer = new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding);
                 paramsWC.getLayout()->addSpacerItem(spacer);
             }
@@ -812,7 +812,7 @@ void PageContentCreator::visit(DefaultPageContent* content) {
 }
 
 void PageContentCreator::setPageTitle(const QString& title) {
-    if (nullptr != pageTitle && false == title.isEmpty()) {
+    if (pageTitle != nullptr && false == title.isEmpty()) {
         pageTitle->setText(title);
         pageTitle->show();
         pageTitle->setObjectName("pageTitle");
@@ -820,7 +820,7 @@ void PageContentCreator::setPageTitle(const QString& title) {
 }
 
 void PageContentCreator::setPageSubtitle(const QString& subtitle) {
-    if (nullptr != pageSubtitle && false == subtitle.isEmpty()) {
+    if (pageSubtitle != nullptr && false == subtitle.isEmpty()) {
         pageSubtitle->setText(subtitle);
         pageSubtitle->show();
     }
@@ -928,10 +928,10 @@ void GroupBox::sl_onCheck() {
 }
 
 void GroupBox::changeView(const QString& buttonText, const QString& showHide) {
-    CHECK(nullptr != showHideButton, );
+    CHECK(showHideButton != nullptr, );
     showHideButton->setText(buttonText);
 
-    CHECK(nullptr != tip, );
+    CHECK(tip != nullptr, );
     QString parametersStr = tr("additional");
     if (!title().isEmpty()) {
         parametersStr = title().toLower();
@@ -939,7 +939,7 @@ void GroupBox::changeView(const QString& buttonText, const QString& showHide) {
     tip->setText(showHide + " " + parametersStr + tr(" settings"));
     showHideButton->setToolTip(tip->text());
 
-    CHECK(nullptr != hLayout, );
+    CHECK(hLayout != nullptr, );
     if (!title().isEmpty()) {
         QMargins m = layout()->contentsMargins();
         m.setTop(0);

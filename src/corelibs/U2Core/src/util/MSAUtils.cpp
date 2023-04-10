@@ -141,7 +141,7 @@ MultipleSequenceAlignment MSAUtils::seq2ma(const QList<GObject*>& list, U2OpStat
     QStringList nameList;
 
     MultipleSequenceAlignmentObject* obj = prepareSequenceHeadersList(list, useGenbankHeader, dnaList, nameList);
-    if (nullptr != obj) {
+    if (obj != nullptr) {
         return obj->getMsaCopy();
     }
 
@@ -315,7 +315,7 @@ QList<U2Sequence> getDbSequences(const QList<GObject*>& objects) {
     QList<U2Sequence> sequencesInDb;
     foreach (GObject* o, objects) {
         if (o->getGObjectType() == GObjectTypes::SEQUENCE) {
-            if (nullptr != (parentDoc = o->getDocument())) {
+            if ((parentDoc = o->getDocument()) != nullptr) {
                 parentDoc->removeObject(o, DocumentObjectRemovalMode_Release);
             }
             QScopedPointer<U2SequenceObject> seqObj(qobject_cast<U2SequenceObject*>(o));
@@ -409,7 +409,7 @@ void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment& origMsa,
 
 U2MsaRow MSAUtils::copyRowFromSequence(U2SequenceObject* seqObj, const U2DbiRef& dstDbi, U2OpStatus& os) {
     U2MsaRow row;
-    CHECK_EXT(nullptr != seqObj, os.setError("NULL sequence object"), row);
+    CHECK_EXT(seqObj != nullptr, os.setError("NULL sequence object"), row);
 
     DNASequence dnaSeq = seqObj->getWholeSequence(os);
     CHECK_OP(os, row);
@@ -448,7 +448,7 @@ U2MsaRow MSAUtils::copyRowFromSequence(DNASequence dnaSeq, const U2DbiRef& dstDb
 }
 
 void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject* msaObj, U2SequenceObject* seqObj, U2OpStatus& os) {
-    CHECK_EXT(nullptr != msaObj, os.setError("NULL msa object"), );
+    CHECK_EXT(msaObj != nullptr, os.setError("NULL msa object"), );
 
     U2MsaRow row = copyRowFromSequence(seqObj, msaObj->getEntityRef().dbiRef, os);
     CHECK_OP(os, );
@@ -456,7 +456,7 @@ void MSAUtils::copyRowFromSequence(MultipleSequenceAlignmentObject* msaObj, U2Se
     U2EntityRef entityRef = msaObj->getEntityRef();
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
-    CHECK_EXT(nullptr != con.dbi, os.setError("NULL root dbi"), );
+    CHECK_EXT(con.dbi != nullptr, os.setError("NULL root dbi"), );
 
     con.dbi->getMsaDbi()->addRow(entityRef.entityId, -1, row, os);
 }

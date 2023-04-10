@@ -39,18 +39,18 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 
 static bool patternFitsMaAlphabet(const MultipleAlignmentObject* maObject, const QString& pattern) {
-    SAFE_POINT(nullptr != maObject, L10N::nullPointerError("MSA object"), false);
+    SAFE_POINT(maObject != nullptr, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
     const DNAAlphabet* alphabet = maObject->getAlphabet();
-    SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("MSA alphabet"), false);
+    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("MSA alphabet"), false);
 
     const QByteArray searchStr = pattern.toUpper().toLatin1();
     return alphabet->containsAll(searchStr.constData(), searchStr.length());
 }
 
 static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QString& pattern) {
-    SAFE_POINT(nullptr != maObject, L10N::nullPointerError("MSA object"), false);
+    SAFE_POINT(maObject != nullptr, L10N::nullPointerError("MSA object"), false);
     SAFE_POINT(!pattern.isEmpty(), "Empty pattern to search", false);
 
     const MultipleAlignmentData* mData = maObject->getMultipleAlignment().data();
@@ -70,7 +70,7 @@ static bool maContainsPattern(const MultipleAlignmentObject* maObject, const QSt
 }
 
 static bool isFilteredByMAContent(const MultipleAlignmentObject* maObj, const ProjectTreeControllerModeSettings& settings) {
-    CHECK(nullptr != maObj, false);
+    CHECK(maObj != nullptr, false);
 
     foreach (const QString& pattern, settings.tokensToShow) {
         if (!patternFitsMaAlphabet(maObj, pattern)) {
@@ -120,7 +120,7 @@ McaReferenceContentFilterTask::McaReferenceContentFilterTask(const ProjectTreeCo
 
 bool McaReferenceContentFilterTask::filterAcceptsObject(GObject* obj) {
     auto mcaObj = qobject_cast<MultipleChromatogramAlignmentObject*>(obj);
-    CHECK(nullptr != mcaObj, false);
+    CHECK(mcaObj != nullptr, false);
 
     foreach (const QString& pattern, settings.tokensToShow) {
         if (!patternFitsMaAlphabet(mcaObj, pattern)) {

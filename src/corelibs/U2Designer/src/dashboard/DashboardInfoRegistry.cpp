@@ -66,7 +66,7 @@ bool DashboardInfoRegistry::isEmpty() const {
 }
 
 void DashboardInfoRegistry::scanDashboardsDir() {
-    if (nullptr != scanTask && !scanTask->isFinished()) {
+    if (scanTask != nullptr && !scanTask->isFinished()) {
         scanTask->cancel();
     }
     scanTask = new ScanDashboardsDirTask();

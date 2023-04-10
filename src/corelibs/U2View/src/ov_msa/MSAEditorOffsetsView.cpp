@@ -194,7 +194,10 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     int alignmentLength = editor->getMaObject()->getLength();
     int lbw = fm.width('[');
     int rbw = fm.width(']');
-    int pos = showStartPos ? ui->getScrollController()->getFirstVisibleBase(true) : ui->getScrollController()->getLastVisibleBase(seqArea->width(), true);
+    ScrollController* scrollController = ui->getScrollController();
+    int pos = showStartPos
+                  ? scrollController->getFirstVisibleBase(true)
+                  : scrollController->getLastVisibleBase(seqArea->width(), true);
 
     QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 

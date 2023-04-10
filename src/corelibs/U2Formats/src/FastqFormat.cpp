@@ -527,7 +527,7 @@ void FastqFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, QList<GObjec
     const QList<GObject*>& seqs = objectsMap[GObjectTypes::SEQUENCE];
     SAFE_POINT(1 == seqs.size(), "Fastq entry storing: sequence objects count error", );
     auto seqObj = dynamic_cast<U2SequenceObject*>(seqs.first());
-    SAFE_POINT(nullptr != seqObj, "Fastq entry storing: NULL sequence object", );
+    SAFE_POINT(seqObj != nullptr, "Fastq entry storing: NULL sequence object", );
 
     GUrl url = seqObj->getDocument() ? seqObj->getDocument()->getURL() : GUrl();
     static QString errorMessage = L10N::errorWritingFile(url);

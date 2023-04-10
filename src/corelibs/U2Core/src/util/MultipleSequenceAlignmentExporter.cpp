@@ -108,14 +108,14 @@ QList<MsaRowReplacementData> MultipleSequenceAlignmentExporter::getAlignmentRows
 
 QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& msaId, U2OpStatus& os) const {
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
+    SAFE_POINT(msaDbi != nullptr, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
 
     return msaDbi->getRows(msaId, os);
 }
 
 QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& msaId, const QList<qint64> rowIds, U2OpStatus& os) const {
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
+    SAFE_POINT(msaDbi != nullptr, NULL_MSA_DBI_ERROR, QList<U2MsaRow>());
     QList<U2MsaRow> result;
     foreach (qint64 rowId, rowIds) {
         result.append(msaDbi->getRow(msaId, rowId, os));
@@ -126,7 +126,7 @@ QList<U2MsaRow> MultipleSequenceAlignmentExporter::exportRows(const U2DataId& ms
 
 QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QList<U2MsaRow> rows, U2OpStatus& os) const {
     U2SequenceDbi* sequenceDbi = con.dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != sequenceDbi, "NULL Sequence Dbi during exporting rows sequences!", QList<DNASequence>());
+    SAFE_POINT(sequenceDbi != nullptr, "NULL Sequence Dbi during exporting rows sequences!", QList<DNASequence>());
 
     QList<DNASequence> sequences;
     sequences.reserve(rows.count());
@@ -151,7 +151,7 @@ QList<DNASequence> MultipleSequenceAlignmentExporter::exportSequencesOfRows(QLis
 
 QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataId& msaId, U2OpStatus& os) const {
     U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
-    SAFE_POINT(nullptr != attrDbi, "NULL Attribute Dbi during exporting an alignment info!", QVariantMap());
+    SAFE_POINT(attrDbi != nullptr, "NULL Attribute Dbi during exporting an alignment info!", QVariantMap());
 
     // Get all MSA attributes
     QVariantMap alInfo;
@@ -173,7 +173,7 @@ QVariantMap MultipleSequenceAlignmentExporter::exportAlignmentInfo(const U2DataI
 
 U2Msa MultipleSequenceAlignmentExporter::exportAlignmentObject(const U2DataId& msaId, U2OpStatus& os) const {
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "NULL MSA Dbi during exporting an alignment object!", U2Msa());
+    SAFE_POINT(msaDbi != nullptr, "NULL MSA Dbi during exporting an alignment object!", U2Msa());
 
     return msaDbi->getMsaObject(msaId, os);
 }

@@ -47,7 +47,7 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignm
     DbiConnection con(dbiRef, true, os);
     CHECK(!os.isCanceled(), nullptr);
     SAFE_POINT_OP(os, nullptr);
-    SAFE_POINT_EXT(nullptr != con.dbi, os.setError(L10N::nullPointerError("Destination database")), nullptr);
+    SAFE_POINT_EXT(con.dbi != nullptr, os.setError(L10N::nullPointerError("Destination database")), nullptr);
 
     TmpDbiObjects objs(dbiRef, os);  // remove the MSA object if opStatus is incorrect
 
@@ -100,9 +100,9 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignm
 }
 
 void MultipleSequenceAlignmentImporter::setChildRankForSequences(const DbiConnection& con, const QList<U2Sequence>& sequences, U2OpStatus& os) {
-    SAFE_POINT(nullptr != con.dbi, L10N::nullPointerError("database connection"), );
+    SAFE_POINT(con.dbi != nullptr, L10N::nullPointerError("database connection"), );
     U2ObjectDbi* objDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(nullptr != objDbi, L10N::nullPointerError("object storage"), );
+    SAFE_POINT(objDbi != nullptr, L10N::nullPointerError("object storage"), );
 
     foreach (const U2Sequence& seq, sequences) {
         objDbi->setObjectRank(seq.id, U2DbiObjectRank_Child, os);
@@ -122,7 +122,7 @@ U2DataId MultipleSequenceAlignmentImporter::createEmptyMsaObject(const DbiConnec
     }
 
     U2MsaDbi* msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "NULL MSA Dbi during importing an alignment!", U2DataId());
+    SAFE_POINT(msaDbi != nullptr, "NULL MSA Dbi during importing an alignment!", U2DataId());
 
     U2DataId id = msaDbi->createMsaObject(folder, visualName, alphabet->getId(), 0, os);
     CHECK_OP(os, U2DataId());
@@ -132,7 +132,7 @@ U2DataId MultipleSequenceAlignmentImporter::createEmptyMsaObject(const DbiConnec
 
 void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, const U2DataId& msaId, const QVariantMap& alInfo, U2OpStatus& os) {
     U2AttributeDbi* attrDbi = con.dbi->getAttributeDbi();
-    SAFE_POINT(nullptr != attrDbi, "NULL Attribute Dbi during importing an alignment!", );
+    SAFE_POINT(attrDbi != nullptr, "NULL Attribute Dbi during importing an alignment!", );
 
     foreach (QString key, alInfo.keys()) {
         if (key != MultipleAlignmentInfo::NAME) {  // name is stored in the object
@@ -147,7 +147,7 @@ void MultipleSequenceAlignmentImporter::importMsaInfo(const DbiConnection& con, 
 
 QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiConnection& con, const QString& folder, const MultipleSequenceAlignment& al, U2OpStatus& os) {
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != seqDbi, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
+    SAFE_POINT(seqDbi != nullptr, "NULL Sequence Dbi during importing an alignment!", QList<U2Sequence>());
 
     QList<U2Sequence> sequences;
     for (int i = 0; i < al->getRowCount(); ++i) {
@@ -162,7 +162,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
         if (alphabet == nullptr) {
             alphabet = U2AlphabetUtils::findBestAlphabet(dnaSeq.constData(), dnaSeq.length());
         }
-        SAFE_POINT(nullptr != alphabet, "Failed to get alphabet for a sequence!", QList<U2Sequence>());
+        SAFE_POINT(alphabet != nullptr, "Failed to get alphabet for a sequence!", QList<U2Sequence>());
         sequence.alphabet.id = alphabet->getId();
 
         seqDbi->createSequenceObject(sequence, folder, os, U2DbiObjectRank_Child);
@@ -180,7 +180,7 @@ QList<U2Sequence> MultipleSequenceAlignmentImporter::importSequences(const DbiCo
 
 void MultipleSequenceAlignmentImporter::splitToCharsAndGaps(const DbiConnection& con, QList<U2Sequence>& sequences, QList<QVector<U2MsaGap>>& gapModel, U2OpStatus& os) {
     U2SequenceDbi* seqDbi = con.dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != seqDbi, "NULL Sequence Dbi during importing an alignment!", );
+    SAFE_POINT(seqDbi != nullptr, "NULL Sequence Dbi during importing an alignment!", );
 
     gapModel.clear();
     for (int i = 0; i < sequences.size(); i++) {

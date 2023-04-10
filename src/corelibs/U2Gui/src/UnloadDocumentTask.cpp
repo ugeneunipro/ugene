@@ -211,9 +211,9 @@ QList<Task*> ReloadDocumentTask::onSubTaskFinished(Task* subTask) {
             return res;
         }
         Project* currentProj = AppContext::getProject();
-        SAFE_POINT(nullptr != currentProj, "Invalid project state!", res);
+        SAFE_POINT(currentProj != nullptr, "Invalid project state!", res);
         doc = currentProj->findDocumentByURL(url);
-        SAFE_POINT(nullptr != doc, "Reloaded document not found!", res);
+        SAFE_POINT(doc != nullptr, "Reloaded document not found!", res);
         SAFE_POINT(doc->isLoaded(), "The reloaded document unexpectedly has unloaded state", res);
         restoreObjectRelationsForDoc();
 
@@ -255,7 +255,7 @@ void ReloadDocumentTask::restoreObjectRelationsForDoc() {
 
 void ReloadDocumentTask::restoreObjectRelationsForObject(GObject* obj, const QList<GObjectRelation>& relations) {
     Project* currentProj = AppContext::getProject();
-    SAFE_POINT(nullptr != currentProj, "Invalid project state!", );
+    SAFE_POINT(currentProj != nullptr, "Invalid project state!", );
 
     obj->setObjectRelations(QList<GObjectRelation>());
 
@@ -265,7 +265,7 @@ void ReloadDocumentTask::restoreObjectRelationsForObject(GObject* obj, const QLi
             continue;
         }
         GObject* relatedObj = relatedDoc->findGObjectByName(relation.ref.objName);
-        if (nullptr != relatedObj && relatedObj->getGObjectType() == relation.ref.objType) {
+        if (relatedObj != nullptr && relatedObj->getGObjectType() == relation.ref.objType) {
             obj->addObjectRelation(relation);
         }
     }

@@ -29,7 +29,7 @@ bool ActorPrototypeRegistry::registerProto(const Descriptor& group, ActorPrototy
     const QString id = proto->getId();
     assert(WorkflowEntityValidator::ACCEPTABLE_ID.match(id).isValid());
     ActorPrototype* existingProto = getProto(id);
-    if (nullptr != existingProto) {
+    if (existingProto != nullptr) {
         coreLog.error(tr("Can't register element config with ID '%1'%2. There is already registered element with this ID%3.")
                           .arg(id)
                           .arg(proto->getFilePath().isEmpty() ? QString() : " (" + proto->getFilePath() + ")")

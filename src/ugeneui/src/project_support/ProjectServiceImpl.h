@@ -37,21 +37,21 @@ class ProjectServiceImpl : public ProjectService {
 
 public:
     ProjectServiceImpl(Project* pr);
-    ~ProjectServiceImpl();
+    ~ProjectServiceImpl() override;
 
-    virtual Project* getProject() const {
+    Project* getProject() const override {
         return pr;
     }
 
-    virtual Task* saveProjectTask(SaveProjectTaskKind k);
+    Task* saveProjectTask(SaveProjectTaskKind k) override;
 
-    virtual Task* closeProjectTask();
+    Task* closeProjectTask() override;
 
-    virtual void enableSaveAction(bool e);
+    void enableSaveAction(bool e) override;
 
 protected:
-    virtual Task* createServiceEnablingTask();
-    virtual Task* createServiceDisablingTask();
+    Task* createServiceEnablingTask() override;
+    Task* createServiceDisablingTask() override;
 
 private slots:
     void sl_save();
@@ -75,7 +75,7 @@ class ProjectServiceEnableTask : public Task {
     Q_OBJECT
 public:
     ProjectServiceEnableTask(ProjectServiceImpl* psi);
-    virtual ReportResult report();
+    ReportResult report() override;
 
 private:
     ProjectServiceImpl* psi;
@@ -85,7 +85,7 @@ class ProjectServiceDisableTask : public Task {
     Q_OBJECT
 public:
     ProjectServiceDisableTask(ProjectServiceImpl* psi);
-    virtual ReportResult report();
+    ReportResult report() override;
 
 private:
     ProjectServiceImpl* psi;

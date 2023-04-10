@@ -36,14 +36,14 @@ OrderedToolbar::OrderedToolbar(QWidget* parent, Qt::Orientation orientation)
 }
 
 void OrderedToolbar::setButtonTabOrderList(QList<QString>* buttonNamesInNeededOrder) {
-    assert(nullptr != buttonNamesInNeededOrder);
+    assert(buttonNamesInNeededOrder != nullptr);
     buttonTabOrderList = buttonNamesInNeededOrder;
 }
 
 void OrderedToolbar::setVisible(bool visible) {
     QWidget::setVisible(visible);
 
-    if (!tabOrdered && nullptr != buttonTabOrderList) {
+    if (!tabOrdered && buttonTabOrderList != nullptr) {
         setButtonsTabOrder();
         tabOrdered = true;
     }
@@ -59,7 +59,7 @@ void OrderedToolbar::setButtonsTabOrder() const {
     for (QList<QString>::const_iterator it = buttonTabOrderList->constBegin(); it != buttonTabOrderList->constEnd(); it++) {
         foreach (QObject* element, barElements) {
             if (element->objectName().contains(*it)) {
-                if (nullptr != prevButton) {
+                if (prevButton != nullptr) {
                     curButton = qobject_cast<QWidget*>(element);
                 } else {
                     prevButton = qobject_cast<QWidget*>(element);
@@ -74,7 +74,7 @@ void OrderedToolbar::setButtonsTabOrder() const {
                 break;
             }
         }
-        assert(nullptr != prevButton);
+        assert(prevButton != nullptr);
     }
 }
 

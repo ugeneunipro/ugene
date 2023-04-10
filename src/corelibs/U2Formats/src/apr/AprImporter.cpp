@@ -68,7 +68,7 @@ void AprImporterTask::prepare() {
     DocumentFormatId formatId = variantFormat.toString();
 
     IOAdapterRegistry* ioar = AppContext::getIOAdapterRegistry();
-    SAFE_POINT_EXT(nullptr != ioar, stateInfo.setError(tr("Invalid I/O environment!")), );
+    SAFE_POINT_EXT(ioar != nullptr, stateInfo.setError(tr("Invalid I/O environment!")), );
 
     QFileInfo fileInfo(dstUrl);
     QDir qDir = fileInfo.dir();

@@ -41,7 +41,7 @@ static QString getCommonHashForFile(const QString& url) {
 QString FileStorageUtils::getFileToFileInfo(const QString& srcUrl, const QString& role, WorkflowProcess& process) {
     AppFileStorage* fileStorage = AppContext::getAppFileStorage();
 
-    if (nullptr != fileStorage) {
+    if (fileStorage != nullptr) {
         U2OpStatus2Log os;
         QString dstUrl = fileStorage->getFileInfo(srcUrl, role, process, os);
         CHECK_OP(os, "");
@@ -70,7 +70,7 @@ QString FileStorageUtils::getFileToFileInfo(const QString& srcUrl, const QString
 void FileStorageUtils::addFileToFileInfo(const FileInfo& fileToFileInfo, WorkflowProcess& process) {
     CHECK(fileToFileInfo.isFileToFileInfo(), );
     AppFileStorage* fileStorage = AppContext::getAppFileStorage();
-    CHECK(nullptr != fileStorage, );
+    CHECK(fileStorage != nullptr, );
 
     U2OpStatus2Log os;
     fileStorage->addFileInfo(fileToFileInfo, process, os);

@@ -52,14 +52,14 @@ static constexpr const int RT_PCR_DESIGN_TAB_NUMBER = 6;
 static constexpr const int RESULT_ANNOTATION_SETTINGS_TAB_NUMBER = 7;
 
 const QStringList PREFIXES = { "edit_", "checkbox_", "combobox_" };
-const QStringList DOUBLE_WITH_CHECK_NAMES = { "PRIMER_PRODUCT_OPT_TM", 
-                                              "PRIMER_OPT_GC_PERCENT", 
+const QStringList DOUBLE_WITH_CHECK_NAMES = { "PRIMER_PRODUCT_OPT_TM",
+                                              "PRIMER_OPT_GC_PERCENT",
                                               "PRIMER_INTERNAL_OPT_GC_PERCENT" };
 const QStringList DEBUG_PARAMETERS = { "SEQUENCE_ID", "SEQUENCE_TEMPLATE", "PRIMER_EXPLAIN_FLAG", "PRIMER_SECONDARY_STRUCTURE_ALIGNMENT"};
-const QMap<QString, QString> LIBRARIES_PATH_AND_NAME = { 
-                                                {"drosophila.w.transposons.txt", "DROSOPHILA"}, 
-                                                {"humrep_and_simple.txt", "HUMAN"}, 
-                                                {"rodent_ref.txt", "RODENT"}, 
+const QMap<QString, QString> LIBRARIES_PATH_AND_NAME = {
+                                                {"drosophila.w.transposons.txt", "DROSOPHILA"},
+                                                {"humrep_and_simple.txt", "HUMAN"},
+                                                {"rodent_ref.txt", "RODENT"},
                                                 {"rodrep_and_simple.txt", "RODENT_AND_SIMPLE"}};
 
 #define GT_CLASS_NAME "GTUtilsDialog::KalignDialogFiller"
@@ -113,7 +113,7 @@ void Primer3DialogFiller::commonScenario() {
         GTGroupBox::setChecked(os, groupBox);
 
         if (!settings.exonRangeLine.isEmpty()) {
-            GTLineEdit::setText(os, "exonRangeEdit", settings.exonRangeLine);
+            GTLineEdit::setText(os, "edit_exonRange", settings.exonRangeLine);
         }
     }
 
@@ -136,13 +136,24 @@ void Primer3DialogFiller::commonScenario() {
         auto button = GTWidget::findPushButton(os, "pickPrimersButton", dialog);
         GTWidget::click(os, button);
     } else {
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os,
+            settings.continueIfError ?  QMessageBox::Ok : QMessageBox::Cancel,
+            settings.validationErrorsText));
         auto button = GTWidget::findPushButton(os, "pickPrimersButton", dialog);
         GTWidget::click(os, button);
-        if (isOsMac()) {
-            dialog->close();
-        } else {
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+        for (const auto& errorWidget : qAsConst(settings.errorWidgetsNames)) {
+            auto wgt = GTWidget::findWidget(os, errorWidget, dialog);
+            auto ss = wgt->styleSheet();
+            GT_CHECK(ss.contains("#ffc8c8"), QString("Incorrect color for %1").arg(errorWidget));
+        }
+
+        if (!settings.continueIfError) {
+            if (isOsMac()) {
+                dialog->close();
+            } else {
+                GTKeyboardDriver::keyClick(Qt::Key_Escape);
+            }
         }
     }
 }
@@ -215,7 +226,7 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
     for (auto w : qAsConst(keys)) {
         tabsAndWidgetsPair.append({ w, tabsAndWidgets.value(w) });
     }
-    std::sort(tabsAndWidgetsPair.begin(), tabsAndWidgetsPair.end(), 
+    std::sort(tabsAndWidgetsPair.begin(), tabsAndWidgetsPair.end(),
         [=](const QPair<QWidget*, Widgets>& first, const QPair<QWidget*, Widgets>& second) {
         return tw->indexOf(first.first) < tw->indexOf(second.first);
     });
@@ -285,7 +296,7 @@ void Primer3DialogFiller::findAllChildrenWithNames(QObject* obj, QMap<QString, Q
             if (!name.isEmpty()) {
                 children.insert(name, o);
             }
-            
+
             findAllChildrenWithNames(o, children);
         }
 }

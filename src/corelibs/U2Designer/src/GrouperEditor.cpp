@@ -65,7 +65,7 @@ void GrouperEditor::setConfiguration(Actor* actor) {
     foreach (QString key, attrs.keys()) {
         Attribute* attr = attrs.value(key);
         if (GROUPER_SLOT_GROUP == attr->getGroup()) {
-            if (nullptr != gAttr) {
+            if (gAttr != nullptr) {
                 assert(0);
                 gAttr = nullptr;
                 break;

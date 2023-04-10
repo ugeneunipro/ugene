@@ -31,10 +31,10 @@ ConnectionHelper::ConnectionHelper(const U2DbiRef& dbiRef, U2OpStatus& os)
     CHECK_OP(os, );
 
     dbi = con->dbi;
-    SAFE_POINT_EXT(nullptr != dbi, os.setError(QString("Error! No DBI")), );
+    SAFE_POINT_EXT(dbi != nullptr, os.setError(QString("Error! No DBI")), );
 
     oDbi = dbi->getObjectDbi();
-    SAFE_POINT_EXT(nullptr != oDbi, os.setError(QString("Error! No object DBI")), );
+    SAFE_POINT_EXT(oDbi != nullptr, os.setError(QString("Error! No object DBI")), );
 }
 
 ConnectionHelper::~ConnectionHelper() {

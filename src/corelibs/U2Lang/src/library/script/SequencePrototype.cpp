@@ -42,15 +42,15 @@ SequencePrototype::SequencePrototype(QObject* parent)
 }
 
 U2SequenceObject* SequencePrototype::getSequenceObject() const {
-    CHECK(nullptr != thisData(), nullptr);
+    CHECK(thisData() != nullptr, nullptr);
     Workflow::DbiDataStorage* storage = dataStorage();
-    CHECK(nullptr != storage, nullptr);
+    CHECK(storage != nullptr, nullptr);
     return Workflow::StorageUtils::getSequenceObject(storage, thisData()->getId());
 }
 
 U2SequenceObject* SequencePrototype::getValidSequenceObject() const {
     U2SequenceObject* result = getSequenceObject();
-    SCRIPT_CHECK(nullptr != result, context(), "Invalid sequence object", nullptr);
+    SCRIPT_CHECK(result != nullptr, context(), "Invalid sequence object", nullptr);
     return result;
 }
 
@@ -139,7 +139,7 @@ QScriptValue SequenceScriptClass::constructor(QScriptContext* ctx, QScriptEngine
 Workflow::SharedDbiDataHandler SequenceScriptClass::copySequence(const ScriptDbiData& id, QScriptEngine* engine) {
     Workflow::SharedDbiDataHandler result;
     Workflow::DbiDataStorage* storage = ScriptEngineUtils::dataStorage(engine);
-    SCRIPT_CHECK(nullptr != storage, engine->currentContext(), "Data storage error", result);
+    SCRIPT_CHECK(storage != nullptr, engine->currentContext(), "Data storage error", result);
 
     QScopedPointer<U2SequenceObject> seqObj(Workflow::StorageUtils::getSequenceObject(storage, id.getId()));
     SCRIPT_CHECK(!seqObj.isNull(), engine->currentContext(), "Invalid sequence id", result);

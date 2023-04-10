@@ -76,7 +76,7 @@ const QString& FilteredProjectGroup::getGroupName() const {
 }
 
 void FilteredProjectGroup::addObject(GObject* obj, int objNumber) {
-    SAFE_POINT(nullptr != obj, L10N::nullPointerError("object"), );
+    SAFE_POINT(obj != nullptr, L10N::nullPointerError("object"), );
     SAFE_POINT(0 <= objNumber && objNumber <= filteredObjs.size(), "Object index is out of range", );
 
     filteredObjs.insert(objNumber, new WrappedObject(obj, this));
@@ -88,7 +88,7 @@ void FilteredProjectGroup::removeAt(int objNumber) {
 }
 
 bool FilteredProjectGroup::contains(GObject* obj) const {
-    SAFE_POINT(nullptr != obj, L10N::nullPointerError("object"), false);
+    SAFE_POINT(obj != nullptr, L10N::nullPointerError("object"), false);
 
     foreach (WrappedObject* wrappedObj, filteredObjs) {
         if (wrappedObj->getObject() == obj) {

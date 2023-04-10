@@ -128,14 +128,14 @@ bool Configuration::isAttributeVisible(Attribute* attribute) const {
     if (attribute->getFlags().testFlag(Attribute::Hidden)) {
         return false;
     }
-    SAFE_POINT(nullptr != attribute, "NULL attribute", false);
+    SAFE_POINT(attribute != nullptr, "NULL attribute", false);
     foreach (const AttributeRelation* relation, attribute->getRelations()) {
         if (VISIBILITY != relation->getType()) {
             continue;
         }
 
         Attribute* masterAttribute = getParameter(relation->getRelatedAttrId());
-        SAFE_POINT(nullptr != masterAttribute, QString("Invalid attribute relation: can't get master attribute '%1'").arg(relation->getRelatedAttrId()), false);
+        SAFE_POINT(masterAttribute != nullptr, QString("Invalid attribute relation: can't get master attribute '%1'").arg(relation->getRelatedAttrId()), false);
 
         isVisible &= isAttributeVisible(masterAttribute);
         isVisible &= relation->getAffectResult(masterAttribute->getAttributePureValue(), attribute->getAttributePureValue()).toBool();

@@ -69,6 +69,7 @@
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsAssemblyBrowser.h"
+#include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsDocument.h"
@@ -4195,7 +4196,7 @@ GUI_TEST_CLASS_DEFINITION(test_7824) {
     // 1. Open 1.gb.
     // 2. Double click any annotation
     // Expected: the corresponding sequence has been selected
-    // 
+    //
     // 3. Click right button on the same annotation
     // Expected: the corresponding sequence is still selected
     // Current: sequence selection is gone, only annotation selection left
@@ -4212,10 +4213,9 @@ GUI_TEST_CLASS_DEFINITION(test_7824) {
     CHECK_SET_ERR(selection.first() == U2Region(29, 91),
                   QString("Selection doesn't match with 'B' annotation it is (%1, %2) instead of (29, 91).")
                       .arg(QString::number(selection.first().startPos))
-                      .arg(QString::number(selection.first().length))
-                  );
+                      .arg(QString::number(selection.first().length)));
     GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C_group  (0, 1)"));
-    QPoint cCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "C");    
+    QPoint cCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "C");
     QPoint bjCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined");
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTMouseDriver::moveTo(cCenter);
@@ -4312,6 +4312,32 @@ GUI_TEST_CLASS_DEFINITION(test_7842) {
 
     GTUtilsDialog::waitForDialog(os, new ConstructMoleculeDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Construct molecule..."});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7850) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "my bookmark");
+
+    // Scroll MSA to the middle.
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+
+    // Update start bookmark.
+    GTUtilsBookmarksTreeView::updateBookmark(os, "my bookmark");
+    int savedLeftOffset = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+
+    // Scroll MSA to the start.
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+
+    // Expected state: click on the bookmark restores updated MSA position.
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "my bookmark");
+
+    int restoredLeftOffset = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+    CHECK_SET_ERR(restoredLeftOffset == savedLeftOffset,
+                  QString("Bad offset: expected %1, current %2").arg(savedLeftOffset).arg(restoredLeftOffset));
 }
 
 }  // namespace GUITest_regression_scenarios

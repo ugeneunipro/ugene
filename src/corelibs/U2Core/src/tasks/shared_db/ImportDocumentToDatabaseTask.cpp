@@ -32,13 +32,13 @@
 namespace U2 {
 
 ImportDocumentToDatabaseTask::ImportDocumentToDatabaseTask(Document* document, const U2DbiRef& dstDbiRef, const QString& dstFolder, const ImportToDatabaseOptions& options)
-    : Task(tr("Import document %1 to the database").arg(nullptr != document ? document->getName() : ""), TaskFlag_NoRun),
+    : Task(tr("Import document %1 to the database").arg(document != nullptr ? document->getName() : ""), TaskFlag_NoRun),
       document(document),
       dstDbiRef(dstDbiRef),
       dstFolder(dstFolder),
       options(options) {
     GCOUNTER(cvar, "ImportDocumentToDatabaseTask");
-    CHECK_EXT(nullptr != document, setError(tr("Invalid document to import")), );
+    CHECK_EXT(document != nullptr, setError(tr("Invalid document to import")), );
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid database reference")), );
 
     setMaxParallelSubtasks(1);
@@ -100,9 +100,9 @@ QStringList ImportDocumentToDatabaseTask::getSkippedObjectNames() const {
     foreach (const QPointer<Task>& subtask, getSubtasks()) {
         if (subtask->isCanceled() || subtask->hasError()) {
             auto importObjectTask = qobject_cast<ImportObjectToDatabaseTask*>(subtask);
-            if (nullptr != importObjectTask) {
+            if (importObjectTask != nullptr) {
                 GObject* object = importObjectTask->getSourceObject();
-                if (nullptr != object) {
+                if (object != nullptr) {
                     result << object->getGObjectName();
                 }
             }
@@ -129,10 +129,10 @@ QMap<GObject*, GObject*> ImportDocumentToDatabaseTask::getObjectPairs() const {
     foreach (const QPointer<Task>& subtask, getSubtasks()) {
         if (!subtask->isCanceled() && !subtask->hasError()) {
             auto importObjectTask = qobject_cast<ImportObjectToDatabaseTask*>(subtask);
-            if (nullptr != importObjectTask) {
+            if (importObjectTask != nullptr) {
                 GObject* srcObject = importObjectTask->getSourceObject();
                 GObject* dstObject = importObjectTask->getDestinationObject();
-                if (nullptr != srcObject && nullptr != dstObject) {
+                if (srcObject != nullptr && dstObject != nullptr) {
                     objects.insert(srcObject, dstObject);
                 }
             }
@@ -179,7 +179,7 @@ void ImportDocumentToDatabaseTask::propagateObjectsRelations(QStringList& errors
 }
 
 GObject* ImportDocumentToDatabaseTask::getAppropriateObject(const QList<GObject*> objects, const GObject* pattern) {
-    CHECK(nullptr != pattern, nullptr);
+    CHECK(pattern != nullptr, nullptr);
 
     foreach (GObject* object, objects) {
         if (object->getGObjectName() == pattern->getGObjectName() &&

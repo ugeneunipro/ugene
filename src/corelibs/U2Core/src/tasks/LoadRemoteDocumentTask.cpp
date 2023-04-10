@@ -467,7 +467,7 @@ EntrezQueryTask::EntrezQueryTask(QXmlDefaultHandler* rHandler, const QString& se
       queryReply(nullptr),
       resultHandler(rHandler),
       query(searchQuery) {
-    SAFE_POINT(nullptr != rHandler, "Invalid pointer encountered", );
+    SAFE_POINT(rHandler != nullptr, "Invalid pointer encountered", );
 }
 
 void EntrezQueryTask::run() {

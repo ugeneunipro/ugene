@@ -218,7 +218,7 @@ QMenu* ToolsMenu::getToolsMenu() {
 
 QMenu* ToolsMenu::getMenu(const QString& menuName) {
     QMenu* tools = getToolsMenu();
-    CHECK(nullptr != tools, nullptr);
+    CHECK(tools != nullptr, nullptr);
 
     if (TOOLS == menuName) {
         return tools;
@@ -294,7 +294,7 @@ QAction* ToolsMenu::getPrevAction(QMenu* menu, const QString& menuName, const QS
 
     for (int i = pos - 1; i >= 0; i--) {
         QAction* action = findAction(menu, actionNames[i]);
-        if (nullptr != action) {
+        if (action != nullptr) {
             return action;
         }
     }
@@ -309,7 +309,7 @@ QAction* ToolsMenu::getNextAction(QMenu* menu, const QString& menuName, const QS
 
     for (int i = pos + 1; i < actionNames.size(); i++) {
         QAction* action = findAction(menu, actionNames[i]);
-        if (nullptr != action) {
+        if (action != nullptr) {
             return action;
         }
     }
@@ -350,7 +350,7 @@ void ToolsMenu::insertAction(QMenu* menu, const QString& menuName, QAction* acti
 
 void ToolsMenu::addAction(const QString& menuName, QAction* action) {
     QMenu* menu = getMenu(menuName);
-    SAFE_POINT(nullptr != menu, "Can not find menu " + menuName, );
+    SAFE_POINT(menu != nullptr, "Can not find menu " + menuName, );
     insertAction(menu, menuName, action);
 }
 

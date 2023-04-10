@@ -34,8 +34,8 @@ BaseOneOneWorker::BaseOneOneWorker(Actor* a, bool autoTransitBus, const QString&
 void BaseOneOneWorker::init() {
     input = ports.value(inPortId);
     output = ports.value(outPortId);
-    SAFE_POINT(nullptr != input, QString("Input port '%1' is NULL").arg(inPortId), );
-    SAFE_POINT(nullptr != output, QString("Output port '%1' is NULL").arg(outPortId), );
+    SAFE_POINT(input != nullptr, QString("Input port '%1' is NULL").arg(inPortId), );
+    SAFE_POINT(output != nullptr, QString("Output port '%1' is NULL").arg(outPortId), );
 }
 
 Task* BaseOneOneWorker::tick() {
@@ -43,14 +43,14 @@ Task* BaseOneOneWorker::tick() {
         U2OpStatusImpl os;
         Task* prepareTask = prepare(os);
         CHECK_OP(os, nullptr);
-        if (nullptr != prepareTask) {
+        if (prepareTask != nullptr) {
             return prepareTask;
         }
     }
 
     if (input->hasMessage()) {
         Task* tickTask = processNextInputMessage();
-        CHECK(nullptr != tickTask, nullptr);
+        CHECK(tickTask != nullptr, nullptr);
         connect(tickTask, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return tickTask;
     } else if (input->isEnded()) {
@@ -75,7 +75,7 @@ void BaseOneOneWorker::onPrepared(Task* /*task*/, U2OpStatus& /*os*/) {
 
 void BaseOneOneWorker::sl_taskFinished() {
     auto task = dynamic_cast<Task*>(sender());
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(task->isFinished() && !task->isCanceled() && !task->hasError(), );
     U2OpStatusImpl os;
     QList<Message> result = fetchResult(task, os);
@@ -91,7 +91,7 @@ void BaseOneOneWorker::sl_taskFinished() {
 
 void BaseOneOneWorker::sl_prepared() {
     auto task = dynamic_cast<Task*>(sender());
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(task->isFinished(), );
     if (task->isCanceled() || task->hasError()) {
         output->setEnded();
@@ -116,7 +116,7 @@ Task* BaseOneOneWorker::prepare(U2OpStatus& os) {
         output->setEnded();
         setDone();
     }
-    if (nullptr != task) {
+    if (task != nullptr) {
         connect(task, SIGNAL(si_stateChanged()), SLOT(sl_prepared()));
     }
     prepared = true;

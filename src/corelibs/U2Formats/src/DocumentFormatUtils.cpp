@@ -171,9 +171,9 @@ void DocumentFormatUtils::updateFormatHints(QList<GObject*>& objects, QVariantMa
 
 QString DocumentFormatUtils::getFormatNameById(const DocumentFormatId& formatId) {
     DocumentFormatRegistry* registry = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(nullptr != registry, L10N::nullPointerError("document format registry"), "");
+    SAFE_POINT(registry != nullptr, L10N::nullPointerError("document format registry"), "");
     DocumentFormat* format = registry->getFormatById(formatId);
-    SAFE_POINT(nullptr != format, QString("Document format '%1' is not registered").arg(formatId), "");
+    SAFE_POINT(format != nullptr, QString("Document format '%1' is not registered").arg(formatId), "");
     return format->getFormatName();
 }
 

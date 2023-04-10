@@ -171,7 +171,7 @@ void SearchGenbankSequenceDialogController::sl_taskStateChanged(Task* task) {
             ui->searchButton->setEnabled(true);
         } else {
             prepareSummaryRequestTask(results);
-            if (nullptr != summaryTask) {
+            if (summaryTask != nullptr) {
                 AppContext::getTaskScheduler()->registerTopLevelTask(summaryTask);
             }
         }

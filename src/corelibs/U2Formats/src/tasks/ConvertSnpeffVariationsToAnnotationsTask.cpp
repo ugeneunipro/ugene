@@ -154,7 +154,7 @@ QList<Task*> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFinis
 
     if (loadTask == subTask) {
         loadedVariationsDocument = loadTask->takeDocument();
-        CHECK_EXT(nullptr != loadedVariationsDocument, setError(tr("'%1' load failed, the result document is NULL").arg(variationsUrl)), newSubtasks);
+        CHECK_EXT(loadedVariationsDocument != nullptr, setError(tr("'%1' load failed, the result document is NULL").arg(variationsUrl)), newSubtasks);
         loadedVariationsDocument->setDocumentOwnsDbiResources(false);
 
         QList<GObject*> objects = loadedVariationsDocument->findGObjectByType(GObjectTypes::VARIANT_TRACK);
@@ -163,7 +163,7 @@ QList<Task*> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFinis
         QList<VariantTrackObject*> variantTrackObjects;
         foreach (GObject* object, objects) {
             auto variantTrackObject = qobject_cast<VariantTrackObject*>(object);
-            SAFE_POINT_EXT(nullptr != variantTrackObject, setError("Can't cast GObject to VariantTrackObject"), newSubtasks);
+            SAFE_POINT_EXT(variantTrackObject != nullptr, setError("Can't cast GObject to VariantTrackObject"), newSubtasks);
             variantTrackObjects << variantTrackObject;
         }
 
@@ -204,9 +204,9 @@ QList<Task*> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFinis
 
 Document* LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::prepareDocument() {
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-    SAFE_POINT_EXT(nullptr != format, setError(QString("Document format '%1' not found in the registry").arg(formatId)), nullptr);
+    SAFE_POINT_EXT(format != nullptr, setError(QString("Document format '%1' not found in the registry").arg(formatId)), nullptr);
     IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
-    SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError(L10N::nullPointerError("ioAdapterFactory")), nullptr);
+    SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError(L10N::nullPointerError("ioAdapterFactory")), nullptr);
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue<U2DbiRef>(dstDbiRef);

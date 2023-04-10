@@ -99,7 +99,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
     CHECK_OP(os, res);
 
     U2SequenceDbi* srcSeqDbi = srcCon.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(nullptr != srcSeqDbi, os.setError("Invalid sequence DBI"), res);
+    SAFE_POINT_EXT(srcSeqDbi != nullptr, os.setError("Invalid sequence DBI"), res);
     U2Sequence seq = srcSeqDbi->getSequenceObject(srcSeq.entityId, os);
     CHECK_OP(os, res);
 
@@ -115,7 +115,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef& srcSeq, const U2DbiR
     DbiConnection dstCon(dstDbi, os);
     CHECK_OP(os, res);
     U2SequenceDbi* dstSeqDbi = dstCon.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(nullptr != dstSeqDbi, os.setError("Invalid sequence DBI"), res);
+    SAFE_POINT_EXT(dstSeqDbi != nullptr, os.setError("Invalid sequence DBI"), res);
     dstSeqDbi->createSequenceObject(res, dstFolder, os);
     CHECK_OP(os, res);
 
@@ -354,7 +354,7 @@ U2Sequence U2SequenceUtils::getSequenceDbInfo(U2SequenceObject* seqObj) {
 
     seq.id = seqObj->getEntityRef().entityId;
     seq.dbiId = seqObj->getEntityRef().dbiRef.dbiId;
-    if (nullptr != seqObj->getAlphabet()) {
+    if (seqObj->getAlphabet() != nullptr) {
         seq.alphabet.id = seqObj->getAlphabet()->getId();
     }
     seq.circular = seqObj->isCircular();

@@ -306,7 +306,7 @@ QString Annotation::findFirstQualifierValue(const QString& name) const {
 }
 
 bool Annotation::annotationLessThan(Annotation* first, Annotation* second) {
-    SAFE_POINT(first != nullptr && nullptr != second, "Invalid annotation detected", false);
+    SAFE_POINT(first != nullptr && second != nullptr, "Invalid annotation detected", false);
 
     AnnotationGroup* firstGroup = first->getGroup();
     SAFE_POINT(firstGroup != nullptr, L10N::nullPointerError("annotation group"), false);

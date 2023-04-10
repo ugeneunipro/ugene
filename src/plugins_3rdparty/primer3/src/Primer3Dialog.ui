@@ -292,7 +292,7 @@
          <item row="0" column="0" rowspan="2">
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <widget class="QLabel" name="label_TARGET">
+            <widget class="QLabel" name="label_SEQUENCE_TARGET">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If one or more Targets is specified then a legal primer pair must flank at least one of them. A Target might be a simple sequence repeat site (for example a CA repeat) or a single-base-pair polymorphism. The value should be a space-separated list of &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs where &lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt; is the index of the first base of a Target, and length is its &lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -302,7 +302,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_OVERLAP_JUNCTION_LIST">
+            <widget class="QLabel" name="label_SEQUENCE_OVERLAP_JUNCTION_LIST">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this list is not empty, then the forward OR the reverse primer must overlap one of these junction points by at least &lt;span style=&quot; font-weight:700;&quot;&gt;3 Prime Junction Overlap&lt;/span&gt; nucleotides at the 3' end and at least &lt;span style=&quot; font-weight:700;&quot;&gt;5 Prime Junction Overlap&lt;/span&gt; nucleotides at the 5' end.&lt;/p&gt;&lt;p&gt;In more detail: The junction associated with a given position is the space immediately to the right of that position in the template sequence on the strand given as input.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -312,7 +312,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_EXCLUDED_REGION">
+            <widget class="QLabel" name="label_SEQUENCE_EXCLUDED_REGION">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Primer oligos may not overlap any region specified in this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs where &lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt; is the index of the first base of the excluded region, and &lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt; is its length. This tag is useful for tasks such as excluding regions of low sequence quality or for excluding regions containing repetitive elements such as ALUs or LINEs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -322,7 +322,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_PAIR_OK">
+            <widget class="QLabel" name="label_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This tag allows detailed specification of possible locations of left and right primers in primer pairs.&lt;/p&gt;&lt;p&gt;The associated value must be a semicolon-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;left_start&lt;/span&gt;,&lt;span style=&quot; font-weight:700;&quot;&gt;left_length&lt;/span&gt;,&lt;span style=&quot; font-weight:700;&quot;&gt;right_start&lt;/span&gt;,&lt;span style=&quot; font-weight:700;&quot;&gt;right_length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;quadruples. The left primer must be in the region specified by &lt;span style=&quot; font-weight:700;&quot;&gt;left_start&lt;/span&gt;,&lt;span style=&quot; font-weight:700;&quot;&gt;left_length&lt;/span&gt; and the right primer must be in the region specified by &lt;span style=&quot; font-weight:700;&quot;&gt;right_start&lt;/span&gt;,&lt;span style=&quot; font-weight:700;&quot;&gt;right_length&lt;/span&gt;. &lt;span style=&quot; font-weight:700;&quot;&gt;left_start&lt;/span&gt; and &lt;span style=&quot; font-weight:700;&quot;&gt;left_length&lt;/span&gt; specify the location of the left primer in terms of the index of the first base in the region and the length of the region. &lt;span style=&quot; font-weight:700;&quot;&gt;right_start&lt;/span&gt; and &lt;span style=&quot; font-weight:700;&quot;&gt;right_length&lt;/span&gt; specify the location of the right primer in analogous fashion. As seen in the example below, if no integers are specified for a region then the location of the corresponding primer is not constrained.&lt;/p&gt;&lt;p&gt;Example:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Pair OK Region List&lt;/span&gt;=100,50,300,50 ; 900,60,, ; ,,930,100&lt;/p&gt;&lt;p&gt;Specifies that there are three choices:&lt;/p&gt;&lt;p&gt;Left primer in the 50 bp region starting at position 100 AND right primer in the 50 bp region starting at position 300&lt;/p&gt;&lt;p&gt;OR&lt;/p&gt;&lt;p&gt;Left primer in the 60 bp region starting at position 900 (and right primer anywhere)&lt;/p&gt;&lt;p&gt;OR&lt;/p&gt;&lt;p&gt;Right primer in the 100 bp region starting at position 930 (and left primer anywhere)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -332,7 +332,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_INCLUDED_REGION">
+            <widget class="QLabel" name="label_SEQUENCE_INCLUDED_REGION">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A sub-region of the given sequence in which to pick primers. For example, often the first dozen or so bases of a sequence are vector, and should be excluded from consideration. The value for this parameter has the form&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;where &lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt; is the index of the first base to consider, and &lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt; is the number of subsequent bases in the primer-picking region.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -354,7 +354,7 @@ Primer3 selects the position of the right primer by scanning right from the left
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_START_CODON_SEQUENCE">
+            <widget class="QLabel" name="label_SEQUENCE_START_CODON_SEQUENCE">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The sequence of the start codon, by default ATG. Some bacteria use different start codons, this tag allows to specify alternative start codons.
 
@@ -386,7 +386,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_34">
+            <widget class="QLabel" name="label_PRIMER_MUST_MATCH_FIVE_PRIME">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Discards all primers which do not match this match sequence at the 5' end. (New in v. 2.3.6, added by A. Untergasser.)&lt;br/&gt;&lt;br/&gt;The match sequence must be 5 nucleotides long and can contain the following letters:&lt;/p&gt;&lt;p&gt;N Any nucleotide&lt;br/&gt;A Adenine&lt;br/&gt;G Guanine&lt;br/&gt;C Cytosine&lt;br/&gt;T Thymine&lt;br/&gt;R Purine (A or G)&lt;br/&gt;Y Pyrimidine (C or T)&lt;br/&gt;W Weak (A or T)&lt;br/&gt;S Strong (G or C)&lt;br/&gt;M Amino (A or C)&lt;br/&gt;K Keto (G or T)&lt;br/&gt;B Not A (G or C or T)&lt;br/&gt;H Not G (A or C or T)&lt;br/&gt;D Not C (A or G or T)&lt;br/&gt;V Not T (A or G or C)&lt;/p&gt;&lt;p&gt;Any primer which will not match the entire match sequence at the 5' end will be discarded and not evaluated. Setting strict requirements here will result in low quality primers due to the high numbers of primers discarded at this step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -396,7 +396,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_36">
+            <widget class="QLabel" name="label_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer's 5'&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -614,7 +614,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLabel" name="label_35">
+            <widget class="QLabel" name="label_PRIMER_MUST_MATCH_THREE_PRIME">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Discards all primers which do not match this match sequence at the 3' end. Similar parameter to &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer's 5'&lt;/span&gt;, but limits the 3' end. (New in v. 2.3.6, added by A. Untergasser.)&lt;br/&gt;&lt;br/&gt;The match sequence must be 5 nucleotides long and can contain the following letters:&lt;/p&gt;&lt;p&gt;N Any nucleotide&lt;br/&gt;A Adenine&lt;br/&gt;G Guanine&lt;br/&gt;C Cytosine&lt;br/&gt;T Thymine&lt;br/&gt;R Purine (A or G)&lt;br/&gt;Y Pyrimidine (C or T)&lt;br/&gt;W Weak (A or T)&lt;br/&gt;S Strong (G or C)&lt;br/&gt;M Amino (A or C)&lt;br/&gt;K Keto (G or T)&lt;br/&gt;B Not A (G or C or T)&lt;br/&gt;H Not G (A or C or T)&lt;br/&gt;D Not C (A or G or T)&lt;br/&gt;V Not T (A or G or C)&lt;/p&gt;&lt;p&gt;Any primer which will not match the entire match sequence at the 3' end will be discarded and not evaluated. Setting strict requirements here will result in low quality primers due to the high numbers of primers discarded at this step.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -638,7 +638,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </widget>
            </item>
            <item row="5" column="1">
-            <widget class="QLabel" name="label_123">
+            <widget class="QLabel" name="label_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME">
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Equivalent parameter of &lt;span style=&quot; font-weight:700;&quot;&gt;Five Matches on Primer's 3'&lt;/span&gt; for the internal oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -3286,7 +3286,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
        <item>
         <layout class="QFormLayout" name="formLayout_6">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_58">
+          <widget class="QLabel" name="label_SEQUENCE_INTERNAL_EXCLUDED_REGION">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Middle oligos may not overlap any region specified by this tag. The associated value must be a space-separated list of&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;,&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt;&lt;/p&gt;&lt;p&gt;pairs, where &lt;span style=&quot; font-weight:700;&quot;&gt;start&lt;/span&gt; is the index of the first base of an excluded region, and &lt;span style=&quot; font-weight:700;&quot;&gt;length&lt;/span&gt; is its length. Often one would make Target regions excluded regions for internal oligos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -3303,7 +3303,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_86">
+          <widget class="QLabel" name="label_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The 5' end of the middle oligo / probe must overlap one of the junctions in &lt;span style=&quot; font-weight:700;&quot;&gt;Internal Oligo Overlap Positions&lt;/span&gt; by this amount. See details in &lt;span style=&quot; font-weight:700;&quot;&gt;Overlap Junction List&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -6004,7 +6004,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="label_SEQUENCE_QUALITY">
          <property name="text">
           <string>Sequence quality</string>
          </property>
@@ -6246,14 +6246,14 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
-             <widget class="QLabel" name="label_82">
+             <widget class="QLabel" name="label_exonRange">
               <property name="text">
                <string>Exon range:</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="exonRangeEdit">
+             <widget class="QLineEdit" name="edit_exonRange">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>

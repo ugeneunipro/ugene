@@ -92,10 +92,10 @@ QList<QLayout*> removeOneLayoutContent(QLayout* l) {
 
     while (l->count() > 0) {
         QLayoutItem* item = l->takeAt(0);
-        if (nullptr != item->widget()) {
+        if (item->widget() != nullptr) {
             item->widget()->setParent(nullptr);
             delete item;
-        } else if (nullptr != item->layout()) {
+        } else if (item->layout() != nullptr) {
             result << item->layout();
         } else {
             delete item;

@@ -5357,6 +5357,26 @@ GUI_TEST_CLASS_DEFINITION(test_6797_2) {
     GTUtilsStartPage::checkRecentListUrl(os, "test_6797.uprj", false);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6798) {
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
+
+    // Select file "pattern_with_uppercase_letter.txt with content "TTGT"
+    GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, testDir + "_common_data/FindAlgorithm/", "pattern_with_uppercase_letter.txt");
+
+    // Actual state: "Results: 1/2317"
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2317"), "Results string not match");
+
+    // Select file pattern_with_lowcase_letter.txt with content "ttgt"
+    GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, testDir + "_common_data/FindAlgorithm/", "pattern_with_lowercase_letter.txt");
+
+    // Expected state: "Results: 1/2317"
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2317"), "Results string not match");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6807) {
     class CheckWarningScenario : public CustomScenario {
         void run(HI::GUITestOpStatus& os) override {

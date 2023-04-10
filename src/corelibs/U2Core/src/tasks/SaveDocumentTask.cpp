@@ -191,7 +191,7 @@ Task::ReportResult SaveDocumentTask::report() {
     }
     if (flags.testFlag(SaveDoc_OpenAfter)) {
         Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(url, openDocumentWithProjectHints);
-        if (nullptr != openTask) {
+        if (openTask != nullptr) {
             AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
         }
     }

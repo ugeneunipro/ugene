@@ -262,7 +262,7 @@ LoadDocumentTask* LoadDocumentTask::getDefaultLoadDocTask(U2OpStatus& os, const 
     CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect file format: %1").arg(url.getURLString())), nullptr);
 
     DocumentFormat* df = dfs.first().format;
-    SAFE_POINT_EXT(nullptr != df, os.setError(tr("Document format is unknown (format: '%1', file path: '%2')").arg(df->getFormatId()).arg(url.getURLString())), nullptr);
+    SAFE_POINT_EXT(df != nullptr, os.setError(tr("Document format is unknown (format: '%1', file path: '%2')").arg(df->getFormatId()).arg(url.getURLString())), nullptr);
     return new LoadDocumentTask(df->getFormatId(), url, iof, hints);
 }
 
@@ -399,7 +399,7 @@ static Document* loadFromMultipleFiles(IOAdapterFactory* iof, QVariantMap& fs, U
     } else if (fs.value(DocumentReadingMode_SequenceAsAlignmentHint).toBool()) {
         MultipleSequenceAlignmentObject* msaObject = MSAUtils::seqDocs2msaObj(docs, fs, os);
         CHECK_OP(os, nullptr);
-        SAFE_POINT_EXT(nullptr != msaObject, os.setError("The alignment object is NULL!"), nullptr);
+        SAFE_POINT_EXT(msaObject != nullptr, os.setError("The alignment object is NULL!"), nullptr);
         newObjects << msaObject;
         ref = U2DbiRef();
     } else {
