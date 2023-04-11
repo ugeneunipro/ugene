@@ -4340,5 +4340,22 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
                   QString("Bad offset: expected %1, current %2").arg(savedLeftOffset).arg(restoredLeftOffset));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7861) {
+    // Open COI.aln.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Press PageDown.
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
+
+    // Goto 1.
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+
+    // Expected: position 1 is visible.
+    int leftOffset = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+    CHECK_SET_ERR(leftOffset == 0, QString("Bad offset: expected 0, current %1").arg(leftOffset));
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
