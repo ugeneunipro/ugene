@@ -66,7 +66,7 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
 
     WorkflowIterationRunTask* t = new WorkflowIterationRunTask(sh, debugInfo);
     WorkflowMonitor* m = t->getMonitor();
-    if (nullptr != m) {
+    if (m != nullptr) {
         monitors << m;
     }
     connect(t, SIGNAL(si_ticked()), SIGNAL(si_ticked()));
@@ -281,7 +281,7 @@ QList<Task*> WorkflowIterationRunTask::onSubTaskFinished(Task* subTask) {
     if (scheduler->isReady() && nextTickRestoring) {
         Task* replayingTask = scheduler->replayLastWorkerTick();
         nextTickRestoring = false;
-        if (nullptr != replayingTask) {
+        if (replayingTask != nullptr) {
             tasks << replayingTask;
             emit si_ticked();
             return tasks;
@@ -362,7 +362,7 @@ inline static bool isSourceActor(const QString& actor, const QString& key) {
 }
 
 WorkflowMonitor* WorkflowIterationRunTask::getMonitor() const {
-    CHECK(nullptr != context, nullptr);
+    CHECK(context != nullptr, nullptr);
     return context->getMonitor();
 }
 
@@ -420,10 +420,10 @@ void WorkflowIterationRunTask::sl_pauseStateChanged(bool isPaused) {
 void WorkflowIterationRunTask::sl_busInvestigationIsRequested(const Workflow::Link* bus,
                                                               int messageNumber) {
     CommunicationChannel* channel = lmap.value(getKey(bus));
-    if (nullptr != channel && debugInfo->isPaused()) {
+    if (channel != nullptr && debugInfo->isPaused()) {
         QQueue<Message> messages = channel->getMessages(messageNumber, messageNumber);
         WorkflowDebugMessageParser* parser = debugInfo->getMessageParser();
-        SAFE_POINT(nullptr != parser, "Invalid debug message parser!", );
+        SAFE_POINT(parser != nullptr, "Invalid debug message parser!", );
         parser->setSourceData(messages);
         WorkflowInvestigationData data = parser->getAllMessageValues();
         debugInfo->respondToInvestigator(data, bus);
@@ -445,11 +445,11 @@ void WorkflowIterationRunTask::sl_convertMessages2Documents(const Workflow::Link
                                                             int messageNumber,
                                                             const QString& schemeName) {
     CommunicationChannel* channel = lmap.value(getKey(bus));
-    if (nullptr != channel && debugInfo->isPaused()) {
+    if (channel != nullptr && debugInfo->isPaused()) {
         QQueue<Message> messages = channel->getMessages(messageNumber, messageNumber);
         if (!messages.isEmpty()) {
             WorkflowDebugMessageParser* parser = debugInfo->getMessageParser();
-            SAFE_POINT(nullptr != parser, "Invalid debug message parser!", );
+            SAFE_POINT(parser != nullptr, "Invalid debug message parser!", );
             parser->setSourceData(messages);
             parser->convertMessagesToDocuments(messageType, schemeName, messageNumber);
         }

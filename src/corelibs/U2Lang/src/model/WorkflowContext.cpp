@@ -60,7 +60,7 @@ WorkflowContext::WorkflowContext(const QList<Actor*>& procs, WorkflowMonitor* _m
 
     {  // register WD process
         AppFileStorage* fileStorage = AppContext::getAppFileStorage();
-        CHECK(nullptr != fileStorage, );
+        CHECK(fileStorage != nullptr, );
 
         U2OpStatusImpl os;
         process = WorkflowProcess(getWorkflowId(this));
@@ -78,7 +78,7 @@ WorkflowContext::~WorkflowContext() {
     // unregister WD process
     if (!process.getId().isEmpty()) {
         AppFileStorage* fileStorage = AppContext::getAppFileStorage();
-        CHECK(nullptr != fileStorage, );
+        CHECK(fileStorage != nullptr, );
 
         U2OpStatusImpl os;
         fileStorage->unregisterWorkflowProcess(process, os);

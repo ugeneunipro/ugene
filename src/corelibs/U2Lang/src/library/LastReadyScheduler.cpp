@@ -70,7 +70,7 @@ inline ActorId LastReadyScheduler::actorId() const {
 }
 
 inline bool LastReadyScheduler::hasValidFinishedTask() const {
-    return (lastWorker != nullptr) && (nullptr != lastTask) && (lastTask->isFinished());
+    return (lastWorker != nullptr) && (lastTask != nullptr) && (lastTask->isFinished());
 }
 
 inline qint64 LastReadyScheduler::lastTaskTimeSec() const {

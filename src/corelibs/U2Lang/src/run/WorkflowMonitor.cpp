@@ -55,7 +55,7 @@ WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner* _task, Schema*
         while (paramsIter.hasNext()) {
             paramsIter.next();
             Attribute* attr = paramsIter.value();
-            SAFE_POINT(nullptr != attr, "NULL attribute in params!", );
+            SAFE_POINT(attr != nullptr, "NULL attribute in params!", );
 
             info.parameters << attr;
         }
@@ -253,7 +253,7 @@ void WorkflowMonitor::sl_taskStateChanged() {
 
 void WorkflowMonitor::sl_workerTaskFinished(Task* workerTask) {
     Actor* actor = taskMap.value(workerTask, nullptr);
-    SAFE_POINT(nullptr != actor, QString("An unknown task finished: %1").arg(workerTask->getTaskName()), );
+    SAFE_POINT(actor != nullptr, QString("An unknown task finished: %1").arg(workerTask->getTaskName()), );
     CHECK(workerTask->isReportingEnabled(), );
     workersReports[actor->getId()].insert(workerTask->getTaskName(), workerTask->generateReport());
 }
@@ -340,7 +340,7 @@ QList<ExternalToolListener*> WorkflowMonitor::createWorkflowListeners(const QStr
 WDListener* WorkflowMonitor::getListener(const QString& actorId, int actorRunNumber, const QString& toolName, int toolRunNumber) const {
     foreach (ExternalToolListener* listener, workersLog[actorId].logs) {
         auto wdListener = dynamic_cast<WDListener*>(listener);
-        SAFE_POINT(nullptr != wdListener, "Can't cast ExternalToolListener to WDListener", nullptr);
+        SAFE_POINT(wdListener != nullptr, "Can't cast ExternalToolListener to WDListener", nullptr);
         if (actorRunNumber == wdListener->getActorRunNumber() &&
             actorId == wdListener->getActorId() &&
             toolName == wdListener->getToolName() &&
@@ -355,7 +355,7 @@ int WorkflowMonitor::getNewToolRunNumber(const QString& actorId, int actorRunNum
     int toolRunNumber = 1;
     foreach (ExternalToolListener* listener, workersLog[actorId].logs) {
         auto wdListener = dynamic_cast<WDListener*>(listener);
-        SAFE_POINT(nullptr != wdListener, "Can't cast ExternalToolListener to WDListener", 0);
+        SAFE_POINT(wdListener != nullptr, "Can't cast ExternalToolListener to WDListener", 0);
         if (toolName == wdListener->getToolName() && actorRunNumber == wdListener->getActorRunNumber()) {
             toolRunNumber++;
         }
@@ -469,7 +469,7 @@ WDListener::WDListener(WorkflowMonitor* _monitor, const QString& _actorId, const
 }
 
 void WDListener::addNewLogMessage(const QString& message, int messageType) {
-    if (nullptr != logProcessor) {
+    if (logProcessor != nullptr) {
         logProcessor->processLogMessage(message);
     }
     writeToFile(messageType, message);

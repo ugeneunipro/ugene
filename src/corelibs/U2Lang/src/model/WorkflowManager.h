@@ -104,7 +104,7 @@ public:
     virtual bool cancelCurrentTaskIfAllowed() = 0;
     virtual void makeOneTick(const ActorId&) = 0;
     virtual void setDebugInfo(WorkflowDebugStatus* newDebugInfo) {
-        Q_ASSERT(nullptr != newDebugInfo);
+        Q_ASSERT(newDebugInfo != nullptr);
         debugInfo = newDebugInfo;
     }
 
