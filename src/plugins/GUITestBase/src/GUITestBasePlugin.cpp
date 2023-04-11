@@ -1842,6 +1842,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7830);
     REGISTER_TEST(GUITest_regression_scenarios::test_7842);
     REGISTER_TEST(GUITest_regression_scenarios::test_7850);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7860);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

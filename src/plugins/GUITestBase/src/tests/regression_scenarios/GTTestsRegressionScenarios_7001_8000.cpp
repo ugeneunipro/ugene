@@ -4340,5 +4340,32 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
                   QString("Bad offset: expected %1, current %2").arg(savedLeftOffset).arg(restoredLeftOffset));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7860) {
+    // Open COI.nwk
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Press zoom out twice
+    auto treeView = GTWidget::findWidget(os, "treeView");
+
+    GTUtilsPhyTree::clickZoomOutButton(os);
+    GTUtilsPhyTree::clickZoomOutButton(os);
+    QImage initialImage = GTWidget::getImage(os, treeView);
+
+    // Create a bookmark
+    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Zoom-2");
+
+    // Press Reset zoom
+    GTUtilsPhyTree::clickZoom100Button(os);
+
+    // Doubleclick on the bookmark
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Zoom-2");
+
+    QImage bookmarkedImage = GTWidget::getImage(os, treeView);
+
+    // Expected: the tree is zoomed out twice
+    CHECK_SET_ERR(initialImage == bookmarkedImage, "Bookmarked image is not equal expected image")
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
