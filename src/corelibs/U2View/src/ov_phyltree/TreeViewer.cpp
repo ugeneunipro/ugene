@@ -96,15 +96,6 @@ TreeViewer::TreeViewer(const QString& viewName, PhyTreeObject* _phyObject, bool 
     });
 }
 
-QTransform TreeViewer::getTransform() const {
-    return ui->transform();
-}
-
-void TreeViewer::setTransform(const QTransform& m) {
-    ui->setTransform(m);
-    ui->updateFixedSizeItemScales();
-}
-
 QVariantMap TreeViewer::saveState() {
     return TreeViewerState::saveState(this);
 }
@@ -952,12 +943,8 @@ void TreeViewerUI::setZoomLevel(double newZoomLevel, bool cancelFitToViewMode) {
     newZoomLevel = qBound(MINIMUM_ZOOM_LEVEL, newZoomLevel, MAXIMUM_ZOOM_LEVEL);
     CHECK(newZoomLevel != zoomLevel, );
     uiLog.trace("New zoom level: " + QString::number(newZoomLevel));
-    if (newZoomLevel == 1) {
-        resetTransform();
-    } else {
-        double scaleChange = newZoomLevel / zoomLevel;
-        scale(scaleChange, scaleChange);
-    }
+    resetTransform();
+    scale(newZoomLevel, newZoomLevel);
     zoomLevel = newZoomLevel;
 
     updateFixedSizeItemScales();
@@ -976,7 +963,7 @@ QList<QGraphicsItem*> TreeViewerUI::getFixedSizeItems() const {
 }
 
 void TreeViewerUI::updateFixedSizeItemScales() {
-    double sceneToScreenScale = qMin(transform().m11(), transform().m22());
+    double sceneToScreenScale = zoomLevel;
     QList<QGraphicsItem*> fixedSizeItems = getFixedSizeItems();
     for (QGraphicsItem* item : qAsConst(fixedSizeItems)) {
         item->setScale(1 / sceneToScreenScale);  // Scale back to screen coordinates.
