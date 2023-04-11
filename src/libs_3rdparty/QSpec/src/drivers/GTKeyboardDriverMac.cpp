@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,¡¡
  * MA 02110-1301, USA.
  */
 
@@ -30,117 +30,7 @@
 namespace HI {
 
 #ifdef Q_OS_DARWIN
-
-int asciiToVirtual(int);
-bool extractShiftModifier(char& key);
-bool keyPressMac(int key);
-bool keyReleaseMac(int key);
-
-#    define GT_CLASS_NAME "GTKeyboardDriverMac"
-#    define GT_METHOD_NAME "keyPress_char"
-bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
-    DRIVER_CHECK(key != 0, "key = 0");
-
-    const bool isChanged = extractShiftModifier(key);
-    if (isChanged) {
-        keyPressMac(GTKeyboardDriver::key[Qt::Key_Shift]);
-    } else {
-        key = asciiToVirtual(key);
-    }
-
-    GTGlobals::sleep(1);
-    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    foreach (Qt::Key mod, modKeys) {
-        keyPressMac(GTKeyboardDriver::key[mod]);
-    }
-
-    return keyPressMac((int)key);
-}
-#    undef GT_METHOD_NAME
-
-#    define GT_METHOD_NAME "keyRelease_char"
-bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
-    DRIVER_CHECK(key != 0, "key = 0");
-
-    const bool isChanged = extractShiftModifier(key);
-    if (!isChanged) {
-        key = asciiToVirtual(key);
-    } else {
-        keyReleaseMac(GTKeyboardDriver::key[Qt::Key_Shift]);
-    }
-
-    GTGlobals::sleep(1);
-    keyReleaseMac((int)key);
-    GTGlobals::sleep(1);
-
-    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    foreach (Qt::Key mod, modKeys) {
-        keyReleaseMac(GTKeyboardDriver::key[mod]);
-    }
-    GTGlobals::sleep(1);
-
-    return true;
-}
-#    undef GT_METHOD_NAME
-
-bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
-    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    foreach (Qt::Key mod, modKeys) {
-        keyPressMac(GTKeyboardDriver::key[mod]);
-    }
-    return keyPressMac(GTKeyboardDriver::key[key]);
-}
-
-bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
-    keyReleaseMac(GTKeyboardDriver::key[key]);
-
-    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    foreach (Qt::Key mod, modKeys) {
-        keyReleaseMac(GTKeyboardDriver::key[mod]);
-    }
-
-    return true;
-}
-
-GTKeyboardDriver::keys::keys() {
-    ADD_KEY(Qt::Key_Control, kVK_Command);
-    ADD_KEY(Qt::Key_Tab, kVK_Tab);
-    ADD_KEY(Qt::Key_Enter, kVK_Return);
-    ADD_KEY(Qt::Key_Shift, kVK_Shift);
-    ADD_KEY(Qt::Key_Meta, kVK_Control);
-    ADD_KEY(Qt::Key_Alt, kVK_Option);
-    ADD_KEY(Qt::Key_Escape, kVK_Escape);
-    ADD_KEY(Qt::Key_Space, kVK_Space);
-    ADD_KEY(Qt::Key_Left, kVK_LeftArrow);
-    ADD_KEY(Qt::Key_Up, kVK_UpArrow);
-    ADD_KEY(Qt::Key_Right, kVK_RightArrow);
-    ADD_KEY(Qt::Key_Down, kVK_DownArrow);
-    ADD_KEY(Qt::Key_Delete, kVK_ForwardDelete);
-    ADD_KEY(Qt::Key_Backspace, kVK_Delete);
-    ADD_KEY(Qt::Key_Help, kVK_Help);
-    ADD_KEY(Qt::Key_F1, kVK_F1);
-    ADD_KEY(Qt::Key_F2, kVK_F2);
-    ADD_KEY(Qt::Key_F3, kVK_F3);
-    ADD_KEY(Qt::Key_F4, kVK_F4);
-    ADD_KEY(Qt::Key_F5, kVK_F5);
-    ADD_KEY(Qt::Key_F6, kVK_F6);
-    ADD_KEY(Qt::Key_F7, kVK_F7);
-    ADD_KEY(Qt::Key_F8, kVK_F8);
-    ADD_KEY(Qt::Key_F9, kVK_F9);
-    ADD_KEY(Qt::Key_F10, kVK_F10);
-    ADD_KEY(Qt::Key_F12, kVK_F12);
-    ADD_KEY(Qt::Key_Home, kVK_Home);
-    ADD_KEY(Qt::Key_End, kVK_End);
-    ADD_KEY(Qt::Key_PageUp, kVK_PageUp);
-    ADD_KEY(Qt::Key_PageDown, kVK_PageDown);
-
-    // feel free to add other keys
-    // macro kVK_* defined in Carbon.framework/Frameworks/HIToolbox.framework/Headers/Events.h
-}
-
-#    undef GT_CLASS_NAME
-
-int asciiToVirtual(int key) {
+static int asciiToVirtual(int key) {
     if (isalpha(key)) {
         key = tolower(key);
     }
@@ -291,11 +181,10 @@ int asciiToVirtual(int key) {
             key = kVK_Return;
             break;
     }
-
     return key;
 }
 
-bool extractShiftModifier(char& key) {
+static bool extractShiftModifier(char& key) {
     switch (key) {
         case '_':
             key = asciiToVirtual('-');
@@ -359,29 +248,126 @@ bool extractShiftModifier(char& key) {
     return false;
 }
 
-bool keyPressMac(int key) {
+static bool keyPressMac(int key) {
     CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, true);
     DRIVER_CHECK(event != NULL, "Can't create event");
     CGEventSetFlags(event, CGEventGetFlags(event) & ~kCGEventFlagMaskNumericPad);
 
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
-    GTGlobals::sleep(1);
+    GTGlobals::sleep(100);
 
     return true;
 }
 
-bool keyReleaseMac(int key) {
+static bool keyReleaseMac(int key) {
     CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, false);
     DRIVER_CHECK(event != NULL, "Can't create event");
     CGEventSetFlags(event, CGEventGetFlags(event) & ~kCGEventFlagMaskNumericPad);
 
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
-    GTGlobals::sleep(1);
+    GTGlobals::sleep(100);
 
     return true;
 }
+
+#    define GT_CLASS_NAME "GTKeyboardDriverMac"
+#    define GT_METHOD_NAME "keyPress_char"
+bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
+    DRIVER_CHECK(key != 0, "key = 0");
+
+    bool isChanged = extractShiftModifier(key);
+    if (isChanged) {
+        keyPressMac(GTKeyboardDriver::key[Qt::Key_Shift]);
+    } else {
+        key = asciiToVirtual(key);
+    }
+
+    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
+    foreach (Qt::Key mod, modKeys) {
+        keyPressMac(GTKeyboardDriver::key[mod]);
+    }
+    return keyPressMac((int)key);
+}
+#    undef GT_METHOD_NAME
+
+#    define GT_METHOD_NAME "keyRelease_char"
+bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
+    DRIVER_CHECK(key != 0, "key = 0");
+
+    const bool isChanged = extractShiftModifier(key);
+    if (!isChanged) {
+        key = asciiToVirtual(key);
+    } else {
+        keyReleaseMac(GTKeyboardDriver::key[Qt::Key_Shift]);
+    }
+
+    keyReleaseMac((int)key);
+
+    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
+    foreach (Qt::Key mod, modKeys) {
+        keyReleaseMac(GTKeyboardDriver::key[mod]);
+    }
+    return true;
+}
+#    undef GT_METHOD_NAME
+
+bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
+    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
+    foreach (Qt::Key mod, modKeys) {
+        keyPressMac(GTKeyboardDriver::key[mod]);
+    }
+    return keyPressMac(GTKeyboardDriver::key[key]);
+}
+
+bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
+    keyReleaseMac(GTKeyboardDriver::key[key]);
+
+    QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
+    foreach (Qt::Key mod, modKeys) {
+        keyReleaseMac(GTKeyboardDriver::key[mod]);
+    }
+
+    return true;
+}
+
+GTKeyboardDriver::keys::keys() {
+    ADD_KEY(Qt::Key_Control, kVK_Command);
+    ADD_KEY(Qt::Key_Tab, kVK_Tab);
+    ADD_KEY(Qt::Key_Enter, kVK_Return);
+    ADD_KEY(Qt::Key_Shift, kVK_Shift);
+    ADD_KEY(Qt::Key_Meta, kVK_Control);
+    ADD_KEY(Qt::Key_Alt, kVK_Option);
+    ADD_KEY(Qt::Key_Escape, kVK_Escape);
+    ADD_KEY(Qt::Key_Space, kVK_Space);
+    ADD_KEY(Qt::Key_Left, kVK_LeftArrow);
+    ADD_KEY(Qt::Key_Up, kVK_UpArrow);
+    ADD_KEY(Qt::Key_Right, kVK_RightArrow);
+    ADD_KEY(Qt::Key_Down, kVK_DownArrow);
+    ADD_KEY(Qt::Key_Delete, kVK_ForwardDelete);
+    ADD_KEY(Qt::Key_Backspace, kVK_Delete);
+    ADD_KEY(Qt::Key_Help, kVK_Help);
+    ADD_KEY(Qt::Key_F1, kVK_F1);
+    ADD_KEY(Qt::Key_F2, kVK_F2);
+    ADD_KEY(Qt::Key_F3, kVK_F3);
+    ADD_KEY(Qt::Key_F4, kVK_F4);
+    ADD_KEY(Qt::Key_F5, kVK_F5);
+    ADD_KEY(Qt::Key_F6, kVK_F6);
+    ADD_KEY(Qt::Key_F7, kVK_F7);
+    ADD_KEY(Qt::Key_F8, kVK_F8);
+    ADD_KEY(Qt::Key_F9, kVK_F9);
+    ADD_KEY(Qt::Key_F10, kVK_F10);
+    ADD_KEY(Qt::Key_F12, kVK_F12);
+    ADD_KEY(Qt::Key_Home, kVK_Home);
+    ADD_KEY(Qt::Key_End, kVK_End);
+    ADD_KEY(Qt::Key_PageUp, kVK_PageUp);
+    ADD_KEY(Qt::Key_PageDown, kVK_PageDown);
+
+    // feel free to add other keys
+    // macro kVK_* defined in Carbon.framework/Frameworks/HIToolbox.framework/Headers/Events.h
+}
+#    undef GT_CLASS_NAME
 
 #endif
 }  // namespace HI
