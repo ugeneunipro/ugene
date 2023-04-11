@@ -2646,8 +2646,8 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="41"/>
         <location filename="../src/util/PositionSelector.cpp" line="86"/>
-        <source>Go!</source>
-        <translation>Перейти!</translation>
+        <source>Go</source>
+        <translation>Перейти</translation>
     </message>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="42"/>

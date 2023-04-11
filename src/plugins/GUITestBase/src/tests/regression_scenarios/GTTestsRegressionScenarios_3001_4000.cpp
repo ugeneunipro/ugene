@@ -3052,7 +3052,7 @@ GUI_TEST_CLASS_DEFINITION(test_3609_2) {
 
     GTLineEdit::setText(os, goToPosLineEdit, "199960");
 
-    auto goBtn = GTWidget::findWidget(os, "Go!");
+    auto goBtn = GTWidget::findWidget(os, "goButton");
     GTWidget::click(os, goBtn);
 
     CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());

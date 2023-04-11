@@ -52,7 +52,7 @@ public:
     void updateVerticalScrollBar();
 
     void scrollToViewRow(int viewRowIndex, int widgetHeight);
-    void scrollToBase(int baseNumber, int widgetWidth);
+    void scrollToBase(int baseIndex, int widgetWidth);
     void scrollToPoint(const QPoint& maPoint, const QSize& screenSize);
 
     void centerBase(int baseIndex, int widgetWidth);
