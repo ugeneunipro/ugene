@@ -288,7 +288,7 @@ Message IntegralBus::get() {
             if (printSlots.contains(key)) {
                 QString slotString = actorId + "." + portId + "." + key;
                 DataTypePtr type = busType->getDatatypesMap().value(key, DataTypePtr());
-                if (nullptr != type.data()) {
+                if (type.data() != nullptr) {
                     WorkflowUtils::print(slotString, result.value(key), type, workflowContext);
                 }
             }
@@ -394,7 +394,7 @@ void IntegralBus::put(const Message& m, bool isMessageRestored) {
                 QString slotString = actorId + "." + portId + "." + key;
                 IntegralBusSlot slot(key, portId, actorId);
                 DataTypePtr type = busType->getDatatypesMap().value(slot.toString(), DataTypePtr());
-                if (nullptr != type.data()) {
+                if (type.data() != nullptr) {
                     WorkflowUtils::print(slotString, map.value(key), type, workflowContext);
                 }
             }

@@ -4340,6 +4340,30 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
                   QString("Bad offset: expected %1, current %2").arg(savedLeftOffset).arg(restoredLeftOffset));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7860) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Press zoom out twice.
+    auto treeView = GTWidget::findWidget(os, "treeView");
+
+    GTUtilsPhyTree::clickZoomOutButton(os);
+    GTUtilsPhyTree::clickZoomOutButton(os);
+    QImage savedImage = GTWidget::getImage(os, treeView);
+
+    // Create a bookmark.
+    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Zoom-2");
+    // Press Reset zoom.
+    GTUtilsPhyTree::clickZoom100Button(os);
+    // Double-click on the bookmark.
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Zoom-2");
+
+    QImage restoredImage = GTWidget::getImage(os, treeView);
+
+    // Expected: the tree is zoomed out twice.
+    CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7861) {
     // Open COI.aln.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");

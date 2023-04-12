@@ -249,8 +249,8 @@ bool hasSchemeCycles(const Schema& scheme) {
 }
 
 bool validateScript(Actor* a, NotificationsList& infoList) {
-    SAFE_POINT(nullptr != a, "NULL actor", false);
-    SAFE_POINT(nullptr != a->getScript(), "NULL script", false);
+    SAFE_POINT(a != nullptr, "NULL actor", false);
+    SAFE_POINT(a->getScript() != nullptr, "NULL script", false);
     const QString scriptText = a->getScript()->getScriptText();
     if (scriptText.simplified().isEmpty()) {
         infoList << WorkflowNotification(QObject::tr("Empty script text"), a->getId());
@@ -623,11 +623,11 @@ void WorkflowUtils::print(const QString& slotString, const QVariant& data, DataT
         text += data.toString();
     } else if (BaseTypes::DNA_SEQUENCE_TYPE() == type) {
         QScopedPointer<U2SequenceObject> obj(StorageUtils::getSequenceObject(storage, data.value<SharedDbiDataHandler>()));
-        CHECK(nullptr != obj.data(), );
+        CHECK(obj.data() != nullptr, );
         data2text(context, BaseDocumentFormats::FASTA, obj.data(), text);
     } else if (BaseTypes::MULTIPLE_ALIGNMENT_TYPE() == type) {
         QScopedPointer<MultipleSequenceAlignmentObject> obj(StorageUtils::getMsaObject(storage, data.value<SharedDbiDataHandler>()));
-        CHECK(nullptr != obj.data(), );
+        CHECK(obj.data() != nullptr, );
         data2text(context, BaseDocumentFormats::CLUSTAL_ALN, obj.data(), text);
     } else if (BaseTypes::ANNOTATION_TABLE_TYPE() == type || BaseTypes::ANNOTATION_TABLE_LIST_TYPE() == type) {
         QList<SharedAnnotationData> annotationList = StorageUtils::getAnnotationTable(storage, data);
@@ -776,7 +776,7 @@ QMap<Descriptor, DataTypePtr> WorkflowUtils::getBusType(Port* inPort) {
         Port* src = links.keys().first();
         assert(src->isOutput());
         auto bus = dynamic_cast<IntegralBusPort*>(src);
-        assert(nullptr != bus);
+        assert(bus != nullptr);
         DataTypePtr type = bus->getType();
         return type->getDatatypesMap();
     }
@@ -854,9 +854,9 @@ QString WorkflowUtils::createUniqueString(const QString& str, const QString& sep
 
 QString WorkflowUtils::updateExternalToolPath(const QString& id, const QString& path) {
     ExternalToolRegistry* registry = AppContext::getExternalToolRegistry();
-    SAFE_POINT(nullptr != registry, "NULL external tool registry", "");
+    SAFE_POINT(registry != nullptr, "NULL external tool registry", "");
     ExternalTool* tool = registry->getById(id);
-    SAFE_POINT(nullptr != tool, QString("Unknown tool: %1").arg(id), "");
+    SAFE_POINT(tool != nullptr, QString("Unknown tool: %1").arg(id), "");
 
     if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
         tool->setPath(path);
@@ -866,10 +866,10 @@ QString WorkflowUtils::updateExternalToolPath(const QString& id, const QString& 
 
 QString WorkflowUtils::getExternalToolPath(const QString& toolId) {
     ExternalToolRegistry* registry = AppContext::getExternalToolRegistry();
-    SAFE_POINT(nullptr != registry, "NULL external tool registry", "");
+    SAFE_POINT(registry != nullptr, "NULL external tool registry", "");
 
     ExternalTool* tool = registry->getById(toolId);
-    SAFE_POINT(nullptr != tool, QString("Unknown tool (id): %1").arg(toolId), "");
+    SAFE_POINT(tool != nullptr, QString("Unknown tool (id): %1").arg(toolId), "");
 
     return tool->getPath();
 }
@@ -909,21 +909,21 @@ void WorkflowUtils::schemaFromFile(const QString& url, Schema* schema, Metadata*
 
 static bool isDatasetsAttr(Attribute* attr) {
     auto dsa = dynamic_cast<URLAttribute*>(attr);
-    return (nullptr != dsa);
+    return (dsa != nullptr);
 }
 
 UrlAttributeType WorkflowUtils::isUrlAttribute(Attribute* attr, const Actor* actor) {
-    SAFE_POINT(nullptr != attr, "NULL attribute!", NotAnUrl);
-    SAFE_POINT(nullptr != actor, "NULL actor!", NotAnUrl);
+    SAFE_POINT(attr != nullptr, "NULL attribute!", NotAnUrl);
+    SAFE_POINT(actor != nullptr, "NULL actor!", NotAnUrl);
 
     if (isDatasetsAttr(attr)) {
         return DatasetAttr;
     }
 
     ConfigurationEditor* editor = actor->getEditor();
-    CHECK(nullptr != editor, NotAnUrl);
+    CHECK(editor != nullptr, NotAnUrl);
     PropertyDelegate* delegate = editor->getDelegate(attr->getId());
-    CHECK(nullptr != delegate, NotAnUrl);
+    CHECK(delegate != nullptr, NotAnUrl);
 
     if (PropertyDelegate::INPUT_FILE == delegate->type()) {
         return InputFile;

@@ -42,13 +42,7 @@ public:
     bool isValid() const;
 
     GObjectReference getPhyObject() const;
-    void setPhyObject(const GObjectReference& ref);
-
     double getZoomLevel() const;
-    void setZoomLevel(double zoomLevel);
-
-    QTransform getTransform() const;
-    void setTransform(const QTransform& m);
 
     QVariantMap stateData;
 };

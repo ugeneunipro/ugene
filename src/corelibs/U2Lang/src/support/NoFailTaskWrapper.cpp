@@ -28,12 +28,12 @@ namespace U2 {
 NoFailTaskWrapper::NoFailTaskWrapper(Task* task)
     : Task("Wrapper", TaskFlags(TaskFlag_CancelOnSubtaskCancel) | TaskFlag_NoRun),
       subTask(task) {
-    SAFE_POINT_EXT(nullptr != subTask, setError("NULL task"), );
+    SAFE_POINT_EXT(subTask != nullptr, setError("NULL task"), );
     setTaskName(tr("Wrapper task for: \"%1\"").arg(subTask->getTaskName()));
 }
 
 void NoFailTaskWrapper::prepare() {
-    CHECK(nullptr != subTask, );
+    CHECK(subTask != nullptr, );
     addSubTask(subTask);
 }
 

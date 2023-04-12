@@ -71,7 +71,7 @@ void WorkflowDebugMessageParser::setSourceData(const QQueue<Message>& initSource
 }
 
 void WorkflowDebugMessageParser::setContext(Workflow::WorkflowContext* initContext) {
-    SAFE_POINT(nullptr != initContext, "Invalid workflow context!", );
+    SAFE_POINT(initContext != nullptr, "Invalid workflow context!", );
     context = initContext;
 }
 

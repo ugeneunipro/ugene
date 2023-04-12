@@ -47,7 +47,7 @@ bool WorkflowEnv::init(WorkflowEnv* env) {
 }
 
 WorkflowEnv* WorkflowEnv::getInstance() {
-    SAFE_POINT(nullptr != instance, "WorkflowEnv instance is NULL", nullptr);
+    SAFE_POINT(instance != nullptr, "WorkflowEnv instance is NULL", nullptr);
     return instance;
 }
 

@@ -142,7 +142,7 @@ bool DirUrlContainer::validateUrl(NotificationsList& notificationList) {
     }
 
     FilesIterator* it = getFileUrls();
-    SAFE_POINT(nullptr != it, "NULL fileIterator!", false);
+    SAFE_POINT(it != nullptr, "NULL fileIterator!", false);
     while (it->hasNext()) {
         QString fileUrl = it->getNextFile();
         bool urlIsValid = WorkflowUtils::validateInputFiles(fileUrl, notificationList);
@@ -204,7 +204,7 @@ bool DbFolderUrlContainer::validateUrl(NotificationsList& notificationList) {
     }
 
     FilesIterator* it = getFileUrls();
-    SAFE_POINT(nullptr != it, "Invalid DB object iterator", false);
+    SAFE_POINT(it != nullptr, "Invalid DB object iterator", false);
     while (it->hasNext()) {
         QString fileUrl = it->getNextFile();
         bool urlIsValid = WorkflowUtils::validateInputDbObject(fileUrl, notificationList);

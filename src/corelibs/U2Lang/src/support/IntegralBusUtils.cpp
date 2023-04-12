@@ -34,7 +34,7 @@ namespace Workflow {
 
 IntegralBusUtils::SplitResult IntegralBusUtils::splitCandidates(const QList<Descriptor>& candidates, const Descriptor& toDesc, DataTypePtr toDatatype) {
     CandidatesSplitter* splitter = CandidatesSplitterRegistry::instance()->findSplitter(toDesc, toDatatype);
-    SAFE_POINT(nullptr != splitter, "NULL splitter", SplitResult());
+    SAFE_POINT(splitter != nullptr, "NULL splitter", SplitResult());
     return splitter->splitCandidates(candidates);
 }
 
@@ -274,7 +274,7 @@ void CandidatesSplitterRegistry::registerSplitter(CandidatesSplitter* splitter) 
 
 void CandidatesSplitterRegistry::unregisterSplitter(const QString& id) {
     CandidatesSplitter* splitter = findSplitter(id);
-    CHECK(nullptr != splitter, );
+    CHECK(splitter != nullptr, );
     splitters.removeAll(splitter);
     delete splitter;
 }

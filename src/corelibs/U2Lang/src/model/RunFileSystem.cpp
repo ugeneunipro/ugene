@@ -73,13 +73,13 @@ FSItem* FSItem::child(int pos) const {
 }
 
 int FSItem::row() const {
-    CHECK(nullptr != parentItem, 0);
+    CHECK(parentItem != nullptr, 0);
     return parentItem->items.indexOf(const_cast<FSItem*>(this));
 }
 
 bool FSItem::contains(const QString& name) const {
     SAFE_POINT(isDir(), "Files can not have children", false);
-    return (nullptr != getItem(children(), name));
+    return (getItem(children(), name) != nullptr);
 }
 
 void FSItem::rename(const QString& newName) {
@@ -116,7 +116,7 @@ int FSItem::posToInsert(FSItem* item) const {
 void FSItem::removeChild(const QString& name, U2OpStatus& os) {
     SAFE_POINT(isDir(), "Files can not have children", );
     FSItem* item = FSItem::getItem(children(), name);
-    SAFE_POINT(nullptr != item, "No child with the name " + name, );
+    SAFE_POINT(item != nullptr, "No child with the name " + name, );
 
     if (item->isDir() && !item->children().isEmpty()) {
         os.setError(item->name() + " is not empty");
@@ -169,7 +169,7 @@ bool RunFileSystem::canAdd(const QString& pathStr, bool isDirectory) {
     foreach (const QString& dirName, parentPath) {
         CHECK(current->isDir(), false);
         FSItem* item = FSItem::getItem(current->children(), dirName);
-        CHECK(nullptr != item, true);
+        CHECK(item != nullptr, true);
         current = item;
     }
 

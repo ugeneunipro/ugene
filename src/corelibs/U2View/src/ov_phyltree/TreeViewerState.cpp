@@ -33,7 +33,6 @@ namespace U2 {
 #define VIEW_ID QString("view_id")
 #define PHY_OBJ QString("phy_obj_ref")
 #define ZOOM_LEVEL QString("zoom_level")
-#define TRANSFORM QString("transform")
 
 bool TreeViewerState::isValid() const {
     return stateData.value(VIEW_ID) == TreeViewerFactory::ID;
@@ -43,41 +42,20 @@ GObjectReference TreeViewerState::getPhyObject() const {
     return stateData.contains(PHY_OBJ) ? stateData[PHY_OBJ].value<GObjectReference>() : GObjectReference();
 }
 
-void TreeViewerState::setPhyObject(const GObjectReference& ref) {
-    stateData[PHY_OBJ] = QVariant::fromValue<GObjectReference>(ref);
-}
-
 double TreeViewerState::getZoomLevel() const {
     QVariant v = stateData.value(ZOOM_LEVEL);
     return v.isValid() ? v.value<double>() : 1.0;
-}
-
-void TreeViewerState::setZoomLevel(double zoomLevel) {
-    stateData[ZOOM_LEVEL] = zoomLevel;
-}
-
-QTransform TreeViewerState::getTransform() const {
-    QVariant v = stateData.value(TRANSFORM);
-    return v.type() == QVariant::Transform ? v.value<QTransform>() : QTransform();
-}
-
-void TreeViewerState::setTransform(const QTransform& m) {
-    stateData[TRANSFORM] = m;
 }
 
 QVariantMap TreeViewerState::saveState(TreeViewer* v) {
     TreeViewerState ss;
 
     ss.stateData[VIEW_ID] = TreeViewerFactory::ID;
-
     PhyTreeObject* phyObj = v->getPhyObject();
     if (phyObj) {
-        ss.setPhyObject(GObjectReference(phyObj));
+        ss.stateData[PHY_OBJ] = QVariant::fromValue<GObjectReference>(GObjectReference(phyObj));
     }
-
-    ss.setZoomLevel(v->getZoomLevel());
-    ss.setTransform(v->getTransform());
-
+    ss.stateData[ZOOM_LEVEL] = v->getZoomLevel();
     ss.stateData.unite(v->getSettingsState());
 
     return ss.stateData;

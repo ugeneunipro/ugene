@@ -33,7 +33,7 @@ namespace Workflow {
 
 bool ActorValidator::validate(const Configuration* cfg, NotificationsList& notificationList) const {
     auto actor = static_cast<const Actor*>(cfg);
-    SAFE_POINT(nullptr != actor, "NULL actor", false);
+    SAFE_POINT(actor != nullptr, "NULL actor", false);
     QMap<QString, QString> options;
     return validate(actor, notificationList, options);
 }
