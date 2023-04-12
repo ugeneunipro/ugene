@@ -1841,31 +1841,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7827);
     REGISTER_TEST(GUITest_regression_scenarios::test_7830);
     REGISTER_TEST(GUITest_regression_scenarios::test_7842);
-    REGISTER_TESTGUI_TEST_CLASS_DEFINITION(test_7860) {
-    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
-    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
-
-    // Press zoom out twice.
-    auto treeView = GTWidget::findWidget(os, "treeView");
-
-    GTUtilsPhyTree::clickZoomOutButton(os);
-    GTUtilsPhyTree::clickZoomOutButton(os);
-    QImage savedImage = GTWidget::getImage(os, treeView);
-
-    // Create a bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Zoom-2");
-    // Press Reset zoom.
-    GTUtilsPhyTree::clickZoom100Button(os);
-    // Double-click on the bookmark.
-    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Zoom-2");
-
-    QImage restoredImage = GTWidget::getImage(os, treeView);
-
-    // Expected: the tree is zoomed out twice.
-    CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
-}
-
-(GUITest_regression_scenarios::test_7850);
     REGISTER_TEST(GUITest_regression_scenarios::test_7860);
     REGISTER_TEST(GUITest_regression_scenarios::test_7861);
 
