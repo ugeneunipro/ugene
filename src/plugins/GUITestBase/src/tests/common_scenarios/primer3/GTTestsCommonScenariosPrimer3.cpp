@@ -550,11 +550,10 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
         }
     };
 
-
     GTUtilsDialog::add(os, new Scenario(os));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
 
-    CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "test_0024.txt", testDir + "_common_data/primer3/input/test_0024.txt"), "Settings are not equal");
+    CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "test_0024.txt", testDir + "_common_data/primer3/input/test_0024.txt", true), "Settings are not equal");
 }
 
 
