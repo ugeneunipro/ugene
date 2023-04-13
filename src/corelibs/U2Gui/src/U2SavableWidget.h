@@ -44,7 +44,6 @@ public:
     virtual void setChildValue(const QString& childId, const QVariant& value);
 
     MWMDIWindow* getContextWindow() const;
-    void appendExcludeWidgets(const QStringList& excludeWidgetIds);
 
 protected:
     virtual bool childCanBeSaved(QWidget* child) const;
@@ -61,7 +60,7 @@ protected:
      * Widgets, which state shouldn't be saved.
      * This behaviour works for the widget and all it's children
      */
-    QList<QWidget*> excludeWidgets;
+    QStringList excludeWidgetIds;
 };
 
 }  // namespace U2

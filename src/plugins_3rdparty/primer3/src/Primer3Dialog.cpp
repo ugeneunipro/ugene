@@ -83,7 +83,7 @@ const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^
 Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
       context(context),
-      savableWidget(this, GObjectViewUtils::findViewByName(context->getAnnotatedDNAView()->getName())) {
+      savableWidget(this, GObjectViewUtils::findViewByName(context->getAnnotatedDNAView()->getName()), { "primer3RegionSelector", "primer3AnnWgt" }) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
 
@@ -148,7 +148,6 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 
     reset();
 
-    savableWidget.appendExcludeWidgets({ "primer3RegionSelector", "primer3AnnWgt" });
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
