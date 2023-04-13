@@ -7986,7 +7986,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="293"/>
         <source> gram/mol</source>
-        <translation type="unfinished"></translation>
+        <translation> грамм/моль</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="375"/>
