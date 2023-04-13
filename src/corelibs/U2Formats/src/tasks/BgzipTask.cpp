@@ -75,7 +75,7 @@ void BgzipTask::run() {
     BGZF* out = bgzf_fdopen(outFile.getNullable(), "w");
     if (out == nullptr) {
         Task::setError(tr("Can not open output file '%2'").arg(bgzfUrl.getURLString()));
-        FileAndDirectoryUtils::closeFileIfOpen(outFile);
+        FileAndDirectoryUtils::closeFileIfOpen(outFile.getNullable());
         return;
     }
     BGZF_wrapper out_wr(out);
@@ -122,8 +122,13 @@ Task::ReportResult BgzipTask::report() {
 
 bool BgzipTask::checkBgzf(const GUrl& fileUrl) {
     NP<FILE> file = FileAndDirectoryUtils::openFile(fileUrl.getURLString(), "r");
-    int checkResult = file == nullptr ? -1 : bgzf_check_bgzf(file);
-    FileAndDirectoryUtils::closeFileIfOpen(file);
+    int checkResult = 0;
+    if (file == nullptr) {
+        checkResult = -1;
+    } else {
+        checkResult = bgzf_check_bgzf(file.get());
+    }
+    FileAndDirectoryUtils::closeFileIfOpen(file.get());
     return checkResult;  // TODO: method returns incorrect type and the logic looks inverted from the normal.
 }
 

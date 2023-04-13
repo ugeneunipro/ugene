@@ -118,8 +118,8 @@ int bgzf_check_bgzf(FILE* file);
 #endif
 
 #if defined(_WIN32) || defined(_MSC_VER)
-#define ftello(fp) ftell(fp)
-#define fseeko(fp, offset, whence) fseek(fp, offset, whence)
+#define ftello(fp) _ftelli64(fp)
+#define fseeko(fp, offset, whence) _fseeki64(fp, offset, whence)
 #else
 extern off_t ftello(FILE *stream);
 extern int fseeko(FILE *stream, off_t offset, int whence);
