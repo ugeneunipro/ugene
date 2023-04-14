@@ -2412,6 +2412,11 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation>Левый праймер</translation>
     </message>
     <message>
+        <location filename="../src/Primer3Dialog.cpp" line="631"/>
+        <source>%1 sequence has incorrect alphabet, should be be simple DNA</source>
+        <translation>%1 имеет некорректный алфавит, ожидается ДНК.</translation>
+    </message>
+    <message>
         <location filename="../src/Primer3Dialog.cpp" line="646"/>
         <source>Left 5&apos; overhang</source>
         <translation>Левое 5&apos; перекрытие</translation>
@@ -2464,11 +2469,10 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
         <translation>%1 параметр(ов) имеют некорректное(ые) значение(я), обратите внимание на подсвеченние красным виджеты. </translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="813"/>
         <source>The following errors are possible:
 
 </source>
-        <translation>Возможны следующие ошибки:
+        <translation type="vanished">Возможны следующие ошибки:
 
 </translation>
     </message>
@@ -2521,6 +2525,13 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
         <location filename="../src/Primer3Dialog.cpp" line="857"/>
         <source>Save primer settings</source>
         <translation>Сохранить настройки праймера</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.cpp" line="813"/>
+        <source>The following errors are possible:
+
+</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="864"/>

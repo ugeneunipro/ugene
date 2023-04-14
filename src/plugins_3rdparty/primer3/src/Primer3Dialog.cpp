@@ -628,7 +628,7 @@ bool Primer3Dialog::doDataExchange() {
             bool isSimpleDna = alphabet->isNucleic() && alphabet->isDefault();
             if (!isSimpleDna) {
                 res = false;
-                errors.append(QString("%1 sequence has incorrect alphabet, should be be simple DNA").arg(parameterName));
+                errors.append(tr("%1 sequence has incorrect alphabet, should be be simple DNA").arg(parameterName));
             }
         }
         widgetStates.insert(wgt, res);
