@@ -128,11 +128,7 @@ void Primer3DialogFiller::commonScenario() {
     }
 
     if (settings.notRun) {
-        if (isOsMac()) {
-            dialog->close();
-        } else {
-            GTKeyboardDriver::keyClick(Qt::Key_Escape);
-        }
+        GTWidget::click(os, GTWidget::findWidget(os, "closeButton", dialog));
         return;
     }
 
@@ -153,11 +149,7 @@ void Primer3DialogFiller::commonScenario() {
         }
 
         if (!settings.continueIfError) {
-            if (isOsMac()) {
-                dialog->close();
-            } else {
-                GTKeyboardDriver::keyClick(Qt::Key_Escape);
-            }
+            GTWidget::click(os, GTWidget::findWidget(os, "closeButton", dialog));
         }
     }
 }

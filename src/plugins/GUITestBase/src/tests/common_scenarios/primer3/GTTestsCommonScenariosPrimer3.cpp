@@ -541,12 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::add(os, new GTFileDialogUtils(os, sandBoxDir, "test_0024.txt", GTFileDialogUtils::Save));
             GTWidget::click(os, GTWidget::findWidget(os, "saveSettingsButton", dialog));
-
-            if (isOsMac()) {
-                dialog->close();
-            } else {
-                GTKeyboardDriver::keyClick(Qt::Key_Escape);
-            }
+            GTWidget::click(os, GTWidget::findWidget(os, "closeButton", dialog));
         }
     };
 

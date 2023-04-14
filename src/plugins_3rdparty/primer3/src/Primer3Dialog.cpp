@@ -89,6 +89,7 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 
     pickPrimersButton->setDefault(true);
 
+    connect(closeButton, &QPushButton::clicked, this, &Primer3Dialog::close);
     connect(pickPrimersButton, &QPushButton::clicked, this, &Primer3Dialog::sl_pickClicked);
     connect(resetButton, &QPushButton::clicked, this, &Primer3Dialog::sl_resetClicked);
     connect(saveSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_saveSettings);
