@@ -215,8 +215,8 @@ QAction* GTMenu::clickMenuItem(GUITestOpStatus& os, const QMenu* menu, const QSt
             QMenu* actionMenu = action->menu();
             bool isSubmenu = actionMenu != nullptr;
             if (isSubmenu) {
-                // Hover on Linux, click on Windows to expand the child menu.
-#ifdef Q_OS_WIN
+                // Hover on Linux, click on Windows & Mac to expand the child menu.
+#ifndef Q_OS_LINUX
                 GTMouseDriver::click();
 #endif
             } else {  // Click the final action.
