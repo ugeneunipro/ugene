@@ -240,11 +240,14 @@ bool GUITestLauncher::initTestList() {
         int nIgnoredTests = 0;
         QStringList ignoreListEntries = ignoreListFileContent.split("\n");
         for (const QString& entry : qAsConst(ignoreListEntries)) {
+            if (entry.isEmpty() || entry.startsWith("#")) {
+                continue;
+            }
             for (auto test : qAsConst(testList)) {
                 QString teamcityTestName = UGUITest::getTeamcityTestName(test->suite, test->name);
                 if (test->getFullName().startsWith(entry) || teamcityTestName.startsWith(entry)) {
                     test->labelSet.insert(UGUITestLabels::Ignored);
-                    coreLog.details(QString("Adding Ignore label to test %1").arg(teamcityTestName));
+                    coreLog.details(QString("Adding Ignore label to test '%1', entry: '%2'").arg(teamcityTestName).arg(entry));
                     nIgnoredTests++;
                 }
             }
