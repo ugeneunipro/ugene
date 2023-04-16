@@ -1121,10 +1121,10 @@ void DotPlotWidget::drawRulers(QPainter& p, qreal fontScale) const {
     rulerFont.setFamily("Arial");
     rulerFont.setPointSize(8 * fontScale);
 
-    int startX = sequenceCoords(unshiftedUnzoomed(QPointF(0, 0))).x(),
-        endX = sequenceCoords(unshiftedUnzoomed(QPointF(w, 0))).x(),
-        startY = sequenceCoords(unshiftedUnzoomed(QPointF(0, 0))).y(),
-        endY = sequenceCoords(unshiftedUnzoomed(QPointF(0, h))).y();
+    int startX = sequenceCoords(unshiftedUnzoomed(QPointF(0, 0))).x();
+    int endX = sequenceCoords(unshiftedUnzoomed(QPointF(w, 0))).x();
+    int startY = sequenceCoords(unshiftedUnzoomed(QPointF(0, 0))).y();
+    int endY = sequenceCoords(unshiftedUnzoomed(QPointF(0, h))).y();
 
     QPoint extraLen(0, 0);
     int xSeqLen = sequenceX->getSequenceLength();
