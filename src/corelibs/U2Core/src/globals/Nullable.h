@@ -45,7 +45,7 @@ public:
         return value != anotherValue;
     }
 
-    operator T* () const {
+    operator T*() const {
         return get();
     }
 
