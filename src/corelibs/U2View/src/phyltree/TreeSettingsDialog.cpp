@@ -30,7 +30,7 @@
 
 namespace U2 {
 
-TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const OptionsMap& settings)
+TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const QMap<TreeViewOption, QVariant>& settings)
     : BaseSettingsDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929724");
@@ -43,7 +43,7 @@ TreeSettingsDialog::TreeSettingsDialog(QWidget* parent, const OptionsMap& settin
     treeViewCombo->addItem(getPhylogramTreeModeText());
     treeViewCombo->addItem(getCladogramTreeModeText());
 
-    int transformationType = settings[BRANCHES_TRANSFORMATION_TYPE].toInt();
+    int transformationType = settings[BRANCH_DEPTH_SCALE_MODE].toInt();
     switch (transformationType) {
         case DEFAULT:
             treeViewCombo->setCurrentIndex(treeViewCombo->findText(getDefaultTreeModeText()));
@@ -69,11 +69,11 @@ void TreeSettingsDialog::sl_treeTypeChanged(int value) {
 
 void TreeSettingsDialog::accept() {
     if (treeViewCombo->currentText() == getDefaultTreeModeText()) {
-        updatedSettings[BRANCHES_TRANSFORMATION_TYPE] = DEFAULT;
+        updatedSettings[BRANCH_DEPTH_SCALE_MODE] = DEFAULT;
     } else if (treeViewCombo->currentText() == getPhylogramTreeModeText()) {
-        updatedSettings[BRANCHES_TRANSFORMATION_TYPE] = PHYLOGRAM;
+        updatedSettings[BRANCH_DEPTH_SCALE_MODE] = PHYLOGRAM;
     } else if (treeViewCombo->currentText() == getCladogramTreeModeText()) {
-        updatedSettings[BRANCHES_TRANSFORMATION_TYPE] = CLADOGRAM;
+        updatedSettings[BRANCH_DEPTH_SCALE_MODE] = CLADOGRAM;
     } else {
         FAIL("Unexpected tree type value", );
     }

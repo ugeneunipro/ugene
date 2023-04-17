@@ -22,18 +22,17 @@
 #pragma once
 
 #include <QFont>
-#include "TreeSettings.h"
 
+#include "TreeSettings.h"
 
 namespace U2 {
 
 class TreeViewerUtils {
-
 public:
     static void saveImageDialog(const QString& filters, QString& fileName, QString& format);
 
     /** Restores QFont from tree viewer settings. */
-    static QFont getFontFromSettings(const OptionsMap& settings);
+    static QFont getFontFromSettings(const QMap<TreeViewOption, QVariant>& settings);
 };
 
 }  // namespace U2

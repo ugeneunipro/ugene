@@ -365,7 +365,7 @@ static const QString SETTINGS_PATH = "tree_viewer";
 static QHash<TreeViewOption, QString> createTreeOptionsSettingNameMap() {
 #define INIT_OPTION_NAME(option) map[option] = QString(#option).toLower()
     QHash<TreeViewOption, QString> map;
-    INIT_OPTION_NAME(BRANCHES_TRANSFORMATION_TYPE);
+    INIT_OPTION_NAME(BRANCH_DEPTH_SCALE_MODE);
     INIT_OPTION_NAME(TREE_LAYOUT_TYPE);
     INIT_OPTION_NAME(BREADTH_SCALE_ADJUSTMENT_PERCENT);
     INIT_OPTION_NAME(BRANCH_CURVATURE);
@@ -400,11 +400,11 @@ static QString getTreeOptionSettingName(const TreeViewOption& option) {
     return name;
 }
 
-static OptionsMap createDefaultTreeOptionsSettings() {
-    OptionsMap settings;
+static QMap<TreeViewOption, QVariant> createDefaultTreeOptionsSettings() {
+    QMap<TreeViewOption, QVariant> settings;
 
     settings[TREE_LAYOUT_TYPE] = RECTANGULAR_LAYOUT;
-    settings[BRANCHES_TRANSFORMATION_TYPE] = DEFAULT;
+    settings[BRANCH_DEPTH_SCALE_MODE] = DEFAULT;
     settings[SCALEBAR_RANGE] = 0.05;  // Based on values from COI.aln.
     settings[SCALEBAR_FONT_SIZE] = 10;
     settings[SCALEBAR_LINE_WIDTH] = 1;
@@ -435,7 +435,7 @@ static OptionsMap createDefaultTreeOptionsSettings() {
     return settings;
 }
 
-static const OptionsMap defaultSettings = createDefaultTreeOptionsSettings();
+const QMap<TreeViewOption, QVariant> static defaultSettings = createDefaultTreeOptionsSettings();
 
 /** Stores the given tree setting as default into UGENE's settings file. */
 static void storeOptionValueInAppSettings(const TreeViewOption& option, const QVariant& value) {
@@ -573,7 +573,7 @@ bool TreeViewerUI::hasPartialSelection() const {
     return !selectedItems.isEmpty() && !selectedItems.contains(root);
 }
 
-void TreeViewerUI::updateOptions(const U2::OptionsMap& changedOptions) {
+void TreeViewerUI::updateOptions(const QMap<TreeViewOption, QVariant>& changedOptions) {
     QList<TreeViewOption> keys = changedOptions.keys();
     for (const TreeViewOption& curOption : qAsConst(keys)) {
         updateOption(curOption, changedOptions[curOption]);
@@ -589,7 +589,7 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
         case TREE_LAYOUT_TYPE:
             switchTreeLayout(static_cast<TreeLayoutType>(newValue.toInt()));
             break;
-        case BRANCHES_TRANSFORMATION_TYPE:
+        case BRANCH_DEPTH_SCALE_MODE:
             switchTreeLayout(getTreeLayoutType());
             break;
         case BREADTH_SCALE_ADJUSTMENT_PERCENT:
@@ -640,14 +640,14 @@ void TreeViewerUI::updateOption(const TreeViewOption& option, const QVariant& ne
     }
 }
 
-OptionsMap TreeViewerUI::getSelectionSettings() const {
-    OptionsMap effectiveSettings = settings;
+QMap<TreeViewOption, QVariant> TreeViewerUI::getSelectionSettings() const {
+    QMap<TreeViewOption, QVariant> effectiveSettings = settings;
     effectiveSettings.insert(selectionSettingsDelta);
     return effectiveSettings;
 }
 
 void TreeViewerUI::updateTreeSettingsOnSelectedItems() {
-    OptionsMap selectionSettings = getSelectionSettings();
+    QMap<TreeViewOption, QVariant> selectionSettings = getSelectionSettings();
 
     QList<QGraphicsItem*> updatingItems = scene()->selectedItems();
     if (updatingItems.isEmpty()) {
@@ -681,7 +681,7 @@ static QSet<QGraphicsItem*> getAllLevelChildItems(QGraphicsItem* item) {
 }
 
 void TreeViewerUI::updateTextOptionOnSelectedItems() {
-    OptionsMap selectionSettings = getSelectionSettings();
+    QMap<TreeViewOption, QVariant> selectionSettings = getSelectionSettings();
     QSet<QGraphicsItem*> itemsToUpdate = scene()->selectedItems().toSet();
     if (itemsToUpdate.isEmpty()) {
         itemsToUpdate = scene()->items().toSet();
@@ -839,15 +839,18 @@ void TreeViewerUI::updateScene() {
     scene()->update();
 }
 
+static QString branchDepthScaleModeKey("branch_depth_scale_mode");
 static QString branchColorSettingsKey("branch_color");
 static QString branchThicknessSettingsKey("branch_thickness");
 
 QVariantMap TreeViewerUI::getSettingsState() const {
     QVariantMap m;
+    m[branchDepthScaleModeKey] = settings[BRANCH_DEPTH_SCALE_MODE];
     int i = 0;
-    foreach (QGraphicsItem* graphItem, items()) {
+    QList<QGraphicsItem*> graphItems = items();
+    for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
-            OptionsMap branchSettings = branchItem->getSettings();
+            QMap<TreeViewOption, QVariant> branchSettings = branchItem->getSettings();
             m[branchColorSettingsKey + QString::number(i)] = qvariant_cast<QColor>(branchSettings[BRANCH_COLOR]);
             m[branchThicknessSettingsKey + QString::number(i)] = branchSettings[BRANCH_THICKNESS].toInt();
             i++;
@@ -859,9 +862,14 @@ QVariantMap TreeViewerUI::getSettingsState() const {
 
 void TreeViewerUI::setSettingsState(const QVariantMap& m) {
     int i = 0;
-    foreach (QGraphicsItem* graphItem, items()) {
+    QVariant branchDepthScaleMode = m[branchDepthScaleModeKey];
+    if (branchDepthScaleMode.isValid() && branchDepthScaleMode != settings[BRANCH_DEPTH_SCALE_MODE]) {
+        updateOption(BRANCH_DEPTH_SCALE_MODE, branchDepthScaleMode);
+    }
+    QList<QGraphicsItem*> graphItems = items();
+    for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
-            OptionsMap branchSettings = branchItem->getSettings();
+            QMap<TreeViewOption, QVariant> branchSettings = branchItem->getSettings();
 
             QVariant vColor = m[branchColorSettingsKey + QString::number(i)];
             if (vColor.type() == QVariant::Color) {
@@ -898,7 +906,7 @@ void TreeViewerUI::updateLegend() {
         legendItem = nullptr;
     }
 
-    auto type = static_cast<TreeType>(getOption(BRANCHES_TRANSFORMATION_TYPE).toInt());
+    auto type = static_cast<TreeType>(getOption(BRANCH_DEPTH_SCALE_MODE).toInt());
     CHECK(type == PHYLOGRAM, );
 
     QRectF sceneRectWithNoLegend = scene()->itemsBoundingRect();
@@ -1087,7 +1095,7 @@ void TreeViewerUI::sl_rerootTriggered() {
 }
 
 void TreeViewerUI::updateSettingsOnSelectionChange() {
-    OptionsMap newSelectionSettingsDelta;
+    QMap<TreeViewOption, QVariant> newSelectionSettingsDelta;
     QList<QGraphicsItem*> childItems = items();
     TvBranchItem* branch = root;
     for (QGraphicsItem* graphItem : qAsConst(childItems)) {
@@ -1112,7 +1120,7 @@ void TreeViewerUI::updateSettingsOnSelectionChange() {
     }
     // Remove settings that are the same as default.
     QList<TreeViewOption> newSelectionSettingsDeltaKeys = newSelectionSettingsDelta.keys();
-    OptionsMap changedSettings;
+    QMap<TreeViewOption, QVariant> changedSettings;
     for (auto option : qAsConst(newSelectionSettingsDeltaKeys)) {
         QVariant value = newSelectionSettingsDelta[option];
         if (value == settings[option]) {
@@ -1281,7 +1289,7 @@ static double computeDistanceToViewScale(TvRectangularBranchItem* rectRoot) {
 
 void TreeViewerUI::updateBranchGeometry(TvRectangularBranchItem* rootBranch) const {
     // Upscale the recalculated tree to 'distanceToViewScale'.
-    auto treeType = static_cast<TreeType>(getOption(BRANCHES_TRANSFORMATION_TYPE).toInt());
+    auto treeType = static_cast<TreeType>(getOption(BRANCH_DEPTH_SCALE_MODE).toInt());
     double breadthScale = getOption(BREADTH_SCALE_ADJUSTMENT_PERCENT).toDouble();
     double branchCurvature = getOption(BRANCH_CURVATURE).toDouble();
     updateBranches(rootBranch, distanceToViewScale, treeType, breadthScale, branchCurvature);

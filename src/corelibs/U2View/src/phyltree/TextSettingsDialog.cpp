@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-TextSettingsDialog::TextSettingsDialog(QWidget* parent, const OptionsMap& settings)
+TextSettingsDialog::TextSettingsDialog(QWidget* parent, const QMap<TreeViewOption, QVariant>& settings)
     : BaseSettingsDialog(parent) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929735");

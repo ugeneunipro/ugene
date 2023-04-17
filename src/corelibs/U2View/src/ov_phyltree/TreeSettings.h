@@ -41,7 +41,8 @@ enum TreeLayoutType {
 };
 
 enum TreeViewOption {
-    BRANCHES_TRANSFORMATION_TYPE,
+    /** How branch depth (length) is computed: Default (fit-depth), Cladogram (equal length) or Phylogram (length is proportional to distance). */
+    BRANCH_DEPTH_SCALE_MODE,
 
     TREE_LAYOUT_TYPE,
 
@@ -98,7 +99,5 @@ enum TreeViewOption {
 
     OPTION_ENUM_END
 };
-
-typedef QMap<TreeViewOption, QVariant> OptionsMap;
 
 }  // namespace U2

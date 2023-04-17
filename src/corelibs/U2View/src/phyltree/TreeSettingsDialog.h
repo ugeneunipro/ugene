@@ -31,7 +31,7 @@ namespace U2 {
 class TreeSettingsDialog : public BaseSettingsDialog, public Ui_TreeSettingsDialog {
     Q_OBJECT
 public:
-    TreeSettingsDialog(QWidget* parent, const OptionsMap& settings);
+    TreeSettingsDialog(QWidget* parent, const QMap<TreeViewOption, QVariant>& settings);
 
     void accept() override;
 

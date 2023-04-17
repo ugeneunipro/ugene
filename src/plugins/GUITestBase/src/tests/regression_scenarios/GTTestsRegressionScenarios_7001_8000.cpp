@@ -4382,11 +4382,10 @@ GUI_TEST_CLASS_DEFINITION(test_7861) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7863) {
-    // Open a COI.nwk
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
 
-    // Switch "tree view" setting from "Default" to "Phylogram"
+    // Switch "tree view" setting from "Default" to "Phylogram".
     GTUtilsOptionPanelPhyTree::openTab(os);
     auto treeView = GTWidget::findWidget(os, "treeView");
     auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
@@ -4395,14 +4394,14 @@ GUI_TEST_CLASS_DEFINITION(test_7863) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QImage savedImage = GTWidget::getImage(os, treeView);
 
-    // Create a bookmark
+    // Create a bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Phylogram");
 
-    // Switch back to "Default"
+    // Switch branch mode back to "Default".
     GTComboBox::selectItemByText(os, treeViewCombo, "Default");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Activate the bookmark created on the step 3
+    // Activate the "Phylogram" bookmark.
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Phylogram");
     QImage restoredImage = GTWidget::getImage(os, treeView);
 
