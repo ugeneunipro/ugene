@@ -4381,5 +4381,34 @@ GUI_TEST_CLASS_DEFINITION(test_7861) {
     CHECK_SET_ERR(leftOffset == 0, QString("Bad offset: expected 0, current %1").arg(leftOffset));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7863) {
+    // Open a COI.nwk
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Switch "tree view" setting from "Default" to "Phylogram"
+    GTUtilsOptionPanelPhyTree::openTab(os);
+    auto treeView = GTWidget::findWidget(os, "treeView");
+    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
+
+    GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QImage savedImage = GTWidget::getImage(os, treeView);
+
+    // Create a bookmark
+    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Phylogram");
+
+    // Switch back to "Default"
+    GTComboBox::selectItemByText(os, treeViewCombo, "Default");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Activate the bookmark created on the step 3
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Phylogram");
+    QImage restoredImage = GTWidget::getImage(os, treeView);
+
+    // Expected: tree view is changed to "Phylogram"
+    CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
