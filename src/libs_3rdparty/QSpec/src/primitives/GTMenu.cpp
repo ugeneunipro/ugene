@@ -51,7 +51,9 @@ QMenu* GTMenu::showMainMenu(GUITestOpStatus& os, const QString& menuName, GTGlob
 
     QAction* menu = list.takeFirst();
     GT_CHECK_RESULT(menu != nullptr, QString("menu \"%1\" not found").arg(menuName), NULL);
-
+#ifdef Q_OS_DARWIN
+    m = GTGlobals::UseMouse;  // On MacOS menu shortcuts do not work by prefix (like Alt-F for the &File).
+#endif
     switch (m) {
         case GTGlobals::UseMouse: {
             QPoint pos = mainWindow->menuBar()->actionGeometry(menu).center();
