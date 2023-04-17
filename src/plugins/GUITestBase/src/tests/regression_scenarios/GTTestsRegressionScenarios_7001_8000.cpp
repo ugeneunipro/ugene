@@ -4340,6 +4340,59 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
                   QString("Bad offset: expected %1, current %2").arg(savedLeftOffset).arg(restoredLeftOffset));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7852) {
+    /*
+    1. Open samples/FASTA/human_T1.fa.
+    2. Open the "Statistics" tab, expand Codons.
+       Current state: AAA: 16 558.
+    3. Open the "Find pattern" tab, click on sequence, "Ctrl + A" -> "Go".
+    4. Open the "Statistics" tab.
+       Expected: AAA: 5 501.
+    5. Open the "Find pattern" tab, click on sequence, "Ctrl + A", set "Min" to 1, "Max" to 100 -> "Go".
+    6. Open the "Statistics" tab.
+       Expected: AAA: 4
+    */
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    auto reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, reportPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString codonsInfo = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside codons panel")->text();
+    CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>16 558 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 16 558'");
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, reportPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    codonsInfo = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside codons panel")->text();
+    CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>5 501 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 5 501'");
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 100));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, reportPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    codonsInfo = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside codons panel")->text();
+    CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>4 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 4'");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7860) {
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);

@@ -87,9 +87,9 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     updateCurrentRegions();
     initLayout();
     connectSlots();
-    updateData();
-
+    getCodonsOccurrenceCache()->sl_invalidate();
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
+    updateData();
 }
 
 SequenceInfo::~SequenceInfo() {
@@ -606,7 +606,7 @@ void SequenceInfo::launchCalculations(const QString& subgroupId) {
 
     if (subgroupId.isEmpty() || subgroupId == CODON_OCCUR_GROUP_ID || subgroupId == AMINO_ACID_OCCUR_GROUP_ID) {
         bool isCodonReportOpened = codonWidget->isVisible() && codonWidget->isSubgroupOpened();
-        bool isAminoAcidReportOpened = aminoAcidWidget->isVisible() && aminoAcidWidget->isSubgroupOpened();
+        bool isAminoAcidReportOpened = aminoAcidWidget->isSubgroupOpened();
         if (isCodonReportOpened || isAminoAcidReportOpened) {
             if (isCodonReportOpened) {
                 codonWidget->showProgress();
