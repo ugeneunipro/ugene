@@ -45,6 +45,10 @@ public:
         return value != anotherValue;
     }
 
+    operator T* () const {
+        return get();
+    }
+
     /**
      * Returns pointer value that is guaranteed not to be 'nullptr'.
      * Requires that one of the equality check operators (==/!=) is called before this method.

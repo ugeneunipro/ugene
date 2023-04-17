@@ -75,7 +75,7 @@ void BAMUtils::closeFileIfOpen(FILE* file) {
 /** Version the original samopen() function with a correct handling of unicode in faiUrl and non-UGENE use cases removed. */
 static samfile_t* samopen_ugene(const NP<FILE>& file, const char* mode, const QString& faiUrl, bam_header_t* bamHeader) {
     SAFE_POINT(file != nullptr, "samopen_ugene: file is null!", nullptr);
-    int fd = fileno(file.get());
+    int fd = fileno(file);
     SAFE_POINT(fd != -1, "samopen_ugene: file is closed", nullptr);
     int TYPE_BAM = 1;
     int TYPE_READ = 2;
@@ -84,7 +84,7 @@ static samfile_t* samopen_ugene(const NP<FILE>& file, const char* mode, const QS
         fp->type |= TYPE_READ;
         if (strchr(mode, 'b')) {  // binary
             fp->type |= TYPE_BAM;
-            fp->x.bam = bgzf_fdopen(file.get(), "r");
+            fp->x.bam = bgzf_fdopen(file, "r");
             if (fp->x.bam == nullptr) {
                 free(fp);
                 return nullptr;
@@ -109,7 +109,7 @@ static samfile_t* samopen_ugene(const NP<FILE>& file, const char* mode, const QS
                         free(fp);
                         return nullptr;
                     }
-                    fp->header = sam_header_read2_fd(fileno(faiFile.get()));
+                    fp->header = sam_header_read2_fd(fileno(faiFile));
                     if (fp->header == nullptr) {
                         free(fp);
                         return nullptr;
@@ -145,7 +145,7 @@ static samfile_t* samopen_ugene(const NP<FILE>& file, const char* mode, const QS
             bmode[1] = compress_level < 0 ? 0 : compress_level + '0';
             bmode[2] = 0;
             fp->type |= TYPE_BAM;
-            fp->x.bam = bgzf_fdopen(file.get(), bmode);
+            fp->x.bam = bgzf_fdopen(file, bmode);
             if (fp->x.bam == nullptr) {
                 free(fp);
                 return nullptr;
@@ -197,7 +197,7 @@ static samfile_t* samOpen(const QString& url, const char* samMode, const QString
     fileMode.replace("h", "");
     NP<FILE> file = BAMUtils::openFile(url, fileMode);
     samfile_t* samfile = samopen_ugene(file, samMode, faiUrl, header);
-    CHECK_EXT(samfile != nullptr, BAMUtils::closeFileIfOpen(file.getNullable()), nullptr);
+    CHECK_EXT(samfile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
 
     bool isBam = samfile->type == 1;
     if (isBam) {
@@ -350,7 +350,6 @@ bool BAMUtils::isSortedBam(const QString& bamUrl, U2OpStatus& os) {
     QString error;
     bool result = false;
 
-
     NP<FILE> file = BAMUtils::openFile(bamUrl, "rb");
     bamFile bamHandler = bgzf_fdopen(file.getNullable(), "r");
     if (bamHandler != nullptr) {
@@ -427,9 +426,9 @@ static void bamSortCore(U2OpStatus& os, const QString& bamFileToSort, const QStr
     coreLog.trace("bamSortCore: " + bamFileToSort + ", result prefix: " + prefix);
     NP<FILE> file = BAMUtils::openFile(bamFileToSort, "rb");
     CHECK_EXT(file != nullptr, os.setError(BAMUtils::tr("Failed to open file: %1").arg(bamFileToSort)), );
-    bamFile fp = bgzf_fdopen(file.get(), "r");
+    bamFile fp = bgzf_fdopen(file, "r");
     if (fp == nullptr) {
-        BAMUtils::closeFileIfOpen(file.get());
+        BAMUtils::closeFileIfOpen(file);
         coreLog.error(BAMUtils::tr("[bam_sort_core] fail to open file"));
         return;
     }
@@ -513,11 +512,10 @@ void* BAMUtils::loadIndex(const QString& filePath) {
         file = BAMUtils::openFile(filePath.chopped(4) + ".bai", mode);
     }
     CHECK(file != nullptr, nullptr);
-    bam_index_t* idx = bam_index_load_core(file.get());
-    closeFileIfOpen(file.get());
+    bam_index_t* idx = bam_index_load_core(file);
+    closeFileIfOpen(file);
     return idx;
 }
-
 
 static int localBamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
     bam_header_t* hout = nullptr;
@@ -723,9 +721,9 @@ static int bamIndexBuild(const QString& bamFileName) {
         fprintf(stderr, "[bam_index_build2] fail to create the index file.\n");
         return -1;
     }
-    bam_index_save(idx, fpidx.get());
+    bam_index_save(idx, fpidx);
     bam_index_destroy(idx);
-    fclose(fpidx.get());
+    fclose(fpidx);
     return 0;
 }
 

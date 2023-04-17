@@ -126,9 +126,9 @@ bool BgzipTask::checkBgzf(const GUrl& fileUrl) {
     if (file == nullptr) {
         checkResult = -1;
     } else {
-        checkResult = bgzf_check_bgzf(file.get());
+        checkResult = bgzf_check_bgzf(file);
     }
-    FileAndDirectoryUtils::closeFileIfOpen(file.get());
+    FileAndDirectoryUtils::closeFileIfOpen(file);
     return checkResult;  // TODO: method returns incorrect type and the logic looks inverted from the normal.
 }
 
