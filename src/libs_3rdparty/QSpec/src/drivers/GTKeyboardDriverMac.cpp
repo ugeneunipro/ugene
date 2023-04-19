@@ -248,27 +248,21 @@ static bool extractShiftModifier(char& key) {
     return false;
 }
 
-static bool keyPressMac(int key) {
+static bool keyPressMac(CGKeyCode key) {
     CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, true);
     DRIVER_CHECK(event != NULL, "Can't create event");
-    CGEventSetFlags(event, CGEventGetFlags(event) & ~kCGEventFlagMaskNumericPad);
-
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
     GTGlobals::sleep(100);
-
     return true;
 }
 
-static bool keyReleaseMac(int key) {
+static bool keyReleaseMac(CGKeyCode key) {
     CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, false);
     DRIVER_CHECK(event != NULL, "Can't create event");
-    CGEventSetFlags(event, CGEventGetFlags(event) & ~kCGEventFlagMaskNumericPad);
-
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
     GTGlobals::sleep(100);
-
     return true;
 }
 
@@ -277,18 +271,16 @@ static bool keyReleaseMac(int key) {
 bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
     DRIVER_CHECK(key != 0, "key = 0");
 
-    bool isChanged = extractShiftModifier(key);
-    if (isChanged) {
-        keyPressMac(GTKeyboardDriver::key[Qt::Key_Shift]);
-    } else {
-        key = asciiToVirtual(key);
-    }
-
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     foreach (Qt::Key mod, modKeys) {
         keyPressMac(GTKeyboardDriver::key[mod]);
     }
-    return keyPressMac((int)key);
+    bool isShiftRequired = extractShiftModifier(key);
+    if (isShiftRequired) {
+        keyPressMac(GTKeyboardDriver::key[Qt::Key_Shift]);
+    }
+    CGKeyCode keyCode = asciiToVirtual(key);
+    return keyPressMac(keyCode);
 }
 #    undef GT_METHOD_NAME
 
@@ -296,14 +288,13 @@ bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
 bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
     DRIVER_CHECK(key != 0, "key = 0");
 
-    const bool isChanged = extractShiftModifier(key);
-    if (!isChanged) {
-        key = asciiToVirtual(key);
-    } else {
+    CGKeyCode keyCode = asciiToVirtual(key);
+    keyReleaseMac(keyCode);
+
+    bool isShiftRequired = extractShiftModifier(key);
+    if (isShiftRequired) {
         keyReleaseMac(GTKeyboardDriver::key[Qt::Key_Shift]);
     }
-
-    keyReleaseMac((int)key);
 
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     foreach (Qt::Key mod, modKeys) {

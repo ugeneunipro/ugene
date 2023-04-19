@@ -104,6 +104,9 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus& os, const QString& menuName, G
     GT_CHECK_RESULT(resultList.count() < 2, QString("There are %1 actions with this text").arg(resultList.count()), );
 
     QAction* menu = resultList.takeFirst();
+#ifdef Q_OS_DARWIN
+    m = GTGlobals::UseMouse;  // On MacOS menu shortcuts do not work by prefix (like Alt-F for the &File).
+#endif
     switch (m) {
         case GTGlobals::UseMouse: {
             GT_CHECK_RESULT(mainWindow != nullptr, "mainWindow is null!", );
