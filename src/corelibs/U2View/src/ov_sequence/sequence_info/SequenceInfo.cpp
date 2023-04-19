@@ -88,6 +88,7 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     initLayout();
     connectSlots();
     updateData();
+
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
