@@ -104,10 +104,12 @@ SequenceObjectContext::SequenceObjectContext(U2SequenceObject* obj, QObject* par
     connect(seqObj, SIGNAL(si_sequenceChanged()), &commonStatisticsCache, SLOT(sl_invalidate()));
     connect(seqObj, SIGNAL(si_sequenceChanged()), &charactersOccurrenceCache, SLOT(sl_invalidate()));
     connect(seqObj, SIGNAL(si_sequenceChanged()), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
+    connect(seqObj, &U2SequenceObject::si_sequenceChanged, &codonsOccurrenceCache, &StatisticsCache<QMap<QByteArray, qint64>>::sl_invalidate);
 
     connect(selection, SIGNAL(si_onSelectionChanged(GSelection*)), &commonStatisticsCache, SLOT(sl_invalidate()));
     connect(selection, SIGNAL(si_onSelectionChanged(GSelection*)), &charactersOccurrenceCache, SLOT(sl_invalidate()));
     connect(selection, SIGNAL(si_onSelectionChanged(GSelection*)), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
+    connect(selection, &DNASequenceSelection::si_onSelectionChanged, &codonsOccurrenceCache, &StatisticsCache<QMap<QByteArray, qint64>>::sl_invalidate);
 }
 
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject* ao) {

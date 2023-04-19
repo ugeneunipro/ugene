@@ -87,9 +87,8 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     updateCurrentRegions();
     initLayout();
     connectSlots();
-    getCodonsOccurrenceCache()->sl_invalidate();
-    U2WidgetStateStorage::restoreWidgetState(savableWidget);
     updateData();
+    U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
 SequenceInfo::~SequenceInfo() {
