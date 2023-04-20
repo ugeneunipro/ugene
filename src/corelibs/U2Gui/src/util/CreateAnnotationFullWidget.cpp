@@ -224,14 +224,7 @@ QString CreateAnnotationFullWidget::getDescription() const {
 }
 
 QString CreateAnnotationFullWidget::getLocationString() const {
-    const QString location = leLocation->text();
-    if (isValidLocation) {
-        return location;
-    }
-    if (location.startsWith("complement(") && location.endsWith(")")) {
-        return "complement()";
-    }
-    return QString();
+    return leLocation->text();
 }
 
 bool CreateAnnotationFullWidget::isUsePatternNamesChecked() const {
