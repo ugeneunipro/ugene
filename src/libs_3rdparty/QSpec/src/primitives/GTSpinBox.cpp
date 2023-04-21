@@ -97,7 +97,7 @@ void GTSpinBox::setValue(GUITestOpStatus& os, QSpinBox* spinBox, int v, GTGlobal
                 GTGlobals::sleep(100);
                 GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
                 GTGlobals::sleep(100);
-                GTKeyboardDriver::keyClick(Qt::Key_Delete);
+                GTKeyboardDriver::keyClick(Qt::Key_Backspace);
                 GTGlobals::sleep(100);
                 GTKeyboardDriver::keySequence(s);
                 GTGlobals::sleep(100);
