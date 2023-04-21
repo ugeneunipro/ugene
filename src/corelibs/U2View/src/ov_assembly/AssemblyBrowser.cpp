@@ -176,7 +176,7 @@ QWidget* AssemblyBrowser::createViewWidget(QWidget* parent) {
 }
 
 QVariantMap AssemblyBrowser::saveState() {
-    if (nullptr != ui && ui->isCorrectView()) {
+    if (ui != nullptr && ui->isCorrectView()) {
         return AssemblyBrowserState::buildStateMap(this);
     } else {
         return QVariantMap();
@@ -211,14 +211,14 @@ bool AssemblyBrowser::eventFilter(QObject* o, QEvent* e) {
 
 QString AssemblyBrowser::tryAddObject(GObject* obj) {
     Document* objDoc = obj->getDocument();
-    SAFE_POINT(nullptr != objDoc, "", tr("Internal error: only object with document can be added to browser"));
+    SAFE_POINT(objDoc != nullptr, "", tr("Internal error: only object with document can be added to browser"));
 
     static const QString unacceptableObjectError = tr("Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.");
 
     if (GObjectTypes::SEQUENCE == obj->getGObjectType()) {
         auto seqObj = qobject_cast<U2SequenceObject*>(obj);
-        CHECK(nullptr != seqObj, tr("Internal error: broken sequence object"));
-        SAFE_POINT(nullptr != objDoc->getDocumentFormat(), "", tr("Internal error: empty document format"));
+        CHECK(seqObj != nullptr, tr("Internal error: broken sequence object"));
+        SAFE_POINT(objDoc->getDocumentFormat() != nullptr, "", tr("Internal error: empty document format"));
 
         bool setRef = !isAssemblyObjectLocked(true) && !model->isLoadingReference();
         setRef &= model->checkPermissions(QFile::WriteUser, setRef);
@@ -264,7 +264,7 @@ QString AssemblyBrowser::tryAddObject(GObject* obj) {
         }
     } else if (GObjectTypes::VARIANT_TRACK == obj->getGObjectType()) {
         auto trackObj = qobject_cast<VariantTrackObject*>(obj);
-        CHECK(nullptr != trackObj, tr("Internal error: broken variant track object"));
+        CHECK(trackObj != nullptr, tr("Internal error: broken variant track object"));
 
         model->addTrackObject(trackObj);
         addObjectToView(obj);
@@ -907,7 +907,7 @@ void AssemblyBrowser::onObjectRenamed(GObject*, const QString&) {
 }
 
 bool AssemblyBrowser::onCloseEvent() {
-    if (nullptr != loadReferenceTask) {
+    if (loadReferenceTask != nullptr) {
         loadReferenceTask->cancel();
     }
     return true;
@@ -930,7 +930,7 @@ void AssemblyBrowser::assemblyLoaded() {
     GTIMER(c1, t1, "AssemblyBrowser::assemblyLoaded");
     LOG_OP(dbiOpStatus);
     U2Dbi* dbi = model->getDbiConnection().dbi;
-    CHECK(nullptr != dbi, );
+    CHECK(dbi != nullptr, );
 
     assert(U2DbiState_Ready == dbi->getState());
 
@@ -1024,7 +1024,7 @@ void AssemblyBrowser::loadReferenceFromFile() {
         }
     } else {
         loadReferenceTask = createLoadReferenceTask(url);
-        CHECK(nullptr != loadReferenceTask, );
+        CHECK(loadReferenceTask != nullptr, );
     }
 
     prepareLoadReferenceTask(url, loadReferenceTask);
@@ -1038,7 +1038,7 @@ void AssemblyBrowser::loadReferenceFromFile() {
 }
 
 void AssemblyBrowser::setReference(const Document* doc) {
-    CHECK(nullptr != doc, );
+    CHECK(doc != nullptr, );
     const QList<GObject*> objects = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
     if (1 == objects.size()) {
@@ -1050,7 +1050,7 @@ void AssemblyBrowser::setReference(const Document* doc) {
 
 void AssemblyBrowser::sl_setReference() {
     const ProjectView* projectView = AppContext::getProjectView();
-    SAFE_POINT(nullptr != projectView, L10N::nullPointerError("ProjectView"), );
+    SAFE_POINT(projectView != nullptr, L10N::nullPointerError("ProjectView"), );
 
     const GObjectSelection* selection = projectView->getGObjectSelection();
     const QList<GObject*> objects = extractSequenceObjects(selection->getSelectedObjects());
@@ -1082,7 +1082,7 @@ void AssemblyBrowser::sl_extractAssemblyRegion() {
 
 void AssemblyBrowser::sl_onReferenceLoaded() {
     Task* task = loadReferenceTask;
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(task->isFinished(), );
 
     loadReferenceTask = nullptr;
@@ -1094,7 +1094,7 @@ void AssemblyBrowser::sl_onReferenceLoaded() {
     CHECK(!url.isEmpty(), );
 
     const Project* project = AppContext::getProject();
-    CHECK(nullptr != project, );
+    CHECK(project != nullptr, );
 
     setReference(project->findDocumentByURL(url));
 }

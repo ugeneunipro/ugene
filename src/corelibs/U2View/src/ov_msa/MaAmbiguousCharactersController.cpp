@@ -44,12 +44,12 @@ const QPoint MaAmbiguousCharactersController::INVALID_POINT = QPoint(-1, -1);
 
 MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt* maEditorWgt)
     : QObject(maEditorWgt),
-      maEditor(nullptr != maEditorWgt ? maEditorWgt->getEditor() : nullptr),
+      maEditor(maEditorWgt != nullptr ? maEditorWgt->getEditor() : nullptr),
       maEditorWgt(maEditorWgt),
       nextAction(nullptr),
       previousAction(nullptr) {
-    SAFE_POINT(nullptr != maEditorWgt, "maEditorWgt is NULL", );
-    SAFE_POINT(nullptr != maEditor, "maEditor is NULL", );
+    SAFE_POINT(maEditorWgt != nullptr, "maEditorWgt is NULL", );
+    SAFE_POINT(maEditor != nullptr, "maEditor is NULL", );
 
     nextAction = new QAction(QIcon(":core/images/amb_forward.png"), tr("Jump to next ambiguous character"), this);
     nextAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_A));
@@ -128,7 +128,7 @@ QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection di
 
     const QPoint startPosition = getStartPosition();
     prepareIterator(direction, startPosition);
-    SAFE_POINT(nullptr != cachedIterator, "MaIterator is not valid", INVALID_POINT);
+    SAFE_POINT(cachedIterator != nullptr, "MaIterator is not valid", INVALID_POINT);
 
     while (cachedIterator->hasNext()) {
         if (ambiguousCharacters[cachedIterator->next()]) {

@@ -125,7 +125,7 @@ Wizard* HRWizardParser::parseWizard(U2OpStatus& os) {
     CHECK_OP(os, nullptr);
 
     Wizard* result = takeResult();
-    CHECK(nullptr != result, nullptr);
+    CHECK(result != nullptr, nullptr);
     result->setAutoRun(autoRun);
     result->setHasRunButton(hasRunButton);
     result->setHasDefaultsButton(hasDefaultsButton);

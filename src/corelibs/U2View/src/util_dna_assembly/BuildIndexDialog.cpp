@@ -72,7 +72,7 @@ BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry* registry, QWidg
     if (!genomePath.isEmpty()) {
         refSeqEdit->setText(genomePath);
         buildIndexUrl(genomePath);
-        SAFE_POINT(nullptr != customGUI, "Build Index dialog referenced null pointer", );
+        SAFE_POINT(customGUI != nullptr, "Build Index dialog referenced null pointer", );
         customGUI->validateReferenceSequence(genomePath);
     }
 }
@@ -90,7 +90,7 @@ void BuildIndexDialog::sl_onAddRefButtonClicked() {
         return;
     }
 
-    if (nullptr != customGUI) {
+    if (customGUI != nullptr) {
         customGUI->validateReferenceSequence(GUrl(lod.url));
     }
     refSeqEdit->setText(lod.url);
@@ -154,7 +154,7 @@ void BuildIndexDialog::addGuiExtension() {
 void BuildIndexDialog::buildIndexUrl(const GUrl& refUrl) {
     QString extension("");
     GUrl url;
-    if (nullptr != customGUI) {
+    if (customGUI != nullptr) {
         extension = customGUI->getIndexFileExtension();
         url = customGUI->buildIndexUrl(refUrl);
     }

@@ -38,7 +38,7 @@ WorkflowTasksRegistry::~WorkflowTasksRegistry() {
 }
 
 bool WorkflowTasksRegistry::registerReadDocumentTaskFactory(ReadDocumentTaskFactory* factory) {
-    SAFE_POINT(nullptr != factory, "NULL ReadDocumentTaskFactory", false);
+    SAFE_POINT(factory != nullptr, "NULL ReadDocumentTaskFactory", false);
     SAFE_POINT(!readTasks.contains(factory->getId()),
                QString("Double ReadDocumentTaskFactory registering: %1").arg(factory->getId()),
                false);

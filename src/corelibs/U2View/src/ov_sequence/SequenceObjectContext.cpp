@@ -227,7 +227,7 @@ void SequenceObjectContext::sl_showShowAll() {
 }
 
 void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
-    CHECK(nullptr != visibleFrames, );
+    CHECK(visibleFrames != nullptr, );
 
     bool needUpdate = false;
 
@@ -283,7 +283,7 @@ void SequenceObjectContext::sl_onAnnotationRelationChange() {
 }
 
 QMenu* SequenceObjectContext::createGeneticCodeMenu() {
-    CHECK(nullptr != translations, nullptr);
+    CHECK(translations != nullptr, nullptr);
     QMenu* menu = new QMenu(tr("Select genetic code"));
     menu->setIcon(QIcon(":core/images/tt_switch.png"));
     menu->menuAction()->setObjectName("AminoTranslationAction");
@@ -467,7 +467,7 @@ void SequenceObjectContext::setTranslationsVisible(bool visible) {
 }
 
 void SequenceObjectContext::showComplementActions(bool show) {
-    CHECK(nullptr != visibleFrames, );
+    CHECK(visibleFrames != nullptr, );
 
     QList<QAction*> actions = visibleFrames->actions();
     for (int i = 3; i < 6; i++) {

@@ -40,12 +40,12 @@
 namespace U2 {
 
 McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt* ui, SequenceObjectContext* ctx)
-    : PanView(ui, ctx, McaEditorReferenceRenderAreaFactory(ui, nullptr != ui ? ui->getEditor() : nullptr)),
-      editor(nullptr != ui ? ui->getEditor() : nullptr),
+    : PanView(ui, ctx, McaEditorReferenceRenderAreaFactory(ui, ui != nullptr ? ui->getEditor() : nullptr)),
+      editor(ui != nullptr ? ui->getEditor() : nullptr),
       ui(ui),
       renderer(dynamic_cast<McaReferenceAreaRenderer*>(getRenderArea()->getRenderer())),
       firstPressedSelectionPosition(-1) {
-    SAFE_POINT(nullptr != renderer, "Renderer is NULL", );
+    SAFE_POINT(renderer != nullptr, "Renderer is NULL", );
 
     setObjectName("mca_editor_reference_area");
     singleBaseSelection = true;
@@ -149,7 +149,7 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent* event) {
     const int key = event->key();
     bool accepted = false;
     DNASequenceSelection* const selection = ctx->getSequenceSelection();
-    U2Region selectedRegion = (nullptr != selection && !selection->isEmpty() ? selection->getSelectedRegions().first() : U2Region());
+    U2Region selectedRegion = (selection != nullptr && !selection->isEmpty() ? selection->getSelectedRegions().first() : U2Region());
     const qint64 selectionEndPos = selectedRegion.endPos() - 1;
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);

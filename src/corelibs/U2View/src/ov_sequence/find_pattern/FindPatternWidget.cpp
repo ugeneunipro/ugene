@@ -217,7 +217,7 @@ bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
         }
     } else if (eventType == QEvent::Show) {
         auto watched = dynamic_cast<QWidget*>(obj);
-        if (nullptr != watched) {
+        if (watched != nullptr) {
             watched->setFocus();
         }
     }

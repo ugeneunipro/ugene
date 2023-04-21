@@ -58,7 +58,7 @@ void ExtractAssemblyRegionAndOpenViewTask::prepare() {
 
 QList<Task*> ExtractAssemblyRegionAndOpenViewTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
-    CHECK(nullptr != subTask, result);
+    CHECK(subTask != nullptr, result);
 
     if (subTask->hasError() || subTask->isCanceled()) {
         return result;

@@ -102,7 +102,7 @@ void MaConsensusAreaRenderer::drawContent(QPainter& painter,
                                           const MaEditorConsensusAreaSettings& consensusSettings,
                                           const ConsensusRenderSettings& renderSettings) {
     SAFE_POINT(consensusRenderData.isValid(), "Incorrect consensus data to draw", );
-    SAFE_POINT(nullptr != renderSettings.colorScheme, "Color scheme is NULL", );
+    SAFE_POINT(renderSettings.colorScheme != nullptr, "Color scheme is NULL", );
 
     if (consensusSettings.isVisible(MSAEditorConsElement_CONSENSUS_TEXT)) {
         drawConsensus(painter, consensusRenderData, renderSettings);

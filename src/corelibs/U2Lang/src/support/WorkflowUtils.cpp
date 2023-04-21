@@ -1034,10 +1034,10 @@ bool checkObjectInDb(const QString& url) {
 
     DbiConnection connection(dbRef, os);
     CHECK_OP(os, false);
-    CHECK(nullptr != connection.dbi, false);
+    CHECK(connection.dbi != nullptr, false);
 
     U2ObjectDbi* oDbi = connection.dbi->getObjectDbi();
-    CHECK(nullptr != oDbi, false);
+    CHECK(oDbi != nullptr, false);
     U2Object testObject;
     oDbi->getObject(testObject, realId, os);
     CHECK_OP(os, false);
@@ -1054,10 +1054,10 @@ bool checkFolderInDb(const QString& dbUrl, const QString& folderPath) {
 
     DbiConnection connection(dbRef, os);
     CHECK_OP(os, false);
-    CHECK(nullptr != connection.dbi, false);
+    CHECK(connection.dbi != nullptr, false);
 
     U2ObjectDbi* oDbi = connection.dbi->getObjectDbi();
-    CHECK(nullptr != oDbi, false);
+    CHECK(oDbi != nullptr, false);
     const qint64 folderVersion = oDbi->getFolderLocalVersion(folderPath, os);
     CHECK_OP(os, false);
 
@@ -1185,13 +1185,13 @@ bool WorkflowUtils::validateOutputDir(const QString& url, NotificationsList& not
 }
 
 bool WorkflowUtils::isSharedDbUrlAttribute(const Attribute* attr, const Actor* actor) {
-    SAFE_POINT(nullptr != attr, "Invalid attribute supplied", false);
-    SAFE_POINT(nullptr != actor, "Invalid actor supplied", false);
+    SAFE_POINT(attr != nullptr, "Invalid attribute supplied", false);
+    SAFE_POINT(actor != nullptr, "Invalid actor supplied", false);
 
     ConfigurationEditor* editor = actor->getEditor();
-    CHECK(nullptr != editor, false);
+    CHECK(editor != nullptr, false);
     PropertyDelegate* delegate = editor->getDelegate(attr->getId());
-    CHECK(nullptr != delegate, false);
+    CHECK(delegate != nullptr, false);
 
     return PropertyDelegate::SHARED_DB_URL == delegate->type();
 }
@@ -1221,7 +1221,7 @@ bool WorkflowUtils::validateDatasets(const QList<Dataset>& sets, NotificationsLi
     bool res = true;
     for (const Dataset& set : qAsConst(sets)) {
         foreach (URLContainer* urlContainer, set.getUrls()) {
-            SAFE_POINT(nullptr != urlContainer, "NULL URLContainer!", false);
+            SAFE_POINT(urlContainer != nullptr, "NULL URLContainer!", false);
             bool urlIsValid = urlContainer->validateUrl(notificationList);
             res = res && urlIsValid;
         }
@@ -1366,7 +1366,7 @@ QString PrompterBaseImpl::getScreenedURL(IntegralBusPort* input, const QString& 
 
 QString PrompterBaseImpl::getProducers(const QString& port, const QString& slot) {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(port));
-    CHECK(nullptr != input, "");
+    CHECK(input != nullptr, "");
     QList<Actor*> producers = input->getProducers(slot);
 
     QStringList labels;

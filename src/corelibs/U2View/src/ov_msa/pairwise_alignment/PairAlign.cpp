@@ -79,8 +79,8 @@ PairAlign::PairAlign(MSAEditor* _msa)
       showOutputWidget(_msa->getPairwiseAlignmentWidgetsSettings()->showOutputWidget),
       firstSequenceSelectionOn(false), secondSequenceSelectionOn(false),
       sequencesChanged(true), sequenceNamesIsOk(false), alphabetIsOk(false) {
-    SAFE_POINT(nullptr != msa, "MSA Editor is NULL.", );
-    SAFE_POINT(nullptr != pairwiseAlignmentWidgetsSettings, "pairwiseAlignmentWidgetsSettings is NULL.", );
+    SAFE_POINT(msa != nullptr, "MSA Editor is NULL.", );
+    SAFE_POINT(pairwiseAlignmentWidgetsSettings != nullptr, "pairwiseAlignmentWidgetsSettings is NULL.", );
 
     setupUi(this);
 

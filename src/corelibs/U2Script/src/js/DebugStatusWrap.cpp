@@ -145,7 +145,7 @@ Handle<Value> DebugStatusWrap::getActorsWithBreakpoints(const Arguments& args) {
     QList<ActorId> actorIds = obj->debugStatus->getActorsWithBreakpoints();
 
     ScriptContext* scriptContext = AppContext::getScriptContext();
-    Q_ASSERT(nullptr != scriptContext);
+    Q_ASSERT(scriptContext != nullptr);
 
     Local<Object> actorList = Object::New();
     foreach (ActorId id, actorIds) {

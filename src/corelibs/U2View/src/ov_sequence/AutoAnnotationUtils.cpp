@@ -304,7 +304,7 @@ ExportAutoAnnotationsGroupTask::ExportAutoAnnotationsGroupTask(AnnotationGroup* 
       seqCtx(ctx),
       createTask(nullptr),
       annDescription(annDescription) {
-    SAFE_POINT_EXT(nullptr != ag, stateInfo.setError(tr("Invalid annotation group provided")), );
+    SAFE_POINT_EXT(ag != nullptr, stateInfo.setError(tr("Invalid annotation group provided")), );
 }
 
 void ExportAutoAnnotationsGroupTask::prepare() {

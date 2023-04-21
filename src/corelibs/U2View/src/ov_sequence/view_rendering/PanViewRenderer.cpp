@@ -170,7 +170,7 @@ void PanViewRenderer::drawAnnotations(QPainter& p, const QSize& canvasSize, cons
         const QRect textRect(LINE_TEXT_OFFSET, lineY + 1, canvasSize.width(), commonMetrics.lineHeight - 2);
         p.drawText(textRect, getText(rData));
 
-        if (nullptr != rData) {
+        if (rData != nullptr) {
             AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
             AnnotationSettings* as = asr->getAnnotationSettings(rData->key);
             if (as->visible) {

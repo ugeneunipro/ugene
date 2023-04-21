@@ -74,7 +74,7 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
     helpRegistered = true;
 
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(nullptr != cmdLineRegistry);
+    assert(cmdLineRegistry != nullptr);
 
     CMDLineHelpProvider* logFormat = new CMDLineHelpProvider(
         CMDLineCoreOptions::LOG_FORMAT,
@@ -221,9 +221,9 @@ void ConsoleLogDriver::setLogSettings() {
 
 void ConsoleLogDriver::setCmdLineSettings() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(nullptr != cmdLineRegistry);
+    assert(cmdLineRegistry != nullptr);
     Settings* settings = AppContext::getSettings();
-    assert(nullptr != settings);
+    assert(settings != nullptr);
 
     if (cmdLineRegistry->hasParameter(COLOR_OUTPUT_CMD_OPTION)) {
         colored = true;

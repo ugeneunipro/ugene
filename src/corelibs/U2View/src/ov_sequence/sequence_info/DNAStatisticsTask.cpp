@@ -467,8 +467,8 @@ void DNAStatisticsTask::computeStats() {
             mononucleotideExtinctionCoefficientsMap = &DNA_MONONUCLEOTIDES_EXTINCTION_COEFFICIENTS;
             dinucleotideExtinctionCoefficientsMap = &DNA_DINUCLEOTIDES_EXTINCTION_COEFFICIENTS;
         }
-        SAFE_POINT_EXT(nullptr != mononucleotideExtinctionCoefficientsMap, os.setError("An unknown alphabet"), );
-        SAFE_POINT_EXT(nullptr != dinucleotideExtinctionCoefficientsMap, os.setError("An unknown alphabet"), );
+        SAFE_POINT_EXT(mononucleotideExtinctionCoefficientsMap != nullptr, os.setError("An unknown alphabet"), );
+        SAFE_POINT_EXT(dinucleotideExtinctionCoefficientsMap != nullptr, os.setError("An unknown alphabet"), );
 
         for (int i = 0, n = dinucleotidesCount.size(); i < n; ++i) {
             for (int j = 0, m = dinucleotidesCount[i].size(); j < m; ++j) {

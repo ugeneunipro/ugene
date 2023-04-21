@@ -281,7 +281,7 @@ void AssemblyVariantRowManager::sl_trackRemoved(VariantTrackObject* objToRemove)
 
     QLayout* layout = annsArea->layout();
     auto vertLayout = qobject_cast<QVBoxLayout*>(layout);
-    SAFE_POINT(nullptr != vertLayout, "Internal error: layout problems", );
+    SAFE_POINT(vertLayout != nullptr, "Internal error: layout problems", );
 
     for (int i = 0; i < vertLayout->count(); i++) {
         QLayoutItem* it = vertLayout->itemAt(i);
@@ -304,7 +304,7 @@ void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject* newTrackObj) {
 
     QLayout* layout = annsArea->layout();
     auto vertLayout = qobject_cast<QVBoxLayout*>(layout);
-    SAFE_POINT(nullptr != vertLayout, "Internal error: layout problems", );
+    SAFE_POINT(vertLayout != nullptr, "Internal error: layout problems", );
 
     AssemblyVariantRow* row = new AssemblyVariantRow(annsArea, newTrackObj, browser);
     vertLayout->addWidget(row);
@@ -318,7 +318,7 @@ void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject* newTrackObj) {
 void AssemblyVariantRowManager::sl_removeRow() {
     QObject* s = sender();
     auto row = dynamic_cast<AssemblyVariantRow*>(s);
-    SAFE_POINT(nullptr != row, "Internal error: NULL row widget", );
+    SAFE_POINT(row != nullptr, "Internal error: NULL row widget", );
 
     model->sl_trackObjRemoved(row->getTrackObject());
 }

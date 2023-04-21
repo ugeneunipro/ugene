@@ -45,12 +45,12 @@ Task* JsScheduler::tick() {
         worker->deleteBackupMessagesFromPreviousTick();
         Task* newTask = worker->tick();
         debugInfo->checkActorForBreakpoint(schema->actorById(actor));
-        if (nullptr != newTask) {
+        if (newTask != nullptr) {
             tickTasks.append(newTask);
         }
     }
     Task* result = (tickTasks.isEmpty()) ? nullptr : new MultiTask("Js-driven worker tasks", tickTasks);
-    if (nullptr != result) {
+    if (result != nullptr) {
         result->setMaxParallelSubtasks(tickTasks.size());
     }
     nextTicks.clear();

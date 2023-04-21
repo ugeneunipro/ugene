@@ -238,10 +238,10 @@ void ADVClipboard::updateActions() {
     CHECK(seqCtx != nullptr, );
 
     DNASequenceSelection* sel = seqCtx->getSequenceSelection();
-    SAFE_POINT(nullptr != sel, "DNASequenceSelection isn't found.", );
+    SAFE_POINT(sel != nullptr, "DNASequenceSelection isn't found.", );
 
     const DNAAlphabet* alphabet = seqCtx->getAlphabet();
-    SAFE_POINT(nullptr != alphabet, "DNAAlphabet isn't found.", );
+    SAFE_POINT(alphabet != nullptr, "DNAAlphabet isn't found.", );
 
     const bool isNucleic = alphabet->isNucleic();
     if (!isNucleic) {

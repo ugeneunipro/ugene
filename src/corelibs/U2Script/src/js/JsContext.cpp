@@ -143,7 +143,7 @@ Handle<Value> debugStatus(const Arguments& args) {
     }
     Handle<Value> wrappedDebugInfo;
     WorkflowDebugStatus* debugInfo = scriptContext->getDebugStatus();
-    if (nullptr != debugInfo) {
+    if (debugInfo != nullptr) {
         Handle<Value> debugInfoInitData[] = {Integer::New(reinterpret_cast<int>(debugInfo))};
         wrappedDebugInfo = DebugStatusWrap::newInstance(1, debugInfoInitData);
     } else {

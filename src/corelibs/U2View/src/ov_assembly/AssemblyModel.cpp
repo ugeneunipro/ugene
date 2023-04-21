@@ -114,7 +114,7 @@ bool AssemblyModel::hasCachedCoverageStat() {
         return true;
     }
     U2AttributeDbi* attributeDbi = dbiHandle.dbi->getAttributeDbi();
-    if (nullptr != attributeDbi) {
+    if (attributeDbi != nullptr) {
         U2OpStatusImpl status;
         U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, assembly.id, COVERAGE_STAT_ATTRIBUTE_NAME, status);
         if (!status.isCoR() && attr.hasValidId()) {
@@ -130,7 +130,7 @@ const U2AssemblyCoverageStat& AssemblyModel::getCoverageStat(U2OpStatus& os) {
     Q_UNUSED(mutexLocker);
     if (cachedCoverageStat.isEmpty()) {
         U2AttributeDbi* attributeDbi = dbiHandle.dbi->getAttributeDbi();
-        if (nullptr != attributeDbi) {
+        if (attributeDbi != nullptr) {
             U2ByteArrayAttribute attr = U2AttributeUtils::findByteArrayAttribute(attributeDbi, assembly.id, COVERAGE_STAT_ATTRIBUTE_NAME, os);
             if (!os.isCoR()) {
                 if (attr.hasValidId()) {
@@ -381,7 +381,7 @@ void AssemblyModel::removeCrossDatabaseReference(const U2DataId& refId) const {
 
 namespace {
 bool isAssemblyDoc(const Document* doc, const U2Assembly& assembly) {
-    CHECK(nullptr != doc, false);
+    CHECK(doc != nullptr, false);
     foreach (const GObject* obj, doc->findGObjectByType(GObjectTypes::ASSEMBLY)) {
         if (obj == nullptr) {
             continue;
@@ -595,7 +595,7 @@ void AssemblyModel::addTrackObject(VariantTrackObject* trackObj) {
 
 void AssemblyModel::sl_trackObjRemoved(GObject* o) {
     auto trackObj = qobject_cast<VariantTrackObject*>(o);
-    if (nullptr != trackObj) {
+    if (trackObj != nullptr) {
         trackObjList.removeOne(trackObj);
         emit si_trackRemoved(trackObj);
     }

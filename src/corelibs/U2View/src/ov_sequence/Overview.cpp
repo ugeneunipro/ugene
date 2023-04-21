@@ -357,7 +357,7 @@ DetView* Overview::getDet() const {
 }
 
 void Overview::connectAnnotationTableObject(AnnotationTableObject* object) {
-    CHECK(nullptr != object, );
+    CHECK(object != nullptr, );
     connect(object, SIGNAL(si_onAnnotationsAdded(const QList<Annotation*>&)), SLOT(sl_annotationsAdded(const QList<Annotation*>&)));
     connect(object, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation*>&)), SLOT(sl_annotationsRemoved(const QList<Annotation*>&)));
     connect(object, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*)), SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*)));

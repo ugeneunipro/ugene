@@ -409,7 +409,7 @@ U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
 }
 
 void ScrollController::updateHorizontalScrollBarPrivate() {
-    SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
+    SAFE_POINT(hScrollBar != nullptr, "Horizontal scrollbar is not initialized", );
     QSignalBlocker signalBlocker(hScrollBar);
 
     maEditor->multilineViewAction->setEnabled(!maEditor->isAlignmentEmpty() || maEditor->isMultilineMode());
