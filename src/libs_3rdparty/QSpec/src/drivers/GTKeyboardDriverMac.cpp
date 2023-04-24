@@ -253,7 +253,7 @@ static bool keyPressMac(CGKeyCode key) {
     DRIVER_CHECK(event != NULL, "Can't create event");
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
-    GTGlobals::sleep(10);
+    GTGlobals::sleep(100);
     return true;
 }
 
@@ -262,7 +262,7 @@ static bool keyReleaseMac(CGKeyCode key) {
     DRIVER_CHECK(event != NULL, "Can't create event");
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
-    GTGlobals::sleep(10);
+    GTGlobals::sleep(100);
     return true;
 }
 
