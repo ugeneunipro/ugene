@@ -122,12 +122,7 @@ Task::ReportResult BgzipTask::report() {
 
 bool BgzipTask::checkBgzf(const GUrl& fileUrl) {
     NP<FILE> file = FileAndDirectoryUtils::openFile(fileUrl.getURLString(), "r");
-    int checkResult = 0;
-    if (file == nullptr) {
-        checkResult = -1;
-    } else {
-        checkResult = bgzf_check_bgzf(file);
-    }
+    int checkResult = file == nullptr ? -1 : bgzf_check_bgzf(file);
     FileAndDirectoryUtils::closeFileIfOpen(file);
     return checkResult;  // TODO: method returns incorrect type and the logic looks inverted from the normal.
 }

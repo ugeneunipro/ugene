@@ -636,28 +636,23 @@ static int recursiveBamMergeCore(const QString& outFileName, const QList<QString
     int size = filesToMerge.size();
     CHECK(size != 0, -1);
 
-    int remainder = size % MAX_FILES_OPENED;
-    int iterationNumber = size / MAX_FILES_OPENED + (remainder != 0 ? 1 : 0);
-    if (iterationNumber == 1) {
+    auto mergeSplit = U2Region::split({ 0, size }, MAX_FILES_OPENED);
+    if (mergeSplit.size() == 1) {
         return localBamMergeCore(outFileName, filesToMerge);
     }
 
     QStringList newOutFileNameList;
-    for (int i = 0; i < iterationNumber; i++) {
-        int midLength = MAX_FILES_OPENED;
-        if (i == iterationNumber - 1) {
-            midLength = remainder;
-        }
-        QList<QString> newFilesToMerge = filesToMerge.mid(i * MAX_FILES_OPENED, midLength);
+    for (const auto& currentRange : qAsConst(mergeSplit)) {
+        QList<QString> newFilesToMerge = filesToMerge.mid(currentRange.startPos, currentRange.endPos());
         auto firstFileToMergeName = newFilesToMerge.first();
         // Remove ".bam" from the end
         QString newOutFileBaseName = firstFileToMergeName.left(firstFileToMergeName.size() - 4);
-        QString newOutFileName = newOutFileBaseName + "_" + QString::number(i) + ".bam";
+        QString newOutFileName = newOutFileBaseName + "_" + QString::number(currentRange.startPos) + ".bam";
         newOutFileNameList << newOutFileName;
         int res = recursiveBamMergeCore(newOutFileName, newFilesToMerge);
         CHECK(res >= 0, res);
-    }
 
+    }
     return recursiveBamMergeCore(outFileName, newOutFileNameList);
 }
 
