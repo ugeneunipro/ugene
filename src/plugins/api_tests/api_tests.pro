@@ -35,6 +35,7 @@ HEADERS += \
     src/core/gobjects/MsaObjectUnitTests.h \
     src/core/gobjects/PhyTreeObjectUnitTests.h \
     src/core/gobjects/TextObjectUnitTests.h \
+    src/core/util/BAMUtilsUnitTests.h \
     src/core/util/DatatypeSerializeUtilsUnitTest.h \
     src/core/util/DynTableTests.h \
     src/core/util/MsaDbiUtilsUnitTests.h \
@@ -74,6 +75,7 @@ SOURCES += \
     src/core/gobjects/MsaObjectUnitTests.cpp \
     src/core/gobjects/PhyTreeObjectUnitTests.cpp \
     src/core/gobjects/TextObjectUnitTests.cpp \
+    src/core/util/BAMUtilsUnitTests.cpp \
     src/core/util/DatatypeSerializeUtilsUnitTest.cpp \
     src/core/util/DynTableTests.cpp \
     src/core/util/MsaDbiUtilsUnitTests.cpp \
