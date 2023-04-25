@@ -56,6 +56,7 @@ QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequenceVi
     result.insert(InSilicoPcr, "OP_IN_SILICO_PCR");
     result.insert(CircularView, "OP_CV_SETTINGS");
     result.insert(GeneCut, "OP_GENECUT");
+    result.insert(EntropyCalculation, "OP_ENTROPY_CALCULATION");
     return result;
 }
 
@@ -67,6 +68,7 @@ QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequenceVi
     result.insert(InSilicoPcr, "InSilicoPcrOptionPanelWidget");
     result.insert(CircularView, "CircularViewSettingsWidget");
     result.insert(GeneCut, "GenecutOPWidget");
+    result.insert(EntropyCalculation, "EntropyCalculationWidget");
     return result;
 }
 

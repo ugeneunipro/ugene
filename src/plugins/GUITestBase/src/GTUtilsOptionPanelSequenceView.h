@@ -36,7 +36,8 @@ public:
         Statistics,
         InSilicoPcr,
         CircularView,
-        GeneCut
+        GeneCut,
+        EntropyCalculation
     };
 
     enum AddRefMethod {
