@@ -127,7 +127,7 @@ U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object) {
 U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, const wchar_t* _url, FileFormat format) {
     using namespace U2;
 
-    CHECK(objects != nullptr && nullptr != _url, );
+    CHECK(objects != nullptr && _url != nullptr, );
 
     DocumentFormat* docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(
         toDocumentFormatId(format));
@@ -176,7 +176,7 @@ U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLeng
 
 U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t* newName) {
     auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
-    if (unwrappedObject != nullptr && nullptr != newName) {
+    if (unwrappedObject != nullptr && newName != nullptr) {
         unwrappedObject->setGObjectName(QString::fromWCharArray(newName));
     }
 }

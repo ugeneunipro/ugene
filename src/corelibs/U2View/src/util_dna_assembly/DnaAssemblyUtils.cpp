@@ -225,7 +225,7 @@ ConvertFileTask* getConvertTask(const GUrl& url, const QStringList& targetFormat
 QMap<QString, QString> DnaAssemblySupport::toConvert(const DnaAssemblyToRefTaskSettings& settings, QList<GUrl>& unknownFormatFiles) {
     QMap<QString, QString> result;
     DnaAssemblyAlgorithmEnv* env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(settings.algName);
-    SAFE_POINT(nullptr != env, "Unknown algorithm: " + settings.algName, result);
+    SAFE_POINT(env != nullptr, "Unknown algorithm: " + settings.algName, result);
 
     foreach (const GUrl& url, settings.getShortReadUrls()) {
         CHECK_FILE(url, env->getReadsFormats());
@@ -362,7 +362,7 @@ QList<Task*> DnaAssemblyTaskWithConversions::onSubTaskFinished(Task* subTask) {
     CHECK(!hasError(), result);
 
     auto convertTask = qobject_cast<ConvertFileTask*>(subTask);
-    if (nullptr != convertTask) {
+    if (convertTask != nullptr) {
         SAFE_POINT_EXT(conversionTasksCount > 0, setError("Conversions task count error"), result);
         if (convertTask->getSourceURL() == settings.refSeqUrl) {
             settings.refSeqUrl = convertTask->getResult();

@@ -164,7 +164,7 @@ QMap<QString, QList<SharedAnnotationData>> ImportAnnotationsFromCSVTask::prepare
 
 Document* ImportAnnotationsFromCSVTask::prepareNewDocument(const QMap<QString, QList<SharedAnnotationData>>& groups) {
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
-    CHECK(nullptr != format, nullptr);
+    CHECK(format != nullptr, nullptr);
 
     IOAdapterId ioId = IOAdapterUtils::url2io(config.dstFile);
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);

@@ -270,7 +270,7 @@ void addExportItemsToSettings(ExportSequencesDialog* d, const QList<GObject*> se
     }
     foreach (GObject* o, seqObjs) {
         U2SequenceObject* so = qobject_cast<U2SequenceObject*>(o);
-        SAFE_POINT(nullptr != so, "Invalid sequence object", );
+        SAFE_POINT(so != nullptr, "Invalid sequence object", );
         QList<SharedAnnotationData> anns;
         if (s.saveAnnotations) {
             anns = getAllRelatedAnnotations(so, allAnnotationTables);
@@ -289,7 +289,7 @@ void addExportItemsToSettings(ExportSequencesDialog* d, const QList<GObject*> se
 
 void ExportProjectViewItemsContoller::sl_saveSequencesToSequenceFormat() {
     ProjectView* pv = AppContext::getProjectView();
-    SAFE_POINT(nullptr != pv, "Project view is NULL", );
+    SAFE_POINT(pv != nullptr, "Project view is NULL", );
 
     MultiGSelection ms;
     ms.addSelection(pv->getGObjectSelection());
@@ -305,7 +305,7 @@ void ExportProjectViewItemsContoller::sl_saveSequencesToSequenceFormat() {
 
 void ExportProjectViewItemsContoller::sl_saveCorrespondingSequence() {
     ProjectView* pv = AppContext::getProjectView();
-    SAFE_POINT(nullptr != pv, "Project view is NULL", );
+    SAFE_POINT(pv != nullptr, "Project view is NULL", );
 
     MultiGSelection ms;
     ms.addSelection(pv->getGObjectSelection());
@@ -466,7 +466,7 @@ void ExportProjectViewItemsContoller::sl_exportMcaToMsa() {
     }
 
     MultipleChromatogramAlignmentObject* mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(set.first());
-    SAFE_POINT(nullptr != mcaObject, "Can't cast the object to MultipleChromatogramAlignmentObject", );
+    SAFE_POINT(mcaObject != nullptr, "Can't cast the object to MultipleChromatogramAlignmentObject", );
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
 
@@ -577,9 +577,9 @@ void ExportProjectViewItemsContoller::sl_exportAnnotations() {
 
     GObject* obj = set.first();
     auto aObj = qobject_cast<AnnotationTableObject*>(obj);
-    SAFE_POINT(nullptr != aObj, "Invalid annotation table detected!", );
+    SAFE_POINT(aObj != nullptr, "Invalid annotation table detected!", );
     if (!aObj->getAnnotations().isEmpty()) {
-        SAFE_POINT(nullptr != aObj->getDocument(), "Invalid document detected!", );
+        SAFE_POINT(aObj->getDocument() != nullptr, "Invalid document detected!", );
         ExportObjectUtils::exportAnnotations(aObj, aObj->getDocument()->getURL());
         return;
     }
@@ -623,7 +623,7 @@ void ExportProjectViewItemsContoller::sl_exportSequenceQuality() {
 
 void ExportProjectViewItemsContoller::sl_exportObject() {
     ProjectView* pv = AppContext::getProjectView();
-    SAFE_POINT(nullptr != pv, "Invalid project view detected!", );
+    SAFE_POINT(pv != nullptr, "Invalid project view detected!", );
 
     const GObjectSelection* selection = pv->getGObjectSelection();
     CHECK(!selection->isEmpty(), );

@@ -186,7 +186,7 @@ void GenomeAssemblyDialog::sl_onAddShortReadsButtonClicked() {
 
 void GenomeAssemblyDialog::accept() {
     bool validated = true;
-    if (nullptr != customGUI) {
+    if (customGUI != nullptr) {
         QString error;
         if (!customGUI->isParametersOk(error)) {
             if (!error.isEmpty()) {
@@ -238,7 +238,7 @@ void GenomeAssemblyDialog::accept() {
             }
 
             GenomeAssemblyAlgorithmEnv* env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(methodNamesBox->currentText());
-            SAFE_POINT(nullptr != env, "Unknown algorithm: " + methodNamesBox->currentText(), );
+            SAFE_POINT(env != nullptr, "Unknown algorithm: " + methodNamesBox->currentText(), );
             QStringList formats = env->getReadsFormats();
 
             foreach (const QString& r, reads) {

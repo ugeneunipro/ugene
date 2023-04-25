@@ -156,7 +156,7 @@ QDomDocument CustomToolConfigParser::serialize(CustomExternalTool* tool) {
 }
 
 bool CustomToolConfigParser::validate(U2OpStatus& os, CustomExternalTool* tool) {
-    CHECK(nullptr != tool, false);
+    CHECK(tool != nullptr, false);
     CHECK_EXT(!tool->getId().isEmpty(), os.setError(tr("The tool id is not specified in the config file.")), false);
     CHECK_EXT(!tool->getId().contains(QRegularExpression("[^A-Za-z0-9_\\-]")), os.setError(tr("The tool id contains unexpected characters, the only letters, numbers, underlines and dashes are allowed.")), false);
     CHECK_EXT(!tool->getId().startsWith("USUPP_"), os.setError(tr("The custom tool's ID shouldn't start with \"USUPP_\", this is a distinguishing feature of the supported tools.")), false);

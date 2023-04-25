@@ -555,7 +555,7 @@ void ConvertToSQLiteTask::updateAttributes() {
     DbiConnection connection(dstDbiRef, stateInfo);
     CHECK(!hasError(), throw Exception(getError()));
     U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
-    CHECK(nullptr != attributeDbi, );
+    CHECK(attributeDbi != nullptr, );
 
     foreach (int referenceId, importers.keys()) {
         const U2Assembly& assembly = importers[referenceId]->getAssembly();
@@ -897,7 +897,7 @@ void ConvertToSQLiteTask::updateImportInfoCoverageStatAttribute(const U2Assembly
 
 IOAdapter* ConvertToSQLiteTask::prepareIoAdapter() {
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(sourceUrl));
-    SAFE_POINT_EXT(nullptr != factory, throw IOException(L10N::nullPointerError("IO adapter factory")), nullptr);
+    SAFE_POINT_EXT(factory != nullptr, throw IOException(L10N::nullPointerError("IO adapter factory")), nullptr);
     QScopedPointer<IOAdapter> ioAdapter(factory->createIOAdapter());
 
     if (!ioAdapter->open(sourceUrl, IOAdapterMode_Read)) {

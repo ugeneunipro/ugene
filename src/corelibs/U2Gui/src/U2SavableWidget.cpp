@@ -212,7 +212,7 @@ bool U2SavableWidget::isExcluded(const QString& childId) const {
 bool U2SavableWidget::childCanBeSaved(QWidget* child) const {
     const QString widgetName = child->objectName();
     return ((qobject_cast<QLineEdit*>(child) != nullptr && qobject_cast<QFontComboBox*>(child->parent()) == nullptr && widgetName != "qt_spinbox_lineedit")  // skip fake line edit inside a spin box
-            || qobject_cast<QTextEdit*>(child) != nullptr || qobject_cast<QComboBox*>(child) != nullptr || (qobject_cast<QAbstractButton*>(child) != nullptr && qobject_cast<QAbstractButton*>(child)->isCheckable()) || (qobject_cast<QGroupBox*>(child) != nullptr && qobject_cast<QGroupBox*>(child)->isCheckable()) || nullptr != qobject_cast<QSpinBox*>(child) || nullptr != qobject_cast<QDoubleSpinBox*>(child) || nullptr != qobject_cast<QSlider*>(child) || nullptr != qobject_cast<QTableWidget*>(child) || nullptr != qobject_cast<ShowHideSubgroupWidget*>(child)) &&
+            || qobject_cast<QTextEdit*>(child) != nullptr || qobject_cast<QComboBox*>(child) != nullptr || (qobject_cast<QAbstractButton*>(child) != nullptr && qobject_cast<QAbstractButton*>(child)->isCheckable()) || (qobject_cast<QGroupBox*>(child) != nullptr && qobject_cast<QGroupBox*>(child)->isCheckable()) || qobject_cast<QSpinBox*>(child) != nullptr || nullptr != qobject_cast<QDoubleSpinBox*>(child) || nullptr != qobject_cast<QSlider*>(child) || nullptr != qobject_cast<QTableWidget*>(child) || nullptr != qobject_cast<ShowHideSubgroupWidget*>(child)) &&
            !widgetName.isEmpty();
 }
 

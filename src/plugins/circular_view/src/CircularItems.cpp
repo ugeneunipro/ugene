@@ -416,7 +416,7 @@ void CircularAnnotationLabel::avoidLinesIntersections() {
     for (int i = -2; i < 3; i += (i == -1) ? 2 : 1) {
         CircularAnnotationLabel* neighbour = ra->engagedLabelPositionToLabel.value(engagedIndex + i, nullptr);
         bool swapSuccessful = true;
-        if (nullptr != neighbour && labelConnectionLinesIntersect(this, neighbour)) {
+        if (neighbour != nullptr && labelConnectionLinesIntersect(this, neighbour)) {
             ra->engagedLabelPositionToLabel.remove(engagedIndex);
             if (i < 0 ? neighbour->tryPushClockwise() : neighbour->tryPushCounterclockwise()) {
                 engageLabelPosition(engagedIndex + i);

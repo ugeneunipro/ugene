@@ -65,7 +65,7 @@ void MsaSQLiteSpecificTestData::init() {
 }
 
 void MsaSQLiteSpecificTestData::shutdown() {
-    if (nullptr != sqliteDbi) {
+    if (sqliteDbi != nullptr) {
         U2OpStatusImpl os;
         sqliteDbi->shutdown(os);
         SAFE_POINT_OP(os, );

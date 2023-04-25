@@ -94,7 +94,7 @@ void ExportSequenceViewItemsController::init() {
     GObjectViewWindowContext::init();
     if (!viewResources.value(av).isEmpty()) {
         QMenu* actions = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_ACTIONS);
-        SAFE_POINT(nullptr != actions, "Actions menu not found.", );
+        SAFE_POINT(actions != nullptr, "Actions menu not found.", );
         actions->clear();
         AppContext::getMainWindow()->getMDIManager()->getActiveWindow()->setupViewMenu(actions);
     }

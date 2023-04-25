@@ -99,7 +99,7 @@ void AlignToReferenceBlastCmdlineTask::prepare() {
 
     FormatDetectionConfig config;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(referenceUrl, config);
-    CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), setError(tr("wrong reference format")), );
+    CHECK_EXT(!formats.isEmpty() && (formats.first().format != nullptr), setError(tr("wrong reference format")), );
 
     DocumentFormat* format = formats.first().format;
     CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE), setError(tr("wrong reference format")), );
@@ -210,7 +210,7 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
         // add load document task
         FormatDetectionConfig config;
         QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
-        CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), setError(tr("wrong output format")), result);
+        CHECK_EXT(!formats.isEmpty() && (formats.first().format != nullptr), setError(tr("wrong output format")), result);
 
         DocumentFormat* format = formats.first().format;
         CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);

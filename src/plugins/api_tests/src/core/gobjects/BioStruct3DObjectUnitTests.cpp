@@ -118,7 +118,7 @@ BioStruct3D BioStruct3DObjectTestData::readBioStruct(const QString& fileName, U2
     TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     DocumentFormat* f = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_PDB);
-    SAFE_POINT_EXT(nullptr != f, os.setError("NULL format"), BioStruct3D());
+    SAFE_POINT_EXT(f != nullptr, os.setError("NULL format"), BioStruct3D());
 
     QVariantMap hints;
     if (!useSessionDbi) {
@@ -131,7 +131,7 @@ BioStruct3D BioStruct3DObjectTestData::readBioStruct(const QString& fileName, U2
     CHECK_EXT(1 == objs.size(), os.setError("object list size"), BioStruct3D());
 
     BioStruct3DObject* obj = dynamic_cast<BioStruct3DObject*>(objs.first());
-    CHECK_EXT(nullptr != obj, os.setError("NULL object"), BioStruct3D());
+    CHECK_EXT(obj != nullptr, os.setError("NULL object"), BioStruct3D());
 
     return obj->getBioStruct3D();
 }

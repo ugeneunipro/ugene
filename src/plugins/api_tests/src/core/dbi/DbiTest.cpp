@@ -78,7 +78,7 @@ bool TestDbiProvider::init(const QString& dbiFileName, bool _useConnectionPool) 
         CHECK_OP(opStatus, false);
     } else {
         dbi = factory->createDbi();
-        SAFE_POINT(nullptr != dbi, "dbi not created", false);
+        SAFE_POINT(dbi != nullptr, "dbi not created", false);
         QHash<QString, QString> properties;
         if (_create) {
             properties[U2DbiOptions::U2_DBI_OPTION_CREATE] = U2DbiOptions::U2_DBI_VALUE_ON;
@@ -89,7 +89,7 @@ bool TestDbiProvider::init(const QString& dbiFileName, bool _useConnectionPool) 
         SAFE_POINT_OP(opStatus, false);
     }
     U2ObjectDbi* objDbi = dbi->getObjectDbi();
-    SAFE_POINT(nullptr != objDbi, "object dbi not loaded", false);
+    SAFE_POINT(objDbi != nullptr, "object dbi not loaded", false);
 
     initialized = true;
     return true;
@@ -99,7 +99,7 @@ void TestDbiProvider::close() {
     if (dbi) {
         if (useConnectionPool) {
             U2DbiRegistry* dbiReg = AppContext::getDbiRegistry();
-            if (nullptr != dbiReg) {
+            if (dbiReg != nullptr) {
                 dbiReg->getGlobalDbiPool()->releaseDbi(dbi, opStatus);
             }
         } else {

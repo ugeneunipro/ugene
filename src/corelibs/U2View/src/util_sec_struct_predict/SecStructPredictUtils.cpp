@@ -52,13 +52,13 @@ SecStructPredictViewAction::SecStructPredictViewAction(AnnotatedDNAView* v)
 void SecStructPredictViewAction::sl_execute() {
     auto a = dynamic_cast<QAction*>(sender());
     auto viewAction = dynamic_cast<GObjectViewAction*>(a);
-    SAFE_POINT(nullptr != viewAction, "NULL action", );
+    SAFE_POINT(viewAction != nullptr, "NULL action", );
 
     auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
-    SAFE_POINT(nullptr != av, "NULL dna view", );
+    SAFE_POINT(av != nullptr, "NULL dna view", );
 
     SecStructPredictAlgRegistry* sspar = AppContext::getSecStructPredictAlgRegistry();
-    SAFE_POINT(nullptr != sspar, "NULL SecStructPredictAlgRegistry", );
+    SAFE_POINT(sspar != nullptr, "NULL SecStructPredictAlgRegistry", );
 
     if (sspar->getAlgNameList().isEmpty()) {
         QMessageBox::information(av->getWidget(),
@@ -68,8 +68,8 @@ void SecStructPredictViewAction::sl_execute() {
     }
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
-    SAFE_POINT(nullptr != seqCtx, "NULL sequence context", );
-    SAFE_POINT(nullptr != seqCtx->getAlphabet(), "NULL alphabet", );
+    SAFE_POINT(seqCtx != nullptr, "NULL sequence context", );
+    SAFE_POINT(seqCtx->getAlphabet() != nullptr, "NULL alphabet", );
     SAFE_POINT(seqCtx->getAlphabet()->isAmino(), "Wrong alphabet", );
 
     QObjectScopedPointer<SecStructDialog> secStructDialog = new SecStructDialog(seqCtx, av->getWidget());

@@ -205,7 +205,7 @@ void EnzymesADVContext::sl_search() {
 
 void EnzymesADVContext::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
-    SAFE_POINT(nullptr != av, "Invalid sequence view", );
+    SAFE_POINT(av != nullptr, "Invalid sequence view", );
     CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );
 
     QMenu* cloningMenu = new QMenu(tr("Cloning"), m);
