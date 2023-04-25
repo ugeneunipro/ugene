@@ -2,6 +2,7 @@ include (enzymes.pri)
 
 # Input
 HEADERS += src/CloningUtilTasks.h \
+           src/ComboBoxWithCheckBoxes.h \
            src/ConstructMoleculeDialog.h \
            src/CreateFragmentDialog.h \
            src/DigestSequenceDialog.h \
@@ -22,6 +23,7 @@ FORMS += src/ConstructMoleculeDialog.ui \
          src/EnzymesSelectorWidget.ui \
          src/FindEnzymesDialog.ui
 SOURCES += src/CloningUtilTasks.cpp \
+           src/ComboBoxWithCheckBoxes.cpp \
            src/ConstructMoleculeDialog.cpp \
            src/CreateFragmentDialog.cpp \
            src/DigestSequenceDialog.cpp \

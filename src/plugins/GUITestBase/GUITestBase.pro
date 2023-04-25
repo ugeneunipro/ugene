@@ -118,6 +118,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.h \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h \
+            src/runnables/ugene/plugins/enzymes/GTComboBoxWithCheckBoxes.h \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h \
@@ -404,6 +405,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.cpp \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.cpp \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.cpp \
+            src/runnables/ugene/plugins/enzymes/GTComboBoxWithCheckBoxes.cpp \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.cpp \
