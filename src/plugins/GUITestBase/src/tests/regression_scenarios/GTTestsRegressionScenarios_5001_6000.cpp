@@ -496,14 +496,15 @@ GUI_TEST_CLASS_DEFINITION(test_5090) {
     //                    there are two annotations: 'just_an_annotation' (40..50) and 'join_complement' (join(10..15,20..25)). // the second one should have another location after UGENE-3423 will be done
 
     GTLogTracer lt;
-    GTUtilsNotifications::waitForNotification(os, false, "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
 
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/join_complement_ann.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand.");
 
     CHECK_SET_ERR(lt.hasError("The file contains joined annotations with regions, located on different strands. All such joined parts will be stored on the same strand."), "Expected error not found");
 
     GTUtilsMdi::activateWindow(os, "A_SEQ_1 [join_complement_ann.gb]");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     const QString simpleAnnRegion = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "just_an_annotation");
     CHECK_SET_ERR("40..50" == simpleAnnRegion, QString("An incorrect annotation region: expected '%1', got '%2'").arg("40..50").arg(simpleAnnRegion));
