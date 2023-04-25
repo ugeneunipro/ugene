@@ -30,222 +30,154 @@
 namespace HI {
 
 #ifdef Q_OS_DARWIN
-static int asciiToVirtual(int key) {
+static int asciiToVirtual(char key) {
     if (isalpha(key)) {
         key = tolower(key);
     }
-
     switch (key) {
         case ' ':
-            key = kVK_Space;
-            break;
+            return kVK_Space;
         case '0':
-            key = kVK_ANSI_0;
-            break;
+            return kVK_ANSI_0;
         case '1':
-            key = kVK_ANSI_1;
-            break;
+            return kVK_ANSI_1;
         case '2':
-            key = kVK_ANSI_2;
-            break;
+            return kVK_ANSI_2;
         case '3':
-            key = kVK_ANSI_3;
-            break;
+            return kVK_ANSI_3;
         case '4':
-            key = kVK_ANSI_4;
-            break;
+            return kVK_ANSI_4;
         case '5':
-            key = kVK_ANSI_5;
-            break;
+            return kVK_ANSI_5;
         case '6':
-            key = kVK_ANSI_6;
-            break;
+            return kVK_ANSI_6;
         case '7':
-            key = kVK_ANSI_7;
-            break;
+            return kVK_ANSI_7;
         case '8':
-            key = kVK_ANSI_8;
-            break;
+            return kVK_ANSI_8;
         case '9':
-            key = kVK_ANSI_9;
-            break;
+            return kVK_ANSI_9;
         case 'a':
-            key = kVK_ANSI_A;
+            return kVK_ANSI_A;
             break;
         case 'b':
-            key = kVK_ANSI_B;
-            break;
+            return kVK_ANSI_B;
         case 'c':
-            key = kVK_ANSI_C;
-            break;
+            return kVK_ANSI_C;
         case 'd':
-            key = kVK_ANSI_D;
-            break;
+            return kVK_ANSI_D;
         case 'e':
-            key = kVK_ANSI_E;
-            break;
+            return kVK_ANSI_E;
         case 'f':
-            key = kVK_ANSI_F;
-            break;
+            return kVK_ANSI_F;
         case 'g':
-            key = kVK_ANSI_G;
-            break;
+            return kVK_ANSI_G;
         case 'h':
-            key = kVK_ANSI_H;
-            break;
+            return kVK_ANSI_H;
         case 'i':
-            key = kVK_ANSI_I;
-            break;
+            return kVK_ANSI_I;
         case 'j':
-            key = kVK_ANSI_J;
-            break;
+            return kVK_ANSI_J;
         case 'k':
-            key = kVK_ANSI_K;
-            break;
+            return kVK_ANSI_K;
         case 'l':
-            key = kVK_ANSI_L;
-            break;
+            return kVK_ANSI_L;
         case 'm':
-            key = kVK_ANSI_M;
-            break;
+            return kVK_ANSI_M;
         case 'n':
-            key = kVK_ANSI_N;
-            break;
+            return kVK_ANSI_N;
         case 'o':
-            key = kVK_ANSI_O;
-            break;
+            return kVK_ANSI_O;
         case 'p':
-            key = kVK_ANSI_P;
-            break;
+            return kVK_ANSI_P;
         case 'q':
-            key = kVK_ANSI_Q;
-            break;
+            return kVK_ANSI_Q;
         case 'r':
-            key = kVK_ANSI_R;
-            break;
+            return kVK_ANSI_R;
         case 's':
-            key = kVK_ANSI_S;
-            break;
+            return kVK_ANSI_S;
         case 't':
-            key = kVK_ANSI_T;
-            break;
+            return kVK_ANSI_T;
         case 'u':
-            key = kVK_ANSI_U;
-            break;
+            return kVK_ANSI_U;
         case 'v':
-            key = kVK_ANSI_V;
-            break;
+            return kVK_ANSI_V;
         case 'w':
-            key = kVK_ANSI_W;
-            break;
+            return kVK_ANSI_W;
         case 'x':
-            key = kVK_ANSI_X;
-            break;
+            return kVK_ANSI_X;
         case 'y':
-            key = kVK_ANSI_Y;
-            break;
+            return kVK_ANSI_Y;
         case 'z':
-            key = kVK_ANSI_Z;
-            break;
+            return kVK_ANSI_Z;
         case '=':
-            key = kVK_ANSI_Equal;
-            break;
+            return kVK_ANSI_Equal;
         case '-':
-            key = kVK_ANSI_Minus;
-            break;
+            return kVK_ANSI_Minus;
         case ']':
-            key = kVK_ANSI_RightBracket;
-            break;
+            return kVK_ANSI_RightBracket;
         case '[':
-            key = kVK_ANSI_LeftBracket;
-            break;
+            return kVK_ANSI_LeftBracket;
         case '\'':
-            key = kVK_ANSI_Quote;
-            break;
+            return kVK_ANSI_Quote;
         case ';':
-            key = kVK_ANSI_Semicolon;
-            break;
+            return kVK_ANSI_Semicolon;
         case '\\':
-            key = kVK_ANSI_Backslash;
-            break;
+            return kVK_ANSI_Backslash;
         case ',':
-            key = kVK_ANSI_Comma;
-            break;
+            return kVK_ANSI_Comma;
         case '/':
-            key = kVK_ANSI_Slash;
-            break;
+            return kVK_ANSI_Slash;
         case '.':
-            key = kVK_ANSI_Period;
-            break;
+            return kVK_ANSI_Period;
         case '\n':
-            key = kVK_Return;
-            break;
+            return kVK_Return;
     }
     return key;
 }
 
-static bool extractShiftModifier(char& key) {
+static char toKeyWithNoShift(char key) {
     switch (key) {
         case '_':
-            key = asciiToVirtual('-');
-            return true;
+            return '-';
         case '+':
-            key = asciiToVirtual('=');
-            return true;
+            return '=';
         case '<':
-            key = asciiToVirtual(',');
-            return true;
+            return ',';
         case '>':
-            key = asciiToVirtual('.');
-            return true;
+            return '.';
         case ')':
-            key = asciiToVirtual('0');
-            return true;
+            return '0';
         case '!':
-            key = asciiToVirtual('1');
-            return true;
+            return '1';
         case '@':
-            key = asciiToVirtual('2');
-            return true;
+            return '2';
         case '#':
-            key = asciiToVirtual('3');
-            return true;
+            return '3';
         case '$':
-            key = asciiToVirtual('4');
-            return true;
+            return '4';
         case '%':
-            key = asciiToVirtual('5');
-            return true;
+            return '5';
         case '^':
-            key = asciiToVirtual('6');
-            return true;
+            return '6';
         case '&':
-            key = asciiToVirtual('7');
-            return true;
+            return '7';
         case '*':
-            key = asciiToVirtual('8');
-            return true;
+            return '8';
         case '(':
-            key = asciiToVirtual('9');
-            return true;
+            return '9';
         case '\"':
-            key = asciiToVirtual('\'');
-            return true;
+            return '\'';
         case '|':
-            key = asciiToVirtual('\\');
-            return true;
+            return '\\';
         case ':':
-            key = asciiToVirtual(';');
-            return true;
+            return ';';
         case '{':
-            key = asciiToVirtual('[');
-            return true;
+            return '[';
         case '}':
-            key = asciiToVirtual(']');
-            return true;
+            return ']';
     }
-
-    return false;
+    return key;
 }
 
 static bool keyPressMac(CGKeyCode key) {
@@ -268,36 +200,39 @@ static bool keyReleaseMac(CGKeyCode key) {
 
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
 #    define GT_METHOD_NAME "keyPress_char"
-bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
-    DRIVER_CHECK(key != 0, "key = 0");
-
+bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
+    DRIVER_CHECK(origKey != 0, "key = 0");
+    char keyWithNoShift = toKeyWithNoShift(origKey);
+    bool isShiftRequired = origKey != keyWithNoShift;
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     foreach (Qt::Key mod, modKeys) {
+        if (mod == Qt::Key_Shift && isShiftRequired) {
+            continue;
+        }
         keyPressMac(GTKeyboardDriver::key[mod]);
     }
-    bool isShiftRequired = extractShiftModifier(key);
     if (isShiftRequired) {
         keyPressMac(GTKeyboardDriver::key[Qt::Key_Shift]);
     }
-    CGKeyCode keyCode = asciiToVirtual(key);
+    CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
     return keyPressMac(keyCode);
 }
 #    undef GT_METHOD_NAME
 
 #    define GT_METHOD_NAME "keyRelease_char"
-bool GTKeyboardDriver::keyRelease(char key, Qt::KeyboardModifiers modifiers) {
-    DRIVER_CHECK(key != 0, "key = 0");
+bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
+    DRIVER_CHECK(origKey != 0, "key = 0");
+    char keyWithNoShift = toKeyWithNoShift(origKey);
+    bool isShiftRequired = origKey != keyWithNoShift;
 
-    CGKeyCode keyCode = asciiToVirtual(key);
+    CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
     keyReleaseMac(keyCode);
-
-    bool isShiftRequired = extractShiftModifier(key);
     if (isShiftRequired) {
         keyReleaseMac(GTKeyboardDriver::key[Qt::Key_Shift]);
     }
-
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     foreach (Qt::Key mod, modKeys) {
+        if (mod == Qt::Key_Shift && isShiftRequired) continue;
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
     return true;
