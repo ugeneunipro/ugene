@@ -649,7 +649,7 @@ static int recursiveBamMergeCore(const QString& outFileName, const QList<QString
         QString newOutFileBaseName = firstFileToMergeName.left(firstFileToMergeName.size() - 4);
         QString newOutFileName = newOutFileBaseName + "_" + QString::number(currentRange.startPos) + ".bam";
         newOutFileNameList << newOutFileName;
-        int res = recursiveBamMergeCore(newOutFileName, newFilesToMerge);
+        int res = localBamMergeCore(newOutFileName, newFilesToMerge);
         CHECK(res >= 0, res);
 
     }
