@@ -28,6 +28,7 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/Task.h>
 
+#include "MSAEditor.h"
 #include "MaEditorNameList.h"
 
 namespace U2 {
@@ -46,7 +47,7 @@ enum DataState {
 
 class SimilarityStatisticsSettings {
 public:
-    MsaEditorWgt* ui = nullptr;
+    QPointer<MSAEditor> editor;
     bool autoUpdate = true;
     /** Selected algorithm. */
     QString algoId;
@@ -119,7 +120,7 @@ private:
 class MsaEditorAlignmentDependentWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit MsaEditorAlignmentDependentWidget(MsaEditorSimilarityColumn* _contentWidget);
+    explicit MsaEditorAlignmentDependentWidget(MsaEditorWgt* msaEditorWgt, MsaEditorSimilarityColumn* _contentWidget);
 
     void setSettings(const SimilarityStatisticsSettings* _settings);
     void cancelPendingTasks();
@@ -129,6 +130,7 @@ private:
     void createWidgetUI();
     void createHeaderWidget();
 
+    MsaEditorWgt* msaEditorWgt = nullptr;
     MaUtilsWidget* headerWidget = nullptr;
     QLabel* nameWidget = nullptr;
     MsaEditorSimilarityColumn* contentWidget;

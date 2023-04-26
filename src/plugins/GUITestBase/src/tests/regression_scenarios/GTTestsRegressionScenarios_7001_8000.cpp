@@ -3942,31 +3942,28 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7730) {
-    // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // Open the OP's "Statistics" tab.
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::Statistics);
 
-    // In this tab click the ">" button
+    // In this tab click the ">" button.
     GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
 
-    // Сheck the "Show distances column" box
-    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
-
-    // Сheck the "Exclude gaps" box.
-    auto excludeGapsCheckBox = GTWidget::findCheckBox(os, "excludeGapsCheckBox");
-    GTCheckBox::setChecked(os, excludeGapsCheckBox, true);
-
-    // Click "Wrap mode" button
+    // Enable "Wrap mode".
     QAction* wrapMode = GTAction::findActionByText(os, "Wrap mode");
     GTWidget::click(os, GTAction::button(os, wrapMode));
 
-    // Сheck  "Count" checkboх
-    auto countRadioButton = GTWidget::findRadioButton(os, "countsButton");
-    GTRadioButton::click(os, countRadioButton);
+    // Сheck the "Show distances column" box.
+    GTCheckBox::setChecked(os, "showDistancesColumnCheck", true);
+
+    // Disable "Wrap mode".
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
+    // Сheck the "Exclude gaps" box.
+    GTCheckBox::setChecked(os, "excludeGapsCheckBox", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: UGENE doesn't crash
 }

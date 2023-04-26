@@ -79,7 +79,7 @@ void SeqStatisticsWidget::copySettings() {
         settings->excludeGaps = false;
         settings->autoUpdate = true;
         settings->usePercents = true;
-        settings->ui = msaEditorUi;
+        settings->editor = msa;
     }
 }
 

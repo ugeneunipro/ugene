@@ -126,7 +126,7 @@ QString MsaEditorSimilarityColumn::getHeaderText() const {
 }
 
 void MsaEditorSimilarityColumn::updateDistanceMatrix() {
-    createDistanceMatrixTaskRunner.cancel();
+    cancelPendingTasks();
 
     auto createDistanceMatrixTask = new CreateDistanceMatrixTask(newSettings);
     connect(new TaskSignalMapper(createDistanceMatrixTask), &TaskSignalMapper::si_taskFinished, this, &MsaEditorSimilarityColumn::sl_createMatrixTaskFinished);
@@ -169,12 +169,13 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task* t) {
 CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSettings& _s)
     : BackgroundTask<MSADistanceMatrix*>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
       s(_s) {
-    SAFE_POINT(s.ui != nullptr, "Incorrect MSAEditorUI in MsaEditorSimilarityColumnTask ctor!", );
+    SAFE_POINT(!s.editor.isNull(), "MSAEditor is null in CreateDistanceMatrixTask constructor!", );
     result = nullptr;
     setVerboseLogMode(true);
 }
 
 void CreateDistanceMatrixTask::prepare() {
+    CHECK_EXT(!s.editor.isNull(), cancel(), );
     MSADistanceAlgorithmFactory* factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
     CHECK(factory != nullptr, );
     if (s.excludeGaps) {
@@ -183,7 +184,7 @@ void CreateDistanceMatrixTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
 
-    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.ui->getEditor()->getMaObject()->getMultipleAlignment());
+    MSADistanceAlgorithm* algo = factory->createAlgorithm(s.editor->getMaObject()->getMultipleAlignment());
     CHECK(algo != nullptr, );
     addSubTask(algo);
 }
@@ -195,8 +196,8 @@ QList<Task*> CreateDistanceMatrixTask::onSubTaskFinished(Task* subTask) {
     return {};
 }
 
-MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorSimilarityColumn* _contentWidget)
-    : contentWidget(_contentWidget) {
+MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorWgt* _msaEditorWgt, MsaEditorSimilarityColumn* _contentWidget)
+    : msaEditorWgt(_msaEditorWgt), contentWidget(_contentWidget) {
     SAFE_POINT(_contentWidget != nullptr, "Argument is NULL in constructor MsaEditorAlignmentDependentWidget()", );
 
     dataIsOutdatedMessage = QString("<FONT COLOR=#FF0000>%1</FONT>").arg(tr("Data is outdated"));
@@ -204,7 +205,7 @@ MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(MsaEditorSi
     dataIsBeingUpdatedMessage = QString("<FONT COLOR=#0000FF>%1</FONT>").arg(tr("Data is being updated"));
 
     settings = &contentWidget->getSettings();
-    MSAEditor* editor = settings->ui->getEditor();
+    MSAEditor* editor = settings->editor;
     connect(editor->getMaObject(), &MultipleSequenceAlignmentObject::si_alignmentChanged, this, [this] { contentWidget->onAlignmentChanged(); });
     connect(editor, &MaEditor::si_fontChanged, this, [this](const QFont& font) { nameWidget->setFont(font); });
 
@@ -238,11 +239,11 @@ void MsaEditorAlignmentDependentWidget::createHeaderWidget() {
     headerLayout->setSpacing(0);
 
     nameWidget->setAlignment(Qt::AlignCenter);
-    nameWidget->setFont(settings->ui->getEditor()->getFont());
+    nameWidget->setFont(settings->editor->getFont());
     headerLayout->addWidget(nameWidget);
 
     state = DataIsValid;
-    headerWidget = new MaUtilsWidget(settings->ui, settings->ui->getHeaderWidget());
+    headerWidget = new MaUtilsWidget(msaEditorWgt, msaEditorWgt->getHeaderWidget());
     headerWidget->setLayout(headerLayout);
 }
 
