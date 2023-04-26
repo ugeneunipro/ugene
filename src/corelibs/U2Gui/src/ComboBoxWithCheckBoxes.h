@@ -24,10 +24,12 @@
 #include <QComboBox>
 #include <QStandardItem>
 
+#include <U2Core/global.h>
+
 namespace U2 {
 
 //https://habr.com/ru/post/215289/
-class ComboBoxWithCheckBoxes : public QComboBox {
+class U2GUI_EXPORT ComboBoxWithCheckBoxes : public QComboBox {
     Q_OBJECT
 
 public:

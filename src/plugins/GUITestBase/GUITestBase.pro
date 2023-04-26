@@ -53,6 +53,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h \
+            src/runnables/ugene/corelibs/U2Gui/GTComboBoxWithCheckBoxes.h \
             src/runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h \
             src/runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h \
@@ -118,7 +119,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.h \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h \
-            src/runnables/ugene/plugins/enzymes/GTComboBoxWithCheckBoxes.h \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h \
@@ -340,6 +340,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.cpp \
+            src/runnables/ugene/corelibs/U2Gui/GTComboBoxWithCheckBoxes.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.cpp \
             src/runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.cpp \
@@ -405,7 +406,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.cpp \
             src/runnables/ugene/plugins/enzymes/EditFragmentDialogFiller.cpp \
             src/runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.cpp \
-            src/runnables/ugene/plugins/enzymes/GTComboBoxWithCheckBoxes.cpp \
 #   Runnables / UGENE / plugins / external_tools
             src/runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.cpp \

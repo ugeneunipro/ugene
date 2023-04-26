@@ -48,6 +48,7 @@ public:
     static QList<SEnzymeData> getDefaultEnzymesList();
     static SEnzymeData findEnzymeById(const QString& id, const QList<SEnzymeData>& enzymes);
 
+    static const char* NOT_DEFINED_SIGN;
 private:
     static EnzymeFileFormat detectFileFormat(const QString& url);
     static QList<SEnzymeData> readBairochFile(const QString& url, IOAdapterFactory* iof, U2OpStatus& os);

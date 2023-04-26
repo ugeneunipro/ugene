@@ -46,12 +46,11 @@ void GTComboBoxWithCheckBoxes::selectItemByIndex(GUITestOpStatus& os, QComboBox*
     class MainThreadAction : public CustomScenario {
     public:
         MainThreadAction(QComboBox* comboBox, const QList<int>& indexes, GTGlobals::UseMethod method)
-            : CustomScenario(), comboBox(comboBox), indexes(indexes), method(method) {
+            : comboBox(comboBox), indexes(indexes), method(method) {
         }
 
         void run(HI::GUITestOpStatus& os) override {
             GTWidget::click(os, comboBox);
-            GTThread::waitForMainThread();
             QStandardItemModel* standartModel = qobject_cast<QStandardItemModel*>(comboBox->model());
             GT_CHECK(standartModel != nullptr, "QStandardItemModel* == nullptr");
 
@@ -72,11 +71,9 @@ void GTComboBoxWithCheckBoxes::selectItemByIndex(GUITestOpStatus& os, QComboBox*
                 {
                     if (state != expectedState) {
                         GTKeyboardDriver::keyClick(Qt::Key_Space);
-                        GTThread::waitForMainThread();
                     }
 
                     GTKeyboardDriver::keyClick(Qt::Key_Down);
-                    GTThread::waitForMainThread();
                     break;
                 }
                 case GTGlobals::UseMouse:

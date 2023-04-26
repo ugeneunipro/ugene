@@ -194,7 +194,7 @@
   <customwidget>
    <class>U2::ComboBoxWithCheckBoxes</class>
    <extends>QComboBox</extends>
-   <header>ComboBoxWithCheckBoxes.h</header>
+   <header location="global">U2Gui/ComboBoxWithCheckBoxes.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

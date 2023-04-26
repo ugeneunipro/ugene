@@ -102,7 +102,7 @@ public:
 
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
-    void sl_setEnzymesBySuppliers(QStringList checkedSuppliers);
+    void sl_handleSupplierSelectionChange(QStringList checkedSuppliers);
     void sl_updateSuppliers();
     void sl_selectAll();
     void sl_selectNone();

@@ -38,7 +38,11 @@
 
 #include <QRegularExpression>
 
+#include <U2Gui/ComboBoxWithCheckBoxes.h>
+
 namespace U2 {
+
+const char* EnzymesIO::NOT_DEFINED_SIGN = QT_TR_NOOP("Not defined");
 
 QString EnzymesIO::getFileDialogFilter() {
     return FileFilters::createFileFilter(tr("Bairoch format"), {"bairoch"});
@@ -140,6 +144,7 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
     QList<SEnzymeData> res;
 
     QSharedPointer<IOAdapter> io(iof->createIOAdapter(), [](IOAdapter* ioAdapter) {
+        // @IOAdapter should be closed before it's deleted
         ioAdapter->close();
         ioAdapter->deleteLater();
     });
@@ -155,7 +160,7 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
     int line = 0;
     int len = 0;
     bool lineOk = true;
-    QMap<char, QString> commercialSources;
+    QHash<char, QString> commercialSources;
     while ((len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0 && !os.isCanceled()) {
         line++;
         if (!lineOk) {
@@ -176,13 +181,15 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
         }
         CHECK_CONTINUE(len >= 4);
 
-        if (buff[0] == 'C' && buff[1] == 'C' && buff[6] == '=') {
-            char abbreviation = buff[5];
-            QByteArray supplier = QByteArray(buff + 7, len - 7).trimmed();
-            auto supplierSplit = supplier.split(' ');
-            supplierSplit.pop_back();
-            supplier = supplierSplit.join(' ');
-            commercialSources.insert(abbreviation, supplier);
+        if (buff[0] == 'C' && buff[1] == 'C') {
+            if (len > 5 && buff[6] == '=') {
+                char abbreviation = buff[5];
+                QByteArray supplier = QByteArray(buff + 7, len - 7).trimmed();
+                auto supplierSplit = supplier.split(' ');
+                supplierSplit.pop_back();
+                supplier = supplierSplit.join(' ');
+                commercialSources.insert(abbreviation, supplier);
+            }
         } else if (buff[0] == 'I' && buff[1] == 'D') {
             currentData->id = QByteArray(buff + 3, len - 3).trimmed();
         } else if (buff[0] == 'E' && buff[1] == 'T') {
@@ -231,7 +238,7 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
                 currentData->suppliers << commercialSources.value(abb);
             }
             if (currentData->suppliers.isEmpty()) {
-                currentData->suppliers << tr("Not defined");
+                currentData->suppliers << tr(NOT_DEFINED_SIGN);
             }
         }
     }

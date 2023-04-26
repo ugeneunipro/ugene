@@ -39,6 +39,7 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Gui/ComboBoxWithCheckBoxes.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -48,7 +49,6 @@
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AutoAnnotationUtils.h>
 
-#include "ComboBoxWithCheckBoxes.h"
 #include "EnzymesIO.h"
 #include "FindEnzymesTask.h"
 
@@ -156,7 +156,15 @@ void EnzymesSelectorWidget::calculateSuppliers() {
             loadedSuppliers << supplier;
         }
     }
-    std::sort(loadedSuppliers.begin(), loadedSuppliers.end());
+    std::sort(loadedSuppliers.begin(), loadedSuppliers.end(), [](const QString& first, const QString& second) {
+        static const QString sign = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+        if (first == sign) {
+            return true;
+        } else if (second == sign) {
+            return false;
+        }
+        return first < second;
+    });
 }
 
 void EnzymesSelectorWidget::loadFile(const QString& url) {
@@ -190,6 +198,7 @@ void EnzymesSelectorWidget::loadFile(const QString& url) {
     }
 
     setEnzymesList(loadedEnzymes);
+    emit si_newEnzimeFileLoaded();
 }
 
 void EnzymesSelectorWidget::saveFile(const QString& url) {
@@ -222,10 +231,6 @@ void EnzymesSelectorWidget::saveFile(const QString& url) {
     }
     if (QMessageBox::question(this, tr("New enzymes database has been saved."), tr("Do you want to work with new database?"), QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
         loadFile(url);
-        if (!loadedEnzymes.isEmpty()) {
-            setEnzymesList(loadedEnzymes);
-            emit si_newEnzimeFileLoaded();
-        }
     }
 }
 
@@ -570,7 +575,7 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     enzymesSelectorWidget->setLayout(vl);
     enzymesSelectorWidget->setMinimumSize(enzSel->size());
 
-    connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_setEnzymesBySuppliers);
+    connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_handleSupplierSelectionChange);
     connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateSuppliers);
     sl_updateSuppliers();
 
@@ -635,7 +640,7 @@ void FindEnzymesDialog::accept() {
     QDialog::accept();
 }
 
-void FindEnzymesDialog::sl_setEnzymesBySuppliers(QStringList checkedSuppliers) {
+void FindEnzymesDialog::sl_handleSupplierSelectionChange(QStringList checkedSuppliers) {
     const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
     QList<SEnzymeData> visibleEnzymes;
     for (const auto& enzyme : qAsConst(enzymes)) {
@@ -648,21 +653,19 @@ void FindEnzymesDialog::sl_setEnzymesBySuppliers(QStringList checkedSuppliers) {
         }
     }
     enzSel->setEnzymesList(visibleEnzymes);
-    AppContext::getSettings()->setValue(EnzymeSettings::CHECKED_SUPPLIERS, checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR));
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR).replace(notDefinedTr, EnzymesIO::NOT_DEFINED_SIGN);
+    AppContext::getSettings()->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
 }
 
 void FindEnzymesDialog::sl_updateSuppliers() {
     const auto& loadedSuppliers = EnzymesSelectorWidget::getLoadedSuppliers();
     cbSuppliers->clear();
-    for (const auto& supplier : qAsConst(loadedSuppliers)) {
-        cbSuppliers->addItem(supplier);
-    }
+    cbSuppliers->addItems(loadedSuppliers);
     QString selStr = AppContext::getSettings()->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
-    if (selStr.isEmpty()) {
-        cbSuppliers->setCheckedItems(loadedSuppliers);
-    } else {
-        cbSuppliers->setCheckedItems(selStr.split(SUPPLIERS_LIST_SEPARATOR));
-    }
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+    selStr = selStr.replace(EnzymesIO::NOT_DEFINED_SIGN, notDefinedTr);
+    cbSuppliers->setCheckedItems(selStr.isEmpty() ? loadedSuppliers : selStr.split(SUPPLIERS_LIST_SEPARATOR));
 }
 
 

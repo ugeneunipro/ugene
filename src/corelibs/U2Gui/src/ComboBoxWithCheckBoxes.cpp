@@ -60,10 +60,7 @@ void ComboBoxWithCheckBoxes::setCheckedItems(const QStringList &items) {
         QStandardItem* currentItem = standartModel->item(i);
         SAFE_POINT(currentItem != nullptr, L10N::nullPointerError("QStandardItem"), );
 
-        Qt::CheckState newState = Qt::Unchecked;
-        if (checkedIndexes.contains(i)) {
-            newState = Qt::Checked;
-        }
+        Qt::CheckState newState = checkedIndexes.contains(i) ? Qt::Checked : Qt::Unchecked;
 
         auto item = standartModel->item(i);
         auto checkStateRole = static_cast<Qt::CheckState>(item->data(Qt::CheckStateRole).toInt());
@@ -132,7 +129,7 @@ void ComboBoxWithCheckBoxes::updateOnCheckedItemsChange() {
     }
 
     updateDisplayText();
-    repaint();
+    update();
 
     emit si_checkedChanged(checkedItems);
 }
