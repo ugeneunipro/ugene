@@ -24,6 +24,7 @@
 
 #include <U2Core/AppResources.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
 
 #include <U2Formats/BgzipTask.h>
@@ -38,6 +39,7 @@ BowtieBuildTask::BowtieBuildTask(const QString& referencePath, const QString& in
     : ExternalToolSupportTask("Bowtie build", TaskFlags_NR_FOSCOE),
       referencePath(referencePath),
       indexPath(indexPath) {
+    GCOUNTER(cvar, "ExternalTool_Bowtie");
 }
 
 void BowtieBuildTask::prepare() {
@@ -127,6 +129,7 @@ BowtieAlignTask::BowtieAlignTask(const DnaAssemblyToRefTaskSettings& settings)
     : ExternalToolSupportTask("Bowtie align", TaskFlags_NR_FOSCOE),
       logParser(nullptr),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_Bowtie");
 }
 
 bool BowtieAlignTask::hasResult() const {

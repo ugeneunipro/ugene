@@ -174,7 +174,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
 
             QVariantMap hints;
             hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-            if (Q_UNLIKELY(merge && nullptr == mergedAnnotations)) {
+            if (Q_UNLIKELY(merge && mergedAnnotations == nullptr)) {
                 mergedAnnotations.reset(new AnnotationTableObject(annotationName, dbiRef, hints));
             }
             annotationsObject = merge ? mergedAnnotations.data() : new AnnotationTableObject(annotationName, dbiRef, hints);
@@ -286,7 +286,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     objects << so;
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, contigs, mergedMapping, fs);
     AnnotationTableObject* mergedAnnotationsPtr = mergedAnnotations.take();
-    if (nullptr != mergedAnnotationsPtr) {
+    if (mergedAnnotationsPtr != nullptr) {
         sequenceRef.entityRef = U2EntityRef(dbiRef, u2seq.id);
         mergedAnnotationsPtr->addObjectRelation(GObjectRelation(sequenceRef, ObjectRole_Sequence));
         objects.append(mergedAnnotationsPtr);

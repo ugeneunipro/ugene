@@ -218,14 +218,14 @@ QMenu* ToolsMenu::getToolsMenu() {
 
 QMenu* ToolsMenu::getMenu(const QString& menuName) {
     QMenu* tools = getToolsMenu();
-    CHECK(nullptr != tools, nullptr);
+    CHECK(tools != nullptr, nullptr);
 
     if (TOOLS == menuName) {
         return tools;
     }
 
     QMenu* subMenu = tools->findChild<QMenu*>(menuName);
-    if (nullptr == subMenu) {
+    if (subMenu == nullptr) {
         subMenu = createMenu(tools, menuName);
     }
     return subMenu;
@@ -255,7 +255,7 @@ QAction* findAction(const QMenu* menu, const QString& actionName) {
     return nullptr;
 }
 QAction* getSeparator(const QMenu* menu, QAction* action1, QAction* action2) {
-    bool foundAction1 = (nullptr == action1);
+    bool foundAction1 = (action1 == nullptr);
     foreach (QAction* action, menu->actions()) {
         if (action1 == action) {
             foundAction1 = true;
@@ -294,7 +294,7 @@ QAction* ToolsMenu::getPrevAction(QMenu* menu, const QString& menuName, const QS
 
     for (int i = pos - 1; i >= 0; i--) {
         QAction* action = findAction(menu, actionNames[i]);
-        if (nullptr != action) {
+        if (action != nullptr) {
             return action;
         }
     }
@@ -309,7 +309,7 @@ QAction* ToolsMenu::getNextAction(QMenu* menu, const QString& menuName, const QS
 
     for (int i = pos + 1; i < actionNames.size(); i++) {
         QAction* action = findAction(menu, actionNames[i]);
-        if (nullptr != action) {
+        if (action != nullptr) {
             return action;
         }
     }
@@ -322,10 +322,10 @@ void ToolsMenu::insertAction(QMenu* menu, const QString& menuName, QAction* acti
     QAction* next = getNextAction(menu, menuName, action->objectName());
     QAction* sep = getSeparator(menu, prev, next);
 
-    QString prevName = (nullptr == prev) ? "" : prev->objectName();
-    QString nextName = (nullptr == next) ? "" : next->objectName();
+    QString prevName = (prev == nullptr) ? "" : prev->objectName();
+    QString nextName = (next == nullptr) ? "" : next->objectName();
 
-    if (nullptr == sep) {
+    if (sep == nullptr) {
         if (mustHaveSeparator(menuName, action->objectName(), nextName)) {
             QAction* nextSep = menu->insertSeparator(next);
             menu->insertAction(nextSep, action);
@@ -350,7 +350,7 @@ void ToolsMenu::insertAction(QMenu* menu, const QString& menuName, QAction* acti
 
 void ToolsMenu::addAction(const QString& menuName, QAction* action) {
     QMenu* menu = getMenu(menuName);
-    SAFE_POINT(nullptr != menu, "Can not find menu " + menuName, );
+    SAFE_POINT(menu != nullptr, "Can not find menu " + menuName, );
     insertAction(menu, menuName, action);
 }
 

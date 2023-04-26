@@ -30,10 +30,10 @@ class BaseSettingsDialog : public QDialog {
 public:
     BaseSettingsDialog(QWidget* parent);
 
-    const OptionsMap& getSettings() const;
+    const QMap<TreeViewOption, QVariant>& getSettings() const;
 
 protected:
-    OptionsMap updatedSettings;
+    QMap<TreeViewOption, QVariant> updatedSettings;
 };
 
 }  // namespace U2

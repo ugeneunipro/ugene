@@ -239,7 +239,7 @@ void HRSchemaSerializer::parseIncludes(Tokenizer& tokenizer, QList<QString> incl
         if ("etc" == ext) {
             includeType = EXTERNAL_TOOL;
             cfg = string2Actor(rawData);
-            if (nullptr == cfg) {
+            if (cfg == nullptr) {
                 throw ReadFailed(tr("File '%1' contains mistakes").arg(path));
             }
             if (includeAs) {
@@ -260,7 +260,7 @@ void HRSchemaSerializer::parseIncludes(Tokenizer& tokenizer, QList<QString> incl
             schema = new Schema();
             QMap<ActorId, ActorId> procMap;
             error = string2Schema(rawData, schema, nullptr, &procMap, newUrlList);
-            if (nullptr != schema && error.isEmpty()) {
+            if (schema != nullptr && error.isEmpty()) {
                 if (includeAs) {
                     schema->setTypeName(actorId);
                 } else {
@@ -272,13 +272,13 @@ void HRSchemaSerializer::parseIncludes(Tokenizer& tokenizer, QList<QString> incl
     } else if (rawData.startsWith(Constants::OLD_XML_HEADER)) {
         includeType = SCRIPT;
         proto = ScriptWorkerSerializer::string2actor(rawData, actorId, error, path);
-        if (!includeAs && nullptr != proto) {
+        if (!includeAs && proto != nullptr) {
             actorId = proto->getDisplayName();
         }
     } else {
         throw ReadFailed(tr("Unknown file format: '%1'").arg(path));
     }
-    if (nullptr == proto || !error.isEmpty()) {
+    if (proto == nullptr || !error.isEmpty()) {
         throw ReadFailed(QString("Included element \"%1\" contains a error: %2").arg(path).arg(error));
     }
 
@@ -322,7 +322,7 @@ void HRSchemaSerializer::deprecatedUrlAttribute(Actor* proc, const QString& urls
         dSet.addUrl(new FileUrlContainer(url));
     }
     Attribute* a = proc->getParameter(BaseAttributes::URL_IN_ATTRIBUTE().getId());
-    if (nullptr != a) {
+    if (a != nullptr) {
         QList<Dataset> sets;
         sets << dSet;
         a->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
@@ -535,7 +535,7 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer& tokenizer, const Q
 
     foreach (const QString& key, pairs.blockPairs.uniqueKeys()) {
         Attribute* a = proc->getParameter(key);
-        if (nullptr == a) {
+        if (a == nullptr) {
             continue;
         }
         if (GROUPER_SLOT_GROUP == a->getGroup()) {
@@ -562,7 +562,7 @@ Actor* HRSchemaSerializer::parseElementsDefinition(Tokenizer& tokenizer, const Q
             }
         }
 
-        if (nullptr != attr) {
+        if (attr != nullptr) {
             attr->setAttributeValue(getAttrValue(proc, key, value));
         } else {
             coreLog.details(tr("Unexpected actor attribute: %1").arg(key));
@@ -864,7 +864,7 @@ void parseAndCheckParameterAlias(const QString& paramString, const QMap<QString,
 
     paramId = HRSchemaSerializer::parseAt(paramString, 1);
     Attribute* attr = actor->getParameter(paramId);
-    if (nullptr == attr) {
+    if (attr == nullptr) {
         throw ReadFailed(
             HRSchemaSerializer::tr("%1 parameter is undefined: at \"%2\" in aliases block").arg(paramId).arg(paramString));
     }
@@ -960,7 +960,7 @@ void parseAndCheckPortAlias(const QString& portString, const QMap<QString, Actor
 
     portId = HRSchemaSerializer::parseAt(portString, 1);
     Port* port = actor->getPort(portId);
-    if (nullptr == port) {
+    if (port == nullptr) {
         throw ReadFailed(
             HRSchemaSerializer::tr("%1 port is undefined: at \"%2\" in aliases block").arg(portId).arg(portString));
     }
@@ -1067,7 +1067,7 @@ static void parseMeta(WorkflowSchemaReaderData& data) {
             data.tokenizer.assertToken(Constants::BLOCK_END);
         } else if (Constants::VISUAL_START == tok) {
             data.tokenizer.assertToken(Constants::BLOCK_START);
-            if (nullptr == data.meta) {
+            if (data.meta == nullptr) {
                 ParsedPairs::skipBlock(data.tokenizer);
             } else {
                 HRVisualParser vp(data);
@@ -1097,7 +1097,7 @@ static void parseMeta(WorkflowSchemaReaderData& data) {
         } else if (Constants::ESTIMATIONS == tok) {
             data.tokenizer.assertToken(Constants::BLOCK_START);
             QString code = data.tokenizer.take();
-            if (nullptr != data.meta) {
+            if (data.meta != nullptr) {
                 data.meta->estimationsCode = code;
             }
             data.tokenizer.assertToken(Constants::BLOCK_END);
@@ -1153,9 +1153,9 @@ static void parseBody(WorkflowSchemaReaderData& data) {
 
     foreach (Actor* proc, data.actorMap.values()) {
         ActorPrototype* proto = proc->getProto();
-        if (nullptr != proto->getEditor()) {
+        if (proto->getEditor() != nullptr) {
             auto actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
-            if (nullptr != actorEd) {
+            if (actorEd != nullptr) {
                 auto editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);
@@ -1437,7 +1437,7 @@ QString HRSchemaSerializer::grouperOutSlotsDefinition(Attribute* attribute) {
         mRes += makeEqualsPair(Constants::IN_SLOT, slot.getInSlotStr(), 3);
 
         GrouperSlotAction* const action = slot.getAction();
-        if (nullptr != action) {
+        if (action != nullptr) {
             QString actionBlock;
             actionBlock += makeEqualsPair(Constants::TYPE_ATTR, action->getType(), 4);
             QList<QString> parameters = action->getParameters().keys();
@@ -1828,7 +1828,7 @@ static QString itemsMetaData(const QList<Actor*>& actors, const Metadata* meta, 
         res += HRSchemaSerializer::makeBlock(Constants::PARAM_ALIASES_START, Constants::NO_NAME, HRSchemaSerializer::schemaParameterAliases(actors, nmap), 2);
     }
 
-    if (nullptr != meta) {
+    if (meta != nullptr) {
         HRVisualSerializer vs(*meta, nmap);
         res += vs.serialize(2);
     }
@@ -1840,11 +1840,11 @@ static QString metaData(const Schema& schema, const Metadata* meta, const HRSche
 
     res += itemsMetaData(schema.getProcesses(), meta, nmap);
 
-    if (nullptr != meta && !meta->estimationsCode.isEmpty()) {
+    if (meta != nullptr && !meta->estimationsCode.isEmpty()) {
         res += HRSchemaSerializer::makeBlock(Constants::ESTIMATIONS, Constants::NO_NAME, meta->estimationsCode + Constants::NEW_LINE, 2);
     }
 
-    if (nullptr == meta) {
+    if (meta == nullptr) {
         res += HRSchemaSerializer::makeBlock(Constants::VISUAL_START, Constants::NO_NAME, visualData(schema, nmap), 2);
     }
 
@@ -2053,7 +2053,7 @@ Actor* HRSchemaSerializer::deprecatedActorsReplacer(const QString& id, const QSt
 
 void HRSchemaSerializer::parseMarkers(Actor* proc, const QStringList& markerDefs, const QString& attrId) {
     auto attr = dynamic_cast<MarkerAttribute*>(proc->getParameter(attrId));
-    if (nullptr == attr) {
+    if (attr == nullptr) {
         throw ReadFailed(tr("%1 actor has not marker attribute").arg(proc->getId()));
     }
 
@@ -2063,7 +2063,7 @@ void HRSchemaSerializer::parseMarkers(Actor* proc, const QStringList& markerDefs
 
     foreach (const QString& def, markerDefs) {
         Marker* marker = parseMarker(def);
-        SAFE_POINT_EXT(nullptr != marker, throw ReadFailed("NULL marker"), );
+        SAFE_POINT_EXT(marker != nullptr, throw ReadFailed("NULL marker"), );
 
         Descriptor newSlot = MarkerSlots::getSlotByMarkerType(marker->getType(), marker->getName());
         outTypeMap[newSlot] = BaseTypes::STRING_TYPE();
@@ -2113,7 +2113,7 @@ Marker* HRSchemaSerializer::parseMarker(const QString& def) {
 
 QString HRSchemaSerializer::markersDefinition(Attribute* attribute) {
     auto mAttr = dynamic_cast<MarkerAttribute*>(attribute);
-    SAFE_POINT(nullptr != mAttr, "NULL marker attribute", "");
+    SAFE_POINT(mAttr != nullptr, "NULL marker attribute", "");
     QString res;
 
     foreach (Marker* marker, mAttr->getMarkers()) {

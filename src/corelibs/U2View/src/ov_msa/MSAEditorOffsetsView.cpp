@@ -58,7 +58,7 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt* maEd
     connect(editor, SIGNAL(si_fontChanged(const QFont&)), SLOT(sl_updateOffsets()));
 
     MultipleAlignmentObject* mobj = editor->getMaObject();
-    SAFE_POINT(nullptr != mobj, L10N::nullPointerError("multiple alignment object"), );
+    SAFE_POINT(mobj != nullptr, L10N::nullPointerError("multiple alignment object"), );
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_updateOffsets()));
 
     seqArea->installEventFilter(this);
@@ -194,7 +194,10 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     int alignmentLength = editor->getMaObject()->getLength();
     int lbw = fm.width('[');
     int rbw = fm.width(']');
-    int pos = showStartPos ? ui->getScrollController()->getFirstVisibleBase(true) : ui->getScrollController()->getLastVisibleBase(seqArea->width(), true);
+    ScrollController* scrollController = ui->getScrollController();
+    int pos = showStartPos
+                  ? scrollController->getFirstVisibleBase(true)
+                  : scrollController->getLastVisibleBase(seqArea->width(), true);
 
     QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 

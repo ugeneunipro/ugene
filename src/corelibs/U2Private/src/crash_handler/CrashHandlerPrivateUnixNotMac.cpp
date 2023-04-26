@@ -80,7 +80,7 @@ void CrashHandlerPrivateUnixNotMac::storeStackTrace() {
     char name_buf[512];
     name_buf[readlink(path.toLatin1().data(), name_buf, 511)] = 0;
     FILE* fp = fopen(STACKTRACE_FILE_PATH.toLocal8Bit().constData(), "w+");
-    stacktraceFileSucessfullyCreated = (nullptr != fp);
+    stacktraceFileSucessfullyCreated = (fp != nullptr);
     void* stackTrace[1024];
     int frames = backtrace(stackTrace, 1024);
     backtrace_symbols_fd(stackTrace, frames, fileno(fp));
@@ -141,7 +141,7 @@ bool CrashHandlerPrivateUnixNotMac::crashContextCallback(const void* crash_conte
 
 QString CrashHandlerPrivateUnixNotMac::getExceptionText(const google_breakpad::ExceptionHandler::CrashContext* crashContext) {
     QString exceptionText = "Unhandled exception";
-    CHECK(nullptr != crashContext, "C++ exception|" + exceptionText);
+    CHECK(crashContext != nullptr, "C++ exception|" + exceptionText);
 
     switch (crashContext->siginfo.si_signo) {
         case SIGBUS:

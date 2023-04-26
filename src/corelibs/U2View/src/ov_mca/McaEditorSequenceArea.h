@@ -85,7 +85,7 @@ private slots:
     void sl_showAllTraces();
     void sl_setRenderAreaHeight(int k);
 
-    void sl_buildStaticToolbar(GObjectView* v, QToolBar* t);
+    void sl_buildStaticToolbar(GObjectViewController* v, QToolBar* t);
 
     void sl_addInsertion();
     void sl_removeGapBeforeSelection();

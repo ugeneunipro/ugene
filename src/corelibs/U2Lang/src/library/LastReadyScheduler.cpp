@@ -65,12 +65,12 @@ bool LastReadyScheduler::isReady() const {
 }
 
 inline ActorId LastReadyScheduler::actorId() const {
-    CHECK(nullptr != lastWorker, "");
+    CHECK(lastWorker != nullptr, "");
     return lastWorker->getActor()->getId();
 }
 
 inline bool LastReadyScheduler::hasValidFinishedTask() const {
-    return (nullptr != lastWorker) && (nullptr != lastTask) && (lastTask->isFinished());
+    return (lastWorker != nullptr) && (lastTask != nullptr) && (lastTask->isFinished());
 }
 
 inline qint64 LastReadyScheduler::lastTaskTimeSec() const {
@@ -197,7 +197,7 @@ WorkerState LastReadyScheduler::getWorkerState(const ActorId& id) {
 }
 
 bool LastReadyScheduler::cancelCurrentTaskIfAllowed() {
-    if (nullptr == lastTask) {
+    if (lastTask == nullptr) {
         return false;
     }
     if (!lastTask->isFinished() && canLastTaskBeCanceled) {

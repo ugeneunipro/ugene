@@ -69,9 +69,9 @@ void GObject::setGObjectName(const QString& newName) {
         U2OpStatus2Log os;
         DbiConnection con(entityRef.dbiRef, os);
         CHECK_OP(os, );
-        CHECK(nullptr != con.dbi, );
+        CHECK(con.dbi != nullptr, );
         U2ObjectDbi* oDbi = con.dbi->getObjectDbi();
-        CHECK(nullptr != oDbi, );
+        CHECK(oDbi != nullptr, );
 
         oDbi->renameObject(entityRef.entityId, newName, os);
         CHECK_OP(os, );

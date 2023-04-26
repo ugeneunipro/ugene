@@ -37,9 +37,9 @@ U2ErrorType getActorPrototype(const QString& elementType,
                               U2::Workflow::ActorPrototype** outProto) {
     *outProto = nullptr;
     U2::Workflow::ActorPrototypeRegistry* prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
-    CHECK(nullptr != prototypeRegistry, U2_INVALID_CALL);
+    CHECK(prototypeRegistry != nullptr, U2_INVALID_CALL);
     U2::Workflow::ActorPrototype* prototype = prototypeRegistry->getProto(elementType);
-    CHECK(nullptr != prototype, U2_UNKNOWN_ELEMENT);
+    CHECK(prototype != nullptr, U2_UNKNOWN_ELEMENT);
     *outProto = prototype;
     return U2_OK;
 }
@@ -74,7 +74,7 @@ U2ErrorType WorkflowElementFacade::getElementNameByType(const QString& type, QSt
 U2ErrorType WorkflowElementFacade::doesElementTypeExist(const QString& type, bool* exists) {
     Workflow::ActorPrototype* prototype = nullptr;
     U2ErrorType result = getActorPrototype(type, &prototype);
-    *exists = (nullptr != prototype);
+    *exists = (prototype != nullptr);
     return result;
 }
 
@@ -85,7 +85,7 @@ U2ErrorType WorkflowElementFacade::doesElementHaveParameter(const QString& eleme
     *has = false;
     Workflow::ActorPrototype* prototype = nullptr;
     CHECK(U2_OK == (result = getActorPrototype(elementType, &prototype)), result);
-    *has = (nullptr != prototype->getAttribute(parameterName));
+    *has = (prototype->getAttribute(parameterName) != nullptr);
     if (!(*has)) {
         return U2_INVALID_NAME;
     }
@@ -206,7 +206,7 @@ U2ErrorType WorkflowElementFacade::getWriteElementTypeForSlot(const QString& slo
         while (currElement != currGroup.end()) {
             QList<PortDescriptor*> currPorts = (*currElement)->getPortDesciptors();
             Workflow::PortDescriptor* port = currPorts.isEmpty() ? nullptr : currPorts.first();
-            if (nullptr != port && port->isInput()) {
+            if (port != nullptr && port->isInput()) {
                 QList<Descriptor> slotList = port->getOwnTypeMap().keys();
                 foreach (Descriptor slotDescriptor, slotList) {
                     if (slotDescriptor.getId() == slotId) {

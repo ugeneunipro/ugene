@@ -31,7 +31,7 @@ namespace U2 {
 class TextSettingsDialog : public BaseSettingsDialog, public Ui_TextSettingsDialog {
     Q_OBJECT
 public:
-    TextSettingsDialog(QWidget* parent, const OptionsMap& settings);
+    TextSettingsDialog(QWidget* parent, const QMap<TreeViewOption, QVariant>& settings);
 
     void accept() override;
 

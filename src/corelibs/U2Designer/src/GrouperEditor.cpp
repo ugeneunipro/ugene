@@ -47,7 +47,7 @@ QWidget* GrouperEditor::getWidget() {
 }
 
 QWidget* GrouperEditor::createGUI() {
-    if (nullptr == grouperModel) {
+    if (grouperModel == nullptr) {
         return nullptr;
     }
 
@@ -65,7 +65,7 @@ void GrouperEditor::setConfiguration(Actor* actor) {
     foreach (QString key, attrs.keys()) {
         Attribute* attr = attrs.value(key);
         if (GROUPER_SLOT_GROUP == attr->getGroup()) {
-            if (nullptr != gAttr) {
+            if (gAttr != nullptr) {
                 assert(0);
                 gAttr = nullptr;
                 break;
@@ -74,7 +74,7 @@ void GrouperEditor::setConfiguration(Actor* actor) {
         }
     }
 
-    if (nullptr == gAttr) {
+    if (gAttr == nullptr) {
         return;
     }
 

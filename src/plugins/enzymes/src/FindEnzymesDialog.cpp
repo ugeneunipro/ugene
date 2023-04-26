@@ -240,6 +240,22 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     loadedEnzymes = enzymes;
 }
 
+int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesListString) const {
+    int checked = 0;
+    QStringList checkedNamesList;
+    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        checked += gi->checkedEnzymes.size();
+        foreach(const EnzymeTreeItem * ci, gi->checkedEnzymes) {
+            checkedNamesList.append(ci->enzyme->id);
+        }
+    }
+    checkedNamesList.sort();
+    checkedNamesListString = checkedNamesList.join(",");
+
+    return checked;
+}
+
 EnzymeGroupTreeItem* EnzymesSelectorWidget::findGroupItem(const QString& s, bool create) {
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
@@ -274,17 +290,13 @@ void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
 }
 
 void EnzymesSelectorWidget::updateStatus() {
-    int nChecked = 0;
-    QStringList checkedNamesList;
-    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
-        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
-        nChecked += gi->checkedEnzymes.size();
-        foreach (const EnzymeTreeItem* ci, gi->checkedEnzymes) {
-            checkedNamesList.append(ci->enzyme->id);
-        }
+    QString checkedNamesListString;
+    int nChecked = gatherCheckedNamesListString(checkedNamesListString);
+    if (nChecked > 1000) {
+        checkedEnzymesEdit->setPlainText(tr("%1 sites selected. Click \"Save selection\" to export them to the separate file").arg(nChecked));
+    } else {
+        checkedEnzymesEdit->setPlainText(checkedNamesListString);
     }
-    checkedNamesList.sort();
-    checkedEnzymesEdit->setPlainText(checkedNamesList.join(","));
 
     emit si_selectionModified(totalEnzymes, nChecked);
 }
@@ -364,7 +376,8 @@ void EnzymesSelectorWidget::sl_inverseSelection() {
 }
 
 void EnzymesSelectorWidget::sl_saveSelectionToFile() {
-    QString selectionData = checkedEnzymesEdit->toPlainText();
+    QString selectionData;
+    gatherCheckedNamesListString(selectionData);
 
     if (selectionData.size() == 0) {
         QMessageBox::warning(this, tr("Save selection"), tr("Can not save empty selection!"));
@@ -565,10 +578,8 @@ void FindEnzymesDialog::accept() {
 
     if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(advSequenceContext->getSequenceLength(), selectedEnzymes.size())) {
         QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
-        int ret = QMessageBox::question(this, tr("Warning!"), message, QMessageBox::Cancel | QMessageBox::Ignore);
-        if (ret == QMessageBox::Cancel) {
-            return;
-        }
+        QMessageBox::critical(this, tr("Error!"), message, QMessageBox::Ok);
+        return;
     }
 
     saveSettings();

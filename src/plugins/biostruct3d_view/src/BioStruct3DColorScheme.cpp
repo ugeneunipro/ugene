@@ -160,11 +160,11 @@ ChemicalElemColorScheme::ChemicalElemColorScheme(const BioStruct3DObject* biostr
 const QMap<int, QColor> ChainsColorScheme::getChainColors(const BioStruct3DObject* biostructObj) {
     QMap<int, QColor> colorMap;
 
-    if (nullptr != biostructObj->getDocument()) {
+    if (biostructObj->getDocument() != nullptr) {
         QList<GObject*> aObjs = GObjectUtils::selectRelationsFromParentDoc(biostructObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_AnnotationTable);
         for (GObject* obj : qAsConst(aObjs)) {
             auto ao = qobject_cast<AnnotationTableObject*>(obj);
-            SAFE_POINT(nullptr != ao, "Invalid annotation table!", colorMap);
+            SAFE_POINT(ao != nullptr, "Invalid annotation table!", colorMap);
 
             foreach (Annotation* a, ao->getAnnotationsByName(BioStruct3D::MoleculeAnnotationTag)) {
                 const QString chainQualifier = a->findFirstQualifierValue(BioStruct3D::ChainIdQualifierName);

@@ -117,7 +117,7 @@ void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS* exinfo) {
 
 QString CrashHandlerPrivateWin::getExceptionText(EXCEPTION_POINTERS* exinfo) {
     QString exceptionText = "Unhandled exception";
-    CHECK(nullptr != exinfo, "C++ exception|" + exceptionText);
+    CHECK(exinfo != nullptr, "C++ exception|" + exceptionText);
 
     switch (exinfo->ExceptionRecord->ExceptionCode) {
         case EXCEPTION_ACCESS_VIOLATION:

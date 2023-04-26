@@ -30,7 +30,7 @@ class U2VIEW_EXPORT SeqStatisticsWidgetFactory : public OPWidgetFactory {
 public:
     SeqStatisticsWidgetFactory();
 
-    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+    QWidget* createWidget(GObjectViewController* objView, const QVariantMap& options) override;
 
     OPGroupParameters getOPGroupParameters() override;
 

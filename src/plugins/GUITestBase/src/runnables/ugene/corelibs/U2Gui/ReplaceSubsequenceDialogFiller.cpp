@@ -62,7 +62,7 @@ void ReplaceSubsequenceDialogFiller::commonScenario() {
     // GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep();
-    GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
+    GTPlainTextEdit::setText(os, plainText, pasteDataHere);
 
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
     if (expectAlphabetChanged) {

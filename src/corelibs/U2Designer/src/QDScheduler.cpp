@@ -155,10 +155,10 @@ QDResultLinker::QDResultLinker(QDScheduler* _sched)
     : scheme(_sched->getSettings().scheme), sched(_sched), cancelled(false), currentStep(nullptr),
       needInit(true), maxMemorySizeInMB(-1) {
     const AppSettings* appSettings = AppContext::getAppSettings();
-    SAFE_POINT_EXT(nullptr != appSettings, taskLog.error("Invalid applications settings detected"), );
+    SAFE_POINT_EXT(appSettings != nullptr, taskLog.error("Invalid applications settings detected"), );
 
     AppResourcePool* appResourcePool = appSettings->getAppResourcePool();
-    SAFE_POINT_EXT(nullptr != appResourcePool, taskLog.error("Invalid users applications settings detected"), );
+    SAFE_POINT_EXT(appResourcePool != nullptr, taskLog.error("Invalid users applications settings detected"), );
     maxMemorySizeInMB = AppContext::getAppSettings()->getAppResourcePool()->getMaxMemorySizeInMB();
 }
 
@@ -634,7 +634,7 @@ void QDResultLinker::createMergedAnnotations(const QString& groupPrefix) {
 void QDResultLinker::pushToTable() {
     const QDRunSettings& settings = sched->getSettings();
     AnnotationTableObject* ao = settings.annotationsObj;
-    SAFE_POINT(nullptr != ao, "Invalid annotation table detected!", );
+    SAFE_POINT(ao != nullptr, "Invalid annotation table detected!", );
 
     AnnotationGroup* root = ao->getRootGroup();
     if (!settings.groupName.isEmpty()) {

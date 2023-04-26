@@ -30,7 +30,7 @@ namespace U2 {
 
 MultiClickMenu::MultiClickMenu(QMenu* menu)
     : QObject(menu), menu(menu) {
-    CHECK(nullptr != menu, );
+    CHECK(menu != nullptr, );
     menu->installEventFilter(this);
 }
 
@@ -39,7 +39,7 @@ bool MultiClickMenu::eventFilter(QObject* watched, QEvent* event) {
     CHECK(isSelectEvent(event), false);
 
     QAction* action = menu->activeAction();
-    CHECK(nullptr != action, false);
+    CHECK(action != nullptr, false);
 
     if (action->isEnabled()) {
         action->trigger();
@@ -54,7 +54,7 @@ bool MultiClickMenu::isSelectEvent(QEvent* event) {
     }
     if (event->type() == QEvent::KeyPress) {
         auto keyEvent = dynamic_cast<QKeyEvent*>(event);
-        CHECK(nullptr != keyEvent, false);
+        CHECK(keyEvent != nullptr, false);
         return (keyEvent->key() == Qt::Key_Enter) || (keyEvent->key() == Qt::Key_Return);
     }
     return false;

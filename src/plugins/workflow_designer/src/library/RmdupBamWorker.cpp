@@ -22,6 +22,7 @@
 #include "RmdupBamWorker.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
@@ -278,6 +279,7 @@ const QString SamtoolsRmdupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
 SamtoolsRmdupTask::SamtoolsRmdupTask(const BamRmdupSetting& settings)
     : ExternalToolSupportTask(tr("Samtool rmdup for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)), settings(settings), resultUrl("") {
+    GCOUNTER(cvar, "ExternalTool_Samtools");
 }
 
 void SamtoolsRmdupTask::prepare() {

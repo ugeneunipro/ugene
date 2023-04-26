@@ -22,6 +22,7 @@
 #include "BwaSupport.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 namespace U2 {
 
@@ -48,6 +49,11 @@ BwaSupport::BwaSupport()
                      "against a long reference sequence such as the human genome.");
     versionRegExp = QRegExp("Version: (\\d+\\.\\d+\\.\\d+-r\\d+)");
     toolKitName = "BWA";
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinIndexPath;
+    }
 }
 
 }  // namespace U2

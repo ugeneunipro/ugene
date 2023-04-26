@@ -115,13 +115,16 @@ void ImportPrimersDialog::sl_selectionChanged() {
 }
 
 void ImportPrimersDialog::sl_contentChanged() {
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(lwFiles->count() > 0);
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(lwFiles->count() > 0 || lwObjects->count() > 0);
 }
 
 void ImportPrimersDialog::accept() {
     QList<Task*> tasks;
-    foreach (const QString& filePath, item2file) {
+    for (const QString& filePath : qAsConst(item2file)) {
         tasks << new ImportPrimersFromFileTask(filePath);
+    }
+    for (GObject* object : item2object) {
+        tasks << new ImportPrimerFromObjectTask(object);
     }
     if (!tasks.isEmpty()) {
         AppContext::getTaskScheduler()->registerTopLevelTask(new ImportPrimersMultiTask(tasks));

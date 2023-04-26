@@ -51,7 +51,9 @@ QMenu* GTMenu::showMainMenu(GUITestOpStatus& os, const QString& menuName, GTGlob
 
     QAction* menu = list.takeFirst();
     GT_CHECK_RESULT(menu != nullptr, QString("menu \"%1\" not found").arg(menuName), NULL);
-
+#ifdef Q_OS_DARWIN
+    m = GTGlobals::UseMouse;  // On MacOS menu shortcuts do not work by prefix (like Alt-F for the &File).
+#endif
     switch (m) {
         case GTGlobals::UseMouse: {
             QPoint pos = mainWindow->menuBar()->actionGeometry(menu).center();
@@ -215,8 +217,8 @@ QAction* GTMenu::clickMenuItem(GUITestOpStatus& os, const QMenu* menu, const QSt
             QMenu* actionMenu = action->menu();
             bool isSubmenu = actionMenu != nullptr;
             if (isSubmenu) {
-                // Hover on Linux, click on Windows to expand the child menu.
-#ifdef Q_OS_WIN
+                // Hover on Linux, click on Windows & Mac to expand the child menu.
+#ifndef Q_OS_LINUX
                 GTMouseDriver::click();
 #endif
             } else {  // Click the final action.

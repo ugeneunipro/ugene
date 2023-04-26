@@ -31,7 +31,7 @@ ConvertMca2MsaTask::ConvertMca2MsaTask(MultipleChromatogramAlignmentObject* mcaO
     : Task(tr("Convert MCA to MSA task"), TaskFlag_None),
       mcaObject(mcaObject),
       includeReference(includeReference) {
-    SAFE_POINT_EXT(nullptr != mcaObject, setError(L10N::nullPointerError("MCA object")), );
+    SAFE_POINT_EXT(mcaObject != nullptr, setError(L10N::nullPointerError("MCA object")), );
 }
 
 MultipleSequenceAlignment ConvertMca2MsaTask::getMsa() const {

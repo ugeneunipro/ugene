@@ -52,9 +52,9 @@ DbFolderScanner::DbFolderScanner(const QString& url, const QString& accFilter, c
 }
 
 void DbFolderScanner::getSubfolders(const QString& folderPath, QSet<QString>& subfolders, U2OpStatus& os) {
-    SAFE_POINT(nullptr != dbConnection.dbi, "Invalid DBI", );
+    SAFE_POINT(dbConnection.dbi != nullptr, "Invalid DBI", );
     U2ObjectDbi* oDbi = dbConnection.dbi->getObjectDbi();
-    SAFE_POINT(nullptr != oDbi, "Invalid object DBI", );
+    SAFE_POINT(oDbi != nullptr, "Invalid object DBI", );
 
     const QStringList allFolders = oDbi->getFolders(os);
     CHECK_OP(os, );
@@ -66,9 +66,9 @@ void DbFolderScanner::getSubfolders(const QString& folderPath, QSet<QString>& su
 }
 
 void DbFolderScanner::initTargetObjectList(const QSet<QString>& paths, const QString& objNameFilter, U2OpStatus& os) {
-    SAFE_POINT(nullptr != dbConnection.dbi, "Invalid DBI", );
+    SAFE_POINT(dbConnection.dbi != nullptr, "Invalid DBI", );
     U2ObjectDbi* oDbi = dbConnection.dbi->getObjectDbi();
-    SAFE_POINT(nullptr != oDbi, "Invalid object DBI", );
+    SAFE_POINT(oDbi != nullptr, "Invalid object DBI", );
     const U2DbiRef dbiRef = dbConnection.dbi->getDbiRef();
 
     const bool nameFilterApplied = !objNameFilter.isEmpty();
@@ -107,9 +107,9 @@ bool DbFolderScanner::passFilter(const QString& objUrl) {
 }
 
 bool DbFolderScanner::hasAccession(const QString& objUrl) {
-    SAFE_POINT(nullptr != dbConnection.dbi, "Invalid DBI", false);
+    SAFE_POINT(dbConnection.dbi != nullptr, "Invalid DBI", false);
     U2AttributeDbi* aDbi = dbConnection.dbi->getAttributeDbi();
-    SAFE_POINT(nullptr != aDbi, "Invalid attribute DBI", false);
+    SAFE_POINT(aDbi != nullptr, "Invalid attribute DBI", false);
 
     const U2DataId objId = SharedDbUrlUtils::getObjectIdByUrl(objUrl);
     SAFE_POINT(!objId.isEmpty(), "Invalid DB object ID", false);

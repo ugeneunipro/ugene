@@ -22,6 +22,7 @@
 #ifndef _HI_GT_TEXTEDIT_H_
 #define _HI_GT_TEXTEDIT_H_
 
+#include <QPlainTextEdit>
 #include <QTextEdit>
 
 #include "GTGlobals.h"
@@ -33,6 +34,7 @@ public:
     // fails if textEdit is NULL
     // or a set text differs from a given text
     static void setText(GUITestOpStatus& os, QTextEdit* textEdit, const QString& text);
+
     static QString getText(GUITestOpStatus& os, QTextEdit* textEdit);
 
     static bool containsString(GUITestOpStatus& os, QTextEdit* textEdit, const QString& string);

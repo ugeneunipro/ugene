@@ -49,7 +49,7 @@ MultipleChromatogramAlignmentObject* MultipleChromatogramAlignmentImporter::crea
     DbiConnection connection(dbiRef, true, os);
     CHECK(!os.isCanceled(), nullptr);
     SAFE_POINT_OP(os, nullptr);
-    SAFE_POINT_EXT(nullptr != connection.dbi, os.setError(L10N::nullPointerError("Destination database")), nullptr);
+    SAFE_POINT_EXT(connection.dbi != nullptr, os.setError(L10N::nullPointerError("Destination database")), nullptr);
 
     TmpDbiObjects objs(dbiRef, os);
 
@@ -79,7 +79,7 @@ MultipleChromatogramAlignmentObject* MultipleChromatogramAlignmentImporter::crea
 U2Mca MultipleChromatogramAlignmentImporter::importMcaObject(U2OpStatus& os, const DbiConnection& connection, const QString& folder, const MultipleChromatogramAlignment& mca) {
     U2Mca dbMca;
     const DNAAlphabet* alphabet = mca->getAlphabet();
-    SAFE_POINT_EXT(nullptr != alphabet, os.setError("The alignment alphabet is NULL during importing"), U2Mca());
+    SAFE_POINT_EXT(alphabet != nullptr, os.setError("The alignment alphabet is NULL during importing"), U2Mca());
 
     dbMca.alphabet.id = alphabet->getId();
     dbMca.length = mca->getLength();
@@ -92,7 +92,7 @@ U2Mca MultipleChromatogramAlignmentImporter::importMcaObject(U2OpStatus& os, con
     }
 
     U2MsaDbi* msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL MSA Dbi during importing an alignment"), U2Mca());
+    SAFE_POINT_EXT(msaDbi != nullptr, os.setError("NULL MSA Dbi during importing an alignment"), U2Mca());
 
     dbMca.id = msaDbi->createMcaObject(folder, dbMca.visualName, dbMca.alphabet, dbMca.length, os);
     CHECK_OP(os, U2Mca());
@@ -104,7 +104,7 @@ void MultipleChromatogramAlignmentImporter::importMcaInfo(U2OpStatus& os, const 
     const QVariantMap info = mca->getInfo();
 
     U2AttributeDbi* attributeDbi = connection.dbi->getAttributeDbi();
-    SAFE_POINT_EXT(nullptr != attributeDbi, os.setError("NULL Attribute Dbi during importing an alignment"), );
+    SAFE_POINT_EXT(attributeDbi != nullptr, os.setError("NULL Attribute Dbi during importing an alignment"), );
 
     foreach (const QString key, info.keys()) {
         if (key != MultipleAlignmentInfo::NAME) {  // name is stored in the object
@@ -122,12 +122,12 @@ QList<McaRowDatabaseData> MultipleChromatogramAlignmentImporter::importRowChildO
                                                                                        const MultipleChromatogramAlignment& mca) {
     QList<McaRowDatabaseData> mcaRowsDatabaseData;
     UdrDbi* udrDbi = connection.dbi->getUdrDbi();
-    SAFE_POINT_EXT(nullptr != udrDbi, os.setError("NULL UDR Dbi during importing an alignment"), mcaRowsDatabaseData);
+    SAFE_POINT_EXT(udrDbi != nullptr, os.setError("NULL UDR Dbi during importing an alignment"), mcaRowsDatabaseData);
     U2SequenceDbi* sequenceDbi = connection.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(nullptr != sequenceDbi, os.setError("NULL Sequence Dbi during importing an alignment"), mcaRowsDatabaseData);
+    SAFE_POINT_EXT(sequenceDbi != nullptr, os.setError("NULL Sequence Dbi during importing an alignment"), mcaRowsDatabaseData);
 
     const DNAAlphabet* alphabet = mca->getAlphabet();
-    SAFE_POINT_EXT(nullptr != alphabet, os.setError("MCA alphabet is NULL"), mcaRowsDatabaseData);
+    SAFE_POINT_EXT(alphabet != nullptr, os.setError("MCA alphabet is NULL"), mcaRowsDatabaseData);
     const U2AlphabetId alphabetId = alphabet->getId();
 
     foreach (const MultipleChromatogramAlignmentRow& row, mca->getMcaRows()) {

@@ -86,7 +86,7 @@ void DocumentFolders::removeFolder(const QString& path) {
 
     while (!foldersToRemove.isEmpty()) {
         Folder* folder = getFolder(foldersToRemove.takeLast());
-        if (nullptr == folder) {
+        if (folder == nullptr) {
             continue;
         }
         const QString folderPath = folder->getFolderPath();
@@ -145,7 +145,7 @@ QList<Folder*> DocumentFolders::getSubFoldersNatural(const QString& parentPath) 
     foreach (const QString& name, subFoldersNames) {
         QString path = Folder::createPath(parentPath, name);
         Folder* f = getFolder(path);
-        if (nullptr != f) {
+        if (f != nullptr) {
             result << f;
         }
     }
@@ -195,7 +195,7 @@ QList<Folder*>& DocumentFolders::cacheSubFoldersNames(const QString& parentPath,
     foreach (const QString& name, subFoldersNames) {
         QString path = Folder::createPath(parentPath, name);
         Folder* f = getFolder(path);
-        if (nullptr != f) {
+        if (f != nullptr) {
             result << f;
         }
     }

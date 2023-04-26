@@ -31,6 +31,7 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -170,7 +171,7 @@ bool GUITestLauncher::initTestList() {
         if (labelList.contains(UGUITestLabels::Nightly)) {
             // TODO: make configurable via ENV.
             testSuiteCount = isOsWindows() ? 3
-                             : isOsMac()   ? 4
+                             : isOsMac()   ? 3
                              : isOsLinux() ? 5
                                            : 1;
         }
@@ -231,6 +232,28 @@ bool GUITestLauncher::initTestList() {
         testList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
     }
 
+    // Apply dynamic ignore list. Ignored tests are reported to Teamcity as 'ignored' and are not run at all.
+    QString ignoreListFilePath = qgetenv("UGENE_GUI_TEST_IGNORE_LIST_FILE");
+    if (!ignoreListFilePath.isEmpty()) {
+        QString ignoreListFileContent = IOAdapterUtils::readTextFile(ignoreListFilePath);
+        coreLog.details("Applying ignore list:\n" + ignoreListFileContent);
+        int nIgnoredTests = 0;
+        QStringList ignoreListEntries = ignoreListFileContent.split("\n");
+        for (const QString& entry : qAsConst(ignoreListEntries)) {
+            if (entry.isEmpty() || entry.startsWith("#")) {
+                continue;
+            }
+            for (auto test : qAsConst(testList)) {
+                QString teamcityTestName = UGUITest::getTeamcityTestName(test->suite, test->name);
+                if (test->getFullName().startsWith(entry) || teamcityTestName.startsWith(entry)) {
+                    test->labelSet.insert(UGUITestLabels::Ignored);
+                    coreLog.details(QString("Adding Ignore label to test '%1', entry: '%2'").arg(teamcityTestName).arg(entry));
+                    nIgnoredTests++;
+                }
+            }
+        }
+        coreLog.details(QString("Matched %1 tests to ignore").arg(nIgnoredTests));
+    }
     return true;
 }
 

@@ -383,7 +383,7 @@ void TophatSamples::sl_remove() {
     }
 
     QListWidget* list = getListWidget(0);
-    CHECK(nullptr != list, );
+    CHECK(list != nullptr, );
     list->addItems(insertToFirst);
 
     updateArrows();
@@ -404,7 +404,7 @@ void TophatSamples::sl_selectionChanged() {
     CHECK(selectedList->selectedItems().size() > 0, );
 
     QWidget* sampleWidget = selectedList->parentWidget();
-    CHECK(nullptr != sampleWidget, );
+    CHECK(sampleWidget != nullptr, );
     CHECK(order.contains(sampleWidget), );
 
     selectSample(order.indexOf(sampleWidget));
@@ -414,7 +414,7 @@ void TophatSamples::sl_selectionChanged() {
 void TophatSamples::selectSample(int selectedPos) {
     for (int pos = 0; pos < order.size(); pos++) {
         QListWidget* list = getListWidget(pos);
-        SAFE_POINT(nullptr != list, "NULL list widget", );
+        SAFE_POINT(list != nullptr, "NULL list widget", );
         if (pos != selectedPos) {
             list->clearSelection();
             list->setCurrentRow(-1);
@@ -441,7 +441,7 @@ void TophatSamples::getNewPositions(QListWidget* oldList, int oldSamplePos, int 
     if (isBorderCase(oldList, oldDatasetPos, direction)) {
         newSamplePos = (UP == direction) ? oldSamplePos - 1 : oldSamplePos + 1;
         newList = getListWidget(newSamplePos);
-        SAFE_POINT(nullptr != newList, "NULL prev list widget", );
+        SAFE_POINT(newList != nullptr, "NULL prev list widget", );
         newDatasetPos = (UP == direction) ? (newList)->count() : 0;
     }
 }
@@ -449,7 +449,7 @@ void TophatSamples::getNewPositions(QListWidget* oldList, int oldSamplePos, int 
 void TophatSamples::findSelectedDataset(int& samplePos, int& datasetPos) const {
     for (int pos = 0; pos < order.size(); pos++) {
         QListWidget* list = getListWidget(pos);
-        SAFE_POINT(nullptr != list, "NULL list widget", );
+        SAFE_POINT(list != nullptr, "NULL list widget", );
 
         int currentRow = list->currentRow();
         if (-1 != currentRow) {
@@ -467,14 +467,14 @@ void TophatSamples::move(Direction direction) {
     findSelectedDataset(oldSamplePos, oldDatasetPos);
     CHECK(-1 != oldSamplePos, );
     QListWidget* oldList = getListWidget(oldSamplePos);
-    SAFE_POINT(nullptr != oldList, "NULL old list widget", );
+    SAFE_POINT(oldList != nullptr, "NULL old list widget", );
 
     // find target position
     int newSamplePos = -1;
     int newDatasetPos = -1;
     QListWidget* newList = nullptr;
     getNewPositions(oldList, oldSamplePos, oldDatasetPos, direction, newSamplePos, newDatasetPos, newList);
-    SAFE_POINT(nullptr != newList, "NULL new list widget", );
+    SAFE_POINT(newList != nullptr, "NULL new list widget", );
 
     // move selected dataset
     U2OpStatusImpl os;

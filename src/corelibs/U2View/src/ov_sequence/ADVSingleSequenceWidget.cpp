@@ -247,8 +247,8 @@ ADVSingleSequenceWidget::~ADVSingleSequenceWidget() {
 }
 
 QToolButton* ADVSingleSequenceWidget::addButtonWithActionToToolbar(QAction* buttonAction, QToolBar* toolBar, int position) const {
-    SAFE_POINT(nullptr != buttonAction, "buttonAction is NULL", nullptr);
-    SAFE_POINT(nullptr != toolBar, "toolBar is NULL", nullptr);
+    SAFE_POINT(buttonAction != nullptr, "buttonAction is NULL", nullptr);
+    SAFE_POINT(toolBar != nullptr, "toolBar is NULL", nullptr);
     SAFE_POINT(!buttonAction->objectName().isEmpty(), "Action's object name is empty", nullptr);
 
     if (position == -1) {

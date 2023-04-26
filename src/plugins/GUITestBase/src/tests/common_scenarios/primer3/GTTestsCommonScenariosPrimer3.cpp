@@ -20,16 +20,16 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
-#include <primitives/PopupChooser.h>
+#include <system/GTFile.h>
 
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "GTTestsCommonScenariosPrimer3.h"
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "GTUtilsSequenceView.h"
 
 namespace U2 {
 namespace GUITest_common_scenarios_primer3 {
@@ -217,7 +217,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {22, 42}, {292, 314} });
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 2  (0, 2)", { {24, 44}, {292, 314} });
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 3  (0, 2)", { {22, 42}, {265, 289} });
@@ -450,6 +449,106 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "top_primers  (0, 2)", { {610, 629}, {1089, 1108} });
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0022) {
+    // Open sequence
+    // Run Primer 3 with overhangs
+    // Expected: overhangs marked as annotations
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "overhang.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/input/test_0022.txt";
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "pair 1  (0, 2)", { {15, 35}, {57, 76} });
+    auto seq = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_seq", "top_primers");
+    auto strand = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_strand", "top_primers");
+    auto type = GTUtilsAnnotationsTreeView::getQualifierValue(os, "left_end_type", "top_primers");
+    CHECK_SET_ERR(seq == "TCACCCAC", QString("Expected left_end_seq: TCACCCAC, current: %1").arg(seq));
+    CHECK_SET_ERR(strand == "direct", QString("Expected left_end_strand: direct, current: %1").arg(seq));
+    CHECK_SET_ERR(type == "sticky", QString("Expected left_end_type: sticky, current: %1").arg(seq));
+
+    GTUtilsAnnotationsTreeView::deleteItem(os, "top_primers");
+    seq = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_seq", "top_primers");
+    strand = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_strand", "top_primers");
+    type = GTUtilsAnnotationsTreeView::getQualifierValue(os, "right_end_type", "top_primers");
+    CHECK_SET_ERR(seq == "TAAGGATTT", QString("Expected right_end_seq: TAAGGATTT, current: %1").arg(seq));
+    CHECK_SET_ERR(strand == "rev-compl", QString("Expected right_end_strand: rev-compl, current: %1").arg(seq));
+    CHECK_SET_ERR(type == "sticky", QString("Expected right_end_type: sticky, current: %1").arg(seq));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0023) {
+    // Open sequence
+    // Set incorrect values for all possible parameters
+    //
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "human.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/input/test_0023.txt";
+    settings.loadManually = false;
+    settings.rtPcrDesign = true;
+    settings.exonRangeLine = "qwerty";
+    settings.hasValidationErrors = true;
+    settings.validationErrorsText = "19 parameter(s) have an incorrect value(s), pay attention on red widgets.";
+    settings.errorWidgetsNames = QStringList{ "edit_SEQUENCE_PRIMER",
+                                              "edit_SEQUENCE_INTERNAL_OLIGO",
+                                              "edit_SEQUENCE_PRIMER_REVCOMP",
+                                              "edit_SEQUENCE_OVERHANG_LEFT" ,
+                                              "edit_SEQUENCE_OVERHANG_RIGHT" ,
+                                              "edit_SEQUENCE_TARGET" ,
+                                              "edit_SEQUENCE_OVERLAP_JUNCTION_LIST" ,
+                                              "edit_SEQUENCE_EXCLUDED_REGION" ,
+                                              "edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST" ,
+                                              "edit_SEQUENCE_INCLUDED_REGION" ,
+                                              "edit_PRIMER_MUST_MATCH_FIVE_PRIME" ,
+                                              "edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME" ,
+                                              "edit_PRIMER_MUST_MATCH_THREE_PRIME" ,
+                                              "edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME" ,
+                                              "edit_PRIMER_PRODUCT_SIZE_RANGE" ,
+                                              "edit_SEQUENCE_INTERNAL_EXCLUDED_REGION" ,
+                                              "edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST",
+                                              "edit_SEQUENCE_QUALITY",
+                                              "edit_exonRange" };
+
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0024) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "human.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/input/test_0024.txt";
+    settings.loadManually = false;
+    settings.notRun = true;
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    class Scenario : public Filler {
+    public:
+        Scenario(HI::GUITestOpStatus& _os)
+            : Filler(_os, "Primer3Dialog") {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::add(os, new GTFileDialogUtils(os, sandBoxDir, "test_0024.txt", GTFileDialogUtils::Save));
+            GTWidget::click(os, GTWidget::findWidget(os, "saveSettingsButton", dialog));
+            GTWidget::click(os, GTWidget::findWidget(os, "closeButton", dialog));
+        }
+    };
+
+    GTUtilsDialog::add(os, new Scenario(os));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "test_0024.txt", testDir + "_common_data/primer3/input/test_0024.txt", true), "Settings are not equal");
 }
 
 

@@ -34,7 +34,7 @@ public:
     AlignSequencesToAlignmentSupport(QObject* parent);
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 /** Base action for all 'align-to-alignment' actions. */

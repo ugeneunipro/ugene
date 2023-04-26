@@ -116,7 +116,7 @@ QScriptValue WorkflowScriptLibrary::print(QScriptContext* ctx, QScriptEngine*) {
 
 static DNASequence getSequence(QScriptContext* ctx, QScriptEngine* engine, int argNum) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(nullptr != wse, DNASequence());
+    CHECK(wse != nullptr, DNASequence());
 
     SharedDbiDataHandler seqId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum), SequenceScriptClass::CLASS_NAME);
     QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(wse->getWorkflowContext()->getDataStorage(), seqId));
@@ -135,7 +135,7 @@ static QList<SharedAnnotationData> getAnnotationTable(QScriptContext* ctx, QScri
 
 static MultipleSequenceAlignment getAlignment(QScriptContext* ctx, QScriptEngine* engine, int argNum) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(nullptr != wse, MultipleSequenceAlignment());
+    CHECK(wse != nullptr, MultipleSequenceAlignment());
 
     SharedDbiDataHandler msaId = ScriptEngineUtils::getDbiId(engine, ctx->argument(argNum));
     QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(wse->getWorkflowContext()->getDataStorage(), msaId));
@@ -145,17 +145,17 @@ static MultipleSequenceAlignment getAlignment(QScriptContext* ctx, QScriptEngine
 
 static QScriptValue putSequence(QScriptEngine* engine, const DNASequence& seq) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(nullptr != wse, QScriptValue::NullValue);
+    CHECK(wse != nullptr, QScriptValue::NullValue);
     WorkflowContext* ctx = wse->getWorkflowContext();
     SharedDbiDataHandler id = ctx->getDataStorage()->putSequence(seq);
 
-    CHECK(nullptr != ScriptEngineUtils::getSequenceClass(engine), QScriptValue());
+    CHECK(ScriptEngineUtils::getSequenceClass(engine) != nullptr, QScriptValue());
     return ScriptEngineUtils::getSequenceClass(engine)->newInstance(id);
 }
 
 static QScriptValue putAnnotationTable(QScriptEngine* engine, const QList<SharedAnnotationData>& anns) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(nullptr != wse, QScriptValue::NullValue);
+    CHECK(wse != nullptr, QScriptValue::NullValue);
     WorkflowContext* ctx = wse->getWorkflowContext();
     SharedDbiDataHandler id = ctx->getDataStorage()->putAnnotationTable(anns);
     return engine->newVariant(qVariantFromValue(id));
@@ -163,7 +163,7 @@ static QScriptValue putAnnotationTable(QScriptEngine* engine, const QList<Shared
 
 static QScriptValue putAlignment(QScriptEngine* engine, const MultipleSequenceAlignment& msa) {
     WorkflowScriptEngine* wse = ScriptEngineUtils::workflowEngine(engine);
-    CHECK(nullptr != wse, QScriptValue::NullValue);
+    CHECK(wse != nullptr, QScriptValue::NullValue);
     WorkflowContext* ctx = wse->getWorkflowContext();
     SharedDbiDataHandler id = ctx->getDataStorage()->putAlignment(msa);
     return engine->newVariant(qVariantFromValue(id));
@@ -978,7 +978,7 @@ QScriptValue WorkflowScriptLibrary::readFile(QScriptContext* ctx, QScriptEngine*
 
 QScriptValue WorkflowScriptLibrary::readSequences(QScriptContext* ctx, QScriptEngine* engine) {
     DbiDataStorage* storage = ScriptEngineUtils::dataStorage(engine);
-    CHECK(nullptr != storage, QScriptValue());
+    CHECK(storage != nullptr, QScriptValue());
 
     if (ctx->argumentCount() != 1) {
         return ctx->throwError(QObject::tr("Incorrect number of arguments"));

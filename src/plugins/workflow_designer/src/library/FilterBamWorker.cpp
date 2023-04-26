@@ -22,6 +22,7 @@
 #include "FilterBamWorker.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FailTask.h>
 #include <U2Core/FileAndDirectoryUtils.h>
@@ -354,6 +355,7 @@ const QString SamtoolsViewFilterTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
 
 SamtoolsViewFilterTask::SamtoolsViewFilterTask(const BamFilterSetting& settings)
     : ExternalToolSupportTask(tr("Samtool view (filter) for %1 ").arg(settings.inputUrl), TaskFlags(TaskFlag_None)), settings(settings), resultUrl("") {
+    GCOUNTER(cvar, "ExternalTool_Samtools");
 }
 
 void SamtoolsViewFilterTask::prepare() {

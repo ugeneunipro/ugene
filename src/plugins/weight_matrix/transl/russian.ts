@@ -104,12 +104,12 @@
         <location filename="../src/PWMSearchDialog.ui" line="52"/>
         <location filename="../src/PWMSearchDialog.ui" line="246"/>
         <source>Minimal score</source>
-        <translation>Минимальный скор</translation>
+        <translation>Мин. оценка</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="55"/>
         <source>Score:</source>
-        <translation>Скор:</translation>
+        <translation>Оценка:</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="87"/>
@@ -130,7 +130,7 @@
         <location filename="../src/PWMSearchDialog.ui" line="203"/>
         <location filename="../src/PWMSearchDialog.ui" line="206"/>
         <source>Reverse complement strand</source>
-        <translation>Только обратно комплементарные</translation>
+        <translation>Комплементарное</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="264"/>
@@ -165,13 +165,13 @@
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="171"/>
         <source>Both strands</source>
-        <translation>Все</translation>
+        <translation>Оба</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="184"/>
         <location filename="../src/PWMSearchDialog.ui" line="187"/>
         <source>Direct strand</source>
-        <translation>Только прямые</translation>
+        <translation>Прямое</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="306"/>
@@ -197,12 +197,12 @@
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="316"/>
         <source>Strand</source>
-        <translation>Стренд</translation>
+        <translation>Направление</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="321"/>
         <source>Score</source>
-        <translation>Скор</translation>
+        <translation>Мин. оценка</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="331"/>
@@ -212,7 +212,7 @@
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="338"/>
         <source>Save as annotations</source>
-        <translation>Сохранить результаты</translation>
+        <translation>Сохранить результаты как аннотации</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialog.ui" line="362"/>
@@ -223,7 +223,7 @@
         <location filename="../src/WMQuery.cpp" line="185"/>
         <location filename="../src/WeightMatrixSearchWorker.cpp" line="80"/>
         <source>Minimum score to detect transcription factor binding site</source>
-        <translation>Минимальный скор распознавания сайта связывания транскрипционного фактора</translation>
+        <translation>Минимальная оценка распознавания сайта связывания транскрипционного фактора</translation>
     </message>
 </context>
 <context>
@@ -975,12 +975,12 @@ Maybe model data are not enough for selected algorithm</translation>
     <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
         <source>Reverse complement strand</source>
-        <translation>Только комплементарные</translation>
+        <translation>Комплементарное</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="585"/>
         <source>Direct strand</source>
-        <translation>Только прямые</translation>
+        <translation>Прямое</translation>
     </message>
     <message>
         <location filename="../src/PWMSearchDialogController.cpp" line="275"/>

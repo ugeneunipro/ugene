@@ -37,7 +37,7 @@ namespace U2 {
 
 class PanViewRenderArea;
 class GScrollBar;
-class GObjectView;
+class GObjectViewController;
 class PVRowsManager;
 class ADVSingleSequenceWidget;
 class PVRowData;

@@ -119,7 +119,7 @@ Task::ReportResult ReverseSequenceTask::report() {
 
     const int len = seqObj->getSequenceLength();
     // mirror selection
-    if (nullptr != selection) {
+    if (selection != nullptr) {
         QVector<U2Region> regions = selection->getSelectedRegions();
         U2Region::mirror(len, regions);
         U2Region::reverse(regions);

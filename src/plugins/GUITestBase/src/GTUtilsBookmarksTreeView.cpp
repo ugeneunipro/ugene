@@ -120,6 +120,18 @@ void GTUtilsBookmarksTreeView::addBookmark(GUITestOpStatus& os, const QString& v
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "updateBookmark"
+void GTUtilsBookmarksTreeView::updateBookmark(GUITestOpStatus& os, const QString& bookmarkName) {
+    Q_UNUSED(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_UPDATE_BOOKMARK}));
+    GTMouseDriver::moveTo(getItemCenter(os, bookmarkName));
+    GTMouseDriver::click(Qt::RightButton);
+    GTGlobals::sleep(500);
+
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "deleteBookmark"
 void GTUtilsBookmarksTreeView::deleteBookmark(GUITestOpStatus& os, const QString& bookmarkName) {
     clickBookmark(os, bookmarkName);

@@ -43,12 +43,12 @@ namespace U2 {
 class AssemblyBrowserUi;
 class PositionSelector;
 class AssemblyCellRendererFactoryRegistry;
-class OptionsPanel;
+class OptionsPanelController;
 
-class AssemblyBrowser : public GObjectView {
+class AssemblyBrowser : public GObjectViewController {
     Q_OBJECT
 public:
-    AssemblyBrowser(QString viewName, AssemblyObject* o);
+    AssemblyBrowser(const QString& viewName, AssemblyObject* o);
     // some pre-opening checks
     bool checkValid(U2OpStatus& os);
 
@@ -58,7 +58,6 @@ public:
 
     QVariantMap saveState() override;
     Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) override;
-    OptionsPanel* getOptionsPanel() override;
 
     void setGlobalCoverageInfo(CoverageInfo info);
     QList<CoveredRegion> getCoveredRegions() const;
@@ -67,15 +66,15 @@ public:
     }
 
     // Local coverage cache is where calculated coverage for current visible region is stored
-    void setLocalCoverageCache(CoverageInfo coverage);
+    void setLocalCoverageCache(const CoverageInfo& coverage);
     // Methods used to optimize getting coverage at any point inside this region:
-    bool isInLocalCoverageCache(qint64 position);
+    bool isInLocalCoverageCache(qint64 position) const;
     qint32 getCoverageAtPos(qint64 pos);
     // Methods used to draw coverage for cached part of visible region:
-    bool intersectsLocalCoverageCache(U2Region region);
-    bool isInLocalCoverageCache(U2Region region);
+    bool intersectsLocalCoverageCache(const U2Region& region) const;
+    bool isInLocalCoverageCache(const U2Region& region);
     // If required region is not fully included in cache, other positions are filled with zeroes
-    CoverageInfo extractFromLocalCoverageCache(U2Region region);
+    CoverageInfo extractFromLocalCoverageCache(const U2Region& region);
 
     // asm coords <-> pix coords functions
     qint64 calcPixelCoord(qint64 asmCoord) const;
@@ -163,7 +162,7 @@ public:
         return zoomOutAction->isEnabled();
     }
 
-    bool onCloseEvent();
+    bool onCloseEvent() override;
 
 public slots:
     void sl_zoomIn(const QPoint& pos = QPoint());
@@ -178,9 +177,9 @@ signals:
     void si_coverageReady();
 
 protected:
-    virtual QWidget* createWidget();
-    virtual bool eventFilter(QObject*, QEvent*);
-    virtual void onObjectRenamed(GObject* obj, const QString& oldName);
+    QWidget* createViewWidget(QWidget* parent) override;
+    bool eventFilter(QObject*, QEvent*) override;
+    void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
 private slots:
     void sl_onPosChangeRequest(int);
@@ -277,7 +276,7 @@ class AssemblyAnnotationsArea;
 class U2VIEW_EXPORT AssemblyBrowserUi : public QWidget {
     Q_OBJECT
 public:
-    AssemblyBrowserUi(AssemblyBrowser* browser);
+    AssemblyBrowserUi(AssemblyBrowser* browser, QWidget* parent);
 
     inline QSharedPointer<AssemblyModel> getModel() const {
         return browser->getModel();

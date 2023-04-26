@@ -56,7 +56,6 @@ protected:
     QPointer<PhyTreeObject> phyObject;
     GObjectReference unloadedReference;
     QObject* parent = nullptr;
-    bool createMDIWindow = false;
 };
 
 class MSAEditorOpenTreeViewerTask : public OpenTreeViewerTask {
@@ -76,12 +75,12 @@ public:
     OpenSavedTreeViewerTask(const QString& viewName, const QVariantMap& stateData);
     void open() override;
 
-    static void updateRanges(const QVariantMap& stateData, TreeViewer* treeViewer);
+    static void applySavedState(TreeViewer* treeViewer, const QVariantMap& stateData);
 };
 
 class UpdateTreeViewerTask : public ObjectViewTask {
 public:
-    UpdateTreeViewerTask(GObjectView* v, const QString& stateName, const QVariantMap& stateData);
+    UpdateTreeViewerTask(GObjectViewController* v, const QString& stateName, const QVariantMap& stateData);
     void update() override;
 };
 

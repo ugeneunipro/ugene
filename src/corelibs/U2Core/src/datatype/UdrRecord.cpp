@@ -116,9 +116,9 @@ U2DataId UdrValue::getDataId(U2OpStatus& os) const {
 UdrRecord::UdrRecord(const UdrRecordId& id, const QList<UdrValue>& data, U2OpStatus& os)
     : id(id), data(data) {
     UdrSchemaRegistry* udrRegistry = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), );
+    SAFE_POINT_EXT(udrRegistry != nullptr, os.setError("NULL UDR registry"), );
     schema = udrRegistry->getSchemaById(id.getSchemaId());
-    SAFE_POINT_EXT(nullptr != schema, os.setError("Unknown schema id: " + QString(id.getSchemaId())), );
+    SAFE_POINT_EXT(schema != nullptr, os.setError("Unknown schema id: " + QString(id.getSchemaId())), );
 }
 
 const UdrRecordId& UdrRecord::getId() const {
@@ -146,7 +146,7 @@ U2DataId UdrRecord::getDataId(int fieldNum, U2OpStatus& os) const {
 }
 
 bool UdrRecord::checkNum(int fieldNum, U2OpStatus& os) const {
-    SAFE_POINT_EXT(nullptr != schema, os.setError("NULL schema"), false);
+    SAFE_POINT_EXT(schema != nullptr, os.setError("NULL schema"), false);
     SAFE_POINT_EXT(data.size() == schema->size(), os.setError("Size mismatch"), false);
     SAFE_POINT_EXT(0 <= fieldNum && fieldNum < schema->size(), os.setError("Out of range"), false);
     return true;

@@ -33,6 +33,7 @@ class ExternalToolLogParser;
 class ExternalToolRunTaskHelper;
 class SaveDocumentTask;
 class ExternalToolListener;
+class ExternalTool;
 
 // using namespace Workflow;
 
@@ -157,6 +158,18 @@ public:
     static QString prepareArgumentsForCmdLine(const QStringList& arguments);
     static QStringList splitCmdLineArguments(const QString& execString);
     static QVariantMap getScoresGapDependencyMap();
+
+    /*
+     * Path checking
+     */
+    static QString checkArgumentPathLatinSymbols(const QStringList& args);
+    static QString checkTemporaryDirLatinSymbols();
+    static QString checkToolPathLatinSymbols(const ExternalTool* tool);
+    static QString checkIndexDirLatinSymbols();
+
+    static QString checkArgumentPathSpaces(const QStringList& args);
+    static QString checkTemporaryDirSpaces();
+    static QString checkToolPathSpaces(const ExternalTool* tool);
 };
 
 class U2CORE_EXPORT ExternalToolLogParser : public QObject {

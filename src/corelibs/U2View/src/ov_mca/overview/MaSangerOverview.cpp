@@ -184,7 +184,7 @@ void MaSangerOverview::resizeEvent(QResizeEvent* event) {
 
 bool MaSangerOverview::eventFilter(QObject* object, QEvent* event) {
     auto paintEvent = dynamic_cast<QPaintEvent*>(event);
-    CHECK(nullptr != paintEvent, MaOverview::eventFilter(object, event));
+    CHECK(paintEvent != nullptr, MaOverview::eventFilter(object, event));
     if (object == renderArea) {
         QPainter painter(renderArea);
         painter.fillRect(renderArea->rect(), Qt::white);
@@ -257,7 +257,7 @@ void MaSangerOverview::drawReads() {
     painter.fillRect(cachedReadsView.rect(), Qt::white);
 
     MultipleChromatogramAlignmentObject const* const mcaObject = getEditor()->getMaObject();
-    SAFE_POINT(nullptr != mcaObject, tr("Incorrect multiple chromatogram alignment object"), );
+    SAFE_POINT(mcaObject != nullptr, tr("Incorrect multiple chromatogram alignment object"), );
     const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
     const int rowsCount = editor->getCollapseModel()->getViewRowCount();
 

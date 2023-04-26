@@ -52,7 +52,7 @@ public:
     }
 };
 
-class U2VIEW_EXPORT SimpleTextObjectView : public GObjectView {
+class U2VIEW_EXPORT SimpleTextObjectView : public GObjectViewController {
     Q_OBJECT
 
     friend class SimpleTextObjectViewFactory;
@@ -68,7 +68,7 @@ public:
         return selection;
     }
 
-    virtual QWidget* createWidget();
+    QWidget* createViewWidget(QWidget* parent) override;
 
     void updateView(const QVariantMap& stateData);
 

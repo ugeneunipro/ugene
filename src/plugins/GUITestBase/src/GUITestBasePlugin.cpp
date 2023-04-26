@@ -278,7 +278,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0025_1);
     REGISTER_TEST_WINDOWS(GUITest_common_scenarios_msa_editor::test_0028_windows);
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2089);  // "no forbidden folder characters on linux and mac";
-    REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_7700);
 
     //////////////////////////////////////////////////////////////////////////
     // Regression scenarios/
@@ -1642,6 +1641,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6760);
     REGISTER_TEST(GUITest_regression_scenarios::test_6797_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6797_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6798);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_6807);
     REGISTER_TEST(GUITest_regression_scenarios::test_6808);
@@ -1834,8 +1834,19 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7781);
     REGISTER_TEST(GUITest_regression_scenarios::test_7789);
     REGISTER_TEST(GUITest_regression_scenarios::test_7792);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7797);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7806);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7824);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7825);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7827);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7830);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7842);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7850);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7852);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7860);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7861);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7863);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2242,8 +2253,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008_1);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008_2);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0008_3);
 
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0009);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0009_1);
@@ -3460,6 +3469,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0019);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0021);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0022);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0023);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0024);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

@@ -166,7 +166,7 @@ bool Schema::recursiveExpand(QList<QString>& schemaIds) {
         }
 
         Schema* schema = WorkflowEnv::getSchemaActorsRegistry()->getSchema(proto->getId());
-        if (nullptr == schema) {
+        if (schema == nullptr) {
             return false;
         }
 
@@ -295,7 +295,7 @@ ActorId Schema::uniqueActorId(const QString& id, const QList<Actor*>& procs) {
 
 void Schema::renameProcess(const ActorId& oldId, const ActorId& newId) {
     Actor* actor = actorById(oldId);
-    CHECK(nullptr != actor, );
+    CHECK(actor != nullptr, );
 
     actor->setId(newId);
     QMap<ActorId, ActorId> m;

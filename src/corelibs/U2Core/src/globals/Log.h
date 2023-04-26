@@ -60,7 +60,7 @@ public:
 
     static void log(LogLevel level, const QString& message, const QString& category);
 
-    static void log(LogLevel level, const QString& message, const QStringList& categoryies);
+    static void log(LogLevel level, const QString& message, const QStringList& categories);
 
     virtual void message(LogLevel level, const QString& msg);
 
@@ -111,7 +111,7 @@ public:
     }
     QStringList getCategories() const;
 
-    void addListener(LogListener* listner);
+    void addListener(LogListener* listener);
     void removeListener(LogListener* listener);
 
 private:

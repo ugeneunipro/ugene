@@ -37,23 +37,23 @@ U2MsaDbi* MsaTestData::msaDbi = nullptr;
 U2SequenceDbi* MsaTestData::sequenceDbi = nullptr;
 
 void MsaTestData::init() {
-    SAFE_POINT(nullptr == msaDbi, "msaDbi has been already initialized!", );
-    SAFE_POINT(nullptr == sequenceDbi, "sequenceDbi has been already initialized!", );
+    SAFE_POINT(msaDbi == nullptr, "msaDbi has been already initialized!", );
+    SAFE_POINT(sequenceDbi == nullptr, "sequenceDbi has been already initialized!", );
 
     bool ok = dbiProvider.init(MSA_DB_URL, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in MsaTestData::init()!", );
 
     U2Dbi* dbi = dbiProvider.getDbi();
     msaDbi = dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "Failed to get msaDbi!", );
+    SAFE_POINT(msaDbi != nullptr, "Failed to get msaDbi!", );
 
     sequenceDbi = dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
+    SAFE_POINT(sequenceDbi != nullptr, "Failed to get sequenceDbi!", );
 }
 
 void MsaTestData::shutdown() {
-    if (nullptr != msaDbi) {
-        SAFE_POINT(nullptr != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
+    if (msaDbi != nullptr) {
+        SAFE_POINT(sequenceDbi != nullptr, "sequenceDbi must also be not NULL on this step!", );
 
         U2OpStatusImpl os;
         dbiProvider.close();
@@ -64,14 +64,14 @@ void MsaTestData::shutdown() {
 }
 
 U2MsaDbi* MsaTestData::getMsaDbi() {
-    if (nullptr == msaDbi) {
+    if (msaDbi == nullptr) {
         init();
     }
     return msaDbi;
 }
 
 U2SequenceDbi* MsaTestData::getSequenceDbi() {
-    if (nullptr == sequenceDbi) {
+    if (sequenceDbi == nullptr) {
         init();
     }
     return sequenceDbi;

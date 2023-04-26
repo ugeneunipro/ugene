@@ -81,7 +81,7 @@ void DNAFlexViewContext::sl_showDNAFlexDialog() {
     }
 }
 
-void DNAFlexViewContext::initViewContext(GObjectView* view) {
+void DNAFlexViewContext::initViewContext(GObjectViewController* view) {
     auto annotView = qobject_cast<AnnotatedDNAView*>(view);
 
     // Adding the graphs item

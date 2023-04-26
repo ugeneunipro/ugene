@@ -72,7 +72,7 @@ private slots:
     void sl_completeRedraw();
 
 protected:
-    void paintEvent(QPaintEvent* e);
+    void paintEvent(QPaintEvent* e) override;
     void updateView();
     void drawAll(QPainter& p);
     QFont getOffsetsFont();

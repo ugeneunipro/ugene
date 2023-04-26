@@ -35,9 +35,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QGraphicsItem>
-#include <QGraphicsView>
 #include <QScreen>
-#include <QTextEdit>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
@@ -362,14 +360,14 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
     // Test for UGENE-2202
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os, testDir + "_common_data/scenarios/sandbox/somedir"));
     // 1. Open Workflow Designer
     GTMenu::clickMainMenuItem(os, {"Tools", "Workflow Designer..."});
 
     // 2. Write the path to the folder which does not exist(in the StartupDialogFiller).
     // 3. Click OK(in the StartupDialogFiller).
-    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {

@@ -41,7 +41,7 @@ McaReadsTabFactory::McaReadsTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMap&) {
+QWidget* McaReadsTabFactory::createWidget(GObjectViewController* objView, const QVariantMap&) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

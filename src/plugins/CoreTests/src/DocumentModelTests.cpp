@@ -75,19 +75,19 @@ void GTest_LoadDocument::init(XMLTestFormat*, const QDomElement& el) {
     needVerifyLog = false;
     QVariantMap hints;
 
-    if (nullptr != el.attribute("message")) {
+    if (el.attribute("message") != nullptr) {
         expectedLogMessage = el.attribute("message");
     }
 
-    if (nullptr != el.attribute("message2")) {
+    if (el.attribute("message2") != nullptr) {
         expectedLogMessage2 = el.attribute("message2");
     }
 
-    if (nullptr != el.attribute("no-message")) {
+    if (el.attribute("no-message") != nullptr) {
         unexpectedLogMessage = el.attribute("no-message");
     }
 
-    if (nullptr != el.attribute("sequence-mode")) {
+    if (el.attribute("sequence-mode") != nullptr) {
         QString seqMode = el.attribute("sequence-mode");
         if ("msa" == seqMode) {
             hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
@@ -218,7 +218,7 @@ void GTest_SaveDocument::prepare() {
     SaveDocFlags saveTaskFlags;
     if (!formatId.isEmpty() && formatId != doc->getDocumentFormatId()) {
         DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-        CHECK_EXT(nullptr != format, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );
+        CHECK_EXT(format != nullptr, stateInfo.setError(QString("Document format not found: %1").arg(formatId)), );
         doc = doc->getSimpleCopy(format, iof, url);
         saveTaskFlags |= SaveDoc_DestroyButDontUnload;
     }
@@ -249,7 +249,7 @@ void GTest_LoadBrokenDocument::init(XMLTestFormat*, const QDomElement& el) {
     message = el.attribute("message");
 
     QVariantMap hints;
-    if (nullptr != el.attribute("sequence-mode")) {
+    if (el.attribute("sequence-mode") != nullptr) {
         QString seqMode = el.attribute("sequence-mode");
         if ("msa" == seqMode) {
             hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
@@ -295,15 +295,15 @@ void GTest_ImportDocument::init(XMLTestFormat*, const QDomElement& el) {
     docContextName = el.attribute("index");
     needVerifyLog = false;
 
-    if (nullptr != el.attribute("message")) {
+    if (el.attribute("message") != nullptr) {
         expectedLogMessage = el.attribute("message");
     }
 
-    if (nullptr != el.attribute("message2")) {
+    if (el.attribute("message2") != nullptr) {
         expectedLogMessage2 = el.attribute("message2");
     }
 
-    if (nullptr != el.attribute("no-message")) {
+    if (el.attribute("no-message") != nullptr) {
         unexpectedLogMessage = el.attribute("no-message");
     }
 
@@ -332,12 +332,12 @@ void GTest_ImportDocument::init(XMLTestFormat*, const QDomElement& el) {
 
     FormatDetectionResult* bestRes = nullptr;
     for (int i = 0; i < detectionRes.size(); ++i) {
-        if (nullptr != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
+        if (detectionRes[i].importer != nullptr && detectionRes[i].importer->getFormatIds().contains(formatId)) {
             bestRes = &detectionRes[i];
             break;
         }
     }
-    CHECK_EXT(nullptr != bestRes && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
+    CHECK_EXT(bestRes != nullptr && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
 
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
@@ -390,7 +390,7 @@ void GTest_ImportDocument::prepare() {
 }
 
 Task::ReportResult GTest_ImportDocument::report() {
-    if (nullptr != importTask && importTask->hasError()) {
+    if (importTask != nullptr && importTask->hasError()) {
         stateInfo.setError(importTask->getError());
     } else if (!docContextName.isEmpty()) {
         addContext(docContextName, importTask->getDocument());
@@ -431,12 +431,12 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat*, const QDomElement& el) {
 
     FormatDetectionResult* bestRes = nullptr;
     for (int i = 0; i < detectionRes.size(); ++i) {
-        if (nullptr != detectionRes[i].importer && detectionRes[i].importer->getFormatIds().contains(formatId)) {
+        if (detectionRes[i].importer != nullptr && detectionRes[i].importer->getFormatIds().contains(formatId)) {
             bestRes = &detectionRes[i];
             break;
         }
     }
-    CHECK_EXT(nullptr != bestRes && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
+    CHECK_EXT(bestRes != nullptr && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
 
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
@@ -865,7 +865,7 @@ Task::ReportResult GTest_CompareFiles::report() {
 
 IOAdapter* GTest_CompareFiles::createIoAdapter(const QString& filePath) {
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
-    CHECK_EXT(nullptr != factory, setError("IOAdapterFactory is NULL"), nullptr);
+    CHECK_EXT(factory != nullptr, setError("IOAdapterFactory is NULL"), nullptr);
     IOAdapter* ioAdapter = factory->createIOAdapter();
 
     if (!ioAdapter->open(filePath, IOAdapterMode_Read)) {
@@ -996,7 +996,7 @@ Task::ReportResult GTest_Compare_VCF_Files::report() {
 
 IOAdapter* GTest_Compare_VCF_Files::createIoAdapter(const QString& filePath) {
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
-    CHECK_EXT(nullptr != factory, setError("IOAdapterFactory is NULL"), nullptr);
+    CHECK_EXT(factory != nullptr, setError("IOAdapterFactory is NULL"), nullptr);
     IOAdapter* ioAdapter = factory->createIOAdapter();
 
     if (!ioAdapter->open(filePath, IOAdapterMode_Read)) {

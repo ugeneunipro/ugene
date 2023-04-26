@@ -22,6 +22,7 @@
 #include "ScrollController.h"
 
 #include "U2Core/U2SafePoints.h"
+#include "U2Core/Log.h"
 #include <U2Core/MultipleAlignmentObject.h>
 
 #include "BaseWidthController.h"
@@ -86,13 +87,13 @@ void ScrollController::scrollToViewRow(int viewRowIndex, int widgetHeight) {
     }
 }
 
-void ScrollController::scrollToBase(int baseNumber, int widgetWidth) {
-    const U2Region baseRange = U2Region(ui->getBaseWidthController()->getBaseGlobalOffset(baseNumber), maEditor->getColumnWidth());
-    const U2Region visibleRange = getHorizontalRangeToDrawIn(widgetWidth);
-    if (baseRange.startPos < visibleRange.startPos) {
-        hScrollBar->setValue(static_cast<int>(baseRange.startPos));
-    } else if (baseRange.endPos() >= visibleRange.endPos()) {
-        hScrollBar->setValue(static_cast<int>(baseRange.endPos() - widgetWidth));
+void ScrollController::scrollToBase(int baseIndex, int widgetWidth) {
+    U2Region baseScreenRange(ui->getBaseWidthController()->getBaseGlobalOffset(baseIndex), maEditor->getColumnWidth());
+    U2Region visibleRange = getHorizontalRangeToDrawIn(widgetWidth);
+    if (baseScreenRange.startPos < visibleRange.startPos) {
+        hScrollBar->setValue(int(baseScreenRange.startPos));
+    } else if (baseScreenRange.endPos() >= visibleRange.endPos()) {
+        hScrollBar->setValue(int(baseScreenRange.endPos() - widgetWidth));
     }
 }
 
@@ -408,7 +409,7 @@ U2Region ScrollController::getVerticalRangeToDrawIn(int widgetHeight) const {
 }
 
 void ScrollController::updateHorizontalScrollBarPrivate() {
-    SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
+    SAFE_POINT(hScrollBar != nullptr, "Horizontal scrollbar is not initialized", );
     QSignalBlocker signalBlocker(hScrollBar);
 
     maEditor->multilineViewAction->setEnabled(!maEditor->isAlignmentEmpty() || maEditor->isMultilineMode());

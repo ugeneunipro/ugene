@@ -22,6 +22,7 @@
 #include "TrimmomaticSupport.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include "TrimmomaticStep.h"
 #include "java/JavaSupport.h"
@@ -55,6 +56,10 @@ TrimmomaticSupport::TrimmomaticSupport()
     dependencies << JavaSupport::ET_JAVA_ID;
 
     initTrimmomaticSteps();
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::NonLatinArguments;
+    }
 }
 
 TrimmomaticSupport::~TrimmomaticSupport() {

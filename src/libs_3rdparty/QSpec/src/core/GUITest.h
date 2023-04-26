@@ -43,7 +43,7 @@ public:
     const int timeout;
 
     /** Set of test labels. */
-    const QSet<QString> labelSet;
+    QSet<QString> labelSet;
 
     static QString getFullTestName(const QString& suiteName, const QString& testName) {
         return suiteName + ":" + testName;

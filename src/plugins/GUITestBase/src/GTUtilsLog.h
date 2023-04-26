@@ -32,38 +32,30 @@ namespace U2 {
 class GTLogTracer : public QObject, public LogListener {
     Q_OBJECT
 public:
-    GTLogTracer(const QString& expectedMessage = QString());
+    GTLogTracer();
     ~GTLogTracer();
 
-    void onMessage(const LogMessage& msg);
+    void onMessage(const LogMessage& msg) override;
 
-    bool hasErrors() const {
-        return !errorsList.isEmpty();
-    }
+    bool hasErrors() const;
 
-    QString getJoinedErrorString() const {
-        return errorsList.isEmpty() ? "" : errorsList.join("\n");
-    }
+    QString getJoinedErrorString() const;
 
-    static QList<LogMessage*> getMessages();
+    /** Checks if there was any log message with the given substring (case insensitive). */
+    bool hasMessage(const QString& substring) const;
 
-    static bool checkMessage(const QString& s);
+    /** Checks if there was error log message with the given substring (case insensitive). */
+    bool hasError(const QString& substring) const;
 
-    bool isExpectedMessageFound;
-    QStringList errorsList;
-    QString expectedMessage;
+    /** Clears all cached messages. */
+    void clear();
+
+    QStringList allMessages;
+    QStringList errorMessages;
 };
 
 class GTUtilsLog {
 public:
-    static void check(HI::GUITestOpStatus& os, const GTLogTracer& logTracer);
-    static void checkContainsError(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& messagePart);
-    static void checkContainsMessage(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, bool expected = true);
-    static QStringList getErrors(HI::GUITestOpStatus& os, const GTLogTracer& logTracer);
-
-    /** Checks that there is no errors in log. Fails if there are erorrs. */
-    static void checkNoErrorsInLog(HI::GUITestOpStatus& os);
-
     /** Waits for the message to appear in the log with the given timeout. */
     static void checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& message, int timeoutMillis = 30000);
 

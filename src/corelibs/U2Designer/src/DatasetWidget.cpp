@@ -137,7 +137,7 @@ ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectTy
     settings.objectTypesToShow += compatibleObjTypes;
 
     Project* proj = AppContext::getProject();
-    SAFE_POINT(nullptr != proj, "Invalid project", settings);
+    SAFE_POINT(proj != nullptr, "Invalid project", settings);
 
     foreach (Document* doc, proj->getDocuments()) {
         settings.excludeDocList << doc;
@@ -248,14 +248,14 @@ bool URLListWidget::eventFilter(QObject* obj, QEvent* event) {
 
         auto e = static_cast<QContextMenuEvent*>(event);
         QListWidgetItem* item = ui->itemsArea->itemAt(e->pos());
-        CHECK(nullptr != item, false);
+        CHECK(item != nullptr, false);
         CHECK(item->isSelected(), false);
 
         auto urlItem = static_cast<UrlItem*>(item);
-        CHECK(nullptr != urlItem, false);
+        CHECK(urlItem != nullptr, false);
 
         QWidget* options = urlItem->getOptionsWidget();
-        if (nullptr != options) {
+        if (options != nullptr) {
             popup->showOptions(options, ui->itemsArea->mapToGlobal(e->pos()));
         }
         return true;
@@ -298,7 +298,7 @@ void OptionsPopup::showOptions(QWidget* options, const QPoint& p) {
 
 void OptionsPopup::removeOptions() {
     QLayoutItem* child;
-    while (nullptr != (child = l->takeAt(0))) {
+    while ((child = l->takeAt(0)) != nullptr) {
         child->widget()->setParent(nullptr);
         delete child;
     }

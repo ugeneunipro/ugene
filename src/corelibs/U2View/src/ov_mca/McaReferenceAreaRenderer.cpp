@@ -44,7 +44,7 @@ namespace U2 {
 McaReferenceAreaRenderer::McaReferenceAreaRenderer(PanView* panView, SequenceObjectContext* ctx, MaEditor* maEditor)
     : PanViewRenderer(panView, ctx),
       maEditor(maEditor) {
-    SAFE_POINT(nullptr != maEditor, "MA Editor is NULL", );
+    SAFE_POINT(maEditor != nullptr, "MA Editor is NULL", );
     setFont(maEditor->getFont());
 }
 

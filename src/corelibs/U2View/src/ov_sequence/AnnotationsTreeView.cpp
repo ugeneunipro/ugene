@@ -44,8 +44,6 @@
 #include <U2Core/DBXRefRegistry.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -146,7 +144,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView* _ctx)
 
     restoreWidgetState();
 
-    connect(ctx, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_onBuildMenu(GObjectView*, QMenu*, const QString&)));
+    connect(ctx, &GObjectViewController::si_buildMenu, this, &AnnotationsTreeView::sl_onBuildMenu);
     connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject*)), SLOT(sl_onAnnotationObjectAdded(AnnotationTableObject*)));
     connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject*)), SLOT(sl_onAnnotationObjectRemoved(AnnotationTableObject*)));
     connect(ctx, SIGNAL(si_sequenceAdded(ADVSequenceObjectContext*)), SLOT(sl_sequenceAdded(ADVSequenceObjectContext*)));
@@ -298,7 +296,7 @@ AVGroupItem* AnnotationsTreeView::findGroupItem(AnnotationGroup* g) const {
         }
     } else {
         AVGroupItem* parentGroupItem = findGroupItem(g->getParentGroup());
-        if (nullptr != parentGroupItem) {
+        if (parentGroupItem != nullptr) {
             const int n = parentGroupItem->childCount();
             for (int i = 0; i < n; i++) {
                 auto item = static_cast<AVItem*>(parentGroupItem->child(i));
@@ -331,7 +329,7 @@ AVAnnotationItem* AnnotationsTreeView::findAnnotationItem(const AVGroupItem* gro
 
 AVAnnotationItem* AnnotationsTreeView::findAnnotationItem(AnnotationGroup* g, Annotation* a) const {
     AVGroupItem* groupItem = findGroupItem(g);
-    if (nullptr == groupItem) {
+    if (groupItem == nullptr) {
         return nullptr;
     }
     return findAnnotationItem(groupItem, a);
@@ -342,7 +340,7 @@ So can only be used for annotations that belongs to some object */
 QList<AVAnnotationItem*> AnnotationsTreeView::findAnnotationItems(Annotation* a) const {
     QList<AVAnnotationItem*> res;
 
-    SAFE_POINT(nullptr != a->getGObject() && ctx->getAnnotationObjects(true).contains(a->getGObject()), "Invalid annotation table!", res);
+    SAFE_POINT(a->getGObject() != nullptr && ctx->getAnnotationObjects(true).contains(a->getGObject()), "Invalid annotation table!", res);
 
     AnnotationGroup* g = a->getGroup();
     AVGroupItem* gItem = findGroupItem(g);
@@ -358,17 +356,17 @@ QList<AVAnnotationItem*> AnnotationsTreeView::findAnnotationItems(const AVGroupI
     QList<AVAnnotationItem*> annotationItems;
     for (int i = 0; i < gi->childCount(); ++i) {
         auto childItem = dynamic_cast<AVItem*>(gi->child(i));
-        SAFE_POINT(nullptr != childItem, "Can't cast 'QTreeWidgetItem *' to 'AVItem *'", QList<AVAnnotationItem*>());
+        SAFE_POINT(childItem != nullptr, "Can't cast 'QTreeWidgetItem *' to 'AVItem *'", QList<AVAnnotationItem*>());
         switch (childItem->type) {
             case AVItemType_Annotation: {
                 auto annotationItem = dynamic_cast<AVAnnotationItem*>(childItem);
-                SAFE_POINT(nullptr != annotationItem, "Can't cast 'AVItem *' to 'AVAnnotationItem *'", QList<AVAnnotationItem*>());
+                SAFE_POINT(annotationItem != nullptr, "Can't cast 'AVItem *' to 'AVAnnotationItem *'", QList<AVAnnotationItem*>());
                 annotationItems << annotationItem;
                 break;
             }
             case AVItemType_Group: {
                 auto groupItem = dynamic_cast<AVGroupItem*>(childItem);
-                SAFE_POINT(nullptr != groupItem, "Can't cast 'AVItem *' to 'AVGroupItem *'", QList<AVAnnotationItem*>());
+                SAFE_POINT(groupItem != nullptr, "Can't cast 'AVItem *' to 'AVGroupItem *'", QList<AVAnnotationItem*>());
                 annotationItems << findAnnotationItems(groupItem);
                 break;
             }
@@ -427,7 +425,7 @@ void AnnotationsTreeView::sl_onItemSelectionChanged() {
         if (item->type == AVItemType_Annotation) {
             auto annotationItem = static_cast<AVAnnotationItem*>(item);
             Annotation* annotation = annotationItem->annotation;
-            SAFE_POINT(nullptr != annotation->getGObject(), "Invalid annotation table!", );
+            SAFE_POINT(annotation->getGObject() != nullptr, "Invalid annotation table!", );
             // Activate the first new annotation from the selected tree items.
             if (!annotationActivated && !selectedAnnotationsBefore.contains(annotation)) {
                 emitAnnotationActivated(annotation);
@@ -468,7 +466,7 @@ void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection*, 
     foreach (Annotation* a, removed) {
         AnnotationGroup* g = a->getGroup();
         AVAnnotationItem* item = findAnnotationItem(g, a);
-        if (nullptr == item) {
+        if (item == nullptr) {
             continue;
         }
         if (item->isSelected()) {
@@ -480,13 +478,13 @@ void AnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection*, 
     foreach (Annotation* a, added) {
         AnnotationGroup* g = a->getGroup();
         AVAnnotationItem* item = findAnnotationItem(g, a);
-        if (nullptr == item) {
+        if (item == nullptr) {
             continue;
         }
         if (!item->isSelected()) {
             item->setSelected(true);
             selectedItems.append(item);
-            for (QTreeWidgetItem* p = item->parent(); nullptr != p; p = p->parent()) {
+            for (QTreeWidgetItem* p = item->parent(); p != nullptr; p = p->parent()) {
                 if (!p->isExpanded()) {
                     p->setExpanded(true);
                 }
@@ -539,7 +537,7 @@ void AnnotationsTreeView::sl_onAnnotationObjectAdded(AnnotationTableObject* obj)
     SAFE_POINT(findGroupItem(obj->getRootGroup()) == nullptr, "Invalid annotation group!", );
 
     AVGroupItem* groupItem = buildGroupTree(nullptr, obj->getRootGroup(), false);
-    SAFE_POINT(nullptr != groupItem, "creating AVGroupItem failed", );
+    SAFE_POINT(groupItem != nullptr, "creating AVGroupItem failed", );
     tree->addTopLevelItem(groupItem);
     connect(obj, SIGNAL(si_onAnnotationsAdded(const QList<Annotation*>&)), SLOT(sl_onAnnotationsAdded(const QList<Annotation*>&)));
     connect(obj, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation*>&)), SLOT(sl_onAnnotationsRemoved(const QList<Annotation*>&)));
@@ -567,7 +565,7 @@ void AnnotationsTreeView::sl_onAnnotationObjectRemoved(AnnotationTableObject* ob
 void AnnotationsTreeView::sl_onAnnotationObjectRenamed(const QString&) {
     auto ao = qobject_cast<AnnotationTableObject*>(sender());
     AVGroupItem* gi = findGroupItem(ao->getRootGroup());
-    SAFE_POINT(nullptr != gi, "Failed to find annotations object on rename!", );
+    SAFE_POINT(gi != nullptr, "Failed to find annotations object on rename!", );
     gi->updateVisual();
 }
 
@@ -703,7 +701,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
             case AnnotationModification_AddedToGroup: {
                 const AnnotationGroupModification& gmd = static_cast<const AnnotationGroupModification&>(annotationModification);
                 AVGroupItem* gi = findGroupItem(gmd.getGroup());
-                SAFE_POINT(nullptr != gi, L10N::nullPointerError("annotation view group item"), );
+                SAFE_POINT(gi != nullptr, L10N::nullPointerError("annotation view group item"), );
                 buildAnnotationTree(gi, gmd.annotation);
                 gi->updateVisual();
             } break;
@@ -726,7 +724,7 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
 }
 
 void AnnotationsTreeView::sl_onGroupCreated(AnnotationGroup* g) {
-    CHECK(nullptr == findGroupItem(g), );
+    CHECK(findGroupItem(g) == nullptr, );
     AVGroupItem* pg = g->getParentGroup() == nullptr ? nullptr : findGroupItem(g->getParentGroup());
     buildGroupTree(pg, g);
     pg->updateVisual();
@@ -734,7 +732,7 @@ void AnnotationsTreeView::sl_onGroupCreated(AnnotationGroup* g) {
 
 void AnnotationsTreeView::sl_onGroupRemoved(AnnotationGroup* parent, AnnotationGroup* g) {
     AVGroupItem* pg = findGroupItem(parent);
-    if (nullptr == pg) {
+    if (pg == nullptr) {
         return;
     }
 
@@ -745,7 +743,7 @@ void AnnotationsTreeView::sl_onGroupRemoved(AnnotationGroup* parent, AnnotationG
     for (int i = 0, n = pg->childCount(); i < n; i++) {
         auto item = static_cast<AVItem*>(pg->child(i));
         if (AVItemType_Group == item->type && (static_cast<AVGroupItem*>(item))->group == g) {
-            if (nullptr != item->parent()) {
+            if (item->parent() != nullptr) {
                 item->parent()->removeChild(item);
             }
             delete item;
@@ -760,7 +758,7 @@ void AnnotationsTreeView::sl_onGroupRemoved(AnnotationGroup* parent, AnnotationG
 
 void AnnotationsTreeView::sl_onGroupRenamed(AnnotationGroup* g) {
     AVGroupItem* gi = findGroupItem(g);
-    SAFE_POINT(nullptr != gi, "Invalid view item detected!", );
+    SAFE_POINT(gi != nullptr, "Invalid view item detected!", );
     gi->updateVisual();
 }
 
@@ -870,7 +868,7 @@ void AnnotationsTreeView::updateColumnContextActions(AVItem* item, int col) {
     }
 }
 
-void AnnotationsTreeView::sl_onBuildMenu(GObjectView*, QMenu* m, const QString& type) {
+void AnnotationsTreeView::sl_onBuildMenu(GObjectViewController*, QMenu* m, const QString& type) {
     if (type != GObjectViewMenuType::CONTEXT) {
         return;
     }
@@ -996,7 +994,7 @@ void AnnotationsTreeView::sl_pasteFinished(Task* _pasteTask) {
     }
 
     auto pasteTask = qobject_cast<PasteTask*>(_pasteTask);
-    if (nullptr == pasteTask || pasteTask->isCanceled()) {
+    if (pasteTask == nullptr || pasteTask->isCanceled()) {
         return;
     }
     const QList<Document*>& docs = pasteTask->getDocuments();
@@ -1406,9 +1404,9 @@ bool AnnotationsTreeView::initiateDragAndDrop(QMouseEvent*) {
     dndCopyOnly = false;  // allow 'move' by default first
     for (int i = 0, n = initialSelItems.size(); i < n; i++) {
         auto itemi = dynamic_cast<AVItem*>(initialSelItems[i]);
-        SAFE_POINT(nullptr != itemi, L10N::nullPointerError("Annotation tree item"), false);
+        SAFE_POINT(itemi != nullptr, L10N::nullPointerError("Annotation tree item"), false);
         AnnotationTableObject* ao = itemi->getAnnotationTableObject();
-        SAFE_POINT(nullptr != ao, L10N::nullPointerError("annotation table object"), false);
+        SAFE_POINT(ao != nullptr, L10N::nullPointerError("annotation table object"), false);
         if (AutoAnnotationsSupport::isAutoAnnotationObject(ao)) {
             //  only allow to drag top-level auto annotations groups
             if (!(itemi->type == AVItemType_Group && itemi->parent() != nullptr)) {
@@ -1502,7 +1500,7 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
 
     for (int i = 0, n = dndSelItems.size(); i < n; ++i) {
         AVItem* selItem = dndSelItems.at(i);
-        SAFE_POINT(nullptr != selItem->parent(), "Invalid tree item parent", );  // we never have no top-level object items in dndSelItems
+        SAFE_POINT(selItem->parent() != nullptr, "Invalid tree item parent", );  // we never have no top-level object items in dndSelItems
         if (selItem->type == AVItemType_Annotation) {
             auto fromGroupItem = dynamic_cast<AVGroupItem*>(selItem->parent());
             auto ai = dynamic_cast<AVAnnotationItem*>(selItem);
@@ -1706,13 +1704,13 @@ void AnnotationsTreeView::sl_annotationDoubleClicked(Annotation* annotation, int
     const U2Region& indexRegion = annotationRegions[regionIndex];
     QList<U2Region> regionsToSelect = {indexRegion};
     AnnotationTableObject* tableObject = annotation->getGObject();
-    SAFE_POINT(nullptr != tableObject, "AnnotationTableObject isn't found", );
+    SAFE_POINT(tableObject != nullptr, "AnnotationTableObject isn't found", );
 
     ADVSequenceObjectContext* sequenceContext = ctx->getSequenceContext(tableObject);
-    SAFE_POINT(nullptr != sequenceContext, "ADVSequenceObjectContext isn't found", );
+    SAFE_POINT(sequenceContext != nullptr, "ADVSequenceObjectContext isn't found", );
 
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(nullptr != sequenceObject, "U2SequenceObject isn't found", );
+    SAFE_POINT(sequenceObject != nullptr, "U2SequenceObject isn't found", );
 
     const int sequenceLength = sequenceObject->getSequenceLength();
     if (sequenceObject->isCircular() && (indexRegion.startPos == 0 || indexRegion.endPos() == sequenceLength)) {
@@ -1791,7 +1789,9 @@ void AnnotationsTreeView::annotationClicked(AVAnnotationItem* item, QMap<AVAnnot
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool controlOfShiftPressed = km.testFlag(Qt::ControlModifier) || km.testFlag(Qt::ShiftModifier);
     if (!controlOfShiftPressed) {
-        sequenceSelection->clear();
+        if (sequenceSelection->getSelectedRegions().toList() != item->annotation->getRegions().toList()) {
+            sequenceSelection->clear();
+        }
         foreach (AVAnnotationItem* key, selectedAnnotations.keys()) {
             selectedAnnotation.remove(key);
         }
@@ -1949,7 +1949,7 @@ void AnnotationsTreeView::sl_invertSelection() {
     while (!stack.isEmpty()) {
         const QModelIndex parent = stack.pop();
         auto aItem = dynamic_cast<AVAnnotationItem*>(tree->itemFromIndex(parent));
-        if (nullptr != aItem) {
+        if (aItem != nullptr) {
             if (originalSelection.contains(parent)) {
                 selectedAnnotations.select(parent, parent);
             } else {
@@ -2229,9 +2229,9 @@ void AnnotationsTreeView::sl_addQualifier() {
 
 void AnnotationsTreeView::sl_annotationObjectModifiedStateChanged() {
     auto ao = qobject_cast<AnnotationTableObject*>(sender());
-    SAFE_POINT(nullptr != ao, "Invalid annotation table!", );
+    SAFE_POINT(ao != nullptr, "Invalid annotation table!", );
     AVGroupItem* gi = findGroupItem(ao->getRootGroup());
-    SAFE_POINT(nullptr != gi, "Invalid annotation view item detected!", );
+    SAFE_POINT(gi != nullptr, "Invalid annotation view item detected!", );
     gi->updateVisual();
 }
 
@@ -2478,7 +2478,7 @@ void AVAnnotationItem::updateVisual(ATVAnnUpdateFlags f) {
     if (f.testFlag(ATVAnnUpdateFlag_QualColumns)) {
         // setup custom qualifiers columns
         AnnotationsTreeView* atv = getAnnotationTreeView();
-        SAFE_POINT(nullptr != atv, "Invalid annotations tree view!", );
+        SAFE_POINT(atv != nullptr, "Invalid annotations tree view!", );
         const QStringList& colNames = atv->getQualifierColumnNames();
         hasNumericQColumns = false;
         for (int i = 0, n = colNames.size(); i < n; i++) {

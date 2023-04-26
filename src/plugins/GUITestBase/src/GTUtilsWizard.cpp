@@ -28,10 +28,8 @@
 #include <primitives/GTWidget.h>
 #include <utils/GTThread.h>
 
-#include <QApplication>
 #include <QDir>
 #include <QFileInfo>
-#include <QLabel>
 #include <QScrollArea>
 #include <QWizard>
 
@@ -215,7 +213,6 @@ void GTUtilsWizard::setValue(HI::GUITestOpStatus& os, QWidget* w, QVariant value
 void GTUtilsWizard::clickButton(HI::GUITestOpStatus& os, WizardButton button) {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
     QWidget* buttonWidget = GTWidget::findButtonByText(os, buttonMap.key(button), dialog);
-    GTGlobals::sleep(500);
     GTWidget::click(os, buttonWidget);
 }
 #undef GT_METHOD_NAME

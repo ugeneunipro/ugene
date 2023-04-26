@@ -52,7 +52,7 @@ private slots:
 private:
     GSequenceGraphFactory* graphFactory;
 
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 }  // namespace U2

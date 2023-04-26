@@ -51,7 +51,7 @@ protected slots:
     void sl_showCustomAutoAnnotationDialog();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 class AnnotatorTests {

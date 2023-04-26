@@ -47,8 +47,8 @@ void MsaSizeUtil::updateMinHeightIfPossible(MaEditorSequenceArea* heightFrom, QW
     }
 }
 
-MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, bool multiline)
-    : MaEditorMultilineWgt(editor),
+MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, QWidget* parent, bool multiline)
+    : MaEditorMultilineWgt(editor, parent),
       multiTreeViewer(nullptr),
       treeViewer(nullptr) {
     initActions();
@@ -75,7 +75,9 @@ MsaEditorMultilineWgt::MsaEditorMultilineWgt(MSAEditor* editor, bool multiline)
 MaEditorWgt* MsaEditorMultilineWgt::createChild(MaEditor* editor,
                                                 MaEditorOverviewArea* overviewArea,
                                                 MaEditorStatusBar* statusBar) {
-    return new MsaEditorWgt(qobject_cast<MSAEditor*>(editor), overviewArea, statusBar);
+    auto msaEditor = qobject_cast<MSAEditor*>(editor);
+    SAFE_POINT(msaEditor != nullptr, "Not MSAEditor!", nullptr);
+    return new MsaEditorWgt(msaEditor, this, overviewArea, statusBar);
 }
 
 void MsaEditorMultilineWgt::deleteChild(int index) {
@@ -341,10 +343,12 @@ void MsaEditorMultilineWgt::hideSimilarity() {
 }
 
 void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
+    int baseIndex = position - 1;
+    CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
     if (getMultilineMode()) {
-        getScrollController()->scrollToBase(QPoint(position, 0));
+        getScrollController()->scrollToBase(QPoint(baseIndex, 0));
     } else {
-        getUI(0)->getScrollController()->scrollToBase(position, getSequenceAreaWidth(0));
+        getUI(0)->getScrollController()->scrollToBase(baseIndex, getSequenceAreaWidth(0));
     }
     // Keep the vertical part of the selection but limit the horizontal to the given position.
     // In case of 1-row selection it will procude a single cell selection as the result.

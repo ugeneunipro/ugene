@@ -47,8 +47,8 @@ namespace U2 {
 
 #define TOP_INDENT 10
 
-McaEditorWgt::McaEditorWgt(McaEditor* editor)
-    : MaEditorWgt(editor) {
+McaEditorWgt::McaEditorWgt(McaEditor* editor, QWidget* parent)
+    : MaEditorWgt(editor, parent) {
     rowHeightController = new McaRowHeightController(this);
     refCharController = new McaReferenceCharController(this, editor);
 

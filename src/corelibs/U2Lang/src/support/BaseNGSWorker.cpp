@@ -103,7 +103,7 @@ namespace {
 QString getTargetUrl(Task* task) {
     auto NGSTask = dynamic_cast<BaseNGSTask*>(task);
 
-    if (nullptr != NGSTask) {
+    if (NGSTask != nullptr) {
         return NGSTask->getResult();
     }
     return "";

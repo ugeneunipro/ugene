@@ -290,7 +290,7 @@ void SQLiteAssemblyDbi::addReads(AssemblyAdapter* a, U2DbiIterator<U2AssemblyRea
 
 void SQLiteAssemblyDbi::removeTables(const U2DataId& assemblyId, U2OpStatus& os) {
     AssemblyAdapter* adapter = getAdapter(assemblyId, os);
-    CHECK(nullptr != adapter, );
+    CHECK(adapter != nullptr, );
     adapter->dropReadsTables(os);
 }
 

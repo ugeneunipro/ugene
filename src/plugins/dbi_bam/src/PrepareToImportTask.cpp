@@ -125,16 +125,16 @@ static bool isUnknownFormat(const QList<FormatDetectionResult>& formats) {
         return true;
     }
     FormatDetectionResult f = formats.first();
-    if (nullptr == f.format && nullptr == f.importer) {
+    if (f.format == nullptr && nullptr == f.importer) {
         return true;
     }
     return false;
 }
 
 static QString detectedFormatId(const FormatDetectionResult& f) {
-    if (nullptr == f.format && f.importer == nullptr) {
+    if (f.format == nullptr && f.importer == nullptr) {
         return "";
-    } else if (nullptr == f.format) {
+    } else if (f.format == nullptr) {
         return f.importer->getImporterName();
     }
     return f.format->getFormatId();

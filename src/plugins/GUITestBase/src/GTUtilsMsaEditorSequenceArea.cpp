@@ -496,13 +496,11 @@ bool GTUtilsMSAEditorSequenceArea::collapsingMode(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getFirstVisibleBaseIndex"
-int GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(GUITestOpStatus& os, int multilineIndex) {
+int GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(GUITestOpStatus& os, int multilineIndex, bool countClipped) {
     auto msaEditArea = getSequenceArea(os, multilineIndex);
 
     ScrollController* scrollController = msaEditArea->getEditor()->getUI()->getUI(multilineIndex)->getScrollController();
-    int clippedIdx = scrollController->getFirstVisibleBase(true);
-    int notClippedIdx = scrollController->getFirstVisibleBase(false);
-    return clippedIdx + (clippedIdx == notClippedIdx ? 0 : 1);
+    return scrollController->getFirstVisibleBase(countClipped);
 }
 #undef GT_METHOD_NAME
 

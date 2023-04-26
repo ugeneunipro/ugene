@@ -44,10 +44,10 @@ const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "%UserProfile%/";
 #endif
 
 QString FileAndDirectoryUtils::getFormatId(const FormatDetectionResult& r) {
-    if (nullptr != r.format) {
+    if (r.format != nullptr) {
         return r.format->getFormatId();
     }
-    if (nullptr != r.importer) {
+    if (r.importer != nullptr) {
         return r.importer->getId();
     }
     return "";

@@ -104,10 +104,12 @@ SequenceObjectContext::SequenceObjectContext(U2SequenceObject* obj, QObject* par
     connect(seqObj, SIGNAL(si_sequenceChanged()), &commonStatisticsCache, SLOT(sl_invalidate()));
     connect(seqObj, SIGNAL(si_sequenceChanged()), &charactersOccurrenceCache, SLOT(sl_invalidate()));
     connect(seqObj, SIGNAL(si_sequenceChanged()), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
+    connect(seqObj, &U2SequenceObject::si_sequenceChanged, &codonsOccurrenceCache, &StatisticsCache<QMap<QByteArray, qint64>>::sl_invalidate);
 
     connect(selection, SIGNAL(si_onSelectionChanged(GSelection*)), &commonStatisticsCache, SLOT(sl_invalidate()));
     connect(selection, SIGNAL(si_onSelectionChanged(GSelection*)), &charactersOccurrenceCache, SLOT(sl_invalidate()));
     connect(selection, SIGNAL(si_onSelectionChanged(GSelection*)), &dinucleotidesOccurrenceCache, SLOT(sl_invalidate()));
+    connect(selection, &DNASequenceSelection::si_onSelectionChanged, &codonsOccurrenceCache, &StatisticsCache<QMap<QByteArray, qint64>>::sl_invalidate);
 }
 
 void SequenceObjectContext::guessAminoTT(const AnnotationTableObject* ao) {
@@ -227,7 +229,7 @@ void SequenceObjectContext::sl_showShowAll() {
 }
 
 void SequenceObjectContext::setTranslationState(const SequenceObjectContext::TranslationState state) {
-    CHECK(nullptr != visibleFrames, );
+    CHECK(visibleFrames != nullptr, );
 
     bool needUpdate = false;
 
@@ -283,7 +285,7 @@ void SequenceObjectContext::sl_onAnnotationRelationChange() {
 }
 
 QMenu* SequenceObjectContext::createGeneticCodeMenu() {
-    CHECK(nullptr != translations, nullptr);
+    CHECK(translations != nullptr, nullptr);
     QMenu* menu = new QMenu(tr("Select genetic code"));
     menu->setIcon(QIcon(":core/images/tt_switch.png"));
     menu->menuAction()->setObjectName("AminoTranslationAction");
@@ -467,7 +469,7 @@ void SequenceObjectContext::setTranslationsVisible(bool visible) {
 }
 
 void SequenceObjectContext::showComplementActions(bool show) {
-    CHECK(nullptr != visibleFrames, );
+    CHECK(visibleFrames != nullptr, );
 
     QList<QAction*> actions = visibleFrames->actions();
     for (int i = 3; i < 6; i++) {

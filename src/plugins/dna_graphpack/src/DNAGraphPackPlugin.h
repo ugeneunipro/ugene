@@ -36,7 +36,7 @@
 namespace U2 {
 
 class MWMDIWindow;
-class GObjectView;
+class GObjectViewController;
 class GSequenceGraphFactory;
 class GSequenceGraphData;
 class GraphAction;
@@ -60,7 +60,7 @@ public:
 private:
     QList<GSequenceGraphFactory*> graphFactories;
 
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private slots:
     void sl_sequenceWidgetAdded(ADVSequenceWidget*);

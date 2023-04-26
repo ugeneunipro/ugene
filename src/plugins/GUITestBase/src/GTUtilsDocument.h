@@ -28,7 +28,7 @@
 namespace U2 {
 using namespace HI;
 
-class GObjectView;
+class GObjectViewController;
 class Document;
 
 class GTUtilsDocument {
@@ -58,10 +58,10 @@ public:
     static void checkIfDocumentIsLocked(HI::GUITestOpStatus& os, const QString& documentName, bool isLocked);
 
 protected:
-    static GObjectView* getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d);
+    static GObjectViewController* getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d);
 
 private:
-    static QList<GObjectView*> getAllGObjectViews();
+    static QList<GObjectViewController*> getAllGObjectViews();
 };
 
 }  // namespace U2

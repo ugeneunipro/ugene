@@ -126,6 +126,15 @@ BlastSupport::BlastSupport(const QString& id)
         FAIL("Unsupported blast tool: " + id, );
     }
     toolKitName = "BLAST";
+    pathChecks << ExternalTool::PathChecks::NonLatinArguments 
+               << ExternalTool::PathChecks::SpacesArguments;
+    if (isOsLinux() || isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesTemporaryDirPath;
+    }
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinToolPath;
+    }
 }
 
 bool BlastSupport::checkBlastTool(const QString& toolId) {
@@ -240,7 +249,7 @@ BlastSupportContext::BlastSupportContext(QObject* p)
     connect(fetchSequenceByIdAction, SIGNAL(triggered()), SLOT(sl_fetchSequenceById()));
 }
 
-void BlastSupportContext::initViewContext(GObjectView* view) {
+void BlastSupportContext::initViewContext(GObjectViewController* view) {
     SAFE_POINT(qobject_cast<AnnotatedDNAView*>(view) != nullptr, "Object view is not an AnnotatedDNAView", );
 
     auto queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST..."), 2000, searchToolIds);
@@ -261,7 +270,7 @@ static QString getCommaSeparatedIdsFromAnnotations(const QList<Annotation*>& ann
     return idList.join(",");
 }
 
-void BlastSupportContext::buildStaticOrContextMenu(GObjectView* view, QMenu* m) {
+void BlastSupportContext::buildStaticOrContextMenu(GObjectViewController* view, QMenu* m) {
     auto dnaView = qobject_cast<AnnotatedDNAView*>(view);
     CHECK(dnaView != nullptr, );
 

@@ -75,13 +75,13 @@ ExportSequenceViewItemsController::ExportSequenceViewItemsController(QObject* p)
       av(nullptr) {
 }
 
-void ExportSequenceViewItemsController::initViewContext(GObjectView* v) {
+void ExportSequenceViewItemsController::initViewContext(GObjectViewController* v) {
     av = qobject_cast<AnnotatedDNAView*>(v);
     ADVExportContext* vc = new ADVExportContext(av);
     addViewResource(av, vc);
 }
 
-void ExportSequenceViewItemsController::buildStaticOrContextMenu(GObjectView* v, QMenu* m) {
+void ExportSequenceViewItemsController::buildStaticOrContextMenu(GObjectViewController* v, QMenu* m) {
     QList<QObject*> resources = viewResources.value(v);
     assert(resources.size() == 1);
     QObject* r = resources.first();
@@ -94,7 +94,7 @@ void ExportSequenceViewItemsController::init() {
     GObjectViewWindowContext::init();
     if (!viewResources.value(av).isEmpty()) {
         QMenu* actions = AppContext::getMainWindow()->getTopLevelMenu(MWMENU_ACTIONS);
-        SAFE_POINT(nullptr != actions, "Actions menu not found.", );
+        SAFE_POINT(actions != nullptr, "Actions menu not found.", );
         actions->clear();
         AppContext::getMainWindow()->getMDIManager()->getActiveWindow()->setupViewMenu(actions);
     }

@@ -41,6 +41,7 @@ BwaBuildIndexTask::BwaBuildIndexTask(const QString& referencePath, const QString
       referencePath(referencePath),
       indexPath(indexPath),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_BWA");
 }
 
 void BwaBuildIndexTask::prepare() {
@@ -90,6 +91,7 @@ BwaAlignTask::BwaAlignTask(const QString& indexPath, const QList<ShortReadSet>& 
       readSets(shortReadSets),
       resultPath(resultPath),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_BWA");
 }
 
 QString BwaAlignTask::getSAIPath(const QString& shortReadsUrl) {
@@ -312,6 +314,7 @@ BwaMemAlignTask::BwaMemAlignTask(const QString& indexPath, const DnaAssemblyToRe
       indexPath(indexPath),
       resultPath(settings.resultFileName.getURLString()),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_BWA");
 }
 
 void BwaMemAlignTask::prepare() {
@@ -481,6 +484,7 @@ BwaSwAlignTask::BwaSwAlignTask(const QString& indexPath, const DnaAssemblyToRefT
     : ExternalToolSupportTask("BWA SW reads assembly", TaskFlags_NR_FOSCOE),
       indexPath(indexPath),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_BWA");
 }
 
 void BwaSwAlignTask::prepare() {
@@ -607,7 +611,7 @@ BwaTask::BwaTask(const DnaAssemblyToRefTaskSettings& settings, bool justBuildInd
     : DnaAssemblyToReferenceTask(settings, TaskFlags_NR_FOSCOE, justBuildIndex),
       buildIndexTask(nullptr),
       alignTask(nullptr) {
-    GCOUNTER(cvar, "NGS:BWATask");
+    GCOUNTER(cvar, "ExternalTool_BWA");
 }
 
 void BwaTask::prepare() {

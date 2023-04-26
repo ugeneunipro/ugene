@@ -146,7 +146,7 @@
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="196"/>
         <source>Both strands</source>
-        <translation>Обе</translation>
+        <translation>Обa</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="215"/>
@@ -156,7 +156,7 @@
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="218"/>
         <source>Direct strand</source>
-        <translation>Прямая</translation>
+        <translation>Прямое</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="240"/>
@@ -166,7 +166,7 @@
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="243"/>
         <source>Complement strand</source>
-        <translation>Комплементарная</translation>
+        <translation>Комплементарное</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="106"/>
@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="111"/>
         <source>Strand</source>
-        <translation>Стренд</translation>
+        <translation>Направление</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="116"/>
@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="77"/>
         <source>Save as annotations</source>
-        <translation>Сохранить результаты</translation>
+        <translation>Сохранить результаты как аннотации</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialog.ui" line="136"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/SiteconQuery.cpp" line="81"/>
         <source>both strands</source>
-        <translation>оба стренда</translation>
+        <translation>оба направления</translation>
     </message>
     <message>
         <location filename="../src/SiteconQuery.cpp" line="84"/>
@@ -1077,12 +1077,12 @@
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="381"/>
         <source>Complement strand</source>
-        <translation>Только комплeментарные</translation>
+        <translation>Комплeментарное</translation>
     </message>
     <message>
         <location filename="../src/SiteconSearchDialogController.cpp" line="381"/>
         <source>Direct strand</source>
-        <translation>Только прямые</translation>
+        <translation>Прямое</translation>
     </message>
 </context>
 <context>

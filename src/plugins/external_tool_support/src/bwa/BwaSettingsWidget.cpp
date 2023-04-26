@@ -88,13 +88,13 @@ void BwaIndexAlgorithmWarningReporter::sl_IndexAlgorithmChanged(int index) {
         }
     }
     using namespace U2;
-    SAFE_POINT(nullptr != reportLabel, "Trying to access null pointer data", );
+    SAFE_POINT(reportLabel != nullptr, "Trying to access null pointer data", );
     reportLabel->setText(infoText);
 }
 
 void BwaIndexAlgorithmWarningReporter::setReportLabelStyle() {
     using namespace U2;
-    SAFE_POINT(nullptr != reportLabel, "Trying to access null pointer data", );
+    SAFE_POINT(reportLabel != nullptr, "Trying to access null pointer data", );
     QString infoLabelStyleSheet = reportLabel->styleSheet();
     setStylesheetAttributeValue(STYLE_SHEET_COLOR_ATTRIBUTE, U2::Theme::errorColorLabelStr(), infoLabelStyleSheet);
     setStylesheetAttributeValue(STYLE_SHEET_FONT_WEIGHT_ATTRIBUTE, INFO_MESSAGE_FONT, infoLabelStyleSheet);

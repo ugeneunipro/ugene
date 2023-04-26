@@ -26,7 +26,6 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
-#include <QTextEdit>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppContext.h>
@@ -736,7 +735,7 @@ void DetView::updateVerticalScrollBarPosition() {
 
 void DetView::setupTranslationsMenu() {
     QMenu* translationsMenu = ctx->createTranslationFramesMenu(QList<QAction*>() << doNotTranslateAction << translateAnnotationsOrSelectionAction << setUpFramesManuallyAction << showAllFramesAction);
-    CHECK(nullptr != translationsMenu, );
+    CHECK(translationsMenu != nullptr, );
     QToolButton* button = addActionToLocalToolbar(translationsMenu->menuAction());
     button->setPopupMode(QToolButton::InstantPopup);
     button->setObjectName("translationsMenuToolbarButton");
@@ -744,7 +743,7 @@ void DetView::setupTranslationsMenu() {
 
 void DetView::setupGeneticCodeMenu() {
     QMenu* ttMenu = ctx->createGeneticCodeMenu();
-    CHECK(nullptr != ttMenu, );
+    CHECK(ttMenu != nullptr, );
     QToolButton* button = addActionToLocalToolbar(ttMenu->menuAction());
     SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(ttMenu->menuAction()->objectName()), );
     button->setPopupMode(QToolButton::InstantPopup);

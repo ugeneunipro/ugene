@@ -62,6 +62,10 @@ SnpEffSupport::SnpEffSupport()
     dependencies << JavaSupport::ET_JAVA_ID;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinToolPath;
+    }
 }
 
 QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {

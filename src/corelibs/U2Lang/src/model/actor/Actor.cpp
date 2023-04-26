@@ -441,7 +441,7 @@ const QList<ValidatorDesc>& Actor::getCustomValidators() const {
  * Attributes with value "Default" (case-insensitive) are ignored.
  */
 static bool validateUrlAttribute(Attribute* attr, UrlAttributeType urlType, NotificationsList& infoList) {
-    SAFE_POINT(nullptr != attr, "NULL attribute!", false);
+    SAFE_POINT(attr != nullptr, "NULL attribute!", false);
     SAFE_POINT(NotAnUrl != urlType, "Can't pass not an URL to the method!", false);
 
     if (!attr->getAttributeScript().isEmpty()) {
@@ -480,7 +480,7 @@ bool Actor::validate(NotificationsList& notificationList) const {
     bool result = Configuration::validate(notificationList);
     foreach (const ValidatorDesc& desc, customValidators) {
         ActorValidator* v = WorkflowEnv::getActorValidatorRegistry()->findValidator(desc.type);
-        if (nullptr != v) {
+        if (v != nullptr) {
             result &= v->validate(this, notificationList, desc.options);
         }
     }
@@ -488,7 +488,7 @@ bool Actor::validate(NotificationsList& notificationList) const {
     // Validate URL and Numeric parameters
     bool urlsRes = true;
     foreach (Attribute* attr, getParameters()) {
-        SAFE_POINT(nullptr != attr, "NULL attribute!", false);
+        SAFE_POINT(attr != nullptr, "NULL attribute!", false);
         if (!isAttributeVisible(attr)) {
             continue;
         }

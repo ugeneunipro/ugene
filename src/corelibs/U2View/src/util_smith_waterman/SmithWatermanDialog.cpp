@@ -101,7 +101,7 @@ SmithWatermanDialog::SmithWatermanDialog(QWidget* w, ADVSequenceObjectContext* c
     }
 
     tagsRegistry = AppContext::getSWMulAlignResultNamesTagsRegistry();
-    if (nullptr == tagsRegistry) {
+    if (tagsRegistry == nullptr) {
         coreLog.error(tr("No result names tag registry found."));
         QDialog::done(-1);
         return;
@@ -197,7 +197,7 @@ void SmithWatermanDialog::sl_templateButtonPressed() {
     const QString buttonText = senderButton->text();
     auto editInFocus = dynamic_cast<QLineEdit*>(QApplication::focusWidget());
 
-    assert(nullptr != senderButton && nullptr != editInFocus);
+    assert(senderButton != nullptr && nullptr != editInFocus);
 
     const QString buttonTag = buttonText.left(buttonText.indexOf(SHORTHAND_AND_LABEL_SEPARATOR));
     editInFocus->setText(editInFocus->text().append(buttonTag));

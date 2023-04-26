@@ -66,6 +66,16 @@ TCoffeeSupport::TCoffeeSupport()
     description = tr("<i>T-Coffee</i> is a multiple sequence alignment package.");
     versionRegExp = QRegExp("PROGRAM: T-COFFEE Version_(\\d+\\.\\d+)");
     toolKitName = "T-Coffee";
+    pathChecks << ExternalTool::PathChecks::SpacesTemporaryDirPath;
+    if (isOsLinux()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesTemporaryDirPath
+                   << ExternalTool::PathChecks::SpacesToolPath
+                   << ExternalTool::PathChecks::SpacesArguments;
+    }
+    if (isOsMac()) {
+        //Fill me after UGENE-7831 fix
+    }
 }
 
 void TCoffeeSupport::sl_runWithExtFileSpecify() {
@@ -103,7 +113,7 @@ TCoffeeSupportContext::TCoffeeSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void TCoffeeSupportContext::initViewContext(GObjectView* view) {
+void TCoffeeSupportContext::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);

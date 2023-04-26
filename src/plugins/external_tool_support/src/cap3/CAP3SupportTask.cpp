@@ -52,7 +52,7 @@ CAP3SupportTask::CAP3SupportTask(const CAP3SupportTaskSettings& _settings)
       cap3Task(nullptr),
       copyResultTask(nullptr),
       settings(_settings) {
-    GCOUNTER(cvar, "CAP3SupportTask");
+    GCOUNTER(cvar, "ExternalTool_CAP3");
     setMaxParallelSubtasks(1);
 }
 
@@ -152,7 +152,7 @@ QList<Task*> RunCap3AndOpenResultTask::onSubTaskFinished(Task* subTask) {
         QVariantMap hints;
         hints[ProjectLoaderHint_LoadWithoutView] = !openView;
         Task* loadTask = loader->openWithProjectTask(url, hints);
-        if (nullptr != loadTask) {
+        if (loadTask != nullptr) {
             subTasks << loadTask;
         }
     }

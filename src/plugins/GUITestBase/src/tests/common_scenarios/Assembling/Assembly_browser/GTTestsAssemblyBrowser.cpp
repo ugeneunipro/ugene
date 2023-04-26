@@ -33,7 +33,6 @@
 
 #include <QApplication>
 #include <QDir>
-#include <QTableView>
 
 #include <U2Core/GUrlUtils.h>
 
@@ -282,8 +281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
         ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0012/test_0012/test_0012.txt")),
         ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, ""),
         ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, ""),
-        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant())
-    };
+        ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant())};
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
 }
@@ -496,7 +494,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     // 3. Click the "chrM" sequence object in Project View.
     GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
 
-    // 4. Right click on the reference area.
+    // 4. Right-click on the reference area.
     // Expected: "Unassociate" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
@@ -505,7 +503,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"setReferenceAction"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    // 6. Right click on the reference area.
+    // 6. Right-click on the reference area.
     // Expected: "Unassociate" is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
@@ -514,7 +512,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"unassociateReferenceAction"}));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    // 8. Right click on the reference area.
+    // 8. Right-click on the reference area.
     // Expected: "Unassociate" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
@@ -562,7 +560,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "assembly_test_0018.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
-    // 8. Right click on the reference area while the file is loading.
+    // 8. Right-click on the reference area while the file is loading.
     // Expected: "Unassociate" and "Set reference sequence" are disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
     // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
@@ -570,7 +568,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
     // GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
-    // 9. Right click on the reference area after loading.
+    // 9. Right-click on the reference area after loading.
     // Expected: "Unassociate" and "Set reference sequence" are enabled.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), {"Set reference", "Unassociate"}, PopupChecker::IsEnabled));
@@ -630,7 +628,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // 3. Choose "data/samples/Assembly/chrM.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
-    // Expected: it become reference.
+    // Expected: it becomes reference.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
@@ -680,12 +678,12 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     // 3. Click the "Set reference sequence" toolbar button.
     // Expected: file dialog appears.
     // 4. Choose "samples/Assembly/chrM.fa".
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
     // Expected: the sequence becomes reference.
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
@@ -706,13 +704,13 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     // 4. Click the "Set reference sequence" toolbar button.
     // Expected: file dialog appears.
     // 5. Choose "samples/Assembly/chrM.fa".
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
     // Expected: the document is loaded, the sequence becomes reference.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
@@ -1049,12 +1047,12 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     // Based on UGENE-7677
     // 1. open view for _common_data\bam\more_then_100000_reads.bam
     // Expected state: conversion finished without error
-    GTLogTracer l;
+    GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/bam/", "more_then_100000_reads.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::checkNoActiveWaiters(os);
-    GTUtilsLog::check(os, l);
+    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
     auto readsCount = GTUtilsAssemblyBrowser::getReadsCount(os);
     CHECK_SET_ERR(readsCount > 1000000, QString("Unexpected reads count, expected: >1000000, current: %1").arg(readsCount));
 }

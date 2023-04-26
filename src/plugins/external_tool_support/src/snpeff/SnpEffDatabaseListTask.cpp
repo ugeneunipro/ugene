@@ -25,6 +25,7 @@
 #include <QFileInfo>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/Settings.h>
 
 #include "SnpEffSupport.h"
@@ -41,6 +42,7 @@ SnpEffDatabaseListTask::SnpEffDatabaseListTask()
     if (dbListFilePath.isEmpty()) {
         dbListFilePath = AppContext::getSettings()->getValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, QVariant(""), true).toString();
     }
+    GCOUNTER(cvar, "ExternalTool_SnpEff");
 }
 
 void SnpEffDatabaseListTask::prepare() {

@@ -43,7 +43,7 @@ class AVAnnotationItem;
 class AVGroupItem;
 class AVItem;
 class AVQualifierItem;
-class GObjectView;
+class GObjectViewController;
 class RemoveItemsTask;
 class U2Qualifier;
 
@@ -121,7 +121,7 @@ private slots:
     void sl_onAddAnnotationObjectToView();
     void sl_removeObjectFromView();
     void sl_removeAnnsAndQs();
-    void sl_onBuildMenu(GObjectView* thiz, QMenu* menu, const QString& type);
+    void sl_onBuildMenu(GObjectViewController* thiz, QMenu* menu, const QString& type);
     void sl_onCopyQualifierValue();
     void sl_onCopyQualifierURL();
     void sl_onToggleQualifierColumn();

@@ -66,7 +66,7 @@ private:
 class U2VIEW_EXPORT MaEditorWgt : public QWidget {
     Q_OBJECT
 public:
-    MaEditorWgt(MaEditor* editor);
+    MaEditorWgt(MaEditor* editor, QWidget* parent);
 
     QWidget* createHeaderLabelWidget(const QString& text = QString(),
                                      Qt::Alignment ali = Qt::AlignCenter,

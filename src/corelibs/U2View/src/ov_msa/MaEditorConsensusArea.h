@@ -36,7 +36,7 @@ class QToolBar;
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class MSAConsensusAlgorithm;
 class MSAConsensusAlgorithmFactory;
 

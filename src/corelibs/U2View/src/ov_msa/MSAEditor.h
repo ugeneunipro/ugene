@@ -205,7 +205,7 @@ protected slots:
     }
 
 protected:
-    QWidget* createWidget() override;
+    QWidget* createViewWidget(QWidget* parent) override;
     void onAfterViewWindowInit() override;
 
     void initActions() override;
@@ -219,11 +219,11 @@ protected:
     void addAlignMenu(QMenu* m);
     void addExportMenu(QMenu* m) override;
     void addAppearanceMenu(QMenu* m, int uiIndex);
-    void addColorsMenu(QMenu* m, int index);
-    void addHighlightingMenu(QMenu* m);
-    void addNavigationMenu(QMenu* m);
-    void addTreeMenu(QMenu* m);
-    void addAdvancedMenu(QMenu* m);
+    void addColorsMenu(QMenu* m, int index) const;
+    void addHighlightingMenu(QMenu* m) const;
+    void addNavigationMenu(QMenu* m) const;
+    void addTreeMenu(QMenu* m) const;
+    void addAdvancedMenu(QMenu* m) const;
     void addStatisticsMenu(QMenu* m);
 
     void updateActions() override;

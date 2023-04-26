@@ -38,9 +38,9 @@ PositionSelector::PositionSelector(QWidget* p, qint64 s, qint64 e, bool fixedSiz
     init(fixedSize);
 
     QToolButton* goButton = new QToolButton(this);
-    goButton->setText(tr("Go!"));
+    goButton->setText(tr("Go"));
     goButton->setToolTip(tr("Go to position"));
-    goButton->setObjectName("Go!");
+    goButton->setObjectName("goButton");
     connect(goButton, SIGNAL(clicked(bool)), SLOT(sl_onButtonClicked(bool)));
 
     layout()->addWidget(goButton);
@@ -83,8 +83,8 @@ PositionSelector::PositionSelector(QDialog* dialog, qint64 rangeStart, qint64 ra
     init(false);
 
     QPushButton* okButton = new QPushButton(this);
-    okButton->setText(tr("Go!"));
-    okButton->setObjectName("okButton");
+    okButton->setText(tr("Go"));
+    okButton->setObjectName("goButton");
     okButton->setDefault(true);
     connect(okButton, SIGNAL(clicked(bool)), SLOT(sl_onButtonClicked(bool)));
 

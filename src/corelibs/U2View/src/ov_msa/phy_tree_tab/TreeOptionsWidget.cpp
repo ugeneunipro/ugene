@@ -115,7 +115,7 @@ void TreeOptionsWidget::createGroups() {
 }
 
 void TreeOptionsWidget::updateAllWidgets() {
-    OptionsMap settings = getTreeViewer()->getSelectionSettings();
+    QMap<TreeViewOption, QVariant> settings = getTreeViewer()->getSelectionSettings();
     QList<TreeViewOption> keyList = settings.keys();
     for (const TreeViewOption& option : qAsConst(keyList)) {
         sl_onOptionChanged(option, settings[option]);
@@ -129,7 +129,7 @@ void TreeOptionsWidget::sl_onOptionChanged(const TreeViewOption& option, const Q
             showNamesCheck->setChecked(value.toBool());
             alignLabelsCheck->setEnabled(showNamesCheck->isChecked());
             break;
-        case BRANCHES_TRANSFORMATION_TYPE:
+        case BRANCH_DEPTH_SCALE_MODE:
             treeViewCombo->setCurrentIndex(value.toInt());
             scalebarGroup->setEnabled(static_cast<TreeType>(value.toInt()) == PHYLOGRAM);
             break;
@@ -220,7 +220,7 @@ void TreeOptionsWidget::initializeOptionsMap() {
     optionsMap[breadthScaleAdjustmentSlider->objectName()] = BREADTH_SCALE_ADJUSTMENT_PERCENT;
     optionsMap[curvatureSlider->objectName()] = BRANCH_CURVATURE;
 
-    optionsMap[treeViewCombo->objectName()] = BRANCHES_TRANSFORMATION_TYPE;
+    optionsMap[treeViewCombo->objectName()] = BRANCH_DEPTH_SCALE_MODE;
     optionsMap[layoutCombo->objectName()] = TREE_LAYOUT_TYPE;
 }
 
@@ -290,7 +290,7 @@ void TreeOptionsWidget::createGeneralSettingsWidgets() {
 void TreeOptionsWidget::updateFormatSettings() {
     // Update labels format settings widgets
     auto treeViewerUi = getTreeViewer();
-    OptionsMap settings = treeViewerUi->getSelectionSettings();
+    QMap<TreeViewOption, QVariant> settings = treeViewerUi->getSelectionSettings();
 
     updateButtonColor(labelsColorButton, qvariant_cast<QColor>(settings[LABEL_COLOR]));
 

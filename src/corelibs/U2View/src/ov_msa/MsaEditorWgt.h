@@ -43,6 +43,7 @@ class U2VIEW_EXPORT MsaEditorWgt : public MaEditorWgt {
 
 public:
     MsaEditorWgt(MSAEditor* editor,
+                 QWidget* parent,
                  MaEditorOverviewArea* overview = nullptr,
                  MaEditorStatusBar* statusbar = nullptr);
 

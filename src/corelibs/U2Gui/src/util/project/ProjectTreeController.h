@@ -35,7 +35,7 @@ class QTreeView;
 namespace U2 {
 
 class EditableTreeView;
-class GObjectView;
+class GObjectViewController;
 class MWMDIWindow;
 class ProjectFilterProxyModel;
 class ProjectViewFilterModel;
@@ -57,7 +57,9 @@ public:
     void refreshObject(GObject* object);
     QAction* getLoadSeletectedDocumentsAction() const;
     void updateSettings(const ProjectTreeControllerModeSettings& settings);
-    QSet<Document*> getDocsInSelection(bool deriveFromObjects) const;
+
+    /** Returns a set that contains all selected documents plus documents with a selected objects. */
+    QSet<Document*> getDocumentSelectionDerivedFromObjects() const;
 
 private slots:
     void sl_onDocumentAdded(Document* doc);
@@ -78,8 +80,8 @@ private slots:
     void sl_onImportToDatabase();
     void sl_windowActivated(MWMDIWindow* w);
     void sl_windowDeactivated(MWMDIWindow* w);
-    void sl_objectAddedToActiveView(GObjectView* w, GObject* obj);
-    void sl_objectRemovedFromActiveView(GObjectView* w, GObject* obj);
+    void sl_objectAddedToActiveView(GObjectViewController* w, GObject* obj);
+    void sl_objectRemovedFromActiveView(GObjectViewController* w, GObject* obj);
     void sl_onResourceUserRegistered(const QString& res, Task* t);
     void sl_onResourceUserUnregistered(const QString& res, Task* t);
     void sl_onLoadingDocumentProgressChanged();
@@ -163,7 +165,7 @@ private:
     DocumentSelection documentSelection;
     FolderSelection folderSelection;
     GObjectSelection objectSelection;
-    QPointer<GObjectView> markActiveView;
+    QPointer<GObjectViewController> markActiveView;
     GObject* objectIsBeingRecycled;
 
     QHash<Task*, QHash<Document*, QSet<U2DataId>>> task2ObjectsBeingDeleted;

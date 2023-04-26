@@ -54,11 +54,11 @@ void FeaturesTableObjectTestData::init() {
     SAFE_POINT(ok, "dbi provider failed to initialize", );
 
     featureDbi = dbiProvider.getDbi()->getFeatureDbi();
-    SAFE_POINT(nullptr != featureDbi, "feature database not loaded", );
+    SAFE_POINT(featureDbi != nullptr, "feature database not loaded", );
 }
 
 U2FeatureDbi* FeaturesTableObjectTestData::getFeatureDbi() {
-    if (nullptr == featureDbi) {
+    if (featureDbi == nullptr) {
         init();
     }
     return featureDbi;
@@ -69,7 +69,7 @@ static U2DbiRef getDbiRef() {
 }
 
 void FeaturesTableObjectTestData::shutdown() {
-    if (nullptr != featureDbi) {
+    if (featureDbi != nullptr) {
         U2OpStatusImpl opStatus;
         dbiProvider.close();
         featureDbi = nullptr;

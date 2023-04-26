@@ -52,9 +52,9 @@ static const QString WD_SCHEMES_PATH = getCommonDataDir() + "cmdline/wd-sas-sche
 
 static U2ErrorType getActorDisplayName(const QString& actorId, QString& actorName) {
     U2::Workflow::ActorPrototypeRegistry* prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
-    CHECK(nullptr != prototypeRegistry, U2_INVALID_CALL);
+    CHECK(prototypeRegistry != nullptr, U2_INVALID_CALL);
     U2::Workflow::ActorPrototype* prototype = prototypeRegistry->getProto(actorId);
-    CHECK(nullptr != prototype, U2_UNKNOWN_ELEMENT);
+    CHECK(prototype != nullptr, U2_UNKNOWN_ELEMENT);
     actorName = prototype->getDisplayName();
     return U2_OK;
 }

@@ -132,12 +132,12 @@ void DelegateTags::set(const DelegateTags& other) {
 }
 
 QString DelegateTags::getString(const DelegateTags* tags, const QString& name) {
-    CHECK(nullptr != tags, "");
+    CHECK(tags != nullptr, "");
     return tags->get(name).toString();
 }
 
 QStringList DelegateTags::getStringList(const DelegateTags* tags, const QString& name) {
-    CHECK(nullptr != tags, QStringList());
+    CHECK(tags != nullptr, QStringList());
     return tags->get(name).toStringList();
 }
 

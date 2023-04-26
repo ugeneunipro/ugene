@@ -42,19 +42,19 @@ void ProjectFilterProxyModel::updateSettings(const ProjectTreeControllerModeSett
 
 ProjectViewModel* ProjectFilterProxyModel::sourceModel() const {
     auto srcModel = qobject_cast<ProjectViewModel*>(QSortFilterProxyModel::sourceModel());
-    SAFE_POINT(nullptr != srcModel, L10N::nullPointerError("project view model"), nullptr);
+    SAFE_POINT(srcModel != nullptr, L10N::nullPointerError("project view model"), nullptr);
     return srcModel;
 }
 
 QModelIndex ProjectFilterProxyModel::getIndexForDoc(Document* doc) const {
     ProjectViewModel* srcModel = sourceModel();
-    CHECK(nullptr != srcModel, QModelIndex());
+    CHECK(srcModel != nullptr, QModelIndex());
     return mapFromSource(srcModel->getIndexForDoc(doc));
 }
 
 bool ProjectFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const {
     ProjectViewModel* srcModel = sourceModel();
-    CHECK(nullptr != srcModel, false);
+    CHECK(srcModel != nullptr, false);
 
     const QModelIndex index = srcModel->index(sourceRow, 0, sourceParent);
     ProjectViewModel::Type itemType = srcModel->itemType(index);
@@ -71,10 +71,10 @@ bool ProjectFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex&
 }
 
 bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder* folder) const {
-    SAFE_POINT(nullptr != folder, "Invalid folder detected", false);
+    SAFE_POINT(folder != nullptr, "Invalid folder detected", false);
 
     ProjectViewModel* srcModel = sourceModel();
-    CHECK(nullptr != srcModel, true);
+    CHECK(srcModel != nullptr, true);
 
     const QString path = folder->getFolderPath();
 

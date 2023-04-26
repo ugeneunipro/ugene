@@ -42,17 +42,17 @@
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class TreeViewerUI;
 class TvBranchItem;
 class TvNodeItem;
 class TvTextItem;
 class TvRectangularBranchItem;
 
-class TreeViewer : public GObjectView {
+class TreeViewer : public GObjectViewController {
     Q_OBJECT
 public:
-    TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject);
+    TreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject, bool hasOptionsPanel = true);
 
     // from GObjectView
     void buildStaticToolbar(QToolBar* tb) override;
@@ -63,8 +63,6 @@ public:
     QVariantMap saveState() override;
 
     Task* updateViewTask(const QString& stateName, const QVariantMap& stateData) override;
-
-    OptionsPanel* getOptionsPanel() override;
 
     PhyTreeObject* getPhyObject() const {
         return phyObject;
@@ -89,7 +87,7 @@ public:
     }
 
 protected:
-    QWidget* createWidget() override;
+    QWidget* createViewWidget(QWidget* parent) override;
     void onObjectRenamed(GObject* obj, const QString& oldName) override;
 
 public:
@@ -147,7 +145,7 @@ class U2VIEW_EXPORT TreeViewerUI : public QGraphicsView {
     friend class TreeViewer;
 
 public:
-    explicit TreeViewerUI(TreeViewer* treeViewer);
+    explicit TreeViewerUI(TreeViewer* treeViewer, QWidget* parent);
     ~TreeViewerUI() override;
 
     /** Returns option value by looking up first in 'selectionSettings and next in the 'setting'. */
@@ -157,7 +155,7 @@ public:
     void setSettingsState(const QVariantMap& m);
 
     /** Returns current settings adjusted by 'selectionSettings'. */
-    OptionsMap getSelectionSettings() const;
+    QMap<TreeViewOption, QVariant> getSelectionSettings() const;
 
     TreeLayoutType getTreeLayoutType() const;
 
@@ -186,7 +184,7 @@ public:
     void updateOption(const TreeViewOption& option, const QVariant& newValue);
 
     /** Updates all options from the 'changedOptions' map. */
-    void updateOptions(const OptionsMap& changedOptions);
+    void updateOptions(const QMap<TreeViewOption, QVariant>& changedOptions);
 
 protected:
     void wheelEvent(QWheelEvent* e) override;
@@ -329,11 +327,9 @@ private:
     QGraphicsLineItem* legendItem = nullptr;
     QMenu* buttonPopup = nullptr;
 
-    /** Settings for the whole view. Saved & restored on view creation and applied to all new elements by default. */
-    OptionsMap settings;
+    QMap<TreeViewOption, QVariant> settings;
 
-    /** Settings override for the currently selected items. Contains only option that override 'settings' for the current selection. */
-    OptionsMap selectionSettingsDelta;
+    QMap<TreeViewOption, QVariant> selectionSettingsDelta;
 
     /** Current visible labels state on the scene. May be different from the state in options when is stale. */
     QFlags<LabelType> visibleLabelTypes;

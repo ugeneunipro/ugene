@@ -46,13 +46,13 @@ class ChromaViewContext : public GObjectViewWindowContext {
 public:
     ChromaViewContext(QObject* p);
 
-    bool canHandle(GObjectView* v, GObject* o) override;
+    bool canHandle(GObjectViewController* v, GObject* o) override;
 protected slots:
     void sl_showChromatogram();
     void sl_sequenceWidgetAdded(ADVSequenceWidget*);
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 class ChromaViewAction : public ADVSequenceWidgetAction {

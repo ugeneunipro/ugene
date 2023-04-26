@@ -108,7 +108,7 @@ void Dbi::init(const QHash<QString, QString>& properties, const QVariantMap& /*p
         objectDbi.reset();
         reader.reset();
         ioAdapter.reset();
-        if (nullptr != dbRef.handle) {
+        if (dbRef.handle != nullptr) {
             sqlite3_close(dbRef.handle);
             dbRef.handle = nullptr;
         }
@@ -128,7 +128,7 @@ QVariantMap Dbi::shutdown(U2OpStatus& os) {
         objectDbi.reset();
         reader.reset();
         ioAdapter.reset();
-        if (nullptr != dbRef.handle) {
+        if (dbRef.handle != nullptr) {
             sqlite3_close(dbRef.handle);
             dbRef.handle = nullptr;
         }

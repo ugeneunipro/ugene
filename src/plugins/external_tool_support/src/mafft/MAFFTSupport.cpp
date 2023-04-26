@@ -66,6 +66,9 @@ MAFFTSupport::MAFFTSupport()
     AlignmentAlgorithmsRegistry* registry = AppContext::getAlignmentAlgorithmsRegistry();
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignNewSequencesToAlignment));
     registry->registerAlgorithm(new MafftAlignSequencesToAlignmentAlgorithm(AlignSelectionToAlignment));
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::SpacesTemporaryDirPath;
+    }
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify() {
@@ -118,7 +121,7 @@ MAFFTSupportContext::MAFFTSupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void MAFFTSupportContext::initViewContext(GObjectView* view) {
+void MAFFTSupportContext::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);

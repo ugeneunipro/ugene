@@ -164,7 +164,7 @@ void MaConsensusModeWidget::sl_thresholdResetClicked(bool newState) {
     Q_UNUSED(newState);
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
     MSAConsensusAlgorithmFactory* factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
-    SAFE_POINT(nullptr != factory, "Consensus alorithm factory is NULL", );
+    SAFE_POINT(factory != nullptr, "Consensus alorithm factory is NULL", );
     sl_thresholdChanged(factory->getDefaultThreshold());
 }
 
@@ -174,7 +174,7 @@ void MaConsensusModeWidget::sl_thresholdChanged(int value) {
 
 void MaConsensusModeWidget::initConsensusTypeCombo() {
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT(nullptr != reg, "Consensus algorithm registry is NULL.", );
+    SAFE_POINT(reg != nullptr, "Consensus algorithm registry is NULL.", );
 
     const DNAAlphabet* alphabet = maObject->getAlphabet();
     curAlphabetId = alphabet->getId();

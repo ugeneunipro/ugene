@@ -23,6 +23,8 @@
 
 #include "StringTieSupport.h"
 
+#include <U2Core/Counter.h>
+
 namespace U2 {
 
 StringTieTaskSettings::StringTieTaskSettings() {
@@ -50,6 +52,7 @@ StringTieTaskSettings::StringTieTaskSettings() {
 StringTieTask::StringTieTask(const StringTieTaskSettings& settings)
     : ExternalToolSupportTask(tr("Assemble Transcripts with StringTie task"), TaskFlags_NR_FOSE_COSC),
       settings(settings) {
+    GCOUNTER(cvar, "ExternalTool_Stringtie");
 }
 
 void StringTieTask::prepare() {

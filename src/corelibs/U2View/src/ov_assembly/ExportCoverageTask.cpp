@@ -51,7 +51,7 @@ void GetAssemblyVisibleNameTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     U2AssemblyDbi* assemblyDbi = con.dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(nullptr != assemblyDbi, setError(tr("Assembly DBI is NULL")), );
+    SAFE_POINT_EXT(assemblyDbi != nullptr, setError(tr("Assembly DBI is NULL")), );
 
     const U2Assembly assembly = assemblyDbi->getAssemblyObject(assemblyId, stateInfo);
     CHECK_OP(stateInfo, );
@@ -80,13 +80,13 @@ void ExportCoverageTask::prepare() {
     QDir().mkpath(QFileInfo(settings.url).absoluteDir().absolutePath());
     if (settings.compress) {
         IOAdapterFactory* ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::GZIPPED_LOCAL_FILE);
-        SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError(tr("Can't write the compressed file: IOAdapterFactory is NULL")), );
+        SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError(tr("Can't write the compressed file: IOAdapterFactory is NULL")), );
         ioAdapter.reset(ioAdapterFactory->createIOAdapter());
         bool isSuccess = ioAdapter->open(settings.url, IOAdapterMode_Write);
         CHECK_EXT(isSuccess, setError(L10N::errorOpeningFileWrite(settings.url)), );
     } else {
         IOAdapterFactory* ioAdapterFactory = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
-        SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError(tr("Can't write the file: IOAdapterFactory is NULL")), );
+        SAFE_POINT_EXT(ioAdapterFactory != nullptr, setError(tr("Can't write the file: IOAdapterFactory is NULL")), );
         ioAdapter.reset(ioAdapterFactory->createIOAdapter());
         bool isSuccess = ioAdapter->open(settings.url, IOAdapterMode_Write);
         CHECK_EXT(isSuccess, setError(L10N::errorOpeningFileWrite(settings.url)), );
@@ -105,7 +105,7 @@ QList<Task*> ExportCoverageTask::onSubTaskFinished(Task* subTask) {
     return QList<Task*>();
 }
 Task::ReportResult ExportCoverageTask::report() {
-    if (nullptr != calculateTask) {
+    if (calculateTask != nullptr) {
         SAFE_POINT_EXT(!calculateTask->areThereUnprocessedResults(), setError(tr("Not all regions were processed")), ReportResult_Finished);
     }
     return ReportResult_Finished;
@@ -161,7 +161,7 @@ void ExportCoverageHistogramTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     U2AttributeDbi* attributeDbi = con.dbi->getAttributeDbi();
-    SAFE_POINT_EXT(nullptr != attributeDbi, setError(tr("Attribute DBI is NULL")), );
+    SAFE_POINT_EXT(attributeDbi != nullptr, setError(tr("Attribute DBI is NULL")), );
 
     const U2IntegerAttribute lengthAttribute = U2AttributeUtils::findIntegerAttribute(attributeDbi, assemblyId, U2BaseAttributeName::reference_length, stateInfo);
     CHECK_OP(stateInfo, );
@@ -235,7 +235,7 @@ QByteArray ExportCoveragePerBaseTask::toByteArray(const CoveragePerBaseInfo& inf
 }
 
 void ExportCoveragePerBaseTask::writeResult(const QVector<CoveragePerBaseInfo>* data) {
-    CHECK(nullptr != data, );
+    CHECK(data != nullptr, );
 
     foreach (const CoveragePerBaseInfo& info, *data) {
         alreadyProcessed++;

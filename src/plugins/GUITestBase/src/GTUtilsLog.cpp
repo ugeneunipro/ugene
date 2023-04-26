@@ -28,8 +28,7 @@
 namespace U2 {
 using namespace HI;
 
-GTLogTracer::GTLogTracer(const QString& expectedMessage)
-    : isExpectedMessageFound(false), expectedMessage(expectedMessage) {
+GTLogTracer::GTLogTracer() {
     LogServer::getInstance()->addListener(this);
 }
 
@@ -37,82 +36,54 @@ GTLogTracer::~GTLogTracer() {
     LogServer::getInstance()->removeListener(this);
 }
 
+/** Returns true if the message was produced by the GUI testing framework. */
+static bool isGuiTestSystemMessage(const QString& message) {
+    return message.contains("] GT_");
+}
+
 void GTLogTracer::onMessage(const LogMessage& msg) {
     if (msg.level == LogLevel_ERROR) {
-        errorsList << msg.text;
+        errorMessages << msg.text;
     }
-
-    if (!expectedMessage.isEmpty() && !msg.text.contains("] GT_") && msg.text.contains(expectedMessage)) {
-        isExpectedMessageFound = true;
-    }
+    allMessages << msg.text;
 }
 
-QList<LogMessage*> GTLogTracer::getMessages() {
-    return LogCache::getAppGlobalInstance()->messages;
+bool GTLogTracer::hasErrors() const {
+    return !errorMessages.isEmpty();
 }
 
-bool GTLogTracer::checkMessage(const QString& s) {
-    QList<LogMessage*> messages = getMessages();
-    for (LogMessage* message : qAsConst(messages)) {
-        if (message->text.contains(s, Qt::CaseInsensitive)) {
+QString GTLogTracer::getJoinedErrorString() const {
+    return errorMessages.isEmpty() ? "" : errorMessages.join("\n");
+}
+
+void GTLogTracer::clear() {
+    errorMessages.clear();
+    allMessages.clear();
+}
+
+static bool findMessage(const QString& substring, const QStringList& messages) {
+    for (const QString& message : qAsConst(messages)) {
+        if (!isGuiTestSystemMessage(message) && message.contains(substring, Qt::CaseInsensitive)) {
             return true;
         }
     }
     return false;
 }
+bool GTLogTracer::hasMessage(const QString& substring) const {
+    return findMessage(substring, allMessages);
+}
+
+bool GTLogTracer::hasError(const QString& substring) const {
+    return findMessage(substring, errorMessages);
+}
 
 #define GT_CLASS_NAME "GTUtilsLog"
-#define GT_METHOD_NAME "check"
-void GTUtilsLog::check(HI::GUITestOpStatus& os, const GTLogTracer& logTracer) {
-    GTThread::waitForMainThread();
-    GT_CHECK(!logTracer.hasErrors(), "There are errors in log: " + logTracer.errorsList.join("\n"));
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkContainsError"
-void GTUtilsLog::checkContainsError(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& messagePart) {
-    Q_UNUSED(os);
-    GTGlobals::sleep(500);
-    bool isErrorFound = false;
-    for (QString error : qAsConst(logTracer.errorsList)) {
-        if (error.contains(messagePart)) {
-            isErrorFound = true;
-            break;
-        }
-    }
-    GT_CHECK(isErrorFound, "The log doesn't contain error message: " + messagePart);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkContainsMessage"
-void GTUtilsLog::checkContainsMessage(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, bool expected) {
-    GT_CHECK(!logTracer.expectedMessage.isEmpty(), "'Expected message' is required by logTracer");
-    GTGlobals::sleep(500);
-    if (expected) {
-        GT_CHECK(logTracer.isExpectedMessageFound, "Expected message is not found: " + logTracer.expectedMessage);
-    } else {
-        GT_CHECK(!logTracer.isExpectedMessageFound, "Expected message is found, but should not: " + logTracer.expectedMessage);
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "getErrors"
-QStringList GTUtilsLog::getErrors(HI::GUITestOpStatus& /*os*/, const GTLogTracer& logTracer) {
-    QStringList result;
-    foreach (LogMessage* message, logTracer.getMessages()) {
-        if (message->level == LogLevel_ERROR) {
-            result << message->text;
-        }
-    }
-    return result;
-}
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMessageWithWait"
-void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& message, int timeoutMillis) {
+void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& lt, const QString& message, int timeoutMillis) {
     for (int time = 0; time < timeoutMillis; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        if (logTracer.checkMessage(message)) {
+        if (lt.hasMessage(message)) {
             return;
         }
     }
@@ -123,7 +94,7 @@ void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer
 #define GT_METHOD_NAME "checkMessageWithTextCount"
 void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus& os, const QString& messagePart, int expectedMessageCount, const QString& context) {
     int messageCount = 0;
-    QList<LogMessage*> messages = GTLogTracer::getMessages();
+    const QList<LogMessage*>& messages = LogCache::getAppGlobalInstance()->messages;
     for (auto message : qAsConst(messages)) {
         if (message->text.contains("checkMessageWithTextCount: Unexpected message count for text: '")) {
             continue;  // A harness message from one of the previous GT_CHECK calls. Contains the check message part.
@@ -136,15 +107,6 @@ void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus& os, const QStrin
                  .arg(expectedMessageCount)
                  .arg(messageCount)
                  .arg(context.isEmpty() ? "" : ", context: " + context));
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkNoErrorsInLog"
-void GTUtilsLog::checkNoErrorsInLog(HI::GUITestOpStatus& os) {
-    QList<LogMessage*> messages = GTLogTracer::getMessages();
-    for (LogMessage* message : qAsConst(messages)) {
-        GT_CHECK(message->level != LogLevel_ERROR, "Found error message in log: " + message->text);
-    }
 }
 #undef GT_METHOD_NAME
 

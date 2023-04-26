@@ -44,7 +44,7 @@ void ElapsedTimeUpdater::sl_taskFinished(Task*) {
 }
 
 ElapsedTimeUpdater::~ElapsedTimeUpdater() {
-    CHECK(nullptr != executedTask, );
+    CHECK(executedTask != nullptr, );
     qint64 newElapsedTime = executedTask->getTimeInfo().finishTime - executedTask->getTimeInfo().startTime;
     if (newElapsedTime > elapsedTime) {
         monitor->addTick(newElapsedTime - elapsedTime, runningActorId);

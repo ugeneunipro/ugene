@@ -84,7 +84,7 @@ void CrashHandler::handleException(const QString& exceptionType, const QString& 
         return;
     }
 
-    if (nullptr != crashHandlerPrivate) {
+    if (crashHandlerPrivate != nullptr) {
         crashHandlerPrivate->storeStackTrace();
     }
 
@@ -128,7 +128,7 @@ void CrashHandler::setupPrivateHandler() {
 #elif defined(Q_OS_WIN)
     crashHandlerPrivate = new CrashHandlerPrivateWin;
 #endif
-    SAFE_POINT(nullptr != crashHandlerPrivate, "Crash handler was not initialized: an unrecognized OS", );
+    SAFE_POINT(crashHandlerPrivate != nullptr, "Crash handler was not initialized: an unrecognized OS", );
     crashHandlerPrivate->setupHandler();
 }
 
@@ -203,7 +203,7 @@ QString CrashHandler::generateReport(const QString& exceptionType, int maxReport
         reportText += "None";
     }
 
-    const QString stackTrace = (nullptr != crashHandlerPrivate ? crashHandlerPrivate->getStackTrace() : "");
+    const QString stackTrace = (crashHandlerPrivate != nullptr ? crashHandlerPrivate->getStackTrace() : "");
     reportText += "|" + (stackTrace.isEmpty() ? "None" : stackTrace);
 
     return reportText;

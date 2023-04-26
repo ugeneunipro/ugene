@@ -92,13 +92,13 @@ Attribute* ExtimationsUtilsClass::getAttribute(const QString& attrStr, U2OpStatu
     CHECK_OP(os, nullptr);
 
     Actor* actor = schema->actorById(tokens[0]);
-    if (nullptr == actor) {
+    if (actor == nullptr) {
         os.setError("Unknown actor id: " + tokens[0]);
         return nullptr;
     }
 
     Attribute* attr = actor->getParameter(tokens[1]);
-    if (nullptr == attr) {
+    if (attr == nullptr) {
         os.setError("Wrong attribute string: " + attrStr);
         return nullptr;
     }
@@ -179,10 +179,10 @@ QString ExtimationsUtilsClass::fileFormat(const QString& url) {
     CHECK_JS(!result.isEmpty(), tr("Unknown file format: %1").arg(url), "");
 
     FormatDetectionResult r = result.first();
-    if (nullptr != r.format) {
+    if (r.format != nullptr) {
         return r.format->getFormatId();
     } else {
-        CHECK_JS(nullptr != r.importer, "NULL importer", "");
+        CHECK_JS(r.importer != nullptr, "NULL importer", "");
         return r.importer->getId();
     }
 }
@@ -224,13 +224,13 @@ bool ExtimationsUtilsClass::testAttr(const QString& attrStr) {
     CHECK_OP(os, false);
 
     Actor* actor = schema->actorById(tokens[0]);
-    if (nullptr == actor) {
+    if (actor == nullptr) {
         os.setError("Unknown actor id: " + tokens[0]);
         return false;
     }
 
     Attribute* attr = actor->getParameter(tokens[1]);
-    if (nullptr == attr) {
+    if (attr == nullptr) {
         os.setError("Wrong attribute string: " + attrStr);
         return false;
     }

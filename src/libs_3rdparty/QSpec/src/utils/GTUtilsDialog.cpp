@@ -19,12 +19,13 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTUtilsDialog.h"
+
 #include <QApplication>
 #include <QDateTime>
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "GTUtilsDialog.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
 #include "utils/GTThread.h"
@@ -109,23 +110,8 @@ void GUIDialogWaiter::checkDialog() {
 
             timer.stop();
             GTUtilsDialog::waiterList.removeOne(this);
-
-            try {
-                GTThread::waitForMainThread();
-                runnable->run();
-            } catch (GUITestOpStatus*) {
-                QWidget* popupWidget = QApplication::activePopupWidget();
-                while (popupWidget != nullptr) {
-                    GTWidget::close(os, popupWidget);
-                    popupWidget = QApplication::activePopupWidget();
-                }
-
-                QWidget* modalWidget = QApplication::activeModalWidget();
-                while (modalWidget != nullptr) {
-                    GTWidget::close(os, modalWidget);
-                    modalWidget = QApplication::activeModalWidget();
-                }
-            }
+            GTThread::waitForMainThread();
+            runnable->run();
         } else {
             waitingTime += DIALOG_CHECK_PERIOD;
             if (waitingTime > settings.timeout) {
@@ -138,6 +124,7 @@ void GUIDialogWaiter::checkDialog() {
             }
         }
     } catch (GUITestOpStatus*) {
+        qWarning("Caught exception in GUIDialogWaiter::checkDialog");
     }
 }
 #undef GT_METHOD_NAME
@@ -149,7 +136,9 @@ QList<GUIDialogWaiter*> GTUtilsDialog::waiterList = QList<GUIDialogWaiter*>();
 
 #define GT_METHOD_NAME "buttonBox"
 QDialogButtonBox* GTUtilsDialog::buttonBox(GUITestOpStatus& os, QWidget* dialog) {
-    return qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+    auto buttonBox = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+    GT_CHECK_RESULT(buttonBox != nullptr, "buttonBox is nullptr", nullptr);
+    return buttonBox;
 }
 #undef GT_METHOD_NAME
 
@@ -182,7 +171,6 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus& os, QWidget* dialog, QDialog
     }
 #else
     QDialogButtonBox* box = buttonBox(os, dialog);
-    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton* pushButton = box->button(button);
     GT_CHECK(pushButton != nullptr, "pushButton is NULL");
     GTWidget::click(os, pushButton);

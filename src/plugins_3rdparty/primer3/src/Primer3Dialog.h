@@ -26,6 +26,7 @@
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/RegionSelector.h>
+#include <U2Gui/U2SavableWidget.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
 
@@ -67,7 +68,8 @@ public:
 private:
     void reset();
     bool doDataExchange();
-    void showInvalidInputMessage(QWidget* field, QString fieldLabel);
+    bool updateErrorState(const QMap<QWidget*, bool>& widgetStates, const QStringList& errors);
+    QString getWidgetTemplateError(QWidget* wgt, const QString& errorWgtLabel = QString()) const;
 
 private slots:
     void sl_resetClicked();
@@ -84,6 +86,8 @@ private:
     Primer3TaskSettings* settings = nullptr;
     RegionSelector* rs = nullptr;
     ADVSequenceObjectContext* context = nullptr;
+
+    U2SavableWidget savableWidget;
 
     const Primer3TaskSettings defaultSettings;
 

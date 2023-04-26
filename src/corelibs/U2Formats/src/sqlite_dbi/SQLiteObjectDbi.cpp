@@ -313,7 +313,7 @@ void SQLiteObjectDbi::removeObjectAttributes(const U2DataId& id, U2OpStatus& os)
 
 void SQLiteObjectDbi::removeObjectModHistory(const U2DataId& id, U2OpStatus& os) {
     U2ModDbi* modDbi = dbi->getModDbi();
-    SAFE_POINT(nullptr != modDbi, "NULL Mod Dbi!", );
+    SAFE_POINT(modDbi != nullptr, "NULL Mod Dbi!", );
 
     modDbi->removeObjectMods(id, os);
 }
@@ -1182,7 +1182,7 @@ SQLiteDbi* SQLiteModificationAction::getDbi() const {
 /* SQLiteObjectDbiUtils */
 /************************************************************************/
 void SQLiteObjectDbiUtils::renameObject(SQLiteDbi* dbi, U2Object& object, const QString& newName, U2OpStatus& os) {
-    SAFE_POINT(nullptr != dbi, "NULL dbi!", );
+    SAFE_POINT(dbi != nullptr, "NULL dbi!", );
     SQLiteTransaction t(dbi->getDbRef(), os);
     Q_UNUSED(t);
 
@@ -1199,7 +1199,7 @@ void SQLiteObjectDbiUtils::renameObject(SQLiteDbi* dbi, U2Object& object, const 
 }
 
 void SQLiteObjectDbiUtils::renameObject(SQLiteModificationAction& updateAction, SQLiteDbi* dbi, U2Object& object, const QString& newName, U2OpStatus& os) {
-    SAFE_POINT(nullptr != dbi, "NULL dbi!", );
+    SAFE_POINT(dbi != nullptr, "NULL dbi!", );
     SQLiteTransaction t(dbi->getDbRef(), os);
     Q_UNUSED(t);
 

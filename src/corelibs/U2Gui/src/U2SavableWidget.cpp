@@ -41,9 +41,9 @@ Q_DECLARE_METATYPE(QVector<QVector<QString>>)
 
 namespace U2 {
 
-U2SavableWidget::U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
-    : wrappedWidget(wrappedWidget), contextWindow(contextWindow), widgetStateSaved(false) {
-    SAFE_POINT(nullptr != wrappedWidget, L10N::nullPointerError("wrapped widget"), );
+U2SavableWidget::U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow, const QStringList& _excludeWidgetIds)
+    : wrappedWidget(wrappedWidget), contextWindow(contextWindow), widgetStateSaved(false), excludeWidgetIds(_excludeWidgetIds) {
+    SAFE_POINT(wrappedWidget != nullptr, L10N::nullPointerError("wrapped widget"), );
 }
 
 U2SavableWidget::~U2SavableWidget() {
@@ -76,7 +76,7 @@ QSet<QString> U2SavableWidget::getChildIds() const {
 
 bool U2SavableWidget::childValueIsAcceptable(const QString& childId, const QVariant& value) const {
     Q_UNUSED(value);
-    return childExists(childId);
+    return childExists(childId) && !isExcluded(childId);
 }
 
 namespace {
@@ -192,10 +192,27 @@ QSet<QWidget*> U2SavableWidget::getCompoundChildren() const {
     return QSet<QWidget*>();
 }
 
+bool U2SavableWidget::isExcluded(const QString& childId) const {
+    CHECK(!excludeWidgetIds.contains(childId), true);
+
+    auto wgt = getChildWidgetById(childId);
+    CHECK(wgt != nullptr, false);
+
+    auto parent = wgt->parent();
+    while (parent != nullptr) {
+        auto parentName = parent->objectName();;
+        CHECK(!excludeWidgetIds.contains(parentName), true);
+
+        parent = parent->parent();
+    }
+
+    return false;
+}
+
 bool U2SavableWidget::childCanBeSaved(QWidget* child) const {
     const QString widgetName = child->objectName();
-    return ((nullptr != qobject_cast<QLineEdit*>(child) && nullptr == qobject_cast<QFontComboBox*>(child->parent()) && widgetName != "qt_spinbox_lineedit")  // skip fake line edit inside a spin box
-            || nullptr != qobject_cast<QTextEdit*>(child) || nullptr != qobject_cast<QComboBox*>(child) || (nullptr != qobject_cast<QAbstractButton*>(child) && qobject_cast<QAbstractButton*>(child)->isCheckable()) || (nullptr != qobject_cast<QGroupBox*>(child) && qobject_cast<QGroupBox*>(child)->isCheckable()) || nullptr != qobject_cast<QSpinBox*>(child) || nullptr != qobject_cast<QDoubleSpinBox*>(child) || nullptr != qobject_cast<QSlider*>(child) || nullptr != qobject_cast<QTableWidget*>(child) || nullptr != qobject_cast<ShowHideSubgroupWidget*>(child)) &&
+    return ((qobject_cast<QLineEdit*>(child) != nullptr && qobject_cast<QFontComboBox*>(child->parent()) == nullptr && widgetName != "qt_spinbox_lineedit")  // skip fake line edit inside a spin box
+            || qobject_cast<QTextEdit*>(child) != nullptr || qobject_cast<QComboBox*>(child) != nullptr || (qobject_cast<QAbstractButton*>(child) != nullptr && qobject_cast<QAbstractButton*>(child)->isCheckable()) || (qobject_cast<QGroupBox*>(child) != nullptr && qobject_cast<QGroupBox*>(child)->isCheckable()) || qobject_cast<QSpinBox*>(child) != nullptr || nullptr != qobject_cast<QDoubleSpinBox*>(child) || nullptr != qobject_cast<QSlider*>(child) || nullptr != qobject_cast<QTableWidget*>(child) || nullptr != qobject_cast<ShowHideSubgroupWidget*>(child)) &&
            !widgetName.isEmpty();
 }
 

@@ -308,7 +308,7 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task* subT
             Document* loadedDoc = proj->findDocumentByURL(url);
             if (loadedDoc != nullptr) {
                 Task* task = createLoadedDocTask(loadedDoc, mode == LoadRemoteDocumentMode_OpenView);
-                if (nullptr != task) {
+                if (task != nullptr) {
                     subTasks.append(task);
                 }
             } else {

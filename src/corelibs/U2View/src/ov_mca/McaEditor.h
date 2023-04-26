@@ -100,7 +100,7 @@ private slots:
     void sl_saveChromatogramState();
 
 protected:
-    QWidget* createWidget() override;
+    QWidget* createViewWidget(QWidget* parent) override;
     void initActions() override;
 
     QAction* showChromatogramsAction;

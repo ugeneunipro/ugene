@@ -164,7 +164,7 @@ bool ExportSequenceItem::isEmpty() const {
 }
 
 void ExportSequenceItem::setSequenceInfo(U2SequenceObject* seqObj) {
-    SAFE_POINT(nullptr != seqObj, L10N::nullPointerError("sequence object"), );
+    SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("sequence object"), );
 
     seqRef = seqObj->getEntityRef();
     name = seqObj->getGObjectName();
@@ -206,7 +206,7 @@ bool checkFrame(const QVector<U2Region>& regions, int frame) {
 
 ExportSequenceItem toRevComplement(ExportSequenceItem& ei, const U2DbiRef& resultDbiRef, U2OpStatus& os) {
     ExportSequenceItem complEi = ei;
-    CHECK_EXT(nullptr != ei.complTT, os.setError(ExportSequenceTask::tr("Complement translation not found")), complEi);
+    CHECK_EXT(ei.complTT != nullptr, os.setError(ExportSequenceTask::tr("Complement translation not found")), complEi);
 
     U2SequenceImporter importer(QVariantMap(), true);
     importer.startSequence(os, resultDbiRef, U2ObjectDbi::ROOT_FOLDER, ei.name + "|rev-compl", ei.circular);
@@ -247,7 +247,7 @@ ExportSequenceItem toRevComplement(ExportSequenceItem& ei, const U2DbiRef& resul
 QList<ExportSequenceItem> toAmino(ExportSequenceItem& ei, bool allFrames, const U2DbiRef& resultDbiRef, U2OpStatus& os) {
     QList<ExportSequenceItem> res;
 
-    CHECK_EXT(nullptr != ei.aminoTT, os.setError(ExportSequenceTask::tr("Amino translation not found")), res);
+    CHECK_EXT(ei.aminoTT != nullptr, os.setError(ExportSequenceTask::tr("Amino translation not found")), res);
     SAFE_POINT(ei.aminoTT->isThree2One(), "Invalid amino translation", res);
 
     const int nFrames = allFrames ? 3 : 1;
@@ -316,7 +316,7 @@ QList<ExportSequenceItem> toAmino(ExportSequenceItem& ei, bool allFrames, const 
 
 ExportSequenceItem backToNucleic(ExportSequenceItem& ei, bool mostProbable, const U2DbiRef& resultDbiRef, U2OpStatus& os) {
     ExportSequenceItem backEi = ei;
-    CHECK_EXT(nullptr != ei.backTT, os.setError(ExportSequenceTask::tr("Back-translation not found")), backEi);
+    CHECK_EXT(ei.backTT != nullptr, os.setError(ExportSequenceTask::tr("Back-translation not found")), backEi);
     SAFE_POINT(ei.backTT->isOne2Three(), "Invalid reverse translation", backEi);
 
     U2SequenceImporter importer(QVariantMap(), true);
@@ -325,7 +325,7 @@ ExportSequenceItem backToNucleic(ExportSequenceItem& ei, bool mostProbable, cons
 
     // translate
     const DNATranslation1to3Impl* trans = dynamic_cast<const DNATranslation1to3Impl*>(ei.backTT);
-    SAFE_POINT(nullptr != trans, L10N::nullPointerError("DNA translation"), backEi);
+    SAFE_POINT(trans != nullptr, L10N::nullPointerError("DNA translation"), backEi);
     const BackTranslationMode translationMode = mostProbable ? USE_MOST_PROBABLE_CODONS : USE_FREQUENCE_DISTRIBUTION;
 
     U2SequenceObject seqObject(ei.name, ei.seqRef);

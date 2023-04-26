@@ -38,29 +38,29 @@ McaEditorContext::McaEditorContext(QObject* parent)
 
 void McaEditorContext::sl_exportMca2Msa() {
     GObjectViewAction* action = qobject_cast<GObjectViewAction*>(sender());
-    SAFE_POINT(nullptr != action, "action is NULL", );
+    SAFE_POINT(action != nullptr, "action is NULL", );
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(action->getObjectView());
-    SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
+    SAFE_POINT(mcaEditor != nullptr, "Mca Editor is NULL", );
 
     MultipleChromatogramAlignmentObject* mcaObject = mcaEditor->getMaObject();
     ExportUtils::launchExportMca2MsaTask(mcaObject);
 }
 
-void McaEditorContext::initViewContext(GObjectView* view) {
+void McaEditorContext::initViewContext(GObjectViewController* view) {
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(view);
-    SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
-    CHECK(nullptr != mcaEditor->getMaObject(), );
+    SAFE_POINT(mcaEditor != nullptr, "Mca Editor is NULL", );
+    CHECK(mcaEditor->getMaObject() != nullptr, );
 
     GObjectViewAction* action = new GObjectViewAction(this, view, tr("Export alignment without chromatograms..."));
     connect(action, SIGNAL(triggered()), SLOT(sl_exportMca2Msa()));
     addViewAction(action);
 }
 
-void McaEditorContext::buildStaticOrContextMenu(GObjectView* view, QMenu* menu) {
+void McaEditorContext::buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) {
     McaEditor* mcaEditor = qobject_cast<McaEditor*>(view);
-    SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
-    SAFE_POINT(nullptr != menu, "Menu is NULL", );
-    CHECK(nullptr != mcaEditor->getMaObject(), );
+    SAFE_POINT(mcaEditor != nullptr, "Mca Editor is NULL", );
+    SAFE_POINT(menu != nullptr, "Menu is NULL", );
+    CHECK(mcaEditor->getMaObject() != nullptr, );
 
     QList<GObjectViewAction*> list = getViewActions(view);
     SAFE_POINT(1 == list.size(), "List size is incorrect", );

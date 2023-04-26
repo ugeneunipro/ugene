@@ -83,7 +83,7 @@ TvBranchItem::TvBranchItem(TvBranchItem* parentTvBranch, const PhyBranch* _phyBr
     }
 }
 
-void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
+void TvBranchItem::updateSettings(const QMap<TreeViewOption, QVariant>& newSettings) {
     prepareGeometryChange();
     settings = newSettings;
     int penWidth = settings[BRANCH_THICKNESS].toInt();
@@ -113,7 +113,7 @@ void TvBranchItem::updateSettings(const OptionsMap& newSettings) {
     updateLabelPositions();
 }
 
-const OptionsMap& TvBranchItem::getSettings() const {
+const QMap<TreeViewOption, QVariant>& TvBranchItem::getSettings() const {
     return settings;
 }
 

@@ -61,7 +61,7 @@ ChromaViewContext::ChromaViewContext(QObject* p)
     : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
 }
 
-void ChromaViewContext::initViewContext(GObjectView* v) {
+void ChromaViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
     foreach (ADVSequenceWidget* w, av->getSequenceWidgets()) {
         sl_sequenceWidgetAdded(w);
@@ -130,7 +130,7 @@ void ChromaViewContext::sl_showChromatogram() {
     }
 }
 
-bool ChromaViewContext::canHandle(GObjectView* v, GObject* o) {
+bool ChromaViewContext::canHandle(GObjectViewController* v, GObject* o) {
     Q_UNUSED(v);
     return qobject_cast<DNAChromatogramObject*>(o) != nullptr;
 }

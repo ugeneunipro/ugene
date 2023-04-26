@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DataPathRegistry.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2Formats/ConvertFileTask.h>
 
@@ -60,6 +61,9 @@ BedtoolsSupport::BedtoolsSupport(const QString& path)
     if (dpr != nullptr) {
         U2DataPath* dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
+    }
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments;
     }
 }
 

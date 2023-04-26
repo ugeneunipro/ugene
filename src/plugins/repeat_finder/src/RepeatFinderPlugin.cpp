@@ -96,7 +96,7 @@ RepeatViewContext::RepeatViewContext(QObject* p)
     : GObjectViewWindowContext(p, AnnotatedDNAViewFactory::ID) {
 }
 
-void RepeatViewContext::initViewContext(GObjectView* v) {
+void RepeatViewContext::initViewContext(GObjectViewController* v) {
     auto av = qobject_cast<AnnotatedDNAView*>(v);
     ADVGlobalAction* a = new ADVGlobalAction(av, QIcon(":repeat_finder/images/repeats.png"), tr("Find repeats..."), 40);
     a->addAlphabetFilter(DNAAlphabet_NUCL);

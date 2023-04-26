@@ -53,7 +53,7 @@ PhmmerSearchTask::PhmmerSearchTask(const PhmmerSearchSettings& settings)
       phmmerTask(nullptr),
       parseTask(nullptr),
       removeWorkingDir(false) {
-    GCOUNTER(cvar, "HMMER Search");
+    GCOUNTER(cvar, "ExternalTool_HMMER");
     SAFE_POINT_EXT(settings.validate(), setError("Settings are invalid"), );
 }
 

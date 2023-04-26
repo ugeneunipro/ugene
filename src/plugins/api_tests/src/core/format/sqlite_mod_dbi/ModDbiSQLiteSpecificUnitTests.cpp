@@ -49,7 +49,7 @@ SQLiteDbi* ModSQLiteSpecificTestData::sqliteDbi = nullptr;
 const QString ModSQLiteSpecificTestData::TEST_MSA_NAME = "Test alignment";
 
 void ModSQLiteSpecificTestData::init() {
-    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(sqliteDbi == nullptr, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_MSA_DB_URL, false);
@@ -73,7 +73,7 @@ void ModSQLiteSpecificTestData::init() {
 }
 
 void ModSQLiteSpecificTestData::shutdown() {
-    if (nullptr != sqliteDbi) {
+    if (sqliteDbi != nullptr) {
         U2OpStatusImpl os;
         sqliteDbi->shutdown(os);
         SAFE_POINT_OP(os, );
@@ -83,7 +83,7 @@ void ModSQLiteSpecificTestData::shutdown() {
 }
 
 void ModSQLiteSpecificTestData::cleanUpAllModSteps() {
-    if (nullptr != sqliteDbi) {
+    if (sqliteDbi != nullptr) {
         U2OpStatusImpl os;
         SQLiteWriteQuery qSingle("DELETE FROM SingleModStep", sqliteDbi->getDbRef(), os);
         SQLiteWriteQuery qMulti("DELETE FROM MultiModStep", sqliteDbi->getDbRef(), os);
@@ -96,7 +96,7 @@ void ModSQLiteSpecificTestData::cleanUpAllModSteps() {
 }
 
 SQLiteDbi* ModSQLiteSpecificTestData::getSQLiteDbi() {
-    if (nullptr == sqliteDbi) {
+    if (sqliteDbi == nullptr) {
         init();
     }
     return sqliteDbi;

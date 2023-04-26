@@ -41,14 +41,14 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt* ui)
     initRenderer();
     setupFontAndHeight();
 
-    connect(editor, SIGNAL(si_buildMenu(GObjectView*, QMenu*, const QString&)), SLOT(sl_buildMenu(GObjectView*, QMenu*, const QString&)));
+    connect(editor, &GObjectViewController::si_buildMenu, this, &MSAEditorConsensusArea::sl_buildMenu);
 }
 
 QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
     return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, minReportPercent, maxReportChars);
 }
 
-void MSAEditorConsensusArea::sl_buildMenu(GObjectView* /*view*/, QMenu* menu, const QString& menuType) {
+void MSAEditorConsensusArea::sl_buildMenu(GObjectViewController* /*view*/, QMenu* menu, const QString& menuType) {
     if (menuType == MsaEditorMenuType::CONTEXT || menuType == MsaEditorMenuType::STATIC) {
         buildMenu(menu);
     }

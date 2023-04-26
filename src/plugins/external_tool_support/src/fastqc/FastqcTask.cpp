@@ -25,6 +25,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/Counter.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/GUrlUtils.h>
@@ -115,6 +116,7 @@ FastQCTask::FastQCTask(const FastQCSetting& settings)
     : ExternalToolSupportTask(QString("FastQC for %1").arg(settings.inputFileUrl), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText),
       settings(settings),
       temporaryDir(AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath() + "/") {
+    GCOUNTER(cvar, "ExternalTool_FastQC");
 }
 
 void FastQCTask::prepare() {

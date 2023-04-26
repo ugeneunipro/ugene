@@ -76,7 +76,7 @@ Task* MarkSequenceWorker::tick() {
         QVariantMap data = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = data.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (nullptr == seqObj.data()) {
+        if (seqObj.data() == nullptr) {
             return nullptr;
         }
         U2OpStatusImpl os;

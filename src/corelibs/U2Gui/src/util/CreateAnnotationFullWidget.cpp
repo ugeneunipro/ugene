@@ -207,7 +207,7 @@ void CreateAnnotationFullWidget::setDescription(const QString& description) {
 
 QString CreateAnnotationFullWidget::getAnnotationTypeString() const {
     QListWidgetItem* currentItem = lwAnnotationType->currentItem();
-    SAFE_POINT(nullptr != currentItem, "Annotation type is not selected", "");
+    SAFE_POINT(currentItem != nullptr, "Annotation type is not selected", "");
     return currentItem->text();
 }
 
@@ -224,14 +224,7 @@ QString CreateAnnotationFullWidget::getDescription() const {
 }
 
 QString CreateAnnotationFullWidget::getLocationString() const {
-    const QString location = leLocation->text();
-    if (isValidLocation) {
-        return location;
-    }
-    if (location.startsWith("complement(") && location.endsWith(")")) {
-        return "complement()";
-    }
-    return QString();
+    return leLocation->text();
 }
 
 bool CreateAnnotationFullWidget::isUsePatternNamesChecked() const {
@@ -281,7 +274,11 @@ void CreateAnnotationFullWidget::sl_regionChanged() {
     CHECK(ok, );
     qint64 endPos = leRegionEnd->text().toLongLong(&ok);
     CHECK(ok, );
-    isValidLocation = (startPos >= 1 && startPos <= seqLen && endPos >= 1 && endPos <= seqLen);
+    isValidLocation = startPos >= 1 && startPos <= seqLen && endPos >= 1 && endPos <= seqLen;
+    if (!isValidLocation) {
+        leLocation->setText("");
+        return;
+    }
 
     U2Location location;
     if (startPos > endPos) {  // split (200..100) to (200..len,1..100)

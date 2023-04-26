@@ -108,7 +108,7 @@ void MusclePlugin::sl_runWithExtFileSpecify() {
     AppContext::getTaskScheduler()->registerTopLevelTask(muscleTask);
 }
 
-MuscleAction::MuscleAction(QObject* p, GObjectView* v, const QString& text, int order, bool isAlignSelectionAction)
+MuscleAction::MuscleAction(QObject* p, GObjectViewController* v, const QString& text, int order, bool isAlignSelectionAction)
     : GObjectViewAction(p, v, text, order) {
     setIcon(QIcon(":umuscle/images/muscle_16.png"));
 
@@ -130,7 +130,7 @@ MuscleMSAEditorContext::MuscleMSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void MuscleMSAEditorContext::initViewContext(GObjectView* view) {
+void MuscleMSAEditorContext::initViewContext(GObjectViewController* view) {
     view->registerActionProvider(this);
 
     auto alignAction = new MuscleAction(this, view, tr("Align with MUSCLE…"), 1000);

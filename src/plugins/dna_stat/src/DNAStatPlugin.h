@@ -44,10 +44,10 @@ public:
 
 protected slots:
     void sl_showMSAProfileDialog();
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 
 private:
     /* Alignment length limint for opening grid report in UGENE */
@@ -61,10 +61,10 @@ public:
 
 protected slots:
     void sl_showDistanceMatrixDialog();
-    void buildStaticOrContextMenu(GObjectView* view, QMenu* menu) override;
+    void buildStaticOrContextMenu(GObjectViewController* view, QMenu* menu) override;
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectViewController* view) override;
 };
 
 }  // namespace U2

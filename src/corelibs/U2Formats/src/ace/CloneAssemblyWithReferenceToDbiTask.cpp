@@ -69,15 +69,15 @@ void CloneAssemblyWithReferenceToDbiTask::run() {
     delete cloneReferenceTask->getSourceObject();
 
     QScopedPointer<GObject> clonedObject(cloneAssemblyTask->takeResult());
-    SAFE_POINT_EXT(nullptr != clonedObject, setError(tr("Can't get the cloned object")), );
+    SAFE_POINT_EXT(clonedObject != nullptr, setError(tr("Can't get the cloned object")), );
     QScopedPointer<AssemblyObject> clonedAssemblyObject(qobject_cast<AssemblyObject*>(clonedObject.data()));
-    SAFE_POINT_EXT(nullptr != clonedAssemblyObject, setError(tr("Unexpected result object: expect AssemblyObject, got %1 object").arg(clonedObject->getGObjectType())), );
+    SAFE_POINT_EXT(clonedAssemblyObject != nullptr, setError(tr("Unexpected result object: expect AssemblyObject, got %1 object").arg(clonedObject->getGObjectType())), );
     clonedObject.take();
 
     clonedObject.reset(cloneReferenceTask->takeResult());
-    SAFE_POINT_EXT(nullptr != clonedObject, setError(tr("Can't get the cloned object")), );
+    SAFE_POINT_EXT(clonedObject != nullptr, setError(tr("Can't get the cloned object")), );
     QScopedPointer<U2SequenceObject> clonedSequenceObject(qobject_cast<U2SequenceObject*>(clonedObject.data()));
-    SAFE_POINT_EXT(nullptr != clonedSequenceObject, setError(tr("Unexpected result object: expect U2SequenceObject, got %1 object").arg(clonedObject->getGObjectType())), );
+    SAFE_POINT_EXT(clonedSequenceObject != nullptr, setError(tr("Unexpected result object: expect U2SequenceObject, got %1 object").arg(clonedObject->getGObjectType())), );
     clonedObject.take();
 
     DbiConnection con(dstDbiRef, stateInfo);

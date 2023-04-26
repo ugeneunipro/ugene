@@ -76,6 +76,7 @@ const QString MsaEditorMenuType::ALIGN_SELECTED_SEQUENCES_TO_ALIGNMENT("msa_edit
 MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
       treeManager(this) {
+    optionsPanelController = new OptionsPanelController(this);
     selectionController = new MaEditorSelectionController(this);
     connect(maObject, SIGNAL(si_rowsRemoved(const QList<qint64>&)), SLOT(sl_rowsRemoved(const QList<qint64>&)));
 
@@ -205,7 +206,7 @@ void MSAEditor::sl_buildTree() {
 }
 
 bool MSAEditor::onObjectRemoved(GObject* obj) {
-    bool result = GObjectView::onObjectRemoved(obj);
+    bool result = GObjectViewController::onObjectRemoved(obj);
 
     for (int i = 0; i < getUI()->getChildrenCount(); i++) {
         obj->disconnect(getMaEditorWgt(i)->getSequenceArea());
@@ -239,7 +240,7 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
         }
     }
 
-    // Save toolbar for future switching singleline <-> multiline modes
+    // Save toolbar for future switching single-line <-> multiline modes
     this->staticToolBar = tb;
     tb->addAction(getMaEditorWgt(0)->copyFormattedSelectionAction);
 
@@ -267,7 +268,7 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(multilineViewAction);
     tb->addSeparator();
 
-    GObjectView::buildStaticToolbar(tb);
+    GObjectViewController::buildStaticToolbar(tb);
 }
 
 void MSAEditor::buildMenu(QMenu* m, const QString& type) {
@@ -276,12 +277,12 @@ void MSAEditor::buildMenu(QMenu* m, const QString& type) {
         return;
     }
 
-    // Save menu for future switching singleline <-> multiline modes
+    // Save menu for future switching single-line <-> multiline modes
     this->staticMenu = m;
     this->staticMenuType = type;
 
-    // create menu for 0th child, as all children use the same sequeance
-    // so menu action's result will applyed to all lines
+    // create menu for 0th child, as all children use the same sequence
+    // so menu action's result will applied to all lines
     addAppearanceMenu(m, 0);
 
     addNavigationMenu(m);
@@ -306,7 +307,7 @@ void MSAEditor::buildMenu(QMenu* m, const QString& type) {
 }
 
 void MSAEditor::fillMenu(QMenu* m, const QString& type) {
-    GObjectView::buildMenu(m, type);
+    GObjectViewController::buildMenu(m, type);
 }
 
 void MSAEditor::addCopyPasteMenu(QMenu* m, int uiIndex) {
@@ -410,7 +411,7 @@ void MSAEditor::addAppearanceMenu(QMenu* m, int uiIndex) {
     appearanceMenu->addAction(multilineViewAction);
 }
 
-void MSAEditor::addColorsMenu(QMenu* m, int index) {
+void MSAEditor::addColorsMenu(QMenu* m, int index) const {
     QMenu* colorsSchemeMenu = m->addMenu(tr("Colors"));
     colorsSchemeMenu->menuAction()->setObjectName("Colors");
     colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
@@ -420,7 +421,7 @@ void MSAEditor::addColorsMenu(QMenu* m, int index) {
     }
     colorsSchemeMenu->addSeparator();
 
-    QMenu* customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
+    auto customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
     customColorSchemaMenu->menuAction()->setObjectName("Custom schemes");
 
     foreach (QAction* a, sequenceArea->customColorSchemeMenuActions) {
@@ -437,8 +438,8 @@ void MSAEditor::addColorsMenu(QMenu* m, int index) {
     m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), colorsSchemeMenu);
 }
 
-void MSAEditor::addHighlightingMenu(QMenu* m) {
-    QMenu* highlightSchemeMenu = new QMenu(tr("Highlighting"), nullptr);
+void MSAEditor::addHighlightingMenu(QMenu* m) const {
+    auto highlightSchemeMenu = new QMenu(tr("Highlighting"), nullptr);
 
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
 
@@ -451,7 +452,7 @@ void MSAEditor::addHighlightingMenu(QMenu* m) {
     m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), highlightSchemeMenu);
 }
 
-void MSAEditor::addNavigationMenu(QMenu* m) {
+void MSAEditor::addNavigationMenu(QMenu* m) const {
     QMenu* navMenu = m->addMenu(tr("Navigation"));
     navMenu->menuAction()->setObjectName(MSAE_MENU_NAVIGATION);
     navMenu->addAction(gotoAction);
@@ -460,14 +461,14 @@ void MSAEditor::addNavigationMenu(QMenu* m) {
     navMenu->addAction(searchInSequenceNamesAction);
 }
 
-void MSAEditor::addTreeMenu(QMenu* m) {
+void MSAEditor::addTreeMenu(QMenu* m) const {
     QMenu* em = m->addMenu(tr("Tree"));
     // em->setIcon(QIcon(":core/images/tree.png"));
     em->menuAction()->setObjectName(MSAE_MENU_TREES);
     em->addAction(buildTreeAction);
 }
 
-void MSAEditor::addAdvancedMenu(QMenu* m) {
+void MSAEditor::addAdvancedMenu(QMenu* m) const {
     QMenu* menu = m->addMenu(tr("Advanced"));
     menu->menuAction()->setObjectName(MSAE_MENU_ADVANCED);
 
@@ -484,18 +485,18 @@ void MSAEditor::addStatisticsMenu(QMenu* m) {
     em->menuAction()->setObjectName(MSAE_MENU_STATISTICS);
 }
 
-QWidget* MSAEditor::createWidget() {
-    Q_ASSERT(ui == nullptr);
+QWidget* MSAEditor::createViewWidget(QWidget* parent) {
+    SAFE_POINT(ui == nullptr, "UI is already created", ui);
 
     Settings* s = AppContext::getSettings();
-    bool sMultilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
 
     // Use false for multilineMode while creating widget
     multilineMode = false;
-    ui = new MsaEditorMultilineWgt(this, multilineMode);
+    ui = new MsaEditorMultilineWgt(this, parent, multilineMode);
     new MoveToObjectMaController(this, ui);
 
     // Now restore multiline mode from settings
+    bool sMultilineMode = s->getValue(getSettingsRoot() + MSAE_MULTILINE_MODE, false).toBool();
     setMultilineMode(sMultilineMode);
     multilineViewAction->setChecked(sMultilineMode);
 
@@ -507,6 +508,7 @@ QWidget* MSAEditor::createWidget() {
 }
 
 void MSAEditor::onAfterViewWindowInit() {
+    sl_hideTreeOP();
     getUI()->getUI(0)->getSequenceArea()->setFocus();
 }
 
@@ -563,7 +565,6 @@ void MSAEditor::initActions() {
     unsetReferenceSequenceAction->setObjectName("unset_reference");
     connect(unsetReferenceSequenceAction, SIGNAL(triggered()), SLOT(sl_unsetReferenceSeq()));
 
-    optionsPanel = new OptionsPanel(this);
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
 
     QList<OPFactoryFilterVisitorInterface*> filters;
@@ -571,7 +572,7 @@ void MSAEditor::initActions() {
 
     QList<OPWidgetFactory*> opWidgetFactories = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactories) {
-        optionsPanel->addGroup(factory);
+        optionsPanelController->addGroup(factory);
     }
 
     connect(alignSelectedSequencesToAlignmentAction, &QAction::triggered, this, &MSAEditor::sl_alignSelectedSequencesToAlignment);
@@ -584,8 +585,6 @@ void MSAEditor::initActions() {
     connect(gotoAction, &QAction::triggered, getMaEditorMultilineWgt(), &MaEditorMultilineWgt::sl_goto);
 
     qDeleteAll(filters);
-
-    sl_hideTreeOP();
 
     treeManager.loadRelatedTrees();
 }
@@ -629,10 +628,8 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint& /*pos*/) {
 }
 
 void MSAEditor::sl_showTreeOP() {
-    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
-    if (opWidget == nullptr) {
-        return;
-    }
+    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanelController->getContentWidget());
+    SAFE_POINT(opWidget != nullptr, "Options panel has no content widget", );
 
     QWidget* addTreeGroupWidget = opWidget->findOptionsWidgetByGroupId("OP_MSA_ADD_TREE_WIDGET");
     if (addTreeGroupWidget != nullptr) {
@@ -652,10 +649,9 @@ void MSAEditor::sl_showTreeOP() {
 }
 
 void MSAEditor::sl_hideTreeOP() {
-    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanel->getMainWidget());
-    if (opWidget == nullptr) {
-        return;
-    }
+    auto opWidget = dynamic_cast<OptionsPanelWidget*>(optionsPanelController->getContentWidget());
+    SAFE_POINT(opWidget != nullptr, "Options panel has no content widget", );
+
     GroupHeaderImageWidget* header = opWidget->findHeaderWidgetByGroupId("OP_MSA_TREES_WIDGET");
     QWidget* groupWidget = opWidget->findOptionsWidgetByGroupId("OP_MSA_TREES_WIDGET");
     bool openAddTreeGroup = groupWidget != nullptr;
@@ -672,7 +668,7 @@ void MSAEditor::sl_hideTreeOP() {
 
 bool MSAEditor::eventFilter(QObject*, QEvent* e) {
     if (e->type() == QEvent::DragEnter || e->type() == QEvent::Drop) {
-        QDropEvent* de = (QDropEvent*)e;
+        auto de = (QDropEvent*)e;
         const QMimeData* md = de->mimeData();
         auto gomd = qobject_cast<const GObjectMimeData*>(md);
         if (gomd != nullptr) {
@@ -718,19 +714,13 @@ void MSAEditor::sl_alignNewSequencesToAlignment() {
 }
 
 void MSAEditor::sl_searchInSequences() {
-    auto optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when search in sequences was initiated!", );
     QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInSequences();
-    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
+    optionsPanelController->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
 void MSAEditor::sl_searchInSequenceNames() {
-    auto optionsPanel = getOptionsPanel();
-    SAFE_POINT(optionsPanel != nullptr, "Internal error: options panel is NULL"
-                                        " when search in sequence names was initiated!", );
     QVariantMap options = FindPatternMsaWidgetFactory::getOptionsToActivateSearchInNames();
-    optionsPanel->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
+    optionsPanelController->openGroupById(FindPatternMsaWidgetFactory::getGroupId(), options);
 }
 
 void MSAEditor::sl_alignSelectedSequencesToAlignment() {
@@ -945,8 +935,7 @@ void MSAEditor::updateCollapseModel() {
             maRowIdsOfNonCollapsedRowsBefore += group->maRowIds.toSet();
         }
     }
-    for (int i = 0; i < rowGroups.size(); i++) {
-        const QList<int>& maRowsInGroup = rowGroups[i];
+    for (const auto & maRowsInGroup : qAsConst(rowGroups)) {
         QList<qint64> maRowIdsInGroup = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(maRowsInGroup);
         bool isCollapsed = !maRowIdsOfNonCollapsedRowsBefore.contains(maRowIdsInGroup[0]);
         newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, maRowIdsInGroup, isCollapsed);
@@ -989,7 +978,7 @@ MaEditorSelectionController* MSAEditor::getSelectionController() const {
 
 void MSAEditor::sl_exportImage() {
     MSAImageExportController controller(getMaEditorWgt());
-    QWidget* parentWidget = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
+    auto parentWidget = (QWidget*)AppContext::getMainWindow()->getQMainWindow();
     QString fileName = GUrlUtils::fixFileName(maObject->getGObjectName());
     QObjectScopedPointer<ExportImageDialog> dlg = new ExportImageDialog(&controller,
                                                                         ExportImageDialog::MSA,

@@ -22,6 +22,7 @@
 #include "Bowtie2Support.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -78,6 +79,12 @@ Bowtie2Support::Bowtie2Support(const QString& id)
         description = tr("<i>Bowtie 2 index inspector</i>"
                          " extracts information from a Bowtie index about what kind"
                          " of index it is and what reference sequence were used to build it.");
+    }
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinArguments
+                   << ExternalTool::PathChecks::NonLatinTemporaryDirPath
+                   << ExternalTool::PathChecks::NonLatinToolPath
+                   << ExternalTool::PathChecks::NonLatinIndexPath;
     }
 }
 

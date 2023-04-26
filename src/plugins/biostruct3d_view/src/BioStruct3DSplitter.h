@@ -35,7 +35,7 @@ class BioStruct3DObject;
 class BioStruct3DGLWidget;
 class AnnotatedDNAView;
 class GObject;
-class GObjectView;
+class GObjectViewController;
 class SplitterHeaderWidget;
 class Document;
 class GLFrameManager;

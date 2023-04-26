@@ -35,7 +35,7 @@ namespace U2 {
 class Task;
 class ADVSequenceObjectContext;
 class ADVSequenceWidget;
-class GObjectView;
+class GObjectViewController;
 class LRegionsSelection;
 
 class DotPlotImageExportSettings;

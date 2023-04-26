@@ -211,12 +211,12 @@ void BaseWorker::saveCurrentChannelsStateAndRestorePrevious() {
 }
 
 WorkflowMonitor* BaseWorker::monitor() const {
-    CHECK(nullptr != context, nullptr);
+    CHECK(context != nullptr, nullptr);
     return context->getMonitor();
 }
 
 void BaseWorker::reportError(const QString& message) {
-    CHECK(nullptr != monitor(), );
+    CHECK(monitor() != nullptr, );
     monitor()->addError(message, getActorId());
 }
 

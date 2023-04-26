@@ -20,28 +20,14 @@
  */
 
 #include "WizardFiller.h"
-#include <base_dialogs/GTFileDialog.h>
-#include <base_dialogs/MessageBoxFiller.h>
-#include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
-#include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QComboBox>
-#include <QDir>
 #include <QLabel>
-#include <QRadioButton>
 #include <QScrollArea>
-#include <QToolButton>
-#include <QWizard>
 
-#include "../../src/corelibs/U2Designer/src/wizard/WDWizardPage.h"
 #include "GTUtilsWizard.h"
 
 namespace U2 {
@@ -51,34 +37,13 @@ using namespace HI;
 
 #define GT_METHOD_NAME "commonScenario"
 void WizardFiller::commonScenario() {
-    GTGlobals::sleep();
-    if (inputFiles.count() != 0 && !inputFiles.first().isEmpty()) {
+    if (!inputFiles.isEmpty() && !inputFiles.first().isEmpty()) {
         GTUtilsWizard::setInputFiles(os, inputFiles);
     }
     GTUtilsWizard::setAllParameters(os, map);
-
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
 }
 
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "WizardFiller::getExpandButton"
-QToolButton* WizardFiller::getExpandButton(HI::GUITestOpStatus& os) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    auto wizard = qobject_cast<QWizard*>(dialog);
-    GT_CHECK_RESULT(wizard, "activeModalWidget is not of wizard type", nullptr);
-
-    QList<QWidget*> widList = wizard->currentPage()->findChildren<QWidget*>();
-    QList<QToolButton*> plusList;
-    for (QWidget* w : qAsConst(widList)) {
-        auto but = qobject_cast<QToolButton*>(w);
-        if (but && but->text() == "+" && abs(but->rect().width() - 19) < 2) {
-            plusList.append(but);
-        }
-    }
-    // There can be one or more '+' buttons at wizard page which are invisible. TODO:detect them
-    return plusList.isEmpty() ? nullptr : plusList.takeLast();
-}
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME

@@ -50,9 +50,9 @@ public:
         : dbi(nullptr) {
         con = new DbiConnection(dbiRef, os);
         CHECK_OP(os, );
-        SAFE_POINT_EXT(nullptr != con->dbi, os.setError("NULL DBI"), );
+        SAFE_POINT_EXT(con->dbi != nullptr, os.setError("NULL DBI"), );
         dbi = con->dbi->getUdrDbi();
-        SAFE_POINT_EXT(nullptr != dbi, os.setError("NULL source UDR DBI"), );
+        SAFE_POINT_EXT(dbi != nullptr, os.setError("NULL source UDR DBI"), );
     }
 
     ~DbiHelper() {

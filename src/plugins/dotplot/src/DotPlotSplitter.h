@@ -30,7 +30,7 @@ class QToolButton;
 
 namespace U2 {
 
-class GObjectView;
+class GObjectViewController;
 class DotPlotWidget;
 class ADVSequenceObjectContext;
 

@@ -33,7 +33,8 @@ public:
     static void setReadWrite(GUITestOpStatus& os, const QString& path, bool recursive = false);
     static void setReadOnly(GUITestOpStatus& os, const QString& path, bool recursive = false);
 
-    static bool equals(GUITestOpStatus& os, const QString&, const QString&);
+    // @simplified - remove all spacing characters (\t, \n, \r, \v and \f) before equaling
+    static bool equals(GUITestOpStatus& os, const QString&, const QString&, bool simplified = false);
     static bool equals(GUITestOpStatus& os, const QString&);
 
     static qint64 getSize(GUITestOpStatus& os, const QString&);

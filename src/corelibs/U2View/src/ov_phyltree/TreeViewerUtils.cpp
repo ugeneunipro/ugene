@@ -55,7 +55,7 @@ void TreeViewerUtils::saveImageDialog(const QString& filters, QString& fileName,
     }
 }
 
-QFont TreeViewerUtils::getFontFromSettings(const OptionsMap& settings) {
+QFont TreeViewerUtils::getFontFromSettings(const QMap<TreeViewOption, QVariant>& settings) {
     QFont font = QApplication::font();
     QString family = settings[LABEL_FONT_FAMILY].toString();
     if (!family.isEmpty()) {

@@ -73,7 +73,7 @@ void AttributeTestData::init() {
     SAFE_POINT_OP(opStatus, );
 
     attributeDbi = dbi->getAttributeDbi();
-    SAFE_POINT(nullptr != attributeDbi, "attribute database not loaded", );
+    SAFE_POINT(attributeDbi != nullptr, "attribute database not loaded", );
 }
 
 U2AttributeDbi* AttributeTestData::getAttributeDbi() {

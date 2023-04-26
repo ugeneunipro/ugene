@@ -21,16 +21,9 @@
 
 #include "CreateAnnotationWidgetController.h"
 
-#include <QCheckBox>
-#include <QComboBox>
-#include <QGridLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QMainWindow>
 #include <QMenu>
-#include <QRadioButton>
-#include <QToolButton>
-#include <QVBoxLayout>
 
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
@@ -38,7 +31,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/GObjectReference.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
@@ -199,7 +191,7 @@ public:
         if (obj->isUnloaded()) {
             return !allowUnloaded;
         }
-        SAFE_POINT(nullptr != qobject_cast<AnnotationTableObject*>(obj), "Invalid annotation table object!", false);
+        SAFE_POINT(qobject_cast<AnnotationTableObject*>(obj) != nullptr, "Invalid annotation table object!", false);
         return obj->isStateLocked();
     }
     bool allowUnloaded;

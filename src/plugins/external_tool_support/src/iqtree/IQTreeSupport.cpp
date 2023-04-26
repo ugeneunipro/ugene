@@ -24,6 +24,7 @@
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 
 #include <U2View/CreatePhyTreeWidget.h>
 
@@ -53,6 +54,9 @@ IQTreeSupport::IQTreeSupport()
     // register the method
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
     registry->registerPhyTreeGenerator(new IQTreeAdapter(), IQTreeSupport::ET_IQTREE_ALGORITHM_NAME_AND_KEY);
+    if (isOsWindows()) {
+        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath;
+    }
 }
 
 ////////////////////////////////////////

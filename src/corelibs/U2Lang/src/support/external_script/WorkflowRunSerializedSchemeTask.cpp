@@ -53,7 +53,7 @@ WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString& 
     GCOUNTER(cvar, "workflow_run_from_script");
 
     loadTask = createLoadSchemeTask();
-    if (nullptr != loadTask) {
+    if (loadTask != nullptr) {
         addSubTask(loadTask);
     }
 }

@@ -103,7 +103,7 @@ void AssemblyTestData::init() {
     SAFE_POINT_OP(opStatus, );
 
     assemblyDbi = dbi->getAssemblyDbi();
-    SAFE_POINT(nullptr != assemblyDbi, "assembly database not loaded", );
+    SAFE_POINT(assemblyDbi != nullptr, "assembly database not loaded", );
 }
 
 U2AssemblyDbi* AssemblyTestData::getAssemblyDbi() {

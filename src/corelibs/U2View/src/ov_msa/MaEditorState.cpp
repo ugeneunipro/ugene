@@ -21,7 +21,6 @@
 
 #include "MaEditorState.h"
 
-#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
@@ -113,8 +112,8 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
     MultilineScrollController* scrollController = wgt->getScrollController();
     SAFE_POINT(scrollController != nullptr, "ScrollController is NULL", QVariantMap());
 
-    int firstBase = scrollController->getFirstVisibleBase();
-    int firstSeq = scrollController->getFirstVisibleMaRowIndex();
+    int firstBase = scrollController->getFirstVisibleBase(true);
+    int firstSeq = scrollController->getFirstVisibleMaRowIndex(true);
 
     ss.setFirstPos(firstBase);
     ss.setFirstSeq(firstSeq);

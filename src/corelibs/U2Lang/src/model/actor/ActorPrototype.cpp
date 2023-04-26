@@ -110,7 +110,7 @@ Actor* ActorPrototype::createInstance(const ActorId& actorId, AttributeScript* s
     }
     if (ed) {
         auto actorEd = dynamic_cast<ActorConfigurationEditor*>(ed);
-        if (nullptr != actorEd) {
+        if (actorEd != nullptr) {
             auto editor = dynamic_cast<ActorConfigurationEditor*>(ed->clone());
             editor->setConfiguration(proc);
             proc->setEditor(editor);

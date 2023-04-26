@@ -75,9 +75,9 @@ public:
 
     bool isCollapsed() const;
 
-    void updateSettings(const OptionsMap& settings);
+    void updateSettings(const QMap<TreeViewOption, QVariant>& settings);
 
-    const OptionsMap& getSettings() const;
+    const QMap<TreeViewOption, QVariant>& getSettings() const;
 
     void initDistanceText(const QString& text = "");
 
@@ -136,7 +136,7 @@ protected:
     /** Distance of the branch (a value from the Newick file or PhyBranch::distance). */
     double distance = 0;
     bool collapsed = false;
-    OptionsMap settings;
+    QMap<TreeViewOption, QVariant> settings;
     Side side = Side::Left;
 };
 

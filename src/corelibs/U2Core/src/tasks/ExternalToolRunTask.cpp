@@ -24,13 +24,13 @@
 #include <QDir>
 #include <QRegularExpression>
 
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
+#include <U2Core/Settings.h>
 #include <U2Core/ScriptingToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -39,12 +39,10 @@
 #    include <windows.h>
 #endif
 
-#ifdef Q_OS_UNIX
-#    include <signal.h>
-#    include <unistd.h>
-#endif
-
 namespace U2 {
+
+#define SETTINGS_ROOT QString("/genome_aligner_settings/")
+#define INDEX_DIR QString("index_dir")
 
 #define WIN_LAUNCH_CMD_COMMAND "cmd /C "
 #define START_WAIT_MSEC 3000
@@ -60,14 +58,17 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
       helper(nullptr),
       listener(nullptr),
       parseOutputFile(parseOutputFile) {
-    CHECK_EXT(AppContext::getExternalToolRegistry()->getById(toolId) != nullptr, stateInfo.setError(tr("External tool is absent")), );
-    QString toolPath = AppContext::getExternalToolRegistry()->getById(toolId)->getPath();
-    CHECK_EXT(QFile::exists(toolPath), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(toolPath)), )
-
-    toolName = AppContext::getExternalToolRegistry()->getToolNameById(toolId);
-    coreLog.trace("Creating run task for: " + toolName);
-    if (logParser != nullptr) {
-        logParser->setParent(this);
+    ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
+    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(toolId)), );
+    CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
+    
+    tool->checkPaths(arguments, stateInfo);
+    if (!stateInfo.hasError()) {
+        toolName = tool->getName();
+        coreLog.trace("Creating run task for: " + toolName);
+        if (logParser != nullptr) {
+            logParser->setParent(this);
+        }        
     }
 }
 
@@ -227,7 +228,7 @@ ExternalToolRunTaskHelper::ExternalToolRunTaskHelper(QProcess* _process, Externa
 void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
     QMutexLocker locker(&logMutex);
 
-    CHECK(nullptr != process, );
+    CHECK(process != nullptr, );
     if (process->readChannel() == QProcess::StandardError) {
         process->setReadChannel(QProcess::StandardOutput);
     }
@@ -236,7 +237,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
         // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseOutput(line);
-        if (nullptr != listener) {
+        if (listener != nullptr) {
             listener->addNewLogMessage(line, ExternalToolListener::OUTPUT_LOG);
         }
         numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
@@ -247,7 +248,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog() {
 void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
     QMutexLocker locker(&logMutex);
 
-    CHECK(nullptr != process, );
+    CHECK(process != nullptr, );
     if (process->readChannel() == QProcess::StandardOutput) {
         process->setReadChannel(QProcess::StandardError);
     }
@@ -256,7 +257,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog() {
         // call log parser
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseErrOutput(line);
-        if (nullptr != listener) {
+        if (listener != nullptr) {
             listener->addNewLogMessage(line, ExternalToolListener::ERROR_LOG);
         }
         numberReadChars = static_cast<int>(process->read(logData.data(), logData.size()));
@@ -402,7 +403,11 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     result.arguments = arguments;
 
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    CHECK_EXT(nullptr != tool, os.setError(tr("A tool with the ID %1 is absent").arg(toolId)), result);
+    tool->checkPaths(arguments, os);
+    if (os.hasError()) {
+        return result;
+    }
+    CHECK_EXT(tool != nullptr, os.setError(tr("A tool with the ID %1 is absent").arg(toolId)), result);
 
     const QString toolName = tool->getName();
     if (tool->getPath().isEmpty()) {
@@ -414,9 +419,9 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
 
     if (!toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry* stregister = AppContext::getScriptingToolRegistry();
-        SAFE_POINT_EXT(nullptr != stregister, os.setError("No scripting tool registry"), result);
+        SAFE_POINT_EXT(stregister != nullptr, os.setError("No scripting tool registry"), result);
         ScriptingTool* stool = stregister->getById(toolRunnerProgram);
-        if (nullptr == stool || stool->getPath().isEmpty()) {
+        if (stool == nullptr || stool->getPath().isEmpty()) {
             os.setError(QString("The tool %1 that runs %2 is not installed. Please set the path of the tool in the External Tools settings").arg(toolRunnerProgram).arg(toolName));
             return result;
         }
@@ -458,7 +463,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     const QString commandWithArguments = GUrlUtils::getQuotedString(result.program) + ExternalToolSupportUtils::prepareArgumentsForCmdLine(result.arguments);
     algoLog.details(tr("Launching %1 tool: %2").arg(toolName).arg(commandWithArguments));
 
-    if (nullptr != listener) {
+    if (listener != nullptr) {
         listener->setToolName(toolName);
         listener->addNewLogMessage(commandWithArguments, ExternalToolListener::PROGRAM_WITH_ARGUMENTS);
     }
@@ -584,6 +589,86 @@ QVariantMap ExternalToolSupportUtils::getScoresGapDependencyMap() {
     map.insert("5 -4", gaps);
 
     return map;
+}
+
+bool checkHasNonLatin1Symbols(const QString& str) {
+    QByteArray tolatin1(str.toLatin1());
+    return QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != str;
+}
+
+QString ExternalToolSupportUtils::checkArgumentPathLatinSymbols(const QStringList& args) {
+    for (const QString& path : qAsConst(args)) {
+        if (!path.isEmpty() && checkHasNonLatin1Symbols(path)) {
+            return tr("One of the arguments passed to \"%1\" external tool is not in Latin alphabet."
+                      " Make sure that the input and output files and folders"
+                      " are located in the paths which contain only Latin characters. Current problem path is: \"") +
+                   path + "\"";
+        }
+    }
+    return "";
+}
+
+QString ExternalToolSupportUtils::checkTemporaryDirLatinSymbols() {
+    QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    if (checkHasNonLatin1Symbols(path)) {
+        return tr("Your \"Temporary files\" directory contains non-latin symbols, \"%1\" external tool can't correct process it."
+                  " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") + path;
+    }
+    return "";
+}
+
+QString ExternalToolSupportUtils::checkToolPathLatinSymbols(const ExternalTool* tool) {
+    const QString& path = tool->getPath();
+    QByteArray tolatin1(path.toLatin1());
+    if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
+        tr("\"%1\" external tool located in path which contains non-latin symbols."
+           " Please change it location to path which contains only latin symbols, set the new path in"
+           " Preferences on the External tools and try again. Current problem path is: ") + path;
+    }
+    return "";
+}
+
+QString ExternalToolSupportUtils::checkIndexDirLatinSymbols() {
+    QString path = AppContext::getSettings()->getValue(SETTINGS_ROOT + INDEX_DIR, "", true).toString();
+    if (checkHasNonLatin1Symbols(path)) {
+        return tr("Your \"Build indexes\" directory contains non-latin symbols, \"%1\" external tool can't correct process it."
+                  " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") +
+               path;
+    }
+    return "";
+}
+
+QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& args) {
+    for (const QString& path : qAsConst(args)) {
+        if (path.contains(" ")) {
+            return tr("One of the arguments passed to \"%1\" external tool contains spaces."
+                      " Make sure that the input and output files and folders"
+                      " are located in the paths which contain no spaces. Current problem path is: ") +
+                path;
+        }
+    }
+    return "";
+}
+
+QString ExternalToolSupportUtils::checkTemporaryDirSpaces() {
+    QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
+    if (path.contains(" ")) {
+        return tr("Your \"Temporary files\" directory contains spaces, \"%1\" external tool can't correct process it."
+                  " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") + 
+               path;
+    }
+    return "";
+}
+
+QString ExternalToolSupportUtils::checkToolPathSpaces(const ExternalTool* tool) {
+    const QString& path = tool->getPath();
+    if (path.contains(" ")) {
+        return tr("\"%1\" external tool located in path which contains spaces symbols."
+                  " Please change it location to path which contains no spaces,  set the new path in"
+                  " Preferences on the External tools and try again. Current problem path is: ") +
+               path;
+    }
+    return "";
 }
 
 ExternalToolLogProcessor::~ExternalToolLogProcessor() {

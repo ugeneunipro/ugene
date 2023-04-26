@@ -34,7 +34,7 @@ void IncludedProtoFactory::init(IncludedProtoFactory* protoMaker) {
 }
 
 ActorPrototype* IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute*> attrs, const QString& name, const QString& description, const QString& actorFilePath, bool isAliasName) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_getScriptProto(input, output, attrs, name, description, actorFilePath, isAliasName);
     } else {
         return nullptr;
@@ -42,7 +42,7 @@ ActorPrototype* IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, Q
 }
 
 ActorPrototype* IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig* cfg) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_getExternalToolProto(cfg);
     } else {
         return nullptr;
@@ -50,7 +50,7 @@ ActorPrototype* IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig
 }
 
 ActorPrototype* IncludedProtoFactory::getSchemaActorProto(Schema* schema, const QString& name, const QString& actorFilePath) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_getSchemaActorProto(schema, name, actorFilePath);
     } else {
         return nullptr;
@@ -58,7 +58,7 @@ ActorPrototype* IncludedProtoFactory::getSchemaActorProto(Schema* schema, const 
 }
 
 bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig* cfg) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_registerExternalToolWorker(cfg);
     } else {
         return false;
@@ -66,7 +66,7 @@ bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig* cfg
 }
 
 void IncludedProtoFactory::registerScriptWorker(const QString& actorName) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_registerScriptWorker(actorName);
     } else {
         return;
@@ -74,7 +74,7 @@ void IncludedProtoFactory::registerScriptWorker(const QString& actorName) {
 }
 
 ExternalProcessConfig* IncludedProtoFactory::getExternalToolWorker(const QString& id) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_getExternalToolWorker(id);
     } else {
         return nullptr;
@@ -82,7 +82,7 @@ ExternalProcessConfig* IncludedProtoFactory::getExternalToolWorker(const QString
 }
 
 ExternalProcessConfig* IncludedProtoFactory::unregisterExternalToolWorker(const QString& id) {
-    if (nullptr != instance) {
+    if (instance != nullptr) {
         return instance->_unregisterExternalToolWorker(id);
     } else {
         return nullptr;
@@ -92,7 +92,7 @@ ExternalProcessConfig* IncludedProtoFactory::unregisterExternalToolWorker(const 
 bool IncludedProtoFactory::isRegistered(const QString& actorName) {
     ActorPrototype* proto = WorkflowEnv::getProtoRegistry()->getProto(actorName);
 
-    if (nullptr == proto) {
+    if (proto == nullptr) {
         return false;
     } else {
         return true;
@@ -101,7 +101,7 @@ bool IncludedProtoFactory::isRegistered(const QString& actorName) {
 
 bool IncludedProtoFactory::isRegisteredTheSameProto(const QString& actorId, ActorPrototype* proto) {
     ActorPrototype* regProto = WorkflowEnv::getProtoRegistry()->getProto(actorId);
-    assert(nullptr != proto);
+    assert(proto != nullptr);
 
     // compare simple proto parameters
     if (regProto->isScriptFlagSet() != proto->isScriptFlagSet()) {

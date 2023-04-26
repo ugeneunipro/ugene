@@ -88,7 +88,7 @@ DefaultConvertFileTask::DefaultConvertFileTask(const GUrl& sourceUrl, const QStr
 
 void DefaultConvertFileTask::prepare() {
     loadTask = LoadDocumentTask::getDefaultLoadDocTask(sourceURL);
-    if (nullptr == loadTask) {
+    if (loadTask == nullptr) {
         coreLog.info(QString("Cannot load file %1").arg(sourceURL.getURLString()));
         return;
     }
@@ -107,11 +107,11 @@ QList<Task*> DefaultConvertFileTask::onSubTaskFinished(Task* subTask) {
 
     bool mainThread = false;
     Document* srcDoc = loadTask->getDocument(mainThread);
-    SAFE_POINT_EXT(nullptr != srcDoc, setError("NULL document"), result);
+    SAFE_POINT_EXT(srcDoc != nullptr, setError("NULL document"), result);
 
     DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
     DocumentFormat* df = dfr->getFormatById(targetFormat);
-    SAFE_POINT_EXT(nullptr != df, setError("NULL document format"), result);
+    SAFE_POINT_EXT(df != nullptr, setError("NULL document format"), result);
 
     QSet<GObjectType> selectedFormatObjectsTypes = df->getSupportedObjectTypes();
     QSet<GObjectType> inputFormatObjectTypes;

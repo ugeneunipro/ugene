@@ -34,15 +34,15 @@ namespace Js {
 bool NodeApiUtils::isArgumentCountCorrect(int actualCount, int requiredCount) {
     const char* errorText = (actualCount > requiredCount) ? TOO_MANY_ARGUMENTS_ERROR : (actualCount < requiredCount) ? TOO_FEW_ARGUMENTS_ERROR
                                                                                                                      : nullptr;
-    if (nullptr != errorText) {
+    if (errorText != nullptr) {
         ThrowException(Exception::TypeError(String::New(errorText)));
     }
-    return (nullptr == errorText);
+    return (errorText == nullptr);
 }
 
 ScriptContext* NodeApiUtils::getScriptContext() {
     ScriptContext* scriptContext = AppContext::getScriptContext();
-    if (nullptr == scriptContext) {
+    if (scriptContext == nullptr) {
         ThrowException(Exception::TypeError(String::New(CONTEXT_IS_NOT_INITIALIZED)));
     }
     return scriptContext;

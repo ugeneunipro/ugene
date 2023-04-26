@@ -204,7 +204,7 @@ QMap<QString, QString> MapDatatypeEditor::getBindingsMap() {
 }
 
 int MapDatatypeEditor::getOptimalHeight() {
-    return nullptr != table ? table->minimumHeight() : 0;
+    return table != nullptr ? table->minimumHeight() : 0;
 }
 
 static QString formatDoc(const Descriptor& s, const Descriptor& d) {
@@ -325,7 +325,7 @@ QMap<QString, QString> BusPortEditor::getBindingsMap() {
 }
 
 bool BusPortEditor::isEmpty() const {
-    if (nullptr != table) {
+    if (table != nullptr) {
         int rows = table->model()->rowCount();
         return (0 == rows);
     } else {
