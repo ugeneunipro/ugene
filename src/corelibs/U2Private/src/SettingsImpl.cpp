@@ -121,9 +121,7 @@ QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& default
     
     if (versionedValue) {
         QString desiredKey;
-        // find versioned value in the key path
         if (pathValue) {
-            //orf\47.0-dev\C%3A\src\ugene\src\_debug
              desiredKey = toVersionKey(key) + "/" + UGENE_WORKING_DIR_PATH;
         } else {
             desiredKey = toVersionKey(key);

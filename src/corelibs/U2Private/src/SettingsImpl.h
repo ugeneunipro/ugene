@@ -47,6 +47,7 @@ public:
     virtual QString toVersionKey(const QString& key) const;
     virtual QString toMinorVersionKey(const QString& key) const;
 
+    /* Add current ugene working directory path to key */
     virtual QString toPathKey(const QString& key) const;
 
     virtual void sync();
