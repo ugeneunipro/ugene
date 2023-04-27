@@ -33,7 +33,7 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include "GTComboBoxWithCheckBoxes.h"
+#include "runnables/ugene/corelibs/U2Gui/GTComboBoxWithCheckBoxes.h"
 
 namespace U2 {
 

@@ -144,9 +144,8 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
     QList<SEnzymeData> res;
 
     QSharedPointer<IOAdapter> io(iof->createIOAdapter(), [](IOAdapter* ioAdapter) {
-        // @IOAdapter should be closed before it's deleted
         ioAdapter->close();
-        ioAdapter->deleteLater();
+        delete ioAdapter;
     });
     if (!io->open(url, IOAdapterMode_Read)) {
         os.setError(L10N::errorOpeningFileRead(url));
