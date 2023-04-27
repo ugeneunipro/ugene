@@ -48,6 +48,10 @@ IMPLEMENT_TEST(BAMUtilsUnitTests, bamMergeCore) {
     auto resFile = BAMUtils::mergeBam(bamUrls, tmpFile, os);
     CHECK_NO_ERROR(os);
     CHECK_EQUAL(tmpFile, resFile.getURLString(), "Files not equal");
+    for (int i = 0; i < 6; i++) {
+        QString filePath = inputFilesDir + QString::number(i + 1) + (i == 0 ? "" : "01") + "_" + QString::number(i) + ".bam";
+        CHECK_TRUE(!QFile(filePath).exists(), QString("File \"%1\" exists, but shouldn't be").arg(filePath));
+    }
 }
 
 
