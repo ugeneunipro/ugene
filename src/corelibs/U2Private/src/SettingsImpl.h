@@ -41,11 +41,13 @@ public:
     virtual bool contains(const QString& key) const;
     virtual void remove(const QString& key);
 
-    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false) const;
-    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false);
+    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false, bool pathValue = false) const;
+    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false, bool pathValue = false);
 
     virtual QString toVersionKey(const QString& key) const;
     virtual QString toMinorVersionKey(const QString& key) const;
+
+    virtual QString toPathKey(const QString& key) const;
 
     virtual void sync();
 
@@ -54,5 +56,7 @@ public:
 private:
     mutable QMutex threadSafityLock;
     QSettings* settings;
+
+    static QString UGENE_WORKING_DIR_PATH;
 };
 }  // namespace U2

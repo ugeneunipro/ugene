@@ -31,6 +31,8 @@
 
 namespace U2 {
 
+QString SettingsImpl::UGENE_WORKING_DIR_PATH = "";
+
 static QString findKey(const QStringList& envList, const QString& key) {
     QString prefix = key + "=";
     QString result;
@@ -87,6 +89,9 @@ SettingsImpl::SettingsImpl(QSettings::Scope scope) {
     } else {
         settings = new QSettings(fileName, format, this);
     }
+    if (UGENE_WORKING_DIR_PATH.isEmpty()) {
+        UGENE_WORKING_DIR_PATH = QCoreApplication::applicationDirPath();
+    }
 }
 
 SettingsImpl::~SettingsImpl() {
@@ -107,23 +112,29 @@ void SettingsImpl::remove(const QString& pathName) {
     settings->remove(key);
 }
 
-QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& defaultValue, bool versionedValue) const {
+QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& defaultValue, bool versionedValue, bool pathValue) const {
     QMutexLocker lock(&threadSafityLock);
 
     QString path = pathName;
     QString key = preparePath(path);
 
+    
     if (versionedValue) {
+        QString desiredKey;
         // find versioned value in the key path
+        if (pathValue) {
+            //orf\47.0-dev\C%3A\src\ugene\src\_debug
+             desiredKey = toVersionKey(key) + "/" + UGENE_WORKING_DIR_PATH;
+        } else {
+            desiredKey = toVersionKey(key);
+        }
         settings->beginGroup(key);
         QStringList allKeys = settings->allKeys();
         settings->endGroup();
 
-        QString versionedKey = toVersionKey(key);
-
         bool found = false;
         foreach (const QString& settingsKey, allKeys) {
-            if (QString(key + "/" + settingsKey) == versionedKey) {
+            if (QString(key + "/" + settingsKey) == desiredKey) {
                 found = true;
                 break;
             }
@@ -132,13 +143,13 @@ QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& default
             return defaultValue;
         }
 
-        key = versionedKey;
+        key = desiredKey;
     }
 
     return settings->value(key, defaultValue);
 }
 
-void SettingsImpl::setValue(const QString& pathName, const QVariant& value, bool versionedValue) {
+void SettingsImpl::setValue(const QString& pathName, const QVariant& value, bool versionedValue, bool pathValue) {
     QMutexLocker lock(&threadSafityLock);
 
     QString path = pathName;
@@ -149,6 +160,10 @@ void SettingsImpl::setValue(const QString& pathName, const QVariant& value, bool
 
         // create versioned key
         key = toVersionKey(key);
+    }
+
+    if (pathValue && versionedValue) {
+        key = toPathKey(key);
     }
 
     settings->setValue(key, value);
@@ -162,6 +177,11 @@ QString SettingsImpl::toVersionKey(const QString& key) const {
 QString SettingsImpl::toMinorVersionKey(const QString& key) const {
     static QString VERSION_KEY_SUFFIX = "/" + QString::number(Version::appVersion().major) + "." + QString::number(Version::appVersion().minor);
     return key + VERSION_KEY_SUFFIX + (key.endsWith("/") ? "/" : "");
+}
+
+QString SettingsImpl::toPathKey(const QString& key) const {
+    static QString PATH_KEY_SUFFIX = "/" + UGENE_WORKING_DIR_PATH;
+    return key + PATH_KEY_SUFFIX + (key.endsWith("/") ? "/" : "");
 }
 
 QStringList SettingsImpl::getAllKeys(const QString& path) const {

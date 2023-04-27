@@ -40,11 +40,13 @@ public:
 
     // for versioned default value is returned if versions don't match
     // all version-specific values must use versioneedValue = true
-    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false) const = 0;
-    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false) = 0;
+    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false, bool pathValue = false) const = 0;
+    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false, bool pathValue = false) = 0;
 
     virtual QString toVersionKey(const QString& key) const = 0;
     virtual QString toMinorVersionKey(const QString& key) const = 0;
+
+    virtual QString toPathKey(const QString& key) const = 0;
 
     virtual void sync() = 0;
     virtual QString fileName() const = 0;
