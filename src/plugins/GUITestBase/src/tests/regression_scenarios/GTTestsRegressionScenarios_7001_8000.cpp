@@ -4367,7 +4367,7 @@ GUI_TEST_CLASS_DEFINITION(test_7852) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
@@ -4381,7 +4381,7 @@ GUI_TEST_CLASS_DEFINITION(test_7852) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
     GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
     GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 100));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
