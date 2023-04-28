@@ -30,6 +30,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Task.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -86,6 +87,10 @@ QTreeWidget* GTUtilsTaskTreeView::openView(HI::GUITestOpStatus& os) {
         taskTreeView = getTreeWidget(os, true);
     }
     return taskTreeView;
+}
+
+bool GTUtilsTaskTreeView::isViewOpened(HI::GUITestOpStatus& os) {
+    return getTreeWidget(os) != nullptr;
 }
 
 void GTUtilsTaskTreeView::toggleView(HI::GUITestOpStatus& /*os*/) {
@@ -157,15 +162,26 @@ void GTUtilsTaskTreeView::cancelTask(HI::GUITestOpStatus& os, const QString& ite
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "click"
 void GTUtilsTaskTreeView::click(HI::GUITestOpStatus& os, const QString& itemName, Qt::MouseButton b) {
     moveTo(os, itemName);
     GTMouseDriver::click(b);
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "doubleClick"
+void GTUtilsTaskTreeView::doubleClick(HI::GUITestOpStatus& os, const QString& itemName) {
+    moveTo(os, itemName);
+    GTMouseDriver::doubleClick();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "moveTo"
 void GTUtilsTaskTreeView::moveTo(HI::GUITestOpStatus& os, const QString& itemName) {
     openView(os);
     moveToOpenedView(os, itemName);
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTopLevelTasksCount"
 int GTUtilsTaskTreeView::getTopLevelTasksCount(HI::GUITestOpStatus& os) {
@@ -236,11 +252,31 @@ int GTUtilsTaskTreeView::countTasks(HI::GUITestOpStatus& os, const QString& item
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getTaskStatus"
 QString GTUtilsTaskTreeView::getTaskStatus(GUITestOpStatus& os, const QString& itemName) {
     openView(os);
     GTGlobals::sleep(500);
     return getTreeWidgetItem(os, itemName)->text(1);
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getTaskProgress"
+int GTUtilsTaskTreeView::getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool failOnNull) {
+    if (!isViewOpened(os)) {
+        openView(os);
+        GTGlobals::sleep(500);
+    }
+    auto item = getTreeWidgetItem(os, itemName, failOnNull);
+    CHECK(item != nullptr, -1);
+
+    auto itemText = item->text(2);
+    bool ok = false;
+    auto number = itemText.left(2).toInt(&ok);
+    CHECK(ok, -1);
+
+    return number;
+}
+#undef GT_METHOD_NAME
 
 SchedulerListener::SchedulerListener()
     : QObject(nullptr),

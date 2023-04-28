@@ -92,6 +92,7 @@
 #include "GTUtilsQueryDesigner.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -4545,6 +4546,52 @@ GUI_TEST_CLASS_DEFINITION(test_7863) {
 
     // Expected: tree view is changed to "Phylogram"
     CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7785) {
+    class InSilicoWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTWidget::getActiveModalWidget(os);
+
+            GTUtilsWizard::setInputFiles(os, { {QFileInfo(testDir + "_common_data/fasta/chr6.fa").absoluteFilePath()} });
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(testDir + "_common_data/regression/7785/TheSimplestPrimers.txt").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    // 1. Open WD and choose the "In Silico PCR" sample.
+    // 2. Select "Read Sequence", add _common_data/fasta/chr6.fa
+    // 3. Select "In Silico PCR" item, add "add "_common_data/regression/7785/TheSimplestPrimers.txt"
+    // 4. Run
+    // 5. Wait until the "Multiple In Silico PCR" task progress > 90
+    // 6. Click "Stop workflow"
+    // Expected state: no crash
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+
+    GTUtilsTaskTreeView::doubleClick(os, "Execute workflow");
+    GTUtilsTaskTreeView::doubleClick(os, "Workflow run");
+
+    auto stopButton = GTAction::button(os, "Stop workflow", GTUtilsMdi::activeWindow(os));
+    auto globalPos = stopButton->mapToGlobal(GTWidget::getWidgetVisibleCenter(stopButton));
+    GTMouseDriver::moveTo(globalPos);
+
+    GTUtilsTask::waitTaskStart(os, "Multiple In Silico PCR");
+
+    int progress;
+    do {
+        progress = GTUtilsTaskTreeView::getTaskProgress(os, "Multiple In Silico PCR", false);
+    } while (progress < 91);
+
+    GTMouseDriver::click();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }  // namespace GUITest_regression_scenarios

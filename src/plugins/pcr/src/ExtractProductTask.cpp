@@ -32,6 +32,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GHints.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/IOAdapter.h>
@@ -247,6 +248,7 @@ void ExtractProductTask::run() {
     annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.reversePrimerMatchLength, U2Strand::Complementary, productSequence.length()));
     annotations->addObjectRelation(GObjectRelation(GObjectReference(sequenceObject), ObjectRole_Sequence));
     doc->addObject(annotations);
+    doc->getGHints()->set(DocumentRemovalMode_Synchronous, true);
 
     if (settings.annotationsExtraction != ExtractProductSettings::None) {
         for (const U2EntityRef& annsRef : qAsConst(settings.annotationRefs)) {

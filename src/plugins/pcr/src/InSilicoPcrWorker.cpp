@@ -192,6 +192,7 @@ Task* InSilicoPcrWorker::createPrepareTask(U2OpStatus& os) const {
     if (task == nullptr) {
         os.setError(tr("Can not read the primers file: ") + primersUrl);
     }
+    task->moveDocumentToMainThread = true;
     return task;
 }
 

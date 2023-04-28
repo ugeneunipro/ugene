@@ -48,9 +48,14 @@ class GTUtilsTaskTreeView {
 public:
     static void waitTaskFinished(HI::GUITestOpStatus& os, long timeoutMillis = 180000);
     static void click(HI::GUITestOpStatus& os, const QString& itemName, Qt::MouseButton b = Qt::LeftButton);
+    // Double click on the item with @itemName. This tree item will be expanded
+    static void doubleClick(HI::GUITestOpStatus& os, const QString& itemName);
 
     /** Opens view if it is not opened and returns tree widget. */
     static QTreeWidget* openView(HI::GUITestOpStatus& os);
+
+    /** Returns true if Task tree view is opened or false if it's not. */
+    static bool isViewOpened(HI::GUITestOpStatus& os);
 
     static void toggleView(HI::GUITestOpStatus& os);
 
@@ -75,6 +80,7 @@ public:
 
     static int countTasks(HI::GUITestOpStatus& os, const QString& itemName);
     static QString getTaskStatus(HI::GUITestOpStatus& os, const QString& itemName);
+    static int getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool failOnNull = true);
 
     static const QString widgetName;
 
