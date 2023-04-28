@@ -143,10 +143,7 @@ EnzymeFileFormat EnzymesIO::detectFileFormat(const QString& url) {
 QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFactory* iof, U2OpStatus& os) {
     QList<SEnzymeData> res;
 
-    QSharedPointer<IOAdapter> io(iof->createIOAdapter(), [](IOAdapter* ioAdapter) {
-        ioAdapter->close();
-        delete ioAdapter;
-    });
+    QScopedPointer <IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
         os.setError(L10N::errorOpeningFileRead(url));
         return res;

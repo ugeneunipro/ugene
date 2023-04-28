@@ -654,7 +654,10 @@ void FindEnzymesDialog::sl_handleSupplierSelectionChange(QStringList checkedSupp
     }
     enzSel->setEnzymesList(visibleEnzymes);
     static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
-    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR).replace(notDefinedTr, EnzymesIO::NOT_DEFINED_SIGN);
+    if (checkedSuppliers.contains(notDefinedTr)) {
+        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
+    }
+    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
     AppContext::getSettings()->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
 }
 

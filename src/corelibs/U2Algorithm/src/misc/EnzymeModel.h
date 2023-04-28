@@ -52,7 +52,7 @@ class DNAAlphabet;
 
 #define ENZYME_CUT_UNKNOWN 0x7FFFFF
 #define ENZYME_LIST_SEPARATOR ","
-#define SUPPLIERS_LIST_SEPARATOR ";"
+#define SUPPLIERS_LIST_SEPARATOR "\n"
 
 class U2ALGORITHM_EXPORT EnzymeSettings {
 public:
