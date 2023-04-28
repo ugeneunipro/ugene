@@ -261,11 +261,11 @@ QString GTUtilsTaskTreeView::getTaskStatus(GUITestOpStatus& os, const QString& i
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTaskProgress"
-int GTUtilsTaskTreeView::getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool findIfNotFound) {
+int GTUtilsTaskTreeView::getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool failIfNotFound) {
     if (!isViewOpened(os)) {
         openView(os);
     }
-    auto item = getTreeWidgetItem(os, itemName, findIfNotFound);
+    auto item = getTreeWidgetItem(os, itemName, failIfNotFound);
     CHECK(item != nullptr, -1);
 
     auto itemText = item->text(2);

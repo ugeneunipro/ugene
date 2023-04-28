@@ -247,6 +247,7 @@ void ExtractProductTask::run() {
     annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.reversePrimerMatchLength, U2Strand::Complementary, productSequence.length()));
     annotations->addObjectRelation(GObjectRelation(GObjectReference(sequenceObject), ObjectRole_Sequence));
     doc->addObject(annotations);
+    doc->getGHints()->set(DocumentRemovalMode_Synchronous, true);
 
     if (settings.annotationsExtraction != ExtractProductSettings::None) {
         for (const U2EntityRef& annsRef : qAsConst(settings.annotationRefs)) {
