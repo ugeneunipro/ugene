@@ -47,6 +47,7 @@ ImportPrimersDialog::ImportPrimersDialog(QWidget* parent)
     new HelpButton(this, buttonBox, "65930783");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    pbAddObject->setEnabled(AppContext::getProject() != nullptr);
     connectSignals();
     sl_updateState();
 }
@@ -112,6 +113,7 @@ void ImportPrimersDialog::sl_removeObjectClicked() {
 
 void ImportPrimersDialog::sl_selectionChanged() {
     pbRemoveFile->setEnabled(!lwFiles->selectedItems().isEmpty());
+    pbRemoveObject->setEnabled(!lwObjects->selectedItems().isEmpty());
 }
 
 void ImportPrimersDialog::sl_contentChanged() {

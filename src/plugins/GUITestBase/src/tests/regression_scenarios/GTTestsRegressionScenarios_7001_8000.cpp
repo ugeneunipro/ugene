@@ -4432,6 +4432,45 @@ GUI_TEST_CLASS_DEFINITION(test_7852) {
     CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>4 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 4'");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7853_1) {
+    // 1. Open Primer Library
+    // 2. Click "Import primer(s)"
+    // Expected: "Add Object(s)" button is disabled
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    class Custom : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            CHECK_SET_ERR(!GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) shoud be disabled'");
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new Custom()));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7853_2) {
+    // 1. Open any file (e.g. human_T1.fa)
+    // 2. Open Primer Library
+    // 3. Click "Import primer(s)"
+    // Expected: "Add Object(s)" button is enabled
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    class Custom : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            CHECK_SET_ERR(GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) shoud be enabled'");
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new Custom()));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7858) {
     GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
