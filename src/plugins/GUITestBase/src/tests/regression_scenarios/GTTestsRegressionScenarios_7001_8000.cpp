@@ -4416,6 +4416,19 @@ GUI_TEST_CLASS_DEFINITION(test_7850_1) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7851) {
+    /*
+    * 1. Open samples/PDB/1CF7.pdb
+    * Bug state: There are many messages in the log:
+    * [DETAILS][12:50] QList::insert(): Index out of range.
+    * Expected state: no such messages in the log.
+    */
+    GTLogTracer lt;
+    GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(!lt.hasMessage("QList::insert(): Index out of range."), "'QList::insert(): Index out of range.' present in log, but it shouldn't");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7852) {
     /*
     1. Open samples/FASTA/human_T1.fa.
