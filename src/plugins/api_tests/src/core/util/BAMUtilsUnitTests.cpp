@@ -22,6 +22,7 @@
 #include "BAMUtilsUnitTests.h"
 
 #include <QDir>
+#include <QUuid>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -36,22 +37,28 @@ namespace U2 {
 
 IMPLEMENT_TEST(BAMUtilsUnitTests, bamMergeCore) {
     TestRunnerSettings* trs = AppContext::getAppSettings()->getTestRunnerSettings();
-    QString inputFilesDir = trs->getVar("COMMON_DATA_DIR") + "/regression/7862/";
+    QString inputFiles = trs->getVar("COMMON_DATA_DIR") + "/regression/7862/orig.bam";
+    auto uuid = QUuid::createUuid().toString();
+    auto tempDir = QDir::temp().absoluteFilePath(uuid.mid(1, uuid.size() - 2));
+    bool ok = QDir(tempDir).mkpath(".");
+    CHECK_TRUE(ok, "Can't create tmp dir");
 
     QStringList bamUrls;
-    for (int i = 0; i < 550; i++) {
-        bamUrls << inputFilesDir + QString::number(i + 1) + ".bam";
+    for (int i = 0; i < 1050; i++) {
+        auto fileName = tempDir + "/" + QString::number(i + 1) + ".bam";
+        ok = QFile::copy(inputFiles, fileName);
+        CHECK_TRUE(ok, QString("Can't copy %1 to %2").arg(inputFiles).arg(fileName));
+
+        bamUrls << fileName;
     }
-    QString tmpFile = QDir::temp().absoluteFilePath("res.bam");
+    QString resExpectedFile = tempDir + "/" + "res.bam";
 
     U2OpStatusImpl os;
-    auto resFile = BAMUtils::mergeBam(bamUrls, tmpFile, os);
+    auto resFile = BAMUtils::mergeBam(bamUrls, resExpectedFile, os);
     CHECK_NO_ERROR(os);
-    CHECK_EQUAL(tmpFile, resFile.getURLString(), "Files not equal");
-    for (int i = 0; i < 6; i++) {
-        QString filePath = inputFilesDir + QString::number(i + 1) + (i == 0 ? "" : "01") + "_" + QString::number(i) + ".bam";
-        CHECK_TRUE(!QFile(filePath).exists(), QString("File \"%1\" exists, but shouldn't be").arg(filePath));
-    }
+    CHECK_EQUAL(resExpectedFile, resFile.getURLString(), "Files not equal");
+    // 1050 input files + 1 result
+    CHECK_TRUE(QDir(tempDir).entryList({ "*.bam" }).size() == 1051, "Incorrect files number");
 }
 
 

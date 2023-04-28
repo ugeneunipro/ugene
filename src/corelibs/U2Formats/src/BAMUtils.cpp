@@ -21,6 +21,7 @@
 
 #include <QFileInfo>
 #include <QTemporaryFile>
+#include <QUuid>
 
 #include <U2Core/FileAndDirectoryUtils.h>
 
@@ -632,7 +633,7 @@ static int localBamMergeCore(const QString& outFileName, const QList<QString>& f
 }
 
 static constexpr int MAX_FILES_OPENED = 100;
-static int recursiveBamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge, QStringList& intermediateFiles) {
+static int recursiveBamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
     int size = filesToMerge.size();
     CHECK(size != 0, -1);
 
@@ -644,35 +645,32 @@ static int recursiveBamMergeCore(const QString& outFileName, const QList<QString
     QStringList newOutFileNameList;
     for (int i = 0; i < mergeSplit.size(); i++) {
         const auto& currentRange = mergeSplit.at(i);
-         QList<QString> newFilesToMerge = filesToMerge.mid(currentRange.startPos, currentRange.endPos());
+        QList<QString> newFilesToMerge = filesToMerge.mid(currentRange.startPos, MAX_FILES_OPENED);
         QString newOutFileName = newFilesToMerge.first();
-        do {
-            // Remove ".bam" from the end
-            newOutFileName = newOutFileName.left(newOutFileName.size() - 4);
-            newOutFileName = newOutFileName + "_" + QString::number(i) + ".bam";
-        } while (QFile(newOutFileName).exists());
-
+        // Remove ".bam" from the end
+        newOutFileName = newOutFileName.left(newOutFileName.size() - 4);
+        auto uuid = QUuid::createUuid().toString();
+        uuid = uuid.mid(1, uuid.size() - 2);
+        newOutFileName = newOutFileName + uuid + ".bam";
         newOutFileNameList << newOutFileName;
-        intermediateFiles << newOutFileName;
         int res = localBamMergeCore(newOutFileName, newFilesToMerge);
         CHECK(res >= 0, res);
 
     }
-    return recursiveBamMergeCore(outFileName, newOutFileNameList, intermediateFiles);
+    int res = recursiveBamMergeCore(outFileName, newOutFileNameList);
+
+    for (const auto& fileName : qAsConst(newOutFileNameList)) {
+        CHECK_CONTINUE(!QFile::remove(fileName));
+
+        coreLog.error(BAMUtils::tr("Can't remove temporary file: %1").arg(fileName));
+    }
+    return res;
 }
 
 int BAMUtils::bamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge) {
     coreLog.trace("bamMergeCore: " + filesToMerge.join(",") + " to " + outFileName);
 
-    QStringList intermediateFiles;
-    int res = recursiveBamMergeCore(outFileName, filesToMerge, intermediateFiles);
-
-    for (const auto& f : qAsConst(intermediateFiles)) {
-        CHECK_CONTINUE(!QFile::remove(f));
-
-        coreLog.error(tr("Can't remove temporary file: %1").arg(f));
-    }
-    return res;
+    return recursiveBamMergeCore(outFileName, filesToMerge);
 }
 
 bool BAMUtils::hasValidBamIndex(const QString& bamUrl) {
