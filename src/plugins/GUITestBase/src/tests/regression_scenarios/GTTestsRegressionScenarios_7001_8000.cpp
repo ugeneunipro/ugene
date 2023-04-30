@@ -4219,6 +4219,18 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7823) {
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsAnnotationsTreeView::expandItem(os, "CDS  (0, 4)");
+
+    GTMouseDriver::dragAndDrop(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS"),
+                               GTUtilsAnnotationsTreeView::getItemCenter(os, "comment  (0, 1)"));
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, false);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7824) {
     // 1. Open 1.gb.
     // 2. Double click any annotation
