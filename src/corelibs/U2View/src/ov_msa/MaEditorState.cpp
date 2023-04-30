@@ -107,7 +107,9 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
         ss.setMaObjectRef(GObjectReference(maObj));
     }
 
-    auto wgt = qobject_cast<MSAEditor*>(v)->getMaEditorMultilineWgt();
+    auto maEditor = qobject_cast<MaEditor*>(v);
+    SAFE_POINT(maEditor != nullptr, "MSAEditor is null", QVariantMap());
+    auto wgt = maEditor->getMaEditorMultilineWgt();
     SAFE_POINT(wgt != nullptr, "MaEditorWgt is NULL", QVariantMap());
     MultilineScrollController* scrollController = wgt->getScrollController();
     SAFE_POINT(scrollController != nullptr, "ScrollController is NULL", QVariantMap());
