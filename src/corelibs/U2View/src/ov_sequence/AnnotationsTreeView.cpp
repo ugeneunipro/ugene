@@ -1549,12 +1549,8 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
         i++;
     }
 
-    i = 0;
-    QMap<AnnotationTableObject*, QList<AnnotationModification>> annotationModifications;
-    for (AnnotationGroup* g : qAsConst(srcGroupList)) {
-        Annotation* annotation = dndToRemove.at(i);
+    for (Annotation* annotation : qAsConst(dndToRemove)) {
         annotation->getGroup()->removeAnnotations({annotation});
-        i++;
     }
 
     // Process groups
@@ -2388,7 +2384,7 @@ bool AVGroupItem::isReadonly() const {
     // documents names are not editable
     GObject* obj = group->getGObject();
     bool readOnly = obj->isStateLocked() || AutoAnnotationsSupport::isAutoAnnotationObject(obj);
-    return group->getParentGroup() == nullptr ? true : readOnly;
+    return group->getParentGroup() == nullptr || readOnly;
 }
 
 void AVGroupItem::findAnnotationItems(QList<AVAnnotationItem*>& result, Annotation* a) const {
