@@ -64,7 +64,7 @@ const float MaEditor::zoomMult = 1.25;
 
 const double MaEditor::FONT_BOX_TO_CELL_BOX_MULTIPLIER = 1.25;
 
-MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj)
+MaEditor::MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewName, MultipleAlignmentObject* obj)
     : GObjectViewController(factoryId, viewName),
       ui(nullptr),
       resizeMode(ResizeMode_FontAndContent),
@@ -545,10 +545,15 @@ void MaEditor::updateFontMetrics() {
     minimumFontPointSize = estimatedMinimumFontPointSize;
 }
 
-void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
+void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) const {
     if (getMaEditorWgt(0)->getSequenceArea()->isPosInRange(firstPos)) {
-        getMaEditorMultilineWgt()->getScrollController()->setFirstVisibleBase(firstPos);
-        getMaEditorMultilineWgt()->getScrollController()->setFirstVisibleMaRow(firstSeq);
+        if (isMultilineMode()) {
+            getMaEditorMultilineWgt()->getScrollController()->setFirstVisibleBase(firstPos);
+            getMaEditorMultilineWgt()->getScrollController()->setFirstVisibleMaRow(firstSeq);
+        } else {
+            getMaEditorWgt(0)->getScrollController()->setFirstVisibleBase(firstPos);
+            getMaEditorWgt(0)->getScrollController()->setFirstVisibleMaRow(firstSeq);
+        }
     }
 }
 

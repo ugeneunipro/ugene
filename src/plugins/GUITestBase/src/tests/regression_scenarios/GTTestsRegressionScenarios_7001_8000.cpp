@@ -4424,7 +4424,9 @@ GUI_TEST_CLASS_DEFINITION(test_7858) {
     GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-    GTUtilsBookmarksTreeView::addBookmark(os, "Aligned reads [alignment.ugenedb]", "My bookmark");
+    GTUtilsBookmarksTreeView::addBookmark(os, "Aligned reads [alignment.ugenedb]", "Bookmark1");
+    GTUtilsBookmarksTreeView::clickBookmark(os, "Bookmark1");
+    // Expected state: no crash.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7860) {

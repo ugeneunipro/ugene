@@ -120,7 +120,7 @@ public:
     static const double FONT_BOX_TO_CELL_BOX_MULTIPLIER;
 
 public:
-    MaEditor(GObjectViewFactoryId factoryId, const QString& viewName, MultipleAlignmentObject* obj);
+    MaEditor(const GObjectViewFactoryId& factoryId, const QString& viewName, MultipleAlignmentObject* obj);
 
     virtual QVariantMap saveState();
 
@@ -288,7 +288,7 @@ protected:
     /** Updates font metrics like fontPixelToPointSize, minimum-font-size. Called on every font update. */
     void updateFontMetrics();
 
-    void setFirstVisiblePosSeq(int firstPos, int firstSeq);
+    void setFirstVisiblePosSeq(int firstPos, int firstSeq) const;
     void setZoomFactor(double newZoomFactor);
 
     virtual void updateActions();
