@@ -175,11 +175,15 @@ void UpdateTreeViewerTask::update() {
 //////////////////////////////////////////////////////////////////////////
 /// create view
 
-CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& sData)
+CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(MSAEditor* _msaEditor,
+                                                             const QString& name,
+                                                             const QPointer<PhyTreeObject>& obj,
+                                                             const QVariantMap& sData)
     : Task("Open tree viewer", TaskFlag_NoRun),
       viewName(name),
       phyObj(obj),
-      stateData(sData) {
+      stateData(sData),
+      msaEditor(_msaEditor) {
     SAFE_POINT(phyObj != nullptr, "Invalid tree object detected", );
     connect(obj.data(), SIGNAL(destroyed(QObject*)), SLOT(cancel()));
 }
@@ -190,7 +194,8 @@ void CreateMSAEditorTreeViewerTask::prepare() {
 
 Task::ReportResult CreateMSAEditorTreeViewerTask::report() {
     CHECK(!stateInfo.isCoR(), Task::ReportResult_Finished);
-    view = new MSAEditorTreeViewer(viewName, phyObj);
+    CHECK(!msaEditor.isNull(), Task::ReportResult_Finished);  // MSA Editor was closed. Do nothing.
+    view = new MSAEditorTreeViewer(msaEditor, viewName, phyObj);
 
     if (!stateData.isEmpty()) {
         OpenSavedTreeViewerTask::applySavedState(view, stateData);
@@ -238,10 +243,9 @@ MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MSA
 }
 
 void MSAEditorOpenTreeViewerTask::createTreeViewer() {
-    auto createTask = new CreateMSAEditorTreeViewerTask(phyObject->getDocument()->getName(), phyObject, stateData);
+    auto createTask = new CreateMSAEditorTreeViewerTask(treeManager->getMsaEditor(), phyObject->getDocument()->getName(), phyObject, stateData);
     connect(new TaskSignalMapper(createTask), SIGNAL(si_taskFinished(Task*)), treeManager, SLOT(sl_openTreeTaskFinished(Task*)));
-    TaskScheduler* scheduler = AppContext::getTaskScheduler();
-    scheduler->registerTopLevelTask(createTask);
+    AppContext::getTaskScheduler()->registerTopLevelTask(createTask);
 }
 
 }  // namespace U2

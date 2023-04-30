@@ -3163,6 +3163,31 @@ GUI_TEST_CLASS_DEFINITION(test_7631) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7633) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Click "Build Tree". Click "Display Options->Display tree in new window".
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI_7633.nwk", 0, 0, false));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    // Remove the tree from the project.
+    GTUtilsProjectTreeView::click(os, "COI_7633.nwk");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Switch to the COI.aln window.
+    GTUtilsProjectTreeView::doubleClickItem(os, "COI.aln");
+
+    // Open the "Tree Setting" tab in the Options Panel and click "Open tree".
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/sandbox/COI_7633.nwk"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
+
+    // Expected: there is no crash, tree viewer is added.
+    // TODO: uncomment after fixing UGENE-7869.
+    //  GTUtilsMsaEditor::getTreeView(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7635) {
     // Checks that notification container widget contains all available notifications.
     class Create10NotificationsScenario : public CustomScenario {

@@ -87,7 +87,7 @@ public:
 class CreateMSAEditorTreeViewerTask : public Task {
     Q_OBJECT
 public:
-    CreateMSAEditorTreeViewerTask(const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& stateData);
+    CreateMSAEditorTreeViewerTask(MSAEditor* msaEditor, const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& stateData);
     void prepare() override;
     ReportResult report() override;
     TreeViewer* getTreeViewer() const;
@@ -98,6 +98,7 @@ private:
     QPointer<PhyTreeObject> phyObj;
     QVariantMap stateData;
     TreeViewer* view = nullptr;
+    QPointer<MSAEditor> msaEditor;
 };
 
 class CreateTreeViewerTask : public Task {

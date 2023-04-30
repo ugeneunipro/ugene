@@ -36,7 +36,7 @@ class MSAEditor;
 class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
 public:
-    MSAEditorTreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject);
+    MSAEditorTreeViewer(MSAEditor* msaEditor, const QString& viewName, PhyTreeObject* phyTreeObject);
     ~MSAEditorTreeViewer() override;
 
     const CreatePhyTreeSettings& getCreatePhyTreeSettings() const;
@@ -59,8 +59,6 @@ public:
 
     /** Returns true if Tree and MSA are in 'sync' mode. */
     bool isSyncModeEnabled() const;
-
-    void setMSAEditor(MSAEditor* newEditor);
 
     MSAEditor* getMsaEditor() const;
 
