@@ -4420,6 +4420,13 @@ GUI_TEST_CLASS_DEFINITION(test_7852) {
     CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>4 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 4'");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7858) {
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    GTUtilsBookmarksTreeView::addBookmark(os, "Aligned reads [alignment.ugenedb]", "My bookmark");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7860) {
     GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
