@@ -607,7 +607,7 @@ void AnnotationsTreeView::sl_onAnnotationsAdded(const QList<Annotation*>& as) {
             SAFE_POINT(gi != nullptr, "AnnotationsTreeView::sl_onAnnotationsAdded: childGroup not found", );
             buildGroupTree(gi, childGroup);
             createdGroups << childGroup;  // if a group item has been built it already contains corresponding annotation items
-                // so in further iterations we skip child annotations of this group
+                                          // so in further iterations we skip child annotations of this group
         }
         SAFE_POINT(gi != nullptr, "Invalid annotation view item!", );
         toUpdate.insert(gi);
@@ -696,27 +696,6 @@ void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModific
                     } else {
                         ai->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);  // otherwise process indicator only
                     }
-                }
-            } break;
-            case AnnotationModification_AddedToGroup: {
-                const AnnotationGroupModification& gmd = static_cast<const AnnotationGroupModification&>(annotationModification);
-                AVGroupItem* gi = findGroupItem(gmd.getGroup());
-                SAFE_POINT(gi != nullptr, L10N::nullPointerError("annotation view group item"), );
-                buildAnnotationTree(gi, gmd.annotation);
-                gi->updateVisual();
-            } break;
-
-            case AnnotationModification_RemovedFromGroup: {
-                const AnnotationGroupModification& gmd = static_cast<const AnnotationGroupModification&>(annotationModification);
-                AVAnnotationItem* ai = findAnnotationItem(gmd.getGroup(), gmd.annotation);
-                // TODO:ichebyki
-                // Need huge fix for annotations tree, see UGENE-7717
-                // This is just a workaround for UGENE-7154
-                if (ai != nullptr) {
-                    auto gi = dynamic_cast<AVGroupItem*>(ai->parent());
-                    selectedAnnotation.remove(ai);
-                    delete ai;
-                    gi->updateVisual();
                 }
             } break;
         }
@@ -1565,19 +1544,18 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
     // Add and remove the dragged annotations to the receiver AnnotationsTreeView at once.
     // It is required for the case of cross-view drag and drop.
     int i = 0;
-    foreach (AnnotationGroup* g, dstGroupList) {
-        g->addAnnotations(QList<SharedAnnotationData>() << dndAdded.at(i)->getData());
+    for (AnnotationGroup* g : qAsConst(dstGroupList)) {
+        g->addAnnotations({dndAdded.at(i)->getData()});
         i++;
     }
 
     i = 0;
     QMap<AnnotationTableObject*, QList<AnnotationModification>> annotationModifications;
-    foreach (AnnotationGroup* g, srcGroupList) {
-        annotationModifications[g->getGObject()] << AnnotationGroupModification(AnnotationModification_RemovedFromGroup, dndToRemove.at(i), g);
+    for (AnnotationGroup* g : qAsConst(srcGroupList)) {
+        AnnotationTableObject* annotationObject = g->getGObject();
+        Annotation* annotation = dndToRemove.at(i);
+        annotation->getGroup()->removeAnnotations({annotation});
         i++;
-    }
-    foreach (AnnotationTableObject* annotationTableObject, annotationModifications.keys()) {
-        annotationTableObject->emit_onAnnotationsModified(annotationModifications[annotationTableObject]);
     }
 
     // Process groups
