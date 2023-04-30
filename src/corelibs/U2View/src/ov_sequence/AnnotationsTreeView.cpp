@@ -1552,7 +1552,6 @@ void AnnotationsTreeView::finishDragAndDrop(Qt::DropAction dndAction) {
     i = 0;
     QMap<AnnotationTableObject*, QList<AnnotationModification>> annotationModifications;
     for (AnnotationGroup* g : qAsConst(srcGroupList)) {
-        AnnotationTableObject* annotationObject = g->getGObject();
         Annotation* annotation = dndToRemove.at(i);
         annotation->getGroup()->removeAnnotations({annotation});
         i++;
