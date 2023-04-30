@@ -1242,20 +1242,6 @@ void TreeViewerUI::changeLabelsAlignment() {
     }
 }
 
-/** Expands every collapsed branch in tree. */
-static void makeLayoutNotCollapsed(TvBranchItem* branch) {
-    CHECK(branch != nullptr, );
-    if (branch->isCollapsed()) {
-        branch->toggleCollapsedState();
-    }
-    QList<QGraphicsItem*> childItems = branch->childItems();
-    for (auto child : qAsConst(childItems)) {
-        if (auto childBranch = dynamic_cast<TvBranchItem*>(child)) {
-            makeLayoutNotCollapsed(childBranch);
-        }
-    }
-}
-
 /** Recalculates distanceToViewScale, minDistance, maxDistance. */
 static double computeDistanceToViewScale(TvRectangularBranchItem* rectRoot) {
     static constexpr int DEFAULT_MAX_WIDTH_PER_BRANCH = 500;
