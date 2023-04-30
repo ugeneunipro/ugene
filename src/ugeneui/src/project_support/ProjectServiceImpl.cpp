@@ -152,6 +152,12 @@ Task::ReportResult ProjectServiceEnableTask::report() {
 
     psi->closeProjectAction = new QAction(tr("&Close project"), psi);
     psi->closeProjectAction->setObjectName("closeProjectAction");
+
+    if (qgetenv("UGENE_GUI_TEST") == "1") {
+        // Add an extra shortcut in GUI tests mode to speed up UGENE closing after the test.
+        // It saves ~30 minutes for Linux tests. See 'post_action_0002'.
+        psi->closeProjectAction->setShortcut(QKeySequence(Qt::CTRL | (isOsMac() ? Qt::Key_E : Qt::Key_Q)));
+    }
     connect(psi->closeProjectAction, &QAction::triggered, psi, &ProjectServiceImpl::sl_closeProject);
 
     psi->exportProjectAction = new QAction(tr("Export project..."), psi);

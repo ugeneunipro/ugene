@@ -107,7 +107,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os), 10000, true);
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-        GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+        GTKeyboardDriver::keyClick(isOsMac() ? 'e' : 'q', Qt::ControlModifier);
         GTUtilsTaskTreeView::waitTaskFinished(os, 3000);
         GTUtilsDialog::cleanup(os, GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
     }
