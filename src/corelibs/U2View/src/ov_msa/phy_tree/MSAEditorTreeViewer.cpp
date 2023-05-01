@@ -45,7 +45,7 @@ MSAEditorTreeViewer::MSAEditorTreeViewer(MSAEditor* _editor, const QString& view
 }
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {
-    if (isSyncModeEnabled()) {
+    if (editor != nullptr && isSyncModeEnabled()) {
         auto msaEditorUi = qobject_cast<MsaEditorWgt*>(editor->getUI()->getUI(0));
         if (msaEditorUi != nullptr) {
             msaEditorUi->getSequenceArea()->disableFreeRowOrderMode(this);
@@ -115,7 +115,7 @@ void MSAEditorTreeViewer::setParentAlignmentName(const QString& _alignmentName) 
 }
 
 void MSAEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
-    bool isEnabled = checkTreeAndMsaCanBeSynchronized();
+    bool isEnabled = editor != nullptr && checkTreeAndMsaCanBeSynchronized();
     syncModeAction->setEnabled(isEnabled);
 
     bool isChecked = isEnabled && isSyncModeOn;  // Override 'isSyncModeOn' with a safer option.
