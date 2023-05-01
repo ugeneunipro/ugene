@@ -4367,6 +4367,18 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
                   QString("Bad offset: expected %1, current %2").arg(savedLeftOffset).arg(restoredLeftOffset));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7850_1) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Raw/raw.seq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsBookmarksTreeView::addBookmark(os, "raw [raw.seq]", "raw_seq");
+
+    GTUtilsMdi::closeWindow(os, "raw [raw.seq]");
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {ACTION_UPDATE_BOOKMARK}, PopupChecker::CheckOption(PopupChecker::IsDisabled)));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "raw_seq"));
+    GTMouseDriver::click(Qt::RightButton);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7852) {
     /*
     1. Open samples/FASTA/human_T1.fa.
