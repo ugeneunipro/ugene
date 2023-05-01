@@ -227,7 +227,7 @@ void ObjectViewTreeController::updateActions() {
 
     activateViewAction->setEnabled(hasActiveView || stateToOpen != nullptr);
     addStateAction->setEnabled(canAddStates);
-    updateStateAction->setEnabled(si != nullptr);
+    updateStateAction->setEnabled(canAddStates && si != nullptr);
     removeStateAction->setEnabled(si != nullptr || (vi != nullptr && vi->childCount() > 0));
     renameStateAction->setEnabled(si != nullptr);
 }
