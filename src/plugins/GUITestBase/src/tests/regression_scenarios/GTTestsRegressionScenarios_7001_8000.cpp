@@ -4440,7 +4440,7 @@ GUI_TEST_CLASS_DEFINITION(test_7853_1) {
 
     class Custom : public CustomScenario {
         void run(GUITestOpStatus& os) override {
-            CHECK_SET_ERR(!GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) shoud be disabled'");
+            CHECK_SET_ERR(!GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) should be disabled'");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
@@ -4461,7 +4461,7 @@ GUI_TEST_CLASS_DEFINITION(test_7853_2) {
 
     class Custom : public CustomScenario {
         void run(GUITestOpStatus& os) override {
-            CHECK_SET_ERR(GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) shoud be enabled'");
+            CHECK_SET_ERR(GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) should be enabled'");
 
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
