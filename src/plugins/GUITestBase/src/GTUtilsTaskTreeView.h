@@ -85,7 +85,7 @@ public:
      * Returns the persantage value if the task is running;
      * -1 if the task wasn't found; -2 if the task exists, but still not int the running state
      */
-    static int getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool failIfNotFound = true);
+    static int getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool findIfNotFound = true);
 
     static const QString widgetName;
 
