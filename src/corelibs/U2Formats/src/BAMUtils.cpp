@@ -47,12 +47,14 @@ extern "C" {
 #include <SamtoolsAdapter.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/AssemblyObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
@@ -642,16 +644,20 @@ static int recursiveBamMergeCore(const QString& outFileName, const QList<QString
         return localBamMergeCore(outFileName, filesToMerge);
     }
 
+    U2OpStatus2Log os;
+    auto temporaryDir = AppContext::getAppSettings()->getUserAppsSettings()->createCurrentProcessTemporarySubDir(os);
+    CHECK_OP(os, -1);
+
     QStringList newOutFileNameList;
     for (int i = 0; i < mergeSplit.size(); i++) {
         const auto& currentRange = mergeSplit.at(i);
         QList<QString> newFilesToMerge = filesToMerge.mid(currentRange.startPos, MAX_FILES_OPENED);
         QString newOutFileName = newFilesToMerge.first();
         // Remove ".bam" from the end
-        newOutFileName = newOutFileName.left(newOutFileName.size() - 4);
+        auto baseFileName = QFileInfo(newOutFileName).baseName();
         auto uuid = QUuid::createUuid().toString();
         uuid = uuid.mid(1, uuid.size() - 2);
-        newOutFileName = newOutFileName + uuid + ".bam";
+        newOutFileName = temporaryDir + "/" + baseFileName + uuid + ".bam";
         newOutFileNameList << newOutFileName;
         int res = localBamMergeCore(newOutFileName, newFilesToMerge);
         CHECK(res >= 0, res);
