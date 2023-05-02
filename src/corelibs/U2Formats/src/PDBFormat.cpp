@@ -190,6 +190,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
     char* buf = readBuff.data();
     qint64 len = 0;
     bool firstCompndLine = true;
+    QMap<int, QMap<int, QMap<int, SharedAtom>>> atomsMap;  // QMap<chainIndex, QMap<modelId, QMap<atomIndex, Atom>>>
     while (!ti.isCoR()) {
         bool lineOk = true;
 
@@ -229,7 +230,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
         }
 
         if (currentPDBLine.startsWith("ATOM  ") || currentPDBLine.startsWith("HETATM")) {
-            parseAtom(biostruct, ti);
+            parseAtom(biostruct, ti, atomsMap);
             continue;
         }
 
@@ -260,6 +261,21 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
 
     if (!flagAtomRecordPresent) {
         ti.setError(U2::PDBFormat::tr("Some mandatory records are absent"));
+    }
+
+    for (const QMap<int, QMap<int, SharedAtom>> atomsInChain : qAsConst(atomsMap)) {
+        // first index for atoms in chain is 1
+        if (!atomsInChain.keys().contains(atomsInChain.size())) {
+            ti.setError(U2::PDBFormat::tr("One of the atom chains is incomplete. One or more atoms are lost."));
+        }
+        for (const QMap<int, SharedAtom> atomsInModel : qAsConst(atomsInChain)) {
+            const int chainIndex = atomsMap.key(atomsInChain);
+            const int modelIndex = atomsMap[chainIndex].key(atomsInModel);
+            const QList<int> atomsInModelKeys = atomsInModel.keys();
+            for (const int id : qAsConst(atomsInModelKeys)) {
+                biostruct.moleculeMap[chainIndex]->models[modelIndex].atoms.append(atomsMap[chainIndex][modelIndex][id]);
+            }
+        }
     }
 
     updateSecStructChainIndexes(biostruct);
@@ -338,7 +354,7 @@ bool PDBFormat::PDBParser::seqResContains(char chainIdentifier, int residueIndex
     }
 }
 
-void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&) {
+void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QMap<int, QMap<int, QMap<int, SharedAtom>>>& atomsMap) {
     /*
     Record Format
 
@@ -431,9 +447,18 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&) {
     biostruct.modelMap[modelId].insert(id, a);
 
     if (atomIsInChain) {
+        if (chainIndex == 2) {
+            while(false);
+        }
         SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
         Molecule3DModel& model3D = mol->models[modelId];
-        model3D.atoms.size() <= id ? model3D.atoms.append(a) : model3D.atoms.insert(id, a);
+        if (atomsMap.find(chainIndex) == atomsMap.end()) {
+            atomsMap[chainIndex] = QMap<int, QMap<int, SharedAtom>>();
+        }
+        if (atomsMap[chainIndex].find(modelId) == atomsMap[chainIndex].end()) {
+            atomsMap[chainIndex][modelId] = QMap<int, SharedAtom>();
+        }
+        atomsMap[chainIndex][modelId][id] = a;
     }
 }
 
