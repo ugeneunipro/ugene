@@ -667,8 +667,8 @@ void FindEnzymesDialog::sl_updateSuppliers() {
     cbSuppliers->addItems(loadedSuppliers);
     QString selStr = AppContext::getSettings()->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
     static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
-    selStr = selStr.replace(EnzymesIO::NOT_DEFINED_SIGN, notDefinedTr);
     cbSuppliers->setCheckedItems(selStr.isEmpty() ? loadedSuppliers : selStr.split(SUPPLIERS_LIST_SEPARATOR));
+    selStr = selStr.replace(EnzymesIO::NOT_DEFINED_SIGN, notDefinedTr);
 }
 
 
