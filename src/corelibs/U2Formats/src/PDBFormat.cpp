@@ -450,8 +450,6 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QMap<i
         if (chainIndex == 2) {
             while(false);
         }
-        SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
-        Molecule3DModel& model3D = mol->models[modelId];
         if (atomsMap.find(chainIndex) == atomsMap.end()) {
             atomsMap[chainIndex] = QMap<int, QMap<int, SharedAtom>>();
         }
