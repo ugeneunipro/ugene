@@ -80,7 +80,12 @@ public:
 
     static int countTasks(HI::GUITestOpStatus& os, const QString& itemName);
     static QString getTaskStatus(HI::GUITestOpStatus& os, const QString& itemName);
-    static int getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool failOnNull = true);
+    /*f
+     * Returns progress of the @itemName task. if @findIfNotFound is true, fails if the task with @@itemName wasn't found
+     * Returns the persantage value if the task is running;
+     * -1 if the task wasn't found; -2 if the task exists, but still not int the running state
+     */
+    static int getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool findIfNotFound = true);
 
     static const QString widgetName;
 

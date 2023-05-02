@@ -4586,9 +4586,10 @@ GUI_TEST_CLASS_DEFINITION(test_7785) {
     GTUtilsTask::waitTaskStart(os, "Multiple In Silico PCR");
 
     int progress;
-    do {
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && progress < 91; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         progress = GTUtilsTaskTreeView::getTaskProgress(os, "Multiple In Silico PCR", false);
-    } while (progress < 91);
+    }
 
     GTMouseDriver::click();
     GTUtilsTaskTreeView::waitTaskFinished(os);

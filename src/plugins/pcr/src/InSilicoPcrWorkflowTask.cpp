@@ -40,7 +40,7 @@ QList<Task*> InSilicoPcrWorkflowTask::onSubTaskFinished(Task* subTask) {
     if (subTask == pcrTask) {
         foreach (const InSilicoPcrProduct& product, pcrTask->getResults()) {
             QVariantMap hints;
-            hints[DocumentRemovalMode_Synchronous] = QString();
+            hints[DocumentRemovalMode_Synchronous] = true;
             auto productTask = new ExtractProductTask(product, productSettings, hints);
             productTask->setSubtaskProgressWeight(0.3 / pcrTask->getResults().size());
             result << productTask;
