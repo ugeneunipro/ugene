@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document index="doc" url="pdb/broken/Helix_wrong_index.pdb" io="local_file" format="pdb" no-message="error" />
+
+</multi-test>
