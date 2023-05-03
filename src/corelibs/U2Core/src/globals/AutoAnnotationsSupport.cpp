@@ -40,11 +40,11 @@ const QString AutoAnnotationObject::AUTO_ANNOTATION_HINT("auto-annotation object
 
 AutoAnnotationsUpdater::AutoAnnotationsUpdater(const QString& name, const QString& groupName, bool isCantBeEnabledByDefault, bool translationDependent)
     : groupName(groupName), name(name), canBeEnabledByDefault(!isCantBeEnabledByDefault), dependsOnAminoTranslation(translationDependent) {
-    isOnByDefault = canBeEnabledByDefault && AppContext::getSettings()->getValue(AUTO_ANNOTATION_SETTINGS + groupName, false, true).toBool();
+    isOnByDefault = canBeEnabledByDefault && AppContext::getSettings()->getValue(AUTO_ANNOTATION_SETTINGS + groupName, false, true, true).toBool();
 }
 
 AutoAnnotationsUpdater::~AutoAnnotationsUpdater() {
-    AppContext::getSettings()->setValue(AUTO_ANNOTATION_SETTINGS + groupName, isOnByDefault, true);
+    AppContext::getSettings()->setValue(AUTO_ANNOTATION_SETTINGS + groupName, isOnByDefault, true, true);
 }
 
 AutoAnnotationsUpdater* AutoAnnotationsSupport::findUpdaterByGroupName(const QString& groupName) {

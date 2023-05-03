@@ -58,6 +58,6 @@ private:
     mutable QMutex threadSafityLock;
     QSettings* settings;
 
-    static QString UGENE_WORKING_DIR_PATH;
+    static QString UGENE_WORKING_DIR_PATH_MD4;
 };
 }  // namespace U2
