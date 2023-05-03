@@ -33,8 +33,6 @@
 
 namespace U2 {
 
-static const QString UGENE_WORKING_DIR_PATH_MD4 = QString(QCryptographicHash::hash(QCoreApplication::applicationDirPath().toUtf8(), QCryptographicHash::Md4).toHex());
-
 static QString findKey(const QStringList& envList, const QString& key) {
     QString prefix = key + "=";
     QString result;
@@ -165,7 +163,7 @@ QString SettingsImpl::toMinorVersionKey(const QString& key) const {
 }
 
 QString SettingsImpl::toPathKey(const QString& key) const {
-    static QString PATH_KEY_SUFFIX = "/" + UGENE_WORKING_DIR_PATH_MD4;
+    static QString PATH_KEY_SUFFIX = "/" + QString(QCryptographicHash::hash(QCoreApplication::applicationDirPath().toUtf8(), QCryptographicHash::Md4).toHex());
     return toVersionKey(key) + PATH_KEY_SUFFIX + (key.endsWith("/") ? "/" : "");
 }
 
