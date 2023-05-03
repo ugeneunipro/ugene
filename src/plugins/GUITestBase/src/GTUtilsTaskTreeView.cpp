@@ -277,6 +277,16 @@ int GTUtilsTaskTreeView::getTaskProgress(HI::GUITestOpStatus& os, const QString&
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "waitTaskProgressMoreThan"
+void GTUtilsTaskTreeView::waitTaskProgressMoreThan(HI::GUITestOpStatus& os, const QString& itemName, int taskProgress) {
+    int progress = -1;
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && progress <= taskProgress; time += GT_OP_CHECK_MILLIS) {
+        GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+        progress = GTUtilsTaskTreeView::getTaskProgress(os, itemName, false);
+    }
+}
+#undef GT_METHOD_NAME
+
 SchedulerListener::SchedulerListener()
     : QObject(nullptr),
       registeredTaskCount(0) {
