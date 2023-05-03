@@ -264,13 +264,11 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
     }
 
     for (const QMap<int, QMap<int, SharedAtom>> atomsInChain : qAsConst(atomsMap)) {
-        for (const QMap<int, SharedAtom> atomsInModel : qAsConst(atomsInChain)) {
+        for (const QMap<int, SharedAtom> atomModelsInChain : qAsConst(atomsInChain)) {
             const int chainIndex = atomsMap.key(atomsInChain);
-            const int modelIndex = atomsMap[chainIndex].key(atomsInModel);
-            QList<int> atomsInModelKeys = atomsInModel.keys();
-            std::sort(atomsInModelKeys.begin(), atomsInModelKeys.end());
-            for (const int id : qAsConst(atomsInModelKeys)) {
-                biostruct.moleculeMap[chainIndex]->models[modelIndex].atoms.append(atomsMap[chainIndex][modelIndex][id]);
+            const int modelIndex = atomsMap[chainIndex].key(atomModelsInChain);
+            for (const SharedAtom atom : qAsConst(atomModelsInChain)) {
+                biostruct.moleculeMap[chainIndex]->models[modelIndex].atoms.append(atom);
             }
         }
     }
@@ -444,10 +442,10 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QMap<i
     biostruct.modelMap[modelId].insert(id, a);
 
     if (atomIsInChain) {
-        if (atomsMap.find(chainIndex) == atomsMap.end()) {
+        if (!atomsMap.contains(chainIndex)) {
             atomsMap[chainIndex] = QMap<int, QMap<int, SharedAtom>>();
         }
-        if (atomsMap[chainIndex].find(modelId) == atomsMap[chainIndex].end()) {
+        if (!atomsMap[chainIndex].contains(modelId)) {
             atomsMap[chainIndex][modelId] = QMap<int, SharedAtom>();
         }
         atomsMap[chainIndex][modelId][id] = a;
