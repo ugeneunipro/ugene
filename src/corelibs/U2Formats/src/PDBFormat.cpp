@@ -264,10 +264,6 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
     }
 
     for (const QMap<int, QMap<int, SharedAtom>> atomsInChain : qAsConst(atomsMap)) {
-        // first index for atoms in chain is 1
-        if (!atomsInChain.keys().contains(atomsInChain.size())) {
-            ti.setError(U2::PDBFormat::tr("One of the atom chains is incomplete. One or more atoms are lost."));
-        }
         for (const QMap<int, SharedAtom> atomsInModel : qAsConst(atomsInChain)) {
             const int chainIndex = atomsMap.key(atomsInChain);
             const int modelIndex = atomsMap[chainIndex].key(atomsInModel);
