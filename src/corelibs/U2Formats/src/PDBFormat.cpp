@@ -271,7 +271,8 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
         for (const QMap<int, SharedAtom> atomsInModel : qAsConst(atomsInChain)) {
             const int chainIndex = atomsMap.key(atomsInChain);
             const int modelIndex = atomsMap[chainIndex].key(atomsInModel);
-            const QList<int> atomsInModelKeys = atomsInModel.keys();
+            QList<int> atomsInModelKeys = atomsInModel.keys();
+            std::sort(atomsInModelKeys.begin(), atomsInModelKeys.end());
             for (const int id : qAsConst(atomsInModelKeys)) {
                 biostruct.moleculeMap[chainIndex]->models[modelIndex].atoms.append(atomsMap[chainIndex][modelIndex][id]);
             }
