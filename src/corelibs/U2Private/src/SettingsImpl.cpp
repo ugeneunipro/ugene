@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-QString SettingsImpl::UGENE_WORKING_DIR_PATH_MD4 = "";
+static const QString UGENE_WORKING_DIR_PATH_MD4 = QString(QCryptographicHash::hash(QCoreApplication::applicationDirPath().toUtf8(), QCryptographicHash::Md4).toHex());
 
 static QString findKey(const QStringList& envList, const QString& key) {
     QString prefix = key + "=";
@@ -90,9 +90,6 @@ SettingsImpl::SettingsImpl(QSettings::Scope scope) {
         settings = new QSettings(format, scope, U2_ORGANIZATION_NAME, U2_PRODUCT_NAME, this);
     } else {
         settings = new QSettings(fileName, format, this);
-    }
-    if (UGENE_WORKING_DIR_PATH_MD4.isEmpty()) {
-        UGENE_WORKING_DIR_PATH_MD4 = QString(QCryptographicHash::hash(QCoreApplication::applicationDirPath().toUtf8(), QCryptographicHash::Md4).toHex());
     }
 }
 
