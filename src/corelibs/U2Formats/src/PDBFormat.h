@@ -91,7 +91,7 @@ private:
         void parseSecondaryStructure(BioStruct3D& biostruct, U2OpStatus& ti);
         void parseHet(BioStruct3D& biostruct, U2OpStatus& ti);
         void parseAtomConnections(BioStruct3D& biostruct, U2OpStatus& ti);
-        void parseAtom(BioStruct3D& biostruct, U2OpStatus& ti, QHash<int, QHash<int, QHash<int, SharedAtom>>>& atomsHash);
+        void parseAtom(BioStruct3D& biostruct, U2OpStatus& ti);
         void parseSplitSection(U2OpStatus& ti);
 
         void createMolecule(char chainIdentifier, BioStruct3D& biostruct, int chainIndex);

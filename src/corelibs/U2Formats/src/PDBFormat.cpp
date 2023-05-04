@@ -190,7 +190,6 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
     char* buf = readBuff.data();
     qint64 len = 0;
     bool firstCompndLine = true;
-    QHash<int, QHash<int, QHash<int, SharedAtom>>> atomsHash;  // QHash<chainIndex, QHash<modelId, QHash<atomIndex, Atom>>>
     while (!ti.isCoR()) {
         bool lineOk = true;
 
@@ -230,7 +229,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
         }
 
         if (currentPDBLine.startsWith("ATOM  ") || currentPDBLine.startsWith("HETATM")) {
-            parseAtom(biostruct, ti, atomsHash);
+            parseAtom(biostruct, ti);
             continue;
         }
 
@@ -261,18 +260,6 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
 
     if (!flagAtomRecordPresent) {
         ti.setError(U2::PDBFormat::tr("Some mandatory records are absent"));
-    }
-
-    for (const QHash<int, QHash<int, SharedAtom>> atomsInChain : qAsConst(atomsHash)) {
-        for (const QHash<int, SharedAtom> atomModelsInChain : qAsConst(atomsInChain)) {
-            const int chainIndex = atomsHash.key(atomsInChain);
-            const int modelIndex = atomsHash[chainIndex].key(atomModelsInChain);
-            QList<int> atomsInModelKeys = atomModelsInChain.keys();
-            std::sort(atomsInModelKeys.begin(), atomsInModelKeys.end());
-            for (const int id : qAsConst(atomsInModelKeys)) {
-                biostruct.moleculeMap[chainIndex]->models[modelIndex].atoms.append(atomsHash[chainIndex][modelIndex][id]);
-            }
-        }
     }
 
     updateSecStructChainIndexes(biostruct);
@@ -351,7 +338,7 @@ bool PDBFormat::PDBParser::seqResContains(char chainIdentifier, int residueIndex
     }
 }
 
-void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QHash<int, QHash<int, QHash<int, SharedAtom>>>& atomsHash) {
+void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&) {
     /*
     Record Format
 
@@ -444,13 +431,9 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QHash<
     biostruct.modelMap[modelId].insert(id, a);
 
     if (atomIsInChain) {
-        if (!atomsHash.contains(chainIndex)) {
-            atomsHash[chainIndex] = QHash<int, QHash<int, SharedAtom>>();
-        }
-        if (!atomsHash[chainIndex].contains(modelId)) {
-            atomsHash[chainIndex][modelId] = QHash<int, SharedAtom>();
-        }
-        atomsHash[chainIndex][modelId][id] = a;
+        SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
+        Molecule3DModel& model3D = mol->models[modelId];
+        model3D.atoms.append(a);
     }
 }
 
