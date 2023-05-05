@@ -54,7 +54,7 @@ TmCalculatorPropertyWidget::TmCalculatorPropertyWidget(QWidget* parent, Delegate
 }
 
 void TmCalculatorPropertyWidget::updateUiState() {
-    auto factory = AppContext::getTmCalculatorRegistry()->getDefaultTmCalculatorFactory();
+    auto factory = AppContext::getTmCalculatorRegistry()->getById(tempSettings.value(TmCalculator::KEY_ID).toString());
     lineEdit->setText(factory->visualName);
 }
 
