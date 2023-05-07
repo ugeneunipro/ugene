@@ -131,7 +131,7 @@ QList<SEnzymeData> EnzymesSelectorWidget::getSelectedEnzymes() {
     return selectedEnzymes;
 }
 
-const QList<SEnzymeData>& EnzymesSelectorWidget::getLoadedEnzymes() {
+QList<SEnzymeData> EnzymesSelectorWidget::getLoadedEnzymes() {
     if (loadedEnzymes.isEmpty()) {
         U2OpStatus2Log os;
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
@@ -143,7 +143,7 @@ const QList<SEnzymeData>& EnzymesSelectorWidget::getLoadedEnzymes() {
     return loadedEnzymes;
 }
 
-const QStringList& EnzymesSelectorWidget::getLoadedSuppliers() {
+QStringList EnzymesSelectorWidget::getLoadedSuppliers() {
     return loadedSuppliers;
 }
 
@@ -281,7 +281,7 @@ int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesLis
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         checked += gi->checkedEnzymes.size();
-        foreach(const EnzymeTreeItem * ci, gi->checkedEnzymes) {
+        foreach (const EnzymeTreeItem* ci, gi->checkedEnzymes) {
             checkedNamesList.append(ci->enzyme->id);
         }
     }
@@ -649,7 +649,6 @@ void FindEnzymesDialog::sl_handleSupplierSelectionChange(QStringList checkedSupp
 
             visibleEnzymes.append(enzyme);
             break;
-
         }
     }
     enzSel->setEnzymesList(visibleEnzymes);
@@ -673,7 +672,6 @@ void FindEnzymesDialog::sl_updateSuppliers() {
     }
     cbSuppliers->setCheckedItems(suppliersList);
 }
-
 
 void FindEnzymesDialog::sl_selectAll() {
     cbSuppliers->setCheckedItems(EnzymesSelectorWidget::getLoadedSuppliers());

@@ -47,8 +47,8 @@ public:
     static void setupSettings();
     static void saveSettings();
     static void initSelection();
-    static const QList<SEnzymeData>& getLoadedEnzymes();
-    static const QStringList& getLoadedSuppliers();
+    static QList<SEnzymeData> getLoadedEnzymes();
+    static QStringList getLoadedSuppliers();
     QList<SEnzymeData> getSelectedEnzymes();
     int getNumSelected();
     int getTotalNumber() {
