@@ -37,14 +37,18 @@ public:
 
     virtual bool contains(const QString& key) const = 0;
     virtual void remove(const QString& key) = 0;
-
-    // for versioned default value is returned if versions don't match
-    // all version-specific values must use versioneedValue = true
-    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false) const = 0;
-    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false) = 0;
+    /*
+     * Returns value for given key, for versioned and pathed default value is 
+     * returned if versions don't match all version-specific values must use versioneedValue = true
+     * all path-specific values must use versioneedValue = true and bool pathValue = true
+     */
+    virtual QVariant getValue(const QString& key, const QVariant& defaultValue = QVariant(), bool versionedValue = false, bool pathValue = false) const = 0;
+    virtual void setValue(const QString& key, const QVariant& value, bool versionedValue = false, bool pathValue = false) = 0;
 
     virtual QString toVersionKey(const QString& key) const = 0;
     virtual QString toMinorVersionKey(const QString& key) const = 0;
+
+    virtual QString toPathKey(const QString& key) const = 0;
 
     virtual void sync() = 0;
     virtual QString fileName() const = 0;

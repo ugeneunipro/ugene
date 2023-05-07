@@ -70,7 +70,7 @@ void ExternalToolSupportSettings::loadExternalToolsFromAppConfig() {
     for (int i = 0; i < numberExternalTools; i++) {
         QString toolIndex = QString::number(i);
         QString id = settings->getValue(PREFIX_EXTERNAL_TOOL_ID + toolIndex, QVariant(""), true).toString();
-        QString path = settings->getValue(PREFIX_EXTERNAL_TOOL_PATH + toolIndex, QVariant(""), true).toString();
+        QString path = settings->getValue(PREFIX_EXTERNAL_TOOL_PATH + toolIndex, QVariant(""), true, true).toString();
         bool isValid = settings->getValue(PREFIX_EXTERNAL_TOOL_IS_VALID + toolIndex, QVariant(false), true).toBool();
         bool isChecked = settings->getValue(PREFIX_EXTERNAL_TOOL_IS_CHECKED + toolIndex, QVariant(false), true).toBool();
         QString version = settings->getValue(PREFIX_EXTERNAL_TOOL_VERSION + toolIndex, QVariant("unknown"), true).toString();
@@ -98,7 +98,7 @@ void ExternalToolSupportSettings::saveExternalToolsToAppConfig() {
         if (i < externalToolList.length()) {
             ExternalTool* tool = externalToolList[i];
             settings->setValue(PREFIX_EXTERNAL_TOOL_ID + toolIndex, tool->getId(), true);
-            settings->setValue(PREFIX_EXTERNAL_TOOL_PATH + toolIndex, tool->getPath(), true);
+            settings->setValue(PREFIX_EXTERNAL_TOOL_PATH + toolIndex, tool->getPath(), true, true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_IS_VALID + toolIndex, tool->isValid(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_IS_CHECKED + toolIndex, tool->isChecked(), true);
             settings->setValue(PREFIX_EXTERNAL_TOOL_VERSION + toolIndex, tool->getVersion(), true);

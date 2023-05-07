@@ -21,6 +21,7 @@
 
 #include "SettingsImpl.h"
 
+#include <QCryptographicHash>
 #include <QDir>
 #include <QProcess>
 
@@ -28,6 +29,7 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/Version.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -107,44 +109,40 @@ void SettingsImpl::remove(const QString& pathName) {
     settings->remove(key);
 }
 
-QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& defaultValue, bool versionedValue) const {
+QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& defaultValue, bool versionedValue, bool pathValue) const {
+    SAFE_POINT(!pathValue || (pathValue && versionedValue), "'pathValue' always sould be 'versionedValue' too!", defaultValue);
     QMutexLocker lock(&threadSafityLock);
 
     QString path = pathName;
     QString key = preparePath(path);
 
     if (versionedValue) {
-        // find versioned value in the key path
+        QString keyWithExtras = pathValue ? toPathKey(key) : toVersionKey(key);
+        
         settings->beginGroup(key);
         QStringList allKeys = settings->allKeys();
         settings->endGroup();
 
-        QString versionedKey = toVersionKey(key);
-
-        bool found = false;
         foreach (const QString& settingsKey, allKeys) {
-            if (QString(key + "/" + settingsKey) == versionedKey) {
-                found = true;
-                break;
+            if (QString(key + "/" + settingsKey) == keyWithExtras) {
+                return settings->value(keyWithExtras, defaultValue);
             }
         }
-        if (!found) {
-            return defaultValue;
-        }
-
-        key = versionedKey;
+        return defaultValue;
     }
-
     return settings->value(key, defaultValue);
 }
 
-void SettingsImpl::setValue(const QString& pathName, const QVariant& value, bool versionedValue) {
+void SettingsImpl::setValue(const QString& pathName, const QVariant& value, bool versionedValue, bool pathValue) {
+    SAFE_POINT(!pathValue || (pathValue && versionedValue), "'pathValue' always sould be 'versionedValue' too!", );
     QMutexLocker lock(&threadSafityLock);
 
     QString path = pathName;
     QString key = preparePath(path);
 
-    if (versionedValue) {
+    if (pathValue && versionedValue) {
+        key = toPathKey(key);
+    } else if (versionedValue) {
         // TODO: delete versioned keys?
 
         // create versioned key
@@ -162,6 +160,11 @@ QString SettingsImpl::toVersionKey(const QString& key) const {
 QString SettingsImpl::toMinorVersionKey(const QString& key) const {
     static QString VERSION_KEY_SUFFIX = "/" + QString::number(Version::appVersion().major) + "." + QString::number(Version::appVersion().minor);
     return key + VERSION_KEY_SUFFIX + (key.endsWith("/") ? "/" : "");
+}
+
+QString SettingsImpl::toPathKey(const QString& key) const {
+    static QString PATH_KEY_SUFFIX = "/" + QString(QCryptographicHash::hash(QCoreApplication::applicationDirPath().toUtf8(), QCryptographicHash::Md4).toHex());
+    return toVersionKey(key) + PATH_KEY_SUFFIX + (key.endsWith("/") ? "/" : "");
 }
 
 QStringList SettingsImpl::getAllKeys(const QString& path) const {

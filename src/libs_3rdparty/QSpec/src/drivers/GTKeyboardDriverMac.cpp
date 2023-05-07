@@ -180,18 +180,29 @@ static char toKeyWithNoShift(char key) {
     return key;
 }
 
-static bool keyPressMac(CGKeyCode key) {
+static void patchModKeyFlags(CGKeyCode key, bool isPress, CGEventRef& event, const QList<Qt::Key>& modKeys = {}) {
+    if (key != kVK_ANSI_M || !modKeys.contains(Qt::Key_Shift)) {
+        return; // Patch only M key behavior. Check GUITest_common_scenarios_document_from_text_test_0003.
+    }
+    Q_UNUSED(isPress);
+//  printf("Current mask: %lu, key: %lu\n", CGEventGetFlags(event), key);
+    CGEventSetFlags(event, kCGEventFlagMaskShift);
+}
+
+static bool keyPressMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
     CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, true);
     DRIVER_CHECK(event != NULL, "Can't create event");
+    patchModKeyFlags(key, true, event, modKeys);
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
     GTGlobals::sleep(10);
     return true;
 }
 
-static bool keyReleaseMac(CGKeyCode key) {
+static bool keyReleaseMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
     CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, false);
     DRIVER_CHECK(event != NULL, "Can't create event");
+    patchModKeyFlags(key, false, event, modKeys);
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
     GTGlobals::sleep(10);
@@ -201,38 +212,33 @@ static bool keyReleaseMac(CGKeyCode key) {
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
 #    define GT_METHOD_NAME "keyPress_char"
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
+    //    printf("Key press %c\n", origKey);
     DRIVER_CHECK(origKey != 0, "key = 0");
-    char keyWithNoShift = toKeyWithNoShift(origKey);
-    bool isShiftRequired = origKey != keyWithNoShift;
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
+    char keyWithNoShift = toKeyWithNoShift(origKey);
+    if (origKey != keyWithNoShift && modKeys.isEmpty()) {
+        modKeys.append(Qt::Key_Shift);
+    }
     foreach (Qt::Key mod, modKeys) {
-        if (mod == Qt::Key_Shift && isShiftRequired) {
-            continue;
-        }
         keyPressMac(GTKeyboardDriver::key[mod]);
     }
-    if (isShiftRequired) {
-        keyPressMac(GTKeyboardDriver::key[Qt::Key_Shift]);
-    }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
-    return keyPressMac(keyCode);
+    return keyPressMac(keyCode, modKeys);
 }
 #    undef GT_METHOD_NAME
 
 #    define GT_METHOD_NAME "keyRelease_char"
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
+//    printf("Key release %c\n", origKey);
     DRIVER_CHECK(origKey != 0, "key = 0");
-    char keyWithNoShift = toKeyWithNoShift(origKey);
-    bool isShiftRequired = origKey != keyWithNoShift;
-
-    CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
-    keyReleaseMac(keyCode);
-    if (isShiftRequired) {
-        keyReleaseMac(GTKeyboardDriver::key[Qt::Key_Shift]);
-    }
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
+    char keyWithNoShift = toKeyWithNoShift(origKey);
+    if (origKey != keyWithNoShift && modKeys.isEmpty()) {
+        modKeys.append(Qt::Key_Shift);
+    }
+    CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
+    keyReleaseMac(keyCode, modKeys);
     foreach (Qt::Key mod, modKeys) {
-        if (mod == Qt::Key_Shift && isShiftRequired) continue;
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
     return true;
