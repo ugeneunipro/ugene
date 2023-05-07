@@ -4565,21 +4565,21 @@ GUI_TEST_CLASS_DEFINITION(test_7863) {
     // Switch "tree view" setting from "Default" to "Phylogram".
     GTUtilsOptionPanelPhyTree::openTab(os);
     auto treeView = GTWidget::findWidget(os, "treeView");
-    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo");
 
-    GTComboBox::selectItemByText(os, treeViewCombo, "Phylogram");
+    GTUtilsOptionPanelPhyTree::changeTreeLayout(os, "Circular");
+    GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(os, "Phylogram");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QImage savedImage = GTWidget::getImage(os, treeView);
 
     // Create a bookmark.
-    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Phylogram");
+    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Circular Phylogram");
 
     // Switch branch mode back to "Default".
-    GTComboBox::selectItemByText(os, treeViewCombo, "Default");
+    GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(os, "Default");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Activate the "Phylogram" bookmark.
-    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Phylogram");
+    // Activate the "Circular Phylogram" bookmark.
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Circular Phylogram");
     QImage restoredImage = GTWidget::getImage(os, treeView);
 
     // Expected: tree view is changed to "Phylogram"

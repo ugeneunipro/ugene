@@ -152,7 +152,7 @@ public:
     QVariant getOption(const TreeViewOption& option) const;
 
     QVariantMap getSettingsState() const;
-    void setSettingsState(const QVariantMap& m);
+    void setSettingsState(const QVariantMap& state);
 
     /** Returns current settings adjusted by 'selectionSettings'. */
     QMap<TreeViewOption, QVariant> getSelectionSettings() const;

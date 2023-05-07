@@ -360,90 +360,88 @@ static const double MAXIMUM_ZOOM_LEVEL = 10.0;
 /** Margins around the whole tree on the scene. On-screen pixels. */
 static constexpr int TREE_MARGINS = 10;
 
-static const QString SETTINGS_PATH = "tree_viewer";
+static const QVector<TreeViewOption> ALL_TREE_VIEW_OPTIONS = {
+    TREE_LAYOUT_TYPE,
+    BREADTH_SCALE_ADJUSTMENT_PERCENT,
+    LABEL_COLOR,
+    LABEL_FONT_FAMILY,
+    LABEL_FONT_SIZE,
+    LABEL_FONT_BOLD,
+    LABEL_FONT_ITALIC,
+    LABEL_FONT_UNDERLINE,
+    SHOW_BRANCH_DISTANCE_LABELS,
+    SHOW_INNER_NODE_LABELS,
+    SHOW_LEAF_NODE_LABELS,
+    ALIGN_LEAF_NODE_LABELS,
+    BRANCH_COLOR,
+    BRANCH_THICKNESS,
+    BRANCH_CURVATURE,
+    BRANCH_DEPTH_SCALE_MODE,
+    NODE_COLOR,
+    NODE_RADIUS,
+    SHOW_NODE_SHAPE,
+    SHOW_TIP_SHAPE,
+    SCALEBAR_FONT_SIZE,
+    SCALEBAR_LINE_WIDTH,
+    SCALEBAR_RANGE,
+};
 
-static QHash<TreeViewOption, QString> createTreeOptionsSettingNameMap() {
-#define INIT_OPTION_NAME(option) map[option] = QString(#option).toLower()
-    QHash<TreeViewOption, QString> map;
-    INIT_OPTION_NAME(BRANCH_DEPTH_SCALE_MODE);
-    INIT_OPTION_NAME(TREE_LAYOUT_TYPE);
-    INIT_OPTION_NAME(BREADTH_SCALE_ADJUSTMENT_PERCENT);
-    INIT_OPTION_NAME(BRANCH_CURVATURE);
-    INIT_OPTION_NAME(LABEL_COLOR);
-    INIT_OPTION_NAME(LABEL_FONT_FAMILY);
-    INIT_OPTION_NAME(LABEL_FONT_SIZE);
-    INIT_OPTION_NAME(LABEL_FONT_BOLD);
-    INIT_OPTION_NAME(LABEL_FONT_ITALIC);
-    INIT_OPTION_NAME(LABEL_FONT_UNDERLINE);
-    INIT_OPTION_NAME(BRANCH_COLOR);
-    INIT_OPTION_NAME(BRANCH_THICKNESS);
-    INIT_OPTION_NAME(SHOW_NODE_SHAPE);
-    INIT_OPTION_NAME(SHOW_TIP_SHAPE);
-    INIT_OPTION_NAME(NODE_COLOR);
-    INIT_OPTION_NAME(NODE_RADIUS);
-    INIT_OPTION_NAME(SHOW_BRANCH_DISTANCE_LABELS);
-    INIT_OPTION_NAME(SHOW_INNER_NODE_LABELS);
-    INIT_OPTION_NAME(SHOW_LEAF_NODE_LABELS);
-    INIT_OPTION_NAME(ALIGN_LEAF_NODE_LABELS);
-    INIT_OPTION_NAME(SCALEBAR_RANGE);
-    INIT_OPTION_NAME(SCALEBAR_FONT_SIZE);
-    INIT_OPTION_NAME(SCALEBAR_LINE_WIDTH);
-    return map;
+static const QString TREE_VIEWER_SETTINGS_PATH = "tree_view";
+
+static QString treeOptionSettingsPrefix("option:");
+
+static QString convertTreeViewOptionToSettingsKey(const TreeViewOption& treeOption) {
+    return treeOptionSettingsPrefix + QString::number(treeOption);
 }
 
-static const QHash<TreeViewOption, QString> treeOptionSettingNames = createTreeOptionsSettingNameMap();
-
-/** Returns serialized name of the tree option used to store settings in file. */
-static QString getTreeOptionSettingName(const TreeViewOption& option) {
-    QString name = treeOptionSettingNames.value(option);
-    SAFE_POINT(!name.isEmpty(), "Unsupported option: " + QString::number(option), "");
-    return name;
+/** Converts setting key to TreeViewOption. If conversion is not possible returns 0. */
+static int convertSettingKeyToTreeViewOption(const QString& settingKey) {
+    CHECK(settingKey.startsWith(treeOptionSettingsPrefix), 0);
+    CHECK(settingKey.length() > treeOptionSettingsPrefix.length(), 0);
+    QString suffix = settingKey.mid(treeOptionSettingsPrefix.length());
+    return suffix.toInt();
 }
 
-static QMap<TreeViewOption, QVariant> createDefaultTreeOptionsSettings() {
-    QMap<TreeViewOption, QVariant> settings;
-
-    settings[TREE_LAYOUT_TYPE] = RECTANGULAR_LAYOUT;
-    settings[BRANCH_DEPTH_SCALE_MODE] = DEFAULT;
-    settings[SCALEBAR_RANGE] = 0.05;  // Based on values from COI.aln.
-    settings[SCALEBAR_FONT_SIZE] = 10;
-    settings[SCALEBAR_LINE_WIDTH] = 1;
-    settings[LABEL_COLOR] = QColor(Qt::darkGray);
-    settings[LABEL_FONT_FAMILY] = "";  // System default.
-    settings[LABEL_FONT_SIZE] = 12;
-    settings[LABEL_FONT_BOLD] = false;
-    settings[LABEL_FONT_ITALIC] = false;
-    settings[LABEL_FONT_UNDERLINE] = false;
-    settings[SHOW_LEAF_NODE_LABELS] = true;
-    settings[SHOW_BRANCH_DISTANCE_LABELS] = true;
-    settings[SHOW_INNER_NODE_LABELS] = false;
-    settings[ALIGN_LEAF_NODE_LABELS] = false;
-    settings[BRANCH_COLOR] = QColor(0, 0, 0);
-    settings[BRANCH_THICKNESS] = 1;
-    settings[BREADTH_SCALE_ADJUSTMENT_PERCENT] = 100;
-    settings[BRANCH_CURVATURE] = 0;
-    settings[SHOW_NODE_SHAPE] = false;
-    settings[SHOW_TIP_SHAPE] = false;
-    // TODO: these 2 options are not shown and not used. Make them used again & use correct defaults.
-    settings[NODE_RADIUS] = 2;
-    settings[NODE_COLOR] = QColor(0, 0, 0);
-
-    for (int i = 0; i < OPTION_ENUM_END; i++) {
-        auto option = static_cast<TreeViewOption>(i);
-        SAFE_POINT(settings.contains(option), "Not all options have been initialized", settings);
+static QVariant getDefaultTreeOption(const TreeViewOption& option) {
+    static QMap<TreeViewOption, QVariant> settings;
+    if (settings.isEmpty()) {
+        settings[TREE_LAYOUT_TYPE] = RECTANGULAR_LAYOUT;
+        settings[BRANCH_DEPTH_SCALE_MODE] = DEFAULT;
+        settings[SCALEBAR_RANGE] = 0.05;  // Based on values from COI.aln.
+        settings[SCALEBAR_FONT_SIZE] = 10;
+        settings[SCALEBAR_LINE_WIDTH] = 1;
+        settings[LABEL_COLOR] = QColor(Qt::darkGray);
+        settings[LABEL_FONT_FAMILY] = "";  // System default.
+        settings[LABEL_FONT_SIZE] = 12;
+        settings[LABEL_FONT_BOLD] = false;
+        settings[LABEL_FONT_ITALIC] = false;
+        settings[LABEL_FONT_UNDERLINE] = false;
+        settings[SHOW_LEAF_NODE_LABELS] = true;
+        settings[SHOW_BRANCH_DISTANCE_LABELS] = true;
+        settings[SHOW_INNER_NODE_LABELS] = false;
+        settings[ALIGN_LEAF_NODE_LABELS] = false;
+        settings[BRANCH_COLOR] = QColor(0, 0, 0);
+        settings[BRANCH_THICKNESS] = 1;
+        settings[BREADTH_SCALE_ADJUSTMENT_PERCENT] = 100;
+        settings[BRANCH_CURVATURE] = 0;
+        settings[SHOW_NODE_SHAPE] = false;
+        settings[SHOW_TIP_SHAPE] = false;
+        // TODO: these 2 options are not shown and not used. Make them used again & use correct defaults.
+        settings[NODE_RADIUS] = 2;
+        settings[NODE_COLOR] = QColor(0, 0, 0);
     }
-    return settings;
+    QVariant result = settings.value(option);
+    SAFE_POINT(result.isValid(), "Tree option has no default value: " + QString::number(option), result);
+    return result;
 }
-
-const QMap<TreeViewOption, QVariant> static defaultSettings = createDefaultTreeOptionsSettings();
 
 /** Stores the given tree setting as default into UGENE's settings file. */
 static void storeOptionValueInAppSettings(const TreeViewOption& option, const QVariant& value) {
-    QString settingName = getTreeOptionSettingName(option);
-    if (value != defaultSettings.value(option)) {
-        AppContext::getSettings()->setValue(SETTINGS_PATH + "/" + settingName, value);
+    QString settingKey = convertTreeViewOptionToSettingsKey(option);
+    if (value != getDefaultTreeOption(option)) {
+        AppContext::getSettings()->setValue(TREE_VIEWER_SETTINGS_PATH + "/" + settingKey, value);
     } else {
-        AppContext::getSettings()->remove(SETTINGS_PATH + "/" + settingName);
+        AppContext::getSettings()->remove(TREE_VIEWER_SETTINGS_PATH + "/" + settingKey);
     }
 }
 
@@ -518,10 +516,10 @@ TreeViewerUI::~TreeViewerUI() {
 }
 
 void TreeViewerUI::initializeSettings() {
-    QList<TreeViewOption> optionKeys = treeOptionSettingNames.keys();
-    for (auto option : qAsConst(optionKeys)) {
-        QString settingName = getTreeOptionSettingName(option);
-        settings[option] = AppContext::getSettings()->getValue(SETTINGS_PATH + "/" + settingName, defaultSettings[option]);
+    for (auto option : qAsConst(ALL_TREE_VIEW_OPTIONS)) {
+        QString settingKey = convertTreeViewOptionToSettingsKey(option);
+        QVariant defaultValue = getDefaultTreeOption(option);
+        settings[option] = AppContext::getSettings()->getValue(TREE_VIEWER_SETTINGS_PATH + "/" + settingKey, defaultValue);
     }
     // Tree viewer can't be started with a non-rectangular layout today.
     settings[TREE_LAYOUT_TYPE] = RECTANGULAR_LAYOUT;
@@ -839,13 +837,16 @@ void TreeViewerUI::updateScene() {
     scene()->update();
 }
 
-static QString branchDepthScaleModeKey("branch_depth_scale_mode");
 static QString branchColorSettingsKey("branch_color");
 static QString branchThicknessSettingsKey("branch_thickness");
 
 QVariantMap TreeViewerUI::getSettingsState() const {
     QVariantMap m;
-    m[branchDepthScaleModeKey] = settings[BRANCH_DEPTH_SCALE_MODE];
+    QList<TreeViewOption> keys = settings.keys();
+    for (const auto& treeOption : qAsConst(keys)) {
+        QVariant value = settings.value(treeOption);
+        m[convertTreeViewOptionToSettingsKey(treeOption)] = value;
+    }
     int i = 0;
     QList<QGraphicsItem*> graphItems = items();
     for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
@@ -860,23 +861,32 @@ QVariantMap TreeViewerUI::getSettingsState() const {
     return m;
 }
 
-void TreeViewerUI::setSettingsState(const QVariantMap& m) {
+void TreeViewerUI::setSettingsState(const QVariantMap& state) {
     int i = 0;
-    QVariant branchDepthScaleMode = m[branchDepthScaleModeKey];
-    if (branchDepthScaleMode.isValid() && branchDepthScaleMode != settings[BRANCH_DEPTH_SCALE_MODE]) {
-        updateOption(BRANCH_DEPTH_SCALE_MODE, branchDepthScaleMode);
+    QList<QString> settingKeys = state.keys();
+    for (const auto& settingKey : qAsConst(settingKeys)) {
+        int optionAsInt = convertSettingKeyToTreeViewOption(settingKey);
+        if (optionAsInt == 0) {
+            continue;
+        }
+        auto option = (TreeViewOption)optionAsInt;
+        QVariant currentValue = settings[option];
+        QVariant stateValue = state[settingKey];
+        if (stateValue != currentValue) {
+            updateOption(option, stateValue);
+        }
     }
     QList<QGraphicsItem*> graphItems = items();
     for (QGraphicsItem* graphItem : qAsConst(graphItems)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(graphItem)) {
             QMap<TreeViewOption, QVariant> branchSettings = branchItem->getSettings();
 
-            QVariant vColor = m[branchColorSettingsKey + QString::number(i)];
+            QVariant vColor = state[branchColorSettingsKey + QString::number(i)];
             if (vColor.type() == QVariant::Color) {
                 branchSettings[BRANCH_COLOR] = vColor.value<QColor>();
             }
 
-            QVariant vThickness = m[branchThicknessSettingsKey + QString::number(i)];
+            QVariant vThickness = state[branchThicknessSettingsKey + QString::number(i)];
             if (vThickness.type() == QVariant::Int) {
                 branchSettings[BRANCH_THICKNESS] = vThickness.toInt();
             }
