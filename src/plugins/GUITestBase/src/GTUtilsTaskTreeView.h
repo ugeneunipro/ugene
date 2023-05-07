@@ -48,9 +48,14 @@ class GTUtilsTaskTreeView {
 public:
     static void waitTaskFinished(HI::GUITestOpStatus& os, long timeoutMillis = 180000);
     static void click(HI::GUITestOpStatus& os, const QString& itemName, Qt::MouseButton b = Qt::LeftButton);
+    // Double click on the item with @itemName. This tree item will be expanded
+    static void doubleClick(HI::GUITestOpStatus& os, const QString& itemName);
 
     /** Opens view if it is not opened and returns tree widget. */
     static QTreeWidget* openView(HI::GUITestOpStatus& os);
+
+    /** Returns true if Task tree view is opened or false if it's not. */
+    static bool isViewOpened(HI::GUITestOpStatus& os);
 
     static void toggleView(HI::GUITestOpStatus& os);
 
@@ -75,6 +80,16 @@ public:
 
     static int countTasks(HI::GUITestOpStatus& os, const QString& itemName);
     static QString getTaskStatus(HI::GUITestOpStatus& os, const QString& itemName);
+    /*
+     * Returns progress of the @itemName task. if @failIfNotFound is true, fails if the task with @@itemName wasn't found
+     * Returns the persantage value if the task is running;
+     * -1 if the task wasn't found; -2 if the task exists, but still not int the running state
+     */
+    static int getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool failIfNotFound = true);
+    /*
+     * Waits until task with the name @itemName has progress more than @taskProgress
+     */
+    static void waitTaskProgressMoreThan(HI::GUITestOpStatus& os, const QString& itemName, int taskProgress);
 
     static const QString widgetName;
 

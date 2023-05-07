@@ -47,7 +47,7 @@ public:
 class ExtractProductTask : public Task {
     Q_OBJECT
 public:
-    ExtractProductTask(const InSilicoPcrProduct& product, const ExtractProductSettings& settings);
+    ExtractProductTask(const InSilicoPcrProduct& product, const ExtractProductSettings& settings, const QVariantMap& hints = {});
     ~ExtractProductTask();
 
     // Task
@@ -70,6 +70,7 @@ private:
 private:
     InSilicoPcrProduct product;
     ExtractProductSettings settings;
+    QVariantMap hints;
     qint64 wholeSequenceLength = 0;
 
     Document* result = nullptr;

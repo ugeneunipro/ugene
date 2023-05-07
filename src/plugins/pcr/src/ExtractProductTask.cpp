@@ -32,6 +32,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GHints.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/IOAdapter.h>
@@ -61,8 +62,8 @@ QString ExtractProductTask::getProductName(const QString& sequenceName, qint64 s
         .arg(endPos);
 }
 
-ExtractProductTask::ExtractProductTask(const InSilicoPcrProduct& _product, const ExtractProductSettings& _settings)
-    : Task(tr("Extract PCR product"), TaskFlags_FOSE_COSC), product(_product), settings(_settings) {
+ExtractProductTask::ExtractProductTask(const InSilicoPcrProduct& _product, const ExtractProductSettings& _settings, const QVariantMap& _hints)
+    : Task(tr("Extract PCR product"), TaskFlags_FOSE_COSC), product(_product), settings(_settings), hints(_hints) {
     GCOUNTER(cvar, "ExtractProductTask");
     SAFE_POINT(settings.targetDbiRef.isValid() || !settings.outputFile.isEmpty(), "Invalid ExtractProductSettings", );
 }
@@ -222,7 +223,6 @@ void ExtractProductTask::run() {
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
     SAFE_POINT_EXT(format != nullptr, setError(L10N::nullPointerError("Genbank Format")), );
     QString outputFileUrl = settings.outputFile;
-    QVariantMap hints;
     if (settings.targetDbiRef.isValid()) {
         hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(settings.targetDbiRef);
         SAFE_POINT_EXT(settings.outputFile.isEmpty(), stateInfo.setError(L10N::internalError("Both dbiRef & fileUrl are set as the result destination")), );

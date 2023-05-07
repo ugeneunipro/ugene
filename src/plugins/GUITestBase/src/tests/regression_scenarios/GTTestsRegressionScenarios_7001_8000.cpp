@@ -92,6 +92,7 @@
 #include "GTUtilsQueryDesigner.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -108,6 +109,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
@@ -4079,6 +4081,49 @@ GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTUtilsTaskTreeView::waitTaskFinished(os, 5000);  // Check the task is canceled fast enough with no crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7785) {
+    class InSilicoWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTWidget::getActiveModalWidget(os);
+
+            GTUtilsWizard::setInputFiles(os, { {QFileInfo(testDir + "_common_data/fasta/chr6.fa").absoluteFilePath()} });
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(testDir + "_common_data/regression/7785/TheSimplestPrimers.txt").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    // 1. Open WD and choose the "In Silico PCR" sample.
+    // 2. Select "Read Sequence", add _common_data/fasta/chr6.fa
+    // 3. Select "In Silico PCR" item, add "add "_common_data/regression/7785/TheSimplestPrimers.txt"
+    // 4. Run
+    // 5. Wait until the "Multiple In Silico PCR" task progress > 90
+    // 6. Click "Stop workflow"
+    // Expected state: no crash
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+
+    GTUtilsTaskTreeView::doubleClick(os, "Execute workflow");
+    GTUtilsTaskTreeView::doubleClick(os, "Workflow run");
+
+    auto stopButton = GTAction::button(os, "Stop workflow", GTUtilsMdi::activeWindow(os));
+    auto globalPos = stopButton->mapToGlobal(GTWidget::getWidgetVisibleCenter(stopButton));
+    GTMouseDriver::moveTo(globalPos);
+
+    GTUtilsTask::waitTaskStart(os, "Multiple In Silico PCR");
+
+    GTUtilsTaskTreeView::waitTaskProgressMoreThan(os, "Multiple In Silico PCR", 90);
+
+    GTMouseDriver::click();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7781) {
     // Open "_common_data/scenarios/_regression/7781/7781.bam".
     GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "test_7781.ugenedb", "", "", false));
@@ -4584,6 +4629,41 @@ GUI_TEST_CLASS_DEFINITION(test_7863) {
 
     // Expected: tree view is changed to "Phylogram"
     CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_7867) {
+    // Open In Silico PCR element in Workflow Designer
+    // Melting temperature by default is Primer3 in Option Panel instead of Rough like in 46.0
+    // Open Melting temperature dialog, select Rough algorithm, push OK
+    // Dialog is closed, but  Primer3 is still displayed, field is selected
+    // Click on Melting temperature label
+    // "Rough-tm-algorithm" is displayed on the screen. It's correct.
+    // Again click on "Rough-tm-algorithm"
+    // Expected: Rough
+    class InSilicoWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTWidget::getActiveModalWidget(os);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+
+    GTUtilsWorkflowDesigner::click(os, "In Silico PCR");
+    auto tsPar = GTUtilsWorkflowDesigner::getParameter(os, "Temperature settings");
+    CHECK_SET_ERR(tsPar == "Primer 3", "Incorrect parameter, expected \"Primer 3\"");
+
+        QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters = { {GTUtilsMeltingTemperature::Parameter::Algorithm, "Rough"} };
+    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
+    GTUtilsWorkflowDesigner::setParameter(os, "Temperature settings", "", GTUtilsWorkflowDesigner::customDialogSelector);
+
+    tsPar = GTUtilsWorkflowDesigner::getParameter(os, "Temperature settings");
+    CHECK_SET_ERR(tsPar == "Rough", "Incorrect parameter, expected \"Rough\"");
 }
 
 }  // namespace GUITest_regression_scenarios
