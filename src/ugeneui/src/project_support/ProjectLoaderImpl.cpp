@@ -882,7 +882,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton* button) {
 ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m, QWidget* p)
     : QDialog(p), Ui_CreateNewProjectDialog() {
     setupUi(this);
-    new HelpButton(this, buttonBox, "65929273");
+    helpButton = new HelpButton(this, buttonBox, "65929273");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -892,6 +892,7 @@ ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m
 
     if (m == Save_Project) {
         setWindowTitle(ProjectLoaderImpl::tr("Save project as"));
+        helpButton->updatePageId("94078823");
         createButton->setText(ProjectLoaderImpl::tr("Save"));
         projectNameEdit->setText(AppContext::getProject()->getProjectName());
         QString url = AppContext::getProject()->getProjectURL();
