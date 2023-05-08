@@ -110,8 +110,3 @@ SOURCES += \
            src/utils/GTUtilsDialog.cpp \
            src/utils/GTUtilsText.cpp \
            src/utils/GTUtilsToolTip.cpp
-
-macx {
-OBJECTIVE_HEADERS += src/primitives/private/GTMenuPrivateMac.h
-OBJECTIVE_SOURCES += src/primitives/private/GTMenuPrivateMac.mm
-}
