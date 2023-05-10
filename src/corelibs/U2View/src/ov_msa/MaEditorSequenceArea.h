@@ -316,7 +316,6 @@ protected:
     GScrollBar* const shBar;
     GScrollBar* const svBar;
     QRubberBand* rubberBand = nullptr;
-    bool showRubberBandOnSelection;
 
     SequenceAreaRenderer* renderer = nullptr;
 
