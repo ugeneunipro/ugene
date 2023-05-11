@@ -28,8 +28,8 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
-#include <U2Core/Version.h>
 #include <U2Core/U2SafePoints.h>
+#include <U2Core/Version.h>
 
 namespace U2 {
 
@@ -79,11 +79,8 @@ SettingsImpl::SettingsImpl(QSettings::Scope scope) {
     } else {
         fileName = findKey(envList, U2_SYSTEM_INI);
     }
-#ifdef Q_OS_DARWIN
-    QSettings::Format format = QSettings::NativeFormat;
-#else
-    QSettings::Format format = QSettings::IniFormat;
-#endif
+    bool isInTestMode = qgetenv("UGENE_GUI_TEST") == "1";
+    QSettings::Format format = isOsMac() && !isInTestMode ? QSettings::NativeFormat : QSettings::IniFormat;
     if (fileName.isEmpty()) {
         settings = new QSettings(format, scope, U2_ORGANIZATION_NAME, U2_PRODUCT_NAME, this);
     } else {
@@ -110,15 +107,14 @@ void SettingsImpl::remove(const QString& pathName) {
 }
 
 QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& defaultValue, bool versionedValue, bool pathValue) const {
-    SAFE_POINT(!pathValue || (pathValue && versionedValue), "'pathValue' always sould be 'versionedValue' too!", defaultValue);
+    SAFE_POINT(!pathValue || (pathValue && versionedValue), "'pathValue' must be 'versionedValue'!", defaultValue);
     QMutexLocker lock(&threadSafityLock);
 
-    QString path = pathName;
-    QString key = preparePath(path);
+    QString key = preparePath(pathName);
 
     if (versionedValue) {
         QString keyWithExtras = pathValue ? toPathKey(key) : toVersionKey(key);
-        
+
         settings->beginGroup(key);
         QStringList allKeys = settings->allKeys();
         settings->endGroup();
@@ -134,11 +130,10 @@ QVariant SettingsImpl::getValue(const QString& pathName, const QVariant& default
 }
 
 void SettingsImpl::setValue(const QString& pathName, const QVariant& value, bool versionedValue, bool pathValue) {
-    SAFE_POINT(!pathValue || (pathValue && versionedValue), "'pathValue' always sould be 'versionedValue' too!", );
+    SAFE_POINT(!pathValue || (pathValue && versionedValue), "'pathValue' must be 'versionedValue'!", );
     QMutexLocker lock(&threadSafityLock);
 
-    QString path = pathName;
-    QString key = preparePath(path);
+    QString key = preparePath(pathName);
 
     if (pathValue && versionedValue) {
         key = toPathKey(key);
