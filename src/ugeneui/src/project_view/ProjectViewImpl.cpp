@@ -1151,7 +1151,7 @@ void ProjectViewImpl::sl_onOpenContainingFolder() {
     for (Document* doc : qAsConst(docToOpen)) {
         const GUrl& url = doc->getURL();
         if (url.isLocalFile()) {
-            QDesktopServices::openUrl(url.dirPath());
+            QDesktopServices::openUrl(QUrl("file:///" + url.dirPath()));
             nOpened++;
             if (nOpened == maxToOpen) {
                 break;
