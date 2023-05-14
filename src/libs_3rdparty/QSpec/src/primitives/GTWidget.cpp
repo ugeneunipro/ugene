@@ -383,6 +383,10 @@ QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWind
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
             QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
             image = pixmap.toImage();
+            double ratio = ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
+            if (!useGrabWindow && ratio != 1 && ratio > 0) {
+                image = image.scaled(qRound(image.width() / ratio), qRound(image.height() / ratio));
+            }
         }
 
         QWidget* widget;
