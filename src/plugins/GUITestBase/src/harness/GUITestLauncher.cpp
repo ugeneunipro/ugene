@@ -135,8 +135,8 @@ void GUITestLauncher::firstTestRunCheck(const QString& testName) {
 /** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
 QList<GUITest*> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest*>& allTests) {
     QList<int> testsPerSuite;
-    if (suiteCount == 3) {  // Windows.
-        testsPerSuite << 920 << 880 << -1;
+    if (suiteCount == 3) {  // Windows & Mac.
+        testsPerSuite << 950 << 910 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {

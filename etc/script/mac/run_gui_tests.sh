@@ -7,13 +7,16 @@
 
 # ============== Environment for test script
 TEAMCITY_WORK_DIR=$(pwd)
-UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene_app/Unipro UGENE.app/Contents/MacOS"
 echo "TEAMCITY_WORK_DIR: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}'"
+UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene_app/Unipro UGENE.app/Contents/MacOS"
+SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
+SCRIPTS_DIR="${SOURCE_DIR}/etc/script/linux"
 
 if [ -z "${UGENE_USE_DIRECT_API_TO_OPEN_FILES}" ]; then export UGENE_USE_DIRECT_API_TO_OPEN_FILES="1"; fi
 if [ -z "${UGENE_USE_MASTER_USER_INI}" ]; then export UGENE_USE_MASTER_USER_INI="1"; fi
 if [ -z "${UGENE_GUI_TEST_SUITE}" ]; then export UGENE_GUI_TEST_SUITE="suite.txt"; fi
 if [ -n "${UGENE_GUI_TEST_SUITE_NUMBER}" ]; then export UGENE_GUI_TEST_SUITE="${UGENE_GUI_TEST_SUITE_NUMBER}"; fi
+if [ -z "${UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE}" ]; then export UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE="${SCRIPTS_DIR}/restore_dirs_before_test.sh"; fi
 
 # Data/files dirs prefixes.
 UGENE_WORKFLOW_OUTPUT_DIR="${TEAMCITY_WORK_DIR}/workflow_output"
