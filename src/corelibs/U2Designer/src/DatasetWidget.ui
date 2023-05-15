@@ -73,28 +73,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="addFromDbButton">
-       <property name="minimumSize">
-        <size>
-         <width>22</width>
-         <height>22</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Add data from shared databases</string>
-       </property>
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="autoRaise">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -210,7 +188,6 @@
   <tabstop>itemsArea</tabstop>
   <tabstop>addFileButton</tabstop>
   <tabstop>addDirButton</tabstop>
-  <tabstop>addFromDbButton</tabstop>
   <tabstop>upButton</tabstop>
   <tabstop>downButton</tabstop>
   <tabstop>deleteButton</tabstop>
