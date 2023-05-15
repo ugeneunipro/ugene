@@ -90,11 +90,6 @@ this merge sequence slot:</source>
         <translation>Добавить директорию</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="84"/>
-        <source>Add data from shared databases</source>
-        <translation>Добавить данные из удаленной базы данных</translation>
-    </message>
-    <message>
         <location filename="../src/DatasetWidget.ui" line="116"/>
         <source>Up url(s)</source>
         <translation>Переместить путь(и) выше</translation>
