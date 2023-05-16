@@ -828,9 +828,9 @@ bool Primer3Dialog::updateErrorState(const QMap<QWidget*, bool>& widgetStates, c
 }
 
 QString Primer3Dialog::getWidgetTemplateError(QWidget* wgt, const QString& errorWgtLabe) const {
-    static const QString ERROR_TEMPLATE
-        = QT_TR_NOOP(tr("The \"%1\" parameter has incorrect value, please"
-        ", read the tooltip of this parameter to find out how the correct one looks like."));
+    static const char* ERROR_TEMPLATE
+        = QT_TR_NOOP("The \"%1\" parameter has incorrect value, please"
+        ", read the tooltip of this parameter to find out how the correct one looks like.");
 
     auto name = errorWgtLabe;
     if (name.isEmpty()) {
@@ -845,7 +845,7 @@ QString Primer3Dialog::getWidgetTemplateError(QWidget* wgt, const QString& error
         }
     }
 
-    return ERROR_TEMPLATE.arg(name);
+    return tr(ERROR_TEMPLATE).arg(name);
 }
 
 void Primer3Dialog::sl_pickClicked() {
