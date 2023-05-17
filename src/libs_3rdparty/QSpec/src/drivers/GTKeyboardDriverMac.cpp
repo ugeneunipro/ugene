@@ -181,12 +181,9 @@ static char toKeyWithNoShift(char key) {
 }
 
 static void patchModKeyFlags(CGKeyCode key, bool isPress, CGEventRef& event, const QList<Qt::Key>& modKeys = {}) {
-    if (key != kVK_ANSI_M || !modKeys.contains(Qt::Key_Shift)) {
-        return; // Patch only M key behavior. Check GUITest_common_scenarios_document_from_text_test_0003.
+    if (modKeys.contains(Qt::Key_Shift) || (key == kVK_Shift && isPress)) {
+        CGEventSetFlags(event, kCGEventFlagMaskShift);
     }
-    Q_UNUSED(isPress);
-//  printf("Current mask: %lu, key: %lu\n", CGEventGetFlags(event), key);
-    CGEventSetFlags(event, kCGEventFlagMaskShift);
 }
 
 static bool keyPressMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
