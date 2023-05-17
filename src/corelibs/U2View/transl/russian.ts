@@ -2792,7 +2792,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="157"/>
         <source>Complementary (5&apos;-3&apos;) sequence</source>
-        <translation>Комплементарную (3&apos;-5&apos;)</translation>
+        <translation type="unfinished">Комплементарную (5&apos;-3&apos;)</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="162"/>
