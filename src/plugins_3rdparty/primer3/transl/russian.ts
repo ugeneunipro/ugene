@@ -371,7 +371,7 @@
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6431"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6438"/>
@@ -2488,7 +2488,7 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
 Click OK to continue calculation, but the incorrect values will be ignored.</source>
         <translation>
 
-Нажмите ОК чтбы продолжить расчет, некорректные значения будут проигнорированы.</translation>
+Нажмите ОК чтобы продолжить расчет, некорректные значения будут проигнорированы.</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="832"/>
