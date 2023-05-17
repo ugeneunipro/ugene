@@ -1255,12 +1255,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1505"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1509"/>
         <source>Expand</source>
         <translation>Раскрыть</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1508"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1512"/>
         <source>Collapse</source>
         <translation>Скрыть</translation>
     </message>
@@ -2792,7 +2792,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="157"/>
         <source>Complementary (5&apos;-3&apos;) sequence</source>
-        <translation>Комплементарную (3&apos;-5&apos;)</translation>
+        <translation>Комплементарную (5&apos;-3&apos;)</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotatedDNAView.cpp" line="162"/>
@@ -2841,19 +2841,19 @@ Double-click to collapse the branch</source>
         <translation>Удалить выбранные объекты с аннотациями</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1186"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1165"/>
         <source>Copy qualifier text</source>
         <translation>Копировать значение квалификатора</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="199"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1190"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1169"/>
         <source>Copy qualifier URL</source>
         <translation>Копировать ссылку</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="202"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1173"/>
         <source>Toggle column</source>
         <translation>Переключить столбец</translation>
     </message>
@@ -2874,13 +2874,13 @@ Double-click to collapse the branch</source>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="219"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="849"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="828"/>
         <source>Copy column text</source>
         <translation>Копировать значение</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="222"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="863"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="842"/>
         <source>copy column URL</source>
         <translation>Копировать ссылку</translation>
     </message>
@@ -2892,17 +2892,17 @@ Double-click to collapse the branch</source>
         <translation>Аннотация</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2055"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2028"/>
         <source>Edit Group</source>
         <translation>Редактировать группу</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2102"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2075"/>
         <source>Edit Annotation</source>
         <translation>Редактирование аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2102"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2075"/>
         <source>Edit</source>
         <translation>Редактирование</translation>
     </message>
@@ -2947,48 +2947,48 @@ Double-click to collapse the branch</source>
         <translation>Как минимум одна из аннотаций вне диапазона последовательности!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="855"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="834"/>
         <source>Copy column &apos;%1&apos; text</source>
         <translation>Копировать значение &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="858"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="837"/>
         <source>Copy &apos;%1&apos; annotation location</source>
         <translation>Копировать позицию аннотации &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="867"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="846"/>
         <source>Copy column &apos;%1&apos; URL</source>
         <translation>Копировать ссылку &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="892"/>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="871"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1173"/>
         <source>Hide &apos;%1&apos; column</source>
         <translation>Скрыть столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1186"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1165"/>
         <source>Copy qualifier &apos;%1&apos; value</source>
         <translation>Копировать значение &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1190"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1169"/>
         <source>Copy qualifier &apos;%1&apos; URL</source>
         <translation>Копировать ссылку &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1194"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="1173"/>
         <source>Add &apos;%1&apos; column</source>
         <translation>Добавить столбец &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2200"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2173"/>
         <source>Editing of &quot;comment&quot; annotation is not allowed!</source>
         <translation>Редактирование аннотации &quot;comment&quot; недопустимо!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2256"/>
+        <location filename="../src/ov_sequence/AnnotationsTreeView.cpp" line="2229"/>
         <source>Create Permanent Annotation</source>
         <translation>Создать постоянную аннотацию</translation>
     </message>
@@ -4074,12 +4074,12 @@ You don&apos;t have enough rights to change file</source>
 <context>
     <name>U2::CreateTreeViewerTask</name>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="210"/>
+        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="215"/>
         <source>Open tree viewer</source>
         <translation>Открыть дерево</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="214"/>
+        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="219"/>
         <source>Invalid tree object detected</source>
         <translation>Invalid tree object detected</translation>
     </message>
@@ -5851,34 +5851,34 @@ Directory Path: %1</translation>
         <translation>Нет доступных алгоритмов для построения дерева.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="267"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="271"/>
         <source>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</source>
         <translation>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="300"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="301"/>
         <source>Select files to open...</source>
         <translation>Выберите файлы...</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="317"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="318"/>
         <source>Failed to load document: %1</source>
         <translation>Не удалось загрузить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="322"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="323"/>
         <source>Tree loading task is finished with error: %1</source>
         <translation>Задача загрузки дерева завершена с ошибкой: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="330"/>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="344"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="331"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="345"/>
         <source>Document contains no tree objects!</source>
         <translation>Документ не содержит объектов дерева!</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="365"/>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="367"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="366"/>
+        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="368"/>
         <source>Incorrect reference to the MSAEditor</source>
         <translation>Incorrect reference to the MSAEditor</translation>
     </message>
@@ -7015,17 +7015,17 @@ Simple overview is unavailable.</source>
         <translation type="vanished">Data are being updated</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="202"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="203"/>
         <source>Data is outdated</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="203"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="204"/>
         <source>Data is valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="204"/>
+        <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="205"/>
         <source>Data is being updated</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8057,17 +8057,17 @@ Please, load the corresponding plugins.</source>
         <translation>Рамка считывания -%1</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="278"/>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="280"/>
         <source>Incorrect signal sender!</source>
         <translation>Incorrect signal sender!</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="287"/>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="289"/>
         <source>Select genetic code</source>
         <translation>Выбрать генетический код</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="299"/>
+        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="301"/>
         <source>Show/hide amino acid translations</source>
         <translation>Показать/скрыть аминокислотные трансляции</translation>
     </message>
@@ -8542,44 +8542,44 @@ Please, load the corresponding plugins.</source>
         <translation type="vanished">Экспортировать изображение дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="502"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="500"/>
         <source>Tree image</source>
         <translation>Изображение дерева</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1158"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1176"/>
         <source>Image is too large. Please zoom out.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1163"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1181"/>
         <source>Failed to copy image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1188"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1212"/>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1218"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1206"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1230"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1236"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1188"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1206"/>
         <source>Selected dir is read only: %1</source>
         <translation>Указанная директория доступна только для чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1212"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1230"/>
         <source>Failed to generate SVG image.</source>
         <translation>Невозможно создать SVG изображение.</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1218"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1236"/>
         <source>Failed to open file for writing: %1</source>
         <translation>Невозможно открыть файл для записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1295"/>
+        <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1299"/>
         <source>Failed to build tree layout.</source>
         <translation type="unfinished"></translation>
     </message>
