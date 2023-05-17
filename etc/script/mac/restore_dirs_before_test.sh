@@ -16,7 +16,7 @@ fi
 rsync -a --delete test/_common_data/ "${UGENE_TESTS_DIR_NAME}/_common_data/" || return 1
 
 # Sync data dir.
-rsync -a --delete "data/" "${UGENE_DATA_DIR_NAME}/" || return 1
+rsync -a --delete ugene_git/data/ "${UGENE_DATA_DIR_NAME}/" || return 1
 
 # Copy default ini file if set.
 if [[ ("${UGENE_USE_MASTER_USER_INI}" -eq "1") && (-n "${UGENE_USER_INI}") && (-f "${UGENE_MASTER_USER_INI}") ]]; then
