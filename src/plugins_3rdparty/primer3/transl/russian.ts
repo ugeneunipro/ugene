@@ -370,21 +370,26 @@
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6431"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6438"/>
         <source>Save settings</source>
         <translation>Сохранить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6438"/>
+        <location filename="../src/Primer3Dialog.ui" line="6445"/>
         <source>Load settings</source>
         <translation>Загрузить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6445"/>
+        <location filename="../src/Primer3Dialog.ui" line="6452"/>
         <source>Reset form</source>
         <translation>Сброс параметров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6452"/>
+        <location filename="../src/Primer3Dialog.ui" line="6459"/>
         <source>Pick primers</source>
         <translation>Подобрать</translation>
     </message>
@@ -2362,109 +2367,109 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 <context>
     <name>U2::Primer3Dialog</name>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="115"/>
+        <location filename="../src/Primer3Dialog.cpp" line="121"/>
         <source>NONE</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="116"/>
+        <location filename="../src/Primer3Dialog.cpp" line="122"/>
         <source>HUMAN</source>
         <translation>HUMAN</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="117"/>
+        <location filename="../src/Primer3Dialog.cpp" line="123"/>
         <source>RODENT_AND_SIMPLE</source>
         <translation>RODENT_AND_SIMPLE</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="118"/>
+        <location filename="../src/Primer3Dialog.cpp" line="124"/>
         <source>RODENT</source>
         <translation>RODENT</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="119"/>
+        <location filename="../src/Primer3Dialog.cpp" line="125"/>
         <source>DROSOPHILA</source>
         <translation>DROSOPHILA</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="524"/>
+        <location filename="../src/Primer3Dialog.cpp" line="532"/>
         <source>The &quot;Include region&quot; should be the only one</source>
         <translation>&quot;Включенный регион&quot; должен быть только один</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="702"/>
+        <location filename="../src/Primer3Dialog.cpp" line="710"/>
         <source>Sequence quality list length must be equal to the sequence length</source>
         <translation>Длина списка качества последовательности должна быть равна длине последовательности</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="720"/>
+        <location filename="../src/Primer3Dialog.cpp" line="728"/>
         <source>Task &quot;pick_discriminative_primers&quot; requires exactly one &quot;Targets&quot; region.</source>
         <translation>Опция &quot;pick_discriminative_primers&quot; Требует ровно один &quot;Целевой регион&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="730"/>
+        <location filename="../src/Primer3Dialog.cpp" line="738"/>
         <source>At least one primer on the &quot;Main&quot; settings page should be enabled.</source>
         <translation>Должен быть отмечен как минимум один из праймеров на странице &quot;Основные параметры&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="640"/>
+        <location filename="../src/Primer3Dialog.cpp" line="648"/>
         <source>Left primer</source>
         <translation>Левый праймер</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="631"/>
+        <location filename="../src/Primer3Dialog.cpp" line="639"/>
         <source>%1 sequence has incorrect alphabet, should be be simple DNA</source>
         <translation>%1 имеет некорректный алфавит, ожидается ДНК.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="646"/>
+        <location filename="../src/Primer3Dialog.cpp" line="654"/>
         <source>Left 5&apos; overhang</source>
         <translation>Левое 5&apos; перекрытие</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="660"/>
+        <location filename="../src/Primer3Dialog.cpp" line="668"/>
         <source>Internal oligo</source>
         <translation>Внутренний олигонуклеотид</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="672"/>
+        <location filename="../src/Primer3Dialog.cpp" line="680"/>
         <source>Right primer</source>
         <translation>Правый праймер</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="678"/>
+        <location filename="../src/Primer3Dialog.cpp" line="686"/>
         <source>Right 5&apos; overhang</source>
         <translation>Правое 5&apos; перекрытие</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="752"/>
+        <location filename="../src/Primer3Dialog.cpp" line="760"/>
         <source>Primer Size Ranges should have at least one range</source>
         <translation>Диапазон размеров продукта должен иметь как миниум один диапазон</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="764"/>
+        <location filename="../src/Primer3Dialog.cpp" line="772"/>
         <source>Sequence range region is too small for current product size ranges</source>
         <translation>Регион последовательности слишком мал для текущего диапазона размера продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="781"/>
+        <location filename="../src/Primer3Dialog.cpp" line="789"/>
         <source>The priming sequence is too long, please, decrease the region</source>
         <translation>Последовательность слишком длинная, пожалуйста, уменьшите регион</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="791"/>
+        <location filename="../src/Primer3Dialog.cpp" line="799"/>
         <source>Incorrect sum &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
         <translation>Некорректная сумма по параметрам &quot;Начало включенного региона + Индекс первого символа&quot; - значение должно быть больше либо равно 0</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="795"/>
+        <location filename="../src/Primer3Dialog.cpp" line="803"/>
         <source>The priming sequence is out of range.
 Either make the priming region end &quot;%1&quot; less or equal than the sequence size &quot;%2&quot; plus the first base index value &quot;%3&quot;or mark the sequence as circular</source>
         <translation>Последовательность праймирования все заданного региона.
 Либо сделайте конец праймируемого региона %1 меньше либо равным размеру последовательности %2 плюс индекс первого сиимвола %3, либо отметьте последовательность круговой</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="811"/>
+        <location filename="../src/Primer3Dialog.cpp" line="819"/>
         <source>%1 parameter(s) have an incorrect value(s), pay attention on red widgets. </source>
         <translation>%1 параметр(ов) имеют некорректное(ые) значение(я), обратите внимание на подсвеченние красным виджеты. </translation>
     </message>
@@ -2477,74 +2482,81 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
 </translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="816"/>
+        <location filename="../src/Primer3Dialog.cpp" line="824"/>
         <source>
 
 Click OK to continue calculation, but the incorrect values will be ignored.</source>
         <translation>
 
-Нажмите ОК чтбы продолжить расчет, некорректные значения будут проигнарированы.</translation>
+Нажмите ОК чтобы продолжить расчет, некорректные значения будут проигнорированы.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="946"/>
+        <location filename="../src/Primer3Dialog.cpp" line="832"/>
+        <source>The &quot;%1&quot; parameter has incorrect value, please, read the tooltip of this parameter to find out how the correct one looks like.</source>
+        <translation>Параметру &quot;%1&quot; установлено некорректное значение. Пожалуйста, прочитайте подсказку, всплывающую при наведении на данный параметр, чтобы понять, как откорректировать значение.</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.cpp" line="954"/>
         <source>Can&apos;t read to &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="966"/>
-        <location filename="../src/Primer3Dialog.cpp" line="975"/>
-        <location filename="../src/Primer3Dialog.cpp" line="984"/>
-        <location filename="../src/Primer3Dialog.cpp" line="996"/>
-        <location filename="../src/Primer3Dialog.cpp" line="1049"/>
-        <location filename="../src/Primer3Dialog.cpp" line="1055"/>
-        <location filename="../src/Primer3Dialog.cpp" line="1090"/>
+        <location filename="../src/Primer3Dialog.cpp" line="974"/>
+        <location filename="../src/Primer3Dialog.cpp" line="983"/>
+        <location filename="../src/Primer3Dialog.cpp" line="992"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1004"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1057"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1063"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1098"/>
         <source>Can&apos;t parse &quot;%1&quot; value: &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="985"/>
+        <location filename="../src/Primer3Dialog.cpp" line="993"/>
         <source>Incorrect value for &quot;%1&quot; value: &quot;%2&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="1068"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1076"/>
         <source>PRIMER_MISPRIMING_LIBRARY value should points to the file from the &quot;%1&quot; directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="1081"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1089"/>
         <source>PRIMER_INTERNAL_MISHYB_LIBRARY value should points to the file from the &quot;%1&quot; directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="1085"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1093"/>
         <source>PRIMER_MIN_THREE_PRIME_DISTANCE is unused in the UGENE GUI interface. We may either skip it or set PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE and PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE to %1. Do you want to set?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="857"/>
+        <location filename="../src/Primer3Dialog.cpp" line="865"/>
         <source>Save primer settings</source>
         <translation>Сохранить настройки праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="813"/>
+        <location filename="../src/Primer3Dialog.cpp" line="821"/>
         <source>The following errors are possible:
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Возможны следующие ошибки:
+
+</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="864"/>
+        <location filename="../src/Primer3Dialog.cpp" line="872"/>
         <source>Can&apos;t write to &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="938"/>
+        <location filename="../src/Primer3Dialog.cpp" line="946"/>
         <source>Text files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="939"/>
+        <location filename="../src/Primer3Dialog.cpp" line="947"/>
         <source>Load settings</source>
         <translation>Загрузить настройки</translation>
     </message>
