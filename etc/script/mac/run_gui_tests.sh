@@ -19,9 +19,9 @@ if [ -n "${UGENE_GUI_TEST_SUITE_NUMBER}" ]; then export UGENE_GUI_TEST_SUITE="${
 if [ -z "${UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE}" ]; then export UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE="${SCRIPTS_DIR}/restore_dirs_before_test.sh"; fi
 
 # Data/files dirs prefixes.
-UGENE_WORKFLOW_OUTPUT_DIR="${TEAMCITY_WORK_DIR}/workflow_output"
-UGENE_SAVE_FILES_DIR="${TEAMCITY_WORK_DIR}/UGENE_Files"
-UGENE_SAVE_DATA_DIR="${TEAMCITY_WORK_DIR}/UGENE_Data"
+export UGENE_WORKFLOW_OUTPUT_DIR="${TEAMCITY_WORK_DIR}/workflow_output"
+export UGENE_SAVE_FILES_DIR="${TEAMCITY_WORK_DIR}/UGENE_Files"
+export UGENE_SAVE_DATA_DIR="${TEAMCITY_WORK_DIR}/UGENE_Data"
 
 # ============== Environment for UGENE: all parameters must be exported
 # Disable crash handler

@@ -2,6 +2,8 @@
 
 # This Script restores original 'data' & 'common_data' dirs before each GUI test run.
 
+echo "Running restore_dirs_before_test.sh, dir: $(pwd) UGENE_TESTS_DIR_NAME: ${UGENE_TESTS_DIR_NAME}, UGENE_DATA_DIR_NAME: ${UGENE_DATA_DIR_NAME}, UGENE_USE_MASTER_USER_INI: ${UGENE_USE_MASTER_USER_INI}, UGENE_USER_INI: ${UGENE_USER_INI}"
+
 if [ -z "${UGENE_TESTS_DIR_NAME}" ]; then
   echo "UGENE_TESTS_DIR_NAME is not set!"
   exit 1

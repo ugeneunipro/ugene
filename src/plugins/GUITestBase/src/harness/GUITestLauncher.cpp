@@ -327,7 +327,7 @@ static bool restoreTestDirWithExternalScript(const QString& pathToShellScript, c
 
     qint64 endTimeMicros = GTimer::currentTimeMicros();
     qint64 runTimeMillis = (endTimeMicros - startTimeMicros) / 1000;
-    coreLog.info("Backup and restore run time (millis): " + QString::number(runTimeMillis));
+    coreLog.info("Backup and restore run time (millis): " + QString::number(runTimeMillis) + ", out: " + process.readAllStandardOutput());
 
     QProcess::ExitStatus exitStatus = process.exitStatus();
     if (!isFinished || exitStatus != QProcess::NormalExit) {
