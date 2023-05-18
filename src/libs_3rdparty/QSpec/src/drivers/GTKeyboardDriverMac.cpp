@@ -181,7 +181,7 @@ static char toKeyWithNoShift(char key) {
 }
 
 static void patchModKeyFlags(CGKeyCode key, bool isPress, CGEventRef& event, const QList<Qt::Key>& modKeys = {}) {
-    if (modKeys.contains(Qt::Key_Shift) || (key == kVK_Shift && isPress)) {
+    if ((key == kVK_ANSI_M && modKeys.contains(Qt::Key_Shift)) || (key == kVK_Shift && isPress)) {
         CGEventSetFlags(event, kCGEventFlagMaskShift);
     }
 }
@@ -226,7 +226,7 @@ bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
 
 #    define GT_METHOD_NAME "keyRelease_char"
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
-//    printf("Key release %c\n", origKey);
+    //    printf("Key release %c\n", origKey);
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
