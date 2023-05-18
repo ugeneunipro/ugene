@@ -10,7 +10,7 @@ TEAMCITY_WORK_DIR=$(pwd)
 echo "TEAMCITY_WORK_DIR: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}'"
 UGENE_DIR="${TEAMCITY_WORK_DIR}/ugene_app/Unipro UGENE.app/Contents/MacOS"
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
-SCRIPTS_DIR="${SOURCE_DIR}/etc/script/linux"
+SCRIPTS_DIR="${SOURCE_DIR}/etc/script/mac"
 
 if [ -z "${UGENE_USE_DIRECT_API_TO_OPEN_FILES}" ]; then export UGENE_USE_DIRECT_API_TO_OPEN_FILES="1"; fi
 if [ -z "${UGENE_USE_MASTER_USER_INI}" ]; then export UGENE_USE_MASTER_USER_INI="1"; fi
