@@ -3547,10 +3547,11 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     // Center the second (index = 1) read in the sequence area.
     GTUtilsMcaEditor::clickReadName(os, 1);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // Collapse the chromatogram view.
     GTKeyboardDriver::keyClick(Qt::Key_Left);
+
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     QWidget* sequenceAreaWidget = GTUtilsMcaEditor::getSequenceArea(os);
 
