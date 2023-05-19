@@ -4666,5 +4666,23 @@ GUI_TEST_CLASS_DEFINITION(test_7867) {
     CHECK_SET_ERR(tsPar == "Rough", "Incorrect parameter, expected \"Rough\"");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7885) {
+    // Open _common_data/scenarios/_regression/7885/test_7885.aln
+    // Select sequencef from 2 to the last one
+    // Click Ctrl + x
+    // Expected: nothing has been cut, error in the log
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7885/", "test_7885.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::clickSequenceName(os, "seq2");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
+    GTUtilsMsaEditor::clickSequenceName(os, "seq2_1_5_2_1_1");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTLogTracer lt;
+    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os) != 0, "No selected sequences");
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

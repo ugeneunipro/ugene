@@ -214,6 +214,49 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInf
     getEditor()->updateCollapseModel();
 }
 
+void MSAEditorSequenceArea::copySelection(U2OpStatus& os) {
+    // Copies selection to the clipboard using FASTA format (the most simple format keeps sequence names).
+    const MaEditorSelection& selection = editor->getSelection();
+    CHECK(!selection.isEmpty(), );
+
+    MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
+    MaCollapseModel* collapseModel = editor->getCollapseModel();
+    QString textMimeContent;
+    QString ugeneMimeContent;
+    QList<QRect> selectionRects = selection.getRectList();
+
+    // Estimate approximate result length
+    qint64 estimatedResultLength = 0;
+    for (const QRect& selectionRect : qAsConst(selectionRects)) {
+        estimatedResultLength += selectionRect.width() * selectionRect.height();
+    }
+    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
+        os.setError(tr("Block size is too big and can't be copied into the clipboard"));
+        return;
+    }
+
+    for (const QRect& selectionRect : qAsConst(selectionRects)) {
+        for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
+            if (!textMimeContent.isEmpty()) {
+                textMimeContent.append("\n");
+            }
+            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+            const MultipleSequenceAlignmentRow& row = maObj->getMsaRow(maRowIndex);
+            QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
+            ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
+                .append(row.data()->getName())
+                .append('\n')
+                .append(TextUtils::split(sequence, FastaFormat::FASTA_SEQUENCE_LINE_LENGTH).join("\n"))
+                .append('\n');
+            textMimeContent.append(sequence);
+        }
+    }
+    auto mimeData = new QMimeData();
+    mimeData->setText(textMimeContent);
+    mimeData->setData(U2Clipboard::UGENE_MIME_TYPE, ugeneMimeContent.toUtf8());
+    QApplication::clipboard()->setMimeData(mimeData);
+}
+
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectViewController* v, QToolBar* t) {
     Q_UNUSED(v);
 
@@ -481,36 +524,8 @@ void MSAEditorSequenceArea::sl_modelChanged() {
 }
 
 void MSAEditorSequenceArea::sl_copySelection() {
-    // Copies selection to the clipboard using FASTA format (the most simple format keeps sequence names).
-    const MaEditorSelection& selection = editor->getSelection();
-    CHECK(!selection.isEmpty(), );
-
-    MultipleSequenceAlignmentObject* maObj = getEditor()->getMaObject();
-    MaCollapseModel* collapseModel = editor->getCollapseModel();
-    QString textMimeContent;
-    QString ugeneMimeContent;
     U2OpStatus2Log os;
-    QList<QRect> selectionRects = selection.getRectList();
-    for (const QRect& selectionRect : qAsConst(selectionRects)) {
-        for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
-            if (!textMimeContent.isEmpty()) {
-                textMimeContent.append("\n");
-            }
-            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-            const MultipleSequenceAlignmentRow& row = maObj->getMsaRow(maRowIndex);
-            QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
-            ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
-                .append(row.data()->getName())
-                .append('\n')
-                .append(TextUtils::split(sequence, FastaFormat::FASTA_SEQUENCE_LINE_LENGTH).join("\n"))
-                .append('\n');
-            textMimeContent.append(sequence);
-        }
-    }
-    auto mimeData = new QMimeData();
-    mimeData->setText(textMimeContent);
-    mimeData->setData(U2Clipboard::UGENE_MIME_TYPE, ugeneMimeContent.toUtf8());
-    QApplication::clipboard()->setMimeData(mimeData);
+    copySelection(os);
 }
 
 void MSAEditorSequenceArea::sl_copySelectionFormatted() {
@@ -594,7 +609,11 @@ void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task* task) {
 void MSAEditorSequenceArea::sl_cutSelection() {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
-    sl_copySelection();
+
+    U2OpStatus2Log os;
+    copySelection(os);
+    CHECK_OP(os, );
+
     sl_delCurrentSelection();
 }
 
