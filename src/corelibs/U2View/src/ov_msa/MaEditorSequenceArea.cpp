@@ -75,8 +75,6 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
       prevPressedButton(Qt::NoButton),
       changeTracker(editor->getMaObject()->getEntityRef()) {
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
-    // show rubber band for selection in MSA editor only
-    showRubberBandOnSelection = qobject_cast<MSAEditor*>(editor) != nullptr;
     maMode = ViewMode;
 
     setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -957,7 +955,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
 
     if (isInRange(mouseMoveViewPos)) {
         selecting = !shifting && !isSelectionResize;
-        if (selecting && showRubberBandOnSelection && !rubberBand->isVisible()) {
+        if (selecting && !rubberBand->isVisible()) {
             rubberBand->setGeometry(QRect(mousePressEventPoint, QSize()));
             rubberBand->show();
         }
@@ -984,7 +982,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent* event) {
         moveBorder(mouseMoveEventPoint);
     } else if (shifting && editingEnabled) {
         shiftSelectedRegion(mouseMoveViewPos.x() - editor->getCursorPosition().x());
-    } else if (selecting && showRubberBandOnSelection) {
+    } else if (selecting) {
         rubberBand->setGeometry(QRect(mousePressEventPoint, mouseMoveEventPoint).normalized());
         rubberBand->show();
     }

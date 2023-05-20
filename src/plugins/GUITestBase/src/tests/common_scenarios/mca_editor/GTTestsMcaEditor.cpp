@@ -3551,6 +3551,8 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     // Collapse the chromatogram view.
     GTKeyboardDriver::keyClick(Qt::Key_Left);
 
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
     QWidget* sequenceAreaWidget = GTUtilsMcaEditor::getSequenceArea(os);
 
     // Check that sequence area cell contains a text character up until the cell size is > 7px.
@@ -3580,6 +3582,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
         GTUtilsMcaEditor::zoomOut(os);
         GTUtilsMcaEditor::clickReadName(os, 1);
         GTKeyboardDriver::keyClick(Qt::Key_Space);
+        GTKeyboardDriver::keyClick(Qt::Key_Escape);
     }
 }
 
