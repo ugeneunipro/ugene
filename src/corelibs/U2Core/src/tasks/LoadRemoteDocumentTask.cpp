@@ -652,6 +652,14 @@ RemoteDBRegistry::RemoteDBRegistry() {
     hints.insert(SWISS_PROT, QObject::tr("Use SWISS-PROT accession number. For example: %1 or %2").arg(makeIDLink("Q9IGQ6")).arg(makeIDLink("A0N8V2")));
     hints.insert(UNIPROTKB_SWISS_PROT, QObject::tr("Use UniProtKB/Swiss-Prot accession number. For example: %1").arg(makeIDLink("P16152")));
     hints.insert(UNIPROTKB_TREMBL, QObject::tr("Use UniProtKB/TrEMBL accession number. For example: %1").arg(makeIDLink("D0VTW9")));
+
+    externalLinks.insert(ENSEMBL, "http://www.ensembl.org/index.html");
+    externalLinks.insert(GENBANK_DNA, "https://www.ncbi.nlm.nih.gov/nucleotide/");
+    externalLinks.insert(GENBANK_PROTEIN, "https://www.ncbi.nlm.nih.gov/protein");
+    externalLinks.insert(PDB, "https://www.rcsb.org/");
+    externalLinks.insert(SWISS_PROT, "https://www.uniprot.org/");
+    externalLinks.insert(UNIPROTKB_SWISS_PROT, "https://www.uniprot.org/");
+    externalLinks.insert(UNIPROTKB_TREMBL, "https://www.uniprot.org/");
 }
 
 RemoteDBRegistry& RemoteDBRegistry::getRemoteDBRegistry() {
@@ -659,11 +667,11 @@ RemoteDBRegistry& RemoteDBRegistry::getRemoteDBRegistry() {
     return registry;
 }
 
-QList<QString> RemoteDBRegistry::getDBs() {
+QList<QString> RemoteDBRegistry::getDBs() const {
     return (queryDBs.keys() + httpDBs.keys());
 }
 
-QString RemoteDBRegistry::getURL(const QString& accId, const QString& dbName) {
+QString RemoteDBRegistry::getURL(const QString& accId, const QString& dbName) const {
     QString result("");
     if (httpDBs.contains(dbName)) {
         result = QString(httpDBs.value(dbName)).arg(accId);
@@ -671,11 +679,11 @@ QString RemoteDBRegistry::getURL(const QString& accId, const QString& dbName) {
     return result;
 }
 
-QString RemoteDBRegistry::getDbEntrezName(const QString& dbName) {
+const QString& RemoteDBRegistry::getDbEntrezName(const QString& dbName) const {
     return queryDBs.value(dbName);
 }
 
-QString RemoteDBRegistry::getHint(const QString& dbName) {
+QString RemoteDBRegistry::getHint(const QString& dbName) const {
     if (hints.contains(dbName)) {
         return hints.value(dbName);
     } else {
@@ -683,13 +691,19 @@ QString RemoteDBRegistry::getHint(const QString& dbName) {
     }
 }
 
-void RemoteDBRegistry::convertAlias(QString& dbName) {
+const QString& RemoteDBRegistry::getExternalLinkByName(const QString& dbName) const {
+    SAFE_POINT(externalLinks.keys().contains(dbName), "No database found", QString());
+
+    return externalLinks.value(dbName);
+}
+
+void RemoteDBRegistry::convertAlias(QString& dbName) const {
     if (aliases.contains(dbName)) {
         dbName = aliases.value(dbName);
     }
 }
 
-bool RemoteDBRegistry::hasDbId(const QString& dbId) {
+bool RemoteDBRegistry::hasDbId(const QString& dbId) const {
     return queryDBs.contains(dbId) || httpDBs.contains(dbId);
 }
 
