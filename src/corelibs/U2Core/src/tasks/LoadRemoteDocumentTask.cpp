@@ -679,7 +679,7 @@ QString RemoteDBRegistry::getURL(const QString& accId, const QString& dbName) co
     return result;
 }
 
-const QString& RemoteDBRegistry::getDbEntrezName(const QString& dbName) const {
+QString RemoteDBRegistry::getDbEntrezName(const QString& dbName) const {
     return queryDBs.value(dbName);
 }
 
@@ -691,7 +691,7 @@ QString RemoteDBRegistry::getHint(const QString& dbName) const {
     }
 }
 
-const QString& RemoteDBRegistry::getExternalLinkByName(const QString& dbName) const {
+QString RemoteDBRegistry::getExternalLinkByName(const QString& dbName) const {
     SAFE_POINT(externalLinks.keys().contains(dbName), "No database found", QString());
 
     return externalLinks.value(dbName);

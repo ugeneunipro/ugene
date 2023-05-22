@@ -49,7 +49,6 @@ static const QString SAVE_DIR("downloadremotefiledialog/savedir");
 static const QString HINT_STYLE_SHEET = "color:green; font:bold";
 static const QString DB_EXTERNAL_LINK = QString(R"(<a href="%1"><img src=":core/images/external_link.png" width="22" height="22";></a>)");
 
-
 namespace U2 {
 
 QString DownloadRemoteFileDialog::defaultDB("");
@@ -67,8 +66,10 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget* p)
     adjustSize();
 
     RemoteDBRegistry& registry = RemoteDBRegistry::getRemoteDBRegistry();
-    connect(ui->databasesBox, &QComboBox::currentTextChanged, this, [this, &registry](const QString& text) {
-        ui->lbExternalLink->setText(DB_EXTERNAL_LINK.arg(registry.getExternalLinkByName(text)));
+    connect(ui->databasesBox, &QComboBox::currentTextChanged, this, [this](const QString& text) {
+        auto link = RemoteDBRegistry::getRemoteDBRegistry().getExternalLinkByName(text);
+        auto sign = DB_EXTERNAL_LINK.arg(link);
+        ui->lbExternalLink->setText(sign);
     });
 
     const QList<QString> dataBases = registry.getDBs();
