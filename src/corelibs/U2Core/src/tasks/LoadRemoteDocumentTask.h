@@ -63,7 +63,7 @@ public:
     QList<QString> getDBs() const;
     bool hasDbId(const QString& dbId) const;
     QString getHint(const QString& dbName) const;
-    // Return the link to the database (to open in browser) by the database name
+    // Returns the link to the database (to open in browser) by the database name.
     QString getExternalLinkByName(const QString& dbName) const;
     // TODO: move this to AppContext
     static RemoteDBRegistry& getRemoteDBRegistry();

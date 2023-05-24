@@ -653,13 +653,13 @@ RemoteDBRegistry::RemoteDBRegistry() {
     hints.insert(UNIPROTKB_SWISS_PROT, QObject::tr("Use UniProtKB/Swiss-Prot accession number. For example: %1").arg(makeIDLink("P16152")));
     hints.insert(UNIPROTKB_TREMBL, QObject::tr("Use UniProtKB/TrEMBL accession number. For example: %1").arg(makeIDLink("D0VTW9")));
 
-    externalLinks.insert(ENSEMBL, "http://www.ensembl.org/index.html");
-    externalLinks.insert(GENBANK_DNA, "https://www.ncbi.nlm.nih.gov/nucleotide/");
+    externalLinks.insert(ENSEMBL, "https://www.ensembl.org");
+    externalLinks.insert(GENBANK_DNA, "https://www.ncbi.nlm.nih.gov/nucleotide");
     externalLinks.insert(GENBANK_PROTEIN, "https://www.ncbi.nlm.nih.gov/protein");
-    externalLinks.insert(PDB, "https://www.rcsb.org/");
-    externalLinks.insert(SWISS_PROT, "https://www.uniprot.org/");
-    externalLinks.insert(UNIPROTKB_SWISS_PROT, "https://www.uniprot.org/");
-    externalLinks.insert(UNIPROTKB_TREMBL, "https://www.uniprot.org/");
+    externalLinks.insert(PDB, "https://www.rcsb.org");
+    externalLinks.insert(SWISS_PROT, "https://www.uniprot.org");
+    externalLinks.insert(UNIPROTKB_SWISS_PROT, "https://www.uniprot.org");
+    externalLinks.insert(UNIPROTKB_TREMBL, "https://www.uniprot.org");
 }
 
 RemoteDBRegistry& RemoteDBRegistry::getRemoteDBRegistry() {
@@ -692,7 +692,7 @@ QString RemoteDBRegistry::getHint(const QString& dbName) const {
 }
 
 QString RemoteDBRegistry::getExternalLinkByName(const QString& dbName) const {
-    SAFE_POINT(externalLinks.keys().contains(dbName), "No database found", QString());
+    SAFE_POINT(externalLinks.contains(dbName), QString("No database found: %1").arg(dbName), {});
 
     return externalLinks.value(dbName);
 }

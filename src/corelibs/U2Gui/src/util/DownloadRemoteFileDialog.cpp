@@ -47,7 +47,7 @@
 
 static const QString SAVE_DIR("downloadremotefiledialog/savedir");
 static const QString HINT_STYLE_SHEET = "color:green; font:bold";
-static const QString DB_EXTERNAL_LINK = QString(R"(<a href="%1"><img src=":core/images/external_link.png" width="22" height="22";></a>)");
+static const QString DB_EXTERNAL_LINK = QString(R"(<a href="%1"><img src=":core/images/external_link.png" width="22" height="22"></a>)");
 
 namespace U2 {
 
