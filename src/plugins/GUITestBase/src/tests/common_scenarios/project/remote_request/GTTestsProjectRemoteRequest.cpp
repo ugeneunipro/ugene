@@ -375,13 +375,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
             QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             static const QMap<QString, QString> DATABASE_LINK_MAP
-                = { {"NCBI GenBank (DNA sequence)", "https://www.ncbi.nlm.nih.gov/nucleotide/"},
+                = { {"NCBI GenBank (DNA sequence)", "https://www.ncbi.nlm.nih.gov/nucleotide"},
                     {"NCBI protein sequence database", "https://www.ncbi.nlm.nih.gov/protein"},
-                    {"ENSEMBL", "http://www.ensembl.org/index.html"},
-                    {"PDB", "https://www.rcsb.org/"},
-                    {"SWISS-PROT", "https://www.uniprot.org/"},
-                    {"UniProtKB/Swiss-Prot", "https://www.uniprot.org/"},
-                    {"UniProtKB/TrEMBL", "https://www.uniprot.org/"} };
+                    {"ENSEMBL", "https://www.ensembl.org"},
+                    {"PDB", "https://www.rcsb.org"},
+                    {"SWISS-PROT", "https://www.uniprot.org"},
+                    {"UniProtKB/Swiss-Prot", "https://www.uniprot.org"},
+                    {"UniProtKB/TrEMBL", "https://www.uniprot.org"} };
 
             auto dbs = GTComboBox::getValues(os, GTWidget::findComboBox(os, "databasesBox", dialog));
             CHECK_SET_ERR(dbs.size() == DATABASE_LINK_MAP.size(), "Unexpected DBs size");
