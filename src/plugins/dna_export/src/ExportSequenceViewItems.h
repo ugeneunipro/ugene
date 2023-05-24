@@ -80,8 +80,9 @@ private:
     void prepareMAFromBlastAnnotations(MultipleSequenceAlignment& ma, const QString& nameQualId, bool includeRef, U2OpStatus& os);
     void prepareMAFromAnnotations(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os);
     void prepareMAFromSequences(MultipleSequenceAlignment& ma, bool translate, U2OpStatus& os);
-    void fetchSequencesFromRemoteDB(const QString& listId);
+    void fetchSequencesFromRemoteDB(const QMap<QString, QStringList>& databaseAccessionsMap);
     void selectionToAlignment(const QString& title, bool annotations, bool translate);
+    QString getDbByCurrentAlphabet() const;
 
     AnnotatedDNAView* view;
 

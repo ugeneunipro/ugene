@@ -29,6 +29,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DBXRefRegistry.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -38,6 +39,7 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
+#include <U2Core/MultiTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SelectionUtils.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -649,6 +651,18 @@ void ADVExportContext::selectionToAlignment(const QString& title, bool annotatio
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 
+QString ADVExportContext::getDbByCurrentAlphabet() const {
+    const DNAAlphabet* seqAl = view->getSequenceObjectsWithContexts().first()->getAlphabet();
+    QString db;
+    if (seqAl->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
+        db = "NCBI GenBank (DNA sequence)";
+    } else if (seqAl->getId() == BaseDNAAlphabetIds::AMINO_DEFAULT()) {
+        db = "NCBI protein sequence database";
+    } else {
+        return {};
+    }
+}
+
 void ADVExportContext::sl_saveSelectedAnnotationsToAlignment() {
     selectionToAlignment(annotationsToAlignmentAction->text(), true, false);
 }
@@ -667,74 +681,92 @@ void ADVExportContext::sl_saveSelectedSequenceToAlignmentWithTranslation() {
 
 void ADVExportContext::sl_getSequenceByDBXref() {
     const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
+    auto dbEntries = AppContext::getDBXRefRegistry()->getEntries();
+    QMap<QString, QStringList> databaseAccessionsMap;
+    for (const Annotation* ann : qAsConst(selection)) {
+        QList<U2Qualifier> res;
+        ann->findQualifiers("db_xref", res);
+        for (const auto& qual : qAsConst(res)) {
+            auto value = qual.value.split(":");
+            CHECK_CONTINUE(value.size() == 2);
 
-    QStringList genbankID;
-    foreach (const Annotation* ann, selection) {
-        const QString tmp = ann->findFirstQualifierValue("db_xref");
-        if (!tmp.isEmpty()) {
-            genbankID << tmp.split(":").last();
+            auto database = value.first();
+            CHECK_CONTINUE(dbEntries.contains(database));
+            CHECK_CONTINUE(!dbEntries.value(database).fileUrl.isEmpty());
+
+            auto accession = value.last();
+            auto dbAccessions = databaseAccessionsMap.value(database);
+            dbAccessions.append(accession);
+            databaseAccessionsMap.insert(database, dbAccessions);
         }
     }
-    QString listId = genbankID.join(",");
-    fetchSequencesFromRemoteDB(listId);
+
+    fetchSequencesFromRemoteDB(databaseAccessionsMap);
 }
 
 void ADVExportContext::sl_getSequenceByAccession() {
     const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
 
     QStringList genbankID;
-    foreach (const Annotation* ann, selection) {
-        const QString tmp = ann->findFirstQualifierValue("accession");
-        if (!tmp.isEmpty()) {
-            genbankID << tmp;
+    for (const Annotation* ann : qAsConst(selection)) {
+        QList<U2Qualifier> res;
+        ann->findQualifiers("accession", res);
+        for (const auto& qual : qAsConst(res)) {
+            genbankID << qual.value;
         }
     }
-    QString listId = genbankID.join(",");
-    fetchSequencesFromRemoteDB(listId);
+    auto db = getDbByCurrentAlphabet();
+    CHECK(!db.isEmpty(), )
+
+    fetchSequencesFromRemoteDB({ {db, genbankID} });
 }
 
 void ADVExportContext::sl_getSequenceById() {
     const QList<Annotation*>& selection = view->getAnnotationsSelection()->getAnnotations();
 
     QStringList genbankID;
-    foreach (const Annotation* ann, selection) {
-        const QString tmp = ann->findFirstQualifierValue("id");
-        if (!tmp.isEmpty()) {
-            int off = tmp.indexOf("|");
-            int off1 = tmp.indexOf("|", off + 1);
-            genbankID << tmp.mid(off + 1, off1 - off - 1);
+    for (const Annotation* ann : qAsConst(selection)) {
+        QList<U2Qualifier> res;
+        ann->findQualifiers("id", res);
+        for (const auto& qual : qAsConst(res)) {
+            if (!qual.value.isEmpty()) {
+                int off = qual.value.indexOf("|");
+                int off1 = qual.value.indexOf("|", off + 1);
+                genbankID << qual.value.mid(off + 1, off1 - off - 1);
+            }
         }
     }
-    QString listId = genbankID.join(",");
-    fetchSequencesFromRemoteDB(listId);
+    auto db = getDbByCurrentAlphabet();
+    CHECK(!db.isEmpty(), )
+
+    fetchSequencesFromRemoteDB({ {db, genbankID} });
 }
 
-void ADVExportContext::fetchSequencesFromRemoteDB(const QString& listId) {
-    const DNAAlphabet* seqAl = view->getSequenceObjectsWithContexts().first()->getAlphabet();
-
-    QString db;
-    if (seqAl->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
-        db = "NCBI GenBank (DNA sequence)";
-    } else if (seqAl->getId() == BaseDNAAlphabetIds::AMINO_DEFAULT()) {
-        db = "NCBI protein sequence database";
-    } else {
-        return;
-    }
-
+void ADVExportContext::fetchSequencesFromRemoteDB(const QMap<QString, QStringList>& databaseAccessionsMap) {
     QObjectScopedPointer<GetSequenceByIdDialog> dlg = new GetSequenceByIdDialog(view->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );
+    CHECK(dlg->result() == QDialog::Accepted, );
 
-    if (dlg->result() == QDialog::Accepted) {
-        QString dir = dlg->getDirectory();
-        Task* t;
-        if (dlg->isAddToProject()) {
-            t = new LoadRemoteDocumentAndAddToProjectTask(listId, db, dir);
-        } else {
-            t = new LoadRemoteDocumentTask(listId, db, dir);
+    bool addToProject = dlg->isAddToProject();
+    QString dir = dlg->getDirectory();
+    QVariantMap hints = { {SHOW_REPORT_HINT, true} };
+    auto databases = databaseAccessionsMap.keys();
+    QList<Task*> tasks;
+    for (const auto& database : qAsConst(databases)) {
+        const auto& accessions = databaseAccessionsMap.value(database);
+        for (const auto& acc : qAsConst(accessions)) {
+            if (addToProject) {
+                tasks << new LoadRemoteDocumentAndAddToProjectTask(acc, database, dir, {}, hints);
+            } else {
+                tasks << new LoadRemoteDocumentTask(acc, database, dir, {}, hints);
+            }
         }
-        AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
+
+    TaskFlags flags = TaskFlag_NoRun | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled;
+    Task* topLevelTask = new MultiTask(tr("Download remote documents by qualifiers"), tasks, false, flags);
+    AppContext::getTaskScheduler()->registerTopLevelTask(topLevelTask);
 }
 
 void ADVExportContext::sl_exportBlastResultToAlignment() {

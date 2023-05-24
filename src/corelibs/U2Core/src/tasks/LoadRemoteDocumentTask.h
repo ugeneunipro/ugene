@@ -42,6 +42,7 @@ namespace U2 {
 #define FASTA_FORMAT "fasta"
 #define GENBANK_WITH_PARTS "gbwithparts"
 #define FORCE_DOWNLOAD_SEQUENCE_HINT "gbwithparts"
+#define SHOW_REPORT_HINT "show_report_hint"
 
 class Document;
 class CopyDataTask;
@@ -148,7 +149,8 @@ class U2CORE_EXPORT LoadRemoteDocumentTask : public BaseLoadRemoteDocumentTask {
 public:
     LoadRemoteDocumentTask(const GUrl& url);
     LoadRemoteDocumentTask(const QString& accId, const QString& dbName, const QString& fullPathDir = "", const QString& fileFormat = "", const QVariantMap& hints = QVariantMap());
-    virtual void prepare();
+    void prepare() override;
+    QString generateReport() const override;
 
     QString getAccNumber() const {
         return accNumber;
@@ -156,6 +158,8 @@ public:
     QString getDBName() const {
         return dbName;
     }
+
+    static void setReportEnabled(Task* task, const QVariantMap& hints);
 
 protected:
     virtual QString getFileFormat(const QString& dbid);
@@ -167,7 +171,7 @@ private:
     QString getRetType() const;
 
     GUrl fileUrl;
-    LoadDataFromEntrezTask* loadDataFromEntrezTask;
+    LoadDataFromEntrezTask* loadDataFromEntrezTask = nullptr;
     QString accNumber;
     QString dbName;
 };

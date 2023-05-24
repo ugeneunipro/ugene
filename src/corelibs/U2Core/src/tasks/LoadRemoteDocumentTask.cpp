@@ -172,19 +172,19 @@ void BaseLoadRemoteDocumentTask::createLoadedDocument() {
 //////////////////////////////////////////////////////////////////////////
 // LoadRemoteDocumentTask
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const GUrl& url)
-    : BaseLoadRemoteDocumentTask(),
-      loadDataFromEntrezTask(nullptr) {
+    : BaseLoadRemoteDocumentTask() {
     fileUrl = url;
     GCOUNTER(cvar, "LoadRemoteDocumentTask");
+    setReportEnabled(this, { { SHOW_REPORT_HINT, true } });
 }
 
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString& accId, const QString& dbName, const QString& fullPathDir, const QString& fileFormat, const QVariantMap& hints)
     : BaseLoadRemoteDocumentTask(fullPathDir, hints),
-      loadDataFromEntrezTask(nullptr),
       accNumber(accId),
       dbName(dbName) {
     GCOUNTER(cvar, "LoadRemoteDocumentTask");
     format = fileFormat;
+    setReportEnabled(this, hints);
 }
 
 void LoadRemoteDocumentTask::prepare() {
@@ -206,6 +206,35 @@ void LoadRemoteDocumentTask::prepare() {
                 addSubTask(loadDataFromEntrezTask);
             }
         }
+    }
+}
+
+QString LoadRemoteDocumentTask::generateReport() const {
+    CHECK(!hasError(), tr("Failed to download %1 from %2. Error: %3").arg(accNumber).arg(dbName).arg(getError()));
+    CHECK(!isCanceled(), {});
+
+    QString res = tr("Document was successfully downloaded: [%1, %2] -> <a href='%3'>%3</a>").arg(dbName).arg(accNumber).arg(fullPath);
+    res += "<br>";
+
+    RemoteDBRegistry::getRemoteDBRegistry().getDbEntrezName
+
+    QString dbLink;
+    QString fileUrl = AppContext::getDBXRefRegistry()->getRefByKey(dbName).fileUrl;
+    if (!fileUrl.isEmpty()) {
+        dbLink = fileUrl.arg(accNumber);
+    }
+
+    res += tr("The database link: <a href='%1'>%1</a>").arg(dbLink);
+
+    return res;
+}
+
+void LoadRemoteDocumentTask::setReportEnabled(Task* task, const QVariantMap& hints) {
+    CHECK(hints.contains(SHOW_REPORT_HINT), );
+
+    if (hints.value(SHOW_REPORT_HINT).toBool()) {
+        task->setReportingSupported(true);
+        task->setReportingEnabled(true);
     }
 }
 

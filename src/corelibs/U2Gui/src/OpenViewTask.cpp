@@ -217,27 +217,29 @@ void OpenViewTask::prepare() {
 
 //////////////////////////////////////////////////////////////////////////
 
-LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QString& accId, const QString& dbName)
+//protected constructor
+LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QVariantMap& _hints)
     : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      mode(LoadRemoteDocumentMode_OpenView), loadRemoteDocTask(nullptr) {
-    accNumber = accId;
-    databaseName = dbName;
+      hints(_hints) {
+    LoadRemoteDocumentTask::setReportEnabled(this, hints);
 }
 
 LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const GUrl& url)
-    : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      mode(LoadRemoteDocumentMode_OpenView), loadRemoteDocTask(nullptr) {
+    : LoadRemoteDocumentAndAddToProjectTask({ {SHOW_REPORT_HINT, true} })
+{
     docUrl = url;
 }
 
-LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QString& accId, const QString& dbName, const QString& fp, const QString& format, const QVariantMap& hints, LoadRemoteDocumentMode mode)
-    : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      accNumber(accId), databaseName(dbName), fileFormat(format), fullpath(fp), hints(hints), mode(mode), loadRemoteDocTask(nullptr) {
-    if (mode == LoadRemoteDocumentMode_LoadOnly) {
-        setReportingSupported(true);
-        setReportingEnabled(true);
-        setTaskName(tr("Load remote document"));
-    }
+LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QString& _accId, const QString& _dbName,
+                                                                             const QString& _fp, const QString& _format,
+                                                                             const QVariantMap& _hints, bool _openView)
+    : LoadRemoteDocumentAndAddToProjectTask(_hints)
+{
+    accNumber = _accId;
+    databaseName = _dbName;
+    fileFormat = _format;
+    fullpath = _fp;
+    openView = _openView;
 }
 
 void LoadRemoteDocumentAndAddToProjectTask::prepare() {
@@ -275,9 +277,6 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task* subT
     }
 
     if (subTask == loadRemoteDocTask) {
-        if (mode == LoadRemoteDocumentMode_LoadOnly) {
-            return subTasks;
-        }
         // hack for handling errors with http requests with bad resource id
         Document* d = loadRemoteDocTask->getDocument();
         if (d->getDocumentFormatId() == BaseDocumentFormats::PLAIN_TEXT) {
@@ -296,7 +295,7 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task* subT
         Project* proj = AppContext::getProject();
         if (proj == nullptr) {
             QVariantMap hints;
-            hints[ProjectLoaderHint_LoadWithoutView] = mode != LoadRemoteDocumentMode_OpenView;
+            hints[ProjectLoaderHint_LoadWithoutView] = !openView;
             Task* openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(fullPath, hints);
             if (openWithProjectTask != nullptr) {
                 subTasks.append(openWithProjectTask);
@@ -307,7 +306,7 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task* subT
             QString url = doc->getURLString();
             Document* loadedDoc = proj->findDocumentByURL(url);
             if (loadedDoc != nullptr) {
-                Task* task = createLoadedDocTask(loadedDoc, mode == LoadRemoteDocumentMode_OpenView);
+                Task* task = createLoadedDocTask(loadedDoc, openView);
                 if (task != nullptr) {
                     subTasks.append(task);
                 }
@@ -316,7 +315,7 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task* subT
                 doc = loadRemoteDocTask->takeDocument();
                 SAFE_POINT(doc != nullptr, "loadRemoteDocTask->takeDocument() returns NULL!", subTasks);
                 subTasks.append(new AddDocumentTask(doc));
-                if (mode == LoadRemoteDocumentMode_OpenView) {
+                if (openView) {
                     subTasks.append(new LoadUnloadedDocumentAndOpenViewTask(doc));
                 } else {
                     subTasks.append(new LoadUnloadedDocumentTask(doc));
@@ -329,19 +328,9 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task* subT
 }
 
 QString LoadRemoteDocumentAndAddToProjectTask::generateReport() const {
-    // Note: reporting is enabled only for db + accession mode.
-    if (hasError()) {
-        return tr("Failed to download %1 from %2. Error: %3").arg(accNumber).arg(databaseName).arg(getError());
-    }
-    if (isCanceled()) {
-        return QString();
-    }
-    QString url = loadRemoteDocTask->getLocalUrl();
-    return tr("Document was successfully downloaded: [%1, %2] -> <a href='%3'>%4</a>")
-        .arg(databaseName)
-        .arg(accNumber)
-        .arg(url)
-        .arg(url);
+    SAFE_POINT(loadRemoteDocTask != nullptr, L10N::nullPointerError("LoadRemoteDocumentTask"), {});
+
+    return loadRemoteDocTask->generateReport();
 }
 
 AddDocumentAndOpenViewTask::AddDocumentAndOpenViewTask(Document* doc, const AddDocumentTaskConfig& conf)
