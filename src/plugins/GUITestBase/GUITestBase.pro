@@ -112,6 +112,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h \
             src/runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h \
             src/runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h \
+            src/runnables/ugene/plugins/dna_export/GetSequenceByIdFiller.h \
             src/runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h \
 #   Runnables / UGENE / plugins / enzymes
             src/runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h \
@@ -399,6 +400,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.cpp \
             src/runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.cpp \
             src/runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.cpp \
+            src/runnables/ugene/plugins/dna_export/GetSequenceByIdFiller.cpp \
             src/runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.cpp \
 #   Runnables / UGENE / plugins / enzymes
             src/runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.cpp \
