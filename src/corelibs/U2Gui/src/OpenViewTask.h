@@ -57,21 +57,17 @@ public:
                                           const QString& format = QString(),
                                           const QVariantMap& hints = QVariantMap(),
                                           bool openView = true);
-    LoadRemoteDocumentAndAddToProjectTask(const GUrl& url);
     void prepare() override;
     QString generateReport() const override;
 
 protected:
     QList<Task*> onSubTaskFinished(Task* subTask);
 
-    LoadRemoteDocumentAndAddToProjectTask(const QVariantMap& hints);
-
 private:
     QString accNumber;
     QString databaseName;
     QString fileFormat;
     QString fullpath;
-    GUrl docUrl;
     QVariantMap hints;
     bool openView = true;
     LoadRemoteDocumentTask* loadRemoteDocTask = nullptr;

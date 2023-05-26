@@ -218,36 +218,24 @@ void OpenViewTask::prepare() {
 //////////////////////////////////////////////////////////////////////////
 
 //protected constructor
-LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QVariantMap& _hints)
-    : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      hints(_hints) {
-    LoadRemoteDocumentTask::setReportEnabled(this, hints);
-}
-
-LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const GUrl& url)
-    : LoadRemoteDocumentAndAddToProjectTask({ {SHOW_REPORT_HINT, true} })
-{
-    docUrl = url;
-}
-
 LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QString& _accId, const QString& _dbName,
                                                                              const QString& _fp, const QString& _format,
                                                                              const QVariantMap& _hints, bool _openView)
-    : LoadRemoteDocumentAndAddToProjectTask(_hints)
-{
-    accNumber = _accId;
-    databaseName = _dbName;
-    fileFormat = _format;
-    fullpath = _fp;
-    openView = _openView;
+    : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE |
+                                                          TaskFlag_MinimizeSubtaskErrorText |
+                                                          TaskFlag_ReportingIsSupported |
+                                                          TaskFlag_ReportingIsEnabled),
+      accNumber(_accId),
+      databaseName(_dbName),
+      fileFormat(_format),
+      fullpath(_fp),
+      hints(_hints),
+      openView(_openView) {
+    hints.insert(SHOW_REPORT_HINT, true);
 }
 
 void LoadRemoteDocumentAndAddToProjectTask::prepare() {
-    if (docUrl.isEmpty()) {
-        loadRemoteDocTask = new LoadRemoteDocumentTask(accNumber, databaseName, fullpath, fileFormat, hints);
-    } else {
-        loadRemoteDocTask = new LoadRemoteDocumentTask(docUrl);
-    }
+    loadRemoteDocTask = new LoadRemoteDocumentTask(accNumber, databaseName, fullpath, fileFormat, hints);
     addSubTask(loadRemoteDocTask);
 }
 

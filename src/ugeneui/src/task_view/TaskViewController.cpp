@@ -468,10 +468,15 @@ bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
         auto me = static_cast<QMouseEvent*>(e);
         QString url = textEdit->anchorAt(me->pos());
         if (!url.isEmpty()) {
+            bool internetUrl = url.startsWith("http");
             if (me->button() == Qt::LeftButton) {
-                Task* t = AppContext::getProjectLoader()->openWithProjectTask(url);
-                if (t) {
-                    AppContext::getTaskScheduler()->registerTopLevelTask(t);
+                if (internetUrl) {
+                    QDesktopServices::openUrl(QUrl(url));
+                } else {
+                    Task* t = AppContext::getProjectLoader()->openWithProjectTask(url);
+                    if (t) {
+                        AppContext::getTaskScheduler()->registerTopLevelTask(t);
+                    }
                 }
             } else if (me->button() == Qt::RightButton) {
                 showContextMenu(me->globalPos(), url);
@@ -490,7 +495,10 @@ bool TVReportWindow::eventFilter(QObject*, QEvent* e) {
 
 void TVReportWindow::showContextMenu(const QPoint& pos, const QString& url) {
     QScopedPointer<QMenu> menu(new QMenu());
-    menu->addAction(createDirAction(url, menu.data()));
+    bool internetUrl = url.startsWith("http");
+    if (!internetUrl) {
+        menu->addAction(createDirAction(url, menu.data()));
+    }
     menu->addAction(createFileAction(url, menu.data()));
     menu->exec(pos);
 }
@@ -526,7 +534,8 @@ void TVReportWindow::sl_open() {
     CHECK(nullptr != dirAction, );
 
     QString url = dirAction->data().toString();
-    QDesktopServices::openUrl(QUrl("file:///" + url));
+    bool internetUrl = url.startsWith("http");
+    QDesktopServices::openUrl(QUrl(!internetUrl ? "file:///" : "" + url));
 }
 
 QString TVReportWindow::convertTime(int msecs) {

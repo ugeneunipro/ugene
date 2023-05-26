@@ -37,6 +37,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
@@ -404,6 +405,67 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0016_1) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI GenBank (DNA sequence)");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "NC_001363");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsNotifications::waitForNotification(os, false, "https://www.ncbi.nlm.nih.gov/nucleotide/NC_001363?report=genbank");
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_2) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI GenBank (DNA sequence)");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "NC_001363");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsNotifications::waitForNotification(os, false, "");
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_3) {
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_4) {
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_5) {
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_6) {
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_7) {
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0017) {
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0018) {
+
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0019) {
+
+
+}
 
 }  // namespace GUITest_common_scenarios_project_remote_request
 }  // namespace U2

@@ -67,7 +67,9 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget* p)
 
     RemoteDBRegistry& registry = RemoteDBRegistry::getRemoteDBRegistry();
     connect(ui->databasesBox, &QComboBox::currentTextChanged, this, [this](const QString& text) {
-        auto link = RemoteDBRegistry::getRemoteDBRegistry().getExternalLinkByName(text);
+        auto link = RemoteDBRegistry::EXTERNAL_LINKS.value(text);
+        SAFE_POINT(!link.isEmpty(), QString("No database found: %1").arg(text), );
+
         auto sign = DB_EXTERNAL_LINK.arg(link);
         ui->lbExternalLink->setText(sign);
     });
@@ -195,7 +197,6 @@ void DownloadRemoteFileDialog::accept() {
 
     QVariantMap hints;
     hints.insert(FORCE_DOWNLOAD_SEQUENCE_HINT, ui->chbForceDownloadSequence->isVisible() && ui->chbForceDownloadSequence->isChecked());
-    hints.insert(SHOW_REPORT_HINT, true);
 
     bool addToProject = ui->chbAddToProjectCheck->isChecked();
     if (addToProject && resIds.size() >= 100) {

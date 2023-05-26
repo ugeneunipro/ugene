@@ -750,16 +750,15 @@ void ADVExportContext::fetchSequencesFromRemoteDB(const QMap<QString, QStringLis
 
     bool addToProject = dlg->isAddToProject();
     QString dir = dlg->getDirectory();
-    QVariantMap hints = { {SHOW_REPORT_HINT, true} };
     auto databases = databaseAccessionsMap.keys();
     QList<Task*> tasks;
     for (const auto& database : qAsConst(databases)) {
         const auto& accessions = databaseAccessionsMap.value(database);
         for (const auto& acc : qAsConst(accessions)) {
             if (addToProject) {
-                tasks << new LoadRemoteDocumentAndAddToProjectTask(acc, database, dir, {}, hints);
+                tasks << new LoadRemoteDocumentAndAddToProjectTask(acc, database, dir);
             } else {
-                tasks << new LoadRemoteDocumentTask(acc, database, dir, {}, hints);
+                tasks << new LoadRemoteDocumentTask(acc, database, dir);
             }
         }
     }
