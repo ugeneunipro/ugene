@@ -657,10 +657,10 @@ QString ADVExportContext::getDbByCurrentAlphabet() const {
     if (seqAl->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
         db = "NCBI GenBank (DNA sequence)";
     } else if (seqAl->getId() == BaseDNAAlphabetIds::AMINO_DEFAULT()) {
-        db = "NCBI protein sequence database";
-    } else {
-        return {};
+        db = "NCBI rotein sequence database";
     }
+
+    return db;
 }
 
 void ADVExportContext::sl_saveSelectedAnnotationsToAlignment() {

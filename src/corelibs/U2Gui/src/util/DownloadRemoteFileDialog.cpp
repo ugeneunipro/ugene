@@ -210,6 +210,7 @@ void DownloadRemoteFileDialog::accept() {
     }
     for (int i = 0; i < resIds.size(); i++) {
         if (!addToProject) {
+            hints.insert(SHOW_REPORT_HINT, true);
             tasks << new LoadRemoteDocumentTask(resIds[i], dbId, fullPath, fileFormat, hints);
         } else {
             bool openView = i < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? true : false;
