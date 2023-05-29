@@ -113,6 +113,43 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Show only selected suppliers:</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="U2::ComboBoxWithCheckBoxes" name="cbSuppliers"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="pbSelectAll">
+          <property name="text">
+           <string>Select all</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbSelectNone">
+          <property name="text">
+           <string>Select none</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbInvertSelection">
+          <property name="text">
+           <string>Invert selection</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Search  in:</string>
@@ -153,6 +190,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>U2::ComboBoxWithCheckBoxes</class>
+   <extends>QComboBox</extends>
+   <header location="global">U2Gui/ComboBoxWithCheckBoxes.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

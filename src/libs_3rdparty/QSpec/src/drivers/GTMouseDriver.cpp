@@ -35,12 +35,10 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
     return true;
 }
 
-#ifndef Q_OS_DARWIN
 bool GTMouseDriver::click(const QPoint& p, Qt::MouseButton button) {
     DRIVER_CHECK(moveTo(p), "Mouse move was failed");
     return click(button);
 }
-#endif
 
 bool GTMouseDriver::dragAndDrop(const QPoint& start, const QPoint& end) {
     GTGlobals::sleep(QApplication::doubleClickInterval() + 1);  // Protect from double-clicks.

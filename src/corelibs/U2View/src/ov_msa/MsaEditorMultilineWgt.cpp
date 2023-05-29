@@ -343,10 +343,12 @@ void MsaEditorMultilineWgt::hideSimilarity() {
 }
 
 void MsaEditorMultilineWgt::sl_onPosChangeRequest(int position) {
+    int baseIndex = position - 1;
+    CHECK(baseIndex >= 0 && baseIndex < editor->getAlignmentLen(), );
     if (getMultilineMode()) {
-        getScrollController()->scrollToBase(QPoint(position, 0));
+        getScrollController()->scrollToBase(QPoint(baseIndex, 0));
     } else {
-        getUI(0)->getScrollController()->scrollToBase(position, getSequenceAreaWidth(0));
+        getUI(0)->getScrollController()->scrollToBase(baseIndex, getSequenceAreaWidth(0));
     }
     // Keep the vertical part of the selection but limit the horizontal to the given position.
     // In case of 1-row selection it will procude a single cell selection as the result.

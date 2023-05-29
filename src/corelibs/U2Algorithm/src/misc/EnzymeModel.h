@@ -52,12 +52,14 @@ class DNAAlphabet;
 
 #define ENZYME_CUT_UNKNOWN 0x7FFFFF
 #define ENZYME_LIST_SEPARATOR ","
+#define SUPPLIERS_LIST_SEPARATOR "\n"
 
 class U2ALGORITHM_EXPORT EnzymeSettings {
 public:
     static const QString DATA_DIR_KEY;
     static const QString DATA_FILE_KEY;
     static const QString LAST_SELECTION;
+    static const QString CHECKED_SUPPLIERS;
     static const QString ENABLE_HIT_COUNT;
     static const QString MAX_HIT_VALUE;
     static const QString MIN_HIT_VALUE;
@@ -76,6 +78,7 @@ public:
     int cutDirect;  // starts from the first char in direct strand
     int cutComplement;  // starts from the first char in complement strand, negative->right offset
     QString organizm;
+    QStringList suppliers; // commercial sources of the current enzyme
     const DNAAlphabet* alphabet;
 };
 

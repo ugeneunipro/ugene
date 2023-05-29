@@ -92,6 +92,7 @@
 #include "GTUtilsQueryDesigner.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -108,6 +109,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/temperature/MeltingTemperatureSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
@@ -3163,6 +3165,31 @@ GUI_TEST_CLASS_DEFINITION(test_7631) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7633) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Click "Build Tree". Click "Display Options->Display tree in new window".
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/COI_7633.nwk", 0, 0, false));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    // Remove the tree from the project.
+    GTUtilsProjectTreeView::click(os, "COI_7633.nwk");
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Switch to the COI.aln window.
+    GTUtilsProjectTreeView::doubleClickItem(os, "COI.aln");
+
+    // Open the "Tree Setting" tab in the Options Panel and click "Open tree".
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::AddTree);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/sandbox/COI_7633.nwk"));
+    GTWidget::click(os, GTWidget::findWidget(os, "openTreeButton"));
+
+    // Expected: there is no crash, tree viewer is added.
+    // TODO: uncomment after fixing UGENE-7869.
+    //  GTUtilsMsaEditor::getTreeView(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7635) {
     // Checks that notification container widget contains all available notifications.
     class Create10NotificationsScenario : public CustomScenario {
@@ -3941,6 +3968,33 @@ GUI_TEST_CLASS_DEFINITION(test_7720) {
                   "Some line of the multiline view must be hidden #2");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7730) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Open the OP's "Statistics" tab.
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::Statistics);
+
+    // In this tab click the ">" button.
+    GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
+
+    // Enable "Wrap mode".
+    QAction* wrapMode = GTAction::findActionByText(os, "Wrap mode");
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
+    // Сheck the "Show distances column" box.
+    GTCheckBox::setChecked(os, "showDistancesColumnCheck", true);
+
+    // Disable "Wrap mode".
+    GTWidget::click(os, GTAction::button(os, wrapMode));
+
+    // Сheck the "Exclude gaps" box.
+    GTCheckBox::setChecked(os, "excludeGapsCheckBox", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: UGENE doesn't crash
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7740) {
     GTFileDialog::openFile(os, dataDir + "samples/Newick/COI.nwk");
     GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
@@ -4025,6 +4079,49 @@ GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTGlobals::sleep(15000);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Cancel the execution.
     GTUtilsTaskTreeView::waitTaskFinished(os, 5000);  // Check the task is canceled fast enough with no crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7785) {
+    class InSilicoWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTWidget::getActiveModalWidget(os);
+
+            GTUtilsWizard::setInputFiles(os, { {QFileInfo(testDir + "_common_data/fasta/chr6.fa").absoluteFilePath()} });
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setParameter(os, "Primers URL", QFileInfo(testDir + "_common_data/regression/7785/TheSimplestPrimers.txt").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    // 1. Open WD and choose the "In Silico PCR" sample.
+    // 2. Select "Read Sequence", add _common_data/fasta/chr6.fa
+    // 3. Select "In Silico PCR" item, add "add "_common_data/regression/7785/TheSimplestPrimers.txt"
+    // 4. Run
+    // 5. Wait until the "Multiple In Silico PCR" task progress > 90
+    // 6. Click "Stop workflow"
+    // Expected state: no crash
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+
+    GTUtilsTaskTreeView::doubleClick(os, "Execute workflow");
+    GTUtilsTaskTreeView::doubleClick(os, "Workflow run");
+
+    auto stopButton = GTAction::button(os, "Stop workflow", GTUtilsMdi::activeWindow(os));
+    auto globalPos = stopButton->mapToGlobal(GTWidget::getWidgetVisibleCenter(stopButton));
+    GTMouseDriver::moveTo(globalPos);
+
+    GTUtilsTask::waitTaskStart(os, "Multiple In Silico PCR");
+
+    GTUtilsTaskTreeView::waitTaskProgressMoreThan(os, "Multiple In Silico PCR", 90);
+
+    GTMouseDriver::click();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7781) {
@@ -4192,6 +4289,18 @@ GUI_TEST_CLASS_DEFINITION(test_7806) {
     CHECK_SET_ERR(size == 4, "chrM.fa in SAM dir is changed, size: " + QString::number(size));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7823) {
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsAnnotationsTreeView::expandItem(os, "CDS  (0, 4)");
+
+    GTMouseDriver::dragAndDrop(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS"),
+                               GTUtilsAnnotationsTreeView::getItemCenter(os, "comment  (0, 1)"));
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, false);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7824) {
     // 1. Open 1.gb.
     // 2. Double click any annotation
@@ -4338,6 +4447,241 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
     int restoredLeftOffset = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
     CHECK_SET_ERR(restoredLeftOffset == savedLeftOffset,
                   QString("Bad offset: expected %1, current %2").arg(savedLeftOffset).arg(restoredLeftOffset));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7850_1) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Raw/raw.seq");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsBookmarksTreeView::addBookmark(os, "raw [raw.seq]", "raw_seq");
+
+    GTUtilsMdi::closeWindow(os, "raw [raw.seq]");
+
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {ACTION_UPDATE_BOOKMARK}, PopupChecker::CheckOption(PopupChecker::IsDisabled)));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "raw_seq"));
+    GTMouseDriver::click(Qt::RightButton);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7852) {
+    /*
+    1. Open samples/FASTA/human_T1.fa.
+    2. Open the "Statistics" tab, expand Codons.
+       Current state: AAA: 16 558.
+    3. Open the "Find pattern" tab, click on sequence, "Ctrl + A" -> "Go".
+    4. Open the "Statistics" tab.
+       Expected: AAA: 5 501.
+    5. Open the "Find pattern" tab, click on sequence, "Ctrl + A", set "Min" to 1, "Max" to 100 -> "Go".
+    6. Open the "Statistics" tab.
+       Expected: AAA: 4
+    */
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    auto reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, reportPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QString codonsInfo = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside codons panel")->text();
+    CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>16 558 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 16 558'");
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 199950));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, reportPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    codonsInfo = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside codons panel")->text();
+    CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>5 501 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 5 501'");
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsDialog::add(os, new PopupChooser(os, {"Select", "Sequence region"}));
+    GTUtilsDialog::add(os, new SelectSequenceRegionDialogFiller(os, 1, 100));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, reportPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    codonsInfo = GTWidget::findWidgetByType<QLabel*>(os, reportPanel, "Failed to find label inside codons panel")->text();
+    CHECK_SET_ERR(codonsInfo.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>4 &nbsp;&nbsp;</td>"), "Codons info does not contain desired string 'AAA: 4'");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7853_1) {
+    // 1. Open Primer Library
+    // 2. Click "Import primer(s)"
+    // Expected: "Add Object(s)" button is disabled
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    class Custom : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            CHECK_SET_ERR(!GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) should be disabled'");
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new Custom()));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7853_2) {
+    // 1. Open any file (e.g. human_T1.fa)
+    // 2. Open Primer Library
+    // 3. Click "Import primer(s)"
+    // Expected: "Add Object(s)" button is enabled
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsPrimerLibrary::openLibrary(os);
+
+    class Custom : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            CHECK_SET_ERR(GTWidget::findWidget(os, "pbAddObject")->isEnabled(), "Add object(s) should be enabled'");
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ImportPrimersDialogFiller(os, new Custom()));
+    GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Button::Import);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7858) {
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    GTUtilsBookmarksTreeView::addBookmark(os, "Aligned reads [alignment.ugenedb]", "Bookmark1");
+    GTUtilsBookmarksTreeView::clickBookmark(os, "Bookmark1");
+    // Expected state: no crash.
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7860) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Press zoom out twice.
+    auto treeView = GTWidget::findWidget(os, "treeView");
+
+    GTUtilsPhyTree::clickZoomOutButton(os);
+    GTUtilsPhyTree::clickZoomOutButton(os);
+    QImage savedImage = GTWidget::getImage(os, treeView);
+
+    // Create a bookmark.
+    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Zoom-2");
+    // Press Reset zoom.
+    GTUtilsPhyTree::clickZoom100Button(os);
+    // Double-click on the bookmark.
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Zoom-2");
+
+    QImage restoredImage = GTWidget::getImage(os, treeView);
+
+    // Expected: the tree is zoomed out twice.
+    CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7861) {
+    // Open COI.aln.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Press PageDown.
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
+
+    // Goto 1.
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+
+    // Expected: position 1 is visible.
+    int leftOffset = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
+    CHECK_SET_ERR(leftOffset == 0, QString("Bad offset: expected 0, current %1").arg(leftOffset));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7863) {
+    GTFileDialog::openFile(os, dataDir + "/samples/Newick/COI.nwk");
+    GTUtilsPhyTree::checkTreeViewerWindowIsActive(os);
+
+    // Switch "tree view" setting from "Default" to "Phylogram".
+    GTUtilsOptionPanelPhyTree::openTab(os);
+    auto treeView = GTWidget::findWidget(os, "treeView");
+
+    GTUtilsOptionPanelPhyTree::changeTreeLayout(os, "Circular");
+    GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(os, "Phylogram");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QImage savedImage = GTWidget::getImage(os, treeView);
+
+    // Create a bookmark.
+    GTUtilsBookmarksTreeView::addBookmark(os, "Tree [COI.nwk]", "Circular Phylogram");
+
+    // Switch branch mode back to "Default".
+    GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(os, "Default");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Activate the "Circular Phylogram" bookmark.
+    GTUtilsBookmarksTreeView::doubleClickBookmark(os, "Circular Phylogram");
+    QImage restoredImage = GTWidget::getImage(os, treeView);
+
+    // Expected: tree view is changed to "Phylogram"
+    CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_7867) {
+    // Open In Silico PCR element in Workflow Designer
+    // Melting temperature by default is Primer3 in Option Panel instead of Rough like in 46.0
+    // Open Melting temperature dialog, select Rough algorithm, push OK
+    // Dialog is closed, but  Primer3 is still displayed, field is selected
+    // Click on Melting temperature label
+    // "Rough-tm-algorithm" is displayed on the screen. It's correct.
+    // Again click on "Rough-tm-algorithm"
+    // Expected: Rough
+    class InSilicoWizardScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            GTWidget::getActiveModalWidget(os);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "In Silico PCR", new InSilicoWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "In Silico PCR");
+
+    GTUtilsWorkflowDesigner::click(os, "In Silico PCR");
+    auto tsPar = GTUtilsWorkflowDesigner::getParameter(os, "Temperature settings");
+    CHECK_SET_ERR(tsPar == "Primer 3", "Incorrect parameter, expected \"Primer 3\"");
+
+        QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters = { {GTUtilsMeltingTemperature::Parameter::Algorithm, "Rough"} };
+    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
+    GTUtilsWorkflowDesigner::setParameter(os, "Temperature settings", "", GTUtilsWorkflowDesigner::customDialogSelector);
+
+    tsPar = GTUtilsWorkflowDesigner::getParameter(os, "Temperature settings");
+    CHECK_SET_ERR(tsPar == "Rough", "Incorrect parameter, expected \"Rough\"");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7885) {
+    // Open _common_data/scenarios/_regression/7885/test_7885.aln
+    // Select sequencef from 2 to the last one
+    // Click Ctrl + x
+    // Expected: nothing has been cut, error in the log
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/7885/", "test_7885.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::clickSequenceName(os, "seq2");
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTKeyboardDriver::keyClick(Qt::Key_PageDown);
+    GTUtilsMsaEditor::clickSequenceName(os, "seq2_1_5_2_1_1");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTLogTracer lt;
+    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+    CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum(os) != 0, "No selected sequences");
 }
 
 }  // namespace GUITest_regression_scenarios

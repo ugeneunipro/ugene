@@ -20,9 +20,11 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
+#include <system/GTFile.h>
 
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "GTTestsCommonScenariosPrimer3.h"
@@ -518,6 +520,35 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0024) {
+    GTFileDialog::openFile(os, testDir + "_common_data/primer3", "human.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.filePath = testDir + "_common_data/primer3/input/test_0024.txt";
+    settings.loadManually = false;
+    settings.notRun = true;
+    GTUtilsDialog::add(os, new Primer3DialogFiller(os, settings));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    class Scenario : public Filler {
+    public:
+        Scenario(HI::GUITestOpStatus& _os)
+            : Filler(_os, "Primer3Dialog") {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::add(os, new GTFileDialogUtils(os, sandBoxDir, "test_0024.txt", GTFileDialogUtils::Save));
+            GTWidget::click(os, GTWidget::findWidget(os, "saveSettingsButton", dialog));
+            GTWidget::click(os, GTWidget::findWidget(os, "closeButton", dialog));
+        }
+    };
+
+    GTUtilsDialog::add(os, new Scenario(os));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Primer3");
+
+    CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "test_0024.txt", testDir + "_common_data/primer3/input/test_0024.txt", true), "Settings are not equal");
 }
 
 

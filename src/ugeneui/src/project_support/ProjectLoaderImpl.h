@@ -40,6 +40,7 @@ namespace U2 {
 
 class DocumentProviderTask;
 class FormatDetectionResult;
+class HelpButton;
 
 class ProjectLoaderImpl : public ProjectLoader {
     Q_OBJECT
@@ -171,6 +172,7 @@ private:
     void setupDefaults();
     bool fileEditIsEmpty;
     QPushButton* createButton;
+    HelpButton* helpButton = nullptr;
 };
 
 class AD2P_DocumentInfo {

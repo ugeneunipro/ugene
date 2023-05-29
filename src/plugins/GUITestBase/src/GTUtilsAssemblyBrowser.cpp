@@ -234,7 +234,7 @@ void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus& os, qint64 positi
 
     switch (method) {
         case Button:
-            GTWidget::click(os, GTWidget::findWidget(os, "Go!"));
+            GTWidget::click(os, GTWidget::findWidget(os, "goButton"));
             break;
         default:
             GTKeyboardDriver::keyClick(Qt::Key_Enter);

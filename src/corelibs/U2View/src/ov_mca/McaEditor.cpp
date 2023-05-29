@@ -64,7 +64,7 @@ McaEditor::McaEditor(const QString& viewName,
     }
 
     U2SequenceObject* referenceObj = obj->getReferenceObj();
-    SAFE_POINT(nullptr != referenceObj, "Trying to open McaEditor without a reference", );
+    SAFE_POINT(referenceObj != nullptr, "Trying to open McaEditor without a reference", );
     referenceCtx = new SequenceObjectContext(referenceObj, this);
 }
 

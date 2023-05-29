@@ -112,7 +112,7 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget* p, const QStringList& shortReadsUr
     if (!activeRefSeqUrl.isEmpty()) {
         refSeqEdit->setText(activeRefSeqUrl);
         buildResultUrl(activeRefSeqUrl);
-        if (nullptr != customGUI) {
+        if (customGUI != nullptr) {
             QString error;
             customGUI->buildIndexUrl(lastRefSeqUrl, prebuiltIndex, error);
             customGUI->validateReferenceSequence(activeRefSeqUrl);
@@ -158,7 +158,7 @@ void DnaAssemblyDialog::sl_onAddRefButtonClicked() {
     refSeqEdit->setText(lod.url);
     buildResultUrl(lod.url);
 
-    if (nullptr != customGUI) {
+    if (customGUI != nullptr) {
         QString error;
         if (!customGUI->buildIndexUrl(lod.url, prebuiltIndex, error)) {
             QMessageBox::information(this, "DNA Assembly", error);
@@ -168,7 +168,7 @@ void DnaAssemblyDialog::sl_onAddRefButtonClicked() {
 }
 
 void DnaAssemblyDialog::accept() {
-    if (nullptr != customGUI) {
+    if (customGUI != nullptr) {
         QString error;
         if (!customGUI->isParametersOk(error)) {
             if (!error.isEmpty()) {
@@ -315,7 +315,7 @@ bool DnaAssemblyDialog::isSamOutput() const {
 }
 
 bool DnaAssemblyDialog::isPrebuiltIndex() const {
-    CHECK(nullptr != customGUI, false);
+    CHECK(customGUI != nullptr, false);
     return customGUI->isIndex(refSeqEdit->text());
 }
 
@@ -424,7 +424,7 @@ void DnaAssemblyDialog::sl_formatChanged(const QString& newFormat) {
 
 DnaAssemblyToRefTaskSettings DnaAssemblyGUIUtils::getSettings(DnaAssemblyDialog* dialog) {
     DnaAssemblyToRefTaskSettings s;
-    SAFE_POINT(nullptr != dialog, "NULL dialog", s);
+    SAFE_POINT(dialog != nullptr, "NULL dialog", s);
     s.samOutput = dialog->isSamOutput();
     s.refSeqUrl = dialog->getRefSeqUrl();
     s.algName = dialog->getAlgorithmName();

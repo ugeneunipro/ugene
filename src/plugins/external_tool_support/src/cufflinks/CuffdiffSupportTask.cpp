@@ -44,7 +44,7 @@ CuffdiffSupportTask::CuffdiffSupportTask(const CuffdiffSettings& _settings)
     : ExternalToolSupportTask(tr("Running Cuffdiff task"), TaskFlags_NR_FOSE_COSC),
       settings(_settings),
       diffTask(nullptr) {
-    SAFE_POINT_EXT(nullptr != settings.storage, setError(tr("Workflow data storage is NULL")), );
+    SAFE_POINT_EXT(settings.storage != nullptr, setError(tr("Workflow data storage is NULL")), );
     GCOUNTER(cvar, "ExternalTool_Cuff");
 }
 
@@ -239,10 +239,10 @@ void CuffdiffSupportTask::addOutFiles() {
 
 void CuffdiffSupportTask::createTranscriptDoc() {
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::GTF);
-    SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("GTF format")), );
+    SAFE_POINT_EXT(format != nullptr, setError(L10N::nullPointerError("GTF format")), );
 
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(nullptr != iof, setError(L10N::nullPointerError("I/O adapter factory")), );
+    SAFE_POINT_EXT(iof != nullptr, setError(L10N::nullPointerError("I/O adapter factory")), );
 
     transcriptUrl = workingDir + "/transcripts.gtf";
     transcriptDoc.reset(format->createNewLoadedDocument(iof, transcriptUrl, stateInfo));

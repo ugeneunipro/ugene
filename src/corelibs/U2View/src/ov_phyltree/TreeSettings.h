@@ -35,15 +35,14 @@ enum TreeType {
 };
 
 enum TreeLayoutType {
-    RECTANGULAR_LAYOUT,
-    CIRCULAR_LAYOUT,
-    UNROOTED_LAYOUT
+    RECTANGULAR_LAYOUT = 0,
+    CIRCULAR_LAYOUT = 1,
+    UNROOTED_LAYOUT = 2
 };
 
 enum TreeViewOption {
-    BRANCHES_TRANSFORMATION_TYPE,
-
-    TREE_LAYOUT_TYPE,
+    /** Type of the layout: Circular, Rectangular, Unrooted... */
+    TREE_LAYOUT_TYPE = 1,
 
     /*
      * Affects breadth of the tree:
@@ -51,54 +50,48 @@ enum TreeViewOption {
      * values < 100% make breadth smaller (a narrower tree),
      * values > 100% make breadth larger (a wider tree)
      *
-     * Available only for in the rectangular layout.
+     * Available only for in the 'rectangular' layout.
      */
-    BREADTH_SCALE_ADJUSTMENT_PERCENT,
+    BREADTH_SCALE_ADJUSTMENT_PERCENT = 2,
 
+    LABEL_COLOR = 100,
+    LABEL_FONT_FAMILY = 101,
+    LABEL_FONT_SIZE = 102,
+    LABEL_FONT_BOLD = 103,
+    LABEL_FONT_ITALIC = 104,
+    LABEL_FONT_UNDERLINE = 105,
+    /** Shows/hides branch distance labels. */
+    SHOW_BRANCH_DISTANCE_LABELS = 106,
+    /** Shows/hides inner node labels: names/heights (heights are not implemented yet). */
+    SHOW_INNER_NODE_LABELS = 107,
+
+    /** Shows/hides leaf node labels (sequence/species names). */
+    SHOW_LEAF_NODE_LABELS = 108,
+
+    /** Aligns leaf node labels (sequence/species names). */
+    ALIGN_LEAF_NODE_LABELS = 109,
+
+    BRANCH_COLOR = 200,
+    BRANCH_THICKNESS = 201,
     /** Curvature of branches in Rectangular layout mode. 0 -> no curvature. 100 -> maximum possible curvature. */
-    BRANCH_CURVATURE,
+    BRANCH_CURVATURE = 202,
+    /** How branch depth (length) is computed: Default (fit-depth), Cladogram (equal length) or Phylogram (length is proportional to distance). */
+    BRANCH_DEPTH_SCALE_MODE = 203,
 
-    LABEL_COLOR,
-    LABEL_FONT_FAMILY,
-    LABEL_FONT_SIZE,
-    LABEL_FONT_BOLD,
-    LABEL_FONT_ITALIC,
-    LABEL_FONT_UNDERLINE,
-
-    BRANCH_COLOR,
-    BRANCH_THICKNESS,
-
+    NODE_COLOR = 300,
+    NODE_RADIUS = 301,
     /**
      * If true (default): nodes shapes are visible (circles).
      * If false: the shape is visible only for selected nodes or on hover over the node area.
      */
-    SHOW_NODE_SHAPE,
+    SHOW_NODE_SHAPE = 302,
     /** Same as SHOW_NODE_SHAPE but for tips (leafs). */
-    SHOW_TIP_SHAPE,
-    NODE_COLOR,
-    NODE_RADIUS,
-
-    /** Shows/hides branch distance labels. */
-    SHOW_BRANCH_DISTANCE_LABELS,
-
-    /** Shows/hides inner node labels: names/heights (heights are not implemented yet). */
-    SHOW_INNER_NODE_LABELS,
-
-    /** Shows/hides leaf node labels (sequence/species names). */
-    SHOW_LEAF_NODE_LABELS,
-
-    /** Aligns leaf node labels (sequence/species names). */
-    ALIGN_LEAF_NODE_LABELS,
+    SHOW_TIP_SHAPE = 303,
 
     /** Distance-units length of the legend line. */
-    SCALEBAR_RANGE,
-
-    SCALEBAR_FONT_SIZE,
-    SCALEBAR_LINE_WIDTH,
-
-    OPTION_ENUM_END
+    SCALEBAR_FONT_SIZE = 402,
+    SCALEBAR_LINE_WIDTH = 403,
+    SCALEBAR_RANGE = 404
 };
-
-typedef QMap<TreeViewOption, QVariant> OptionsMap;
 
 }  // namespace U2

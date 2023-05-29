@@ -57,7 +57,7 @@ void GTPlainTextEdit::clear(GUITestOpStatus& os, QPlainTextEdit* textEdit) {
     }
     GTKeyboardUtils::selectAll();
     GTGlobals::sleep(100);
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
     // Wait up to 5 seconds for the text to be cleaned.
     QString currentText = textEdit->toPlainText();

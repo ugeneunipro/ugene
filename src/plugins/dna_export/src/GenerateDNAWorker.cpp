@@ -295,7 +295,7 @@ Task* GenerateDNAWorker::tick() {
 
 void GenerateDNAWorker::sl_taskFinished(Task* t) {
     DNASequenceGeneratorTask* task = qobject_cast<DNASequenceGeneratorTask*>(t);
-    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
+    SAFE_POINT(t != nullptr, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }

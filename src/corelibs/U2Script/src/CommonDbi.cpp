@@ -116,7 +116,7 @@ U2SCRIPT_EXPORT void releaseObject(UgeneDbHandle resultObject) {
 U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object) {
     auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     U2::GObject* result = nullptr;
-    if (nullptr != unwrappedObject) {
+    if (unwrappedObject != nullptr) {
         U2::U2OpStatusImpl statusInfo;
         result = unwrappedObject->clone(unwrappedObject->getEntityRef().dbiRef, statusInfo);
         CHECK_OP(statusInfo, nullptr);
@@ -127,11 +127,11 @@ U2SCRIPT_EXPORT UgeneDbHandle cloneObject(UgeneDbHandle object) {
 U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, const wchar_t* _url, FileFormat format) {
     using namespace U2;
 
-    CHECK(nullptr != objects && nullptr != _url, );
+    CHECK(objects != nullptr && _url != nullptr, );
 
     DocumentFormat* docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(
         toDocumentFormatId(format));
-    CHECK_EXT(nullptr != docFormat, coreLog.error(QObject::tr("The unsupported format"
+    CHECK_EXT(docFormat != nullptr, coreLog.error(QObject::tr("The unsupported format"
                                                               " was provided")), );
     const QString url = QString::fromWCharArray(_url);
     QFileInfo fileInfo(url);
@@ -147,7 +147,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, 
                                                        stateInfo);
     for (int i = 0; i < objectCount; ++i) {
         auto object = reinterpret_cast<GObject*>(objects[i]);
-        if (nullptr != object) {
+        if (object != nullptr) {
             doc->addObject(object);
         }
     }
@@ -158,7 +158,7 @@ U2SCRIPT_EXPORT void saveObjectsToFile(UgeneDbHandle* objects, int objectCount, 
 U2SCRIPT_EXPORT ObjectType getObjectType(UgeneDbHandle object) {
     auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     U2::GObjectType result = U2::GObjectTypes::UNKNOWN;
-    if (nullptr != unwrappedObject) {
+    if (unwrappedObject != nullptr) {
         result = unwrappedObject->getGObjectType();
     }
     return toObjectType(result);
@@ -167,7 +167,7 @@ U2SCRIPT_EXPORT ObjectType getObjectType(UgeneDbHandle object) {
 U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLength, wchar_t* name) {
     auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
     QString result;
-    if (nullptr != unwrappedObject) {
+    if (unwrappedObject != nullptr) {
         result = unwrappedObject->getGObjectName();
     }
     U2ErrorType error = U2::TextConversionUtils::qstringToCstring(result, expectedMaxNameLength, name);
@@ -176,7 +176,7 @@ U2SCRIPT_EXPORT void getObjectName(UgeneDbHandle object, int expectedMaxNameLeng
 
 U2SCRIPT_EXPORT void setObjectName(UgeneDbHandle object, const wchar_t* newName) {
     auto unwrappedObject = reinterpret_cast<U2::GObject*>(object);
-    if (nullptr != unwrappedObject && nullptr != newName) {
+    if (unwrappedObject != nullptr && newName != nullptr) {
         unwrappedObject->setGObjectName(QString::fromWCharArray(newName));
     }
 }

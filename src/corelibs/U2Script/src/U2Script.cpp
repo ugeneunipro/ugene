@@ -37,7 +37,7 @@ U2ErrorType processTask(U2::Task* task) {
         // now it's being used in unit tests
         CHECK(U2::UgeneContextWrapper::isAppContextInitialized(), U2_INVALID_CALL);
         U2::TaskScheduler* scheduler = U2::AppContext::getTaskScheduler();
-        CHECK(nullptr != scheduler, U2_INVALID_CALL);
+        CHECK(scheduler != nullptr, U2_INVALID_CALL);
         scheduler->registerTopLevelTask(task);
     } else {
         GLOBAL_CONTEXT->processTask(task);
@@ -67,7 +67,7 @@ U2SCRIPT_EXPORT U2ErrorType initContext(const wchar_t* _workingDirectoryPath) {
 }
 
 U2SCRIPT_EXPORT U2ErrorType releaseContext() {
-    if (nullptr != GLOBAL_CONTEXT) {
+    if (GLOBAL_CONTEXT != nullptr) {
         delete GLOBAL_CONTEXT;
         GLOBAL_CONTEXT = nullptr;
     } else {

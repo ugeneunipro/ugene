@@ -77,7 +77,7 @@ void MsaEditorWgt::sl_onTabsCountChanged(int curTabsNumber) {
 void MsaEditorWgt::createDistanceColumn(MSADistanceMatrix* matrix) {
     dataList->setMatrix(matrix);
     dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-    MsaEditorAlignmentDependentWidget* statisticsWidget = new MsaEditorAlignmentDependentWidget(dataList);
+    MsaEditorAlignmentDependentWidget* statisticsWidget = new MsaEditorAlignmentDependentWidget(this, dataList);
 
     MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, statisticsWidget, 0.04, nameAreaContainer, 1);
 }
@@ -118,11 +118,11 @@ void MsaEditorWgt::showSimilarity() {
     if (similarityStatistics == nullptr) {
         SimilarityStatisticsSettings settings;
         settings.algoId = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmIds().at(0);
-        settings.ui = this;
+        settings.editor = getEditor();
 
         dataList = new MsaEditorSimilarityColumn(this, &settings);
         dataList->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
-        similarityStatistics = new MsaEditorAlignmentDependentWidget(dataList);
+        similarityStatistics = new MsaEditorAlignmentDependentWidget(this, dataList);
 
         MaSplitterUtils::insertWidgetWithScale(nameAndSequenceAreasSplitter, similarityStatistics, 0.04, nameAreaContainer, 1);
     } else {

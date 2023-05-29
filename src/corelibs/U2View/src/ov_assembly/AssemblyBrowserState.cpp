@@ -76,7 +76,7 @@ void AssemblyBrowserState::saveState(const AssemblyBrowser* ab) {
 }
 
 void AssemblyBrowserState::restoreState(AssemblyBrowser* ab) const {
-    if (nullptr != ab->getMainWidget() && ab->getMainWidget()->isCorrectView()) {
+    if (ab->getMainWidget() != nullptr && ab->getMainWidget()->isCorrectView()) {
         ab->navigateToRegion(getVisibleBasesRegion());
         ab->setYOffsetInAssembly(getYOffset());
     }

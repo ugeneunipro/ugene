@@ -1,7 +1,7 @@
 # This file contains UGENE version info
 
 # int version levels for executables
-UGENE_VER_MAJOR=47
+UGENE_VER_MAJOR=48
 UGENE_VER_MINOR=0
 UGENE_VER_SUFFIX=-dev
 

@@ -4219,7 +4219,7 @@ GUI_TEST_CLASS_DEFINITION(test_1457) {
     //    Expected state: navigation tool is disabled.
     QToolBar* mwtoolbar_activemdi = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     auto go_to_pos_line_edit = GTWidget::findWidget(os, "go_to_pos_line_edit", mwtoolbar_activemdi);
-    auto go = GTWidget::findWidget(os, "Go!", mwtoolbar_activemdi);
+    auto go = GTWidget::findWidget(os, "goButton", mwtoolbar_activemdi);
     CHECK_SET_ERR(!go_to_pos_line_edit->isEnabled(), "go_to_pos_line_edit on toolbar is enabled");
     CHECK_SET_ERR(!go->isEnabled(), "go button on toolbar is enabled");
     //    3. Open navigation tab on the options panel.
@@ -4227,7 +4227,7 @@ GUI_TEST_CLASS_DEFINITION(test_1457) {
     //    Expected state: navigation tool on the options panel is disabled.
     auto OP_OPTIONS_WIDGET = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
     auto go_to_pos_line_edit_op = GTWidget::findWidget(os, "go_to_pos_line_edit", OP_OPTIONS_WIDGET);
-    auto go_op = GTWidget::findWidget(os, "Go!", OP_OPTIONS_WIDGET);
+    auto go_op = GTWidget::findWidget(os, "goButton", OP_OPTIONS_WIDGET);
     CHECK_SET_ERR(!go_to_pos_line_edit_op->isEnabled(), "go_to_pos_line_edit on option panel is enabled");
     CHECK_SET_ERR(!go_op->isEnabled(), "go button on option panel is enabled");
     //    4. Zoom to any location.

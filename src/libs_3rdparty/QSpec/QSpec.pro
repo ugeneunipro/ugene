@@ -51,7 +51,6 @@ HEADERS += \
            src/utils/GTMouseUtils.h \
            src/utils/GTThread.h \
            src/utils/GTUtilsDialog.h \
-           src/utils/GTUtilsMac.h \
            src/utils/GTUtilsText.h \
            src/utils/GTUtilsToolTip.h
 
@@ -109,11 +108,5 @@ SOURCES += \
            src/utils/GTMouseUtils.cpp \
            src/utils/GTThread.cpp \
            src/utils/GTUtilsDialog.cpp \
-           src/utils/GTUtilsMac.cpp \
            src/utils/GTUtilsText.cpp \
            src/utils/GTUtilsToolTip.cpp
-
-macx {
-OBJECTIVE_HEADERS += src/primitives/private/GTMenuPrivateMac.h
-OBJECTIVE_SOURCES += src/primitives/private/GTMenuPrivateMac.mm
-}

@@ -176,7 +176,7 @@ CircularViewSplitter* CircularViewContext::getView(GObjectViewController* view, 
     QList<QObject*> resources = viewResources.value(view);
     foreach (QObject* r, resources) {
         circularView = qobject_cast<CircularViewSplitter*>(r);
-        if (nullptr != circularView) {
+        if (circularView != nullptr) {
             return circularView;
         }
     }
@@ -200,7 +200,7 @@ void CircularViewContext::buildStaticOrContextMenu(GObjectViewController* v, QMe
     QList<QObject*> resources = viewResources.value(v);
     foreach (QObject* r, resources) {
         auto circularView = qobject_cast<CircularViewSplitter*>(r);
-        if (nullptr != circularView) {
+        if (circularView != nullptr) {
             if (!circularView->isEmpty()) {
                 empty = false;
             }
@@ -212,13 +212,13 @@ void CircularViewContext::buildStaticOrContextMenu(GObjectViewController* v, QMe
     QMenu* exportMenu = GUIUtils::findSubMenu(m, ADV_MENU_EXPORT);
     SAFE_POINT(exportMenu != nullptr, "Invalid exporting menu", );
     GObjectViewAction* exportAction = findViewAction(v, EXPORT_ACTION_NAME);
-    SAFE_POINT(nullptr != exportAction, "Invalid exporting action", );
+    SAFE_POINT(exportAction != nullptr, "Invalid exporting action", );
     exportMenu->addAction(exportAction);
 
     QMenu* editMenu = GUIUtils::findSubMenu(m, ADV_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "Invalid editing menu", );
     GObjectViewAction* newSeqOriginAction = findViewAction(v, NEW_SEQ_ORIGIN_ACTION_NAME);
-    SAFE_POINT(nullptr != newSeqOriginAction, "Invalid new sequence origin action", );
+    SAFE_POINT(newSeqOriginAction != nullptr, "Invalid new sequence origin action", );
     editMenu->addAction(newSeqOriginAction);
 }
 //////////////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ void CircularViewContext::removeCircularView(GObjectViewController* view) {
     QList<QObject*> resources = viewResources.value(view);
     foreach (QObject* r, resources) {
         auto circularView = qobject_cast<CircularViewSplitter*>(r);
-        if (nullptr != circularView) {
+        if (circularView != nullptr) {
             SAFE_POINT(circularView->isEmpty(), "Circular view is not empty", );
             auto av = qobject_cast<AnnotatedDNAView*>(view);
             av->unregisterSplitWidget(circularView);
@@ -267,7 +267,7 @@ void CircularViewContext::toggleViews(AnnotatedDNAView* av) {
 
 void CircularViewContext::sl_showCircular() {
     auto a = qobject_cast<CircularViewAction*>(sender());
-    SAFE_POINT(nullptr != a, "Invalid CV action", );
+    SAFE_POINT(a != nullptr, "Invalid CV action", );
     auto sw = qobject_cast<ADVSingleSequenceWidget*>(a->seqWidget);
     if (a->isChecked()) {
         a->setText(tr("Remove circular view"));
@@ -307,14 +307,14 @@ void CircularViewContext::sl_toggleViews() {
 
 void CircularViewContext::sl_setSequenceOrigin() {
     auto setSequenceOriginAction = qobject_cast<GObjectViewAction*>(sender());
-    SAFE_POINT(nullptr != setSequenceOriginAction, "Invalid action detected", );
+    SAFE_POINT(setSequenceOriginAction != nullptr, "Invalid action detected", );
 
     auto av = qobject_cast<AnnotatedDNAView*>(setSequenceOriginAction->getObjectView());
-    CHECK(nullptr != av, );
+    CHECK(av != nullptr, );
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
     U2SequenceObject* seqObj = seqCtx->getSequenceObject();
-    CHECK(nullptr != seqObj, );
+    CHECK(seqObj != nullptr, );
 
     QObjectScopedPointer<SetSequenceOriginDialog> dlg = new SetSequenceOriginDialog(av->getActiveSequenceWidget());
     const int res = dlg->exec();

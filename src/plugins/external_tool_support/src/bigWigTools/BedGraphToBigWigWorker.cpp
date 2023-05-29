@@ -236,7 +236,7 @@ namespace {
 QString getTargetTaskUrl(Task* task) {
     auto curtask = dynamic_cast<BedGraphToBigWigTask*>(task);
 
-    if (nullptr != curtask) {
+    if (curtask != nullptr) {
         return curtask->getResult();
     }
     return "";

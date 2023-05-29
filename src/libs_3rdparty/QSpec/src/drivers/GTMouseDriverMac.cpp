@@ -87,61 +87,6 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
 }
 #    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "moveAndClick"
-bool GTMouseDriver::click(const QPoint& p, Qt::MouseButton button) {
-    DRIVER_CHECK(!bp.testFlag(Qt::LeftButton), "Can't click, LeftButton is pressed already");
-
-    CGEventType eventType2, eventType3;
-    CGMouseButton btn;
-    if (button == Qt::LeftButton) {
-        eventType2 = kCGEventLeftMouseDown;
-        eventType3 = kCGEventLeftMouseUp;
-        btn = kCGMouseButtonLeft;
-    } else if (button == Qt::RightButton) {
-        eventType2 = kCGEventRightMouseDown;
-        eventType3 = kCGEventRightMouseUp;
-        btn = kCGMouseButtonRight;
-    } else if (button == Qt::MiddleButton) {
-        eventType2 = kCGEventOtherMouseDown;
-        eventType3 = kCGEventOtherMouseUp;
-        btn = kCGMouseButtonCenter;
-    } else {
-        DRIVER_CHECK(false, "Unknown mouse button");
-    }
-
-    int x = p.x();
-    int y = p.y();
-    DRIVER_CHECK(isPointInsideScreen(x, y), "Invalid coordinates");
-    CGPoint pt = CGPointMake(x, y);
-
-    CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, btn /*ignored*/);
-    DRIVER_CHECK(event != NULL, "Can't create event");
-    CGEventPost(kCGSessionEventTap, event);
-    GTGlobals::sleep(200);
-    CFRelease(event);
-
-    bp |= button;
-    CGEventRef event2 = CGEventCreateMouseEvent(NULL, eventType2, pt, btn);
-    DRIVER_CHECK(event2 != NULL, "Can't create event2");
-    CGEventSetIntegerValueField(event2, kCGMouseEventClickState, 1);
-    CGEventPost(kCGSessionEventTap, event2);
-    GTGlobals::sleep(200);
-    CFRelease(event2);
-
-    bp &= (Qt::MouseButtonMask ^ button);
-    CGEventRef event3 = CGEventCreateMouseEvent(NULL, eventType3, pt, btn);
-    DRIVER_CHECK(event3 != NULL, "Can't create event3");
-    CGEventSetIntegerValueField(event3, kCGMouseEventClickState, 1);
-    CGEventPost(kCGSessionEventTap, event3);
-    GTGlobals::sleep(200);
-    CFRelease(event3);
-
-    GTGlobals::sleep(100);
-
-    return true;
-}
-#    undef GT_METHOD_NAME
-
 #    define GT_METHOD_NAME "press"
 bool GTMouseDriver::press(Qt::MouseButton button) {
     bp |= button;

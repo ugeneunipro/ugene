@@ -2,6 +2,7 @@ include (U2Gui.pri)
 
 # Input
 HEADERS += src/AppSettingsGUI.h \
+           src/ComboBoxWithCheckBoxes.h \
            src/MainWindow.h \
            src/Notification.h \
            src/NotificationsTypes.h \
@@ -161,7 +162,8 @@ FORMS += src/util/AddNewDocumentDialog.ui \
          src/util/shared_db/ImportToDatabaseDialog.ui \
          src/util/shared_db/ItemToImportEditDialog.ui
 
-SOURCES += src/MainWindow.cpp \
+SOURCES += src/ComboBoxWithCheckBoxes.cpp \
+           src/MainWindow.cpp \
            src/Notification.cpp \
            src/NotificationWidget.cpp \
            src/ObjectViewModel.cpp \

@@ -49,7 +49,7 @@ void CalculateCoveragePerBaseOnRegionTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     U2AssemblyDbi* assemblyDbi = con.dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(nullptr != assemblyDbi, setError(tr("Assembly DBI is NULL")), );
+    SAFE_POINT_EXT(assemblyDbi != nullptr, setError(tr("Assembly DBI is NULL")), );
 
     results->resize(region.length);
 
@@ -162,7 +162,7 @@ QList<Task*> CalculateCoveragePerBaseTask::onSubTaskFinished(Task* subTask) {
         }
     } else {
         auto calculateTask = qobject_cast<CalculateCoveragePerBaseOnRegionTask*>(subTask);
-        SAFE_POINT_EXT(nullptr != calculateTask, setError(tr("An unexpected subtask")), res);
+        SAFE_POINT_EXT(calculateTask != nullptr, setError(tr("An unexpected subtask")), res);
 
         results.insert(calculateTask->getRegion().startPos, calculateTask->takeResult());
         emit si_regionIsProcessed(calculateTask->getRegion().startPos);
@@ -189,7 +189,7 @@ void GetAssemblyLengthTask::run() {
     DbiConnection con(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     U2AttributeDbi* attributeDbi = con.dbi->getAttributeDbi();
-    SAFE_POINT_EXT(nullptr != attributeDbi, setError(tr("Attribute DBI is NULL")), );
+    SAFE_POINT_EXT(attributeDbi != nullptr, setError(tr("Attribute DBI is NULL")), );
 
     const U2IntegerAttribute lengthAttribute = U2AttributeUtils::findIntegerAttribute(attributeDbi, assemblyId, U2BaseAttributeName::reference_length, stateInfo);
     CHECK_OP(stateInfo, );

@@ -39,7 +39,7 @@ BreakpointConditionChecker::BreakpointConditionChecker(const QString& initCondit
       parameter(IS_TRUE),
       lastConditionEvaluation(DEFAULT_CONDITION_EVAL_RESULT),
       engineGuard() {
-    if (nullptr != engine) {
+    if (engine != nullptr) {
         WorkflowScriptLibrary::initEngine(engine);
     }
 }
@@ -60,7 +60,7 @@ void BreakpointConditionChecker::setContext(Workflow::WorkflowContext* context) 
 }
 
 bool BreakpointConditionChecker::evaluateCondition(const AttributeScript* conditionContext) {
-    Q_ASSERT(nullptr != conditionContext);
+    Q_ASSERT(conditionContext != nullptr);
 
     QMutexLocker lock(&engineGuard);
 

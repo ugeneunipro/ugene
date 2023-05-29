@@ -635,7 +635,7 @@ PanViewRenderArea::PanViewRenderArea(PanView* d, PanViewRenderer* renderer)
     : GSequenceLineViewGridAnnotationRenderArea(d),
       panView(d),
       renderer(renderer) {
-    SAFE_POINT(nullptr != renderer, "Renderer is NULL", );
+    SAFE_POINT(renderer != nullptr, "Renderer is NULL", );
 }
 
 void PanViewRenderArea::drawAll(QPaintDevice* pd) {

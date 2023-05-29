@@ -84,7 +84,7 @@ void OpenAnnotatedDNAViewTask::populateSeqObjectRefs(GObject* object, QList<Docu
                                                                             GObjectTypes::SEQUENCE);
 
     Document* doc = object->getDocument();
-    SAFE_POINT(nullptr != doc, "Invalid document detected!", );
+    SAFE_POINT(doc != nullptr, "Invalid document detected!", );
 
     QList<GObject*> objWithSeqRelation;
     if (GObjectUtils::hasType(object, GObjectTypes::SEQUENCE)) {

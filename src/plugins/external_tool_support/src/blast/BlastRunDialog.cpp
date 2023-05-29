@@ -204,7 +204,7 @@ void BlastWithExtFileRunDialog::loadDoc(const QString& url) {
     FormatDetectionConfig config;
     config.useExtensionBonus = true;
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(url, config);
-    CHECK_EXT(!formats.isEmpty() && (nullptr != formats.first().format), onFormatError(), );
+    CHECK_EXT(!formats.isEmpty() && (formats.first().format != nullptr), onFormatError(), );
 
     DocumentFormat* format = formats.first().format;
     CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE), onFormatError(), );

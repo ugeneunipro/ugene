@@ -197,13 +197,13 @@ QList<Task*> CufflinksSupportTask::onSubTaskFinished(Task* subTask) {
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/isoforms.fpkm_tracking", outputFiles);
         ExternalToolSupportUtils::appendExistingFile(settings.outDir + "/genes.fpkm_tracking", outputFiles);
         initLoadIsoformAnnotationsTask("transcripts.gtf", CufflinksOutputGtf);
-        CHECK(nullptr != loadIsoformAnnotationsTask, result);
+        CHECK(loadIsoformAnnotationsTask != nullptr, result);
         result << loadIsoformAnnotationsTask;
     }
 
     else if (subTask == loadIsoformAnnotationsTask) {
         QScopedPointer<Document> doc(loadIsoformAnnotationsTask->takeDocument());
-        SAFE_POINT_EXT(nullptr != doc, setError(L10N::nullPointerError("document with annotations")), result);
+        SAFE_POINT_EXT(doc != nullptr, setError(L10N::nullPointerError("document with annotations")), result);
         doc->setDocumentOwnsDbiResources(false);
         foreach (GObject* object, doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE)) {
             doc->removeObject(object, DocumentObjectRemovalMode_Release);
@@ -229,7 +229,7 @@ void CufflinksSupportTask::initLoadIsoformAnnotationsTask(const QString& fileNam
     const QString filePath = settings.outDir + "/" + fileName;
 
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(nullptr != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFLINKS)), );
+    SAFE_POINT_EXT(iof != nullptr, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFLINKS)), );
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.storage->getDbiRef());

@@ -49,8 +49,8 @@ U2SCRIPT_EXPORT U2ErrorType createScheme(const wchar_t* _pathToScheme, SchemeHan
 
 U2SCRIPT_EXPORT U2ErrorType addReaderToScheme(SchemeHandle _scheme, const wchar_t* _readerType, const wchar_t* _inputFilePath, int maxExpectedNameLength, wchar_t* _name) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _readerType && nullptr != _inputFilePath && nullptr != _name, U2_INVALID_STRING);
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_readerType != nullptr && _inputFilePath != nullptr && _name != nullptr, U2_INVALID_STRING);
     const QString readerType = QString::fromWCharArray(_readerType);
     const QString inputFilePath = QString::fromWCharArray(_inputFilePath);
 
@@ -62,8 +62,8 @@ U2SCRIPT_EXPORT U2ErrorType addReaderToScheme(SchemeHandle _scheme, const wchar_
 
 U2SCRIPT_EXPORT U2ErrorType addWriterToScheme(SchemeHandle _scheme, const wchar_t* _writerType, const wchar_t* _outputFilePath, int maxExpectedNameLength, wchar_t* _name) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _writerType && nullptr != _outputFilePath && nullptr != _name, U2_INVALID_STRING);
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_writerType != nullptr && _outputFilePath != nullptr && _name != nullptr, U2_INVALID_STRING);
     const QString writerType = QString::fromWCharArray(_writerType);
     const QString outputFilePath = QString::fromWCharArray(_outputFilePath);
 
@@ -78,8 +78,8 @@ U2SCRIPT_EXPORT U2ErrorType setSchemeElementAttribute(SchemeHandle _scheme,
                                                       const wchar_t* _attributeName,
                                                       const wchar_t* _attributeValue) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _elementName && nullptr != _attributeName && nullptr != _attributeValue,
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_elementName != nullptr && _attributeName != nullptr && _attributeValue != nullptr,
           U2_INVALID_STRING);
     const QString elementName = QString::fromWCharArray(_elementName);
     const QString attributeName = QString::fromWCharArray(_attributeName);
@@ -94,8 +94,8 @@ U2SCRIPT_EXPORT U2ErrorType getSchemeElementAttribute(SchemeHandle _scheme,
                                                       int maxExpectedNameLength,
                                                       wchar_t* _attributeValue) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _elementName && nullptr != _attributeName && nullptr != _attributeValue,
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_elementName != nullptr && _attributeName != nullptr && nullptr != _attributeValue,
           U2_INVALID_STRING);
     const QString elementName = QString::fromWCharArray(_elementName);
     const QString attributeName = QString::fromWCharArray(_attributeName);
@@ -108,8 +108,8 @@ U2SCRIPT_EXPORT U2ErrorType getSchemeElementAttribute(SchemeHandle _scheme,
 
 U2SCRIPT_EXPORT U2ErrorType addElementToScheme(SchemeHandle _scheme, const wchar_t* _elementType, int maxExpectedNameLength, wchar_t* _name) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _elementType, U2_INVALID_STRING);
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_elementType != nullptr, U2_INVALID_STRING);
     const QString elementType = QString::fromWCharArray(_elementType);
 
     QString elementName;
@@ -120,8 +120,8 @@ U2SCRIPT_EXPORT U2ErrorType addElementToScheme(SchemeHandle _scheme, const wchar
 
 U2SCRIPT_EXPORT U2ErrorType addFlowToScheme(SchemeHandle _scheme, const wchar_t* _srcElementName, const wchar_t* _srcPortName, const wchar_t* _dstElementName, const wchar_t* _dstPortName) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _srcElementName && nullptr != _srcPortName && nullptr != _dstElementName && nullptr != _dstPortName, U2_INVALID_STRING);
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_srcElementName != nullptr && _srcPortName != nullptr && nullptr != _dstElementName && nullptr != _dstPortName, U2_INVALID_STRING);
     const QString srcElementName = QString::fromWCharArray(_srcElementName);
     const QString srcPortName = QString::fromWCharArray(_srcPortName);
     const QString dstElementName = QString::fromWCharArray(_dstElementName);
@@ -136,8 +136,8 @@ U2SCRIPT_EXPORT U2ErrorType addSchemeActorsBinding(SchemeHandle _scheme,
                                                    const wchar_t* _dstElementName,
                                                    const wchar_t* _dstPortAndSlotNames) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _srcElementName && nullptr != _srcSlotName && nullptr != _dstElementName && nullptr != _dstPortAndSlotNames, U2_INVALID_STRING);
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_srcElementName != nullptr && _srcSlotName != nullptr && nullptr != _dstElementName && nullptr != _dstPortAndSlotNames, U2_INVALID_STRING);
     const QString srcElementName = QString::fromWCharArray(_srcElementName);
     const QString srcSlotName = QString::fromWCharArray(_srcSlotName);
     const QString dstElementName = QString::fromWCharArray(_dstElementName);
@@ -148,8 +148,8 @@ U2SCRIPT_EXPORT U2ErrorType addSchemeActorsBinding(SchemeHandle _scheme,
 
 U2SCRIPT_EXPORT U2ErrorType saveSchemeToFile(SchemeHandle _scheme, const wchar_t* _path) {
     auto scheme = reinterpret_cast<U2::SchemeWrapper*>(_scheme);
-    CHECK(nullptr != scheme, U2_INVALID_SCHEME);
-    CHECK(nullptr != _path, U2_INVALID_STRING);
+    CHECK(scheme != nullptr, U2_INVALID_SCHEME);
+    CHECK(_path != nullptr, U2_INVALID_STRING);
     QString pathString = QString::fromWCharArray(_path);
     return scheme->saveToFile(pathString);
 }
@@ -160,7 +160,7 @@ U2SCRIPT_EXPORT void releaseScheme(SchemeHandle _scheme) {
 }
 
 U2SCRIPT_EXPORT U2ErrorType createSas(const wchar_t* _algorithmType, const wchar_t* _inputPath, const wchar_t* _outputPath, SchemeHandle* scheme) {
-    CHECK(nullptr != _algorithmType, U2_INVALID_STRING);
+    CHECK(_algorithmType != nullptr, U2_INVALID_STRING);
     const QString algorithmType = QString::fromWCharArray(_algorithmType);
     const QString inputPath = QString::fromWCharArray(_inputPath);
     const QString outputPath = QString::fromWCharArray(_outputPath);
@@ -209,7 +209,7 @@ U2SCRIPT_EXPORT U2ErrorType launchScheme(SchemeHandle _scheme, int* outputFilesC
 }
 
 U2SCRIPT_EXPORT U2ErrorType launchSas(const wchar_t* _algorithmType, const wchar_t* _inputPath, const wchar_t* _outputPath, int* outputFilesCount, wchar_t*** _outputFileNames) {
-    CHECK(nullptr != _algorithmType && nullptr != _inputPath && nullptr != _outputPath, U2_INVALID_STRING);
+    CHECK(_algorithmType != nullptr && _inputPath != nullptr && nullptr != _outputPath, U2_INVALID_STRING);
     U2::SchemeWrapper* scheme = nullptr;
     const QString algorithmType = QString::fromWCharArray(_algorithmType);
     const QString inputPath = QString::fromWCharArray(_inputPath);

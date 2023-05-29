@@ -68,16 +68,16 @@ void GTUtilsOptionPanelPhyTree::changeTreeLayout(HI::GUITestOpStatus& os, const 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkTreeType"
-void GTUtilsOptionPanelPhyTree::checkTreeType(HI::GUITestOpStatus& os, const QString& layoutName) {
+#define GT_METHOD_NAME "checkBranchDepthScaleMode"
+void GTUtilsOptionPanelPhyTree::checkBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode) {
     auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo", getOptionsPanelWidget(os));
-    CHECK_SET_ERR(layoutName == treeViewCombo->currentText(), QString("Unexpected layout name. Expected: %1, got: %2").arg(layoutName).arg(treeViewCombo->currentText()));
+    CHECK_SET_ERR(mode == treeViewCombo->currentText(), QString("Unexpected mode. Expected: %1, got: %2").arg(mode).arg(treeViewCombo->currentText()));
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "changeTreeType"
-void GTUtilsOptionPanelPhyTree::changeTreeType(HI::GUITestOpStatus& os, const QString& typeName) {
-    GTComboBox::selectItemByText(os, "treeViewCombo", getOptionsPanelWidget(os), typeName);
+#define GT_METHOD_NAME "changeBranchDepthScaleMode"
+void GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode) {
+    GTComboBox::selectItemByText(os, "treeViewCombo", getOptionsPanelWidget(os), mode);
 }
 #undef GT_METHOD_NAME
 

@@ -572,7 +572,7 @@ void MultilineScrollController::zoomVerticalScrollBarPrivate() {
 void MultilineScrollController::updateVerticalScrollBarPrivate() {
     CHECK(ui->getChildrenCount() > 0, );
 
-    SAFE_POINT(nullptr != vScrollBar, "Multiline Vertical scrollbar is not initialized", );
+    SAFE_POINT(vScrollBar != nullptr, "Multiline Vertical scrollbar is not initialized", );
     QSignalBlocker signalBlocker(vScrollBar);
 
     CHECK_EXT(!maEditor->isAlignmentEmpty(), vScrollBar->setVisible(false), );

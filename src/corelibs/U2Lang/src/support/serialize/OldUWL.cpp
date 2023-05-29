@@ -53,7 +53,7 @@ void parseOldMarker(Actor* proc, ParsedPairs& pairs) {
     }
 
     Marker* marker = HRSchemaSerializer::parseMarker(pairs, MARKER_TYPE, MARKER_NAME);
-    SAFE_POINT(nullptr != marker, "NULL marker", );
+    SAFE_POINT(marker != nullptr, "NULL marker", );
     if (markerAttr->contains(marker->getName())) {
         throw ReadFailed(QObject::tr("Redefinition of %1 marker at %2 actor").arg(marker->getName()).arg(proc->getId()));
     }
@@ -74,7 +74,7 @@ bool isOldMarkerActor(Actor* actor) {
     const QMap<QString, Attribute*> attrs = actor->getParameters();
     CHECK(1 == attrs.size(), false);
     auto attr = dynamic_cast<MarkerAttribute*>(*attrs.begin());
-    return (nullptr != attr);
+    return (attr != nullptr);
 }
 }  // namespace
 

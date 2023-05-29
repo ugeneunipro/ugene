@@ -406,7 +406,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>26 926 aa</td></tr>"
-                        "<tr><td>Molecular weight: </td><td>2993901.23</td></tr>"
+                        "<tr><td>Molecular weight: </td><td>2993901.23 gram/mol</td></tr>"
                         "<tr><td>Isoelectic point: </td><td>6.74</td></tr></table>");
 
     CHECK_SET_ERR(statisticsLabel->text() == s, "Found: " + statisticsLabel->text());
@@ -523,7 +523,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTWidget::click(os, w2);
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 aa</td></tr>"
-                "<tr><td>Molecular weight: </td><td>5752.43</td></tr>"
+                "<tr><td>Molecular weight: </td><td>5752.43 gram/mol</td></tr>"
                 "<tr><td>Isoelectic point: </td><td>5.15</td></tr></table>");
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 }

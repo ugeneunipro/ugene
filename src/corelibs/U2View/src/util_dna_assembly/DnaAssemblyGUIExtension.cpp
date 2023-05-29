@@ -74,7 +74,7 @@ bool DnaAssemblyAlgorithmMainWidget::isValidIndex(const QString& oneIndexFileUrl
 bool DnaAssemblyAlgorithmMainWidget::requiredToolsAreOk() const {
     QStringList missedExtTools;
     ExternalToolRegistry* extToolRegistry = AppContext::getExternalToolRegistry();
-    SAFE_POINT(nullptr != extToolRegistry, L10N::nullPointerError("External tool subsystem"), false);
+    SAFE_POINT(extToolRegistry != nullptr, L10N::nullPointerError("External tool subsystem"), false);
     foreach (const QString& toolId, requiredExtToolIds) {
         ExternalTool* tool = extToolRegistry->getById(toolId);
         if (tool == nullptr || tool->getPath().isEmpty()) {

@@ -393,7 +393,7 @@ void GTest_RemoveColumnsOfGaps::prepare() {
         stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    assert(nullptr != obj);
+    assert(obj != nullptr);
 
     auto maObj = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
     if (maObj == nullptr) {

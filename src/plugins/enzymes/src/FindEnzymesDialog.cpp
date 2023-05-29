@@ -37,7 +37,9 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
+#include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Gui/ComboBoxWithCheckBoxes.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -57,6 +59,7 @@ namespace U2 {
 
 QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
+QStringList EnzymesSelectorWidget::loadedSuppliers;
 
 EnzymesSelectorWidget::EnzymesSelectorWidget() {
     setupUi(this);
@@ -130,39 +133,72 @@ QList<SEnzymeData> EnzymesSelectorWidget::getSelectedEnzymes() {
 
 QList<SEnzymeData> EnzymesSelectorWidget::getLoadedEnzymes() {
     if (loadedEnzymes.isEmpty()) {
-        TaskStateInfo ti;
+        U2OpStatus2Log os;
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
-        loadedEnzymes = EnzymesIO::readEnzymes(lastUsedFile, ti);
+        loadedEnzymes = EnzymesIO::readEnzymes(lastUsedFile, os);
+        CHECK_OP(os, {});
+
+        calculateSuppliers();
     }
     return loadedEnzymes;
 }
 
-void EnzymesSelectorWidget::loadFile(const QString& url) {
-    TaskStateInfo ti;
-    QList<SEnzymeData> enzymes;
+QStringList EnzymesSelectorWidget::getLoadedSuppliers() {
+    return loadedSuppliers;
+}
 
-    if (!QFileInfo(url).exists()) {
-        ti.setError(tr("File not exists: %1").arg(url));
-    } else {
-        GTIMER(c1, t1, "FindEnzymesDialog::loadFile [EnzymesIO::readEnzymes]");
-        enzymes = EnzymesIO::readEnzymes(url, ti);
-    }
-    if (ti.hasError()) {
-        if (isVisible()) {
-            QMessageBox::critical(nullptr, tr("Error"), ti.getError());
-        } else {
-            ioLog.error(ti.getError());
+void EnzymesSelectorWidget::calculateSuppliers() {
+    loadedSuppliers.clear();
+    for (const auto& enzyme : qAsConst(loadedEnzymes)) {
+        for (const auto& supplier : qAsConst(enzyme->suppliers)) {
+            CHECK_CONTINUE(!loadedSuppliers.contains(supplier));
+
+            loadedSuppliers << supplier;
         }
-        return;
     }
-    if (!enzymes.isEmpty()) {
+    std::sort(loadedSuppliers.begin(), loadedSuppliers.end(), [](const QString& first, const QString& second) {
+        static const QString sign = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+        if (first == sign) {
+            return true;
+        } else if (second == sign) {
+            return false;
+        }
+        return first < second;
+    });
+}
+
+void EnzymesSelectorWidget::loadFile(const QString& url) {
+    U2OpStatus2Log os;
+    {
+        QList<SEnzymeData> enzymes;
+        if (!QFileInfo(url).exists()) {
+            os.setError(tr("File not exists: %1").arg(url));
+        } else {
+            GTIMER(c1, t1, "FindEnzymesDialog::loadFile [EnzymesIO::readEnzymes]");
+            enzymes = EnzymesIO::readEnzymes(url, os);
+        }
+        if (os.hasError()) {
+            if (isVisible()) {
+                QMessageBox::critical(nullptr, tr("Error"), os.getError());
+            } else {
+                ioLog.error(os.getError());
+            }
+            return;
+        }
+
+        loadedEnzymes = enzymes;
+        calculateSuppliers();
+    }
+
+    if (!loadedEnzymes.isEmpty()) {
         if (AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString() != url) {
             lastSelection.clear();
         }
         AppContext::getSettings()->setValue(EnzymeSettings::DATA_FILE_KEY, url);
     }
 
-    setEnzymesList(enzymes);
+    setEnzymesList(loadedEnzymes);
+    emit si_newEnzimeFileLoaded();
 }
 
 void EnzymesSelectorWidget::saveFile(const QString& url) {
@@ -208,7 +244,7 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
 
     enzymesFilterEdit->clear();
 
-    foreach (const SEnzymeData& enz, enzymes) {
+    for (const SEnzymeData& enz : qAsConst(enzymes)) {
         EnzymeTreeItem* item = new EnzymeTreeItem(enz);
         if (lastSelection.contains(enz->id)) {
             item->setCheckState(0, Qt::Checked);
@@ -237,7 +273,6 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     //     t4.stop();
 
     updateStatus();
-    loadedEnzymes = enzymes;
 }
 
 int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesListString) const {
@@ -246,7 +281,7 @@ int EnzymesSelectorWidget::gatherCheckedNamesListString(QString& checkedNamesLis
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         checked += gi->checkedEnzymes.size();
-        foreach(const EnzymeTreeItem * ci, gi->checkedEnzymes) {
+        foreach (const EnzymeTreeItem* ci, gi->checkedEnzymes) {
             checkedNamesList.append(ci->enzyme->id);
         }
     }
@@ -305,7 +340,15 @@ void EnzymesSelectorWidget::sl_openEnzymesFile() {
     LastUsedDirHelper dir(EnzymeSettings::DATA_DIR_KEY);
     dir.url = U2FileDialog::getOpenFileName(this, tr("Select enzyme database file"), dir.dir, EnzymesIO::getFileDialogFilter());
     if (!dir.url.isEmpty()) {
+        const QString& previousEnzymeFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
+        if (previousEnzymeFile != dir.url) {
+            lastSelection.clear();
+        }
         loadFile(dir.url);
+        if (!loadedEnzymes.isEmpty()) {
+            setEnzymesList(loadedEnzymes);
+            emit si_newEnzimeFileLoaded();
+        }
     }
 }
 
@@ -532,6 +575,14 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     enzymesSelectorWidget->setLayout(vl);
     enzymesSelectorWidget->setMinimumSize(enzSel->size());
 
+    connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_handleSupplierSelectionChange);
+    connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateSuppliers);
+    sl_updateSuppliers();
+
+    connect(pbSelectAll, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectAll);
+    connect(pbSelectNone, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectNone);
+    connect(pbInvertSelection, &QPushButton::clicked, this, &FindEnzymesDialog::sl_invertSelection);
+
     connect(enzSel, SIGNAL(si_selectionModified(int, int)), SLOT(sl_onSelectionModified(int, int)));
     sl_onSelectionModified(enzSel->getTotalNumber(), enzSel->getNumSelected());
 }
@@ -587,6 +638,59 @@ void FindEnzymesDialog::accept() {
     AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext, ANNOTATION_GROUP_ENZYME);
 
     QDialog::accept();
+}
+
+void FindEnzymesDialog::sl_handleSupplierSelectionChange(QStringList checkedSuppliers) {
+    const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
+    QList<SEnzymeData> visibleEnzymes;
+    for (const auto& enzyme : qAsConst(enzymes)) {
+        for (const auto& supplier : qAsConst(enzyme->suppliers)) {
+            CHECK_CONTINUE(checkedSuppliers.contains(supplier));
+
+            visibleEnzymes.append(enzyme);
+            break;
+        }
+    }
+    enzSel->setEnzymesList(visibleEnzymes);
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+    if (checkedSuppliers.contains(notDefinedTr)) {
+        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
+    }
+    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
+    AppContext::getSettings()->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
+}
+
+void FindEnzymesDialog::sl_updateSuppliers() {
+    const auto& loadedSuppliers = EnzymesSelectorWidget::getLoadedSuppliers();
+    cbSuppliers->clear();
+    cbSuppliers->addItems(loadedSuppliers);
+    QString selStr = AppContext::getSettings()->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+    auto suppliersList = selStr.isEmpty() ? loadedSuppliers : selStr.split(SUPPLIERS_LIST_SEPARATOR);
+    if (suppliersList.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
+        suppliersList.replace(suppliersList.indexOf(EnzymesIO::NOT_DEFINED_SIGN), notDefinedTr);
+    }
+    cbSuppliers->setCheckedItems(suppliersList);
+}
+
+void FindEnzymesDialog::sl_selectAll() {
+    cbSuppliers->setCheckedItems(EnzymesSelectorWidget::getLoadedSuppliers());
+}
+
+void FindEnzymesDialog::sl_selectNone() {
+    cbSuppliers->setCheckedItems({});
+}
+
+void FindEnzymesDialog::sl_invertSelection() {
+    const auto& suppliers = EnzymesSelectorWidget::getLoadedSuppliers();
+    const auto& selectedSuppliers = cbSuppliers->getCheckedItems();
+    QStringList newSelectedSuppliers;
+    for (const auto& supplier : qAsConst(suppliers)) {
+        CHECK_CONTINUE(!selectedSuppliers.contains(supplier));
+
+        newSelectedSuppliers << supplier;
+    }
+    cbSuppliers->setCheckedItems(newSelectedSuppliers);
 }
 
 void FindEnzymesDialog::initSettings() {
@@ -649,6 +753,9 @@ EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     setData(3, Qt::ToolTipRole, enzyme->seq);
     setText(4, enzyme->organizm);  // todo: show cut sites
     setData(4, Qt::ToolTipRole, enzyme->organizm);
+    auto suppliers = enzyme->suppliers.join("; ");
+    setText(5, suppliers);
+    setData(5, Qt::ToolTipRole, suppliers);
 }
 
 bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {

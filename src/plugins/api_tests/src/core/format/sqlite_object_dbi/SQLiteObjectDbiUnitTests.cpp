@@ -64,20 +64,20 @@ void SQLiteObjectDbiTestData::init() {
     SAFE_POINT_OP(os, );
 
     sqliteObjectDbi = sqliteDbi->getSQLiteObjectDbi();
-    SAFE_POINT(nullptr != sqliteObjectDbi, "Failed to get sqliteObjectDbi!", );
+    SAFE_POINT(sqliteObjectDbi != nullptr, "Failed to get sqliteObjectDbi!", );
 
     attributeDbi = sqliteDbi->getAttributeDbi();
-    SAFE_POINT(nullptr != attributeDbi, "Failed to get attributeDbi!", );
+    SAFE_POINT(attributeDbi != nullptr, "Failed to get attributeDbi!", );
 
     msaDbi = sqliteDbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "Failed to get msaDbi!", );
+    SAFE_POINT(msaDbi != nullptr, "Failed to get msaDbi!", );
 
     sequenceDbi = sqliteDbi->getSequenceDbi();
-    SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
+    SAFE_POINT(sequenceDbi != nullptr, "Failed to get sequenceDbi!", );
 }
 
 void SQLiteObjectDbiTestData::shutdown() {
-    if (nullptr != sqliteDbi) {
+    if (sqliteDbi != nullptr) {
         delete sqliteDbi;
 
         sqliteDbi = nullptr;

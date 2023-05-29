@@ -51,25 +51,14 @@
 namespace U2 {
 
 static constexpr int COMMON_STATISTICS_TABLE_CELLSPACING = 5;
-static const char* CAPTION_SEQ_REGION_LENGTH = QT_TR_NOOP("Length");
 
 static const QString CAPTION_SUFFIX_DS_DNA = "dsDNA:";
 static const QString CAPTION_SUFFIX_SS_DNA = "ssDNA:";
 static const QString CAPTION_SUFFIX_DS_RNA = "dsRNA:";
 static const QString CAPTION_SUFFIX_SS_RNA = "ssRNA:";
 
-// nucl
-static const char* CAPTION_SEQ_GC_CONTENT = QT_TR_NOOP("GC content");
-static const char* CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = QT_TR_NOOP("Molecular weight");
-static const char* CAPTION_SEQ_EXTINCTION_COEFFICIENT = QT_TR_NOOP("Extinction coefficient");
-static const char* CAPTION_SEQ_MELTING_TEMPERATURE = QT_TR_NOOP("Melting temperature");
-
 static const QString CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub>";
 static const QString CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>");  // 0x3BC - greek 'mu'
-
-// amino
-static const char* CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = QT_TR_NOOP("Molecular weight");
-static const char* CAPTION_SEQ_ISOELECTIC_POINT = QT_TR_NOOP("Isoelectic point");
 
 static const QString CHAR_OCCUR_GROUP_ID = "char_occur_group";
 static const QString DINUCL_OCCUR_GROUP_ID = "dinucl_occur_group";
@@ -81,8 +70,15 @@ SequenceInfo::SequenceInfo(AnnotatedDNAView* _annotatedDnaView)
     : annotatedDnaView(_annotatedDnaView),
       annotatedDnaViewName(annotatedDnaView->getName()),
       savableWidget(this, GObjectViewUtils::findViewByName(annotatedDnaViewName)),
-      temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(annotatedDnaViewName)) {
+      temperatureCalculator(AppContext::getTmCalculatorRegistry()->createTmCalculator(annotatedDnaViewName)),
+      captionSeqRegionLength(tr("Length")),
+      captionSeqGcContent(tr("GC content")),
+      captionSeqMolecularWeight(tr("Molecular weight")),
+      captionSeqExtinctionCoefficient(tr("Extinction coefficient")),
+      captionSeqMeltingTemperature(tr("Melting temperature")),
+      captionSeqIsoelecticPoint(tr("Isoelectic point")) {
     SAFE_POINT(annotatedDnaView != nullptr, "AnnotatedDNAView is NULL!", );
+
 
     updateCurrentRegions();
     initLayout();
@@ -266,32 +262,32 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
 
     const QString lengthSuffix = alphabet->isNucleic() ? tr("nt") : alphabet->isAmino() ? tr("aa")
                                                                                         : QString();
-    statsInfo += formTableRow(tr(CAPTION_SEQ_REGION_LENGTH), getValue(getFormattedLongNumber(commonStatistics.length) + lengthSuffix, isValid), availableSpace);
+    statsInfo += formTableRow(captionSeqRegionLength, getValue(getFormattedLongNumber(commonStatistics.length) + lengthSuffix, isValid), availableSpace);
 
     if (alphabet->isNucleic()) {
-        statsInfo += formTableRow(tr(CAPTION_SEQ_GC_CONTENT), getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
+        statsInfo += formTableRow(captionSeqGcContent, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
         bool isValidMeltingTm = isValid && commonStatistics.meltingTemp != TmCalculator::INVALID_TM;
         QString meltingTmFormattedValue = getValue(QString::number(commonStatistics.meltingTemp, 'f', 2) + " °C", isValidMeltingTm);
-        statsInfo += formTableRow(tr(CAPTION_SEQ_MELTING_TEMPERATURE), meltingTmFormattedValue, availableSpace, true);
+        statsInfo += formTableRow(captionSeqMeltingTemperature, meltingTmFormattedValue, availableSpace, true);
 
         const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
         statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(ssCaption) + "</b></td></tr>";
 
-        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + tr(CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT), getValue(QString::number(commonStatistics.ssMolecularWeight, 'f', 2) + tr(" Da"), isValid), availableSpace);
-        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + tr(CAPTION_SEQ_EXTINCTION_COEFFICIENT), getValue(QString::number(commonStatistics.ssExtinctionCoefficient) + tr(" l/(mol * cm)"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + captionSeqMolecularWeight, getValue(QString::number(commonStatistics.ssMolecularWeight, 'f', 2) + tr(" Da"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + captionSeqExtinctionCoefficient, getValue(QString::number(commonStatistics.ssExtinctionCoefficient) + tr(" l/(mol * cm)"), isValid), availableSpace);
         statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_NMOLE_OD, getValue(QString::number(commonStatistics.ssOd260AmountOfSubstance, 'f', 2), isValid), availableSpace);
         statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_MG_OD, getValue(QString::number(commonStatistics.ssOd260Mass, 'f', 2), isValid), availableSpace);
 
         const QString dsCaption = alphabet->isRNA() ? CAPTION_SUFFIX_DS_RNA : CAPTION_SUFFIX_DS_DNA;
         statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(dsCaption) + "</b></td></tr>";
 
-        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + tr(CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT), getValue(QString::number(commonStatistics.dsMolecularWeight, 'f', 2) + tr(" Da"), isValid), availableSpace);
-        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + tr(CAPTION_SEQ_EXTINCTION_COEFFICIENT), getValue(QString::number(commonStatistics.dsExtinctionCoefficient) + tr(" l/(mol * cm)"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + captionSeqMolecularWeight, getValue(QString::number(commonStatistics.dsMolecularWeight, 'f', 2) + tr(" Da"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + captionSeqExtinctionCoefficient, getValue(QString::number(commonStatistics.dsExtinctionCoefficient) + tr(" l/(mol * cm)"), isValid), availableSpace);
         statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_NMOLE_OD, getValue(QString::number(commonStatistics.dsOd260AmountOfSubstance, 'f', 2), isValid), availableSpace);
         statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_MG_OD, getValue(QString::number(commonStatistics.dsOd260Mass, 'f', 2), isValid), availableSpace);
     } else if (alphabet->isAmino()) {
-        statsInfo += formTableRow(CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT, getValue(QString::number(commonStatistics.ssMolecularWeight, 'f', 2), isValid), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_ISOELECTIC_POINT, getValue(QString::number(commonStatistics.isoelectricPoint, 'f', 2), isValid), availableSpace);
+        statsInfo += formTableRow(captionSeqMolecularWeight, getValue(QString::number(commonStatistics.ssMolecularWeight, 'f', 2) + tr(" gram/mol"), isValid), availableSpace);
+        statsInfo += formTableRow(captionSeqIsoelecticPoint, getValue(QString::number(commonStatistics.isoelectricPoint, 'f', 2), isValid), availableSpace);
     }
 
     statsInfo += "</table>";
@@ -551,7 +547,7 @@ bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
 }
 
 void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
-    if (link == tr(CAPTION_SEQ_MELTING_TEMPERATURE)) {
+    if (link == captionSeqMeltingTemperature) {
         QObjectScopedPointer<TmCalculatorSelectorDialog> dialog(new TmCalculatorSelectorDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
         int res = dialog->exec();
         CHECK(!dialog.isNull() && res == QDialog::Accepted, );
@@ -605,7 +601,7 @@ void SequenceInfo::launchCalculations(const QString& subgroupId) {
     }
 
     if (subgroupId.isEmpty() || subgroupId == CODON_OCCUR_GROUP_ID || subgroupId == AMINO_ACID_OCCUR_GROUP_ID) {
-        bool isCodonReportOpened = codonWidget->isVisible() && codonWidget->isSubgroupOpened();
+        bool isCodonReportOpened = activeContext->getAlphabet()->isNucleic() && codonWidget->isSubgroupOpened();
         bool isAminoAcidReportOpened = aminoAcidWidget->isVisible() && aminoAcidWidget->isSubgroupOpened();
         if (isCodonReportOpened || isAminoAcidReportOpened) {
             if (isCodonReportOpened) {
@@ -642,22 +638,22 @@ int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {
     QStringList captions;
     switch (alphabetType) {
         case DNAAlphabet_NUCL:
-            captions << tr(CAPTION_SEQ_REGION_LENGTH)
-                     << tr(CAPTION_SEQ_GC_CONTENT)
-                     << tr(CAPTION_SEQ_MELTING_TEMPERATURE)
-                     << QString("    ") + tr(CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT)
-                     << QString("    ") + tr(CAPTION_SEQ_EXTINCTION_COEFFICIENT);
+            captions << captionSeqRegionLength
+                     << captionSeqGcContent
+                     << captionSeqMeltingTemperature
+                     << QString("    ") + captionSeqMolecularWeight
+                     << QString("    ") + captionSeqExtinctionCoefficient;
             // Two captions are ignored because of HTML tags within them
             //                 << CAPTION_SEQ_NMOLE_OD
             //                 << CAPTION_SEQ_MG_OD;
             break;
         case DNAAlphabet_AMINO:
-            captions << tr(CAPTION_SEQ_REGION_LENGTH)
-                     << tr(CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT)
-                     << tr(CAPTION_SEQ_ISOELECTIC_POINT);
+            captions << captionSeqRegionLength
+                     << captionSeqMolecularWeight
+                     << captionSeqIsoelecticPoint;
             break;
         default:
-            captions << tr(CAPTION_SEQ_REGION_LENGTH);
+            captions << captionSeqRegionLength;
             break;
     }
 

@@ -73,7 +73,7 @@ void ModSQLiteSpecificTestData::init() {
 }
 
 void ModSQLiteSpecificTestData::shutdown() {
-    if (nullptr != sqliteDbi) {
+    if (sqliteDbi != nullptr) {
         U2OpStatusImpl os;
         sqliteDbi->shutdown(os);
         SAFE_POINT_OP(os, );
@@ -83,7 +83,7 @@ void ModSQLiteSpecificTestData::shutdown() {
 }
 
 void ModSQLiteSpecificTestData::cleanUpAllModSteps() {
-    if (nullptr != sqliteDbi) {
+    if (sqliteDbi != nullptr) {
         U2OpStatusImpl os;
         SQLiteWriteQuery qSingle("DELETE FROM SingleModStep", sqliteDbi->getDbRef(), os);
         SQLiteWriteQuery qMulti("DELETE FROM MultiModStep", sqliteDbi->getDbRef(), os);

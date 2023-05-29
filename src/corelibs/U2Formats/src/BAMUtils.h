@@ -87,6 +87,13 @@ public:
 
     /** Loads BAM index from the file (bam_index_t*). Returns nullptr of error. */
     static void* loadIndex(const QString& path);
+
+    /**
+     * Merges multiple sorted BAM.
+     * Copy of the 'bam_merge_core' but with Unicode strings and parameters limited to the current UGENE use-cases.
+     */
+    static int bamMergeCore(const QString& outFileName, const QList<QString>& filesToMerge);
+
 };
 
 // iterates over a FASTQ file (including zipped) with kseq from samtools

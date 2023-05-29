@@ -48,19 +48,19 @@ namespace U2 {
 /// open new view
 
 OpenTreeViewerTask::OpenTreeViewerTask(PhyTreeObject* _obj, QObject* _parent)
-    : ObjectViewTask(TreeViewerFactory::ID), phyObject(_obj), parent(_parent), createMDIWindow(false) {
-    assert(!phyObject.isNull());
+    : ObjectViewTask(TreeViewerFactory::ID), phyObject(_obj), parent(_parent) {
+    SAFE_POINT(!phyObject.isNull(), "PhyTreeObject is null!", );
 }
 
 OpenTreeViewerTask::OpenTreeViewerTask(UnloadedObject* _obj, QObject* _parent)
-    : ObjectViewTask(TreeViewerFactory::ID), unloadedReference(_obj), parent(_parent), createMDIWindow(false) {
-    assert(_obj->getLoadedObjectType() == GObjectTypes::PHYLOGENETIC_TREE);
+    : ObjectViewTask(TreeViewerFactory::ID), unloadedReference(_obj), parent(_parent) {
+    SAFE_POINT(_obj->getLoadedObjectType() == GObjectTypes::PHYLOGENETIC_TREE, "Object is not a tree", );
     documentsToLoad.append(_obj->getDocument());
 }
 
 OpenTreeViewerTask::OpenTreeViewerTask(Document* doc, QObject* _parent)
-    : ObjectViewTask(TreeViewerFactory::ID), phyObject(nullptr), parent(_parent), createMDIWindow(false) {
-    assert(!doc->isLoaded());
+    : ObjectViewTask(TreeViewerFactory::ID), phyObject(nullptr), parent(_parent) {
+    SAFE_POINT(!doc->isLoaded(), "Document is not loaded", );
     documentsToLoad.append(doc);
 }
 
@@ -151,13 +151,8 @@ void OpenSavedTreeViewerTask::open() {
     scheduler->registerTopLevelTask(createTask);
 }
 
-void OpenSavedTreeViewerTask::updateRanges(const QVariantMap& stateData, TreeViewer* treeViewer) {
+void OpenSavedTreeViewerTask::applySavedState(TreeViewer* treeViewer, const QVariantMap& stateData) {
     TreeViewerState state(stateData);
-
-    QTransform m = state.getTransform();
-    if (m != QTransform()) {
-        treeViewer->setTransform(m);
-    }
     treeViewer->setZoomLevel(state.getZoomLevel());
     treeViewer->setSettingsState(stateData);
 }
@@ -169,24 +164,26 @@ UpdateTreeViewerTask::UpdateTreeViewerTask(GObjectViewController* v, const QStri
 }
 
 void UpdateTreeViewerTask::update() {
-    if (view.isNull() || view->getFactoryId() != TreeViewerFactory::ID) {
-        return;  // view was closed;
-    }
+    CHECK(!view.isNull() && view->getFactoryId() == TreeViewerFactory::ID, );  // View may be already closed.
 
     auto phyView = qobject_cast<TreeViewer*>(view.data());
-    assert(phyView != nullptr);
+    SAFE_POINT(phyView != nullptr, "Not a treeViewer!", );
 
-    OpenSavedTreeViewerTask::updateRanges(stateData, phyView);
+    OpenSavedTreeViewerTask::applySavedState(phyView, stateData);
 }
 
 //////////////////////////////////////////////////////////////////////////
 /// create view
 
-CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(const QString& name, const QPointer<PhyTreeObject>& obj, const QVariantMap& sData)
+CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(MSAEditor* _msaEditor,
+                                                             const QString& name,
+                                                             const QPointer<PhyTreeObject>& obj,
+                                                             const QVariantMap& sData)
     : Task("Open tree viewer", TaskFlag_NoRun),
       viewName(name),
       phyObj(obj),
-      stateData(sData) {
+      stateData(sData),
+      msaEditor(_msaEditor) {
     SAFE_POINT(phyObj != nullptr, "Invalid tree object detected", );
     connect(obj.data(), SIGNAL(destroyed(QObject*)), SLOT(cancel()));
 }
@@ -197,10 +194,11 @@ void CreateMSAEditorTreeViewerTask::prepare() {
 
 Task::ReportResult CreateMSAEditorTreeViewerTask::report() {
     CHECK(!stateInfo.isCoR(), Task::ReportResult_Finished);
-    view = new MSAEditorTreeViewer(viewName, phyObj);
+    CHECK(!msaEditor.isNull(), Task::ReportResult_Finished);  // MSA Editor was closed. Do nothing.
+    view = new MSAEditorTreeViewer(msaEditor, viewName, phyObj);
 
     if (!stateData.isEmpty()) {
-        OpenSavedTreeViewerTask::updateRanges(stateData, view);
+        OpenSavedTreeViewerTask::applySavedState(view, stateData);
     }
     return Task::ReportResult_Finished;
 }
@@ -235,7 +233,7 @@ Task::ReportResult CreateTreeViewerTask::report() {
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
     mdiManager->addMDIWindow(w);
     if (!stateData.isEmpty()) {
-        OpenSavedTreeViewerTask::updateRanges(stateData, treeViewer);
+        OpenSavedTreeViewerTask::applySavedState(treeViewer, stateData);
     }
     return Task::ReportResult_Finished;
 }
@@ -245,10 +243,9 @@ MSAEditorOpenTreeViewerTask::MSAEditorOpenTreeViewerTask(PhyTreeObject* obj, MSA
 }
 
 void MSAEditorOpenTreeViewerTask::createTreeViewer() {
-    auto createTask = new CreateMSAEditorTreeViewerTask(phyObject->getDocument()->getName(), phyObject, stateData);
+    auto createTask = new CreateMSAEditorTreeViewerTask(treeManager->getMsaEditor(), phyObject->getDocument()->getName(), phyObject, stateData);
     connect(new TaskSignalMapper(createTask), SIGNAL(si_taskFinished(Task*)), treeManager, SLOT(sl_openTreeTaskFinished(Task*)));
-    TaskScheduler* scheduler = AppContext::getTaskScheduler();
-    scheduler->registerTopLevelTask(createTask);
+    AppContext::getTaskScheduler()->registerTopLevelTask(createTask);
 }
 
 }  // namespace U2

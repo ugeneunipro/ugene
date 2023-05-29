@@ -79,7 +79,7 @@ QStringList CrashHandlerArgsHelper::getArguments() const {
 
     if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
         CMDLineRegistry* cmdLine = AppContext::getCMDLineRegistry();
-        if (nullptr != cmdLine) {
+        if (cmdLine != nullptr) {
             QString testName = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
             args << SILENT_SEND_FILE_ARG;
             args << FAILED_TEST_FILE_ARG << testName;
@@ -123,7 +123,7 @@ QString CrashHandlerArgsHelper::findFilePathToWrite(U2OpStatus& os) {
 
 void CrashHandlerArgsHelper::shutdownSessionDatabase() {
     U2DbiRegistry* dbiReg = AppContext::getDbiRegistry();
-    CHECK(nullptr != dbiReg, );
+    CHECK(dbiReg != nullptr, );
 
     U2OpStatusImpl os;
     const QString url = dbiReg->shutdownSessionDbi(os);

@@ -383,7 +383,7 @@ void SamReader::readHeader() {
                 } else {
                     throw InvalidFormatException(BAMDbiPlugin::tr("SQ record without LN field"));
                 }
-                assert(nullptr != reference);
+                assert(reference != nullptr);
                 if (fields.contains("AS")) {
                     reference->setAssemblyId(fields["AS"]);
                 }

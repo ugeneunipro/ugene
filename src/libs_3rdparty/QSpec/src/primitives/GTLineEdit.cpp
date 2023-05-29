@@ -93,7 +93,7 @@ void GTLineEdit::clear(GUITestOpStatus& os, QLineEdit* lineEdit) {
     }
     GTKeyboardUtils::selectAll();
     GTGlobals::sleep(100);
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
     // Wait up to 5 seconds for the text to be cleaned.
     QString currentText = lineEdit->text();

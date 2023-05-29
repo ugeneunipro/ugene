@@ -321,13 +321,13 @@ void IntegralBusPort::copyInput(IntegralBusPort* port, const PortMapping& mappin
 
 StrStrMap IntegralBusPort::getBusMap() const {
     Attribute* busAttr = getParameter(BUS_MAP_ATTR_ID);
-    CHECK(nullptr != busAttr, StrStrMap());
+    CHECK(busAttr != nullptr, StrStrMap());
     return busAttr->getAttributeValueWithoutScript<StrStrMap>();
 }
 
 SlotPathMap IntegralBusPort::getPathsMap() const {
     Attribute* pathsAttr = getParameter(PATHS_ATTR_ID);
-    CHECK(nullptr != pathsAttr, SlotPathMap());
+    CHECK(pathsAttr != nullptr, SlotPathMap());
     return pathsAttr->getAttributeValueWithoutScript<SlotPathMap>();
 }
 
@@ -656,7 +656,7 @@ bool IntegralBusSlot::operator==(const IntegralBusSlot& ibs) const {
 /************************************************************************/
 bool PortValidator::validate(const Configuration* cfg, NotificationsList& notificationList) const {
     auto port = static_cast<const IntegralBusPort*>(cfg);
-    SAFE_POINT(nullptr != port, "NULL port", false);
+    SAFE_POINT(port != nullptr, "NULL port", false);
     return validate(port, notificationList);
 }
 

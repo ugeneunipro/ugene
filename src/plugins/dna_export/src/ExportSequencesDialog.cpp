@@ -163,7 +163,7 @@ ExportSequencesDialog::ExportSequencesDialog(bool m, bool allowComplement, bool 
 
 void ExportSequencesDialog::sl_formatChanged(const QString& newFormatId) {
     DocumentFormatRegistry* dfr = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(nullptr != dfr, "Invalid document format registry", );
+    SAFE_POINT(dfr != nullptr, "Invalid document format registry", );
     if (dfr->getFormatById(newFormatId)->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE)) {
         withAnnotationsBox->setEnabled(true);
         withAnnotationsBox->setChecked(true);

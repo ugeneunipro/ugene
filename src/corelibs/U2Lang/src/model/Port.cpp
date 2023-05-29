@@ -216,7 +216,7 @@ void Link::connect(Port* p1, Port* p2) {
 }
 
 void Link::disconnect() {
-    if (nullptr != src && nullptr != dest) {
+    if (src != nullptr && dest != nullptr) {
         src->removeLink(this);
         dest->removeLink(this);
     }

@@ -121,7 +121,7 @@ QString DatasetFilesIterator::getNextFile() {
     if (!hasNext()) {
         return "";
     }
-    if (nullptr != currentIter) {
+    if (currentIter != nullptr) {
         assert(!sets.isEmpty());
         lastDatasetName = sets.first().getName();
         return currentIter->getNextFile();
@@ -135,7 +135,7 @@ bool DatasetFilesIterator::hasNext() {
     }
 
     do {
-        if (nullptr != currentIter && currentIter->hasNext()) {
+        if (currentIter != nullptr && currentIter->hasNext()) {
             return true;
         }
         while (!sets.isEmpty() && sets.first().getUrls().isEmpty()) {
@@ -151,7 +151,7 @@ bool DatasetFilesIterator::hasNext() {
         currentIter = url->getFileUrls();
     } while (!currentIter->hasNext());
 
-    return (nullptr != currentIter && currentIter->hasNext());
+    return (currentIter != nullptr && currentIter->hasNext());
 }
 
 QString DatasetFilesIterator::getLastDatasetName() const {

@@ -28,6 +28,7 @@
 #include <U2Algorithm/EnzymeModel.h>
 
 #include <U2Core/Task.h>
+#include <U2Core/U2OpStatus.h>
 
 namespace U2 {
 
@@ -41,16 +42,17 @@ enum EnzymeFileFormat {
 class EnzymesIO : public QObject {
     Q_OBJECT
 public:
-    static QList<SEnzymeData> readEnzymes(const QString& url, TaskStateInfo& ti);
-    static void writeEnzymes(const QString& url, const QString& source, const QSet<QString>& enzymes, TaskStateInfo& ti);
+    static QList<SEnzymeData> readEnzymes(const QString& url, U2OpStatus& os);
+    static void writeEnzymes(const QString& url, const QString& source, const QSet<QString>& enzymes, U2OpStatus& os);
     static QString getFileDialogFilter();
     static QList<SEnzymeData> getDefaultEnzymesList();
     static SEnzymeData findEnzymeById(const QString& id, const QList<SEnzymeData>& enzymes);
 
+    static const char* NOT_DEFINED_SIGN;
 private:
     static EnzymeFileFormat detectFileFormat(const QString& url);
-    static QList<SEnzymeData> readBairochFile(const QString& url, IOAdapterFactory* iof, TaskStateInfo& ti);
-    static void writeBairochFile(const QString& url, IOAdapterFactory* iof, const QString& source, IOAdapterFactory* srciof, const QSet<QString>& enzymes, TaskStateInfo& ti);
+    static QList<SEnzymeData> readBairochFile(const QString& url, IOAdapterFactory* iof, U2OpStatus& os);
+    static void writeBairochFile(const QString& url, IOAdapterFactory* iof, const QString& source, IOAdapterFactory* srciof, const QSet<QString>& enzymes, U2OpStatus& os);
 };
 
 class LoadEnzymeFileTask : public Task {

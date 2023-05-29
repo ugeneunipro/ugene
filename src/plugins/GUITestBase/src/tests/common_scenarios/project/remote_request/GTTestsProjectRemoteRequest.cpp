@@ -21,6 +21,8 @@
 
 #include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTTreeWidget.h>
 
@@ -364,6 +366,44 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsDocument::isDocumentLoaded(os, "D0VTW9.txt");
     GTUtilsDocument::checkDocument(os, "D0VTW9.txt", AnnotatedDNAViewFactory::ID);
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0015) {
+    GTUtilsTaskTreeView::openView(os);
+
+    class CheckLinks : public CustomScenario {
+        void run(GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            static const QMap<QString, QString> DATABASE_LINK_MAP
+                = { {"NCBI GenBank (DNA sequence)", "https://www.ncbi.nlm.nih.gov/nucleotide"},
+                    {"NCBI protein sequence database", "https://www.ncbi.nlm.nih.gov/protein"},
+                    {"ENSEMBL", "https://www.ensembl.org"},
+                    {"PDB", "https://www.rcsb.org"},
+                    {"SWISS-PROT", "https://www.uniprot.org"},
+                    {"UniProtKB/Swiss-Prot", "https://www.uniprot.org"},
+                    {"UniProtKB/TrEMBL", "https://www.uniprot.org"} };
+
+            auto dbs = GTComboBox::getValues(os, GTWidget::findComboBox(os, "databasesBox", dialog));
+            CHECK_SET_ERR(dbs.size() == DATABASE_LINK_MAP.size(), "Unexpected DBs size");
+
+            for (const auto& db : qAsConst(dbs)) {
+                const auto& link = DATABASE_LINK_MAP.value(db);
+                CHECK_SET_ERR(!link.isEmpty(), QString("Unexpected db: %1").arg(db));
+
+                GTComboBox::selectItemByText(os, "databasesBox", dialog, db);
+                auto text = GTLabel::getText(os, "lbExternalLink", dialog);
+                CHECK_SET_ERR(text.contains(link), QString("The %1 has no link, text: %2").arg(db).arg(text));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, new CheckLinks));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+
+}
+
 
 }  // namespace GUITest_common_scenarios_project_remote_request
 }  // namespace U2

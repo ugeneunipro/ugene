@@ -179,10 +179,10 @@ QString ExtimationsUtilsClass::fileFormat(const QString& url) {
     CHECK_JS(!result.isEmpty(), tr("Unknown file format: %1").arg(url), "");
 
     FormatDetectionResult r = result.first();
-    if (nullptr != r.format) {
+    if (r.format != nullptr) {
         return r.format->getFormatId();
     } else {
-        CHECK_JS(nullptr != r.importer, "NULL importer", "");
+        CHECK_JS(r.importer != nullptr, "NULL importer", "");
         return r.importer->getId();
     }
 }

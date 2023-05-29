@@ -67,7 +67,7 @@ void SequenceTestData::init() {
     U2OpStatusImpl opStatus;
 
     sequenceDbi = dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != sequenceDbi, "sequence database not loaded", );
+    SAFE_POINT(sequenceDbi != nullptr, "sequence database not loaded", );
 
     sequences = new QList<U2DataId>(objDbi->getObjects(U2Type::Sequence, 0, U2DbiOptions::U2_DBI_NO_LIMIT, opStatus));
     SAFE_POINT_OP(opStatus, );

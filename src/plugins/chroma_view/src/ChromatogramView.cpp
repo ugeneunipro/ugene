@@ -264,7 +264,7 @@ void ChromatogramView::sl_addNewSequenceObject() {
     Project* p = AppContext::getProject();
 
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(m.format);
-    SAFE_POINT(nullptr != format, QString("Format is not registered: '%1'").arg(m.format), );
+    SAFE_POINT(format != nullptr, QString("Format is not registered: '%1'").arg(m.format), );
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(m.io);
     U2OpStatus2Log os;
     Document* doc = format->createNewLoadedDocument(iof, m.url, os);

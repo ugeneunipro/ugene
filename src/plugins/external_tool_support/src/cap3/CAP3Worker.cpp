@@ -506,7 +506,7 @@ Task* CAP3Worker::tick() {
 
 void CAP3Worker::sl_taskFinished() {
     auto capTask = qobject_cast<CAP3SupportTask*>(sender());
-    SAFE_POINT(nullptr != capTask, "NULL task!", );
+    SAFE_POINT(capTask != nullptr, "NULL task!", );
 
     if (!capTask->isFinished()) {
         return;

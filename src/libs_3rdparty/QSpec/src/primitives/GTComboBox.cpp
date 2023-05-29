@@ -75,6 +75,10 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, int
                     GT_CHECK(listView != nullptr, "list view not found");
                     QModelIndex modelIndex = listView->model()->index(index, 0);
                     GTWidget::scrollToIndex(os, listView, modelIndex);
+#ifdef Q_OS_DARWIN
+                    // Due to animation a single scroll on MacOS is not enough for long lists. See GUITest_common_scenarios_create_annotation_widget_test_0002.
+                    GTWidget::scrollToIndex(os, listView, modelIndex);
+#endif
                     QRect rect = listView->visualRect(modelIndex);
                     QPoint itemPointLocal = rect.topLeft() + QPoint(25, rect.height() / 2);  // Why +25px: Qt 5.12 may report too big rect with the center() out of the item.
                     QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);

@@ -1021,14 +1021,14 @@ void TaskSchedulerImpl::pauseThreadWithTask(const Task* task) {
 
 void TaskSchedulerImpl::resumeThreadWithTask(const Task* task) {
     foreach (TaskInfo* ti, priorityQueue) {
-        if (task == ti->task && nullptr != ti->thread && ti->thread->isPaused) {
+        if (task == ti->task && ti->thread != nullptr && ti->thread->isPaused) {
             ti->thread->resume();
         }
     }
 }
 
 void TaskSchedulerImpl::onSubTaskFinished(TaskThread* thread, Task* subtask) {
-    if (thread->ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && nullptr != subtask && !thread->newSubtasksObtained) {
+    if (thread->ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && subtask != nullptr && !thread->newSubtasksObtained) {
         thread->subtasksLocker.lock();
         try {
             thread->unconsideredNewSubtasks = onSubTaskFinished(thread->ti->task, subtask);

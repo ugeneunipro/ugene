@@ -34,33 +34,40 @@
 #include <U2Core/Settings.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/U2OpStatusUtils.h>
+
+#include <QRegularExpression>
+
+#include <U2Gui/ComboBoxWithCheckBoxes.h>
 
 namespace U2 {
+
+const char* EnzymesIO::NOT_DEFINED_SIGN = QT_TR_NOOP("Not defined");
 
 QString EnzymesIO::getFileDialogFilter() {
     return FileFilters::createFileFilter(tr("Bairoch format"), {"bairoch"});
 }
 
-QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, TaskStateInfo& ti) {
+QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
     QList<SEnzymeData> res;
 
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     if (iof == nullptr) {
-        ti.setError(tr("Unsupported URI type"));
+        os.setError(tr("Unsupported URI type"));
         return res;
     }
 
     EnzymeFileFormat f = detectFileFormat(url);
-    if (ti.hasError()) {
+    if (os.hasError()) {
         return res;
     }
     switch (f) {
         case EnzymeFileFormat_Bairoch:
-            res = readBairochFile(url, iof, ti);
+            res = readBairochFile(url, iof, os);
             break;
         default:
-            ti.setError(tr("Unsupported enzymes file format"));
+            os.setError(tr("Unsupported enzymes file format"));
             break;
     }
 
@@ -96,31 +103,31 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, TaskStateInfo& ti)
     return res;
 }
 
-void EnzymesIO::writeEnzymes(const QString& url, const QString& source, const QSet<QString>& enzymes, TaskStateInfo& ti) {
+void EnzymesIO::writeEnzymes(const QString& url, const QString& source, const QSet<QString>& enzymes, U2OpStatus& os) {
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     if (iof == nullptr) {
-        ti.setError(tr("Unsupported URI type"));
+        os.setError(tr("Unsupported URI type"));
         return;
     }
 
     IOAdapterId srcioId = IOAdapterUtils::url2io(source);
     IOAdapterFactory* srciof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(srcioId);
     if (srciof == nullptr) {
-        ti.setError(tr("Unsupported URI type"));
+        os.setError(tr("Unsupported URI type"));
         return;
     }
 
     EnzymeFileFormat f = detectFileFormat(source);
-    if (ti.hasError()) {
+    if (os.hasError()) {
         return;
     }
     switch (f) {
         case EnzymeFileFormat_Bairoch:
-            writeBairochFile(url, iof, source, srciof, enzymes, ti);
+            writeBairochFile(url, iof, source, srciof, enzymes, os);
             break;
         default:
-            ti.setError(tr("Unsupported enzymes file format"));
+            os.setError(tr("Unsupported enzymes file format"));
             break;
     }
 }
@@ -133,12 +140,12 @@ EnzymeFileFormat EnzymesIO::detectFileFormat(const QString& url) {
     return EnzymeFileFormat_Unknown;
 }
 
-QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFactory* iof, TaskStateInfo& ti) {
+QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFactory* iof, U2OpStatus& os) {
     QList<SEnzymeData> res;
 
-    QScopedPointer<IOAdapter> io(iof->createIOAdapter());
+    QScopedPointer <IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
-        ti.setError(L10N::errorOpeningFileRead(url));
+        os.setError(L10N::errorOpeningFileRead(url));
         return res;
     }
 
@@ -146,12 +153,14 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
     QByteArray buffArr(DocumentFormat::READ_BUFF_SIZE, 0);
     char* buff = buffArr.data();
     const QBitArray& LINE_BREAKS = TextUtils::LINE_BREAKS;
-    int line = 0, len = 0;
+    int line = 0;
+    int len = 0;
     bool lineOk = true;
-    while ((len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0 && !ti.cancelFlag) {
+    QHash<char, QString> commercialSources;
+    while ((len = io->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0 && !os.isCanceled()) {
         line++;
         if (!lineOk) {
-            ti.setError(tr("Line is too long: %1").arg(line));
+            os.setError(tr("Line is too long: %1").arg(line));
             return res;
         }
         if (len < 2) {
@@ -166,30 +175,30 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
             }
             continue;
         }
-        if (len < 4) {
-            continue;
-        }
-        if (buff[0] == 'I' && buff[1] == 'D') {
+        CHECK_CONTINUE(len >= 4);
+
+        if (buff[0] == 'C' && buff[1] == 'C') {
+            if (len > 5 && buff[6] == '=') {
+                char abbreviation = buff[5];
+                QByteArray supplier = QByteArray(buff + 7, len - 7).trimmed();
+                auto supplierSplit = supplier.split(' ');
+                supplierSplit.pop_back();
+                supplier = supplierSplit.join(' ');
+                commercialSources.insert(abbreviation, supplier);
+            }
+        } else if (buff[0] == 'I' && buff[1] == 'D') {
             currentData->id = QByteArray(buff + 3, len - 3).trimmed();
-            continue;
-        }
-        if (buff[0] == 'E' && buff[1] == 'T') {
+        } else if (buff[0] == 'E' && buff[1] == 'T') {
             currentData->type = QByteArray(buff + 3, len - 3).trimmed();
-            continue;
-        }
-        if (buff[0] == 'O' && buff[1] == 'S') {
+        } else if (buff[0] == 'O' && buff[1] == 'S') {
             currentData->organizm = QByteArray(buff + 3, len - 3).trimmed();
-            continue;
-        }
-        if (buff[0] == 'A' && buff[1] == 'C') {
+        } else if (buff[0] == 'A' && buff[1] == 'C') {
             currentData->accession = QByteArray(buff + 3, len - 3).trimmed();
             int sz = currentData->accession.size();
             if (sz > 0 && currentData->accession[sz - 1] == ';') {
                 currentData->accession.resize(sz - 1);
             }
-            continue;
-        }
-        if (buff[0] == 'R' && buff[1] == 'S') {
+        } else if (buff[0] == 'R' && buff[1] == 'S') {
             QByteArray rsLine = QByteArray(buff + 3, len - 3);
             QList<QByteArray> strands = rsLine.split(';');
             for (int s = 0, n = qMin(2, strands.count()); s < n; s++) {
@@ -217,22 +226,31 @@ QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFacto
                     currentData->cutComplement = cutPos;
                 }
             }
+        } else if (buff[0] == 'C' && buff[1] == 'R') {
+            auto suppliersAbbreviations = QByteArray(buff + 3, len - 3).trimmed();
+            for (const auto& abb : qAsConst(suppliersAbbreviations)) {
+                CHECK_CONTINUE(abb != '.');
+
+                currentData->suppliers << commercialSources.value(abb);
+            }
+            if (currentData->suppliers.isEmpty()) {
+                currentData->suppliers << tr(NOT_DEFINED_SIGN);
+            }
         }
     }
-    io->close();
     return res;
 }
 
-void EnzymesIO::writeBairochFile(const QString& url, IOAdapterFactory* iof, const QString& source, IOAdapterFactory* srciof, const QSet<QString>& enzymes, TaskStateInfo& ti) {
+void EnzymesIO::writeBairochFile(const QString& url, IOAdapterFactory* iof, const QString& source, IOAdapterFactory* srciof, const QSet<QString>& enzymes, U2OpStatus& os) {
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Write)) {
-        ti.setError(L10N::errorOpeningFileWrite(url));
+        os.setError(L10N::errorOpeningFileWrite(url));
         return;
     }
 
     QScopedPointer<IOAdapter> srcio(srciof->createIOAdapter());
     if (!srcio->open(source, IOAdapterMode_Read)) {
-        ti.setError(L10N::errorOpeningFileRead(source));
+        os.setError(L10N::errorOpeningFileRead(source));
         return;
     }
 
@@ -243,10 +261,10 @@ void EnzymesIO::writeBairochFile(const QString& url, IOAdapterFactory* iof, cons
     bool lineOk = true;
     bool writeString = true;
 
-    while ((len = srcio->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0 && !ti.cancelFlag) {
+    while ((len = srcio->readUntil(buff, DocumentFormat::READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk)) > 0 && !os.isCanceled()) {
         line++;
         if (!lineOk) {
-            ti.setError(tr("Line is too long: %1").arg(line));
+            os.setError(tr("Line is too long: %1").arg(line));
         }
         if (len < 2) {
             if (writeString)
@@ -277,7 +295,7 @@ SEnzymeData EnzymesIO::findEnzymeById(const QString& id, const QList<SEnzymeData
 
 static QList<SEnzymeData> loadEnzymesData() {
     QList<SEnzymeData> res;
-    TaskStateInfo ti;
+    U2OpStatus2Log os;
 
     QString url = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
 
@@ -287,7 +305,7 @@ static QList<SEnzymeData> loadEnzymesData() {
     }
 
     if (QFileInfo(url).exists()) {
-        res = EnzymesIO::readEnzymes(url, ti);
+        res = EnzymesIO::readEnzymes(url, os);
     }
 
     return res;

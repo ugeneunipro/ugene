@@ -74,7 +74,7 @@ void HRVisualParser::parse(U2OpStatus& os) {
 }
 
 void HRVisualParser::parseScale(const QString& scaleStr) {
-    CHECK(nullptr != data.meta, );
+    CHECK(data.meta != nullptr, );
     bool ok = false;
     int scale = scaleStr.toInt(&ok);
     CHECK(ok, );

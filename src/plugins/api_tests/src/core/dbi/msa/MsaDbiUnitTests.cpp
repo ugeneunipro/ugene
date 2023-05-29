@@ -45,15 +45,15 @@ void MsaTestData::init() {
 
     U2Dbi* dbi = dbiProvider.getDbi();
     msaDbi = dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "Failed to get msaDbi!", );
+    SAFE_POINT(msaDbi != nullptr, "Failed to get msaDbi!", );
 
     sequenceDbi = dbi->getSequenceDbi();
-    SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
+    SAFE_POINT(sequenceDbi != nullptr, "Failed to get sequenceDbi!", );
 }
 
 void MsaTestData::shutdown() {
-    if (nullptr != msaDbi) {
-        SAFE_POINT(nullptr != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
+    if (msaDbi != nullptr) {
+        SAFE_POINT(sequenceDbi != nullptr, "sequenceDbi must also be not NULL on this step!", );
 
         U2OpStatusImpl os;
         dbiProvider.close();

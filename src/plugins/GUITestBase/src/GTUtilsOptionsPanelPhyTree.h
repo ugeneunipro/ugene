@@ -43,10 +43,10 @@ public:
     static void changeTreeLayout(HI::GUITestOpStatus& os, const QString& layoutName);
 
     /** Checks current tree layout. */
-    static void checkTreeType(HI::GUITestOpStatus& os, const QString& layoutName);
+    static void checkBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode);
 
     /** Changes tree type to the given value. */
-    static void changeTreeType(HI::GUITestOpStatus& os, const QString& typeName);
+    static void changeBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode);
 };
 
 }  // namespace U2

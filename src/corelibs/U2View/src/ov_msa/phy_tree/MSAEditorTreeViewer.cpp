@@ -40,8 +40,8 @@
 
 namespace U2 {
 
-MSAEditorTreeViewer::MSAEditorTreeViewer(const QString& viewName, PhyTreeObject* phyTreeObject)
-    : TreeViewer(viewName, phyTreeObject, false) {
+MSAEditorTreeViewer::MSAEditorTreeViewer(MSAEditor* _editor, const QString& viewName, PhyTreeObject* phyTreeObject)
+    : TreeViewer(viewName, phyTreeObject, false), editor(_editor) {
 }
 
 MSAEditorTreeViewer::~MSAEditorTreeViewer() {
@@ -122,12 +122,6 @@ void MSAEditorTreeViewer::updateSyncModeActionState(bool isSyncModeOn) {
     syncModeAction->setChecked(isChecked);
     syncModeAction->setText(isChecked ? tr("Disable Tree and Alignment synchronization") : tr("Enable Tree and Alignment synchronization"));
     syncModeAction->setIcon(QIcon(isChecked ? ":core/images/sync-msa-on.png" : ":core/images/sync-msa-off.png"));
-}
-
-void MSAEditorTreeViewer::setMSAEditor(MSAEditor* newEditor) {
-    SAFE_POINT(newEditor != nullptr, "MSAEditor can't be null!", );
-    SAFE_POINT(editor == nullptr, "MSAEditor can't be set twice!", );
-    editor = newEditor;
 }
 
 MSAEditor* MSAEditorTreeViewer::getMsaEditor() const {

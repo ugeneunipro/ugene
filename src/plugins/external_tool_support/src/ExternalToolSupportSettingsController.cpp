@@ -241,7 +241,7 @@ void ExternalToolSupportSettingsPageWidget::sl_deleteCustomToolButtonClicked() {
     CHECK(!toolId.isEmpty(), );
 
     auto tool = qobject_cast<CustomExternalTool*>(AppContext::getExternalToolRegistry()->getById(toolId));
-    SAFE_POINT(nullptr != tool, "Can't get CustomExternalTool from the registry", );
+    SAFE_POINT(tool != nullptr, "Can't get CustomExternalTool from the registry", );
     const QString configFilePath = tool->getConfigFilePath();
 
     AppContext::getExternalToolRegistry()->unregisterEntry(toolId);
@@ -280,7 +280,7 @@ void ExternalToolSupportSettingsPageWidget::sl_externalToolIsAboutToBeRemoved(co
     disconnect(tool, SIGNAL(si_toolValidationStatusChanged(bool)), this, SLOT(sl_toolValidationStatusChanged(bool)));
 
     QTreeWidgetItem* item = externalToolsItems.value(id, nullptr);
-    if (nullptr != item) {
+    if (item != nullptr) {
         QTreeWidgetItem* parentItem = item->parent();
         if (parentItem == nullptr) {
             parentItem = item->treeWidget()->invisibleRootItem();
@@ -410,7 +410,7 @@ QTreeWidgetItem* ExternalToolSupportSettingsPageWidget::appendToolItem(QTreeWidg
 
 void ExternalToolSupportSettingsPageWidget::setToolState(ExternalTool* tool) {
     QTreeWidgetItem* item = externalToolsItems.value(tool->getId(), nullptr);
-    SAFE_POINT(nullptr != item, QString("Tree item for the tool %1 not found").arg(tool->getName()), );
+    SAFE_POINT(item != nullptr, QString("Tree item for the tool %1 not found").arg(tool->getName()), );
 
     externalToolsInfo[tool->getId()].isValid = tool->isValid();
     auto moduleToolLabel = qobject_cast<QLabel*>(twIntegratedTools->itemWidget(item, 1));
@@ -628,7 +628,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
 
 void ExternalToolSupportSettingsPageWidget::sl_validationComplete() {
     auto listener = qobject_cast<ExternalToolValidationListener*>(sender());
-    SAFE_POINT(nullptr != listener, "Unexpected message sender", );
+    SAFE_POINT(listener != nullptr, "Unexpected message sender", );
 
     listener->deleteLater();
 
@@ -637,7 +637,7 @@ void ExternalToolSupportSettingsPageWidget::sl_validationComplete() {
 
     foreach (const QString& toolId, listener->getToolIds()) {
         ExternalTool* tool = etRegistry->getById(toolId);
-        SAFE_POINT(nullptr != tool, QString("External tool %1 not found in the registry.").arg(toolId), );
+        SAFE_POINT(tool != nullptr, QString("External tool %1 not found in the registry.").arg(toolId), );
         setToolState(tool);
     }
     emit si_setLockState(false);
@@ -647,7 +647,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolValidationStatusChanged(bool 
     Q_UNUSED(isValid);
 
     auto s = qobject_cast<ExternalTool*>(sender());
-    SAFE_POINT(nullptr != s, "Unexpected message sender", );
+    SAFE_POINT(s != nullptr, "Unexpected message sender", );
 
     setToolState(s);
 }

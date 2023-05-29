@@ -160,19 +160,19 @@ QList<Task*> BAMImporterTask::onSubTaskFinished(Task* subTask) {
 
     if (loadInfoTask == subTask) {
         initPrepareToImportTask();
-        CHECK(nullptr != prepareToImportTask, res);
+        CHECK(prepareToImportTask != nullptr, res);
         res << prepareToImportTask;
     }
 
     else if (prepareToImportTask == subTask && prepareToImportTask->isNewURL()) {
         initLoadBamInfoTask();
-        CHECK(nullptr != loadBamInfoTask, res);
+        CHECK(loadBamInfoTask != nullptr, res);
         res << loadBamInfoTask;
     }
 
     else if (loadBamInfoTask == subTask || prepareToImportTask == subTask) {
         initConvertToSqliteTask();
-        CHECK(nullptr != convertTask, res);
+        CHECK(convertTask != nullptr, res);
         res << convertTask;
     }
 
@@ -184,19 +184,19 @@ QList<Task*> BAMImporterTask::onSubTaskFinished(Task* subTask) {
 
     else if (!isSqliteDbTransit && convertTask == subTask) {
         initLoadDocumentTask();
-        CHECK(nullptr != loadDocTask, res);
+        CHECK(loadDocTask != nullptr, res);
         res << loadDocTask;
     }
 
     else if ((isSqliteDbTransit && cloneTasks.contains(subTask))) {
         cloneTasks.removeOne(subTask);
         auto cloneTask = qobject_cast<CloneObjectTask*>(subTask);
-        SAFE_POINT_EXT(nullptr != cloneTask, setError("Unexpected task type: CloneObjectTask expected"), res);
+        SAFE_POINT_EXT(cloneTask != nullptr, setError("Unexpected task type: CloneObjectTask expected"), res);
         delete cloneTask->getSourceObject();
 
         if (cloneTasks.isEmpty()) {
             initLoadDocumentTask();
-            CHECK(nullptr != loadDocTask, res);
+            CHECK(loadDocTask != nullptr, res);
             res << loadDocTask;
         }
     }

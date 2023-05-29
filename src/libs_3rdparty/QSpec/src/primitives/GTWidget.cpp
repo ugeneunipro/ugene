@@ -38,21 +38,12 @@
 #include "utils/GTThread.h"
 #include "utils/GTUtilsText.h"
 
-#ifdef Q_OS_DARWIN
-#    include "utils/GTUtilsMac.h"
-#endif
-
 namespace HI {
 #define GT_CLASS_NAME "GTWidget"
 
 #define GT_METHOD_NAME "click"
 void GTWidget::click(GUITestOpStatus& os, QWidget* widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(widget != nullptr, "widget is NULL");
-
-#ifdef Q_OS_DARWIN
-    GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(16000, false);
-#endif
 
     if (p.isNull()) {
         p = getWidgetVisibleCenter(widget);
@@ -392,6 +383,10 @@ QImage GTWidget::getImage(GUITestOpStatus& os, QWidget* widget, bool useGrabWind
             CHECK_SET_ERR(widget != nullptr, "Widget to grab is NULL");
             QPixmap pixmap = useGrabWindow ? QPixmap::grabWindow(widget->winId()) : widget->grab(widget->rect());
             image = pixmap.toImage();
+            double ratio = ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
+            if (!useGrabWindow && ratio != 1 && ratio > 0) {
+                image = image.scaled(qRound(image.width() / ratio), qRound(image.height() / ratio));
+            }
         }
 
         QWidget* widget;

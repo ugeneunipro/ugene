@@ -152,10 +152,10 @@ public:
     QVariant getOption(const TreeViewOption& option) const;
 
     QVariantMap getSettingsState() const;
-    void setSettingsState(const QVariantMap& m);
+    void setSettingsState(const QVariantMap& state);
 
     /** Returns current settings adjusted by 'selectionSettings'. */
-    OptionsMap getSelectionSettings() const;
+    QMap<TreeViewOption, QVariant> getSelectionSettings() const;
 
     TreeLayoutType getTreeLayoutType() const;
 
@@ -184,7 +184,7 @@ public:
     void updateOption(const TreeViewOption& option, const QVariant& newValue);
 
     /** Updates all options from the 'changedOptions' map. */
-    void updateOptions(const OptionsMap& changedOptions);
+    void updateOptions(const QMap<TreeViewOption, QVariant>& changedOptions);
 
 protected:
     void wheelEvent(QWheelEvent* e) override;
@@ -327,11 +327,9 @@ private:
     QGraphicsLineItem* legendItem = nullptr;
     QMenu* buttonPopup = nullptr;
 
-    /** Settings for the whole view. Saved & restored on view creation and applied to all new elements by default. */
-    OptionsMap settings;
+    QMap<TreeViewOption, QVariant> settings;
 
-    /** Settings override for the currently selected items. Contains only option that override 'settings' for the current selection. */
-    OptionsMap selectionSettingsDelta;
+    QMap<TreeViewOption, QVariant> selectionSettingsDelta;
 
     /** Current visible labels state on the scene. May be different from the state in options when is stale. */
     QFlags<LabelType> visibleLabelTypes;

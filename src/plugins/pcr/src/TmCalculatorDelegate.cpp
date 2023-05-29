@@ -38,9 +38,10 @@ TmCalculatorDelegate::TmCalculatorDelegate(QObject* parent)
 QVariant TmCalculatorDelegate::getDisplayValue(const QVariant& value) const {
     if (!value.isValid()) {
         auto defaultFactory = AppContext::getTmCalculatorRegistry()->getDefaultTmCalculatorFactory();
-        return defaultFactory->getId();
+        return defaultFactory->visualName;
     }
-    return value.toMap().value(TmCalculator::KEY_ID).toString();
+    auto currentFactory = AppContext::getTmCalculatorRegistry()->getById(value.toMap().value(TmCalculator::KEY_ID).toString());
+    return currentFactory->visualName;
 }
 
 PropertyDelegate* TmCalculatorDelegate::clone() {

@@ -663,7 +663,7 @@ U2ErrorType SchemeWrapper::getElementType(const QString& elementName, QString& t
 bool SchemeWrapper::validateSchemeContent() const {
     Workflow::Schema* scheme = new Workflow::Schema();
     const QString conversionResult = HRSchemaSerializer::string2Schema(schemeContent, scheme);
-    CHECK(Constants::NO_ERROR == conversionResult && nullptr != scheme, false);
+    CHECK(Constants::NO_ERROR == conversionResult && scheme != nullptr, false);
     QStringList validationErrors;
     bool result = WorkflowUtils::validate(*scheme, validationErrors);
     delete scheme;

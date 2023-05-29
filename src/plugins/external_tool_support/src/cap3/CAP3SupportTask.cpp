@@ -152,7 +152,7 @@ QList<Task*> RunCap3AndOpenResultTask::onSubTaskFinished(Task* subTask) {
         QVariantMap hints;
         hints[ProjectLoaderHint_LoadWithoutView] = !openView;
         Task* loadTask = loader->openWithProjectTask(url, hints);
-        if (nullptr != loadTask) {
+        if (loadTask != nullptr) {
             subTasks << loadTask;
         }
     }

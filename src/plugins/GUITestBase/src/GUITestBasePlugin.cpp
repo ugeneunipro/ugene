@@ -1805,6 +1805,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7629);
     REGISTER_TEST(GUITest_regression_scenarios::test_7630);
     REGISTER_TEST(GUITest_regression_scenarios::test_7631);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7633);
     REGISTER_TEST(GUITest_regression_scenarios::test_7635);
     REGISTER_TEST(GUITest_regression_scenarios::test_7644);
     REGISTER_TEST(GUITest_regression_scenarios::test_7645);
@@ -1825,6 +1826,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7714);
     REGISTER_TEST(GUITest_regression_scenarios::test_7715);
     REGISTER_TEST(GUITest_regression_scenarios::test_7720);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7730);
     REGISTER_TEST(GUITest_regression_scenarios::test_7740);
     REGISTER_TEST(GUITest_regression_scenarios::test_7744);
     REGISTER_TEST(GUITest_regression_scenarios::test_7748);
@@ -1832,17 +1834,29 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7753);
     REGISTER_TEST(GUITest_regression_scenarios::test_7770);
     REGISTER_TEST(GUITest_regression_scenarios::test_7781);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7785);
     REGISTER_TEST(GUITest_regression_scenarios::test_7789);
     REGISTER_TEST(GUITest_regression_scenarios::test_7792);
     REGISTER_TEST(GUITest_regression_scenarios::test_7797);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7806);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7823);
     REGISTER_TEST(GUITest_regression_scenarios::test_7824);
     REGISTER_TEST(GUITest_regression_scenarios::test_7825);
     REGISTER_TEST(GUITest_regression_scenarios::test_7827);
     REGISTER_TEST(GUITest_regression_scenarios::test_7830);
     REGISTER_TEST(GUITest_regression_scenarios::test_7842);
     REGISTER_TEST(GUITest_regression_scenarios::test_7850);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7850_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7852);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7853_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7853_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7858);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7860);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7861);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7863);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7867);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7885);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2050,6 +2064,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0078);
 
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0079_1);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0079_2);
+
+
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence edit/
     //////////////////////////////////////////////////////////////////////////
@@ -2130,6 +2148,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0012);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0014);
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0015);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/toggle view/
@@ -3476,6 +3495,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0021);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0022);
     REGISTER_TEST(GUITest_common_scenarios_primer3::test_0023);
+    REGISTER_TEST(GUITest_common_scenarios_primer3::test_0024);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/start_page

@@ -50,7 +50,7 @@ public:
 
     PhyNode* getPhyNode() const;
 
-    void updateSettings(const OptionsMap& settings);
+    void updateSettings(const QMap<TreeViewOption, QVariant>& settings);
 
     TvBranchItem* getParentBranchItem() const;
 

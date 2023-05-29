@@ -35,7 +35,7 @@ void GoToDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
     GTLineEdit::setText(os, "go_to_pos_line_edit", QString::number(goTo), dialog);
-    GTWidget::click(os, GTWidget::findButtonByText(os, "Go!", dialog));
+    GTWidget::click(os, GTWidget::findButtonByText(os, "Go", dialog));
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

@@ -27,7 +27,7 @@ BaseSettingsDialog::BaseSettingsDialog(QWidget* parent)
     : QDialog(parent) {
 }
 
-const OptionsMap& BaseSettingsDialog::getSettings() const {
+const QMap<TreeViewOption, QVariant>& BaseSettingsDialog::getSettings() const {
     return updatedSettings;
 }
 

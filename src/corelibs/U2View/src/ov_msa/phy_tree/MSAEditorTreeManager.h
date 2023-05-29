@@ -51,6 +51,8 @@ public:
 
     void buildTreeWithDialog();
 
+    MSAEditor* getMsaEditor() const;
+
 private slots:
     void sl_openTree(Task* treeBuildTask);
     void sl_openTreeTaskFinished(Task* task);

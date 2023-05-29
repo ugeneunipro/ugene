@@ -31,7 +31,7 @@ namespace U2 {
 
 FindPatternWidgetSavableTab::FindPatternWidgetSavableTab(QWidget* wrappedWidget, MWMDIWindow* contextWindow)
     : U2SavableWidget(wrappedWidget, contextWindow) {
-    SAFE_POINT(nullptr != qobject_cast<FindPatternWidget*>(wrappedWidget), "Invalid widget provided", );
+    SAFE_POINT(qobject_cast<FindPatternWidget*>(wrappedWidget) != nullptr, "Invalid widget provided", );
 }
 
 FindPatternWidgetSavableTab::~FindPatternWidgetSavableTab() {

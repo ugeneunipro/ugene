@@ -19,26 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_UTILS_MAC_H_
-#define _HI_GT_UTILS_MAC_H_
+#pragma once
 
-#include <QProcess>
+#include <unittest.h>
 
-#include "GTGlobals.h"
+namespace U2 {
 
-namespace HI {
+DECLARE_TEST(BAMUtilsUnitTests, bamMergeCore);
 
-class HI_EXPORT GTUtilsMac {
-public:
-    GTUtilsMac();
-    ~GTUtilsMac();
+}  // namespace U2
 
-    void startWorkaroundForMacCGEvents(int delay, bool waitFinished);
-
-private:
-    QProcess* process = nullptr;
-};
-
-}  // namespace HI
-
-#endif  // _HI_GT_UTILS_MAC_H_
+DECLARE_METATYPE(BAMUtilsUnitTests, bamMergeCore)

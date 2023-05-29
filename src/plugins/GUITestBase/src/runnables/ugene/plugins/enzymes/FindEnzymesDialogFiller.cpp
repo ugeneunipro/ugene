@@ -33,6 +33,8 @@
 
 #include <U2Gui/MainWindow.h>
 
+#include "runnables/ugene/corelibs/U2Gui/GTComboBoxWithCheckBoxes.h"
+
 namespace U2 {
 
 FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings() {
@@ -59,6 +61,10 @@ FindEnzymesDialogFiller::FindEnzymesDialogFiller(HI::GUITestOpStatus& os,
 #define GT_METHOD_NAME "run"
 void FindEnzymesDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget(os);
+
+    if (!settings.suppliers.isEmpty()) {
+        GTComboBoxWithCheckBoxes::selectItemByText(os, "cbSuppliers", dialog, settings.suppliers, GTGlobals::UseMouse);
+    }
 
     if (!settings.clickFindAll) {
         auto enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");

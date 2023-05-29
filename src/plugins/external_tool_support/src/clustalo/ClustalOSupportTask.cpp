@@ -90,9 +90,9 @@ void ClustalOSupportTask::prepare() {
 
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-        if (nullptr != obj) {
+        if (obj != nullptr) {
             auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
+            SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalO");
             alObj->lockState(lock);
         }

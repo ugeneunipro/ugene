@@ -25,6 +25,7 @@
 #include <U2Core/FileFilters.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/ServiceModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -47,6 +48,13 @@ ImportPrimersDialog::ImportPrimersDialog(QWidget* parent)
     new HelpButton(this, buttonBox, "65930783");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
+    pbAddObject->setEnabled(AppContext::getProject() != nullptr);
+
+    ServiceRegistry* sr = AppContext::getServiceRegistry();
+    connect(sr, &ServiceRegistry::si_serviceStateChanged, this, [this](Service*, ServiceState) {
+        pbAddObject->setEnabled(AppContext::getProject() != nullptr);
+    });
+
     connectSignals();
     sl_updateState();
 }
@@ -112,6 +120,7 @@ void ImportPrimersDialog::sl_removeObjectClicked() {
 
 void ImportPrimersDialog::sl_selectionChanged() {
     pbRemoveFile->setEnabled(!lwFiles->selectedItems().isEmpty());
+    pbRemoveObject->setEnabled(!lwObjects->selectedItems().isEmpty());
 }
 
 void ImportPrimersDialog::sl_contentChanged() {

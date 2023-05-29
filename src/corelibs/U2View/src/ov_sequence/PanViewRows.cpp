@@ -126,7 +126,7 @@ void substractRegions(QVector<U2Region>& regionsToProcess, const QVector<U2Regio
 
 void PVRowsManager::removeAnnotation(Annotation* a) {
     PVRowData* row = rowByAnnotation.value(a, nullptr);
-    CHECK(nullptr != row, );  // annotation may present in a DB, but has not been added to the panview yet
+    CHECK(row != nullptr, );  // annotation may present in a DB, but has not been added to the panview yet
     rowByAnnotation.remove(a);
     row->annotations.removeOne(a);
     substractRegions(row->ranges, a->getRegions());

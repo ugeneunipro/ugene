@@ -20,9 +20,6 @@
  */
 
 #include "GTMenuPrivate.h"
-#ifdef Q_OS_DARWIN
-#    include "GTMenuPrivateMac.h"
-#endif
 #include <QMainWindow>
 #include <QMenuBar>
 
@@ -53,15 +50,11 @@ void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus& os, const QStringList& it
 void GTMenuPrivate::checkMainMenuItemState(GUITestOpStatus& os, const QStringList& itemPath, PopupChecker::CheckOption expectedState) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
 
-#ifdef Q_OS_DARWIN
-    GTMenuPrivateMac::checkMainMenuItemState(os, itemPath, expectedState);
-#else
     QStringList cutItemPath = itemPath;
     const QString menuName = cutItemPath.takeFirst();
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, cutItemPath, expectedState, GTGlobals::UseMouse));
     showMainMenu(os, menuName, GTGlobals::UseMouse);
     GTGlobals::sleep(100);
-#endif
 }
 #undef GT_METHOD_NAME
 
@@ -70,15 +63,11 @@ void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus& os, const QStringLi
     GT_CHECK(menuPath.count() > 0, QString("Menu path is too short: { %1 }").arg(menuPath.join(" -> ")));
     GT_CHECK(itemsNames.count() > 0, QString("There are no menu items to check: %1").arg(itemsNames.join(", ")));
 
-#ifdef Q_OS_DARWIN
-    GTMenuPrivateMac::checkMainMenuItemsState(os, menuPath, itemsNames, expectedState);
-#else
     QStringList cutMenuPath = menuPath;
     const QString menuName = cutMenuPath.takeFirst();
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, cutMenuPath, itemsNames, expectedState, GTGlobals::UseMouse));
     showMainMenu(os, menuName, GTGlobals::UseMouse);
     GTGlobals::sleep(100);
-#endif
 }
 #undef GT_METHOD_NAME
 
@@ -104,6 +93,9 @@ void GTMenuPrivate::showMainMenu(GUITestOpStatus& os, const QString& menuName, G
     GT_CHECK_RESULT(resultList.count() < 2, QString("There are %1 actions with this text").arg(resultList.count()), );
 
     QAction* menu = resultList.takeFirst();
+#ifdef Q_OS_DARWIN
+    m = GTGlobals::UseMouse;  // On MacOS menu shortcuts do not work by prefix (like Alt-F for the &File).
+#endif
     switch (m) {
         case GTGlobals::UseMouse: {
             GT_CHECK_RESULT(mainWindow != nullptr, "mainWindow is null!", );

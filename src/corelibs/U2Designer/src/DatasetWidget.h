@@ -38,17 +38,16 @@ class U2DESIGNER_EXPORT URLListWidget : public QWidget {
     Q_OBJECT
 public:
     URLListWidget(URLListController* ctrl);
-    ~URLListWidget();
+    ~URLListWidget() override;
 
     void addUrlItem(UrlItem* urlItem);
 
 protected:
-    virtual bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private slots:
     void sl_addFileButton();
     void sl_addDirButton();
-    void sl_addFromDbButton();
     void sl_downButton();
     void sl_upButton();
     void sl_deleteButton();
@@ -59,7 +58,6 @@ private slots:
 private:
     void addUrl(const QString& url);
     void reset();
-    bool readingFromDbIsSupported() const;
 
 private:
     Ui_DatasetWidget* ui;
@@ -75,7 +73,7 @@ public:
     void hideOptions();
 
 protected:
-    virtual void closeEvent(QCloseEvent* event);
+    void closeEvent(QCloseEvent* event) override;
 
 private:
     void removeOptions();

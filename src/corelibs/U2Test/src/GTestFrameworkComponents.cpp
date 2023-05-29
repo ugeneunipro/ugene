@@ -85,7 +85,7 @@ void TestFramework::setTRHelpSections() {
     helpRegistered = true;
 
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(nullptr != cmdLineRegistry);
+    assert(cmdLineRegistry != nullptr);
 
     CMDLineHelpProvider* testTimeoutSection = new CMDLineHelpProvider(
         TEST_TIMEOUT_CMD_OPTION,
@@ -127,9 +127,9 @@ void TestFramework::setTRHelpSections() {
 
 void TestFramework::setTestRunnerSettings() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(nullptr != cmdLineRegistry);
+    assert(cmdLineRegistry != nullptr);
     Settings* settings = AppContext::getSettings();
-    assert(nullptr != settings);
+    assert(settings != nullptr);
 
     // TODO: make constants TIME_OUT_VAR and NUM_THREADS
     int timeOut = cmdLineRegistry->getParameterValue(TEST_TIMEOUT_CMD_OPTION).toInt();

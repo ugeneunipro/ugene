@@ -30,6 +30,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
@@ -65,6 +66,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/GraphSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/GTComboBoxWithCheckBoxes.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectorFiller.h"
@@ -2300,6 +2302,69 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
     GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_ANALYSE", "Find restriction sites"}));
     GTUtilsDialog::add(os, new RegionSelectorChecker(os));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0079_1) {
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            GTComboBoxWithCheckBoxes::selectItemByText(os, "cbSuppliers", dialog, { "Not defined" }, GTGlobals::UseMouse);
+
+            auto text = GTLabel::getText(os, "statusLabel", dialog);
+            CHECK_SET_ERR(text.contains("Total number of enzymes: 15510, selected 0"), QString("Unexpected text: %1").arg(text));
+
+            auto chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts(os, "cbSuppliers", dialog);
+            CHECK_SET_ERR(chekedValues.size() == 1, QString("Current checked size: %1").arg(chekedValues.size()));
+            CHECK_SET_ERR(chekedValues.first() == "Not defined", QString("Current checked value: %1").arg(chekedValues.first()));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList{}, new custom()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find restriction sites");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0079_2) {
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            GTWidget::click(os, GTWidget::findWidget(os, "pbSelectNone"));
+            auto chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts(os, "cbSuppliers", dialog);
+            CHECK_SET_ERR(chekedValues.size() == 0, QString("Current checked size after pbSelectNone: %1").arg(chekedValues.size()));
+
+
+            GTWidget::click(os, GTWidget::findWidget(os, "pbSelectAll"));
+            chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts(os, "cbSuppliers", dialog);
+            CHECK_SET_ERR(chekedValues.size() == 16, QString("Current checked size after pbSelectAll: %1").arg(chekedValues.size()));
+
+
+            GTComboBoxWithCheckBoxes::selectItemByText(os, "cbSuppliers", dialog, { "Not defined", "Thermo Fisher Scientific" });
+            chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts(os, "cbSuppliers", dialog);
+            CHECK_SET_ERR(chekedValues.size() == 2, QString("Current checked size after pbSelectAll: %1").arg(chekedValues.size()));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "pbInvertSelection"));
+            chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts(os, "cbSuppliers", dialog);
+            CHECK_SET_ERR(chekedValues.size() == 14, QString("Current checked size after pbSelectAll: %1").arg(chekedValues.size()));
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList{}, new custom()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find restriction sites");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }  // namespace GUITest_common_scenarios_sequence_view

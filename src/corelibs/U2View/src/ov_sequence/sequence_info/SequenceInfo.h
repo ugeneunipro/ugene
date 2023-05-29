@@ -163,6 +163,14 @@ private:
 
     QSharedPointer<TmCalculator> temperatureCalculator;
 
+    const QString captionSeqRegionLength;
+    const QString captionSeqGcContent;
+    const QString captionSeqMolecularWeight;
+    const QString captionSeqExtinctionCoefficient;
+    const QString captionSeqMeltingTemperature;
+    const QString captionSeqIsoelecticPoint;
+
+
 };
 
 }  // namespace U2

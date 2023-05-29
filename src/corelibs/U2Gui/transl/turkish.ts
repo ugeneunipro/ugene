@@ -2690,8 +2690,8 @@ Hepsini açmak istediğinizden emin misiniz?</translation>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="41"/>
         <location filename="../src/util/PositionSelector.cpp" line="86"/>
-        <source>Go!</source>
-        <translation>Git!</translation>
+        <source>Go</source>
+        <translation>Git</translation>
     </message>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="42"/>

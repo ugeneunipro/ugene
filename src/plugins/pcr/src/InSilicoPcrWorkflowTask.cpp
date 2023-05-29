@@ -21,6 +21,8 @@
 
 #include "InSilicoPcrWorkflowTask.h"
 
+#include <U2Core/DocumentModel.h>
+
 namespace U2 {
 
 InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(InSilicoPcrTaskSettings* pcrSettings, const ExtractProductSettings& _productSettings)
@@ -37,7 +39,9 @@ QList<Task*> InSilicoPcrWorkflowTask::onSubTaskFinished(Task* subTask) {
 
     if (subTask == pcrTask) {
         foreach (const InSilicoPcrProduct& product, pcrTask->getResults()) {
-            auto productTask = new ExtractProductTask(product, productSettings);
+            QVariantMap hints;
+            hints[DocumentRemovalMode_Synchronous] = true;
+            auto productTask = new ExtractProductTask(product, productSettings, hints);
             productTask->setSubtaskProgressWeight(0.3 / pcrTask->getResults().size());
             result << productTask;
             productTasks << productTask;

@@ -207,7 +207,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent* me) {
                     annotation = annotations[idx];
                 }
             }
-            if (nullptr != annotation) {
+            if (annotation != nullptr) {
                 QVector<U2Region> annotationRegions = annotation->getRegions();
                 bool processAllRegions = U1AnnotationUtils::isAnnotationContainsJunctionPoint(annotation, seqLen);
                 if (processAllRegions) {

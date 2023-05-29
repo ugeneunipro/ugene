@@ -3126,20 +3126,20 @@ GUI_TEST_CLASS_DEFINITION(test_4522) {
     QImage rectDefaultImage = GTUtilsPhyTree::captureTreeImage(os);
 
     GTUtilsOptionPanelPhyTree::changeTreeLayout(os, "Circular");
-    GTUtilsOptionPanelPhyTree::checkTreeType(os, "Default");
+    GTUtilsOptionPanelPhyTree::checkBranchDepthScaleMode(os, "Default");
     QImage circularDefaultImage = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(circularDefaultImage != rectDefaultImage, "circularDefaultImage != rectDefaultImage check failed");
 
-    GTUtilsOptionPanelPhyTree::changeTreeType(os, "Cladogram");
+    GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(os, "Cladogram");
     QImage circularCladogramImage = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(circularCladogramImage != circularDefaultImage, "circularCladogramImage != circularDefaultImage check failed");
 
     GTUtilsOptionPanelPhyTree::changeTreeLayout(os, "Unrooted");
-    GTUtilsOptionPanelPhyTree::checkTreeType(os, "Cladogram");
+    GTUtilsOptionPanelPhyTree::checkBranchDepthScaleMode(os, "Cladogram");
     QImage unrootedCladogramImage = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(unrootedCladogramImage != circularCladogramImage, "unrootedCladogramImage != circularCladogramImage check failed");
 
-    GTUtilsOptionPanelPhyTree::changeTreeType(os, "Default");
+    GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(os, "Default");
     QImage unrootedDefaultImage = GTUtilsPhyTree::captureTreeImage(os);
     CHECK_SET_ERR(unrootedDefaultImage != unrootedCladogramImage, "unrootedDefaultImage != unrootedCladogramImage check failed");
 }

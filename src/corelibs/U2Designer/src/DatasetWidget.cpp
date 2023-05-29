@@ -64,23 +64,17 @@ URLListWidget::URLListWidget(URLListController* _ctrl)
 
     ui->addFileButton->setIcon(fileIcon);
     ui->addDirButton->setIcon(dirIcon);
-    ui->addFromDbButton->setIcon(dbIcon);
     ui->deleteButton->setIcon(deleteIcon);
     ui->upButton->setIcon(upIcon);
     ui->downButton->setIcon(downIcon);
 
     connect(ui->addFileButton, SIGNAL(clicked()), SLOT(sl_addFileButton()));
     connect(ui->addDirButton, SIGNAL(clicked()), SLOT(sl_addDirButton()));
-    connect(ui->addFromDbButton, SIGNAL(clicked()), SLOT(sl_addFromDbButton()));
     connect(ui->downButton, SIGNAL(clicked()), SLOT(sl_downButton()));
     connect(ui->upButton, SIGNAL(clicked()), SLOT(sl_upButton()));
     connect(ui->deleteButton, SIGNAL(clicked()), SLOT(sl_deleteButton()));
 
     connect(ui->itemsArea, SIGNAL(itemSelectionChanged()), SLOT(sl_itemChecked()));
-
-    if (!readingFromDbIsSupported()) {
-        ui->addFromDbButton->hide();
-    }
 
     QAction* deleteAction = new QAction(ui->itemsArea);
     deleteAction->setShortcut(QKeySequence::Delete);
@@ -130,43 +124,6 @@ void URLListWidget::sl_addDirButton() {
     }
 }
 
-namespace {
-
-ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectType>& compatibleObjTypes) {
-    ProjectTreeControllerModeSettings settings;
-    settings.objectTypesToShow += compatibleObjTypes;
-
-    Project* proj = AppContext::getProject();
-    SAFE_POINT(proj != nullptr, "Invalid project", settings);
-
-    foreach (Document* doc, proj->getDocuments()) {
-        settings.excludeDocList << doc;
-    }
-
-    return settings;
-}
-
-}  // namespace
-
-void URLListWidget::sl_addFromDbButton() {
-    const QSet<GObjectType> compatTypes = ctrl->getCompatibleObjTypes();
-    SAFE_POINT(!compatTypes.isEmpty(), "Invalid object types", );
-    const ProjectTreeControllerModeSettings settings = createProjectTreeSettings(compatTypes);
-
-    QList<Folder> folders;
-    QList<GObject*> objects;
-    ProjectTreeItemSelectorDialog::selectObjectsAndFolders(settings, this, folders, objects);
-
-    foreach (const Folder& f, folders) {
-        // FIXME when readers for different data types appear
-        addUrl(SharedDbUrlUtils::createDbFolderUrl(f, U2ObjectTypeUtils::toDataType(*compatTypes.begin())));
-    }
-
-    foreach (GObject* obj, objects) {
-        addUrl(SharedDbUrlUtils::createDbObjectUrl(obj));
-    }
-}
-
 void URLListWidget::addUrl(const QString& url) {
     U2OpStatusImpl os;
     ctrl->addUrl(url, os);
@@ -191,10 +148,6 @@ void URLListWidget::reset() {
     ui->upButton->setEnabled(false);
     ui->downButton->setEnabled(false);
     popup->hideOptions();
-}
-
-bool URLListWidget::readingFromDbIsSupported() const {
-    return !ctrl->getCompatibleObjTypes().isEmpty();
 }
 
 void URLListWidget::sl_downButton() {

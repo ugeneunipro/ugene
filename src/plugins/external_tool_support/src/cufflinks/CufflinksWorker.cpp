@@ -376,7 +376,7 @@ void CufflinksWorker::sl_cufflinksTaskFinished() {
     auto cufflinksSupportTask = qobject_cast<CufflinksSupportTask*>(sender());
     CHECK(cufflinksSupportTask->isFinished(), );
 
-    if (nullptr != output) {
+    if (output != nullptr) {
         DataTypePtr outputMapDataType = WorkflowEnv::getDataTypeRegistry()->getById(CufflinksWorkerFactory::OUT_MAP_DESCR_ID);
         SAFE_POINT(0 != outputMapDataType, "Internal error: can't get DataTypePtr for output map!", );
 

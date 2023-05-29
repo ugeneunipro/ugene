@@ -92,11 +92,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //
     // 5. Click Export button.
     GTUtilsDialog::add(os,
-                                 new ExportSequenceOfSelectedAnnotationsFiller(
-                                     os,
-                                     testDir + "_common_data/scenarios/sandbox/exp.fasta",
-                                     ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                     ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate));
+                       new ExportSequenceOfSelectedAnnotationsFiller(
+                           os,
+                           testDir + "_common_data/scenarios/sandbox/exp.fasta",
+                           ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+                           ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate));
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
@@ -244,12 +244,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION}));
     GTUtilsDialog::add(os,
-                                 new ExportToSequenceFormatFiller(os,
-                                                                  dataDir + " _common_data/scenarios/sandbox/",
-                                                                  "export1.fa",
-                                                                  ExportToSequenceFormatFiller::FASTA,
-                                                                  true,
-                                                                  true));
+                       new ExportToSequenceFormatFiller(os,
+                                                        dataDir + " _common_data/scenarios/sandbox/",
+                                                        "export1.fa",
+                                                        ExportToSequenceFormatFiller::FASTA,
+                                                        true,
+                                                        true));
 
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
@@ -330,7 +330,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtils::checkExportServiceIsEnabled(os);
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
-    GTUtilsDialog::add(os, new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.msf", ExportSequenceAsAlignmentFiller::Msf));
+    GTUtilsDialog::add(os, new ExportSequenceAsAlignmentFiller(os, sandBoxDir, "exp2.msf", ExportSequenceAsAlignmentFiller::Msf));
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
@@ -338,7 +338,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Open file _common_data/scenarios/sandbox/exp2.msf
-    GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.msf");
+    GTFileDialog::openFile(os, sandBoxDir, "exp2.msf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: multiple alignment view with NC_001363 sequence has been opened.
@@ -389,9 +389,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 4. Select file to save: _common_data/scenarios/sandbox/exp2.msf and set 'file format to use' to MSF,
     // Next to uncheck the 'add document to the project' checkbox and click Save button.
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
-
-    Runnable* filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.sto", ExportSequenceAsAlignmentFiller::Stockholm);
-    GTUtilsDialog::add(os, filler);
+    GTUtilsDialog::add(os, new ExportSequenceAsAlignmentFiller(os, sandBoxDir, "exp2.sto", ExportSequenceAsAlignmentFiller::Stockholm));
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
@@ -400,7 +398,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
     GTGlobals::sleep();
-    GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.sto");
+    GTFileDialog::openFile(os, sandBoxDir, "exp2.sto");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
@@ -453,9 +451,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     // 4. Select file to save: _common_data/scenarios/sandbox/exp2.msf and set 'file format to use' to MSF,
     // Next to uncheck the 'add document to the project' check box and click Save button.
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
-
-    Runnable* filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.fa", ExportSequenceAsAlignmentFiller::Fasta);
-    GTUtilsDialog::add(os, filler);
+    GTUtilsDialog::add(os, new ExportSequenceAsAlignmentFiller(os, sandBoxDir, "exp2.fa", ExportSequenceAsAlignmentFiller::Fasta));
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
@@ -464,7 +460,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
-    GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.fa");
+    GTFileDialog::openFile(os, sandBoxDir, "exp2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: multiple alignment view with NC_001363 sequence has been opened
@@ -518,8 +514,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     // Next to uncheck the 'add document to the project' check box and click Save button.
     GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE_AS_ALIGNMENT}));
 
-    Runnable* filler = new ExportSequenceAsAlignmentFiller(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.meg", ExportSequenceAsAlignmentFiller::Mega);
-    GTUtilsDialog::add(os, filler);
+    GTUtilsDialog::add(os, new ExportSequenceAsAlignmentFiller(os, sandBoxDir, "exp2.meg", ExportSequenceAsAlignmentFiller::Mega));
 
     QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", parent);
@@ -528,7 +523,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
-    GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.meg");
+    GTFileDialog::openFile(os, sandBoxDir, "exp2.meg");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: multiple alignment view with NC_001363 sequence has been opened

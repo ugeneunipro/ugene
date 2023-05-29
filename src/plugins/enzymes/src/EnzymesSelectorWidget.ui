@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>659</width>
-    <height>341</height>
+    <height>346</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -99,6 +99,11 @@
         <column>
          <property name="text">
           <string>Organizm / Details</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Suppliers</string>
          </property>
         </column>
        </widget>

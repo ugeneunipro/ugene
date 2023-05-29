@@ -38,6 +38,8 @@ struct FindEnzymesDialogFillerSettings {
     int minHits = -1;
     int maxHits = -1;
     bool clickFindAll = false;
+    // Show suppliers from this list
+    QStringList suppliers;
 };
 
 class FindEnzymesDialogFiller : public Filler {

@@ -90,11 +90,6 @@ bu birleştirme sırası yuvası:</translation>
         <translation>Dizin ekle</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="84"/>
-        <source>Add data from shared databases</source>
-        <translation>Paylaşılan veritabanlarından veri ekleyin</translation>
-    </message>
-    <message>
         <location filename="../src/DatasetWidget.ui" line="116"/>
         <source>Up url(s)</source>
         <translation>Yukarı url&apos;ler</translation>

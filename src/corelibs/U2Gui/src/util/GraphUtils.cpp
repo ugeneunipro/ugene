@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <math.h>
-
 #include <QPainter>
 #include <QVector>
 
@@ -40,9 +38,7 @@ GraphUtils::ArrowConfig::ArrowConfig()
 }
 
 static void drawNum(QPainter& p, int x1, int x2, const QString& num, int lBorder, int rBorder, int y1, int y2) {
-    if (x1 < lBorder || x2 > rBorder) {
-        return;
-    }
+    CHECK(x1 >= lBorder && x2 <= rBorder, );
     QRect rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
     p.drawText(rect, Qt::AlignVCenter | Qt::AlignHCenter, num);
 }
@@ -54,7 +50,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
     }
     p.save();
 
-    assert(c.drawArrow ? c.drawAxis : true);
+    SAFE_POINT(c.drawArrow ? c.drawAxis : true, "drawAxis must be enabled when drawArrow is true", );
 
     p.setFont(font);
     QFontMetrics fm(font);
@@ -73,6 +69,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
         chunk /= 2;
     }
     float scale = len / (float)span;
+    int minXSpaceBetweenNumbers = 5;  // Minimum horizontal space between sibling numbers in pixels.
     if (c.direction == BottomToTop) {
         if (c.drawAxis) {
             p.drawLine(pos.x(), pos.y() - c.extraAxisLenBefore, pos.x(), pos.y() + len + c.extraAxisLenAfter);
@@ -208,7 +205,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                         QString snum = FormatUtils::formatNumber(currnotch);
                         int notchleft = pos.x() + x - snum.length() * cw / 2;
                         int notchright = notchleft + snum.length() * cw;
-                        drawNum(p, notchleft, notchright, snum, leftborder, rightborder, yt1, yt2);
+                        drawNum(p, notchleft, notchright, snum, leftborder + minXSpaceBetweenNumbers, rightborder - minXSpaceBetweenNumbers, yt1, yt2);
                     }
                 }
             }
@@ -235,7 +232,7 @@ void GraphUtils::drawRuler(QPainter& p, const QPoint& pos, qint64 len, qint64 st
                         QString snum = FormatUtils::formatNumber(currnotch);
                         int notchleft = pos.x() + len - x - snum.length() * cw / 2;
                         int notchright = notchleft + snum.length() * cw;
-                        drawNum(p, notchleft, notchright, snum, leftborder, rightborder, yt1, yt2);
+                        drawNum(p, notchleft, notchright, snum, leftborder + minXSpaceBetweenNumbers, rightborder - minXSpaceBetweenNumbers, yt1, yt2);
                     }
                 }
             }

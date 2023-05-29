@@ -211,7 +211,7 @@ Task* CollocationWorker::tick() {
 
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        CHECK(nullptr != seqObj.data(), nullptr);
+        CHECK(seqObj.data() != nullptr, nullptr);
 
         const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), qm.value(FEATURE_TABLE_SLOT));
 
@@ -243,7 +243,7 @@ void CollocationWorker::sl_taskFinished() {
         return;
     }
     QList<SharedAnnotationData> list = t->popResultAnnotations();
-    if (nullptr != output) {
+    if (output != nullptr) {
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(list);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(),
                             qVariantFromValue<SharedDbiDataHandler>(tableId)));

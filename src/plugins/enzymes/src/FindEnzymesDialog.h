@@ -48,14 +48,19 @@ public:
     static void saveSettings();
     static void initSelection();
     static QList<SEnzymeData> getLoadedEnzymes();
+    static QStringList getLoadedSuppliers();
     QList<SEnzymeData> getSelectedEnzymes();
     int getNumSelected();
     int getTotalNumber() {
         return totalEnzymes;
     }
 
+    void setEnzymesList(const QList<SEnzymeData>& enzymes);
+
 signals:
     void si_selectionModified(int, int);
+    void si_newEnzimeFileLoaded();
+
 private slots:
     void sl_openEnzymesFile();
     void sl_saveEnzymesFile();
@@ -70,9 +75,10 @@ private slots:
     void sl_filterTextChanged(const QString& filterText);
 
 private:
+    static void calculateSuppliers();
+
     void loadFile(const QString& url);
     void saveFile(const QString& url);
-    void setEnzymesList(const QList<SEnzymeData>& enzymes);
     void updateStatus();
     int gatherCheckedNamesListString(QString& checkedNamesList) const;
 
@@ -81,6 +87,7 @@ private:
     static QList<SEnzymeData> loadedEnzymes;
     // saves selection between calls to getSelectedEnzymes()
     static QSet<QString> lastSelection;
+    static QStringList loadedSuppliers;
 
     int totalEnzymes;
     bool ignoreItemChecks;
@@ -92,8 +99,14 @@ class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
 public:
     FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext);
     virtual void accept();
+
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
+    void sl_handleSupplierSelectionChange(QStringList checkedSuppliers);
+    void sl_updateSuppliers();
+    void sl_selectAll();
+    void sl_selectNone();
+    void sl_invertSelection();
 
 private:
     void initSettings();

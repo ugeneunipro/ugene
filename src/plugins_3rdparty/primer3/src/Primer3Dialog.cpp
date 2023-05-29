@@ -39,6 +39,7 @@
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
+#include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/AnnotatedDNAView.h>
 
@@ -81,12 +82,14 @@ const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^
 
 Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
-      context(context) {
+      context(context),
+      savableWidget(this, GObjectViewUtils::findViewByName(context->getAnnotatedDNAView()->getName()), { "primer3RegionSelector", "primer3AnnWgt" }) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
 
     pickPrimersButton->setDefault(true);
 
+    connect(closeButton, &QPushButton::clicked, this, &Primer3Dialog::close);
     connect(pickPrimersButton, &QPushButton::clicked, this, &Primer3Dialog::sl_pickClicked);
     connect(resetButton, &QPushButton::clicked, this, &Primer3Dialog::sl_resetClicked);
     connect(saveSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_saveSettings);
@@ -103,13 +106,16 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
         createAnnotationModel.hideAnnotationName = false;
         createAnnotationModel.hideLocation = true;
         createAnnotationWidgetController = new CreateAnnotationWidgetController(createAnnotationModel, this);
-        annotationWidgetLayout->addWidget(createAnnotationWidgetController->getWidget());
+        auto annWgt = createAnnotationWidgetController->getWidget();
+        annWgt->setObjectName("primer3AnnWgt");
+        annotationWidgetLayout->addWidget(annWgt);
     }
 
     if (!context->getSequenceSelection()->getSelectedRegions().isEmpty()) {
         selection = context->getSequenceSelection()->getSelectedRegions().first();
     }
     rs = new RegionSelector(this, context->getSequenceLength(), false, context->getSequenceSelection(), true);
+    rs->setObjectName("primer3RegionSelector");
     rangeSelectorLayout->addWidget(rs);
 
     repeatLibraries.append(QPair<QString, QByteArray>(tr("NONE"), ""));
@@ -142,6 +148,8 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     }
 
     reset();
+
+    U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
 Primer3Dialog::~Primer3Dialog() {
@@ -628,7 +636,7 @@ bool Primer3Dialog::doDataExchange() {
             bool isSimpleDna = alphabet->isNucleic() && alphabet->isDefault();
             if (!isSimpleDna) {
                 res = false;
-                errors.append("Left sequence has incorrect alphabet, should be be simple DNA");
+                errors.append(tr("%1 sequence has incorrect alphabet, should be be simple DNA").arg(parameterName));
             }
         }
         widgetStates.insert(wgt, res);
@@ -820,9 +828,9 @@ bool Primer3Dialog::updateErrorState(const QMap<QWidget*, bool>& widgetStates, c
 }
 
 QString Primer3Dialog::getWidgetTemplateError(QWidget* wgt, const QString& errorWgtLabe) const {
-    static const QString ERROR_TEMPLATE
-        = QT_TR_NOOP(tr("The \"%1\" parameter has incorrect value, please"
-        ", read the tooltip of this parameter to find out how the correct one looks like."));
+    static const char* ERROR_TEMPLATE
+        = QT_TR_NOOP("The \"%1\" parameter has incorrect value, please"
+        ", read the tooltip of this parameter to find out how the correct one looks like.");
 
     auto name = errorWgtLabe;
     if (name.isEmpty()) {
@@ -837,7 +845,7 @@ QString Primer3Dialog::getWidgetTemplateError(QWidget* wgt, const QString& error
         }
     }
 
-    return ERROR_TEMPLATE.arg(name);
+    return tr(ERROR_TEMPLATE).arg(name);
 }
 
 void Primer3Dialog::sl_pickClicked() {

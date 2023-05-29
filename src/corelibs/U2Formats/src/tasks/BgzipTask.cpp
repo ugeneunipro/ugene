@@ -75,7 +75,7 @@ void BgzipTask::run() {
     BGZF* out = bgzf_fdopen(outFile.getNullable(), "w");
     if (out == nullptr) {
         Task::setError(tr("Can not open output file '%2'").arg(bgzfUrl.getURLString()));
-        FileAndDirectoryUtils::closeFileIfOpen(outFile);
+        FileAndDirectoryUtils::closeFileIfOpen(outFile.getNullable());
         return;
     }
     BGZF_wrapper out_wr(out);

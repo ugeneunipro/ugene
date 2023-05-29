@@ -213,6 +213,8 @@ private:
 
     void updateCollapseModel(const MaModificationInfo& modInfo) override;
 
+    void copySelection(U2OpStatus& os);
+
     QAction* delColAction;
     QAction* removeAllGapsAction;
 

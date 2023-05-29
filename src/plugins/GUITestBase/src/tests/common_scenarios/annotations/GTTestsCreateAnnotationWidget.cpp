@@ -2346,19 +2346,19 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    5. Check boundaries for simple location widgets.
             //    Expected state: values belong to region [1..seq_len], the start position can be greater than the end position. If the position is incorrect (e.g. equal 0) a messagebox appears on dialog acception, the dialog is not closed.
             setSimpleLocation(os, 0, 199950, false, dialog);
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             setSimpleLocation(os, 199951, 199950, false, dialog);
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             setSimpleLocation(os, 1, 0, false, dialog);
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             setSimpleLocation(os, 1, 199951, false, dialog);
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location!"));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 
             GTLineEdit::setText(os, leRegionStart, "-1", true);
@@ -2463,9 +2463,9 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             setSimpleLocation(os, 1000000, 50, false, dialog);
 
             //    Expected state: GenBank location string contains "1..50" region.
-            expectedGenbankLocation = "1..50";
+            expectedGenbankLocation = "";
             genbankLocation = leLocation->text();
-            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("77. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("34.1. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    14. Select "GenBank/EMBL format" location style. Set location "300..400".
             setGenbankLocation(os, "300..400", dialog);

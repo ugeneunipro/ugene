@@ -48,7 +48,7 @@ static inline QVBoxLayout* initLayout(QWidget* w) {
 SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor* m)
     : msa(m), savableTab(this, GObjectViewUtils::findViewByName(m->getName())) {
     setObjectName("SequenceStatisticsOptionsPanelTab");
-    SAFE_POINT(nullptr != m, QString("Invalid parameter were passed into constructor SeqStatisticsWidget"), );
+    SAFE_POINT(m != nullptr, QString("Invalid parameter were passed into constructor SeqStatisticsWidget"), );
 
     copySettings();
 
@@ -79,7 +79,7 @@ void SeqStatisticsWidget::copySettings() {
         settings->excludeGaps = false;
         settings->autoUpdate = true;
         settings->usePercents = true;
-        settings->ui = msaEditorUi;
+        settings->editor = msa;
     }
 }
 

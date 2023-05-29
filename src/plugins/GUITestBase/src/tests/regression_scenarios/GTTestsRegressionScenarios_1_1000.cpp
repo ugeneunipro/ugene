@@ -2657,7 +2657,7 @@ GUI_TEST_CLASS_DEFINITION(test_0938) {
     //    1. Open any file in assembly view.
     //    2. Browse options panel.
     //    3. Open "Navigation" tab.
-    //    Expected state: The tab contains "Enter position in assembly" edit field, "Go!" button and "Most Covered Regions".
+    //    Expected state: The tab contains "Enter position in assembly" edit field, "Go" button and "Most Covered Regions".
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os, sandBoxDir + "chrM.sorted.bam.ugenedb"));
     GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.sorted.bam");
@@ -2670,7 +2670,7 @@ GUI_TEST_CLASS_DEFINITION(test_0938) {
 
     auto parent = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
     CHECK_SET_ERR(GTWidget::findWidget(os, "go_to_pos_line_edit", parent) != nullptr, "go_to_pos_line_edit not found");
-    CHECK_SET_ERR(GTWidget::findWidget(os, "Go!", parent) != nullptr, "Go! button not found");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "goButton", parent) != nullptr, "Go! button not found");
     CHECK_SET_ERR(GTWidget::findWidget(os, "COVERED", parent) != nullptr, "Covered regions widget not found");
 }
 

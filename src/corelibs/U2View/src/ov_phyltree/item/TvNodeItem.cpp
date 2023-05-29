@@ -111,7 +111,7 @@ PhyNode* TvNodeItem::getPhyNode() const {
     return parentBranchItem->phyBranch ? parentBranchItem->phyBranch->childNode : nullptr;
 }
 
-void TvNodeItem::updateSettings(const OptionsMap& settings) {
+void TvNodeItem::updateSettings(const QMap<TreeViewOption, QVariant>& settings) {
     bool isTipNode = getParentBranchItem()->isLeaf();
     isShapeVisible = settings[isTipNode ? SHOW_TIP_SHAPE : SHOW_NODE_SHAPE].toBool();
 

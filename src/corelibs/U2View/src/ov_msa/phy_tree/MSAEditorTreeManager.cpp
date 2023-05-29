@@ -252,6 +252,10 @@ void MSAEditorTreeManager::openTreeViewer(PhyTreeObject* treeObj) {
     AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
 }
 
+MSAEditor* MSAEditorTreeManager::getMsaEditor() const {
+    return editor;
+}
+
 void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
     auto createTreeViewerTask = qobject_cast<CreateMSAEditorTreeViewerTask*>(task);
     CHECK(createTreeViewerTask != nullptr, );
@@ -265,9 +269,6 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
 
     auto treeViewer = qobject_cast<MSAEditorTreeViewer*>(createTreeViewerTask->getTreeViewer());
     SAFE_POINT(treeViewer != nullptr, tr("Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)"), );
-
-    // TODO: pass MSA editor to the constructor of MSAEditorTreeViewer and avoid extra state when MSAEditorTreeViewer has no msaEditor assigned.
-    treeViewer->setMSAEditor(editor);
 
     auto viewWindow = new GObjectViewWindow(treeViewer, editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
     connect(viewWindow, SIGNAL(si_windowClosed(GObjectViewWindow*)), this, SLOT(sl_onWindowClosed(GObjectViewWindow*)));

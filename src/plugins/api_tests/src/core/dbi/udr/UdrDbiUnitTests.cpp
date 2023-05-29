@@ -131,7 +131,7 @@ void UdrTestData::init() {
     SAFE_POINT(ok, "dbi provider failed to initialize", );
 
     udrDbi = dbiProvider.getDbi()->getUdrDbi();
-    SAFE_POINT(nullptr != udrDbi, "udr database not loaded", );
+    SAFE_POINT(udrDbi != nullptr, "udr database not loaded", );
 
     initTestData();
 }
@@ -147,9 +147,9 @@ void UdrTestData::shutdown() {
 
 void UdrTestData::initTestUdr() {
     UdrSchemaRegistry* reg = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT(nullptr != reg, "NULL reg", );
+    SAFE_POINT(reg != nullptr, "NULL reg", );
 
-    if (nullptr != reg->getSchemaById(TEST_SCHEMA_ID)) {
+    if (reg->getSchemaById(TEST_SCHEMA_ID) != nullptr) {
         return;
     }
 
@@ -189,7 +189,7 @@ void UdrTestData::initTestUdr() {
 
 void UdrTestData::initTestData() {
     UdrDbi* dbi = UdrTestData::getUdrDbi();
-    SAFE_POINT(nullptr != dbi, "NULL dbi", );
+    SAFE_POINT(dbi != nullptr, "NULL dbi", );
 
     U2OpStatusImpl os;
     {  // schema 1

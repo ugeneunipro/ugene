@@ -175,8 +175,9 @@ U2DataType SamtoolsBasedDbi::getEntityTypeById(const U2DataId& id) const {
 bamFile SamtoolsBasedDbi::openNewBamFileHandler() const {
     QString filePath = url.getURLString();
     NP<FILE> file = BAMUtils::openFile(filePath, "rb");
-    bamFile bFile = bgzf_fdopen(file.getNullable(), "r");
+    bamFile bFile = file != nullptr ? bgzf_fdopen(file, "r") : nullptr;
     CHECK_EXT(bFile != nullptr, BAMUtils::closeFileIfOpen(file), nullptr);
+
     bFile->owned_file = 1;
     return bFile;
 }
@@ -572,7 +573,7 @@ U2Assembly SamtoolsBasedAssemblyDbi::getAssemblyObject(const U2DataId& id, U2OpS
               U2Assembly());
 
     const bam_header_t* header = dbi.getHeader();
-    SAFE_POINT(nullptr != header, "NULL BAM header", U2Assembly());
+    SAFE_POINT(header != nullptr, "NULL BAM header", U2Assembly());
 
     CHECK_EXT(U2Type::Assembly == dbi.getEntityTypeById(id),
               os.setError(BAMDbiPlugin::tr("The specified object is not an assembly")),
@@ -642,7 +643,7 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId& assemblyId, U2OpSt
     CHECK_OP(os, 0);
 
     const bam_header_t* header = dbi.getHeader();
-    CHECK_EXT(nullptr != header, os.setError("NULL header"), 0);
+    CHECK_EXT(header != nullptr, os.setError("NULL header"), 0);
     CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), 0);
 
     qint64 targetLength = header->target_len[id];
@@ -718,7 +719,7 @@ U2IntegerAttribute SamtoolsBasedAttributeDbi::getIntegerAttribute(const U2DataId
         CHECK_OP(os, result);
 
         const bam_header_t* header = dbi.getHeader();
-        CHECK_EXT(nullptr != header, os.setError("NULL header"), result);
+        CHECK_EXT(header != nullptr, os.setError("NULL header"), result);
         CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), result);
         qint64 length = header->target_len[id];
         result = U2IntegerAttribute(objIdStr, U2BaseAttributeName::reference_length, length);

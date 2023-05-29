@@ -32,8 +32,7 @@ class MaEditor;
 
 class U2VIEW_EXPORT MaEditorState {
 public:
-    MaEditorState() {
-    }
+    MaEditorState() = default;
 
     MaEditorState(const QVariantMap& _stateData)
         : stateData(_stateData) {
