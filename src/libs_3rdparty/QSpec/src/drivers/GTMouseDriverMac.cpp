@@ -195,7 +195,7 @@ bool GTMouseDriver::scroll(int value) {
     }
 
     CFRelease(event);
-
+    GTGlobals::sleep(100);
     return true;
 }
 #    undef GT_METHOD_NAME
