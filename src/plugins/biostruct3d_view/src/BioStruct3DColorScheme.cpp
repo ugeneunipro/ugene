@@ -320,6 +320,7 @@ AlignmentEntropyColorScheme::AlignmentEntropyColorScheme(const BioStruct3DObject
         if (isEntropy) {
             entropyChainIds.append(biostruct3D.getIndexByChainId(sm->chainId));
         }
+        isEntropy = true;
     }
 }
 

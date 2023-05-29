@@ -3087,6 +3087,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_entropy::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_entropy::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_entropy::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_entropy::test_0004);
+
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/fasttree
