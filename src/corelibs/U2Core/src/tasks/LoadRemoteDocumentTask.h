@@ -42,7 +42,6 @@ namespace U2 {
 #define FASTA_FORMAT "fasta"
 #define GENBANK_WITH_PARTS "gbwithparts"
 #define FORCE_DOWNLOAD_SEQUENCE_HINT "gbwithparts"
-#define SHOW_REPORT_HINT "show_report_hint"
 
 class Document;
 class CopyDataTask;
@@ -59,7 +58,7 @@ class U2CORE_EXPORT RemoteDBRegistry {
 public:
     // Links to the database (to open in browser) by the database name.
     static const QMap<QString, QString> EXTERNAL_LINKS;
-    // Links to the database (to open in browser) to open a sequence page by ID.
+    // Links to the database (to open in browser) to open a sequence page by database name.
     static const QMap<QString, QString> PAGE_LINKS;
 
     QString getURL(const QString& accId, const QString& dbName) const;

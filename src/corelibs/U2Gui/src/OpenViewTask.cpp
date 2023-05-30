@@ -231,11 +231,12 @@ LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(con
       fullpath(_fp),
       hints(_hints),
       openView(_openView) {
-    hints.insert(SHOW_REPORT_HINT, true);
 }
 
 void LoadRemoteDocumentAndAddToProjectTask::prepare() {
     loadRemoteDocTask = new LoadRemoteDocumentTask(accNumber, databaseName, fullpath, fileFormat, hints);
+    loadRemoteDocTask->setReportingSupported(true);
+    loadRemoteDocTask->setReportingEnabled(true);
     addSubTask(loadRemoteDocTask);
 }
 

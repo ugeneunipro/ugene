@@ -30,7 +30,7 @@ class GetSequenceByIdFiller : public Filler {
 public:
     GetSequenceByIdFiller(HI::GUITestOpStatus& _os, const QString& saveTo, bool addToProject);
 
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     QString saveTo;

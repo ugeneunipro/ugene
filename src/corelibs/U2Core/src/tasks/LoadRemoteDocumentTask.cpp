@@ -205,10 +205,6 @@ LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString& accId, const QStri
       dbName(dbName) {
     GCOUNTER(cvar, "LoadRemoteDocumentTask");
     format = fileFormat;
-    if (hints.value(SHOW_REPORT_HINT).toBool()) {
-        setReportingSupported(true);
-        setReportingEnabled(true);
-    }
 }
 
 void LoadRemoteDocumentTask::prepare() {
@@ -243,7 +239,7 @@ QString LoadRemoteDocumentTask::generateReport() const {
 
     pageLink = pageLink.arg(accNumber);
     res += "<br>";
-    res += tr("The database page link: <a href='%1'>%1</a>").arg(pageLink);
+    res += tr("External database link: <a href='%1'>%1</a>").arg(pageLink);
 
     return res;
 }
