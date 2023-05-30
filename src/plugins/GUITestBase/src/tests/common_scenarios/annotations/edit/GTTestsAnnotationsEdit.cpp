@@ -57,7 +57,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument(os, "1.gb");
     //     2) UGENE window titled with text "UGENE"
-    QString expectedTitle = isOsMac() ? "proj2 UGENE" : "-* UGENE";
+    QString expectedTitle = "-* UGENE";
     GTMainWindow::checkTitle(os, expectedTitle);
 
     // 2. Open view for "1.gb"
