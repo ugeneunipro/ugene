@@ -663,6 +663,7 @@ RemoteDBRegistry::RemoteDBRegistry() {
     externalLinks.insert(SWISS_PROT, "https://www.uniprot.org");
     externalLinks.insert(UNIPROTKB_SWISS_PROT, "https://www.uniprot.org");
     externalLinks.insert(UNIPROTKB_TREMBL, "https://www.uniprot.org");
+    externalLinks.insert(ALPHAFOLD, "https://alphafold.ebi.ac.uk");
 }
 
 RemoteDBRegistry& RemoteDBRegistry::getRemoteDBRegistry() {

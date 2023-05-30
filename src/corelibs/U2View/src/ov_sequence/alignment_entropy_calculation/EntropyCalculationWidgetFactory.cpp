@@ -34,7 +34,7 @@ namespace U2 {
 
 const QString EntropyCalculationWidgetFactory::GROUP_ID = "OP_ENTROPY_CALCULATION";
 //TODO: add icon & doc page
-const QString EntropyCalculationWidgetFactory::GROUP_ICON_STR = ""; 
+const QString EntropyCalculationWidgetFactory::GROUP_ICON_STR = ":biostruct3d_view/images/logo.png"; 
 const QString EntropyCalculationWidgetFactory::GROUP_DOC_PAGE = "";
 
 EntropyCalculationWidgetFactory::EntropyCalculationWidgetFactory() {

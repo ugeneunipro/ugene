@@ -381,7 +381,8 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
                     {"PDB", "https://www.rcsb.org"},
                     {"SWISS-PROT", "https://www.uniprot.org"},
                     {"UniProtKB/Swiss-Prot", "https://www.uniprot.org"},
-                    {"UniProtKB/TrEMBL", "https://www.uniprot.org"} };
+                    {"UniProtKB/TrEMBL", "https://www.uniprot.org"},
+                    {"AlphaFold Protein Structure Database", "https://alphafold.ebi.ac.uk"}};
 
             auto dbs = GTComboBox::getValues(os, GTWidget::findComboBox(os, "databasesBox", dialog));
             CHECK_SET_ERR(dbs.size() == DATABASE_LINK_MAP.size(), "Unexpected DBs size");
@@ -402,6 +403,28 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, new CheckLinks));
     GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016) {
+    //    1. Select {File -> Access remote database} menu item in the main menu.
+    //    2. Fill the dialog:
+    //        Resource ID: A2BC19
+    //        Database: AlphaFold Protein Structure Database
+    //        Save to folder: sandBoxDir
+    //    Expected state: after the downloading task finishes a new document appears in the project
+
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, {"A2BC19"});
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "AlphaFold Protein Structure Database");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "test_0002");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 }
 
 

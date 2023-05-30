@@ -45,18 +45,26 @@ namespace U2 {
 namespace GUITest_common_scenarios_entropy {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    // Open "_common_data/entropy/4aa8.pdb"
+    //    1. Open "_common_data/entropy/4aa8.pdb"
+    //    2. Set coloring scheme to "Alignment Entropy"
+    //    3. Open "Entropy Calculation" tab in the option panel
+    //    4. Fill the dialog:
+    //        Select an alignment: "_common_data/entropy/chymosin.fas"
+    //        Save to: sandBoxDir + "entropy_0001.pdb"
+    //    5. Click "Run" button
+    //    6. After a new file opens, set coloring scheme to "Alignment Entropy"
+    //    Expected state: 3D image has changed and the new file is equal to 
+    //       testDir + "_common_data/entropy/results/entropy_0001.pdb"
+
     GTFileDialog::openFile(os, testDir + "_common_data/entropy/4aa8.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Set coloring scheme to "Alignment Entropy"
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Coloring Scheme", "Alignment Entropy"}));
     QWidget* sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     auto pdb2Widget = GTWidget::findWidget(os, "1-4AA8", sequenceViewWindow);
     GTMenu::showContextMenu(os, pdb2Widget);
     QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2Widget);
 
-    //Run alignment entropy calculation
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Tabs::EntropyCalculation);
     GTLineEdit::setText(os, "alignmentLineEdit", testDir + "_common_data/entropy/chymosin.fas");
     GTLineEdit::setText(os, "saveToLineEdit", sandBoxDir + "entropy_0001.pdb");
@@ -67,7 +75,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     sequenceViewWindow = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     pdb2Widget = GTWidget::findWidget(os, "2-4AA8", sequenceViewWindow);
-    
     GTMenu::showContextMenu(os, pdb2Widget);
 
     QImage pdb2ImageAfter = GTWidget::getImage(os, pdb2Widget);
@@ -78,7 +85,18 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    // Open "_common_data/entropy/2DD8.pdb"
+    //    1. Open "_common_data/entropy/2DD8.pdb"
+    //    2. Set coloring scheme to "Alignment Entropy"
+    //    3. Set focus to the 3rd molecular chain
+    //    4. Open "Entropy Calculation" tab in the option panel
+    //    5. Fill the dialog:
+    //        Select an alignment: "_common_data/entropy/RBD SARS-Cov-2.fas"
+    //        Save to: sandBoxDir + "entropy_0002.pdb"
+    //    6. Click "Run" button
+    //    7. After a new file opens, set coloring scheme to "Alignment Entropy"
+    //    Expected state: 3D image has changed and the new file is equal to
+    //       testDir + "_common_data/entropy/results/entropy_0002.pdb"
+
     GTFileDialog::openFile(os, testDir + "_common_data/entropy/2DD8.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -87,6 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     auto pdb2Widget = GTWidget::findWidget(os, "1-2DD8", sequenceViewWindow);
     GTMenu::showContextMenu(os, pdb2Widget);
     QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2Widget);
+    GTWidget::setFocus(os, GTUtilsSequenceView::getSeqWidgetByNumber(os, 2)->getPanView());
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Tabs::EntropyCalculation);
     GTLineEdit::setText(os, "alignmentLineEdit", testDir + "_common_data/entropy/RBD SARS-Cov-2.fas");
@@ -109,7 +128,18 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    // Open "_common_data/entropy/6QS9.pdb"
+    //    1. Open "_common_data/entropy/6QS9.pdb"
+    //    2. Set coloring scheme to "Alignment Entropy"
+    //    3. Set focus to the 2nd molecular chain
+    //    4. Open "Entropy Calculation" tab in the option panel
+    //    5. Fill the dialog:
+    //        Select an alignment: "_common_data/entropy/albumin.fas"
+    //        Save to: sandBoxDir + "entropy_0003.pdb"
+    //    6. Click "Run" button
+    //    7. After a new file opens, set coloring scheme to "Alignment Entropy"
+    //    Expected state: 3D image has changed and the new file is equal to
+    //       testDir + "_common_data/entropy/results/entropy_0003.pdb"
+
     GTFileDialog::openFile(os, testDir + "_common_data/entropy/6QS9.pdb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -118,6 +148,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     auto pdb2Widget = GTWidget::findWidget(os, "1-6QS9", sequenceViewWindow);
     GTMenu::showContextMenu(os, pdb2Widget);
     QImage pdb2ImageBefore = GTWidget::getImage(os, pdb2Widget);
+    GTWidget::setFocus(os, GTUtilsSequenceView::getSeqWidgetByNumber(os, 1)->getPanView());
 
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Tabs::EntropyCalculation);
     GTLineEdit::setText(os, "alignmentLineEdit", testDir + "_common_data/entropy/albumin.fas");
@@ -137,21 +168,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     CHECK_SET_ERR(GTFile::equals(os, sandBoxDir + "entropy_0003.pdb", testDir + 
         "_common_data/entropy/results/entropy_0003.pdb"),
         "PDB file is not equal to _common_data/entropy/results/entropy_0003.pdb");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0004) {
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, {"A2BC19"});
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "AlphaFold Protein Structure Database");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "test_0002");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 }
 
 }  // namespace GUITest_common_scenarios_entropy

@@ -2149,6 +2149,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0015);
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/toggle view/
@@ -3107,8 +3108,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_entropy::test_0001);
     REGISTER_TEST(GUITest_common_scenarios_entropy::test_0002);
     REGISTER_TEST(GUITest_common_scenarios_entropy::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_entropy::test_0004);
-
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/fasttree
