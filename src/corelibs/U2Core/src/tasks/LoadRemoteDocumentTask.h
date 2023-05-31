@@ -148,6 +148,7 @@ protected:
 class U2CORE_EXPORT LoadRemoteDocumentTask : public BaseLoadRemoteDocumentTask {
     Q_OBJECT
 public:
+    LoadRemoteDocumentTask(const GUrl& url);
     LoadRemoteDocumentTask(const QString& accId, const QString& dbName, const QString& fullPathDir = "", const QString& fileFormat = "", const QVariantMap& hints = QVariantMap());
     void prepare() override;
     QString generateReport() const override;
@@ -168,6 +169,7 @@ protected:
 private:
     QString getRetType() const;
 
+    GUrl fileUrl;
     LoadDataFromEntrezTask* loadDataFromEntrezTask = nullptr;
     QString accNumber;
     QString dbName;

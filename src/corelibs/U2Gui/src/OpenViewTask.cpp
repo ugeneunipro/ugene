@@ -217,7 +217,14 @@ void OpenViewTask::prepare() {
 
 //////////////////////////////////////////////////////////////////////////
 
-//protected constructor
+LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const GUrl& url)
+    : Task(tr("Load remote document and add to project"), TaskFlags_NR_FOSCOE |
+                                                          TaskFlag_MinimizeSubtaskErrorText |
+                                                          TaskFlag_ReportingIsSupported |
+                                                          TaskFlag_ReportingIsEnabled) {
+    docUrl = url;
+}
+
 LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(const QString& _accId, const QString& _dbName,
                                                                              const QString& _fp, const QString& _format,
                                                                              const QVariantMap& _hints, bool _openView)
@@ -234,7 +241,11 @@ LoadRemoteDocumentAndAddToProjectTask::LoadRemoteDocumentAndAddToProjectTask(con
 }
 
 void LoadRemoteDocumentAndAddToProjectTask::prepare() {
-    loadRemoteDocTask = new LoadRemoteDocumentTask(accNumber, databaseName, fullpath, fileFormat, hints);
+    if (docUrl.isEmpty()) {
+        loadRemoteDocTask = new LoadRemoteDocumentTask(accNumber, databaseName, fullpath, fileFormat, hints);
+    } else {
+        loadRemoteDocTask = new LoadRemoteDocumentTask(docUrl);
+    }
     loadRemoteDocTask->setReportingSupported(true);
     loadRemoteDocTask->setReportingEnabled(true);
     addSubTask(loadRemoteDocTask);

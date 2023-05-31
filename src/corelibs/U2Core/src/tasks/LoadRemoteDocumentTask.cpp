@@ -199,6 +199,13 @@ void BaseLoadRemoteDocumentTask::createLoadedDocument() {
 //////////////////////////////////////////////////////////////////////////
 // LoadRemoteDocumentTask
 
+LoadRemoteDocumentTask::LoadRemoteDocumentTask(const GUrl& url)
+    : BaseLoadRemoteDocumentTask(),
+    loadDataFromEntrezTask(nullptr) {
+    fileUrl = url;
+    GCOUNTER(cvar, "LoadRemoteDocumentTask");
+}
+
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString& accId, const QString& dbName, const QString& fullPathDir, const QString& fileFormat, const QVariantMap& hints)
     : BaseLoadRemoteDocumentTask(fullPathDir, hints),
       accNumber(accId),
@@ -233,11 +240,19 @@ QString LoadRemoteDocumentTask::generateReport() const {
     CHECK(!hasError(), tr("Failed to download %1 from %2. Error: %3").arg(accNumber).arg(dbName).arg(getError()));
     CHECK(!isCanceled(), {});
 
-    QString res = tr("Document was successfully downloaded: [%1, %2] -> <a href='%3'>%3</a>").arg(dbName).arg(accNumber).arg(fullPath);
-    QString pageLink = RemoteDBRegistry::PAGE_LINKS.value(dbName);
-    SAFE_POINT(!pageLink.isEmpty(), QString("No database found: %1").arg(dbName), res);
+    QString db = dbName;
+    QString acc = accNumber;
+    if (!fileUrl.isEmpty()) {
+        auto res = AppContext::getDBXRefRegistry()->getDbAndAccessionBytUrl(fileUrl.getURLString());
+        db = res.first;
+        acc = res.second;
+    }
 
-    pageLink = pageLink.arg(accNumber);
+    QString res = tr("Document was successfully downloaded: [%1, %2] -> <a href='%3'>%3</a>").arg(db).arg(acc).arg(fullPath);
+    QString pageLink = RemoteDBRegistry::PAGE_LINKS.value(db);
+    SAFE_POINT(!pageLink.isEmpty(), QString("No database found: %1").arg(db), res);
+
+    pageLink = pageLink.arg(acc);
     res += "<br>";
     res += tr("External database link: <a href='%1'>%1</a>").arg(pageLink);
 
@@ -254,8 +269,12 @@ QString LoadRemoteDocumentTask::getFileFormat(const QString& dbid) {
 }
 
 GUrl LoadRemoteDocumentTask::getSourceUrl() {
-    RemoteDBRegistry::getRemoteDBRegistry().convertAlias(dbName);
-    return GUrl(RemoteDBRegistry::getRemoteDBRegistry().getURL(accNumber, dbName));
+    if (!fileUrl.isEmpty()) {
+        return fileUrl;
+    } else {
+        RemoteDBRegistry::getRemoteDBRegistry().convertAlias(dbName);
+        return GUrl(RemoteDBRegistry::getRemoteDBRegistry().getURL(accNumber, dbName));
+    }
 }
 
 QString LoadRemoteDocumentTask::getFileName() {

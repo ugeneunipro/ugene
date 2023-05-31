@@ -57,6 +57,8 @@ public:
                                           const QString& format = QString(),
                                           const QVariantMap& hints = QVariantMap(),
                                           bool openView = true);
+    LoadRemoteDocumentAndAddToProjectTask(const GUrl& url);
+
     void prepare() override;
     QString generateReport() const override;
 
@@ -68,6 +70,7 @@ private:
     QString databaseName;
     QString fileFormat;
     QString fullpath;
+    GUrl docUrl;
     QVariantMap hints;
     bool openView = true;
     LoadRemoteDocumentTask* loadRemoteDocTask = nullptr;

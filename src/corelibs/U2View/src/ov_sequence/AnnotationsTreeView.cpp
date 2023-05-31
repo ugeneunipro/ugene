@@ -1612,11 +1612,7 @@ void AnnotationsTreeView::sl_itemClicked(QTreeWidgetItem* i, int column) {
 
     QString fileUrl = item->getFileUrl(column);
     if (!fileUrl.isEmpty()) {
-        QStringList split = item->text(column).split(":");
-        CHECK_EXT(split.size() == 2, coreLog.error(tr("Incorrect accession number")), );
-
-        auto downloadDir = AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath();
-        Task* task = new LoadRemoteDocumentAndAddToProjectTask(split.last(), split.first(), downloadDir);
+        Task* task = new LoadRemoteDocumentAndAddToProjectTask(fileUrl);
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     } else {
         GUIUtils::runWebBrowser(item->buildLinkURL(column));
