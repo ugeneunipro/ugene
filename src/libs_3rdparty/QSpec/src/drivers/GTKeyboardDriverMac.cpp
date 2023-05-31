@@ -181,52 +181,75 @@ static char toKeyWithNoShift(char key) {
 }
 
 static void patchModKeyFlags(CGKeyCode key, bool isPress, CGEventRef& event, const QList<Qt::Key>& modKeys = {}) {
-    if ((key == kVK_ANSI_M && modKeys.contains(Qt::Key_Shift)) || (key == kVK_Shift && isPress)) {
-        CGEventSetFlags(event, kCGEventFlagMaskShift);
+    auto flags = CGEventGetFlags(event) & (~kCGEventFlagMaskNumericPad) & (~kCGEventFlagMaskSecondaryFn);
+    if ((modKeys.contains(Qt::Key_Shift) && isPress) || (key == kVK_Shift && isPress)) {
+        flags |= kCGEventFlagMaskShift;
     }
+    CGEventSetFlags(event, flags);
 }
 
-static bool keyPressMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
-    CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, true);
+static bool keyPressMac(CGEventSourceRef source, CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
+    CGEventRef event = CGEventCreateKeyboardEvent(source, key, true);
     DRIVER_CHECK(event != NULL, "Can't create event");
     patchModKeyFlags(key, true, event, modKeys);
-    CGEventPost(kCGSessionEventTap, event);
+    CGEventPost(kCGHIDEventTap, event);
     CFRelease(event);
     GTGlobals::sleep(10);
     return true;
 }
 
-static bool keyReleaseMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
-    CGEventRef event = CGEventCreateKeyboardEvent(NULL, key, false);
+static bool keyReleaseMac(CGEventSourceRef source, CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
+    CGEventRef event = CGEventCreateKeyboardEvent(source, key, false);
     DRIVER_CHECK(event != NULL, "Can't create event");
     patchModKeyFlags(key, false, event, modKeys);
-    CGEventPost(kCGSessionEventTap, event);
+    CGEventPost(kCGHIDEventTap, event);
     CFRelease(event);
     GTGlobals::sleep(10);
     return true;
+}
+
+static void dumpState() {
+//    printf("============= Dump keyboard state start\n");
+//    auto state = CGEventSourceFlagsState(kCGEventSourceStateHIDSystemState);
+//    printf("maskAlphaShift %d\n", state & kCGEventFlagMaskAlphaShift);
+//    printf("maskShift %d\n", state & kCGEventFlagMaskShift);
+//    printf("maskControl %d\n", state & kCGEventFlagMaskControl);
+//    printf("maskCommand %d\n", state & kCGEventFlagMaskCommand);
+//    printf("maskAlternate %d\n", state & kCGEventFlagMaskAlternate);
+//    printf("maskHelp %d\n", state & kCGEventFlagMaskHelp);
+//    printf("maskSecondaryFn %d\n", state & kCGEventFlagMaskSecondaryFn);
+//    printf("maskNumericPad %d\n", state & kCGEventFlagMaskNumericPad);
+//    printf("maskNonCoalesced %d\n", state & kCGEventFlagMaskNonCoalesced);
+//    printf("============= Dump keyboard state end\n");
 }
 
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
 #    define GT_METHOD_NAME "keyPress_char"
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
-    //    printf("Key press %c\n", origKey);
+//    printf("Key press %c\n", origKey);
+    dumpState();
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
     if (origKey != keyWithNoShift && modKeys.isEmpty()) {
         modKeys.append(Qt::Key_Shift);
     }
+    auto source = CGEventSourceCreate(kCGEventSourceStateHIDSystemState);
     foreach (Qt::Key mod, modKeys) {
-        keyPressMac(GTKeyboardDriver::key[mod]);
+        keyPressMac(source, GTKeyboardDriver::key[mod]);
     }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
-    return keyPressMac(keyCode, modKeys);
+    keyPressMac(source, keyCode, modKeys);
+    CFRelease(source);
+    dumpState();
+    return true;
 }
 #    undef GT_METHOD_NAME
 
 #    define GT_METHOD_NAME "keyRelease_char"
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
-    //    printf("Key release %c\n", origKey);
+//    printf("Key release %c\n", origKey);
+    dumpState();
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
@@ -234,10 +257,13 @@ bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers)
         modKeys.append(Qt::Key_Shift);
     }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
-    keyReleaseMac(keyCode, modKeys);
+    auto source = CGEventSourceCreate(kCGEventSourceStateHIDSystemState);
+    keyReleaseMac(source, keyCode, modKeys);
     foreach (Qt::Key mod, modKeys) {
-        keyReleaseMac(GTKeyboardDriver::key[mod]);
+        keyReleaseMac(source, GTKeyboardDriver::key[mod]);
     }
+    CFRelease(source);
+    dumpState();
     return true;
 }
 #    undef GT_METHOD_NAME
@@ -245,19 +271,18 @@ bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers)
 bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     foreach (Qt::Key mod, modKeys) {
-        keyPressMac(GTKeyboardDriver::key[mod]);
+        keyPressMac(nullptr, GTKeyboardDriver::key[mod]);
     }
-    return keyPressMac(GTKeyboardDriver::key[key]);
+    keyPressMac(nullptr, GTKeyboardDriver::key[key]);
+    return true;
 }
 
 bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
-    keyReleaseMac(GTKeyboardDriver::key[key]);
-
+    keyReleaseMac(nullptr, GTKeyboardDriver::key[key]);
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     foreach (Qt::Key mod, modKeys) {
-        keyReleaseMac(GTKeyboardDriver::key[mod]);
+        keyReleaseMac(nullptr, GTKeyboardDriver::key[mod]);
     }
-
     return true;
 }
 
