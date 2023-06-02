@@ -410,30 +410,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
 }
 
-<<<<<<< HEAD
-GUI_TEST_CLASS_DEFINITION(test_0016) {
-    //    1. Select {File -> Access remote database} menu item in the main menu.
-    //    2. Fill the dialog:
-    //        Resource ID: A2BC19
-    //        Database: AlphaFold Protein Structure Database
-    //        Save to folder: sandBoxDir
-    //    Expected state: after the downloading task finishes a new document appears in the project
-
-    QList<DownloadRemoteFileDialogFiller::Action> actions;
-
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, {"A2BC19"});
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "AlphaFold Protein Structure Database");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "test_0002");
-    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
-
-    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
-    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-}
-
-=======
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     QList<DownloadRemoteFileDialogFiller::Action> actions;
     actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI GenBank (DNA sequence)");
@@ -528,6 +504,19 @@ GUI_TEST_CLASS_DEFINITION(test_0016_7) {
     GTUtilsNotifications::checkNotificationReportText(os, "https://www.uniprot.org/uniprotkb/D0VTW9/entry");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0016_8) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "AlphaFold Protein Structure Database");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "A2BC19");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://alphafold.ebi.ac.uk/entry/A2BC19");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/murine_cut.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -563,7 +552,30 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsNotifications::checkNotificationReportText(os, { "Failed to download",
                                                             "https://www.ncbi.nlm.nih.gov/nucleotide/NC_001363?report=genbank"});
 }
->>>>>>> ca7b637428ff4f2d4fa3357bad84f9b46f04264c
+
+GUI_TEST_CLASS_DEFINITION(test_0020) {
+    //    1. Select {File -> Access remote database} menu item in the main menu.
+    //    2. Fill the dialog:
+    //        Resource ID: A2BC19
+    //        Database: AlphaFold Protein Structure Database
+    //        Save to folder: sandBoxDir
+    //    Expected state: after the downloading task finishes a new document appears in the project
+
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, {"A2BC19"});
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "AlphaFold Protein Structure Database");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir + "test_0002");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+}
+
+
 
 }  // namespace GUITest_common_scenarios_project_remote_request
 }  // namespace U2
