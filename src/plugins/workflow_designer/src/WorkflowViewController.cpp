@@ -2020,8 +2020,9 @@ static QIcon getToolbarIcon(const QString& srcPath) {
 
 void WorkflowView::hideDashboards() {
     setDashboardActionDecoration(false);
-    tabView->setVisible(false);
     splitter->setVisible(true);
+    tabView->setVisible(false);
+    splitter->setFocus(); // Required by MacOS to prevent switch to another tab.
     setupActions();
 }
 
@@ -2029,6 +2030,7 @@ void WorkflowView::showDashboards() {
     setDashboardActionDecoration(true);
     tabView->setVisible(true);
     splitter->setVisible(false);
+    tabView->setFocus(); // Required by MacOS to prevent switch to another tab.
     setupActions();
 }
 
