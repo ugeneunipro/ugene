@@ -54,17 +54,19 @@ class U2CORE_EXPORT RemoteDBRegistry {
     QMap<QString, QString> httpDBs;
     QMap<QString, QString> hints;
     QMap<QString, QString> aliases;
-    QMap<QString, QString> externalLinks;
 
 public:
+    // Links to the database (to open in browser) by the database name.
+    static const QMap<QString, QString> EXTERNAL_LINKS;
+    // Links to the database (to open in browser) to open a sequence page by database name.
+    static const QMap<QString, QString> PAGE_LINKS;
+
     QString getURL(const QString& accId, const QString& dbName) const;
     QString getDbEntrezName(const QString& dbName) const;
     void convertAlias(QString& dbName) const;
     QList<QString> getDBs() const;
     bool hasDbId(const QString& dbId) const;
     QString getHint(const QString& dbName) const;
-    // Returns the link to the database (to open in browser) by the database name.
-    QString getExternalLinkByName(const QString& dbName) const;
     // TODO: move this to AppContext
     static RemoteDBRegistry& getRemoteDBRegistry();
 
@@ -149,7 +151,8 @@ class U2CORE_EXPORT LoadRemoteDocumentTask : public BaseLoadRemoteDocumentTask {
 public:
     LoadRemoteDocumentTask(const GUrl& url);
     LoadRemoteDocumentTask(const QString& accId, const QString& dbName, const QString& fullPathDir = "", const QString& fileFormat = "", const QVariantMap& hints = QVariantMap());
-    virtual void prepare();
+    void prepare() override;
+    QString generateReport() const override;
 
     QString getAccNumber() const {
         return accNumber;
@@ -168,7 +171,7 @@ private:
     QString getRetType() const;
 
     GUrl fileUrl;
-    LoadDataFromEntrezTask* loadDataFromEntrezTask;
+    LoadDataFromEntrezTask* loadDataFromEntrezTask = nullptr;
     QString accNumber;
     QString dbName;
 };

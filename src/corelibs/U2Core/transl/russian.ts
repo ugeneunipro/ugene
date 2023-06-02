@@ -4,52 +4,52 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="531"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="560"/>
         <source>This is not ESearch result!</source>
         <translation>Это не является результатом ESearch!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="572"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="601"/>
         <source>This is not a ESummary result!</source>
         <translation>Это не является результатом ESummary!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="650"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="679"/>
         <source>Use Ensembl ID. For example: %1 or %2</source>
         <translation>Используйте Ensembl ID. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="651"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="680"/>
         <source>Use Genbank DNA accession number. For example: %1 or %2</source>
         <translation>Используйте Genbank DNA Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="652"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="681"/>
         <source>Use Genbank protein accession number. For example: %1</source>
         <translation>Используйте Genbank Protein Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="653"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="682"/>
         <source>Use PDB molecule four-letter identifier. For example: %1 or %2</source>
         <translation>Используйте 4-х символьный идентификатор PDB. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="654"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="683"/>
         <source>Use SWISS-PROT accession number. For example: %1 or %2</source>
         <translation>Используйте SWISS-PROT Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="655"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="684"/>
         <source>Use UniProtKB/Swiss-Prot accession number. For example: %1</source>
         <translation>Используйте UniProtKB/Swiss-Prot Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="656"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="685"/>
         <source>Use UniProtKB/TrEMBL accession number. For example: %1</source>
         <translation>Используйте UniProtKB/TrEMBL Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="684"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="713"/>
         <source>Use %1 unique identifier.</source>
         <translation>Используйте уникальный идентификатор %1.</translation>
     </message>
@@ -79,7 +79,7 @@
         <translation>Неподдерживаемый тип объекта: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="515"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="511"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Невозможно определить алфавит последовательности. Возможно это вызвано тем, что некоторые из последовательностей являются пустыми.</translation>
     </message>
@@ -477,7 +477,7 @@
 <context>
     <name>TextUtils</name>
     <message>
-        <location filename="../src/util/TextUtils.cpp" line="187"/>
+        <location filename="../src/util/TextUtils.cpp" line="176"/>
         <source>The text file can&apos;t be read. Check the file encoding and make sure the file is not corrupted.</source>
         <translation>Текстовый файл не может быть прочитан. Проверьте кодировку файла и убедитесь, что файл не поврежден.</translation>
     </message>
@@ -509,9 +509,13 @@
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddDocumentTask.cpp" line="93"/>
+        <location filename="../src/tasks/AddDocumentTask.cpp" line="94"/>
+        <source>Document was removed.</source>
+        <translation>Документ был удален.</translation>
+    </message>
+    <message>
         <source>Document was removed</source>
-        <translation>Документ был удалён</translation>
+        <translation type="vanished">Документ был удалён</translation>
     </message>
 </context>
 <context>
@@ -567,24 +571,21 @@
 <context>
     <name>U2::AppResourcePool</name>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="87"/>
         <source>Threads</source>
-        <translation>Потоки</translation>
+        <translation type="vanished">Потоки</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="94"/>
         <source>Memory</source>
-        <translation>Память</translation>
+        <translation type="vanished">Память</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="94"/>
+        <location filename="../src/globals/AppResources.cpp" line="96"/>
         <source>Mb</source>
         <translation>Mb</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="97"/>
         <source>Project</source>
-        <translation>Проект</translation>
+        <translation type="vanished">Проект</translation>
     </message>
 </context>
 <context>
@@ -598,12 +599,12 @@
 <context>
     <name>U2::BaseLoadRemoteDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="63"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="90"/>
         <source>Load remote document</source>
         <translation>Загрузка удаленного документа</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="135"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="162"/>
         <source>Unknown file format!</source>
         <translation>Неизвестный формат файла!</translation>
     </message>
@@ -1306,60 +1307,72 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::EntrezQueryTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="503"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="532"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление в %1</translation>
     </message>
 </context>
 <context>
+    <name>U2::ExportSequencesTask</name>
+    <message>
+        <location filename="../src/tasks/ExportSequencesTask.cpp" line="46"/>
+        <source>Export selected sequences from alignment</source>
+        <translation>Экспорт выделенных последовательностей из выравнивания</translation>
+    </message>
+</context>
+<context>
     <name>U2::ExternalToolRunTask</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="53"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="51"/>
         <source> tool</source>
         <translation> инструмент</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="63"/>
         <source>External tool is absent</source>
-        <translation>Внешний иструмент отсутствует</translation>
+        <translation type="vanished">Внешний иструмент отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="65"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="62"/>
+        <source>External tool &quot;%1&quot; is absent</source>
+        <translation>Встроенный инструмент &quot;%1&quot; отсутствует</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="63"/>
         <source>External tool &apos;%1&apos; doesn&apos;t exist</source>
         <translation>Внешний инструмент &quot;%1&quot; не существует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="112"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="113"/>
         <source>Can not run %1 tool.</source>
         <translation>Невозможно запустить %1 инструмент.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="114"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="115"/>
         <source>Can not run %1 tool. May be tool path &apos;%2&apos; not valid?</source>
         <translation>Невозможно запустить %1 инструмент. Возможно путь до инструмента &apos;%2&apos; указан неверно?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="127"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="128"/>
         <source>Unable to cancel tool %1 for 10 seconds. Stop &quot;%2&quot; process manually by your OS task manager.</source>
         <translation>Невозможно отменить инструмент %1 в течение 10 секунд. Остановите процесс &quot;%2&quot; вручную с помощью диспетчера задач ОС.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="129"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="130"/>
         <source>Tool %1 is cancelled</source>
         <translation>Инструмент %1 отменен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="141"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="142"/>
         <source>%1 tool exited with the following error: %2 (Code: %3)</source>
         <translation>Инструмент %1 завершил работу со следующей ошибкой: %2 (Код: %3)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="152"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="153"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 инструмент завершил работу с кодом %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="154"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="155"/>
         <source>Tool %1 finished successfully</source>
         <translation>Инструмент %1 завершил работу корректно</translation>
     </message>
@@ -1367,44 +1380,79 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="340"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="341"/>
         <source>Can not remove temporary folder: path is empty.</source>
         <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="345"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="346"/>
         <source>Can not remove folder for temporary files, folder &quot;%1&quot;.</source>
         <translation>Не удается удалить папку для временных файлов, папка &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="358"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="359"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="389"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="390"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="410"/>
         <source>A tool with the ID %1 is absent</source>
         <translation>Инструмент %1 отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="409"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="414"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="453"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="458"/>
         <source>Working folder is &quot;%1&quot;</source>
         <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="459"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="464"/>
         <source>Launching %1 tool: %2</source>
         <translation>Запуск инструмента %1: %2 {1 ?}</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="602"/>
+        <source>One of the arguments passed to &quot;%1&quot; external tool is not in Latin alphabet. Make sure that the input and output files and folders are located in the paths which contain only Latin characters. Current problem path is: &quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="614"/>
+        <source>Your &quot;Temporary files&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="624"/>
+        <source>&quot;%1&quot; external tool located in path which contains non-latin symbols. Please change it location to path which contains only latin symbols, set the new path in Preferences on the External tools and try again. Current problem path is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="634"/>
+        <source>Your &quot;Build indexes&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="644"/>
+        <source>One of the arguments passed to &quot;%1&quot; external tool contains spaces. Make sure that the input and output files and folders are located in the paths which contain no spaces. Current problem path is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="656"/>
+        <source>Your &quot;Temporary files&quot; directory contains spaces, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="666"/>
+        <source>&quot;%1&quot; external tool located in path which contains spaces symbols. Please change it location to path which contains no spaces,  set the new path in Preferences on the External tools and try again. Current problem path is: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1418,7 +1466,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::FailTask</name>
     <message>
-        <location filename="../src/tasks/FailTask.h" line="33"/>
+        <location filename="../src/tasks/FailTask.h" line="32"/>
         <source>Failure</source>
         <translation>Ошибка</translation>
     </message>
@@ -1591,7 +1639,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>%1 это папка [%2].</translation>
     </message>
     <message>
-        <location filename="../src/util/GUrlUtils.h" line="133"/>
+        <location filename="../src/util/GUrlUtils.h" line="132"/>
         <source>Output URL</source>
         <translation>Выходной путь</translation>
     </message>
@@ -1621,8 +1669,12 @@ The session database file is removed after closing of UGENE.</source>
     </message>
     <message>
         <location filename="../src/io/HttpFileAdapter.cpp" line="122"/>
+        <source>GET %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Downloading from %1</source>
-        <translation>Загрузка с %1</translation>
+        <translation type="vanished">Загрузка с %1</translation>
     </message>
     <message>
         <location filename="../src/io/HttpFileAdapter.cpp" line="307"/>
@@ -1814,168 +1866,168 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::L10N</name>
     <message>
-        <location filename="../src/globals/L10n.h" line="37"/>
+        <location filename="../src/globals/L10n.h" line="36"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="40"/>
+        <location filename="../src/globals/L10n.h" line="39"/>
         <source>Warning!</source>
         <translation>Внимание!</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="46"/>
+        <location filename="../src/globals/L10n.h" line="45"/>
         <source>Out of memory!</source>
         <translation>Недостаточно памяти!</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="49"/>
+        <location filename="../src/globals/L10n.h" line="48"/>
         <source>Internal error!</source>
         <translation>Внутренняя ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="66"/>
+        <location filename="../src/globals/L10n.h" line="65"/>
         <source>Write error: &apos;%1&apos;</source>
         <translation>Ошибка записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="69"/>
+        <location filename="../src/globals/L10n.h" line="68"/>
         <source>Read error: %1</source>
         <translation>Ошибка чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="72"/>
+        <location filename="../src/globals/L10n.h" line="71"/>
         <source>File is too large: &apos;%1&apos;</source>
         <translation>Слишком большой размер файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="60"/>
+        <location filename="../src/globals/L10n.h" line="59"/>
         <source>Error opening file for reading: &apos;%1&apos;</source>
         <translation>Ошибка открытия файла для чтения: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="55"/>
+        <location filename="../src/globals/L10n.h" line="54"/>
         <source>Internal error! The object unexpectedly does not exist: </source>
         <translation>Внутренняя ошибка! Объект неожиданно не существует: </translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="63"/>
+        <location filename="../src/globals/L10n.h" line="62"/>
         <source>Error opening file for writing: &apos;%1&apos;</source>
         <translation>Ошибка открытия файла для записи: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="75"/>
+        <location filename="../src/globals/L10n.h" line="74"/>
         <source>File not found: &apos;%1&apos;</source>
         <translation>Файл не найден: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="78"/>
+        <location filename="../src/globals/L10n.h" line="77"/>
         <source>&apos;%1&apos; is not a file</source>
         <translation>&apos;%1&apos; это не файл</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="81"/>
+        <location filename="../src/globals/L10n.h" line="80"/>
         <source>Folder not found: &apos;%1&apos;</source>
         <translation>Папка не найдена: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="84"/>
+        <location filename="../src/globals/L10n.h" line="83"/>
         <source>Error opening folder: &apos;%1&apos;</source>
         <translation>Ошибка открытия папки: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="87"/>
+        <location filename="../src/globals/L10n.h" line="86"/>
         <source>&apos;%1&apos; is not a folder</source>
         <translation>&apos;%1&apos; это не папка</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="91"/>
+        <location filename="../src/globals/L10n.h" line="90"/>
         <source>&apos;%1&apos; does not match database object URL format</source>
         <translation>&apos;%1&apos; не соответствует формату пути объекта базы данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="94"/>
+        <location filename="../src/globals/L10n.h" line="93"/>
         <source>&apos;%1&apos; does not match database folder URL format</source>
         <translation>&apos;%1&apos; не соответствует формату пути папки базы данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="97"/>
+        <location filename="../src/globals/L10n.h" line="96"/>
         <source>Unable to connect to the database &apos;%1&apos;. Check your connection settings in File -&gt; Connect to shared database</source>
         <translation>Невозможно подключиться к базе данных &apos;%1&apos;. Проверьте настройки соединения в настройках Файл -&gt; Подключение к удаленной базе данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="100"/>
+        <location filename="../src/globals/L10n.h" line="99"/>
         <source>Unable to find the object &apos;%1&apos; in the database &apos;%2&apos;</source>
         <translation>Невозможно найти объект &apos;%1&apos; в базе данных &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="103"/>
+        <location filename="../src/globals/L10n.h" line="102"/>
         <source>Unable to find the folder &apos;%1&apos; with the specified path in the database &apos;%2&apos;</source>
         <translation>Невозможно найти папку &apos;%1&apos; по указанному пути в базе данных &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="106"/>
+        <location filename="../src/globals/L10n.h" line="105"/>
         <source>You do not have write permissions to the database &apos;%1&apos;</source>
         <translation>У вас нет прав на запись в базу данных &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="110"/>
+        <location filename="../src/globals/L10n.h" line="109"/>
         <source>Invalid file format. Expected file format: %1,  File: %2</source>
         <translation>Неверный формат файла. Ожидаемый формат: %1, Файл: %2</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="113"/>
+        <location filename="../src/globals/L10n.h" line="112"/>
         <source>Invalid file format! File: %1</source>
         <translation>Неверный формат файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="118"/>
+        <location filename="../src/globals/L10n.h" line="117"/>
         <source>Can&apos;t save image to file %1, format %2</source>
         <translation>Не могу сохранить изображение в файл %1 формата %2</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="121"/>
+        <location filename="../src/globals/L10n.h" line="120"/>
         <source>Document not found: %1</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="125"/>
+        <location filename="../src/globals/L10n.h" line="124"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="129"/>
+        <location filename="../src/globals/L10n.h" line="128"/>
         <source>Object is read only: %1</source>
         <translation>Объект только для чтения: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="133"/>
+        <location filename="../src/globals/L10n.h" line="132"/>
         <source> bp</source>
         <translatorcomment>пара остатков</translatorcomment>
         <translation> п.о</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="141"/>
+        <location filename="../src/globals/L10n.h" line="140"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="144"/>
+        <location filename="../src/globals/L10n.h" line="143"/>
         <source>Reverse-complementary</source>
         <translation>Обратно-комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="148"/>
+        <location filename="../src/globals/L10n.h" line="147"/>
         <source>Required</source>
         <translation>Требуемый</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="157"/>
+        <location filename="../src/globals/L10n.h" line="156"/>
         <source>ugene-active-translation-language-code</source>
         <translation>ru</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="43"/>
+        <location filename="../src/globals/L10n.h" line="42"/>
         <source>Internal error, bad argument: %1</source>
         <translation>Внутренняя ошибка! Неверный аргумент: %1</translation>
     </message>
@@ -1989,17 +2041,17 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDataFromEntrezTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="395"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="426"/>
         <source>Downloading file %1</source>
         <translation>Загрузка с %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="405"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="435"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="446"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="475"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление на %1</translation>
     </message>
@@ -2066,12 +2118,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadRemoteDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="202"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="222"/>
         <source>Undefined database: &apos;%1&apos;</source>
         <translation>Неопределенная база данных: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="253"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="233"/>
+        <source>Failed to download %1 from %2. Error: %3</source>
+        <translation>Невозможно скачать %1 из %2. Ошибка: %3</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="236"/>
+        <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</source>
+        <translation>Документ был успешно загружен: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="242"/>
+        <source>External database link: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
+        <translation>Внешняя ссылка на базу данных: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="284"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
     </message>
@@ -2268,97 +2335,97 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::PrimerStatistics</name>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="43"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="40"/>
         <source>The primers contain a character from the Extended DNA alphabet.</source>
         <translation>Праймеры содержат символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="45"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="42"/>
         <source>The forward primer contains a character from the Extended DNA alphabet.</source>
         <translation>Прямой праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="47"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="44"/>
         <source>The reverse primer contains a character from the Extended DNA alphabet.</source>
         <translation>Обратный праймер содержит символы из расширенного ДНК алфавита.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="49"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="46"/>
         <source>The forward primer length should be between %1 and %2 bp.</source>
         <translation>Длина прямого праймера должна быть между %1 и %2 нк.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="51"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="48"/>
         <source>The reverse primer length should be between %1 and %2 bp.</source>
         <translation>Длина обратного праймера должна быть между %1 и %2 нк.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="54"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="51"/>
         <source> Unable to calculate primer statistics.</source>
         <translation> Невозможно рассчитать статистики праймера.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="150"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="123"/>
         <source>Unexpected symbol: %1</source>
         <translation>Неизвестный символ: %1</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="243"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="211"/>
         <source>low GC-content</source>
         <translation>низкий GC-состав</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="244"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="212"/>
         <source>high GC-content</source>
         <translation>высокий GC-состав</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="250"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="218"/>
         <source>low melting temperature</source>
         <translation>низкая температура плавления</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="251"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="219"/>
         <source>high melting temperature</source>
         <translation>высокая температура плавления</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="257"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="225"/>
         <source>low GC clamp</source>
         <translation>низкий зажим GC</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="263"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="231"/>
         <source>high base runs value</source>
         <translation>высокая базовая стоимость пробега</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="270"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="238"/>
         <source>forward primer has %1.</source>
         <translation>прямой праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="272"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="240"/>
         <source>reverse primer has %1.</source>
         <translation>обратный праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="344"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="312"/>
         <source>Criteria</source>
         <translation>Критерий</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="345"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="313"/>
         <source>Valid Values</source>
         <translation>Допустимые значения</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="346"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="314"/>
         <source>Forward</source>
         <translation>Прямой</translation>
     </message>
     <message>
-        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="347"/>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="315"/>
         <source>Reverse</source>
         <translation>Обратный</translation>
     </message>
@@ -2722,7 +2789,7 @@ UGENE содержит несохраненные изменения.</translati
     <message>
         <location filename="../src/dbi/U2DbiRegistry.cpp" line="280"/>
         <source>Invalid database type: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не верный тип базы данных: %1</translation>
     </message>
     <message>
         <location filename="../src/dbi/U2DbiRegistry.cpp" line="306"/>
@@ -2778,8 +2845,7 @@ UGENE содержит несохраненные изменения.</translati
         <translation>Алфавит не найден!</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="480"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="706"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="702"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Не удалось распознать алфавит!</translation>
     </message>

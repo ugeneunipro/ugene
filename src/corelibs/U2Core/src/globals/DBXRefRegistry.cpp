@@ -22,9 +22,11 @@
 #include "DBXRefRegistry.h"
 
 #include <QFile>
+#include <QRegularExpression>
 #include <QTextStream>
 
 #include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -54,6 +56,42 @@ DBXRefRegistry::DBXRefRegistry(QObject* p)
     }
     file.close();
 }
+
+QPair<QString, QString> DBXRefRegistry::getDbAndAccessionBytUrl(const QString& url) const {
+    const auto& dbNames = refsByKey.keys();
+    QPair<QString, QString> result;
+    for (const auto& dbName : qAsConst(dbNames)) {
+        const auto& dbXref = refsByKey.value(dbName);
+        CHECK_CONTINUE(!dbXref.fileUrl.isEmpty());
+
+        auto splitUrl = dbXref.fileUrl.split("%1");
+        QString regex;
+        static const QString MATCH_REGEX = "(.*)";
+        if (dbXref.fileUrl.startsWith("%1")) {
+            regex += MATCH_REGEX;
+        }
+        for (const auto& partUrl : qAsConst(splitUrl)) {
+            regex += QString(R"(%1)").arg(partUrl);
+            regex += MATCH_REGEX;
+        }
+        regex = regex.left(regex.size() - MATCH_REGEX.size());
+        if (dbXref.fileUrl.endsWith("%1")) {
+            regex += MATCH_REGEX;
+        }
+
+        QRegularExpression regExp(regex);
+        QRegularExpressionMatch match = regExp.match(url);
+        CHECK_CONTINUE(match.hasMatch());
+
+        result.first = dbName;
+        result.second = match.captured(1);
+        break;
+    }
+    SAFE_POINT(!result.first.isEmpty(), QString("Unexpected URL: %1").arg(url), result);
+
+    return result;
+}
+
 QScriptValue DBXRefRegistry::toScriptValue(QScriptEngine* engine, DBXRefRegistry* const& in) {
     return engine->newQObject(in);
 }

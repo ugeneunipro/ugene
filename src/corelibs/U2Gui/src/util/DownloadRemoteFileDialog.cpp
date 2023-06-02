@@ -67,7 +67,9 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget* p)
 
     RemoteDBRegistry& registry = RemoteDBRegistry::getRemoteDBRegistry();
     connect(ui->databasesBox, &QComboBox::currentTextChanged, this, [this](const QString& text) {
-        auto link = RemoteDBRegistry::getRemoteDBRegistry().getExternalLinkByName(text);
+        auto link = RemoteDBRegistry::EXTERNAL_LINKS.value(text);
+        SAFE_POINT(!link.isEmpty(), QString("No database found: %1").arg(text), );
+
         auto sign = DB_EXTERNAL_LINK.arg(link);
         ui->lbExternalLink->setText(sign);
     });
@@ -196,7 +198,6 @@ void DownloadRemoteFileDialog::accept() {
     QVariantMap hints;
     hints.insert(FORCE_DOWNLOAD_SEQUENCE_HINT, ui->chbForceDownloadSequence->isVisible() && ui->chbForceDownloadSequence->isChecked());
 
-    int taskCount = 0;
     bool addToProject = ui->chbAddToProjectCheck->isChecked();
     if (addToProject && resIds.size() >= 100) {
         QString message = tr("There are more than 100 files found for download.\nAre you sure you want to open all of them?");
@@ -207,21 +208,19 @@ void DownloadRemoteFileDialog::accept() {
             addToProject = false;
         }
     }
-    bool hasLoadOnlyDocuments = false;
-    foreach (const QString& resId, resIds) {
-        LoadRemoteDocumentMode mode = LoadRemoteDocumentMode_LoadOnly;
-        if (addToProject) {
-            mode = taskCount < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? LoadRemoteDocumentMode_OpenView : LoadRemoteDocumentMode_AddToProject;
+    for (int i = 0; i < resIds.size(); i++) {
+        if (!addToProject) {
+            auto task = new LoadRemoteDocumentTask(resIds[i], dbId, fullPath, fileFormat, hints);
+            task->setReportingSupported(true);
+            task->setReportingEnabled(true);
+            tasks << task;
+        } else {
+            bool openView = i < OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS ? true : false;
+            tasks << new LoadRemoteDocumentAndAddToProjectTask(resIds[i], dbId, fullPath, fileFormat, hints, openView);
         }
-        hasLoadOnlyDocuments = hasLoadOnlyDocuments || mode == LoadRemoteDocumentMode_LoadOnly;
-        tasks.append(new LoadRemoteDocumentAndAddToProjectTask(resId, dbId, fullPath, fileFormat, hints, mode));
-        taskCount++;
     }
 
-    TaskFlags flags = TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported;
-    if (hasLoadOnlyDocuments) {
-        flags = flags | TaskFlag_ReportingIsEnabled;
-    }
+    TaskFlags flags = TaskFlag_NoRun | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled;
     Task* topLevelTask = new MultiTask(tr("Download remote documents"), tasks, false, flags);
     AppContext::getTaskScheduler()->registerTopLevelTask(topLevelTask);
 

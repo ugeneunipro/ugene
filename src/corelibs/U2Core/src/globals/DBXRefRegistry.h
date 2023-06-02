@@ -64,6 +64,10 @@ public:
         return refsByKey;
     }
 
+    // Finds a database and accession, which have been used when @url was created
+    // Return pair, where database name is the first, accession number is the second
+    QPair<QString, QString> getDbAndAccessionBytUrl(const QString& url) const;
+
 private:
     static QScriptValue toScriptValue(QScriptEngine* engine, DBXRefRegistry* const& in);
     static void fromScriptValue(const QScriptValue& object, DBXRefRegistry*& out);

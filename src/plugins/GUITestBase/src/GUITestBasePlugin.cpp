@@ -2149,7 +2149,20 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0013);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0014);
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0015);
+<<<<<<< HEAD
     REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016);
+=======
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016_1)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016_2)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016_3)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016_4)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016_5)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016_6)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0016_7)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0017)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0018)
+    REGISTER_TEST(GUITest_common_scenarios_project_remote_request::test_0019)
+>>>>>>> ca7b637428ff4f2d4fa3357bad84f9b46f04264c
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/toggle view/

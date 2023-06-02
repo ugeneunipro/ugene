@@ -34,6 +34,7 @@
 #include <QToolTip>
 #include <QVBoxLayout>
 
+#include <U2Core/AppSettings.h>
 #include <U2Core/AnnotationModification.h>
 #include <U2Core/AnnotationSelection.h>
 #include <U2Core/AnnotationSettings.h>
@@ -49,6 +50,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -1607,6 +1609,7 @@ void AnnotationsTreeView::sl_itemClicked(QTreeWidgetItem* i, int column) {
     if (lastMB != Qt::LeftButton || item == nullptr || !item->isColumnLinked(column)) {
         return;
     }
+
     QString fileUrl = item->getFileUrl(column);
     if (!fileUrl.isEmpty()) {
         Task* task = new LoadRemoteDocumentAndAddToProjectTask(fileUrl);

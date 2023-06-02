@@ -29,18 +29,23 @@
 #include <QDir>
 
 #include <U2View/AnnotatedDNAViewFactory.h>
+#include <U2View/AnnotationsTreeView.h>
 #include <U2View/MaEditorFactory.h>
 
 #include "GTTestsProjectRemoteRequest.h"
+#include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsNotifications.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/GetSequenceByIdFiller.h"
+
 namespace U2 {
 
 namespace GUITest_common_scenarios_project_remote_request {
@@ -405,6 +410,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
 }
 
+<<<<<<< HEAD
 GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    1. Select {File -> Access remote database} menu item in the main menu.
     //    2. Fill the dialog:
@@ -427,6 +433,137 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 }
 
+=======
+GUI_TEST_CLASS_DEFINITION(test_0016_1) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI GenBank (DNA sequence)");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "NC_001363");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.ncbi.nlm.nih.gov/nucleotide/NC_001363?report=genbank");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_2) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI protein sequence database");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "AAA59172.1");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.ncbi.nlm.nih.gov/protein/AAA59172.1?report=genbank");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_3) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "ENSEMBL");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "ENSG00000205571");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.ensembl.org/id/ENSG00000205571");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_4) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "PDB");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "3INS");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.rcsb.org/structure/3INS");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_5) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "SWISS-PROT");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "Q9IGQ6");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTUtilsDialog::add(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.uniprot.org/uniprotkb/Q9IGQ6/entry");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_6) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "UniProtKB/Swiss-Prot");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "P16152");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTUtilsDialog::add(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.uniprot.org/uniprotkb/P16152/entry");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0016_7) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "UniProtKB/TrEMBL");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "D0VTW9");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::EnterSaveToDirectoryPath, sandBoxDir);
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTUtilsDialog::add(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.uniprot.org/uniprotkb/D0VTW9/entry");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0017) {
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/murine_cut.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::expandItem(os, "CDS");
+    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "db_xref"), AnnotationsTreeView::COLUMN_VALUE);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.uniprot.org/uniprotkb/P03334/entry");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0018) {
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042);
+    GTUtilsDialog::waitForDialog(os, new GetSequenceByIdFiller(os, sandBoxDir, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Fetch sequences from remote database",
+                                                                  "Fetch sequences by 'db_xref' from 'CDS'" }));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, "https://www.uniprot.org/uniprotkb/P03334/entry");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0019) {
+    QList<DownloadRemoteFileDialogFiller::Action> actions;
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetDatabase, "NCBI GenBank (DNA sequence)");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::SetResourceIds, "qwerty,NC_001363");
+    actions << DownloadRemoteFileDialogFiller::Action(DownloadRemoteFileDialogFiller::ClickOk, "");
+
+    //GTUtilsNotifications::waitForNotification(os, false, "Failed to download");
+    GTUtilsDialog::waitForDialog(os, new DownloadRemoteFileDialogFiller(os, actions));
+    GTMenu::clickMainMenuItem(os, { "File", "Access remote database..." }, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, { "Failed to download",
+                                                            "https://www.ncbi.nlm.nih.gov/nucleotide/NC_001363?report=genbank"});
+}
+>>>>>>> ca7b637428ff4f2d4fa3357bad84f9b46f04264c
 
 }  // namespace GUITest_common_scenarios_project_remote_request
 }  // namespace U2
