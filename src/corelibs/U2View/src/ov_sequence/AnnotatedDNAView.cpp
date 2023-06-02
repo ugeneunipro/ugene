@@ -34,6 +34,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/BioStruct3DObject.h>
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
@@ -265,7 +266,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
     ADVSequenceObjectContext* ctx;
     QList<DNAAlphabetType> alphabets;
 
-    bool has3DObj = false;
+    bool isPdbFormat = false;
     for (int i = 0; i < seqViews.size(); i++) {
         if (seqViews[i] != nullptr) {
             ctx = seqViews[i]->getActiveSequenceContext();
@@ -274,25 +275,24 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
                 if (alphabet) {
                     alphabets.append(alphabet->getType());
                 }
-                if (!has3DObj) {
+                if (!isPdbFormat) {
                     auto seqObj = ctx->getSequenceObject();
                     SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("U2SequenceObject"), nullptr);
 
                     auto curDoc = seqObj->getDocument();
-                    SAFE_POINT(curDoc != nullptr, L10N::nullPointerError("Document"), nullptr);
+                    SAFE_POINT(curDoc != nullptr, L10N::nullPointerError("U2Document"), nullptr);
 
-                    auto objects = curDoc->getObjects();
-                    for (auto obj : objects) {
-                        auto bio3DObj = qobject_cast<BioStruct3DObject*>(obj);
-                        CHECK_CONTINUE(bio3DObj != nullptr);
-                        has3DObj = true;
+                    auto format = curDoc->getDocumentFormat();
+                    SAFE_POINT(format != nullptr, L10N::nullPointerError("U2DocumentFormat"), nullptr);
+
+                    if (format->getFormatId() == BaseDocumentFormats::PLAIN_PDB) {
+                        isPdbFormat = true;
                     }
-
                 }
             }
         }
     }
-    filters.append(new OPFactoryFilterVisitor(ObjViewType_SequenceView, alphabets, has3DObj));
+    filters.append(new OPFactoryFilterVisitor(ObjViewType_SequenceView, alphabets, isPdbFormat));
 
     QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactoriesForSeqView) {
