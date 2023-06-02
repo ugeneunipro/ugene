@@ -2027,8 +2027,8 @@ void WorkflowView::hideDashboards() {
 
 void WorkflowView::showDashboards() {
     setDashboardActionDecoration(true);
-    splitter->setVisible(false);
     tabView->setVisible(true);
+    splitter->setVisible(false);
     setupActions();
 }
 
