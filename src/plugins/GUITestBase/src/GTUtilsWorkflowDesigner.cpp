@@ -175,7 +175,7 @@ void GTUtilsWorkflowDesigner::stopWorkflow(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "returnToWorkflow"
 void GTUtilsWorkflowDesigner::returnToWorkflow(HI::GUITestOpStatus& os) {
-    GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "To Workflow Designer")));
+    GTWidget::click(os, getGotoWorkflowButton(os));
 }
 #undef GT_METHOD_NAME
 
