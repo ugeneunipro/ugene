@@ -224,7 +224,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
-			src/tests/common_scenarios/entropy/GTTestsEntropyCalculation.h \
+            src/tests/common_scenarios/entropy/GTTestsEntropyCalculation.h \
             src/tests/common_scenarios/fasttree/GTTestsFastTree.h \
             src/tests/common_scenarios/genecut/GTTestsGeneCut.h \
             src/tests/common_scenarios/iqtree/GTTestsIQTree.h \

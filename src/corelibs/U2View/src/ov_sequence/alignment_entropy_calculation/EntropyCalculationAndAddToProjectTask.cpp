@@ -29,7 +29,7 @@ EntropyCalculationAndAddToProjectTask::EntropyCalculationAndAddToProjectTask(Ann
                                                                               const QString& _alignmentFilePath,
                                                                               const QString& _saveToPath,
                                                                               bool _addToProject)
-    : Task(tr("Alignment entropy calculation and adding to project"), TaskFlags_FOSE_COSC),
+    : Task(tr("Alignment entropy calculation and adding to project"), TaskFlags_NR_FOSE_COSC),
       annotatedDNAView(_annotatedDNAView),
       alignmentFilePath(_alignmentFilePath),
       saveToPath(_saveToPath),
@@ -39,19 +39,14 @@ EntropyCalculationAndAddToProjectTask::EntropyCalculationAndAddToProjectTask(Ann
 void EntropyCalculationAndAddToProjectTask::prepare() {
     entropyCalculationTask = new EntropyCalculationTask(annotatedDNAView, alignmentFilePath, saveToPath);
     addSubTask(entropyCalculationTask);
-    CHECK_OP(stateInfo, );
-}
-
-void EntropyCalculationAndAddToProjectTask::run() {
 }
 
 QList<Task*> EntropyCalculationAndAddToProjectTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
+    CHECK_OP(stateInfo, res);
     if (subTask == entropyCalculationTask) {
-        CHECK_OP(stateInfo, res);
         if (addToProject) {
             Task* openTask = AppContext::getProjectLoader()->openWithProjectTask(saveToPath);
-            CHECK_OP(stateInfo, res);
             res << openTask;
         }
     }

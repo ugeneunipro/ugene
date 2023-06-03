@@ -61,7 +61,7 @@ void EntropyCalculationWidget::initSaveController() {
     conf.saveTitle = tr("Save file");
     conf.defaultFormatId = BaseDocumentFormats::PLAIN_PDB;
 
-    //TODO: replace regex with getting the opened file name
+    //get save file name from AnnotatedDnaView
     QRegularExpression exprBetweenBrackets("\\[(.*)\\]");
     QRegularExpressionMatch match = exprBetweenBrackets.match(annotatedDnaView->getName());
     conf.defaultFileName = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/" 

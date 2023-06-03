@@ -54,6 +54,7 @@ void EntropyCalculationTask::prepare() {
     addSubTask(loadDocumentTask);
 }
 
+
 void EntropyCalculationTask::run() {
     calculateShannonEntropy();
     normalizeEntropy();
@@ -68,7 +69,7 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         auto objects = doc->getObjects();
         CHECK_EXT(objects.size() == 1, setError(tr("More than 1 object found at %1").arg(alignmentFilePath)), res);
         alignment = qobject_cast<MultipleSequenceAlignmentObject*>(objects.at(0));
-        CHECK_EXT(alignment != nullptr, setError(tr("Cannot cast to MultipleSequenceAlignmentObject: %1").arg(alignmentFilePath)), res);
+        CHECK_EXT(alignment != nullptr, setError(tr("Multiple alignment is expected as the input file: %1").arg(alignmentFilePath)), res);
         rollSequenceName();
         auto context = annotatedDNAView->getActiveSequenceContext();
         SAFE_POINT_EXT(context != nullptr, setError(L10N::nullPointerError("Active sequence context")), res);
@@ -79,26 +80,26 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         sequence.setName(newSequenceName);
         chainId = seqObject->getSequenceInfo().value("CHAIN_ID").toInt();
         addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, {sequence});
-        CHECK_OP(stateInfo, res);
         res << addSequenceTask;
     } else if (subTask == addSequenceTask) {
         qint64 rowId = alignment->getMultipleAlignment()->getRow(newSequenceName)->getRowId();
         realignSequencesTask = new RealignSequencesInAlignmentTask(alignment, {rowId}, 
             BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE);
-        CHECK_OP(stateInfo, res);
         res << realignSequencesTask;
     }
     return res;
 }
 
+/*save sequence name as it might be changed after alignment*/
 void EntropyCalculationTask::rollSequenceName() {
     QSet<QString> rowNames;
-    for (const auto& row : alignment->getRows()) {
+    for (const auto& row : qAsConst(alignment->getRows())) {
         rowNames << row->getName();
     }
     newSequenceName = GUrlUtils::rollFileName(newSequenceName, "_", rowNames);
 }
 
+/*calculate Shannon entropy for every column of alignment where initial sequence does not have a gap*/
 void EntropyCalculationTask::calculateShannonEntropy() {
     auto alignedSequence = alignment->getMultipleAlignment()->getRow(newSequenceName);
     int size = alignment->getMultipleAlignment()->getRowCount() - 1;
@@ -107,7 +108,7 @@ void EntropyCalculationTask::calculateShannonEntropy() {
         CHECK_CONTINUE(!alignedSequence->isGap(i));
         double columnEntropy = 0;
         QMap<char, qint64> counts;
-        for (const auto& row : alignment->getRows()) {
+        for (const auto& row : qAsConst(alignment->getRows())) {
             CHECK_CONTINUE(row->getName() != newSequenceName);
             counts[row->charAt(i)]++;
         }
@@ -120,6 +121,7 @@ void EntropyCalculationTask::calculateShannonEntropy() {
     }
 }
 
+/*divide Shannon entropy values by max value (as temperature factor is greater than 1)*/
 void EntropyCalculationTask::normalizeEntropy() {
     double maxValue = *std::max_element(entropyForEveryColumn.constBegin(), entropyForEveryColumn.constEnd());
     for (double& value : entropyForEveryColumn) {
@@ -127,6 +129,7 @@ void EntropyCalculationTask::normalizeEntropy() {
     }
 }
 
+/*write Shannon entropy values to 'temperature factor' column of 'saveTo' file*/
 void EntropyCalculationTask::writeEntropyToFile() {
     auto context = annotatedDNAView->getActiveSequenceContext();
     SAFE_POINT_EXT(context != nullptr, setError(L10N::nullPointerError("Active sequence context")), );

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENTROPY_CALCULATION_WIDGET_H_
-#define _U2_ENTROPY_CALCULATION_WIDGET_H_
+#pragma once
 
 #include "EntropyCalculationAndAddToProjectTask.h"
 #include "ui_EntropyCalculationWidget.h"
@@ -29,6 +28,7 @@ namespace U2 {
 class AnnotatedDNAView;
 class SaveDocumentController;
 
+/*Widget for entropy calculation option panel tab*/
 class EntropyCalculationWidget : public QWidget, private Ui_EntropyCalculationWidget {
     Q_OBJECT
 
@@ -51,5 +51,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif // _U2_ENTROPY_CALCULATION_WIDGET_H_

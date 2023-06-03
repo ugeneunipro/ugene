@@ -19,14 +19,17 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENTROPY_CALCULATION_AND_ADD_TO_PROJECT_TASK_H
-#define _U2_ENTROPY_CALCULATION_AND_ADD_TO_PROJECT_TASK_H
+#pragma once
 
 #include "EntropyCalculationTask.h"
 
 #include <U2Core/Task.h>
 
 namespace U2 {
+
+/*Aligns sequence to a multiple alignment provided in the 'alignmentFilePath' argument, 
+    calculates Shannon entropy, saves it to 'saveToPath' file and opens it*/
+
 class U2VIEW_EXPORT EntropyCalculationAndAddToProjectTask : public Task {
     Q_OBJECT
 public :
@@ -35,7 +38,6 @@ public :
         const QString& saveToPath,
         bool addToProject);
     void prepare();
-    void run();
     QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
@@ -48,6 +50,4 @@ private:
 };
 
 }  // namespace U2
-
-#endif  // _U2_ENTROPY_CALCULATION_AND_ADD_TO_PROJECT_TASK_H
 

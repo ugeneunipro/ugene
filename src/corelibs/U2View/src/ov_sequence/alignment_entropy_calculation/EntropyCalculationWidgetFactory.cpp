@@ -33,9 +33,8 @@
 namespace U2 {
 
 const QString EntropyCalculationWidgetFactory::GROUP_ID = "OP_ENTROPY_CALCULATION";
-//TODO: add icon & doc page
 const QString EntropyCalculationWidgetFactory::GROUP_ICON_STR = ":biostruct3d_view/images/logo.png"; 
-const QString EntropyCalculationWidgetFactory::GROUP_DOC_PAGE = "";
+const QString EntropyCalculationWidgetFactory::GROUP_DOC_PAGE = "96665646";
 
 EntropyCalculationWidgetFactory::EntropyCalculationWidgetFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
@@ -60,7 +59,7 @@ const QString& EntropyCalculationWidgetFactory::getGroupId() {
 }
 
 bool EntropyCalculationWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
-    return (OPWidgetFactory::passFiltration(filter) && filter->has3DObject());
+    return (OPWidgetFactory::passFiltration(filter) && filter->isPdbFile());
 }
 
 }  // namespace U2

@@ -170,6 +170,7 @@ public:
     COLOR_SCHEME_FACTORY(SimpleColorScheme)
 };  // class SimpleColorScheme
 
+/* Color scheme displaying Shannon entropy in blue-red gradient (red - high entropy, blue - low entropy) */
 class AlignmentEntropyColorScheme : public BioStruct3DColorScheme {
     AlignmentEntropyColorScheme(const BioStruct3DObject* biostruct);
     Color4f getSchemeAtomColor(const SharedAtom& atom) const override;

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ALIGNMENT_ENTROPY_WIDGET_FACTORY_H_
-#define _U2_ALIGNMENT_ENTROPY_WIDGET_FACTORY_H_
+#pragma once
 
 #include <U2Gui/OPWidgetFactory.h>
 
@@ -28,6 +27,7 @@ namespace U2 {
 
 class GObjectView;
 
+/*Widget factory for entropy calculation option panel tab*/
 class U2VIEW_EXPORT EntropyCalculationWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
@@ -48,5 +48,3 @@ private:
 };
 
 }  // namespace U2
-
-#endif

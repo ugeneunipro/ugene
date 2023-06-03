@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_ENTROPY_CALCULATION_TASK_H_
-#define _U2_ENTROPY_CALCULATION_TASK_H_
+#pragma once
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -55,12 +54,10 @@ private:
     AnnotatedDNAView* annotatedDNAView;
     const QString alignmentFilePath;
     const QString saveToPath;
-    /*sequence name will change if the alignment contains a sequence with the same name*/
+    /*sequence name will be changed if the alignment contains a sequence with the same name*/
     QString newSequenceName = "template_name";
     int chainId;
     QVector<double> entropyForEveryColumn;
 };
 
 }  // namespace U2
-
-#endif // _U2_ENTROPY_CALCULATION_TASK_H_
