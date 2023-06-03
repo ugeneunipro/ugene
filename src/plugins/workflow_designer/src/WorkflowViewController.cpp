@@ -2018,19 +2018,38 @@ static QIcon getToolbarIcon(const QString& srcPath) {
     return QIcon(pm);
 }
 
+static bool isInActiveWindow(QWidget* childWidget) {
+    QWidget* activeWindow = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
+    if (activeWindow == nullptr) {
+        return false;
+    }
+    for (auto w = childWidget; w != nullptr; w = w->parentWidget()) {
+        if (w == activeWindow) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void WorkflowView::hideDashboards() {
+    bool isActiveWindow = isInActiveWindow(this);
     setDashboardActionDecoration(false);
     splitter->setVisible(true);
     tabView->setVisible(false);
-    splitter->setFocus(); // Required by MacOS to prevent switch to another tab.
+    if (isActiveWindow) {
+        splitter->setFocus();  // Required by MacOS to prevent switch to another tab when the current is being rebuilt.
+    }
     setupActions();
 }
 
 void WorkflowView::showDashboards() {
+    bool isActiveWindow = isInActiveWindow(this);
     setDashboardActionDecoration(true);
     tabView->setVisible(true);
     splitter->setVisible(false);
-    tabView->setFocus(); // Required by MacOS to prevent switch to another tab.
+    if (isActiveWindow) {
+        tabView->setFocus();  // Required by MacOS to prevent switch to another tab when the current is being rebuilt.
+    }
     setupActions();
 }
 
@@ -2420,7 +2439,7 @@ void WorkflowScene::sl_deleteItem() {
 
 const QList<Actor*> WorkflowScene::getActors(ActorsSelector sel) const {
     QList<Actor*> list;
-    const QList<QGraphicsItem*>  itms = sel == Selected ? selectedItems() : items();
+    const QList<QGraphicsItem*> itms = sel == Selected ? selectedItems() : items();
     for (QGraphicsItem* item : qAsConst(itms)) {
         if (item->type() == WorkflowProcessItemType) {
             list << static_cast<WorkflowProcessItem*>(item)->getProcess();

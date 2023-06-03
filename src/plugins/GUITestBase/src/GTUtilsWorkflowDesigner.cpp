@@ -1477,6 +1477,24 @@ QStringList GTUtilsWorkflowDesigner::getErrors(GUITestOpStatus& os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getGotoDashboardButton"
+QAbstractButton* GTUtilsWorkflowDesigner::getGotoDashboardButton(HI::GUITestOpStatus& os) {
+    QWidget* buttonWidget = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    auto button = qobject_cast<QAbstractButton*>(buttonWidget);
+    CHECK_SET_ERR_RESULT(button != nullptr, "'Show dashboard' is not found", nullptr);
+    return button;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getGotoWorkflowButton"
+QAbstractButton* GTUtilsWorkflowDesigner::getGotoWorkflowButton(GUITestOpStatus& os) {
+    QWidget* buttonWidget = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow");
+    auto button = qobject_cast<QAbstractButton*>(buttonWidget);
+    CHECK_SET_ERR_RESULT(button != nullptr, "'Show workflow' is not found", nullptr);
+    return button;
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }  // namespace U2

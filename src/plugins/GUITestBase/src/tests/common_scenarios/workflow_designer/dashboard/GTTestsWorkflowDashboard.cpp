@@ -215,7 +215,7 @@ public:
         : CustomScenario(), path(_path) {
     }
 
-    void run(HI::GUITestOpStatus& os) {
+    void run(HI::GUITestOpStatus& os) override {
         QWidget* dialog = GTWidget::getActiveModalWidget(os);
         AppSettingsDialogFiller::setWorkflowOutputDirPath(os, path);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -1973,8 +1973,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget* viewSwitchButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "'Go to Dashboards' button is unexpectedly invisible");
 
     //    4. Click to the "Dashboards manager" button on the toolbar.
@@ -2004,8 +2003,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
-    CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -2137,8 +2135,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -2270,8 +2267,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget* viewSwitchButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "'Go to Dashboards' button is unexpectedly invisible");
 
     //    4. Click to the "Dashboards manager" button on the toolbar.
@@ -2334,11 +2330,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -2360,10 +2352,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget* viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
-                      !viewSwitchButton2->isVisible(),
-                  "'Go to Dashboards' is visible");
+    auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    CHECK_SET_ERR(!viewSwitchButton2->isVisible(), "'Go to Dashboards' is visible");
 
     //    8. Click to the "Dashboards manager" button on the toolbar.
     //    Expected result: the "Dashboards Manager" dialog appears. It contains the following text: "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."
@@ -2385,10 +2375,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(viewSwitchButton2 == nullptr ||
-                      !viewSwitchButton2->isVisible(),
-                  "'Go to Dashboards' is visible");
+    viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    CHECK_SET_ERR(!viewSwitchButton2->isVisible(), "'Go to Dashboards' is visible");
 
     //    11. Click to the "Dashboards manager" button on the toolbar.
     //    Expected result: a messagebox appears. It contains the following text: "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."
@@ -2415,11 +2403,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -2536,10 +2520,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    QWidget* viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
-    CHECK_SET_ERR(nullptr != viewSwitchButton2 &&
-                      viewSwitchButton2->isVisible(),
-                  "'Go to Dashboards' is invisible");
+    auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    CHECK_SET_ERR(viewSwitchButton2->isVisible(), "'Go to Dashboards' is invisible");
 
     //    11. Click to the "Dashboards manager" button on the toolbar.
     //    12. Cancel the dialog
@@ -2555,11 +2537,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     //    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -2612,11 +2590,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -2745,11 +2719,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    - There is one tab with a dashboard. Its name is "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -2802,11 +2772,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -2824,6 +2790,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    - The Workflow Designer is in the scene view mode.
     //    - There is no scene/dashboards switch button on the toolbar.
     //    - The "Dashboards manager" button on the toolbar is active.
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
@@ -2884,10 +2852,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //      - The Workflow Designer is in the scene view mode.
     //      - There is no scene/dashboards switch button on the toolbar.
     //      - The "Dashboards manager" button on the toolbar is active.
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton == nullptr || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
     QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
@@ -2956,11 +2921,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -3023,25 +2984,19 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     int tabIndex1 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
     int tabIndex2 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
 
-    //   Open Workflow Designer.
+    //   Open en empty Workflow Designer window (number 3).
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //   Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
 
     //    Switch to first Workflow Designer.
-    coreLog.info(QString("Try to switch to tab %1(%2)")
-                     .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex1).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
     GTUtilsMdi::clickTab(os, tabIndex1);
 
     //    16. Launch the workflow. Do not wait for the task finish.
@@ -3050,9 +3005,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     coreLog.info("It seems that workflow was started");
 
     //    Switch to the second Workflow Designer.
-    coreLog.info(QString("Try to switch to tab %1(%2)")
-                     .arg(tabIndex2)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex2).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
     GTUtilsMdi::clickTab(os, tabIndex2);
 
     //    Launch the workflow. Do not wait for the task finish.
@@ -3074,8 +3027,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 90000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
-    CHECK_SET_ERR(viewSwitchButton != nullptr, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3088,7 +3040,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
-    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
 
     int expectedTabsCount = 2;
@@ -3116,7 +3067,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    Click to the "Dashboards manager" button on the toolbar.
@@ -3166,18 +3116,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //     - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
     //     - The "Align sequence with MUSCLE 1" dashboard is active.
     //     - The "Dashboards manager" button on the toolbar is active.
-    coreLog.info(QString("Try to switch to tab %1(%2)")
-                     .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex1).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3190,7 +3133,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
     dashboardsView = GTUtilsDashboard::getTabWidget(os);
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
 
     expectedTabsCount = 2;
@@ -3218,7 +3160,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    Click to the "Dashboards manager" button on the toolbar.
@@ -3234,22 +3175,14 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //    Expected result:
     //     - The Workflow Designer is in the scene view mode.
     //     - The "Dashboards manager" button on the toolbar is active.
-    coreLog.info(QString("Try to switch to tab %1(%2)")
-                     .arg(tabIndex3)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex3).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
     GTUtilsMdi::clickTab(os, tabIndex3);
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(viewSwitchButton != nullptr &&
-                      viewSwitchButton->isVisible(),
-                  "'Go to Dashboards' is invisible");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "'Go to Dashboards' is invisible");
 
     //    Click to the "Dashboards manager" button on the toolbar.
     //    Expected result:
@@ -3266,11 +3199,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //       Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped,
     //       it depends on the task finish order, it is a correct situation).
     //     - The first dashboard is active.
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -3354,11 +3283,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -3403,12 +3328,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3516,12 +3436,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3586,9 +3501,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsMdi::clickTab(os, tabIndex3);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3693,11 +3606,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -3741,12 +3650,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3854,12 +3758,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3924,9 +3823,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     GTUtilsMdi::clickTab(os, tabIndex3);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -4031,11 +3928,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
@@ -4078,12 +3971,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //          - The "Dashboards manager" button on the toolbar is active.
     GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -4191,12 +4079,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     GTUtilsMdi::clickTab(os, tabIndex1);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os,
-                                                                   MWTOOLBAR_ACTIVEMDI),
-                                             "Show workflow"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -4262,13 +4145,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton &&
-                      viewSwitchButton->isVisible(),
-                  "'Go to Dashboards' is invisible");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "'Go to Dashboards' is invisible");
 
     //    27. Click to the "Dashboards manager" button on the toolbar.
     //    Expected result:
@@ -4282,11 +4160,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //    Expected result:
     //     - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped, it depends on the task finish order, it is a correct situation).
     //     - The first dashboard is active.
-    viewSwitchButton = qobject_cast<QAbstractButton*>(
-        GTToolbar::getWidgetForActionTooltip(os,
-                                             GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
-                                             "Show dashboard"));
-    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(os, viewSwitchButton);
