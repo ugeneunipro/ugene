@@ -750,7 +750,7 @@ static const QString TOOLTIP_N_MARKER = "(N)<sub>%1</sub>";
 static const QString TOOLTIP_FORWARD_MARKER = "<sup>&#x25BC;</sup>";
 static const QString TOOLTIP_REVERSE_MARKER = "<sub>&#x25B2;</sub>";
 static const QString TOOLTIP_SPACE = "&nbsp;";
-static const QString TOOLTIP_HIDDEN_SPACE = "&nbsp;";
+static const QString TOOLTIP_HIDDEN_SPACE = "<sub>&nbsp;</sub>";
 
 EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     : enzyme(ed) {
@@ -890,7 +890,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         }
     }
     auto generateMainPart = [enzymeSize](const QByteArray& seq, int cut, int otherCut, bool forward) {
-        int reversedOtherCut = seq.size() - otherCut;
+        int reversedOtherCut = seq.size() - otherCut - 1;
         QString result;
         auto append2Result = [&result](const QString& add, bool forward) {
             if (forward) {
@@ -899,28 +899,45 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
                 result.insert(0, add);
             }
         };
-        auto removeSpaceFromResult = [&result](bool forward) {
-            if (forward) {
-                result = result.left(result.size() - TOOLTIP_SPACE.size());
+        auto removeSpaceFromResult = [&result, reversedOtherCut](int pos, bool forward) {
+            int size2Remove = 0;
+            if (pos - 1 == reversedOtherCut) {
+                size2Remove = TOOLTIP_HIDDEN_SPACE.size();
             } else {
-                result = result.right(result.size() - TOOLTIP_SPACE.size());
+                size2Remove = TOOLTIP_SPACE.size();
+            }
+            if (forward) {
+                result = result.left(result.size() - size2Remove);
+            } else {
+                result = result.right(result.size() - size2Remove);
             }
         };
+        append2Result(reversedOtherCut == -1 ? TOOLTIP_HIDDEN_SPACE : TOOLTIP_SPACE, forward);
         for (int i = 0; i < enzymeSize; i++) {
             if (i == cut) {
-                if (!result.isEmpty()) {
-                    removeSpaceFromResult(forward);
-                }
+                    /*int size2Remove = 0;
+                    if (i - 1 == reversedOtherCut) {
+                        size2Remove = TOOLTIP_HIDDEN_SPACE.size();
+                    } else {
+                        size2Remove = TOOLTIP_SPACE.size();
+                    }*/
+                removeSpaceFromResult(i, forward);
                 append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER, forward);
             }
             append2Result(QString(seq.at(i)), forward);
-            append2Result(TOOLTIP_SPACE, forward);
+            append2Result(i == reversedOtherCut ? TOOLTIP_HIDDEN_SPACE : TOOLTIP_SPACE, forward);
+            /*if () {
+                append2Result(, forward);
+            } else {
+                append2Result(TOOLTIP_SPACE, forward);
+            }*/
         }
         if (seq.size() == cut) {
+            removeSpaceFromResult(seq.size(), forward);
             append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER, forward);
-        } else {
+        }/* else {
             removeSpaceFromResult(forward);
-        }
+        }*/
         return result;
 
     };
@@ -950,11 +967,11 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         };
         if (type == Ns::Left) {
             result += appendElements();
-            result += TOOLTIP_SPACE;
+            //result += TOOLTIP_SPACE;
         }
         result += mainPart;
         if (type == Ns::Right) {
-            result += TOOLTIP_SPACE;
+            //result += TOOLTIP_SPACE;
             result += appendElements();
         }
         return result;
