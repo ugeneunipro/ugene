@@ -134,6 +134,14 @@ public:
     EnzymeTreeItem(const SEnzymeData& ed);
     SEnzymeData enzyme;
     bool operator<(const QTreeWidgetItem& other) const;
+
+private:
+    enum class Ns {
+        Left,
+        Right,
+        No
+    };
+    QString generateEnzymeTooltip() const;
 };
 
 #define ANY_VALUE -1
