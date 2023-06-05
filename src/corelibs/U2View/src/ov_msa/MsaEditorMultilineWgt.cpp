@@ -202,6 +202,7 @@ void MsaEditorMultilineWgt::updateChildren() {
 
     createChildren();
     activateWindow();
+    raise();
     getUI(0)->getSequenceArea()->setFocus();
     if (showStatistics) {
         showSimilarity();
