@@ -715,8 +715,8 @@ void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool isMultilin
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "gotoDialogWithKeyboardShortcut"
-void GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(HI::GUITestOpStatus& os, int pos, bool isVisualPosition) {
+#define GT_METHOD_NAME "gotoWithKeyboardShortcut"
+void GTUtilsMsaEditor::gotoWithKeyboardShortcut(HI::GUITestOpStatus& os, int pos, bool isVisualPosition) {
     GTUtilsDialog::checkNoActiveWaiters(os);
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, pos + (isVisualPosition ? 0 : -1)));
     GTKeyboardDriver::keyClick('g', Qt::ControlModifier);

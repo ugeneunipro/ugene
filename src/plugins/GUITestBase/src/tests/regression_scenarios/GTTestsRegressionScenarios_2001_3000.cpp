@@ -1400,7 +1400,7 @@ GUI_TEST_CLASS_DEFINITION(test_2314) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    2. Scroll sequence area to the last columns
-    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 604);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os, 604);
 
     //    3. Select to the whole last column by clicking consensus area.
     auto consArea = GTWidget::findWidget(os, "consArea");
@@ -2872,7 +2872,7 @@ GUI_TEST_CLASS_DEFINITION(test_2519) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Go to position 20000.
-    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os,20000);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os,20000);
 
     // 3. Call context menu, select menu item {Edit sequence -> Remove subsequence...}.
     // Expected state: a "Remove subsequence" dialog appears.

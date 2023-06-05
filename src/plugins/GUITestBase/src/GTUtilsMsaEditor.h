@@ -200,7 +200,7 @@ public:
      * Clicks Control + G and submits the position. Requires no pending dialog waiters.
      * If 'isVisualPosition' is true, the 'pos' is visual as typed in the GoTo dialog (starts with 1).
      */
-    static void gotoDialogWithKeyboardShortcut(HI::GUITestOpStatus& os, int pos, bool isVisualPosition = true);
+    static void gotoWithKeyboardShortcut(HI::GUITestOpStatus& os, int pos, bool isVisualPosition = true);
 };
 
 }  // namespace U2

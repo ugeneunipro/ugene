@@ -212,7 +212,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
                       .arg(curVal));
 
     // Vscroll to end
-    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 600);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os, 600);
 
     // Find seq last area
     int lastWgtIndex = 0;
@@ -280,9 +280,9 @@ GUI_TEST_CLASS_DEFINITION(goto_test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check goto
-    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 200);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os, 200);
 
-    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 550);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(os, 550);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0001) {
