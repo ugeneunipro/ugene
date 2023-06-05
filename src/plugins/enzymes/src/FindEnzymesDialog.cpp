@@ -745,12 +745,11 @@ void FindEnzymesDialog::saveSettings() {
 //////////////////////////////////////////////////////////////////////////
 // Tree item
 
-static const QString TOOLTIP_TAG = "<p style='font-family:Courier,monospace'>%1<br>%2</p>";
+static const QString TOOLTIP_TAG = "<p style='font-family:Courier,monospace'><br>%1<br>%2<br></p>";
 static const QString TOOLTIP_N_MARKER = "(N)<sub>%1</sub>";
 static const QString TOOLTIP_FORWARD_MARKER = "<sup>&#x25BC;</sup>";
 static const QString TOOLTIP_REVERSE_MARKER = "<sub>&#x25B2;</sub>";
-static const QString TOOLTIP_SPACE = "&nbsp;";
-static const QString TOOLTIP_HIDDEN_SPACE = "<sub>&nbsp;</sub>";
+static const QString TOOLTIP_SPACE = "<sub>&nbsp;</sub>";
 
 EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     : enzyme(ed) {
@@ -899,45 +898,26 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
                 result.insert(0, add);
             }
         };
-        auto removeSpaceFromResult = [&result, reversedOtherCut](int pos, bool forward) {
-            int size2Remove = 0;
-            if (pos - 1 == reversedOtherCut) {
-                size2Remove = TOOLTIP_HIDDEN_SPACE.size();
-            } else {
-                size2Remove = TOOLTIP_SPACE.size();
-            }
+        auto removeSpaceFromResult = [&result](int pos, bool forward) {
             if (forward) {
-                result = result.left(result.size() - size2Remove);
+                result = result.left(result.size() - TOOLTIP_SPACE.size());
             } else {
-                result = result.right(result.size() - size2Remove);
+                result = result.right(result.size() - TOOLTIP_SPACE.size());
             }
         };
-        append2Result(reversedOtherCut == -1 ? TOOLTIP_HIDDEN_SPACE : TOOLTIP_SPACE, forward);
+        append2Result(TOOLTIP_SPACE, forward);
         for (int i = 0; i < enzymeSize; i++) {
             if (i == cut) {
-                    /*int size2Remove = 0;
-                    if (i - 1 == reversedOtherCut) {
-                        size2Remove = TOOLTIP_HIDDEN_SPACE.size();
-                    } else {
-                        size2Remove = TOOLTIP_SPACE.size();
-                    }*/
                 removeSpaceFromResult(i, forward);
                 append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER, forward);
             }
             append2Result(QString(seq.at(i)), forward);
-            append2Result(i == reversedOtherCut ? TOOLTIP_HIDDEN_SPACE : TOOLTIP_SPACE, forward);
-            /*if () {
-                append2Result(, forward);
-            } else {
-                append2Result(TOOLTIP_SPACE, forward);
-            }*/
+            append2Result(TOOLTIP_SPACE, forward);
         }
         if (seq.size() == cut) {
             removeSpaceFromResult(seq.size(), forward);
             append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER, forward);
-        }/* else {
-            removeSpaceFromResult(forward);
-        }*/
+        }
         return result;
 
     };
