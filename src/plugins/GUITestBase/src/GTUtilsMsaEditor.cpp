@@ -698,20 +698,21 @@ bool GTUtilsMsaEditor::getMultilineMode(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setMultilineMode"
-void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool newMode) {
+void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool isMultilineMode) {
     auto toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
 
     // Press "Multiline View" button on toolbar
     auto multilineModeButton = GTToolbar::getToolButtonByAction(os, toolbar, "multilineView");
     CHECK_SET_ERR_RESULT(multilineModeButton->isVisible(), "\"Multiline View\" button is not visible", );
     CHECK_SET_ERR_RESULT(multilineModeButton->isEnabled(), "\"Multiline View\" button is disabled", );
-    CHECK(getMultilineMode(os) != newMode, );
+    CHECK(getMultilineMode(os) != isMultilineMode, );
 
     GTWidget::click(os, multilineModeButton);
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && getMultilineMode(os) != newMode; time += GT_OP_CHECK_MILLIS) {
+    for (int time = 0; time < GT_OP_WAIT_MILLIS && getMultilineMode(os) != isMultilineMode; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
     }
-    CHECK_SET_ERR_RESULT(getMultilineMode(os) == newMode, "Multiline mode is not changed", );
+    CHECK_SET_ERR_RESULT(getMultilineMode(os) == isMultilineMode, "Multiline mode is not changed", );
+    GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 

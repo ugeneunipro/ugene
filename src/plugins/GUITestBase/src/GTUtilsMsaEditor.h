@@ -194,7 +194,7 @@ public:
     // If mode != getMultilineMode(os)
     // Then the multiline mode is changed
     // Else nothing is being done
-    static void setMultilineMode(HI::GUITestOpStatus& os, bool mode);
+    static void setMultilineMode(HI::GUITestOpStatus& os, bool isMultilineMode);
 
     /**
      * Clicks Control + G and submits the position. Requires no pending dialog waiters.
