@@ -712,7 +712,6 @@ void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool isMultilin
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
     }
     CHECK_SET_ERR_RESULT(getMultilineMode(os) == isMultilineMode, "Multiline mode is not changed", );
-    GTGlobals::sleep(1000);
 }
 #undef GT_METHOD_NAME
 
