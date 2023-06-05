@@ -911,34 +911,33 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     }
     // generates main part (which contains enzyme)
     auto generateMainPart = [enzymeSize](const QByteArray& seq, int cut, int otherCut, bool forward) -> QString {
-        int reversedOtherCut = seq.size() - otherCut - 1;
         QString result;
-        auto append2Result = [&result](const QString& add, bool forward) {
+        auto append2Result = [&result, forward](const QString& add) {
             if (forward) {
                 result += add;
             } else {
                 result.insert(0, add);
             }
         };
-        auto removeSpaceFromResult = [&result](int pos, bool forward) {
+        auto removeSpaceFromResult = [&result, forward]() {
             if (forward) {
                 result = result.left(result.size() - TOOLTIP_SPACE.size());
             } else {
                 result = result.right(result.size() - TOOLTIP_SPACE.size());
             }
         };
-        append2Result(TOOLTIP_SPACE, forward);
+        append2Result(TOOLTIP_SPACE);
         for (int i = 0; i < enzymeSize; i++) {
             if (i == cut) {
-                removeSpaceFromResult(i, forward);
-                append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER, forward);
+                removeSpaceFromResult();
+                append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
             }
-            append2Result(QString(seq.at(i)), forward);
-            append2Result(TOOLTIP_SPACE, forward);
+            append2Result(QString(seq.at(i)));
+            append2Result(TOOLTIP_SPACE);
         }
         if (seq.size() == cut) {
-            removeSpaceFromResult(seq.size(), forward);
-            append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER, forward);
+            removeSpaceFromResult();
+            append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
         }
         return result;
     };
