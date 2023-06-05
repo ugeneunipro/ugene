@@ -175,7 +175,7 @@ void GTUtilsWorkflowDesigner::stopWorkflow(HI::GUITestOpStatus& os) {
 
 #define GT_METHOD_NAME "returnToWorkflow"
 void GTUtilsWorkflowDesigner::returnToWorkflow(HI::GUITestOpStatus& os) {
-    GTWidget::click(os, GTAction::button(os, GTAction::findActionByText(os, "To Workflow Designer")));
+    GTWidget::click(os, getGotoWorkflowButton(os));
 }
 #undef GT_METHOD_NAME
 
@@ -1474,6 +1474,24 @@ QStringList GTUtilsWorkflowDesigner::getErrors(GUITestOpStatus& os) {
         errors << w->item(i)->text();
     }
     return errors;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getGotoDashboardButton"
+QAbstractButton* GTUtilsWorkflowDesigner::getGotoDashboardButton(HI::GUITestOpStatus& os) {
+    QWidget* buttonWidget = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    auto button = qobject_cast<QAbstractButton*>(buttonWidget);
+    CHECK_SET_ERR_RESULT(button != nullptr, "'Show dashboard' is not found", nullptr);
+    return button;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getGotoWorkflowButton"
+QAbstractButton* GTUtilsWorkflowDesigner::getGotoWorkflowButton(GUITestOpStatus& os) {
+    QWidget* buttonWidget = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow");
+    auto button = qobject_cast<QAbstractButton*>(buttonWidget);
+    CHECK_SET_ERR_RESULT(button != nullptr, "'Show workflow' is not found", nullptr);
+    return button;
 }
 #undef GT_METHOD_NAME
 

@@ -43,6 +43,13 @@ static bool isGuiTestSystemMessage(const QString& message) {
 
 void GTLogTracer::onMessage(const LogMessage& msg) {
     if (msg.level == LogLevel_ERROR) {
+        if (isOsMac()) {
+            // Ignore QT errors on new MacOS. These errors can only be fixed by migration to the latest Qt.
+            // Test to reproduce: GUITest_assembly_extract_consensus_test_0001_single_input.
+            if (msg.text.contains("has active key-value observers (KVO)! These will stop working now that the window is recreated, and will result in exceptions when the observers are removed")) {
+                return;
+            }
+        }
         errorMessages << msg.text;
     }
     allMessages << msg.text;

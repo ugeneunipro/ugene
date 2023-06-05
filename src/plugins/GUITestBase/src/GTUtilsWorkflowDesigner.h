@@ -216,6 +216,12 @@ public:
     // custom elements
     static void importCmdlineBasedElement(HI::GUITestOpStatus& os, const QString& path);
 
+    /** Returns a button to switch from WD to the dashboards view. */
+    static QAbstractButton* getGotoDashboardButton(HI::GUITestOpStatus& os);
+
+    /** Returns a button to switch from the dashboards view to WD. */
+    static QAbstractButton* getGotoWorkflowButton(HI::GUITestOpStatus& os);
+
 private:
     static void selectSample(HI::GUITestOpStatus& os, QTreeWidgetItem* sample, QWidget* parentWidget = nullptr);
     static QRect getItemRect(HI::GUITestOpStatus& os, const QString& itemName);
