@@ -189,6 +189,10 @@ void MsaEditorMultilineWgt::updateChildren() {
     }
 
     bool showStatistics = false;
+    QLabel* label = new QLabel("Updating");
+    uiChildrenArea->layout()->addWidget(label);
+    label->setFocus();
+
     for (; uiChildCount > 0; uiChildCount--) {
         auto child = qobject_cast<MsaEditorWgt*>(uiChild[uiChildCount - 1]);
         SAFE_POINT(child != nullptr, "Can't delete sequence widget in multiline mode", );
@@ -201,6 +205,7 @@ void MsaEditorMultilineWgt::updateChildren() {
     }
 
     createChildren();
+    delete label;
     activateWindow();
     raise();
     getUI(0)->getSequenceArea()->setFocus();
