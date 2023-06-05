@@ -37,8 +37,8 @@ public :
         const QString& alignmentFilePath,
         const QString& saveToPath,
         bool addToProject);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     EntropyCalculationTask* entropyCalculationTask = nullptr;
