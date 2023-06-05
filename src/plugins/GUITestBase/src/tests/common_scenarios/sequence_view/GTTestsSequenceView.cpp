@@ -36,6 +36,7 @@
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTScrollBar.h>
 #include <primitives/GTToolbar.h>
+#include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 
@@ -2365,6 +2366,41 @@ GUI_TEST_CLASS_DEFINITION(test_0079_2) {
     GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList{}, new custom()));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find restriction sites");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0080) {
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/enzymes/all_possible_tooltips.bairoch"));
+            GTWidget::click(os, GTWidget::findWidget(os, "enzymesFileButton", dialog));
+
+            auto tree = GTWidget::findTreeWidget(os, "tree", dialog);
+            for (int i = 0; i < 22; i++) {
+                auto name = QString::number(i);
+                if (name.size() == 1) {
+                    name.insert(0, "0");
+                }
+                 name.insert(0, "A");
+                auto item = GTTreeWidget::findItem(os, tree, name);
+                auto tooltip = item->data(0, Qt::ToolTipRole).toString();
+                auto toltipFromFile = GTFile::readAll(os, testDir + "_common_data/enzymes/tooltips/" + name + ".html");
+                CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip").arg(name));
+            }
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, { "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+
+
 }
 
 }  // namespace GUITest_common_scenarios_sequence_view
