@@ -57,24 +57,29 @@
         <translation>Выпуклая структура</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="78"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="79"/>
         <source>Molecular Chains</source>
         <translation>Молекулярные цепи</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="79"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="80"/>
         <source>Chemical Elements</source>
         <translation>Химические элементы</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="80"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="81"/>
         <source>Secondary Structure</source>
         <translation>Вторичная структура</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DColorScheme.cpp" line="81"/>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="82"/>
         <source>Simple colors</source>
         <translation>Простые цвета</translation>
+    </message>
+    <message>
+        <location filename="../src/BioStruct3DColorScheme.cpp" line="83"/>
+        <source>Alignment Entropy</source>
+        <translation>Энтропия выравнивания</translation>
     </message>
 </context>
 <context>

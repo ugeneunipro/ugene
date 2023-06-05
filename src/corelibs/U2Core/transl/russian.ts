@@ -4,52 +4,57 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="560"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="583"/>
         <source>This is not ESearch result!</source>
         <translation>Это не является результатом ESearch!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="601"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="624"/>
         <source>This is not a ESummary result!</source>
         <translation>Это не является результатом ESummary!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="679"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="703"/>
         <source>Use Ensembl ID. For example: %1 or %2</source>
         <translation>Используйте Ensembl ID. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="680"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="704"/>
         <source>Use Genbank DNA accession number. For example: %1 or %2</source>
         <translation>Используйте Genbank DNA Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="681"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="705"/>
         <source>Use Genbank protein accession number. For example: %1</source>
         <translation>Используйте Genbank Protein Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="682"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="706"/>
         <source>Use PDB molecule four-letter identifier. For example: %1 or %2</source>
         <translation>Используйте 4-х символьный идентификатор PDB. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="683"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="707"/>
         <source>Use SWISS-PROT accession number. For example: %1 or %2</source>
         <translation>Используйте SWISS-PROT Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="684"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="708"/>
         <source>Use UniProtKB/Swiss-Prot accession number. For example: %1</source>
         <translation>Используйте UniProtKB/Swiss-Prot Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="685"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="709"/>
         <source>Use UniProtKB/TrEMBL accession number. For example: %1</source>
         <translation>Используйте UniProtKB/TrEMBL Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="713"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="710"/>
+        <source>Use UniProtKB accession number. For example: %1 or %2</source>
+        <translation>Используйте UniProtKB Accession Number. Например: %1 или %2</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="738"/>
         <source>Use %1 unique identifier.</source>
         <translation>Используйте уникальный идентификатор %1.</translation>
     </message>
@@ -599,12 +604,12 @@
 <context>
     <name>U2::BaseLoadRemoteDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="90"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="94"/>
         <source>Load remote document</source>
         <translation>Загрузка удаленного документа</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="162"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="166"/>
         <source>Unknown file format!</source>
         <translation>Неизвестный формат файла!</translation>
     </message>
@@ -855,12 +860,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DBXRefRegistry</name>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="38"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="40"/>
         <source>File with db_xref mappings not found: %1</source>
         <translation>Не найден файл реестра db_xref: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="49"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="51"/>
         <source>Illegal db_xref file entry: %1</source>
         <translation>Неверный формат элемента: &quot;%1&quot;</translation>
     </message>
@@ -1307,7 +1312,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::EntrezQueryTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="532"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="555"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление в %1</translation>
     </message>
@@ -2041,17 +2046,17 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDataFromEntrezTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="426"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="449"/>
         <source>Downloading file %1</source>
         <translation>Загрузка с %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="435"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="458"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="475"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="498"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление на %1</translation>
     </message>
@@ -2118,27 +2123,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadRemoteDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="222"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="233"/>
         <source>Undefined database: &apos;%1&apos;</source>
         <translation>Неопределенная база данных: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="233"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="244"/>
         <source>Failed to download %1 from %2. Error: %3</source>
         <translation>Невозможно скачать %1 из %2. Ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="236"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="255"/>
         <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</source>
         <translation>Документ был успешно загружен: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="242"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="261"/>
         <source>External database link: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
         <translation>Внешняя ссылка на базу данных: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="284"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="307"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
     </message>
