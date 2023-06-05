@@ -910,7 +910,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         }
     }
     // generates main part (which contains enzyme)
-    auto generateMainPart = [enzymeSize](const QByteArray& seq, int cut, int otherCut, bool forward) -> QString {
+    auto generateMainPart = [enzymeSize](const QByteArray& seq, int cut, bool forward) -> QString {
         QString result;
         auto append2Result = [&result, forward](const QString& add) {
             if (forward) {
@@ -941,8 +941,8 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         }
         return result;
     };
-    QString forwardMainPart = generateMainPart(enzyme->seq, enzyme->cutDirect, enzyme->cutComplement, true);
-    QString reverseMainPart = generateMainPart(seqComplement, enzyme->cutComplement, enzyme->cutDirect, false);
+    QString forwardMainPart = generateMainPart(enzyme->seq, enzyme->cutDirect, true);
+    QString reverseMainPart = generateMainPart(seqComplement, enzyme->cutComplement, false);
 
     // Join parts to a single tooltip
     auto generateTooltip = [](Ns type, const QStringList& elements, const QString& mainPart) -> QString {
