@@ -210,9 +210,9 @@ void GTUtilsDialog::checkNoActiveWaiters(GUITestOpStatus& os, int timeoutMillis)
         notFinishedWaiter = getFirstOrNull(waiterList);
     }
     if (notFinishedWaiter != nullptr && !os.hasError()) {
-        os.setError(QString("There are active waiters after: %1ms. First waiter details: %2")
-                        .arg(timeoutMillis)
-                        .arg(notFinishedWaiter->getSettings().objectName));
+        GT_FAIL(QString("There are active waiters after: %1ms. First waiter details: %2")
+                    .arg(timeoutMillis)
+                    .arg(notFinishedWaiter->getSettings().objectName), );
     }
 }
 #undef GT_METHOD_NAME

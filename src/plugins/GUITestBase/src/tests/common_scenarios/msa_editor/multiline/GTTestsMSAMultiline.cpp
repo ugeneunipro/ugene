@@ -212,8 +212,7 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
                       .arg(curVal));
 
     // Vscroll to end
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 600);
 
     // Find seq last area
     int lastWgtIndex = 0;
@@ -281,10 +280,9 @@ GUI_TEST_CLASS_DEFINITION(goto_test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Check goto
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 200));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 200);
+
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 550);
 }
 
 GUI_TEST_CLASS_DEFINITION(overview_test_0001) {

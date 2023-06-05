@@ -51,6 +51,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
+#include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 
 namespace U2 {
@@ -711,6 +712,15 @@ void GTUtilsMsaEditor::setMultilineMode(HI::GUITestOpStatus& os, bool newMode) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
     }
     CHECK_SET_ERR_RESULT(getMultilineMode(os) == newMode, "Multiline mode is not changed", );
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "gotoDialogWithKeyboardShortcut"
+void GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(HI::GUITestOpStatus& os, int pos, bool isVisualPosition) {
+    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, pos + (isVisualPosition ? 0 : -1)));
+    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsDialog::checkNoActiveWaiters(os);
 }
 #undef GT_METHOD_NAME
 

@@ -326,9 +326,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QRect expectedRect(5, 0, 1, 1);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 6);
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 }
@@ -347,10 +345,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     QRect expectedRect(5, 0, 1, 1);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 6);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 }
 
@@ -368,9 +363,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     QRect expectedRect(5, 0, 1, 1);
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 6);
 
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
 }
@@ -551,16 +544,14 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     int b0 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
 
     //  Scroll msa to the middle.
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 600);
 
     // Create a bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "middle bookmark");
     int b600 = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
 
     // Scroll msa to the end.
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 1000);
 
     // Create bookmark. Rename "New bookmark" to "end bookmark".
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "end bookmark");

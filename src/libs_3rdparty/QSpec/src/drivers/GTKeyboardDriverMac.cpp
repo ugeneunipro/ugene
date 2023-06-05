@@ -59,7 +59,6 @@ static int asciiToVirtual(char key) {
             return kVK_ANSI_9;
         case 'a':
             return kVK_ANSI_A;
-            break;
         case 'b':
             return kVK_ANSI_B;
         case 'c':

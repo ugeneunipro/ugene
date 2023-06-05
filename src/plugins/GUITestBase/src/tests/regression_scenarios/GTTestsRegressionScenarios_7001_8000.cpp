@@ -2599,8 +2599,7 @@ GUI_TEST_CLASS_DEFINITION(test_7548) {
 
     QList<QPoint> positions = {{9999 - 1, 0}, {100000 - 1, 0}, {2000000 - 1, 1}};
     for (const QPoint& position : qAsConst(positions)) {
-        GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, position.x() + 1));  // GoTo accepts visual positions.
-        GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+        GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, position.x() + 1); // GoTo accepts visual positions.
         GTUtilsMSAEditorSequenceArea::clickToPosition(os, position);  // Selected character has some opacity adjustment.
 
         QString color = GTUtilsMSAEditorSequenceArea::getColor(os, position);
@@ -4430,16 +4429,14 @@ GUI_TEST_CLASS_DEFINITION(test_7850) {
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "my bookmark");
 
     // Scroll MSA to the middle.
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 550);
 
     // Update start bookmark.
     GTUtilsBookmarksTreeView::updateBookmark(os, "my bookmark");
     int savedLeftOffset = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);
 
     // Scroll MSA to the start.
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 1);
 
     // Expected state: click on the bookmark restores updated MSA position.
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "my bookmark");
@@ -4595,8 +4592,7 @@ GUI_TEST_CLASS_DEFINITION(test_7861) {
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
 
     // Goto 1.
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, 1);
 
     // Expected: position 1 is visible.
     int leftOffset = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os);

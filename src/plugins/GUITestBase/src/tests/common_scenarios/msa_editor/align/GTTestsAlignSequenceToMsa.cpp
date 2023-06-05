@@ -50,9 +50,7 @@ using namespace HI;
 
 static void checkAlignedRegion(HI::GUITestOpStatus& os, const QRect& selectionRect, const QString& expectedContent) {
     int onScreenSelectionStartX = selectionRect.x() + 1;
-    GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, onScreenSelectionStartX));
-    GTKeyboardDriver::keyClick('g', Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::gotoDialogWithKeyboardShortcut(os, onScreenSelectionStartX);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, selectionRect.topLeft(), selectionRect.bottomRight());
     GTKeyboardUtils::copy();
