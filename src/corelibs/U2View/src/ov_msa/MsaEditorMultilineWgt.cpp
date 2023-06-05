@@ -201,11 +201,8 @@ void MsaEditorMultilineWgt::updateChildren() {
     }
 
     createChildren();
-    QTimer::singleShot(0, [this]() {
-        activateWindow();
-        getUI(0)->getSequenceArea()->setFocus();
-    });
-
+    activateWindow();
+    QTimer::singleShot(100, [this]() { getUI(0)->getSequenceArea()->setFocus(); });
     if (showStatistics) {
         showSimilarity();
     }
