@@ -21,6 +21,8 @@
 
 #include "EntropyCalculationTask.h"
 
+#include <cmath>
+
 #include <QFileInfo>
 #include <QTextStream>
 
@@ -115,7 +117,7 @@ void EntropyCalculationTask::calculateShannonEntropy() {
         auto const values = counts.values();
         for (const char& aminoAcid : qAsConst(values)) {
             double p = (double)aminoAcid / size;
-            columnEntropy -= p * log(p);
+            columnEntropy -= p * std::log(p);
         }
         entropyForEveryColumn.append(columnEntropy);
     }

@@ -36,9 +36,9 @@ class U2VIEW_EXPORT EntropyCalculationTask : public Task {
     Q_OBJECT
 public:
     EntropyCalculationTask(AnnotatedDNAView* annotatedDNAView, const QString& alignmentFilePath, const QString& saveToPath);
-    void prepare();
-    void run();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    void run() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     void rollSequenceName();
