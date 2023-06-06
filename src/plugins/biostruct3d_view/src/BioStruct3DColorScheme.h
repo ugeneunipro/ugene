@@ -107,7 +107,7 @@ public:
 
 protected:
     virtual Color4f getSchemeAtomColor(const SharedAtom& atom) const;
-    virtual Color4f getSelectionColor(const SharedAtom& atom) const;
+    virtual Color4f getSelectionColor(const SharedAtom&) const;
 
 protected:
     Color4f defaultAtomColor;

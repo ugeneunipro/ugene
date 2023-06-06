@@ -126,7 +126,7 @@ Color4f BioStruct3DColorScheme::getSchemeAtomColor(const SharedAtom&) const {
     return defaultAtomColor;
 }
 
-Color4f BioStruct3DColorScheme::getSelectionColor(const SharedAtom& atom) const {
+Color4f BioStruct3DColorScheme::getSelectionColor(const SharedAtom&) const {
     return selectionColor;
 }
 
