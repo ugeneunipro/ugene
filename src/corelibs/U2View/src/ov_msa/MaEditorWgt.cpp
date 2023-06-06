@@ -198,7 +198,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     maContainerLayout->addWidget(nameAndSequenceAreasSplitter);
     maContainerLayout->setStretch(0, 1);
 
-    if (addStatusBar && false) {
+    if (addStatusBar) {
         maContainerLayout->addWidget(statusBar);
     }
 
@@ -214,7 +214,7 @@ void MaEditorWgt::initWidgets(bool addStatusBar, bool addOverviewArea) {
     mainSplitter->addWidget(maContainer);
     mainSplitter->setStretchFactor(0, 2);
 
-    if (addOverviewArea && false) {
+    if (addOverviewArea) {
         auto wgt = qobject_cast<MsaEditorWgt*>(this);
         if (wgt == nullptr) {
             mainSplitter->addWidget(overviewArea);
