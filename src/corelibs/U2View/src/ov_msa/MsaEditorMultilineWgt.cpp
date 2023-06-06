@@ -129,9 +129,9 @@ void MsaEditorMultilineWgt::addChild(MaEditorWgt* child) {
 
     connect(child->getScrollController(), &ScrollController::si_visibleAreaChanged, scrollController, &MultilineScrollController::si_visibleAreaChanged);
 
-    scrollController->sl_updateScrollBars();
+    //scrollController->sl_updateScrollBars();
 
-    setActiveChild(child);
+    //setActiveChild(child);
 }
 
 void MsaEditorMultilineWgt::createChildren() {
@@ -139,9 +139,13 @@ void MsaEditorMultilineWgt::createChildren() {
 
     MaEditorOverviewArea* overviewArea = this->getOverviewArea();
     MaEditorStatusBar* statusBar = this->getStatusBar();
-    for (int i = 0; i < 1; i++) {
+    MaEditorWgt* firstChild = nullptr;
+    for (int i = 0; i < childrenCount; i++) {
         MaEditorWgt* child = createChild(editor, overviewArea, statusBar);
         SAFE_POINT(child != nullptr, "Can't create sequence widget", );
+        if (i == 0) {
+            firstChild = child;
+        }
         addChild(child);
 
         // recalculate count
@@ -159,6 +163,9 @@ void MsaEditorMultilineWgt::createChildren() {
             }
         }
     }
+
+    scrollController->sl_updateScrollBars();
+    setActiveChild(firstChild);
 
     // TODO:ichebyki
     // Need to move to special method
