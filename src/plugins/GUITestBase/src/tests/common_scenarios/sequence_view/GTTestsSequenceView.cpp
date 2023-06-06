@@ -2382,11 +2382,11 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
 
             auto tree = GTWidget::findTreeWidget(os, "tree", dialog);
             for (int i = 0; i < 22; i++) {
-                auto name = QString::number(i);
-                if (name.size() == 1) {
-                    name.insert(0, "0");
+                auto id = QString::number(i);
+                if (id.size() == 1) {
+                    id = "0" + id;
                 }
-                 name.insert(0, "A");
+                auto name = "A" + id;
                 auto item = GTTreeWidget::findItem(os, tree, name);
                 auto tooltip = item->data(0, Qt::ToolTipRole).toString();
                 auto toltipFromFile = GTFile::readAll(os, testDir + "_common_data/enzymes/tooltips/" + name + ".html");

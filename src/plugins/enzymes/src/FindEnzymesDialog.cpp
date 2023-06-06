@@ -784,6 +784,28 @@ bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
 }
 
 QString EnzymeTreeItem::generateEnzymeTooltip() const {
+    // Enum, which shows either enzyme has a cut inside of the sequence,
+    // to the left of the sequence or to the right of the sequence
+    // Ns in this scope means "if this enzyme has N character on to the left or
+    // to the right of the enzyme, or no N charactest at all"
+    enum class Ns {
+        // Enzyme has N charactes to the left
+        // Example:
+        // N N N A C G T
+        //       T G C A
+        Left,
+        // Enzyme has N charactes to the right
+        // Example:
+        // A C G T N N N
+        // T G C A
+        Right,
+        // Enzyme doesn't have N characters
+        // Example:
+        // A C G T
+        // T G C A
+        No
+    };
+
     auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     auto seqComplement = DNASequenceUtils::reverseComplement(enzyme->seq, alphabet);
     if (enzyme->cutDirect == ENZYME_CUT_UNKNOWN) {
@@ -808,59 +830,70 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     // these elements will be joined in the end
     // returns list of elements
     auto generateTooltipElements = [](int out, int in, bool forward, Ns type, bool otherHasLeftOut, bool otherHasLeftIn) -> QStringList {
-        auto outPart = [out, in, forward, type, otherHasLeftOut]() {
-            QStringList generateTooltipElementsResult;
+        // Look at the enxyme:
+        // N N N N N A C G T
+        //       N N T G C A
+        // This enzyme is separated to the several parts (name "parts" is not official, just used here)
+        //   Out     In    Main
+        // |N N N| |N N| |A C G T|
+        //         |N N| |T G C A|
+        // @generateOutPartElements generates the "Out" part
+        // Returns the list, wich contails the cut elements and Ns if this enzyme has the "Out" part,
+        // Or spaces if does not have
+        auto generateOutPartElements = [out, in, forward, type, otherHasLeftOut]() -> QStringList {
+            QStringList generateOutPartElementsResult;
             if (out != 0) {
                 switch (type) {
                 case Ns::Left:
-                    generateTooltipElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
-                    generateTooltipElementsResult << TOOLTIP_N_MARKER.arg(out);
+                    generateOutPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                    generateOutPartElementsResult << TOOLTIP_N_MARKER.arg(out);
                     break;
                 case Ns::Right:
-                    generateTooltipElementsResult << TOOLTIP_N_MARKER.arg(out);
-                    generateTooltipElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                    generateOutPartElementsResult << TOOLTIP_N_MARKER.arg(out);
+                    generateOutPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
                     break;
                 }
             } else if (out == 0 && otherHasLeftOut && type == Ns::Left) {
-                generateTooltipElementsResult << QString("%1%1%1%1%1").arg(TOOLTIP_SPACE);
+                generateOutPartElementsResult << QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
             }
-            return generateTooltipElementsResult;
+            return generateOutPartElementsResult;
         };
-        auto inPart = [out, in, forward, type, otherHasLeftOut, otherHasLeftIn]() {
-            QStringList result;
+        // THe same as @generateOutPartElements but for the "In" part
+        auto generateInPartElements = [out, in, forward, type, otherHasLeftOut, otherHasLeftIn]() -> QStringList {
+            QStringList generateInPartElementsResult;
             if (in != 0) {
                 if (out == 0) {
                     switch (type) {
                     case Ns::Left:
-                        result << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
-                        result << TOOLTIP_N_MARKER.arg(in);
+                        generateInPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                        generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
                         break;
                     case Ns::Right:
-                        result << TOOLTIP_N_MARKER.arg(in);
-                        result << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                        generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
+                        generateInPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
                         break;
                     }
                 } else if (out != 0) {
-                    result << TOOLTIP_N_MARKER.arg(in);
+                    generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
                 }
             } else if (in == 0 && otherHasLeftIn && type == Ns::Left) {
                 if (otherHasLeftOut) {
-                    result << QString("%1%1%1%1%1").arg(TOOLTIP_SPACE);
+                    generateInPartElementsResult << QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
                 } else {
-                    result << QString("%1%1%1%1").arg(TOOLTIP_SPACE);
+                    generateInPartElementsResult << QString("&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
                 }
             }
-            return result;
+            return generateInPartElementsResult;
         };
         QStringList result;
         switch (type) {
         case Ns::Left:
-            result << outPart();
-            result << inPart();
+            result << generateOutPartElements();
+            result << generateInPartElements();
             break;
         case Ns::Right:
-            result << inPart();
-            result << outPart();
+            result << generateInPartElements();
+            result << generateOutPartElements();
             break;
         }
         return result;
@@ -909,7 +942,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
                                                             (forwardNShift.second != 0 && forwardNShift.first == Ns::Left));
         }
     }
-    // generates main part (which contains enzyme)
+    // generates the "Main" part (see @generateOutPartElements for details)
     auto generateMainPart = [enzymeSize](const QByteArray& seq, int cut, bool forward) -> QString {
         QString result;
         auto append2Result = [&result, forward](const QString& add) {
@@ -947,42 +980,42 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     // Join parts to a single tooltip
     auto generateTooltip = [](Ns type, const QStringList& elements, const QString& mainPart) -> QString {
         QString result;
-        auto appendElements = [&elements]() -> QString {
-            QString appendElementsResult;
-            for (int i = 0; i < elements.size(); i++) {
-                const auto el = elements[i];
+        // Join elements which are calculated in @generateTooltipElements
+        auto joinElements = [&elements]() -> QString {
+            QString joinElementsResult;
+            for (const auto el : qAsConst(elements)) {
                 if (el == TOOLTIP_FORWARD_MARKER || el == TOOLTIP_REVERSE_MARKER) {
-                    if (!appendElementsResult.isEmpty()) {
-                        appendElementsResult = appendElementsResult.left(appendElementsResult.size() - TOOLTIP_SPACE.size());
+                    if (!joinElementsResult.isEmpty()) {
+                        joinElementsResult = joinElementsResult.left(joinElementsResult.size() - TOOLTIP_SPACE.size());
                     }
-                    appendElementsResult += el;
+                    joinElementsResult += el;
                 } else {
-                    appendElementsResult += el;
+                    joinElementsResult += el;
                     if (el != TOOLTIP_SPACE) {
-                        appendElementsResult += TOOLTIP_SPACE;
+                        joinElementsResult += TOOLTIP_SPACE;
                     }
                 }
             }
-            if (appendElementsResult.endsWith(TOOLTIP_SPACE)) {
-                appendElementsResult = appendElementsResult.left(appendElementsResult.size() - TOOLTIP_SPACE.size());
+            if (joinElementsResult.endsWith(TOOLTIP_SPACE)) {
+                joinElementsResult = joinElementsResult.left(joinElementsResult.size() - TOOLTIP_SPACE.size());
             }
-            return appendElementsResult;
+            return joinElementsResult;
         };
         if (type == Ns::Left) {
-            result += appendElements();
+            result += joinElements();
         }
         result += mainPart;
         if (type == Ns::Right) {
-            result += appendElements();
+            result += joinElements();
         }
         return result;
     };
     QString forwardTooltip = generateTooltip(forwardNShift.first, forwardTooltipElements, forwardMainPart);
     QString reverseTooltip = generateTooltip(reverseNShift.first, reverseTooltipElements, reverseMainPart);
     if (forwardNShift.first == Ns::Left && reverseNShift.first != Ns::Left) {
-        reverseTooltip.insert(0, QString("%1%1%1%1%1").arg(TOOLTIP_SPACE));
+        reverseTooltip.insert(0, QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE));
     } else if (reverseNShift.first == Ns::Left && forwardNShift.first != Ns::Left) {
-        forwardTooltip.insert(0, QString("%1%1%1%1%1").arg(TOOLTIP_SPACE));
+        forwardTooltip.insert(0, QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE));
     }
 
     return TOOLTIP_TAG.arg(forwardTooltip).arg(reverseTooltip);
