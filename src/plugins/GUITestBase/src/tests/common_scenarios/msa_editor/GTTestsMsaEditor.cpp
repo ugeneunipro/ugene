@@ -3932,7 +3932,7 @@ GUI_TEST_CLASS_DEFINITION(test_0090) {
         QRect msaAreaCellRect(sequenceAreaWidget->mapFromGlobal(globalRect.topLeft()), sequenceAreaWidget->mapFromGlobal(globalRect.bottomRight()));
         // Using '-1' because cellImageRect may contain border-line pixels from the next base.
         QRect msaAreaCellRectToCheck(msaAreaCellRect.x(), msaAreaCellRect.y(), msaAreaCellRect.width() - 1, msaAreaCellRect.height() - 1);
-        QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget, true);
+        QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget);
         QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, msaAreaCellRectToCheck);
         bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#FCFF92");
         bool hasTextInTheCell = !hasOnlyBgColor;
