@@ -671,6 +671,9 @@ void FindEnzymesDialog::sl_updateSuppliers() {
     if (suppliersList.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
         suppliersList.replace(suppliersList.indexOf(EnzymesIO::NOT_DEFINED_SIGN), notDefinedTr);
     }
+    if (selStr.isEmpty()) {
+        suppliersList.removeOne(notDefinedTr);
+    }
     cbSuppliers->setCheckedItems(suppliersList);
 }
 
@@ -765,7 +768,7 @@ EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     setData(3, Qt::ToolTipRole, tt);
     setText(4, enzyme->organizm);
     setData(4, Qt::ToolTipRole, enzyme->organizm);
-    auto suppliers = enzyme->suppliers.join("; ");
+    auto suppliers = enzyme->suppliers.join("\n");
     setText(5, suppliers);
     setData(5, Qt::ToolTipRole, suppliers);
 }
