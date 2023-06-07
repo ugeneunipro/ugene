@@ -47,42 +47,24 @@ using namespace HI;
 
 #define GT_METHOD_NAME "click"
 void GTUtilsMdi::click(HI::GUITestOpStatus& os, GTGlobals::WindowAction action) {
+    if (action == GTGlobals::Close) {
+        GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
+        return;
+    }
     MainWindow* mw = AppContext::getMainWindow();
     GT_CHECK(mw != nullptr, "MainWindow == NULL");
-
-    QMainWindow* mainWindow = mw->getQMainWindow();
-    GT_CHECK(mainWindow != nullptr, "QMainWindow == NULL");
-
-    if (!isOsMac()) {
-        switch (action) {
-            case GTGlobals::Close: {
-                GTMenu::clickMainMenuItem(os, {"Window", "Close active view"});
-                break;
-            }
-            default:
-                GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
-                break;
+    if (isOsMac()) {
+        if (action == GTGlobals::Maximize) {
+            MWMDIWindow* mdiWindow = mw->getMDIManager()->getActiveWindow();
+            GT_CHECK(mdiWindow != nullptr, "MDIWindow == NULL");
+            GTWidget::showMaximized(os, mdiWindow);
+        } else {
+            GT_FAIL("Unsupported action", );
         }
     } else {
-        MWMDIWindow* mdiWindow = mw->getMDIManager()->getActiveWindow();
-        GT_CHECK(mdiWindow != nullptr, "MDIWindow == NULL");
-
-        // TODO: make click on button
-        switch (action) {
-            case GTGlobals::Maximize:
-                GTWidget::showMaximized(os, mdiWindow);
-                break;
-            case GTGlobals::Close: {
-                int left = mdiWindow->rect().left();
-                int top = mdiWindow->rect().top();
-                QPoint p(left + 15, top - 10);
-                GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
-                GTMouseDriver::click();
-                break;
-            }
-            default:
-                GT_FAIL("Unsupported action", );
-        }
+        QMainWindow* mainWindow = mw->getQMainWindow();
+        GT_CHECK(mainWindow != nullptr, "QMainWindow == NULL");
+        GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
     }
 }
 #undef GT_METHOD_NAME
