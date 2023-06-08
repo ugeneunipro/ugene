@@ -50,8 +50,8 @@ private:
     AddSequenceObjectsToAlignmentTask* addSequenceTask = nullptr;
     RealignSequencesInAlignmentTask* realignSequencesTask = nullptr;
     
-    MultipleSequenceAlignmentObject* alignment;
-    AnnotatedDNAView* annotatedDNAView;
+    MultipleSequenceAlignmentObject* alignment = nullptr;
+    AnnotatedDNAView* annotatedDNAView = nullptr;
     const QString alignmentFilePath;
     const QString saveToPath;
     /*sequence name will be changed if the alignment contains a sequence with the same name*/

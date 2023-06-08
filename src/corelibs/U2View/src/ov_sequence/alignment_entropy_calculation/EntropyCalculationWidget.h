@@ -43,10 +43,9 @@ private slots:
 private:
     void initLayout();
     void initSaveController();
-    void connectSlots();
 
-    AnnotatedDNAView* annotatedDnaView;
-    SaveDocumentController* saveController;
+    AnnotatedDNAView* annotatedDnaView = nullptr;
+    SaveDocumentController* saveController = nullptr;
 
 };
 

@@ -306,22 +306,8 @@ SimpleColorScheme::SimpleColorScheme(const BioStruct3DObject* biostruct)
 
 AlignmentEntropyColorScheme::AlignmentEntropyColorScheme(const BioStruct3DObject* biostruct)
     : BioStruct3DColorScheme(biostruct) {
-
-    bool isEntropy = true;
     BioStruct3D biostruct3D = biostruct->getBioStruct3D();
-    for (const SharedMolecule& sm : qAsConst(biostruct3D.moleculeMap)) {
-        for (const Molecule3DModel& model : qAsConst(sm->models)) {
-            for (const SharedAtom& atom : qAsConst(model.atoms)) {
-                if (atom->temperature > 1) {
-                    isEntropy = false;
-                }
-            }
-        }
-        if (isEntropy) {
-            entropyChainIds.append(biostruct3D.getIndexByChainId(sm->chainId));
-        }
-        isEntropy = true;
-    }
+    entropyChainIds = getEntropyChainIds(biostruct3D);
 }
 
 Color4f AlignmentEntropyColorScheme::getSchemeAtomColor(const SharedAtom& atom) const {
@@ -341,6 +327,26 @@ Color4f AlignmentEntropyColorScheme::getSelectionOrSchemeColor(const SharedAtom&
     } else {
         return Color4f((QColor(0x00, 0xff, 0x00)));
     }
+}
+
+QVector<int> AlignmentEntropyColorScheme::getEntropyChainIds(const BioStruct3D& biostruct3D) {
+    QVector<int> ids;
+    bool isEntropy = true;
+    for (const SharedMolecule& sm : qAsConst(biostruct3D.moleculeMap)) {
+        for (const Molecule3DModel& model : qAsConst(sm->models)) {
+            for (const SharedAtom& atom : qAsConst(model.atoms)) {
+                if (atom->temperature > 1 || atom->temperature < 0) {
+                    isEntropy = false;
+                    break;
+                }
+            }
+        }
+        if (isEntropy) {
+            ids.append(biostruct3D.getIndexByChainId(sm->chainId));
+        }
+        isEntropy = true;
+    }
+    return ids;
 }
 
 }  // namespace U2

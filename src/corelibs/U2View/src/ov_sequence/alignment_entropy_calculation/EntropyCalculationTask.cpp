@@ -73,12 +73,10 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         alignment = qobject_cast<MultipleSequenceAlignmentObject*>(objects.at(0));
         CHECK_EXT(alignment != nullptr, setError(tr("Multiple alignment is expected as the input file: %1").arg(alignmentFilePath)), res);
         rollSequenceName();
-        auto context = annotatedDNAView->getActiveSequenceContext();
-        SAFE_POINT_EXT(context != nullptr, setError(L10N::nullPointerError("Active sequence context")), res);
-        auto seqObject = context->getSequenceObject();
-        SAFE_POINT_EXT(seqObject != nullptr, setError(L10N::nullPointerError("Sequence object")), res);
-        auto sequence = seqObject->getSequence(U2_REGION_MAX, stateInfo);
+        auto seqObject = annotatedDNAView->getActiveSequenceContext()->getSequenceObject();
+        auto sequence = seqObject->getWholeSequence(stateInfo);
         CHECK_OP(stateInfo, res);
+        CHECK_EXT(alignment->getAlphabet() == sequence.alphabet, setError(tr("Alignment and 3D structure have different alphabets")), res);
         sequence.setName(newSequenceName);
         chainId = seqObject->getSequenceInfo().value("CHAIN_ID").toInt();
         addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, {sequence});
@@ -133,13 +131,7 @@ void EntropyCalculationTask::normalizeEntropy() {
 
 /*write Shannon entropy values to 'temperature factor' column of 'saveTo' file*/
 void EntropyCalculationTask::writeEntropyToFile() {
-    auto context = annotatedDNAView->getActiveSequenceContext();
-    SAFE_POINT_EXT(context != nullptr, setError(L10N::nullPointerError("Active sequence context")), );
-    auto seqObject = context->getSequenceObject();
-    SAFE_POINT_EXT(seqObject != nullptr, setError(L10N::nullPointerError("Sequence object")), );
-    auto document = seqObject->getDocument();
-    SAFE_POINT_EXT(document != nullptr, setError(L10N::nullPointerError("Document")), );
-    QString filePath = document->getURLString();
+    auto filePath = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getDocument()->getURLString();
     CHECK_EXT(QString::compare(filePath, saveToPath, Qt::CaseInsensitive), 
         setError(tr("Original and destination files cannot have the same name: %1. Please change the 'Save to' path.").arg(filePath)), );
     QFile readFile(filePath);

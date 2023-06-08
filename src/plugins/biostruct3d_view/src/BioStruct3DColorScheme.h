@@ -73,6 +73,9 @@ class BioStruct3DColorSchemeFactory {
 public:
     virtual BioStruct3DColorScheme* createInstance(const BioStruct3DObject* biostruct) const = 0;
     //! Method creates factories
+    virtual bool isSchemeValid(const BioStruct3D&) const {
+        return true;
+    }
 };
 
 #define COLOR_SCHEME_FACTORY(c) \
@@ -178,10 +181,21 @@ class AlignmentEntropyColorScheme : public BioStruct3DColorScheme {
 
 private:
     QVector<int> entropyChainIds;
+
     Color4f getSelectionOrSchemeColor(const SharedAtom& atom, int green, bool isSelection) const;
+    static QVector<int> getEntropyChainIds(const BioStruct3D& biostruct);
 
 public:
-    COLOR_SCHEME_FACTORY(AlignmentEntropyColorScheme)
+    static const QString schemeName;
+    class Factory : public BioStruct3DColorSchemeFactory {
+    public:
+        BioStruct3DColorScheme* createInstance(const BioStruct3DObject* biostructObj) const override {
+            return new AlignmentEntropyColorScheme(biostructObj);
+        }
+        bool isSchemeValid(const BioStruct3D& biostruct3d) const override {
+            return !AlignmentEntropyColorScheme::getEntropyChainIds(biostruct3d).isEmpty();
+        }
+    };
 };  // class AlignmentEntropyColorScheme
 
 }  // namespace U2

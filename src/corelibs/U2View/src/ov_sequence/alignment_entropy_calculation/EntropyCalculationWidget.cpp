@@ -44,13 +44,16 @@ EntropyCalculationWidget::EntropyCalculationWidget(AnnotatedDNAView* _annotatedD
     setupUi(this);
     initLayout();
     initSaveController();
-    connectSlots();
     runButton->setEnabled(false);
+
+    connect(alignmentToolButton, SIGNAL(clicked()), SLOT(sl_onFileSelectorClicked()));
+    connect(runButton, SIGNAL(clicked()), SLOT(sl_onRunButtonClicked()));
+    connect(alignmentLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_onTextChanged()));
 }
 
 void EntropyCalculationWidget::initLayout() {
     additionalSettingsLayout->addWidget(new ShowHideSubgroupWidget(
-        QObject::tr("Additional settings"), QObject::tr("Additional settings"), additionalSettingsWidget, true));
+        tr("Additional settings"), tr("Additional settings"), additionalSettingsWidget, true));
 }
 
 void EntropyCalculationWidget::initSaveController() {
@@ -68,12 +71,6 @@ void EntropyCalculationWidget::initSaveController() {
         + (match.hasMatch() ? match.captured(1) : annotatedDnaView->getName());
 
     saveController = new SaveDocumentController(conf, {BaseDocumentFormats::PLAIN_PDB}, this);
-}
-
-void EntropyCalculationWidget::connectSlots() {
-    connect(alignmentToolButton, SIGNAL(clicked()), SLOT(sl_onFileSelectorClicked()));
-    connect(runButton, SIGNAL(clicked()), SLOT(sl_onRunButtonClicked()));
-    connect(alignmentLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_onTextChanged()));
 }
 
 void EntropyCalculationWidget::sl_onFileSelectorClicked() { 

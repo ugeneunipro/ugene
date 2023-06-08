@@ -730,7 +730,10 @@ void BioStruct3DGLWidget::createActions() {
 
     colorSchemeActions = new QActionGroup(this);
     connect(colorSchemeActions, SIGNAL(triggered(QAction*)), this, SLOT(sl_selectColorScheme(QAction*)));
+    const auto biostruct3D = getBioStruct3D();
     foreach (const QString& key, BioStruct3DColorSchemeRegistry::factoriesNames()) {
+        auto fact = BioStruct3DColorSchemeRegistry::getFactory(key);
+        CHECK_CONTINUE(fact->isSchemeValid(biostruct3D));
         action = new QAction(key, colorSchemeActions);
         action->setCheckable(true);
         action->setObjectName(key);
