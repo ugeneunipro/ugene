@@ -2503,7 +2503,10 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
     GTUtilsCv::commonCvBtn::click();
 
     // 3. Find some restriction sites.
-    GTUtilsDialog::add(new FindEnzymesDialogFiller({"AaaI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "AaaI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 

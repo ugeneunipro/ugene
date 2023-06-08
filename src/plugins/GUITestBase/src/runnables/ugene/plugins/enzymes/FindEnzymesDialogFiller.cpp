@@ -62,6 +62,10 @@ FindEnzymesDialogFiller::FindEnzymesDialogFiller(
 void FindEnzymesDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget();
 
+    if (settings.clickSelectAllSuppliers) {
+        GTWidget::click(GTWidget::findWidget("pbSelectAll", dialog));
+    }
+
     if (!settings.suppliers.isEmpty()) {
         GTComboBoxWithCheckBoxes::selectItemByText("cbSuppliers", dialog, settings.suppliers, GTGlobals::UseMouse);
     }

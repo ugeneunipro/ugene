@@ -749,7 +749,10 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"YkrI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "YkrI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
