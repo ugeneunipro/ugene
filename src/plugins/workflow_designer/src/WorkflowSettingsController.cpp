@@ -21,7 +21,6 @@
 
 #include "WorkflowSettingsController.h"
 
-#include <QColorDialog>
 #include <QFileDialog>
 #include <QMouseEvent>
 
@@ -29,6 +28,8 @@
 #include <U2Core/Version.h>
 
 #include <U2Designer/DashboardInfoRegistry.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/WorkflowSettings.h>
 
@@ -112,7 +113,7 @@ void WorkflowSettingsPageWidget::sl_getDirectory() {
 }
 
 void WorkflowSettingsPageWidget::sl_getColor() {
-    QColor newColor = QColorDialog::getColor(colorWidget->palette().color(colorWidget->backgroundRole()), this);
+    QColor newColor = U2ColorDialog::getColor(colorWidget->palette().color(colorWidget->backgroundRole()), this);
     if (newColor.isValid()) {
         QPalette pal = colorWidget->palette();
         pal.setColor(colorWidget->backgroundRole(), newColor);

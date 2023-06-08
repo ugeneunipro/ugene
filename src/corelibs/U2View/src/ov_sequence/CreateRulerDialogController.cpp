@@ -21,12 +21,12 @@
 
 #include "CreateRulerDialogController.h"
 
-#include <QColorDialog>
 #include <QMessageBox>
 #include <QPushButton>
 
 #include <U2Core/TextUtils.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 
 namespace U2 {
@@ -66,7 +66,7 @@ void CreateRulerDialogController::updateColorSample() {
 }
 
 void CreateRulerDialogController::sl_colorButtonClicked() {
-    QColor c = QColorDialog::getColor(color, this);
+    QColor c = U2ColorDialog::getColor(color, this);
     if (!c.isValid()) {
         return;
     }

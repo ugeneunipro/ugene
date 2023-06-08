@@ -21,13 +21,12 @@
 
 #include "MaOverviewContextMenu.h"
 
-#include <QColorDialog>
-
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
 #include <U2Gui/MainWindow.h>
 
@@ -104,17 +103,11 @@ void MaOverviewContextMenu::sl_graphOrientationActionTriggered(QAction* action) 
 }
 
 void MaOverviewContextMenu::sl_colorActionTriggered() {
-    QObjectScopedPointer<QColorDialog> colorDialog = new QColorDialog(graphOverview->getDisplaySettings().color, this);
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        colorDialog->setOption(QColorDialog::DontUseNativeDialog);
-    }
-#endif
-
+    QObjectScopedPointer<QColorDialog> colorDialog = new U2ColorDialog(graphOverview->getDisplaySettings().color, this);
     colorDialog->exec();
     CHECK(!colorDialog.isNull(), );
 
-    if (QDialog::Accepted == colorDialog->result()) {
+    if (colorDialog->result() == QDialog::Accepted) {
         emit si_colorSelected(colorDialog->selectedColor());
     }
 }

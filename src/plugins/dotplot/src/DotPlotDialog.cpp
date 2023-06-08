@@ -21,7 +21,6 @@
 
 #include <math.h>
 
-#include <QColorDialog>
 #include <QDesktopWidget>
 
 #include <U2Core/AppContext.h>
@@ -34,6 +33,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/CreateAnnotationWidgetController.h>
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
@@ -269,7 +269,7 @@ void DotPlotDialog::sl_directInvertedCheckBox() {
 static const QString COLOR_STYLE("QPushButton { background-color: %1 }");
 
 void DotPlotDialog::sl_directColorButton() {
-    QObjectScopedPointer<QColorDialog> d = new QColorDialog(directColor, this);
+    QObjectScopedPointer<QColorDialog> d = new U2ColorDialog(directColor, this);
     d->exec();
     CHECK(!d.isNull(), );
 
@@ -282,7 +282,7 @@ void DotPlotDialog::sl_directColorButton() {
 }
 
 void DotPlotDialog::sl_invertedColorButton() {
-    QObjectScopedPointer<QColorDialog> d = new QColorDialog(invertedColor, this);
+    QObjectScopedPointer<QColorDialog> d = new U2ColorDialog(invertedColor, this);
     d->exec();
     CHECK(!d.isNull(), );
 

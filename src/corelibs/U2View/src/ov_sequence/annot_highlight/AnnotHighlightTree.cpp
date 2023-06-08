@@ -21,11 +21,11 @@
 
 #include "AnnotHighlightTree.h"
 
-#include <QColorDialog>
 #include <QHeaderView>
 
-#include <U2Core/AnnotationSettings.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include "AnnotHighlightTreeItem.h"
 
@@ -131,12 +131,7 @@ void AnnotHighlightTree::sl_onItemClicked(QTreeWidgetItem* item, int column) {
     }
 
     auto annotHighlightItem = static_cast<AnnotHighlightTreeItem*>(item);
-
-    QColorDialog::ColorDialogOption options = static_cast<QColorDialog::ColorDialogOption>(0);
-    if (qgetenv(ENV_GUI_TEST) == "1") {
-        options = QColorDialog::DontUseNativeDialog;
-    }
-    QColor annotColor = QColorDialog::getColor(annotHighlightItem->getColor(), this, "", options);
+    QColor annotColor = U2ColorDialog::getColor(annotHighlightItem->getColor(), this);
     if (annotColor.isValid()) {
         annotHighlightItem->setColor(annotColor);
         emit si_colorChanged(annotHighlightItem->getName(), annotColor);

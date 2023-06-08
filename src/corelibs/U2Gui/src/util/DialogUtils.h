@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <QColorDialog>
 #include <QLineEdit>
 #include <QWidget>
 
@@ -53,6 +54,21 @@ private:
     QString FileFilter;
     QString type;
     bool multi;
+};
+
+class U2GUI_EXPORT U2ColorDialog : public QColorDialog {
+public:
+    explicit U2ColorDialog(QWidget* parent = nullptr);
+    explicit U2ColorDialog(const QColor& initial, QWidget* parent = nullptr);
+
+    /**
+     * Runs a dialog and returns a color.
+     * Same as QColorDialog::getColor() but checks 'UGENE_USE_NATIVE_DIALOGS' environment variable and adjust 'options' accordingly.
+     */
+    static QColor getColor(const QColor& initial = Qt::white,
+                           QWidget* parent = nullptr,
+                           const QString& title = QString(),
+                           QColorDialog::ColorDialogOptions options = QColorDialog::ColorDialogOptions());
 };
 
 }  // namespace U2

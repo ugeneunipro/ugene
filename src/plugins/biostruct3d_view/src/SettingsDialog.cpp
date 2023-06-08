@@ -23,6 +23,7 @@
 
 #include <U2Core/Log.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 
 namespace U2 {
@@ -57,14 +58,14 @@ void BioStruct3DSettingsDialog::initColorSchemes() {
 }
 
 void BioStruct3DSettingsDialog::sl_setBackgroundColor() {
-    backgroundColor = QColorDialog::getColor(backgroundColor, this);
+    backgroundColor = U2ColorDialog::getColor(backgroundColor, this);
 
     state[glWidget->BACKGROUND_COLOR_NAME] = QVariant::fromValue(backgroundColor);
     glWidget->setState(state);
 }
 
 void BioStruct3DSettingsDialog::sl_setSelectionColor() {
-    selectionColor = QColorDialog::getColor(selectionColor, this);
+    selectionColor = U2ColorDialog::getColor(selectionColor, this);
 
     state[glWidget->SELECTION_COLOR_NAME] = QVariant::fromValue(selectionColor);
     glWidget->setState(state);
@@ -103,7 +104,7 @@ void BioStruct3DSettingsDialog::sl_setGlassesColorScheme() {
 }
 
 void BioStruct3DSettingsDialog::sl_setLeftEyeColor() {
-    QColor changed(QColorDialog::getColor(anaglyphSettings.leftEyeColor, this));
+    QColor changed(U2ColorDialog::getColor(anaglyphSettings.leftEyeColor, this));
 
     if (changed.red() != 0 || changed.green() != 0 || changed.blue() != 0) {
         setGlassesColorScheme(changed, anaglyphSettings.rightEyeColor);
@@ -111,7 +112,7 @@ void BioStruct3DSettingsDialog::sl_setLeftEyeColor() {
 }
 
 void BioStruct3DSettingsDialog::sl_setRightEyeColor() {
-    QColor changed(QColorDialog::getColor(anaglyphSettings.rightEyeColor, this));
+    QColor changed(U2ColorDialog::getColor(anaglyphSettings.rightEyeColor, this));
 
     if (changed.red() != 0 || changed.green() != 0 || changed.blue() != 0) {
         setGlassesColorScheme(anaglyphSettings.leftEyeColor, changed);

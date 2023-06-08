@@ -21,7 +21,6 @@
 
 #include "ColorSchemaDialogController.h"
 
-#include <QColorDialog>
 #include <QMessageBox>
 #include <QPainter>
 
@@ -36,6 +35,7 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -161,16 +161,9 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent* event) {
     while (it.hasNext()) {
         it.next();
         if (it.value().contains(event->pos().x() - alphabetColorsFrame->geometry().x(), event->pos().y() - alphabetColorsFrame->geometry().y())) {
-            QObjectScopedPointer<QColorDialog> d = new QColorDialog(this);
-#ifdef Q_OS_DARWIN
-            // A workaround because of UGENE-2263
-            // Another way should be found.
-            // I suppose, that it is bug in the Qt libraries (Qt-4.8.5 for mac)
-            d->setOption(QColorDialog::DontUseNativeDialog);
-#endif
-            const int res = d->exec();
+            QObjectScopedPointer<QColorDialog> d = new U2ColorDialog(this);
+            int res = d->exec();
             CHECK(!d.isNull(), );
-
             if (res == QDialog::Accepted) {
                 newColors[it.key()] = d->selectedColor();
             }
@@ -467,7 +460,7 @@ void ColorSchemaSettingsPageWidget::sl_onDeleteColorSchema() {
             return;
         }
     }
-    FAIL("something wrong causes color scheme deletion, this code must be unreacheble", );
+    FAIL("something wrong causes color scheme deletion, this code must be unreachable", );
 }
 
 }  // namespace U2

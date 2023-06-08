@@ -21,7 +21,6 @@
 
 #include "GraphSettingsDialog.h"
 
-#include <QColorDialog>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QProxyStyle>
@@ -31,6 +30,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 
 #include "ADVGraphModel.h"
@@ -105,7 +105,7 @@ void GraphSettingsDialog::sl_onPickColorButtonClicked() {
     QString colorName = colorButton->objectName();
     QColor initial = colorMap.value(colorName);
 
-    QObjectScopedPointer<QColorDialog> colorDialog = new QColorDialog(initial, this);
+    QObjectScopedPointer<QColorDialog> colorDialog = new U2ColorDialog(initial, this);
 
     // Disable use of native dialog here.
     // Reason: the native dialog will not be shown (tested on Ubuntu 20.04) if we have at least 1 graph-label visible (QT bug?).

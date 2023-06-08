@@ -21,7 +21,6 @@
 
 #include "TreeOptionsWidget.h"
 
-#include <QColorDialog>
 #include <QMainWindow>
 #include <QProxyStyle>
 #include <QStyleFactory>
@@ -33,6 +32,7 @@
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/ShowHideSubgroupWidget.h>
 #include <U2Gui/U2WidgetStateStorage.h>
@@ -340,7 +340,7 @@ void TreeOptionsWidget::sl_fontUnderlineChanged() {
 void TreeOptionsWidget::sl_labelsColorButton() {
     auto treeViewerUi = getTreeViewer();
     auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(LABEL_COLOR));
-    auto newColor = QColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
+    auto newColor = U2ColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
     if (newColor.isValid()) {
         updateButtonColor(labelsColorButton, newColor);
         treeViewerUi->updateOption(LABEL_COLOR, newColor);
@@ -350,7 +350,7 @@ void TreeOptionsWidget::sl_labelsColorButton() {
 void TreeOptionsWidget::sl_branchesColorButton() {
     auto treeViewerUi = getTreeViewer();
     auto curColor = qvariant_cast<QColor>(treeViewerUi->getOption(BRANCH_COLOR));
-    auto newColor = QColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
+    auto newColor = U2ColorDialog::getColor(curColor, AppContext::getMainWindow()->getQMainWindow());
     if (newColor.isValid()) {
         updateButtonColor(branchesColorButton, newColor);
         treeViewerUi->updateOption(BRANCH_COLOR, newColor);

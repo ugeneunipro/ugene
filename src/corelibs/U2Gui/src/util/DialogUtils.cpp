@@ -34,6 +34,10 @@
 
 namespace U2 {
 
+static bool getDontUseNativeDialogFlag() {
+    return qgetenv(ENV_USE_NATIVE_DIALOGS) == "0";
+}
+
 void WizardUtils::setWizardMinimumSize(QWizard* wizard, const QSize& minimumSize) {
     QSize bestSize = minimumSize;
     foreach (int pageId, wizard->pageIds()) {
@@ -72,4 +76,32 @@ void FileLineEdit::sl_onBrowse() {
     setFocus();
 }
 
+/** Adds 'DontUseNativeDialog' option the the options when needed in-place. */
+static void adjustColorDialogOptions(QColorDialog::ColorDialogOptions& options) {
+    if (getDontUseNativeDialogFlag()) {
+        options |= QColorDialog::DontUseNativeDialog;
+    }
+}
+
+U2ColorDialog::U2ColorDialog(QWidget* parent)
+    : QColorDialog(parent) {
+    QColorDialog::ColorDialogOptions adjustedOptions = options();
+    adjustColorDialogOptions(adjustedOptions);
+    setOptions(adjustedOptions);
+}
+
+U2ColorDialog::U2ColorDialog(const QColor& initial, QWidget* parent)
+    : QColorDialog(initial, parent) {
+    QColorDialog::ColorDialogOptions adjustedOptions = options();
+    adjustColorDialogOptions(adjustedOptions);
+    setOptions(adjustedOptions);
+}
+
+QColor U2ColorDialog::getColor(const QColor& initial,
+                               QWidget* parent,
+                               const QString& title,
+                               QColorDialog::ColorDialogOptions options) {
+    adjustColorDialogOptions(options);
+    return QColorDialog::getColor(initial, parent, title, options);
+}
 }  // namespace U2
