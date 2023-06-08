@@ -276,15 +276,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
                     alphabets.append(alphabet->getType());
                 }
                 if (!isPdbFormat) {
-                    auto seqObj = ctx->getSequenceObject();
-                    SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("U2SequenceObject"), nullptr);
-
-                    auto curDoc = seqObj->getDocument();
-                    SAFE_POINT(curDoc != nullptr, L10N::nullPointerError("U2Document"), nullptr);
-
-                    auto format = curDoc->getDocumentFormat();
-                    SAFE_POINT(format != nullptr, L10N::nullPointerError("U2DocumentFormat"), nullptr);
-
+                    auto format = ctx->getSequenceObject()->getDocument()->getDocumentFormat();
                     if (format->getFormatId() == BaseDocumentFormats::PLAIN_PDB) {
                         isPdbFormat = true;
                     }

@@ -86,7 +86,8 @@ const QMap<QString, QString> RemoteDBRegistry::PAGE_LINKS = { {ENSEMBL, ENSEMBL_
                                                               {PDB, PDB_PAGE_ID},
                                                               {SWISS_PROT, UNIPROTKB_PAGE_ID},
                                                               {UNIPROTKB_SWISS_PROT, UNIPROTKB_PAGE_ID},
-                                                              {ALPHAFOLD, ALPHAFOLD_PAGE_ID}};
+                                                              {UNIPROTKB_TREMBL, UNIPROTKB_PAGE_ID},
+                                                              {ALPHAFOLD, ALPHAFOLD_PAGE_ID} };
 
 ////////////////////////////////////////////////////////////////////////////
 // BaseLoadRemoteDocumentTask

@@ -2697,7 +2697,7 @@ GUI_TEST_CLASS_DEFINITION(test_5660) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5663) {
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false, sandBoxDir));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 4, false, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsNotifications::waitForNotification(os, false);

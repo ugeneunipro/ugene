@@ -171,8 +171,6 @@ void EntropyCalculationTask::writeEntropyToFile() {
         }
         out << line << endl;
     }
-    readFile.close();
-    writeFile.close();
 }
 
 }  // namespace U2

@@ -53,7 +53,7 @@ namespace GUITest_common_scenarios_project_remote_request {
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::openView(os);
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "3EZB", 3));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "3EZB", 4));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -132,7 +132,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     QDir().mkpath(sandBoxDir + "remote_request/test_0005");
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "ENSG00000205571 ENSG00000146463", 2, true, true, false, sandBoxDir + "remote_request/test_0005"));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "ENSG00000205571 ENSG00000146463", 3, true, true, false, sandBoxDir + "remote_request/test_0005"));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."});
 
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
@@ -156,7 +156,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     QDir().mkpath(sandBoxDir + "remote_request/test_0006");
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Swiss-Prot"));
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "Q9IGQ6;A0N8V2", 4, true, true, false, sandBoxDir + "remote_request/test_0006"));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "Q9IGQ6;A0N8V2", 5, true, true, false, sandBoxDir + "remote_request/test_0006"));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."});
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -307,7 +307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //        Open.
     //    3.  Expected state: 1ezg appears in a project view.
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, true, true, false, sandBoxDir));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 4, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
 
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
@@ -322,10 +322,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //        Open.
     //    3.  Expected state: 1ezg doesn't appear in a project view.
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 3, false, true, false, sandBoxDir));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1ezg", 4, false, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1CRN", 3, true, true, false, sandBoxDir));
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "1CRN", 4, true, true, false, sandBoxDir));
     GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
 
     GTUtilsDocument::isDocumentLoaded(os, "1CRN.pdb");

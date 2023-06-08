@@ -92,7 +92,7 @@ void EntropyCalculationWidget::sl_onRunButtonClicked() {
 }
 
 void EntropyCalculationWidget::sl_onTextChanged() {
-    runButton->setEnabled(alignmentLineEdit->text() != "");
+    runButton->setEnabled(!alignmentLineEdit->text().isEmpty());
 }
 
 }  // namespace U2
