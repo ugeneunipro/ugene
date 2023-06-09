@@ -34,23 +34,21 @@ namespace HI {
 QPoint GTMouseDriver::mousePos = QPoint(-1, -1);
 Qt::MouseButtons GTMouseDriver::bp = Qt::NoButton;
 
-namespace {
-
-bool isPointInsideScreen(const QPoint& point) {
-    const CGDirectDisplayID displayID = CGMainDisplayID();
-    const size_t horres = CGDisplayPixelsWide(displayID);
-    const size_t vertres = CGDisplayPixelsHigh(displayID);
-
-    const QRect screen(0, 0, horres, vertres);
+static bool isPointInsideScreen(const QPoint& point) {
+    CGDirectDisplayID displayID = CGMainDisplayID();
+    int horres = CGDisplayPixelsWide(displayID);
+    int vertres = CGDisplayPixelsHigh(displayID);
+    QRect screen(1, 1, horres - 2, vertres - 2); // Exclude border pixels like (0,0)
     return screen.contains(point);
 }
 
-bool isPointInsideScreen(int x, int y) {
+static bool isPointInsideScreen(int x, int y) {
     return isPointInsideScreen(QPoint(x, y));
 }
 
 #    define GT_METHOD_NAME "selectAreaMac"
-bool selectAreaMac(const int x, const int y) {
+static bool selectAreaMac(int x, int y) {
+    qDebug("selectAreaMac %d %d", x, y);
     DRIVER_CHECK(isPointInsideScreen(x, y), "Invalid coordinates");
 
     CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);
@@ -64,8 +62,6 @@ bool selectAreaMac(const int x, const int y) {
 }
 #    undef GT_METHOD_NAME
 
-}  // namespace
-
 #    define GT_METHOD_NAME "moveToP"
 bool GTMouseDriver::moveTo(const QPoint& p) {
     int x = p.x();
@@ -73,6 +69,7 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
     if (bp.testFlag(Qt::LeftButton)) {
         return selectAreaMac(x, y);
     }
+    qDebug("GTMouseDriver::moveTo %d %d", x, y);
 
     DRIVER_CHECK(isPointInsideScreen(x, y), "Invalid coordinates");
 

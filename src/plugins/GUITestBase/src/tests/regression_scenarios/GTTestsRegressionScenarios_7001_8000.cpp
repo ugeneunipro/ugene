@@ -3465,7 +3465,7 @@ GUI_TEST_CLASS_DEFINITION(test_7667_1) {
     GTUtilsProject::closeProject(os, true);
     GTUtilsMdi::activateWindow(os, "Query Designer - NewSchema");
 
-    GTWidget::moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
+    GTWidget::moveToAndClick(os, GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
     auto table = GTWidget::findTableView(os, "table");
     {  // Product size ranges.
         GTTableView::click(os, table, 2, 1);
@@ -3505,7 +3505,7 @@ GUI_TEST_CLASS_DEFINITION(test_7667_2) {
     // Expected: both tasks completed successfully.
     GTFileDialog::openFile(os, testDir + "_common_data/primer3/only_primer.uql");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::moveToAndClick(GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
+    GTWidget::moveToAndClick(os, GTUtilsQueryDesigner::getItemCenter(os, "Primer"));
     runSchema(os, testDir + "_common_data/bwa/NC_000021.gbk.min.fa", false);
 
     setNumberToReturn(os, GTWidget::findTableView(os, "table"));

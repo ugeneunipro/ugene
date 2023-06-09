@@ -106,7 +106,7 @@ void GTTableView::click(GUITestOpStatus& os, QTableView* table, int row, int col
     GT_CHECK(modelIndex.isValid(), "Model index is invalid");
 
     GTWidget::scrollToIndex(os, table, modelIndex);
-    GTWidget::moveToAndClick(GTTableView::getCellPosition(os, table, column, row));
+    GTWidget::moveToAndClick(os, GTTableView::getCellPosition(os, table, column, row));
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

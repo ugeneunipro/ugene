@@ -137,11 +137,6 @@ public:
 #define GT_CHECK(condition, errorMessage) \
     GT_CHECK_RESULT(condition, errorMessage, )
 
-#define GT_CHECK_NO_MESSAGE(condition, errorMessage) \
-    if (!(condition)) { \
-        GT_CHECK(condition, errorMessage) \
-    }
-
 #define GT_CHECK_RESULT(condition, errorMessage, result) \
     CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME " __ " GT_METHOD_NAME " _  " + QString(errorMessage), result)
 

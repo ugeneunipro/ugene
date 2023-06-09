@@ -85,7 +85,7 @@ void GUIDialogWaiter::checkDialog() {
     }
     try {
         QWidget* widget = nullptr;
-        GT_CHECK_NO_MESSAGE(runnable != nullptr, "Runnable is NULL");
+        GT_CHECK(runnable != nullptr, "Runnable is NULL");
 
         switch (settings.dialogType) {
             case DialogType::Modal:

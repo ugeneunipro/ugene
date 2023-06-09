@@ -114,7 +114,7 @@ public:
     static TvRectangularBranchItem* getRootRectangularBranch(HI::GUITestOpStatus& os);
 
     /** Sets branch color. */
-    static void setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b);
+    static void setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b, bool checkNoActiveDialogWaiters = true);
 
     /** Returns percentage of the widget area filled with the given color. */
     static double getColorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName);

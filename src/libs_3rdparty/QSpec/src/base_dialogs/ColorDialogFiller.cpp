@@ -39,8 +39,6 @@ void ColorDialogFiller::commonScenario() {
     GTSpinBox::setValue(os, spinList.at(3), r, GTGlobals::UseKeyBoard);
     GTSpinBox::setValue(os, spinList.at(4), g, GTGlobals::UseKeyBoard);
     GTSpinBox::setValue(os, spinList.at(5), b, GTGlobals::UseKeyBoard);
-
-    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 #undef GT_METHOD_NAME

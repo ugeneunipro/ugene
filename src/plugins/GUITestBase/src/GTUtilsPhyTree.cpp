@@ -434,10 +434,13 @@ void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus&, QWidget* treeViewer, i
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setBranchColor"
-void GTUtilsPhyTree::setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b) {
+void GTUtilsPhyTree::setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b, bool checkNoActiveDialogWaiters) {
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
     auto branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
     GTWidget::click(os, branchesColorButton);
+    if (checkNoActiveDialogWaiters) {
+        GTUtilsDialog::checkNoActiveWaiters(os);
+    }
 }
 #undef GT_METHOD_NAME
 

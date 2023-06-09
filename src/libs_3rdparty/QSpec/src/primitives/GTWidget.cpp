@@ -53,16 +53,23 @@ void GTWidget::click(GUITestOpStatus& os, QWidget* widget, Qt::MouseButton mouse
         }
     }
     QPoint globalPoint = widget->mapToGlobal(p);
-    GTMouseDriver::click(globalPoint, mouseButton);
+    bool clickIsOk = GTMouseDriver::click(globalPoint, mouseButton);
+    GT_CHECK(clickIsOk, QString("GTWidget::click Successfully clicked position: %1 %2").arg(globalPoint.x()).arg(globalPoint.y()));
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
-void GTWidget::moveToAndClick(const QPoint& point) {
-    GTMouseDriver::moveTo(point);
+#define GT_METHOD_NAME "moveToAndClick"
+void GTWidget::moveToAndClick(GUITestOpStatus& os, const QPoint& point) {
+    bool moveIsOk = GTMouseDriver::moveTo(point);
+    GT_CHECK(moveIsOk, QString("GTWidget::moveToAndClick: move is OK: %1 %2").arg(point.x()).arg(point.y()));
+
     GTThread::waitForMainThread();
-    GTMouseDriver::click();
+
+    bool clickIsOk = GTMouseDriver::click();
+    GT_CHECK(clickIsOk, QString("GTWidget::moveToAndClick: click is OK"));
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(GUITestOpStatus& os, QWidget* w) {
