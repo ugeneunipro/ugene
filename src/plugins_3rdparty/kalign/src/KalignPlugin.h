@@ -43,12 +43,12 @@ class KalignPlugin : public Plugin {
     Q_OBJECT
 public:
     KalignPlugin();
-    ~KalignPlugin();
+    ~KalignPlugin() override;
 public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    KalignMSAEditorContext* ctx;
+    KalignMSAEditorContext* ctx = nullptr;
 };
 
 class KalignMSAEditorContext : public GObjectViewWindowContext {

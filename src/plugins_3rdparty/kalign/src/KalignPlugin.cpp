@@ -62,8 +62,8 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 
 KalignPlugin::KalignPlugin()
     : Plugin(tr("Kalign"),
-             tr("A port of Kalign package for multiple sequence alignment. Check http://msa.sbc.su.se for the original version")),
-      ctx(NULL) {
+             tr("A port of Kalign package for multiple sequence alignment. Check https://msa.sbc.su.se for the original version")),
+{
     bool guiMode = AppContext::getMainWindow() != NULL;
 
     if (guiMode) {

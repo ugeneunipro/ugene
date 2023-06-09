@@ -37,9 +37,9 @@ class Project;
 class PairwiseAlignmentHirschbergTaskSettings : public PairwiseAlignmentTaskSettings {
 public:
     PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings& s);
-    virtual ~PairwiseAlignmentHirschbergTaskSettings();
+    ~PairwiseAlignmentHirschbergTaskSettings() override;
 
-    virtual bool convertCustomSettings();
+    bool convertCustomSettings() override;
 
     // all settings except translationTable must be set up through customSettings and then must be converted by convertCustomSettings().
     int gapOpen;
@@ -52,16 +52,15 @@ public:
     static const QString PA_H_GAP_TERM;
     static const QString PA_H_BONUS_SCORE;
     static const QString PA_H_REALIZATION_NAME;
-    static const QString PA_H_DEFAULT_RESULT_FILE_NAME;
 };
 
 class PairwiseAlignmentHirschbergTask : public PairwiseAlignmentTask {
 public:
     PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings);
-    ~PairwiseAlignmentHirschbergTask();
+    ~PairwiseAlignmentHirschbergTask() override;
 
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
-    virtual ReportResult report();
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
 
 protected:
     void changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject);
@@ -69,7 +68,6 @@ protected:
 protected:
     PairwiseAlignmentHirschbergTaskSettings* settings;
     KalignTask* kalignSubTask;
-    KalignGObjectRunFromSchemaTask* workflowKalignSubTask;
     MultipleSequenceAlignment ma;
     const DNAAlphabet* alphabet;
 };

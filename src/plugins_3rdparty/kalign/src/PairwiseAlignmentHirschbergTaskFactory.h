@@ -28,10 +28,7 @@ namespace U2 {
 
 class PairwiseAlignmentHirschbergTaskFactory : public AbstractAlignmentTaskFactory {
 public:
-    PairwiseAlignmentHirschbergTaskFactory();
-    virtual ~PairwiseAlignmentHirschbergTaskFactory();
-
-    virtual AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const;
+    AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const override;
 };
 
 }  // namespace U2

@@ -30,7 +30,6 @@ const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_GAP_EXTD("H_gapExtd"
 const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_GAP_TERM("H_gapTerm");
 const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_BONUS_SCORE("H_bonusScore");
 const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_REALIZATION_NAME("H_realizationName");
-const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_DEFAULT_RESULT_FILE_NAME("H_Alignment_Result.aln");
 
 PairwiseAlignmentHirschbergTaskSettings::PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings& s)
     : PairwiseAlignmentTaskSettings(s),
@@ -58,7 +57,6 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     : PairwiseAlignmentTask(TaskFlag_NoRun),
       settings(_settings),
       kalignSubTask(nullptr),
-      workflowKalignSubTask(nullptr),
       alphabet(nullptr) {
     SAFE_POINT(settings != nullptr, "Task settings are not defined.", );
     SAFE_POINT(settings->convertCustomSettings() && settings->isValid(), "Invalid task settings.", );
@@ -80,7 +78,7 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     con.close(os);
 
     alphabet = U2AlphabetUtils::getById(settings->alphabet);
-    SAFE_POINT(alphabet != nullptr, "Albhabet is invalid.", );
+    SAFE_POINT(alphabet != nullptr, "Alphabet is invalid.", );
 
     ma = MultipleSequenceAlignment(firstName + " vs. " + secondName, alphabet);
     ma->addRow(firstName, first);
