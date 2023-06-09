@@ -3967,7 +3967,10 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     QTreeWidgetItem* item = GTTreeWidget::findItem(tree, "76105..76110");
     GTTreeWidget::click(item);
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"AacLI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "AacLI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 

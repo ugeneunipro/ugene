@@ -961,7 +961,10 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     GTFileDialog::openFile(dataDir + "samples/Genbank", "PBR322.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Find next restriction sites "AaaI" and "AagI"
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"AaaI", "AagI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "AaaI", "AagI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
     GTUtilsTaskTreeView::waitTaskFinished();
 

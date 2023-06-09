@@ -5713,7 +5713,10 @@ GUI_TEST_CLASS_DEFINITION(test_6875) {
 
     // 2. Select "Actions > Analyze > Find restriction sites", check "DraRI" enzyme in the appeared dialog, click "OK".
     // Expected state: ugene not crashed
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"DraRI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "DraRI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished();
 }
