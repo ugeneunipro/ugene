@@ -29,8 +29,10 @@
 #include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -76,7 +78,7 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         auto seqObject = annotatedDNAView->getActiveSequenceContext()->getSequenceObject();
         auto sequence = seqObject->getWholeSequence(stateInfo);
         CHECK_OP(stateInfo, res);
-        CHECK_EXT(alignment->getAlphabet() == sequence.alphabet, setError(tr("Alignment and 3D structure have different alphabets")), res);
+        CHECK_EXT(alignment->getAlphabet()->isAmino(), setError(tr("Alignment and 3D structure have different alphabets")), res);
         sequence.setName(newSequenceName);
         chainId = seqObject->getSequenceInfo().value("CHAIN_ID").toInt();
         addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, {sequence});
@@ -134,18 +136,25 @@ void EntropyCalculationTask::writeEntropyToFile() {
     auto filePath = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getDocument()->getURLString();
     CHECK_EXT(QString::compare(filePath, saveToPath, Qt::CaseInsensitive), 
         setError(tr("Original and destination files cannot have the same name: %1. Please change the 'Save to' path.").arg(filePath)), );
-    QFile readFile(filePath);
-    CHECK_EXT(readFile.open(QIODevice::ReadOnly), setError(L10N::errorOpeningFileRead(filePath)), );
-    QFile writeFile(saveToPath);
-    CHECK_EXT(writeFile.open(QIODevice::WriteOnly), setError(L10N::errorOpeningFileWrite(saveToPath)), );
-    QTextStream in(&readFile);
-    QTextStream out(&writeFile);
+
+    QScopedPointer<IOAdapter> readIO(IOAdapterUtils::open(filePath, stateInfo, IOAdapterMode_Read));
+    CHECK_OP(stateInfo, );
+    QScopedPointer<IOAdapter> writeIO(IOAdapterUtils::open(saveToPath, stateInfo, IOAdapterMode_Write));
+    CHECK_OP(stateInfo, );
+
     QVector<double>::const_iterator it = entropyForEveryColumn.constBegin();
     int currentChainIndex = 1;
     int residueSequenceNumber = -1;
     QString roundedEntropy;
-    while (!in.atEnd()) {
-        QString line = in.readLine();
+    while (!readIO->isEof()) {
+        const int max_size = 81;
+
+        QByteArray byteLine(max_size + 1, 0);
+        int lineLength = readIO->readLine(byteLine.data(), max_size);
+        QString line(byteLine);
+        if (line.isEmpty()) {
+            continue;
+        }
         if (line.startsWith("TER")) {
             currentChainIndex++;
         } else if ((line.startsWith("ATOM") || line.startsWith("HETATM")) && it != entropyForEveryColumn.constEnd() && currentChainIndex == chainId) {
@@ -161,7 +170,7 @@ void EntropyCalculationTask::writeEntropyToFile() {
             //temperature factor: positions 60-65
             line.replace(60, 6, roundedEntropy.prepend(QString(" ").repeated(6 - roundedEntropy.length())));
         }
-        out << line << endl;
+        writeIO->writeBlock(line.toLocal8Bit());
     }
 }
 
