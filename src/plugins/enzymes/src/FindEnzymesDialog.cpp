@@ -811,7 +811,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     auto seqComplement = DNASequenceUtils::reverseComplement(enzyme->seq, alphabet);
     if (enzyme->cutDirect == ENZYME_CUT_UNKNOWN) {
-        return TOOLTIP_TAG.arg(QString(enzyme->seq)).arg(QString(seqComplement));
+        return TOOLTIP_TAG.arg(QString(enzyme->seq)).arg(QString(DNASequenceUtils::complement(enzyme->seq, alphabet)));
     }
 
     auto enzymeSize = enzyme->seq.size();
