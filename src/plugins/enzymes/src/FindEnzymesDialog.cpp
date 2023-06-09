@@ -768,9 +768,8 @@ EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     setData(3, Qt::ToolTipRole, tt);
     setText(4, enzyme->organizm);
     setData(4, Qt::ToolTipRole, enzyme->organizm);
-    auto suppliers = enzyme->suppliers.join("\n");
-    setText(5, suppliers);
-    setData(5, Qt::ToolTipRole, suppliers);
+    setText(5, enzyme->suppliers.join("; "));
+    setData(5, Qt::ToolTipRole, enzyme->suppliers.join("\n"));
 }
 
 bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
