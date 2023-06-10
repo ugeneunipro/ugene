@@ -68,7 +68,7 @@ public:
     virtual bool typePass(ObjectViewType factoryViewType) = 0;
     virtual bool alphabetPass(DNAAlphabetType factoryAlphabetType) = 0;
     virtual bool atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType) = 0;
-    virtual bool isPdbFile() = 0;
+    virtual QList<DocumentFormatId> formatIds() = 0;
 };
 
 class U2GUI_EXPORT OPFactoryFilterVisitor : public OPFactoryFilterVisitorInterface {
@@ -85,8 +85,8 @@ public:
     OPFactoryFilterVisitor(ObjectViewType _objectViewType, QList<DNAAlphabetType> _objectListAlphabet)
         : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW), objectAlphabets(_objectListAlphabet) {
     }
-    OPFactoryFilterVisitor(ObjectViewType _objectViewType, QList<DNAAlphabetType> _objectListAlphabet, bool _isPdb)
-        : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW), objectAlphabets(_objectListAlphabet), isPdb(_isPdb) {
+    OPFactoryFilterVisitor(ObjectViewType _objectViewType, QList<DNAAlphabetType> _objectListAlphabet, QList<DocumentFormatId> _formats)
+        : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW), objectAlphabets(_objectListAlphabet), formats(_formats) {
     }
 
     virtual bool typePass(ObjectViewType factoryViewType) {
@@ -96,15 +96,15 @@ public:
         return factoryAlphabetType == objectAlphabetType;
     }
     virtual bool atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType);
-    virtual bool isPdbFile() {
-        return isPdb;
+    virtual QList<DocumentFormatId> formatIds() {
+        return formats;
     }
 
 private:
     ObjectViewType objectViewType;
     DNAAlphabetType objectAlphabetType;
     QList<DNAAlphabetType> objectAlphabets;
-    bool isPdb = false;
+    QList<DocumentFormatId> formats;
 };
 
 class U2GUI_EXPORT OPWidgetFactory : public QObject {

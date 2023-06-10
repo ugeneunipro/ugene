@@ -23,6 +23,7 @@
 
 #include <QPixmap>
 
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/L10n.h>
 
@@ -59,7 +60,12 @@ const QString& EntropyCalculationWidgetFactory::getGroupId() {
 }
 
 bool EntropyCalculationWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
-    return (OPWidgetFactory::passFiltration(filter) && filter->isPdbFile());
+    bool isPdbFormat = false;
+    if (filter->formatIds().contains(BaseDocumentFormats::PLAIN_PDB)) {
+        isPdbFormat = true;
+    }
+    return (OPWidgetFactory::passFiltration(filter) && isPdbFormat && 
+        filter->atLeastOneAlphabetPass(DNAAlphabet_AMINO));
 }
 
 }  // namespace U2

@@ -34,7 +34,6 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/BioStruct3DObject.h>
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
@@ -265,6 +264,7 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
 
     ADVSequenceObjectContext* ctx;
     QList<DNAAlphabetType> alphabets;
+    QList<DocumentFormatId> formatIds;
 
     bool isPdbFormat = false;
     for (int i = 0; i < seqViews.size(); i++) {
@@ -275,16 +275,11 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
                 if (alphabet) {
                     alphabets.append(alphabet->getType());
                 }
-                if (!isPdbFormat) {
-                    auto format = ctx->getSequenceObject()->getDocument()->getDocumentFormat();
-                    if (format->getFormatId() == BaseDocumentFormats::PLAIN_PDB) {
-                        isPdbFormat = true;
-                    }
-                }
+                formatIds.append(ctx->getSequenceObject()->getDocument()->getDocumentFormat()->getFormatId());
             }
         }
     }
-    filters.append(new OPFactoryFilterVisitor(ObjViewType_SequenceView, alphabets, isPdbFormat));
+    filters.append(new OPFactoryFilterVisitor(ObjViewType_SequenceView, alphabets, formatIds));
 
     QList<OPWidgetFactory*> opWidgetFactoriesForSeqView = opWidgetFactoryRegistry->getRegisteredFactories(filters);
     foreach (OPWidgetFactory* factory, opWidgetFactoriesForSeqView) {

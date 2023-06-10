@@ -40,13 +40,17 @@
 #include <U2View/ADVSequenceObjectContext.h>
 
 namespace U2 {
-EntropyCalculationTask::EntropyCalculationTask(AnnotatedDNAView* _annotatedDNAView, 
-                                               const QString& _alignmentFilePath, 
-                                               const QString& _saveToPath)
+EntropyCalculationTask::EntropyCalculationTask(const QString& _alignmentFilePath, 
+                                               const QString& _saveToPath,
+                                               const QString& _originalFilePath,
+                                               DNASequence& _sequence, 
+                                               int _chainId)
     : Task(tr("Alignment entropy calculation"), TaskFlags_FOSE_COSC), 
-    annotatedDNAView(_annotatedDNAView),
     alignmentFilePath(_alignmentFilePath), 
-    saveToPath(_saveToPath) {
+    saveToPath(_saveToPath),
+    originalFilePath(_originalFilePath),
+    sequence(_sequence),
+    chainId(_chainId){
 }
 
 void EntropyCalculationTask::prepare() {
@@ -74,13 +78,9 @@ QList<Task*> EntropyCalculationTask::onSubTaskFinished(Task* subTask) {
         CHECK_EXT(objects.size() == 1, setError(tr("More than 1 object found at %1").arg(alignmentFilePath)), res);
         alignment = qobject_cast<MultipleSequenceAlignmentObject*>(objects.at(0));
         CHECK_EXT(alignment != nullptr, setError(tr("Multiple alignment is expected as the input file: %1").arg(alignmentFilePath)), res);
+        CHECK_EXT(alignment->getAlphabet()->isAmino(), setError(tr("Alignment does not have amino alphabet")), res);
         rollSequenceName();
-        auto seqObject = annotatedDNAView->getActiveSequenceContext()->getSequenceObject();
-        auto sequence = seqObject->getWholeSequence(stateInfo);
-        CHECK_OP(stateInfo, res);
-        CHECK_EXT(alignment->getAlphabet()->isAmino(), setError(tr("Alignment and 3D structure have different alphabets")), res);
         sequence.setName(newSequenceName);
-        chainId = seqObject->getSequenceInfo().value("CHAIN_ID").toInt();
         addSequenceTask = new AddSequenceObjectsToAlignmentTask(alignment, {sequence});
         res << addSequenceTask;
     } else if (subTask == addSequenceTask) {
@@ -133,11 +133,10 @@ void EntropyCalculationTask::normalizeEntropy() {
 
 /*write Shannon entropy values to 'temperature factor' column of 'saveTo' file*/
 void EntropyCalculationTask::writeEntropyToFile() {
-    auto filePath = annotatedDNAView->getActiveSequenceContext()->getSequenceObject()->getDocument()->getURLString();
-    CHECK_EXT(QString::compare(filePath, saveToPath, Qt::CaseInsensitive), 
-        setError(tr("Original and destination files cannot have the same name: %1. Please change the 'Save to' path.").arg(filePath)), );
-
-    QScopedPointer<IOAdapter> readIO(IOAdapterUtils::open(filePath, stateInfo, IOAdapterMode_Read));
+    CHECK_EXT(QString::compare(originalFilePath, saveToPath, Qt::CaseInsensitive), 
+        setError(tr("Original and destination files cannot have the same name: %1. Please change the 'Save to' path.").arg(originalFilePath)), );
+    
+    QScopedPointer<IOAdapter> readIO(IOAdapterUtils::open(originalFilePath, stateInfo, IOAdapterMode_Read));
     CHECK_OP(stateInfo, );
     QScopedPointer<IOAdapter> writeIO(IOAdapterUtils::open(saveToPath, stateInfo, IOAdapterMode_Write));
     CHECK_OP(stateInfo, );
@@ -147,14 +146,13 @@ void EntropyCalculationTask::writeEntropyToFile() {
     int residueSequenceNumber = -1;
     QString roundedEntropy;
     while (!readIO->isEof()) {
+        //PDB rows have 80 symbols
         const int max_size = 81;
-
         QByteArray byteLine(max_size + 1, 0);
         int lineLength = readIO->readLine(byteLine.data(), max_size);
         QString line(byteLine);
-        if (line.isEmpty()) {
-            continue;
-        }
+        CHECK_CONTINUE(!line.isEmpty());
+       
         if (line.startsWith("TER")) {
             currentChainIndex++;
         } else if ((line.startsWith("ATOM") || line.startsWith("HETATM")) && it != entropyForEveryColumn.constEnd() && currentChainIndex == chainId) {

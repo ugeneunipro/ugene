@@ -25,19 +25,23 @@
 #include <U2Core/ProjectModel.h>
 
 namespace U2 {
-EntropyCalculationAndAddToProjectTask::EntropyCalculationAndAddToProjectTask(AnnotatedDNAView * _annotatedDNAView,
-                                                                              const QString& _alignmentFilePath,
-                                                                              const QString& _saveToPath,
-                                                                              bool _addToProject)
+EntropyCalculationAndAddToProjectTask::EntropyCalculationAndAddToProjectTask(const QString& _alignmentFilePath,
+                                                                             const QString& _saveToPath,
+                                                                             const QString& _originalFilePath,
+                                                                             DNASequence& _sequence,
+                                                                             int _chainId,
+                                                                             bool _addToProject)
     : Task(tr("Alignment entropy calculation and adding to project"), TaskFlags_NR_FOSE_COSC),
-      annotatedDNAView(_annotatedDNAView),
       alignmentFilePath(_alignmentFilePath),
       saveToPath(_saveToPath),
+      originalFilePath(_originalFilePath),
+      sequence(_sequence),
+      chainId(_chainId),
       addToProject(_addToProject) {
 }
 
 void EntropyCalculationAndAddToProjectTask::prepare() {
-    entropyCalculationTask = new EntropyCalculationTask(annotatedDNAView, alignmentFilePath, saveToPath);
+    entropyCalculationTask = new EntropyCalculationTask(alignmentFilePath, saveToPath, originalFilePath, sequence, chainId);
     addSubTask(entropyCalculationTask);
 }
 

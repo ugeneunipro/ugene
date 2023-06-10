@@ -33,19 +33,23 @@ namespace U2 {
 class U2VIEW_EXPORT EntropyCalculationAndAddToProjectTask : public Task {
     Q_OBJECT
 public :
-    EntropyCalculationAndAddToProjectTask(AnnotatedDNAView* annotatedDNAView,
-        const QString& alignmentFilePath,
-        const QString& saveToPath,
-        bool addToProject);
+    EntropyCalculationAndAddToProjectTask(const QString& alignmentFilePath,
+                                          const QString& saveToPath,
+                                          const QString& originalFilePath,
+                                          DNASequence& sequence,
+                                          int chainId,
+                                          bool addToProject);
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
     EntropyCalculationTask* entropyCalculationTask = nullptr;
 
-    AnnotatedDNAView* annotatedDNAView;
     const QString alignmentFilePath;
     const QString saveToPath;
+    const QString originalFilePath;
+    DNASequence sequence;
+    int chainId;
     const bool addToProject;
 };
 

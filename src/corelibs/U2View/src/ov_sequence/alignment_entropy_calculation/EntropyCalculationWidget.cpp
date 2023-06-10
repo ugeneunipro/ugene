@@ -29,6 +29,9 @@
 #include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/UserApplicationsSettings.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
@@ -65,11 +68,8 @@ void EntropyCalculationWidget::initSaveController() {
     conf.defaultFormatId = BaseDocumentFormats::PLAIN_PDB;
 
     //get save file name from AnnotatedDnaView
-    QRegularExpression exprBetweenBrackets("\\[(.*)\\]");
-    QRegularExpressionMatch match = exprBetweenBrackets.match(annotatedDnaView->getName());
-    conf.defaultFileName = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/" 
-        + (match.hasMatch() ? match.captured(1) : annotatedDnaView->getName());
-
+    auto name = annotatedDnaView->getActiveSequenceContext()->getSequenceObject()->getDocument()->getName();
+    conf.defaultFileName = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/" + name;
     saveController = new SaveDocumentController(conf, {BaseDocumentFormats::PLAIN_PDB}, this);
 }
 
@@ -83,8 +83,15 @@ void EntropyCalculationWidget::sl_onFileSelectorClicked() {
 }
 
 void EntropyCalculationWidget::sl_onRunButtonClicked() {
-    auto loadTask = new EntropyCalculationAndAddToProjectTask(annotatedDnaView, alignmentLineEdit->text(), 
-        saveToLineEdit->text(),  addToProjectCheckBox->isChecked());
+    auto sequenceObj = annotatedDnaView->getActiveSequenceContext()->getSequenceObject();
+    auto originalFilePath = sequenceObj->getDocument()->getURLString();
+
+    U2OpStatus2Log os;
+    auto sequence = sequenceObj->getWholeSequence(os);
+    CHECK_OP(os, );
+    int chainId = sequenceObj->getSequenceInfo().value("CHAIN_ID").toInt();
+    auto loadTask = new EntropyCalculationAndAddToProjectTask(alignmentLineEdit->text(), saveToLineEdit->text(), 
+        originalFilePath, sequence, chainId, addToProjectCheckBox->isChecked());
     AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
 }
 

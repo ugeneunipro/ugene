@@ -35,7 +35,11 @@ namespace U2 {
 class U2VIEW_EXPORT EntropyCalculationTask : public Task {
     Q_OBJECT
 public:
-    EntropyCalculationTask(AnnotatedDNAView* annotatedDNAView, const QString& alignmentFilePath, const QString& saveToPath);
+    EntropyCalculationTask(const QString& alignmentFilePath,
+                           const QString& saveToPath,
+                           const QString& _originalFilePath,
+                           DNASequence& sequence,
+                           int chainId);
     void prepare() override;
     void run() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
@@ -51,12 +55,13 @@ private:
     RealignSequencesInAlignmentTask* realignSequencesTask = nullptr;
     
     MultipleSequenceAlignmentObject* alignment = nullptr;
-    AnnotatedDNAView* annotatedDNAView = nullptr;
     const QString alignmentFilePath;
     const QString saveToPath;
+    const QString originalFilePath;
+    DNASequence sequence;
+    int chainId;
     /*sequence name will be changed if the alignment contains a sequence with the same name*/
     QString newSequenceName = "template_name";
-    int chainId;
     QVector<double> entropyForEveryColumn;
 };
 
