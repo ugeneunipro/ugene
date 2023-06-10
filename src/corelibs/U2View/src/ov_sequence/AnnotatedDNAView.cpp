@@ -266,7 +266,6 @@ QWidget* AnnotatedDNAView::createViewWidget(QWidget* parent) {
     QList<DNAAlphabetType> alphabets;
     QList<DocumentFormatId> formatIds;
 
-    bool isPdbFormat = false;
     for (int i = 0; i < seqViews.size(); i++) {
         if (seqViews[i] != nullptr) {
             ctx = seqViews[i]->getActiveSequenceContext();
