@@ -60,11 +60,7 @@ const QString& EntropyCalculationWidgetFactory::getGroupId() {
 }
 
 bool EntropyCalculationWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
-    bool isPdbFormat = false;
-    if (filter->formatIds().contains(BaseDocumentFormats::PLAIN_PDB)) {
-        isPdbFormat = true;
-    }
-    return (OPWidgetFactory::passFiltration(filter) && isPdbFormat && 
+    return (OPWidgetFactory::passFiltration(filter) && filter->formatIds().contains(BaseDocumentFormats::PLAIN_PDB) && 
         filter->atLeastOneAlphabetPass(DNAAlphabet_AMINO));
 }
 
