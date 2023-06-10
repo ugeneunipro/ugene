@@ -67,11 +67,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // It is possible to reach negative coord in assembly browser (UGENE-105)
 
     // 1. Open _common_data/scenarios/assembly/example-alignment.ugenedb
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QWidget* window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
-    GTWidget::click(os, window);
+    QWidget* window = GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow();
+    GTWidget::click(window);
     // 2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0; i < 24; i++) {
         GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
@@ -84,7 +84,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
     // Expected state: coordinates is not negative
     // CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
-    auto assRuler = GTWidget::findWidget(os, "AssemblyRuler", window);
+    auto assRuler = GTWidget::findWidget("AssemblyRuler", window);
 
     QObject* l = assRuler->findChild<QObject*>("start position");
     CHECK_SET_ERR(l != nullptr, "first QObject for taking cursor name not found");
@@ -98,11 +98,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 1. open view for _common_data\scenarios\assembly\example-alignment.bam
-    // GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "replace" ));
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    // GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller("replace" ));
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller());
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.bam");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::checkNoActiveWaiters();
     // 2. convert bam file to example-alignment.ugenedb
     // Expected state: conversion finished without error
 }
@@ -111,8 +111,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //    Test default values and bounds of all GUI-elements.
 
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Call context menu on the consensus area, select "Export coverage" menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
@@ -148,29 +148,29 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //    7. Cancel "Export the Assembly Coverage" dialog.
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant());
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    8. Create a file it the same folder as you set in the point 6 with name "chrM_coverage.bedgraph".
-    GTFile::create(os, sandBoxDir + "/common_assembly_browser/chrM_coverage.bedgraph");
+    GTFile::create(sandBoxDir + "/common_assembly_browser/chrM_coverage.bedgraph");
 
     //    9. Call "Export the Assembly Coverage" dialog  again.
     //    Expected state: the file path is "%path_from_point_6%/chrM_coverage_1.bedgraph"
     actions.clear();
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::CheckFilePath, QDir::toNativeSeparators(QFileInfo(sandBoxDir + "common_assembly_browser/chrM_coverage_1.bedgraph").absoluteFilePath()));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant());
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
     //    Test compress checkbox GUI action, test format changing GUI action
 
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Call context menu on the consensus area, select "Export coverage" menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
@@ -243,22 +243,22 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::CheckFilePath, QDir::toNativeSeparators(GUrlUtils::getDefaultDataPath() + "/chrM_coverage.histogram.gz"));
 
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant());
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
     //    Some negative tests for the output file path.
 
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Call context menu on the consensus area, select "Export coverage" menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
     GTFile::removeDir(sandBoxDir + "common_assembly_browser/test_0012/test_0012");
     QDir().mkpath(sandBoxDir + "common_assembly_browser/test_0012");
-    GTFile::setReadOnly(os, sandBoxDir + "common_assembly_browser/test_0012");
+    GTFile::setReadOnly(sandBoxDir + "common_assembly_browser/test_0012");
 
     //    3. Set the empty path and accept the dialog.
     //    Expected state: a messagebox appears, dialog is not closed.
@@ -282,16 +282,16 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
         ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ExpectMessageBox, ""),
         ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, ""),
         ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, QVariant())};
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
     //    Some positive tests for the output file path.
 
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Call context menu on the consensus area, select "Export coverage" menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
@@ -302,43 +302,43 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     QDir().mkpath(sandBoxDir + "common_assembly_browser/test_0013");
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::SelectFile, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_1.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::check(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_1.txt");
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013_1.txt");
 
     //    4. Call the dialog again. Write the valid output file path manually. Path should be to a non-existent file in the writable folder. Accept the dialog.
     //    Expected state: dialog closes, file appears.
     actions.clear();
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_2.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::check(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_2.txt");
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013_2.txt");
 
     //    5. Call the dialog again. Write the valid output file path manually. Path should be to a non-existent file in a non-existent folder with the writable parent folder. Accept the dialog.
     //    Expected state: dialog closes, file appears.
     actions.clear();
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_3.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::check(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_3.txt");
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_3.txt");
 
     //    6. Call the dialog again. Set the output file path to an existent writable file. Accept the dialog.
     //    Expected state: dialog closes, file is overwritten.
-    GTFile::copy(os, testDir + "_common_data/text/text.txt", sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
-    const qint64 fileSizeBefore = GTFile::getSize(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
+    GTFile::copy(testDir + "_common_data/text/text.txt", sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
+    const qint64 fileSizeBefore = GTFile::getSize(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     actions.clear();
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::EnterFilePath, QDir::toNativeSeparators(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt"));
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFile::check(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_4.txt");
-    const qint64 fileSizeAfter = GTFile::getSize(os, sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFile::check(sandBoxDir + "common_assembly_browser/test_0013/test_0013/test_0013_4.txt");
+    const qint64 fileSizeAfter = GTFile::getSize(sandBoxDir + "common_assembly_browser/test_0013/test_0013_4.txt");
     CHECK_SET_ERR(fileSizeAfter != fileSizeBefore, "File wasn't overwritten");
 }
 
@@ -346,8 +346,8 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     //    Test for the unselected export type
 
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Call context menu on the consensus area, select "Export coverage" menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
@@ -362,25 +362,25 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, "");
 
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, "");
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015) {
     //    Test default state of the export coverage worker, possible gui changes.
 
     //    1. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //    2. Add an "Extract Coverage from Assembly" element to the scene.
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Extract Coverage from Assembly");
+    GTUtilsWorkflowDesigner::addAlgorithm("Extract Coverage from Assembly");
 
     //    3. Check that "Output file" parameter is required, "Export" parameter is invisible.
-    GTUtilsWorkflowDesigner::click(os, "Extract Coverage from Assembly");
-    bool isOutputFileRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Output file");
-    bool isFormatRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Format");
-    bool isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
-    bool isThresholdRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Threshold");
+    GTUtilsWorkflowDesigner::click("Extract Coverage from Assembly");
+    bool isOutputFileRequired = GTUtilsWorkflowDesigner::isParameterRequired("Output file");
+    bool isFormatRequired = GTUtilsWorkflowDesigner::isParameterRequired("Format");
+    bool isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible("Export");
+    bool isThresholdRequired = GTUtilsWorkflowDesigner::isParameterRequired("Threshold");
     CHECK_SET_ERR(isOutputFileRequired, "The 'Output file' parameter is unexpectedly not required");
     CHECK_SET_ERR(!isFormatRequired, "The 'Format' parameter is unexpectedly required");
     CHECK_SET_ERR(!isExportTypeVisible, "The 'Export' parameter is unexpectedly visible");
@@ -393,34 +393,34 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     //    Threshold default value - "1";
     //    Threshold minimum value - "0";
     //    Threshold maximum value - "65535";
-    QString outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
-    QString formatValue = GTUtilsWorkflowDesigner::getParameter(os, "Format");
-    QString thresholdValue = GTUtilsWorkflowDesigner::getParameter(os, "Threshold");
+    QString outputFileValue = GTUtilsWorkflowDesigner::getParameter("Output file");
+    QString formatValue = GTUtilsWorkflowDesigner::getParameter("Format");
+    QString thresholdValue = GTUtilsWorkflowDesigner::getParameter("Threshold");
     CHECK_SET_ERR(outputFileValue == "assembly_coverage.bedgraph", QString("1. Unexpected default value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
     CHECK_SET_ERR(formatValue == "Bedgraph", QString("Unexpected default value of the 'Format' parameter: expected '%1', got '%2'").arg("Bedgraph").arg(formatValue));
     CHECK_SET_ERR(thresholdValue == "1", QString("Unexpected default value of the 'Threshold' parameter: expected '%1', got '%2'").arg("1").arg(thresholdValue));
 
-    GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
-    auto sbThreshold = qobject_cast<QSpinBox*>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<QSpinBox*>());
-    GTSpinBox::checkLimits(os, sbThreshold, 0, 65535);
+    GTUtilsWorkflowDesigner::clickParameter("Threshold");
+    auto sbThreshold = qobject_cast<QSpinBox*>(GTUtilsWorkflowDesigner::getParametersTable()->findChild<QSpinBox*>());
+    GTSpinBox::checkLimits(sbThreshold, 0, 65535);
 
     //    5. Set format "Histogram".
     //    Expected state: output file is "assembly_coverage.histogram", "Export" parameter is invisible.
-    GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
-    GTUtilsWorkflowDesigner::setParameter(os, "Format", 1, GTUtilsWorkflowDesigner::comboValue);
-    outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
-    isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
+    GTUtilsWorkflowDesigner::clickParameter("Threshold");
+    GTUtilsWorkflowDesigner::setParameter("Format", 1, GTUtilsWorkflowDesigner::comboValue);
+    outputFileValue = GTUtilsWorkflowDesigner::getParameter("Output file");
+    isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible("Export");
     CHECK_SET_ERR("assembly_coverage.histogram" == outputFileValue, QString("2. Unexpected value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.histogram").arg(outputFileValue));
     CHECK_SET_ERR(!isExportTypeVisible, "The 'Export' parameter is unexpectedly visible");
 
     //    6. Set format "Per base".
     //    Expected state: output file is "assembly_coverage.txt", "Export" parameter appears, it is required, its default value is "coverage".
-    GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
-    GTUtilsWorkflowDesigner::setParameter(os, "Format", 2, GTUtilsWorkflowDesigner::comboValue);
-    outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
-    isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
-    const bool isExportTypeRequired = GTUtilsWorkflowDesigner::isParameterRequired(os, "Export");
-    const QString exportTypeValue = GTUtilsWorkflowDesigner::getParameter(os, "Export");
+    GTUtilsWorkflowDesigner::clickParameter("Threshold");
+    GTUtilsWorkflowDesigner::setParameter("Format", 2, GTUtilsWorkflowDesigner::comboValue);
+    outputFileValue = GTUtilsWorkflowDesigner::getParameter("Output file");
+    isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible("Export");
+    const bool isExportTypeRequired = GTUtilsWorkflowDesigner::isParameterRequired("Export");
+    const QString exportTypeValue = GTUtilsWorkflowDesigner::getParameter("Export");
     CHECK_SET_ERR("assembly_coverage.txt" == outputFileValue, QString("3. Unexpected value of the 'Output file' parameter: expected '%1', got '%2'").arg("assembly_coverage.txt").arg(outputFileValue));
     CHECK_SET_ERR(isExportTypeVisible, "The 'Export' parameter is not 'visible'");
     CHECK_SET_ERR(isExportTypeRequired, "The 'Export' parameter is not 'required'");
@@ -428,17 +428,17 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     //    7. Set format "Bedgraph".
     //    Expected state: output file is "assembly_coverage.bedgraph", "Export" parameter is invisible.
-    GTUtilsWorkflowDesigner::clickParameter(os, "Threshold");
-    GTUtilsWorkflowDesigner::setParameter(os, "Format", 0, GTUtilsWorkflowDesigner::comboValue);
-    outputFileValue = GTUtilsWorkflowDesigner::getParameter(os, "Output file");
-    isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible(os, "Export");
+    GTUtilsWorkflowDesigner::clickParameter("Threshold");
+    GTUtilsWorkflowDesigner::setParameter("Format", 0, GTUtilsWorkflowDesigner::comboValue);
+    outputFileValue = GTUtilsWorkflowDesigner::getParameter("Output file");
+    isExportTypeVisible = GTUtilsWorkflowDesigner::isParameterVisible("Export");
     CHECK_SET_ERR("assembly_coverage.bedgraph" == outputFileValue, QString("4. Unexpected default value of the 'Output file' parameter: expect '%1', got '%2'").arg("assembly_coverage.bedgraph").arg(outputFileValue));
     CHECK_SET_ERR(!isExportTypeVisible, "The 'Export' parameter is unexpectedly visible");
 
     //    8. Enter any value to the "Output file" parameter.
     //    Expected state: a popup completer appears, it contains extensions for the compressed format.
-    /*    GTUtilsWorkflowDesigner::clickParameter(os, "Output file");
-    URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<URLWidget *>());
+    /*    GTUtilsWorkflowDesigner::clickParameter("Output file");
+    URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable()->findChild<URLWidget *>());
     GTKeyboardDriver::keySequence("aaa");
     GTKeyboardDriver::keyPress(Qt::Key_Enter);
     CHECK_SET_ERR(NULL != urlWidget, "Output file url widget was not found");
@@ -454,8 +454,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0016.ugenedb");
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
 
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0016.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0016.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
     QList<ExportCoverageDialogFiller::Action> actions;
 
     //    2. Call context menu on the consensus area, select {Export coverage} menu item.
@@ -463,68 +463,67 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     //    3. Cancel the dialog.
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickCancel, "");
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Consensus);
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog(GTUtilsAssemblyBrowser::Consensus);
 
     //    4. Call context menu on the overview area, select {Export coverage} menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
 
     //    5. Cancel the dialog.
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Overview);
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog(GTUtilsAssemblyBrowser::Overview);
 
     //    6. Zoom to reads somewhere. Call context menu on the reads area, select {Export -> Coverage} menu item.
     //    Expected state: an "Export the Assembly Coverage" dialog appears.
-    GTUtilsAssemblyBrowser::zoomToMax(os);
-    GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Reads);
+    GTUtilsAssemblyBrowser::zoomToMax();
+    GTUtilsDialog::waitForDialog(new ExportCoverageDialogFiller(actions));
+    GTUtilsAssemblyBrowser::callExportCoverageDialog(GTUtilsAssemblyBrowser::Reads);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0017.ugenedb");
 
     // 1. Open "samples/Assembly/chrM.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0017.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0017.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 3. Click the "chrM" sequence object in Project View.
-    GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
+    GTUtilsProjectTreeView::click("chrM", "chrM.fa");
 
     // 4. Right-click on the reference area.
     // Expected: "Unassociate" is disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTUtilsDialog::waitForDialog(new PopupChecker({"unassociateReferenceAction"}, PopupChecker::IsDisabled));
+    GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
 
     // 5. Click "Set reference sequence".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"setReferenceAction"}));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTUtilsDialog::waitForDialog(new PopupChooser({"setReferenceAction"}));
+    GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
 
     // 6. Right-click on the reference area.
     // Expected: "Unassociate" is enabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsEnabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTUtilsDialog::waitForDialog(new PopupChecker({"unassociateReferenceAction"}, PopupChecker::IsEnabled));
+    GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
 
     // 7. Click "Unassociate".
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"unassociateReferenceAction"}));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTUtilsDialog::waitForDialog(new PopupChooser({"unassociateReferenceAction"}));
+    GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
 
     // 8. Right-click on the reference area.
     // Expected: "Unassociate" is disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTUtilsDialog::waitForDialog(new PopupChecker({"unassociateReferenceAction"}, PopupChecker::IsDisabled));
+    GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
 }
 
 namespace {
-void prepareBigFasta(const QString& url, HI::GUITestOpStatus& os) {
+void prepareBigFasta(const QString& url) {
     QFile file(url);
     bool opened = file.open(QIODevice::WriteOnly);
     if (!opened) {
-        os.setError("Can't open a file: " + url);
-        return;
+        GT_FAIL("Can't open a file: " + url, );
     }
     file.write(">assembly_test_0018\n");
     for (int i = 0; i < 1000000; i++) {
@@ -536,98 +535,98 @@ void prepareBigFasta(const QString& url, HI::GUITestOpStatus& os) {
 
 GUI_TEST_CLASS_DEFINITION(test_0018) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0018.ugenedb");
-    prepareBigFasta(sandBoxDir + "assembly_test_0018.fa", os);
+    prepareBigFasta(sandBoxDir + "assembly_test_0018.fa");
 
     // 1. Open "samples/Assembly/chrM.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0018.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0018.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 3. Click the "chrM" sequence object in Project View.
-    GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
+    GTUtilsProjectTreeView::click("chrM", "chrM.fa");
 
     // 4. Click the "Set reference sequence" toolbar button.
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 
     // 5. Clear the objects selection in Project View (e.g. click the document "chrM.fa").
-    GTUtilsProjectTreeView::click(os, "chrM.fa");
+    GTUtilsProjectTreeView::click("chrM.fa");
 
     // 6. Click "Set reference sequence".
     // 7. Choose the file "assembly_test_0018.fa" from sandbox.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "assembly_test_0018.fa"));
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir + "assembly_test_0018.fa"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 
     // 8. Right-click on the reference area while the file is loading.
     // Expected: "Unassociate" and "Set reference sequence" are disabled.
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
-    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"setReferenceAction"}, PopupChecker::IsDisabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"unassociateReferenceAction"}, PopupChecker::IsDisabled));
-    // GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTUtilsDialog::waitForDialog(new PopupChecker({"setReferenceAction"}, PopupChecker::IsDisabled));
+    // GTUtilsDialog::waitForDialog(new PopupChecker({"setReferenceAction"}, PopupChecker::IsDisabled));
+    GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
+    // GTUtilsDialog::waitForDialog(new PopupChecker({"unassociateReferenceAction"}, PopupChecker::IsDisabled));
+    // GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
 
     // 9. Right-click on the reference area after loading.
     // Expected: "Unassociate" and "Set reference sequence" are enabled.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), {"Set reference", "Unassociate"}, PopupChecker::IsEnabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new PopupCheckerByText(QStringList(), {"Set reference", "Unassociate"}, PopupChecker::IsEnabled));
+    GTWidget::click(GTWidget::findWidget("Assembly reference sequence area"), Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0019.ugenedb");
 
     // 1. Open "samples/Assembly/chrM.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Open "samples/FASTA/human_T1.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0019.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0019.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 4. Click the "chrM" sequence object in Project View.
-    GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
+    GTUtilsProjectTreeView::click("chrM", "chrM.fa");
 
     // 5. Click the "Set reference sequence" actions menu item.
     // Expected: it becomes reference.
-    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
+    GTMenu::clickMainMenuItem({"Actions", "Set reference"});
 
     // 6. Add the "human_T1" object to the selection.
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTUtilsProjectTreeView::click(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTUtilsProjectTreeView::click("human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     // 7. Click the "Set reference sequence" actions menu item.
     // Expected: message box about two sequences appears.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "You have more than one sequence"));
-    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "You have more than one sequence"));
+    GTMenu::clickMainMenuItem({"Actions", "Set reference"});
 
     // 8. Click the "chrM.fa" sequence object in Project View.
-    GTUtilsProjectTreeView::click(os, "chrM.fa");
+    GTUtilsProjectTreeView::click("chrM.fa");
 
     // 9. Click the "Set reference sequence" actions menu item.
     // Expected: file dialog appears.
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
-    GTMenu::clickMainMenuItem(os, {"Actions", "Set reference"});
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/Genbank/murine.gb"));
+    GTMenu::clickMainMenuItem({"Actions", "Set reference"});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0020.ugenedb");
 
     // 1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0020.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0020.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Click "Set reference sequence".
     // Expected: file dialog appears.
     // 3. Choose "data/samples/Assembly/chrM.fa".
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/Assembly/chrM.fa"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
     // Expected: it becomes reference.
 }
 
@@ -635,52 +634,52 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0021.ugenedb");
 
     // 1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0021.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0021.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Click "Set reference sequence".
     // Expected: file dialog appears.
     // 3. Choose "data/samples/FASTQ/eas.fastq".
     // Expected: error notification is shown.
-    GTUtilsNotifications::waitForNotification(os, true, "There are more than one sequence in file");
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsNotifications::waitForNotification(true, "There are more than one sequence in file");
+    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller());
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/FASTQ/eas.fastq"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0022) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0022.ugenedb");
 
     // 1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0022.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0022.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Click "Set reference sequence".
     // Expected: file dialog appears.
     // 3. Choose "data/samples/CLUSTALW/COI.aln".
     // Expected: error notification is shown.
-    GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsNotifications::waitForNotification(true, "does not contain sequences");
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/CLUSTALW/COI.aln"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0023.ugenedb");
 
     // 1. Open "samples/Assembly/chrM.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0023.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0023.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 3. Click the "Set reference sequence" toolbar button.
     // Expected: file dialog appears.
     // 4. Choose "samples/Assembly/chrM.fa".
     GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/Assembly/chrM.fa"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 
     // Expected: the sequence becomes reference.
     CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
@@ -690,26 +689,26 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0024.ugenedb");
 
     // 1. Open "samples/Assembly/chrM.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Unload the document.
-    GTUtilsDocument::unloadDocument(os, "chrM.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDocument::unloadDocument("chrM.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0024.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0024.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 4. Click the "Set reference sequence" toolbar button.
     // Expected: file dialog appears.
     // 5. Choose "samples/Assembly/chrM.fa".
     GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Assembly/chrM.fa"));
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/Assembly/chrM.fa"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 
     // Expected: the document is loaded, the sequence becomes reference.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -717,41 +716,41 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     QFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "assembly_test_0025.ugenedb");
 
     // 1. Open "samples/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Unload the document.
-    GTUtilsDocument::unloadDocument(os, "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDocument::unloadDocument("COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 3. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, sandBoxDir + "assembly_test_0025.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir + "assembly_test_0025.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 4. Click the "Set reference sequence" toolbar button.
     // Expected: file dialog appears.
     // 5. Choose "samples/CLUSTALW/COI.aln".
     // Expected: the document is loaded, error notification is shown.
-    GTUtilsDialog::add(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "samples/CLUSTALW/COI.aln"));
+    GTWidget::click(GTAction::button("setReferenceAction"));
 
-    GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsNotifications::waitForNotification(true, "does not contain sequences");
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::add(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_1.ugenedb"));
-    QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
-    GTWidget::click(os, button);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "/test_26_1.ugenedb"));
+    QAbstractButton* button = GTAction::button("ExtractAssemblyRegion");
+    GTWidget::click(button);
+    GTUtilsTaskTreeView::waitTaskFinished();
     //      3. Check expected coverage values
-    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
+    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("229"), "expected coverage value not found");
@@ -764,18 +763,18 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow();
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::add(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "/test_26_2.ugenedb"));
-    QAbstractButton* button = GTAction::button(os, "ExtractAssemblyRegion");
-    GTWidget::click(os, button);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_2.sam", U2Region(4500, 300), "SAM"));
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "/test_26_2.ugenedb"));
+    QAbstractButton* button = GTAction::button("ExtractAssemblyRegion");
+    GTWidget::click(button);
+    GTUtilsTaskTreeView::waitTaskFinished();
     //      3. Check expected coverage values
-    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
+    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("157"), "expected coverage value not found");
@@ -786,17 +785,17 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    2. Select region to extract and import extracted file to project
-    GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_3.ugenedb", U2Region(6500, 900), "UGENE Database"));
-    GTWidget::click(os, GTAction::button(os, "ExtractAssemblyRegion"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new ExtractAssemblyRegionDialogFiller(sandBoxDir + "/test_26_3.ugenedb", U2Region(6500, 900), "UGENE Database"));
+    GTWidget::click(GTAction::button("ExtractAssemblyRegion"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //      3. Check expected coverage values
-    auto coveredRegionsLabel = GTWidget::findLabel(os, "CoveredRegionsLabel", GTUtilsMdi::activeWindow(os));
+    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
 
     QString textFromLabel = coveredRegionsLabel->text();
     CHECK_SET_ERR(textFromLabel.contains("330"), "expected coverage value not found");
@@ -808,176 +807,176 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {
     //    1. Open assembly
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     //    2. Open COI.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    3. Drag and drop COI object to assembly browser
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser"));
-    GTUtilsAssemblyBrowser::addRefFromProject(os, "COI");
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser"));
+    GTUtilsAssemblyBrowser::addRefFromProject("COI");
     //    Expected: error message box appears
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
     // 1. Open assembly
-    GTFileDialog::openFile(os, dataDir + "samples/Assembly", "chrM.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(dataDir + "samples/Assembly", "chrM.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     // 2. Lock document for editing
-    GTUtilsDocument::lockDocument(os, "chrM.sorted.bam.ugenedb");
+    GTUtilsDocument::lockDocument("chrM.sorted.bam.ugenedb");
     // 3. Try to add reference
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "This action requires changing the assembly object that is locked for editing"));
-    GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "This action requires changing the assembly object that is locked for editing"));
+    GTUtilsAssemblyBrowser::addRefFromProject("chrM", GTUtilsProjectTreeView::findIndex("chrM.fa"));
     // Expected: Error message appears
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
     //    1. Open assembly
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     for (int i = 0; i < 15; i++) {
-        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+        GTUtilsAssemblyBrowser::zoomIn(GTUtilsAssemblyBrowser::Hotkey);
     }
     //    2. Go to some position using position selector on the toolbar(check "Go" button and "Enter" hotkey)
-    GTUtilsAssemblyBrowser::goToPosition(os, 1000);
-    int scrollVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
+    GTUtilsAssemblyBrowser::goToPosition(1000);
+    int scrollVal = GTUtilsAssemblyBrowser::getScrollBar(Qt::Horizontal)->value();
     CHECK_SET_ERR(scrollVal == 999, QString("Unexpected scroll value1: %1").arg(scrollVal))
 
-    GTUtilsAssemblyBrowser::goToPosition(os, 2000);
-    scrollVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
+    GTUtilsAssemblyBrowser::goToPosition(2000);
+    scrollVal = GTUtilsAssemblyBrowser::getScrollBar(Qt::Horizontal)->value();
     CHECK_SET_ERR(scrollVal == 1999, QString("Unexpected scroll value2: %1").arg(scrollVal))
 
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
     //    1. Open assembly
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    2. Move reads area right and down with mouse
-    GTUtilsAssemblyBrowser::zoomToReads(os);
+    GTUtilsAssemblyBrowser::zoomToReads();
     for (int i = 0; i < 8; i++) {
-        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+        GTUtilsAssemblyBrowser::zoomIn(GTUtilsAssemblyBrowser::Hotkey);
     }
 
-    int initHorVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
-    int initVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
+    int initHorVal = GTUtilsAssemblyBrowser::getScrollBar(Qt::Horizontal)->value();
+    int initVerVal = GTUtilsAssemblyBrowser::getScrollBar(Qt::Vertical)->value();
 
     GTMouseDriver::press();
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(-200, -200));
     GTMouseDriver::release();
 
     //    Check scrollbars, rules values etc.
-    int finalHorVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
-    int finalVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
+    int finalHorVal = GTUtilsAssemblyBrowser::getScrollBar(Qt::Horizontal)->value();
+    int finalVerVal = GTUtilsAssemblyBrowser::getScrollBar(Qt::Vertical)->value();
     CHECK_SET_ERR(finalHorVal > initHorVal, QString("Unexpected horizontal scroll values. Initial: %1, final %2").arg(initHorVal).arg(finalHorVal));
     CHECK_SET_ERR(finalVerVal > initVerVal, QString("Unexpected vertical scroll values. Initial: %1, final %2").arg(initVerVal).arg(finalVerVal));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {
     //    1. Open assembly
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    2. Click "zoom to reads" link
-    GTUtilsAssemblyBrowser::zoomToReads(os);
+    GTUtilsAssemblyBrowser::zoomToReads();
     //    Check zoom
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"Export"}));
-    GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Reads);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::waitForDialog(new PopupChecker({"Export"}));
+    GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Reads);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0032) {
     //    1. Open assembly
-    GTFile::copy(os, testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
-    GTFileDialog::openFile(os, sandBoxDir + "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFile::copy(testDir + "_common_data/ugenedb/chrM.sorted.bam.ugenedb", sandBoxDir + "chrM.sorted.bam.ugenedb");
+    GTFileDialog::openFile(sandBoxDir + "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    2. Rename assembly object
-    QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, "chrM.sorted.bam.ugenedb");
-    QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, "chrM", documentIndex);
-    GTUtilsProjectTreeView::rename(os, objectIndex, "new_name");
+    QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex("chrM.sorted.bam.ugenedb");
+    QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex("chrM", documentIndex);
+    GTUtilsProjectTreeView::rename(objectIndex, "new_name");
     //    Check UGENE title
-    GTMainWindow::checkTitle(os, "-* UGENE");
+    GTMainWindow::checkTitle("-* UGENE");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
     //    1. Open assembly
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    2. Open "Assembly browser settings" OP tab
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
-    GTUtilsAssemblyBrowser::zoomToReads(os);
+    GTWidget::click(GTWidget::findWidget("OP_ASS_SETTINGS"));
+    GTUtilsAssemblyBrowser::zoomToReads();
     //    3. Change reads highlighting to "strand direction" and "complement"
-    auto box = GTWidget::findComboBox(os, "READS_HIGHLIGHTNING_COMBO");
-    GTComboBox::selectItemByText(os, box, "Strand direction");
-    GTComboBox::selectItemByText(os, box, "Paired reads");
+    auto box = GTWidget::findComboBox("READS_HIGHLIGHTNING_COMBO");
+    GTComboBox::selectItemByText(box, "Strand direction");
+    GTComboBox::selectItemByText(box, "Paired reads");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {
     //    1. Open assembly
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     //    2. Open "Assembly browser settings" OP tab
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_SETTINGS"));
-    GTUtilsAssemblyBrowser::zoomToReads(os);
+    GTWidget::click(GTWidget::findWidget("OP_ASS_SETTINGS"));
+    GTUtilsAssemblyBrowser::zoomToReads();
     //    3. Change consensus algorithm
-    auto box = GTWidget::findComboBox(os, "consensusAlgorithmCombo");
-    GTComboBox::selectItemByText(os, box, "SAMtools");
+    auto box = GTWidget::findComboBox("consensusAlgorithmCombo");
+    GTComboBox::selectItemByText(box, "SAMtools");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
-    GTFileDialog::openFile(os, dataDir + "samples/Assembly/chrM.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(dataDir + "samples/Assembly/chrM.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
-    GTUtilsAssemblyBrowser::addRefFromProject(os, "chrM", GTUtilsProjectTreeView::findIndex(os, "chrM.fa"));
+    GTUtilsAssemblyBrowser::addRefFromProject("chrM", GTUtilsProjectTreeView::findIndex("chrM.fa"));
 
     class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
 
-            auto filepathLineEdit = GTWidget::findLineEdit(os, "filepathLineEdit", dialog);
-            GTLineEdit::setText(os, filepathLineEdit, sandBoxDir + "chrM.snp");
+            auto filepathLineEdit = GTWidget::findLineEdit("filepathLineEdit", dialog);
+            GTLineEdit::setText(filepathLineEdit, sandBoxDir + "chrM.snp");
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
     };
     //    Export consensus
-    GTUtilsDialog::waitForDialog(os, new ExportConsensusDialogFiller(os, new Scenario()));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Export consensus variations..."}));
-    GTUtilsAssemblyBrowser::callContextMenu(os, GTUtilsAssemblyBrowser::Consensus);
+    GTUtilsDialog::waitForDialog(new ExportConsensusDialogFiller(new Scenario()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export consensus variations..."}));
+    GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Consensus);
 
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "chrM.snp"), "chrM.snp is not found");
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem("chrM.snp"), "chrM.snp is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036) {
     // 1. Open assembly
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     // Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
-    GTUtilsAssemblyBrowser::zoomToReads(os);
+    GTUtilsAssemblyBrowser::zoomToReads();
     for (int i = 0; i < 7; i++) {
-        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+        GTUtilsAssemblyBrowser::zoomIn(GTUtilsAssemblyBrowser::Hotkey);
     }
 
-    QScrollBar* vScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical);
-    QScrollBar* hScrollBar = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal);
+    QScrollBar* vScrollBar = GTUtilsAssemblyBrowser::getScrollBar(Qt::Vertical);
+    QScrollBar* hScrollBar = GTUtilsAssemblyBrowser::getScrollBar(Qt::Horizontal);
 
     int vScrollBarValue = vScrollBar->value();
     for (int i = 0; i < 3; i++) {
@@ -1013,31 +1012,31 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
 
 GUI_TEST_CLASS_DEFINITION(test_0037) {
     // Open assembly.
-    GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     // Zoom to the reads level.
-    GTUtilsAssemblyBrowser::zoomToReads(os);
+    GTUtilsAssemblyBrowser::zoomToReads();
     for (int i = 0; i < 10; i++) {
-        GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
+        GTUtilsAssemblyBrowser::zoomIn(GTUtilsAssemblyBrowser::Hotkey);
     }
 
     // Shift view to the 1k+ coordinates to check that large numbers are correctly formatted.
-    GTUtilsAssemblyBrowser::goToPosition(os, 5000);
+    GTUtilsAssemblyBrowser::goToPosition(5000);
 
     // Copy read information and check that it is valid.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"copy_read_information"}, GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
-    QString clipboard = GTClipboard::text(os);
+    GTUtilsDialog::waitForDialog(new PopupChooser({"copy_read_information"}, GTGlobals::UseMouse));
+    GTMenu::showContextMenu(GTWidget::findWidget("assembly_reads_area"));
+    QString clipboard = GTClipboard::text();
     CHECK_SET_ERR(clipboard.startsWith('>') && clipboard.contains("From") &&
                       clipboard.contains("Length") && clipboard.contains("Row") &&
                       clipboard.contains("Cigar") && clipboard.contains("Strand"),
                   "Unexpected clipboard: " + clipboard)
 
     // Check that read position is copied as a number.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy current position to clipboard"}, GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
-    clipboard = GTClipboard::text(os);
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy current position to clipboard"}, GTGlobals::UseMouse));
+    GTMenu::showContextMenu(GTWidget::findWidget("assembly_reads_area"));
+    clipboard = GTClipboard::text();
     bool ok;
     clipboard.toInt(&ok);
     CHECK_SET_ERR(ok, "unexpected clipboard: " + clipboard)
@@ -1048,12 +1047,12 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     // 1. open view for _common_data\bam\more_then_100000_reads.bam
     // Expected state: conversion finished without error
     GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
-    GTFileDialog::openFile(os, testDir + "_common_data/bam/", "more_then_100000_reads.bam");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller());
+    GTFileDialog::openFile(testDir + "_common_data/bam/", "more_then_100000_reads.bam");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::checkNoActiveWaiters();
     CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
-    auto readsCount = GTUtilsAssemblyBrowser::getReadsCount(os);
+    auto readsCount = GTUtilsAssemblyBrowser::getReadsCount();
     CHECK_SET_ERR(readsCount > 1000000, QString("Unexpected reads count, expected: >1000000, current: %1").arg(readsCount));
 }
 

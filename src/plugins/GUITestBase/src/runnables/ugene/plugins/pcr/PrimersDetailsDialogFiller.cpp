@@ -26,20 +26,20 @@
 
 namespace U2 {
 
-PrimersDetailsDialogFiller::PrimersDetailsDialogFiller(HI::GUITestOpStatus& os)
-    : Filler(os, "PrimersDetailsDialog") {
+PrimersDetailsDialogFiller::PrimersDetailsDialogFiller()
+    : Filler("PrimersDetailsDialog") {
 }
 
-PrimersDetailsDialogFiller::PrimersDetailsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "PrimersDetailsDialog", scenario) {
+PrimersDetailsDialogFiller::PrimersDetailsDialogFiller(CustomScenario* scenario)
+    : Filler("PrimersDetailsDialog", scenario) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::PrimersDetailsDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void PrimersDetailsDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

@@ -26,13 +26,11 @@
 
 namespace HI {
 
-MainThreadRunnable::MainThreadRunnable(GUITestOpStatus& os, CustomScenario* scenario)
+MainThreadRunnable::MainThreadRunnable(CustomScenario* _scenario)
     : QObject(nullptr),
-      os(os),
-      scenario(scenario) {
+      scenario(_scenario) {
     if (scenario == nullptr) {
-        os.setError("Scenario is NULL");
-        return;
+        GT_FAIL("Scenario is null!", );
     }
 }
 
@@ -62,19 +60,17 @@ void MainThreadRunnable::doRequest() {
 
 void MainThreadRunnable::run() {
     if (scenario == nullptr) {
-        os.setError("Scenario is NULL");
-        return;
+        GT_FAIL("Scenario is null!", );
     }
-    scenario->run(os);
+    scenario->run();
 }
 
-void MainThreadRunnable::runInMainThread(GUITestOpStatus& os, CustomScenario* scenario) {
+void MainThreadRunnable::runInMainThread(CustomScenario* scenario) {
     CHECK_NO_OS_ERROR();
     if (scenario == nullptr) {
-        os.setError("Custom scenario is NULL");
-        return;
+        GT_FAIL("Scenario is null!", );
     }
-    MainThreadRunnable mainThreadRunnable(os, scenario);
+    MainThreadRunnable mainThreadRunnable(scenario);
     mainThreadRunnable.doRequest();
 }
 

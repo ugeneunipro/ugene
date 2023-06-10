@@ -32,12 +32,12 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void SetSequenceOriginDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto seqOriginBox = GTWidget::findSpinBox(os, "seqOriginBox", dialog);
-    GTSpinBox::setValue(os, seqOriginBox, start, GTGlobals::UseKeyBoard);
+    auto seqOriginBox = GTWidget::findSpinBox("seqOriginBox", dialog);
+    GTSpinBox::setValue(seqOriginBox, start, GTGlobals::UseKeyBoard);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

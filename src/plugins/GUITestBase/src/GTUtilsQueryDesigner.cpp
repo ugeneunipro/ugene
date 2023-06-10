@@ -39,16 +39,16 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsQueryDesigner"
 
 #define GT_METHOD_NAME "openQueryDesigner"
-void GTUtilsQueryDesigner::openQueryDesigner(HI::GUITestOpStatus& os) {
-    GTMenu::clickMainMenuItem(os, {"Tools", "Query Designer..."});
+void GTUtilsQueryDesigner::openQueryDesigner() {
+    GTMenu::clickMainMenuItem({"Tools", "Query Designer..."});
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findAlgorithm"
-QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus& os, const QString& itemName) {
+QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(const QString& itemName) {
     QTreeWidgetItem* foundItem = nullptr;
-    auto w = GTWidget::findTreeWidget(os, "palette");
+    auto w = GTWidget::findTreeWidget("palette");
 
     QList<QTreeWidgetItem*> outerList = w->findItems("", Qt::MatchContains);
 
@@ -71,51 +71,51 @@ QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus& os, co
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addAlgorithm"
-void GTUtilsQueryDesigner::addAlgorithm(HI::GUITestOpStatus& os, const QString& algName) {
-    QTreeWidgetItem* w = findAlgorithm(os, algName);
-    GTMouseDriver::click(GTTreeWidget::getItemCenter(os, w));
-    GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
+void GTUtilsQueryDesigner::addAlgorithm(const QString& algName) {
+    QTreeWidgetItem* w = findAlgorithm(algName);
+    GTMouseDriver::click(GTTreeWidget::getItemCenter(w));
+    GTWidget::click(GTWidget::findWidget("sceneView"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTUtilsQueryDesigner::getItemCenter(HI::GUITestOpStatus& os, const QString& itemName) {
-    QRect r = getItemRect(os, itemName);
+QPoint GTUtilsQueryDesigner::getItemCenter(const QString& itemName) {
+    QRect r = getItemRect(itemName);
     return r.center();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemLeft"
-int GTUtilsQueryDesigner::getItemLeft(HI::GUITestOpStatus& os, const QString& itemName) {
-    QRect r = getItemRect(os, itemName);
+int GTUtilsQueryDesigner::getItemLeft(const QString& itemName) {
+    QRect r = getItemRect(itemName);
     return r.left();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemRight"
-int GTUtilsQueryDesigner::getItemRight(HI::GUITestOpStatus& os, const QString& itemName) {
-    QRect r = getItemRect(os, itemName);
+int GTUtilsQueryDesigner::getItemRight(const QString& itemName) {
+    QRect r = getItemRect(itemName);
     return r.right() - 1;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemTop"
-int GTUtilsQueryDesigner::getItemTop(HI::GUITestOpStatus& os, const QString& itemName) {
-    QRect r = getItemRect(os, itemName);
+int GTUtilsQueryDesigner::getItemTop(const QString& itemName) {
+    QRect r = getItemRect(itemName);
     return r.top();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemBottom"
-int GTUtilsQueryDesigner::getItemBottom(HI::GUITestOpStatus& os, const QString& itemName) {
-    QRect r = getItemRect(os, itemName);
+int GTUtilsQueryDesigner::getItemBottom(const QString& itemName) {
+    QRect r = getItemRect(itemName);
     return r.bottom();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemRect"
-QRect GTUtilsQueryDesigner::getItemRect(HI::GUITestOpStatus& os, const QString& itemName) {
-    auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
+QRect GTUtilsQueryDesigner::getItemRect(const QString& itemName) {
+    auto sceneView = GTWidget::findGraphicsView("sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
 
     for (QGraphicsItem* it : qAsConst(items)) {
@@ -123,7 +123,7 @@ QRect GTUtilsQueryDesigner::getItemRect(HI::GUITestOpStatus& os, const QString& 
         if (auto textItemO = qobject_cast<QGraphicsTextItem*>(itObj)) {
             QString text = textItemO->toPlainText();
             if (text.contains(itemName)) {
-                return GTGraphicsItem::getGraphicsItemRect(os, it->parentItem());
+                return GTGraphicsItem::getGraphicsItemRect(it->parentItem());
             }
         }
     }

@@ -204,13 +204,13 @@ public:
         static const QMap<IndexAlgorithm, QString> indexAlgorithmMap;
     };
 
-    AlignShortReadsFiller(HI::GUITestOpStatus& os, Parameters* parameters)
-        : Filler(os, "AssemblyToRefDialog"),
+    AlignShortReadsFiller(Parameters* parameters)
+        : Filler("AssemblyToRefDialog"),
           parameters(parameters) {
         CHECK_SET_ERR(parameters, "Invalid filler parameters: NULL pointer");
     }
-    AlignShortReadsFiller(HI::GUITestOpStatus& os, CustomScenario* c)
-        : Filler(os, "AssemblyToRefDialog", c), parameters(nullptr) {
+    AlignShortReadsFiller(CustomScenario* c)
+        : Filler("AssemblyToRefDialog", c), parameters(nullptr) {
     }
 
     virtual void commonScenario();

@@ -47,75 +47,75 @@ public:
     static const QMap<Tabs, QString> tabsNames;
     static const QMap<Tabs, QString> innerWidgetNames;
 
-    static void toggleTab(HI::GUITestOpStatus& os, Tabs tab);
-    static void openTab(HI::GUITestOpStatus& os, Tabs tab);
-    static void closeTab(HI::GUITestOpStatus& os, Tabs tab);
-    static bool isTabOpened(HI::GUITestOpStatus& os, Tabs tab);
-    static void checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab);
+    static void toggleTab(Tabs tab);
+    static void openTab(Tabs tab);
+    static void closeTab(Tabs tab);
+    static bool isTabOpened(Tabs tab);
+    static void checkTabIsOpened(Tabs tab);
 
     // Find pattern options panel tab
-    static void enterPattern(HI::GUITestOpStatus& os, const QString& pattern, bool useCopyPaste = false);
-    static void enterPatternFromFile(HI::GUITestOpStatus& os, const QString& filepath, const QString& filename);
+    static void enterPattern(const QString& pattern, bool useCopyPaste = false);
+    static void enterPatternFromFile(const QString& filepath, const QString& filename);
 
-    static bool checkResultsText(HI::GUITestOpStatus& os, const QString& expectedText);
+    static bool checkResultsText(const QString& expectedText);
 
-    static void setSearchWithAmbiguousBases(HI::GUITestOpStatus& os, bool searchWithAmbiguousBases = true);
-    static void setStrand(HI::GUITestOpStatus& os, const QString& strandStr);
-    static void setRegionType(HI::GUITestOpStatus& os, const QString& regionType);
-    static void setRegion(HI::GUITestOpStatus& os, int from, int to);
-    static void setSearchInTranslation(HI::GUITestOpStatus& os, bool inTranslation = true);
-    static void setSearchInLocation(HI::GUITestOpStatus& os, const QString& strandStr);
-    static void setSetMaxResults(HI::GUITestOpStatus& os, int maxResults);
-    static void setAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm);
-    static void setMatchPercentage(HI::GUITestOpStatus& os, int percentage);
-    static void setUsePatternName(HI::GUITestOpStatus& os, bool setChecked = true);
+    static void setSearchWithAmbiguousBases(bool searchWithAmbiguousBases = true);
+    static void setStrand(const QString& strandStr);
+    static void setRegionType(const QString& regionType);
+    static void setRegion(int from, int to);
+    static void setSearchInTranslation(bool inTranslation = true);
+    static void setSearchInLocation(const QString& strandStr);
+    static void setSetMaxResults(int maxResults);
+    static void setAlgorithm(const QString& algorithm);
+    static void setMatchPercentage(int percentage);
+    static void setUsePatternName(bool setChecked = true);
 
-    static int getMatchPercentage(HI::GUITestOpStatus& os);
-    static QString getRegionType(HI::GUITestOpStatus& os);
-    static QPair<int, int> getRegion(HI::GUITestOpStatus& os);
-    static QString getHintText(HI::GUITestOpStatus& os);
+    static int getMatchPercentage();
+    static QString getRegionType();
+    static QPair<int, int> getRegion();
+    static QString getHintText();
 
-    static void enterFilepathForSavingAnnotations(HI::GUITestOpStatus& os, const QString& filepath);
+    static void enterFilepathForSavingAnnotations(const QString& filepath);
 
-    static void toggleInputFromFilePattern(HI::GUITestOpStatus& os);
+    static void toggleInputFromFilePattern();
 
-    static void toggleSaveAnnotationsTo(HI::GUITestOpStatus& os);
+    static void toggleSaveAnnotationsTo();
 
-    static void clickNext(HI::GUITestOpStatus& os);
-    static void clickPrev(HI::GUITestOpStatus& os);
-    static void clickGetAnnotation(HI::GUITestOpStatus& os);
-    static bool isPrevNextEnabled(HI::GUITestOpStatus& os);
-    static bool isGetAnnotationsEnabled(HI::GUITestOpStatus& os);
+    static void clickNext();
+    static void clickPrev();
+    static void clickGetAnnotation();
+    static bool isPrevNextEnabled();
+    static bool isGetAnnotationsEnabled();
 
     // Circular view options panel tab
-    static void toggleCircularView(HI::GUITestOpStatus& os);
-    static void setTitleFontSize(HI::GUITestOpStatus& os, int fontSize);
-    static int getTitleFontSize(HI::GUITestOpStatus& os);
+    static void toggleCircularView();
+    static void setTitleFontSize(int fontSize);
+    static int getTitleFontSize();
 
     // In Silico PCR tab
-    static void setForwardPrimer(HI::GUITestOpStatus& os, const QString& primer);
-    static void setForwardPrimerMismatches(HI::GUITestOpStatus& os, int mismatches);
-    static void setReversePrimer(HI::GUITestOpStatus& os, const QString& primer);
-    static void setReversePrimerMismatches(HI::GUITestOpStatus& os, int mismatches);
-    static void showPrimersDetails(HI::GUITestOpStatus& os);
-    static int productsCount(HI::GUITestOpStatus& os);
-    static void pressFindProducts(HI::GUITestOpStatus& os);
-    static void pressExtractProduct(HI::GUITestOpStatus& os);
+    static void setForwardPrimer(const QString& primer);
+    static void setForwardPrimerMismatches(int mismatches);
+    static void setReversePrimer(const QString& primer);
+    static void setReversePrimerMismatches(int mismatches);
+    static void showPrimersDetails();
+    static int productsCount();
+    static void pressFindProducts();
+    static void pressExtractProduct();
 
     // Utility
-    static bool isSearchAlgorithmShowHideWidgetOpened(HI::GUITestOpStatus& os);
-    static bool isSearchInShowHideWidgetOpened(HI::GUITestOpStatus& os);
-    static bool isOtherSettingsShowHideWidgetOpened(HI::GUITestOpStatus& os);
-    static bool isSaveAnnotationToShowHideWidgetOpened(HI::GUITestOpStatus& os);
-    static bool isAnnotationParametersShowHideWidgetOpened(HI::GUITestOpStatus& os);
+    static bool isSearchAlgorithmShowHideWidgetOpened();
+    static bool isSearchInShowHideWidgetOpened();
+    static bool isOtherSettingsShowHideWidgetOpened();
+    static bool isSaveAnnotationToShowHideWidgetOpened();
+    static bool isAnnotationParametersShowHideWidgetOpened();
 
-    static void openSearchInShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
-    static void openSaveAnnotationToShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
-    static void openAnnotationParametersShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
-    static void openInSilicoPcrMeltingTemperatureShowHideWidget(HI::GUITestOpStatus& os);
+    static void openSearchInShowHideWidget(bool open = true);
+    static void openSaveAnnotationToShowHideWidget(bool open = true);
+    static void openAnnotationParametersShowHideWidget(bool open = true);
+    static void openInSilicoPcrMeltingTemperatureShowHideWidget();
 
     // Statistics
-    static void showMeltingTemperatureDialog(HI::GUITestOpStatus& os);
+    static void showMeltingTemperatureDialog();
 
     /** Template (with %1) for melting temperature report string when the TM is available. */
     static const QString meltingTmReportString;

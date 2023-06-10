@@ -47,7 +47,7 @@ void GTGlobals::sendEvent(QObject* obj, QEvent* e) {
 }
 
 #define GT_METHOD_NAME "takeScreenShot"
-QImage GTGlobals::takeScreenShot(HI::GUITestOpStatus& os) {
+QImage GTGlobals::takeScreenShot() {
     if (GTThread::isMainThread()) {
         return QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).toImage();
     }
@@ -56,19 +56,19 @@ QImage GTGlobals::takeScreenShot(HI::GUITestOpStatus& os) {
         TakeScreenshotScenario(QImage& _image)
             : image(_image) {
         }
-        void run(HI::GUITestOpStatus&) override {
+        void run() override {
             image = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).toImage();
         }
         QImage& image;
     };
     QImage image;
-    GTThread::runInMainThread(os, new TakeScreenshotScenario(image));
+    GTThread::runInMainThread(new TakeScreenshotScenario(image));
     return image;
 }
 #undef GT_METHOD_NAME
 
-void GTGlobals::takeScreenShot(HI::GUITestOpStatus& os, const QString& path) {
-    QImage originalImage = takeScreenShot(os);
+void GTGlobals::takeScreenShot(const QString& path) {
+    QImage originalImage = takeScreenShot();
     bool ok = originalImage.save(path);
     CHECK_SET_ERR(ok, "Failed to save pixmap to file: " + path);
 }

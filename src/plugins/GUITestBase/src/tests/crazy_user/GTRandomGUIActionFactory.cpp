@@ -73,7 +73,7 @@ public:
         auto objCasted = qobject_cast<QWidget*>(obj);
         SAFE_POINT(nullptr != objCasted, "", );
 
-        GTWidget::click(os, objCasted);
+        GTWidget::click(objCasted);
     }
 
     virtual GTAbstractGUIAction_QWidget* clone() const {
@@ -106,7 +106,7 @@ public:
         int filesListId = randInt(0, files.size() - 1);
         QString randomFilePath = files[filesListId];
 
-        GTFileDialogUtils* u = new GTFileDialogUtils(os, randomFilePath);
+        GTFileDialogUtils* u = new GTFileDialogUtils(randomFilePath);
         u->run();
     }
 

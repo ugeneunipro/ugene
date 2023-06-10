@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_COMBOBOX_H_
-#define _HI_GT_COMBOBOX_H_
-
+#pragma once
 #include <QComboBox>
 
 #include "GTGlobals.h"
@@ -34,23 +32,22 @@ class HI_EXPORT GTComboBox {
 public:
     // Fails if the comboBox is NULL, index is not in a comboBox range
     // or a comboBox's index differs from a given index in the end of method's execution
-    static void selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, int index, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectItemByIndex(QComboBox* comboBox, int index, GTGlobals::UseMethod method = GTGlobals::UseKey);
 
     // Fails if the comboBox is NULL, combobox doesn't contain an item with text
     // or a comboBox current item's text differs from a given text in the end of method's execution
-    static void selectItemByText(GUITestOpStatus& os, QComboBox* comboBox, const QString& text, GTGlobals::UseMethod method = GTGlobals::UseKey);
-    static void selectItemByText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent, const QString& text, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectItemByText(QComboBox* comboBox, const QString& text, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectItemByText(const QString& comboBoxName, QWidget* parent, const QString& text, GTGlobals::UseMethod method = GTGlobals::UseKey);
 
-    static QString getCurrentText(GUITestOpStatus& os, QComboBox* comboBox);
-    static QString getCurrentText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent = nullptr);
+    static QString getCurrentText(QComboBox* comboBox);
+    static QString getCurrentText(const QString& comboBoxName, QWidget* parent = nullptr);
 
-    static QStringList getValues(GUITestOpStatus& os, QComboBox* comboBox);
-    static void checkValues(GUITestOpStatus& os, QComboBox* comboBox, const QStringList& values);
+    static QStringList getValues(QComboBox* comboBox);
+    static void checkValues(QComboBox* comboBox, const QStringList& values);
 
-    static void checkValuesPresence(GUITestOpStatus& os, QComboBox* comboBox, const QStringList& values);
-    static void checkCurrentValue(GUITestOpStatus& os, QComboBox* comboBox, const QString& expectedText);
-    static void checkCurrentUserDataValue(GUITestOpStatus& os, QComboBox* comboBox, const QString& expectedValue);
+    static void checkValuesPresence(QComboBox* comboBox, const QStringList& values);
+    static void checkCurrentValue(QComboBox* comboBox, const QString& expectedText);
+    static void checkCurrentUserDataValue(QComboBox* comboBox, const QString& expectedValue);
 };
 
 }  // namespace HI
-#endif

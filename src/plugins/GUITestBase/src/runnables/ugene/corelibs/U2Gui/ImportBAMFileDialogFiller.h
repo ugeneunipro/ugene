@@ -28,8 +28,8 @@ using namespace HI;
 
 class ImportBAMFileFiller : public Filler {
 public:
-    ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl = "", const QString referenceFolderPath = "", const QString referenceFileName = "", bool importUnmappedReads = false, bool deselectAll = false, int timeoutMs = 120000);
-    ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c);
+    ImportBAMFileFiller(const QString destinationUrl = "", const QString referenceFolderPath = "", const QString referenceFileName = "", bool importUnmappedReads = false, bool deselectAll = false, int timeoutMs = 120000);
+    ImportBAMFileFiller(CustomScenario* _c);
 
     virtual void commonScenario();
 

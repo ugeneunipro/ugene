@@ -21,11 +21,11 @@
 
 #pragma once
 
+#include <core/GUITestOpStatus.h>
+
 #include <QComboBox>
 
 #include "GTGlobals.h"
-
-#include <core/GUITestOpStatus.h>
 
 namespace U2 {
 
@@ -39,16 +39,13 @@ public:
     GTComboBoxWithCheckBoxes() = delete;
 
     // Check all checkboxes from @indexes and uncheck all others
-    static void selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, const QList<int>& indexes, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectItemByIndex(QComboBox* comboBox, const QList<int>& indexes, GTGlobals::UseMethod method = GTGlobals::UseKey);
 
     // Check all checkboxes from @texts and uncheck all others
-    static void selectItemByText(GUITestOpStatus& os, QComboBox* comboBox, const QStringList& texts, GTGlobals::UseMethod method = GTGlobals::UseKey);
-    static void selectItemByText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent, const QStringList& text, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectItemByText(QComboBox* comboBox, const QStringList& texts, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void selectItemByText(const QString& comboBoxName, QWidget* parent, const QStringList& text, GTGlobals::UseMethod method = GTGlobals::UseKey);
 
-    static QStringList getCheckedItemsTexts(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent);
-
-
-
+    static QStringList getCheckedItemsTexts(const QString& comboBoxName, QWidget* parent);
 };
 
-}
+}  // namespace U2

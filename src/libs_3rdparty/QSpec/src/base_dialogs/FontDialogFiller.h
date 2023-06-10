@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_FONT_DIALOG_FILLER_H_
-#define _HI_GT_FONT_DIALOG_FILLER_H_
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 
@@ -28,10 +27,9 @@ namespace HI {
 
 class HI_EXPORT FontDialogFiller : public Filler {
 public:
-    FontDialogFiller(GUITestOpStatus& _os)
-        : Filler(_os, "") {
+    FontDialogFiller()
+        : Filler("") {
     }
-    void commonScenario();
+    void commonScenario() override;
 };
 }  // namespace HI
-#endif  //_HI_GT_FONT_DIALOG_FILLER_H_

@@ -28,13 +28,13 @@ using namespace HI;
 
 class ExportPrimersDialogFiller : public Filler {
 public:
-    ExportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
+    ExportPrimersDialogFiller(CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
-    static QWidget* getDialog(HI::GUITestOpStatus& os);
-    static void setFormat(HI::GUITestOpStatus& os, const QString& format);
-    static void setFilePath(HI::GUITestOpStatus& os, const QString& filePath);
+    static QWidget* getDialog();
+    static void setFormat(const QString& format);
+    static void setFilePath(const QString& filePath);
 };
 
 }  // namespace U2

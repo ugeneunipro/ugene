@@ -1,5 +1,4 @@
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#pragma once
 
 #include <qglobal.h>
 
@@ -8,5 +7,3 @@
 #else
 #    define HI_EXPORT Q_DECL_IMPORT
 #endif
-
-#endif  // GLOBAL_H

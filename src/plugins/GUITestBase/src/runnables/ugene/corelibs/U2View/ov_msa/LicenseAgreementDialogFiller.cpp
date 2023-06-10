@@ -31,17 +31,17 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::GenerateAlignmentProfileDialogFiller"
 
-LicenseAgreementDialogFiller::LicenseAgreementDialogFiller(HI::GUITestOpStatus& os)
-    : Filler(os, "LicenseDialog") {
+LicenseAgreementDialogFiller::LicenseAgreementDialogFiller()
+    : Filler("LicenseDialog") {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void LicenseAgreementDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     GTGlobals::sleep();
 
-    auto accept = GTWidget::findPushButton(os, "acceptButton", dialog);
-    GTWidget::click(os, accept);
+    auto accept = GTWidget::findPushButton("acceptButton", dialog);
+    GTWidget::click(accept);
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME

@@ -208,24 +208,24 @@ static bool keyReleaseMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
 }
 
 static void dumpState() {
-//    printf("============= Dump keyboard state start\n");
-//    auto state = CGEventSourceFlagsState(kCGEventSourceStateHIDSystemState);
-//    printf("maskAlphaShift %d\n", state & kCGEventFlagMaskAlphaShift);
-//    printf("maskShift %d\n", state & kCGEventFlagMaskShift);
-//    printf("maskControl %d\n", state & kCGEventFlagMaskControl);
-//    printf("maskCommand %d\n", state & kCGEventFlagMaskCommand);
-//    printf("maskAlternate %d\n", state & kCGEventFlagMaskAlternate);
-//    printf("maskHelp %d\n", state & kCGEventFlagMaskHelp);
-//    printf("maskSecondaryFn %d\n", state & kCGEventFlagMaskSecondaryFn);
-//    printf("maskNumericPad %d\n", state & kCGEventFlagMaskNumericPad);
-//    printf("maskNonCoalesced %d\n", state & kCGEventFlagMaskNonCoalesced);
-//    printf("============= Dump keyboard state end\n");
+    //    printf("============= Dump keyboard state start\n");
+    //    auto state = CGEventSourceFlagsState(kCGEventSourceStateHIDSystemState);
+    //    printf("maskAlphaShift %d\n", state & kCGEventFlagMaskAlphaShift);
+    //    printf("maskShift %d\n", state & kCGEventFlagMaskShift);
+    //    printf("maskControl %d\n", state & kCGEventFlagMaskControl);
+    //    printf("maskCommand %d\n", state & kCGEventFlagMaskCommand);
+    //    printf("maskAlternate %d\n", state & kCGEventFlagMaskAlternate);
+    //    printf("maskHelp %d\n", state & kCGEventFlagMaskHelp);
+    //    printf("maskSecondaryFn %d\n", state & kCGEventFlagMaskSecondaryFn);
+    //    printf("maskNumericPad %d\n", state & kCGEventFlagMaskNumericPad);
+    //    printf("maskNonCoalesced %d\n", state & kCGEventFlagMaskNonCoalesced);
+    //    printf("============= Dump keyboard state end\n");
 }
 
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
 #    define GT_METHOD_NAME "keyPress_char"
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
-//    printf("Key press %c\n", origKey);
+    //    printf("Key press %c\n", origKey);
     dumpState();
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
@@ -245,7 +245,7 @@ bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
 
 #    define GT_METHOD_NAME "keyRelease_char"
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
-//    printf("Key release %c\n", origKey);
+    //    printf("Key release %c\n", origKey);
     dumpState();
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);

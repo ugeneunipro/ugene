@@ -32,7 +32,7 @@ namespace HI {
 class HI_EXPORT GTThread {
 public:
     static void waitForMainThread();
-    static void runInMainThread(GUITestOpStatus& os, CustomScenario* scenario);
+    static void runInMainThread(CustomScenario* scenario);
 
     /** Returns true if the current thread is the main QT thread. */
     static bool isMainThread();

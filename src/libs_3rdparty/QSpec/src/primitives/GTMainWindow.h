@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_MAIN_WINDOW_H_
-#define _HI_GT_MAIN_WINDOW_H_
-
+#pragma once
 #include <QMainWindow>
 #include <QWidget>
 
@@ -31,26 +29,24 @@ namespace HI {
 
 class HI_EXPORT GTMainWindow {
 public:
-    static QList<QMainWindow*> getMainWindows(GUITestOpStatus& os);
+    static QList<QMainWindow*> getMainWindows();
 
-    static QList<QWidget*> getMainWindowsAsWidget(GUITestOpStatus& os);
+    static QList<QWidget*> getMainWindowsAsWidget();
 
     /**
      * Returns the first matching QMainWindow named "name" as the widget. Names are compared case-sensitive and
      * locale-insensitive.
      */
-    static QWidget* getMainWindowWidgetByName(GUITestOpStatus& os, const QString& name);
+    static QWidget* getMainWindowWidgetByName(const QString& name);
 
     /** Checks that there is a main window with the given title. */
-    static void checkTitle(GUITestOpStatus& os, const QString& title);
+    static void checkTitle(const QString& title);
 
     /** Minimizes main window: calls QMainWindow->showMinimized safely. */
-    static void minimizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow);
+    static void minimizeMainWindow(QMainWindow* mainWindow);
 
     /** Maximizes main window: calls QMainWindow->showMaximized safely. */
-    static void maximizeMainWindow(GUITestOpStatus& os, QMainWindow* mainWindow);
+    static void maximizeMainWindow(QMainWindow* mainWindow);
 };
 
 }  // namespace HI
-
-#endif

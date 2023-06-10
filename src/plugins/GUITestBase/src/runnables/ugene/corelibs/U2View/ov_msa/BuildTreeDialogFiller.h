@@ -35,9 +35,9 @@ public:
         M1
     };
 
-    BuildTreeDialogFiller(HI::GUITestOpStatus& os, const QString& saveTree = "default", int model = 0, double alpha = 0, bool displayWithMsa = false);
-    BuildTreeDialogFiller(HI::GUITestOpStatus& os, int replicates, const QString& saveTree = "default", int seed = 5, ConsensusType type = MAJORITYEXT, double fraction = 0.5);
-    BuildTreeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    BuildTreeDialogFiller(const QString& saveTree = "default", int model = 0, double alpha = 0, bool displayWithMsa = false);
+    BuildTreeDialogFiller(int replicates, const QString& saveTree = "default", int seed = 5, ConsensusType type = MAJORITYEXT, double fraction = 0.5);
+    BuildTreeDialogFiller(CustomScenario* scenario);
 
     void commonScenario();
 
@@ -54,7 +54,7 @@ private:
 
 class BuildTreeDialogFillerPhyML : public Filler {
 public:
-    BuildTreeDialogFillerPhyML(HI::GUITestOpStatus& os, bool _freqOptimRadioPressed, int bootstrap = -1);
+    BuildTreeDialogFillerPhyML(bool _freqOptimRadioPressed, int bootstrap = -1);
     void commonScenario();
 
 private:

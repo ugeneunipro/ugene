@@ -36,29 +36,29 @@ public:
     static const QString DocumentUnloaded;
 
     // checks if the document with a given name exists and loaded in a view with a given factory Id
-    static void checkDocument(HI::GUITestOpStatus& os, const QString& documentName, const GObjectViewFactoryId& id = QString());
+    static void checkDocument(const QString& documentName, const GObjectViewFactoryId& id = QString());
 
-    static void removeDocument(HI::GUITestOpStatus& os, const QString& documentName, GTGlobals::UseMethod method = GTGlobals::UseKey);
+    static void removeDocument(const QString& documentName, GTGlobals::UseMethod method = GTGlobals::UseKey);
 
     /**
      * Finds document with the given name in the project.
      * Waits until document is found or fails unless options.failIfNotFound is false.
      */
-    static Document* getDocument(HI::GUITestOpStatus& os, const QString& documentName, const GTGlobals::FindOptions& options = {});
+    static Document* getDocument(const QString& documentName, const GTGlobals::FindOptions& options = {});
 
-    static bool isDocumentLoaded(HI::GUITestOpStatus& os, const QString& documentName);
+    static bool isDocumentLoaded(const QString& documentName);
 
-    static void saveDocument(HI::GUITestOpStatus& os, const QString& documentName);
-    static void unloadDocument(HI::GUITestOpStatus& os, const QString& documentName, bool waitForMessageBox = true);
-    static void loadDocument(HI::GUITestOpStatus& os, const QString& documentName);
+    static void saveDocument(const QString& documentName);
+    static void unloadDocument(const QString& documentName, bool waitForMessageBox = true);
+    static void loadDocument(const QString& documentName);
 
-    static void lockDocument(HI::GUITestOpStatus& os, const QString& documentName);
-    static void unlockDocument(HI::GUITestOpStatus& os, const QString& documentName);
+    static void lockDocument(const QString& documentName);
+    static void unlockDocument(const QString& documentName);
 
-    static void checkIfDocumentIsLocked(HI::GUITestOpStatus& os, const QString& documentName, bool isLocked);
+    static void checkIfDocumentIsLocked(const QString& documentName, bool isLocked);
 
 protected:
-    static GObjectViewController* getDocumentGObjectView(HI::GUITestOpStatus& os, Document* d);
+    static GObjectViewController* getDocumentGObjectView(Document* d);
 
 private:
     static QList<GObjectViewController*> getAllGObjectViews();

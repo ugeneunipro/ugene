@@ -47,447 +47,447 @@ namespace U2 {
 namespace GUITest_common_scenarios_annotations_qualifiers {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
     GTThread::waitForMainThread();
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD , "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual1", "val1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual1", "val1"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual1");
+    GTUtilsAnnotationsTreeView::findItem("qual1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual1", "val1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual1", "val1"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual1");
+    GTUtilsAnnotationsTreeView::findItem("qual1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "C");  // Expand annotation to make qualifiers visible.
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
+    GTUtilsAnnotationsTreeView::expandItem("C");  // Expand annotation to make qualifiers visible.
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual1"));
     GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qu");
+    GTUtilsAnnotationsTreeView::findItem("qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "B");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
+    GTUtilsAnnotationsTreeView::expandItem("B");
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual"));
     GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qu");
+    GTUtilsAnnotationsTreeView::findItem("qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "B");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
+    GTUtilsAnnotationsTreeView::expandItem("B");
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual"));
     GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::checkNoActiveWaiters();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "C");
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
+    GTUtilsAnnotationsTreeView::expandItem("C");
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual1"));
     GTMouseDriver::click();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu1"));
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::checkNoActiveWaiters();
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qu");
+    GTUtilsAnnotationsTreeView::findItem("qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "C");
+    GTUtilsAnnotationsTreeView::expandItem("C");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu", "va"));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu", "va"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual1"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qu");
+    GTUtilsAnnotationsTreeView::findItem("qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_1) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "B");
+    GTUtilsAnnotationsTreeView::expandItem("B");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu", "va"));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu", "va"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qu");
+    GTUtilsAnnotationsTreeView::findItem("qu");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_2) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "B");
+    GTUtilsAnnotationsTreeView::expandItem("B");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu", "va"));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu", "va"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "C");
+    GTUtilsAnnotationsTreeView::expandItem("C");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qu1", "va1"));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qu1", "va1"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("qual1"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qu");
-    GTUtilsAnnotationsTreeView::findItem(os, "qu1");
+    GTUtilsAnnotationsTreeView::findItem("qu");
+    GTUtilsAnnotationsTreeView::findItem("qu1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTUtilsProjectTreeView::doubleClickItem(os, "NC_001363 sequence");
+    GTUtilsProjectTreeView::doubleClickItem("NC_001363 sequence");
 
-    auto annotationCItem = GTUtilsAnnotationsTreeView::expandItem(os, "C");
-    auto qualifierCItem = GTUtilsAnnotationsTreeView::findItem(os, "qual1", annotationCItem);
-    GTTreeWidget::click(os, qualifierCItem);
+    auto annotationCItem = GTUtilsAnnotationsTreeView::expandItem("C");
+    auto qualifierCItem = GTUtilsAnnotationsTreeView::findItem("qual1", annotationCItem);
+    GTTreeWidget::click(qualifierCItem);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    qualifierCItem = GTUtilsAnnotationsTreeView::findItem(os, "qual1", annotationCItem, {false}, false);
+    qualifierCItem = GTUtilsAnnotationsTreeView::findItem("qual1", annotationCItem, {false}, false);
     CHECK_SET_ERR(qualifierCItem == nullptr, "There is annotation qual1, expected state there is no annotation qual1");
 
-    auto annotationBItem = GTUtilsAnnotationsTreeView::expandItem(os, "B");
-    auto qualifierBItem = GTUtilsAnnotationsTreeView::findItem(os, "qual", annotationBItem);
-    GTTreeWidget::click(os, qualifierBItem);
+    auto annotationBItem = GTUtilsAnnotationsTreeView::expandItem("B");
+    auto qualifierBItem = GTUtilsAnnotationsTreeView::findItem("qual", annotationBItem);
+    GTTreeWidget::click(qualifierBItem);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    qualifierBItem = GTUtilsAnnotationsTreeView::findItem(os, "qual", annotationBItem, {false}, false);
+    qualifierBItem = GTUtilsAnnotationsTreeView::findItem("qual", annotationBItem, {false}, false);
     CHECK_SET_ERR(qualifierBItem == nullptr, "There is annotation qual1, expected state there is no annotation qual");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual1", "val1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual1", "val1"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual1");
+    GTUtilsAnnotationsTreeView::findItem("qual1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_2) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual1", "val1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual1", "val1"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual1");
+    GTUtilsAnnotationsTreeView::findItem("qual1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Open "_common_data/scenarios/annotations_qualifiers/test_6_murine.gb".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/annotations_qualifiers/test_6_murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/annotations_qualifiers/test_6_murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Click the "db_xref" qualifier value in any "CDS" annotation.
-    GTUtilsAnnotationsTreeView::expandItem(os, "CDS");
-    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "db_xref"), AnnotationsTreeView::COLUMN_VALUE);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::expandItem("CDS");
+    GTTreeWidget::click(GTUtilsAnnotationsTreeView::findItem("db_xref"), AnnotationsTreeView::COLUMN_VALUE);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: a P03334 is loaded and opened.
-    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow();
     QString expectedTitle = "GAG_MSVMO [P03334.txt]";
     CHECK_SET_ERR(expectedTitle == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle).arg(activeWindow->windowTitle()));
 
     // Open "test_6_murine.gb" view and click the same qualifier value again.
-    GTUtilsProjectTreeView::doubleClickItem(os, "test_6_murine.gb");
+    GTUtilsProjectTreeView::doubleClickItem("test_6_murine.gb");
 
-    activeWindow = GTUtilsMdi::activeWindow(os);
+    activeWindow = GTUtilsMdi::activeWindow();
     QString expectedTitle1 = "NC_001363 [test_6_murine.gb]";
     CHECK_SET_ERR(expectedTitle1 == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle1).arg(activeWindow->windowTitle()));
 
-    GTTreeWidget::click(os, GTUtilsAnnotationsTreeView::findItem(os, "db_xref"), AnnotationsTreeView::COLUMN_VALUE);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTTreeWidget::click(GTUtilsAnnotationsTreeView::findItem("db_xref"), AnnotationsTreeView::COLUMN_VALUE);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: nothing happens, the original view is still active.
-    activeWindow = GTUtilsMdi::activeWindow(os);
+    activeWindow = GTUtilsMdi::activeWindow();
     CHECK_SET_ERR(nullptr != activeWindow, "Active window is NULL");
     CHECK_SET_ERR(expectedTitle1 == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle1).arg(activeWindow->windowTitle()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier", "qwe"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("new_qualifier", "qwe"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier");
+    GTUtilsAnnotationsTreeView::findItem("new_qualifier");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_1) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier", "qwe"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("new_qualifier", "qwe"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier");
+    GTUtilsAnnotationsTreeView::findItem("new_qualifier");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_2) {
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
-    GTFile::copy(os, testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
+    GTFile::copy(testDir + "_common_data/scenarios/project/proj2.uprj", sandBoxDir + "proj2.uprj");
+    GTFile::copy(testDir + "_common_data/scenarios/project/1.gb", sandBoxDir + "1.gb");
 
-    GTFileDialog::openFile(os, sandBoxDir, "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTFileDialog::openFile(sandBoxDir, "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "qual", "val"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("qual", "val"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "qual");
+    GTUtilsAnnotationsTreeView::findItem("qual");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier", "qwe"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("new_qualifier", "qwe"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier");
+    GTUtilsAnnotationsTreeView::findItem("new_qualifier");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "new_qualifier_1", "qwe_1"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("new_qualifier_1", "qwe_1"));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("C"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsAnnotationsTreeView::findItem(os, "new_qualifier_1");
+    GTUtilsAnnotationsTreeView::findItem("new_qualifier_1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    GTFile::copy(os, testDir + "_common_data/genbank/1anot_1seq.gen", sandBoxDir + "1anot_1seq.gen");
-    GTFileDialog::openFile(os, sandBoxDir + "1anot_1seq.gen");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::copy(testDir + "_common_data/genbank/1anot_1seq.gen", sandBoxDir + "1anot_1seq.gen");
+    GTFileDialog::openFile(sandBoxDir + "1anot_1seq.gen");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
     QString longQualifierValueNoSpaces =
@@ -496,56 +496,56 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
         QString("set of quotation marks is required at the beginning and at the end of the ") +
         QString("text");
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "long", longQualifierValueNoSpaces));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("long", longQualifierValueNoSpaces));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("CDS"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::checkNoActiveWaiters(os);
-    GTUtilsAnnotationsTreeView::findItem(os, "long");
+    GTUtilsDialog::checkNoActiveWaiters();
+    GTUtilsAnnotationsTreeView::findItem("long");
 
-    GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");
-    GTUtilsDocument::unloadDocument(os, "1anot_1seq.gen");
-    GTUtilsDocument::loadDocument(os, "1anot_1seq.gen");
+    GTUtilsDocument::saveDocument("1anot_1seq.gen");
+    GTUtilsDocument::unloadDocument("1anot_1seq.gen");
+    GTUtilsDocument::loadDocument("1anot_1seq.gen");
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "CDS");
-    QTreeWidgetItem* qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem(os, "long");
+    GTUtilsAnnotationsTreeView::expandItem("CDS");
+    QTreeWidgetItem* qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem("long");
     CHECK_SET_ERR(qualifierTreeItem->text(AnnotationsTreeView::COLUMN_VALUE) == longQualifierValueNoSpaces, "Different qualifier value!");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_REMOVE, "Selected annotations and qualifiers"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "long"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_REMOVE, "Selected annotations and qualifiers"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("long"));
     GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    GTFile::copy(os, testDir + "_common_data/genbank/1anot_1seq.gen", sandBoxDir + "1anot_1seq.gen");
-    GTFileDialog::openFile(os, sandBoxDir + "1anot_1seq.gen");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::copy(testDir + "_common_data/genbank/1anot_1seq.gen", sandBoxDir + "1anot_1seq.gen");
+    GTFileDialog::openFile(sandBoxDir + "1anot_1seq.gen");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
 
     QString longQualifierValueNoSpaces = "Mostqualifiervalueswillbeadescriptivetextphrasewhichmustbeenclosedindoublequotationmarks.";
 
-    GTUtilsDialog::waitForDialog(os, new EditQualifierFiller(os, "noSpaces", longQualifierValueNoSpaces));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_ADD, "add_qualifier_action"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "CDS"));
+    GTUtilsDialog::waitForDialog(new EditQualifierFiller("noSpaces", longQualifierValueNoSpaces));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("CDS"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::checkNoActiveWaiters(os);
-    GTUtilsAnnotationsTreeView::findItem(os, "noSpaces");
+    GTUtilsDialog::checkNoActiveWaiters();
+    GTUtilsAnnotationsTreeView::findItem("noSpaces");
 
-    GTUtilsDocument::saveDocument(os, "1anot_1seq.gen");
-    GTUtilsDocument::unloadDocument(os, "1anot_1seq.gen");
-    GTUtilsDocument::loadDocument(os, "1anot_1seq.gen");
+    GTUtilsDocument::saveDocument("1anot_1seq.gen");
+    GTUtilsDocument::unloadDocument("1anot_1seq.gen");
+    GTUtilsDocument::loadDocument("1anot_1seq.gen");
 
-    GTUtilsAnnotationsTreeView::expandItem(os, "CDS");
-    QTreeWidgetItem* qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem(os, "noSpaces");
+    GTUtilsAnnotationsTreeView::expandItem("CDS");
+    QTreeWidgetItem* qualifierTreeItem = GTUtilsAnnotationsTreeView::findItem("noSpaces");
     CHECK_SET_ERR(qualifierTreeItem->text(AnnotationsTreeView::COLUMN_VALUE) == longQualifierValueNoSpaces, "Different qualifier value!");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ADV_MENU_REMOVE, "Selected annotations and qualifiers"}));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "noSpaces"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_REMOVE, "Selected annotations and qualifiers"}));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("noSpaces"));
     GTMouseDriver::click(Qt::RightButton);
 }
 

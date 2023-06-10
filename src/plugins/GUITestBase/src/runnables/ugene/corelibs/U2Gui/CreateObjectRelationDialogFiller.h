@@ -28,9 +28,9 @@ using namespace HI;
 
 class CreateObjectRelationDialogFiller : public Filler {
 public:
-    CreateObjectRelationDialogFiller(HI::GUITestOpStatus& os);
-    CreateObjectRelationDialogFiller(HI::GUITestOpStatus& os, CustomScenario* sc)
-        : Filler(os, "CreateObjectRelationDialog", sc) {
+    CreateObjectRelationDialogFiller();
+    CreateObjectRelationDialogFiller(CustomScenario* sc)
+        : Filler("CreateObjectRelationDialog", sc) {
     }
 
     virtual void commonScenario();

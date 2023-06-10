@@ -35,17 +35,17 @@ using namespace HI;
 
 #define GT_METHOD_NAME "commonScenario"
 void ConfigurationWizardFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     GTGlobals::sleep(500);
 
     GTMouseDriver::moveTo(QPoint(dialog->pos().x() + dialog->rect().width() / 2, dialog->pos().y() + 5));
     GTMouseDriver::click();
 
     for (const QString& radioButtonName : qAsConst(radioNames)) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, radioButtonName, dialog));
+        GTRadioButton::click(GTWidget::findRadioButton(radioButtonName, dialog));
     }
 
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Setup);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Setup);
 }
 #undef GT_METHOD_NAME
 

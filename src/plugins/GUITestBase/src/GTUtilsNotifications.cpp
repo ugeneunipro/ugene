@@ -38,8 +38,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "NotificationChecker"
 
-NotificationChecker::NotificationChecker(HI::GUITestOpStatus& _os)
-    : os(_os) {
+NotificationChecker::NotificationChecker() {
     t = new QTimer(this);
     connect(t, SIGNAL(timeout()), this, SLOT(sl_checkNotification()));
     t->start(100);
@@ -55,7 +54,7 @@ void NotificationChecker::sl_checkNotification() {
         if (notification != nullptr && notification->isVisible()) {
             uiLog.trace("notification is found");
             t->stop();
-            GTWidget::click(os, notification);
+            GTWidget::click(notification);
             return;
         }
     }
@@ -65,28 +64,28 @@ void NotificationChecker::sl_checkNotification() {
 
 #define GT_CLASS_NAME "NotificationDialogFiller"
 
-NotificationDialogFiller::NotificationDialogFiller(HI::GUITestOpStatus& os, const QString& message)
-    : Filler(os, "NotificationDialog"),
+NotificationDialogFiller::NotificationDialogFiller(const QString& message)
+    : Filler("NotificationDialog"),
       message(message) {
     settings.timeout = 350000;
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void NotificationDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     if (!message.isEmpty()) {
         QTextBrowser* tb = dialog->findChild<QTextBrowser*>();
         GT_CHECK(tb != nullptr, "text browser not found");
         QString actualMessage = tb->toPlainText();
         GT_CHECK(actualMessage.contains(message), "unexpected message: " + actualMessage);
     }
-    QWidget* ok = GTWidget::findButtonByText(os, "Ok", dialog);
-    GTWidget::click(os, ok);
+    QWidget* ok = GTWidget::findButtonByText("Ok", dialog);
+    GTWidget::click(ok);
     if (isOsWindows() || isOsMac()) {
         dialog = QApplication::activeModalWidget();
         if (dialog != nullptr) {
-            ok = GTWidget::findButtonByText(os, "Ok", dialog);
-            GTWidget::click(os, ok);
+            ok = GTWidget::findButtonByText("Ok", dialog);
+            GTWidget::click(ok);
         }
     }
 }
@@ -96,50 +95,50 @@ void NotificationDialogFiller::commonScenario() {
 #define GT_CLASS_NAME "NotificationChecker"
 
 #define GT_METHOD_NAME "waitForNotification"
-void GTUtilsNotifications::waitForNotification(HI::GUITestOpStatus& os, bool dialogExpected, const QString& message) {
+void GTUtilsNotifications::waitForNotification(bool dialogExpected, const QString& message) {
     if (dialogExpected) {
-        GTUtilsDialog::waitForDialog(os, new NotificationDialogFiller(os, message));
+        GTUtilsDialog::waitForDialog(new NotificationDialogFiller(message));
     }
-    new NotificationChecker(os);
+    new NotificationChecker();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNotificationReportText"
-void GTUtilsNotifications::checkNotificationReportText(HI::GUITestOpStatus& os, const QString& textToken) {
-    checkNotificationReportText(os, QStringList(textToken));
+void GTUtilsNotifications::checkNotificationReportText(const QString& textToken) {
+    checkNotificationReportText(QStringList(textToken));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNotificationReportTextList"
-void GTUtilsNotifications::checkNotificationReportText(HI::GUITestOpStatus& os, const QStringList& textTokens) {
-    clickOnNotificationWidget(os);
+void GTUtilsNotifications::checkNotificationReportText(const QStringList& textTokens) {
+    clickOnNotificationWidget();
 
-    QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive(os, "Task report ");
-    auto reportEdit = GTWidget::findTextEdit(os, "reportTextEdit", reportWindow);
+    QWidget* reportWindow = GTUtilsMdi::checkWindowIsActive("Task report ");
+    auto reportEdit = GTWidget::findTextEdit("reportTextEdit", reportWindow);
     QString html = reportEdit->toHtml();
     for (const QString& textToken : qAsConst(textTokens)) {
         CHECK_SET_ERR(html.contains(textToken), "Report contains expected text: " + textToken);
     }
-    GTUtilsMdi::closeActiveWindow(os);
+    GTUtilsMdi::closeActiveWindow();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNotificationDialogText"
-void GTUtilsNotifications::checkNotificationDialogText(HI::GUITestOpStatus& os, const QString& textToken) {
-    GTUtilsDialog::waitForDialog(os, new NotificationDialogFiller(os, textToken));
-    clickOnNotificationWidget(os);
+void GTUtilsNotifications::checkNotificationDialogText(const QString& textToken) {
+    GTUtilsDialog::waitForDialog(new NotificationDialogFiller(textToken));
+    clickOnNotificationWidget();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickOnNotificationWidget"
-void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus& os) {
+void GTUtilsNotifications::clickOnNotificationWidget() {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         QWidgetList widgetList = QApplication::allWidgets();
         for (QWidget* widget : qAsConst(widgetList)) {
             auto notification = qobject_cast<Notification*>(widget);
             if (notification != nullptr && notification->isVisible()) {
-                GTWidget::click(os, notification);
+                GTWidget::click(notification);
                 return;
             }
         }
@@ -161,7 +160,7 @@ static QWidget* findAnyVisibleNotificationWidget() {
 }
 
 #define GT_METHOD_NAME "waitAllNotificationsClosed"
-void GTUtilsNotifications::waitAllNotificationsClosed(HI::GUITestOpStatus& os) {
+void GTUtilsNotifications::waitAllNotificationsClosed() {
     QWidget* notification = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -175,25 +174,25 @@ void GTUtilsNotifications::waitAllNotificationsClosed(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNoVisibleNotifications"
-void GTUtilsNotifications::checkNoVisibleNotifications(HI::GUITestOpStatus& os) {
+void GTUtilsNotifications::checkNoVisibleNotifications() {
     QWidget* notification = findAnyVisibleNotificationWidget();
     GT_CHECK(notification == nullptr, "Found active notification!");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNotificationCounterValue"
-QString GTUtilsNotifications::getNotificationCounterValue(HI::GUITestOpStatus& os) {
-    auto statusBar = GTWidget::findWidget(os, "taskStatusBar");
-    return GTWidget::findLabel(os, "notificationLabel", statusBar)->property("notifications-count").toString();
+QString GTUtilsNotifications::getNotificationCounterValue() {
+    auto statusBar = GTWidget::findWidget("taskStatusBar");
+    return GTWidget::findLabel("notificationLabel", statusBar)->property("notifications-count").toString();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openNotificationContainerWidget"
-QWidget* GTUtilsNotifications::openNotificationContainerWidget(HI::GUITestOpStatus& os) {
-    auto statusBar = GTWidget::findWidget(os, "taskStatusBar");
-    auto label = GTWidget::findLabel(os, "notificationLabel", statusBar);
-    GTWidget::click(os, label);
-    return GTWidget::findWidget(os, "NotificationWidget");
+QWidget* GTUtilsNotifications::openNotificationContainerWidget() {
+    auto statusBar = GTWidget::findWidget("taskStatusBar");
+    auto label = GTWidget::findLabel("notificationLabel", statusBar);
+    GTWidget::click(label);
+    return GTWidget::findWidget("NotificationWidget");
 }
 #undef GT_METHOD_NAME
 

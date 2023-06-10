@@ -31,19 +31,19 @@ class ImportOptionsWidget;
 
 class ImportOptionsWidgetFiller {
 public:
-    static void fill(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void fill(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
 
 private:
-    static void setDestinationFolder(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setKeepFoldersStructure(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setProcessFoldersRecursively(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setCreateSubfolderForTopLevelFolder(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setCreateSubfolderForEachFile(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setImportUnknownAsUdr(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setMultiSequencePolicy(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setAceFormatPolicy(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setCreateSubfolderForDocument(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
-    static void setMergeMultiSequencePolicySeparatorSize(HI::GUITestOpStatus& os, ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setDestinationFolder(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setKeepFoldersStructure(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setProcessFoldersRecursively(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setCreateSubfolderForTopLevelFolder(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setCreateSubfolderForEachFile(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setImportUnknownAsUdr(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setMultiSequencePolicy(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setAceFormatPolicy(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setCreateSubfolderForDocument(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
+    static void setMergeMultiSequencePolicySeparatorSize(ImportOptionsWidget* optionsWidget, const QVariantMap& data);
 };
 
 }  // namespace U2

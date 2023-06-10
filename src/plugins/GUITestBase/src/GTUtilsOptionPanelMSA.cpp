@@ -79,65 +79,65 @@ const QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::innerWid
 #define GT_CLASS_NAME "GTUtilsOptionPanelMSA"
 
 #define GT_METHOD_NAME "toggleTab"
-void GTUtilsOptionPanelMsa::toggleTab(HI::GUITestOpStatus& os, GTUtilsOptionPanelMsa::Tabs tab) {
-    GTWidget::click(os, GTWidget::findWidget(os, tabsNames[tab]));
+void GTUtilsOptionPanelMsa::toggleTab(GTUtilsOptionPanelMsa::Tabs tab) {
+    GTWidget::click(GTWidget::findWidget(tabsNames[tab]));
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openTab"
-QWidget* GTUtilsOptionPanelMsa::openTab(HI::GUITestOpStatus& os, Tabs tab) {
-    if (!isTabOpened(os, tab)) {
-        toggleTab(os, tab);
+QWidget* GTUtilsOptionPanelMsa::openTab(Tabs tab) {
+    if (!isTabOpened(tab)) {
+        toggleTab(tab);
     }
     GTThread::waitForMainThread();
     QString widgetName = innerWidgetNames[tab];
-    return GTWidget::findWidget(os, widgetName);
+    return GTWidget::findWidget(widgetName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "closeTab"
-void GTUtilsOptionPanelMsa::closeTab(HI::GUITestOpStatus& os, Tabs tab) {
-    checkTabIsOpened(os, tab);
-    toggleTab(os, tab);
+void GTUtilsOptionPanelMsa::closeTab(Tabs tab) {
+    checkTabIsOpened(tab);
+    toggleTab(tab);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isTabOpened"
-bool GTUtilsOptionPanelMsa::isTabOpened(HI::GUITestOpStatus& os, Tabs tab) {
-    auto innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], nullptr, {false});
+bool GTUtilsOptionPanelMsa::isTabOpened(Tabs tab) {
+    auto innerTabWidget = GTWidget::findWidget(innerWidgetNames[tab], nullptr, {false});
     return innerTabWidget != nullptr && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkTabIsOpened"
-QWidget* GTUtilsOptionPanelMsa::checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab) {
+QWidget* GTUtilsOptionPanelMsa::checkTabIsOpened(Tabs tab) {
     QString name = innerWidgetNames[tab];
-    auto innerTabWidget = GTWidget::findWidget(os, name);
+    auto innerTabWidget = GTWidget::findWidget(name);
     GT_CHECK_RESULT(innerTabWidget->isVisible(), "MSA Editor options panel is not opened: " + name, nullptr);
     return innerTabWidget;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addReference"
-void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method) {
+void GTUtilsOptionPanelMsa::addReference(const QString& seqName, AddRefMethod method) {
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
     // Option panel should be opned to use this method
-    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList();
 
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
 
     switch (method) {
         case Button:
-            GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
-            GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
+            GTUtilsMSAEditorSequenceArea::selectSequence(seqName);
+            GTWidget::click(GTWidget::findWidget("addSeq"));
             break;
         case Completer:
-            auto sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
-            GTWidget::click(os, sequenceLineEdit);
+            auto sequenceLineEdit = GTWidget::findWidget("sequenceLineEdit");
+            GTWidget::click(sequenceLineEdit);
             GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
             GTGlobals::sleep(200);
-            GTBaseCompleter::click(os, sequenceLineEdit, seqName);
+            GTBaseCompleter::click(sequenceLineEdit, seqName);
             break;
     }
     GTThread::waitForMainThread();
@@ -145,21 +145,21 @@ void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus& os, const QString&
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "removeReference"
-void GTUtilsOptionPanelMsa::removeReference(HI::GUITestOpStatus& os) {
-    GTWidget::click(os, GTWidget::findWidget(os, "deleteSeq"));
+void GTUtilsOptionPanelMsa::removeReference() {
+    GTWidget::click(GTWidget::findWidget("deleteSeq"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReference"
-QString GTUtilsOptionPanelMsa::getReference(HI::GUITestOpStatus& os) {
-    openTab(os, General);
-    return GTLineEdit::getText(os, "sequenceLineEdit");
+QString GTUtilsOptionPanelMsa::getReference() {
+    openTab(General);
+    return GTLineEdit::getText("sequenceLineEdit");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLength"
-int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus& os) {
-    auto alignmentLengthLabel = GTWidget::findLabel(os, "alignmentLength");
+int GTUtilsOptionPanelMsa::getLength() {
+    auto alignmentLengthLabel = GTWidget::findLabel("alignmentLength");
     bool ok;
     int result = alignmentLengthLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok, "label text is not int", -1);
@@ -168,8 +168,8 @@ int GTUtilsOptionPanelMsa::getLength(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getHeight"
-int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus& os) {
-    auto alignmentHeightLabel = GTWidget::findLabel(os, "alignmentHeight");
+int GTUtilsOptionPanelMsa::getHeight() {
+    auto alignmentHeightLabel = GTWidget::findLabel("alignmentHeight");
     bool ok;
     int result = alignmentHeightLabel->text().toInt(&ok);
     GT_CHECK_RESULT(ok, "label text is not int", -1);
@@ -178,9 +178,9 @@ int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "copySelection"
-void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFormat& format) {
-    openTab(os, General);
-    auto copyType = GTWidget::findComboBox(os, "copyType");
+void GTUtilsOptionPanelMsa::copySelection(const CopyFormat& format) {
+    openTab(General);
+    auto copyType = GTWidget::findComboBox("copyType");
 
     QString stringFormat;
     switch (format) {
@@ -214,132 +214,132 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus& os, const CopyFor
         default:
             GT_FAIL("Unexpected format", );
     }
-    GTComboBox::selectItemByText(os, copyType, stringFormat);
+    GTComboBox::selectItemByText(copyType, stringFormat);
 
-    auto copyButton = GTWidget::findToolButton(os, "copyButton");
+    auto copyButton = GTWidget::findToolButton("copyButton");
 
-    GTWidget::click(os, copyButton);
+    GTWidget::click(copyButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setColorScheme"
-void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus& os, const QString& colorSchemeName, GTGlobals::UseMethod method) {
-    openTab(os, Highlighting);
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "colorScheme"), colorSchemeName, method);
+void GTUtilsOptionPanelMsa::setColorScheme(const QString& colorSchemeName, GTGlobals::UseMethod method) {
+    openTab(Highlighting);
+    GTComboBox::selectItemByText(GTWidget::findComboBox("colorScheme"), colorSchemeName, method);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColorScheme"
-QString GTUtilsOptionPanelMsa::getColorScheme(HI::GUITestOpStatus& os) {
-    openTab(os, Highlighting);
-    auto colorScheme = GTWidget::findComboBox(os, "colorScheme");
+QString GTUtilsOptionPanelMsa::getColorScheme() {
+    openTab(Highlighting);
+    auto colorScheme = GTWidget::findComboBox("colorScheme");
     return colorScheme->currentText();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setHighlightingScheme"
-void GTUtilsOptionPanelMsa::setHighlightingScheme(GUITestOpStatus& os, const QString& highlightingSchemeName) {
-    openTab(os, Highlighting);
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "highlightingScheme"), highlightingSchemeName);
+void GTUtilsOptionPanelMsa::setHighlightingScheme(const QString& highlightingSchemeName) {
+    openTab(Highlighting);
+    GTComboBox::selectItemByText(GTWidget::findComboBox("highlightingScheme"), highlightingSchemeName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addFirstSeqToPA"
-void GTUtilsOptionPanelMsa::addFirstSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method) {
-    addSeqToPA(os, seqName, method, 1);
+void GTUtilsOptionPanelMsa::addFirstSeqToPA(const QString& seqName, AddRefMethod method) {
+    addSeqToPA(seqName, method, 1);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addSecondSeqToPA"
-void GTUtilsOptionPanelMsa::addSecondSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method) {
-    addSeqToPA(os, seqName, method, 2);
+void GTUtilsOptionPanelMsa::addSecondSeqToPA(const QString& seqName, AddRefMethod method) {
+    addSeqToPA(seqName, method, 2);
 }
 #undef GT_METHOD_NAME
 
-QString GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(HI::GUITestOpStatus& os, int num) {
-    auto le = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", num));
+QString GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(int num) {
+    auto le = qobject_cast<QLineEdit*>(getWidget("sequenceLineEdit", num));
     return le->text();
 }
 
 #define GT_METHOD_NAME "addSeqToPA"
-void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method, int number) {
+void GTUtilsOptionPanelMsa::addSeqToPA(const QString& seqName, AddRefMethod method, int number) {
     GT_CHECK(number == 1 || number == 2, "number must be 1 or 2");
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
     // Option panel should be opned to use this method
-    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList();
 
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
 
     switch (method) {
         case Button:
-            GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
-            GTWidget::click(os, getAddButton(os, number));
+            GTUtilsMSAEditorSequenceArea::selectSequence(seqName);
+            GTWidget::click(getAddButton(number));
             break;
         case Completer:
-            QWidget* sequenceLineEdit = getSeqLineEdit(os, number);
-            GTWidget::click(os, sequenceLineEdit);
+            QWidget* sequenceLineEdit = getSeqLineEdit(number);
+            GTWidget::click(sequenceLineEdit);
             GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
             GTGlobals::sleep(200);
-            GTBaseCompleter::click(os, sequenceLineEdit, seqName);
+            GTBaseCompleter::click(sequenceLineEdit, seqName);
             break;
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getAddButton"
-QToolButton* GTUtilsOptionPanelMsa::getAddButton(HI::GUITestOpStatus& os, int number) {
-    auto result = qobject_cast<QToolButton*>(getWidget(os, "addSeq", number));
+QToolButton* GTUtilsOptionPanelMsa::getAddButton(int number) {
+    auto result = qobject_cast<QToolButton*>(getWidget("addSeq", number));
     GT_CHECK_RESULT(result != nullptr, "toolbutton is NULL", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDeleteButton"
-QToolButton* GTUtilsOptionPanelMsa::getDeleteButton(HI::GUITestOpStatus& os, int number) {
-    auto result = qobject_cast<QToolButton*>(getWidget(os, "deleteSeq", number));
+QToolButton* GTUtilsOptionPanelMsa::getDeleteButton(int number) {
+    auto result = qobject_cast<QToolButton*>(getWidget("deleteSeq", number));
     GT_CHECK_RESULT(result != nullptr, "toolbutton is NULL", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getAlignButton"
-QPushButton* GTUtilsOptionPanelMsa::getAlignButton(HI::GUITestOpStatus& os) {
-    openTab(os, PairwiseAlignment);
-    return GTWidget::findPushButton(os, "alignButton");
+QPushButton* GTUtilsOptionPanelMsa::getAlignButton() {
+    openTab(PairwiseAlignment);
+    return GTWidget::findPushButton("alignButton");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setPairwiseAlignmentAlgorithm"
-void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm) {
-    openTab(os, PairwiseAlignment);
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmListComboBox"), algorithm);
+void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(const QString& algorithm) {
+    openTab(PairwiseAlignment);
+    GTComboBox::selectItemByText(GTWidget::findComboBox("algorithmListComboBox"), algorithm);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setThreshold"
-void GTUtilsOptionPanelMsa::setThreshold(GUITestOpStatus& os, int threshold) {
-    openTab(os, General);
-    GTSlider::setValue(os, GTWidget::findSlider(os, "thresholdSlider"), threshold);
+void GTUtilsOptionPanelMsa::setThreshold(int threshold) {
+    openTab(General);
+    GTSlider::setValue(GTWidget::findSlider("thresholdSlider"), threshold);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getThreshold"
-int GTUtilsOptionPanelMsa::getThreshold(GUITestOpStatus& os) {
-    openTab(os, General);
-    auto thresholdSlider = GTWidget::findSlider(os, "thresholdSlider");
+int GTUtilsOptionPanelMsa::getThreshold() {
+    openTab(General);
+    auto thresholdSlider = GTWidget::findSlider("thresholdSlider");
     return thresholdSlider->value();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setThresholdComparison"
-void GTUtilsOptionPanelMsa::setThresholdComparison(GUITestOpStatus& os, GTUtilsOptionPanelMsa::ThresholdComparison comparison) {
-    openTab(os, Highlighting);
+void GTUtilsOptionPanelMsa::setThresholdComparison(GTUtilsOptionPanelMsa::ThresholdComparison comparison) {
+    openTab(Highlighting);
     switch (comparison) {
         case LessOrEqual:
-            GTRadioButton::click(os, GTWidget::findRadioButton(os, "thresholdLessRb"));
+            GTRadioButton::click(GTWidget::findRadioButton("thresholdLessRb"));
             break;
         case GreaterOrEqual:
-            GTRadioButton::click(os, GTWidget::findRadioButton(os, "thresholdMoreRb"));
+            GTRadioButton::click(GTWidget::findRadioButton("thresholdMoreRb"));
             break;
         default:
             GT_FAIL(QString("An unknown threshold comparison type: %1").arg(comparison), );
@@ -348,10 +348,10 @@ void GTUtilsOptionPanelMsa::setThresholdComparison(GUITestOpStatus& os, GTUtilsO
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getThresholdComparison"
-GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdComparison(GUITestOpStatus& os) {
-    openTab(os, Highlighting);
-    auto thresholdLessRb = GTWidget::findRadioButton(os, "thresholdLessRb");
-    auto thresholdMoreRb = GTWidget::findRadioButton(os, "thresholdMoreRb");
+GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdComparison() {
+    openTab(Highlighting);
+    auto thresholdLessRb = GTWidget::findRadioButton("thresholdLessRb");
+    auto thresholdMoreRb = GTWidget::findRadioButton("thresholdMoreRb");
     const bool lessOrEqual = thresholdLessRb->isChecked();
     const bool greaterOrEqual = thresholdMoreRb->isChecked();
     GT_CHECK_RESULT(lessOrEqual ^ greaterOrEqual, "Incorrect state of threshold comparison radiobuttons", LessOrEqual);
@@ -360,99 +360,99 @@ GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdCo
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setUseDotsOption"
-void GTUtilsOptionPanelMsa::setUseDotsOption(GUITestOpStatus& os, bool useDots) {
-    openTab(os, Highlighting);
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "useDots"), useDots);
+void GTUtilsOptionPanelMsa::setUseDotsOption(bool useDots) {
+    openTab(Highlighting);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), useDots);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isUseDotsOptionSet"
-bool GTUtilsOptionPanelMsa::isUseDotsOptionSet(GUITestOpStatus& os) {
-    openTab(os, Highlighting);
-    auto useDots = GTWidget::findCheckBox(os, "useDots");
+bool GTUtilsOptionPanelMsa::isUseDotsOptionSet() {
+    openTab(Highlighting);
+    auto useDots = GTWidget::findCheckBox("useDots");
     return useDots->isChecked();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setExportConsensusOutputPath"
-void GTUtilsOptionPanelMsa::setExportConsensusOutputPath(GUITestOpStatus& os, const QString& filePath) {
-    openTab(os, ExportConsensus);
-    GTLineEdit::setText(os, "pathLe", filePath, nullptr);
+void GTUtilsOptionPanelMsa::setExportConsensusOutputPath(const QString& filePath) {
+    openTab(ExportConsensus);
+    GTLineEdit::setText("pathLe", filePath, nullptr);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExportConsensusOutputPath"
-QString GTUtilsOptionPanelMsa::getExportConsensusOutputPath(GUITestOpStatus& os) {
-    return GTLineEdit::getText(os, "pathLe");
+QString GTUtilsOptionPanelMsa::getExportConsensusOutputPath() {
+    return GTLineEdit::getText("pathLe");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExportConsensusOutputFormat"
-QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(GUITestOpStatus& os) {
-    return GTComboBox::getCurrentText(os, "formatCb");
+QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat() {
+    return GTComboBox::getCurrentText("formatCb");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "enterPattern"
-void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus& os, const QString& pattern, bool useCopyPaste /*= false*/) {
-    auto patternEdit = GTWidget::findPlainTextEdit(os, "textPattern");
-    GTWidget::click(os, patternEdit);
+void GTUtilsOptionPanelMsa::enterPattern(const QString& pattern, bool useCopyPaste /*= false*/) {
+    auto patternEdit = GTWidget::findPlainTextEdit("textPattern");
+    GTWidget::click(patternEdit);
 
     if (!patternEdit->toPlainText().isEmpty()) {
-        GTPlainTextEdit::clear(os, patternEdit);
+        GTPlainTextEdit::clear(patternEdit);
     }
     if (useCopyPaste) {
-        GTClipboard::setText(os, pattern);
+        GTClipboard::setText(pattern);
         GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     } else {
-        GTPlainTextEdit::setText(os, patternEdit, pattern);
+        GTPlainTextEdit::setText(patternEdit, pattern);
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPattern"
-QString GTUtilsOptionPanelMsa::getPattern(GUITestOpStatus& os) {
-    auto patternEdit = GTWidget::findPlainTextEdit(os, "textPattern");
+QString GTUtilsOptionPanelMsa::getPattern() {
+    auto patternEdit = GTWidget::findPlainTextEdit("textPattern");
     return patternEdit->toPlainText();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setAlgorithm"
-void GTUtilsOptionPanelMsa::setAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm) {
-    auto algoBox = GTWidget::findComboBox(os, "boxAlgorithm");
+void GTUtilsOptionPanelMsa::setAlgorithm(const QString& algorithm) {
+    auto algoBox = GTWidget::findComboBox("boxAlgorithm");
 
     if (!algoBox->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
+        GTWidget::click(GTWidget::findWidget("ArrowHeader_Search algorithm"));
     }
-    GTComboBox::selectItemByText(os, algoBox, algorithm);
+    GTComboBox::selectItemByText(algoBox, algorithm);
     GTGlobals::sleep(2500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setMatchPercentage"
-void GTUtilsOptionPanelMsa::setMatchPercentage(HI::GUITestOpStatus& os, int percentage) {
-    auto spinMatchBox = GTWidget::findSpinBox(os, "spinBoxMatch");
+void GTUtilsOptionPanelMsa::setMatchPercentage(int percentage) {
+    auto spinMatchBox = GTWidget::findSpinBox("spinBoxMatch");
 
-    GTSpinBox::setValue(os, spinMatchBox, percentage, GTGlobals::UseKeyBoard);
+    GTSpinBox::setValue(spinMatchBox, percentage, GTGlobals::UseKeyBoard);
     GTGlobals::sleep(2500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setCheckedRemoveOverlappedResults"
-void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(HI::GUITestOpStatus& os, bool setChecked) {
-    auto overlapsBox = GTWidget::findCheckBox(os, "removeOverlapsBox");
+void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(bool setChecked) {
+    auto overlapsBox = GTWidget::findCheckBox("removeOverlapsBox");
 
     if (!overlapsBox->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
+        GTWidget::click(GTWidget::findWidget("ArrowHeader_Other settings"));
     }
-    GTCheckBox::setChecked(os, "removeOverlapsBox", setChecked);
+    GTCheckBox::setChecked("removeOverlapsBox", setChecked);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkResultsText"
-void GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus& os, const QString& expectedText) {
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    auto label = GTWidget::findLabel(os, "resultLabel");
+void GTUtilsOptionPanelMsa::checkResultsText(const QString& expectedText) {
+    GTUtilsTaskTreeView::waitTaskFinished();
+    auto label = GTWidget::findLabel("resultLabel");
     QString actualText = label->text();
     CHECK_SET_ERR(actualText == expectedText, QString("Wrong result. Expected: %1, got: %2").arg(expectedText).arg(actualText));
 }
@@ -460,67 +460,67 @@ void GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus& os, const QStr
 
 #define GT_METHOD_NAME "clickNext"
 
-void GTUtilsOptionPanelMsa::clickNext(HI::GUITestOpStatus& os) {
-    auto next = GTWidget::findPushButton(os, "nextPushButton");
-    GTWidget::click(os, next);
+void GTUtilsOptionPanelMsa::clickNext() {
+    auto next = GTWidget::findPushButton("nextPushButton");
+    GTWidget::click(next);
 }
 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickPrev"
-void GTUtilsOptionPanelMsa::clickPrev(HI::GUITestOpStatus& os) {
-    auto prev = GTWidget::findPushButton(os, "prevPushButton");
-    GTWidget::click(os, prev);
+void GTUtilsOptionPanelMsa::clickPrev() {
+    auto prev = GTWidget::findPushButton("prevPushButton");
+    GTWidget::click(prev);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSeqLineEdit"
-QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus& os, int number) {
-    auto result = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", number));
+QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(int number) {
+    auto result = qobject_cast<QLineEdit*>(getWidget("sequenceLineEdit", number));
     GT_CHECK_RESULT(result != nullptr, "sequenceLineEdit is NULL", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isSearchInShowHideWidgetOpened"
-bool GTUtilsOptionPanelMsa::isSearchInShowHideWidgetOpened(HI::GUITestOpStatus& os) {
-    auto searchInInnerWidget = GTWidget::findWidget(os, "widgetSearchIn");
+bool GTUtilsOptionPanelMsa::isSearchInShowHideWidgetOpened() {
+    auto searchInInnerWidget = GTWidget::findWidget("widgetSearchIn");
     return searchInInnerWidget->isVisible();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openSearchInShowHideWidget"
-void GTUtilsOptionPanelMsa::openSearchInShowHideWidget(HI::GUITestOpStatus& os, bool open) {
-    CHECK(open != isSearchInShowHideWidgetOpened(os), );
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
+void GTUtilsOptionPanelMsa::openSearchInShowHideWidget(bool open) {
+    CHECK(open != isSearchInShowHideWidgetOpened(), );
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Search in"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setRegionType"
-void GTUtilsOptionPanelMsa::setRegionType(HI::GUITestOpStatus& os, const QString& regionType) {
-    openSearchInShowHideWidget(os);
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "boxRegion"), regionType);
+void GTUtilsOptionPanelMsa::setRegionType(const QString& regionType) {
+    openSearchInShowHideWidget();
+    GTComboBox::selectItemByText(GTWidget::findComboBox("boxRegion"), regionType);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setRegion"
-void GTUtilsOptionPanelMsa::setRegion(HI::GUITestOpStatus& os, int from, int to) {
-    openSearchInShowHideWidget(os);
-    GTLineEdit::setText(os, "editStart", QString::number(from));
-    GTLineEdit::setText(os, "editEnd", QString::number(to));
+void GTUtilsOptionPanelMsa::setRegion(int from, int to) {
+    openSearchInShowHideWidget();
+    GTLineEdit::setText("editStart", QString::number(from));
+    GTLineEdit::setText("editEnd", QString::number(to));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setSearchContext"
-void GTUtilsOptionPanelMsa::setSearchContext(HI::GUITestOpStatus& os, const QString& context) {
-    auto searchContextBox = GTWidget::findComboBox(os, "searchContextComboBox");
-    GTComboBox::selectItemByText(os, searchContextBox, context);
+void GTUtilsOptionPanelMsa::setSearchContext(const QString& context) {
+    auto searchContextBox = GTWidget::findComboBox("searchContextComboBox");
+    GTComboBox::selectItemByText(searchContextBox, context);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWidget"
-QWidget* GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus& os, const QString& widgetName, int number) {
-    auto sequenceContainerWidget = GTWidget::findWidget(os, "sequenceContainerWidget");
+QWidget* GTUtilsOptionPanelMsa::getWidget(const QString& widgetName, int number) {
+    auto sequenceContainerWidget = GTWidget::findWidget("sequenceContainerWidget");
     QList<QWidget*> widgetList = sequenceContainerWidget->findChildren<QWidget*>(widgetName);
     GT_CHECK_RESULT(widgetList.count() == 2, QString("unexpected number of widgets: %1").arg(widgetList.count()), nullptr);
     QWidget* w1 = widgetList[0];
@@ -539,22 +539,22 @@ QWidget* GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus& os, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getAlphabetLabelText"
-QString GTUtilsOptionPanelMsa::getAlphabetLabelText(HI::GUITestOpStatus& os) {
-    checkTabIsOpened(os, General);
-    auto label = GTWidget::findLabel(os, "alignmentAlphabet");
+QString GTUtilsOptionPanelMsa::getAlphabetLabelText() {
+    checkTabIsOpened(General);
+    auto label = GTWidget::findLabel("alignmentAlphabet");
     return label->text();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setOutputFile"
-void GTUtilsOptionPanelMsa::setOutputFile(HI::GUITestOpStatus& os, const QString& outputFilePath) {
-    auto tabWidget = checkTabIsOpened(os, PairwiseAlignment);
-    auto outputLineEdit = GTWidget::findLineEdit(os, "outputFileLineEdit");
+void GTUtilsOptionPanelMsa::setOutputFile(const QString& outputFilePath) {
+    auto tabWidget = checkTabIsOpened(PairwiseAlignment);
+    auto outputLineEdit = GTWidget::findLineEdit("outputFileLineEdit");
     if (!outputLineEdit->isVisible()) {
-        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Output settings"));
+        GTWidget::click(GTWidget::findWidget("ArrowHeader_Output settings"));
     }
 
-    GTLineEdit::setText(os, outputLineEdit, outputFilePath, tabWidget);
+    GTLineEdit::setText(outputLineEdit, outputFilePath, tabWidget);
 }
 #undef GT_METHOD_NAME
 

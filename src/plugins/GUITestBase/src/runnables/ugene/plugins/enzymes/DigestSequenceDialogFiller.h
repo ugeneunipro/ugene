@@ -28,7 +28,7 @@ using namespace HI;
 
 class DigestSequenceDialogFiller : public Filler {
 public:
-    DigestSequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
+    DigestSequenceDialogFiller(CustomScenario* scenario = nullptr);
 
     void commonScenario();
 };

@@ -39,54 +39,54 @@ namespace GUITest_common_scenarios_project_bookmarks {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     //  1. Open a GenBank file with circular view (tested on NC_014267.gb from NCBI DB)
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/dp_view/", "NC_014267.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/dp_view/", "NC_014267.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //  2. Create a bookmark
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter("NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
 
     //  3. Close project
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 }
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 1. Open a GenBank file with circular view (tested on NC_014267.gb from NCBI DB)
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/dp_view/", "NC_014267.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/dp_view/", "NC_014267.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Create a bookmark. Change: Create 2 bookmarks.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter("NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter("NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
 
     // 3. Close project
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 }
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 1. Open a GenBank file with circular view (tested on NC_014267.gb from NCBI DB)
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/dp_view/", "NC_014267.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/dp_view/", "NC_014267.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Create a bookmark
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter("NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
 
     // 2'. Change: Remove the bookmark
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_REMOVE_BOOKMARK}, GTGlobals::UseMouse));
-    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "NC_014267 sequence [NC_014267.gb]"));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_REMOVE_BOOKMARK}, GTGlobals::UseMouse));
+    GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter("NC_014267 sequence [NC_014267.gb]"));
     GTMouseDriver::click(Qt::RightButton);
 
     // 3. Close project
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 }
 }  // namespace GUITest_common_scenarios_project_bookmarks
 }  // namespace U2

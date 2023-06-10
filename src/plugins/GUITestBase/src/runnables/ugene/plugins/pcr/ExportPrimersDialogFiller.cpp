@@ -35,33 +35,32 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportPrimersDialogFiller"
 
-ExportPrimersDialogFiller::ExportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "ExportPrimersDialog", scenario) {
+ExportPrimersDialogFiller::ExportPrimersDialogFiller(CustomScenario* scenario)
+    : Filler("ExportPrimersDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportPrimersDialogFiller::commonScenario() {
-    GTUtilsDialog::clickButtonBox(os, getDialog(os), QDialogButtonBox::Cancel);
+    GTUtilsDialog::clickButtonBox(getDialog(), QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDialog"
-QWidget* ExportPrimersDialogFiller::getDialog(HI::GUITestOpStatus& os) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+QWidget* ExportPrimersDialogFiller::getDialog() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     return dialog;
 }
 #undef GT_METHOD_NAME
 
-
 #define GT_METHOD_NAME "setFormat"
-void ExportPrimersDialogFiller::setFormat(HI::GUITestOpStatus& os, const QString& format) {
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbFormat", getDialog(os)), format);
+void ExportPrimersDialogFiller::setFormat(const QString& format) {
+    GTComboBox::selectItemByText(GTWidget::findComboBox("cbFormat", getDialog()), format);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFilePath"
-void ExportPrimersDialogFiller::setFilePath(HI::GUITestOpStatus& os, const QString& filePath) {
-    GTLineEdit::setText(os, "leFilePath", filePath, getDialog(os));
+void ExportPrimersDialogFiller::setFilePath(const QString& filePath) {
+    GTLineEdit::setText("leFilePath", filePath, getDialog());
 }
 #undef GT_METHOD_NAME
 

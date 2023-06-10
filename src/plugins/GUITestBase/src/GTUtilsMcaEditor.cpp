@@ -52,22 +52,22 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsMcaEditor"
 
 #define GT_METHOD_NAME "getActiveMcaEditorWindow"
-QWidget* GTUtilsMcaEditor::getActiveMcaEditorWindow(GUITestOpStatus& os) {
-    QWidget* widget = GTUtilsMdi::getActiveObjectViewWindow(os, McaEditorFactory::ID);
+QWidget* GTUtilsMcaEditor::getActiveMcaEditorWindow() {
+    QWidget* widget = GTUtilsMdi::getActiveObjectViewWindow(McaEditorFactory::ID);
     GTThread::waitForMainThread();
     return widget;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMcaEditorWindowIsActive"
-void GTUtilsMcaEditor::checkMcaEditorWindowIsActive(GUITestOpStatus& os) {
-    getActiveMcaEditorWindow(os);
+void GTUtilsMcaEditor::checkMcaEditorWindowIsActive() {
+    getActiveMcaEditorWindow();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditor"
-McaEditor* GTUtilsMcaEditor::getEditor(GUITestOpStatus& os) {
-    McaEditorWgt* editorUi = getEditorUi(os);
+McaEditor* GTUtilsMcaEditor::getEditor() {
+    McaEditorWgt* editorUi = getEditorUi();
     McaEditor* editor = editorUi->getEditor();
     GT_CHECK_RESULT(editor != nullptr, "MCA Editor is NULL", nullptr);
     return editor;
@@ -75,8 +75,8 @@ McaEditor* GTUtilsMcaEditor::getEditor(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getEditorUi"
-McaEditorWgt* GTUtilsMcaEditor::getEditorUi(GUITestOpStatus& os) {
-    checkMcaEditorWindowIsActive(os);
+McaEditorWgt* GTUtilsMcaEditor::getEditorUi() {
+    checkMcaEditorWindowIsActive();
     McaEditorWgt* mcaEditorWgt = nullptr;
     // For some reason McaEditorWgt is not within normal widgets hierarchy (wrong parent?), so can't use GTWidget::findWidget here.
     for (int time = 0; time < GT_OP_WAIT_MILLIS && mcaEditorWgt == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -94,53 +94,53 @@ McaEditorWgt* GTUtilsMcaEditor::getEditorUi(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceLabel"
-QLabel* GTUtilsMcaEditor::getReferenceLabel(GUITestOpStatus& os) {
-    auto referenceLabelContainerWidget = GTWidget::findWidget(os, "reference label container widget", getEditorUi(os));
-    return GTWidget::findLabel(os, "", referenceLabelContainerWidget);
+QLabel* GTUtilsMcaEditor::getReferenceLabel() {
+    auto referenceLabelContainerWidget = GTWidget::findWidget("reference label container widget", getEditorUi());
+    return GTWidget::findLabel("", referenceLabelContainerWidget);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNameListArea"
-McaEditorNameList* GTUtilsMcaEditor::getNameListArea(GUITestOpStatus& os) {
-    return GTWidget::findExactWidget<McaEditorNameList*>(os, "mca_editor_name_list", getEditorUi(os));
+McaEditorNameList* GTUtilsMcaEditor::getNameListArea() {
+    return GTWidget::findExactWidget<McaEditorNameList*>("mca_editor_name_list", getEditorUi());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceArea"
-McaEditorSequenceArea* GTUtilsMcaEditor::getSequenceArea(GUITestOpStatus& os) {
-    return GTWidget::findExactWidget<McaEditorSequenceArea*>(os, "mca_editor_sequence_area", getEditorUi(os));
+McaEditorSequenceArea* GTUtilsMcaEditor::getSequenceArea() {
+    return GTWidget::findExactWidget<McaEditorSequenceArea*>("mca_editor_sequence_area", getEditorUi());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getConsensusArea"
-McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea(GUITestOpStatus& os) {
-    QWidget* activeWindow = getActiveMcaEditorWindow(os);
-    return GTWidget::findExactWidget<McaEditorConsensusArea*>(os, "consArea", activeWindow);
+McaEditorConsensusArea* GTUtilsMcaEditor::getConsensusArea() {
+    QWidget* activeWindow = getActiveMcaEditorWindow();
+    return GTWidget::findExactWidget<McaEditorConsensusArea*>("consArea", activeWindow);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceArea"
-McaEditorReferenceArea* GTUtilsMcaEditor::getReferenceArea(GUITestOpStatus& os) {
-    QWidget* activeWindow = getActiveMcaEditorWindow(os);
-    return GTWidget::findExactWidget<McaEditorReferenceArea*>(os, "mca_editor_reference_area", activeWindow);
+McaEditorReferenceArea* GTUtilsMcaEditor::getReferenceArea() {
+    QWidget* activeWindow = getActiveMcaEditorWindow();
+    return GTWidget::findExactWidget<McaEditorReferenceArea*>("mca_editor_reference_area", activeWindow);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getHorizontalScrollBar"
-QScrollBar* GTUtilsMcaEditor::getHorizontalScrollBar(GUITestOpStatus& os) {
-    return GTWidget::findScrollBar(os, "horizontal_sequence_scroll", getEditorUi(os));
+QScrollBar* GTUtilsMcaEditor::getHorizontalScrollBar() {
+    return GTWidget::findScrollBar("horizontal_sequence_scroll", getEditorUi());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getVerticalScrollBar"
-QScrollBar* GTUtilsMcaEditor::getVerticalScrollBar(GUITestOpStatus& os) {
-    return GTWidget::findScrollBar(os, "vertical_sequence_scroll", getEditorUi(os));
+QScrollBar* GTUtilsMcaEditor::getVerticalScrollBar() {
+    return GTWidget::findScrollBar("vertical_sequence_scroll", getEditorUi());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getMcaRow"
-MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(GUITestOpStatus& os, int rowNum) {
-    McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor(os);
+MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(int rowNum) {
+    McaEditor* mcaEditor = GTUtilsMcaEditor::getEditor();
     MultipleChromatogramAlignmentObject* maObj = mcaEditor->getMaObject();
     GT_CHECK_RESULT(maObj != nullptr, "MultipleChromatogramAlignmentObject not found", nullptr);
 
@@ -150,8 +150,8 @@ MultipleAlignmentRowData* GTUtilsMcaEditor::getMcaRow(GUITestOpStatus& os, int r
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOffsetAction"
-QAction* GTUtilsMcaEditor::getOffsetAction(GUITestOpStatus& os) {
-    McaEditorWgt* editorWgt = GTUtilsMcaEditor::getEditorUi(os);
+QAction* GTUtilsMcaEditor::getOffsetAction() {
+    McaEditorWgt* editorWgt = GTUtilsMcaEditor::getEditorUi();
     GT_CHECK_RESULT(editorWgt != nullptr, "McaEditorWgt not found", nullptr);
 
     MSAEditorOffsetsViewController* offsetController = editorWgt->getOffsetsViewController();
@@ -162,8 +162,8 @@ QAction* GTUtilsMcaEditor::getOffsetAction(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReferenceLabelText"
-QString GTUtilsMcaEditor::getReferenceLabelText(GUITestOpStatus& os) {
-    QLabel* referenceLabel = getReferenceLabel(os);
+QString GTUtilsMcaEditor::getReferenceLabelText() {
+    QLabel* referenceLabel = getReferenceLabel();
     GT_CHECK_RESULT(nullptr != referenceLabel, "Reference label is NULL", "");
     if (referenceLabel->textFormat() != Qt::PlainText) {
         QTextDocument textDocument;
@@ -176,9 +176,9 @@ QString GTUtilsMcaEditor::getReferenceLabelText(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadsCount"
-int GTUtilsMcaEditor::getReadsCount(GUITestOpStatus& os) {
-    auto statusBar = GTWidget::findWidget(os, "mca_editor_status_bar", getEditorUi(os));
-    auto readsCountLabel = GTWidget::findLabel(os, "Line", statusBar);
+int GTUtilsMcaEditor::getReadsCount() {
+    auto statusBar = GTWidget::findWidget("mca_editor_status_bar", getEditorUi());
+    auto readsCountLabel = GTWidget::findLabel("Line", statusBar);
 
     QRegExp readsCounRegExp("Ln \\d+|\\- / (\\d+)");
     readsCounRegExp.indexIn(readsCountLabel->text());
@@ -193,15 +193,15 @@ int GTUtilsMcaEditor::getReadsCount(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadsNames"
-const QStringList GTUtilsMcaEditor::getReadsNames(GUITestOpStatus& os) {
-    return getEditor(os)->getMaObject()->getMultipleAlignment()->getRowNames();
+const QStringList GTUtilsMcaEditor::getReadsNames() {
+    return getEditor()->getMaObject()->getMultipleAlignment()->getRowNames();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDirectReadsNames"
-const QStringList GTUtilsMcaEditor::getDirectReadsNames(GUITestOpStatus& os) {
+const QStringList GTUtilsMcaEditor::getDirectReadsNames() {
     QStringList directReadsNames;
-    MultipleChromatogramAlignmentObject* mcaObject = getEditor(os)->getMaObject();
+    MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
         if (!mcaObject->getMcaRow(i)->isReversed()) {
@@ -213,9 +213,9 @@ const QStringList GTUtilsMcaEditor::getDirectReadsNames(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReverseComplementReadsNames"
-const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames(GUITestOpStatus& os) {
+const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames() {
     QStringList reverseComplementedReadsNames;
-    MultipleChromatogramAlignmentObject* mcaObject = getEditor(os)->getMaObject();
+    MultipleChromatogramAlignmentObject* mcaObject = getEditor()->getMaObject();
     const int rowsCount = mcaObject->getRowCount();
     for (int i = 0; i < rowsCount; i++) {
         if (mcaObject->getMcaRow(i)->isReversed()) {
@@ -227,68 +227,67 @@ const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames(GUITestOpStat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadNameRect"
-QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus& os, const QString& readName) {
-    McaEditorNameList* nameList = getNameListArea(os);
+QRect GTUtilsMcaEditor::getReadNameRect(const QString& readName) {
+    McaEditorNameList* nameList = getNameListArea();
     GT_CHECK_RESULT(nullptr != nameList, "McaEditorNameList not found", QRect());
 
-    const QStringList names = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
+    const QStringList names = GTUtilsMcaEditorSequenceArea::getVisibleNames();
     const int rowNumber = names.indexOf(readName);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(readName), QRect());
-    return getReadNameRect(os, rowNumber);
+    return getReadNameRect(rowNumber);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getReadNameRect"
-QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus& os, int rowNumber) {
-    Q_UNUSED(os);
+QRect GTUtilsMcaEditor::getReadNameRect(int rowNumber) {
     GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(rowNumber), QRect());
 
-    McaEditorNameList* nameList = getNameListArea(os);
+    McaEditorNameList* nameList = getNameListArea();
     GT_CHECK_RESULT(nullptr != nameList, "McaEditorNameList not found", QRect());
 
-    const U2Region rowScreenRange = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
+    const U2Region rowScreenRange = getEditorUi()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
     return QRect(nameList->mapToGlobal(QPoint(0, rowScreenRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowScreenRange.endPos())));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToRead"
-void GTUtilsMcaEditor::scrollToRead(GUITestOpStatus& os, const QString& readName) {
-    scrollToRead(os, readName2readNumber(os, readName));
+void GTUtilsMcaEditor::scrollToRead(const QString& readName) {
+    scrollToRead(readName2readNumber(readName));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToRead"
-void GTUtilsMcaEditor::scrollToRead(GUITestOpStatus& os, int readNumber) {
-    McaEditorWgt* mcaEditorWgt = getEditorUi(os);
+void GTUtilsMcaEditor::scrollToRead(int readNumber) {
+    McaEditorWgt* mcaEditorWgt = getEditorUi();
     const U2Region rowRange = mcaEditorWgt->getRowHeightController()->getGlobalYRegionByViewRowIndex(readNumber);
-    CHECK(!U2Region(mcaEditorWgt->getScrollController()->getScreenPosition().y(), getNameListArea(os)->height()).contains(rowRange), );
-    GTScrollBar::moveSliderWithMouseToValue(os, getVerticalScrollBar(os), rowRange.center() - mcaEditorWgt->getSequenceArea()->height() / 2);
+    CHECK(!U2Region(mcaEditorWgt->getScrollController()->getScreenPosition().y(), getNameListArea()->height()).contains(rowRange), );
+    GTScrollBar::moveSliderWithMouseToValue(getVerticalScrollBar(), rowRange.center() - mcaEditorWgt->getSequenceArea()->height() / 2);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveToReadName"
-void GTUtilsMcaEditor::moveToReadName(GUITestOpStatus& os, const QString& readName) {
-    moveToReadName(os, readName2readNumber(os, readName));
+void GTUtilsMcaEditor::moveToReadName(const QString& readName) {
+    moveToReadName(readName2readNumber(readName));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveToReadName"
-void GTUtilsMcaEditor::moveToReadName(GUITestOpStatus& os, int readNumber) {
-    scrollToRead(os, readNumber);
-    const QRect readNameRect = getReadNameRect(os, readNumber);
+void GTUtilsMcaEditor::moveToReadName(int readNumber) {
+    scrollToRead(readNumber);
+    const QRect readNameRect = getReadNameRect(readNumber);
     GTMouseDriver::moveTo(readNameRect.center());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickReadName"
-void GTUtilsMcaEditor::clickReadName(GUITestOpStatus& os, const QString& readName, Qt::MouseButton mouseButton, const Qt::KeyboardModifiers& modifiers) {
-    clickReadName(os, readName2readNumber(os, readName), mouseButton, modifiers);
+void GTUtilsMcaEditor::clickReadName(const QString& readName, Qt::MouseButton mouseButton, const Qt::KeyboardModifiers& modifiers) {
+    clickReadName(readName2readNumber(readName), mouseButton, modifiers);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickReadName"
-void GTUtilsMcaEditor::clickReadName(GUITestOpStatus& os, int readNumber, Qt::MouseButton mouseButton, const Qt::KeyboardModifiers& modifiers) {
-    moveToReadName(os, readNumber);
+void GTUtilsMcaEditor::clickReadName(int readNumber, Qt::MouseButton mouseButton, const Qt::KeyboardModifiers& modifiers) {
+    moveToReadName(readNumber);
 
     QList<Qt::Key> modifierKeys = GTKeyboardDriver::modifiersToKeys(modifiers);
     for (auto key : qAsConst(modifierKeys)) {
@@ -302,71 +301,71 @@ void GTUtilsMcaEditor::clickReadName(GUITestOpStatus& os, int readNumber, Qt::Mo
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClickReadName"
-void GTUtilsMcaEditor::doubleClickReadName(GUITestOpStatus& os, int readIndex) {
-    moveToReadName(os, readIndex);
+void GTUtilsMcaEditor::doubleClickReadName(int readIndex) {
+    moveToReadName(readIndex);
     GTMouseDriver::doubleClick();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "undo"
-void GTUtilsMcaEditor::removeRead(GUITestOpStatus& os, const QString& readName) {
-    clickReadName(os, readName);
+void GTUtilsMcaEditor::removeRead(const QString& readName) {
+    clickReadName(readName);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "undo"
-void GTUtilsMcaEditor::undo(GUITestOpStatus& os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
+void GTUtilsMcaEditor::undo() {
+    GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "msa_action_undo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "redo"
-void GTUtilsMcaEditor::redo(GUITestOpStatus& os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
+void GTUtilsMcaEditor::redo() {
+    GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "msa_action_redo"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "zoomIn"
-void GTUtilsMcaEditor::zoomIn(HI::GUITestOpStatus& os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom In"));
+void GTUtilsMcaEditor::zoomIn() {
+    GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Zoom In"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "zoomOut"
-void GTUtilsMcaEditor::zoomOut(HI::GUITestOpStatus& os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
+void GTUtilsMcaEditor::zoomOut() {
+    GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "resetZoom"
-void GTUtilsMcaEditor::resetZoom(HI::GUITestOpStatus& os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
+void GTUtilsMcaEditor::resetZoom() {
+    GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Reset Zoom"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isUndoEnabled"
-bool GTUtilsMcaEditor::isUndoEnabled(GUITestOpStatus& os) {
-    return GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
+bool GTUtilsMcaEditor::isUndoEnabled() {
+    return GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "msa_action_undo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isRedoEnabled"
-bool GTUtilsMcaEditor::isRedoEnabled(GUITestOpStatus& os) {
-    return GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
+bool GTUtilsMcaEditor::isRedoEnabled() {
+    return GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "msa_action_redo")->isEnabled();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "toggleShowChromatogramsMode"
-void GTUtilsMcaEditor::toggleShowChromatogramsMode(GUITestOpStatus& os) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show chromatograms"));
+void GTUtilsMcaEditor::toggleShowChromatogramsMode() {
+    GTWidget::click(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Show chromatograms"));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "readName2readNumber"
-int GTUtilsMcaEditor::readName2readNumber(GUITestOpStatus& os, const QString& readName) {
-    const QStringList names = GTUtilsMcaEditorSequenceArea::getVisibleNames(os);
+int GTUtilsMcaEditor::readName2readNumber(const QString& readName) {
+    const QStringList names = GTUtilsMcaEditorSequenceArea::getVisibleNames();
     const int rowNumber = names.indexOf(readName);
     GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(readName), -1);
     return rowNumber;
@@ -374,9 +373,9 @@ int GTUtilsMcaEditor::readName2readNumber(GUITestOpStatus& os, const QString& re
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectReadsByName"
-void GTUtilsMcaEditor::selectReadsByName(HI::GUITestOpStatus& os, const QStringList& rowNames) {
+void GTUtilsMcaEditor::selectReadsByName(const QStringList& rowNames) {
     for (const QString& rowName : qAsConst(rowNames)) {
-        clickReadName(os, rowName, Qt::LeftButton, Qt::ControlModifier);
+        clickReadName(rowName, Qt::LeftButton, Qt::ControlModifier);
     }
 }
 #undef GT_METHOD_NAME

@@ -20,26 +20,24 @@
  */
 
 #include "GTComboBoxWithCheckBoxes.h"
-
 #include <utils/GTThread.h>
 
 #include <QListView>
 #include <QStandardItemModel>
 
+#include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "drivers/GTKeyboardDriver.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
 
-#include <U2Core/Log.h>
-#include <U2Core/U2SafePoints.h>
-
 namespace U2 {
-
 
 #define GT_CLASS_NAME "GTComboBoxWithCheckBoxes"
 
 #define GT_METHOD_NAME "selectItemByIndex"
-void GTComboBoxWithCheckBoxes::selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, const QList<int>& indexes, GTGlobals::UseMethod method) {
+void GTComboBoxWithCheckBoxes::selectItemByIndex(QComboBox* comboBox, const QList<int>& indexes, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
 
     // Access to the internal comboBox->view() must be done from the main thread (the view is lazily instantiated).
@@ -49,8 +47,8 @@ void GTComboBoxWithCheckBoxes::selectItemByIndex(GUITestOpStatus& os, QComboBox*
             : comboBox(comboBox), indexes(indexes), method(method) {
         }
 
-        void run(HI::GUITestOpStatus& os) override {
-            GTWidget::click(os, comboBox);
+        void run() override {
+            GTWidget::click(comboBox);
             QStandardItemModel* standartModel = qobject_cast<QStandardItemModel*>(comboBox->model());
             GT_CHECK(standartModel != nullptr, "QStandardItemModel* == nullptr");
 
@@ -66,49 +64,46 @@ void GTComboBoxWithCheckBoxes::selectItemByIndex(GUITestOpStatus& os, QComboBox*
 
                 auto state = static_cast<Qt::CheckState>(currentItem->data(Qt::CheckStateRole).toInt());
                 switch (method) {
-                case GTGlobals::UseKey:
-                case GTGlobals::UseKeyBoard:
-                {
-                    if (state != expectedState) {
-                        GTKeyboardDriver::keyClick(Qt::Key_Space);
+                    case GTGlobals::UseKey:
+                    case GTGlobals::UseKeyBoard: {
+                        if (state != expectedState) {
+                            GTKeyboardDriver::keyClick(Qt::Key_Space);
+                        }
+
+                        GTKeyboardDriver::keyClick(Qt::Key_Down);
+                        break;
                     }
+                    case GTGlobals::UseMouse: {
+                        CHECK_CONTINUE(state != expectedState);
 
-                    GTKeyboardDriver::keyClick(Qt::Key_Down);
-                    break;
+                        QListView* listView = comboBox->findChild<QListView*>();
+                        GT_CHECK(listView != nullptr, "list view not found");
+                        QModelIndex modelIndex = listView->model()->index(index, 0);
+                        GTWidget::scrollToIndex(listView, modelIndex);
+                        QRect rect = listView->visualRect(modelIndex);
+                        QPoint itemPointLocal = rect.topLeft() + QPoint(12, rect.height() / 2);  // 12 - checkbox position
+                        QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);
+                        qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", QCursor::pos().x(), QCursor::pos().y(), itemPointGlobal.x(), itemPointGlobal.y());
+                        GTMouseDriver::moveTo(itemPointGlobal);
+                        GTMouseDriver::click();
+                        break;
+                    }
+                    default:
+                        GT_FAIL("Unexpected method", );
                 }
-                case GTGlobals::UseMouse:
-                {
-                    CHECK_CONTINUE(state != expectedState);
-
-                    QListView* listView = comboBox->findChild<QListView*>();
-                    GT_CHECK(listView != nullptr, "list view not found");
-                    QModelIndex modelIndex = listView->model()->index(index, 0);
-                    GTWidget::scrollToIndex(os, listView, modelIndex);
-                    QRect rect = listView->visualRect(modelIndex);
-                    QPoint itemPointLocal = rect.topLeft() + QPoint(12, rect.height() / 2); // 12 - checkbox position
-                    QPoint itemPointGlobal = listView->viewport()->mapToGlobal(itemPointLocal);
-                    qDebug("GT_DEBUG_MESSAGE moving to the list item: %d %d -> %d %d", QCursor::pos().x(), QCursor::pos().y(), itemPointGlobal.x(), itemPointGlobal.y());
-                    GTMouseDriver::moveTo(itemPointGlobal);
-                    GTMouseDriver::click();
-                    break;
-                }
-                default:
-                    GT_FAIL("Unexpected method", );
-                }
-
             }
         }
         QComboBox* comboBox;
         QList<int> indexes;
         GTGlobals::UseMethod method;
     };
-    GTThread::runInMainThread(os, new MainThreadAction(comboBox, indexes, method));
+    GTThread::runInMainThread(new MainThreadAction(comboBox, indexes, method));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectItemByText"
-void GTComboBoxWithCheckBoxes::selectItemByText(GUITestOpStatus& os, QComboBox* comboBox, const QStringList& texts, GTGlobals::UseMethod method) {
+void GTComboBoxWithCheckBoxes::selectItemByText(QComboBox* comboBox, const QStringList& texts, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
 
     QList<int> indexes;
@@ -119,19 +114,19 @@ void GTComboBoxWithCheckBoxes::selectItemByText(GUITestOpStatus& os, QComboBox* 
         indexes << index;
     }
 
-    selectItemByIndex(os, comboBox, indexes, method);
+    selectItemByIndex(comboBox, indexes, method);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectItemByText"
-void GTComboBoxWithCheckBoxes::selectItemByText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent, const QStringList& texts, GTGlobals::UseMethod method) {
-    selectItemByText(os, GTWidget::findComboBox(os, comboBoxName, parent), texts, method);
+void GTComboBoxWithCheckBoxes::selectItemByText(const QString& comboBoxName, QWidget* parent, const QStringList& texts, GTGlobals::UseMethod method) {
+    selectItemByText(GTWidget::findComboBox(comboBoxName, parent), texts, method);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCheckedItemsTexts"
-QStringList GTComboBoxWithCheckBoxes::getCheckedItemsTexts(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent) {
-    auto cb = GTWidget::findComboBox(os, comboBoxName, parent);
+QStringList GTComboBoxWithCheckBoxes::getCheckedItemsTexts(const QString& comboBoxName, QWidget* parent) {
+    auto cb = GTWidget::findComboBox(comboBoxName, parent);
     GT_CHECK_RESULT(cb != nullptr, "QComboBox* == nullptr", QStringList());
 
     QStandardItemModel* standartModel = qobject_cast<QStandardItemModel*>(cb->model());
@@ -154,8 +149,6 @@ QStringList GTComboBoxWithCheckBoxes::getCheckedItemsTexts(GUITestOpStatus& os, 
 }
 #undef GT_METHOD_NAME
 
-
-
 #undef GT_CLASS_NAME
 
-}
+}  // namespace U2

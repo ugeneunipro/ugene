@@ -46,40 +46,40 @@ MAFFTSupportRunDialogFiller::Parameters::Parameters()
 
 #define GT_CLASS_NAME "GTUtilsDialog::MAFFTSupportRunDialogFiller"
 
-MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus& os, MAFFTSupportRunDialogFiller::Parameters* parameters)
-    : Filler(os, "MAFFTSupportRunDialog"),
+MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(MAFFTSupportRunDialogFiller::Parameters* parameters)
+    : Filler("MAFFTSupportRunDialog"),
       parameters(parameters) {
     CHECK_SET_ERR(parameters, "Invalid filler parameters: NULL pointer");
 }
 
-MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "MAFFTSupportRunDialog", scenario),
+MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(CustomScenario* scenario)
+    : Filler("MAFFTSupportRunDialog", scenario),
       parameters(nullptr) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void MAFFTSupportRunDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto gapOpenCheckBox = GTWidget::findCheckBox(os, "gapOpenCheckBox", dialog);
-    GTCheckBox::setChecked(os, gapOpenCheckBox, parameters->checkBox_gapOpenCheckBox_checked);
+    auto gapOpenCheckBox = GTWidget::findCheckBox("gapOpenCheckBox", dialog);
+    GTCheckBox::setChecked(gapOpenCheckBox, parameters->checkBox_gapOpenCheckBox_checked);
 
-    auto gapOpenSpinBox = GTWidget::findDoubleSpinBox(os, "gapOpenSpinBox", dialog);
-    GTDoubleSpinbox::setValue(os, gapOpenSpinBox, parameters->doubleSpin_gapOpenSpinBox_value);
+    auto gapOpenSpinBox = GTWidget::findDoubleSpinBox("gapOpenSpinBox", dialog);
+    GTDoubleSpinbox::setValue(gapOpenSpinBox, parameters->doubleSpin_gapOpenSpinBox_value);
 
-    auto gapExtCheckBox = GTWidget::findCheckBox(os, "gapExtCheckBox", dialog);
-    GTCheckBox::setChecked(os, gapExtCheckBox, parameters->checkBox_gapExtCheckBox_checked);
+    auto gapExtCheckBox = GTWidget::findCheckBox("gapExtCheckBox", dialog);
+    GTCheckBox::setChecked(gapExtCheckBox, parameters->checkBox_gapExtCheckBox_checked);
 
-    auto gapExtSpinBox = GTWidget::findDoubleSpinBox(os, "gapExtSpinBox", dialog);
-    GTDoubleSpinbox::setValue(os, gapExtSpinBox, parameters->doubleSpin_gapExtSpinBox_value);
+    auto gapExtSpinBox = GTWidget::findDoubleSpinBox("gapExtSpinBox", dialog);
+    GTDoubleSpinbox::setValue(gapExtSpinBox, parameters->doubleSpin_gapExtSpinBox_value);
 
-    auto maxNumberIterRefinementCheckBox = GTWidget::findCheckBox(os, "maxNumberIterRefinementCheckBox", dialog);
-    GTCheckBox::setChecked(os, maxNumberIterRefinementCheckBox, parameters->checkBox_maxNumberIterRefinementCheckBox_checked);
+    auto maxNumberIterRefinementCheckBox = GTWidget::findCheckBox("maxNumberIterRefinementCheckBox", dialog);
+    GTCheckBox::setChecked(maxNumberIterRefinementCheckBox, parameters->checkBox_maxNumberIterRefinementCheckBox_checked);
 
-    auto maxNumberIterRefinementSpinBox = GTWidget::findSpinBox(os, "maxNumberIterRefinementSpinBox", dialog);
-    GTSpinBox::setValue(os, maxNumberIterRefinementSpinBox, parameters->spin_maxNumberIterRefinementSpinBox_value);
+    auto maxNumberIterRefinementSpinBox = GTWidget::findSpinBox("maxNumberIterRefinementSpinBox", dialog);
+    GTSpinBox::setValue(maxNumberIterRefinementSpinBox, parameters->spin_maxNumberIterRefinementSpinBox_value);
 
-    GTWidget::click(os, GTWidget::findButtonByText(os, "Align", dialog));
+    GTWidget::click(GTWidget::findButtonByText("Align", dialog));
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

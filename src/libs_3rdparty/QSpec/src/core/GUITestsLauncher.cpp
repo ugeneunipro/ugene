@@ -12,15 +12,15 @@ void GUITestsLauncher::sl_runTest() {
         qApp->exit(1);
     }
 
-    auto testThread = new TestThread(test, os);
+    auto testThread = new TestThread(test);
     connect(testThread, SIGNAL(finished()), this, SLOT(sl_onTestFinished()));
     testThread->start();
 }
 void GUITestsLauncher::sl_onTestFinished() {
     sender()->deleteLater();
 
-    if (os.hasError()) {
-        qCritical("Test failed: %s", os.getError().toLocal8Bit().constData());
+    if (GTGlobals::getOpStatus().hasError()) {
+        qCritical("Test failed: %s", GTGlobals::getOpStatus().getError().toLocal8Bit().constData());
         qApp->exit(1);
     } else {
         qDebug("Success");

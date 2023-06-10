@@ -89,7 +89,8 @@ QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
     try {
         for (GUITest* test : qAsConst(tests)) {
             qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
-            test->run(GTGlobals::getOpStatus());
+            GTGlobals::resetOpStatus();
+            test->run();
             qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
         }
     } catch (HI::GUITestOpStatus*) {
@@ -102,7 +103,8 @@ QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
             const QList<GUITest*> postCheckList = testBase->getTests(UGUITestBase::PostAdditionalChecks);
             for (GUITest* test : qAsConst(postCheckList)) {
                 qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
-                test->run(GTGlobals::getOpStatus());
+                GTGlobals::resetOpStatus();
+                test->run();
                 qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
             }
         } catch (HI::GUITestOpStatus*) {
@@ -154,7 +156,7 @@ void GUITestThread::removeDir(const QString& dirName) {
 
 void GUITestThread::saveScreenshot() {
     HI::GUITestOpStatus os;
-    QImage image = GTGlobals::takeScreenShot(os);
+    QImage image = GTGlobals::takeScreenShot();
     image.save(HI::GUITest::screenshotDir + testToRun->getFullName() + ".jpg");
 }
 
@@ -164,10 +166,10 @@ void GUITestThread::cleanup() {
     UGUITestBase* testBase = UGUITestBase::getInstance();
     const QList<GUITest*> postActionList = testBase->getTests(UGUITestBase::PostAdditionalActions);
     for (HI::GUITest* postAction : qAsConst(postActionList)) {
-        HI::GUITestOpStatus os;
         try {
             qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());
-            postAction->run(os);
+            GTGlobals::resetOpStatus();
+            postAction->run();
             qDebug("Cleanup action is finished: %s", postAction->getFullName().toLocal8Bit().constData());
         } catch (HI::GUITestOpStatus* opStatus) {
             coreLog.error(opStatus->getError());
@@ -179,7 +181,6 @@ void GUITestThread::cleanup() {
 void GUITestThread::writeTestResult() {
     QByteArray testOutput = (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8();
     qDebug("writing test result for teamcity: '%s'", testOutput.constData());
-
     printf("%s\n", testOutput.constData());
     fflush(stdout);
 }

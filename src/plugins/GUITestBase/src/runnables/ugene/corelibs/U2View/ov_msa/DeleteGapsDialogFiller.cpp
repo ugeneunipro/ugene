@@ -35,16 +35,16 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::DeleteGapsDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void DeleteGapsDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (radioButNum == 1) {
-        auto allColumnsOfGaps = GTWidget::findRadioButton(os, "allRadioButton", dialog);
-        GTRadioButton::click(os, allColumnsOfGaps);
+        auto allColumnsOfGaps = GTWidget::findRadioButton("allRadioButton", dialog);
+        GTRadioButton::click(allColumnsOfGaps);
     } else {
-        auto withNumberOfGaps = GTWidget::findRadioButton(os, "absoluteRadioButton", dialog);
-        GTRadioButton::click(os, withNumberOfGaps);
+        auto withNumberOfGaps = GTWidget::findRadioButton("absoluteRadioButton", dialog);
+        GTRadioButton::click(withNumberOfGaps);
     }
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -53,20 +53,20 @@ void DeleteGapsDialogFiller::commonScenario() {
 #define GT_METHOD_NAME "commonScenario"
 void RemoveGapColsDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto radio = GTWidget::findRadioButton(os, radioMap[button], dialog);
-    GTRadioButton::click(os, radio);
+    auto radio = GTWidget::findRadioButton(radioMap[button], dialog);
+    GTRadioButton::click(radio);
 
     if (button == Number) {
-        auto box = GTWidget::findSpinBox(os, "absoluteSpinBox", dialog);
-        GTSpinBox::setValue(os, box, spinValue);
+        auto box = GTWidget::findSpinBox("absoluteSpinBox", dialog);
+        GTSpinBox::setValue(box, spinValue);
     } else if (button == Percent) {
-        auto box = GTWidget::findSpinBox(os, "relativeSpinBox", dialog);
-        GTSpinBox::setValue(os, box, spinValue);
+        auto box = GTWidget::findSpinBox("relativeSpinBox", dialog);
+        GTSpinBox::setValue(box, spinValue);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

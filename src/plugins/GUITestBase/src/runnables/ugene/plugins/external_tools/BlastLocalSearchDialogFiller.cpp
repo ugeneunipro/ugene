@@ -34,41 +34,41 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::BlastLocalSearchDialogFiller"
 
-BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(const Parameters& parameters, HI::GUITestOpStatus& os)
-    : Filler(os, "BlastLocalSearchDialog"), parameters(parameters) {
+BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(const Parameters& parameters)
+    : Filler("BlastLocalSearchDialog"), parameters(parameters) {
 }
 
-BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "BlastLocalSearchDialog", scenario) {
+BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(CustomScenario* scenario)
+    : Filler("BlastLocalSearchDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void BlastLocalSearchDialogFiller::commonScenario() {
-    auto dialog = GTWidget::getActiveModalWidget(os);
+    auto dialog = GTWidget::getActiveModalWidget();
     if (!parameters.runBlast) {
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         return;
     }
 
-    auto programNameCombo = GTWidget::findComboBox(os, "programNameComboBox", dialog);
-    GTComboBox::selectItemByText(os, programNameCombo, parameters.programNameText);
+    auto programNameCombo = GTWidget::findComboBox("programNameComboBox", dialog);
+    GTComboBox::selectItemByText(programNameCombo, parameters.programNameText);
 
     if (!parameters.dbPath.isEmpty()) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters.dbPath));
-        GTWidget::click(os, GTWidget::findWidget(os, "selectDatabasePushButton"));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters.dbPath));
+        GTWidget::click(GTWidget::findWidget("selectDatabasePushButton"));
     }
 
     if (parameters.withInputFile) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters.inputPath));
-        GTWidget::click(os, GTWidget::findWidget(os, "browseInput"));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters.inputPath));
+        GTWidget::click(GTWidget::findWidget("browseInput"));
     }
 
     if (!parameters.searchRegion.isEmpty()) {
-        GTLineEdit::setText(os, "start_edit_line", QString::number(parameters.searchRegion.startPos), dialog);
-        GTLineEdit::setText(os, "end_edit_line", QString::number(parameters.searchRegion.endPos()), dialog);
+        GTLineEdit::setText("start_edit_line", QString::number(parameters.searchRegion.startPos), dialog);
+        GTLineEdit::setText("end_edit_line", QString::number(parameters.searchRegion.endPos()), dialog);
     }
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

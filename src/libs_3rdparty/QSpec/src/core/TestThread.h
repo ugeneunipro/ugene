@@ -10,12 +10,12 @@ namespace HI {
 
 class HI_EXPORT TestThread : public QThread {
 public:
-    TestThread(GUITest* test, GUITestOpStatus& os)
-        : test(test), os(os) {
+    TestThread(GUITest* _test)
+        : test(_test) {
     }
 
 public:
-    virtual void run();
+    void run() override;
 
 private:
     GUITest* test;

@@ -31,7 +31,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsTask"
 
 #define GT_METHOD_NAME "getTaskByName"
-Task* GTUtilsTask::getTaskByName(HI::GUITestOpStatus& os, const QString& taskName, const GTGlobals::FindOptions& options) {
+Task* GTUtilsTask::getTaskByName(const QString& taskName, const GTGlobals::FindOptions& options) {
     TaskScheduler* scheduler = AppContext::getTaskScheduler();
     GT_CHECK_RESULT(scheduler != nullptr, "task scheduler is NULL", {});
     QList<Task*> allTasks = scheduler->getTopLevelTasks();
@@ -51,18 +51,18 @@ Task* GTUtilsTask::getTaskByName(HI::GUITestOpStatus& os, const QString& taskNam
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkNoTask"
-void GTUtilsTask::checkNoTask(HI::GUITestOpStatus& os, const QString& taskName) {
-    Task* task = getTaskByName(os, taskName, {false});
+void GTUtilsTask::checkNoTask(const QString& taskName) {
+    Task* task = getTaskByName(taskName, {false});
     GT_CHECK(task == nullptr, "task " + taskName + " unexpectedly found");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "waitTaskStart"
-void GTUtilsTask::waitTaskStart(HI::GUITestOpStatus& os, const QString& taskName, int timeout) {
+void GTUtilsTask::waitTaskStart(const QString& taskName, int timeout) {
     Task* task = nullptr;
     for (int time = 0; time < timeout && task == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        task = getTaskByName(os, taskName, {false});
+        task = getTaskByName(taskName, {false});
     }
     GT_CHECK(task != nullptr, "waitTaskStart: task '" + taskName + "' is not found");
 }

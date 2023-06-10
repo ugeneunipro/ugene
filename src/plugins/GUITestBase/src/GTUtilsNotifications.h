@@ -30,19 +30,18 @@ using namespace HI;
 class NotificationChecker : public QObject {
     Q_OBJECT
 public:
-    NotificationChecker(HI::GUITestOpStatus& _os);
+    NotificationChecker();
 
 public slots:
     void sl_checkNotification();
 
 private:
     QTimer* t;
-    HI::GUITestOpStatus& os;
 };
 
 class NotificationDialogFiller : public Filler {
 public:
-    NotificationDialogFiller(HI::GUITestOpStatus& os, const QString& message = "");
+    NotificationDialogFiller(const QString& message = "");
 
     void commonScenario();
 
@@ -52,29 +51,29 @@ private:
 
 class GTUtilsNotifications {
 public:
-    static void waitForNotification(HI::GUITestOpStatus& os, bool dialogExpected = true, const QString& message = "");
+    static void waitForNotification(bool dialogExpected = true, const QString& message = "");
 
     /** Waits for notification, clicks it and checks that the notification report contains the required text tokens. */
-    static void checkNotificationReportText(HI::GUITestOpStatus& os, const QString& textToken);
-    static void checkNotificationReportText(HI::GUITestOpStatus& os, const QStringList& textTokenList);
+    static void checkNotificationReportText(const QString& textToken);
+    static void checkNotificationReportText(const QStringList& textTokenList);
 
     /** Waits for notification, clicks it and checks that the modal dialog has the required text. */
-    static void checkNotificationDialogText(HI::GUITestOpStatus& os, const QString& textToken);
+    static void checkNotificationDialogText(const QString& textToken);
 
     /** Clicks on the active (first) notification widget. */
-    static void clickOnNotificationWidget(HI::GUITestOpStatus& os);
+    static void clickOnNotificationWidget();
 
     /** Waits until all notification popups are closed. */
-    static void waitAllNotificationsClosed(HI::GUITestOpStatus& os);
+    static void waitAllNotificationsClosed();
 
     /** Checks that there are no notification balloons on the screen. */
-    static void checkNoVisibleNotifications(HI::GUITestOpStatus& os);
+    static void checkNoVisibleNotifications();
 
     /** Returns text shown on the notification container button in the status bar. */
-    static QString getNotificationCounterValue(HI::GUITestOpStatus& os);
+    static QString getNotificationCounterValue();
 
     /** Opens notification container widget and returns it. */
-    static QWidget* openNotificationContainerWidget(HI::GUITestOpStatus& os);
+    static QWidget* openNotificationContainerWidget();
 };
 
 }  // namespace U2

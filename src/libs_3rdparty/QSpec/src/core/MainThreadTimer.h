@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_MAIN_THREAD_TIMER_H_
-#define _HI_MAIN_THREAD_TIMER_H_
-
+#pragma once
 #include <QMutex>
 #include <QTimer>
 
@@ -44,5 +42,3 @@ private:
 };
 
 }  // namespace HI
-
-#endif

@@ -35,19 +35,19 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 
 void AliasesDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     GTGlobals::sleep(500);
 
-    auto table = GTWidget::findTableView(os, "paramAliasesTableWidget", dialog);
+    auto table = GTWidget::findTableView("paramAliasesTableWidget", dialog);
     QMap<QPoint*, QString>::iterator i;
     for (i = map.begin(); i != map.end(); ++i) {
-        GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, i.key()->x(), i.key()->y()));
+        GTMouseDriver::moveTo(GTTableView::getCellPosition(table, i.key()->x(), i.key()->y()));
         GTMouseDriver::doubleClick();
         GTKeyboardDriver::keySequence(i.value());
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

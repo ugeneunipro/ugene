@@ -28,14 +28,14 @@ using namespace HI;
 
 class ImportPrimersDialogFiller : public Filler {
 public:
-    ImportPrimersDialogFiller(HI::GUITestOpStatus& os, const QStringList& fileList, const QMap<QString, QStringList>& objectNameList);
-    ImportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
+    ImportPrimersDialogFiller(const QStringList& fileList, const QMap<QString, QStringList>& objectNameList);
+    ImportPrimersDialogFiller(CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
-    static void addFile(HI::GUITestOpStatus& os, const QString& filePath);
-    static void addObjects(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& databaseAndObjectNames);
-    static QWidget* getDialog(HI::GUITestOpStatus& os);
+    static void addFile(const QString& filePath);
+    static void addObjects(const QMap<QString, QStringList>& databaseAndObjectNames);
+    static QWidget* getDialog();
 
 private:
     const QStringList fileList;

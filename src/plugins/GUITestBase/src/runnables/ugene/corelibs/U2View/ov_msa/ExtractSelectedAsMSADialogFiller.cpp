@@ -36,19 +36,19 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExtractSelectedAsMSADialogFiller"
 #define GT_METHOD_NAME "run"
-ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus& os,
-                                                                   const QString& _filepath,
-                                                                   const QStringList& selectedSequenceNameList,
-                                                                   int _from,
-                                                                   int _to,
-                                                                   bool _addToProj,
-                                                                   bool _invertButtonPress,
-                                                                   bool _allButtonPress,
-                                                                   bool _noneButtonPress,
-                                                                   bool _dontCheckFilepath,
-                                                                   const QString& format,
-                                                                   bool useDefaultSequenceSelectionFlag)
-    : Filler(os, "CreateSubalignmentDialog"),
+ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(
+    const QString& _filepath,
+    const QStringList& selectedSequenceNameList,
+    int _from,
+    int _to,
+    bool _addToProj,
+    bool _invertButtonPress,
+    bool _allButtonPress,
+    bool _noneButtonPress,
+    bool _dontCheckFilepath,
+    const QString& format,
+    bool useDefaultSequenceSelectionFlag)
+    : Filler("CreateSubalignmentDialog"),
       filepath(_filepath),
       format(format),
       sequenceNameList(selectedSequenceNameList),
@@ -62,8 +62,8 @@ ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStat
       useDefaultSequenceSelection(useDefaultSequenceSelectionFlag) {
 }
 
-ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus& os, CustomScenario* c)
-    : Filler(os, "CreateSubalignmentDialog", c),
+ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(CustomScenario* c)
+    : Filler("CreateSubalignmentDialog", c),
       from(0),
       to(0),
       addToProj(false),
@@ -75,44 +75,44 @@ ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStat
 }
 
 void ExtractSelectedAsMSADialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (from) {
-        GTLineEdit::setText(os, "startLineEdit", QString::number(from), dialog);
+        GTLineEdit::setText("startLineEdit", QString::number(from), dialog);
     }
 
     if (to) {
-        GTLineEdit::setText(os, "endLineEdit", QString::number(to), dialog);
+        GTLineEdit::setText("endLineEdit", QString::number(to), dialog);
     }
 
-    GTLineEdit::setText(os, "filepathEdit", filepath, dialog, dontCheckFilepath);
+    GTLineEdit::setText("filepathEdit", filepath, dialog, dontCheckFilepath);
 
     if (!useDefaultSequenceSelection) {
-        GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
+        GTWidget::click(GTWidget::findWidget("noneButton", dialog));
     }
 
     if (invertButtonPress) {
-        GTWidget::click(os, GTWidget::findWidget(os, "invertButton", dialog));
+        GTWidget::click(GTWidget::findWidget("invertButton", dialog));
     }
 
     if (allButtonPress) {
-        GTWidget::click(os, GTWidget::findWidget(os, "allButton", dialog));
+        GTWidget::click(GTWidget::findWidget("allButton", dialog));
     }
 
     if (noneButtonPress) {
-        GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
+        GTWidget::click(GTWidget::findWidget("noneButton", dialog));
     }
 
     if (addToProj) {
-        GTCheckBox::setChecked(os, "addToProjBox", addToProj, dialog);
+        GTCheckBox::setChecked("addToProjBox", addToProj, dialog);
     }
 
     if (!format.isEmpty()) {
-        GTComboBox::selectItemByText(os, "formatCombo", dialog, format);
+        GTComboBox::selectItemByText("formatCombo", dialog, format);
     }
 
     if (!useDefaultSequenceSelection) {
-        auto table = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
+        auto table = GTWidget::findTableWidget("sequencesTableWidget", dialog);
         QPoint p = table->geometry().topRight();
         p.setX(p.x() - 2);
         p.setY(p.y() + 2);
@@ -126,23 +126,23 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
                 GT_CHECK(box != nullptr, "Not a QCheckBox cell");
                 if (sequenceName == box->text()) {
                     GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
-                    GTWidget::scrollToIndex(os, table, table->model()->index(i, 0));
-                    GTCheckBox::setChecked(os, box, true);
+                    GTWidget::scrollToIndex(table, table->model()->index(i, 0));
+                    GTCheckBox::setChecked(box, true);
                 }
             }
         }
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedSequences"
-QStringList ExtractSelectedAsMSADialogFiller::getSequences(HI::GUITestOpStatus& os, bool selected) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+QStringList ExtractSelectedAsMSADialogFiller::getSequences(bool selected) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     QStringList result;
 
-    auto sequencesTableWidget = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
+    auto sequencesTableWidget = GTWidget::findTableWidget("sequencesTableWidget", dialog);
     for (int i = 0; i < sequencesTableWidget->rowCount(); i++) {
         auto box = qobject_cast<QCheckBox*>(sequencesTableWidget->cellWidget(i, 0));
         GT_CHECK_RESULT(box != nullptr, "cell widget is not checkbox", QStringList());

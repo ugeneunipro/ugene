@@ -34,9 +34,9 @@ public:
         Continuous
     };
 
-    ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, const QString& documentName, const QString& objectName, const QSet<GObjectType>& acceptableTypes = QSet<GObjectType>(), SelectionMode mode = Single, int expectedDocCount = -1);
-    ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& itemsToSelect, const QSet<GObjectType>& acceptableTypes = QSet<GObjectType>(), SelectionMode mode = Single, int expectedDocCount = -1);
-    ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    ProjectTreeItemSelectorDialogFiller(const QString& documentName, const QString& objectName, const QSet<GObjectType>& acceptableTypes = QSet<GObjectType>(), SelectionMode mode = Single, int expectedDocCount = -1);
+    ProjectTreeItemSelectorDialogFiller(const QMap<QString, QStringList>& itemsToSelect, const QSet<GObjectType>& acceptableTypes = QSet<GObjectType>(), SelectionMode mode = Single, int expectedDocCount = -1);
+    ProjectTreeItemSelectorDialogFiller(CustomScenario* scenario);
 
     virtual void commonScenario();
 

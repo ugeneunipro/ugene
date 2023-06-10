@@ -45,7 +45,7 @@ using namespace HI;
 const QString GTUtilsTaskTreeView::widgetName = DOCK_TASK_TREE_VIEW;
 
 #define GT_METHOD_NAME "waitTaskFinished"
-void GTUtilsTaskTreeView::waitTaskFinished(HI::GUITestOpStatus& os, long timeoutMillis) {
+void GTUtilsTaskTreeView::waitTaskFinished(long timeoutMillis) {
     TaskScheduler* scheduler = AppContext::getTaskScheduler();
     if (scheduler->getTopLevelTasks().isEmpty() && !GTThread::isMainThread()) {
         // Give QT a chance to process all events first.
@@ -80,28 +80,28 @@ QString GTUtilsTaskTreeView::getTasksInfo(QList<Task*> tasks, int level) {
     return result;
 }
 
-QTreeWidget* GTUtilsTaskTreeView::openView(HI::GUITestOpStatus& os) {
-    auto taskTreeView = getTreeWidget(os);
+QTreeWidget* GTUtilsTaskTreeView::openView() {
+    auto taskTreeView = getTreeWidget();
     if (taskTreeView == nullptr) {
-        toggleView(os);
-        taskTreeView = getTreeWidget(os, true);
+        toggleView();
+        taskTreeView = getTreeWidget(true);
     }
     return taskTreeView;
 }
 
-bool GTUtilsTaskTreeView::isViewOpened(HI::GUITestOpStatus& os) {
-    return getTreeWidget(os) != nullptr;
+bool GTUtilsTaskTreeView::isViewOpened() {
+    return getTreeWidget() != nullptr;
 }
 
-void GTUtilsTaskTreeView::toggleView(HI::GUITestOpStatus& /*os*/) {
+void GTUtilsTaskTreeView::toggleView() {
     GTKeyboardDriver::keyClick('2', Qt::AltModifier);
 }
 
 #define GT_METHOD_NAME "getTreeWidgetItem"
-QTreeWidgetItem* GTUtilsTaskTreeView::getTreeWidgetItem(HI::GUITestOpStatus& os, const QString& itemName, bool failOnNull) {
-    QTreeWidget* treeWidget = getTreeWidget(os);
+QTreeWidgetItem* GTUtilsTaskTreeView::getTreeWidgetItem(const QString& itemName, bool failOnNull) {
+    QTreeWidget* treeWidget = getTreeWidget();
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget not found", nullptr);
-    return GTTreeWidget::findItem(os, treeWidget, itemName, nullptr, 0, {failOnNull});
+    return GTTreeWidget::findItem(treeWidget, itemName, nullptr, 0, {failOnNull});
 }
 #undef GT_METHOD_NAME
 
@@ -121,8 +121,8 @@ QTreeWidgetItem* GTUtilsTaskTreeView::getTreeWidgetItem(QTreeWidget* tree, const
     return nullptr;
 }
 
-QTreeWidget* GTUtilsTaskTreeView::getTreeWidget(HI::GUITestOpStatus& os, bool failIfNotFound) {
-    return GTWidget::findTreeWidget(os, widgetName, nullptr, {failIfNotFound});
+QTreeWidget* GTUtilsTaskTreeView::getTreeWidget(bool failIfNotFound) {
+    return GTWidget::findTreeWidget(widgetName, nullptr, {failIfNotFound});
 }
 
 QList<QTreeWidgetItem*> GTUtilsTaskTreeView::getTaskTreeViewItems(QTreeWidgetItem* root, bool recursively) {
@@ -139,72 +139,72 @@ QList<QTreeWidgetItem*> GTUtilsTaskTreeView::getTaskTreeViewItems(QTreeWidgetIte
 }
 
 #define GT_METHOD_NAME "cancelTopLevelTask"
-void GTUtilsTaskTreeView::cancelTask(HI::GUITestOpStatus& os, const QString& itemName, bool failIfNotFound, const QStringList& parentTaskNames) {
-    openView(os);
+void GTUtilsTaskTreeView::cancelTask(const QString& itemName, bool failIfNotFound, const QStringList& parentTaskNames) {
+    openView();
     for (const QString& parentTaskName : qAsConst(parentTaskNames)) {
-        QTreeWidgetItem* parentTaskItem = getTreeWidgetItem(os, parentTaskName, failIfNotFound);
+        QTreeWidgetItem* parentTaskItem = getTreeWidgetItem(parentTaskName, failIfNotFound);
         if (parentTaskName == nullptr) {
             break;
         }
-        GTTreeWidget::expand(os, parentTaskItem);
+        GTTreeWidget::expand(parentTaskItem);
     }
-    auto item = getTreeWidgetItem(os, itemName, failIfNotFound);
+    auto item = getTreeWidgetItem(itemName, failIfNotFound);
     if (item == nullptr) {
         return;
     }
-    QPoint itemCoordinate = GTTreeWidget::getItemCenter(os, item);
+    QPoint itemCoordinate = GTTreeWidget::getItemCenter(item);
     GTMouseDriver::moveTo(itemCoordinate);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Cancel task"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"Cancel task"}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 
-    checkTaskIsPresent(os, itemName, false);
+    checkTaskIsPresent(itemName, false);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTUtilsTaskTreeView::click(HI::GUITestOpStatus& os, const QString& itemName, Qt::MouseButton b) {
-    moveTo(os, itemName);
+void GTUtilsTaskTreeView::click(const QString& itemName, Qt::MouseButton b) {
+    moveTo(itemName);
     GTMouseDriver::click(b);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClick"
-void GTUtilsTaskTreeView::doubleClick(HI::GUITestOpStatus& os, const QString& itemName) {
-    moveTo(os, itemName);
+void GTUtilsTaskTreeView::doubleClick(const QString& itemName) {
+    moveTo(itemName);
     GTMouseDriver::doubleClick();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveTo"
-void GTUtilsTaskTreeView::moveTo(HI::GUITestOpStatus& os, const QString& itemName) {
-    openView(os);
-    moveToOpenedView(os, itemName);
+void GTUtilsTaskTreeView::moveTo(const QString& itemName) {
+    openView();
+    moveToOpenedView(itemName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTopLevelTasksCount"
-int GTUtilsTaskTreeView::getTopLevelTasksCount(HI::GUITestOpStatus& os) {
-    openView(os);
+int GTUtilsTaskTreeView::getTopLevelTasksCount() {
+    openView();
 
-    return getTreeWidget(os, true)->invisibleRootItem()->childCount();
+    return getTreeWidget(true)->invisibleRootItem()->childCount();
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsTaskTreeView::moveToOpenedView(HI::GUITestOpStatus& os, const QString& itemName) {
-    QPoint p = getTreeViewItemPosition(os, itemName);
+void GTUtilsTaskTreeView::moveToOpenedView(const QString& itemName) {
+    QPoint p = getTreeViewItemPosition(itemName);
     GTMouseDriver::moveTo(p);
 }
 
 #define GT_METHOD_NAME "getTreeViewItemPosition"
-QPoint GTUtilsTaskTreeView::getTreeViewItemPosition(HI::GUITestOpStatus& os, const QString& itemName) {
-    QTreeWidget* treeWidget = getTreeWidget(os);
+QPoint GTUtilsTaskTreeView::getTreeViewItemPosition(const QString& itemName) {
+    QTreeWidget* treeWidget = getTreeWidget();
     GT_CHECK_RESULT(treeWidget != nullptr, "treeWidget is NULL", QPoint());
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        QTreeWidgetItem* item = getTreeWidgetItem(os, itemName, false);
+        QTreeWidgetItem* item = getTreeWidgetItem(itemName, false);
         if (item != nullptr) {
-            return GTTreeWidget::getItemCenter(os, item);
+            return GTTreeWidget::getItemCenter(item);
         }
     }
     GT_FAIL("Tree item not found: " + itemName, {});
@@ -212,8 +212,8 @@ QPoint GTUtilsTaskTreeView::getTreeViewItemPosition(HI::GUITestOpStatus& os, con
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkTaskIsPresent"
-void GTUtilsTaskTreeView::checkTaskIsPresent(HI::GUITestOpStatus& os, const QString& topLevelTaskName, bool checkIfPresent) {
-    auto treeWidget = openView(os);
+void GTUtilsTaskTreeView::checkTaskIsPresent(const QString& topLevelTaskName, bool checkIfPresent) {
+    auto treeWidget = openView();
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget not found", );
 
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
@@ -238,10 +238,10 @@ void GTUtilsTaskTreeView::checkTaskIsPresent(HI::GUITestOpStatus& os, const QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "countTasks"
-int GTUtilsTaskTreeView::countTasks(HI::GUITestOpStatus& os, const QString& itemName) {
-    openView(os);
+int GTUtilsTaskTreeView::countTasks(const QString& itemName) {
+    openView();
     int result = 0;
-    QList<QTreeWidgetItem*> treeItems = getTaskTreeViewItems(getTreeWidget(os)->invisibleRootItem());
+    QList<QTreeWidgetItem*> treeItems = getTaskTreeViewItems(getTreeWidget()->invisibleRootItem());
     for (QTreeWidgetItem* item : qAsConst(treeItems)) {
         QString treeItemName = item->text(0);
         if (treeItemName == itemName) {
@@ -253,19 +253,19 @@ int GTUtilsTaskTreeView::countTasks(HI::GUITestOpStatus& os, const QString& item
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTaskStatus"
-QString GTUtilsTaskTreeView::getTaskStatus(GUITestOpStatus& os, const QString& itemName) {
-    openView(os);
+QString GTUtilsTaskTreeView::getTaskStatus(const QString& itemName) {
+    openView();
     GTGlobals::sleep(500);
-    return getTreeWidgetItem(os, itemName)->text(1);
+    return getTreeWidgetItem(itemName)->text(1);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTaskProgress"
-int GTUtilsTaskTreeView::getTaskProgress(HI::GUITestOpStatus& os, const QString& itemName, bool failIfNotFound) {
-    if (!isViewOpened(os)) {
-        openView(os);
+int GTUtilsTaskTreeView::getTaskProgress(const QString& itemName, bool failIfNotFound) {
+    if (!isViewOpened()) {
+        openView();
     }
-    auto item = getTreeWidgetItem(os, itemName, failIfNotFound);
+    auto item = getTreeWidgetItem(itemName, failIfNotFound);
     CHECK(item != nullptr, -1);
 
     auto itemText = item->text(2);
@@ -278,11 +278,11 @@ int GTUtilsTaskTreeView::getTaskProgress(HI::GUITestOpStatus& os, const QString&
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "waitTaskProgressMoreThan"
-void GTUtilsTaskTreeView::waitTaskProgressMoreThan(HI::GUITestOpStatus& os, const QString& itemName, int taskProgress) {
+void GTUtilsTaskTreeView::waitTaskProgressMoreThan(const QString& itemName, int taskProgress) {
     int progress = -1;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && progress <= taskProgress; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        progress = GTUtilsTaskTreeView::getTaskProgress(os, itemName, false);
+        progress = GTUtilsTaskTreeView::getTaskProgress(itemName, false);
     }
 }
 #undef GT_METHOD_NAME

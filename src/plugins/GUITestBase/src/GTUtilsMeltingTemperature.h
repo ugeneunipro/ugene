@@ -56,8 +56,7 @@ public:
      * @parameters parameters to set
      * @parent parent
      */
-    static void setParameters(HI::GUITestOpStatus& os, const QMap<Parameter, QString>& parameters, QWidget* parent);
-
+    static void setParameters(const QMap<Parameter, QString>& parameters, QWidget* parent);
 };
 
-}
+}  // namespace U2

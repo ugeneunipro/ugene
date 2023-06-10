@@ -27,7 +27,7 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTSpinBox"
 #define GT_METHOD_NAME "getCellPosition"
-QPoint GTTableView::getCellPosition(GUITestOpStatus& os, QTableView* table, int column, int row) {
+QPoint GTTableView::getCellPosition(QTableView* table, int column, int row) {
     GT_CHECK_RESULT(table, "table view is NULL", {});
     QPoint p(table->columnViewportPosition(column) + table->columnWidth(column) / 2,
              table->rowViewportPosition(row) + table->rowHeight(row) * 1.5);
@@ -36,27 +36,27 @@ QPoint GTTableView::getCellPosition(GUITestOpStatus& os, QTableView* table, int 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollTo"
-void GTTableView::scrollTo(GUITestOpStatus& os, QTableView* table, const QModelIndex& index) {
+void GTTableView::scrollTo(QTableView* table, const QModelIndex& index) {
     // TODO: set index by mouse/keyboard
     class MainThreadAction : public CustomScenario {
     public:
         MainThreadAction(QTableView* _table, const QModelIndex& _index)
             : table(_table), index(_index) {
         }
-        void run(HI::GUITestOpStatus&) override {
+        void run() override {
             table->scrollTo(index);
         }
         QTableView* table = nullptr;
         QModelIndex index;
     };
-    GTThread::runInMainThread(os, new MainThreadAction(table, index));
+    GTThread::runInMainThread(new MainThreadAction(table, index));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCellPoint"
-QPoint GTTableView::getCellPoint(GUITestOpStatus& os, QTableView* table, int row, int column) {
+QPoint GTTableView::getCellPoint(QTableView* table, int row, int column) {
     QModelIndex idx = table->model()->index(row, column);
-    scrollTo(os, table, idx);
+    scrollTo(table, idx);
     QRect cellRect = table->visualRect(idx);
     QWidget* viewport = table->viewport();
     return viewport->mapToGlobal(cellRect.center());
@@ -64,7 +64,7 @@ QPoint GTTableView::getCellPoint(GUITestOpStatus& os, QTableView* table, int row
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "rowCount"
-int GTTableView::rowCount(GUITestOpStatus& os, QTableView* table) {
+int GTTableView::rowCount(QTableView* table) {
     GT_CHECK_RESULT(table != nullptr, "Table view is NULL", -1);
     GT_CHECK_RESULT(table->model() != nullptr, "Table view model is NULL", -1);
     return table->model()->rowCount(QModelIndex());
@@ -72,7 +72,7 @@ int GTTableView::rowCount(GUITestOpStatus& os, QTableView* table) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "data"
-QString GTTableView::data(GUITestOpStatus& os, QTableView* table, int row, int column) {
+QString GTTableView::data(QTableView* table, int row, int column) {
     GT_CHECK_RESULT(table != nullptr, "Table view is NULL", "");
     GT_CHECK_RESULT(table->model() != nullptr, "Table view model is NULL", "");
 
@@ -83,7 +83,7 @@ QString GTTableView::data(GUITestOpStatus& os, QTableView* table, int row, int c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTTableView::click(GUITestOpStatus& os, QTableView* table, int row, int column) {
+void GTTableView::click(QTableView* table, int row, int column) {
     GT_CHECK(table != nullptr, "Table is nullptr");
     GT_CHECK(table->model() != nullptr, "Table model is nullptr");
 
@@ -98,15 +98,15 @@ void GTTableView::click(GUITestOpStatus& os, QTableView* table, int row, int col
         FindModelIndexScenario(QTableView* table_, int rowNum, int colNum, QModelIndex& modelInd)
             : table(table_), rowNum(rowNum), colNum(colNum), modelInd(modelInd) {
         }
-        void run(GUITestOpStatus&) override {
+        void run() override {
             modelInd = table->model()->index(rowNum, colNum);
         }
     };
-    GTThread::runInMainThread(os, new FindModelIndexScenario(table, row, column, modelIndex));
+    GTThread::runInMainThread(new FindModelIndexScenario(table, row, column, modelIndex));
     GT_CHECK(modelIndex.isValid(), "Model index is invalid");
 
-    GTWidget::scrollToIndex(os, table, modelIndex);
-    GTWidget::moveToAndClick(os, GTTableView::getCellPosition(os, table, column, row));
+    GTWidget::scrollToIndex(table, modelIndex);
+    GTWidget::moveToAndClick(GTTableView::getCellPosition(table, column, row));
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

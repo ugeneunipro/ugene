@@ -28,14 +28,14 @@ using namespace HI;
 
 class CreateAnnotationWidgetFiller : public Filler {
 public:
-    CreateAnnotationWidgetFiller(HI::GUITestOpStatus& os,
+    CreateAnnotationWidgetFiller(
                                  bool newTableRB,
                                  const QString& groupName,
                                  const QString& annotationName,
                                  const QString& location,
                                  const QString& saveTo = "",
                                  const QString& description = "");
-    CreateAnnotationWidgetFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    CreateAnnotationWidgetFiller(CustomScenario* scenario);
 
     void commonScenario() override;
 

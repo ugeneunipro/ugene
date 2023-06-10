@@ -28,12 +28,12 @@ using namespace HI;
 
 class ImportACEFileFiller : public Filler {
 public:
-    ImportACEFileFiller(HI::GUITestOpStatus& os,
+    ImportACEFileFiller(
                         bool isReadOnly,
                         QString dstUrl = QString(),
                         QString r = QString(),
                         int timeoutMs = 120000);
-    ImportACEFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c);
+    ImportACEFileFiller(CustomScenario* _c);
 
     virtual void commonScenario();
 

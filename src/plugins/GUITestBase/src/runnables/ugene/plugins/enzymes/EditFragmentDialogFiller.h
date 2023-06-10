@@ -58,7 +58,7 @@ public:
         bool checkRComplText;
     };
 
-    EditFragmentDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters);
+    EditFragmentDialogFiller(const Parameters& parameters);
 
     void commonScenario();
 

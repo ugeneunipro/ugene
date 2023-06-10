@@ -36,12 +36,12 @@ namespace GUITest_common_scenarios_project_multiple_docs {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state:
     // 	1) Project view with document "1.gb" has been opened
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTUtilsDocument::checkDocument("1.gb");
 
     // 2. Use menu {File->Save Project As}
     // Expected state: "Save project as" dialog has appeared
@@ -51,29 +51,29 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 	{Project Folder:} _common_data/scenarios/sandbox
     // 	{Project file} proj2
     // 4. Click Save button
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
-    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
+    GTUtilsDialog::waitForDialog(new SaveProjectAsDialogFiller("proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
+    GTMenu::clickMainMenuItem({"File", "Save project as..."});
 
     // 5. Use menu {File->Open}. Open file samples/PDB/1CF7.PDB
-    GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/PDB/", "1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state:
     // 	1) Project view with documents "1CF7.PDB", "1.gb" has been opened
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
-    GTUtilsDocument::checkDocument(os, "1.gb");
+    GTUtilsDocument::checkDocument("1CF7.PDB");
+    GTUtilsDocument::checkDocument("1.gb");
 
     // 6. Close project
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 
     // 7. Open project from the location used in item 3
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state:
     // Project has 2 documents: 1CF7.PDB and 1.gb
-    GTUtilsDocument::checkDocument(os, "1.gb");
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument("1.gb");
+    GTUtilsDocument::checkDocument("1CF7.PDB");
 }
 
 }  // namespace GUITest_common_scenarios_project_multiple_docs

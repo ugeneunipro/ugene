@@ -28,7 +28,7 @@ using namespace HI;
 
 class SiteconBuildDialogFiller : public Filler {
 public:
-    SiteconBuildDialogFiller(HI::GUITestOpStatus& os, const QString& inputFilePath, const QString& modelFilePath);
+    SiteconBuildDialogFiller(const QString& inputFilePath, const QString& modelFilePath);
 
     void commonScenario() override;
 

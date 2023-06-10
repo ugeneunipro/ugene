@@ -32,7 +32,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTUtilsTreeView"
 
 #define GT_METHOD_NAME "expand"
-void GTTreeWidget::expand(GUITestOpStatus& os, QTreeWidgetItem* item) {
+void GTTreeWidget::expand(QTreeWidgetItem* item) {
     GT_CHECK_RESULT(item != nullptr, "item is NULL", );
     if (item->isExpanded() || item == item->treeWidget()->invisibleRootItem()) {
         return;
@@ -43,33 +43,33 @@ void GTTreeWidget::expand(GUITestOpStatus& os, QTreeWidgetItem* item) {
         ExpandInMainThreadScenario(QTreeWidgetItem* _item)
             : item(_item) {
         }
-        void run(HI::GUITestOpStatus& os) override {
+        void run() override {
             QTreeWidget* tree = item->treeWidget();
             GT_CHECK_RESULT(tree != nullptr, "Tree is nullptr!", );
             tree->expandItem(item);
         }
         QTreeWidgetItem* item = nullptr;
     };
-    GTThread::runInMainThread(os, new ExpandInMainThreadScenario(item));
-    scrollToItem(os, item);
-    checkItemIsExpanded(os, item);
+    GTThread::runInMainThread(new ExpandInMainThreadScenario(item));
+    scrollToItem(item);
+    checkItemIsExpanded(item);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
-void GTTreeWidget::checkItem(GUITestOpStatus& os, QTreeWidgetItem* item, int column, GTGlobals::UseMethod method) {
+void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMethod method) {
     GT_CHECK(item != nullptr, "treeWidgetItem is NULL");
     GT_CHECK(column >= 0, "The column number is invalid");
 
     QTreeWidget* tree = item->treeWidget();
     GT_CHECK(tree != nullptr, "The tree widget is NULL");
 
-    GTTreeWidget::scrollToItem(os, item);
-    QRect itemRect = getItemRect(os, item);
+    GTTreeWidget::scrollToItem(item);
+    QRect itemRect = getItemRect(item);
     QPoint indentationOffset(tree->indentation(), 0);
     QPoint itemStartPos = QPoint(itemRect.left(), itemRect.center().y()) - indentationOffset;
     QPoint columnOffset(tree->columnViewportPosition(column), 0);
-    QPoint itemLevelOffset(getItemLevel(os, item) * tree->indentation(), 0);
+    QPoint itemLevelOffset(getItemLevel(item) * tree->indentation(), 0);
 
     switch (method) {
         case GTGlobals::UseKeyBoard: {
@@ -92,7 +92,7 @@ void GTTreeWidget::checkItem(GUITestOpStatus& os, QTreeWidgetItem* item, int col
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemRect"
-QRect GTTreeWidget::getItemRect(GUITestOpStatus& os, QTreeWidgetItem* item) {
+QRect GTTreeWidget::getItemRect(QTreeWidgetItem* item) {
     GT_CHECK_RESULT(item != nullptr, "treeWidgetItem is NULL", {});
     GT_CHECK_RESULT(!item->isHidden(), "item is hidden", {});
 
@@ -105,15 +105,15 @@ QRect GTTreeWidget::getItemRect(GUITestOpStatus& os, QTreeWidgetItem* item) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTTreeWidget::getItemCenter(GUITestOpStatus& os, QTreeWidgetItem* item) {
+QPoint GTTreeWidget::getItemCenter(QTreeWidgetItem* item) {
     GT_CHECK_RESULT(item != nullptr, "item is NULL", {});
 
     QTreeWidget* treeWidget = item->treeWidget();
     GT_CHECK_RESULT(treeWidget != nullptr, "treeWidget is NULL", {});
 
-    GTTreeWidget::scrollToItem(os, item);
+    GTTreeWidget::scrollToItem(item);
 
-    QPoint itemRectCenterPoint = getItemRect(os, item).center();
+    QPoint itemRectCenterPoint = getItemRect(item).center();
     return treeWidget->viewport()->mapToGlobal(itemRectCenterPoint);
 }
 #undef GT_METHOD_NAME
@@ -131,16 +131,16 @@ QList<QTreeWidgetItem*> GTTreeWidget::getItems(QTreeWidgetItem* root) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItems"
-QList<QTreeWidgetItem*> GTTreeWidget::getItems(GUITestOpStatus& os, QTreeWidget* treeWidget) {
+QList<QTreeWidgetItem*> GTTreeWidget::getItems(QTreeWidget* treeWidget) {
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", QList<QTreeWidgetItem*>());
     return getItems(treeWidget->invisibleRootItem());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemNames"
-QStringList GTTreeWidget::getItemNames(GUITestOpStatus& os, QTreeWidget* treeWidget) {
+QStringList GTTreeWidget::getItemNames(QTreeWidget* treeWidget) {
     QStringList itemNames;
-    QList<QTreeWidgetItem*> items = getItems(os, treeWidget);
+    QList<QTreeWidgetItem*> items = getItems(treeWidget);
     for (QTreeWidgetItem* item : qAsConst(items)) {
         itemNames << item->text(0);
     }
@@ -149,7 +149,7 @@ QStringList GTTreeWidget::getItemNames(GUITestOpStatus& os, QTreeWidget* treeWid
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findItemPrivate"
-QTreeWidgetItem* GTTreeWidget::findItemPrivate(GUITestOpStatus& os, QTreeWidget* tree, const QString& text, QTreeWidgetItem* parent, int column, const GTGlobals::FindOptions& options) {
+QTreeWidgetItem* GTTreeWidget::findItemPrivate(QTreeWidget* tree, const QString& text, QTreeWidgetItem* parent, int column, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", nullptr);
 
     if (parent == nullptr) {
@@ -172,7 +172,7 @@ QTreeWidgetItem* GTTreeWidget::findItemPrivate(GUITestOpStatus& os, QTreeWidget*
 
         if (options.depth == GTGlobals::FindOptions::INFINITE_DEPTH ||
             innerOptions.depth > 0) {
-            QTreeWidgetItem* childItem = findItemPrivate(os, tree, text, item, column, innerOptions);
+            QTreeWidgetItem* childItem = findItemPrivate(tree, text, item, column, innerOptions);
             if (childItem != nullptr) {
                 return childItem;
             }
@@ -183,24 +183,24 @@ QTreeWidgetItem* GTTreeWidget::findItemPrivate(GUITestOpStatus& os, QTreeWidget*
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findItem"
-QTreeWidgetItem* GTTreeWidget::findItem(GUITestOpStatus& os,
-                                        QTreeWidget* tree,
-                                        const QString& text,
-                                        QTreeWidgetItem* parent,
-                                        int column,
-                                        const GTGlobals::FindOptions& options,
-                                        bool expandParent) {
-    QTreeWidgetItem* item = findItemPrivate(os, tree, text, parent, column, options);
+QTreeWidgetItem* GTTreeWidget::findItem(
+    QTreeWidget* tree,
+    const QString& text,
+    QTreeWidgetItem* parent,
+    int column,
+    const GTGlobals::FindOptions& options,
+    bool expandParent) {
+    QTreeWidgetItem* item = findItemPrivate(tree, text, parent, column, options);
     CHECK_SET_ERR_RESULT(!options.failIfNotFound || item != nullptr, QString("Item '%1' not found").arg(text), nullptr);
     if (item != nullptr && item->parent() != nullptr && expandParent) {
-        expand(os, item->parent());
+        expand(item->parent());
     }
     return item;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findItems"
-QList<QTreeWidgetItem*> GTTreeWidget::findItems(GUITestOpStatus& os, QTreeWidget* tree, const QString& text, QTreeWidgetItem* parent, int column, const GTGlobals::FindOptions& options) {
+QList<QTreeWidgetItem*> GTTreeWidget::findItems(QTreeWidget* tree, const QString& text, QTreeWidgetItem* parent, int column, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", {});
     if (parent == nullptr) {
         parent = tree->invisibleRootItem();
@@ -223,7 +223,7 @@ QList<QTreeWidgetItem*> GTTreeWidget::findItems(GUITestOpStatus& os, QTreeWidget
 
         if (options.depth == GTGlobals::FindOptions::INFINITE_DEPTH ||
             innerOptions.depth > 0) {
-            items << findItems(os, tree, text, item, column, innerOptions);
+            items << findItems(tree, text, item, column, innerOptions);
         }
     }
 
@@ -232,16 +232,16 @@ QList<QTreeWidgetItem*> GTTreeWidget::findItems(GUITestOpStatus& os, QTreeWidget
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "click"
-void GTTreeWidget::click(GUITestOpStatus& os, QTreeWidgetItem* item, int column, Qt::MouseButton button) {
+void GTTreeWidget::click(QTreeWidgetItem* item, int column, Qt::MouseButton button) {
     GT_CHECK(item != nullptr, "item is NULL");
-    GTTreeWidget::scrollToItem(os, item);
+    GTTreeWidget::scrollToItem(item);
 
     QPoint point;
     if (column == -1) {
-        point = getItemCenter(os, item);
+        point = getItemCenter(item);
     } else {
         QTreeWidget* tree = item->treeWidget();
-        QRect itemRect = getItemRect(os, item);
+        QRect itemRect = getItemRect(item);
         point = tree->viewport()->mapToGlobal(itemRect.topLeft());
         point += QPoint(tree->columnViewportPosition(column) + tree->columnWidth(column) / 2, itemRect.height() / 2);
     }
@@ -252,16 +252,16 @@ void GTTreeWidget::click(GUITestOpStatus& os, QTreeWidgetItem* item, int column,
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClick"
-void GTTreeWidget::doubleClick(GUITestOpStatus& os, QTreeWidgetItem* item, int column) {
+void GTTreeWidget::doubleClick(QTreeWidgetItem* item, int column) {
     GT_CHECK(item != nullptr, "item is NULL");
-    GTTreeWidget::scrollToItem(os, item);
+    GTTreeWidget::scrollToItem(item);
 
     QPoint point;
     if (column == -1) {
-        point = getItemCenter(os, item);
+        point = getItemCenter(item);
     } else {
         QTreeWidget* tree = item->treeWidget();
-        QRect itemRect = getItemRect(os, item);
+        QRect itemRect = getItemRect(item);
         point = tree->viewport()->mapToGlobal(itemRect.topLeft());
         point += QPoint(tree->columnViewportPosition(column) + tree->columnWidth(column) / 2, itemRect.height() / 2);
     }
@@ -272,7 +272,7 @@ void GTTreeWidget::doubleClick(GUITestOpStatus& os, QTreeWidgetItem* item, int c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemLevel"
-int GTTreeWidget::getItemLevel(GUITestOpStatus& os, QTreeWidgetItem* item) {
+int GTTreeWidget::getItemLevel(QTreeWidgetItem* item) {
     GT_CHECK_RESULT(item != nullptr, "item is NULL", -1);
 
     int level = 0;
@@ -286,27 +286,27 @@ int GTTreeWidget::getItemLevel(GUITestOpStatus& os, QTreeWidgetItem* item) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToItem"
-void GTTreeWidget::scrollToItem(GUITestOpStatus& os, QTreeWidgetItem* item) {
+void GTTreeWidget::scrollToItem(QTreeWidgetItem* item) {
     GT_CHECK_RESULT(item != nullptr, "item is NULL", );
     class ScrollInMainThreadScenario : public CustomScenario {
     public:
         ScrollInMainThreadScenario(QTreeWidgetItem* _item)
             : item(_item) {
         }
-        void run(HI::GUITestOpStatus& os) override {
+        void run() override {
             QTreeWidget* tree = item->treeWidget();
             GT_CHECK_RESULT(tree != nullptr, "Tree is nullptr!", );
             tree->scrollToItem(item);
         }
         QTreeWidgetItem* item = nullptr;
     };
-    GTThread::runInMainThread(os, new ScrollInMainThreadScenario(item));
+    GTThread::runInMainThread(new ScrollInMainThreadScenario(item));
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItemIsExpanded"
-void GTTreeWidget::checkItemIsExpanded(HI::GUITestOpStatus& os, QTreeWidgetItem* item) {
+void GTTreeWidget::checkItemIsExpanded(QTreeWidgetItem* item) {
     GT_CHECK(item != nullptr, "Item is null!");
 
     bool isExpanded = item->isExpanded();

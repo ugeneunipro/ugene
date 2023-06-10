@@ -70,15 +70,15 @@ public:
         Down
     };
 
-    static void openDialog(HI::GUITestOpStatus& os, WorkflowProcessItem* trimmomaticElement);
+    static void openDialog(WorkflowProcessItem* trimmomaticElement);
 
     // Add steps
-    TrimmomaticDialogFiller(HI::GUITestOpStatus& os, const QList<QPair<TrimmomaticSteps, QMap<TrimmomaticValues, QVariant>>>& addValues);
+    TrimmomaticDialogFiller(const QList<QPair<TrimmomaticSteps, QMap<TrimmomaticValues, QVariant>>>& addValues);
     // Move steps
-    TrimmomaticDialogFiller(HI::GUITestOpStatus& os, const QList<QPair<QPair<TrimmomaticSteps, int>, TrimmomaticDirection>>& moveValues);
+    TrimmomaticDialogFiller(const QList<QPair<QPair<TrimmomaticSteps, int>, TrimmomaticDirection>>& moveValues);
     // Remove steps
-    TrimmomaticDialogFiller(HI::GUITestOpStatus& os, const QList<QPair<TrimmomaticSteps, int>>& removeValues);
-    TrimmomaticDialogFiller(HI::GUITestOpStatus& os, CustomScenario* customScenario);
+    TrimmomaticDialogFiller(const QList<QPair<TrimmomaticSteps, int>>& removeValues);
+    TrimmomaticDialogFiller(CustomScenario* customScenario);
 
     void commonScenario() override;
 

@@ -34,7 +34,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTComboBox"
 
 #define GT_METHOD_NAME "selectItemByIndex"
-void GTComboBox::selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, int index, GTGlobals::UseMethod method) {
+void GTComboBox::selectItemByIndex(QComboBox* comboBox, int index, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
     if (comboBox->currentIndex() == index) {
         return;
@@ -46,15 +46,15 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, int
         MainThreadAction(QComboBox* comboBox, int index, GTGlobals::UseMethod method)
             : CustomScenario(), comboBox(comboBox), index(index), method(method) {
         }
-        void run(HI::GUITestOpStatus& os) override {
+        void run() override {
             int itemsCount = comboBox->count();
             GT_CHECK(index >= 0 && index < itemsCount, "invalid index: " + QString::number(index) + ", count: " + QString::number(itemsCount));
 
             if (comboBox->isEditable()) {
-                GTWidget::click(os, comboBox, Qt::LeftButton, QPoint(comboBox->rect().width() - 10, 10));
+                GTWidget::click(comboBox, Qt::LeftButton, QPoint(comboBox->rect().width() - 10, 10));
                 GTThread::waitForMainThread();
             } else if (!comboBox->view()->isVisible()) {  // activate dropdown if it is not visible.
-                GTWidget::click(os, comboBox);
+                GTWidget::click(comboBox);
                 GTThread::waitForMainThread();
             }
 
@@ -74,10 +74,10 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, int
                     QListView* listView = comboBox->findChild<QListView*>();
                     GT_CHECK(listView != nullptr, "list view not found");
                     QModelIndex modelIndex = listView->model()->index(index, 0);
-                    GTWidget::scrollToIndex(os, listView, modelIndex);
+                    GTWidget::scrollToIndex(listView, modelIndex);
 #ifdef Q_OS_DARWIN
                     // Due to animation a single scroll on MacOS is not enough for long lists. See GUITest_common_scenarios_create_annotation_widget_test_0002.
-                    GTWidget::scrollToIndex(os, listView, modelIndex);
+                    GTWidget::scrollToIndex(listView, modelIndex);
 #endif
                     QRect rect = listView->visualRect(modelIndex);
                     QPoint itemPointLocal = rect.topLeft() + QPoint(25, rect.height() / 2);  // Why +25px: Qt 5.12 may report too big rect with the center() out of the item.
@@ -94,7 +94,7 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, int
         int index;
         GTGlobals::UseMethod method;
     };
-    GTThread::runInMainThread(os, new MainThreadAction(comboBox, index, method));
+    GTThread::runInMainThread(new MainThreadAction(comboBox, index, method));
     // Activate the final action from a separate thread. Reason: it may trigger other popups or dialogs (they can't be processed in the main thread).
     if (method == GTGlobals::UseMouse) {
         GTMouseDriver::click();
@@ -105,36 +105,36 @@ void GTComboBox::selectItemByIndex(GUITestOpStatus& os, QComboBox* comboBox, int
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectItemByText"
-void GTComboBox::selectItemByText(GUITestOpStatus& os, QComboBox* comboBox, const QString& text, GTGlobals::UseMethod method) {
+void GTComboBox::selectItemByText(QComboBox* comboBox, const QString& text, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
     int index = comboBox->findText(text, Qt::MatchExactly);
     GT_CHECK(index != -1, "Text " + text + " was not found");
-    selectItemByIndex(os, comboBox, index, method);
+    selectItemByIndex(comboBox, index, method);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectItemByText"
-void GTComboBox::selectItemByText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent, const QString& text, GTGlobals::UseMethod method) {
-    selectItemByText(os, GTWidget::findComboBox(os, comboBoxName, parent), text, method);
+void GTComboBox::selectItemByText(const QString& comboBoxName, QWidget* parent, const QString& text, GTGlobals::UseMethod method) {
+    selectItemByText(GTWidget::findComboBox(comboBoxName, parent), text, method);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCurrentText"
-QString GTComboBox::getCurrentText(GUITestOpStatus& os, QComboBox* const comboBox) {
-    Q_UNUSED(os);
+QString GTComboBox::getCurrentText(QComboBox* const comboBox) {
+
     GT_CHECK_RESULT(comboBox != NULL, "comboBox is NULL", "");
     return comboBox->currentText();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCurrentText"
-QString GTComboBox::getCurrentText(GUITestOpStatus& os, const QString& comboBoxName, QWidget* parent) {
-    return getCurrentText(os, GTWidget::findComboBox(os, comboBoxName, parent));
+QString GTComboBox::getCurrentText(const QString& comboBoxName, QWidget* parent) {
+    return getCurrentText(GTWidget::findComboBox(comboBoxName, parent));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getValues"
-QStringList GTComboBox::getValues(GUITestOpStatus& os, QComboBox* comboBox) {
+QStringList GTComboBox::getValues(QComboBox* comboBox) {
     QStringList result;
     GT_CHECK_RESULT(NULL != comboBox, "Combobox is NULL", result);
     for (int i = 0; i < comboBox->count(); i++) {
@@ -146,10 +146,10 @@ QStringList GTComboBox::getValues(GUITestOpStatus& os, QComboBox* comboBox) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkValues"
-void GTComboBox::checkValues(GUITestOpStatus& os, QComboBox* comboBox, const QStringList& values) {
+void GTComboBox::checkValues(QComboBox* comboBox, const QStringList& values) {
     GT_CHECK(NULL != comboBox, "comboBox is NULL");
 
-    GTWidget::setFocus(os, comboBox);
+    GTWidget::setFocus(comboBox);
     GTGlobals::sleep();
 
     QListView* view = comboBox->findChild<QListView*>();
@@ -189,7 +189,7 @@ void GTComboBox::checkValues(GUITestOpStatus& os, QComboBox* comboBox, const QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkValuesPresence"
-void GTComboBox::checkValuesPresence(GUITestOpStatus& os, QComboBox* comboBox, const QStringList& values) {
+void GTComboBox::checkValuesPresence(QComboBox* comboBox, const QStringList& values) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
 
     for (const QString& s : qAsConst(values)) {
@@ -200,7 +200,7 @@ void GTComboBox::checkValuesPresence(GUITestOpStatus& os, QComboBox* comboBox, c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkCurrentValue"
-void GTComboBox::checkCurrentValue(GUITestOpStatus& os, QComboBox* comboBox, const QString& expectedText) {
+void GTComboBox::checkCurrentValue(QComboBox* comboBox, const QString& expectedText) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
     QString currentText = comboBox->currentText();
     GT_CHECK(currentText == expectedText, QString("Unexpected value: expected '%1', got '%2'").arg(expectedText).arg(currentText));
@@ -208,7 +208,7 @@ void GTComboBox::checkCurrentValue(GUITestOpStatus& os, QComboBox* comboBox, con
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkCurrentUserDataValue"
-void GTComboBox::checkCurrentUserDataValue(GUITestOpStatus& os, QComboBox* comboBox, const QString& expectedValue) {
+void GTComboBox::checkCurrentUserDataValue(QComboBox* comboBox, const QString& expectedValue) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
     QString dataValue = comboBox->currentData(Qt::UserRole).toString();
     GT_CHECK(dataValue == expectedValue, QString("Unexpected user data value: expected '%1', got '%2'").arg(expectedValue).arg(dataValue));

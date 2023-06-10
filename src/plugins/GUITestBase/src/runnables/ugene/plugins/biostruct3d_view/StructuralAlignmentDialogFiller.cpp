@@ -28,24 +28,24 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "StructuralAlignmentDialogFiller"
-StructuralAlignmentDialogFiller::StructuralAlignmentDialogFiller(HI::GUITestOpStatus& os, const QStringList& chainIndexes)
-    : Filler(os, "StructuralAlignmentDialog"), chainIndexes(chainIndexes) {
+StructuralAlignmentDialogFiller::StructuralAlignmentDialogFiller(const QStringList& chainIndexes)
+    : Filler("StructuralAlignmentDialog"), chainIndexes(chainIndexes) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void StructuralAlignmentDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (!chainIndexes.isEmpty()) {
-        auto refEditor = GTWidget::findWidget(os, "ref_editor", dialog);
-        auto combo = GTWidget::findComboBox(os, "chainCombo", refEditor);
+        auto refEditor = GTWidget::findWidget("ref_editor", dialog);
+        auto combo = GTWidget::findComboBox("chainCombo", refEditor);
         for (const QString& curString : qAsConst(chainIndexes)) {
             int index = combo->findText(curString, Qt::MatchContains);
             GT_CHECK(index != -1, "Index '" + curString + "' was not found");
         }
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

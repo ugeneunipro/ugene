@@ -43,8 +43,8 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsPhyTree"
 
 #define GT_METHOD_NAME "getNodeByBranchText"
-TvNodeItem* GTUtilsPhyTree::getNodeByBranchText(HI::GUITestOpStatus& os, const QString& leftBranchText, const QString& rightBranchText) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+TvNodeItem* GTUtilsPhyTree::getNodeByBranchText(const QString& leftBranchText, const QString& rightBranchText) {
+    auto treeView = GTWidget::findGraphicsView("treeView");
     QList<QGraphicsItem*> itemList = treeView->scene()->items();
     for (QGraphicsItem* item : qAsConst(itemList)) {
         if (auto node = dynamic_cast<TvNodeItem*>(item)) {
@@ -60,8 +60,8 @@ TvNodeItem* GTUtilsPhyTree::getNodeByBranchText(HI::GUITestOpStatus& os, const Q
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNodes"
-QList<TvNodeItem*> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus& os) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+QList<TvNodeItem*> GTUtilsPhyTree::getNodes() {
+    auto treeView = GTWidget::findGraphicsView("treeView");
     QList<QGraphicsItem*> itemList = treeView->scene()->items();
     QList<TvNodeItem*> result;
     for (QGraphicsItem* item : qAsConst(itemList)) {
@@ -74,8 +74,8 @@ QList<TvNodeItem*> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSelectedNodes"
-QList<TvNodeItem*> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus& os) {
-    QList<TvNodeItem*> nodes = getNodes(os);
+QList<TvNodeItem*> GTUtilsPhyTree::getSelectedNodes() {
+    QList<TvNodeItem*> nodes = getNodes();
     QList<TvNodeItem*> selectedNodes;
     for (auto node : qAsConst(nodes)) {
         if (node->isSelected()) {
@@ -87,8 +87,8 @@ QList<TvNodeItem*> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getUnselectedNodes"
-QList<TvNodeItem*> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatus& os) {
-    QList<TvNodeItem*> nodes = getNodes(os);
+QList<TvNodeItem*> GTUtilsPhyTree::getUnselectedNodes() {
+    QList<TvNodeItem*> nodes = getNodes();
     QList<TvNodeItem*> unselectedNodes;
     for (auto node : qAsConst(nodes)) {
         if (node->isSelected()) {
@@ -100,10 +100,10 @@ QList<TvNodeItem*> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLabels"
-QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getLabels(HI::GUITestOpStatus& os, QGraphicsView* treeView) {
+QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getLabels(QGraphicsView* treeView) {
     QList<QGraphicsSimpleTextItem*> result;
     if (treeView == nullptr) {
-        treeView = GTWidget::findGraphicsView(os, "treeView");
+        treeView = GTWidget::findGraphicsView("treeView");
     }
     GT_CHECK_RESULT(treeView, "treeView not found", result);
     QList<QGraphicsItem*> list = treeView->scene()->items();
@@ -122,9 +122,9 @@ QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getLabels(HI::GUITestOpStatus& o
 }
 #undef GT_METHOD_NAME
 
-QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getVisibleLabels(HI::GUITestOpStatus& os, QGraphicsView* treeView) {
+QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getVisibleLabels(QGraphicsView* treeView) {
     QList<QGraphicsSimpleTextItem*> result;
-    foreach (QGraphicsSimpleTextItem* item, getLabels(os, treeView)) {
+    foreach (QGraphicsSimpleTextItem* item, getLabels(treeView)) {
         if (item->isVisible() && !item->text().isEmpty()) {
             result << item;
         }
@@ -133,10 +133,10 @@ QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getVisibleLabels(HI::GUITestOpSt
 }
 
 #define GT_METHOD_NAME "getDistances"
-QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getDistances(HI::GUITestOpStatus& os, QGraphicsView* treeView) {
+QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getDistances(QGraphicsView* treeView) {
     QList<QGraphicsSimpleTextItem*> result;
     if (treeView == nullptr) {
-        treeView = GTWidget::findGraphicsView(os, "treeView");
+        treeView = GTWidget::findGraphicsView("treeView");
     }
     GT_CHECK_RESULT(treeView, "treeView not found", result);
     QList<QGraphicsItem*> list = treeView->scene()->items();
@@ -155,9 +155,9 @@ QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getDistances(HI::GUITestOpStatus
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getVisibleDistances"
-QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getVisibleDistances(HI::GUITestOpStatus& os, QGraphicsView* treeView) {
+QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getVisibleDistances(QGraphicsView* treeView) {
     QList<QGraphicsSimpleTextItem*> result;
-    const QList<QGraphicsSimpleTextItem*> textItemList = getDistances(os, treeView);
+    const QList<QGraphicsSimpleTextItem*> textItemList = getDistances(treeView);
     for (QGraphicsSimpleTextItem* item : qAsConst(textItemList)) {
         if (item->isVisible()) {
             result << item;
@@ -168,9 +168,9 @@ QList<QGraphicsSimpleTextItem*> GTUtilsPhyTree::getVisibleDistances(HI::GUITestO
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDistancesValues"
-QList<double> GTUtilsPhyTree::getDistancesValues(HI::GUITestOpStatus& os) {
+QList<double> GTUtilsPhyTree::getDistancesValues() {
     QList<double> result;
-    QList<QGraphicsSimpleTextItem*> distList = getDistances(os);
+    QList<QGraphicsSimpleTextItem*> distList = getDistances();
 
     for (QGraphicsSimpleTextItem* item : qAsConst(distList)) {
         bool ok;
@@ -186,9 +186,9 @@ QList<double> GTUtilsPhyTree::getDistancesValues(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLabelsText"
-QStringList GTUtilsPhyTree::getLabelsText(HI::GUITestOpStatus& os) {
+QStringList GTUtilsPhyTree::getLabelsText() {
     QStringList result;
-    QList<QGraphicsSimpleTextItem*> labelList = getLabels(os);
+    QList<QGraphicsSimpleTextItem*> labelList = getLabels();
     for (QGraphicsSimpleTextItem* item : qAsConst(labelList)) {
         result << item->text();
     }
@@ -198,44 +198,44 @@ QStringList GTUtilsPhyTree::getLabelsText(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getGlobalCenterCoord"
-QPoint GTUtilsPhyTree::getGlobalCenterCoord(HI::GUITestOpStatus& os, QGraphicsItem* item) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
-    QRectF viewRect = getItemViewRect(os, item);
+QPoint GTUtilsPhyTree::getGlobalCenterCoord(QGraphicsItem* item) {
+    auto treeView = GTWidget::findGraphicsView("treeView");
+    QRectF viewRect = getItemViewRect(item);
     return treeView->mapToGlobal(viewRect.center().toPoint());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemViewRect"
-QRect GTUtilsPhyTree::getItemViewRect(HI::GUITestOpStatus& os, QGraphicsItem* item) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+QRect GTUtilsPhyTree::getItemViewRect(QGraphicsItem* item) {
+    auto treeView = GTWidget::findGraphicsView("treeView");
     QRectF sceneRect = item->mapToScene(item->boundingRect()).boundingRect();
     return treeView->mapFromScene(sceneRect).boundingRect();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickNode"
-void GTUtilsPhyTree::clickNode(HI::GUITestOpStatus& os, TvNodeItem* node, const Qt::MouseButton& mouseButton) {
+void GTUtilsPhyTree::clickNode(TvNodeItem* node, const Qt::MouseButton& mouseButton) {
     GT_CHECK(node != nullptr, "Node to click is NULL");
     node->ensureVisible();  // TODO: do not run from the non-UI thread.
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(getGlobalCenterCoord(os, node));
+    GTMouseDriver::moveTo(getGlobalCenterCoord(node));
     GTMouseDriver::click(mouseButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "doubleClickNode"
-void GTUtilsPhyTree::doubleClickNode(HI::GUITestOpStatus& os, TvNodeItem* node) {
+void GTUtilsPhyTree::doubleClickNode(TvNodeItem* node) {
     GT_CHECK(node != nullptr, "Node to doubleClickNode is NULL");
     node->ensureVisible();
     GTThread::waitForMainThread();
-    GTMouseDriver::moveTo(getGlobalCenterCoord(os, node));
+    GTMouseDriver::moveTo(getGlobalCenterCoord(node));
     GTMouseDriver::doubleClick();
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNodeDistance"
-qreal GTUtilsPhyTree::getNodeDistance(HI::GUITestOpStatus& os, TvNodeItem* node) {
+qreal GTUtilsPhyTree::getNodeDistance(TvNodeItem* node) {
     GT_CHECK_RESULT(node != nullptr, "Node is NULL", 0);
     auto branch = dynamic_cast<TvRectangularBranchItem*>(node->parentItem());
     GT_CHECK_RESULT(branch != nullptr, "Node's branch' is NULL", 0);
@@ -244,15 +244,15 @@ qreal GTUtilsPhyTree::getNodeDistance(HI::GUITestOpStatus& os, TvNodeItem* node)
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTreeViewerUi"
-TreeViewerUI* GTUtilsPhyTree::getTreeViewerUi(HI::GUITestOpStatus& os) {
-    return GTWidget::findExactWidget<TreeViewerUI*>(os, "treeView", GTUtilsMdi::activeWindow(os));
+TreeViewerUI* GTUtilsPhyTree::getTreeViewerUi() {
+    return GTWidget::findExactWidget<TreeViewerUI*>("treeView", GTUtilsMdi::activeWindow());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOrderedRectangularNodes"
-QList<TvNodeItem*> GTUtilsPhyTree::getOrderedRectangularNodes(HI::GUITestOpStatus& os, int expectedNodeCount) {
+QList<TvNodeItem*> GTUtilsPhyTree::getOrderedRectangularNodes(int expectedNodeCount) {
     QList<TvNodeItem*> orderedRectangularNodes;
-    QList<TvRectangularBranchItem*> graphicsRectangularBranchItems = getOrderedRectangularBranches(os);
+    QList<TvRectangularBranchItem*> graphicsRectangularBranchItems = getOrderedRectangularBranches();
     for (TvRectangularBranchItem* rectangularBranch : qAsConst(graphicsRectangularBranchItems)) {
         GT_CHECK_RESULT(rectangularBranch != nullptr, "Rectangular branch is NULL", QList<TvNodeItem*>());
         TvNodeItem* rectangularNode = rectangularBranch->getNodeItem();
@@ -269,14 +269,14 @@ QList<TvNodeItem*> GTUtilsPhyTree::getOrderedRectangularNodes(HI::GUITestOpStatu
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOrderedRectangularBranches"
-QList<TvRectangularBranchItem*> GTUtilsPhyTree::getOrderedRectangularBranches(HI::GUITestOpStatus& os) {
-    return getSubtreeOrderedRectangularBranches(os, getRootRectangularBranch(os));
+QList<TvRectangularBranchItem*> GTUtilsPhyTree::getOrderedRectangularBranches() {
+    return getSubtreeOrderedRectangularBranches(getRootRectangularBranch());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRootNode"
-TvNodeItem* GTUtilsPhyTree::getRootNode(HI::GUITestOpStatus& os) {
-    TvBranchItem* rootItem = getRootBranch(os);
+TvNodeItem* GTUtilsPhyTree::getRootNode() {
+    TvBranchItem* rootItem = getRootBranch();
     TvNodeItem* buttonItem = rootItem->getNodeItem();
     GT_CHECK_RESULT(buttonItem != nullptr, "Root branch has no button", nullptr);
     return buttonItem;
@@ -284,8 +284,8 @@ TvNodeItem* GTUtilsPhyTree::getRootNode(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRootBranch"
-TvBranchItem* GTUtilsPhyTree::getRootBranch(HI::GUITestOpStatus& os) {
-    auto treeView = GTWidget::findGraphicsView(os, "treeView");
+TvBranchItem* GTUtilsPhyTree::getRootBranch() {
+    auto treeView = GTWidget::findGraphicsView("treeView");
     QList<QGraphicsItem*> itemList = treeView->scene()->items();
     for (QGraphicsItem* item : qAsConst(itemList)) {
         if (auto branchItem = dynamic_cast<TvBranchItem*>(item)) {
@@ -299,8 +299,8 @@ TvBranchItem* GTUtilsPhyTree::getRootBranch(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRootRectangularBranch"
-TvRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch(HI::GUITestOpStatus& os) {
-    TreeViewerUI* treeViewerUi = getTreeViewerUi(os);
+TvRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch() {
+    TreeViewerUI* treeViewerUi = getTreeViewerUi();
     GT_CHECK_RESULT(treeViewerUi != nullptr, "TreeViewerUI is NULL", nullptr);
 
     QList<QGraphicsItem*> items = treeViewerUi->scene()->items();
@@ -316,7 +316,7 @@ TvRectangularBranchItem* GTUtilsPhyTree::getRootRectangularBranch(HI::GUITestOpS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSubtreeOrderedRectangularBranches"
-QList<TvRectangularBranchItem*> GTUtilsPhyTree::getSubtreeOrderedRectangularBranches(HI::GUITestOpStatus& os, TvRectangularBranchItem* rootBranch) {
+QList<TvRectangularBranchItem*> GTUtilsPhyTree::getSubtreeOrderedRectangularBranches(TvRectangularBranchItem* rootBranch) {
     GT_CHECK_RESULT(rootBranch != nullptr, "Subtree root branch is NULL", QList<TvRectangularBranchItem*>());
 
     const QList<QGraphicsItem*> childItems = rootBranch->childItems();
@@ -332,7 +332,7 @@ QList<TvRectangularBranchItem*> GTUtilsPhyTree::getSubtreeOrderedRectangularBran
 
     QList<TvRectangularBranchItem*> subtreeOrderedRectangularBranches;
     for (TvRectangularBranchItem* childRectangularBranch : qAsConst(childRectangularBranches)) {
-        subtreeOrderedRectangularBranches << getSubtreeOrderedRectangularBranches(os, childRectangularBranch);
+        subtreeOrderedRectangularBranches << getSubtreeOrderedRectangularBranches(childRectangularBranch);
     }
     subtreeOrderedRectangularBranches << rootBranch;
 
@@ -356,24 +356,24 @@ bool GTUtilsPhyTree::rectangularBranchLessThan(TvRectangularBranchItem* first, T
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getActiveTreeViewerWindow"
-QWidget* GTUtilsPhyTree::getActiveTreeViewerWindow(GUITestOpStatus& os) {
-    QWidget* widget = GTUtilsMdi::getActiveObjectViewWindow(os, TreeViewerFactory::ID);
+QWidget* GTUtilsPhyTree::getActiveTreeViewerWindow() {
+    QWidget* widget = GTUtilsMdi::getActiveObjectViewWindow(TreeViewerFactory::ID);
     GTThread::waitForMainThread();
     return widget;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "captureTreeImage"
-QImage GTUtilsPhyTree::captureTreeImage(GUITestOpStatus& os) {
-    return GTWidget::getImage(os, getTreeViewerUi(os));
+QImage GTUtilsPhyTree::captureTreeImage() {
+    return GTWidget::getImage(getTreeViewerUi());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkTreeViewerWindowIsActive"
-void GTUtilsPhyTree::checkTreeViewerWindowIsActive(GUITestOpStatus& os, const QString& titlePart) {
-    getActiveTreeViewerWindow(os);
+void GTUtilsPhyTree::checkTreeViewerWindowIsActive(const QString& titlePart) {
+    getActiveTreeViewerWindow();
     if (!titlePart.isEmpty()) {
-        auto windowTitle = GTUtilsMdi::activeWindowTitle(os);
+        auto windowTitle = GTUtilsMdi::activeWindowTitle();
         GT_CHECK_RESULT(windowTitle.contains(titlePart),
                         QString("Wrong window title part. Expected part: '%1', actual title: '%2'")
                             .arg(titlePart)
@@ -383,46 +383,46 @@ void GTUtilsPhyTree::checkTreeViewerWindowIsActive(GUITestOpStatus& os, const QS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickZoomInButton"
-void GTUtilsPhyTree::clickZoomInButton(HI::GUITestOpStatus& os) {
-    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomInTreeViewerAction");
+void GTUtilsPhyTree::clickZoomInButton() {
+    GTToolbar::clickWidgetByActionName(MWTOOLBAR_ACTIVEMDI, "zoomInTreeViewerAction");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickZoomOutButton"
-void GTUtilsPhyTree::clickZoomOutButton(HI::GUITestOpStatus& os) {
-    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomOutTreeViewerAction");
+void GTUtilsPhyTree::clickZoomOutButton() {
+    GTToolbar::clickWidgetByActionName(MWTOOLBAR_ACTIVEMDI, "zoomOutTreeViewerAction");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickZoomFitButton"
-void GTUtilsPhyTree::clickZoomFitButton(HI::GUITestOpStatus& os) {
-    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoomFitAction");
+void GTUtilsPhyTree::clickZoomFitButton() {
+    GTToolbar::clickWidgetByActionName(MWTOOLBAR_ACTIVEMDI, "zoomFitAction");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickZoom100Button"
-void GTUtilsPhyTree::clickZoom100Button(HI::GUITestOpStatus& os) {
-    GTToolbar::clickWidgetByActionName(os, MWTOOLBAR_ACTIVEMDI, "zoom100Action");
+void GTUtilsPhyTree::clickZoom100Button() {
+    GTToolbar::clickWidgetByActionName(MWTOOLBAR_ACTIVEMDI, "zoom100Action");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSceneWidth"
-int GTUtilsPhyTree::getSceneWidth(HI::GUITestOpStatus& os) {
-    TreeViewerUI* ui = getTreeViewerUi(os);
+int GTUtilsPhyTree::getSceneWidth() {
+    TreeViewerUI* ui = getTreeViewerUi();
     QRect rect = ui->mapFromScene(ui->sceneRect()).boundingRect();
     return rect.width();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "zoomWithMouseWheel"
-void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus& os, int steps) {
-    TreeViewerUI* treeViewer = getTreeViewerUi(os);
-    zoomWithMouseWheel(os, treeViewer, steps);
+void GTUtilsPhyTree::zoomWithMouseWheel(int steps) {
+    TreeViewerUI* treeViewer = getTreeViewerUi();
+    zoomWithMouseWheel(treeViewer, steps);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "zoomWithMouseWheelWithTreeViewer"
-void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus&, QWidget* treeViewer, int steps) {
+void GTUtilsPhyTree::zoomWithMouseWheel(QWidget* treeViewer, int steps) {
     QPoint treeViewCenter = treeViewer->mapToGlobal(treeViewer->rect().center());
     GTMouseDriver::moveTo(treeViewCenter);
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -434,21 +434,21 @@ void GTUtilsPhyTree::zoomWithMouseWheel(GUITestOpStatus&, QWidget* treeViewer, i
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setBranchColor"
-void GTUtilsPhyTree::setBranchColor(HI::GUITestOpStatus& os, int r, int g, int b, bool checkNoActiveDialogWaiters) {
-    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
-    auto branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
-    GTWidget::click(os, branchesColorButton);
+void GTUtilsPhyTree::setBranchColor(int r, int g, int b, bool checkNoActiveDialogWaiters) {
+    GTUtilsDialog::waitForDialog(new ColorDialogFiller(r, g, b));
+    auto branchesColorButton = GTWidget::findWidget("branchesColorButton");
+    GTWidget::click(branchesColorButton);
     if (checkNoActiveDialogWaiters) {
-        GTUtilsDialog::checkNoActiveWaiters(os);
+        GTUtilsDialog::checkNoActiveWaiters();
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColorPercent"
-double GTUtilsPhyTree::getColorPercent(HI::GUITestOpStatus& os, QWidget* widget, const QString& colorName) {
+double GTUtilsPhyTree::getColorPercent(QWidget* widget, const QString& colorName) {
     int total = 0;
     int found = 0;
-    const QImage img = GTWidget::getImage(os, widget);
+    const QImage img = GTWidget::getImage(widget);
     QRect r = widget->rect();
     int wid = r.width();
     int heig = r.height();

@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_DIALOG_UTILS_H_
-#define _HI_GUI_DIALOG_UTILS_H_
-
+#pragma once
 #include <core/CustomScenario.h>
 
 #include <QDialogButtonBox>
@@ -68,7 +66,7 @@ public:
         bool isRandomOrderWaiter = false;
     };
 
-    GUIDialogWaiter(GUITestOpStatus& os, Runnable* _r, const WaitSettings& settings = WaitSettings());
+    GUIDialogWaiter(Runnable* _r, const WaitSettings& settings = WaitSettings());
     virtual ~GUIDialogWaiter();
 
     const WaitSettings& getSettings() const {
@@ -86,7 +84,6 @@ public slots:
     void checkDialog();
 
 private:
-    GUITestOpStatus& os;
     Runnable* runnable = nullptr;
     WaitSettings settings;
 
@@ -96,8 +93,8 @@ private:
 
 class HI_EXPORT Filler : public Runnable {
 public:
-    Filler(GUITestOpStatus& os, const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario = NULL);
-    Filler(GUITestOpStatus& os, const QString& objectName, CustomScenario* scenario = NULL);
+    Filler(const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario = NULL);
+    Filler(const QString& objectName, CustomScenario* scenario = NULL);
     ~Filler();
 
     GUIDialogWaiter::WaitSettings getSettings() const;
@@ -106,7 +103,6 @@ public:
     }
 
 protected:
-    GUITestOpStatus& os;
     GUIDialogWaiter::WaitSettings settings;
     CustomScenario* scenario;
 
@@ -123,35 +119,33 @@ public:
         NoFailOnUnfinished
     };
 
-    static QDialogButtonBox* buttonBox(GUITestOpStatus& os, QWidget* dialog);
+    static QDialogButtonBox* buttonBox(QWidget* dialog);
 
-    static void clickButtonBox(GUITestOpStatus& os, QDialogButtonBox::StandardButton button);
+    static void clickButtonBox(QDialogButtonBox::StandardButton button);
 
-    static void clickButtonBox(GUITestOpStatus& os, QWidget* dialog, QDialogButtonBox::StandardButton button);
+    static void clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardButton button);
 
     // if objectName is not empty, waits for QWidget with a given name
-    static void waitForDialog(GUITestOpStatus& os, Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList = true);
+    static void waitForDialog(Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList = true);
 
-    static void waitForDialog(GUITestOpStatus& os, Runnable* r, int timeout = 0, bool isRandomOrderWaiter = false, bool isPrependToList = true);
-
-    /** Same as waitForDialog but adds waiter to the end of the current waiters list. */
-    static void add(GUITestOpStatus& os, Runnable* r, const GUIDialogWaiter::WaitSettings& settings);
+    static void waitForDialog(Runnable* r, int timeout = 0, bool isRandomOrderWaiter = false, bool isPrependToList = true);
 
     /** Same as waitForDialog but adds waiter to the end of the current waiters list. */
-    static void add(GUITestOpStatus& os, Runnable* r, int timeout = 0);
+    static void add(Runnable* r, const GUIDialogWaiter::WaitSettings& settings);
+
+    /** Same as waitForDialog but adds waiter to the end of the current waiters list. */
+    static void add(Runnable* r, int timeout = 0);
 
     /** Waits up to 'timeout' millis that all dialogs (runnables) are finished: the pool of GUIDialogWaiters is empty. */
-    static void checkNoActiveWaiters(GUITestOpStatus& os, int timeoutMillis = 30000);
+    static void checkNoActiveWaiters(int timeoutMillis = 30000);
 
     static void removeRunnable(Runnable* runnable);
 
     /** Deletes all GUIDialogWaiters, sets err if there are unfinished waiters. */
-    static void cleanup(GUITestOpStatus& os, const CleanupMode& cleanupMode);
+    static void cleanup(const CleanupMode& cleanupMode);
 
 private:
     static QList<GUIDialogWaiter*> waiterList;
 };
 
 }  // namespace HI
-
-#endif

@@ -28,7 +28,7 @@ using namespace HI;
 
 class DefaultWizardFiller : public Filler {
 public:
-    DefaultWizardFiller(HI::GUITestOpStatus& os, const QString& wizardName = "");
+    DefaultWizardFiller(const QString& wizardName = "");
 
     void commonScenario();
 };

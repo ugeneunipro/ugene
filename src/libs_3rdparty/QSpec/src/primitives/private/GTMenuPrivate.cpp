@@ -20,6 +20,7 @@
  */
 
 #include "GTMenuPrivate.h"
+
 #include <QMainWindow>
 #include <QMenuBar>
 
@@ -35,47 +36,47 @@ namespace HI {
 #define GT_CLASS_NAME "GTMenu"
 
 #define GT_METHOD_NAME "clickMainMenuItem"
-void GTMenuPrivate::clickMainMenuItem(GUITestOpStatus& os, const QStringList& itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
+void GTMenuPrivate::clickMainMenuItem(const QStringList& itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
     qWarning("clickMainMenuItem is going to click menu: '%s'", itemPath.join(" -> ").toLocal8Bit().constData());
 
     QStringList cutItemPath = itemPath;
     QString menuName = cutItemPath.takeFirst();
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, cutItemPath, method, matchFlag));
-    showMainMenu(os, menuName, method);
+    GTUtilsDialog::waitForDialog(new PopupChooserByText(cutItemPath, method, matchFlag));
+    showMainMenu(menuName, method);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMainMenuItemState"
-void GTMenuPrivate::checkMainMenuItemState(GUITestOpStatus& os, const QStringList& itemPath, PopupChecker::CheckOption expectedState) {
+void GTMenuPrivate::checkMainMenuItemState(const QStringList& itemPath, PopupChecker::CheckOption expectedState) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path is too short: { %1 }").arg(itemPath.join(" -> ")));
 
     QStringList cutItemPath = itemPath;
     const QString menuName = cutItemPath.takeFirst();
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, cutItemPath, expectedState, GTGlobals::UseMouse));
-    showMainMenu(os, menuName, GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(new PopupCheckerByText(cutItemPath, expectedState, GTGlobals::UseMouse));
+    showMainMenu(menuName, GTGlobals::UseMouse);
     GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMainMenuItemState"
-void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus& os, const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState) {
+void GTMenuPrivate::checkMainMenuItemsState(const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState) {
     GT_CHECK(menuPath.count() > 0, QString("Menu path is too short: { %1 }").arg(menuPath.join(" -> ")));
     GT_CHECK(itemsNames.count() > 0, QString("There are no menu items to check: %1").arg(itemsNames.join(", ")));
 
     QStringList cutMenuPath = menuPath;
     const QString menuName = cutMenuPath.takeFirst();
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, cutMenuPath, itemsNames, expectedState, GTGlobals::UseMouse));
-    showMainMenu(os, menuName, GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(new PopupCheckerByText(cutMenuPath, itemsNames, expectedState, GTGlobals::UseMouse));
+    showMainMenu(menuName, GTGlobals::UseMouse);
     GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showMainMenu"
-void GTMenuPrivate::showMainMenu(GUITestOpStatus& os, const QString& menuName, GTGlobals::UseMethod m) {
+void GTMenuPrivate::showMainMenu(const QString& menuName, GTGlobals::UseMethod m) {
     QMainWindow* mainWindow = nullptr;
     QList<QAction*> resultList;
-    foreach (QWidget* parent, GTMainWindow::getMainWindowsAsWidget(os)) {
+    foreach (QWidget* parent, GTMainWindow::getMainWindowsAsWidget()) {
         QList<QAction*> list = parent->findChildren<QAction*>();
         bool isContainMenu = false;
         for (QAction* act : qAsConst(list)) {

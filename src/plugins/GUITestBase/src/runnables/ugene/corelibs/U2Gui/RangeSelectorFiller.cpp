@@ -31,16 +31,16 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ZoomToRangeDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ZoomToRangeDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (minVal != -1) {
-        GTLineEdit::setText(os, "start_edit_line", QString::number(minVal), dialog);
+        GTLineEdit::setText("start_edit_line", QString::number(minVal), dialog);
     }
     if (maxVal != -1) {
-        GTLineEdit::setText(os, "end_edit_line", QString::number(maxVal), dialog);
+        GTLineEdit::setText("end_edit_line", QString::number(maxVal), dialog);
     }
 
-    GTWidget::click(os, GTWidget::findButtonByText(os, "Ok", dialog));
+    GTWidget::click(GTWidget::findButtonByText("Ok", dialog));
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

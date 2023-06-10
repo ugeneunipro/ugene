@@ -33,23 +33,23 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::BuildIndexDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void BuildIndexDialogFiller::commonScenario() {
-    auto dialog = GTWidget::getActiveModalWidget(os);
+    auto dialog = GTWidget::getActiveModalWidget();
 
-    auto methodNamesBox = GTWidget::findComboBox(os, "methodNamesBox", dialog);
+    auto methodNamesBox = GTWidget::findComboBox("methodNamesBox", dialog);
     for (int i = 0; i < methodNamesBox->count(); i++) {
         if (methodNamesBox->itemText(i) == method) {
-            GTComboBox::selectItemByIndex(os, methodNamesBox, i);
+            GTComboBox::selectItemByIndex(methodNamesBox, i);
         }
     }
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, refPath, refFileName));
-    GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(refPath, refFileName));
+    GTWidget::click(GTWidget::findWidget("addRefButton", dialog));
 
     if (!useDefaultIndexName) {
-        GTLineEdit::setText(os, "indexFileNameEdit", indPath + indFileName, dialog);
+        GTLineEdit::setText("indexFileNameEdit", indPath + indFileName, dialog);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

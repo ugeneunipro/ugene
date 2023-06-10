@@ -31,12 +31,12 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::StartupDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void WorkflowMetaDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "urlEdit", url, dialog, false, true);
-    GTLineEdit::setText(os, "nameEdit", name, dialog);
+    GTLineEdit::setText("urlEdit", url, dialog, false, true);
+    GTLineEdit::setText("nameEdit", name, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

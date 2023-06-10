@@ -30,7 +30,8 @@ class Primer3DialogFiller : public Filler {
 public:
     class Primer3Settings {
     public:
-        Primer3Settings() {}
+        Primer3Settings() {
+        }
 
         // Result primers number (deprecated)
         int resultsCount = -1;
@@ -67,7 +68,7 @@ public:
         bool notRun = false;
     };
 
-    Primer3DialogFiller(HI::GUITestOpStatus& os, const Primer3Settings& settings = Primer3Settings());
+    Primer3DialogFiller(const Primer3Settings& settings = Primer3Settings());
     void commonScenario();
 
 private:
@@ -88,7 +89,6 @@ private:
     void loadFromFileManually(QWidget* parent);
     QWidget* getWidgetTab(QWidget* wt) const;
     void findAllChildrenWithNames(QObject* obj, QMap<QString, QObject*>& children);
-
 
     Primer3Settings settings;
 };

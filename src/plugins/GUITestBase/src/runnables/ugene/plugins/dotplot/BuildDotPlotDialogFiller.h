@@ -28,7 +28,7 @@ using namespace HI;
 
 class BuildDotPlotFiller : public Filler {
 public:
-    BuildDotPlotFiller(HI::GUITestOpStatus& _os,
+    BuildDotPlotFiller(
                        const QString& _firstFileName,
                        const QString& _secondFileName = "",
                        bool _mergeFirstBoxChecked = false,

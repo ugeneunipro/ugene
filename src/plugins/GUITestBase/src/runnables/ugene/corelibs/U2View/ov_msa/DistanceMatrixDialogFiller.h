@@ -32,9 +32,9 @@ public:
         NONE
     };
 
-    DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, bool hamming = true, bool counts = true, bool excludeGaps = true);
-    DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, SaveFormat format, QString path);
-    DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
+    DistanceMatrixDialogFiller(bool hamming = true, bool counts = true, bool excludeGaps = true);
+    DistanceMatrixDialogFiller(SaveFormat format, QString path);
+    DistanceMatrixDialogFiller(CustomScenario* c);
 
     virtual void commonScenario();
 

@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef HI_GUI_GTMOUSE_H_
-#define HI_GUI_GTMOUSE_H_
+#pragma once
 
 #include <QtWidgets/QWidget>
 
@@ -30,9 +29,8 @@ namespace HI {
 
 class HI_EXPORT GTMouseUtils {
 public:
-    static void moveCursorToWidget(GUITestOpStatus& os, QWidget* widget);
-    static void moveCursorOutOfWidget(GUITestOpStatus& os, QWidget* widget);
+    static void moveCursorToWidget(QWidget* widget);
+    static void moveCursorOutOfWidget(QWidget* widget);
 };
 
 }  // namespace HI
-#endif

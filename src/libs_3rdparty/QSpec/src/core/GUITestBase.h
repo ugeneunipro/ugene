@@ -1,6 +1,4 @@
-#ifndef _HI_GUI_TEST_BASE_H_
-#define _HI_GUI_TEST_BASE_H_
-
+#pragma once
 #include <QtGui>
 
 #include "core/GUITest.h"
@@ -45,5 +43,3 @@ protected:
 };
 
 }  // namespace HI
-
-#endif

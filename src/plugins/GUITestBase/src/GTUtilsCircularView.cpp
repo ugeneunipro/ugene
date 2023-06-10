@@ -37,13 +37,11 @@ const QString GTUtilsCv::actionName = "CircularViewAction";
 // CV common test utils
 //////////////////////////////////////////////////////////////////////////
 #define GT_METHOD_NAME "cvBtn::isPresent"
-bool GTUtilsCv::isCvPresent(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget) {
+bool GTUtilsCv::isCvPresent(ADVSingleSequenceWidget* seqWidget) {
     CHECK_SET_ERR_RESULT(seqWidget != nullptr, "NULL sequence widget!", false);
 
     QString cvWidgetName = "CV_" + seqWidget->objectName();
-    auto cvWidget = GTWidget::findWidget(os, cvWidgetName, nullptr, {false});
-    CHECK_SET_ERR_RESULT(!os.isCoR(), "Error getting CV widget!", false);
-
+    auto cvWidget = GTWidget::findWidget(cvWidgetName, nullptr, {false});
     return cvWidget != nullptr;
 }
 #undef GT_METHOD_NAME
@@ -52,18 +50,16 @@ bool GTUtilsCv::isCvPresent(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* se
 // GTUtilsCv::cvBtn
 //////////////////////////////////////////////////////////////////////////
 #define GT_METHOD_NAME "cvBtn::isPresent"
-bool GTUtilsCv::cvBtn::isPresent(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget) {
-    QAbstractButton* cvButton = getCvButton(os, seqWidget, false);
-    CHECK_SET_ERR_RESULT(!os.isCoR(), "Error getting CV button!", false);
+bool GTUtilsCv::cvBtn::isPresent(ADVSingleSequenceWidget* seqWidget) {
+    QAbstractButton* cvButton = getCvButton(seqWidget, false);
     return cvButton != nullptr;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "cvBtn::isChecked"
-bool GTUtilsCv::cvBtn::isChecked(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget) {
-    QAbstractButton* cvButton = getCvButton(os, seqWidget, true /* CV button must exist */);
+bool GTUtilsCv::cvBtn::isChecked(ADVSingleSequenceWidget* seqWidget) {
+    QAbstractButton* cvButton = getCvButton(seqWidget, true /* CV button must exist */);
 
-    CHECK_SET_ERR_RESULT(!os.isCoR(), "Error getting CV button!", false);
     SAFE_POINT(cvButton != nullptr, "cvButton is NULL!", false);
 
     CHECK_SET_ERR_RESULT(cvButton->isCheckable(), "CV button is not checkable!", false);
@@ -73,14 +69,10 @@ bool GTUtilsCv::cvBtn::isChecked(HI::GUITestOpStatus& os, ADVSingleSequenceWidge
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "cvBtn::click"
-void GTUtilsCv::cvBtn::click(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget) {
-    QAbstractButton* cvButton = getCvButton(os, seqWidget, true /* CV button must exist */);
-
-    CHECK_OP_SET_ERR(os, "Error getting CV button!");
+void GTUtilsCv::cvBtn::click(ADVSingleSequenceWidget* seqWidget) {
+    QAbstractButton* cvButton = getCvButton(seqWidget, true /* CV button must exist */);
     SAFE_POINT(nullptr != cvButton, "cvButton is NULL!", );
-
-    GTWidget::click(os, cvButton);
-    CHECK_OP_SET_ERR(os, "Error clicking CV button!");
+    GTWidget::click(cvButton);
 }
 #undef GT_METHOD_NAME
 
@@ -88,23 +80,23 @@ void GTUtilsCv::cvBtn::click(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* s
 // GTUtilsCv::commonCvBtn
 //////////////////////////////////////////////////////////////////////////
 #define GT_METHOD_NAME "commonCvBtn::mustExist"
-void GTUtilsCv::commonCvBtn::mustExist(HI::GUITestOpStatus& os) {
-    GTWidget::findWidget(os, "globalToggleViewAction_widget");
+void GTUtilsCv::commonCvBtn::mustExist() {
+    GTWidget::findWidget("globalToggleViewAction_widget");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "commonCvBtn::click"
-void GTUtilsCv::commonCvBtn::click(HI::GUITestOpStatus& os) {
-    auto button = GTWidget::findWidget(os, "globalToggleViewAction_widget");
+void GTUtilsCv::commonCvBtn::click() {
+    auto button = GTWidget::findWidget("globalToggleViewAction_widget");
 
     if (!button->isVisible()) {
-        auto ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), {false});
+        auto ext_button = GTWidget::findWidget("qt_toolbar_ext_button", GTWidget::findWidget("mwtoolbar_activemdi"), {false});
         if (ext_button != nullptr) {
-            GTWidget::click(os, ext_button);
+            GTWidget::click(ext_button);
         }
         GTGlobals::sleep(500);
     }
-    GTWidget::click(os, button);
+    GTWidget::click(button);
 }
 #undef GT_METHOD_NAME
 
@@ -113,10 +105,10 @@ void GTUtilsCv::commonCvBtn::click(HI::GUITestOpStatus& os) {
 ////////////////////////////////////////////////////////////////////////
 
 #define GT_METHOD_NAME "GTUtilsCv::getCvButton"
-QAbstractButton* GTUtilsCv::getCvButton(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget, bool setFailedIfNotFound) {
+QAbstractButton* GTUtilsCv::getCvButton(ADVSingleSequenceWidget* seqWidget, bool setFailedIfNotFound) {
     GT_CHECK_RESULT(nullptr != seqWidget, "NULL sequence widget!", nullptr)
 
-    QAbstractButton* cvButton = GTAction::button(os, actionName, seqWidget, GTGlobals::FindOptions(setFailedIfNotFound));
+    QAbstractButton* cvButton = GTAction::button(actionName, seqWidget, GTGlobals::FindOptions(setFailedIfNotFound));
     return cvButton;
 }
 #undef GT_METHOD_NAME

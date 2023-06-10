@@ -31,23 +31,23 @@ using namespace HI;
 
 class GTUtilsBookmarksTreeView {
 public:
-    static QTreeWidget* getTreeWidget(HI::GUITestOpStatus& os);
+    static QTreeWidget* getTreeWidget();
 
     // returns center or item's rect
     // fails if the item wasn't found
-    static QPoint getItemCenter(GUITestOpStatus& os, const QString& itemName);
+    static QPoint getItemCenter(const QString& itemName);
 
-    static QTreeWidgetItem* findItem(GUITestOpStatus& os, const QString& itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
-    static QString getSelectedItem(GUITestOpStatus& os);
+    static QTreeWidgetItem* findItem(const QString& itemName, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QString getSelectedItem();
 
-    static void addBookmark(GUITestOpStatus& os, const QString& viewName, const QString& bookmarkName = QString());
+    static void addBookmark(const QString& viewName, const QString& bookmarkName = QString());
 
     // updates bookmark state
-    static void updateBookmark(GUITestOpStatus& os, const QString& bookmarkName);
-    static void deleteBookmark(GUITestOpStatus& os, const QString& bookmarkName);
+    static void updateBookmark(const QString& bookmarkName);
+    static void deleteBookmark(const QString& bookmarkName);
 
-    static void clickBookmark(GUITestOpStatus& os, const QString& bookmarkName);
-    static void doubleClickBookmark(GUITestOpStatus& os, const QString& bookmarkName);
+    static void clickBookmark(const QString& bookmarkName);
+    static void doubleClickBookmark(const QString& bookmarkName);
 
     static const QString widgetName;
 };

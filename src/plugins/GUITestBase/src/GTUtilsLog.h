@@ -57,13 +57,13 @@ public:
 class GTUtilsLog {
 public:
     /** Waits for the message to appear in the log with the given timeout. */
-    static void checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& logTracer, const QString& message, int timeoutMillis = 30000);
+    static void checkMessageWithWait(const GTLogTracer& logTracer, const QString& message, int timeoutMillis = 30000);
 
     /**
      * Checks that there are exactly 'expectedMessageCount' in the log with 'messagePart' text token inside.
      * 'context' is a message marker added to the failure string. Used to identify individual method calls.
      */
-    static void checkMessageWithTextCount(HI::GUITestOpStatus& os, const QString& messagePart, int expectedMessageCount, const QString& context = "");
+    static void checkMessageWithTextCount(const QString& messagePart, int expectedMessageCount, const QString& context = "");
 };
 
 }  // namespace U2

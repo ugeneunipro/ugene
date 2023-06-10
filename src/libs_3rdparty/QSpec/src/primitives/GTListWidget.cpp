@@ -30,7 +30,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTListWidget"
 
 #define GT_METHOD_NAME "click"
-void GTListWidget::click(GUITestOpStatus& os, QListWidget* listWidget, const QString& text, Qt::MouseButton button, int foundItemsNum) {
+void GTListWidget::click(QListWidget* listWidget, const QString& text, Qt::MouseButton button, int foundItemsNum) {
     QList<QListWidgetItem*> list = listWidget->findItems(text, Qt::MatchExactly);
     GT_CHECK(0 <= foundItemsNum && foundItemsNum < list.size(), QString("item %1 not found").arg(text));
 
@@ -48,8 +48,7 @@ void GTListWidget::click(GUITestOpStatus& os, QListWidget* listWidget, const QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isItemChecked"
-bool GTListWidget::isItemChecked(GUITestOpStatus& os, QListWidget* listWidget, const QString& text) {
-    Q_UNUSED(os);
+bool GTListWidget::isItemChecked(QListWidget* listWidget, const QString& text) {
     GT_CHECK_RESULT(NULL != listWidget, "List widget is NULL", false);
     QList<QListWidgetItem*> list = listWidget->findItems(text, Qt::MatchExactly);
     GT_CHECK_RESULT(!list.isEmpty(), QString("Item '%1' wasn't' not found").arg(text), false);
@@ -59,31 +58,28 @@ bool GTListWidget::isItemChecked(GUITestOpStatus& os, QListWidget* listWidget, c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
-void GTListWidget::checkItem(GUITestOpStatus& os, QListWidget* listWidget, const QString& text, bool newState) {
-    Q_UNUSED(os);
+void GTListWidget::checkItem(QListWidget* listWidget, const QString& text, bool newState) {
     GT_CHECK(NULL != listWidget, "List widget is NULL");
-    if (newState != isItemChecked(os, listWidget, text)) {
-        click(os, listWidget, text);
+    if (newState != isItemChecked(listWidget, text)) {
+        click(listWidget, text);
         GTKeyboardDriver::keyClick(Qt::Key_Space);
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkAllItems"
-void GTListWidget::checkAllItems(GUITestOpStatus& os, QListWidget* listWidget, bool newState) {
-    Q_UNUSED(os);
+void GTListWidget::checkAllItems(QListWidget* listWidget, bool newState) {
     GT_CHECK(NULL != listWidget, "List widget is NULL");
 
-    const QStringList itemTexts = getItems(os, listWidget);
+    const QStringList itemTexts = getItems(listWidget);
     foreach (const QString& itemText, itemTexts) {
-        checkItem(os, listWidget, itemText, newState);
+        checkItem(listWidget, itemText, newState);
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItems"
-QStringList GTListWidget::getItems(GUITestOpStatus& os, QListWidget* listWidget) {
-    Q_UNUSED(os);
+QStringList GTListWidget::getItems(QListWidget* listWidget) {
     GT_CHECK_RESULT(NULL != listWidget, "List widget is NULL", QStringList());
     QStringList itemTexts;
     QList<QListWidgetItem*> items = listWidget->findItems("", Qt::MatchContains);
@@ -95,7 +91,7 @@ QStringList GTListWidget::getItems(GUITestOpStatus& os, QListWidget* listWidget)
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectItemsByText"
-QListWidgetItem* GTListWidget::findItemByText(GUITestOpStatus& os, QListWidget* listWidget, const QString& text) {
+QListWidgetItem* GTListWidget::findItemByText(QListWidget* listWidget, const QString& text) {
     QList<QListWidgetItem*> result;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && result.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -108,7 +104,7 @@ QListWidgetItem* GTListWidget::findItemByText(GUITestOpStatus& os, QListWidget* 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findItemsByText"
-QList<QListWidgetItem*> GTListWidget::findItemsByText(GUITestOpStatus& os, QListWidget* listWidget, const QStringList& itemTexts) {
+QList<QListWidgetItem*> GTListWidget::findItemsByText(QListWidget* listWidget, const QStringList& itemTexts) {
     QList<QListWidgetItem*> result;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && result.isEmpty(); time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -127,29 +123,29 @@ QList<QListWidgetItem*> GTListWidget::findItemsByText(GUITestOpStatus& os, QList
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectItemsByText"
-void GTListWidget::selectItemsByText(HI::GUITestOpStatus& os, QListWidget* listWidget, const QStringList& itemTexts) {
+void GTListWidget::selectItemsByText(QListWidget* listWidget, const QStringList& itemTexts) {
     GT_CHECK_RESULT(!itemTexts.empty(), "List of items to select is empty", );
     QList<QListWidgetItem*> items;
     for (const QString& name : qAsConst(itemTexts)) {
-        items << findItemByText(os, listWidget, name);
+        items << findItemByText(listWidget, name);
     }
-    selectItems(os, items);
+    selectItems(items);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectItems"
-void GTListWidget::selectItems(HI::GUITestOpStatus& os, const QList<QListWidgetItem*>& items) {
+void GTListWidget::selectItems(const QList<QListWidgetItem*>& items) {
     GT_CHECK_RESULT(!items.empty(), "List of items to select is empty", );
 
     // Click on the first item to remove current selection. After this point only the first item is selected.
-    GTListWidget::scrollToItem(os, items.first());
-    GTMouseDriver::moveTo(getItemCenter(os, items.first()));
+    GTListWidget::scrollToItem(items.first());
+    GTMouseDriver::moveTo(getItemCenter(items.first()));
     GTMouseDriver::click();
 
     for (QListWidgetItem* item : qAsConst(items)) {
         if (!item->isSelected()) {
-            GTListWidget::scrollToItem(os, item);
-            GTMouseDriver::moveTo(getItemCenter(os, item));
+            GTListWidget::scrollToItem(item);
+            GTMouseDriver::moveTo(getItemCenter(item));
             GTKeyboardDriver::keyPress(Qt::Key_Control);
             GTMouseDriver::click();
             GTKeyboardDriver::keyRelease(Qt::Key_Control);
@@ -160,35 +156,35 @@ void GTListWidget::selectItems(HI::GUITestOpStatus& os, const QList<QListWidgetI
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToItem"
-void GTListWidget::scrollToItem(GUITestOpStatus& os, QListWidgetItem* item) {
+void GTListWidget::scrollToItem(QListWidgetItem* item) {
     GT_CHECK_RESULT(item != nullptr, "item is NULL", );
     class ScrollInMainThreadScenario : public CustomScenario {
     public:
         ScrollInMainThreadScenario(QListWidgetItem* _item)
             : item(_item) {
         }
-        void run(HI::GUITestOpStatus& os) override {
+        void run() override {
             QListWidget* list = item->listWidget();
             GT_CHECK_RESULT(list != nullptr, "List widget is nullptr!", );
             list->scrollToItem(item);
         }
         QListWidgetItem* item = nullptr;
     };
-    GTThread::runInMainThread(os, new ScrollInMainThreadScenario(item));
+    GTThread::runInMainThread(new ScrollInMainThreadScenario(item));
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemCenter"
-QPoint GTListWidget::getItemCenter(GUITestOpStatus& os, QListWidgetItem* item) {
-    QPoint itemRectCenterPoint = getItemRect(os, item).center();
+QPoint GTListWidget::getItemCenter(QListWidgetItem* item) {
+    QPoint itemRectCenterPoint = getItemRect(item).center();
     QListWidget* listWidget = item->listWidget();
     return listWidget->viewport()->mapToGlobal(itemRectCenterPoint);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getItemRect"
-QRect GTListWidget::getItemRect(GUITestOpStatus& os, QListWidgetItem* item) {
+QRect GTListWidget::getItemRect(QListWidgetItem* item) {
     GT_CHECK_RESULT(item != nullptr, "item is nullptr", {});
     GT_CHECK_RESULT(!item->isHidden(), "item is hidden", {});
 
@@ -199,8 +195,8 @@ QRect GTListWidget::getItemRect(GUITestOpStatus& os, QListWidgetItem* item) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkSelection"
-void GTListWidget::checkSelection(GUITestOpStatus& os, QListWidget* listWidget, const QStringList& itemTexts) {
-    QList<QListWidgetItem*> items = findItemsByText(os, listWidget, itemTexts);
+void GTListWidget::checkSelection(QListWidget* listWidget, const QStringList& itemTexts) {
+    QList<QListWidgetItem*> items = findItemsByText(listWidget, itemTexts);
     QList<QListWidgetItem*> selectedItems = listWidget->selectedItems();
     std::sort(items.begin(), items.end());
     std::sort(selectedItems.begin(), selectedItems.end());

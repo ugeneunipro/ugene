@@ -26,8 +26,8 @@
 namespace U2 {
 using namespace HI;
 
-EscapeClicker::EscapeClicker(HI::GUITestOpStatus& os, const QString& name, CustomScenario* scenario)
-    : Filler(os, name, scenario) {
+EscapeClicker::EscapeClicker(const QString& name, CustomScenario* scenario)
+    : Filler(name, scenario) {
 }
 
 void EscapeClicker::commonScenario() {

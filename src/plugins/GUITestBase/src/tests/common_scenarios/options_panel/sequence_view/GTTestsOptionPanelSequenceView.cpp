@@ -58,169 +58,169 @@ namespace GUITest_common_scenarios_options_panel_sequence_view {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // checking 'next' 'prev' buttons functionality
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
-    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isGetAnnotationsEnabled(os), "Get annotations is enabled");
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isGetAnnotationsEnabled(), "Get annotations is enabled");
+    GTUtilsOptionPanelSequenceView::enterPattern("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2"), "Results string not match");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/2"), "Results string not match");
 
-    GTUtilsOptionPanelSequenceView::clickNext(os);
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 2/2"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::clickNext();
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 2/2"), "Results string not match");
 
-    GTUtilsOptionPanelSequenceView::clickNext(os);
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::clickNext();
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/2"), "Results string not match");
 
-    GTUtilsOptionPanelSequenceView::clickPrev(os);
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 2/2"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::clickPrev();
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 2/2"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // checking searching with invalid pattern
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "zz");
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern("zz");
 
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/0"), "Results string is not match");
-    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isPrevNextEnabled(os), "Next and prev buttons are enabled");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: -/0"), "Results string is not match");
+    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isPrevNextEnabled(), "Next and prev buttons are enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // checking results with diffirent algorithms
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
-    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
-    GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, testDir + "_common_data/FindAlgorithm/", "find_pattern_op_1.fa");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/40"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern();
+    GTUtilsOptionPanelSequenceView::enterPatternFromFile(testDir + "_common_data/FindAlgorithm/", "find_pattern_op_1.fa");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/40"), "Results string not match");
 
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    GTUtilsOptionPanelSequenceView::setStrand(os, "Direct");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/16"), "Results string not match");
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Search in"));
+    GTUtilsOptionPanelSequenceView::setStrand("Direct");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/16"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     // checking saving annotations after search
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    GTUtilsOptionPanelSequenceView::toggleSaveAnnotationsTo(os);
-    GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(os, sandBoxDir + "op_seqview_test_0001.gb");
-    GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTWidget::findWidget(os, "annotations_tree_widget"));
-    GTUtilsAnnotationsTreeView::findItem(os, "misc_feature  (0, 2)");
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    GTUtilsOptionPanelSequenceView::toggleSaveAnnotationsTo();
+    GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(sandBoxDir + "op_seqview_test_0001.gb");
+    GTUtilsOptionPanelSequenceView::clickGetAnnotation();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTWidget::click(GTWidget::findWidget("annotations_tree_widget"));
+    GTUtilsAnnotationsTreeView::findItem("misc_feature  (0, 2)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     // checking searching with different parameter 'match percentage'
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAAAAAAAAAAAAAAAAA");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/40"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::enterPattern("AAAAAAAAAAAAAAAAAAAA");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/40"), "Results string not match");
 
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
-    GTUtilsOptionPanelSequenceView::setAlgorithm(os, "Substitute");
-    GTUtilsOptionPanelSequenceView::setMatchPercentage(os, 75);
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/1649"), "Results string not match");
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Search algorithm"));
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Substitute");
+    GTUtilsOptionPanelSequenceView::setMatchPercentage(75);
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/1649"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    1. Open "data/samples/FASTA/human_T1.fa".
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "Search In Sequence" options panel tab.
     //    Expected state: all show/hide widgetsare collapsed.
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
-    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isSearchAlgorithmShowHideWidgetOpened(os), "'Search algorithm' subwidget is unexpectedly opened");
-    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isSearchInShowHideWidgetOpened(os), "'Search in' subwidget is unexpectedly opened");
-    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isOtherSettingsShowHideWidgetOpened(os), "'Other settings' subwidget is unexpectedly opened");
-    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isSaveAnnotationToShowHideWidgetOpened(os), "'Save annotations to' subwidget is unexpectedly opened");
-    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isAnnotationParametersShowHideWidgetOpened(os), "'Annotation parameters' subwidget is unexpectedly opened");
+    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isSearchAlgorithmShowHideWidgetOpened(), "'Search algorithm' subwidget is unexpectedly opened");
+    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isSearchInShowHideWidgetOpened(), "'Search in' subwidget is unexpectedly opened");
+    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isOtherSettingsShowHideWidgetOpened(), "'Other settings' subwidget is unexpectedly opened");
+    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isSaveAnnotationToShowHideWidgetOpened(), "'Save annotations to' subwidget is unexpectedly opened");
+    CHECK_SET_ERR(!GTUtilsOptionPanelSequenceView::isAnnotationParametersShowHideWidgetOpened(), "'Annotation parameters' subwidget is unexpectedly opened");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // checking results with searching in translation
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "FFFFFFFFF");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/0"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::enterPattern("FFFFFFFFF");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: -/0"), "Results string not match");
 
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    GTUtilsOptionPanelSequenceView::setSearchInTranslation(os, true);
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/2"), "Results string not match");
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Search in"));
+    GTUtilsOptionPanelSequenceView::setSearchInTranslation(true);
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/2"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     // checking results with searching in translation
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAAAAAAAAAAAAAAAAA");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/40"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::enterPattern("AAAAAAAAAAAAAAAAAAAA");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/40"), "Results string not match");
 
-    GTUtilsSequenceView::selectSequenceRegion(os, 1, 9000);
+    GTUtilsSequenceView::selectSequenceRegion(1, 9000);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Selected region");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: -/2"), "Results string not match");
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Search in"));
+    GTUtilsOptionPanelSequenceView::setSearchInLocation("Selected region");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: -/2"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     // checking results with searching in translation
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "AAAAAAAAAAAAAAAAAAAA");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/40"), "Results string not match");
+    GTUtilsOptionPanelSequenceView::enterPattern("AAAAAAAAAAAAAAAAAAAA");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/40"), "Results string not match");
 
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
-    GTUtilsOptionPanelSequenceView::setSearchInLocation(os, "Custom region");
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Search in"));
+    GTUtilsOptionPanelSequenceView::setSearchInLocation("Custom region");
 
-    auto regLE = GTWidget::findLineEdit(os, "editEnd", nullptr, {false});
+    auto regLE = GTWidget::findLineEdit("editEnd", nullptr, {false});
     CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
-    GTLineEdit::setText(os, regLE, "40000");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/12"), "Results string not match");
+    GTLineEdit::setText(regLE, "40000");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/12"), "Results string not match");
 
     regLE = nullptr;
-    regLE = GTWidget::findLineEdit(os, "editStart", nullptr, {false});
+    regLE = GTWidget::findLineEdit("editStart", nullptr, {false});
     CHECK_SET_ERR(regLE != nullptr, "LineEdit is NULL");
-    GTLineEdit::setText(os, regLE, "9000");
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/10"), "Results string not match");
+    GTLineEdit::setText(regLE, "9000");
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/10"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     // checking results with searching in translation
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
-    GTUtilsOptionPanelSequenceView::enterPattern(os, "A");
+    GTUtilsOptionPanelSequenceView::enterPattern("A");
 
-    GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
-    GTUtilsOptionPanelSequenceView::setSetMaxResults(os, 99900);
-    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/99900"), "Results string not match");
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Other settings"));
+    GTUtilsOptionPanelSequenceView::setSetMaxResults(99900);
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText("Results: 1/99900"), "Results string not match");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -231,10 +231,10 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     // Expected: Melting temperature = 78.57
     // Open and close the "Statistics" tab again
     // Expected: Melting temperature = 78.57
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
-    auto statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Statistics);
+    auto statisticsLabel = GTWidget::findLabel("Common Statistics");
     QString roughMeltTemp = GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("83.70");
     CHECK_SET_ERR(statisticsLabel->text().contains(roughMeltTemp), QString("No expected string: %1").arg(roughMeltTemp));
 
@@ -250,16 +250,16 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     parameters.insert(GTUtilsMeltingTemperature::Parameter::MaxLen, "33");
     parameters.insert(GTUtilsMeltingTemperature::Parameter::ThermodynamicTable, "0");
     parameters.insert(GTUtilsMeltingTemperature::Parameter::SaltCorrectionFormula, "2");
-    GTUtilsDialog::waitForDialog(os, new MeltingTemperatureSettingsDialogFiller(os, parameters));
-    GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new MeltingTemperatureSettingsDialogFiller(parameters));
+    GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     QString primer3MeltTemp = GTUtilsOptionPanelSequenceView::meltingTmReportString.arg("78.57");
     CHECK_SET_ERR(statisticsLabel->text().contains(primer3MeltTemp), QString("No expected string: %1").arg(primer3MeltTemp));
 
-    GTUtilsOptionPanelSequenceView::closeTab(os, GTUtilsOptionPanelSequenceView::Statistics);
-    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
-    statisticsLabel = GTWidget::findLabel(os, "Common Statistics");
+    GTUtilsOptionPanelSequenceView::closeTab(GTUtilsOptionPanelSequenceView::Statistics);
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Statistics);
+    statisticsLabel = GTWidget::findLabel("Common Statistics");
     CHECK_SET_ERR(statisticsLabel->text().contains(primer3MeltTemp), QString("No expected string: %1").arg(primer3MeltTemp));
 }
 

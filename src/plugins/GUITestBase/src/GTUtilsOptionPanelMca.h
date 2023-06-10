@@ -41,28 +41,28 @@ public:
     static const QMap<Tabs, QString> tabsNames;
     static const QMap<Tabs, QString> innerWidgetNames;
 
-    static void toggleTab(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent = nullptr);
-    static void openTab(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent = nullptr);
-    static void closeTab(HI::GUITestOpStatus& os, Tabs tab);
-    static bool isTabOpened(HI::GUITestOpStatus& os, Tabs tab, QWidget* parent = nullptr);
+    static void toggleTab(Tabs tab, QWidget* parent = nullptr);
+    static void openTab(Tabs tab, QWidget* parent = nullptr);
+    static void closeTab(Tabs tab);
+    static bool isTabOpened(Tabs tab, QWidget* parent = nullptr);
 
-    static void setConsensusType(HI::GUITestOpStatus& os, const QString& consensusTypeName);
-    static QString getConsensusType(HI::GUITestOpStatus& os);
-    static QStringList getConsensusTypes(HI::GUITestOpStatus& os);
+    static void setConsensusType(const QString& consensusTypeName);
+    static QString getConsensusType();
+    static QStringList getConsensusTypes();
 
-    static int getHeight(HI::GUITestOpStatus& os);
-    static int getLength(HI::GUITestOpStatus& os);
+    static int getHeight();
+    static int getLength();
 
-    static void setThreshold(HI::GUITestOpStatus& os, int threshold);
-    static int getThreshold(HI::GUITestOpStatus& os);
+    static void setThreshold(int threshold);
+    static int getThreshold();
 
-    static void setExportFileName(HI::GUITestOpStatus& os, QString exportFileName);
-    static QString getExportFileName(HI::GUITestOpStatus& os);
+    static void setExportFileName(QString exportFileName);
+    static QString getExportFileName();
 
-    static void setFileFormat(HI::GUITestOpStatus& os, FileFormat fileFormat);
+    static void setFileFormat(FileFormat fileFormat);
 
-    static void pushResetButton(HI::GUITestOpStatus& os);
-    static void pushExportButton(HI::GUITestOpStatus& os);
+    static void pushResetButton();
+    static void pushExportButton();
 
     /*
      * Open the "reads" tab and set up the "Alternative mutations" widget
@@ -71,6 +71,6 @@ public:
      * @value persentage value, default - 75
      * @withSpinbox set value with the spin box if true, otherwise with slider
      **/
-    static void showAlternativeMutations(HI::GUITestOpStatus& os, bool show, int value = 75, bool withSpinbox = true, QWidget* parent = nullptr);
+    static void showAlternativeMutations(bool show, int value = 75, bool withSpinbox = true, QWidget* parent = nullptr);
 };
 }  // namespace U2

@@ -32,16 +32,16 @@ namespace U2 {
 #define GT_CLASS_NAME "GTMSAEditorStatusWidget"
 
 #define GT_METHOD_NAME "getStatusWidget"
-QWidget* GTMSAEditorStatusWidget::getStatusWidget(GUITestOpStatus& os) {
-    MsaEditorWgt *editor = GTUtilsMsaEditor::getEditorUi(os);
-    QWidget *mainUI = editor->getEditor()->getUI();
-    return GTWidget::findExactWidget<QWidget *>(os, "msa_editor_status_bar", mainUI);
+QWidget* GTMSAEditorStatusWidget::getStatusWidget() {
+    MsaEditorWgt* editor = GTUtilsMsaEditor::getEditorUi();
+    QWidget* mainUI = editor->getEditor()->getUI();
+    return GTWidget::findExactWidget<QWidget*>("msa_editor_status_bar", mainUI);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "length"
-int GTMSAEditorStatusWidget::length(HI::GUITestOpStatus& os, QWidget* w) {
-    auto label = GTWidget::findLabel(os, "Column", w);
+int GTMSAEditorStatusWidget::length(QWidget* w) {
+    auto label = GTWidget::findLabel("Column", w);
 
     QString labelText = label->text();
     QString lengthString = labelText.section('/', -1, -1);
@@ -55,8 +55,8 @@ int GTMSAEditorStatusWidget::length(HI::GUITestOpStatus& os, QWidget* w) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequencesCount"
-int GTMSAEditorStatusWidget::getSequencesCount(HI::GUITestOpStatus& os, QWidget* w) {
-    auto label = GTWidget::findLabel(os, "Line", w);
+int GTMSAEditorStatusWidget::getSequencesCount(QWidget* w) {
+    auto label = GTWidget::findLabel("Line", w);
 
     QString labelText = label->text();
     QString countString = labelText.section('/', -1, -1);
@@ -70,8 +70,8 @@ int GTMSAEditorStatusWidget::getSequencesCount(HI::GUITestOpStatus& os, QWidget*
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowNumberString"
-QString GTMSAEditorStatusWidget::getRowNumberString(GUITestOpStatus& os) {
-    auto lineLabel = GTWidget::findLabel(os, "Line", getStatusWidget(os));
+QString GTMSAEditorStatusWidget::getRowNumberString() {
+    auto lineLabel = GTWidget::findLabel("Line", getStatusWidget());
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Seq ").length() - 1).section('/', 0, 0).trimmed();
@@ -79,8 +79,8 @@ QString GTMSAEditorStatusWidget::getRowNumberString(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getRowsCountString"
-QString GTMSAEditorStatusWidget::getRowsCountString(GUITestOpStatus& os) {
-    auto lineLabel = GTWidget::findLabel(os, "Line", getStatusWidget(os));
+QString GTMSAEditorStatusWidget::getRowsCountString() {
+    auto lineLabel = GTWidget::findLabel("Line", getStatusWidget());
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Seq ").length() - 1).section('/', 1, 1).trimmed();
@@ -88,8 +88,8 @@ QString GTMSAEditorStatusWidget::getRowsCountString(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColumnNumberString"
-QString GTMSAEditorStatusWidget::getColumnNumberString(GUITestOpStatus& os) {
-    auto columnLabel = GTWidget::findLabel(os, "Column", getStatusWidget(os));
+QString GTMSAEditorStatusWidget::getColumnNumberString() {
+    auto columnLabel = GTWidget::findLabel("Column", getStatusWidget());
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("Col ").length() - 1).section('/', 0, 0).trimmed();
@@ -97,8 +97,8 @@ QString GTMSAEditorStatusWidget::getColumnNumberString(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getColumnsCountString"
-QString GTMSAEditorStatusWidget::getColumnsCountString(GUITestOpStatus& os) {
-    auto columnLabel = GTWidget::findLabel(os, "Column", getStatusWidget(os));
+QString GTMSAEditorStatusWidget::getColumnsCountString() {
+    auto columnLabel = GTWidget::findLabel("Column", getStatusWidget());
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("Col ").length() - 1).section('/', 1, 1).trimmed();
@@ -106,8 +106,8 @@ QString GTMSAEditorStatusWidget::getColumnsCountString(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceUngappedPositionString"
-QString GTMSAEditorStatusWidget::getSequenceUngappedPositionString(GUITestOpStatus& os) {
-    auto positionLabel = GTWidget::findLabel(os, "Position", getStatusWidget(os));
+QString GTMSAEditorStatusWidget::getSequenceUngappedPositionString() {
+    auto positionLabel = GTWidget::findLabel("Position", getStatusWidget());
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("Pos ").length() - 1).section('/', 0, 0).trimmed();
@@ -115,8 +115,8 @@ QString GTMSAEditorStatusWidget::getSequenceUngappedPositionString(GUITestOpStat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceUngappedLengthString"
-QString GTMSAEditorStatusWidget::getSequenceUngappedLengthString(GUITestOpStatus& os) {
-    auto positionLabel = GTWidget::findLabel(os, "Position", getStatusWidget(os));
+QString GTMSAEditorStatusWidget::getSequenceUngappedLengthString() {
+    auto positionLabel = GTWidget::findLabel("Position", getStatusWidget());
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("Pos ").length() - 1).section('/', 1, 1).trimmed();

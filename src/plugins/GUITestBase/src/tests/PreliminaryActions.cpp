@@ -47,13 +47,13 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
     // Release mouse and keyboard buttons
     // Start dialogs hang checking
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     if (isOsWindows()) {
         QProcess::execute("closeAllErrors.exe");  // this exe file, compiled Autoit script
     }
 
-    GTUtilsDialog::cleanup(os, GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
+    GTUtilsDialog::cleanup(GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
 
     if (!isOsWindows()) {
         GTMouseDriver::release(Qt::RightButton);
@@ -76,7 +76,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
     CHECK_SET_ERR(mainWindow != nullptr, "main window is NULL");
 
     if (!mainWindow->isMaximized()) {
-        GTWidget::showMaximized(os, mainWindow);
+        GTWidget::showMaximized(mainWindow);
     }
 }
 
@@ -87,24 +87,23 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
     }
     // Backup some files used in tests directly.
     if (QDir(testDir).exists()) {
-        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj1.uprj");
-        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
-        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj2.uprj");
-        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj3.uprj");
-        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-        GTFile::backup(os, testDir + "_common_data/scenarios/project/proj5.uprj");
+        GTFile::backup(testDir + "_common_data/scenarios/project/proj1.uprj");
+        GTFile::backup(testDir + "_common_data/scenarios/project/proj2-1.uprj");
+        GTFile::backup(testDir + "_common_data/scenarios/project/proj2.uprj");
+        GTFile::backup(testDir + "_common_data/scenarios/project/proj3.uprj");
+        GTFile::backup(testDir + "_common_data/scenarios/project/proj4.uprj");
+        GTFile::backup(testDir + "_common_data/scenarios/project/proj5.uprj");
 
         // Files from the projects above.
-        GTFile::backup(os, testDir + "_common_data/scenarios/project/1.gb");
+        GTFile::backup(testDir + "_common_data/scenarios/project/1.gb");
 
-        GTFile::backup(os, dataDir + "workflow_samples/NGS/consensus.uwl");
+        GTFile::backup(dataDir + "workflow_samples/NGS/consensus.uwl");
     }
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0004) {
     // create a directory for screenshots
 
-    Q_UNUSED(os);
     QDir dir(QDir().absoluteFilePath(screenshotDir));
     if (!dir.exists(dir.absoluteFilePath(screenshotDir))) {
         dir.mkpath(dir.path());
@@ -117,7 +116,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mw != nullptr, "main window is NULL");
     if (isOsMac()) {
-        GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));
+        GTWidget::click(mw, Qt::LeftButton, QPoint(200, 200));
     }
 }
 

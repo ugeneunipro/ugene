@@ -33,8 +33,8 @@ public:
     enum Button { Start,
                   Cancel };
 
-    FindRepeatsDialogFiller(HI::GUITestOpStatus& os, const QString& _resultFilesPath, bool _searchInverted = false, int minRepeatLength = -1, int repeatsIdentity = -1, int minDistance = -1);
-    FindRepeatsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    FindRepeatsDialogFiller(const QString& _resultFilesPath, bool _searchInverted = false, int minRepeatLength = -1, int repeatsIdentity = -1, int minDistance = -1);
+    FindRepeatsDialogFiller(CustomScenario* scenario);
 
     virtual void commonScenario();
     Button button;

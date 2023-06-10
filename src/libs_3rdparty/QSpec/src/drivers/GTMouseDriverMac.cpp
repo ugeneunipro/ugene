@@ -38,7 +38,7 @@ static bool isPointInsideScreen(const QPoint& point) {
     CGDirectDisplayID displayID = CGMainDisplayID();
     int horres = CGDisplayPixelsWide(displayID);
     int vertres = CGDisplayPixelsHigh(displayID);
-    QRect screen(1, 1, horres - 2, vertres - 2); // Exclude border pixels like (0,0)
+    QRect screen(1, 1, horres - 2, vertres - 2);  // Exclude border pixels like (0,0)
     return screen.contains(point);
 }
 

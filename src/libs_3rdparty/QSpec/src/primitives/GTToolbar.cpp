@@ -29,15 +29,15 @@ namespace HI {
 #define GT_CLASS_NAME "GTToolbar"
 
 #define GT_METHOD_NAME "getToolbar"
-QToolBar* GTToolbar::getToolbar(GUITestOpStatus& os, const QString& toolbarSysName) {
-    auto toolbar = qobject_cast<QToolBar*>(GTWidget::findWidget(os, toolbarSysName));
+QToolBar* GTToolbar::getToolbar(const QString& toolbarSysName) {
+    auto toolbar = qobject_cast<QToolBar*>(GTWidget::findWidget(toolbarSysName));
     GT_CHECK_RESULT(toolbar != nullptr, "No such toolbar: " + toolbarSysName, nullptr);
     return toolbar;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWidgetForAction"
-QWidget* GTToolbar::getWidgetForAction(GUITestOpStatus& os, const QToolBar* toolbar, QAction* action) {
+QWidget* GTToolbar::getWidgetForAction(const QToolBar* toolbar, QAction* action) {
     GT_CHECK_RESULT(toolbar != nullptr, "Toolbar is nullptr", nullptr);  // the found widget is not a qtoolbar or doesn't exist
 
     QWidget* widget = toolbar->widgetForAction(action);
@@ -48,16 +48,16 @@ QWidget* GTToolbar::getWidgetForAction(GUITestOpStatus& os, const QToolBar* tool
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWidgetForActionObjectName"
-QWidget* GTToolbar::getWidgetForActionObjectName(GUITestOpStatus& os, const QToolBar* toolbar, const QString& actionName) {
+QWidget* GTToolbar::getWidgetForActionObjectName(const QToolBar* toolbar, const QString& actionName) {
     GT_CHECK_RESULT(toolbar != nullptr, "Toolbar is nullptr", nullptr);
-    QAction* action = GTToolbar::getActionByObjectName(os, actionName, toolbar);
-    return GTToolbar::getWidgetForAction(os, toolbar, action);
+    QAction* action = GTToolbar::getActionByObjectName(actionName, toolbar);
+    return GTToolbar::getWidgetForAction(toolbar, action);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getToolButtonByAction"
-QToolButton* GTToolbar::getToolButtonByAction(GUITestOpStatus& os, const QToolBar* toolbar, const QString& actionName) {
-    auto widget = GTToolbar::getWidgetForActionObjectName(os, toolbar, actionName);
+QToolButton* GTToolbar::getToolButtonByAction(const QToolBar* toolbar, const QString& actionName) {
+    auto widget = GTToolbar::getWidgetForActionObjectName(toolbar, actionName);
     auto button = qobject_cast<QToolButton*>(widget);
     GT_CHECK_RESULT(button != nullptr, "Not a tool button: " + actionName, nullptr);
     return button;
@@ -65,11 +65,11 @@ QToolButton* GTToolbar::getToolButtonByAction(GUITestOpStatus& os, const QToolBa
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getWidgetForActionTooltip"
-QWidget* GTToolbar::getWidgetForActionTooltip(GUITestOpStatus& os, const QToolBar* toolbar, const QString& tooltip) {
+QWidget* GTToolbar::getWidgetForActionTooltip(const QToolBar* toolbar, const QString& tooltip) {
     GT_CHECK_RESULT(toolbar != nullptr, "Toolbar is nullptr", nullptr);
     for (QAction* action : toolbar->actions()) {
         if (action->toolTip() == tooltip) {
-            return GTToolbar::getWidgetForAction(os, toolbar, action);
+            return GTToolbar::getWidgetForAction(toolbar, action);
         }
     }
     GT_CHECK_RESULT(false, "No action with such tooltip: " + tooltip, nullptr);
@@ -77,13 +77,13 @@ QWidget* GTToolbar::getWidgetForActionTooltip(GUITestOpStatus& os, const QToolBa
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickButtonByTooltipOnToolbar"
-void GTToolbar::clickButtonByTooltipOnToolbar(GUITestOpStatus& os, const QString& toolbarSysName, const QString& tooltip) {
-    GTWidget::click(os, GTToolbar::getWidgetForActionTooltip(os, getToolbar(os, toolbarSysName), tooltip));
+void GTToolbar::clickButtonByTooltipOnToolbar(const QString& toolbarSysName, const QString& tooltip) {
+    GTWidget::click(GTToolbar::getWidgetForActionTooltip(getToolbar(toolbarSysName), tooltip));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getActionByObjectName"
-QAction* GTToolbar::getActionByObjectName(GUITestOpStatus& os, const QString& actionName, const QToolBar* toolbar) {
+QAction* GTToolbar::getActionByObjectName(const QString& actionName, const QToolBar* toolbar) {
     GT_CHECK_RESULT(toolbar != nullptr, "Toolbar is nullptr", nullptr);
     for (QAction* action : toolbar->actions()) {
         if (actionName == action->objectName()) {
@@ -95,10 +95,10 @@ QAction* GTToolbar::getActionByObjectName(GUITestOpStatus& os, const QString& ac
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickWidgetByActionName"
-void GTToolbar::clickWidgetByActionName(GUITestOpStatus& os, const QString& toolbarSysName, const QString& actionObjectName) {
-    QWidget* widget = GTToolbar::getWidgetForActionObjectName(os, getToolbar(os, toolbarSysName), actionObjectName);
+void GTToolbar::clickWidgetByActionName(const QString& toolbarSysName, const QString& actionObjectName) {
+    QWidget* widget = GTToolbar::getWidgetForActionObjectName(getToolbar(toolbarSysName), actionObjectName);
     GT_CHECK(widget->isEnabled(), "Widget is disabled: " + actionObjectName);
-    GTWidget::click(os, widget);
+    GTWidget::click(widget);
 }
 #undef GT_METHOD_NAME
 

@@ -38,22 +38,22 @@ public:
                   Import,
                   Export,
                   Close,
-                  Temperature};
-    static QWidget* openLibrary(HI::GUITestOpStatus& os);
-    static void clickButton(HI::GUITestOpStatus& os, Button button);
-    static QAbstractButton* getButton(HI::GUITestOpStatus& os, Button button);
-    static int librarySize(HI::GUITestOpStatus& os);
-    static QString getPrimerSequence(HI::GUITestOpStatus& os, int number);
-    static QString getPrimerSequence(HI::GUITestOpStatus& os, const QString& name);
-    static QPoint getPrimerPoint(HI::GUITestOpStatus& os, int number);
-    static void clickPrimer(HI::GUITestOpStatus& os, int number);
-    static void clearLibrary(HI::GUITestOpStatus& os);
-    static void addPrimer(HI::GUITestOpStatus& os, const QString& name, const QString& data);
-    static void selectPrimers(HI::GUITestOpStatus& os, const QList<int>& numbers);
-    static void selectAll(HI::GUITestOpStatus& os);
+                  Temperature };
+    static QWidget* openLibrary();
+    static void clickButton(Button button);
+    static QAbstractButton* getButton(Button button);
+    static int librarySize();
+    static QString getPrimerSequence(int number);
+    static QString getPrimerSequence(const QString& name);
+    static QPoint getPrimerPoint(int number);
+    static void clickPrimer(int number);
+    static void clearLibrary();
+    static void addPrimer(const QString& name, const QString& data);
+    static void selectPrimers(const QList<int>& numbers);
+    static void selectAll();
 
 private:
-    static QTableView* table(HI::GUITestOpStatus& os);
+    static QTableView* table();
 };
 
 }  // namespace U2

@@ -30,10 +30,10 @@ using namespace HI;
 
 class ConvertAssemblyToSAMDialogFiller : public Filler {
 public:
-    ConvertAssemblyToSAMDialogFiller(HI::GUITestOpStatus& _os,
+    ConvertAssemblyToSAMDialogFiller(
                                      const QString& _dbPath,
                                      const QString& _dbFileName)
-        : Filler(_os, "AssemblyToSamDialog"),
+        : Filler("AssemblyToSamDialog"),
           databasePath(_dbPath),
           databaseFileName(_dbFileName) {
     }

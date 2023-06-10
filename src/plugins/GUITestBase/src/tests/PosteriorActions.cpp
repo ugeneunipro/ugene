@@ -46,8 +46,6 @@ namespace U2 {
 namespace GUITest_posterior_actions {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
-    Q_UNUSED(os);
-
     // Release all hold keyboard modifier keys
     Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
     if (modifiers & Qt::ShiftModifier) {
@@ -77,7 +75,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
         if (i > 0) {
             GTGlobals::sleep(100);
         }
-        GTWidget::close(os, popupWidget);
+        GTWidget::close(popupWidget);
         popupWidget = QApplication::activePopupWidget();
     }
 
@@ -86,11 +84,11 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
         if (i > 0) {
             GTGlobals::sleep(100);
         }
-        GTWidget::close(os, modalWidget);
+        GTWidget::close(modalWidget);
         modalWidget = QApplication::activeModalWidget();
     }
 
-    GTClipboard::clear(os);
+    GTClipboard::clear();
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0002) {
@@ -100,21 +98,21 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Cancel all tasks
 
     if (AppContext::getProject() != nullptr) {
-        GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
+        GTWidget::click(GTUtilsProjectTreeView::getTreeView());
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-        GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No), 10000, true);
-        GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os), 10000, true);
+        GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No), 10000, true);
+        GTUtilsDialog::waitForDialog(new AppCloseMessageBoxDialogFiller(), 10000, true);
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
         GTKeyboardDriver::keyClick(isOsMac() ? 'e' : 'q', Qt::ControlModifier);
-        GTUtilsTaskTreeView::waitTaskFinished(os, 3000);
-        GTUtilsDialog::cleanup(os, GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
+        GTUtilsTaskTreeView::waitTaskFinished(3000);
+        GTUtilsDialog::cleanup(GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
     }
 
-    GTUtilsMdi::closeAllWindows(os);
+    GTUtilsMdi::closeAllWindows();
     AppContext::getTaskScheduler()->cancelAllTasks();
-    GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
+    GTUtilsTaskTreeView::waitTaskFinished(10000);
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
@@ -124,17 +122,17 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
     }
     // Restore backup files
     if (QDir(testDir).exists()) {
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj1.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2-1.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj2.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj3.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj4.uprj");
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/proj5.uprj");
+        GTFile::restore(testDir + "_common_data/scenarios/project/proj1.uprj");
+        GTFile::restore(testDir + "_common_data/scenarios/project/proj2-1.uprj");
+        GTFile::restore(testDir + "_common_data/scenarios/project/proj2.uprj");
+        GTFile::restore(testDir + "_common_data/scenarios/project/proj3.uprj");
+        GTFile::restore(testDir + "_common_data/scenarios/project/proj4.uprj");
+        GTFile::restore(testDir + "_common_data/scenarios/project/proj5.uprj");
 
         // Files from the projects above.
-        GTFile::restore(os, testDir + "_common_data/scenarios/project/1.gb");
+        GTFile::restore(testDir + "_common_data/scenarios/project/1.gb");
 
-        GTFile::restore(os, dataDir + "workflow_samples/NGS/consensus.uwl");
+        GTFile::restore(dataDir + "workflow_samples/NGS/consensus.uwl");
     }
 }
 
@@ -144,7 +142,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
         return;
     }
     if (QDir(sandBoxDir).exists()) {
-        GTFile::setReadWrite(os, sandBoxDir, true);
+        GTFile::setReadWrite(sandBoxDir, true);
         QDir sandBox(sandBoxDir);
         const QStringList entryList = sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden);
         for (const QString& path : qAsConst(entryList)) {

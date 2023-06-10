@@ -30,43 +30,43 @@
 
 namespace U2 {
 
-MakeBlastDbDialogFiller::MakeBlastDbDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters)
-    : Filler(os, "MakeBlastDbDialog"), parameters(parameters) {
+MakeBlastDbDialogFiller::MakeBlastDbDialogFiller(const Parameters& parameters)
+    : Filler("MakeBlastDbDialog"), parameters(parameters) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::MakeBlastDbDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 
 void MakeBlastDbDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto inputFilesRadioButton = GTWidget::findRadioButton(os, "inputFilesRadioButton", dialog);
-    GTWidget::findLineEdit(os, "inputFilesLineEdit", dialog);
+    auto inputFilesRadioButton = GTWidget::findRadioButton("inputFilesRadioButton", dialog);
+    GTWidget::findLineEdit("inputFilesLineEdit", dialog);
 
-    auto proteinTypeRadioButton = GTWidget::findRadioButton(os, "proteinTypeRadioButton", dialog);
-    auto nucleotideTypeRadioButton = GTWidget::findRadioButton(os, "nucleotideTypeRadioButton", dialog);
+    auto proteinTypeRadioButton = GTWidget::findRadioButton("proteinTypeRadioButton", dialog);
+    auto nucleotideTypeRadioButton = GTWidget::findRadioButton("nucleotideTypeRadioButton", dialog);
 
     bool isProtein = parameters.alphabetType == Parameters::Protein;
     CHECK_SET_ERR(!parameters.checkAlphabetType || isProtein == proteinTypeRadioButton->isChecked(), "Incorrect alphabet");
 
     if (parameters.justCancel) {
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         return;
     }
 
     if (!parameters.inputFilePath.isEmpty()) {
-        GTRadioButton::click(os, inputFilesRadioButton);
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters.inputFilePath));
-        GTWidget::click(os, GTWidget::findWidget(os, "inputFilesToolButton"));
+        GTRadioButton::click(inputFilesRadioButton);
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters.inputFilePath));
+        GTWidget::click(GTWidget::findWidget("inputFilesToolButton"));
     }
 
-    GTRadioButton::click(os, isProtein ? proteinTypeRadioButton : nucleotideTypeRadioButton);
+    GTRadioButton::click(isProtein ? proteinTypeRadioButton : nucleotideTypeRadioButton);
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters.outputDirPath, "", GTFileDialogUtils::Choose));
-    GTWidget::click(os, GTWidget::findWidget(os, "databasePathToolButton"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters.outputDirPath, "", GTFileDialogUtils::Choose));
+    GTWidget::click(GTWidget::findWidget("databasePathToolButton"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTWidget::click(os, GTWidget::findButtonByText(os, "Build", GTUtilsDialog::buttonBox(os, dialog)));
+    GTWidget::click(GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog)));
 }
 
 #undef GT_METHOD_NAME

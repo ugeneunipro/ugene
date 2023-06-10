@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_CUSTOM_SCENARIO_H_
-#define _HI_CUSTOM_SCENARIO_H_
+#pragma once
 
 #include <core/GUITestOpStatus.h>
 #include <core/global.h>
@@ -30,9 +29,7 @@ namespace HI {
 class HI_EXPORT CustomScenario {
 public:
     virtual ~CustomScenario();
-    virtual void run(HI::GUITestOpStatus& os) = 0;
+    virtual void run() = 0;
 };
 
 }  // namespace HI
-
-#endif  // _HI_CUSTOM_SCENARIO_H_

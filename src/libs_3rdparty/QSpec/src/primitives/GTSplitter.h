@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_SPLITTER_H_
-#define _HI_GT_SPLITTER_H_
-
+#pragma once
 #include <QSplitter>
 
 #include "GTGlobals.h"
@@ -33,10 +31,8 @@ namespace HI {
  */
 class HI_EXPORT GTSplitter {
 public:
-    static QRect getHandleRect(GUITestOpStatus& os, QSplitter* splitter, int handleNumber = 0);
-    static void moveHandle(GUITestOpStatus& os, QSplitter* splitter, int pixels, int handleNumber = 0);
+    static QRect getHandleRect(QSplitter* splitter, int handleNumber = 0);
+    static void moveHandle(QSplitter* splitter, int pixels, int handleNumber = 0);
 };
 
 }  // namespace HI
-
-#endif  // _HI_GT_SPLITTER_H_

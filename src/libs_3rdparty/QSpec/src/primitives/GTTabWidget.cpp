@@ -31,14 +31,14 @@ namespace HI {
 #define GT_CLASS_NAME "GTTabWidget"
 
 #define GT_METHOD_NAME "setCurrentIndex"
-void GTTabWidget::setCurrentIndex(GUITestOpStatus& os, QTabWidget* const tabWidget, int index) {
+void GTTabWidget::setCurrentIndex(QTabWidget* const tabWidget, int index) {
     GT_CHECK(tabWidget != NULL, "QTabWidget* == NULL");
 
     int tabsCount = tabWidget->count();
     GT_CHECK(index >= 0 && index < tabsCount, "invalid index");
 
     QTabBar* tabBar = tabWidget->findChild<QTabBar*>();
-    GTTabBar::setCurrentIndex(os, tabBar, index);
+    GTTabBar::setCurrentIndex(tabBar, index);
 
     int currIndex = tabWidget->currentIndex();
     GT_CHECK(currIndex == index, "Can't set index");
@@ -46,8 +46,7 @@ void GTTabWidget::setCurrentIndex(GUITestOpStatus& os, QTabWidget* const tabWidg
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabBar"
-QTabBar* GTTabWidget::getTabBar(GUITestOpStatus& os, QTabWidget* tabWidget) {
-    Q_UNUSED(os)
+QTabBar* GTTabWidget::getTabBar(QTabWidget* tabWidget) {
     GT_CHECK_RESULT(tabWidget != NULL, "tabWidget is NULL", NULL);
     QList<QTabBar*> tabBars = tabWidget->findChildren<QTabBar*>();
     int numToCheck = tabBars.size();
@@ -58,10 +57,10 @@ QTabBar* GTTabWidget::getTabBar(GUITestOpStatus& os, QTabWidget* tabWidget) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickTab"
-void GTTabWidget::clickTab(GUITestOpStatus& os, QTabWidget* const tabWidget, int tabIndex, Qt::MouseButton button) {
+void GTTabWidget::clickTab(QTabWidget* const tabWidget, int tabIndex, Qt::MouseButton button) {
     GT_CHECK(tabWidget != NULL, "tabWidget is NULL");
-    setCurrentIndex(os, tabWidget, tabIndex);
-    QTabBar* tabBar = getTabBar(os, tabWidget);
+    setCurrentIndex(tabWidget, tabIndex);
+    QTabBar* tabBar = getTabBar(tabWidget);
     QRect r = tabBar->tabRect(tabIndex);
     GTMouseDriver::moveTo(tabBar->mapToGlobal(r.center()));
     GTMouseDriver::click(button);
@@ -69,40 +68,40 @@ void GTTabWidget::clickTab(GUITestOpStatus& os, QTabWidget* const tabWidget, int
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickTab"
-void GTTabWidget::clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QWidget* parent, int tabIndex, Qt::MouseButton button) {
-    clickTab(os, GTWidget::findTabWidget(os, tabWidgetName, parent), tabIndex, button);
+void GTTabWidget::clickTab(const QString& tabWidgetName, QWidget* parent, int tabIndex, Qt::MouseButton button) {
+    clickTab(GTWidget::findTabWidget(tabWidgetName, parent), tabIndex, button);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickTab"
-void GTTabWidget::clickTab(GUITestOpStatus& os, QTabWidget* const tabWidget, const QString& tabName, Qt::MouseButton button) {
-    int num = getTabNumByName(os, tabWidget, tabName);
-    clickTab(os, tabWidget, num, button);
+void GTTabWidget::clickTab(QTabWidget* const tabWidget, const QString& tabName, Qt::MouseButton button) {
+    int num = getTabNumByName(tabWidget, tabName);
+    clickTab(tabWidget, num, button);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickTab"
-void GTTabWidget::clickTab(GUITestOpStatus& os, const QString& tabWidgetName, QWidget* parent, const QString& tabName, Qt::MouseButton button) {
-    clickTab(os, GTWidget::findTabWidget(os, tabWidgetName, parent), tabName, button);
+void GTTabWidget::clickTab(const QString& tabWidgetName, QWidget* parent, const QString& tabName, Qt::MouseButton button) {
+    clickTab(GTWidget::findTabWidget(tabWidgetName, parent), tabName, button);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabName"
-QString GTTabWidget::getTabName(GUITestOpStatus& os, QTabWidget* tabWidget, int idx) {
-    return getTabBar(os, tabWidget)->tabText(idx);
+QString GTTabWidget::getTabName(QTabWidget* tabWidget, int idx) {
+    return getTabBar(tabWidget)->tabText(idx);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabNameByWidget"
-QString GTTabWidget::getTabNameByWidget(GUITestOpStatus& os, QTabWidget* tabWidget, QWidget* widget) {
-    return getTabBar(os, tabWidget)->tabText(tabWidget->indexOf(widget));
+QString GTTabWidget::getTabNameByWidget(QTabWidget* tabWidget, QWidget* widget) {
+    return getTabBar(tabWidget)->tabText(tabWidget->indexOf(widget));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabNumByName"
-int GTTabWidget::getTabNumByName(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName) {
+int GTTabWidget::getTabNumByName(QTabWidget* tabWidget, QString tabName) {
     GT_CHECK_RESULT(tabWidget != NULL, "tabWidget is NULL", -1);
-    QTabBar* tabBar = getTabBar(os, tabWidget);
+    QTabBar* tabBar = getTabBar(tabWidget);
     int num = -1;
     for (int i = 0; i < tabBar->count(); i++) {
         QString text = tabBar->tabText(i);
@@ -117,26 +116,26 @@ int GTTabWidget::getTabNumByName(GUITestOpStatus& os, QTabWidget* tabWidget, QSt
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabCornerWidget"
-QWidget* GTTabWidget::getTabCornerWidget(GUITestOpStatus& os, QTabWidget* tabWidget, int idx) {
-    QWidget* result = GTTabWidget::getTabBar(os, tabWidget)->tabButton(idx, QTabBar::RightSide);
+QWidget* GTTabWidget::getTabCornerWidget(QTabWidget* tabWidget, int idx) {
+    QWidget* result = GTTabWidget::getTabBar(tabWidget)->tabButton(idx, QTabBar::RightSide);
     GT_CHECK_RESULT(result != NULL, "corner widget not found", NULL);
     return result;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabCornerWidget"
-QWidget* GTTabWidget::getTabCornerWidget(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName) {
-    int idx = getTabNumByName(os, tabWidget, tabName);
-    return getTabCornerWidget(os, tabWidget, idx);
+QWidget* GTTabWidget::getTabCornerWidget(QTabWidget* tabWidget, QString tabName) {
+    int idx = getTabNumByName(tabWidget, tabName);
+    return getTabCornerWidget(tabWidget, idx);
 }
 #undef GT_METHOD_NAME
 
-void GTTabWidget::closeTab(GUITestOpStatus& os, QTabWidget* tabWidget, int idx) {
-    GTWidget::click(os, getTabCornerWidget(os, tabWidget, idx));
+void GTTabWidget::closeTab(QTabWidget* tabWidget, int idx) {
+    GTWidget::click(getTabCornerWidget(tabWidget, idx));
 }
 
-void GTTabWidget::closeTab(GUITestOpStatus& os, QTabWidget* tabWidget, QString tabName) {
-    GTWidget::click(os, getTabCornerWidget(os, tabWidget, tabName));
+void GTTabWidget::closeTab(QTabWidget* tabWidget, QString tabName) {
+    GTWidget::click(getTabCornerWidget(tabWidget, tabName));
 }
 
 #undef GT_CLASS_NAME

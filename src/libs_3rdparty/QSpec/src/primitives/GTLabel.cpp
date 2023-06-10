@@ -24,21 +24,21 @@
 #include "primitives/GTWidget.h"
 
 namespace HI {
-QString GTLabel::getText(GUITestOpStatus& os, const QString& labelName, QWidget* parent) {
+QString GTLabel::getText(const QString& labelName, QWidget* parent) {
     QString text;
     class GetLabelTextScenario : public CustomScenario {
         QLabel* label;
         QString& text;
 
     public:
-        GetLabelTextScenario(QLabel* label, QString& text)
-            : label(label), text(text) {
+        GetLabelTextScenario(QLabel* _label, QString& _text)
+            : label(_label), text(_text) {
         }
-        void run(GUITestOpStatus&) override {
+        void run() override {
             text = label->text();
         }
     };
-    GTThread::runInMainThread(os, new GetLabelTextScenario(GTWidget::findLabel(os, labelName, parent), text));
+    GTThread::runInMainThread(new GetLabelTextScenario(GTWidget::findLabel(labelName, parent), text));
     return text;
 }
 }  // namespace HI

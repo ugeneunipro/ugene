@@ -8,9 +8,6 @@
 namespace HI {
 class HI_EXPORT GUITestsLauncher : public QObject {
     Q_OBJECT
-public:
-    GUITestsLauncher() {
-    }
 
 public slots:
     virtual void sl_runTest();
@@ -18,9 +15,6 @@ public slots:
 
 protected:
     GUITestBase guiTestBase;
-
-private:
-    GUITestOpStatus os;
 };
 
 }  // namespace HI

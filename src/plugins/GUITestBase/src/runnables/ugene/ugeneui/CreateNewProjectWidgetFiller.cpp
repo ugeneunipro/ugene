@@ -34,11 +34,11 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 void SaveProjectAsDialogFiller::commonScenario() {
     GTGlobals::sleep();
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "projectNameEdit", projectName, dialog);
-    GTLineEdit::setText(os, "projectFilePathEdit", projectFile, dialog);
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTLineEdit::setText("projectNameEdit", projectName, dialog);
+    GTLineEdit::setText("projectFilePathEdit", projectFile, dialog);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

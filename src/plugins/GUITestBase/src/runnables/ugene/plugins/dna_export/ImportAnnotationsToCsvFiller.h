@@ -90,7 +90,7 @@ public:
         QString name;
     };
 
-    ImportAnnotationsToCsvFiller(HI::GUITestOpStatus& _os,
+    ImportAnnotationsToCsvFiller(
                                  const QString& _fileToRead,
                                  const QString& _resultFile,
                                  ImportAnnotationsToCsvFiller::fileFormat _format,
@@ -104,7 +104,7 @@ public:
                                  const QString& _defaultAnnotationName,
                                  const RoleParameters& roleParameters = RoleParameters(),
                                  GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    ImportAnnotationsToCsvFiller(HI::GUITestOpStatus& _os, CustomScenario* c);
+    ImportAnnotationsToCsvFiller( CustomScenario* c);
 
     virtual void commonScenario();
 
@@ -127,11 +127,11 @@ private:
 
 class RoleFiller : public Filler {
 public:
-    RoleFiller(HI::GUITestOpStatus& os, ImportAnnotationsToCsvFiller::RoleParameter* _parameter)
-        : Filler(os, "CSVColumnConfigurationDialog"), parameter(_parameter) {
+    RoleFiller(ImportAnnotationsToCsvFiller::RoleParameter* _parameter)
+        : Filler("CSVColumnConfigurationDialog"), parameter(_parameter) {
     }
-    RoleFiller(HI::GUITestOpStatus& os, CustomScenario* c)
-        : Filler(os, "CSVColumnConfigurationDialog", c), parameter(nullptr) {
+    RoleFiller(CustomScenario* c)
+        : Filler("CSVColumnConfigurationDialog", c), parameter(nullptr) {
     }
 
     virtual void commonScenario();

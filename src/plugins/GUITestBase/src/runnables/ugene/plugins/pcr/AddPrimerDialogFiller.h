@@ -39,7 +39,7 @@ public:
         CustomScenario* scenario;
     };
 
-    AddPrimerDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters);
+    AddPrimerDialogFiller(const Parameters& parameters);
     void commonScenario();
 
 private:

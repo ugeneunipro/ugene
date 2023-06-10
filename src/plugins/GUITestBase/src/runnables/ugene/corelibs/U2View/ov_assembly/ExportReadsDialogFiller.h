@@ -28,7 +28,7 @@ using namespace HI;
 
 class ExportReadsDialogFiller : public Filler {
 public:
-    ExportReadsDialogFiller(HI::GUITestOpStatus& os, const QString& filePath, const QString format = "FASTA", bool addToProject = true);
+    ExportReadsDialogFiller(const QString& filePath, const QString format = "FASTA", bool addToProject = true);
     void commonScenario();
 
 private:

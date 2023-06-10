@@ -4,7 +4,7 @@ namespace HI {
 
 void TestThread::run() {
     try {
-        test->run(os);
+        test->run();
     } catch (GUITestOpStatus*) {
     }
 }

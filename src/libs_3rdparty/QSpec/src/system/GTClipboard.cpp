@@ -34,7 +34,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTClipboard"
 
 #define GT_METHOD_NAME "text"
-QString GTClipboard::text(GUITestOpStatus& os) {
+QString GTClipboard::text() {
     GTGlobals::sleep(300);
 
     // check that clipboard contains text
@@ -44,8 +44,7 @@ QString GTClipboard::text(GUITestOpStatus& os) {
         Scenario(QString& _text)
             : text(_text) {
         }
-        void run(GUITestOpStatus& os) {
-            Q_UNUSED(os);
+        void run() {
             QClipboard* clipboard = QApplication::clipboard();
 
             GT_CHECK(clipboard != NULL, "Clipboard is NULL");
@@ -60,20 +59,20 @@ QString GTClipboard::text(GUITestOpStatus& os) {
         QString& text;
     };
 
-    GTThread::runInMainThread(os, new Scenario(clipboardText));
+    GTThread::runInMainThread(new Scenario(clipboardText));
     GTThread::waitForMainThread();
     return clipboardText;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkHasNonEmptyImage"
-void GTClipboard::checkHasNonEmptyImage(GUITestOpStatus& os) {
+void GTClipboard::checkHasNonEmptyImage() {
     class Scenario : public CustomScenario {
     public:
         Scenario(QImage& _image)
             : image(_image) {
         }
-        void run(GUITestOpStatus& os) {
+        void run() {
             QClipboard* clipboard = QApplication::clipboard();
             const QMimeData* mimeData = clipboard->mimeData();
             GT_CHECK(mimeData->hasImage(), "Clipboard doesn't contain image data");
@@ -86,21 +85,20 @@ void GTClipboard::checkHasNonEmptyImage(GUITestOpStatus& os) {
     };
 
     QImage image;
-    GTThread::runInMainThread(os, new Scenario(image));
+    GTThread::runInMainThread(new Scenario(image));
     GTThread::waitForMainThread();
     GT_CHECK(!image.isNull(), "Clipboard image is empty");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setText"
-void GTClipboard::setText(GUITestOpStatus& os, QString text) {
+void GTClipboard::setText(QString text) {
     class Scenario : public CustomScenario {
     public:
         Scenario(QString _text)
             : text(_text) {
         }
-        void run(GUITestOpStatus& os) {
-            Q_UNUSED(os);
+        void run() {
             QClipboard* clipboard = QApplication::clipboard();
             clipboard->clear();
             clipboard->setText(text);
@@ -110,14 +108,14 @@ void GTClipboard::setText(GUITestOpStatus& os, QString text) {
         QString text;
     };
 
-    GTThread::runInMainThread(os, new Scenario(text));
+    GTThread::runInMainThread(new Scenario(text));
     GTThread::waitForMainThread();
 }
 
 #undef GT_METHOD_NAME
 
 namespace {
-QList<QUrl> toLocalQUrls(GUITestOpStatus& os, const QList<QString>& urls) {
+QList<QUrl> toLocalQUrls(const QList<QString>& urls) {
     QList<QUrl> qurls;
     for (const QString& url : qAsConst(urls)) {
         QFileInfo fi(url);
@@ -127,8 +125,7 @@ QList<QUrl> toLocalQUrls(GUITestOpStatus& os, const QList<QString>& urls) {
             QString absolutePath = fi.absoluteFilePath();
             qurls.append(QUrl::fromLocalFile(absolutePath));
         } else {
-            os.setError("Cannot make an absolute path: " + url);
-            return qurls;
+            GT_FAIL("Cannot make an absolute path: " + url, qurls);
         }
     }
     return qurls;
@@ -136,7 +133,7 @@ QList<QUrl> toLocalQUrls(GUITestOpStatus& os, const QList<QString>& urls) {
 }  // namespace
 
 #define GT_METHOD_NAME "setUrls"
-void GTClipboard::setUrls(GUITestOpStatus& os, const QList<QString>& urls) {
+void GTClipboard::setUrls(const QList<QString>& urls) {
     class Scenario : public CustomScenario {
         QList<QUrl> urls;
 
@@ -145,8 +142,7 @@ void GTClipboard::setUrls(GUITestOpStatus& os, const QList<QString>& urls) {
             : urls(urls) {
         }
 
-        void run(GUITestOpStatus& os) {
-            Q_UNUSED(os);
+        void run() {
             QMimeData* urlMime = new QMimeData();
             urlMime->setUrls(urls);
 
@@ -156,27 +152,26 @@ void GTClipboard::setUrls(GUITestOpStatus& os, const QList<QString>& urls) {
         }
     };
 
-    QList<QUrl> qurls = toLocalQUrls(os, urls);
-    GTThread::runInMainThread(os, new Scenario(qurls));
+    QList<QUrl> qurls = toLocalQUrls(urls);
+    GTThread::runInMainThread(new Scenario(qurls));
     GTThread::waitForMainThread();
 }
 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clear"
-void GTClipboard::clear(GUITestOpStatus& os) {
+void GTClipboard::clear() {
     class Scenario : public CustomScenario {
     public:
         Scenario() {
         }
-        void run(GUITestOpStatus& os) {
-            Q_UNUSED(os);
+        void run() {
             QClipboard* clipboard = QApplication::clipboard();
             clipboard->clear();
         }
     };
 
-    GTThread::runInMainThread(os, new Scenario());
+    GTThread::runInMainThread(new Scenario());
     GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME

@@ -32,41 +32,41 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsMeltingTemperature"
 
 #define GT_METHOD_NAME "setParameters"
-void GTUtilsMeltingTemperature::setParameters(HI::GUITestOpStatus& os, const QMap<Parameter, QString>& parameters, QWidget* parent) {
+void GTUtilsMeltingTemperature::setParameters(const QMap<Parameter, QString>& parameters, QWidget* parent) {
     QList<Parameter> parameterKeys = parameters.keys();
     if (parameterKeys.contains(Parameter::Algorithm)) {
-        auto cbAlgorithm = GTWidget::findComboBox(os, "cbAlgorithm", parent);
-        GTComboBox::selectItemByText(os, cbAlgorithm, parameters.value(Parameter::Algorithm));
+        auto cbAlgorithm = GTWidget::findComboBox("cbAlgorithm", parent);
+        GTComboBox::selectItemByText(cbAlgorithm, parameters.value(Parameter::Algorithm));
     }
     if (parameterKeys.contains(Parameter::DnaConc)) {
-        GTDoubleSpinbox::setValue(os, "dsbDna", parameters.value(Parameter::DnaConc).toDouble(), GTGlobals::UseKeyBoard, parent);
+        GTDoubleSpinbox::setValue("dsbDna", parameters.value(Parameter::DnaConc).toDouble(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::MonovalentConc)) {
-        GTDoubleSpinbox::setValue(os, "dsbMonovalent", parameters.value(Parameter::MonovalentConc).toDouble(), GTGlobals::UseKeyBoard, parent);
+        GTDoubleSpinbox::setValue("dsbMonovalent", parameters.value(Parameter::MonovalentConc).toDouble(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::DivalentConc)) {
-        GTDoubleSpinbox::setValue(os, "dsbDivalent", parameters.value(Parameter::DivalentConc).toDouble(), GTGlobals::UseKeyBoard, parent);
+        GTDoubleSpinbox::setValue("dsbDivalent", parameters.value(Parameter::DivalentConc).toDouble(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::DntpConc)) {
-        GTDoubleSpinbox::setValue(os, "dsbDntp", parameters.value(Parameter::DntpConc).toDouble(), GTGlobals::UseKeyBoard, parent);
+        GTDoubleSpinbox::setValue("dsbDntp", parameters.value(Parameter::DntpConc).toDouble(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::DmsoConc)) {
-        GTDoubleSpinbox::setValue(os, "dsbDmso", parameters.value(Parameter::DmsoConc).toDouble(), GTGlobals::UseKeyBoard, parent);
+        GTDoubleSpinbox::setValue("dsbDmso", parameters.value(Parameter::DmsoConc).toDouble(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::DmsoFactor)) {
-        GTDoubleSpinbox::setValue(os, "dsbDmsoFactor", parameters.value(Parameter::DmsoFactor).toDouble(), GTGlobals::UseKeyBoard, parent);
+        GTDoubleSpinbox::setValue("dsbDmsoFactor", parameters.value(Parameter::DmsoFactor).toDouble(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::FormamideConc)) {
-        GTDoubleSpinbox::setValue(os, "dsbFormamide", parameters.value(Parameter::FormamideConc).toDouble(), GTGlobals::UseKeyBoard, parent);
+        GTDoubleSpinbox::setValue("dsbFormamide", parameters.value(Parameter::FormamideConc).toDouble(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::MaxLen)) {
-        GTSpinBox::setValue(os, "sbNnMaxLength", parameters.value(Parameter::MaxLen).toInt(), GTGlobals::UseKeyBoard, parent);
+        GTSpinBox::setValue("sbNnMaxLength", parameters.value(Parameter::MaxLen).toInt(), GTGlobals::UseKeyBoard, parent);
     }
     if (parameterKeys.contains(Parameter::ThermodynamicTable)) {
-        GTComboBox::selectItemByIndex(os, GTWidget::findComboBox(os, "cbTable", parent), parameters.value(Parameter::ThermodynamicTable).toInt());
+        GTComboBox::selectItemByIndex(GTWidget::findComboBox("cbTable", parent), parameters.value(Parameter::ThermodynamicTable).toInt());
     }
     if (parameterKeys.contains(Parameter::SaltCorrectionFormula)) {
-        GTComboBox::selectItemByIndex(os, GTWidget::findComboBox(os, "cbSalt", parent), parameters.value(Parameter::SaltCorrectionFormula).toInt());
+        GTComboBox::selectItemByIndex(GTWidget::findComboBox("cbSalt", parent), parameters.value(Parameter::SaltCorrectionFormula).toInt());
     }
 }
 

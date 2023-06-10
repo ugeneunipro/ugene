@@ -51,23 +51,23 @@ public:
     QString message;
     QString reads;
     QMessageBox::StandardButton b;
-    void run(HI::GUITestOpStatus& os) {
-        QWidget* dialog = GTWidget::getActiveModalWidget(os);
-        GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "methodNamesBox", dialog), aligner);
+    void run() {
+        QWidget* dialog = GTWidget::getActiveModalWidget();
+        GTComboBox::selectItemByText(GTWidget::findComboBox("methodNamesBox", dialog), aligner);
 
         //    2. Set wrong file as reference
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, wrongRef));
-        GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(wrongRef));
+        GTWidget::click(GTWidget::findWidget("addRefButton", dialog));
 
         if (reads != "") {
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, reads));
-            GTWidget::click(os, GTWidget::findWidget(os, "addShortreadsButton", dialog));
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(reads));
+            GTWidget::click(GTWidget::findWidget("addShortreadsButton", dialog));
         }
 
         //    Expected state: warning messagebox appeared
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b, message));
-        GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
-        GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(b, message));
+        GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
+        GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
     }
 };
 
@@ -78,36 +78,36 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //    1. {Tools -> Align to reference -> Align short reads}
     GTLogTracer lt;
     QString refName = "lambda_virus";
-    GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
+    GTFile::copy(testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/",
                                                  refName + ".fa",
                                                  testDir + "_common_data/bowtie2/",
                                                  "reads_1.fq",
                                                  AlignShortReadsFiller::Parameters::Bowtie);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&Parameters));
 
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".1.ebwt"), "index1 not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".2.ebwt"), "index2 not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".3.ebwt"), "index3 not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".4.ebwt"), "index4 not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".rev.1.ebwt"), "index_rev1 not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".rev.2.ebwt"), "index_rev2 not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".1.ebwt"), "index1 not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".2.ebwt"), "index2 not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".3.ebwt"), "index3 not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".4.ebwt"), "index4 not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.1.ebwt"), "index_rev1 not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.2.ebwt"), "index_rev2 not found");
     CHECK_SET_ERR(lt.hasMessage("Launching Bowtie build indexer tool"), "Expected message not found");
 
     //    2. Repeat step 1.
     lt.clear();
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("Launching Bowtie build indexer tool"), "Found unexpected message");
 
@@ -123,11 +123,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QFile::rename(sandBoxDir + refName + ".rev.1.ebwt", sandBoxDir + refName + ".fa.rev.1.ebwt");
     QFile::rename(sandBoxDir + refName + ".rev.2.ebwt", sandBoxDir + refName + ".fa.rev.2.ebwt");
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("Launching Bowtie build indexer tool"), "Found unexpected message");
 
@@ -136,12 +136,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     //    4.  An index file is set as a reference sequence
     AlignShortReadsFiller::Parameters ParametersIndex(testDir + "_common_data/scenarios/sandbox/", refName + ".fa.1.ebwt", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bowtie);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &ParametersIndex));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&ParametersIndex));
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("Launching Bowtie build indexer tool"), "Found unexpected message");
 
@@ -153,35 +153,35 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //    1. {Tools -> Align to reference -> Align short reads}
     //    2. Set wrong file as reference, align with Bowtie
     //    Exected state: error message appears
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new WrongRefSetter("Bowtie", dataDir + "samples/CLUSTALW/COI.aln", "These files have the incompatible format:", testDir + "_common_data/bowtie2/reads_1.fq", QMessageBox::No)));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(new WrongRefSetter("Bowtie", dataDir + "samples/CLUSTALW/COI.aln", "These files have the incompatible format:", testDir + "_common_data/bowtie2/reads_1.fq", QMessageBox::No)));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // BROKEN INDEX TEST
     //     1. {Tools -> Align to reference -> Align short reads}
     const QString refName = "lambda_virus";
-    GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
+    GTFile::copy(testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/",
                                                  refName + ".fa",
                                                  testDir + "_common_data/bowtie2/",
                                                  "reads_1.fq",
                                                  AlignShortReadsFiller::Parameters::Bowtie);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&Parameters));
 
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Delete one of the indes files
     QFile f(sandBoxDir + refName + ".3.ebwt");
     CHECK_SET_ERR(f.exists(), "index not built");
     f.remove();
 
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new WrongRefSetter("Bowtie", sandBoxDir + refName + ".1.ebwt", "You set the index as a reference and the index files are corrupted")));
+    GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(new WrongRefSetter("Bowtie", sandBoxDir + refName + ".1.ebwt", "You set the index as a reference and the index files are corrupted")));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 }
 
 // BOWTIE2 TESTS
@@ -191,32 +191,32 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    1. {Tools -> Align to reference -> Align short reads}
     GTLogTracer lt;
     QString refName = "lambda_virus";
-    GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", sandBoxDir + "lambda_virus.fa");
+    GTFile::copy(testDir + "_common_data/bowtie2/lambda_virus.fa", sandBoxDir + "lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters parameters(sandBoxDir,
                                                  refName + ".fa",
                                                  testDir + "_common_data/bowtie2/",
                                                  "reads_1.fq",
                                                  AlignShortReadsFiller::Parameters::Bowtie2);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new AlignShortReadsFiller(&parameters));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".1.bt2"), "index1 not created");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".2.bt2"), "index2 not created");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".3.bt2"), "index3 not created");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".4.bt2"), "index4 not created");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".1.bt2"), "index1 not created");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".2.bt2"), "index2 not created");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".3.bt2"), "index3 not created");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".4.bt2"), "index4 not created");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".rev.1.bt2"), "index_rev1 not created");
     CHECK_SET_ERR(lt.hasMessage("Launching Bowtie 2 build indexer tool"), "Expected message not found");
 
     //    2. Repeat step 1.
     lt.clear();
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("Launching Bowtie build indexer tool"), "Found unexpected message");
 
@@ -232,10 +232,10 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QFile::rename(sandBoxDir + refName + ".rev.1.bt2", sandBoxDir + refName + ".fa.rev.1.bt2");
     QFile::rename(sandBoxDir + refName + ".rev.2.bt2", sandBoxDir + refName + ".fa.rev.2.bt2");
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("Launching Bowtie build indexer tool"), "Found unexpected message");
 
@@ -244,10 +244,10 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     //    4.  An index file is set as a reference sequence
     AlignShortReadsFiller::Parameters parametersIndex(sandBoxDir, refName + ".fa.1.bt2", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bowtie2);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parametersIndex));
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new AlignShortReadsFiller(&parametersIndex));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("Launching Bowtie build indexer tool"), "Found unexpected message");
 
@@ -259,30 +259,30 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //    1. {Tools -> Align to reference -> Align short reads}
     //    2. Set wrong file as reference, align with Bowtie2
     //    Exected state: error message appears
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new WrongRefSetter("Bowtie2", dataDir + "samples/CLUSTALW/COI.aln", "These files have the incompatible format:", testDir + "_common_data/bowtie2/reads_1.fq", QMessageBox::No)));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(new WrongRefSetter("Bowtie2", dataDir + "samples/CLUSTALW/COI.aln", "These files have the incompatible format:", testDir + "_common_data/bowtie2/reads_1.fq", QMessageBox::No)));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     // BROKEN INDEX TEST
     //     1. {Tools -> Align to reference -> Align short reads}
     const QString refName = "lambda_virus";
-    GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
+    GTFile::copy(testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bowtie2);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&Parameters));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Delete one of the indes files
     QFile f(sandBoxDir + refName + ".3.bt2");
     CHECK_SET_ERR(f.exists(), "index not built");
     f.remove();
 
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new WrongRefSetter("Bowtie2", sandBoxDir + refName + ".1.bt2", "You set the index as a reference and the index files are corrupted")));
+    GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(new WrongRefSetter("Bowtie2", sandBoxDir + refName + ".1.bt2", "You set the index as a reference and the index files are corrupted")));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 }
 
 // BWA TESTS
@@ -291,31 +291,31 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    1. {Tools -> Align to reference -> Align short reads}
     GTLogTracer lt;
     const QString refName = "lambda_virus";
-    GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
+    GTFile::copy(testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&Parameters));
 
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.amb"), "amb not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.ann"), "ann not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.bwt"), "bwt not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.pac"), "pac not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.sa"), "sa not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.amb"), "amb not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.ann"), "ann not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.bwt"), "bwt not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.pac"), "pac not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.sa"), "sa not found");
     CHECK_SET_ERR(lt.hasMessage("bwa index -p"), "Expected message not found");
 
     //    2. Repeat step 1.
     lt.clear();
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("bwa index -p"), "Found unexpected message");
 
@@ -333,11 +333,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     QFile::rename(sandBoxDir + refName + ".fa.pac", sandBoxDir + refName + ".pac");
     QFile::rename(sandBoxDir + refName + ".fa.sa", sandBoxDir + refName + ".sa");
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("bwa index -p"), "Found unexpected message");
 
@@ -350,12 +350,12 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     //    4.  An index file is set as a reference sequence
     AlignShortReadsFiller::Parameters ParametersIndex(testDir + "_common_data/scenarios/sandbox/", refName + ".ann", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &ParametersIndex));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&ParametersIndex));
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("bwa index -p"), "Found unexpected message");
 
@@ -371,31 +371,31 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     //    1. {Tools -> Align to reference -> Align short reads}
     //    2. Set wrong file as reference, align with BWA
     //    Exected state: error message appears
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new WrongRefSetter("BWA", dataDir + "samples/CLUSTALW/COI.aln", "These files have the incompatible format:", testDir + "_common_data/bowtie2/reads_1.fq", QMessageBox::No)));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(new WrongRefSetter("BWA", dataDir + "samples/CLUSTALW/COI.aln", "These files have the incompatible format:", testDir + "_common_data/bowtie2/reads_1.fq", QMessageBox::No)));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     // BROKEN INDEX TEST
     //     1. {Tools -> Align to reference -> Align short reads}
     const QString refName = "lambda_virus";
-    GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
+    GTFile::copy(testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&Parameters));
 
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Delete one of the indes files
     QFile f(sandBoxDir + refName + ".fa.bwt");
     CHECK_SET_ERR(f.exists(), "index not built");
     f.remove();
 
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new WrongRefSetter("BWA", sandBoxDir + refName + ".fa.ann", "You set the index as a reference and the index files are corrupted")));
+    GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(new WrongRefSetter("BWA", sandBoxDir + refName + ".fa.ann", "You set the index as a reference and the index files are corrupted")));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -403,30 +403,30 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //    1. {Tools -> Align to reference -> Align short reads}
     GTLogTracer lt;
     const QString refName = "lambda_virus";
-    GTFile::copy(os, testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
+    GTFile::copy(testDir + "_common_data/bowtie2/lambda_virus.fa", testDir + "_common_data/scenarios/sandbox/lambda_virus.fa");
 
     AlignShortReadsFiller::Parameters Parameters(testDir + "_common_data/scenarios/sandbox/", refName + ".fa", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::BwaMem);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &Parameters));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&Parameters));
 
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is built
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.amb"), "amb not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.ann"), "ann not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.bwt"), "bwt not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.pac"), "pac not found");
-    CHECK_SET_ERR(GTFile::check(os, sandBoxDir + refName + ".fa.sa"), "sa not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.amb"), "amb not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.ann"), "ann not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.bwt"), "bwt not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.pac"), "pac not found");
+    CHECK_SET_ERR(GTFile::check(sandBoxDir + refName + ".fa.sa"), "sa not found");
     CHECK_SET_ERR(lt.hasMessage("bwa index -p"), "Expected message not found");
 
     //    2. Repeat step 1.
     lt.clear();
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("bwa index -p"), "Found unexpected message");
 
@@ -441,12 +441,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     QFile::rename(sandBoxDir + refName + ".fa.sa", sandBoxDir + refName + ".sa");
 
     CHECK_SET_ERR(!lt.hasMessage("bwa index -p"), "Found unexpected message");
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "AssemblyToRefDialog"));
+    GTUtilsDialog::add(new DefaultDialogFiller("AssemblyToRefDialog"));
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("bwa index -p"), "Found unexpected message");
 
@@ -455,12 +455,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //    4.  An index file is set as a reference sequence
     AlignShortReadsFiller::Parameters ParametersIndex(testDir + "_common_data/scenarios/sandbox/", refName + ".ann", testDir + "_common_data/bowtie2/", "reads_1.fq", AlignShortReadsFiller::Parameters::Bwa);
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &ParametersIndex));
+    GTUtilsDialog::add(new AlignShortReadsFiller(&ParametersIndex));
 
-    GTUtilsDialog::add(os, new DefaultDialogFiller(os, "Import BAM File", QDialogButtonBox::Cancel));
+    GTUtilsDialog::add(new DefaultDialogFiller("Import BAM File", QDialogButtonBox::Cancel));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    Expected state: index is reused
     CHECK_SET_ERR(!lt.hasMessage("bwa index -p"), "Found unexpected message");
 

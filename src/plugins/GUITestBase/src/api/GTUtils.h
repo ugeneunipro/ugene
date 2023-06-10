@@ -35,10 +35,10 @@ public:
     static QString genUniqueString(const QString& prefix = "");
 
     /** Waits until service is enabled. Fails if the service in not active within the default timeout. */
-    static void checkServiceIsEnabled(HI::GUITestOpStatus& os, const QString& serviceName);
+    static void checkServiceIsEnabled(const QString& serviceName);
 
-    static void checkExportServiceIsEnabled(HI::GUITestOpStatus& os) {
-        checkServiceIsEnabled(os, "DNA export service");
+    static void checkExportServiceIsEnabled() {
+        checkServiceIsEnabled("DNA export service");
     }
 
     /**
@@ -46,7 +46,7 @@ public:
      * For all 'contains'-line matchers 'textInUi' is checked to contain 'textInTest'.
      * If some match flag from the flags is not supported an error is set to 'os'.
      */
-    static bool matchText(HI::GUITestOpStatus& os, const QString& textInTest, const QString& textInUi, const Qt::MatchFlags& matchFlags);
+    static bool matchText(const QString& textInTest, const QString& textInUi, const Qt::MatchFlags& matchFlags);
 };
 
 }  // namespace U2

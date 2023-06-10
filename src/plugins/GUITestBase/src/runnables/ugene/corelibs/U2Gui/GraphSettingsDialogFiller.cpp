@@ -35,15 +35,15 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::GraphSettingsDialogFiller"
 #define GT_METHOD_NAME "run"
 
-GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus& os,
-                                                     int _window,
-                                                     int _steps,
-                                                     double _cutoff_min,
-                                                     double _cutoff_max,
-                                                     int _r,
-                                                     int _g,
-                                                     int _b)
-    : Filler(os, "GraphSettingsDialog"),
+GraphSettingsDialogFiller::GraphSettingsDialogFiller(
+    int _window,
+    int _steps,
+    double _cutoff_min,
+    double _cutoff_max,
+    int _r,
+    int _g,
+    int _b)
+    : Filler("GraphSettingsDialog"),
       window(_window),
       steps(_steps),
       cutoff_min(_cutoff_min),
@@ -53,8 +53,8 @@ GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus& os,
       b(_b) {
 }
 
-GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus& os, CustomScenario* c)
-    : Filler(os, "GraphSettingsDialog", c),
+GraphSettingsDialogFiller::GraphSettingsDialogFiller(CustomScenario* c)
+    : Filler("GraphSettingsDialog", c),
       window(0),
       steps(0),
       cutoff_min(0),
@@ -65,40 +65,40 @@ GraphSettingsDialogFiller::GraphSettingsDialogFiller(GUITestOpStatus& os, Custom
 }
 
 void GraphSettingsDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (window != -1) {
-        auto windowEdit = GTWidget::findSpinBox(os, "windowEdit", dialog);
-        GTSpinBox::setValue(os, windowEdit, window, GTGlobals::UseKeyBoard);
+        auto windowEdit = GTWidget::findSpinBox("windowEdit", dialog);
+        GTSpinBox::setValue(windowEdit, window, GTGlobals::UseKeyBoard);
     }
 
     if (steps != -1) {
-        auto stepsPerWindowEdit = GTWidget::findSpinBox(os, "stepsPerWindowEdit", dialog);
-        GTSpinBox::setValue(os, stepsPerWindowEdit, steps, GTGlobals::UseKeyBoard);
+        auto stepsPerWindowEdit = GTWidget::findSpinBox("stepsPerWindowEdit", dialog);
+        GTSpinBox::setValue(stepsPerWindowEdit, steps, GTGlobals::UseKeyBoard);
     }
 
     if (cutoff_max != 0 || cutoff_min != 0) {
-        auto minmaxGroup = GTWidget::findGroupBox(os, "minmaxGroup", dialog);
-        GTGroupBox::setChecked(os, minmaxGroup);
+        auto minmaxGroup = GTWidget::findGroupBox("minmaxGroup", dialog);
+        GTGroupBox::setChecked(minmaxGroup);
     }
 
     if (cutoff_min != 0) {
-        auto minBox = GTWidget::findDoubleSpinBox(os, "minBox", dialog);
-        GTDoubleSpinbox::setValue(os, minBox, cutoff_min, GTGlobals::UseKeyBoard);
+        auto minBox = GTWidget::findDoubleSpinBox("minBox", dialog);
+        GTDoubleSpinbox::setValue(minBox, cutoff_min, GTGlobals::UseKeyBoard);
     }
 
     if (cutoff_max != 0) {
-        auto maxBox = GTWidget::findDoubleSpinBox(os, "maxBox", dialog);
-        GTDoubleSpinbox::setValue(os, maxBox, cutoff_max, GTGlobals::UseKeyBoard);
+        auto maxBox = GTWidget::findDoubleSpinBox("maxBox", dialog);
+        GTDoubleSpinbox::setValue(maxBox, cutoff_max, GTGlobals::UseKeyBoard);
     }
 
     if (r != -1 && g != -1 && b != -1) {
-        GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
-        GTWidget::click(os, GTWidget::findWidget(os, "Default color", dialog));
+        GTUtilsDialog::waitForDialog(new ColorDialogFiller(r, g, b));
+        GTWidget::click(GTWidget::findWidget("Default color", dialog));
     }
 
     GTGlobals::sleep(200);
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

@@ -31,134 +31,127 @@ GUI_TEST_CLASS_DEFINITION(general_avail_1) {
     // @@step1: Open file standard_dna_1000.fa
     // @expected: There is a CV button on the sequence toolbar, it is not toggled
     // @expected: CV is closed
-    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(os,
-                                                                                testDir + "_common_data/alphabets",
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(testDir + "_common_data/alphabets",
                                                                                 "standard_dna_1000.fa",
                                                                                 "seq1");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step2: Click the CV button
     // @expected: CV button is toggled
     // @expected: CV is opened
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step3: Click the CV button
     // @expected: CV button it is not toggled
     // @expected: CV is closed
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_avail_2) {
     // @@step1: Open file extended_dna_1000.fa
     // @expected: There is a CV button on the sequence toolbar, it is not toggled
     // @expected: CV is closed
-    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(os,
-                                                                                testDir + "_common_data/alphabets",
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(testDir + "_common_data/alphabets",
                                                                                 "extended_dna_1000.fa",
                                                                                 "seq2");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step2: Click the CV button
     // @expected: CV button is toggled
     // @expected: CV is opened
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step3: Click the CV button
     // @expected: CV button it is not toggled
     // @expected: CV is closed
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_avail_3) {
     // @@step1: Open file standard_rna_1000.fa
     // @expected: There is a CV button on the sequence toolbar, it is not toggled
     // @expected: CV is closed
-    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(os,
-                                                                                testDir + "_common_data/alphabets",
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(testDir + "_common_data/alphabets",
                                                                                 "standard_rna_1000.fa",
                                                                                 "seq3");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step2: Click the CV button
     // @expected: CV button is toggled
     // @expected: CV is opened
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step3: Click the CV button
     // @expected: CV button it is not toggled
     // @expected: CV is closed
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_avail_4) {
     // @@step1: Open file extended_rna_1000.fa
     // @expected: There is a CV button on the sequence toolbar, it is not toggled
     // @expected: CV is closed
-    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(os,
-                                                                                testDir + "_common_data/alphabets",
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(testDir + "_common_data/alphabets",
                                                                                 "extended_rna_1000.fa",
                                                                                 "seq4");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step2: Click the CV button
     // @expected: CV button is toggled
     // @expected: CV is opened
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
     // @@step3: Click the CV button
     // @expected: CV button it is not toggled
     // @expected: CV is closed
-    GTUtilsCv::cvBtn::click(os, seqWidget);
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seqWidget), "Unexpected state of CV button!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget), "Unexpected state of CV widget!");
+    GTUtilsCv::cvBtn::click(seqWidget);
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_avail_5) {
     // @@step1: Open file standard_amino_1000.fa
     // @expected: There is no CV button on the sequence toolbar
-    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(os,
-                                                                                testDir + "_common_data/alphabets",
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(testDir + "_common_data/alphabets",
                                                                                 "standard_amino_1000.fa",
                                                                                 "seq5");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(os, seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(seqWidget), "Unexpected state of CV button!");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_avail_6) {
     // @@step1: Open file extended_amino_1000.fa
     // @expected: There is no CV button on the sequence toolbar
-    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(os,
-                                                                                testDir + "_common_data/alphabets",
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(testDir + "_common_data/alphabets",
                                                                                 "extended_amino_1000.fa",
                                                                                 "seq6");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(os, seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(seqWidget), "Unexpected state of CV button!");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_avail_7) {
     // @@step1: Open file raw_alphabet_1000.fa
     // @expected: There is no CV button on the sequence toolbar
-    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectRawSequence(os,
-                                                                                   testDir + "_common_data/alphabets",
+    ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectRawSequence(testDir + "_common_data/alphabets",
                                                                                    "raw_alphabet_1000.fa",
                                                                                    "seq7");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(os, seqWidget), "Unexpected state of CV button!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(seqWidget), "Unexpected state of CV button!");
 }
 
 GUI_TEST_CLASS_DEFINITION(general_avail_8) {
@@ -173,48 +166,45 @@ GUI_TEST_CLASS_DEFINITION(general_avail_8) {
                   << "seq3"
                   << "seq5";
 
-    seqWidgets = GTUtilsProject::openFileExpectSequences(os,
-                                                         testDir + "_common_data/alphabets/",
+    seqWidgets = GTUtilsProject::openFileExpectSequences(testDir + "_common_data/alphabets/",
                                                          "standard_dna_rna_amino_1000.fa",
                                                          expectedNames);
-    CHECK_OP_SET_ERR(os, "Failed to open sequences!");
-
     ADVSingleSequenceWidget* seq1Widget = seqWidgets.at(0);
     ADVSingleSequenceWidget* seq3Widget = seqWidgets.at(1);
     ADVSingleSequenceWidget* seq5Widget = seqWidgets.at(2);
 
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seq1Widget), "Unexpected state of CV button on seq1 widget!");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seq3Widget), "Unexpected state of CV button on seq3 widget!");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(os, seq5Widget), "Unexpected state of CV button on seq5 widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seq1Widget), "Unexpected state of CV button on seq1 widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seq3Widget), "Unexpected state of CV button on seq3 widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isPresent(seq5Widget), "Unexpected state of CV button on seq5 widget!");
 
     // @@step2: Click the CV button on seq3 widget
     // @expected: CV for seq1 widget is closed, CV button for seq1 widget is not toggled
     // @expected: CV for seq3 widget is opened, CV button for seq3 widget is not toggled
-    GTUtilsCv::cvBtn::click(os, seq3Widget);
+    GTUtilsCv::cvBtn::click(seq3Widget);
 
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seq1Widget), "Unexpected state of CV button on seq1 widget!");
-    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seq3Widget), "Unexpected state of CV button on seq3 widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seq1Widget), "Unexpected state of CV button on seq1 widget!");
+    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seq3Widget), "Unexpected state of CV button on seq3 widget!");
 
     // @@step3: check CV button on sequence view
-    GTUtilsCv::commonCvBtn::mustExist(os);
+    GTUtilsCv::commonCvBtn::mustExist();
 
     // @@step4: click CV button on the sequence view toolbar
     // @expected: CV for seq1 widget is opened, CV button for seq1 widget is toggled
     // @expected: CV for seq3 widget is closed, CV button for seq1 widget is not toggled
-    GTUtilsCv::commonCvBtn::click(os);
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seq1Widget), "Unexpected state of CV widget for seq1!");
-    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seq3Widget), "Unexpected state of CV widget for seq3!");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seq1Widget), "Unexpected state of CV button on seq1 widget!");
-    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(os, seq3Widget), "Unexpected state of CV button on seq3 widget!");
+    GTUtilsCv::commonCvBtn::click();
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seq1Widget), "Unexpected state of CV widget for seq1!");
+    CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seq3Widget), "Unexpected state of CV widget for seq3!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seq1Widget), "Unexpected state of CV button on seq1 widget!");
+    CHECK_SET_ERR(!GTUtilsCv::cvBtn::isChecked(seq3Widget), "Unexpected state of CV button on seq3 widget!");
 
     // @@step5: click CV button on the sequence view again
     // @expected: CV for seq1 widget is closed, CV button for seq1 widget is not toggled
     // @expected: CV for seq3 widget is opened, CV button for seq1 widget is toggled
-    GTUtilsCv::commonCvBtn::click(os);
-    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seq1Widget), "Unexpected state of CV widget for seq1!");
-    CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seq3Widget), "Unexpected state of CV widget for seq3!");
-    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seq1Widget), "Unexpected state of CV button on seq1 widget!");
-    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(os, seq3Widget), "Unexpected state of CV button on seq3 widget!");
+    GTUtilsCv::commonCvBtn::click();
+    CHECK_SET_ERR(GTUtilsCv::isCvPresent(seq1Widget), "Unexpected state of CV widget for seq1!");
+    CHECK_SET_ERR(GTUtilsCv::isCvPresent(seq3Widget), "Unexpected state of CV widget for seq3!");
+    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seq1Widget), "Unexpected state of CV button on seq1 widget!");
+    CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seq3Widget), "Unexpected state of CV button on seq3 widget!");
 }
 
 }  // namespace GUITest_common_scenarios_circular_view

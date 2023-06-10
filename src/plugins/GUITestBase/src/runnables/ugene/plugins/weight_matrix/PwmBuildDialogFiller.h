@@ -36,8 +36,8 @@ public:
     };
     typedef QPair<ActionType, QVariant> Action;
 
-    PwmBuildDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
-    PwmBuildDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
+    PwmBuildDialogFiller(const QList<Action>& actions);
+    PwmBuildDialogFiller(CustomScenario* c);
 
     void commonScenario();
 

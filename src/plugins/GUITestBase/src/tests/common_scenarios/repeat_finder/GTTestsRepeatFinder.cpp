@@ -44,29 +44,29 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //
     // Steps:
     // 1. Use menu {File->Open}. Open file _common_data/fasta/seq4.fa.
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "seq4.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "seq4.fa");
+    GTFileDialog::openFile(testDir + "_common_data/fasta/", "seq4.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("seq4.fa");
 
     // 2. Run Find Repeats dialog
-    Runnable* swDialog = new FindRepeatsDialogFiller(os, testDir + "_common_data/scenarios/sandbox/");
-    GTUtilsDialog::waitForDialog(os, swDialog);
+    Runnable* swDialog = new FindRepeatsDialogFiller(testDir + "_common_data/scenarios/sandbox/");
+    GTUtilsDialog::waitForDialog(swDialog);
 
-    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find repeats..."}, GTGlobals::UseMouse);
 
     // 3. Close sequence view, then reopen it
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::click(GTGlobals::Close);
     GTMouseDriver::click();
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "seq4.fa"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("seq4.fa"));
     GTMouseDriver::doubleClick();
 
     // 4. Check that annotation has the qualifier "repeat homology"
-    QTreeWidgetItem* repeatsGroupItem = GTUtilsAnnotationsTreeView::findItem(os, "repeat_unit  (0, 325)");
-    GTTreeWidget::expand(os, repeatsGroupItem);
-    GTTreeWidget::expand(os, repeatsGroupItem->child(0));
+    QTreeWidgetItem* repeatsGroupItem = GTUtilsAnnotationsTreeView::findItem("repeat_unit  (0, 325)");
+    GTTreeWidget::expand(repeatsGroupItem);
+    GTTreeWidget::expand(repeatsGroupItem->child(0));
 
-    GTUtilsAnnotationsTreeView::findItem(os, "repeat_identity");
+    GTUtilsAnnotationsTreeView::findItem("repeat_identity");
 }
 
 }  // namespace GUITest_common_scenarios_repeat_finder

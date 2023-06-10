@@ -30,7 +30,7 @@ using namespace HI;
 
 class TCoffeeDailogFiller : public Filler {
 public:
-    TCoffeeDailogFiller(HI::GUITestOpStatus& os, int gapOpen = INT_MAX, int gapExt = INT_MAX, int numOfIters = INT_MAX);
+    TCoffeeDailogFiller(int gapOpen = INT_MAX, int gapExt = INT_MAX, int numOfIters = INT_MAX);
 
     void commonScenario();
 

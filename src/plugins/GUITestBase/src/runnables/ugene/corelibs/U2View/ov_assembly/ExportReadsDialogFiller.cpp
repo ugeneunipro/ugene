@@ -34,8 +34,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportReadsDialogFiller"
 
-ExportReadsDialogFiller::ExportReadsDialogFiller(HI::GUITestOpStatus& os, const QString& filePath, const QString format, bool addToProject)
-    : Filler(os, "ExportReadsDialog"),
+ExportReadsDialogFiller::ExportReadsDialogFiller(const QString& filePath, const QString format, bool addToProject)
+    : Filler("ExportReadsDialog"),
       filePath(filePath),
       format(format),
       addToProject(addToProject) {
@@ -43,17 +43,17 @@ ExportReadsDialogFiller::ExportReadsDialogFiller(HI::GUITestOpStatus& os, const 
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportReadsDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "filepathLineEdit", filePath, dialog);
+    GTLineEdit::setText("filepathLineEdit", filePath, dialog);
 
-    auto formatComboBox = GTWidget::findComboBox(os, "documentFormatComboBox", dialog);
-    GTComboBox::selectItemByText(os, formatComboBox, format);
+    auto formatComboBox = GTWidget::findComboBox("documentFormatComboBox", dialog);
+    GTComboBox::selectItemByText(formatComboBox, format);
 
-    auto addToPrj = GTWidget::findCheckBox(os, "addToProjectCheckBox", dialog);
-    GTCheckBox::setChecked(os, addToPrj, addToProject);
+    auto addToPrj = GTWidget::findCheckBox("addToProjectCheckBox", dialog);
+    GTCheckBox::setChecked(addToPrj, addToProject);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

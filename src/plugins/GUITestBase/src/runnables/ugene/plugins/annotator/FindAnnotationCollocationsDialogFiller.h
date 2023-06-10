@@ -30,8 +30,8 @@ using namespace HI;
 
 class FindAnnotationCollocationsDialogFiller : public Filler {
 public:
-    FindAnnotationCollocationsDialogFiller(HI::GUITestOpStatus& os)
-        : Filler(os, "FindAnnotationCollocationsDialog") {
+    FindAnnotationCollocationsDialogFiller()
+        : Filler("FindAnnotationCollocationsDialog") {
     }
     void commonScenario();
     QToolButton* getPlusButton() const;

@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_SLIDER_H_
-#define _HI_GT_SLIDER_H_
-
+#pragma once
 #include <QSlider>
 
 #include "GTGlobals.h"
@@ -34,9 +32,7 @@ public:
      * Sets slider value in the main thread.
      * Fails if the slider is not enabled or if the value is out of min/max range.
      */
-    static void setValue(GUITestOpStatus& os, QSlider* slider, int value);
+    static void setValue(QSlider* slider, int value);
 };
 
 }  // namespace HI
-
-#endif  // _HI_GT_SLIDER_H

@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_SPINBOX_H_
-#define _HI_GT_SPINBOX_H_
-
+#pragma once
 #include <QSpinBox>
 
 #include "GTGlobals.h"
@@ -32,17 +30,15 @@ namespace HI {
  */
 class HI_EXPORT GTSpinBox {
 public:
-    static int getValue(GUITestOpStatus& os, QSpinBox* spinBox);
-    static int getValue(GUITestOpStatus& os, const QString& spinBoxName, QWidget* parent = nullptr);
+    static int getValue(QSpinBox* spinBox);
+    static int getValue(const QString& spinBoxName, QWidget* parent = nullptr);
 
-    static void setValue(GUITestOpStatus& os, QSpinBox* spinBox, int v, GTGlobals::UseMethod useMethod = GTGlobals::UseKeyBoard);
-    static void setValue(GUITestOpStatus& os, const QString& spinBoxName, int v, GTGlobals::UseMethod useMethod = GTGlobals::UseKeyBoard, QWidget* parent = nullptr);
-    static void setValue(GUITestOpStatus& os, const QString& spinBoxName, int v, QWidget* parent = NULL);
+    static void setValue(QSpinBox* spinBox, int v, GTGlobals::UseMethod useMethod = GTGlobals::UseKeyBoard);
+    static void setValue(const QString& spinBoxName, int v, GTGlobals::UseMethod useMethod = GTGlobals::UseKeyBoard, QWidget* parent = nullptr);
+    static void setValue(const QString& spinBoxName, int v, QWidget* parent = NULL);
 
-    static void checkLimits(GUITestOpStatus& os, QSpinBox* spinBox, int min, int max);
-    static void checkLimits(GUITestOpStatus& os, const QString& spinBoxName, int min, int max, QWidget* parent = nullptr);
+    static void checkLimits(QSpinBox* spinBox, int min, int max);
+    static void checkLimits(const QString& spinBoxName, int min, int max, QWidget* parent = nullptr);
 };
 
 }  // namespace HI
-
-#endif

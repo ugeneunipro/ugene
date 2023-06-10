@@ -35,7 +35,7 @@ public:
     enum Button { Ok,
                   Cancel };
 
-    GTSequenceReadingModeDialogUtils(HI::GUITestOpStatus& os, CustomScenario* scenario = nullptr);
+    GTSequenceReadingModeDialogUtils(CustomScenario* scenario = nullptr);
     virtual void commonScenario();
 
 private:

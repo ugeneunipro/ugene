@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTMENU_H
-#define GTMENU_H
-
+#pragma once
 #include <QAction>
 #include <QMenu>
 
@@ -32,25 +30,25 @@ namespace HI {
 
 class HI_EXPORT GTMenu {
 public:
-    static QMenu* showMainMenu(GUITestOpStatus& os, const QString& menuName, GTGlobals::UseMethod m = GTGlobals::UseMouse);  // should be removed in Qt5, use clickMainMenuItem instead
-    static void clickMainMenuItem(GUITestOpStatus& os, const QStringList& itemPath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
-    static void checkMainMenuItemState(GUITestOpStatus& os, const QStringList& itemPath, PopupChecker::CheckOption expectedState);
-    static void checkMainMenuItemsState(GUITestOpStatus& os, const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState);
+    static QMenu* showMainMenu(const QString& menuName, GTGlobals::UseMethod m = GTGlobals::UseMouse);  // should be removed in Qt5, use clickMainMenuItem instead
+    static void clickMainMenuItem(const QStringList& itemPath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static void checkMainMenuItemState(const QStringList& itemPath, PopupChecker::CheckOption expectedState);
+    static void checkMainMenuItemsState(const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState);
 
     /** Activates context menu using right mouse click to the center of the target widget. */
-    static void showContextMenu(GUITestOpStatus& os, QWidget* target);
+    static void showContextMenu(QWidget* target);
 
-    static void clickMenuItemByName(GUITestOpStatus& os, const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
-    static void clickMenuItemByText(GUITestOpStatus& os, const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static void clickMenuItemByName(const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static void clickMenuItemByText(const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
 
     // moves cursor to menu item, clicks on menu item;
 
-    static QAction* clickMenuItem(GUITestOpStatus& os, const QMenu* menu, const QString& itemName, GTGlobals::UseMethod useMethod = GTGlobals::UseMouse, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static QAction* clickMenuItem(const QMenu* menu, const QString& itemName, GTGlobals::UseMethod useMethod = GTGlobals::UseMouse, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
 
-    static QAction* getMenuItem(GUITestOpStatus& os, const QMenu* menu, const QString& itemName, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static QAction* getMenuItem(const QMenu* menu, const QString& itemName, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
 
     // global position of menu action's center
-    static QPoint actionPos(GUITestOpStatus& os, const QMenu* menu, QAction* action);
+    static QPoint actionPos(const QMenu* menu, QAction* action);
 
     static const QString FILE;
     static const QString ACTIONS;
@@ -60,8 +58,7 @@ public:
     static const QString HELP;
 
 private:
-    static void clickMenuItemPrivate(GUITestOpStatus& os, const QMenu* menu, const QStringList& itemName, GTGlobals::UseMethod m = GTGlobals::UseMouse, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static void clickMenuItemPrivate(const QMenu* menu, const QStringList& itemName, GTGlobals::UseMethod m = GTGlobals::UseMouse, bool byText = false, Qt::MatchFlag matchFlag = Qt::MatchExactly);
 };
 
 }  // namespace HI
-#endif  // GTMENU_H

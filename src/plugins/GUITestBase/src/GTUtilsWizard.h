@@ -38,13 +38,13 @@ public:
         Finish
     };
 
-    static void setInputFiles(HI::GUITestOpStatus& os, const QList<QStringList>& list);
-    static void setAllParameters(HI::GUITestOpStatus& os, QMap<QString, QVariant> map);
-    static void setParameter(HI::GUITestOpStatus& os, const QString& parameterName, const QVariant& parameterValue);
-    static QVariant getParameter(HI::GUITestOpStatus& os, const QString& parameterName);
-    static void setValue(HI::GUITestOpStatus& os, QWidget* w, QVariant value);
-    static void clickButton(HI::GUITestOpStatus& os, WizardButton button);
-    static QString getPageTitle(HI::GUITestOpStatus& os);
+    static void setInputFiles(const QList<QStringList>& list);
+    static void setAllParameters(QMap<QString, QVariant> map);
+    static void setParameter(const QString& parameterName, const QVariant& parameterValue);
+    static QVariant getParameter(const QString& parameterName);
+    static void setValue(QWidget* w, QVariant value);
+    static void clickButton(WizardButton button);
+    static QString getPageTitle();
 
 private:
     static const QMap<QString, WizardButton> buttonMap;

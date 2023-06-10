@@ -29,26 +29,26 @@
 namespace U2 {
 using namespace HI;
 
-ExtractAssemblyRegionDialogFiller::ExtractAssemblyRegionDialogFiller(HI::GUITestOpStatus& os, const QString& filepath, const U2Region& region, const QString& format)
-    : Filler(os, "ExtractAssemblyRegionDialog"), filepath(filepath), regionToExtract(region), format(format) {
+ExtractAssemblyRegionDialogFiller::ExtractAssemblyRegionDialogFiller(const QString& filepath, const U2Region& region, const QString& format)
+    : Filler("ExtractAssemblyRegionDialog"), filepath(filepath), regionToExtract(region), format(format) {
 }
 
 #define GT_CLASS_NAME "ExtractAssemblyRegionDialogFiller"
 
 #define GT_METHOD_NAME "commonScenario"
 void ExtractAssemblyRegionDialogFiller::commonScenario() {
-    QWidget* widget = GTWidget::getActiveModalWidget(os);
+    QWidget* widget = GTWidget::getActiveModalWidget();
 
-    auto docFormatCB = GTWidget::findComboBox(os, "documentFormatComboBox", widget);
-    GTComboBox::selectItemByText(os, docFormatCB, format);
+    auto docFormatCB = GTWidget::findComboBox("documentFormatComboBox", widget);
+    GTComboBox::selectItemByText(docFormatCB, format);
 
-    GTLineEdit::setText(os, "start_edit_line", QString::number(regionToExtract.startPos), widget);
+    GTLineEdit::setText("start_edit_line", QString::number(regionToExtract.startPos), widget);
 
-    GTLineEdit::setText(os, "end_edit_line", QString::number(regionToExtract.endPos()), widget);
+    GTLineEdit::setText("end_edit_line", QString::number(regionToExtract.endPos()), widget);
 
-    GTLineEdit::setText(os, "filepathLineEdit", filepath, widget);
+    GTLineEdit::setText("filepathLineEdit", filepath, widget);
 
-    GTUtilsDialog::clickButtonBox(os, widget, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(widget, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

@@ -33,57 +33,57 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::FindQualifierFiller"
 
-FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus& os, const FindQualifierFiller::FindQualifierFillerSettings& settings)
-    : Filler(os, "SearchQualifierDialog"),
+FindQualifierFiller::FindQualifierFiller(const FindQualifierFiller::FindQualifierFillerSettings& settings)
+    : Filler("SearchQualifierDialog"),
       settings(settings) {
 }
 
-FindQualifierFiller::FindQualifierFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "SearchQualifierDialog", scenario) {
+FindQualifierFiller::FindQualifierFiller(CustomScenario* scenario)
+    : Filler("SearchQualifierDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void FindQualifierFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "nameEdit", settings.name, dialog);
+    GTLineEdit::setText("nameEdit", settings.name, dialog);
 
-    GTLineEdit::setText(os, "valueEdit", settings.value, dialog);
+    GTLineEdit::setText("valueEdit", settings.value, dialog);
 
     if (settings.exactMatch) {
-        auto exactButton = GTWidget::findRadioButton(os, "exactButton", dialog);
-        GTRadioButton::click(os, exactButton);
+        auto exactButton = GTWidget::findRadioButton("exactButton", dialog);
+        GTRadioButton::click(exactButton);
     } else {
-        auto containsButton = GTWidget::findRadioButton(os, "containsButton", dialog);
-        GTRadioButton::click(os, containsButton);
+        auto containsButton = GTWidget::findRadioButton("containsButton", dialog);
+        GTRadioButton::click(containsButton);
     }
 
-    auto box = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
+    auto box = GTWidget::findDialogButtonBox("buttonBox", dialog);
 
     if (settings.expectTheEndOfTree) {
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "The end of the annotation tree has been reached. Would you like to start the search from the beginning?"));
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "The end of the annotation tree has been reached. Would you like to start the search from the beginning?"));
     }
 
     if (settings.expectNoResults) {
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No results found"));
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "No results found"));
     }
 
     if (settings.nextQualifier && settings.nextCount > 0) {
         QPushButton* nextButton = box->button(QDialogButtonBox::Ok);
         GT_CHECK(nextButton != nullptr, "\"Next\" button is NULL");
         for (unsigned int i = 0; i < settings.nextCount; i++) {
-            GTWidget::click(os, nextButton);
+            GTWidget::click(nextButton);
         }
     }
 
     if (settings.selectAll) {
         QPushButton* selectAllButton = box->button(QDialogButtonBox::Yes);
         GT_CHECK(selectAllButton != nullptr, "\"Select all\" button is NULL");
-        GTWidget::click(os, selectAllButton);
+        GTWidget::click(selectAllButton);
     }
     GTGlobals::sleep();
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Close);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Close);
 }
 #undef GT_METHOD_NAME
 

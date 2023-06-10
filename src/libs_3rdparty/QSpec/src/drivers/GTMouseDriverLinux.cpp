@@ -103,7 +103,9 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
     DRIVER_CHECK(display != nullptr, "display is NULL");
 
     // 1 = Left, 2 = Middle, 3 = Right
-    unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3 : button == Qt::MiddleButton ? 2 : 0;
+    unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3
+                                                  : button == Qt::MiddleButton  ? 2
+                                                                                : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 
     XTestFakeButtonEvent(display, btn, True, 0);
@@ -122,7 +124,9 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
     Display* display = XOpenDisplay(display_name.constData());
     DRIVER_CHECK(display != nullptr, "display is NULL");
 
-    unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3 : button == Qt::MiddleButton ? 2 : 0;
+    unsigned int btn = button == Qt::LeftButton ? 1 : button == Qt::RightButton ? 3
+                                                  : button == Qt::MiddleButton  ? 2
+                                                                                : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 
     XTestFakeButtonEvent(display, btn, False, 0);

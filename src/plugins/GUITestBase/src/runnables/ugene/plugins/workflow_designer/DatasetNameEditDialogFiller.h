@@ -28,8 +28,8 @@ using namespace HI;
 
 class DatasetNameEditDialogFiller : public Filler {
 public:
-    DatasetNameEditDialogFiller(HI::GUITestOpStatus& os, QString _datasetName = "")
-        : Filler(os, ""),
+    DatasetNameEditDialogFiller(QString _datasetName = "")
+        : Filler(""),
           datasetName(_datasetName) {
     }
     void commonScenario();

@@ -26,7 +26,7 @@
 namespace U2 {
 #define GT_CLASS_NAME "GTGraphicsItem"
 #define GT_METHOD_NAME "getGraphicsItemRect"
-QRect GTGraphicsItem::getGraphicsItemRect(HI::GUITestOpStatus& os, QGraphicsItem* it) {
+QRect GTGraphicsItem::getGraphicsItemRect(QGraphicsItem* it) {
     auto sceneView = qobject_cast<QGraphicsView*>(it->scene()->views().at(0));
     GT_CHECK_RESULT(sceneView, "sceneView not found", QRect());
 
@@ -44,8 +44,8 @@ QRect GTGraphicsItem::getGraphicsItemRect(HI::GUITestOpStatus& os, QGraphicsItem
 }
 #undef GT_METHOD_NAME
 
-QPoint GTGraphicsItem::getItemCenter(HI::GUITestOpStatus& os, QGraphicsItem* it) {
-    QRect r = getGraphicsItemRect(os, it);
+QPoint GTGraphicsItem::getItemCenter(QGraphicsItem* it) {
+    QRect r = getGraphicsItemRect(it);
     QPoint p = r.center();
     return p;
 }
