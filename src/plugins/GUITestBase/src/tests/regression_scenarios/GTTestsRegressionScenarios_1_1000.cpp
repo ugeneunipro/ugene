@@ -43,13 +43,10 @@
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QHeaderView>
-#include <QListWidget>
 #include <QMainWindow>
 #include <QMenu>
-#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -70,7 +67,6 @@
 #include "GTUtilsAssemblyBrowser.h"
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsDashboard.h"
-#include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -2009,7 +2005,7 @@ GUI_TEST_CLASS_DEFINITION(test_0846) {
     //    5. Click checkbox "Save sequence names"
     //    6. Click "OK"
     GTUtilsDialog::add(new PopupChooserByText({"Export", "Export annotations..."}, GTGlobals::UseKey));
-    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_0846.csv", ExportAnnotationsFiller::csv));
+    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_0846.csv", ExportAnnotationsFiller::csv, false));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
 

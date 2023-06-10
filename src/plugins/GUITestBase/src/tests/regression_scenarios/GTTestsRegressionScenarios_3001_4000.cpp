@@ -50,7 +50,6 @@
 #include <QHeaderView>
 #include <QMainWindow>
 #include <QMenu>
-#include <QPlainTextEdit>
 #include <QPushButton>
 #include <QTextStream>
 #include <QThreadPool>
@@ -58,7 +57,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ProjectViewModel.h>
 #include <U2Gui/ToolsMenu.h>
@@ -81,7 +79,6 @@
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
-#include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -1423,7 +1420,7 @@ GUI_TEST_CLASS_DEFINITION(test_3305) {
     //        File format: bed
     //    and accept it.
     GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, "ep_exportAnnotations2CSV"}));
-    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_3305/test_3305.bed", ExportAnnotationsFiller::bed, false));
+    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_3305/test_3305.bed", ExportAnnotationsFiller::bed));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("test_3305.gb"));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();

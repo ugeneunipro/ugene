@@ -1998,12 +1998,12 @@ GUI_TEST_CLASS_DEFINITION(test_4244) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     GTUtilsDialog::add(new PopupChooser({ADV_MENU_EXPORT, "action_export_annotations"}));
-    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_4244", ExportAnnotationsFiller::gff, false));
+    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_4244", ExportAnnotationsFiller::gff));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("name"));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDialog::add(new PopupChooser({ADV_MENU_EXPORT, "action_export_annotations"}));
-    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_4244.gb", ExportAnnotationsFiller::genbank, false));
+    GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "test_4244.gb", ExportAnnotationsFiller::genbank));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("name"));
     GTMouseDriver::click(Qt::RightButton);
 

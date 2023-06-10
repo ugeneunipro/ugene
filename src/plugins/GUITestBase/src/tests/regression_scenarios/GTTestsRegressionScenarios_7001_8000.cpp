@@ -730,7 +730,7 @@ GUI_TEST_CLASS_DEFINITION(test_7191) {
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_PROJECT__REMOVE_SELECTED}));
     GTMouseDriver::click(Qt::RightButton);
     GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(new ExportAnnotationsFiller(sandBoxDir + "test_7191.gb", ExportAnnotationsFiller::ugenedb, false));
+    GTUtilsDialog::waitForDialog(new ExportAnnotationsFiller(sandBoxDir + "test_7191.gb", ExportAnnotationsFiller::ugenedb));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export/Import", "Export annotations..."}));
     GTUtilsProjectTreeView::callContextMenu("NC_004718 features");
     GTUtilsTaskTreeView::waitTaskFinished();

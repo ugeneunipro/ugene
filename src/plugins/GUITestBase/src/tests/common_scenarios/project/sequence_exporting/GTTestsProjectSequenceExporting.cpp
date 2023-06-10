@@ -30,7 +30,6 @@
 
 #include <QApplication>
 #include <QCheckBox>
-#include <QPlainTextEdit>
 #include <QTreeView>
 
 #include <U2Core/AppContext.h>
@@ -263,13 +262,13 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
     GTUtilsDialog::add(new PopupChooser({ADV_MENU_EXPORT, ACTION_EXPORT_ANNOTATIONS}));
-    GTUtilsDialog::add(new ExportAnnotationsFiller(testDir + "_common_data/scenarios/sandbox/1.csv", ExportAnnotationsFiller::csv));
+    GTUtilsDialog::add(new ExportAnnotationsFiller(testDir + "_common_data/scenarios/sandbox/1.csv", ExportAnnotationsFiller::csv, false));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B_joined"));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    bool equals = GTFile::equals(testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0004.csv");
-    CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
+    bool isEquals = GTFile::equals(testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0004.csv");
+    CHECK_SET_ERR(isEquals, "Exported file differs from the test file");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
