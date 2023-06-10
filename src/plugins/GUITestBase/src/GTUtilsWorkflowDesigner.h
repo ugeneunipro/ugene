@@ -179,7 +179,7 @@ public:
     static QStringList getComboBoxParameterValues(HI::GUITestOpStatus& os, QString parameter);
     static QList<QPair<QString, bool>> getCheckableComboboxValuesFromInputPortTable(HI::GUITestOpStatus& os, int tableIndex, const QString& slotName);
 
-    static QTableWidget* getInputPortsTable(HI::GUITestOpStatus& os, int index);
+    static QTableWidget* getInputPortsTable(HI::GUITestOpStatus& os, int index, bool failIfNotFound = true);
     static QTableWidget* getOutputPortsTable(HI::GUITestOpStatus& os, int index);
 
     static void scrollInputPortsWidgetToTableRow(HI::GUITestOpStatus& os, int tableIndex, const QString& slotName);

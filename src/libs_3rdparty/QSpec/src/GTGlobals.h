@@ -82,6 +82,12 @@ public:
     static QImage takeScreenShot(HI::GUITestOpStatus& os);
 
     static void GUITestFail();
+
+    /** Returns active GUITestOpStatus instance. */
+    static GUITestOpStatus& getOpStatus();
+
+    /** Resets active GUITestOpStatus instance to a new one with no error inside. */
+    static void resetOpStatus();
 };
 
 #define GT_DEBUG_MESSAGE(condition, errorMessage, result) \
@@ -120,7 +126,7 @@ public:
 #define CHECK_NO_OS_ERROR(result) \
     if (os.hasError()) { \
         os.setError(QString("Can't continue when os.hasError. Location: %1:%2").arg(__FILE__).arg(__LINE__)); \
-        return result;\
+        return result; \
     }
 
 /** Unconditionally marks active test as failed. Prints 'errorMessage' into the log. */
@@ -129,9 +135,6 @@ public:
     HI::GTGlobals::GUITestFail(); \
     os.setError(errorMessage); \
     return result;
-
-#define CHECK_OP_SET_ERR_RESULT(os, errorMessage, result) \
-    CHECK_SET_ERR_RESULT(!os.isCoR(), errorMessage, result)
 
 /** Used in util methods */
 #define GT_CHECK(condition, errorMessage) \
@@ -146,6 +149,8 @@ public:
 #define DRIVER_CHECK(condition, errorMessage) \
     if (!(condition)) { \
         qCritical("Driver error: '%s'", QString(errorMessage).toLocal8Bit().constData()); \
+        HI::GTGlobals::GUITestFail(); \
+        HI::GTGlobals::getOpStatus().setError(errorMessage); \
         return false; \
     }
 

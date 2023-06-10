@@ -83,6 +83,19 @@ void GTGlobals::GUITestFail() {
     qCritical("\nGT_DEBUG_MESSAGE !!!FIRST FAIL");
 }
 
+static GUITestOpStatus* activeOp = new GUITestOpStatus();
+
+/** Returns active GUITestOpStatus instance. */
+GUITestOpStatus& GTGlobals::getOpStatus() {
+    return *activeOp;
+}
+
+/** Resets active GUITestOpStatus instance to a new one with no error inside. */
+void GTGlobals::resetOpStatus() {
+    delete activeOp;
+    activeOp = new GUITestOpStatus();
+}
+
 #undef GT_CLASS_NAME
 
 }  // namespace HI

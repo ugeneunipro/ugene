@@ -86,24 +86,23 @@ QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
     // Start all tests with some common mouse position.
     GTMouseDriver::moveTo({400, 300});
 
-    HI::GUITestOpStatus os;
     try {
         for (GUITest* test : qAsConst(tests)) {
             qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
-            test->run(os);
+            test->run(GTGlobals::getOpStatus());
             qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
         }
     } catch (HI::GUITestOpStatus*) {
     }
     // Run post checks if there is an error.
-    QString error = os.getError();
+    QString error = GTGlobals::getOpStatus().getError();
     if (!error.isEmpty()) {
         try {
             UGUITestBase* testBase = UGUITestBase::getInstance();
             const QList<GUITest*> postCheckList = testBase->getTests(UGUITestBase::PostAdditionalChecks);
             for (GUITest* test : qAsConst(postCheckList)) {
                 qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
-                test->run(os);
+                test->run(GTGlobals::getOpStatus());
                 qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
             }
         } catch (HI::GUITestOpStatus*) {

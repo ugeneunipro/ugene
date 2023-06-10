@@ -54,9 +54,8 @@ bool GTUtilsCv::isCvPresent(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* se
 #define GT_METHOD_NAME "cvBtn::isPresent"
 bool GTUtilsCv::cvBtn::isPresent(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget) {
     QAbstractButton* cvButton = getCvButton(os, seqWidget, false);
-    CHECK_OP_SET_ERR_RESULT(os, "Error getting CV button!", false);
-
-    return nullptr != cvButton;
+    CHECK_SET_ERR_RESULT(!os.isCoR(), "Error getting CV button!", false);
+    return cvButton != nullptr;
 }
 #undef GT_METHOD_NAME
 
@@ -64,8 +63,8 @@ bool GTUtilsCv::cvBtn::isPresent(HI::GUITestOpStatus& os, ADVSingleSequenceWidge
 bool GTUtilsCv::cvBtn::isChecked(HI::GUITestOpStatus& os, ADVSingleSequenceWidget* seqWidget) {
     QAbstractButton* cvButton = getCvButton(os, seqWidget, true /* CV button must exist */);
 
-    CHECK_OP_SET_ERR_RESULT(os, "Error getting CV button!", false);
-    SAFE_POINT(nullptr != cvButton, "cvButton is NULL!", false);
+    CHECK_SET_ERR_RESULT(!os.isCoR(), "Error getting CV button!", false);
+    SAFE_POINT(cvButton != nullptr, "cvButton is NULL!", false);
 
     CHECK_SET_ERR_RESULT(cvButton->isCheckable(), "CV button is not checkable!", false);
 

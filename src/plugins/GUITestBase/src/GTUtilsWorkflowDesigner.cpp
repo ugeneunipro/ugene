@@ -1137,7 +1137,7 @@ QString GTUtilsWorkflowDesigner::getCellValue(HI::GUITestOpStatus& os, QString p
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getInputPortsTable"
-QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus& os, int index) {
+QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus& os, int index, bool failIfNotFound) {
     QWidget* wdWindow = getActiveWorkflowDesignerWindow(os);
     auto inputPortBox = GTWidget::findWidget(os, "inputPortBox", wdWindow);
     GTGroupBox::setChecked(os, "inputPortBox", true);
@@ -1147,9 +1147,12 @@ QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus& o
             tables.removeOne(w);
         }
     }
-    int number = tables.count();
-    GT_CHECK_RESULT(index < number, QString("there are %1 visiable tables for input ports").arg(number), nullptr);
-    return tables[index];
+    int tableSize = tables.count();
+    if (failIfNotFound) {
+        GT_CHECK_RESULT(index < tableSize, QString("there are %1 visiable tables for input ports").arg(tableSize), nullptr);
+        return tables[index];
+    }
+    return index < tableSize ? tables[index] : nullptr;
 }
 #undef GT_METHOD_NAME
 
