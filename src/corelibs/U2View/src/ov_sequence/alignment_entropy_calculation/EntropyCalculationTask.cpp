@@ -37,6 +37,9 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Formats/PDBFormat.h>
+
+
 #include <U2View/ADVSequenceObjectContext.h>
 
 namespace U2 {
@@ -54,6 +57,7 @@ EntropyCalculationTask::EntropyCalculationTask(const QString& _alignmentFilePath
 }
 
 void EntropyCalculationTask::prepare() {
+    CHECK_EXT(sequence.alphabet->isAmino(), setError(tr("Sequence in focus does not have amino alphabet")), );
     CHECK_EXT(QFileInfo::exists(alignmentFilePath), setError(tr("File '%1' doesn't exist.").arg(alignmentFilePath)), );
     QVariantMap hints;
     hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;
@@ -145,6 +149,7 @@ void EntropyCalculationTask::writeEntropyToFile() {
     int currentChainIndex = 1;
     int residueSequenceNumber = -1;
     QString roundedEntropy;
+    int seqResidueNumber = 0;
     while (!readIO->isEof()) {
         //PDB rows have 80 symbols
         const int max_size = 81;
@@ -161,6 +166,11 @@ void EntropyCalculationTask::writeEntropyToFile() {
                 if (residueSequenceNumber != -1) {
                     it++;
                 }
+                QByteArray residueName = (line.mid(17, 3).trimmed()).toLocal8Bit();
+                char acronym = PDBFormat::getAcronymByName(residueName);
+                SAFE_POINT(acronym == sequence.constSequence().at(seqResidueNumber), " ", );
+                seqResidueNumber++;
+
                 residueSequenceNumber = newResidueSeqNumber;
                 roundedEntropy = QString::number(*it, 'f', 2);
             }

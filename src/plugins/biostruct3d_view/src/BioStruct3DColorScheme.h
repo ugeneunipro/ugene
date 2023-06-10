@@ -73,9 +73,7 @@ class BioStruct3DColorSchemeFactory {
 public:
     virtual BioStruct3DColorScheme* createInstance(const BioStruct3DObject* biostruct) const = 0;
     //! Method creates factories
-    virtual bool isSchemeValid(const BioStruct3D&) const {
-        return true;
-    }
+    virtual bool isSchemeValid(const BioStruct3D&) const;
 };
 
 #define COLOR_SCHEME_FACTORY(c) \
@@ -189,12 +187,8 @@ public:
     static const QString schemeName;
     class Factory : public BioStruct3DColorSchemeFactory {
     public:
-        BioStruct3DColorScheme* createInstance(const BioStruct3DObject* biostructObj) const override {
-            return new AlignmentEntropyColorScheme(biostructObj);
-        }
-        bool isSchemeValid(const BioStruct3D& biostruct3d) const override {
-            return !AlignmentEntropyColorScheme::getEntropyChainIds(biostruct3d).isEmpty();
-        }
+        BioStruct3DColorScheme* createInstance(const BioStruct3DObject* biostructObj) const override;
+        bool isSchemeValid(const BioStruct3D& biostruct3d) const override;
     };
 };  // class AlignmentEntropyColorScheme
 

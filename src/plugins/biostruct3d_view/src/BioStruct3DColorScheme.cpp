@@ -67,6 +67,10 @@ BioStruct3DColorSchemeRegistry* BioStruct3DColorSchemeRegistry::getInstance() {
     return reg;
 }
 
+bool BioStruct3DColorSchemeFactory::isSchemeValid(const BioStruct3D&) const {
+    return true;
+}
+
 #define REGISTER_FACTORY(c) factories.insert(c::schemeName, new c::Factory)
 void BioStruct3DColorSchemeRegistry::registerFactories() {
     REGISTER_FACTORY(ChainsColorScheme);
@@ -347,6 +351,14 @@ QVector<int> AlignmentEntropyColorScheme::getEntropyChainIds(const BioStruct3D& 
         isEntropy = true;
     }
     return ids;
+}
+
+BioStruct3DColorScheme* AlignmentEntropyColorScheme::Factory::createInstance(const BioStruct3DObject* biostructObj) const {
+    return new AlignmentEntropyColorScheme(biostructObj);
+}
+
+bool AlignmentEntropyColorScheme::Factory::isSchemeValid(const BioStruct3D& biostruct3d) const {
+    return !AlignmentEntropyColorScheme::getEntropyChainIds(biostruct3d).isEmpty();
 }
 
 }  // namespace U2
