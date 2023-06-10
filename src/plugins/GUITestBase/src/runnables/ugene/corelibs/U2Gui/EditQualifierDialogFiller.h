@@ -35,7 +35,7 @@ public:
           closeErrormessageBox(_closeErrorMessageBox) {
     }
 
-    EditQualifierFiller( const QString& _qualifierName, bool _noCheck = false, bool _closeErrorMessageBox = false)
+    EditQualifierFiller(const QString& _qualifierName, bool _noCheck = false, bool _closeErrorMessageBox = false)
         : Filler("EditQualifierDialog"),
           qualifierName(_qualifierName),
           noCheck(_noCheck),

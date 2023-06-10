@@ -75,7 +75,7 @@ private:
 // Use DownloadRemoteFileDialogFiller instead
 class RemoteDBDialogFillerDeprecated : public Filler {
 public:
-    RemoteDBDialogFillerDeprecated( const QString _resID, int _DBItemNum, bool addToProject = true, bool forceGetSequence = true, bool _pressCancel = false, const QString _saveDirPath = QString(), GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse, int _outFormatVal = -1)
+    RemoteDBDialogFillerDeprecated(const QString _resID, int _DBItemNum, bool addToProject = true, bool forceGetSequence = true, bool _pressCancel = false, const QString _saveDirPath = QString(), GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse, int _outFormatVal = -1)
         : Filler("DownloadRemoteFileDialog"),
           resID(_resID),
           DBItemNum(_DBItemNum),

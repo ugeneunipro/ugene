@@ -35,9 +35,9 @@ public:
                   Cancel };
     enum SwRealization { CLASSIC,
                          SSE2 };
-    SmithWatermanDialogFiller( const QString& _pattern = "", const GTRegionSelector::RegionSelectorSettings& _s = GTRegionSelector::RegionSelectorSettings(), SwRealization _realization = CLASSIC);
+    SmithWatermanDialogFiller(const QString& _pattern = "", const GTRegionSelector::RegionSelectorSettings& _s = GTRegionSelector::RegionSelectorSettings(), SwRealization _realization = CLASSIC);
 
-    SmithWatermanDialogFiller( SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern = "", const GTRegionSelector::RegionSelectorSettings& _s = GTRegionSelector::RegionSelectorSettings());
+    SmithWatermanDialogFiller(SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern = "", const GTRegionSelector::RegionSelectorSettings& _s = GTRegionSelector::RegionSelectorSettings());
 
     SmithWatermanDialogFiller(CustomScenario* scenario);
 

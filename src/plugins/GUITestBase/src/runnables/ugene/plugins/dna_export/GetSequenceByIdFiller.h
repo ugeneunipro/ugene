@@ -28,7 +28,7 @@ using namespace HI;
 
 class GetSequenceByIdFiller : public Filler {
 public:
-    GetSequenceByIdFiller( const QString& saveTo, bool addToProject);
+    GetSequenceByIdFiller(const QString& saveTo, bool addToProject);
 
     void commonScenario() override;
 

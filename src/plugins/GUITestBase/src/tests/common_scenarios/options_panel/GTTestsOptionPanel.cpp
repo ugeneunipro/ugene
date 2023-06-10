@@ -665,9 +665,9 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     // 7. The hint is visible again
 
     ADVSingleSequenceWidget* seqWidget = GTUtilsProject::openFileExpectSequence(
-                                                                                dataDir + "samples/Genbank",
-                                                                                "sars.gb",
-                                                                                "NC_004718");
+        dataDir + "samples/Genbank",
+        "sars.gb",
+        "NC_004718");
     GTWidget::click(GTWidget::findWidget("OP_CV_SETTINGS"));
 
     auto openCvWidget = GTWidget::findWidget("openCvWidget");
@@ -692,9 +692,9 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // 8. The hint is visible, the settings are hidden
 
     ADVSingleSequenceWidget* seqWidget1 = GTUtilsProject::openFileExpectSequence(
-                                                                                 dataDir + "samples/Genbank",
-                                                                                 "sars.gb",
-                                                                                 "NC_004718");
+        dataDir + "samples/Genbank",
+        "sars.gb",
+        "NC_004718");
     CHECK_SET_ERR(!GTUtilsCv::isCvPresent(seqWidget1), "CV opened");
     GTWidget::click(GTWidget::findWidget("OP_CV_SETTINGS"));
 

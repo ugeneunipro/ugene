@@ -39,12 +39,12 @@ public:
 
     ExportAnnotationsFiller(const QString& exportToFile, fileFormat format);
     ExportAnnotationsFiller(
-                            const QString& _exportToFile,
-                            fileFormat _format,
-                            bool _addToProject,
-                            bool _saveSequencesUnderAnnotations = true,
-                            bool _saveSequenceNames = true,
-                            GTGlobals::UseMethod method = GTGlobals::UseMouse);
+        const QString& _exportToFile,
+        fileFormat _format,
+        bool _addToProject,
+        bool _saveSequencesUnderAnnotations = true,
+        bool _saveSequenceNames = true,
+        GTGlobals::UseMethod method = GTGlobals::UseMouse);
     ExportAnnotationsFiller(CustomScenario* scenario);
 
     void commonScenario();

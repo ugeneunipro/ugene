@@ -91,20 +91,20 @@ public:
     };
 
     ImportAnnotationsToCsvFiller(
-                                 const QString& _fileToRead,
-                                 const QString& _resultFile,
-                                 ImportAnnotationsToCsvFiller::fileFormat _format,
-                                 bool _addResultFileToProject,
-                                 bool _columnSeparator,
-                                 const QString& _separator,
-                                 int _numberOfLines,
-                                 const QString& _skipAllLinesStartsWith,
-                                 bool _interpretMultipleAsSingle,
-                                 bool _removeQuotesButton,
-                                 const QString& _defaultAnnotationName,
-                                 const RoleParameters& roleParameters = RoleParameters(),
-                                 GTGlobals::UseMethod method = GTGlobals::UseMouse);
-    ImportAnnotationsToCsvFiller( CustomScenario* c);
+        const QString& _fileToRead,
+        const QString& _resultFile,
+        ImportAnnotationsToCsvFiller::fileFormat _format,
+        bool _addResultFileToProject,
+        bool _columnSeparator,
+        const QString& _separator,
+        int _numberOfLines,
+        const QString& _skipAllLinesStartsWith,
+        bool _interpretMultipleAsSingle,
+        bool _removeQuotesButton,
+        const QString& _defaultAnnotationName,
+        const RoleParameters& roleParameters = RoleParameters(),
+        GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    ImportAnnotationsToCsvFiller(CustomScenario* c);
 
     virtual void commonScenario();
 

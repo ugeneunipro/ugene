@@ -33,17 +33,17 @@ public:
      * If 'useDefaultSequenceSelection' is 'true' ignores 'selectedSequenceNameList' values and re-uses currently checked values by MSA editor.
      */
     ExtractSelectedAsMSADialogFiller(
-                                     const QString& filepath,
-                                     const QStringList& selectedSequenceNameList = QStringList(),
-                                     int from = 0,
-                                     int to = 0,
-                                     bool addToProj = true,
-                                     bool invertButtonPress = false,
-                                     bool allButtonPress = false,
-                                     bool noneButtonPress = false,
-                                     bool dontCheckFilepath = false,
-                                     const QString& format = "",
-                                     bool useDefaultSequenceSelectionFlag = false);
+        const QString& filepath,
+        const QStringList& selectedSequenceNameList = QStringList(),
+        int from = 0,
+        int to = 0,
+        bool addToProj = true,
+        bool invertButtonPress = false,
+        bool allButtonPress = false,
+        bool noneButtonPress = false,
+        bool dontCheckFilepath = false,
+        const QString& format = "",
+        bool useDefaultSequenceSelectionFlag = false);
 
     ExtractSelectedAsMSADialogFiller(CustomScenario* c);
 

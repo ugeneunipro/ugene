@@ -28,7 +28,7 @@ using namespace HI;
 
 class ReplaceSubsequenceDialogFiller : public Filler {
 public:
-    ReplaceSubsequenceDialogFiller( const QString& _pasteDataHere, bool recalculateQuals = false, bool expectAlphabetChanged = false);
+    ReplaceSubsequenceDialogFiller(const QString& _pasteDataHere, bool recalculateQuals = false, bool expectAlphabetChanged = false);
     ReplaceSubsequenceDialogFiller(CustomScenario* scenario, bool expectAlphabetChanged = false);
     void commonScenario();
 

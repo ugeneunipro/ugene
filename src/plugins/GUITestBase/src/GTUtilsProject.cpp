@@ -126,9 +126,9 @@ void GTUtilsProject::openFilesWithDialog(const QList<QUrl>& urls) {
 
 #define GT_METHOD_NAME "openFileExpectSequence"
 ADVSingleSequenceWidget* GTUtilsProject::openFileExpectSequence(
-                                                                const QString& dirPath,
-                                                                const QString& fileName,
-                                                                const QString& seqName) {
+    const QString& dirPath,
+    const QString& fileName,
+    const QString& seqName) {
     return openFileExpectSequence(dirPath + "/" + fileName, seqName);
 }
 #undef GT_METHOD_NAME
@@ -160,9 +160,9 @@ ADVSingleSequenceWidget* GTUtilsProject::openFileExpectSequence(
 
 #define GT_METHOD_NAME "openFileExpectRawSequence"
 ADVSingleSequenceWidget* GTUtilsProject::openFileExpectRawSequence(
-                                                                   const QString& dirPath,
-                                                                   const QString& fileName,
-                                                                   const QString& seqName) {
+    const QString& dirPath,
+    const QString& fileName,
+    const QString& seqName) {
     return openFileExpectRawSequence(dirPath + "/" + fileName, seqName);
 }
 #undef GT_METHOD_NAME
@@ -178,9 +178,9 @@ ADVSingleSequenceWidget* GTUtilsProject::openFileExpectRawSequence(
 
 #define GT_METHOD_NAME "openFileExpectSequences"
 QList<ADVSingleSequenceWidget*> GTUtilsProject::openFileExpectSequences(
-                                                                        const QString& path,
-                                                                        const QString& fileName,
-                                                                        const QList<QString>& seqNames) {
+    const QString& path,
+    const QString& fileName,
+    const QList<QString>& seqNames) {
     QList<ADVSingleSequenceWidget*> result;
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(path + fileName);

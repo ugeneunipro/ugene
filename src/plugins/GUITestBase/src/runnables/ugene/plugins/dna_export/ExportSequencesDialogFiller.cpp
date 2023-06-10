@@ -36,7 +36,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSelectedRegionFiller"
-ExportSelectedRegionFiller::ExportSelectedRegionFiller( const QString& _path, const QString& _name, bool translate, const QString& seqName, bool saveAllAminoFrames)
+ExportSelectedRegionFiller::ExportSelectedRegionFiller(const QString& _path, const QString& _name, bool translate, const QString& seqName, bool saveAllAminoFrames)
     : Filler("U2__ExportSequencesDialog"), name(_name), seqName(seqName), translate(translate),
       saveAllAminoFrames(saveAllAminoFrames) {
     path = GTFileDialog::toAbsoluteNativePath(_path, true);
@@ -91,14 +91,14 @@ void ExportSelectedRegionFiller::setName(const QString& value) {
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSequenceOfSelectedAnnotationsFiller"
 ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFiller(
-                                                                                     const QString& _path,
-                                                                                     FormatToUse _format,
-                                                                                     MergeOptions _options,
-                                                                                     int _gapLength,
-                                                                                     bool _addDocToProject,
-                                                                                     bool _exportWithAnnotations,
-                                                                                     GTGlobals::UseMethod method,
-                                                                                     bool _translate)
+    const QString& _path,
+    FormatToUse _format,
+    MergeOptions _options,
+    int _gapLength,
+    bool _addDocToProject,
+    bool _exportWithAnnotations,
+    GTGlobals::UseMethod method,
+    bool _translate)
     : Filler("U2__ExportSequencesDialog"), gapLength(_gapLength), format(_format), addToProject(_addDocToProject),
       exportWithAnnotations(false), options(_options), useMethod(method), translate(_translate) {
     exportWithAnnotations = _exportWithAnnotations;

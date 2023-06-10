@@ -1268,9 +1268,9 @@ GUI_TEST_CLASS_DEFINITION(test_3274) {
                   << "seq5";
 
     seqWidgets = GTUtilsProject::openFileExpectSequences(
-                                                         testDir + "_common_data/alphabets/",
-                                                         "standard_dna_rna_amino_1000.fa",
-                                                         expectedNames);
+        testDir + "_common_data/alphabets/",
+        "standard_dna_rna_amino_1000.fa",
+        expectedNames);
     ADVSingleSequenceWidget* seq1Widget = seqWidgets.at(0);
     ADVSingleSequenceWidget* seq3Widget = seqWidgets.at(1);
 
@@ -1501,11 +1501,9 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-
     // 2. Open COI.aln
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-
 
     // 3. Drag the sequence to the alignment
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_LOAD, "Sequence from current project"}));
@@ -1835,9 +1833,9 @@ GUI_TEST_CLASS_DEFINITION(test_3379) {
                   << "seq5";
 
     seqWidgets = GTUtilsProject::openFileExpectSequences(
-                                                         testDir + "_common_data/alphabets/",
-                                                         "standard_dna_rna_amino_1000.fa",
-                                                         expectedNames);
+        testDir + "_common_data/alphabets/",
+        "standard_dna_rna_amino_1000.fa",
+        expectedNames);
     // 2. Open a few CV
     ADVSingleSequenceWidget* seq1Widget = seqWidgets.at(0);
     ADVSingleSequenceWidget* seq3Widget = seqWidgets.at(1);
@@ -2050,9 +2048,9 @@ GUI_TEST_CLASS_DEFINITION(test_3430) {
                   << "seq5";
 
     seqWidgets = GTUtilsProject::openFileExpectSequences(
-                                                         testDir + "_common_data/alphabets/",
-                                                         "standard_dna_rna_amino_1000.fa",
-                                                         expectedNames);
+        testDir + "_common_data/alphabets/",
+        "standard_dna_rna_amino_1000.fa",
+        expectedNames);
     // 2. Open one circular view
     ADVSingleSequenceWidget* seq1Widget = seqWidgets.at(0);
 
@@ -2280,11 +2278,9 @@ GUI_TEST_CLASS_DEFINITION(test_3455) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(sample));
     GTMouseDriver::click();
 
-
     // 4. Load any workflow.
     QString schemaPath = testDir + "_common_data/scenarios/workflow designer/222.uwl";
     GTUtilsWorkflowDesigner::loadWorkflow(schemaPath);
-
 
     // Expected: the elements tab is active.
     GTUtilsWorkflowDesigner::tab current = GTUtilsWorkflowDesigner::currentTab();
@@ -3173,7 +3169,7 @@ GUI_TEST_CLASS_DEFINITION(test_3613) {
     GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(
-                                 new ImportBAMFileFiller(sandBoxDir + "test_3613.bam.ugenedb"));
+        new ImportBAMFileFiller(sandBoxDir + "test_3613.bam.ugenedb"));
     GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.bam");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsAssemblyBrowser::zoomToMax();
@@ -4699,16 +4695,16 @@ GUI_TEST_CLASS_DEFINITION(test_3959) {
     // Expected state: the same sequence region is displayed, scrollbar has shrunk, "Zoom out" has enabled.
 
     Runnable* filler = new CreateDocumentFiller(
-                                                "AAAA",
-                                                false,
-                                                CreateDocumentFiller::StandardRNA,
-                                                true,
-                                                false,
-                                                "",
-                                                testDir + "_common_data/scenarios/sandbox/result",
-                                                CreateDocumentFiller::FASTA,
-                                                "result",
-                                                true);
+        "AAAA",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -4719,7 +4715,7 @@ GUI_TEST_CLASS_DEFINITION(test_3959) {
     // CHECK_SET_ERR(!zoomOutButton->isEnabled(), "zoomOutButton button on toolbar is not disabled");
 
     Runnable* filler1 = new InsertSequenceFiller(
-                                                 "AAAA");
+        "AAAA");
     GTUtilsDialog::waitForDialog(filler1);
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseKey);
 }

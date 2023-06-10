@@ -65,11 +65,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTKeyboardUtils::selectAll();
 
     GTUtilsDialog::add(
-                       new RemovePartFromSequenceDialogFiller(
-                                                              RemovePartFromSequenceDialogFiller::Remove,
-                                                              true,
-                                                              testDir + "_common_data/scenarios/sandbox/result.fa",
-                                                              RemovePartFromSequenceDialogFiller::FASTA));
+        new RemovePartFromSequenceDialogFiller(
+            RemovePartFromSequenceDialogFiller::Remove,
+            true,
+            testDir + "_common_data/scenarios/sandbox/result.fa",
+            RemovePartFromSequenceDialogFiller::FASTA));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
 
     GTUtilsSequenceView::openSequenceView("result.fa");
@@ -109,11 +109,11 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 6. Click Remove Button.
     GTUtilsDialog::add(new PopupChooser({ADV_MENU_EDIT, ACTION_EDIT_REMOVE_SUBSEQUENCE}, GTGlobals::UseMouse));
     GTUtilsDialog::add(
-                       new RemovePartFromSequenceDialogFiller(
-                                                              RemovePartFromSequenceDialogFiller::Remove,
-                                                              true,
-                                                              testDir + "_common_data/scenarios/sandbox/result.gb",
-                                                              RemovePartFromSequenceDialogFiller::Genbank));
+        new RemovePartFromSequenceDialogFiller(
+            RemovePartFromSequenceDialogFiller::Remove,
+            true,
+            testDir + "_common_data/scenarios/sandbox/result.gb",
+            RemovePartFromSequenceDialogFiller::Genbank));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -135,14 +135,14 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     GTUtilsDialog::waitForDialog(
-                                 new InsertSequenceFiller(
-                                                          "AAAAAA",
-                                                          InsertSequenceFiller::Resize,
-                                                          1,
-                                                          testDir + "_common_data/scenarios/sandbox/result.fa",
-                                                          InsertSequenceFiller::FASTA,
-                                                          true,
-                                                          false));
+        new InsertSequenceFiller(
+            "AAAAAA",
+            InsertSequenceFiller::Resize,
+            1,
+            testDir + "_common_data/scenarios/sandbox/result.fa",
+            InsertSequenceFiller::FASTA,
+            true,
+            false));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseKey);
     GTUtilsDocument::checkDocument("result.fa");
 
@@ -159,14 +159,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     GTUtilsDialog::waitForDialog(
-                                 new InsertSequenceFiller(
-                                                          "AAAAAA",
-                                                          InsertSequenceFiller::Resize,
-                                                          1,
-                                                          testDir + "_common_data/scenarios/sandbox/result.gb",
-                                                          InsertSequenceFiller::Genbank,
-                                                          true,
-                                                          false));
+        new InsertSequenceFiller(
+            "AAAAAA",
+            InsertSequenceFiller::Resize,
+            1,
+            testDir + "_common_data/scenarios/sandbox/result.gb",
+            InsertSequenceFiller::Genbank,
+            true,
+            false));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseKey);
 
     GTUtilsDocument::checkDocument("result.gb");
@@ -186,11 +186,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::add(new SelectSequenceRegionDialogFiller(1, 50));
     GTKeyboardUtils::selectAll();
     GTUtilsDialog::add(
-                       new RemovePartFromSequenceDialogFiller(
-                                                              RemovePartFromSequenceDialogFiller::Remove,
-                                                              true,
-                                                              testDir + "_common_data/scenarios/sandbox/result.fa",
-                                                              RemovePartFromSequenceDialogFiller::FASTA));
+        new RemovePartFromSequenceDialogFiller(
+            RemovePartFromSequenceDialogFiller::Remove,
+            true,
+            testDir + "_common_data/scenarios/sandbox/result.fa",
+            RemovePartFromSequenceDialogFiller::FASTA));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
     GTUtilsDocument::checkDocument("result.fa");
     GTUtilsSequenceView::openSequenceView("result.fa");
@@ -245,11 +245,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTKeyboardUtils::selectAll();
 
     GTUtilsDialog::add(
-                       new RemovePartFromSequenceDialogFiller(
-                                                              RemovePartFromSequenceDialogFiller::Remove,
-                                                              false,
-                                                              testDir + "_common_data/scenarios/sandbox/result.fa",
-                                                              RemovePartFromSequenceDialogFiller::FASTA));
+        new RemovePartFromSequenceDialogFiller(
+            RemovePartFromSequenceDialogFiller::Remove,
+            false,
+            testDir + "_common_data/scenarios/sandbox/result.fa",
+            RemovePartFromSequenceDialogFiller::FASTA));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove subsequence..."}, GTGlobals::UseMouse);
 
     int sequenceLength = GTUtilsSequenceView::getLengthOfSequence();

@@ -83,11 +83,11 @@ private:
 class NCBISearchDialogSimpleFiller : public Filler {
 public:
     NCBISearchDialogSimpleFiller(
-                                 const QString& query,
-                                 bool doubleEnter = false,
-                                 int _esultLimit = -1,
-                                 const QString& term = "",
-                                 const QString& resultToLoad = "");
+        const QString& query,
+        bool doubleEnter = false,
+        int _esultLimit = -1,
+        const QString& term = "",
+        const QString& resultToLoad = "");
 
     void commonScenario() override;
 

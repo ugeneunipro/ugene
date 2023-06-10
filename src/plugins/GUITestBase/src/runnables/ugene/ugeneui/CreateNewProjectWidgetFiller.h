@@ -27,7 +27,7 @@ namespace U2 {
 using namespace HI;
 class SaveProjectAsDialogFiller : public Filler {
 public:
-    SaveProjectAsDialogFiller( const QString& _projectName, const QString& _projectFile)
+    SaveProjectAsDialogFiller(const QString& _projectName, const QString& _projectFile)
         : Filler("CreateNewProjectDialog"), projectName(_projectName), projectFile(_projectFile) {
     }
     void commonScenario();

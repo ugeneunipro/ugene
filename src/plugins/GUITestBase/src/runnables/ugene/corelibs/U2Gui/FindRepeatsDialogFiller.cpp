@@ -35,11 +35,11 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 FindRepeatsDialogFiller::FindRepeatsDialogFiller(
-                                                 const QString& _resultFilesPath,
-                                                 bool _searchInverted,
-                                                 int _minRepeatLength,
-                                                 int _repeatsIdentity,
-                                                 int _minDistance)
+    const QString& _resultFilesPath,
+    bool _searchInverted,
+    int _minRepeatLength,
+    int _repeatsIdentity,
+    int _minDistance)
     : Filler("FindRepeatsDialog"), button(Start), resultAnnotationFilesPath(_resultFilesPath),
       searchInverted(_searchInverted), minRepeatLength(_minRepeatLength), repeatsIdentity(_repeatsIdentity), minDistance(_minDistance) {
 }

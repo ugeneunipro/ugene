@@ -34,7 +34,7 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportChromatogramFiller"
-ExportChromatogramFiller::ExportChromatogramFiller( const QString& _path, const QString& _name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method)
+ExportChromatogramFiller::ExportChromatogramFiller(const QString& _path, const QString& _name, ExportChromatogramFiller::FormatToUse _format, bool reversed, bool complement, bool addDocumentToProject, GTGlobals::UseMethod method)
     : Filler("ExportChromatogramDialog"), name(_name), useMethod(method), format(_format), reversed(reversed),
       complement(complement), addDocumentToProject(addDocumentToProject) {
     path = _path;

@@ -49,7 +49,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::SmithWatermanDialogFiller"
 #define GT_METHOD_NAME "run"
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller( SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s)
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s)
     : Filler("SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
       resultView(_resultView), resultFilesPath(_resultFilesPath), autoSetupAlgorithmParams(true),
       realization(_realization) {
@@ -59,7 +59,7 @@ SmithWatermanDialogFiller::SmithWatermanDialogFiller(CustomScenario* scenario)
     : Filler("SmithWatermanDialogBase", scenario) {
 }
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller( const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s, SwRealization _realization)
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s, SwRealization _realization)
     : Filler("SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
       resultView(SmithWatermanSettings::ANNOTATIONS), resultFilesPath(""),
       autoSetupAlgorithmParams(false), realization(_realization) {

@@ -55,9 +55,7 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
 
     setReference(settings.referenceUrl, dialog);
 
-
     setReads(settings.readUrls, dialog);
-
 
     auto settingSpinBox = GTWidget::findSpinBox("minIdentitySpinBox", dialog);
     GTSpinBox::setValue(settingSpinBox, settings.minIdentity);
@@ -69,7 +67,6 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
     GTCheckBox::setChecked(checkBox, settings.addResultToProject);
 
     setDestination(settings.outAlignment, dialog);
-
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }

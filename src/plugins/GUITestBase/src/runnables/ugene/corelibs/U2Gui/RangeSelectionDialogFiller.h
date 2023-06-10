@@ -30,11 +30,11 @@ class SelectSequenceRegionDialogFiller : public Filler {
 public:
     enum RangeType { Single,
                      Multiple };
-    SelectSequenceRegionDialogFiller( int* _len);
-    SelectSequenceRegionDialogFiller( CustomScenario* scenario = nullptr);
-    SelectSequenceRegionDialogFiller( int _minVal, int _maxVal);
-    SelectSequenceRegionDialogFiller( const QString& range);
-    SelectSequenceRegionDialogFiller( int _length, bool selectFromBegin = true);
+    SelectSequenceRegionDialogFiller(int* _len);
+    SelectSequenceRegionDialogFiller(CustomScenario* scenario = nullptr);
+    SelectSequenceRegionDialogFiller(int _minVal, int _maxVal);
+    SelectSequenceRegionDialogFiller(const QString& range);
+    SelectSequenceRegionDialogFiller(int _length, bool selectFromBegin = true);
 
     void commonScenario();
     void setCircular(bool v);

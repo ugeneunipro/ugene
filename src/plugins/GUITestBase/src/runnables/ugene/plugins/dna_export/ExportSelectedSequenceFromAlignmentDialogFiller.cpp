@@ -35,7 +35,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSelectedSequenceFromAlignment"
 
-ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment( const QString& _path, documentFormat _format, bool _keepGaps, bool _addToProj)
+ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(const QString& _path, documentFormat _format, bool _keepGaps, bool _addToProj)
     : Filler("U2__SaveSelectedSequenceFromMSADialog"),
       path(_path),
       format(_format),

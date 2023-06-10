@@ -28,7 +28,7 @@ using namespace HI;
 
 class GoToDialogFiller : public Filler {
 public:
-    GoToDialogFiller( int _goTo)
+    GoToDialogFiller(int _goTo)
         : Filler(""), goTo(_goTo) {
     }
     void commonScenario();

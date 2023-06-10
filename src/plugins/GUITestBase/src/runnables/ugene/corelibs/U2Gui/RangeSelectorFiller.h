@@ -28,7 +28,7 @@ using namespace HI;
 
 class ZoomToRangeDialogFiller : public Filler {
 public:
-    ZoomToRangeDialogFiller( int min = -1, int max = -1)
+    ZoomToRangeDialogFiller(int min = -1, int max = -1)
         : Filler("range_selection_dialog"), minVal(min), maxVal(max) {
     }
     void commonScenario();

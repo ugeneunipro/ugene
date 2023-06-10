@@ -39,19 +39,19 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::RemovePartFromSequenceDialogFiller"
-RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller( QString _range, bool recalculateQuals)
+RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(QString _range, bool recalculateQuals)
     : Filler("RemovePartFromSequenceDialog"), range(_range), removeType(Resize), format(FASTA), saveNew(false),
       recalculateQuals(recalculateQuals) {
 }
 
-RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller( RemoveType _removeType, bool _saveNew, const QString& _saveToFile, FormatToUse _format)
+RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(RemoveType _removeType, bool _saveNew, const QString& _saveToFile, FormatToUse _format)
     : Filler("RemovePartFromSequenceDialog"), removeType(_removeType), format(_format), saveNew(_saveNew), recalculateQuals(false) {
     saveToFile = GTFileDialog::toAbsoluteNativePath(_saveToFile);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
 }
 
-RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller( RemoveType _removeType)
+RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(RemoveType _removeType)
     : Filler("RemovePartFromSequenceDialog"), removeType(_removeType), format(FASTA), recalculateQuals(false) {
 }
 

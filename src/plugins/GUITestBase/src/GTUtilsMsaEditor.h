@@ -89,9 +89,9 @@ public:
 
     /** Clicks sequence with a mouse button and a keyboard key pressed. */
     static void clickSequenceName(
-                                  const QString& sequenceName,
-                                  const Qt::MouseButton& mouseButton = Qt::LeftButton,
-                                  const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
+        const QString& sequenceName,
+        const Qt::MouseButton& mouseButton = Qt::LeftButton,
+        const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
 
     static void moveToColumn(int column);
     static void clickColumn(int column, Qt::MouseButton mouseButton = Qt::LeftButton);

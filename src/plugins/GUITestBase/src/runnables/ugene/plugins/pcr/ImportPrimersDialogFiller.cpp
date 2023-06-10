@@ -37,8 +37,8 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ImportPrimersDialogFiller"
 
 ImportPrimersDialogFiller::ImportPrimersDialogFiller(
-                                                     const QStringList& _fileList,
-                                                     const QMap<QString, QStringList>& _objectNameList)
+    const QStringList& _fileList,
+    const QMap<QString, QStringList>& _objectNameList)
     : Filler("ImportPrimersDialog"),
       fileList(_fileList),
       objectNameList(_objectNameList) {

@@ -28,7 +28,7 @@ using namespace HI;
 
 class AliasesDialogFiller : public Filler {
 public:
-    AliasesDialogFiller( QMap<QPoint*, QString> _map)
+    AliasesDialogFiller(QMap<QPoint*, QString> _map)
         : Filler("SchemaAliasesConfigurationDialog"),
           map(_map) {
     }

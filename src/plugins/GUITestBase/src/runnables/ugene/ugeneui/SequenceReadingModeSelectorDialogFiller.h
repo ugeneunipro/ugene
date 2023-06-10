@@ -38,10 +38,10 @@ public:
         Align
     };
 
-    SequenceReadingModeSelectorDialogFiller( ReadingMode _mode = Separate, int _bases = 10, bool cancel = false)
+    SequenceReadingModeSelectorDialogFiller(ReadingMode _mode = Separate, int _bases = 10, bool cancel = false)
         : Filler("SequenceReadingModeSelectorDialog"), readingMode(_mode), bases(_bases), cancel(cancel) {
     }
-    SequenceReadingModeSelectorDialogFiller( CustomScenario* c);
+    SequenceReadingModeSelectorDialogFiller(CustomScenario* c);
 
     void commonScenario() override;
 

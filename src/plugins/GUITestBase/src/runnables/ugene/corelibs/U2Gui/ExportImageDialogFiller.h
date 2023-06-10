@@ -45,7 +45,7 @@ protected:
 
 class CircularViewExportImage : public Filler {
 public:
-    CircularViewExportImage( QString _filePath, QString _comboValue = "", QString exportedSequenceName = "", int _spinValue = 0)
+    CircularViewExportImage(QString _filePath, QString _comboValue = "", QString exportedSequenceName = "", int _spinValue = 0)
         : Filler("ImageExportForm"),
           filePath(QDir::toNativeSeparators(_filePath)),
           comboValue(_comboValue),
@@ -154,7 +154,7 @@ private:
 
 class SelectSubalignmentFiller : public Filler {
 public:
-    SelectSubalignmentFiller( const RegionMsa& regionMsa)
+    SelectSubalignmentFiller(const RegionMsa& regionMsa)
         : Filler("SelectSubalignmentDialog"),
           msaRegion(regionMsa) {
     }

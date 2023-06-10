@@ -29,7 +29,6 @@
 
 #include <U2Core/U2SafePoints.h>
 
-
 #include "GTTestsWorkflowParameterValidation.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -88,7 +87,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     };
     QString inFile = QFileInfo(testDir + "_common_data/clustal/align.aln").absoluteFilePath();
     RenameHelper h(inFile);
-
 
     // 5. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));

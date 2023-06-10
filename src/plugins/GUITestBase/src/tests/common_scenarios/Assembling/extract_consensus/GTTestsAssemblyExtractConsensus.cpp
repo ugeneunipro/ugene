@@ -123,7 +123,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
 
             GTWidget::click(GTWidget::findButtonByText("Add", dialog));
             GTUtilsDialog::waitForDialog(
-                                         new GTFileDialogUtils(testDir + "_common_data/bam/small.bam.sorted.bam"));
+                new GTFileDialogUtils(testDir + "_common_data/bam/small.bam.sorted.bam"));
 
             GTUtilsWizard::clickButton(GTUtilsWizard::Run);
         }
@@ -194,7 +194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     GTUtilsDialog::waitForDialog(new HI::MessageBoxDialogFiller(QMessageBox::Ok));
     //  Expected state: There should also be an error about missing required input parameter in the workflow
     GTUtilsWorkflowDesigner::checkErrorList(
-                                            "Read Assembly: Required parameter has no input urls specified: Input file(s)");
+        "Read Assembly: Required parameter has no input urls specified: Input file(s)");
 }
 
 }  // namespace GUITest_assembly_extract_consensus

@@ -174,10 +174,10 @@ GUI_TEST_CLASS_DEFINITION(test_7012) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsDialog::waitForDialog(
-                                 new WizardFiller(
-                                                  "Extract Consensus Wizard",
-                                                  QStringList(),
-                                                  {{"Assembly", testDir + "_common_data/ugenedb/1.bam.ugenedb"}}));
+        new WizardFiller(
+            "Extract Consensus Wizard",
+            QStringList(),
+            {{"Assembly", testDir + "_common_data/ugenedb/1.bam.ugenedb"}}));
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1596,15 +1596,15 @@ GUI_TEST_CLASS_DEFINITION(test_7448_1) {
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 2);
 
     GTUtilsDialog::waitForDialog(
-                                 new ExportSequenceOfSelectedAnnotationsFiller(
-                                                                               sandBoxDir + "murine_out.fa",
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
-                                                                               0,
-                                                                               true,
-                                                                               false,
-                                                                               GTGlobals::UseMouse,
-                                                                               true));
+        new ExportSequenceOfSelectedAnnotationsFiller(
+            sandBoxDir + "murine_out.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+            0,
+            true,
+            false,
+            GTGlobals::UseMouse,
+            true));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export", "Export sequence of selected annotations..."}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1626,15 +1626,15 @@ GUI_TEST_CLASS_DEFINITION(test_7448_2) {
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 1);
 
     GTUtilsDialog::waitForDialog(
-                                 new ExportSequenceOfSelectedAnnotationsFiller(
-                                                                               sandBoxDir + "test_7448_2_out.fa",
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
-                                                                               0,
-                                                                               true,
-                                                                               false,
-                                                                               GTGlobals::UseMouse,
-                                                                               true));
+        new ExportSequenceOfSelectedAnnotationsFiller(
+            sandBoxDir + "test_7448_2_out.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+            0,
+            true,
+            false,
+            GTGlobals::UseMouse,
+            true));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export", "Export sequence of selected annotations..."}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1658,15 +1658,15 @@ GUI_TEST_CLASS_DEFINITION(test_7448_3) {
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 1);
 
     GTUtilsDialog::waitForDialog(
-                                 new ExportSequenceOfSelectedAnnotationsFiller(
-                                                                               sandBoxDir + "test_7448_3_out.fa",
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
-                                                                               0,
-                                                                               true,
-                                                                               false,
-                                                                               GTGlobals::UseMouse,
-                                                                               true));
+        new ExportSequenceOfSelectedAnnotationsFiller(
+            sandBoxDir + "test_7448_3_out.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+            0,
+            true,
+            false,
+            GTGlobals::UseMouse,
+            true));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export", "Export sequence of selected annotations..."}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1695,15 +1695,15 @@ GUI_TEST_CLASS_DEFINITION(test_7448_4) {
     GTUtilsSequenceView::clickAnnotationDet("misc_feature", 10);
 
     GTUtilsDialog::waitForDialog(
-                                 new ExportSequenceOfSelectedAnnotationsFiller(
-                                                                               sandBoxDir + "test_7448_4_out.fa",
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
-                                                                               0,
-                                                                               true,
-                                                                               false,
-                                                                               GTGlobals::UseMouse,
-                                                                               true));
+        new ExportSequenceOfSelectedAnnotationsFiller(
+            sandBoxDir + "test_7448_4_out.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+            0,
+            true,
+            false,
+            GTGlobals::UseMouse,
+            true));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export", "Export sequence of selected annotations..."}));
     GTMouseDriver::click(Qt::RightButton);
@@ -1764,9 +1764,9 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
     GTWidget::click(
-                    GTWidget::findWidget(
-                                         "qt_toolbar_ext_button",
-                                         GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence")));
+        GTWidget::findWidget(
+            "qt_toolbar_ext_button",
+            GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence")));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7455) {
@@ -2214,10 +2214,10 @@ GUI_TEST_CLASS_DEFINITION(test_7504) {
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
     GTUtilsDialog::waitForDialog(
-                                 new ExportSequenceOfSelectedAnnotationsFiller(
-                                                                               sandBoxDir + "test_7504_out.fa",
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                               ExportSequenceOfSelectedAnnotationsFiller::Merge));
+        new ExportSequenceOfSelectedAnnotationsFiller(
+            sandBoxDir + "test_7504_out.fa",
+            ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+            ExportSequenceOfSelectedAnnotationsFiller::Merge));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export", "Export sequence of selected annotations..."}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
@@ -2292,9 +2292,9 @@ GUI_TEST_CLASS_DEFINITION(test_7507) {
     auto glWidget = GTWidget::findWidget("1-4RTE", sequenceViewWindow);
 
     GTUtilsDialog::waitForDialog(
-                                 new PopupCheckerByText(
-                                                        {"Render Style", "Worms"},
-                                                        PopupChecker::CheckOptions(PopupChecker::IsEnabled | PopupChecker::IsChecked)));
+        new PopupCheckerByText(
+            {"Render Style", "Worms"},
+            PopupChecker::CheckOptions(PopupChecker::IsEnabled | PopupChecker::IsChecked)));
     GTMenu::showContextMenu(glWidget);
 }
 
@@ -3410,9 +3410,9 @@ static void setNumberToReturn(QTableView* table) {
 static void setDouble(QTableView* table, int row, double value) {
     GTTableView::click(table, row, 1);
     GTDoubleSpinbox::setValue(
-                              GTWidget::findWidgetByType<QDoubleSpinBox*>(table, "7667-" + QString::number(row)),
-                              value,
-                              GTGlobals::UseKeyBoard);
+        GTWidget::findWidgetByType<QDoubleSpinBox*>(table, "7667-" + QString::number(row)),
+        value,
+        GTGlobals::UseKeyBoard);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7667_1) {

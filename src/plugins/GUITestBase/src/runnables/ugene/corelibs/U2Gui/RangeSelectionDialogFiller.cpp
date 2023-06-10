@@ -32,7 +32,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSequenceOfSelectedAnnotationsFiller"
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( int* _len)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(int* _len)
     : Filler("RangeSelectionDialog") {
     rangeType = Single;
     selectAll = true;
@@ -45,7 +45,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( int* _len)
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( CustomScenario* scenario)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(CustomScenario* scenario)
     : Filler("RangeSelectionDialog", scenario) {
     rangeType = Single;
     selectAll = true;
@@ -58,7 +58,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( CustomScenar
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( int _minVal, int _maxVal)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(int _minVal, int _maxVal)
     : Filler("RangeSelectionDialog") {
     rangeType = Single;
     selectAll = false;
@@ -71,7 +71,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( int _minVal,
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( const QString& range)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(const QString& range)
     : Filler("RangeSelectionDialog") {
     rangeType = Multiple;
     selectAll = false;
@@ -84,7 +84,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( const QStrin
     circular = false;
 }
 
-SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller( int _length, bool selectFromBegin)
+SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(int _length, bool selectFromBegin)
     : Filler("RangeSelectionDialog") {
     rangeType = Single;
     selectAll = false;

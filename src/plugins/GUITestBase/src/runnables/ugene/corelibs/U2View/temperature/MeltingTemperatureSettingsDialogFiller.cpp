@@ -28,7 +28,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "MeltingTemperatureSettingsDialogFiller"
 MeltingTemperatureSettingsDialogFiller::MeltingTemperatureSettingsDialogFiller(
-                                                                               const QMap<GTUtilsMeltingTemperature::Parameter, QString>& _parameters)
+    const QMap<GTUtilsMeltingTemperature::Parameter, QString>& _parameters)
     : Filler("MeltingTemperatureCalculationDialog"),
       parameters(_parameters) {
 }

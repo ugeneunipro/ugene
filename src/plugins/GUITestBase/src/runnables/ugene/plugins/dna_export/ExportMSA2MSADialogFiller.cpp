@@ -36,7 +36,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller( int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
+ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
     : Filler("U2__ExportMSA2MSADialog"),
       formatVal(_formatVal),
       path(_path),

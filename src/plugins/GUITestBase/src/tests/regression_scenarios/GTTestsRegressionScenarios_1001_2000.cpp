@@ -1894,12 +1894,9 @@ GUI_TEST_CLASS_DEFINITION(test_1186_1) {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, "test_1186_1.sam", GTFileDialogUtils::Save, GTGlobals::UseMouse));
 
-
             auto setResultFileNameButton = GTWidget::findWidget("setResultFileNameButton", dialog);
 
-
             GTWidget::click(setResultFileNameButton);
-
 
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/FASTA/", "human_T1.fa"));
             auto addRefButton = GTWidget::findWidget("addRefButton", dialog);
@@ -1930,14 +1927,11 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
 
             GTCheckBox::setChecked(samBox, false);
 
-
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, "test_1186_2.ugenedb", GTFileDialogUtils::Save, GTGlobals::UseMouse));
 
             auto setResultFileNameButton = GTWidget::findWidget("setResultFileNameButton", dialog);
 
-
             GTWidget::click(setResultFileNameButton);
-
 
             auto resultFileNameEdit = GTWidget::findLineEdit("resultFileNameEdit", dialog);
             CHECK_SET_ERR(resultFileNameEdit->text().contains("test_1186_2.ugenedb"), "Incorrect output file");
@@ -3504,7 +3498,6 @@ GUI_TEST_CLASS_DEFINITION(test_1358) {
 
     GTUtilsWorkflowDesigner::loadWorkflow(testDir + "_common_data/regression/1358/test_0001.uwl");
 
-
     GTUtilsWorkflowDesigner::click("Read Sequence");
     GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "/samples/Genbank/murine.gb");
     // 2. Press "Run schema"
@@ -3654,8 +3647,8 @@ GUI_TEST_CLASS_DEFINITION(test_1371) {
     GTUtilsProjectTreeView::checkItem("Contig2");
     GTUtilsProjectTreeView::checkItem("Contig2_ref");
     GTUtilsProjectTreeView::checkObjectTypes(
-                                             {GObjectTypes::ASSEMBLY, GObjectTypes::SEQUENCE},
-                                             GTUtilsProjectTreeView::findIndex("test_1371.ugenedb"));
+        {GObjectTypes::ASSEMBLY, GObjectTypes::SEQUENCE},
+        GTUtilsProjectTreeView::findIndex("test_1371.ugenedb"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1376) {
@@ -7732,7 +7725,7 @@ GUI_TEST_CLASS_DEFINITION(test_1924) {
     // 2. Use context menu on the sequence     {Edit sequence -> Insert subsequence}
     // 3. Fill in "atcgtac" or any valid sequence containing lower case
     Runnable* filler = new InsertSequenceFiller(
-                                                "atcgtac");
+        "atcgtac");
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseKey);
 

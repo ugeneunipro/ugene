@@ -53,7 +53,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 #define GT_METHOD_NAME "run"
     class CreateAnnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnnotationDialogComboBoxChecker( const QString& radioButtonName)
+        CreateAnnnotationDialogComboBoxChecker(const QString& radioButtonName)
             : Filler("CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {
@@ -100,7 +100,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 #define GT_METHOD_NAME "run"
     class CreateAnnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnnotationDialogComboBoxChecker( const QString& radioButtonName)
+        CreateAnnnotationDialogComboBoxChecker(const QString& radioButtonName)
             : Filler("CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {

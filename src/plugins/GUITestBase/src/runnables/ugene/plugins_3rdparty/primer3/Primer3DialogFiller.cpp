@@ -137,8 +137,8 @@ void Primer3DialogFiller::commonScenario() {
         GTWidget::click(button);
     } else {
         GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(
-                                                                settings.continueIfError ? QMessageBox::Ok : QMessageBox::Cancel,
-                                                                settings.validationErrorsText));
+            settings.continueIfError ? QMessageBox::Ok : QMessageBox::Cancel,
+            settings.validationErrorsText));
         auto button = GTWidget::findPushButton("pickPrimersButton", dialog);
         GTWidget::click(button);
 

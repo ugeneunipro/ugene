@@ -72,7 +72,6 @@ void PwmBuildDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "enterInput"
 void PwmBuildDialogFiller::enterInput(const QVariant& actionData) {
-
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the file path from the action data");
     GTLineEdit::setText("inputEdit", actionData.toString(), dialog);
 }
@@ -80,7 +79,6 @@ void PwmBuildDialogFiller::enterInput(const QVariant& actionData) {
 
 #define GT_METHOD_NAME "selectInput"
 void PwmBuildDialogFiller::selectInput(const QVariant& actionData) {
-
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the file path from the action data");
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(actionData.toString()));
     GTWidget::click(GTWidget::findWidget("inputButton", dialog));
@@ -90,7 +88,6 @@ void PwmBuildDialogFiller::selectInput(const QVariant& actionData) {
 
 #define GT_METHOD_NAME "expectInvalidFile"
 void PwmBuildDialogFiller::expectInvalidFile() {
-
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "There are no sequences in the file."));
 }
 #undef GT_METHOD_NAME

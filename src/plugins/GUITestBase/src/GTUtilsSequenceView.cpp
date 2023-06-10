@@ -66,7 +66,7 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 class GTSequenceReader : public Filler {
 public:
-    GTSequenceReader( QString* _str)
+    GTSequenceReader(QString* _str)
         : Filler("EditSequenceDialog"), str(_str) {
     }
     void commonScenario() override {
@@ -309,9 +309,9 @@ QWidget* GTUtilsSequenceView::getPanOrDetView(int number) {
 #define GT_METHOD_NAME "getSeqWidgetByNumber"
 ADVSingleSequenceWidget* GTUtilsSequenceView::getSeqWidgetByNumber(int number, const GTGlobals::FindOptions& options) {
     auto widget = GTWidget::findWidget(
-                                       QString("ADV_single_sequence_widget_%1").arg(number),
-                                       getActiveSequenceViewWindow(),
-                                       options);
+        QString("ADV_single_sequence_widget_%1").arg(number),
+        getActiveSequenceViewWindow(),
+        options);
 
     auto seqWidget = qobject_cast<ADVSingleSequenceWidget*>(widget);
 
@@ -416,9 +416,9 @@ QString GTUtilsSequenceView::getSeqName(ADVSingleSequenceWidget* seqWidget) {
 
 #define GT_METHOD_NAME "moveMouseToAnnotationInDetView"
 void GTUtilsSequenceView::moveMouseToAnnotationInDetView(
-                                                         const QString& annotationName,
-                                                         int annotationRegionStartPos,
-                                                         int sequenceWidgetIndex) {
+    const QString& annotationName,
+    int annotationRegionStartPos,
+    int sequenceWidgetIndex) {
     ADVSingleSequenceWidget* sequenceView = getSeqWidgetByNumber(sequenceWidgetIndex);
     DetView* detView = sequenceView->getDetView();
     GT_CHECK(detView != nullptr, "detView not found");
@@ -482,11 +482,11 @@ void GTUtilsSequenceView::moveMouseToAnnotationInDetView(
 
 #define GT_METHOD_NAME "clickAnnotationDet"
 void GTUtilsSequenceView::clickAnnotationDet(
-                                             const QString& annotationName,
-                                             int annotationRegionStartPos,
-                                             int sequenceWidgetIndex,
-                                             const bool isDoubleClick,
-                                             Qt::MouseButton button) {
+    const QString& annotationName,
+    int annotationRegionStartPos,
+    int sequenceWidgetIndex,
+    const bool isDoubleClick,
+    Qt::MouseButton button) {
     moveMouseToAnnotationInDetView(annotationName, annotationRegionStartPos, sequenceWidgetIndex);
     if (isDoubleClick) {
         GTMouseDriver::doubleClick();
@@ -577,7 +577,7 @@ QList<GraphLabelTextBox*> GTUtilsSequenceView::getGraphLabels(GSequenceGraphView
     return result;
 }
 
-QColor GTUtilsSequenceView::getGraphColor( GSequenceGraphView* graph) {
+QColor GTUtilsSequenceView::getGraphColor(GSequenceGraphView* graph) {
     ColorMap map = graph->getGraphDrawer()->getColors();
     QColor result = map.value("Default color");
     return result;

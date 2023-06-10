@@ -35,7 +35,7 @@ namespace U2 {
 #define GT_CLASS_NAME "CreateElementWithCommandLineFiller"
 
 CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(
-                                                                               const ElementWithCommandLineSettings& settings)
+    const ElementWithCommandLineSettings& settings)
     : Filler("CreateExternalProcessWorkerDialog"),
       settings(settings) {
 }

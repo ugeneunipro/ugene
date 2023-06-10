@@ -40,7 +40,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::replaceSubsequenceDialogFiller"
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller( const QString& _pasteDataHere, bool recalculateQuals, bool _expectAlphabetChanged)
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(const QString& _pasteDataHere, bool recalculateQuals, bool _expectAlphabetChanged)
     : Filler("EditSequenceDialog"),
       pasteDataHere(_pasteDataHere),
       recalculateQuals(recalculateQuals),

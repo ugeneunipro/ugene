@@ -32,7 +32,7 @@ public:
     enum Button { Start,
                   Cancel };
 
-    FindTandemsDialogFiller( const QString& _resultFilesPath);
+    FindTandemsDialogFiller(const QString& _resultFilesPath);
     FindTandemsDialogFiller(CustomScenario* scenario);
 
     virtual void commonScenario();

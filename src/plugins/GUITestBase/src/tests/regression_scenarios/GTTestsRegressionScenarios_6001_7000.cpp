@@ -4034,9 +4034,9 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
 
     GTUtilsDialog::waitForDialog(new DotPlotFiller(new BuildDotPlot100Scenario()));
     GTUtilsDialog::waitForDialog(
-                                 new BuildDotPlotFiller(
-                                                        testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa",
-                                                        testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa"));
+        new BuildDotPlotFiller(
+            testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa",
+            testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa"));
     GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
     GTWidget::findWidget("dotplot widget", GTUtilsMdi::activeWindow());
 
@@ -4045,9 +4045,9 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
 
     GTUtilsDialog::waitForDialog(new DotPlotFiller(new BuildDotPlot70Scenario()));
     GTUtilsDialog::waitForDialog(
-                                 new BuildDotPlotFiller(
-                                                        testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa",
-                                                        testDir + "_common_data/fasta/AMINO.fa"));
+        new BuildDotPlotFiller(
+            testDir + "_common_data/fasta/reference_ACGT_rand_1000.fa",
+            testDir + "_common_data/fasta/AMINO.fa"));
     GTMenu::clickMainMenuItem({"Tools", "Build dotplot..."});
 }
 
@@ -5211,12 +5211,12 @@ GUI_TEST_CLASS_DEFINITION(test_6759) {
     //    6. Scroll to end, then to begin
 
     GTFileDialog::openFile(
-                           testDir + "_common_data/regression/6759/",
-                           "sequence.gb");
+        testDir + "_common_data/regression/6759/",
+        "sequence.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTFileDialog::openFile(
-                           testDir + "_common_data/regression/6759/",
-                           "annotations.gb");
+        testDir + "_common_data/regression/6759/",
+        "annotations.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem("Unknown features"),
                   "No 'Unknown features' object!");

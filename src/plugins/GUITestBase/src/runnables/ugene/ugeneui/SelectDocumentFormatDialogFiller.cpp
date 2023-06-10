@@ -29,7 +29,7 @@
 namespace U2 {
 using namespace HI;
 
-SelectDocumentFormatDialogFiller::SelectDocumentFormatDialogFiller( CustomScenario* scenario)
+SelectDocumentFormatDialogFiller::SelectDocumentFormatDialogFiller(CustomScenario* scenario)
     : Filler("DocumentFormatSelectorDialog", scenario) {
 }
 

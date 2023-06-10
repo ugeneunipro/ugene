@@ -127,7 +127,7 @@ public:
 
 public:
     CreateElementWithCommandLineToolFiller(
-                                           const ElementWithCommandLineSettings& settings);
+        const ElementWithCommandLineSettings& settings);
     CreateElementWithCommandLineToolFiller(CustomScenario* scenario);
     void commonScenario();
 

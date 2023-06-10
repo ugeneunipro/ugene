@@ -33,14 +33,14 @@
 namespace U2 {
 
 BuildDotPlotFiller::BuildDotPlotFiller(
-                                       const QString& _firstFileName,
-                                       const QString& _secondFileName,
-                                       bool _mergeFirstBoxChecked,
-                                       bool _oneSequenceBoxChecked,
-                                       bool _mergeSecondBoxChecked,
-                                       int _gapFirstValue,
-                                       int _gapSecondValue,
-                                       bool _cancel)
+    const QString& _firstFileName,
+    const QString& _secondFileName,
+    bool _mergeFirstBoxChecked,
+    bool _oneSequenceBoxChecked,
+    bool _mergeSecondBoxChecked,
+    int _gapFirstValue,
+    int _gapSecondValue,
+    bool _cancel)
     : Filler("DotPlotFilesDialog"), mergeFirstBoxChecked(_mergeFirstBoxChecked),
       oneSequenceBoxChecked(_oneSequenceBoxChecked), mergeSecondBoxChecked(_mergeSecondBoxChecked),
       firstFileName(_firstFileName), secondFileName(_secondFileName), firstGapSize(_gapFirstValue),

@@ -44,10 +44,10 @@ public:
 
     static QTreeWidgetItem* findFirstAnnotation(const GTGlobals::FindOptions& options = {}, bool expandParent = true);
     static QTreeWidgetItem* findItem(
-                                     const QString& itemName,
-                                     QTreeWidgetItem* parentItem = nullptr,
-                                     const GTGlobals::FindOptions& = {},
-                                     bool expandParent = true);
+        const QString& itemName,
+        QTreeWidgetItem* parentItem = nullptr,
+        const GTGlobals::FindOptions& = {},
+        bool expandParent = true);
     static QTreeWidgetItem* findItemWithIndex(const QString& itemName, int index, bool expandParent = true);
     static QList<QTreeWidgetItem*> findItems(const QString& itemName, const GTGlobals::FindOptions& = {});
 

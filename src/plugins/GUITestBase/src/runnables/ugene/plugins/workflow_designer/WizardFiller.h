@@ -31,13 +31,13 @@ using namespace HI;
 
 class WizardFiller : public Filler {
 public:
-    WizardFiller( QString name, QList<QStringList> _inputFiles = QList<QStringList>(), QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
+    WizardFiller(QString name, QList<QStringList> _inputFiles = QList<QStringList>(), QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
         : Filler(name), inputFiles(_inputFiles), map(_map) {
     }
-    WizardFiller( QString name, QStringList _inputFiles, QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
+    WizardFiller(QString name, QStringList _inputFiles, QMap<QString, QVariant> _map = (QMap<QString, QVariant>()))
         : Filler(name), inputFiles(QList<QStringList>() << _inputFiles), map(_map) {
     }
-    WizardFiller( QString name, CustomScenario* c)
+    WizardFiller(QString name, CustomScenario* c)
         : Filler(name, c) {
     }
 

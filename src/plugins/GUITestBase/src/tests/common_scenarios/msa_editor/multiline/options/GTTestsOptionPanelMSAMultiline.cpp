@@ -124,7 +124,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003) {
 
     // 3. Copy seq
     GTUtilsDialog::waitForDialog(
-                                 new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
+        new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -304,7 +304,7 @@ GUI_TEST_CLASS_DEFINITION(search_test_0001) {
     // Check visible bases and selection
     int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(0);
     int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(
-                                                                            GTUtilsMsaEditor::getEditor()->getUI()->getChildrenCount() - 1);
+        GTUtilsMsaEditor::getEditor()->getUI()->getChildrenCount() - 1);
 
     CHECK_SET_ERR(firstBaseIdx < 66 && 68 < lastBaseIdx,
                   "Selection must be between fist and last bases");

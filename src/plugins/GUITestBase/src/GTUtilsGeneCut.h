@@ -54,11 +54,11 @@ public:
     static void login(const QString& email = "genecut@unipro.ru", const QString& password = "genecut_test_password", bool showPassword = false, bool rememberMe = false);
     static void resetPassword(const QString& email = "genecut@unipro.ru");
     static void createNewUser(
-                              const QString& email = "genecut@unipro.ru",
-                              const QString& password = "genecut_test_password",
-                              const QString& passwordConfirm = "genecut_test_password",
-                              const QString& firstName = "Genecut",
-                              const QString& secondName = "by Unipro");
+        const QString& email = "genecut@unipro.ru",
+        const QString& password = "genecut_test_password",
+        const QString& passwordConfirm = "genecut_test_password",
+        const QString& firstName = "Genecut",
+        const QString& secondName = "by Unipro");
     static void selectResultByIndex(int index, bool fetchResults = true);
     static void checkResultInfo(const QString& inputFileName, const QList<Steps>& steps, Status status = Status::Completed);
     static void compareFiles(FileType fileType, const QString& seqenceFilePath, bool sequencesOnly = false);

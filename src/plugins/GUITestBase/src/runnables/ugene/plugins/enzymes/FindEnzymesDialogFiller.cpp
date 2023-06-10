@@ -47,14 +47,14 @@ FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings(const QStringLi
 #define GT_CLASS_NAME "FindEnzymesDialogFiller"
 
 FindEnzymesDialogFiller::FindEnzymesDialogFiller(
-                                                 const FindEnzymesDialogFillerSettings& _settings,
-                                                 CustomScenario* scenario)
+    const FindEnzymesDialogFillerSettings& _settings,
+    CustomScenario* scenario)
     : Filler("FindEnzymesDialog", scenario), settings(_settings) {
 }
 
 FindEnzymesDialogFiller::FindEnzymesDialogFiller(
-                                                 const QStringList& enzymes,
-                                                 CustomScenario* scenario)
+    const QStringList& enzymes,
+    CustomScenario* scenario)
     : Filler("FindEnzymesDialog", scenario), settings(enzymes) {
 }
 

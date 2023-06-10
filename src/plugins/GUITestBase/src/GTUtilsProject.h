@@ -70,12 +70,12 @@ public:
      * Returns the sequence widget.
      */
     static ADVSingleSequenceWidget* openFileExpectSequence(
-                                                           const QString& dirPath,
-                                                           const QString& fileName,
-                                                           const QString& seqName);
+        const QString& dirPath,
+        const QString& fileName,
+        const QString& seqName);
     static ADVSingleSequenceWidget* openFileExpectSequence(
-                                                           const QString& filePath,
-                                                           const QString& seqName);
+        const QString& filePath,
+        const QString& seqName);
 
     /**
      * Opens file @path\@fileName and expects a sequence with raw alphabet to be opened.
@@ -84,13 +84,13 @@ public:
      * Returns the sequence widget.
      */
     static ADVSingleSequenceWidget* openFileExpectRawSequence(
-                                                              const QString& dirPath,
-                                                              const QString& fileName,
-                                                              const QString& seqName);
+        const QString& dirPath,
+        const QString& fileName,
+        const QString& seqName);
 
     static ADVSingleSequenceWidget* openFileExpectRawSequence(
-                                                              const QString& filePath,
-                                                              const QString& seqName);
+        const QString& filePath,
+        const QString& seqName);
 
     /**
      * Opens file @path\@fileName.

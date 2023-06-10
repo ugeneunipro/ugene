@@ -265,7 +265,7 @@ void GUITestService::runAllGUITests() {
 
         QString testResult = GTGlobals::getOpStatus().getError();
         if (testResult.isEmpty()) {
-            testResult =  GUITestTeamcityLogger::successResult;
+            testResult = GUITestTeamcityLogger::successResult;
         }
         GTGlobals::resetOpStatus();
         for (GUITest* postActionTest : qAsConst(postActionTests)) {

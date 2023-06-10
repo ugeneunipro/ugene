@@ -1876,9 +1876,9 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
     for (int i = 0; i < 10; ++i) {
         GTUtilsDialog::waitForDialog(new RapidProjectCreator(projectName, projectFolder, projectFile));
         GTWidget::click(
-                        GTToolbar::getWidgetForActionObjectName(
-                                                                GTToolbar::getToolbar(MWTOOLBAR_MAIN),
-                                                                ACTION_PROJECTSUPPORT__NEW_PROJECT));
+            GTToolbar::getWidgetForActionObjectName(
+                GTToolbar::getToolbar(MWTOOLBAR_MAIN),
+                ACTION_PROJECTSUPPORT__NEW_PROJECT));
     }
 }
 
@@ -2039,9 +2039,9 @@ GUI_TEST_CLASS_DEFINITION(test_2377) {
     GTUtilsWorkflowDesigner::addAlgorithm(assemblyWriterName);
 
     WorkflowProcessItem* assemblyReader = GTUtilsWorkflowDesigner::getWorker(
-                                                                             assemblyReaderName);
+        assemblyReaderName);
     WorkflowProcessItem* assemblyWriter = GTUtilsWorkflowDesigner::getWorker(
-                                                                             assemblyWriterName);
+        assemblyWriterName);
 
     GTUtilsWorkflowDesigner::connect(assemblyReader, assemblyWriter);
 
@@ -2099,9 +2099,9 @@ GUI_TEST_CLASS_DEFINITION(test_2379) {
         // Do not move it to another place: if you need the same filler than extend the original class.
     public:
         CreateProjectFiller(
-                            const QString& _projectName,
-                            const QString& _projectFolder,
-                            const QString& _projectFile)
+            const QString& _projectName,
+            const QString& _projectFolder,
+            const QString& _projectFile)
             : Filler("CreateNewProjectDialog"),
               projectName(_projectName),
               projectFolder(_projectFolder),
@@ -2670,7 +2670,7 @@ GUI_TEST_CLASS_DEFINITION(test_2470) {
 
     class OkClicker : public Filler {
     public:
-        OkClicker( const QString& dbPath, const QString& outputPath)
+        OkClicker(const QString& dbPath, const QString& outputPath)
             : Filler("BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {
         }
         void run() override {
@@ -2690,9 +2690,9 @@ GUI_TEST_CLASS_DEFINITION(test_2470) {
     };
 
     GTUtilsDialog::waitForDialog(
-                                 new OkClicker(
-                                               testDir + "_common_data/scenarios/_regression/2470/nice_base.nhr",
-                                               testDir + "_common_data/scenarios/sandbox/2470_fetched.fa"));
+        new OkClicker(
+            testDir + "_common_data/scenarios/_regression/2470/nice_base.nhr",
+            testDir + "_common_data/scenarios/sandbox/2470_fetched.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2784,7 +2784,7 @@ GUI_TEST_CLASS_DEFINITION(test_2496) {
     // Expected state: import bam dialog appeared
 
     GTUtilsDialog::waitForDialog(
-                                 new ImportBAMFileFiller(testDir + "_common_data/scenarios/sandbox/example-alignment.bam.ugenedb"));
+        new ImportBAMFileFiller(testDir + "_common_data/scenarios/sandbox/example-alignment.bam.ugenedb"));
     GTFileDialog::openFile(testDir + "_common_data/scenarios/assembly/", "example-alignment.bam");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
@@ -2866,7 +2866,7 @@ GUI_TEST_CLASS_DEFINITION(test_2519) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Go to position 20000.
-    GTUtilsMsaEditor::gotoWithKeyboardShortcut( 20000);
+    GTUtilsMsaEditor::gotoWithKeyboardShortcut(20000);
 
     // 3. Call context menu, select menu item {Edit sequence -> Remove subsequence...}.
     // Expected state: a "Remove subsequence" dialog appears.
@@ -3914,11 +3914,11 @@ GUI_TEST_CLASS_DEFINITION(test_2713) {
     //    Expected state: "human_T1" view has disappeared from the "Bookmarks" list, "murine.gb" has been reloaded.
     const GUIDialogWaiter::WaitSettings waitSettings("");
     GTUtilsDialog::waitForDialog(
-                                 new MessageBoxDialogFiller(
-                                                            QMessageBox::Yes,
-                                                            "Document 'test_2713.gb' was modified. Do you want to reload it?",
-                                                            ""),
-                                 waitSettings);
+        new MessageBoxDialogFiller(
+            QMessageBox::Yes,
+            "Document 'test_2713.gb' was modified. Do you want to reload it?",
+            ""),
+        waitSettings);
 
     QFile file(sandBoxDir + "/test_2713.gb");
     bool opened = file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -4168,16 +4168,16 @@ GUI_TEST_CLASS_DEFINITION(test_2770) {
     // 6. Search.
     // Expected: two annotations are found.
     Runnable* filler = new CreateDocumentFiller(
-                                                "TTTTTTTTTTTTTTTTTTTTTTTAAATTTTTTTTTTTTTTTTTTTTTTT",
-                                                false,
-                                                CreateDocumentFiller::StandardRNA,
-                                                true,
-                                                false,
-                                                "",
-                                                testDir + "_common_data/scenarios/sandbox/result",
-                                                CreateDocumentFiller::FASTA,
-                                                "result",
-                                                true);
+        "TTTTTTTTTTTTTTTTTTTTTTTAAATTTTTTTTTTTTTTTTTTTTTTT",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
     GTUtilsDialog::waitForDialog(filler);
 
     GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
@@ -4572,7 +4572,6 @@ GUI_TEST_CLASS_DEFINITION(test_2884) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     // 2. Place Cuffdiff element on the scene
     GTUtilsWorkflowDesigner::addAlgorithm("Test for Diff. Expression with Cuffdiff");
-
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Test for Diff. Expression with Cuffdiff"));
     GTMouseDriver::click();
@@ -5138,9 +5137,9 @@ GUI_TEST_CLASS_DEFINITION(test_2962_1) {
     GTLogTracer lt;
     ADVSingleSequenceWidget* seqWidget =
         GTUtilsProject::openFileExpectSequence(
-                                               testDir + "_common_data/scenarios/_regression/2924",
-                                               "human_T1_cutted.fa",
-                                               "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+            testDir + "_common_data/scenarios/_regression/2924",
+            "human_T1_cutted.fa",
+            "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTUtilsCv::cvBtn::click(seqWidget);
 
     CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
@@ -5150,9 +5149,9 @@ GUI_TEST_CLASS_DEFINITION(test_2962_1) {
     GTMenu::clickMainMenuItem({"File", "Close project"}, GTGlobals::UseMouse);
 
     seqWidget = GTUtilsProject::openFileExpectSequence(
-                                                       testDir + "_common_data/scenarios/_regression/2924",
-                                                       "human_T1_cutted.fa",
-                                                       "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+        testDir + "_common_data/scenarios/_regression/2924",
+        "human_T1_cutted.fa",
+        "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTUtilsCv::cvBtn::click(seqWidget);
     CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");

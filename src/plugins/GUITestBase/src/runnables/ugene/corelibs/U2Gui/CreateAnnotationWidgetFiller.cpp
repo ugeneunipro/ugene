@@ -38,12 +38,12 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::CreateAnnotationDialogFiller"
 
 CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(
-                                                           bool newTableRB,
-                                                           const QString& groupName,
-                                                           const QString& annotationName,
-                                                           const QString& location,
-                                                           const QString& saveTo,
-                                                           const QString& description)
+    bool newTableRB,
+    const QString& groupName,
+    const QString& annotationName,
+    const QString& location,
+    const QString& saveTo,
+    const QString& description)
     : Filler("CreateAnnotationDialog"),
       groupName(groupName),
       annotationName(annotationName),

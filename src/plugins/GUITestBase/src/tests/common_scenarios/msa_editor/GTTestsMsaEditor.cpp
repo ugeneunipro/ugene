@@ -2488,12 +2488,12 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_EXPORT, "export_msa_as_image_action"}));
     GTUtilsDialog::add(
-                       new ExportMsaImage(
-                                          testDir + "_common_data/scenarios/sandbox/test_0043.png",
-                                          ExportMsaImage::Settings(),
-                                          false,
-                                          false,
-                                          RegionMsa(U2Region(1, 594), sequences)));
+        new ExportMsaImage(
+            testDir + "_common_data/scenarios/sandbox/test_0043.png",
+            ExportMsaImage::Settings(),
+            false,
+            false,
+            RegionMsa(U2Region(1, 594), sequences)));
 
     GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea(0));
 }
@@ -2553,9 +2553,9 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
             auto exportType = GTWidget::findComboBox("comboBox", dialog);
 
             GTUtilsDialog::waitForDialog(
-                                         new SelectSubalignmentFiller(
-                                                                      RegionMsa(U2Region(1, 593),
-                                                                                {"Montana_montana", "Conocephalus_percaudata"})));
+                new SelectSubalignmentFiller(
+                    RegionMsa(U2Region(1, 593),
+                              {"Montana_montana", "Conocephalus_percaudata"})));
             auto select = GTWidget::findPushButton("selectRegionButton", dialog);
             GTWidget::click(select);
 
@@ -2767,9 +2767,9 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
             CHECK_SET_ERR(!exportButton->isEnabled(), "Export button is enabled");
 
             GTUtilsDialog::waitForDialog(
-                                         new SelectSubalignmentFiller(
-                                                                      RegionMsa(U2Region(1, 593),
-                                                                                {"Sequence__1", "Sequence__2", "Sequnce__3", "Sequence__4"})));
+                new SelectSubalignmentFiller(
+                    RegionMsa(U2Region(1, 593),
+                              {"Sequence__1", "Sequence__2", "Sequnce__3", "Sequence__4"})));
 
             auto select = GTWidget::findPushButton("selectRegionButton", dialog);
             GTWidget::click(select);

@@ -28,7 +28,7 @@ using namespace HI;
 
 class KalignDialogFiller : public Filler {
 public:
-    KalignDialogFiller( int _gapOpenVal = 0, bool _toAmino = false);
+    KalignDialogFiller(int _gapOpenVal = 0, bool _toAmino = false);
     void commonScenario();
 
 private:

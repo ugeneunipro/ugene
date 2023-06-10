@@ -92,20 +92,20 @@ public:
 
     /** Move mouse (hovers) to the annotation in the DetView. */
     static void moveMouseToAnnotationInDetView(
-                                               const QString& annotationName,
-                                               int annotationRegionStartPos,
-                                               int sequenceWidgetIndex = 0);
+        const QString& annotationName,
+        int annotationRegionStartPos,
+        int sequenceWidgetIndex = 0);
 
     /**
      * Clicks on the center of the annotation region in DetView.
      * Locates the region to click by the annotationName and annotationRegionStartPos(visual, starts with 1) that must be one of the location.region.startPos.
      */
     static void clickAnnotationDet(
-                                   const QString& annotationName,
-                                   int annotationRegionStartPos,
-                                   int sequenceWidgetIndex = 0,
-                                   bool isDoubleClick = false,
-                                   Qt::MouseButton button = Qt::LeftButton);
+        const QString& annotationName,
+        int annotationRegionStartPos,
+        int sequenceWidgetIndex = 0,
+        bool isDoubleClick = false,
+        Qt::MouseButton button = Qt::LeftButton);
 
     static void clickAnnotationPan(const QString& name, int startPos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 

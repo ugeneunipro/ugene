@@ -45,12 +45,12 @@ struct FindEnzymesDialogFillerSettings {
 class FindEnzymesDialogFiller : public Filler {
 public:
     FindEnzymesDialogFiller(
-                            const FindEnzymesDialogFillerSettings& settings,
-                            CustomScenario* scenario = nullptr);
+        const FindEnzymesDialogFillerSettings& settings,
+        CustomScenario* scenario = nullptr);
 
     FindEnzymesDialogFiller(
-                            const QStringList& enzymes,
-                            CustomScenario* scenario = nullptr);
+        const QStringList& enzymes,
+        CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 

@@ -31,8 +31,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportChromatogramFiller"
 EditSettingsDialogFiller::EditSettingsDialogFiller(
-                                                   AnnotationPolicy _policy,
-                                                   bool _recalculateQualifiers)
+    AnnotationPolicy _policy,
+    bool _recalculateQualifiers)
     : Filler("EditSettingDialogForm"),
       policy(_policy),
       recalculateQualifiers(_recalculateQualifiers) {

@@ -58,11 +58,11 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(const QString& saveTree, int model,
 }
 
 BuildTreeDialogFiller::BuildTreeDialogFiller(
-                                             int replicates,
-                                             const QString& saveTree,
-                                             int seed,
-                                             BuildTreeDialogFiller::ConsensusType type,
-                                             double fraction)
+    int replicates,
+    const QString& saveTree,
+    int seed,
+    BuildTreeDialogFiller::ConsensusType type,
+    double fraction)
     : Filler("CreatePhyTree"),
       saveTree(saveTree),
       model(0),

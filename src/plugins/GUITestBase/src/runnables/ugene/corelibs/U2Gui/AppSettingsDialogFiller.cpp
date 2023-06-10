@@ -307,7 +307,7 @@ void AppSettingsDialogFiller::setExternalToolsDir(const QString& dirPath) {
 
 #undef GT_CLASS_NAME
 
-NewColorSchemeCreator::NewColorSchemeCreator( QString _schemeName, alphabet _al, Action _act, bool cancel)
+NewColorSchemeCreator::NewColorSchemeCreator(QString _schemeName, alphabet _al, Action _act, bool cancel)
     : Filler("AppSettingsDialog"), schemeName(_schemeName), al(_al), act(_act), cancel(cancel) {
 }
 

@@ -1331,8 +1331,8 @@ GUI_TEST_CLASS_DEFINITION(test_5367) {
     GTUtilsDialog::checkNoActiveWaiters();
 
     CHECK_SET_ERR(GTFile::equals(
-                                 sandBoxDir + "/test_5367_coverage.txt",
-                                 testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"),
+                      sandBoxDir + "/test_5367_coverage.txt",
+                      testDir + "/_common_data/bam/accepted_hits_with_gaps_coverage.txt"),
                   "Exported coverage is wrong!");
 }
 

@@ -29,7 +29,7 @@ using namespace HI;
 
 class GTUtilsEscClicker : public Filler {
 public:
-    GTUtilsEscClicker( const QString& menuObjectName, bool _mouse = false);
+    GTUtilsEscClicker(const QString& menuObjectName, bool _mouse = false);
     void commonScenario();
 
 private:

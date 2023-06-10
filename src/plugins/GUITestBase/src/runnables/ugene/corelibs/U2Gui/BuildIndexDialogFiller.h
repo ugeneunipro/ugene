@@ -29,12 +29,12 @@ using namespace HI;
 class BuildIndexDialogFiller : public Filler {
 public:
     BuildIndexDialogFiller(
-                           const QString& _refPath,
-                           const QString& _refFileName,
-                           const QString& _method = "UGENE Genome Aligner",
-                           bool _useDefaultIndexName = true,
-                           const QString& _indPath = QString(),
-                           const QString& _indFileName = QString())
+        const QString& _refPath,
+        const QString& _refFileName,
+        const QString& _method = "UGENE Genome Aligner",
+        bool _useDefaultIndexName = true,
+        const QString& _indPath = QString(),
+        const QString& _indFileName = QString())
         : Filler("BuildIndexFromRefDialog"),
           refPath(_refPath),
           refFileName(_refFileName),

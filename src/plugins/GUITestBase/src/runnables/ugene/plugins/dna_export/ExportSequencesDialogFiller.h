@@ -28,7 +28,7 @@ using namespace HI;
 
 class ExportSelectedRegionFiller : public Filler {
 public:
-    ExportSelectedRegionFiller( const QString& _path, const QString& _name, bool translate = false, const QString& seqName = QString(), bool saveAllAminoFrames = true);
+    ExportSelectedRegionFiller(const QString& _path, const QString& _name, bool translate = false, const QString& seqName = QString(), bool saveAllAminoFrames = true);
     ExportSelectedRegionFiller(const QString& filePath);
     ExportSelectedRegionFiller(CustomScenario* customScenario);
 
@@ -53,14 +53,14 @@ public:
                         Merge };
 
     ExportSequenceOfSelectedAnnotationsFiller(
-                                              const QString& _path,
-                                              FormatToUse _format,
-                                              MergeOptions _options,
-                                              int _gapLength = 0,
-                                              bool _addDocToProject = true,
-                                              bool _exportWithAnnotations = false,
-                                              GTGlobals::UseMethod method = GTGlobals::UseMouse,
-                                              bool translate = false);
+        const QString& _path,
+        FormatToUse _format,
+        MergeOptions _options,
+        int _gapLength = 0,
+        bool _addDocToProject = true,
+        bool _exportWithAnnotations = false,
+        GTGlobals::UseMethod method = GTGlobals::UseMouse,
+        bool translate = false);
     void commonScenario();
 
 private:

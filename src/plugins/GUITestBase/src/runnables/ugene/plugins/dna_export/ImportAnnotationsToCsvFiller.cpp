@@ -41,19 +41,19 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::ImportAnnotationsToCsvFiller"
 
 ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(
-                                                           const QString& _fileToRead,
-                                                           const QString& _resultFile,
-                                                           ImportAnnotationsToCsvFiller::fileFormat _format,
-                                                           bool _addResultFileToProject,
-                                                           bool _columnSeparator,
-                                                           const QString& _separator,
-                                                           int _numberOfLines,
-                                                           const QString& _skipAllLinesStartsWith,
-                                                           bool _interpretMultipleAsSingle,
-                                                           bool _removeQuotesButton,
-                                                           const QString& _defaultAnnotationName,
-                                                           const RoleParameters& _roleParameters,
-                                                           GTGlobals::UseMethod method)
+    const QString& _fileToRead,
+    const QString& _resultFile,
+    ImportAnnotationsToCsvFiller::fileFormat _format,
+    bool _addResultFileToProject,
+    bool _columnSeparator,
+    const QString& _separator,
+    int _numberOfLines,
+    const QString& _skipAllLinesStartsWith,
+    bool _interpretMultipleAsSingle,
+    bool _removeQuotesButton,
+    const QString& _defaultAnnotationName,
+    const RoleParameters& _roleParameters,
+    GTGlobals::UseMethod method)
     : Filler("ImportAnnotationsFromCSVDialog"),
       fileToRead(_fileToRead),
       resultFile(QDir::toNativeSeparators(_resultFile)),

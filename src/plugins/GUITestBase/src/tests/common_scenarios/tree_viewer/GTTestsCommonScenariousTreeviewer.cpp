@@ -843,7 +843,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     QString outputDirPath(testDir + "_common_data/scenarios/sandbox");
     QDir outputDir(outputDirPath);
     GTUtilsDialog::waitForDialog(
-                                 new BuildTreeDialogFiller(outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
+        new BuildTreeDialogFiller(outputDir.absolutePath() + "/COI.nwk", 0, 0.0, true));
     GTWidget::click(buildButton);
 
     // Expected state: a new file with tree has been created and has appeared along with the alignment

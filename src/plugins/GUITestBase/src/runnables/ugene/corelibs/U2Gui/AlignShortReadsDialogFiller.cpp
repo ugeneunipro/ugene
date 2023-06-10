@@ -134,16 +134,13 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
 
     GTComboBox::selectItemByText(modeComboBox, bowtie2Parameters->getMode());
 
-
     auto mismatchesSpinBox = GTWidget::findSpinBox("mismatchesSpinBox", dialog);
 
     GTSpinBox::setValue(mismatchesSpinBox, bowtie2Parameters->numberOfMismatches);
 
-
     auto seedlenCheckBox = GTWidget::findCheckBox("seedlenCheckBox", dialog);
 
     GTCheckBox::setChecked(seedlenCheckBox, bowtie2Parameters->seedLengthCheckBox);
-
 
     auto seedlenSpinBox = GTWidget::findSpinBox("seedlenSpinBox", dialog);
 
@@ -151,11 +148,9 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
         GTSpinBox::setValue(seedlenSpinBox, bowtie2Parameters->seedLength);
     }
 
-
     auto dpadCheckBox = GTWidget::findCheckBox("dpadCheckBox", dialog);
 
     GTCheckBox::setChecked(dpadCheckBox, bowtie2Parameters->addColumnsToAllowGapsCheckBox);
-
 
     auto dpadSpinBox = GTWidget::findSpinBox("dpadSpinBox", dialog);
 
@@ -163,11 +158,9 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
         GTSpinBox::setValue(dpadSpinBox, bowtie2Parameters->addColumnsToAllowGaps);
     }
 
-
     auto gbarCheckBox = GTWidget::findCheckBox("gbarCheckBox", dialog);
 
     GTCheckBox::setChecked(gbarCheckBox, bowtie2Parameters->disallowGapsCheckBox);
-
 
     auto gbarSpinBox = GTWidget::findSpinBox("gbarSpinBox", dialog);
 
@@ -175,11 +168,9 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
         GTSpinBox::setValue(gbarSpinBox, bowtie2Parameters->disallowGaps);
     }
 
-
     auto seedCheckBox = GTWidget::findCheckBox("seedCheckBox", dialog);
 
     GTCheckBox::setChecked(seedCheckBox, bowtie2Parameters->seedCheckBox);
-
 
     auto seedSpinBox = GTWidget::findSpinBox("seedSpinBox", dialog);
 
@@ -187,13 +178,11 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
         GTSpinBox::setValue(seedSpinBox, bowtie2Parameters->seed);
     }
 
-
     if (!isOsWindows()) {
         auto threadsSpinBox = GTWidget::findSpinBox("threadsSpinBox", dialog);
 
         if (threadsSpinBox->minimum() <= bowtie2Parameters->threads && threadsSpinBox->maximum() >= bowtie2Parameters->threads) {
             GTSpinBox::setValue(threadsSpinBox, bowtie2Parameters->threads);
-
         }
     }
 
@@ -202,31 +191,25 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
 
     GTCheckBox::setChecked(nomixedCheckBox, bowtie2Parameters->noUnpairedAlignments);
 
-
     auto nodiscordantCheckBox = GTWidget::findCheckBox("nodiscordantCheckBox", dialog);
 
     GTCheckBox::setChecked(nodiscordantCheckBox, bowtie2Parameters->noDiscordantAlignments);
-
 
     auto nofwCheckBox = GTWidget::findCheckBox("nofwCheckBox", dialog);
 
     GTCheckBox::setChecked(nofwCheckBox, bowtie2Parameters->noForwardOrientation);
 
-
     auto norcCheckBox = GTWidget::findCheckBox("norcCheckBox", dialog);
 
     GTCheckBox::setChecked(norcCheckBox, bowtie2Parameters->noReverseComplementOrientation);
-
 
     auto nooverlapCheckBox = GTWidget::findCheckBox("nooverlapCheckBox", dialog);
 
     GTCheckBox::setChecked(nooverlapCheckBox, bowtie2Parameters->noOverlappingMates);
 
-
     auto nocontainCheckBox = GTWidget::findCheckBox("nocontainCheckBox", dialog);
 
     GTCheckBox::setChecked(nocontainCheckBox, bowtie2Parameters->noMatesContainingOneAnother);
-
 }
 #undef GT_METHOD_NAME
 

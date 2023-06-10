@@ -77,16 +77,16 @@ public:
     static QModelIndex findIndex(QTreeView* treeView, const QString& itemName, const QModelIndex& parent, const GTGlobals::FindOptions& options = {});
     static QModelIndex findIndex(const QStringList& itemPath, const GTGlobals::FindOptions& options = {});
     static QModelIndexList findIndeciesInProjectViewNoWait(
-                                                           const QString& itemName,
-                                                           const QModelIndex& parent = QModelIndex(),
-                                                           int parentDepth = 0,
-                                                           const GTGlobals::FindOptions& options = {});
+        const QString& itemName,
+        const QModelIndex& parent = QModelIndex(),
+        int parentDepth = 0,
+        const GTGlobals::FindOptions& options = {});
     static QModelIndexList findIndiciesInTreeNoWait(
-                                                    QTreeView* treeView,
-                                                    const QString& itemName,
-                                                    const QModelIndex& parent = QModelIndex(),
-                                                    int parentDepth = 0,
-                                                    const GTGlobals::FindOptions& options = {});
+        QTreeView* treeView,
+        const QString& itemName,
+        const QModelIndex& parent = QModelIndex(),
+        int parentDepth = 0,
+        const GTGlobals::FindOptions& options = {});
 
     static void filterProject(const QString& searchField);
     static void filterProjectSequental(const QStringList& searchField, bool waitUntilSearchEnd);

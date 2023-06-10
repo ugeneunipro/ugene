@@ -33,7 +33,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
 
-DotPlotFiller::DotPlotFiller( CustomScenario* customScenario)
+DotPlotFiller::DotPlotFiller(CustomScenario* customScenario)
     : Filler("DotPlotDialog", customScenario),
       minLen(100),
       identity(0),

@@ -27,7 +27,7 @@ namespace U2 {
 using namespace HI;
 class EditGroupAnnotationsFiller : public Filler {
 public:
-    EditGroupAnnotationsFiller( const QString& _groupName)
+    EditGroupAnnotationsFiller(const QString& _groupName)
         : Filler(""), groupName(_groupName) {
     }
 

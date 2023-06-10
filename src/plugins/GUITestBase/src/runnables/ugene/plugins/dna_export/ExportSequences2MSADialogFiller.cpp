@@ -34,7 +34,7 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceAsAlignmentFiller"
-ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller( const QString& _path, const QString& _name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject, GTGlobals::UseMethod method)
+ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(const QString& _path, const QString& _name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject, GTGlobals::UseMethod method)
     : Filler("U2__ExportSequences2MSADialog"), name(_name), useMethod(method), format(_format), addToProject(addDocumentToProject) {
     path = GTFileDialog::toAbsoluteNativePath(_path, true);
 
@@ -47,7 +47,7 @@ ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller( const QString&
     comboBoxItems[Stockholm] = "Stockholm";
 }
 
-ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller( CustomScenario* scenario)
+ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(CustomScenario* scenario)
     : Filler("U2__ExportSequences2MSADialog", scenario),
       format(Clustalw),
       addToProject(false) {

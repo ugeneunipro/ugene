@@ -52,7 +52,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "output.ugenedb"));
 
-
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished();

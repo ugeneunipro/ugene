@@ -285,11 +285,11 @@ void NcbiSearchDialogFiller::waitTasksFinish() {
 #define GT_CLASS_NAME "GTUtilsDialog::NCBISearchDialogSimpleFiller"
 
 NCBISearchDialogSimpleFiller::NCBISearchDialogSimpleFiller(
-                                                           const QString& _query,
-                                                           bool _doubleEnter,
-                                                           int _resultLimit,
-                                                           const QString& _term,
-                                                           const QString& _resultToLoad)
+    const QString& _query,
+    bool _doubleEnter,
+    int _resultLimit,
+    const QString& _term,
+    const QString& _resultToLoad)
     : Filler("SearchGenbankSequenceDialog"),
       query(_query),
       doubleEnter(_doubleEnter),

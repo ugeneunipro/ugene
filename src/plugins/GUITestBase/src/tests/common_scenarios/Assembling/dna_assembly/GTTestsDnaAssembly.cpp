@@ -47,9 +47,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
 
-
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {

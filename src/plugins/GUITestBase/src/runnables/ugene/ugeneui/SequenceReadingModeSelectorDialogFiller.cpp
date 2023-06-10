@@ -32,7 +32,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::SequenceReadingModeSelectorDialogFiller"
 
-SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller( CustomScenario* c)
+SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller(CustomScenario* c)
     : Filler("SequenceReadingModeSelectorDialog", c),
       cancel(false) {
 }

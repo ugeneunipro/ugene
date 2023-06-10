@@ -32,7 +32,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ClustalWDialogFiller"
 
-ClustalWDialogFiller::ClustalWDialogFiller( int _gapOpenVal)
+ClustalWDialogFiller::ClustalWDialogFiller(int _gapOpenVal)
     : Filler("ClustalWSupportRunDialog"),
       gapOpenVal(_gapOpenVal) {
 }

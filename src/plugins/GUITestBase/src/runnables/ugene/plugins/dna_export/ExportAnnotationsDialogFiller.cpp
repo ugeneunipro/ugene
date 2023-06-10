@@ -47,12 +47,12 @@ ExportAnnotationsFiller::ExportAnnotationsFiller(const QString& exportToFile, fi
 }
 
 ExportAnnotationsFiller::ExportAnnotationsFiller(
-                                                 const QString& _exportToFile,
-                                                 fileFormat _format,
-                                                 bool addToProject,
-                                                 bool saveSequencesUnderAnnotations,
-                                                 bool saveSequenceNames,
-                                                 GTGlobals::UseMethod method)
+    const QString& _exportToFile,
+    fileFormat _format,
+    bool addToProject,
+    bool saveSequencesUnderAnnotations,
+    bool saveSequenceNames,
+    GTGlobals::UseMethod method)
     : Filler("U2__ExportAnnotationsDialog"),
       softMode(false),
       format(_format),

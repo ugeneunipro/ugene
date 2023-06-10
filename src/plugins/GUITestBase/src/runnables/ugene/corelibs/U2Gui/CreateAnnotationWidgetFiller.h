@@ -29,12 +29,12 @@ using namespace HI;
 class CreateAnnotationWidgetFiller : public Filler {
 public:
     CreateAnnotationWidgetFiller(
-                                 bool newTableRB,
-                                 const QString& groupName,
-                                 const QString& annotationName,
-                                 const QString& location,
-                                 const QString& saveTo = "",
-                                 const QString& description = "");
+        bool newTableRB,
+        const QString& groupName,
+        const QString& annotationName,
+        const QString& location,
+        const QString& saveTo = "",
+        const QString& description = "");
     CreateAnnotationWidgetFiller(CustomScenario* scenario);
 
     void commonScenario() override;

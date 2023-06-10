@@ -32,7 +32,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::KalignDialogFiller"
 
-KalignDialogFiller::KalignDialogFiller( int _gapOpenVal, bool _toAmino)
+KalignDialogFiller::KalignDialogFiller(int _gapOpenVal, bool _toAmino)
     : Filler("KalignDialog"),
       gapOpenVal(_gapOpenVal), toAmino(_toAmino) {
 }

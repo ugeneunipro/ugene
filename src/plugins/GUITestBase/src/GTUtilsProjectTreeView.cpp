@@ -290,10 +290,10 @@ QModelIndex GTUtilsProjectTreeView::findIndex(const QString& itemName, const QMo
 
 #define GT_METHOD_NAME "findIndex4"
 QModelIndex GTUtilsProjectTreeView::findIndex(
-                                              QTreeView* treeView,
-                                              const QString& itemName,
-                                              const QModelIndex& parent,
-                                              const GTGlobals::FindOptions& options) {
+    QTreeView* treeView,
+    const QString& itemName,
+    const QModelIndex& parent,
+    const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(treeView != nullptr, "Tree view is NULL", QModelIndex());
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", QModelIndex());
 
@@ -351,11 +351,11 @@ bool compareStrings(const QString& pattern, const QString& data, Qt::MatchFlags 
 
 #define GT_METHOD_NAME "findIndicesInTreeNoWait"
 QModelIndexList GTUtilsProjectTreeView::findIndiciesInTreeNoWait(
-                                                                 QTreeView* treeView,
-                                                                 const QString& itemName,
-                                                                 const QModelIndex& parent,
-                                                                 int parentDepth,
-                                                                 const GTGlobals::FindOptions& options) {
+    QTreeView* treeView,
+    const QString& itemName,
+    const QModelIndex& parent,
+    int parentDepth,
+    const GTGlobals::FindOptions& options) {
     CHECK(options.depth == GTGlobals::FindOptions::INFINITE_DEPTH || parentDepth < options.depth, {});
 
     QAbstractItemModel* model = treeView->model();
@@ -450,11 +450,11 @@ QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(const QString& subst
 
 #define GT_METHOD_NAME "checkFilteredGroup"
 void GTUtilsProjectTreeView::checkFilteredGroup(
-                                                const QString& groupName,
-                                                const QStringList& namesToCheck,
-                                                const QStringList& alternativeNamesToCheck,
-                                                const QStringList& excludedNames,
-                                                const QStringList& skipGroupIfContains) {
+    const QString& groupName,
+    const QStringList& namesToCheck,
+    const QStringList& alternativeNamesToCheck,
+    const QStringList& excludedNames,
+    const QStringList& skipGroupIfContains) {
     const QModelIndexList groupIndexes = findFilteredIndexes(groupName);
     CHECK_SET_ERR(groupIndexes.size() == 1, QString("Expected to find a single filter group. Found %1").arg(groupIndexes.size()));
 
@@ -680,7 +680,7 @@ void GTUtilsProjectTreeView::dragAndDropSeveralElements(QModelIndexList from, QM
 }
 #undef GT_METHOD_NAME
 
-void GTUtilsProjectTreeView::sendDragAndDrop( const QPoint& enterPos, const QPoint& dropPos) {
+void GTUtilsProjectTreeView::sendDragAndDrop(const QPoint& enterPos, const QPoint& dropPos) {
     GTMouseDriver::dragAndDrop(enterPos, dropPos);
     GTGlobals::sleep(1000);
 }

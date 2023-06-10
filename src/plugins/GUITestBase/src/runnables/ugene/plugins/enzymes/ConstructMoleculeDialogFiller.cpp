@@ -47,8 +47,6 @@ void ConstructMoleculeDialogFiller::commonScenario() {
     dialog = GTWidget::getActiveModalWidget();
 
     foreach (const Action& action, actions) {
-
-
         switch (action.first) {
             case AddAllFragments:
                 addAllFragments();

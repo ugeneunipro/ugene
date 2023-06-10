@@ -38,20 +38,20 @@ using namespace HI;
 #define GT_CLASS_NAME "ProjectTreeItemSelectorDialogFiller"
 
 ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(
-                                                                         const QString& documentName,
-                                                                         const QString& objectName,
-                                                                         const QSet<GObjectType>& acceptableTypes,
-                                                                         SelectionMode mode,
-                                                                         int expectedDocCount)
+    const QString& documentName,
+    const QString& objectName,
+    const QSet<GObjectType>& acceptableTypes,
+    SelectionMode mode,
+    int expectedDocCount)
     : Filler("ProjectTreeItemSelectorDialogBase"), acceptableTypes(acceptableTypes), mode(mode), expectedDocCount(expectedDocCount) {
     itemsToSelect.insert(documentName, {objectName});
 }
 
 ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(
-                                                                         const QMap<QString, QStringList>& itemsToSelect,
-                                                                         const QSet<GObjectType>& acceptableTypes,
-                                                                         SelectionMode mode,
-                                                                         int expectedDocCount)
+    const QMap<QString, QStringList>& itemsToSelect,
+    const QSet<GObjectType>& acceptableTypes,
+    SelectionMode mode,
+    int expectedDocCount)
     : Filler("ProjectTreeItemSelectorDialogBase"), itemsToSelect(itemsToSelect), acceptableTypes(acceptableTypes), mode(mode),
       expectedDocCount(expectedDocCount) {
 }

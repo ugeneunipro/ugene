@@ -205,10 +205,10 @@ QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItemWithIndex(const QString& it
 
 #define GT_METHOD_NAME "findItem"
 QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItem(
-                                                      const QString& itemName,
-                                                      QTreeWidgetItem* parentItem,
-                                                      const GTGlobals::FindOptions& options,
-                                                      bool expandParent) {
+    const QString& itemName,
+    QTreeWidgetItem* parentItem,
+    const GTGlobals::FindOptions& options,
+    bool expandParent) {
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", nullptr);
     if (parentItem == nullptr) {
         parentItem = getTreeWidget()->invisibleRootItem();

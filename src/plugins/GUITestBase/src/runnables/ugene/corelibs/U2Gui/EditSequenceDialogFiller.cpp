@@ -43,7 +43,7 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::insertSequenceFiller"
-InsertSequenceFiller::InsertSequenceFiller( const QString& _pasteDataHere, RegionResolvingMode _regionResolvingMode, int _insertPosition, const QString& _documentLocation, documentFormat _format, bool _saveToNewFile, bool _mergeAnnotations, GTGlobals::UseMethod method, bool _wrongInput, bool recalculateQuals)
+InsertSequenceFiller::InsertSequenceFiller(const QString& _pasteDataHere, RegionResolvingMode _regionResolvingMode, int _insertPosition, const QString& _documentLocation, documentFormat _format, bool _saveToNewFile, bool _mergeAnnotations, GTGlobals::UseMethod method, bool _wrongInput, bool recalculateQuals)
     : Filler("EditSequenceDialog"), pasteDataHere(_pasteDataHere), regionResolvingMode(_regionResolvingMode), insertPosition(_insertPosition),
       documentLocation(_documentLocation), format(_format), saveToNewFile(_saveToNewFile), mergeAnnotations(_mergeAnnotations),
       useMethod(method), wrongInput(_wrongInput), recalculateQuals(recalculateQuals) {

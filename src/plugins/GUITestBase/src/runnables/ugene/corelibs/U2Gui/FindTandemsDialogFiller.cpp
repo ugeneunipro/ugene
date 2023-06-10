@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-FindTandemsDialogFiller::FindTandemsDialogFiller( const QString& _resultFilesPath)
+FindTandemsDialogFiller::FindTandemsDialogFiller(const QString& _resultFilesPath)
     : Filler("FindTandemsDialog"), button(Start), resultAnnotationFilesPath(_resultFilesPath) {
 }
 

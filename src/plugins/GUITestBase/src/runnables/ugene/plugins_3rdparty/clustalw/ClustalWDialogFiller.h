@@ -28,7 +28,7 @@ using namespace HI;
 
 class ClustalWDialogFiller : public Filler {
 public:
-    ClustalWDialogFiller( int _gapOpenVal = 0);
+    ClustalWDialogFiller(int _gapOpenVal = 0);
 
     void commonScenario();
 

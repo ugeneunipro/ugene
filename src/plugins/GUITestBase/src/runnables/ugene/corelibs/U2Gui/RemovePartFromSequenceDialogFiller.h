@@ -33,9 +33,9 @@ public:
     enum FormatToUse { FASTA,
                        Genbank };
 
-    RemovePartFromSequenceDialogFiller( QString _range, bool recalculateQuals = false);
-    RemovePartFromSequenceDialogFiller( RemoveType _removeType, bool _saveNew, const QString& _saveToFile, FormatToUse _format);
-    RemovePartFromSequenceDialogFiller( RemoveType _removeType);
+    RemovePartFromSequenceDialogFiller(QString _range, bool recalculateQuals = false);
+    RemovePartFromSequenceDialogFiller(RemoveType _removeType, bool _saveNew, const QString& _saveToFile, FormatToUse _format);
+    RemovePartFromSequenceDialogFiller(RemoveType _removeType);
 
     void commonScenario();
 

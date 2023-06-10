@@ -37,7 +37,7 @@ public:
                             StandardAmino,
                             AllSymbols };
 
-    CreateDocumentFiller( const QString& _pasteDataHere, bool customSettings, documentAlphabet _alphabet, bool skipUnknownSymbols, bool replaceUnknownSymbols, const QString symbol, const QString& _documentLocation, documentFormat _format, const QString& _sequenceName, bool saveFile, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    CreateDocumentFiller(const QString& _pasteDataHere, bool customSettings, documentAlphabet _alphabet, bool skipUnknownSymbols, bool replaceUnknownSymbols, const QString symbol, const QString& _documentLocation, documentFormat _format, const QString& _sequenceName, bool saveFile, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     CreateDocumentFiller(CustomScenario* scenario);
     void commonScenario();
 
@@ -68,7 +68,7 @@ public:
                             StandardAmino,
                             AllSymbols };
 
-    CancelCreateDocumentFiller( const QString& _pasteDataHere, bool customSettings, documentAlphabet _alphabet, bool skipUnknownSymbols, bool replaceUnknownSymbols, const QString symbol, const QString& _documentLocation, documentFormat _format, const QString& _sequenceName, bool saveFile, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    CancelCreateDocumentFiller(const QString& _pasteDataHere, bool customSettings, documentAlphabet _alphabet, bool skipUnknownSymbols, bool replaceUnknownSymbols, const QString symbol, const QString& _documentLocation, documentFormat _format, const QString& _sequenceName, bool saveFile, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     void commonScenario();
 
 private:

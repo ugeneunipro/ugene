@@ -31,8 +31,8 @@ using namespace HI;
 class ConvertAssemblyToSAMDialogFiller : public Filler {
 public:
     ConvertAssemblyToSAMDialogFiller(
-                                     const QString& _dbPath,
-                                     const QString& _dbFileName)
+        const QString& _dbPath,
+        const QString& _dbFileName)
         : Filler("AssemblyToSamDialog"),
           databasePath(_dbPath),
           databaseFileName(_dbFileName) {

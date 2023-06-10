@@ -28,7 +28,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GetSequenceByIdFiller"
 
-GetSequenceByIdFiller::GetSequenceByIdFiller( const QString& _saveTo, bool _addToProject)
+GetSequenceByIdFiller::GetSequenceByIdFiller(const QString& _saveTo, bool _addToProject)
     : Filler("getSequenceByIdDialog"), saveTo(_saveTo), addToProject(_addToProject) {
 }
 

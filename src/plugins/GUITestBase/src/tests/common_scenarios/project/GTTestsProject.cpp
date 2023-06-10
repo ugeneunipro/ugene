@@ -483,8 +483,8 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
     GTUtilsDocument::checkDocument("ace_test_1.ace", MsaEditorFactory::ID);
     GTUtilsProjectTreeView::checkObjectTypes(
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
-                                             GTUtilsProjectTreeView::findIndex("ace_test_1.ace"));
+        QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
+        GTUtilsProjectTreeView::findIndex("ace_test_1.ace"));
 
     //    3. Open "_common_data/ACE/ace_test_2.ace".
     //    Expected state: a dialog appears, it offers to select a view to open the file with.
@@ -497,8 +497,8 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
     GTUtilsDocument::checkDocument("project_test_0033.ugenedb", AssemblyBrowserFactory::ID);
     GTUtilsProjectTreeView::checkObjectTypes(
-                                             QSet<GObjectType>() << GObjectTypes::SEQUENCE << GObjectTypes::ASSEMBLY,
-                                             GTUtilsProjectTreeView::findIndex("project_test_0033.ugenedb"));
+        QSet<GObjectType>() << GObjectTypes::SEQUENCE << GObjectTypes::ASSEMBLY,
+        GTUtilsProjectTreeView::findIndex("project_test_0033.ugenedb"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {

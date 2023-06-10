@@ -31,9 +31,9 @@ using namespace HI;
 class DocumentFormatSelectorDialogFiller : public Filler {
 public:
     DocumentFormatSelectorDialogFiller(
-                                       const QString& _format,
-                                       const int _score = -1,
-                                       const int _formatLineLable = -1)
+        const QString& _format,
+        const int _score = -1,
+        const int _formatLineLable = -1)
         : Filler("DocumentFormatSelectorDialog"),
           format(_format),
           score(_score),

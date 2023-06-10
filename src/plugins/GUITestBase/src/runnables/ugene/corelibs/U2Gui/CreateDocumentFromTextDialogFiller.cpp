@@ -42,17 +42,17 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::createDocumentFiller"
 CreateDocumentFiller::CreateDocumentFiller(
-                                           const QString& _pasteDataHere,
-                                           bool _customSettings = false,
-                                           documentAlphabet _alphabet = StandardDNA,
-                                           bool _skipUnknownSymbols = true,
-                                           bool _replaceUnknownSymbols = false,
-                                           const QString _symbol = "",
-                                           const QString& _documentLocation = QString(),
-                                           documentFormat _format = FASTA,
-                                           const QString& _sequenceName = QString(),
-                                           bool saveFile = false,
-                                           GTGlobals::UseMethod method)
+    const QString& _pasteDataHere,
+    bool _customSettings = false,
+    documentAlphabet _alphabet = StandardDNA,
+    bool _skipUnknownSymbols = true,
+    bool _replaceUnknownSymbols = false,
+    const QString _symbol = "",
+    const QString& _documentLocation = QString(),
+    documentFormat _format = FASTA,
+    const QString& _sequenceName = QString(),
+    bool saveFile = false,
+    GTGlobals::UseMethod method)
     : Filler("CreateDocumentFromTextDialog"),
       customSettings(_customSettings),
       alphabet(_alphabet),
@@ -136,7 +136,7 @@ void CreateDocumentFiller::commonScenario() {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::cancelCreateDocumentFiller"
-CancelCreateDocumentFiller::CancelCreateDocumentFiller( const QString& _pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString& _documentLocation = QString(), documentFormat _format = FASTA, const QString& _sequenceName = QString(), bool saveFile = false, GTGlobals::UseMethod method)
+CancelCreateDocumentFiller::CancelCreateDocumentFiller(const QString& _pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString& _documentLocation = QString(), documentFormat _format = FASTA, const QString& _sequenceName = QString(), bool saveFile = false, GTGlobals::UseMethod method)
     : Filler("CreateDocumentFromTextDialog"), customSettings(_customSettings), alphabet(_alphabet), skipUnknownSymbols(_skipUnknownSymbols), replaceUnknownSymbols(_replaceUnknownSymbols),
       symbol(_symbol), format(_format), saveFile(saveFile), useMethod(method) {
     sequenceName = _sequenceName;

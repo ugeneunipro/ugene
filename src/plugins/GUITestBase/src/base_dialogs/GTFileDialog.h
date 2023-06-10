@@ -111,7 +111,7 @@ public:
     /** Open file with file dialog. Ignores UGENE_USE_DIRECT_API_TO_OPEN_FILES option. */
     static void openFileWithDialog(const QString& path, const QString& fileName, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
 
-    static void openFileList( const QString&, const QStringList&);
+    static void openFileList(const QString&, const QStringList&);
     static void openFileList(const QStringList& filePaths);
 
     /**

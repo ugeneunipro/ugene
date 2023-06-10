@@ -857,19 +857,19 @@ GUI_TEST_CLASS_DEFINITION(test_0666) {
     GTUtilsDialog::checkNoActiveWaiters();
 
     GTUtilsAnnotationsTreeView::selectItemsByName(
-                                                  {
-                                                      "pair 1  (0, 2)",
-                                                      "pair 10  (0, 2)",
-                                                      "pair 11  (0, 2)",
-                                                      "pair 12  (0, 2)",
-                                                      "pair 13  (0, 2)",
-                                                      "pair 14  (0, 2)",
-                                                      "pair 15  (0, 2)",
-                                                      "pair 16  (0, 2)",
-                                                      "pair 17  (0, 2)",
-                                                      "pair 18  (0, 2)",
-                                                      "pair 19  (0, 2)",
-                                                  });
+        {
+            "pair 1  (0, 2)",
+            "pair 10  (0, 2)",
+            "pair 11  (0, 2)",
+            "pair 12  (0, 2)",
+            "pair 13  (0, 2)",
+            "pair 14  (0, 2)",
+            "pair 15  (0, 2)",
+            "pair 16  (0, 2)",
+            "pair 17  (0, 2)",
+            "pair 18  (0, 2)",
+            "pair 19  (0, 2)",
+        });
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
@@ -2933,16 +2933,16 @@ GUI_TEST_CLASS_DEFINITION(test_0981_1) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(
-                                 new InsertSequenceFiller(
-                                                          "qweqwea",
-                                                          InsertSequenceFiller::Resize,
-                                                          1,
-                                                          "",
-                                                          InsertSequenceFiller::FASTA,
-                                                          false,
-                                                          false,
-                                                          GTGlobals::UseMouse,
-                                                          true));
+        new InsertSequenceFiller(
+            "qweqwea",
+            InsertSequenceFiller::Resize,
+            1,
+            "",
+            InsertSequenceFiller::FASTA,
+            false,
+            false,
+            GTGlobals::UseMouse,
+            true));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Insert subsequence..."}, GTGlobals::UseKey);
 }
 
@@ -2954,9 +2954,9 @@ GUI_TEST_CLASS_DEFINITION(test_0981_2) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"Select", "Sequence region"}));
     GTWidget::click(GTUtilsSequenceView::getSeqWidgetByNumber()->getDetView(), Qt::RightButton);
     Runnable* filler1 = new ReplaceSubsequenceDialogFiller(
-                                                           "qweqwea",
-                                                           false,
-                                                           true);
+        "qweqwea",
+        false,
+        true);
     GTUtilsDialog::waitForDialog(filler1);
     GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_EDIT, ACTION_EDIT_REPLACE_SUBSEQUENCE}, GTGlobals::UseMouse));
     GTWidget::click(GTUtilsSequenceView::getSeqWidgetByNumber()->getDetView(), Qt::RightButton);

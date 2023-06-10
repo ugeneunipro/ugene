@@ -28,7 +28,7 @@ using namespace HI;
 
 class ExportProjectDialogFiller : public Filler {
 public:
-    ExportProjectDialogFiller( const QString& _projectName = "")
+    ExportProjectDialogFiller(const QString& _projectName = "")
         : Filler("ExportProjectDialog"), projectName(_projectName) {
     }
     void commonScenario();
@@ -39,7 +39,7 @@ private:
 
 class ExportProjectDialogChecker : public Filler {
 public:
-    ExportProjectDialogChecker( const QString& _projectName)
+    ExportProjectDialogChecker(const QString& _projectName)
         : Filler("ExportProjectDialog"), projectName(_projectName) {
     }
     void commonScenario();

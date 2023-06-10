@@ -42,11 +42,11 @@ public:
         WorkflowDesigner,
         ExternalTools
     };
-    AppSettingsDialogFiller( style _itemStyle = extended)
+    AppSettingsDialogFiller(style _itemStyle = extended)
         : Filler("AppSettingsDialog"),
           itemStyle(_itemStyle), r(-1), g(-1), b(-1) {
     }
-    AppSettingsDialogFiller( int _r, int _g, int _b)
+    AppSettingsDialogFiller(int _r, int _g, int _b)
         : Filler("AppSettingsDialog"),
           itemStyle(none), r(_r), g(_g), b(_b) {
     }
@@ -80,7 +80,7 @@ public:
     enum Action { Create,
                   Delete,
                   Change };
-    NewColorSchemeCreator( QString _schemeName, alphabet _al, Action _act = Create, bool cancel = false);
+    NewColorSchemeCreator(QString _schemeName, alphabet _al, Action _act = Create, bool cancel = false);
     NewColorSchemeCreator(CustomScenario* c);
     virtual void commonScenario();
 

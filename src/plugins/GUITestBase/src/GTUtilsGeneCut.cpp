@@ -76,11 +76,11 @@ void GTUtilsGeneCut::resetPassword(const QString& email) {
 }
 
 void GTUtilsGeneCut::createNewUser(
-                                   const QString& email,
-                                   const QString& password,
-                                   const QString& passwordConfirm,
-                                   const QString& firstName,
-                                   const QString& secondName) {
+    const QString& email,
+    const QString& password,
+    const QString& passwordConfirm,
+    const QString& firstName,
+    const QString& secondName) {
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Tabs::GeneCut);
     GTWidget::click(GTWidget::findPushButton("pbRegister"));
     GTLineEdit::setText(GTWidget::findLineEdit("leEmailNew"), email);

@@ -3304,8 +3304,8 @@ GUI_TEST_CLASS_DEFINITION(test_4587) {
     GTUtilsProject::openFile(testDir + "_common_data/scenarios/_regression/4587/extended_dna.ace");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::checkObjectTypes(
-                                             QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
-                                             GTUtilsProjectTreeView::findIndex("Contig1"));
+        QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
+        GTUtilsProjectTreeView::findIndex("Contig1"));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -3340,9 +3340,9 @@ GUI_TEST_CLASS_DEFINITION(test_4588) {
     };
 
     GTUtilsDialog::waitForDialog(
-                                 new OkClicker(
-                                               testDir + "_common_data/scenarios/_regression/4588/BLAST/4588.00.nhr",
-                                               testDir + "_common_data/scenarios/sandbox/4588_fetched.fa"));
+        new OkClicker(
+            testDir + "_common_data/scenarios/_regression/4588/BLAST/4588.00.nhr",
+            testDir + "_common_data/scenarios/sandbox/4588_fetched.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -3384,9 +3384,9 @@ GUI_TEST_CLASS_DEFINITION(test_4588_1) {
     };
 
     GTUtilsDialog::waitForDialog(
-                                 new OkClicker(
-                                               testDir + "_common_data/scenarios/_regression/4588/BLAST_plus/4588.00.nhr",
-                                               testDir + "_common_data/scenarios/sandbox/4588_1_fetched.fa"));
+        new OkClicker(
+            testDir + "_common_data/scenarios/_regression/4588/BLAST_plus/4588.00.nhr",
+            testDir + "_common_data/scenarios/sandbox/4588_1_fetched.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({"fetchMenu", "fetchSequenceById"}));
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -3402,7 +3402,7 @@ GUI_TEST_CLASS_DEFINITION(test_4588_2) {
 
     class OkClicker : public Filler {
     public:
-        OkClicker( const QString& dbPath, const QString& outputPath)
+        OkClicker(const QString& dbPath, const QString& outputPath)
             : Filler("BlastDBCmdDialog"), dbPath(dbPath), outputPath(outputPath) {
         }
         void run() override {

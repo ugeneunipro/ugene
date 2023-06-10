@@ -33,10 +33,10 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
 ImportAPRFileFiller::ImportAPRFileFiller(
-                                         bool _isReadOnly,
-                                         QString dstUrl,
-                                         QString formatToConvertTo,
-                                         int timeoutMs)
+    bool _isReadOnly,
+    QString dstUrl,
+    QString formatToConvertTo,
+    int timeoutMs)
     : Filler("Select Document Format"),
       isReadOnly(_isReadOnly),
       destinationUrl(dstUrl),

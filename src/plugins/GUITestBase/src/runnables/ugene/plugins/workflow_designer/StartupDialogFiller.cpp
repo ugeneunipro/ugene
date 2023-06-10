@@ -51,7 +51,6 @@ void StartupDialogFiller::commonScenario() {
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 
-
             GTLineEdit::setText("pathEdit", originalPath, dialog);
         }
     }

@@ -29,14 +29,14 @@ using namespace HI;
 class BuildDotPlotFiller : public Filler {
 public:
     BuildDotPlotFiller(
-                       const QString& _firstFileName,
-                       const QString& _secondFileName = "",
-                       bool _mergeFirstBoxChecked = false,
-                       bool _oneSequenceBoxChecked = false,
-                       bool _mergeSecondBoxChecked = false,
-                       int _gapFirstValue = 5,
-                       int _gapSecondValue = 5,
-                       bool cancel = false);
+        const QString& _firstFileName,
+        const QString& _secondFileName = "",
+        bool _mergeFirstBoxChecked = false,
+        bool _oneSequenceBoxChecked = false,
+        bool _mergeSecondBoxChecked = false,
+        int _gapFirstValue = 5,
+        int _gapSecondValue = 5,
+        bool cancel = false);
 
     void commonScenario() override;
 

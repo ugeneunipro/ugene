@@ -77,14 +77,14 @@ public:
     static void moveToReadName(int readNumber);
 
     static void clickReadName(
-                              const QString& sequenceName,
-                              Qt::MouseButton mouseButton = Qt::LeftButton,
-                              const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
+        const QString& sequenceName,
+        Qt::MouseButton mouseButton = Qt::LeftButton,
+        const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
 
     static void clickReadName(
-                              int readNumber,
-                              Qt::MouseButton mouseButton = Qt::LeftButton,
-                              const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
+        int readNumber,
+        Qt::MouseButton mouseButton = Qt::LeftButton,
+        const Qt::KeyboardModifiers& modifiers = Qt::NoModifier);
 
     /** Double clicks read with the given index in the name list. */
     static void doubleClickReadName(int readIndex);
