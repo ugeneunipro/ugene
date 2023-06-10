@@ -35,30 +35,30 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportAnnotationsFiller"
-ExportAnnotationsFiller::ExportAnnotationsFiller(const QString& exportToFile, fileFormat format)
+ExportAnnotationsFiller::ExportAnnotationsFiller(const QString& _exportToFile, const FileFormat& _format)
     : Filler("U2__ExportAnnotationsDialog"),
       softMode(true),
-      format(format),
+      format(_format),
       addToProject(false),
       saveSequencesUnderAnnotations(false),
       saveSequenceNames(false),
       useMethod(GTGlobals::UseMouse) {
-    init(exportToFile);
+    init(_exportToFile);
 }
 
 ExportAnnotationsFiller::ExportAnnotationsFiller(
     const QString& _exportToFile,
-    fileFormat _format,
-    bool addToProject,
-    bool saveSequencesUnderAnnotations,
-    bool saveSequenceNames,
+    const FileFormat& _format,
+    bool _addToProject,
+    bool _saveSequencesUnderAnnotations,
+    bool _saveSequenceNames,
     GTGlobals::UseMethod method)
     : Filler("U2__ExportAnnotationsDialog"),
       softMode(false),
       format(_format),
-      addToProject(addToProject),
-      saveSequencesUnderAnnotations(saveSequencesUnderAnnotations),
-      saveSequenceNames(saveSequenceNames),
+      addToProject(_addToProject),
+      saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations),
+      saveSequenceNames(_saveSequenceNames),
       useMethod(method) {
     init(_exportToFile);
 }
@@ -104,11 +104,8 @@ void ExportAnnotationsFiller::commonScenario() {
     }
 
     if (!softMode) {
-        auto checkButton = GTWidget::findCheckBox("exportSequenceCheck", dialog);
-        GTCheckBox::setChecked(checkButton, saveSequencesUnderAnnotations);
-
-        checkButton = GTWidget::findCheckBox("exportSequenceNameCheck", dialog);
-        GTCheckBox::setChecked(checkButton, saveSequenceNames);
+        GTCheckBox::setChecked("exportSequenceCheck", saveSequencesUnderAnnotations, dialog);
+        GTCheckBox::setChecked("exportSequenceNameCheck", saveSequenceNames, dialog);
     }
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);

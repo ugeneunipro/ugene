@@ -28,7 +28,7 @@ using namespace HI;
 
 class ExportAnnotationsFiller : public Filler {
 public:
-    enum fileFormat {
+    enum FileFormat {
         bed,
         genbank,
         gff,
@@ -37,10 +37,11 @@ public:
         ugenedb
     };
 
-    ExportAnnotationsFiller(const QString& exportToFile, fileFormat format);
+    ExportAnnotationsFiller(const QString& exportToFile, const FileFormat& format);
+
     ExportAnnotationsFiller(
         const QString& _exportToFile,
-        fileFormat _format,
+        const FileFormat& _format,
         bool _addToProject,
         bool _saveSequencesUnderAnnotations = true,
         bool _saveSequenceNames = true,
@@ -54,8 +55,8 @@ private:
 
     bool softMode;
     QString exportToFile;
-    fileFormat format;
-    QMap<fileFormat, QString> comboBoxItems;
+    FileFormat format;
+    QMap<FileFormat, QString> comboBoxItems;
     bool addToProject;
     bool saveSequencesUnderAnnotations;
     bool saveSequenceNames;
