@@ -1033,13 +1033,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
     bool isMsaEditor = qobject_cast<MSAEditor*>(getEditor()) != nullptr;
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     bool isCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
-#ifdef Q_OS_DARWIN
-    // In one case it is better to use a Command key as modifier,
-    // in another - a Control key. genuineCtrl - Control key on Mac OS X.
-    bool isGenuineCtrlPressed = e->modifiers().testFlag(Qt::MetaModifier);
-#else
-    bool isGenuineCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
-#endif
+    bool isAltPressed = e->modifiers().testFlag(Qt::AltModifier);
 
     // Arrow keys with control work as page-up/page-down.
     if (isCtrlPressed && (key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up || key == Qt::Key_Down)) {
@@ -1174,13 +1168,12 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
                                                       : ScrollController::Right);
             break;
         case Qt::Key_Backspace:
-            removeGapsPrecedingSelection(isGenuineCtrlPressed ? 1 : -1);
+            removeGapsPrecedingSelection(isAltPressed ? 1 : -1);
             break;
-        case Qt::Key_Insert:
         case Qt::Key_Space:
             if (!isAlignmentLocked()) {
                 emit si_startMaChanging();
-                insertGapsBeforeSelection(isGenuineCtrlPressed ? 1 : -1);
+                insertGapsBeforeSelection(isAltPressed ? 1 : -1);
             }
             break;
     }

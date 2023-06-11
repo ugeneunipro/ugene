@@ -866,14 +866,14 @@ GUI_TEST_CLASS_DEFINITION(test_2128) {
     // 3. Add gaps by pressing "Ctrl + Space" key
     const int totalShiftCount = 3;
     for (int shiftCounter = 0; shiftCounter < totalShiftCount; ++shiftCounter) {
-        GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::ControlModifier);
+        GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::AltModifier);
         currentSelection.moveRight(currentSelection.right() + 1);
         GTUtilsMSAEditorSequenceArea::checkSelectedRect(currentSelection);
     }
 
     // 4. Remove gaps with "Ctrl + Backspace" key
     for (int shiftCounter = 0; shiftCounter < totalShiftCount; ++shiftCounter) {
-        GTKeyboardDriver::keyClick(Qt::Key_Backspace, Qt::ControlModifier);
+        GTKeyboardDriver::keyClick(Qt::Key_Backspace, Qt::AltModifier);
         currentSelection.moveLeft(currentSelection.left() - 1);
         GTUtilsMSAEditorSequenceArea::checkSelectedRect(currentSelection);
     }
