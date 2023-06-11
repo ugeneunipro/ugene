@@ -25,12 +25,12 @@
 
 namespace U2 {
 
-DefaultWizardFiller::DefaultWizardFiller(HI::GUITestOpStatus& os, const QString& wizardName)
-    : Filler(os, wizardName) {
+DefaultWizardFiller::DefaultWizardFiller(const QString& wizardName)
+    : Filler(wizardName) {
 }
 
 void DefaultWizardFiller::commonScenario() {
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
 }
 
 }  // namespace U2

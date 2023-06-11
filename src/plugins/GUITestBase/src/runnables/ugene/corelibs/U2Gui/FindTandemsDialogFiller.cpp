@@ -31,33 +31,33 @@
 
 namespace U2 {
 
-FindTandemsDialogFiller::FindTandemsDialogFiller(HI::GUITestOpStatus& _os, const QString& _resultFilesPath)
-    : Filler(_os, "FindTandemsDialog"), button(Start), resultAnnotationFilesPath(_resultFilesPath) {
+FindTandemsDialogFiller::FindTandemsDialogFiller(const QString& _resultFilesPath)
+    : Filler("FindTandemsDialog"), button(Start), resultAnnotationFilesPath(_resultFilesPath) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::FindTandemsDialogFiller"
 #define GT_METHOD_NAME "run"
 
-FindTandemsDialogFiller::FindTandemsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "FindTandemsDialog", scenario),
+FindTandemsDialogFiller::FindTandemsDialogFiller(CustomScenario* scenario)
+    : Filler("FindTandemsDialog", scenario),
       button(Start) {
 }
 
 void FindTandemsDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (button == Cancel) {
-        auto cancelButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget(os, "cancelButton", dialog));
-        GTWidget::click(os, cancelButton);
+        auto cancelButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget("cancelButton", dialog));
+        GTWidget::click(cancelButton);
         return;
     }
 
-    GTTabWidget::clickTab(os, GTWidget::findTabWidget(os, "tabWidget"), 1);
+    GTTabWidget::clickTab(GTWidget::findTabWidget("tabWidget"), 1);
     GTGlobals::sleep(100);
 
-    GTLineEdit::setText(os, "leNewTablePath", resultAnnotationFilesPath, dialog);
+    GTLineEdit::setText("leNewTablePath", resultAnnotationFilesPath, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

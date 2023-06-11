@@ -46,37 +46,37 @@ using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
     // 1. Open "data/samples/Genbank/murine.gb"
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Open "data/samples/CLUSTALW/COI.aln"
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: Project filter clear button is invisible
-    auto clearButton = GTWidget::findWidget(os, "project filter clear button");
+    auto clearButton = GTWidget::findWidget("project filter clear button");
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");
 
     // 3. Type to the project filter field "polyprotein"
-    GTUtilsProjectTreeView::openView(os);
-    auto nameFilterEdit = GTWidget::findLineEdit(os, "nameFilterEdit");
-    GTLineEdit::setText(os, nameFilterEdit, "polyprotein");
+    GTUtilsProjectTreeView::openView();
+    auto nameFilterEdit = GTWidget::findLineEdit("nameFilterEdit");
+    GTLineEdit::setText(nameFilterEdit, "polyprotein");
 
     // Expected state: Project filter clear button is visible
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");
     GTGlobals::sleep(3000);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");
 
     // 4. Click the clear button
-    GTWidget::click(os, clearButton);
+    GTWidget::click(clearButton);
 
     // Expected state: project filter field is empty, clear button is invisible
     CHECK_SET_ERR(nameFilterEdit->text().isEmpty(), "Project filter clear button hasn't wiped filter");
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");
 
     // 5. Type to the project filter field "AAA"
-    GTLineEdit::setText(os, nameFilterEdit, "AAA");
+    GTLineEdit::setText(nameFilterEdit, "AAA");
 
     // Expected state: Project filter clear button is visible
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");

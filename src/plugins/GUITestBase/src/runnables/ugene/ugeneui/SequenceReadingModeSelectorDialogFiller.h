@@ -38,10 +38,10 @@ public:
         Align
     };
 
-    SequenceReadingModeSelectorDialogFiller(HI::GUITestOpStatus& _os, ReadingMode _mode = Separate, int _bases = 10, bool cancel = false)
-        : Filler(_os, "SequenceReadingModeSelectorDialog"), readingMode(_mode), bases(_bases), cancel(cancel) {
+    SequenceReadingModeSelectorDialogFiller(ReadingMode _mode = Separate, int _bases = 10, bool cancel = false)
+        : Filler("SequenceReadingModeSelectorDialog"), readingMode(_mode), bases(_bases), cancel(cancel) {
     }
-    SequenceReadingModeSelectorDialogFiller(HI::GUITestOpStatus& _os, CustomScenario* c);
+    SequenceReadingModeSelectorDialogFiller(CustomScenario* c);
 
     void commonScenario() override;
 

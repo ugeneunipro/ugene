@@ -38,10 +38,10 @@ using namespace HI;
 #define GT_METHOD_NAME "commonScenario"
 void WizardFiller::commonScenario() {
     if (!inputFiles.isEmpty() && !inputFiles.first().isEmpty()) {
-        GTUtilsWizard::setInputFiles(os, inputFiles);
+        GTUtilsWizard::setInputFiles(inputFiles);
     }
-    GTUtilsWizard::setAllParameters(os, map);
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+    GTUtilsWizard::setAllParameters(map);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
 }
 
 #undef GT_METHOD_NAME

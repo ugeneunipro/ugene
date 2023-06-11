@@ -32,16 +32,16 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void HmmerSearchDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "queryHmmFileEdit", profile, dialog);
+    GTLineEdit::setText("queryHmmFileEdit", profile, dialog);
 
-    auto radio = GTWidget::findRadioButton(os, "rbCreateNewTable", dialog);
-    GTRadioButton::click(os, radio);
+    auto radio = GTWidget::findRadioButton("rbCreateNewTable", dialog);
+    GTRadioButton::click(radio);
 
-    GTLineEdit::setText(os, "leNewTablePath", newFilePath, dialog);
+    GTLineEdit::setText("leNewTablePath", newFilePath, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

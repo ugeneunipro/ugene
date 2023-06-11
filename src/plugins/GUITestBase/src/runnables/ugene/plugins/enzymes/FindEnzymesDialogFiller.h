@@ -44,21 +44,21 @@ struct FindEnzymesDialogFillerSettings {
 
 class FindEnzymesDialogFiller : public Filler {
 public:
-    FindEnzymesDialogFiller(HI::GUITestOpStatus& os,
-                            const FindEnzymesDialogFillerSettings& settings,
-                            CustomScenario* scenario = nullptr);
+    FindEnzymesDialogFiller(
+        const FindEnzymesDialogFillerSettings& settings,
+        CustomScenario* scenario = nullptr);
 
-    FindEnzymesDialogFiller(HI::GUITestOpStatus& os,
-                            const QStringList& enzymes,
-                            CustomScenario* scenario = nullptr);
+    FindEnzymesDialogFiller(
+        const QStringList& enzymes,
+        CustomScenario* scenario = nullptr);
 
     void commonScenario() override;
 
     /** Opens FindEnzymesDialog in by clicking an action in the main toolbar. */
-    static void openDialogWithToolbarAction(HI::GUITestOpStatus& os);
+    static void openDialogWithToolbarAction();
 
     /** Calls 'openDialogWithToolbarAction' to open the dialog and selects enzymes from 'enzymeNames'. */
-    static void selectEnzymes(HI::GUITestOpStatus& os, const QStringList& enzymeNames);
+    static void selectEnzymes(const QStringList& enzymeNames);
 
     FindEnzymesDialogFillerSettings settings;
 };

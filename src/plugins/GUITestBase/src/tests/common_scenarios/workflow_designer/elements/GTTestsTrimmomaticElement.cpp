@@ -38,11 +38,11 @@ using TrimmomaticMoveSettings = QPair<QPair<TrimmomaticDialogFiller::Trimmomatic
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
-    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(trimmomaticName);
 
     // 3. Click on the element, open the "Trimmomatic steps" dialog
     // 4. Add the "AVGQUAL" step and set "Quality Threshold" to 25
@@ -90,19 +90,19 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> trailing = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "25"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::TRAILING, trailing));
 
-    TrimmomaticDialogFiller* filler = new TrimmomaticDialogFiller(os, steps);
+    TrimmomaticDialogFiller* filler = new TrimmomaticDialogFiller(steps);
 
-    GTUtilsDialog::waitForDialog(os, filler);
-    TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
+    GTUtilsDialog::waitForDialog(filler);
+    TrimmomaticDialogFiller::openDialog(trimmomaticElement);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 1. Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
-    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(trimmomaticName);
 
     // 3. Click on the element, open the "Trimmomatic steps" dialog
     // 4. Add the "AVGQUAL" step and set "Quality Threshold" to 1
@@ -116,10 +116,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual2));
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> avgqual3 = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "3"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual3));
-    TrimmomaticDialogFiller* addFiller = new TrimmomaticDialogFiller(os, steps);
+    TrimmomaticDialogFiller* addFiller = new TrimmomaticDialogFiller(steps);
 
-    GTUtilsDialog::waitForDialog(os, addFiller);
-    TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
+    GTUtilsDialog::waitForDialog(addFiller);
+    TrimmomaticDialogFiller::openDialog(trimmomaticElement);
 
     // 8. Click on the element, open the "Trimmomatic steps" dialog
     // 9. Click on the "AVGQUAL" step 1 and move it down
@@ -133,19 +133,19 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     moveSteps.append(step2);
     TrimmomaticMoveSettings step3(QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int>(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, 1), TrimmomaticDialogFiller::TrimmomaticDirection::Up);
     moveSteps.append(step3);
-    TrimmomaticDialogFiller* moveFiller = new TrimmomaticDialogFiller(os, moveSteps);
+    TrimmomaticDialogFiller* moveFiller = new TrimmomaticDialogFiller(moveSteps);
 
-    GTUtilsDialog::waitForDialog(os, moveFiller);
-    TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
+    GTUtilsDialog::waitForDialog(moveFiller);
+    TrimmomaticDialogFiller::openDialog(trimmomaticElement);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 1. Open WD
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     // 2. Add "Improve Reads with Trimmomatic" to the scene
     const QString trimmomaticName = "Improve Reads with Trimmomatic";
-    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(os, trimmomaticName);
+    WorkflowProcessItem* trimmomaticElement = GTUtilsWorkflowDesigner::addElement(trimmomaticName);
 
     // 3. Click on the element, open the "Trimmomatic steps" dialog
     // 4. Add the "AVGQUAL" step and set "Quality Threshold" to 1
@@ -159,10 +159,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual2));
     QMap<TrimmomaticDialogFiller::TrimmomaticValues, QVariant> avgqual3 = {{TrimmomaticDialogFiller::TrimmomaticValues::QualityThreshold, "3"}};
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, avgqual3));
-    TrimmomaticDialogFiller* addFiller = new TrimmomaticDialogFiller(os, steps);
+    TrimmomaticDialogFiller* addFiller = new TrimmomaticDialogFiller(steps);
 
-    GTUtilsDialog::waitForDialog(os, addFiller);
-    TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
+    GTUtilsDialog::waitForDialog(addFiller);
+    TrimmomaticDialogFiller::openDialog(trimmomaticElement);
     // 8. Click on the element, open the "Trimmomatic steps" dialog
     // 9. Click on the "AVGQUAL" step 2 and remove it
     // 10. Click on  the "AVGQUAL" step 1 and remove it
@@ -172,10 +172,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     removeValues.append(step1);
     QPair<TrimmomaticDialogFiller::TrimmomaticSteps, int> step2(TrimmomaticDialogFiller::TrimmomaticSteps::AVGQUAL, 0);
     removeValues.append(step2);
-    TrimmomaticDialogFiller* removeFiller = new TrimmomaticDialogFiller(os, removeValues);
+    TrimmomaticDialogFiller* removeFiller = new TrimmomaticDialogFiller(removeValues);
 
-    GTUtilsDialog::waitForDialog(os, removeFiller);
-    TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);
+    GTUtilsDialog::waitForDialog(removeFiller);
+    TrimmomaticDialogFiller::openDialog(trimmomaticElement);
 }
 
 }  // namespace GUITest_common_scenarios_trimmomatic_element

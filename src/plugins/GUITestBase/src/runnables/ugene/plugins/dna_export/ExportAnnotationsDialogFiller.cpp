@@ -35,36 +35,36 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportAnnotationsFiller"
-ExportAnnotationsFiller::ExportAnnotationsFiller(const QString& exportToFile, fileFormat format, HI::GUITestOpStatus& os)
-    : Filler(os, "U2__ExportAnnotationsDialog"),
+ExportAnnotationsFiller::ExportAnnotationsFiller(const QString& _exportToFile, const FileFormat& _format)
+    : Filler("U2__ExportAnnotationsDialog"),
       softMode(true),
-      format(format),
+      format(_format),
       addToProject(false),
       saveSequencesUnderAnnotations(false),
       saveSequenceNames(false),
       useMethod(GTGlobals::UseMouse) {
-    init(exportToFile);
+    init(_exportToFile);
 }
 
-ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus& _os,
-                                                 const QString& _exportToFile,
-                                                 fileFormat _format,
-                                                 bool addToProject,
-                                                 bool saveSequencesUnderAnnotations,
-                                                 bool saveSequenceNames,
-                                                 GTGlobals::UseMethod method)
-    : Filler(_os, "U2__ExportAnnotationsDialog"),
+ExportAnnotationsFiller::ExportAnnotationsFiller(
+    const QString& _exportToFile,
+    const FileFormat& _format,
+    bool _addToProject,
+    bool _saveSequencesUnderAnnotations,
+    bool _saveSequenceNames,
+    GTGlobals::UseMethod method)
+    : Filler("U2__ExportAnnotationsDialog"),
       softMode(false),
       format(_format),
-      addToProject(addToProject),
-      saveSequencesUnderAnnotations(saveSequencesUnderAnnotations),
-      saveSequenceNames(saveSequenceNames),
+      addToProject(_addToProject),
+      saveSequencesUnderAnnotations(_saveSequencesUnderAnnotations),
+      saveSequenceNames(_saveSequenceNames),
       useMethod(method) {
     init(_exportToFile);
 }
 
-ExportAnnotationsFiller::ExportAnnotationsFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "U2__ExportAnnotationsDialog", scenario),
+ExportAnnotationsFiller::ExportAnnotationsFiller(CustomScenario* scenario)
+    : Filler("U2__ExportAnnotationsDialog", scenario),
       softMode(false),
       format(genbank),
       addToProject(false),
@@ -86,32 +86,29 @@ void ExportAnnotationsFiller::init(const QString& exportToFileParam) {
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportAnnotationsFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "fileNameEdit", exportToFile, dialog);
+    GTLineEdit::setText("fileNameEdit", exportToFile, dialog);
 
     QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
+    GTComboBox::selectItemByIndex(comboBox, index, useMethod);
     if (!addToProject) {
-        auto addToProjectButton = GTWidget::findCheckBox(os, "addToProjectCheck", dialog);
+        auto addToProjectButton = GTWidget::findCheckBox("addToProjectCheck", dialog);
         if (addToProjectButton->isEnabled()) {
-            GTCheckBox::setChecked(os, addToProjectButton, false);
+            GTCheckBox::setChecked(addToProjectButton, false);
         }
     }
 
     if (!softMode) {
-        auto checkButton = GTWidget::findCheckBox(os, "exportSequenceCheck", dialog);
-        GTCheckBox::setChecked(os, checkButton, saveSequencesUnderAnnotations);
-
-        checkButton = GTWidget::findCheckBox(os, "exportSequenceNameCheck", dialog);
-        GTCheckBox::setChecked(os, checkButton, saveSequenceNames);
+        GTCheckBox::setChecked("exportSequenceCheck", saveSequencesUnderAnnotations, dialog);
+        GTCheckBox::setChecked("exportSequenceNameCheck", saveSequenceNames, dialog);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

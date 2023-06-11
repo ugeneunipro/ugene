@@ -31,78 +31,78 @@
 
 namespace U2 {
 
-EditFragmentDialogFiller::EditFragmentDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters)
-    : Filler(os, "EditFragmentDialog"), parameters(parameters) {
+EditFragmentDialogFiller::EditFragmentDialogFiller(const Parameters& parameters)
+    : Filler("EditFragmentDialog"), parameters(parameters) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditFragmentDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 
 void EditFragmentDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     // GUITest_regression_scenarios_test_0574
     if (parameters.checkRComplText) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "rStickyButton", dialog));
-        auto rCustomOverhangBox = GTWidget::findGroupBox(os, "rCustomOverhangBox", dialog);
-        GTGroupBox::setChecked(os, rCustomOverhangBox, true);
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "rComplRadioButton", dialog));
-        GT_CHECK(GTLineEdit::getText(os, "rComplOverhangEdit", dialog) == parameters.rComplText, "Wrong rComplTextEdit text");
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        GTRadioButton::click(GTWidget::findRadioButton("rStickyButton", dialog));
+        auto rCustomOverhangBox = GTWidget::findGroupBox("rCustomOverhangBox", dialog);
+        GTGroupBox::setChecked(rCustomOverhangBox, true);
+        GTRadioButton::click(GTWidget::findRadioButton("rComplRadioButton", dialog));
+        GT_CHECK(GTLineEdit::getText("rComplOverhangEdit", dialog) == parameters.rComplText, "Wrong rComplTextEdit text");
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         return;
     }
 
     if (parameters.lSticky) {
-        auto lStickyButton = GTWidget::findRadioButton(os, "lStickyButton", dialog);
-        GTRadioButton::click(os, lStickyButton);
+        auto lStickyButton = GTWidget::findRadioButton("lStickyButton", dialog);
+        GTRadioButton::click(lStickyButton);
 
-        auto lCustomOverhangBox = GTWidget::findGroupBox(os, "lCustomOverhangBox", dialog);
-        GTGroupBox::setChecked(os, lCustomOverhangBox, parameters.lCustom);
+        auto lCustomOverhangBox = GTWidget::findGroupBox("lCustomOverhangBox", dialog);
+        GTGroupBox::setChecked(lCustomOverhangBox, parameters.lCustom);
 
         if (parameters.lCustom) {
             if (parameters.lDirect) {
-                auto lDirectRadioButton = GTWidget::findRadioButton(os, "lDirectRadioButton", dialog);
-                GTRadioButton::click(os, lDirectRadioButton);
+                auto lDirectRadioButton = GTWidget::findRadioButton("lDirectRadioButton", dialog);
+                GTRadioButton::click(lDirectRadioButton);
 
-                GTLineEdit::setText(os, "lDirectOverhangEdit", parameters.lDirectText, dialog);
+                GTLineEdit::setText("lDirectOverhangEdit", parameters.lDirectText, dialog);
             } else {
-                auto lComplRadioButton = GTWidget::findRadioButton(os, "lComplRadioButton", dialog);
-                GTRadioButton::click(os, lComplRadioButton);
+                auto lComplRadioButton = GTWidget::findRadioButton("lComplRadioButton", dialog);
+                GTRadioButton::click(lComplRadioButton);
 
-                GTLineEdit::setText(os, "lComplOverhangEdit", parameters.lComplText, dialog);
+                GTLineEdit::setText("lComplOverhangEdit", parameters.lComplText, dialog);
             }
         }
     } else {
-        auto lBluntButton = GTWidget::findRadioButton(os, "lBluntButton", dialog);
-        GTRadioButton::click(os, lBluntButton);
+        auto lBluntButton = GTWidget::findRadioButton("lBluntButton", dialog);
+        GTRadioButton::click(lBluntButton);
     }
 
     if (parameters.rSticky) {
-        auto rStickyButton = GTWidget::findRadioButton(os, "rStickyButton", dialog);
-        GTRadioButton::click(os, rStickyButton);
+        auto rStickyButton = GTWidget::findRadioButton("rStickyButton", dialog);
+        GTRadioButton::click(rStickyButton);
 
-        auto rCustomOverhangBox = GTWidget::findGroupBox(os, "rCustomOverhangBox", dialog);
-        GTGroupBox::setChecked(os, rCustomOverhangBox, parameters.rCustom);
+        auto rCustomOverhangBox = GTWidget::findGroupBox("rCustomOverhangBox", dialog);
+        GTGroupBox::setChecked(rCustomOverhangBox, parameters.rCustom);
 
         if (parameters.rCustom) {
             if (parameters.rDirect) {
-                auto rDirectRadioButton = GTWidget::findRadioButton(os, "rDirectRadioButton", dialog);
-                GTRadioButton::click(os, rDirectRadioButton);
+                auto rDirectRadioButton = GTWidget::findRadioButton("rDirectRadioButton", dialog);
+                GTRadioButton::click(rDirectRadioButton);
 
-                GTLineEdit::setText(os, "rDirectOverhangEdit", parameters.rDirectText, dialog);
+                GTLineEdit::setText("rDirectOverhangEdit", parameters.rDirectText, dialog);
             } else {
-                auto rComplRadioButton = GTWidget::findRadioButton(os, "rComplRadioButton", dialog);
-                GTRadioButton::click(os, rComplRadioButton);
+                auto rComplRadioButton = GTWidget::findRadioButton("rComplRadioButton", dialog);
+                GTRadioButton::click(rComplRadioButton);
 
-                GTLineEdit::setText(os, "rComplOverhangEdit", parameters.rComplText, dialog);
+                GTLineEdit::setText("rComplOverhangEdit", parameters.rComplText, dialog);
             }
         }
     } else {
-        auto rBluntButton = GTWidget::findRadioButton(os, "rBluntButton", dialog);
-        GTRadioButton::click(os, rBluntButton);
+        auto rBluntButton = GTWidget::findRadioButton("rBluntButton", dialog);
+        GTRadioButton::click(rBluntButton);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

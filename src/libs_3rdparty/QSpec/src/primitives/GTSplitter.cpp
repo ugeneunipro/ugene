@@ -28,7 +28,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTSplitter"
 
 #define GT_METHOD_NAME "getHandleRect"
-QRect GTSplitter::getHandleRect(GUITestOpStatus& os, QSplitter* splitter, int handleNumber) {
+QRect GTSplitter::getHandleRect(QSplitter* splitter, int handleNumber) {
     GT_CHECK_RESULT(splitter != nullptr, "splitter is nullptr", QRect());
 
     int handlesCount = splitter->count();
@@ -43,8 +43,8 @@ QRect GTSplitter::getHandleRect(GUITestOpStatus& os, QSplitter* splitter, int ha
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "moveHandle"
-void GTSplitter::moveHandle(GUITestOpStatus& os, QSplitter* splitter, int pixels, int handleNumber) {
-    QRect handleRect = getHandleRect(os, splitter, handleNumber);
+void GTSplitter::moveHandle(QSplitter* splitter, int pixels, int handleNumber) {
+    QRect handleRect = getHandleRect(splitter, handleNumber);
     QPoint mouseOffset(0, 0);
     if (splitter->orientation() == Qt::Vertical) {
         mouseOffset.setY(pixels);

@@ -43,617 +43,617 @@ namespace U2 {
 namespace GUITest_common_scenarios_document_from_text {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
 
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTUtilsDialog::checkNoActiveWaiters();
 
-    GTUtilsDocument::checkDocument(os, "result");
-    GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");
+    GTUtilsDocument::checkDocument("result");
+    GTUtilsSequenceView::checkSequence("ACAAGTCGGATTTATA");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           false);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        false);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");
+    GTUtilsSequenceView::checkSequence("ACAAGTCGGATTTATA");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
 
-    GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");
+    GTUtilsSequenceView::checkSequence("ACAAGTCGGATTTATA");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");
+    GTUtilsSequenceView::checkSequence("ACAAGTCGGATTTATA");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATAACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           false);
-    GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATAACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        false);
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATAACAAGTCGGATTTATA");
+    GTUtilsSequenceView::checkSequence("ACAAGTCGGATTTATAACAAGTCGGATTTATA");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::StandardDNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::StandardDNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "ACAAGTCGGATTTATA");
+    GTUtilsSequenceView::checkSequence("ACAAGTCGGATTTATA");
 
-    GTUtilsDocument::removeDocument(os, "result.gb");
+    GTUtilsDocument::removeDocument("result.gb");
 
-    Runnable* filler1 = new CreateDocumentFiller(os,
-                                                 "ACAA",
-                                                 false,
-                                                 CreateDocumentFiller::StandardRNA,
-                                                 true,
-                                                 false,
-                                                 "",
-                                                 testDir + "_common_data/scenarios/sandbox/result_new",
-                                                 CreateDocumentFiller::Genbank,
-                                                 "result_new",
-                                                 true);
-    GTUtilsDialog::waitForDialog(os, filler1);
+    Runnable* filler1 = new CreateDocumentFiller(
+        "ACAA",
+        false,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result_new",
+        CreateDocumentFiller::Genbank,
+        "result_new",
+        true);
+    GTUtilsDialog::waitForDialog(filler1);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
 
-    GTUtilsDocument::checkDocument(os, "result_new.gb");
+    GTUtilsDocument::checkDocument("result_new.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "ACAA");
+    GTUtilsSequenceView::checkSequence("ACAA");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    auto filler = new CreateDocumentFiller(os,
-                                           "FKMDNYTRVEPPG,DD.JFUYBVYERHGK",
-                                           true,
-                                           CreateDocumentFiller::AllSymbols,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+    auto filler = new CreateDocumentFiller(
+        "FKMDNYTRVEPPG,DD.JFUYBVYERHGK",
+        true,
+        CreateDocumentFiller::AllSymbols,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "FKMDNYTRVEPPG,DD.JFUYBVYERHGK");
+    GTUtilsSequenceView::checkSequence("FKMDNYTRVEPPG,DD.JFUYBVYERHGK");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_1) {
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    auto filler = new CreateDocumentFiller(os,
-                                           "FKMDNYTRVEPPG,DD.JFUYBVYERHGK",
-                                           true,
-                                           CreateDocumentFiller::AllSymbols,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+    auto filler = new CreateDocumentFiller(
+        "FKMDNYTRVEPPG,DD.JFUYBVYERHGK",
+        true,
+        CreateDocumentFiller::AllSymbols,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "FKMDNYTRVEPPG,DD.JFUYBVYERHGK");
+    GTUtilsSequenceView::checkSequence("FKMDNYTRVEPPG,DD.JFUYBVYERHGK");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACGT",
-                                           true,
-                                           CreateDocumentFiller::StandardDNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           false);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "ACGT",
+        true,
+        CreateDocumentFiller::StandardDNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        false);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "ACGT");
+    GTUtilsSequenceView::checkSequence("ACGT");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardDNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardDNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "NACCGTTAAAGCCAGT");
+    GTUtilsSequenceView::checkSequence("NACCGTTAAAGCCAGT");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardDNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardDNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "NACCGTTAAAGCCAGT");
+    GTUtilsSequenceView::checkSequence("NACCGTTAAAGCCAGT");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "NACCGAAUAGCCAG");
+    GTUtilsSequenceView::checkSequence("NACCGAAUAGCCAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "-NACCGTTAA---AGCC-----AGT--");
+    GTUtilsSequenceView::checkSequence("-NACCGTTAA---AGCC-----AGT--");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "-NACCGTTAA---AGCC-----AGT--");
+    GTUtilsSequenceView::checkSequence("-NACCGTTAA---AGCC-----AGT--");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           false,
-                                           true,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        false,
+        true,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "ANACCGAAAAAAUAGCCAAAAAAGAAA");
+    GTUtilsSequenceView::checkSequence("ANACCGAAAAAAUAGCCAAAAAAGAAA");
 }
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedDNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGTTAAAGCCDMAGT");
+    GTUtilsSequenceView::checkSequence("RNACCGTTAAAGCCDMAGT");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedDNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGTTAAAGCCDMAGT");
+    GTUtilsSequenceView::checkSequence("RNACCGTTAAAGCCDMAGT");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUA---GCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUA---GCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedDNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGTTAAA---GCCDMAGT");
+    GTUtilsSequenceView::checkSequence("RNACCGTTAAA---GCCDMAGT");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "NACCGAAUAGCCAG");
+    GTUtilsSequenceView::checkSequence("NACCGAAUAGCCAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "NACCGAAUAGCCAG");
+    GTUtilsSequenceView::checkSequence("NACCGAAUAGCCAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOU---AGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOU---AGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "NACCGAAU---AGCCAG");
+    GTUtilsSequenceView::checkSequence("NACCGAAU---AGCCAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedRNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedRNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsDocument::checkDocument("result");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGAAUAGCCDMAG");
+    GTUtilsSequenceView::checkSequence("RNACCGAAUAGCCDMAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedRNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedRNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGAAUAGCCDMAG");
+    GTUtilsSequenceView::checkSequence("RNACCGAAUAGCCDMAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOU---AGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedRNA,
-                                           true,
-                                           false,
-                                           "A",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOU---AGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedRNA,
+        true,
+        false,
+        "A",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGAAU---AGCCDMAG");
+    GTUtilsSequenceView::checkSequence("RNACCGAAU---AGCCDMAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGTTAA---AGCCD---MAGT--");
+    GTUtilsSequenceView::checkSequence("RNACCGTTAA---AGCCD---MAGT--");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGTTAA---AGCCD---MAGT--");
+    GTUtilsSequenceView::checkSequence("RNACCGTTAA---AGCCD---MAGT--");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGT---TAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGT---TAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCGT---TAA---AGCCD---MAGT--");
+    GTUtilsSequenceView::checkSequence("RNACCGT---TAA---AGCCD---MAGT--");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -669,21 +669,21 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //    {Document location} _common_data/scenarios/sandbox/result.fa
     //    {Document Format} FASTA
     //    {Save file immidiately} set checked
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedRNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedRNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //  3. Click Create button
     //  Expected result:
@@ -691,9 +691,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //   - sequence view opened
     //   - sequence are RNACCG--AA--UAGCCD---MAG---
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCG--AA--UAGCCD---MAG---");
+    GTUtilsSequenceView::checkSequence("RNACCG--AA--UAGCCD---MAG---");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010_1) {
@@ -710,21 +710,21 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     //    {Document location} _common_data/scenarios/sandbox/result.fa
     //    {Document Format} FASTA
     //    {Save file immidiately} set checked
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedRNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result.gb",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedRNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result.gb",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //  3. Click Create button
     //  Expected result:
@@ -732,9 +732,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     //   - sequence view opened
     //   - sequence are RNACCG--AA--UAGCCD---MAG---
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCG--AA--UAGCCD---MAG---");
+    GTUtilsSequenceView::checkSequence("RNACCG--AA--UAGCCD---MAG---");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010_2) {
@@ -751,22 +751,22 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     //    {Document location} _common_data/scenarios/sandbox/result.fa
     //    {Document Format} FASTA
     //    {Save file immidiately} set checked
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::ExtendedRNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true,
-                                           GTGlobals::UseMouse);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::ExtendedRNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true,
+        GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseMouse);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //  3. Click Create button
     //  Expected result:
@@ -774,9 +774,9 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     //   - sequence view opened
     //   - sequence are RNACCG--AA--UAGCCD---MAG---
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "RNACCG--AA--UAGCCD---MAG---");
+    GTUtilsSequenceView::checkSequence("RNACCG--AA--UAGCCD---MAG---");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -792,21 +792,21 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //  {Document location} _common_data/scenarios/sandbox/result.fa
     //  {Document Format} FASTA
     //  {Save file immidiately} set checked
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //  3. Click Create button
     //  Expected result:
@@ -814,9 +814,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //  - sequence view opened
     //  - sequence are -NACCG--AA--UAGCC-----AG---
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "-NACCG--AA--UAGCC-----AG---");
+    GTUtilsSequenceView::checkSequence("-NACCG--AA--UAGCC-----AG---");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_1) {
@@ -833,21 +833,21 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //  {Document location} _common_data/scenarios/sandbox/result.fa
     //  {Document Format} FASTA
     //  {Save file immidiately} set checked
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::Genbank,
-                                           "result.gb",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::Genbank,
+        "result.gb",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //  3. Click Create button
     //  Expected result:
@@ -855,9 +855,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //  - sequence view opened
     //  - sequence are -NACCG--AA--UAGCC-----AG---
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsSequenceView::checkSequence(os, "-NACCG--AA--UAGCC-----AG---");
+    GTUtilsSequenceView::checkSequence("-NACCG--AA--UAGCC-----AG---");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011_2) {
@@ -873,22 +873,22 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     //  {Document location} _common_data/scenarios/sandbox/result.fa
     //  {Document Format} FASTA
     //  {Save file immediately} set checked
-    auto filler = new CreateDocumentFiller(os,
-                                           "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
-                                           true,
-                                           CreateDocumentFiller::StandardRNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true,
-                                           GTGlobals::UseMouse);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "RNACCGTTAAIOUAGCCDOOPMAGTZZ",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true,
+        GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //  3. Click Create button
     //  Expected result:
@@ -896,313 +896,313 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     //  - sequence view opened
     //  - sequence are -NACCG--AA--UAGCC-----AG---
 
-    GTUtilsDocument::checkDocument(os, "result");
+    GTUtilsDocument::checkDocument("result");
 
-    GTUtilsSequenceView::checkSequence(os, "-NACCG--AA--UAGCC-----AG---");
+    GTUtilsSequenceView::checkSequence("-NACCG--AA--UAGCC-----AG---");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.fa");
+    GTUtilsDocument::checkDocument("result.fa");
 
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "result.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/sandbox/", "result.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.gb",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.gb",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "result.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/sandbox/", "result.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTC---GGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
-    GTUtilsDialog::waitForDialog(os, filler);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTC---GGATTTATA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "result.fa");
+    GTUtilsDocument::checkDocument("result.fa");
 
-    GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "result.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/sandbox/", "result.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "result.fa");
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("result.fa");
 
-    GTUtilsProjectTreeView::rename(os, "result", "result_new");
+    GTUtilsProjectTreeView::rename("result", "result_new");
 
-    GTUtilsProjectTreeView::findIndex(os, "result_new");  // checks inside
+    GTUtilsProjectTreeView::findIndex("result_new");  // checks inside
 }
 GUI_TEST_CLASS_DEFINITION(test_0013_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCGGATTTATA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.gb",
-                                           CreateDocumentFiller::Genbank,
-                                           "result",
-                                           true);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCGGATTTATA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.gb",
+        CreateDocumentFiller::Genbank,
+        "result",
+        true);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "result.gb");
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("result.gb");
 
-    GTUtilsProjectTreeView::rename(os, "result", "result_new");
+    GTUtilsProjectTreeView::rename("result", "result_new");
 
-    GTUtilsProjectTreeView::findIndex(os, "result_new");  // checks inside
+    GTUtilsProjectTreeView::findIndex("result_new");  // checks inside
 }
 GUI_TEST_CLASS_DEFINITION(test_0013_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "ACAAGTCG---GATTTATA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           true);
+    auto filler = new CreateDocumentFiller(
+        "ACAAGTCG---GATTTATA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        true);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "result.fa");
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("result.fa");
 
-    GTUtilsProjectTreeView::rename(os, "result", "result_new");
+    GTUtilsProjectTreeView::rename("result", "result_new");
 
-    GTUtilsProjectTreeView::findIndex(os, "result_new");  // checks inside
+    GTUtilsProjectTreeView::findIndex("result_new");  // checks inside
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014) {
-    auto filler = new CancelCreateDocumentFiller(os,
-                                                 "",
-                                                 false,
-                                                 CancelCreateDocumentFiller::ExtendedDNA,
-                                                 false,
-                                                 true,
-                                                 "-",
-                                                 testDir + "",
-                                                 CancelCreateDocumentFiller::FASTA,
-                                                 "",
-                                                 false);
+    auto filler = new CancelCreateDocumentFiller(
+        "",
+        false,
+        CancelCreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "",
+        CancelCreateDocumentFiller::FASTA,
+        "",
+        false);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
+    GTUtilsProject::checkProject(GTUtilsProject::NotExists);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014_1) {
-    auto filler = new CancelCreateDocumentFiller(os,
-                                                 "AAAA",
-                                                 false,
-                                                 CancelCreateDocumentFiller::ExtendedDNA,
-                                                 false,
-                                                 true,
-                                                 "-",
-                                                 testDir + "",
-                                                 CancelCreateDocumentFiller::Genbank,
-                                                 "",
-                                                 false);
+    auto filler = new CancelCreateDocumentFiller(
+        "AAAA",
+        false,
+        CancelCreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "",
+        CancelCreateDocumentFiller::Genbank,
+        "",
+        false);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
+    GTUtilsProject::checkProject(GTUtilsProject::NotExists);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0014_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "AAA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           false);
+    auto filler = new CreateDocumentFiller(
+        "AAA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        false);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProject::checkProject(os, GTUtilsProject::Exists);
+    GTUtilsProject::checkProject(GTUtilsProject::Exists);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "AAA\n",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           false);
+    auto filler = new CreateDocumentFiller(
+        "AAA\n",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        false);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QAbstractButton* complement = GTAction::button(os, "complement_action");
+    QAbstractButton* complement = GTAction::button("complement_action");
     CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
-    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
+    auto toolbar = GTWidget::findWidget("views_tool_bar_result");
+    GTWidget::click(GTWidget::findWidget("show_hide_details_view", toolbar));
 
-    QAbstractButton* complement1 = GTAction::button(os, "complement_action");
+    QAbstractButton* complement1 = GTAction::button("complement_action");
     CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
+    GTUtilsDialog::waitForDialog(new PopupChecker({"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
+    GTWidget::click(GTWidget::findWidget("translationsMenuToolbarButton"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015_1) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "AAA",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           false);
+    auto filler = new CreateDocumentFiller(
+        "AAA",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        false);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QAbstractButton* complement = GTAction::button(os, "complement_action");
+    QAbstractButton* complement = GTAction::button("complement_action");
     CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
-    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
+    auto toolbar = GTWidget::findWidget("views_tool_bar_result");
+    GTWidget::click(GTWidget::findWidget("show_hide_details_view", toolbar));
 
-    QAbstractButton* complement1 = GTAction::button(os, "complement_action");
+    QAbstractButton* complement1 = GTAction::button("complement_action");
     CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
+    GTUtilsDialog::waitForDialog(new PopupChecker({"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
+    GTWidget::click(GTWidget::findWidget("translationsMenuToolbarButton"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0015_2) {
-    auto filler = new CreateDocumentFiller(os,
-                                           "AAA\n",
-                                           false,
-                                           CreateDocumentFiller::ExtendedDNA,
-                                           false,
-                                           true,
-                                           "-",
-                                           testDir + "_common_data/scenarios/sandbox/result.fa",
-                                           CreateDocumentFiller::FASTA,
-                                           "result",
-                                           false);
+    auto filler = new CreateDocumentFiller(
+        "AAA\n",
+        false,
+        CreateDocumentFiller::ExtendedDNA,
+        false,
+        true,
+        "-",
+        testDir + "_common_data/scenarios/sandbox/result.fa",
+        CreateDocumentFiller::FASTA,
+        "result",
+        false);
 
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(filler);
 
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QAbstractButton* complement = GTAction::button(os, "complement_action");
+    QAbstractButton* complement = GTAction::button("complement_action");
     CHECK_SET_ERR(!complement->isEnabled(), "button is not disabled");
 
-    auto toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
+    auto toolbar = GTWidget::findWidget("views_tool_bar_result");
+    GTWidget::click(GTWidget::findWidget("show_hide_details_view", toolbar));
 
-    QAbstractButton* complement1 = GTAction::button(os, "complement_action");
+    QAbstractButton* complement1 = GTAction::button("complement_action");
     CHECK_SET_ERR(complement1->isEnabled(), "button is not enabled");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
-    GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
+    GTUtilsDialog::waitForDialog(new PopupChecker({"do_not_translate_radiobutton"}, PopupChecker::IsEnabled));
+    GTWidget::click(GTWidget::findWidget("translationsMenuToolbarButton"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {
@@ -1213,16 +1213,16 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    >seq_name
     //    ACGT
 
-    GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, ">seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0016.fa", CreateDocumentFiller::FASTA, "test_0016", false));
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(">seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0016.fa", CreateDocumentFiller::FASTA, "test_0016", false));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: the sequence has been added to the Project View, view is opened. The sequence name is the same as specified in the input text, sequence data are correct.
-    GTUtilsProjectTreeView::findIndex(os, "seq_name");
-    const QString sequenceData = GTUtilsSequenceView::getSequenceAsString(os);
+    GTUtilsProjectTreeView::findIndex("seq_name");
+    const QString sequenceData = GTUtilsSequenceView::getSequenceAsString();
     const QString expectedSequenceData = "ACGT";
     CHECK_SET_ERR(sequenceData == expectedSequenceData, QString("Incorrect sequence data: expect '%1', got '%2'").arg(expectedSequenceData).arg(sequenceData));
 }
@@ -1236,16 +1236,16 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     //    >seq_name
     //    ACGT
 
-    GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, ";just a comment\n>seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0017.fa", CreateDocumentFiller::FASTA, "test_0017", false));
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(";just a comment\n>seq_name\nACGT", false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0017.fa", CreateDocumentFiller::FASTA, "test_0017", false));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: the sequence has been added to the Project View, view is opened. The sequence name is the same as specified in the input text, sequence data are correct.
-    GTUtilsProjectTreeView::findIndex(os, "seq_name");
-    const QString sequenceData = GTUtilsSequenceView::getSequenceAsString(os);
+    GTUtilsProjectTreeView::findIndex("seq_name");
+    const QString sequenceData = GTUtilsSequenceView::getSequenceAsString();
     const QString expectedSequenceData = "ACGT";
     CHECK_SET_ERR(sequenceData == expectedSequenceData, QString("Incorrect sequence data: expect '%1', got '%2'").arg(expectedSequenceData).arg(sequenceData));
 }
@@ -1263,21 +1263,21 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //    TTTT
 
     const QString data = ">seq_name1\nACGT\n>seq_name2\nCCCC\n>seq_name3\nTTTT";
-    GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, data, false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0018.fa", CreateDocumentFiller::FASTA, "test_0018", false));
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(data, false, CreateDocumentFiller::ExtendedDNA, false, true, "-", sandBoxDir + "test_0018.fa", CreateDocumentFiller::FASTA, "test_0018", false));
 
     //    3. Specify a created document location and press the "Create" button in the dialog.
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: sequences have been added to the Project View, view is opened. Sequence names are the same as specified in the input text, sequences data are correct.
-    GTUtilsProjectTreeView::findIndex(os, "seq_name1");
-    GTUtilsProjectTreeView::findIndex(os, "seq_name2");
-    GTUtilsProjectTreeView::findIndex(os, "seq_name3");
+    GTUtilsProjectTreeView::findIndex("seq_name1");
+    GTUtilsProjectTreeView::findIndex("seq_name2");
+    GTUtilsProjectTreeView::findIndex("seq_name3");
 
-    const QString sequenceData1 = GTUtilsSequenceView::getSequenceAsString(os, 0);
-    const QString sequenceData2 = GTUtilsSequenceView::getSequenceAsString(os, 1);
-    const QString sequenceData3 = GTUtilsSequenceView::getSequenceAsString(os, 2);
+    const QString sequenceData1 = GTUtilsSequenceView::getSequenceAsString(0);
+    const QString sequenceData2 = GTUtilsSequenceView::getSequenceAsString(1);
+    const QString sequenceData3 = GTUtilsSequenceView::getSequenceAsString(2);
 
     const QString expectedSequenceData1 = "ACGT";
     const QString expectedSequenceData2 = "CCCC";
@@ -1295,8 +1295,8 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             //    2. Input nucleotide sequences in the dialog appeared in FASTA format:
             //    >seq_name1
             //    >seq_name2
@@ -1304,22 +1304,22 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
             //    >seq_name3
             //    TTTT
             const QString data = ">seq_name1\n>seq_name2\nCCCC\n>seq_name3\nTTTT";
-            GTPlainTextEdit::setText(os, GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog), data);
+            GTPlainTextEdit::setText(GTWidget::findPlainTextEdit("sequenceEdit", dialog), data);
 
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "filepathEdit", dialog), sandBoxDir + "test_0018.fa");
+            GTLineEdit::setText(GTWidget::findLineEdit("filepathEdit", dialog), sandBoxDir + "test_0018.fa");
 
             //    3. Specify a created document location and press the "Create" button in the dialog.
             //    Expected state: a message box appears, dialog is not accepted.
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Input sequence is empty"));
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "Input sequence is empty"));
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new CreateDocumentFiller(os, new Scenario()));
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new CreateDocumentFiller(new Scenario()));
+    GTMenu::clickMainMenuItem({"File", "New document from text..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 }  // namespace GUITest_common_scenarios_document_from_text

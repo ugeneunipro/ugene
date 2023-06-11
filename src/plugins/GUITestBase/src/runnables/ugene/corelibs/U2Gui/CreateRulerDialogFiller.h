@@ -27,8 +27,8 @@ namespace U2 {
 using namespace HI;
 class CreateRulerDialogFiller : public Filler {
 public:
-    CreateRulerDialogFiller(HI::GUITestOpStatus& os, QString _rulerName, int _startPos);
-    CreateRulerDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
+    CreateRulerDialogFiller(QString _rulerName, int _startPos);
+    CreateRulerDialogFiller(CustomScenario* c);
 
     virtual void commonScenario();
 

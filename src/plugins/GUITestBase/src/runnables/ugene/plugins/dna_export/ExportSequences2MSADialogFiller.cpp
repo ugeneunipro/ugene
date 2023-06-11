@@ -34,8 +34,8 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceAsAlignmentFiller"
-ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject, GTGlobals::UseMethod method)
-    : Filler(_os, "U2__ExportSequences2MSADialog"), name(_name), useMethod(method), format(_format), addToProject(addDocumentToProject) {
+ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(const QString& _path, const QString& _name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject, GTGlobals::UseMethod method)
+    : Filler("U2__ExportSequences2MSADialog"), name(_name), useMethod(method), format(_format), addToProject(addDocumentToProject) {
     path = GTFileDialog::toAbsoluteNativePath(_path, true);
 
     comboBoxItems[Clustalw] = "CLUSTALW";
@@ -47,32 +47,32 @@ ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpSt
     comboBoxItems[Stockholm] = "Stockholm";
 }
 
-ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus& _os, CustomScenario* scenario)
-    : Filler(_os, "U2__ExportSequences2MSADialog", scenario),
+ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(CustomScenario* scenario)
+    : Filler("U2__ExportSequences2MSADialog", scenario),
       format(Clustalw),
       addToProject(false) {
 }
 
 #define GT_METHOD_NAME "run"
 void ExportSequenceAsAlignmentFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");
 
-    GTLineEdit::setText(os, lineEdit, path + name);
+    GTLineEdit::setText(lineEdit, path + name);
 
     QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
+    GTComboBox::selectItemByIndex(comboBox, index, useMethod);
 
-    auto checkBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
-    GTCheckBox::setChecked(os, checkBox, addToProject);
+    auto checkBox = GTWidget::findCheckBox("addToProjectBox", dialog);
+    GTCheckBox::setChecked(checkBox, addToProject);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

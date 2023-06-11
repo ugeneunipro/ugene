@@ -36,8 +36,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, documentFormat _format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method)
-    : Filler(_os, "U2__ExportMSA2SequencesDialog"), name(_name), format(_format), saveFile(saveFile), keepCharacters(keepCharacters),
+ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(const QString& _path, const QString& _name, documentFormat _format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method)
+    : Filler("U2__ExportMSA2SequencesDialog"), name(_name), format(_format), saveFile(saveFile), keepCharacters(keepCharacters),
       useMethod(method) {
     path = GTFileDialog::toAbsoluteNativePath(_path, true);
     comboBoxItems[EMBL] = "EMBL";
@@ -50,11 +50,11 @@ ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus& 
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportToSequenceFormatFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, lineEdit, path + name);
+    GTLineEdit::setText(lineEdit, path + name);
 
     QComboBox* comboBox = dialog->findChild<QComboBox*>();
     GT_CHECK(comboBox != nullptr, "ComboBox not found");
@@ -63,18 +63,18 @@ void ExportToSequenceFormatFiller::commonScenario() {
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
     if (comboBox->currentIndex() != index) {
-        GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
+        GTComboBox::selectItemByIndex(comboBox, index, useMethod);
     }
 
     if (saveFile) {
-        auto saveFileCheckBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
-        GTCheckBox::setChecked(os, saveFileCheckBox);
+        auto saveFileCheckBox = GTWidget::findCheckBox("addToProjectBox", dialog);
+        GTCheckBox::setChecked(saveFileCheckBox);
     }
 
-    GTRadioButton::click(os, keepCharacters ? "keepGapsRB" : "trimGapsRB", dialog);
+    GTRadioButton::click(keepCharacters ? "keepGapsRB" : "trimGapsRB", dialog);
     GTGlobals::sleep(100);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

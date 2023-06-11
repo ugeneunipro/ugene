@@ -51,17 +51,17 @@ public:
         Interrupted
     };
 
-    static void login(HI::GUITestOpStatus& os, const QString& email = "genecut@unipro.ru", const QString& password = "genecut_test_password", bool showPassword = false, bool rememberMe = false);
-    static void resetPassword(HI::GUITestOpStatus& os, const QString& email = "genecut@unipro.ru");
-    static void createNewUser(HI::GUITestOpStatus& os,
-                              const QString& email = "genecut@unipro.ru",
-                              const QString& password = "genecut_test_password",
-                              const QString& passwordConfirm = "genecut_test_password",
-                              const QString& firstName = "Genecut",
-                              const QString& secondName = "by Unipro" );
-    static void selectResultByIndex(HI::GUITestOpStatus& os, int index, bool fetchResults = true);
-    static void checkResultInfo(HI::GUITestOpStatus& os, const QString& inputFileName, const QList<Steps>& steps, Status status = Status::Completed);
-    static void compareFiles(HI::GUITestOpStatus& os, FileType fileType, const QString& seqenceFilePath, bool sequencesOnly = false);
+    static void login(const QString& email = "genecut@unipro.ru", const QString& password = "genecut_test_password", bool showPassword = false, bool rememberMe = false);
+    static void resetPassword(const QString& email = "genecut@unipro.ru");
+    static void createNewUser(
+        const QString& email = "genecut@unipro.ru",
+        const QString& password = "genecut_test_password",
+        const QString& passwordConfirm = "genecut_test_password",
+        const QString& firstName = "Genecut",
+        const QString& secondName = "by Unipro");
+    static void selectResultByIndex(int index, bool fetchResults = true);
+    static void checkResultInfo(const QString& inputFileName, const QList<Steps>& steps, Status status = Status::Completed);
+    static void compareFiles(FileType fileType, const QString& seqenceFilePath, bool sequencesOnly = false);
 
 private:
     static const QMap<Steps, QString> STEP_ENUM_2_STRING;

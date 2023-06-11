@@ -37,21 +37,21 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::EditAnnotationFiller"
 #define GT_METHOD_NAME "run"
 void EditAnnotationFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "leAnnotationName", annotationName, dialog);
+    GTLineEdit::setText("leAnnotationName", annotationName, dialog);
 
-    auto gbFormatLocation = GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
-    GTRadioButton::click(os, gbFormatLocation);
+    auto gbFormatLocation = GTWidget::findRadioButton("rbGenbankFormat", dialog);
+    GTRadioButton::click(gbFormatLocation);
 
-    GTLineEdit::setText(os, "leLocation", location, dialog);
+    GTLineEdit::setText("leLocation", location, dialog);
 
     if (complementStrand != false) {
-        auto complementStrand = GTWidget::findToolButton(os, "tbDoComplement", dialog);
-        GTWidget::click(os, complementStrand);
+        auto complementStrand = GTWidget::findToolButton("tbDoComplement", dialog);
+        GTWidget::click(complementStrand);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -60,27 +60,27 @@ void EditAnnotationFiller::commonScenario() {
 
 #define GT_METHOD_NAME "commonScenario"
 void EditAnnotationChecker::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (!annotationName.isEmpty()) {
-        auto lineEdit = GTWidget::findLineEdit(os, "leAnnotationName", dialog);
+        auto lineEdit = GTWidget::findLineEdit("leAnnotationName", dialog);
         QString text = lineEdit->text();
 
         GT_CHECK(text == annotationName, QString("The name is incorrect: got [%1], expected [%2]").arg(text).arg(annotationName));
     }
 
     if (!location.isEmpty()) {
-        auto gbFormatLocation = GTWidget::findRadioButton(os, "rbGenbankFormat", dialog);
-        GTRadioButton::click(os, gbFormatLocation);
+        auto gbFormatLocation = GTWidget::findRadioButton("rbGenbankFormat", dialog);
+        GTRadioButton::click(gbFormatLocation);
 
-        auto lineEdit1 = GTWidget::findLineEdit(os, "leLocation", dialog);
+        auto lineEdit1 = GTWidget::findLineEdit("leLocation", dialog);
 
         QString text = lineEdit1->text();
 
         GT_CHECK(text == location, QString("The location is incorrect: got [%1], expected [%2]").arg(text).arg(location));
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
 

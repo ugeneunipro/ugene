@@ -28,15 +28,15 @@ using namespace HI;
 
 class DashboardsManagerDialogFiller : public Filler {
 public:
-    DashboardsManagerDialogFiller(HI::GUITestOpStatus& os, CustomScenario* _c = nullptr)
-        : Filler(os, "DashboardsManagerDialog", _c) {
+    DashboardsManagerDialogFiller(CustomScenario* _c = nullptr)
+        : Filler("DashboardsManagerDialog", _c) {
     }
 
     virtual void commonScenario();
 
-    static void selectDashboards(HI::GUITestOpStatus& os, QStringList names);
-    static bool isDashboardPresent(HI::GUITestOpStatus& os, QString name);
-    static QList<QPair<QString, bool>> getDashboardsState(HI::GUITestOpStatus& os);  // returns map dashboard_name->is_checked
+    static void selectDashboards(QStringList names);
+    static bool isDashboardPresent(QString name);
+    static QList<QPair<QString, bool>> getDashboardsState();  // returns map dashboard_name->is_checked
 };
 
 }  // namespace U2

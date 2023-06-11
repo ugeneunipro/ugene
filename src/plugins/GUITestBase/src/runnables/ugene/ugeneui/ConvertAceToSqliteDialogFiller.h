@@ -32,8 +32,8 @@ public:
                          REPLACE,
                          APPEND,
                          CANCEL };
-    ConvertAceToSqliteDialogFiller(HI::GUITestOpStatus& _os, QString _leDest, OutFileAction action = NOT_SET)
-        : Filler(_os, "AceImportDialog"),
+    ConvertAceToSqliteDialogFiller(QString _leDest, OutFileAction action = NOT_SET)
+        : Filler("AceImportDialog"),
           leDestUrl(_leDest), action(action) {
     }
     void commonScenario();

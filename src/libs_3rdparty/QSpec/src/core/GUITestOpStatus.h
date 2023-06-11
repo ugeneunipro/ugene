@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_TEST_OP_STATUS_H_
-#define _HI_GUI_TEST_OP_STATUS_H_
+#pragma once
 
 #include <QString>
 
@@ -28,9 +27,9 @@
 
 namespace HI {
 
-class HI_EXPORT GUITestOpStatus {
+class HI_EXPORT GUITestOpStatus final {
 public:
-    virtual void setError(const QString& err) {
+    void setError(const QString& err) {
         if (!error.isEmpty()) {
             qWarning("Can't override error! Current error: %s, new error: %s", error.toLocal8Bit().constData(), err.toLocal8Bit().constData());
         } else {
@@ -39,15 +38,15 @@ public:
         throw this;
     }
 
-    virtual QString getError() const {
+    QString getError() const {
         return error;
     }
 
-    virtual bool hasError() const {
+    bool hasError() const {
         return !error.isEmpty();
     }
 
-    virtual bool isCoR() const {
+    bool isCoR() const {
         return hasError();
     }
 
@@ -55,4 +54,3 @@ private:
     QString error;
 };
 }  // namespace HI
-#endif  // GUITESTOPSTATUS_H

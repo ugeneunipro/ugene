@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_LABEL_H_
-#define _HI_GT_LABEL_H_
-
+#pragma once
 #include "GTGlobals.h"
 
 namespace HI {
@@ -30,9 +28,7 @@ namespace HI {
  */
 class HI_EXPORT GTLabel {
 public:
-    static QString getText(GUITestOpStatus& os, const QString& labelName, QWidget* parent = nullptr);
+    static QString getText(const QString& labelName, QWidget* parent = nullptr);
 };
 
 }  // namespace HI
-
-#endif  // _HI_GT_LABEL_H_

@@ -28,7 +28,7 @@ using namespace HI;
 
 class StructuralAlignmentDialogFiller : public Filler {
 public:
-    StructuralAlignmentDialogFiller(HI::GUITestOpStatus& os, const QStringList& chainIndex = QStringList());
+    StructuralAlignmentDialogFiller(const QStringList& chainIndex = QStringList());
 
     void commonScenario();
 

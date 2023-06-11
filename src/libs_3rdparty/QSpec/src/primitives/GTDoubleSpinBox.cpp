@@ -31,21 +31,21 @@ namespace HI {
 #define GT_CLASS_NAME "GTDoubleSpinBox"
 
 #define GT_METHOD_NAME "getValue"
-int GTDoubleSpinbox::getValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox) {
-    Q_UNUSED(os);
+int GTDoubleSpinbox::getValue(QDoubleSpinBox* spinBox) {
+
     GT_CHECK_RESULT(spinBox != NULL, "spinBox is NULL", -1);
     return spinBox->value();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getValue"
-int GTDoubleSpinbox::getValue(GUITestOpStatus& os, const QString& spinBoxName, QWidget* parent) {
-    return GTDoubleSpinbox::getValue(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent));
+int GTDoubleSpinbox::getValue(const QString& spinBoxName, QWidget* parent) {
+    return GTDoubleSpinbox::getValue(GTWidget::findDoubleSpinBox(spinBoxName, parent));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setValue"
-void GTDoubleSpinbox::setValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox, double v, GTGlobals::UseMethod useMethod) {
+void GTDoubleSpinbox::setValue(QDoubleSpinBox* spinBox, double v, GTGlobals::UseMethod useMethod) {
     GT_CHECK(spinBox != NULL, "spinBox is NULL");
     if (spinBox->value() == v) {
         return;
@@ -81,7 +81,7 @@ void GTDoubleSpinbox::setValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox, dou
                     key = Qt::Key_Down;
                 }
 
-                GTWidget::setFocus(os, spinBox);
+                GTWidget::setFocus(spinBox);
                 while (QString().setNum(spinBox->value()) != QString().setNum(v)) {
                     GTKeyboardDriver::keyClick(key);
                     GTGlobals::sleep(100);
@@ -90,7 +90,7 @@ void GTDoubleSpinbox::setValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox, dou
             }
             case GTGlobals::UseKeyBoard:
                 QString s = QString::number(v).replace('.', QLocale().decimalPoint());
-                GTWidget::setFocus(os, spinBox);
+                GTWidget::setFocus(spinBox);
 
                 GTGlobals::sleep(100);
                 GTKeyboardDriver::keyClick(Qt::Key_Up);
@@ -109,19 +109,19 @@ void GTDoubleSpinbox::setValue(GUITestOpStatus& os, QDoubleSpinBox* spinBox, dou
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setValue"
-void GTDoubleSpinbox::setValue(GUITestOpStatus& os, const QString& spinBoxName, double v, GTGlobals::UseMethod useMethod, QWidget* parent) {
-    GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent), v, useMethod);
+void GTDoubleSpinbox::setValue(const QString& spinBoxName, double v, GTGlobals::UseMethod useMethod, QWidget* parent) {
+    GTDoubleSpinbox::setValue(GTWidget::findDoubleSpinBox(spinBoxName, parent), v, useMethod);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setValue"
-void GTDoubleSpinbox::setValue(GUITestOpStatus& os, const QString& spinBoxName, double v, QWidget* parent) {
-    GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent), v);
+void GTDoubleSpinbox::setValue(const QString& spinBoxName, double v, QWidget* parent) {
+    GTDoubleSpinbox::setValue(GTWidget::findDoubleSpinBox(spinBoxName, parent), v);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkLimits"
-void GTDoubleSpinbox::checkLimits(GUITestOpStatus& os, QDoubleSpinBox* spinBox, double min, double max) {
+void GTDoubleSpinbox::checkLimits(QDoubleSpinBox* spinBox, double min, double max) {
     GT_CHECK(spinBox != NULL, "spinbox is NULL");
     int actualMin = spinBox->minimum();
     int actualMax = spinBox->maximum();
@@ -131,8 +131,8 @@ void GTDoubleSpinbox::checkLimits(GUITestOpStatus& os, QDoubleSpinBox* spinBox, 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkLimits"
-void GTDoubleSpinbox::checkLimits(GUITestOpStatus& os, const QString& spinBoxName, int min, int max, QWidget* parent) {
-    GTDoubleSpinbox::checkLimits(os, GTWidget::findDoubleSpinBox(os, spinBoxName, parent), min, max);
+void GTDoubleSpinbox::checkLimits(const QString& spinBoxName, int min, int max, QWidget* parent) {
+    GTDoubleSpinbox::checkLimits(GTWidget::findDoubleSpinBox(spinBoxName, parent), min, max);
 }
 #undef GT_METHOD_NAME
 

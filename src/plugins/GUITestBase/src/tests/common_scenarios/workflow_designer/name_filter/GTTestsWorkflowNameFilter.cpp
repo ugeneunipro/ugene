@@ -42,23 +42,23 @@ using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Open WD.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     // 2. Open the samples tab.
-    auto tabs = GTWidget::findTabWidget(os, "tabs");
-    GTTabWidget::setCurrentIndex(os, tabs, 1);
-    // GTWidget::click(os, GTWidget::findWidget(os, "samples"));
+    auto tabs = GTWidget::findTabWidget("tabs");
+    GTTabWidget::setCurrentIndex(tabs, 1);
+    // GTWidget::click(GTWidget::findWidget("samples"));
 
     // 3. Click the "Name filter" line edit.
-    auto parent = GTWidget::findWidget(os, "palette");
-    auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
+    auto parent = GTWidget::findWidget("palette");
+    auto nameFilter = GTWidget::findLineEdit("nameFilterLineEdit", parent);
     // hack. GTLineEdit can not set focus on widget. Don't know why
-    GTWidget::click(os, nameFilter);
+    GTWidget::click(nameFilter);
     GTKeyboardDriver::keySequence("HMM");
     // 4. Write "HMM".
 
     // Expected: There are two samples after filtering.
-    auto samples = GTWidget::findTreeWidget(os, "samples");
+    auto samples = GTWidget::findTreeWidget("samples");
 
     int count = 0;
     QList<QTreeWidgetItem*> outerList = samples->findItems("", Qt::MatchContains);
@@ -78,10 +78,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 1. Open WD.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     // 2. Open the samples tab.
-    GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::samples);
+    GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::samples);
 
     // 3. Press Ctrl+F.
     // Expected: the "Name filter" line edit has the focus
@@ -91,7 +91,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTKeyboardDriver::keySequence("align muscle");
 
     // Expected: There are two samples after filtering.
-    auto samples = GTWidget::findTreeWidget(os, "samples");
+    auto samples = GTWidget::findTreeWidget("samples");
 
     int count = 0;
     QList<QTreeWidgetItem*> outerList = samples->findItems("", Qt::MatchContains);
@@ -131,23 +131,23 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 1. Open WD.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     // 2. Open the samples tab.
-    auto tabs = GTWidget::findTabWidget(os, "tabs");
-    GTTabWidget::setCurrentIndex(os, tabs, 1);
+    auto tabs = GTWidget::findTabWidget("tabs");
+    GTTabWidget::setCurrentIndex(tabs, 1);
 
     // 3. Click the "Name filter" line edit.
-    auto parent = GTWidget::findWidget(os, "palette");
-    auto nameFilter = GTWidget::findLineEdit(os, "nameFilterLineEdit", parent);
+    auto parent = GTWidget::findWidget("palette");
+    auto nameFilter = GTWidget::findLineEdit("nameFilterLineEdit", parent);
 
     // 4. Write "NGS".
     // hack. GTLineEdit can not set focus on widget. Don't know why
-    GTWidget::click(os, nameFilter);
+    GTWidget::click(nameFilter);
     GTKeyboardDriver::keySequence("NGS");
 
     // Expected: There are two samples after filtering.
-    auto samples = GTWidget::findTreeWidget(os, "samples");
+    auto samples = GTWidget::findTreeWidget("samples");
 
     int count = 0;
     QList<QTreeWidgetItem*> outerList = samples->findItems("", Qt::MatchContains);

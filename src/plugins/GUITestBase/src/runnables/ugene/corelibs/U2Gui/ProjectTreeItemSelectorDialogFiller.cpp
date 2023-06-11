@@ -37,27 +37,27 @@ using namespace HI;
 
 #define GT_CLASS_NAME "ProjectTreeItemSelectorDialogFiller"
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os,
-                                                                         const QString& documentName,
-                                                                         const QString& objectName,
-                                                                         const QSet<GObjectType>& acceptableTypes,
-                                                                         SelectionMode mode,
-                                                                         int expectedDocCount)
-    : Filler(os, "ProjectTreeItemSelectorDialogBase"), acceptableTypes(acceptableTypes), mode(mode), expectedDocCount(expectedDocCount) {
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(
+    const QString& documentName,
+    const QString& objectName,
+    const QSet<GObjectType>& acceptableTypes,
+    SelectionMode mode,
+    int expectedDocCount)
+    : Filler("ProjectTreeItemSelectorDialogBase"), acceptableTypes(acceptableTypes), mode(mode), expectedDocCount(expectedDocCount) {
     itemsToSelect.insert(documentName, {objectName});
 }
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os,
-                                                                         const QMap<QString, QStringList>& itemsToSelect,
-                                                                         const QSet<GObjectType>& acceptableTypes,
-                                                                         SelectionMode mode,
-                                                                         int expectedDocCount)
-    : Filler(os, "ProjectTreeItemSelectorDialogBase"), itemsToSelect(itemsToSelect), acceptableTypes(acceptableTypes), mode(mode),
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(
+    const QMap<QString, QStringList>& itemsToSelect,
+    const QSet<GObjectType>& acceptableTypes,
+    SelectionMode mode,
+    int expectedDocCount)
+    : Filler("ProjectTreeItemSelectorDialogBase"), itemsToSelect(itemsToSelect), acceptableTypes(acceptableTypes), mode(mode),
       expectedDocCount(expectedDocCount) {
 }
 
-ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "ProjectTreeItemSelectorDialogBase", scenario),
+ProjectTreeItemSelectorDialogFiller::ProjectTreeItemSelectorDialogFiller(CustomScenario* scenario)
+    : Filler("ProjectTreeItemSelectorDialogBase", scenario),
       mode(Single),
       expectedDocCount(0) {
 }
@@ -75,8 +75,8 @@ static bool checkTreeRowCount(QTreeView* tree, int expectedDocCount) {
 
 #define GT_METHOD_NAME "commonScenario"
 void ProjectTreeItemSelectorDialogFiller::commonScenario() {
-    auto dialog = GTWidget::getActiveModalWidget(os);
-    auto treeView = GTWidget::findTreeView(os, "treeView", dialog);
+    auto dialog = GTWidget::getActiveModalWidget();
+    auto treeView = GTWidget::findTreeView("treeView", dialog);
     CHECK_SET_ERR(expectedDocCount == -1 || checkTreeRowCount(treeView, expectedDocCount), "Unexpected document count");
 
     GTGlobals::FindOptions options;
@@ -86,24 +86,24 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario() {
     QList<QString> allItemKeys = itemsToSelect.keys();
     auto getCurrentClickModifier = [this, &isFirstClick] { return isFirstClick ? Qt::Key_unknown : (mode == Continuous ? Qt::Key_Shift : Qt::Key_Control); };
     for (const QString& itemKey : qAsConst(allItemKeys)) {
-        QModelIndex parentItemIndex = GTUtilsProjectTreeView::findIndex(os, treeView, itemKey, options);
+        QModelIndex parentItemIndex = GTUtilsProjectTreeView::findIndex(treeView, itemKey, options);
         if (!acceptableTypes.isEmpty()) {
-            GTUtilsProjectTreeView::checkObjectTypes(os, treeView, acceptableTypes, parentItemIndex);
+            GTUtilsProjectTreeView::checkObjectTypes(treeView, acceptableTypes, parentItemIndex);
         }
         QStringList objectNames = itemsToSelect.value(itemKey);
         if (objectNames.isEmpty()) {  // Select the document itself.
-            GTTreeView::click(os, treeView, parentItemIndex, getCurrentClickModifier());
+            GTTreeView::click(treeView, parentItemIndex, getCurrentClickModifier());
             isFirstClick = false;
             continue;
         }
         for (const QString& objectName : qAsConst(objectNames)) {
-            QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(os, treeView, objectName, parentItemIndex, options);
-            GTTreeView::click(os, treeView, objectIndex, getCurrentClickModifier());
+            QModelIndex objectIndex = GTUtilsProjectTreeView::findIndex(treeView, objectName, parentItemIndex, options);
+            GTTreeView::click(treeView, objectIndex, getCurrentClickModifier());
             isFirstClick = false;
         }
     }
     // Close the dialog.
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

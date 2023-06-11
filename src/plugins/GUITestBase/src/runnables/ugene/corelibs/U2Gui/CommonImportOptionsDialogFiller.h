@@ -27,7 +27,7 @@ namespace U2 {
 using namespace HI;
 class CommonImportOptionsDialogFiller : public Filler {
 public:
-    CommonImportOptionsDialogFiller(HI::GUITestOpStatus& os, const QVariantMap& data);
+    CommonImportOptionsDialogFiller(const QVariantMap& data);
 
     void commonScenario();
 

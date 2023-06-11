@@ -48,14 +48,14 @@ public:
     };
 
 #ifdef Q_OS_DARWIN
-    GTFileDialogUtils(GUITestOpStatus& os, const QString& folderPath, const QString& fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste, const QString& filter = QString());
-    GTFileDialogUtils(GUITestOpStatus& os, const QString& filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = CopyPaste, const QString& filter = QString());
+    GTFileDialogUtils(const QString& folderPath, const QString& fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste, const QString& filter = QString());
+    GTFileDialogUtils(const QString& filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = CopyPaste, const QString& filter = QString());
 #else
-    GTFileDialogUtils(GUITestOpStatus& os, const QString& folderPath, const QString& fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = Typing, const QString& filter = QString());
-    GTFileDialogUtils(GUITestOpStatus& os, const QString& filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = Typing, const QString& filter = QString());
+    GTFileDialogUtils(const QString& folderPath, const QString& fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = Typing, const QString& filter = QString());
+    GTFileDialogUtils(const QString& filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = Typing, const QString& filter = QString());
 #endif
 
-    GTFileDialogUtils(GUITestOpStatus& os, CustomScenario* customScenario);
+    GTFileDialogUtils(CustomScenario* customScenario);
     void openFileDialog();
 
     void commonScenario() override;
@@ -84,10 +84,10 @@ protected:
 
 class GTFileDialogUtils_list : public GTFileDialogUtils {
 public:
-    GTFileDialogUtils_list(GUITestOpStatus& os, const QString& folderPath, const QStringList& fileNames);
-    GTFileDialogUtils_list(GUITestOpStatus& os, const QStringList& filePaths);
+    GTFileDialogUtils_list(const QString& folderPath, const QStringList& fileNames);
+    GTFileDialogUtils_list(const QStringList& filePaths);
 
-    void setNameList(GUITestOpStatus& os, const QStringList& filePaths, QWidget* parent);
+    void setNameList(const QStringList& filePaths, QWidget* parent);
 
     void commonScenario() override;
 
@@ -104,15 +104,15 @@ public:
     enum Button { Open,
                   Cancel };
 
-    static void openFile(GUITestOpStatus& os, const QString& path, const QString& fileName, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
+    static void openFile(const QString& path, const QString& fileName, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
 
-    static void openFile(GUITestOpStatus& os, const QString& filePath, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
+    static void openFile(const QString& filePath, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
 
     /** Open file with file dialog. Ignores UGENE_USE_DIRECT_API_TO_OPEN_FILES option. */
-    static void openFileWithDialog(GUITestOpStatus& os, const QString& path, const QString& fileName, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
+    static void openFileWithDialog(const QString& path, const QString& fileName, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
 
-    static void openFileList(GUITestOpStatus&, const QString&, const QStringList&);
-    static void openFileList(GUITestOpStatus& os, const QStringList& filePaths);
+    static void openFileList(const QString&, const QStringList&);
+    static void openFileList(const QStringList& filePaths);
 
     /**
      * Converts absolute or relative path to the absolute path with native file separators which is safe to use in QT file dialog.

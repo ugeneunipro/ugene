@@ -28,15 +28,15 @@ using namespace HI;
 
 class GraphSettingsDialogFiller : public Filler {
 public:
-    GraphSettingsDialogFiller(HI::GUITestOpStatus& os,
-                              int window = -1,
-                              int steps = -1,
-                              double cutoff_min = 0,
-                              double cutoff_max = 0,
-                              int r = -1,
-                              int g = -1,
-                              int b = -1);
-    GraphSettingsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
+    GraphSettingsDialogFiller(
+        int window = -1,
+        int steps = -1,
+        double cutoff_min = 0,
+        double cutoff_max = 0,
+        int r = -1,
+        int g = -1,
+        int b = -1);
+    GraphSettingsDialogFiller(CustomScenario* c);
 
     virtual void commonScenario();
 

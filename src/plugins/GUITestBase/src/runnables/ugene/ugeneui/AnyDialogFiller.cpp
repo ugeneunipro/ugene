@@ -27,8 +27,8 @@
 
 namespace U2 {
 void AnyDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTUtilsDialog::clickButtonBox(os, dialog, b);
+    GTUtilsDialog::clickButtonBox(dialog, b);
 }
 }  // namespace U2

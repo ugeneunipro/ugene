@@ -41,6 +41,5 @@ GUI_TEST_CLASS_DECLARATION(test_0010)
 GUI_TEST_CLASS_DECLARATION(test_0011)
 GUI_TEST_CLASS_DECLARATION(test_0012)
 
-
 }  // namespace GUITest_common_scenarios_genecut
 }  // namespace U2

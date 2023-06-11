@@ -27,8 +27,8 @@ using namespace HI;
 
 class HmmerSearchDialogFiller : public Filler {
 public:
-    HmmerSearchDialogFiller(HI::GUITestOpStatus& os, QString _profile, QString _newFilePath)
-        : Filler(os, "HmmerSearchDialog"),
+    HmmerSearchDialogFiller(QString _profile, QString _newFilePath)
+        : Filler("HmmerSearchDialog"),
           profile(_profile),
           newFilePath(_newFilePath) {
     }

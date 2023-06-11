@@ -21,15 +21,13 @@
 
 #include "LogSettingsGUIController.h"
 
-#include <QColorDialog>
 #include <QHeaderView>
 #include <QMessageBox>
-#include <QToolButton>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/LogCache.h>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
 
@@ -269,11 +267,10 @@ void LogSettingsPageWidget::sl_catItemStateChanged(QTableWidgetItem* item) {
     }
 }
 
-void LogSettingsPageWidget::sl_changeColor(const QString& v) {
-    Q_UNUSED(v);
+void LogSettingsPageWidget::sl_changeColor(const QString&) {
     auto label = qobject_cast<QLabel*>(sender());
     auto tw = qobject_cast<LogSettingsTopLineWidget*>(label->parent());
-    QColor color = QColorDialog::getColor(tw->color, this);
+    QColor color = U2ColorDialog::getColor(tw->color, this);
     if (color.isValid()) {
         tw->color = color.name();
         updateColorLabel(label, tw->color);

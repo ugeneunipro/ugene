@@ -31,47 +31,47 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
-ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus& os,
-                                         bool _isReadOnly,
-                                         QString dstUrl,
-                                         QString srcUrl,
-                                         int timeoutMs)
-    : Filler(os, "Select Document Format"),
+ImportACEFileFiller::ImportACEFileFiller(
+    bool _isReadOnly,
+    QString dstUrl,
+    QString srcUrl,
+    int timeoutMs)
+    : Filler("Select Document Format"),
       isReadOnly(_isReadOnly),
       sourceUrl(srcUrl),
       destinationUrl(dstUrl) {
     settings.timeout = timeoutMs;
 }
 
-ImportACEFileFiller::ImportACEFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c)
-    : Filler(os, "Select Document Format", _c),
+ImportACEFileFiller::ImportACEFileFiller(CustomScenario* _c)
+    : Filler("Select Document Format", _c),
       isReadOnly(false) {
     settings.timeout = 120000;
 }
 
 void ImportACEFileFiller::commonScenario() {
     GTGlobals::sleep(500);
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (isReadOnly) {
-        auto rb = GTWidget::findRadioButton(os, "0_radio", dialog);
-        GTRadioButton::click(os, rb);
+        auto rb = GTWidget::findRadioButton("0_radio", dialog);
+        GTRadioButton::click(rb);
         GTGlobals::sleep();
     } else {
-        auto rb = GTWidget::findRadioButton(os, "1_radio", dialog);
-        GTRadioButton::click(os, rb);
+        auto rb = GTWidget::findRadioButton("1_radio", dialog);
+        GTRadioButton::click(rb);
         GTGlobals::sleep();
 
         if (!sourceUrl.isEmpty()) {
-            GTLineEdit::setText(os, "sourseLineEdit", sourceUrl, QApplication::activeModalWidget());
+            GTLineEdit::setText("sourseLineEdit", sourceUrl, QApplication::activeModalWidget());
         }
 
         if (!destinationUrl.isEmpty()) {
-            GTLineEdit::setText(os, "fileNameEdit", destinationUrl, QApplication::activeModalWidget(), dialog);
+            GTLineEdit::setText("fileNameEdit", destinationUrl, QApplication::activeModalWidget(), dialog);
         }
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

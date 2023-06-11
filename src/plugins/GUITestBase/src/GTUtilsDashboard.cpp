@@ -43,35 +43,35 @@ QString GTUtilsDashboard::Notification::toString() const {
 #define GT_CLASS_NAME "GTUtilsDashboard"
 
 #define GT_METHOD_NAME "getCopyButton"
-QWidget* GTUtilsDashboard::getCopyButton(GUITestOpStatus& os, const QString& toolRunNodeId) {
-    auto node = getExternalToolNode(os, toolRunNodeId);
-    return GTWidget::findWidget(os, "copyButton", node);
+QWidget* GTUtilsDashboard::getCopyButton(const QString& toolRunNodeId) {
+    auto node = getExternalToolNode(toolRunNodeId);
+    return GTWidget::findWidget("copyButton", node);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExternalToolsWidget"
-ExternalToolsDashboardWidget* GTUtilsDashboard::getExternalToolsWidget(GUITestOpStatus& os) {
-    Dashboard* dashboard = getDashboard(os);
-    return GTWidget::findWidgetByType<ExternalToolsDashboardWidget*>(os, dashboard, "External tools widget is not found");
+ExternalToolsDashboardWidget* GTUtilsDashboard::getExternalToolsWidget() {
+    Dashboard* dashboard = getDashboard();
+    return GTWidget::findWidgetByType<ExternalToolsDashboardWidget*>(dashboard, "External tools widget is not found");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExternalToolNode"
-ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNode(GUITestOpStatus& os, const QString& nodeId) {
-    ExternalToolsDashboardWidget* widget = getExternalToolsWidget(os);
-    return GTWidget::findExactWidget<ExternalToolsTreeNode*>(os, nodeId, widget);
+ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNode(const QString& nodeId) {
+    ExternalToolsDashboardWidget* widget = getExternalToolsWidget();
+    return GTWidget::findExactWidget<ExternalToolsTreeNode*>(nodeId, widget);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExternalToolNodeByText"
-ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus& os, const QString& textPattern, bool isExactMatch) {
-    return getExternalToolNodeByText(os, nullptr, textPattern, isExactMatch);
+ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(const QString& textPattern, bool isExactMatch) {
+    return getExternalToolNodeByText(nullptr, textPattern, isExactMatch);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExternalToolNodesByText"
-QList<ExternalToolsTreeNode*> GTUtilsDashboard::getExternalToolNodesByText(HI::GUITestOpStatus& os, ExternalToolsTreeNode* parent, const QString& textPattern, bool isExactMatch) {
-    QList<ExternalToolsTreeNode*> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode*>() : parent->children;
+QList<ExternalToolsTreeNode*> GTUtilsDashboard::getExternalToolNodesByText(ExternalToolsTreeNode* parent, const QString& textPattern, bool isExactMatch) {
+    QList<ExternalToolsTreeNode*> nodes = parent == nullptr ? getExternalToolsWidget()->findChildren<ExternalToolsTreeNode*>() : parent->children;
     QList<ExternalToolsTreeNode*> result;
     for (auto node : qAsConst(nodes)) {
         if (node->content == textPattern) {
@@ -85,8 +85,8 @@ QList<ExternalToolsTreeNode*> GTUtilsDashboard::getExternalToolNodesByText(HI::G
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExternalToolNodeByTextWithParent"
-ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus& os, ExternalToolsTreeNode* parent, const QString& textPattern, bool isExactMatch) {
-    QList<ExternalToolsTreeNode*> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode*>() : parent->children;
+ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(ExternalToolsTreeNode* parent, const QString& textPattern, bool isExactMatch) {
+    QList<ExternalToolsTreeNode*> nodes = parent == nullptr ? getExternalToolsWidget()->findChildren<ExternalToolsTreeNode*>() : parent->children;
     for (auto node : qAsConst(nodes)) {
         if (node->content == textPattern) {
             return node;
@@ -99,21 +99,21 @@ ExternalToolsTreeNode* GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStat
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getTabWidget"
-QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus& os) {
-    return GTWidget::findTabWidget(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
+QTabWidget* GTUtilsDashboard::getTabWidget() {
+    return GTWidget::findTabWidget("WorkflowTabView", GTUtilsMdi::activeWindow());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findLoadSchemaButton"
-QToolButton* GTUtilsDashboard::findLoadSchemaButton(HI::GUITestOpStatus& os) {
-    Dashboard* dashboard = findDashboard(os);
+QToolButton* GTUtilsDashboard::findLoadSchemaButton() {
+    Dashboard* dashboard = findDashboard();
     return dashboard == nullptr ? nullptr : dashboard->findChild<QToolButton*>("loadSchemaButton");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDashboardName"
-QString GTUtilsDashboard::getDashboardName(GUITestOpStatus& os, int dashboardNumber) {
-    return GTTabWidget::getTabName(os, getTabWidget(os), dashboardNumber);
+QString GTUtilsDashboard::getDashboardName(int dashboardNumber) {
+    return GTTabWidget::getTabName(getTabWidget(), dashboardNumber);
 }
 #undef GT_METHOD_NAME
 
@@ -127,27 +127,27 @@ static QStringList getFileButtonLabels(QWidget* parentWidget) {
 }
 
 #define GT_METHOD_NAME "getInputFiles"
-QStringList GTUtilsDashboard::getInputFiles(HI::GUITestOpStatus& os) {
-    openTab(os, Input);
-    auto dashboard = getDashboard(os);
-    auto parametersWidget = GTWidget::findWidget(os, "ParametersDashboardWidget", dashboard);
+QStringList GTUtilsDashboard::getInputFiles() {
+    openTab(Input);
+    auto dashboard = getDashboard();
+    auto parametersWidget = GTWidget::findWidget("ParametersDashboardWidget", dashboard);
     return getFileButtonLabels(parametersWidget);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOutputFiles"
-QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus& os) {
-    auto dashboard = getDashboard(os);
-    auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
+QStringList GTUtilsDashboard::getOutputFiles() {
+    auto dashboard = getDashboard();
+    auto outputFilesWidget = GTWidget::findWidget("OutputFilesDashboardWidget", dashboard);
     return getFileButtonLabels(outputFilesWidget);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOutputFileUrls"
-QStringList GTUtilsDashboard::getOutputFileUrls(HI::GUITestOpStatus& os) {
+QStringList GTUtilsDashboard::getOutputFileUrls() {
     QStringList urls;
-    auto dashboard = getDashboard(os);
-    auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
+    auto dashboard = getDashboard();
+    auto outputFilesWidget = GTWidget::findWidget("OutputFilesDashboardWidget", dashboard);
     QList<QToolButton*> buttons = outputFilesWidget->findChildren<QToolButton*>();
     for (auto button : qAsConst(buttons)) {
         QString typeAndUrl = button->property("file-url").toString();
@@ -158,25 +158,25 @@ QStringList GTUtilsDashboard::getOutputFileUrls(HI::GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickOutputFile"
-void GTUtilsDashboard::clickOutputFile(GUITestOpStatus& os, const QString& outputFileName) {
-    auto dashboard = getDashboard(os);
-    auto outputFilesWidget = GTWidget::findWidget(os, "OutputFilesDashboardWidget", dashboard);
-    auto button = GTWidget::findButtonByText(os, outputFileName, outputFilesWidget);
-    GTWidget::click(os, button);
+void GTUtilsDashboard::clickOutputFile(const QString& outputFileName) {
+    auto dashboard = getDashboard();
+    auto outputFilesWidget = GTWidget::findWidget("OutputFilesDashboardWidget", dashboard);
+    auto button = GTWidget::findButtonByText(outputFileName, outputFilesWidget);
+    GTWidget::click(button);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "hasNotifications"
-bool GTUtilsDashboard::hasNotifications(HI::GUITestOpStatus& os) {
-    openTab(os, Overview);
-    auto dashboard = getDashboard(os);
-    auto notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", dashboard);
+bool GTUtilsDashboard::hasNotifications() {
+    openTab(Overview);
+    auto dashboard = getDashboard();
+    auto notificationsWidget = GTWidget::findWidget("NotificationsDashboardWidget", dashboard);
     return notificationsWidget->isVisible();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNotificationTypeFromHtml"
-QString GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus& os, const QString& html) {
+QString GTUtilsDashboard::getNotificationTypeFromHtml(const QString& html) {
     QString type;
 
     int start = html.indexOf("<img class=\"");
@@ -191,7 +191,7 @@ QString GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus& os, c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNotificationCellText"
-QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus& os, const QGridLayout& tableLayout, const int row, const int col) {
+QString GTUtilsDashboard::getNotificationCellText(const QGridLayout& tableLayout, const int row, const int col) {
     const QWidget* cellWidget = tableLayout.itemAtPosition(row, col)->widget();
     QString text;
 
@@ -212,9 +212,9 @@ QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus& os, const
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNotifications"
-QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITestOpStatus& os) {
+QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications() {
     const QString notificationsWidgetName = "NotificationsDashboardWidget";
-    auto notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os));
+    auto notificationsWidget = GTWidget::findWidget(notificationsWidgetName, GTUtilsDashboard::getDashboard());
     auto tableLayout = qobject_cast<QGridLayout*>(notificationsWidget->layout());
     QList<Notification> notifications;
 
@@ -224,17 +224,17 @@ QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITest
 
     const int notificationsNumber = tableLayout->rowCount();
     for (int row = 1; row < notificationsNumber; row++) {
-        const QString type = getNotificationTypeFromHtml(os, getNotificationCellText(os, *tableLayout, row, 0));
-        const QString element = getNotificationCellText(os, *tableLayout, row, 1);
-        const QString message = getNotificationCellText(os, *tableLayout, row, 2);
+        const QString type = getNotificationTypeFromHtml(getNotificationCellText(*tableLayout, row, 0));
+        const QString element = getNotificationCellText(*tableLayout, row, 1);
+        const QString message = getNotificationCellText(*tableLayout, row, 2);
         notifications << Notification {type, element, message};
     }
     return notifications;
 }
 #undef GT_METHOD_NAME
 
-QString GTUtilsDashboard::getJoinedNotificationsString(GUITestOpStatus& os) {
-    const auto notifications = getNotifications(os);
+QString GTUtilsDashboard::getJoinedNotificationsString() {
+    const auto notifications = getNotifications();
     QStringList stringNotifications;
     for (const auto& notification : qAsConst(notifications)) {
         stringNotifications << notification.toString();
@@ -255,35 +255,35 @@ QString GTUtilsDashboard::getTabObjectName(Tabs tab) {
 }
 
 #define GT_METHOD_NAME "findDashboard"
-Dashboard* GTUtilsDashboard::findDashboard(HI::GUITestOpStatus& os) {
-    QTabWidget* tabWidget = getTabWidget(os);
+Dashboard* GTUtilsDashboard::findDashboard() {
+    QTabWidget* tabWidget = getTabWidget();
     return tabWidget == nullptr ? nullptr : qobject_cast<Dashboard*>(tabWidget->currentWidget());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDashboard"
-Dashboard* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus& os) {
-    auto dashboard = findDashboard(os);
+Dashboard* GTUtilsDashboard::getDashboard() {
+    auto dashboard = findDashboard();
     GT_CHECK_RESULT(dashboard != nullptr, "Dashboard widget not found", nullptr);
     return dashboard;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openTab"
-void GTUtilsDashboard::openTab(HI::GUITestOpStatus& os, Tabs tab) {
-    QWidget* dashboard = findDashboard(os);
+void GTUtilsDashboard::openTab(Tabs tab) {
+    QWidget* dashboard = findDashboard();
     GT_CHECK(dashboard != nullptr, "Dashboard widget not found");
 
     QString tabButtonObjectName = getTabObjectName(tab);
-    auto tabButton = GTWidget::findToolButton(os, tabButtonObjectName, dashboard);
+    auto tabButton = GTWidget::findToolButton(tabButtonObjectName, dashboard);
 
-    GTWidget::click(os, tabButton);
+    GTWidget::click(tabButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "hasTab"
-bool GTUtilsDashboard::hasTab(HI::GUITestOpStatus& os, Tabs tab) {
-    QWidget* dashboard = findDashboard(os);
+bool GTUtilsDashboard::hasTab(Tabs tab) {
+    QWidget* dashboard = findDashboard();
     GT_CHECK_RESULT(dashboard != nullptr, "Dashboard is not found", false);
 
     QString tabButtonObjectName = getTabObjectName(tab);
@@ -293,32 +293,32 @@ bool GTUtilsDashboard::hasTab(HI::GUITestOpStatus& os, Tabs tab) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNodeText"
-QString GTUtilsDashboard::getNodeText(GUITestOpStatus& os, const QString& nodeId) {
-    return getExternalToolNode(os, nodeId)->content;
+QString GTUtilsDashboard::getNodeText(const QString& nodeId) {
+    return getExternalToolNode(nodeId)->content;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChildrenNodesCount"
-int GTUtilsDashboard::getChildrenNodesCount(GUITestOpStatus& os, const QString& nodeId) {
-    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget(os)->getTopLevelNodes().size() : getExternalToolNode(os, nodeId)->children.count();
+int GTUtilsDashboard::getChildrenNodesCount(const QString& nodeId) {
+    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget()->getTopLevelNodes().size() : getExternalToolNode(nodeId)->children.count();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChildNodes"
-QList<ExternalToolsTreeNode*> GTUtilsDashboard::getChildNodes(GUITestOpStatus& os, const QString& nodeId) {
-    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget(os)->getTopLevelNodes() : getExternalToolNode(os, nodeId)->children;
+QList<ExternalToolsTreeNode*> GTUtilsDashboard::getChildNodes(const QString& nodeId) {
+    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget()->getTopLevelNodes() : getExternalToolNode(nodeId)->children;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChildNodeId"
-QString GTUtilsDashboard::getChildNodeId(GUITestOpStatus& os, const QString& nodeId, int childIndex) {
-    return getDescendantNodeId(os, nodeId, {childIndex});
+QString GTUtilsDashboard::getChildNodeId(const QString& nodeId, int childIndex) {
+    return getDescendantNodeId(nodeId, {childIndex});
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDescendantNodeId"
-QString GTUtilsDashboard::getDescendantNodeId(GUITestOpStatus& os, const QString& nodeId, const QList<int>& childIndexes) {
-    QList<ExternalToolsTreeNode*> childNodes = getChildNodes(os, nodeId);
+QString GTUtilsDashboard::getDescendantNodeId(const QString& nodeId, const QList<int>& childIndexes) {
+    QList<ExternalToolsTreeNode*> childNodes = getChildNodes(nodeId);
     QString resultNodeId = nodeId;
     for (int i : qAsConst(childIndexes)) {
         GT_CHECK_RESULT(i >= 0 && i < childNodes.size(), "Illegal child index: " + QString::number(i) + ", nodes: " + childNodes.size(), "");
@@ -330,13 +330,13 @@ QString GTUtilsDashboard::getDescendantNodeId(GUITestOpStatus& os, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChildWithTextId"
-QString GTUtilsDashboard::getChildWithTextId(GUITestOpStatus& os, const QString& nodeId, const QString& text) {
-    int childrenCount = getChildrenNodesCount(os, nodeId);
+QString GTUtilsDashboard::getChildWithTextId(const QString& nodeId, const QString& text) {
+    int childrenCount = getChildrenNodesCount(nodeId);
     QString resultChildId;
     QStringList quotedChildrenTexts;
     for (int i = 0; i < childrenCount; i++) {
-        const QString currentChildId = getChildNodeId(os, nodeId, i);
-        const QString childText = getNodeText(os, currentChildId);
+        const QString currentChildId = getChildNodeId(nodeId, i);
+        const QString childText = getNodeText(currentChildId);
         quotedChildrenTexts << "\'" + childText + "\'";
         if (text == childText) {
             GT_CHECK_RESULT(resultChildId.isEmpty(),
@@ -360,19 +360,19 @@ QString GTUtilsDashboard::getChildWithTextId(GUITestOpStatus& os, const QString&
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "hasLimitationMessage"
-bool GTUtilsDashboard::hasLimitationMessage(GUITestOpStatus& os, const QString& nodeId) {
-    return !getLimitationMessage(os, nodeId).isEmpty();
+bool GTUtilsDashboard::hasLimitationMessage(const QString& nodeId) {
+    return !getLimitationMessage(nodeId).isEmpty();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLimitationMessage"
-QString GTUtilsDashboard::getLimitationMessage(GUITestOpStatus& os, const QString& nodeId) {
-    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget(os)->getLimitationWarningHtml() : getExternalToolNode(os, nodeId)->limitationWarningHtml;
+QString GTUtilsDashboard::getLimitationMessage(const QString& nodeId) {
+    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget()->getLimitationWarningHtml() : getExternalToolNode(nodeId)->limitationWarningHtml;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "parseUrlFromContent"
-static QString parseUrlFromContent(GUITestOpStatus& os, const QString& content) {
+static QString parseUrlFromContent(const QString& content) {
     QString urlStartToken = "<a href=\"";
     int urlStartTokenIdx = content.lastIndexOf(urlStartToken);
     GT_CHECK_RESULT(urlStartTokenIdx > 0, "urlStartToken is not found, text: " + content, "");
@@ -384,89 +384,89 @@ static QString parseUrlFromContent(GUITestOpStatus& os, const QString& content) 
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLimitationMessageLogUrl"
-QString GTUtilsDashboard::getLogUrlFromNodeLimitationMessage(GUITestOpStatus& os, const QString& nodeId) {
-    QString limitationMessage = getLimitationMessage(os, nodeId);
-    return parseUrlFromContent(os, limitationMessage);
+QString GTUtilsDashboard::getLogUrlFromNodeLimitationMessage(const QString& nodeId) {
+    QString limitationMessage = getLimitationMessage(nodeId);
+    return parseUrlFromContent(limitationMessage);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLogUrlFromOutputContent"
-QString GTUtilsDashboard::getLogUrlFromOutputContent(GUITestOpStatus& os, const QString& outputNodeId) {
-    auto content = getExternalToolNode(os, outputNodeId)->content;
-    return parseUrlFromContent(os, content);
+QString GTUtilsDashboard::getLogUrlFromOutputContent(const QString& outputNodeId) {
+    auto content = getExternalToolNode(outputNodeId)->content;
+    return parseUrlFromContent(content);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCopyButtonSize"
-QSize GTUtilsDashboard::getCopyButtonSize(GUITestOpStatus& os, const QString& toolRunNodeId) {
-    return getCopyButton(os, toolRunNodeId)->rect().size();
+QSize GTUtilsDashboard::getCopyButtonSize(const QString& toolRunNodeId) {
+    return getCopyButton(toolRunNodeId)->rect().size();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickCopyButton"
-void GTUtilsDashboard::clickCopyButton(GUITestOpStatus& os, const QString& toolRunNodeId) {
-    GTWidget::click(os, getCopyButton(os, toolRunNodeId));
+void GTUtilsDashboard::clickCopyButton(const QString& toolRunNodeId) {
+    GTWidget::click(getCopyButton(toolRunNodeId));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isNodeVisible"
-bool GTUtilsDashboard::isNodeVisible(GUITestOpStatus& os, const QString& nodeId) {
-    return getExternalToolNode(os, nodeId)->isVisible();
+bool GTUtilsDashboard::isNodeVisible(const QString& nodeId) {
+    return getExternalToolNode(nodeId)->isVisible();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isNodeCollapsed"
-bool GTUtilsDashboard::isNodeCollapsed(GUITestOpStatus& os, const QString& nodeId) {
-    return !getExternalToolNode(os, nodeId)->isExpanded();
+bool GTUtilsDashboard::isNodeCollapsed(const QString& nodeId) {
+    return !getExternalToolNode(nodeId)->isExpanded();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "collapseNode"
-void GTUtilsDashboard::collapseNode(GUITestOpStatus& os, const QString& nodeId) {
-    GT_CHECK(isNodeVisible(os, nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
-    GT_CHECK(!isNodeCollapsed(os, nodeId), QString("Node with ID '%1' is already collapsed.").arg(nodeId));
-    clickNodeTitle(os, getExternalToolNode(os, nodeId));
-    GT_CHECK(isNodeCollapsed(os, nodeId), QString("Node with ID '%1' was not collapsed.").arg(nodeId));
+void GTUtilsDashboard::collapseNode(const QString& nodeId) {
+    GT_CHECK(isNodeVisible(nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
+    GT_CHECK(!isNodeCollapsed(nodeId), QString("Node with ID '%1' is already collapsed.").arg(nodeId));
+    clickNodeTitle(getExternalToolNode(nodeId));
+    GT_CHECK(isNodeCollapsed(nodeId), QString("Node with ID '%1' was not collapsed.").arg(nodeId));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "expandNode"
-void GTUtilsDashboard::expandNode(GUITestOpStatus& os, const QString& nodeId) {
-    GT_CHECK(isNodeVisible(os, nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
-    GT_CHECK(isNodeCollapsed(os, nodeId), QString("Node with ID '%1' is already expanded.").arg(nodeId));
-    clickNodeTitle(os, getExternalToolNode(os, nodeId));
-    GT_CHECK(!isNodeCollapsed(os, nodeId), QString("Node with ID '%1' was not expanded.").arg(nodeId));
+void GTUtilsDashboard::expandNode(const QString& nodeId) {
+    GT_CHECK(isNodeVisible(nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
+    GT_CHECK(isNodeCollapsed(nodeId), QString("Node with ID '%1' is already expanded.").arg(nodeId));
+    clickNodeTitle(getExternalToolNode(nodeId));
+    GT_CHECK(!isNodeCollapsed(nodeId), QString("Node with ID '%1' was not expanded.").arg(nodeId));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickNodeTitle"
-void GTUtilsDashboard::clickNodeTitle(GUITestOpStatus& os, ExternalToolsTreeNode* node) {
+void GTUtilsDashboard::clickNodeTitle(ExternalToolsTreeNode* node) {
     GT_CHECK(node != nullptr, "Node is null!");
     GT_CHECK(node->badgeLabel->titleLabel != nullptr, "Node title label is null!");
-    GTWidget::click(os, node->badgeLabel->titleLabel);
+    GTWidget::click(node->badgeLabel->titleLabel);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getInputTabPageWidget"
-QWidget* GTUtilsDashboard::getInputTabPageWidget(GUITestOpStatus& os) {
-    return GTWidget::findWidget(os, "input_tab_page", getDashboard(os));
+QWidget* GTUtilsDashboard::getInputTabPageWidget() {
+    return GTWidget::findWidget("input_tab_page", getDashboard());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickLabelInParametersWidget"
-void GTUtilsDashboard::clickLabelInParametersWidget(GUITestOpStatus& os, const QString& labelText) {
-    auto parametersWidget = GTWidget::findWidget(os, "ParametersDashboardWidget", getInputTabPageWidget(os));
-    auto workerLabelWidgets = GTWidget::findLabelByText(os, labelText, parametersWidget);
+void GTUtilsDashboard::clickLabelInParametersWidget(const QString& labelText) {
+    auto parametersWidget = GTWidget::findWidget("ParametersDashboardWidget", getInputTabPageWidget());
+    auto workerLabelWidgets = GTWidget::findLabelByText(labelText, parametersWidget);
     GT_CHECK(workerLabelWidgets.size() == 1, QString("clickLabelInParametersWidget: labels count: %1, label text: %2").arg(workerLabelWidgets.size()).arg(labelText));
-    GTWidget::click(os, workerLabelWidgets[0]);
+    GTWidget::click(workerLabelWidgets[0]);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickFileButtonInParametersWidget"
-void GTUtilsDashboard::clickFileButtonInParametersWidget(GUITestOpStatus& os, const QString& buttonText) {
-    auto parametersWidget = GTWidget::findWidget(os, "ParametersDashboardWidget", getInputTabPageWidget(os));
-    auto fileButton = GTWidget::findButtonByText(os, buttonText, parametersWidget);
-    GTWidget::click(os, fileButton);
+void GTUtilsDashboard::clickFileButtonInParametersWidget(const QString& buttonText) {
+    auto parametersWidget = GTWidget::findWidget("ParametersDashboardWidget", getInputTabPageWidget());
+    auto fileButton = GTWidget::findButtonByText(buttonText, parametersWidget);
+    GTWidget::click(fileButton);
 }
 #undef GT_METHOD_NAME
 

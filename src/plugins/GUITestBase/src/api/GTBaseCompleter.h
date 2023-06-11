@@ -30,10 +30,10 @@ using namespace HI;
 
 class GTBaseCompleter {
 public:
-    static void click(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor, const QString& seqName);
-    static QStringList getNames(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor);
-    static bool isEmpty(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor);
-    static QTreeWidget* getCompleter(HI::GUITestOpStatus& os, QWidget* widgetCompleterFor);
+    static void click(QWidget* widgetCompleterFor, const QString& seqName);
+    static QStringList getNames(QWidget* widgetCompleterFor);
+    static bool isEmpty(QWidget* widgetCompleterFor);
+    static QTreeWidget* getCompleter(QWidget* widgetCompleterFor);
 };
 
 }  // namespace U2

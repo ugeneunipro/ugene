@@ -20,6 +20,10 @@
  */
 
 #include "GTTestsGeneCut.h"
+#include <base_dialogs/GTFileDialog.h>
+#include <primitives/GTWidget.h>
+
+#include <U2Core/L10n.h>
 
 #include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsGeneCut.h"
@@ -28,24 +32,19 @@
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 
-#include <base_dialogs/GTFileDialog.h>
-#include <primitives/GTWidget.h>
-
-#include <U2Core/L10n.h>
-
 namespace U2 {
 namespace GUITest_common_scenarios_genecut {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Try to reset password
     // Use fake email to avoid confirmation letter
-    GTUtilsGeneCut::resetPassword(os, "fake@email.com");
-    auto lbResetStatus = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lbResetStatus"));
+    GTUtilsGeneCut::resetPassword("fake@email.com");
+    auto lbResetStatus = qobject_cast<QLabel*>(GTWidget::findWidget("lbResetStatus"));
     CHECK_SET_ERR(lbResetStatus != nullptr, L10N::nullPointerError("QLabel"));
 
     // Expected: error, because there is no account with such email
@@ -54,13 +53,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Try to create a new user
     // Use diffenerent passwords
-    GTUtilsGeneCut::createNewUser(os, "genecut@unipro.ru", "password", "another_password");
-    auto lbRegisterWarning = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lbRegisterWarning"));
+    GTUtilsGeneCut::createNewUser("genecut@unipro.ru", "password", "another_password");
+    auto lbRegisterWarning = qobject_cast<QLabel*>(GTWidget::findWidget("lbRegisterWarning"));
     CHECK_SET_ERR(lbRegisterWarning != nullptr, L10N::nullPointerError("QLabel"));
 
     // Expected: error, because passords do not match
@@ -69,13 +68,13 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Try to create a new user
     // Use emeil wich exists
-    GTUtilsGeneCut::createNewUser(os);
-    auto lbRegisterWarning = qobject_cast<QLabel*>(GTWidget::findWidget(os, "lbRegisterWarning"));
+    GTUtilsGeneCut::createNewUser();
+    auto lbRegisterWarning = qobject_cast<QLabel*>(GTWidget::findWidget("lbRegisterWarning"));
     CHECK_SET_ERR(lbRegisterWarning != nullptr, L10N::nullPointerError("QLabel"));
 
     // Expected: error, because user already exists
@@ -84,204 +83,199 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 9
-    GTUtilsGeneCut::selectResultByIndex(os, 8);
+    GTUtilsGeneCut::selectResultByIndex(8);
 
     // Expected: input file gfp.fa, OptimizeCodonContext was chosen, completed
-    GTUtilsGeneCut::checkResultInfo(os, "gfp.fa", { GTUtilsGeneCut::Steps::OptimizeCodonContext });
+    GTUtilsGeneCut::checkResultInfo("gfp.fa", {GTUtilsGeneCut::Steps::OptimizeCodonContext});
 
     // Compare the result file with _common_data/genecut/output/gfp_optimized.fa
-    GTUtilsGeneCut::compareFiles(os, GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/output/gfp_optimized.fa");
+    GTUtilsGeneCut::compareFiles(GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/output/gfp_optimized.fa");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 10
-    GTUtilsGeneCut::selectResultByIndex(os, 9);
+    GTUtilsGeneCut::selectResultByIndex(9);
 
     // Expected: input file AMINO.fa, OptimizeCodonContext was chosen, completed
-    GTUtilsGeneCut::checkResultInfo(os, "AMINO.fa", { GTUtilsGeneCut::Steps::OptimizeCodonContext });
+    GTUtilsGeneCut::checkResultInfo("AMINO.fa", {GTUtilsGeneCut::Steps::OptimizeCodonContext});
 
     // Expected: can't compare input and output
-    CHECK_SET_ERR(!GTWidget::findPushButton(os, "pbCompare")->isEnabled(), "pbCompare should be disabled");
+    CHECK_SET_ERR(!GTWidget::findPushButton("pbCompare")->isEnabled(), "pbCompare should be disabled");
 
     // Compare the result file with _common_data/genecut/output/AMINO263_optimized.fa
-    GTUtilsGeneCut::compareFiles(os, GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/output/AMINO263_optimized.fa");
+    GTUtilsGeneCut::compareFiles(GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/output/AMINO263_optimized.fa");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 11
-    GTUtilsGeneCut::selectResultByIndex(os, 10);
+    GTUtilsGeneCut::selectResultByIndex(10);
 
     // Expected: input file gfp_cut.fa, OptimizeCodonContext was chosen, completed with errors
-    GTUtilsGeneCut::checkResultInfo(os, "gfp_cut.fa", { GTUtilsGeneCut::Steps::OptimizeCodonContext }, GTUtilsGeneCut::Status::CompletedWithError);
+    GTUtilsGeneCut::checkResultInfo("gfp_cut.fa", {GTUtilsGeneCut::Steps::OptimizeCodonContext}, GTUtilsGeneCut::Status::CompletedWithError);
 
     // Expected: no result sequence
-    CHECK_SET_ERR(!GTWidget::findPushButton(os, "pbGetResultSequence")->isEnabled(), "pbCompare should be disabled");
+    CHECK_SET_ERR(!GTWidget::findPushButton("pbGetResultSequence")->isEnabled(), "pbCompare should be disabled");
 
     // Expected: can't compare input and output
-    CHECK_SET_ERR(!GTWidget::findPushButton(os, "pbCompare")->isEnabled(), "pbCompare should be disabled");
+    CHECK_SET_ERR(!GTWidget::findPushButton("pbCompare")->isEnabled(), "pbCompare should be disabled");
 
     // Compare the input file with _common_data/genecut/output/AMINO.fa
-    GTUtilsGeneCut::compareFiles(os, GTUtilsGeneCut::FileType::Input, testDir + "_common_data/genecut/input/gfp_cut.fa");
+    GTUtilsGeneCut::compareFiles(GTUtilsGeneCut::FileType::Input, testDir + "_common_data/genecut/input/gfp_cut.fa");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 1
-    GTUtilsGeneCut::selectResultByIndex(os, 0);
+    GTUtilsGeneCut::selectResultByIndex(0);
 
     // Expected: input file gfp.fa, ExcludeRestrictionSites was chosen, completed
-    GTUtilsGeneCut::checkResultInfo(os, "gfp.fa", { GTUtilsGeneCut::Steps::ExcludeRestrictionSites });
+    GTUtilsGeneCut::checkResultInfo("gfp.fa", {GTUtilsGeneCut::Steps::ExcludeRestrictionSites});
 
     // Compare the result file with _common_data/genecut/output/gfp_sites_excluded.fa
-    GTUtilsGeneCut::compareFiles(os, GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/output/gfp_sites_excluded.fa");
+    GTUtilsGeneCut::compareFiles(GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/output/gfp_sites_excluded.fa");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 2
-    GTUtilsGeneCut::selectResultByIndex(os, 1);
+    GTUtilsGeneCut::selectResultByIndex(1);
 
     // Expected: input file gfp.fa, ExcludeRestrictionSites was chosen, completed
-    GTUtilsGeneCut::checkResultInfo(os, "gfp.fa", { GTUtilsGeneCut::Steps::ExcludeRestrictionSites });
+    GTUtilsGeneCut::checkResultInfo("gfp.fa", {GTUtilsGeneCut::Steps::ExcludeRestrictionSites});
 
     // Compare the result file with the input file
-    GTUtilsGeneCut::compareFiles(os, GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/input/gfp.fa", true);
+    GTUtilsGeneCut::compareFiles(GTUtilsGeneCut::FileType::Result, testDir + "_common_data/genecut/input/gfp.fa", true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 3
-    GTUtilsGeneCut::selectResultByIndex(os, 2);
+    GTUtilsGeneCut::selectResultByIndex(2);
 
     // Expected: input file gfp.fa, OligonucleotidesAssembly was chosen, completed
-    GTUtilsGeneCut::checkResultInfo(os, "gfp.fa", { GTUtilsGeneCut::Steps::OligonucleotidesAssembly });
+    GTUtilsGeneCut::checkResultInfo("gfp.fa", {GTUtilsGeneCut::Steps::OligonucleotidesAssembly});
 
     // Load the result sequence with oligonucleotides
-    GTWidget::click(os, GTWidget::findPushButton(os, "pbGetResultSequence"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(GTWidget::findPushButton("pbGetResultSequence"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check for Long Oligonucleotides assembly
-    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Oligonucleotides assembly  (0, 21)",
-        { {1, 38}, {19, 75}, {56, 110}, {93, 152}, {128, 186},  {19, 75},
-          {169, 226}, {209, 268}, {252, 311}, {284, 340}, {323, 381},
-          {354, 413}, {387, 445}, {420, 474}, {453, 512}, {486, 538},
-          {520, 578}, {565, 617}, {600, 658}, {641, 691}, {674, 717} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions("Oligonucleotides assembly  (0, 21)",
+                                                       {{1, 38}, {19, 75}, {56, 110}, {93, 152}, {128, 186}, {19, 75}, {169, 226}, {209, 268}, {252, 311}, {284, 340}, {323, 381}, {354, 413}, {387, 445}, {420, 474}, {453, 512}, {486, 538}, {520, 578}, {565, 617}, {600, 658}, {641, 691}, {674, 717}});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 4
-    GTUtilsGeneCut::selectResultByIndex(os, 3);
+    GTUtilsGeneCut::selectResultByIndex(3);
 
     // Expected: input file AMINO.fa, OptimizeCodonContext and OligonucleotidesAssembly were chosen, completed with errors
-    GTUtilsGeneCut::checkResultInfo(os, "AMINO.fa", { GTUtilsGeneCut::Steps::OptimizeCodonContext, GTUtilsGeneCut::Steps::OligonucleotidesAssembly }, GTUtilsGeneCut::Status::CompletedWithError);
+    GTUtilsGeneCut::checkResultInfo("AMINO.fa", {GTUtilsGeneCut::Steps::OptimizeCodonContext, GTUtilsGeneCut::Steps::OligonucleotidesAssembly}, GTUtilsGeneCut::Status::CompletedWithError);
 
     // Expected: no result sequence
-    CHECK_SET_ERR(!GTWidget::findPushButton(os, "pbGetResultSequence")->isEnabled(), "pbCompare should be disabled");
+    CHECK_SET_ERR(!GTWidget::findPushButton("pbGetResultSequence")->isEnabled(), "pbCompare should be disabled");
 
     // Expected: can't compare input and output
-    CHECK_SET_ERR(!GTWidget::findPushButton(os, "pbCompare")->isEnabled(), "pbCompare should be disabled");
+    CHECK_SET_ERR(!GTWidget::findPushButton("pbCompare")->isEnabled(), "pbCompare should be disabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 5
-    GTUtilsGeneCut::selectResultByIndex(os, 4);
+    GTUtilsGeneCut::selectResultByIndex(4);
 
     // Expected: input file HLP-hF8-N6M-pA.fa, OptimizeCodonContext and OligonucleotidesAssembly were chosen, Interrupted
-    GTUtilsGeneCut::checkResultInfo(os, "HLP-hF8-N6M-pA.fa",
-        { GTUtilsGeneCut::Steps::OptimizeCodonContext,
-         GTUtilsGeneCut::Steps::ExcludeRestrictionSites,
-         GTUtilsGeneCut::Steps::LongFragmentsAssembly,
-         GTUtilsGeneCut::Steps::OligonucleotidesAssembly }, GTUtilsGeneCut::Status::Interrupted);
+    GTUtilsGeneCut::checkResultInfo("HLP-hF8-N6M-pA.fa",
+                                    {GTUtilsGeneCut::Steps::OptimizeCodonContext,
+                                     GTUtilsGeneCut::Steps::ExcludeRestrictionSites,
+                                     GTUtilsGeneCut::Steps::LongFragmentsAssembly,
+                                     GTUtilsGeneCut::Steps::OligonucleotidesAssembly},
+                                    GTUtilsGeneCut::Status::Interrupted);
 
     // Expected: no result sequence
-    CHECK_SET_ERR(!GTWidget::findPushButton(os, "pbGetResultSequence")->isEnabled(), "pbCompare should be disabled");
+    CHECK_SET_ERR(!GTWidget::findPushButton("pbGetResultSequence")->isEnabled(), "pbCompare should be disabled");
 
     // Expected: can't compare input and output
-    CHECK_SET_ERR(!GTWidget::findPushButton(os, "pbCompare")->isEnabled(), "pbCompare should be disabled");
-
+    CHECK_SET_ERR(!GTWidget::findPushButton("pbCompare")->isEnabled(), "pbCompare should be disabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
     // Open _common_data/fasta/human_T1_cutted.fa
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "human_T1_cutted.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(testDir + "_common_data/fasta", "human_T1_cutted.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Login
-    GTUtilsGeneCut::login(os);
+    GTUtilsGeneCut::login();
 
     // Fetch results and select 8
-    GTUtilsGeneCut::selectResultByIndex(os, 7);
+    GTUtilsGeneCut::selectResultByIndex(7);
 
     // Expected: input file gfp.fa, OligonucleotidesAssembly was chosen, completed
-    GTUtilsGeneCut::checkResultInfo(os, "gfp.fa",
-        { GTUtilsGeneCut::Steps::OptimizeCodonContext,
-          GTUtilsGeneCut::Steps::ExcludeRestrictionSites,
-          GTUtilsGeneCut::Steps::LongFragmentsAssembly,
-          GTUtilsGeneCut::Steps::OligonucleotidesAssembly });
-
+    GTUtilsGeneCut::checkResultInfo("gfp.fa",
+                                    {GTUtilsGeneCut::Steps::OptimizeCodonContext,
+                                     GTUtilsGeneCut::Steps::ExcludeRestrictionSites,
+                                     GTUtilsGeneCut::Steps::LongFragmentsAssembly,
+                                     GTUtilsGeneCut::Steps::OligonucleotidesAssembly});
 
     // Load the result sequence with oligonucleotides
-    GTWidget::click(os, GTWidget::findPushButton(os, "pbGetResultSequence"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTWidget::click(GTWidget::findPushButton("pbGetResultSequence"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check for Long fragments assembly
-    GTUtilsAnnotationsTreeView::checkAnnotationRegions(os, "Long fragments assembly  (0, 2)", { {1, 717} });
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions("Long fragments assembly  (0, 2)", {{1, 717}});
 }
 
+}  // namespace GUITest_common_scenarios_genecut
 
-}
-
-}
+}  // namespace U2

@@ -45,14 +45,14 @@ public:
         bool addResultToProject;
     };
 
-    AlignToReferenceBlastDialogFiller(const Settings& settings, HI::GUITestOpStatus& os);
-    AlignToReferenceBlastDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
+    AlignToReferenceBlastDialogFiller(const Settings& settings);
+    AlignToReferenceBlastDialogFiller(CustomScenario* c);
 
     void commonScenario();
 
-    static void setReference(HI::GUITestOpStatus& os, const QString& referenceUrl, QWidget* dialog);
-    static void setReads(HI::GUITestOpStatus& os, const QStringList& readUrls, QWidget* dialog);
-    static void setDestination(HI::GUITestOpStatus& os, const QString& destinationUrl, QWidget* dialog);
+    static void setReference(const QString& referenceUrl, QWidget* dialog);
+    static void setReads(const QStringList& readUrls, QWidget* dialog);
+    static void setDestination(const QString& destinationUrl, QWidget* dialog);
 
 private:
     Settings settings;

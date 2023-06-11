@@ -28,7 +28,7 @@ using namespace HI;
 
 class GetSequenceByIdFiller : public Filler {
 public:
-    GetSequenceByIdFiller(HI::GUITestOpStatus& _os, const QString& saveTo, bool addToProject);
+    GetSequenceByIdFiller(const QString& saveTo, bool addToProject);
 
     void commonScenario() override;
 
@@ -37,4 +37,4 @@ private:
     bool addToProject;
 };
 
-}
+}  // namespace U2

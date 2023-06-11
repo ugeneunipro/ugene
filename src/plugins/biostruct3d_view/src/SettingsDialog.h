@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <QColorDialog>
-
 #include "AnaglyphRenderer.h"
 #include "BioStruct3DGLWidget.h"
 #include "ui_SettingsDialog.h"

@@ -22,7 +22,7 @@
 #pragma once
 
 #include <harness/UGUITestBase.h>
-//#include <U2Core/U2OpStatus.h>
+// #include <U2Core/U2OpStatus.h>
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
@@ -63,7 +63,7 @@ public:
     }
 
 protected:
-    virtual void run(HI::GUITestOpStatus& os);
+    virtual void run();
 };
 
 }  // namespace GUITest_crazy_user

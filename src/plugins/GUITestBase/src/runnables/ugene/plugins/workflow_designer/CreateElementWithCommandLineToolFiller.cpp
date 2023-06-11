@@ -34,19 +34,19 @@ namespace U2 {
 
 #define GT_CLASS_NAME "CreateElementWithCommandLineFiller"
 
-CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus& os,
-                                                                               const ElementWithCommandLineSettings& settings)
-    : Filler(os, "CreateExternalProcessWorkerDialog"),
+CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(
+    const ElementWithCommandLineSettings& settings)
+    : Filler("CreateExternalProcessWorkerDialog"),
       settings(settings) {
 }
 
-CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "CreateExternalProcessWorkerDialog", scenario) {
+CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(CustomScenario* scenario)
+    : Filler("CreateExternalProcessWorkerDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "run"
 void CreateElementWithCommandLineToolFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     processFirstPage(dialog);
 
@@ -118,7 +118,7 @@ QString CreateElementWithCommandLineToolFiller::formatToArgumentValue(const QStr
 void CreateElementWithCommandLineToolFiller::processStringType(QTableView* table, int row, const ColumnName columnName, const QString& value) {
     CHECK(!value.isEmpty(), );
 
-    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(columnName), row));
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(table, static_cast<int>(columnName), row));
     GTMouseDriver::doubleClick();
     GTKeyboardDriver::keySequence(value);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
@@ -127,12 +127,12 @@ void CreateElementWithCommandLineToolFiller::processStringType(QTableView* table
 void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, int row, const InOutDataType& type) {
     setType(table, row, type.first);
     {
-        GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(ColumnName::Value), row));
+        GTMouseDriver::moveTo(GTTableView::getCellPosition(table, static_cast<int>(ColumnName::Value), row));
         GTMouseDriver::doubleClick();
 
         auto box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString fullValue = formatToArgumentValue(type.second);
-        GTComboBox::selectItemByText(os, box, fullValue);
+        GTComboBox::selectItemByText(box, fullValue);
         if (isOsWindows()) {
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
         }
@@ -146,29 +146,29 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
 
 void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
     if (!settings.elementName.isEmpty()) {
-        GTLineEdit::setText(os, "leName", settings.elementName, dialog);
+        GTLineEdit::setText("leName", settings.elementName, dialog);
     }
 
     switch (settings.tooltype) {
         case CommandLineToolType::ExecutablePath: {
-            auto rbCustomTool = GTWidget::findRadioButton(os, "rbCustomTool", dialog);
+            auto rbCustomTool = GTWidget::findRadioButton("rbCustomTool", dialog);
 
-            GTRadioButton::click(os, rbCustomTool);
-            GTLineEdit::setText(os, "leToolPath", settings.tool, dialog);
+            GTRadioButton::click(rbCustomTool);
+            GTLineEdit::setText("leToolPath", settings.tool, dialog);
             break;
         }
         case CommandLineToolType::IntegratedExternalTool: {
-            auto rbIntegratedTool = GTWidget::findRadioButton(os, "rbIntegratedTool", dialog);
+            auto rbIntegratedTool = GTWidget::findRadioButton("rbIntegratedTool", dialog);
 
-            GTRadioButton::click(os, rbIntegratedTool);
+            GTRadioButton::click(rbIntegratedTool);
             if (!settings.tool.isEmpty()) {
-                auto cbIntegratedTools = GTWidget::findComboBox(os, "cbIntegratedTools", dialog);
+                auto cbIntegratedTools = GTWidget::findComboBox("cbIntegratedTools", dialog);
 
                 if (cbIntegratedTools->findText(settings.tool) == -1) {
-                    GTComboBox::selectItemByText(os, cbIntegratedTools, "Show all tools");
+                    GTComboBox::selectItemByText(cbIntegratedTools, "Show all tools");
                     GTKeyboardDriver::keyClick(Qt::Key_Escape);
                 }
-                GTComboBox::selectItemByText(os, cbIntegratedTools, settings.tool, HI::GTGlobals::UseKeyBoard);
+                GTComboBox::selectItemByText(cbIntegratedTools, settings.tool, HI::GTGlobals::UseKeyBoard);
             }
             break;
         }
@@ -177,74 +177,74 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
     }
 
     // GTGlobals::sleep();
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
 void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) {
-    auto pbAddInput = GTWidget::findWidget(os, "pbAddInput", dialog);
+    auto pbAddInput = GTWidget::findWidget("pbAddInput", dialog);
 
-    auto tvInput = GTWidget::findTableView(os, "tvInput");
+    auto tvInput = GTWidget::findTableView("tvInput");
 
     fillTheTable(tvInput, pbAddInput, settings.input);
 
     // GTGlobals::sleep();
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
 void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
-    auto pbAdd = GTWidget::findWidget(os, "pbAdd", dialog);
+    auto pbAdd = GTWidget::findWidget("pbAdd", dialog);
 
-    auto tvAttributes = GTWidget::findTableView(os, "tvAttributes");
+    auto tvAttributes = GTWidget::findTableView("tvAttributes");
 
     fillTheTable(tvAttributes, pbAdd, settings.parameters);
 
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
 void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) {
-    auto pbAddOutput = GTWidget::findWidget(os, "pbAddOutput", dialog);
+    auto pbAddOutput = GTWidget::findWidget("pbAddOutput", dialog);
 
-    auto tvOutput = GTWidget::findTableView(os, "tvOutput");
+    auto tvOutput = GTWidget::findTableView("tvOutput");
 
     fillTheTable(tvOutput, pbAddOutput, settings.output);
 
     // GTGlobals::sleep();
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
 void CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog) {
-    auto teCommand = GTWidget::findTextEdit(os, "teCommand", dialog);
+    auto teCommand = GTWidget::findTextEdit("teCommand", dialog);
 
-    GTTextEdit::setText(os, teCommand, settings.command);
+    GTTextEdit::setText(teCommand, settings.command);
 
-    MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(os, settings.commandDialogButtonTitle, "You don't use listed parameters in template string");
-    GTUtilsDialog::waitForDialog(os, msbxFiller);
+    MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(settings.commandDialogButtonTitle, "You don't use listed parameters in template string");
+    GTUtilsDialog::waitForDialog(msbxFiller);
     // GTGlobals::sleep();
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Next);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);
 }
 
 void CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog) {
-    auto teDescription = GTWidget::findTextEdit(os, "teDescription", dialog);
+    auto teDescription = GTWidget::findTextEdit("teDescription", dialog);
 
     if (teDescription->toPlainText().isEmpty()) {
-        GTTextEdit::setText(os, teDescription, settings.description);
+        GTTextEdit::setText(teDescription, settings.description);
     }
 
-    auto tePrompter = GTWidget::findTextEdit(os, "tePrompter", dialog);
+    auto tePrompter = GTWidget::findTextEdit("tePrompter", dialog);
 
     if (tePrompter->toPlainText().isEmpty()) {
-        GTTextEdit::setText(os, tePrompter, settings.prompter);
+        GTTextEdit::setText(tePrompter, settings.prompter);
     }
 
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
 void CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget* /*dialog*/) {
-    MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(os, settings.summaryDialogButton, "You have changed the structure of the element");
-    GTUtilsDialog::waitForDialog(os, msbxFiller);
-    GTUtilsWizard::clickButton(os, GTUtilsWizard::Finish);
+    MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(settings.summaryDialogButton, "You have changed the structure of the element");
+    GTUtilsDialog::waitForDialog(msbxFiller);
+    GTUtilsWizard::clickButton(GTUtilsWizard::Finish);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);
 }

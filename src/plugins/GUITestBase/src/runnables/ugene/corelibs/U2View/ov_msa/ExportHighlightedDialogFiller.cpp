@@ -29,21 +29,21 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "ExportHighlightedDialogFiller"
-ExportHighlightedDialogFiller::ExportHighlightedDialogFiller(HI::GUITestOpStatus& os, const QString& filePath, bool inverted)
-    : Filler(os, "ExportHighlightedDialog"),
+ExportHighlightedDialogFiller::ExportHighlightedDialogFiller(const QString& filePath, bool inverted)
+    : Filler("ExportHighlightedDialog"),
       filePath(filePath),
       invertedExport(inverted) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportHighlightedDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
+    GTLineEdit::setText("fileNameEdit", filePath, dialog);
 
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "transposeBox", dialog), invertedExport);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("transposeBox", dialog), invertedExport);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

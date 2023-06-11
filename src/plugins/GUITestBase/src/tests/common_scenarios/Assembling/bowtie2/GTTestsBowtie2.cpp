@@ -23,8 +23,6 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/ToolsMenu.h>
-
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
@@ -43,9 +41,9 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //   {Reference sequence} : _common_data/fasta/human_T1_cutted.fa
     //   {Index file name} : _tmp/bowtie2/human_T1_cutted
     //  And click Start.
-    GTUtilsDialog::waitForDialog(os, new BuildIndexDialogFiller(os, testDir + "_common_data/fasta/", "human_T1_cutted.fa", "Bowtie2", false, testDir + "_common_data/scenarios/sandbox/", "human_T1_cutted"));
+    GTUtilsDialog::waitForDialog(new BuildIndexDialogFiller(testDir + "_common_data/fasta/", "human_T1_cutted.fa", "Bowtie2", false, testDir + "_common_data/scenarios/sandbox/", "human_T1_cutted"));
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Build index for reads mapping..."});
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Build index for reads mapping..."});
 
     // Expected state: there are six files as result:
     // human_T1_cutted.1.bt2, human_T1_cutted.2.bt2, human_T1_cutted.3.bt2, human_T1_cutted.4.bt2,
@@ -58,7 +56,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     indexList << testDir + "_common_data/scenarios/sandbox/human_T1_cutted.rev.2.bt2";
 
     for (int i = 0; i < indexList.size(); i++) {
-        CHECK_SET_ERR(GTFile::check(os, indexList[i]), "Index file " + indexList[i] + " is missing!");
+        CHECK_SET_ERR(GTFile::check(indexList[i]), "Index file " + indexList[i] + " is missing!");
     }
 }
 
@@ -96,27 +94,24 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // And click Start.
     // Expected state: an "Import SAM file" dialog appears. The incoming assembly has name "human_T1" and contains 3 reads.
-    GTFile::copy(os, testDir + "_common_data/bowtie2/index/human_T1_cutted.fa", testDir + "_common_data/scenarios/sandbox/human_T1_cutted.fa");
-    CHECK_OP(os, );
+    GTFile::copy(testDir + "_common_data/bowtie2/index/human_T1_cutted.fa", testDir + "_common_data/scenarios/sandbox/human_T1_cutted.fa");
 
     AlignShortReadsFiller::Bowtie2Parameters bowtie2Parameters(testDir + "_common_data/scenarios/sandbox/",
                                                                "human_T1_cutted.fa",
                                                                testDir + "_common_data/fasta/",
                                                                "shuffled.fa");
     // Parameters
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, alignShortReadsFiller);
-    CHECK_OP(os, );
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&bowtie2Parameters);
 
-    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, importBAMFileFiller);
-    CHECK_OP(os, );
+    GTUtilsDialog::add(alignShortReadsFiller);
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_OP(os, );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller();
+
+    GTUtilsDialog::add(importBAMFileFiller);
+
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -146,8 +141,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //        {No reverse-complement orientation (--norc)} : checked
     //        {No overlapping mates (--no-overlap)} : checked
     //        {No mates containing one another (--no-contain)} : checked
-    GTFile::copy(os, testDir + "_common_data/bowtie2/index/human_T1_cutted.fa", testDir + "_common_data/scenarios/sandbox/human_T1_cutted.fa");
-    CHECK_OP(os, );
+    GTFile::copy(testDir + "_common_data/bowtie2/index/human_T1_cutted.fa", testDir + "_common_data/scenarios/sandbox/human_T1_cutted.fa");
 
     AlignShortReadsFiller::Bowtie2Parameters bowtie2Parameters(testDir + "_common_data/scenarios/sandbox/",
                                                                "human_T1_cutted.fa",
@@ -168,19 +162,17 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     bowtie2Parameters.noOverlappingMates = true;
     bowtie2Parameters.noMatesContainingOneAnother = true;
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, alignShortReadsFiller);
-    CHECK_OP(os, );
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&bowtie2Parameters);
 
-    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, importBAMFileFiller);
-    CHECK_OP(os, );
+    GTUtilsDialog::add(alignShortReadsFiller);
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_OP(os, );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller();
+
+    GTUtilsDialog::add(importBAMFileFiller);
+
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -210,8 +202,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //        {No overlapping mates (--no-overlap)} : checked
     //        {No mates containing one another (--no-contain)} : unchecked
 
-    GTFile::copy(os, testDir + "_common_data/bowtie2/index/human_T1_cutted.fa", testDir + "_common_data/scenarios/sandbox/human_T1_cutted.fa");
-    CHECK_OP(os, );
+    GTFile::copy(testDir + "_common_data/bowtie2/index/human_T1_cutted.fa", testDir + "_common_data/scenarios/sandbox/human_T1_cutted.fa");
 
     AlignShortReadsFiller::Bowtie2Parameters bowtie2Parameters(testDir + "_common_data/bowtie2/index",
                                                                "human_T1_cutted.fa",
@@ -239,20 +230,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     bowtie2Parameters.noOverlappingMates = false;
     bowtie2Parameters.noMatesContainingOneAnother = false;
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &bowtie2Parameters);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, alignShortReadsFiller);
-    CHECK_OP(os, );
+    GTUtilsDialog::add(new AlignShortReadsFiller(&bowtie2Parameters));
+    GTUtilsDialog::add(new ImportBAMFileFiller(testDir + "_common_data/scenarios/sandbox/human_T1_cutted.sam.ugenedb"));
 
-    ImportBAMFileFiller* importBAMFileFiller = new ImportBAMFileFiller(os,
-                                                                       testDir + "_common_data/scenarios/sandbox/human_T1_cutted.sam.ugenedb");
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, importBAMFileFiller);
-    CHECK_OP(os, );
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_OP(os, );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -261,11 +244,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                                                                testDir + "_common_data/scenarios/assembly/bowtie2/",
                                                                "e_coli_1000.fq");
     bowtie2Parameters.prebuiltIndex = true;
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &bowtie2Parameters));
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsDialog::add(new AlignShortReadsFiller(&bowtie2Parameters));
+    GTUtilsDialog::add(new ImportBAMFileFiller());
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -273,11 +256,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                                         "lambda_virus.fa.gz",
                                                         testDir + "_common_data/bowtie2/",
                                                         "reads_1.fq");
-    GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(&parameters));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 
-    GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new ImportBAMFileFiller());
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 }  // namespace GUITest_Bowtie2

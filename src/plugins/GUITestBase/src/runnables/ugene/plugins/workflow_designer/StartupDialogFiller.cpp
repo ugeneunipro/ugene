@@ -34,29 +34,28 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::StartupDialogFiller"
 
-StartupDialogFiller::StartupDialogFiller(HI::GUITestOpStatus& os, const QString& path, bool isPathValid)
-    : Filler(os, "StartupDialog"),
+StartupDialogFiller::StartupDialogFiller(const QString& path, bool isPathValid)
+    : Filler("StartupDialog"),
       path(path),
       isPathValid(isPathValid) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void StartupDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     if (path != UGUITest::sandBoxDir) {
-        QString originalPath = GTLineEdit::getText(os, "pathEdit", dialog);
-        GTLineEdit::setText(os, "pathEdit", path, dialog);
+        QString originalPath = GTLineEdit::getText("pathEdit", dialog);
+        GTLineEdit::setText("pathEdit", path, dialog);
 
         if (!isPathValid) {
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-            CHECK_OP(os, );
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 
-            GTLineEdit::setText(os, "pathEdit", originalPath, dialog);
+            GTLineEdit::setText("pathEdit", originalPath, dialog);
         }
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

@@ -36,11 +36,11 @@ namespace U2 {
 #define GT_CLASS_NAME "CreateElementWithScriptDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void CreateElementWithScriptDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "nameEdit", name, dialog);
+    GTLineEdit::setText("nameEdit", name, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -48,25 +48,25 @@ void CreateElementWithScriptDialogFiller::commonScenario() {
 #define GT_CLASS_NAME "ScriptEditorDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ScriptEditorDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "scriptPathEdit", url, dialog);
+    GTLineEdit::setText("scriptPathEdit", url, dialog);
 
     QTextEdit* edit = nullptr;
-    foreach (QTextEdit* textEdit,   dialog->findChildren<QTextEdit*>()) {
+    foreach (QTextEdit* textEdit, dialog->findChildren<QTextEdit*>()) {
         if (!textEdit->isReadOnly()) {
             edit = textEdit;
         }
     }
     GT_CHECK(edit, "textEdit not found");
-    GTTextEdit::setText(os, edit, text);
+    GTTextEdit::setText(edit, text);
 
     if (checkSyntax) {
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, checkSyntaxResult));
-        GTWidget::click(os, GTWidget::findWidget(os, "checkButton", dialog));
-        GTUtilsDialog::checkNoActiveWaiters(os);
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, checkSyntaxResult));
+        GTWidget::click(GTWidget::findWidget("checkButton", dialog));
+        GTUtilsDialog::checkNoActiveWaiters();
     }
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -74,7 +74,7 @@ void ScriptEditorDialogFiller::commonScenario() {
 #define GT_CLASS_NAME "ScriptEditorDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ScriptEditorDialogSyntaxChecker::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QTextEdit* edit = nullptr;
     foreach (QTextEdit* textEdit, dialog->findChildren<QTextEdit*>()) {
@@ -83,14 +83,14 @@ void ScriptEditorDialogSyntaxChecker::commonScenario() {
         }
     }
     GT_CHECK(edit != nullptr, "textEdit not found");
-    GTTextEdit::setText(os, edit, text);
+    GTTextEdit::setText(edit, text);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, message));
-    GTWidget::click(os, GTWidget::findWidget(os, "checkButton", dialog));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, message));
+    GTWidget::click(GTWidget::findWidget("checkButton", dialog));
 
     GTGlobals::sleep(1000);
 
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

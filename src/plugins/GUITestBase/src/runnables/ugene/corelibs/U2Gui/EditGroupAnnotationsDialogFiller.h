@@ -27,8 +27,8 @@ namespace U2 {
 using namespace HI;
 class EditGroupAnnotationsFiller : public Filler {
 public:
-    EditGroupAnnotationsFiller(HI::GUITestOpStatus& _os, const QString& _groupName)
-        : Filler(_os, ""), groupName(_groupName) {
+    EditGroupAnnotationsFiller(const QString& _groupName)
+        : Filler(""), groupName(_groupName) {
     }
 
     void commonScenario();

@@ -28,7 +28,7 @@ using namespace HI;
 
 class ClustalOSupportRunDialogFiller : public Filler {
 public:
-    ClustalOSupportRunDialogFiller(HI::GUITestOpStatus& os);
+    ClustalOSupportRunDialogFiller();
 
     void commonScenario();
 };

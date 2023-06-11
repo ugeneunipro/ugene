@@ -34,7 +34,7 @@ using namespace HI;
 
 class StartupDialogFiller : public Filler {
 public:
-    StartupDialogFiller(HI::GUITestOpStatus& os, const QString& path = UGUITest::sandBoxDir, bool isPathValid = true);
+    StartupDialogFiller(const QString& path = UGUITest::sandBoxDir, bool isPathValid = true);
     void commonScenario();
 
 private:

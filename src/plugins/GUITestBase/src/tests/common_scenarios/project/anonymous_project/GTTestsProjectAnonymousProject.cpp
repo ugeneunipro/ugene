@@ -42,12 +42,12 @@ namespace GUITest_common_scenarios_project_anonymous_project {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 1. Use menu {File->Open}. Open file data/samples/PDB/1CF7.pdb
-    GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/PDB/", "1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state:
     //     1) Project view with document "1CF7.PDB" is opened
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument("1CF7.PDB");
 
     // 2. Use menu {File->Export Project}
     // Expected state: "Export Project" dialog has appeared
@@ -56,36 +56,36 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     {Project file name} proj2.uprj
     // 4. Click OK button
     // 5. Click NO in opened messagebox
-    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Export project..."});
+    GTUtilsDialog::waitForDialog(new ExportProjectDialogFiller(testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
+    GTMenu::clickMainMenuItem({"File", "Export project..."});
 
     // 6. Use menu {File->Close project}
     // 7. Click NO in opened messagebox
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 
     // 8. Use menu {File->Open}. Open project _common_data/scenarios/sandbox/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state:
     //     1) project view with document "1CF7.PDB" has been opened,
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument("1CF7.PDB");
 
     //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.PDB"
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.PDB");
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("1CF7.PDB"));
+    GTUtilsToolTip::checkExistingToolTip("_common_data/scenarios/sandbox/1CF7.PDB");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 1. Use menu {File->Open}. Open file samples/PDB/1CF7.pdb
-    GTFileDialog::openFile(os, dataDir + "samples/PDB/", "1CF7.PDB");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/PDB/", "1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state:
     //     1) Project view with document "1CF7.PDB" is opened
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument("1CF7.PDB");
 
     // 2. Use menu {File->Save Project As}
     // Expected state: "Save project as" dialog has appeared
@@ -95,26 +95,26 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Project Folder:} _common_data/scenarios/sandbox
     //     {Project file} proj2
     // 4. Click Save button
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
-    GTMenu::clickMainMenuItem(os, {"File", "Save project as..."});
+    GTUtilsDialog::waitForDialog(new SaveProjectAsDialogFiller("proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
+    GTMenu::clickMainMenuItem({"File", "Save project as..."});
 
     // 5. Use menu {File->Close project}
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
+    GTMenu::clickMainMenuItem({"File", "Close project"});
 
     // Expected state: project and sequence view closed
-    GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
+    GTUtilsProject::checkProject(GTUtilsProject::NotExists);
 
     // 6. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state:
     //     1) project view with document "1CF7.PDB" has been opened,
-    GTUtilsDocument::checkDocument(os, "1CF7.PDB");
+    GTUtilsDocument::checkDocument("1CF7.PDB");
     //     3) File path at tooltip for "1CF7.PDB" must be "samples/PDB/1CF7.PDB"
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("1CF7.PDB"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
+    GTUtilsToolTip::checkExistingToolTip("samples/PDB/1CF7.PDB");
 }
 
 }  // namespace GUITest_common_scenarios_project_anonymous_project

@@ -32,7 +32,7 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void CAP3SupportDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     foreach (QString file, input) {
         int num = file.lastIndexOf('/');
@@ -43,8 +43,8 @@ void CAP3SupportDialogFiller::commonScenario() {
         QString path = file.left(num);
         QString name = file.right(file.length() - num - 1);
 
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path, name));
-        GTWidget::click(os, GTWidget::findWidget(os, "addButton", dialog));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(path, name));
+        GTWidget::click(GTWidget::findWidget("addButton", dialog));
     }
 
     int num = output.lastIndexOf('/');
@@ -54,10 +54,10 @@ void CAP3SupportDialogFiller::commonScenario() {
     }
     QString outputPath = output.left(num);
     QString outputName = output.right(output.length() - num - 1);
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, outputPath, outputName, GTFileDialogUtils::Save));
-    GTWidget::click(os, GTWidget::findWidget(os, "specifyOutputPathButton", dialog));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(outputPath, outputName, GTFileDialogUtils::Save));
+    GTWidget::click(GTWidget::findWidget("specifyOutputPathButton", dialog));
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

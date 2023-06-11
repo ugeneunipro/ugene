@@ -32,39 +32,39 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::SequenceReadingModeSelectorDialogFiller"
 
-SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller(HI::GUITestOpStatus& _os, CustomScenario* c)
-    : Filler(_os, "SequenceReadingModeSelectorDialog", c),
+SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller(CustomScenario* c)
+    : Filler("SequenceReadingModeSelectorDialog", c),
       cancel(false) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void SequenceReadingModeSelectorDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    auto buttonBox = GTWidget::findDialogButtonBox("buttonBox", dialog);
     if (cancel) {
         QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
         GT_CHECK(button != nullptr, "standard button not found");
-        GTWidget::click(os, button);
+        GTWidget::click(button);
         return;
     }
     if (readingMode == Separate) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "separateRB", dialog));
+        GTRadioButton::click(GTWidget::findRadioButton("separateRB", dialog));
     }
     if (readingMode == Merge) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "mergeRB", dialog));
+        GTRadioButton::click(GTWidget::findRadioButton("mergeRB", dialog));
 
-        auto mergeSpinBox = GTWidget::findSpinBox(os, "mergeSpinBox", dialog);
-        GTSpinBox::setValue(os, mergeSpinBox, bases, GTGlobals::UseKeyBoard);
+        auto mergeSpinBox = GTWidget::findSpinBox("mergeSpinBox", dialog);
+        GTSpinBox::setValue(mergeSpinBox, bases, GTGlobals::UseKeyBoard);
     }
     if (readingMode == Join) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "malignmentRB", dialog));
+        GTRadioButton::click(GTWidget::findRadioButton("malignmentRB", dialog));
     }
     if (readingMode == Align) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "refalignmentRB", dialog));
+        GTRadioButton::click(GTWidget::findRadioButton("refalignmentRB", dialog));
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

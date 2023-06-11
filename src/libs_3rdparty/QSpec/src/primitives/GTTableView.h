@@ -18,9 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef GTTABLEVIEW_H
-#define GTTABLEVIEW_H
-
+#pragma once
 #include <QPoint>
 #include <QTableView>
 
@@ -30,19 +28,18 @@ namespace HI {
 
 class HI_EXPORT GTTableView {
 public:
-    static QPoint getCellPosition(GUITestOpStatus& os, QTableView* table, int column, int row);
+    static QPoint getCellPosition(QTableView* table, int column, int row);
 
-    static QPoint getCellPoint(GUITestOpStatus& os, QTableView* table, int row, int column);
+    static QPoint getCellPoint(QTableView* table, int row, int column);
 
-    static int rowCount(GUITestOpStatus& os, QTableView* table);
+    static int rowCount(QTableView* table);
 
-    static QString data(GUITestOpStatus& os, QTableView* table, int row, int column);
+    static QString data(QTableView* table, int row, int column);
 
-    static void scrollTo(GUITestOpStatus& os, QTableView* table, const QModelIndex& index);
+    static void scrollTo(QTableView* table, const QModelIndex& index);
 
     // Scrolls to a cell (`row`, `column`) and clicks on it.
-    static void click(GUITestOpStatus& os, QTableView* table, int row, int column);
+    static void click(QTableView* table, int row, int column);
 };
 
 }  // namespace HI
-#endif  // GTTABLEVIEW_H

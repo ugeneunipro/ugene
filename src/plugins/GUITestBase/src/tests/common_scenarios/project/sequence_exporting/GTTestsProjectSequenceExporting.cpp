@@ -30,7 +30,6 @@
 
 #include <QApplication>
 #include <QCheckBox>
-#include <QPlainTextEdit>
 #include <QTreeView>
 
 #include <U2Core/AppContext.h>
@@ -67,34 +66,34 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
-    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
-    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+    GTFileDialog::openFile(sandBoxDir, projectFileName);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDocument::checkDocument(os, firstAnnFileName);
-    GTUtilsDocument::checkDocument(os, secondAnnFileName);
+    GTUtilsDocument::checkDocument(firstAnnFileName);
+    GTUtilsDocument::checkDocument(secondAnnFileName);
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
-    Document* doc1 = GTUtilsDocument::getDocument(os, firstAnnFileName);
-    Document* doc2 = GTUtilsDocument::getDocument(os, secondAnnFileName);
+    Document* doc1 = GTUtilsDocument::getDocument(firstAnnFileName);
+    Document* doc2 = GTUtilsDocument::getDocument(secondAnnFileName);
 
     CHECK_SET_ERR(!doc1->isLoaded(), "1.gb is loaded");
     CHECK_SET_ERR(!doc2->isLoaded(), "2.gb is loaded");
     //     2) UGENE window titled with text "proj4 UGENE"
-    GTMainWindow::checkTitle(os, "proj4 UGENE");
+    GTMainWindow::checkTitle("proj4 UGENE");
 
     // 2. Double-click on "[a] Annotations" sequence object, in project view tree
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("Annotations"));
     GTMouseDriver::doubleClick();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
     // 3. Select region 1..4 at sequence view. Right click to selected region open context menu. Use menu {Export->Export Selected Sequence region}
     // Expected state: Export DNA Sequences To FASTA Format dialog open
@@ -102,21 +101,21 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // {Export to file:} _common_data/scenarios/sandbox/exp.fasta
     // {Add created document to project} set checked
 
-    GTUtilsSequenceView::selectSequenceRegion(os, 1, 4);
+    GTUtilsSequenceView::selectSequenceRegion(1, 4);
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_selected_sequence_region"}, GTGlobals::UseMouse));
-    GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_EXPORT", "action_export_selected_sequence_region"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
 
-    QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
+    QWidget* activeWindow = GTUtilsMdi::activeWindow();
     QPoint p = activeWindow->mapToGlobal(activeWindow->rect().center());
     GTMouseDriver::moveTo(QPoint(p.x(), 200));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence view [1..4] has been opened, with sequence "AAAT"
-    GTUtilsDocument::checkDocument(os, "exp.fasta");
+    GTUtilsDocument::checkDocument("exp.fasta");
 
     QString seq;
-    GTUtilsSequenceView::getSequenceAsString(os, seq);
+    GTUtilsSequenceView::getSequenceAsString(seq);
 
     CHECK_SET_ERR(seq == "AAAT", "exported sequence differs from AAAT");
 }
@@ -129,27 +128,27 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
-    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir, projectFileName);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened
-    GTUtilsDocument::checkDocument(os, firstAnnFileName);
-    GTUtilsDocument::checkDocument(os, secondAnnFileName);
+    GTUtilsDocument::checkDocument(firstAnnFileName);
+    GTUtilsDocument::checkDocument(secondAnnFileName);
 
     // 2. Double-click on "[a] Annotations" sequence object, in project view tree
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("Annotations"));
     GTMouseDriver::doubleClick();
 
     //     Expected result: NC_001363 sequence has been opened in sequence view
-    GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
     // 3. Select annotation C. Use context menu item {Export->Export Sequence of Selected Annotations}
     // Expected state: Export Sequence of selected annotations will open
@@ -160,19 +159,19 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     {Add created document to project} set checked
     // 5. Click Export button.
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
-    Runnable* filler = new ExportSequenceOfSelectedAnnotationsFiller(os,
-                                                                     testDir + "_common_data/scenarios/sandbox/exp.fasta",
-                                                                     ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                     ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate);
-    GTUtilsDialog::add(os, filler);
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
+    Runnable* filler = new ExportSequenceOfSelectedAnnotationsFiller(
+        testDir + "_common_data/scenarios/sandbox/exp.fasta",
+        ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+        ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate);
+    GTUtilsDialog::add(filler);
 
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("C"));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: sequence view C has been opened, with sequence "GAATAGAAAAG"
-    GTUtilsSequenceView::checkSequence(os, "GAATAGAAAAG");
+    GTUtilsSequenceView::checkSequence("GAATAGAAAAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -183,33 +182,33 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
-    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir, projectFileName);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened
-    GTUtilsProjectTreeView::findIndex(os, firstAnnFileName);  // checks inside
-    GTUtilsProjectTreeView::findIndex(os, secondAnnFileName);
+    GTUtilsProjectTreeView::findIndex(firstAnnFileName);  // checks inside
+    GTUtilsProjectTreeView::findIndex(secondAnnFileName);
 
     // 2. Double-click on "[a] Annotations" sequence object, in project view tree
-    QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
+    QPoint itemPos = GTUtilsProjectTreeView::getItemCenter("Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
-    GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
     // 3. Select joined annotation B. Use context menu item {Export->Export Sequence of Selected Annotations}
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B_joined"));
     GTMouseDriver::doubleClick();
 
     // Expected state: Export Sequence of Selected Annotations
@@ -220,20 +219,20 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Merge sequences} set selected
     //     {Gap length} 5
     // 5. Click Export button.
-    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
-    Runnable* filler = new ExportSequenceOfSelectedAnnotationsFiller(os,
-                                                                     testDir + "_common_data/scenarios/sandbox/exp.fasta",
-                                                                     ExportSequenceOfSelectedAnnotationsFiller::Fasta,
-                                                                     ExportSequenceOfSelectedAnnotationsFiller::Merge,
-                                                                     5,
-                                                                     true);
-    GTUtilsDialog::add(os, filler);
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined"));
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
+    Runnable* filler = new ExportSequenceOfSelectedAnnotationsFiller(
+        testDir + "_common_data/scenarios/sandbox/exp.fasta",
+        ExportSequenceOfSelectedAnnotationsFiller::Fasta,
+        ExportSequenceOfSelectedAnnotationsFiller::Merge,
+        5,
+        true);
+    GTUtilsDialog::add(filler);
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B_joined"));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: sequence view B part 1 of 3 has been opened, with sequence "ACCCCACCCGTAGGTGGCAAGCTAGCTTAAG"
-    GTUtilsSequenceView::checkSequence(os, "ACCCCACCCGTAGGTGGCAAGCTAGCTTAAG");
+    GTUtilsSequenceView::checkSequence("ACCCCACCCGTAGGTGGCAAGCTAGCTTAAG");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -244,32 +243,32 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
-    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
-    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+    GTFileDialog::openFile(sandBoxDir, projectFileName);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDocument::checkDocument(os, firstAnnFileName);
-    GTUtilsDocument::checkDocument(os, secondAnnFileName);
+    GTUtilsDocument::checkDocument(firstAnnFileName);
+    GTUtilsDocument::checkDocument(secondAnnFileName);
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("Annotations"));
     GTMouseDriver::doubleClick();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {ADV_MENU_EXPORT, ACTION_EXPORT_ANNOTATIONS}));
-    GTUtilsDialog::add(os, new ExportAnnotationsFiller(os, testDir + "_common_data/scenarios/sandbox/1.csv", ExportAnnotationsFiller::csv));
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined"));
+    GTUtilsDialog::add(new PopupChooser({ADV_MENU_EXPORT, ACTION_EXPORT_ANNOTATIONS}));
+    GTUtilsDialog::add(new ExportAnnotationsFiller(testDir + "_common_data/scenarios/sandbox/1.csv", ExportAnnotationsFiller::csv, false));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("B_joined"));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    bool equals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0004.csv");
-    CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
+    bool isEquals = GTFile::equals(testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0004.csv");
+    CHECK_SET_ERR(isEquals, "Exported file differs from the test file");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -280,237 +279,237 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     QString secondAnnFilePath = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, projectFilePath, sandBoxDir + "/" + projectFileName);
-    GTFile::copy(os, firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
+    GTFile::copy(projectFilePath, sandBoxDir + "/" + projectFileName);
+    GTFile::copy(firstAnnFilePath, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(secondAnnFilePath, sandBoxDir + "/" + secondAnnFileName);
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
-    GTFileDialog::openFile(os, sandBoxDir, projectFileName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(sandBoxDir, projectFileName);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDocument::checkDocument(os, firstAnnFileName);
-    GTUtilsDocument::checkDocument(os, secondAnnFileName);
+    GTUtilsDocument::checkDocument(firstAnnFileName);
+    GTUtilsDocument::checkDocument(secondAnnFileName);
 
-    QModelIndex nc_001363 = GTUtilsProjectTreeView::findIndex(os, "NC_001363 sequence", GTUtilsProjectTreeView::findIndex(os, firstAnnFileName));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QModelIndex nc_001363 = GTUtilsProjectTreeView::findIndex("NC_001363 sequence", GTUtilsProjectTreeView::findIndex(firstAnnFileName));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, nc_001363));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(nc_001363));
     GTMouseDriver::doubleClick();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, firstAnnFileName, AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument(firstAnnFileName, AnnotatedDNAViewFactory::ID);
 
-    GTTreeWidget::doubleClick(os, GTUtilsAnnotationsTreeView::findItem(os, "C"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTTreeWidget::doubleClick(GTUtilsAnnotationsTreeView::findItem("C"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_annotations"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_EXPORT", "action_export_annotations"}, GTGlobals::UseKey));
 
-    GTUtilsDialog::add(os,
-                       new ExportAnnotationsFiller(os,
-                                                   testDir + "_common_data/scenarios/sandbox/1.csv",
-                                                   ExportAnnotationsFiller::csv,
-                                                   true,
-                                                   true,
-                                                   false));
+    GTUtilsDialog::add(
+        new ExportAnnotationsFiller(
+            testDir + "_common_data/scenarios/sandbox/1.csv",
+            ExportAnnotationsFiller::csv,
+            true,
+            true,
+            false));
     GTMouseDriver::click(Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    bool isEquals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0005.csv");
+    bool isEquals = GTFile::equals(testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0005.csv");
     CHECK_SET_ERR(isEquals, "Exported file differs from the test file");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
-    Runnable* filler = new CreateDocumentFiller(os,
-                                                "ACGTGTGTGTACGACAGACGACAGCAGACGACAGACAGACAGACAGCAAGAGAGAGAGAG",
-                                                true,
-                                                CreateDocumentFiller::StandardRNA,
-                                                true,
-                                                false,
-                                                "",
-                                                testDir + "_common_data/scenarios/sandbox/",
-                                                CreateDocumentFiller::Genbank,
-                                                "Sequence",
-                                                false);
-    GTUtilsDialog::waitForDialog(os, filler);
-    GTMenu::clickMainMenuItem(os, {"File", "New document from text..."}, GTGlobals::UseKey);
+    Runnable* filler = new CreateDocumentFiller(
+        "ACGTGTGTGTACGACAGACGACAGCAGACGACAGACAGACAGACAGCAAGAGAGAGAGAG",
+        true,
+        CreateDocumentFiller::StandardRNA,
+        true,
+        false,
+        "",
+        testDir + "_common_data/scenarios/sandbox/",
+        CreateDocumentFiller::Genbank,
+        "Sequence",
+        false);
+    GTUtilsDialog::waitForDialog(filler);
+    GTMenu::clickMainMenuItem({"File", "New document from text..."}, GTGlobals::UseKey);
 
-    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "misc_feature_group", "misc_feature", "complement(1.. 20)"));
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(true, "misc_feature_group", "misc_feature", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature"));
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("misc_feature"));
     GTMouseDriver::doubleClick();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
-    Runnable* filler3 = new ExportSequenceOfSelectedAnnotationsFiller(os,
-                                                                      testDir + "_common_data/scenarios/sandbox/exp.gb",
-                                                                      ExportSequenceOfSelectedAnnotationsFiller::Genbank,
-                                                                      ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
-                                                                      0,
-                                                                      true,
-                                                                      true);
-    GTUtilsDialog::add(os, filler3);
-    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature"));
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_EXPORT", "action_export_sequence_of_selected_annotations"}, GTGlobals::UseKey));
+    Runnable* filler3 = new ExportSequenceOfSelectedAnnotationsFiller(
+        testDir + "_common_data/scenarios/sandbox/exp.gb",
+        ExportSequenceOfSelectedAnnotationsFiller::Genbank,
+        ExportSequenceOfSelectedAnnotationsFiller::SaveAsSeparate,
+        0,
+        true,
+        true);
+    GTUtilsDialog::add(filler3);
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("misc_feature"));
     GTMouseDriver::click(Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     class CustomExportSelectedRegion : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
-            auto formatCombo = GTWidget::findComboBox(os, "formatCombo", dialog);
-            auto withAnnotationsBox = GTWidget::findCheckBox(os, "withAnnotationsBox", dialog);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto formatCombo = GTWidget::findComboBox("formatCombo", dialog);
+            auto withAnnotationsBox = GTWidget::findCheckBox("withAnnotationsBox", dialog);
 
             CHECK_SET_ERR(!withAnnotationsBox->isEnabled(), "Export with annotations flag is enabled unexpectedly");
             CHECK_SET_ERR(!withAnnotationsBox->isChecked(), "Export with annotations flag is checked unexpectedly");
 
-            GTComboBox::selectItemByText(os, formatCombo, "GenBank");
+            GTComboBox::selectItemByText(formatCombo, "GenBank");
             CHECK_SET_ERR(withAnnotationsBox->isEnabled(), "Export with annotations flag is disabled unexpectedly");
             CHECK_SET_ERR(withAnnotationsBox->isChecked(), "Export with annotations flag is unchecked unexpectedly");
 
-            GTComboBox::selectItemByText(os, formatCombo, "FASTQ");
+            GTComboBox::selectItemByText(formatCombo, "FASTQ");
             CHECK_SET_ERR(!withAnnotationsBox->isEnabled(), "Export with annotations flag is enabled unexpectedly");
             CHECK_SET_ERR(!withAnnotationsBox->isChecked(), "Export with annotations flag is checked unexpectedly");
 
-            GTComboBox::selectItemByText(os, formatCombo, "GFF");
+            GTComboBox::selectItemByText(formatCombo, "GFF");
             CHECK_SET_ERR(withAnnotationsBox->isEnabled(), "Export with annotations flag is disabled unexpectedly");
             CHECK_SET_ERR(withAnnotationsBox->isChecked(), "Export with annotations flag is unchecked unexpectedly");
 
-            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         }
     };
 
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
-    GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, new CustomExportSelectedRegion()));
-    GTUtilsProjectTreeView::click(os, "NC_001363", Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(new CustomExportSelectedRegion()));
+    GTUtilsProjectTreeView::click("NC_001363", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     // the test checks that a sequence associated with an annotation table can be exported
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
-    GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0009.fa"));
-    GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
+    GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(sandBoxDir, "Project_export_test_0009.fa"));
+    GTUtilsProjectTreeView::click("NC_001363 features", Qt::RightButton);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "Project_export_test_0009.fa");
-    GTUtilsProjectTreeView::findIndex(os, "NC_001363", docIndex);
+    QModelIndex docIndex = GTUtilsProjectTreeView::findIndex("Project_export_test_0009.fa");
+    GTUtilsProjectTreeView::findIndex("NC_001363", docIndex);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     // negative test for an annotation table not associated with any sequence
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTFileDialog::openFile(os, dataDir + "samples/GFF/", "5prime_utr_intron_A21.gff");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTFileDialog::openFile(dataDir + "samples/GFF/", "5prime_utr_intron_A21.gff");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtils::checkExportServiceIsEnabled();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
+    GTUtilsProjectTreeView::click("Ca21chr5 features", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // the rest part of the test checks that a newly created association can be used for sequence export
 
-    QModelIndex idxGff = GTUtilsProjectTreeView::findIndex(os, "Ca21chr5 features");
-    auto seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QModelIndex idxGff = GTUtilsProjectTreeView::findIndex("Ca21chr5 features");
+    auto seqArea = GTWidget::findWidget("render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
-    GTUtilsDialog::add(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, "Yes"));
-    GTUtilsProjectTreeView::dragAndDrop(os, idxGff, seqArea);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new CreateObjectRelationDialogFiller());
+    GTUtilsDialog::add(new MessageBoxDialogFiller("Yes"));
+    GTUtilsProjectTreeView::dragAndDrop(idxGff, seqArea);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
-    GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0010.fa"));
-    GTUtilsProjectTreeView::click(os, "Ca21chr5 features", Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(sandBoxDir, "Project_export_test_0010.fa"));
+    GTUtilsProjectTreeView::click("Ca21chr5 features", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "Project_export_test_0010.fa");
-    GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", docIndex);
+    QModelIndex docIndex = GTUtilsProjectTreeView::findIndex("Project_export_test_0010.fa");
+    GTUtilsProjectTreeView::findIndex("human_T1 (UCSC April 2002 chr7:115977709-117855134)", docIndex);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
     // negative test for annotation table associated with a removed sequence
 
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProjectTreeView::click(os, "NC_001363");
+    GTUtilsProjectTreeView::click("NC_001363");
     GTKeyboardDriver::keyPress(Qt::Key_Delete);
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
+    GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
+    GTUtilsProjectTreeView::click("NC_001363 features", Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
     // test for an annotation table whose sequence association was changed
-    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
 
-    QModelIndex annIdx = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features");
-    auto seqArea = GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QModelIndex annIdx = GTUtilsProjectTreeView::findIndex("NC_001363 features");
+    auto seqArea = GTWidget::findWidget("render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
-    GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
-    GTUtilsProjectTreeView::dragAndDrop(os, annIdx, seqArea);
+    GTUtilsDialog::waitForDialog(new CreateObjectRelationDialogFiller());
+    GTUtilsProjectTreeView::dragAndDrop(annIdx, seqArea);
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDialog::add(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
-    GTUtilsDialog::add(os, new ExportSelectedRegionFiller(os, sandBoxDir, "Project_export_test_0012.fa"));
-    GTUtilsProjectTreeView::click(os, "NC_001363 features", Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
+    GTUtilsDialog::add(new ExportSelectedRegionFiller(sandBoxDir, "Project_export_test_0012.fa"));
+    GTUtilsProjectTreeView::click("NC_001363 features", Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QModelIndex docIndex = GTUtilsProjectTreeView::findIndex(os, "Project_export_test_0012.fa");
-    GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)", docIndex);
+    QModelIndex docIndex = GTUtilsProjectTreeView::findIndex("Project_export_test_0012.fa");
+    GTUtilsProjectTreeView::findIndex("human_T1 (UCSC April 2002 chr7:115977709-117855134)", docIndex);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0013) {
     // test for multiple annotation object selection associated sequence import is not available
-    GTFileDialog::openFile(os, dataDir + "samples/GFF/", "5prime_utr_intron_A21.gff");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/GFF/", "5prime_utr_intron_A21.gff");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTUtilsProjectTreeView::click(os, "Ca21chr5 features");
-    GTUtilsProjectTreeView::click(os, "Ca21chr1 features");
+    GTUtilsProjectTreeView::click("Ca21chr5 features");
+    GTUtilsProjectTreeView::click("Ca21chr1 features");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtils::checkExportServiceIsEnabled();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}, PopupChecker::NotExists));
+    GTUtilsDialog::waitForDialog(new PopupChecker({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}, PopupChecker::NotExists));
     GTMouseDriver::click(Qt::RightButton);
 }
 

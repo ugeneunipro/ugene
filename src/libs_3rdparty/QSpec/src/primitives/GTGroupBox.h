@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_GROUP_BOX_H_
-#define _HI_GT_GROUP_BOX_H_
-
+#pragma once
 #include <QGroupBox>
 
 #include "GTGlobals.h"
@@ -32,17 +30,15 @@ namespace HI {
  */
 class HI_EXPORT GTGroupBox {
 public:
-    static bool getChecked(GUITestOpStatus& os, QGroupBox* groupBox);
-    static bool getChecked(GUITestOpStatus& os, const QString& groupBoxName, QWidget* parent = NULL);
+    static bool getChecked(QGroupBox* groupBox);
+    static bool getChecked(const QString& groupBoxName, QWidget* parent = NULL);
 
-    static void setChecked(GUITestOpStatus& os, QGroupBox* groupBox, bool checked = true);
-    static void setChecked(GUITestOpStatus& os, const QString& groupBoxName, bool checked = true, QWidget* parent = NULL);
-    static void setChecked(GUITestOpStatus& os, const QString& groupBoxName, QWidget* parent = NULL);
+    static void setChecked(QGroupBox* groupBox, bool checked = true);
+    static void setChecked(const QString& groupBoxName, bool checked = true, QWidget* parent = NULL);
+    static void setChecked(const QString& groupBoxName, QWidget* parent = NULL);
 
 private:
     static QRect getCheckBoxRect(QGroupBox* groupBox);
 };
 
 }  // namespace HI
-
-#endif

@@ -34,8 +34,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
-ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, bool deselectAll, int timeoutMs)
-    : Filler(os, "Import BAM File"),
+ImportBAMFileFiller::ImportBAMFileFiller(const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, bool deselectAll, int timeoutMs)
+    : Filler("Import BAM File"),
       referenceFolderPath(referenceFolderPath),
       referenceFileName(referenceFileName),
       destinationUrl(destinationUrl),
@@ -44,8 +44,8 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, const QString 
     settings.timeout = timeoutMs;
 }
 
-ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c)
-    : Filler(os, "Import BAM File", _c),
+ImportBAMFileFiller::ImportBAMFileFiller(CustomScenario* _c)
+    : Filler("Import BAM File", _c),
       referenceFolderPath(""),
       referenceFileName(""),
       destinationUrl(""),
@@ -55,27 +55,27 @@ ImportBAMFileFiller::ImportBAMFileFiller(HI::GUITestOpStatus& os, CustomScenario
 }
 
 void ImportBAMFileFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     if (!referenceFolderPath.isEmpty()) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, referenceFolderPath, referenceFileName));
-        GTWidget::click(os, GTWidget::findWidget(os, "refUrlButton", dialog));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(referenceFolderPath, referenceFileName));
+        GTWidget::click(GTWidget::findWidget("refUrlButton", dialog));
     }
 
     if (!destinationUrl.isEmpty()) {
-        GTLineEdit::setText(os, "destinationUrlEdit", destinationUrl, dialog);
+        GTLineEdit::setText("destinationUrlEdit", destinationUrl, dialog);
     }
 
-    auto importUnmapped = GTWidget::findCheckBox(os, "importUnmappedBox", dialog);
+    auto importUnmapped = GTWidget::findCheckBox("importUnmappedBox", dialog);
     if (importUnmapped->isChecked() != importUnmappedReads) {
-        GTCheckBox::setChecked(os, importUnmapped, importUnmapped);
+        GTCheckBox::setChecked(importUnmapped, importUnmapped);
     }
 
     if (deselectAll) {
-        auto deselectAllButton = GTWidget::findToolButton(os, "selectNoneToolButton", dialog);
-        GTWidget::click(os, deselectAllButton);
+        auto deselectAllButton = GTWidget::findToolButton("selectNoneToolButton", dialog);
+        GTWidget::click(deselectAllButton);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

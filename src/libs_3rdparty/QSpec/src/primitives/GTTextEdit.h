@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_TEXTEDIT_H_
-#define _HI_GT_TEXTEDIT_H_
-
+#pragma once
 #include <QPlainTextEdit>
 #include <QTextEdit>
 
@@ -33,15 +31,13 @@ class HI_EXPORT GTTextEdit {
 public:
     // fails if textEdit is NULL
     // or a set text differs from a given text
-    static void setText(GUITestOpStatus& os, QTextEdit* textEdit, const QString& text);
+    static void setText(QTextEdit* textEdit, const QString& text);
 
-    static QString getText(GUITestOpStatus& os, QTextEdit* textEdit);
+    static QString getText(QTextEdit* textEdit);
 
-    static bool containsString(GUITestOpStatus& os, QTextEdit* textEdit, const QString& string);
+    static bool containsString(QTextEdit* textEdit, const QString& string);
 
-    static void clear(GUITestOpStatus& os, QTextEdit* textEdit);
+    static void clear(QTextEdit* textEdit);
 };
 
 }  // namespace HI
-
-#endif  // _HI_GT_TEXTEDIT_H_

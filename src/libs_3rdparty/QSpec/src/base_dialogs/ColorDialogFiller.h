@@ -19,24 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef COLORDIALOGFILLER_H
-#define COLORDIALOGFILLER_H
+#pragma once
 
 #include "utils/GTUtilsDialog.h"
 namespace HI {
 
 class HI_EXPORT ColorDialogFiller : public Filler {
 public:
-    ColorDialogFiller(GUITestOpStatus& os, int _r, int _g, int _b, bool _setWithQt = false)
-        : Filler(os, ""),
-          r(_r), g(_g), b(_b), setWithQt(_setWithQt) {
+    ColorDialogFiller(int _r, int _g, int _b)
+        : Filler(""),
+          r(_r), g(_g), b(_b) {
     }
-    void commonScenario();
+    void commonScenario() override;
 
 private:
     int r, g, b;
-    bool setWithQt;
 };
 
 }  // namespace HI
-#endif  // COLORDIALOGFILLER_H

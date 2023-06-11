@@ -28,25 +28,25 @@ namespace U2 {
 class GTUtilsOptionPanelPhyTree {
 public:
     /** Opens options panel in tree viewer (today we have only 1 tab . */
-    static QWidget* openTab(HI::GUITestOpStatus& os);
+    static QWidget* openTab();
 
     /** Returns tree-options widget. */
-    static QWidget* getOptionsPanelWidget(HI::GUITestOpStatus& os);
+    static QWidget* getOptionsPanelWidget();
 
     /** Returns currently shown font size. */
-    static int getFontSize(HI::GUITestOpStatus& os);
+    static int getFontSize();
 
     /** Sets new font size. */
-    static void setFontSize(HI::GUITestOpStatus& os, int fontSize);
+    static void setFontSize(int fontSize);
 
     /** Changes tree layout to the given value. */
-    static void changeTreeLayout(HI::GUITestOpStatus& os, const QString& layoutName);
+    static void changeTreeLayout(const QString& layoutName);
 
     /** Checks current tree layout. */
-    static void checkBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode);
+    static void checkBranchDepthScaleMode(const QString& mode);
 
     /** Changes tree type to the given value. */
-    static void changeBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode);
+    static void changeBranchDepthScaleMode(const QString& mode);
 };
 
 }  // namespace U2

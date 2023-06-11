@@ -38,12 +38,12 @@ namespace U2 {
 namespace GUITest_common_scenarios_project_relations {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/project/proj2.uprj");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "1.gb");
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTUtilsProject::openFile(testDir + "_common_data/scenarios/project/proj2.uprj");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("1.gb");
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument("1.gb", AnnotatedDNAViewFactory::ID);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -54,23 +54,23 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     QString secondAnn = testDir + "_common_data/scenarios/project/2.gb";
     QString secondAnnFileName = "2.gb";
 
-    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
-    GTFile::copy(os, firstAnn, sandBoxDir + "/" + firstAnnFileName);
-    GTFile::copy(os, secondAnn, sandBoxDir + "/" + secondAnnFileName);
-    GTFileDialog::openFile(os, sandBoxDir, fileName);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFile::copy(filePath, sandBoxDir + "/" + fileName);
+    GTFile::copy(firstAnn, sandBoxDir + "/" + firstAnnFileName);
+    GTFile::copy(secondAnn, sandBoxDir + "/" + secondAnnFileName);
+    GTFileDialog::openFile(sandBoxDir, fileName);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDocument::checkDocument(os, "1.gb");
-    GTUtilsDocument::checkDocument(os, "2.gb");
+    GTUtilsDocument::checkDocument("1.gb");
+    GTUtilsDocument::checkDocument("2.gb");
 
-    QModelIndex parent = GTUtilsProjectTreeView::findIndex(os, "1.gb");
-    QModelIndex child = GTUtilsProjectTreeView::findIndex(os, "NC_001363 features", parent);
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, child));
+    QModelIndex parent = GTUtilsProjectTreeView::findIndex("1.gb");
+    QModelIndex child = GTUtilsProjectTreeView::findIndex("NC_001363 features", parent);
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(child));
     GTMouseDriver::doubleClick();
-    GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsDocument::checkDocument("1.gb", AnnotatedDNAViewFactory::ID);
 
-    GTMenu::clickMainMenuItem(os, {"File", "Close project"});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTMenu::clickMainMenuItem({"File", "Close project"});
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 }  // namespace GUITest_common_scenarios_project_relations

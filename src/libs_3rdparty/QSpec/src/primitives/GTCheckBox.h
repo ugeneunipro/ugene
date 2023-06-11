@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_CHECKBOX_H_
-#define _HI_GT_CHECKBOX_H_
+#pragma once
 
 #include <QCheckBox>
 
@@ -32,16 +31,15 @@ namespace HI {
  */
 class HI_EXPORT GTCheckBox {
 public:
-    static void setChecked(GUITestOpStatus& os, QCheckBox* checkBox, bool checked = true);
-    static void setChecked(GUITestOpStatus& os, const QString& checkBoxName, bool checked = true, QWidget* parent = nullptr);
-    static void setChecked(GUITestOpStatus& os, const QString& checkBoxName, QWidget* parent = nullptr);
+    static void setChecked(QCheckBox* checkBox, bool checked = true);
+    static void setChecked(const QString& checkBoxName, bool checked = true, QWidget* parent = nullptr);
+    static void setChecked(const QString& checkBoxName, QWidget* parent = nullptr);
 
-    static bool getState(GUITestOpStatus& os, QCheckBox* checkBox);
-    static bool getState(GUITestOpStatus& os, const QString& checkBoxName, QWidget* parent = nullptr);
+    static bool getState(QCheckBox* checkBox);
+    static bool getState(const QString& checkBoxName, QWidget* parent = nullptr);
 
-    static void checkState(GUITestOpStatus& os, QCheckBox* checkBox, bool expectedState);
-    static void checkState(GUITestOpStatus& os, const QString& checkBoxName, bool expectedState, QWidget* parent = nullptr);
+    static void checkState(QCheckBox* checkBox, bool expectedState);
+    static void checkState(const QString& checkBoxName, bool expectedState, QWidget* parent = nullptr);
 };
 
 }  // namespace HI
-#endif

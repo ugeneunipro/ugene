@@ -37,14 +37,14 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::CreateAnnotationDialogFiller"
 
-CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(HI::GUITestOpStatus& os,
-                                                           bool newTableRB,
-                                                           const QString& groupName,
-                                                           const QString& annotationName,
-                                                           const QString& location,
-                                                           const QString& saveTo,
-                                                           const QString& description)
-    : Filler(os, "CreateAnnotationDialog"),
+CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(
+    bool newTableRB,
+    const QString& groupName,
+    const QString& annotationName,
+    const QString& location,
+    const QString& saveTo,
+    const QString& description)
+    : Filler("CreateAnnotationDialog"),
       groupName(groupName),
       annotationName(annotationName),
       location(location),
@@ -53,40 +53,40 @@ CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(HI::GUITestOpStatus& 
       description(description) {
 }
 
-CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "CreateAnnotationDialog", scenario),
+CreateAnnotationWidgetFiller::CreateAnnotationWidgetFiller(CustomScenario* scenario)
+    : Filler("CreateAnnotationDialog", scenario),
       newTableRB(false) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 
 void CreateAnnotationWidgetFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (newTableRB) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbCreateNewTable", dialog));
+        GTRadioButton::click(GTWidget::findRadioButton("rbCreateNewTable", dialog));
 
         if (!saveTo.isEmpty()) {
             QDir().mkpath(QFileInfo(saveTo).dir().absolutePath());
-            GTLineEdit::setText(os, "leNewTablePath", saveTo, dialog);
+            GTLineEdit::setText("leNewTablePath", saveTo, dialog);
         }
     } else {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbExistingTable", dialog));
+        GTRadioButton::click(GTWidget::findRadioButton("rbExistingTable", dialog));
 
         if (!saveTo.isEmpty()) {
-            GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "cbExistingTable", dialog), saveTo);
+            GTComboBox::selectItemByText(GTWidget::findComboBox("cbExistingTable", dialog), saveTo);
         }
     }
 
-    GTLineEdit::setText(os, "leGroupName", groupName, dialog);
-    GTLineEdit::setText(os, "leAnnotationName", annotationName, dialog);
-    GTRadioButton::click(os, GTWidget::findRadioButton(os, "rbGenbankFormat", dialog));
-    GTLineEdit::setText(os, "leLocation", location, dialog);
+    GTLineEdit::setText("leGroupName", groupName, dialog);
+    GTLineEdit::setText("leAnnotationName", annotationName, dialog);
+    GTRadioButton::click(GTWidget::findRadioButton("rbGenbankFormat", dialog));
+    GTLineEdit::setText("leLocation", location, dialog);
     if (!description.isEmpty()) {
-        GTLineEdit::setText(os, "leDescription", description, dialog);
+        GTLineEdit::setText("leDescription", description, dialog);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

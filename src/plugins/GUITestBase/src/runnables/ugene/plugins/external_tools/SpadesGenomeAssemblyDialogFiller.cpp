@@ -35,48 +35,48 @@ namespace U2 {
 #define GT_CLASS_NAME "SpadesGenomeAssemblyDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SpadesGenomeAssemblyDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, output, GTGlobals::UseMouse, GTFileDialogUtils::Choose));
-    GTWidget::click(os, GTWidget::findWidget(os, "setResultDirNameButton", dialog));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(output, GTGlobals::UseMouse, GTFileDialogUtils::Choose));
+    GTWidget::click(GTWidget::findWidget("setResultDirNameButton", dialog));
 
-    auto libraryComboBox = GTWidget::findComboBox(os, "libraryComboBox", dialog);
-    GTComboBox::selectItemByText(os, libraryComboBox, library);
+    auto libraryComboBox = GTWidget::findComboBox("libraryComboBox", dialog);
+    GTComboBox::selectItemByText(libraryComboBox, library);
 
     foreach (QString s, leftReads) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, s));
-        GTWidget::click(os, GTWidget::findWidget(os, "addLeftButton", dialog));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(s));
+        GTWidget::click(GTWidget::findWidget("addLeftButton", dialog));
     }
 
     foreach (QString s, rightReads) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, s));
-        GTWidget::click(os, GTWidget::findWidget(os, "addFightButton", dialog));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(s));
+        GTWidget::click(GTWidget::findWidget("addFightButton", dialog));
     }
 
     QComboBox* combo;
     if (!datasetType.isEmpty()) {
-        combo = GTWidget::findComboBox(os, "typeCombo", dialog);
-        GTComboBox::selectItemByText(os, combo, datasetType);
+        combo = GTWidget::findComboBox("typeCombo", dialog);
+        GTComboBox::selectItemByText(combo, datasetType);
     }
 
     if (!runningMode.isEmpty()) {
-        combo = GTWidget::findComboBox(os, "modeCombo", dialog);
-        GTComboBox::selectItemByText(os, combo, runningMode);
+        combo = GTWidget::findComboBox("modeCombo", dialog);
+        GTComboBox::selectItemByText(combo, runningMode);
     }
 
     if (!kmerSizes.isEmpty()) {
-        GTLineEdit::setText(os, "kmerEdit", kmerSizes, dialog);
+        GTLineEdit::setText("kmerEdit", kmerSizes, dialog);
     }
 
     if (numThreads != 0) {
-        GTSpinBox::setValue(os, "numThreadsSpinbox", numThreads, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue("numThreadsSpinbox", numThreads, GTGlobals::UseKeyBoard);
     }
 
     if (memLimit != 0) {
-        GTSpinBox::setValue(os, "memlimitSpin", memLimit, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue("memlimitSpin", memLimit, GTGlobals::UseKeyBoard);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

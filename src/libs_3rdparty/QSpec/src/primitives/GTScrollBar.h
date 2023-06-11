@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_GTSCROLLBAR_H_
-#define _HI_GUI_GTSCROLLBAR_H_
-
+#pragma once
 #include <QPoint>
 #include <QScrollBar>
 #include <QStyleOptionSlider>
@@ -32,34 +30,32 @@ namespace HI {
 
 class HI_EXPORT GTScrollBar {
 public:
-    static QScrollBar* getScrollBar(GUITestOpStatus& os, const QString& scrollBarName);
+    static QScrollBar* getScrollBar(const QString& scrollBarName);
 
     /** Returns current value of the scrollbar. */
-    static int getValue(GUITestOpStatus& os, QScrollBar* scrollbar);
+    static int getValue(QScrollBar* scrollbar);
 
-    static void pageUp(GUITestOpStatus& os, QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);
-    static void pageDown(GUITestOpStatus& os, QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);
+    static void pageUp(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);
+    static void pageDown(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);
 
-    static void lineUp(GUITestOpStatus& os, QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);  // does not necessarily move one line up (for example, moves cursor in text editors)
-    static void lineDown(GUITestOpStatus& os, QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);  // does not necessarily move one line down (for example, moves cursor in text editors)
+    static void lineUp(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);  // does not necessarily move one line up (for example, moves cursor in text editors)
+    static void lineDown(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod);  // does not necessarily move one line down (for example, moves cursor in text editors)
 
-    static void moveSliderWithMouseUp(GUITestOpStatus& os, QScrollBar* scrollbar, int nPix);
-    static void moveSliderWithMouseDown(GUITestOpStatus& os, QScrollBar* scrollbar, int nPix);
-    static void moveSliderWithMouseToValue(GUITestOpStatus& os, QScrollBar* scrollbar, int value);
+    static void moveSliderWithMouseUp(QScrollBar* scrollbar, int nPix);
+    static void moveSliderWithMouseDown(QScrollBar* scrollbar, int nPix);
+    static void moveSliderWithMouseToValue(QScrollBar* scrollbar, int value);
 
-    static void moveSliderWithMouseWheelUp(GUITestOpStatus& os, QScrollBar* scrollbar, int nScrolls);  // first moves the cursor to the slider and clicks it, then starts scrolling
-    static void moveSliderWithMouseWheelDown(GUITestOpStatus& os, QScrollBar* scrollbar, int nScrolls);  // first moves the cursor to the slider and clicks it, then starts scrolling
+    static void moveSliderWithMouseWheelUp(QScrollBar* scrollbar, int nScrolls);  // first moves the cursor to the slider and clicks it, then starts scrolling
+    static void moveSliderWithMouseWheelDown(QScrollBar* scrollbar, int nScrolls);  // first moves the cursor to the slider and clicks it, then starts scrolling
 
-    static QPoint getSliderPosition(GUITestOpStatus& os, QScrollBar* scrollbar);
-    static QPoint getUpArrowPosition(GUITestOpStatus& os, QScrollBar* scrollbar);
-    static QPoint getDownArrowPosition(GUITestOpStatus& os, QScrollBar* scrollbar);
-    static QPoint getAreaUnderSliderPosition(GUITestOpStatus& os, QScrollBar* scrollbar);
-    static QPoint getAreaOverSliderPosition(GUITestOpStatus& os, QScrollBar* scrollbar);
+    static QPoint getSliderPosition(QScrollBar* scrollbar);
+    static QPoint getUpArrowPosition(QScrollBar* scrollbar);
+    static QPoint getDownArrowPosition(QScrollBar* scrollbar);
+    static QPoint getAreaUnderSliderPosition(QScrollBar* scrollbar);
+    static QPoint getAreaOverSliderPosition(QScrollBar* scrollbar);
 
 private:
-    static QStyleOptionSlider initScrollbarOptions(GUITestOpStatus& os, QScrollBar* scrollbar);
+    static QStyleOptionSlider initScrollbarOptions(QScrollBar* scrollbar);
 };
 
 }  // namespace HI
-
-#endif

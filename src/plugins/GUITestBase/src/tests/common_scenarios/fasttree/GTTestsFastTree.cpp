@@ -48,64 +48,64 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     class RunFastTreeScenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus& os) override {
-            auto dialog = GTWidget::getActiveModalWidget(os);
-            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "FastTree");
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTComboBox::selectItemByText("algorithmBox", dialog, "FastTree");
 
             // Set output file name.
-            GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "GUITest_common_scenarios_fasttree_test_0001.nwk", dialog);
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "GUITest_common_scenarios_fasttree_test_0001.nwk", dialog);
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
     };
 
     for (const QString& alignmentFile : qAsConst(alignmentFileList)) {
-        GTUtilsMdi::closeAllWindows(os);
-        GTFileDialog::openFile(os, alignmentFile);
-        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTUtilsMdi::closeAllWindows();
+        GTFileDialog::openFile(alignmentFile);
+        GTUtilsTaskTreeView::waitTaskFinished();
 
         GTLogTracer lt;
-        GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new RunFastTreeScenario()));
-        GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
-        GTUtilsTaskTreeView::waitTaskFinished(os);
+        GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(new RunFastTreeScenario()));
+        GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+        GTUtilsTaskTreeView::waitTaskFinished();
 
         // Check that tool is launched.
         CHECK_SET_ERR(lt.hasMessage("Launching FastTree tool"), "Expected message not found");
         CHECK_SET_ERR(lt.getJoinedErrorString().isEmpty(), "Errors in the log: " + lt.getJoinedErrorString());
 
         // Check that tree view is opened.
-        GTUtilsMsaEditor::getTreeView(os);
+        GTUtilsMsaEditor::getTreeView();
     }
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Check that FastTree support passing of custom user options to the original tools.
 
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTLogTracer lt;
 
     class RunFastTreeScenario : public CustomScenario {
     public:
-        void run(GUITestOpStatus& os) override {
-            auto dialog = GTWidget::getActiveModalWidget(os);
-            GTComboBox::selectItemByText(os, "algorithmBox", dialog, "FastTree");
+        void run() override {
+            auto dialog = GTWidget::getActiveModalWidget();
+            GTComboBox::selectItemByText("algorithmBox", dialog, "FastTree");
 
-            auto paramsEditor = GTWidget::findPlainTextEdit(os, "extraParametersTextEdit");
-            GTPlainTextEdit::setText(os, paramsEditor, "-gtr");
+            auto paramsEditor = GTWidget::findPlainTextEdit("extraParametersTextEdit");
+            GTPlainTextEdit::setText(paramsEditor, "-gtr");
 
-            GTCheckBox::setChecked(os, "useFastestCheckBox", dialog);
-            GTCheckBox::setChecked(os, "usePseudoCountsCheckBox", dialog);
+            GTCheckBox::setChecked("useFastestCheckBox", dialog);
+            GTCheckBox::setChecked("usePseudoCountsCheckBox", dialog);
 
-            GTLineEdit::setText(os, "fileNameEdit", sandBoxDir + "GUITest_common_scenarios_fasttree_test_0002.nwk", dialog);
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTLineEdit::setText("fileNameEdit", sandBoxDir + "GUITest_common_scenarios_fasttree_test_0002.nwk", dialog);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new RunFastTreeScenario()));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(new RunFastTreeScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check that tool is launched.
     CHECK_SET_ERR(lt.hasMessage("Launching FastTree tool"), "No tool launch message found");
@@ -114,7 +114,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     CHECK_SET_ERR(lt.getJoinedErrorString().isEmpty(), "Errors in the log: " + lt.getJoinedErrorString());
 
     // Check that tree view is opened.
-    GTUtilsMsaEditor::getTreeView(os);
+    GTUtilsMsaEditor::getTreeView();
 }
 
 }  // namespace GUITest_common_scenarios_fasttree

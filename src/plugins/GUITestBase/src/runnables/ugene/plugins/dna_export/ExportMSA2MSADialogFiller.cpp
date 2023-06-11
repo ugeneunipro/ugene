@@ -36,8 +36,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus& _os, int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
-    : Filler(_os, "U2__ExportMSA2MSADialog"),
+ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
+    : Filler("U2__ExportMSA2MSADialog"),
       formatVal(_formatVal),
       path(_path),
       includeGaps(_includeGaps),
@@ -47,20 +47,20 @@ ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus& _os, i
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportMSA2MSADialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (!path.isEmpty()) {
-        GTLineEdit::setText(os, "fileNameEdit", path, dialog);
+        GTLineEdit::setText("fileNameEdit", path, dialog);
     }
     if (formatVal >= 0) {
-        auto formatCombo = GTWidget::findComboBox(os, "formatCombo", dialog);
-        GTComboBox::selectItemByIndex(os, formatCombo, formatVal);
+        auto formatCombo = GTWidget::findComboBox("formatCombo", dialog);
+        GTComboBox::selectItemByIndex(formatCombo, formatVal);
     }
     if (includeGaps) {
-        GTCheckBox::setChecked(os, "cbIncludeGaps", dialog);
+        GTCheckBox::setChecked("cbIncludeGaps", dialog);
 
         if (unknownAsGaps) {
-            GTRadioButton::click(os, "rbUseGaps", dialog);
+            GTRadioButton::click("rbUseGaps", dialog);
         }
     }
 
@@ -80,9 +80,9 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     } else {
         GT_FAIL("incorrect frame", );
     }
-    GTRadioButton::click(os, widgetName, dialog);
+    GTRadioButton::click(widgetName, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

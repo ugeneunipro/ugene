@@ -39,8 +39,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DistanceMatrixDialogFiller"
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, bool _hamming, bool _counts, bool _excludeGaps)
-    : Filler(os, "DistanceMatrixMSAProfileDialog"),
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(bool _hamming, bool _counts, bool _excludeGaps)
+    : Filler("DistanceMatrixMSAProfileDialog"),
       hamming(_hamming),
       counts(_counts),
       excludeGaps(_excludeGaps),
@@ -48,8 +48,8 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, 
       format(HTML) {
 }
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, DistanceMatrixDialogFiller::SaveFormat _format, QString _path)
-    : Filler(os, "DistanceMatrixMSAProfileDialog"),
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(DistanceMatrixDialogFiller::SaveFormat _format, QString _path)
+    : Filler("DistanceMatrixMSAProfileDialog"),
       hamming(true),
       counts(true),
       excludeGaps(true),
@@ -58,8 +58,8 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, 
       path(QDir::toNativeSeparators(_path)) {
 }
 
-DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
-    : Filler(os, "DistanceMatrixMSAProfileDialog", c),
+DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(CustomScenario* c)
+    : Filler("DistanceMatrixMSAProfileDialog", c),
       hamming(false),
       counts(false),
       excludeGaps(false),
@@ -69,42 +69,42 @@ DistanceMatrixDialogFiller::DistanceMatrixDialogFiller(HI::GUITestOpStatus& os, 
 
 #define GT_METHOD_NAME "run"
 void DistanceMatrixDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto algoCombo = GTWidget::findComboBox(os, "algoCombo", dialog);
+    auto algoCombo = GTWidget::findComboBox("algoCombo", dialog);
     if (hamming) {
-        GTComboBox::selectItemByIndex(os, algoCombo, 0);
+        GTComboBox::selectItemByIndex(algoCombo, 0);
     } else {
-        GTComboBox::selectItemByIndex(os, algoCombo, 1);
+        GTComboBox::selectItemByIndex(algoCombo, 1);
     }
 
     if (counts) {
-        auto countsRB = GTWidget::findRadioButton(os, "countsRB", dialog);
-        GTRadioButton::click(os, countsRB);
+        auto countsRB = GTWidget::findRadioButton("countsRB", dialog);
+        GTRadioButton::click(countsRB);
     } else {
-        auto percentsRB = GTWidget::findRadioButton(os, "percentsRB", dialog);
-        GTRadioButton::click(os, percentsRB);
+        auto percentsRB = GTWidget::findRadioButton("percentsRB", dialog);
+        GTRadioButton::click(percentsRB);
     }
 
     if (format != NONE) {
         if (saveToFile) {
-            GTGroupBox::setChecked(os, "saveBox", dialog);
+            GTGroupBox::setChecked("saveBox", dialog);
 
-            GTLineEdit::setText(os, "fileEdit", QDir::toNativeSeparators(path), dialog);
+            GTLineEdit::setText("fileEdit", QDir::toNativeSeparators(path), dialog);
 
             if (format == HTML) {
-                auto htmlRB = GTWidget::findRadioButton(os, "htmlRB", dialog);
-                GTRadioButton::click(os, htmlRB);
+                auto htmlRB = GTWidget::findRadioButton("htmlRB", dialog);
+                GTRadioButton::click(htmlRB);
             } else {
-                auto csvRB = GTWidget::findRadioButton(os, "csvRB", dialog);
-                GTRadioButton::click(os, csvRB);
+                auto csvRB = GTWidget::findRadioButton("csvRB", dialog);
+                GTRadioButton::click(csvRB);
             }
         }
     }
-    auto checkBox = GTWidget::findCheckBox(os, "checkBox", dialog);
-    GTCheckBox::setChecked(os, checkBox, excludeGaps);
+    auto checkBox = GTWidget::findCheckBox("checkBox", dialog);
+    GTCheckBox::setChecked(checkBox, excludeGaps);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

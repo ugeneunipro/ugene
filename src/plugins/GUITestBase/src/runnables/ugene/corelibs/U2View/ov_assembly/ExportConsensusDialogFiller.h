@@ -28,8 +28,8 @@ using namespace HI;
 
 class ExportConsensusDialogFiller : public Filler {
 public:
-    ExportConsensusDialogFiller(HI::GUITestOpStatus& os, CustomScenario* _c)
-        : Filler(os, "ExportConsensusDialog", _c) {
+    ExportConsensusDialogFiller(CustomScenario* _c)
+        : Filler("ExportConsensusDialog", _c) {
     }
     void commonScenario();
 };

@@ -32,23 +32,21 @@ namespace U2 {
 
 #define GT_CLASS_NAME "ConstructMoleculeDialogFiller"
 
-ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions)
-    : Filler(os, "ConstructMoleculeDialog"),
+ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(const QList<Action>& actions)
+    : Filler("ConstructMoleculeDialog"),
       dialog(nullptr),
       actions(actions) {
 }
 
-ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "ConstructMoleculeDialog", scenario), dialog(nullptr) {
+ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(CustomScenario* scenario)
+    : Filler("ConstructMoleculeDialog", scenario), dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ConstructMoleculeDialogFiller::commonScenario() {
-    dialog = GTWidget::getActiveModalWidget(os);
+    dialog = GTWidget::getActiveModalWidget();
 
     foreach (const Action& action, actions) {
-        CHECK_OP(os, );
-
         switch (action.first) {
             case AddAllFragments:
                 addAllFragments();
@@ -71,7 +69,7 @@ void ConstructMoleculeDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "addAllFragments"
 void ConstructMoleculeDialogFiller::addAllFragments() {
-    GTWidget::click(os, GTWidget::findWidget(os, "takeAllButton", dialog));
+    GTWidget::click(GTWidget::findWidget("takeAllButton", dialog));
     GTGlobals::sleep();
 }
 #undef GT_METHOD_NAME
@@ -81,19 +79,19 @@ void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionDa
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
     GTGlobals::FindOptions options;
     options.matchPolicy = Qt::MatchContains;
-    GTTreeWidget::checkItem(os, GTTreeWidget::findItem(os, GTWidget::findTreeWidget(os, "molConstructWidget", dialog), actionData.toString(), nullptr, 1, options), 3);
+    GTTreeWidget::checkItem(GTTreeWidget::findItem(GTWidget::findTreeWidget("molConstructWidget", dialog), actionData.toString(), nullptr, 1, options), 3);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickCancel"
 void ConstructMoleculeDialogFiller::clickCancel() {
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickOk"
 void ConstructMoleculeDialogFiller::clickOk() {
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

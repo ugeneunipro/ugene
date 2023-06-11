@@ -31,24 +31,24 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::AlignShortReadsFiller"
 
-AddNewDocumentDialogFiller::AddNewDocumentDialogFiller(HI::GUITestOpStatus& os, const QString& format, const QString& path)
-    : Filler(os, "AddNewDocumentDialog"),
+AddNewDocumentDialogFiller::AddNewDocumentDialogFiller(const QString& format, const QString& path)
+    : Filler("AddNewDocumentDialog"),
       format(format),
       path(path) {
 }
 
-AddNewDocumentDialogFiller::AddNewDocumentDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "AddNewDocumentDialog", scenario) {
+AddNewDocumentDialogFiller::AddNewDocumentDialogFiller(CustomScenario* scenario)
+    : Filler("AddNewDocumentDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void AddNewDocumentDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "documentTypeCombo", dialog), format);
-    GTLineEdit::setText(os, "documentURLEdit", path, dialog);
+    GTComboBox::selectItemByText(GTWidget::findComboBox("documentTypeCombo", dialog), format);
+    GTLineEdit::setText("documentURLEdit", path, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

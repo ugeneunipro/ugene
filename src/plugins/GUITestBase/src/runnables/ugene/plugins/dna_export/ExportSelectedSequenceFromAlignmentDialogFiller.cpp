@@ -35,8 +35,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSelectedSequenceFromAlignment"
 
-ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus& _os, const QString& _path, documentFormat _format, bool _keepGaps, bool _addToProj)
-    : Filler(_os, "U2__SaveSelectedSequenceFromMSADialog"),
+ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(const QString& _path, documentFormat _format, bool _keepGaps, bool _addToProj)
+    : Filler("U2__SaveSelectedSequenceFromMSADialog"),
       path(_path),
       format(_format),
       keepGaps(_keepGaps),
@@ -50,8 +50,8 @@ ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUI
     comboBoxItems[Ugene_db] = "UGENE Database";
 }
 
-ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "U2__SaveSelectedSequenceFromMSADialog", scenario),
+ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(CustomScenario* scenario)
+    : Filler("U2__SaveSelectedSequenceFromMSADialog", scenario),
       format(EMBL),
       keepGaps(false),
       addToProj(false) {
@@ -59,25 +59,25 @@ ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUI
 
 #define GT_METHOD_NAME "run"
 void ExportSelectedSequenceFromAlignment::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QLineEdit* lineEdit = dialog->findChild<QLineEdit*>();
     GT_CHECK(lineEdit != nullptr, "line edit not found");
-    GTLineEdit::setText(os, lineEdit, path);
+    GTLineEdit::setText(lineEdit, path);
 
-    auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
+    auto comboBox = GTWidget::findComboBox("formatCombo", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    GTComboBox::selectItemByIndex(os, comboBox, index);
+    GTComboBox::selectItemByIndex(comboBox, index);
 
-    auto addToProjectBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
-    GTCheckBox::setChecked(os, addToProjectBox, addToProj);
+    auto addToProjectBox = GTWidget::findCheckBox("addToProjectBox", dialog);
+    GTCheckBox::setChecked(addToProjectBox, addToProj);
 
-    auto keepGapsBox = GTWidget::findCheckBox(os, "keepGapsBox", dialog);
-    GTCheckBox::setChecked(os, keepGapsBox, keepGaps);
+    auto keepGapsBox = GTWidget::findCheckBox("keepGapsBox", dialog);
+    GTCheckBox::setChecked(keepGapsBox, keepGaps);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

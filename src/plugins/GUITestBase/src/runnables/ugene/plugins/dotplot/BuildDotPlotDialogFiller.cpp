@@ -32,16 +32,16 @@
 
 namespace U2 {
 
-BuildDotPlotFiller::BuildDotPlotFiller(HI::GUITestOpStatus& _os,
-                                       const QString& _firstFileName,
-                                       const QString& _secondFileName,
-                                       bool _mergeFirstBoxChecked,
-                                       bool _oneSequenceBoxChecked,
-                                       bool _mergeSecondBoxChecked,
-                                       int _gapFirstValue,
-                                       int _gapSecondValue,
-                                       bool _cancel)
-    : Filler(_os, "DotPlotFilesDialog"), mergeFirstBoxChecked(_mergeFirstBoxChecked),
+BuildDotPlotFiller::BuildDotPlotFiller(
+    const QString& _firstFileName,
+    const QString& _secondFileName,
+    bool _mergeFirstBoxChecked,
+    bool _oneSequenceBoxChecked,
+    bool _mergeSecondBoxChecked,
+    int _gapFirstValue,
+    int _gapSecondValue,
+    bool _cancel)
+    : Filler("DotPlotFilesDialog"), mergeFirstBoxChecked(_mergeFirstBoxChecked),
       oneSequenceBoxChecked(_oneSequenceBoxChecked), mergeSecondBoxChecked(_mergeSecondBoxChecked),
       firstFileName(_firstFileName), secondFileName(_secondFileName), firstGapSize(_gapFirstValue),
       secondGapSize(_gapSecondValue), cancel(_cancel) {
@@ -50,26 +50,26 @@ BuildDotPlotFiller::BuildDotPlotFiller(HI::GUITestOpStatus& _os,
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
 void BuildDotPlotFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTCheckBox::setChecked(os, "oneSequenceCheckBox", oneSequenceBoxChecked, dialog);
-    GTLineEdit::setText(os, "firstFileEdit", firstFileName, dialog);
+    GTCheckBox::setChecked("oneSequenceCheckBox", oneSequenceBoxChecked, dialog);
+    GTLineEdit::setText("firstFileEdit", firstFileName, dialog);
 
-    GTCheckBox::setChecked(os, "mergeFirstCheckBox", mergeFirstBoxChecked, dialog);
+    GTCheckBox::setChecked("mergeFirstCheckBox", mergeFirstBoxChecked, dialog);
     if (mergeFirstBoxChecked) {
-        GTSpinBox::setValue(os, "gapFirst", firstGapSize, dialog);
+        GTSpinBox::setValue("gapFirst", firstGapSize, dialog);
     }
 
     if (!oneSequenceBoxChecked) {
-        GTLineEdit::setText(os, "secondFileEdit", secondFileName, dialog);
-        GTCheckBox::setChecked(os, "mergeSecondCheckBox", mergeSecondBoxChecked, dialog);
+        GTLineEdit::setText("secondFileEdit", secondFileName, dialog);
+        GTCheckBox::setChecked("mergeSecondCheckBox", mergeSecondBoxChecked, dialog);
         if (mergeSecondBoxChecked) {
-            GTSpinBox::setValue(os, "gapSecond", secondGapSize, dialog);
+            GTSpinBox::setValue("gapSecond", secondGapSize, dialog);
         }
     }
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     if (cancel) {
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
     }
 }
 #undef GT_METHOD_NAME

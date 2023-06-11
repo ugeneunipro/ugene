@@ -28,8 +28,8 @@ using namespace HI;
 
 class ExportProjectDialogFiller : public Filler {
 public:
-    ExportProjectDialogFiller(HI::GUITestOpStatus& _os, const QString& _projectName = "")
-        : Filler(_os, "ExportProjectDialog"), projectName(_projectName) {
+    ExportProjectDialogFiller(const QString& _projectName = "")
+        : Filler("ExportProjectDialog"), projectName(_projectName) {
     }
     void commonScenario();
 
@@ -39,8 +39,8 @@ private:
 
 class ExportProjectDialogChecker : public Filler {
 public:
-    ExportProjectDialogChecker(HI::GUITestOpStatus& _os, const QString& _projectName)
-        : Filler(_os, "ExportProjectDialog"), projectName(_projectName) {
+    ExportProjectDialogChecker(const QString& _projectName)
+        : Filler("ExportProjectDialog"), projectName(_projectName) {
     }
     void commonScenario();
 

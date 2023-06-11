@@ -19,16 +19,14 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_DEFAULT_DIALOG_FILLER_H_
-#define _HI_DEFAULT_DIALOG_FILLER_H_
-
+#pragma once
 #include "utils/GTUtilsDialog.h"
 
 namespace HI {
 
 class HI_EXPORT DefaultDialogFiller : public Filler {
 public:
-    DefaultDialogFiller(GUITestOpStatus& os, const QString& name = "", QDialogButtonBox::StandardButton _b = QDialogButtonBox::Ok, CustomScenario* scenario = NULL);
+    DefaultDialogFiller(const QString& name = "", QDialogButtonBox::StandardButton _b = QDialogButtonBox::Ok, CustomScenario* scenario = NULL);
     void commonScenario();
 
 private:
@@ -36,5 +34,3 @@ private:
 };
 
 }  // namespace HI
-
-#endif  // _HI_DEFAULT_DIALOG_FILLER_H_

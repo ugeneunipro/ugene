@@ -35,13 +35,13 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::ExportProjectDialogChecker"
 #define GT_METHOD_NAME "commonScenario"
 void ExportProjectDialogChecker::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    QString fullPath = GTLineEdit::getText(os, "projectFilePathEdit", dialog);
+    QString fullPath = GTLineEdit::getText("projectFilePathEdit", dialog);
     QString actualName = projectName.contains('/') ? fullPath : QFileInfo(fullPath).fileName();
     GT_CHECK(actualName == projectName, QString("Expected project name: %1, got: %2").arg(projectName, actualName));
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -49,12 +49,12 @@ void ExportProjectDialogChecker::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportProjectDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ExportProjectDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (!projectName.isEmpty()) {
-        GTLineEdit::setText(os, "projectFilePathEdit", projectName, dialog);
+        GTLineEdit::setText("projectFilePathEdit", projectName, dialog);
     }
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

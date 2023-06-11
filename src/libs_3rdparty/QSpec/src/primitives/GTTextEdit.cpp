@@ -30,15 +30,15 @@ namespace HI {
 #define GT_CLASS_NAME "GTTextEdit"
 
 #define GT_METHOD_NAME "setText"
-void GTTextEdit::setText(GUITestOpStatus& os, QTextEdit* textEdit, const QString& text) {
+void GTTextEdit::setText(QTextEdit* textEdit, const QString& text) {
     GT_CHECK(textEdit != nullptr, "textEdit is NULL");
 
     if (textEdit->toPlainText() == text) {
         return;
     }
 
-    clear(os, textEdit);
-    GTWidget::setFocus(os, textEdit);
+    clear(textEdit);
+    GTWidget::setFocus(textEdit);
 
     GTKeyboardDriver::keySequence(text);
     GTGlobals::sleep(500);
@@ -46,24 +46,24 @@ void GTTextEdit::setText(GUITestOpStatus& os, QTextEdit* textEdit, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getText"
-QString GTTextEdit::getText(GUITestOpStatus& os, QTextEdit* textEdit) {
+QString GTTextEdit::getText(QTextEdit* textEdit) {
     GT_CHECK_RESULT(textEdit != nullptr, "textEdit is NULL", "");
     return textEdit->toPlainText();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "containsString"
-bool GTTextEdit::containsString(GUITestOpStatus& os, QTextEdit* textEdit, const QString& string) {
-    const QString text = getText(os, textEdit);
+bool GTTextEdit::containsString(QTextEdit* textEdit, const QString& string) {
+    const QString text = getText(textEdit);
     return text.contains(string);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clear"
-void GTTextEdit::clear(GUITestOpStatus& os, QTextEdit* textEdit) {
+void GTTextEdit::clear(QTextEdit* textEdit) {
     GT_CHECK(textEdit != NULL, "textEdit is NULL");
 
-    GTWidget::setFocus(os, textEdit);
+    GTWidget::setFocus(textEdit);
 
     GTKeyboardUtils::selectAll();
     GTGlobals::sleep(100);

@@ -28,19 +28,19 @@ namespace U2 {
 
 #define GT_CLASS_NAME "OrfDialogFiller"
 
-OrfDialogFiller::OrfDialogFiller(GUITestOpStatus& os)
-    : Filler(os, "ORFDialogBase") {
+OrfDialogFiller::OrfDialogFiller()
+    : Filler("ORFDialogBase") {
 }
 
-OrfDialogFiller::OrfDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "ORFDialogBase", scenario) {
+OrfDialogFiller::OrfDialogFiller(CustomScenario* scenario)
+    : Filler("ORFDialogBase", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void OrfDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

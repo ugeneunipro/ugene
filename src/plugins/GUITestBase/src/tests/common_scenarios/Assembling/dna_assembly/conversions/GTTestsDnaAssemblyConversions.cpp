@@ -44,22 +44,21 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         "e_coli_1000.gff",
         AlignShortReadsFiller::Parameters::Bowtie2);
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, alignShortReadsFiller);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "output.ugenedb"));
-    CHECK_OP(os, );
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_OP(os, );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(alignShortReadsFiller);
+
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Yes));
+
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "output.ugenedb"));
+
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::check(os, "_common_data/e_coli/NC_008253.gb.fasta");
-    GTFile::check(os, "_common_data/e_coli/e_coli_1000.gff.fasta");
+    GTFile::check("_common_data/e_coli/NC_008253.gb.fasta");
+    GTFile::check("_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -71,20 +70,20 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         "e_coli_1000.fastq",
         AlignShortReadsFiller::Parameters::Bowtie);
 
-    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(os, &parameters);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, alignShortReadsFiller);
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    CHECK_OP(os, );
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "GUITest_dna_assembly_conversions/test_0002.ugenedb"));
+    AlignShortReadsFiller* alignShortReadsFiller = new AlignShortReadsFiller(&parameters);
 
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_OP(os, );
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::add(alignShortReadsFiller);
+
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Yes));
+
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "GUITest_dna_assembly_conversions/test_0002.ugenedb"));
+
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::check(os, "_common_data/e_coli/NC_008253.gff.fasta");
+    GTFile::check("_common_data/e_coli/NC_008253.gff.fasta");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -100,10 +99,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                  "scerevisiae.bam.bai",
                                                  AlignShortReadsFiller::Parameters::Bwa);
 
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+    GTUtilsDialog::add(new AlignShortReadsFiller(&parameters));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
     //     3. Click start:
     //     Expected: the error dialog appears. It tells that the short reads file has the unknown format.
 }
@@ -112,17 +111,17 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTLogTracer lt;
     AlignShortReadsFiller::Parameters parameters(testDir + "_common_data/e_coli/", "NC_008253.gb", testDir + "_common_data/e_coli/", "e_coli_1000.gff");
 
-    GTUtilsDialog::add(os, new AlignShortReadsFiller(os, &parameters));
-    GTUtilsDialog::add(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
+    GTUtilsDialog::add(new AlignShortReadsFiller(&parameters));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Yes));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
 
-    GTUtilsDialog::add(os, new ImportBAMFileFiller(os, sandBoxDir + "result.ugenedb"));
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "result.ugenedb"));
 
     // UGENE can hang up here
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    GTFile::check(os, "_common_data/e_coli/e_coli_1000.gff.fasta");
+    GTFile::check("_common_data/e_coli/e_coli_1000.gff.fasta");
 }
 
 }  // namespace GUITest_dna_assembly_conversions

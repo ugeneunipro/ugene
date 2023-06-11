@@ -21,10 +21,10 @@
 
 #include "TextSettingsDialog.h"
 
-#include <QColorDialog>
 #include <QProxyStyle>
 #include <QStyleFactory>
 
+#include <U2Gui/DialogUtils.h>
 #include <U2Gui/HelpButton.h>
 
 #include "../ov_phyltree/TreeViewerUtils.h"
@@ -65,7 +65,7 @@ void TextSettingsDialog::updateColorButton() {
 }
 
 void TextSettingsDialog::sl_colorButton() {
-    curColor = QColorDialog::getColor(curColor, this);
+    curColor = U2ColorDialog::getColor(curColor, this);
     if (curColor.isValid()) {
         updatedSettings[LABEL_COLOR] = curColor;
         updateColorButton();

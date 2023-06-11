@@ -47,8 +47,8 @@ public:
 
     typedef QPair<ActionType, QVariant> Action;
 
-    DownloadRemoteFileDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
-    DownloadRemoteFileDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c);
+    DownloadRemoteFileDialogFiller(const QList<Action>& actions);
+    DownloadRemoteFileDialogFiller(CustomScenario* c);
 
     void commonScenario() override;
 
@@ -75,8 +75,8 @@ private:
 // Use DownloadRemoteFileDialogFiller instead
 class RemoteDBDialogFillerDeprecated : public Filler {
 public:
-    RemoteDBDialogFillerDeprecated(HI::GUITestOpStatus& _os, const QString _resID, int _DBItemNum, bool addToProject = true, bool forceGetSequence = true, bool _pressCancel = false, const QString _saveDirPath = QString(), GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse, int _outFormatVal = -1)
-        : Filler(_os, "DownloadRemoteFileDialog"),
+    RemoteDBDialogFillerDeprecated(const QString _resID, int _DBItemNum, bool addToProject = true, bool forceGetSequence = true, bool _pressCancel = false, const QString _saveDirPath = QString(), GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse, int _outFormatVal = -1)
+        : Filler("DownloadRemoteFileDialog"),
           resID(_resID),
           DBItemNum(_DBItemNum),
           addToProject(addToProject),

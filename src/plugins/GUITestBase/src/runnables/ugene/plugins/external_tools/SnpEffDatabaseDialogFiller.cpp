@@ -29,13 +29,13 @@
 #include "primitives/GTTableView.h"
 #include "primitives/GTWidget.h"
 
-//#include <U2
+// #include <U2
 
 namespace U2 {
 using namespace HI;
 
-SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(GUITestOpStatus& os, const QString& dbName, bool dbShouldBeFound)
-    : Filler(os, "SnpEffDatabaseDialog"),
+SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(const QString& dbName, bool dbShouldBeFound)
+    : Filler("SnpEffDatabaseDialog"),
       dbName(dbName),
       dbShouldBeFound(dbShouldBeFound) {
 }
@@ -43,18 +43,18 @@ SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(GUITestOpStatus& os, cons
 #define GT_CLASS_NAME "SnpEffDatabaseDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SnpEffDatabaseDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "lineEdit", dbName, dialog, false, true);
+    GTLineEdit::setText("lineEdit", dbName, dialog, false, true);
     GTGlobals::sleep();
 
-    auto table = dynamic_cast<QTableView*>(GTWidget::findWidget(os, "tableView"));
+    auto table = dynamic_cast<QTableView*>(GTWidget::findWidget("tableView"));
     GT_CHECK(table, "tableView is NULL");
 
     QAbstractItemModel* model = table->model();
     GT_CHECK(model, "model is NULL");
 
-    int rowCount = GTTableView::rowCount(os, table);
+    int rowCount = GTTableView::rowCount(table);
     int row = -1;
     for (int i = 0; i < rowCount; i++) {
         QModelIndex idx = model->index(i, 0);
@@ -67,13 +67,13 @@ void SnpEffDatabaseDialogFiller::commonScenario() {
     if (dbShouldBeFound) {
         GT_CHECK(row != -1, QString("Genome %1 is not found in the table").arg(dbName));
 
-        GTMouseDriver::moveTo(GTTableView::getCellPoint(os, table, row, 0));
+        GTMouseDriver::moveTo(GTTableView::getCellPoint(table, row, 0));
         GTMouseDriver::click();
 
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     } else {
         GT_CHECK(row == -1, QString("Genome %1 is unexpectedly found").arg(dbName));
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
     }
 }
 

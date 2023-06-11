@@ -20,28 +20,27 @@
  */
 
 #include "MeltingTemperatureSettingsDialogFiller.h"
+#include <primitives/GTWidget.h>
 
 #include "GTGlobals.h"
-
-#include <primitives/GTWidget.h>
 
 namespace U2 {
 
 #define GT_CLASS_NAME "MeltingTemperatureSettingsDialogFiller"
-MeltingTemperatureSettingsDialogFiller::MeltingTemperatureSettingsDialogFiller(HI::GUITestOpStatus& os,
-                                                                               const QMap<GTUtilsMeltingTemperature::Parameter, QString>& _parameters)
-    : Filler(os, "MeltingTemperatureCalculationDialog"),
-      parameters(_parameters) {}
+MeltingTemperatureSettingsDialogFiller::MeltingTemperatureSettingsDialogFiller(
+    const QMap<GTUtilsMeltingTemperature::Parameter, QString>& _parameters)
+    : Filler("MeltingTemperatureCalculationDialog"),
+      parameters(_parameters) {
+}
 
 #define GT_METHOD_NAME "commonScenario"
 void MeltingTemperatureSettingsDialogFiller::commonScenario() {
-    auto dialog = GTWidget::getActiveModalWidget(os);
-    GTUtilsMeltingTemperature::setParameters(os, parameters, dialog);
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    auto dialog = GTWidget::getActiveModalWidget();
+    GTUtilsMeltingTemperature::setParameters(parameters, dialog);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
-
-}
+}  // namespace U2

@@ -177,16 +177,16 @@ static bool setFilePermissions(const QString& path, bool allowWrite, bool recurs
 #define GT_CLASS_NAME "GTFile"
 
 #define GT_METHOD_NAME "setReadWrite"
-void GTFile::setReadWrite(GUITestOpStatus& os, const QString& path, bool recursive) {
-    waitForFile(os, path);
+void GTFile::setReadWrite(const QString& path, bool recursive) {
+    waitForFile(path);
     bool set = setFilePermissions(path, true, recursive);
     GT_CHECK(set, "read-write permission could not be set")
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setReadOnly"
-void GTFile::setReadOnly(GUITestOpStatus& os, const QString& path, bool recursive) {
-    waitForFile(os, path);
+void GTFile::setReadOnly(const QString& path, bool recursive) {
+    waitForFile(path);
     bool set = setFilePermissions(path, false, recursive);
     GT_CHECK(set, "read-only permission could not be set")
 }
@@ -195,9 +195,9 @@ void GTFile::setReadOnly(GUITestOpStatus& os, const QString& path, bool recursiv
 const QString GTFile::backupPostfix = "_GT_backup";
 
 #define GT_METHOD_NAME "equals"
-bool GTFile::equals(GUITestOpStatus& os, const QString& path1, const QString& path2, bool simplified) {
-    waitForFile(os, path1);
-    waitForFile(os, path2);
+bool GTFile::equals(const QString& path1, const QString& path2, bool simplified) {
+    waitForFile(path1);
+    waitForFile(path2);
 
     QFile f1(path1);
     QFile f2(path2);
@@ -218,14 +218,14 @@ bool GTFile::equals(GUITestOpStatus& os, const QString& path1, const QString& pa
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "equals"
-bool GTFile::equals(GUITestOpStatus& os, const QString& path1) {
+bool GTFile::equals(const QString& path1) {
     QFile f1(path1);
 
     bool ok = f1.open(QIODevice::ReadOnly);
     GT_CHECK_RESULT(ok, f1.errorString(), false);
 
     QByteArray byteArray1 = f1.readAll();
-    QByteArray byteArray2 = GTClipboard::text(os).toLocal8Bit();
+    QByteArray byteArray2 = GTClipboard::text().toLocal8Bit();
 
     GT_CHECK_RESULT(f1.error() == QFile::NoError, f1.errorString(), false);
 
@@ -233,7 +233,7 @@ bool GTFile::equals(GUITestOpStatus& os, const QString& path1) {
 }
 #undef GT_METHOD_NAME
 #define GT_METHOD_NAME "getSize"
-qint64 GTFile::getSize(GUITestOpStatus& os, const QString& path) {
+qint64 GTFile::getSize(const QString& path) {
     QFile file(path);
     bool ok = file.open(QIODevice::ReadOnly);
     GT_CHECK_RESULT(ok, "file '" + path + "' is not found", -1);
@@ -242,7 +242,7 @@ qint64 GTFile::getSize(GUITestOpStatus& os, const QString& path) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "copy"
-void GTFile::copy(GUITestOpStatus& os, const QString& from, const QString& to) {
+void GTFile::copy(const QString& from, const QString& to) {
     QFile f2(to);
     bool ok = f2.open(QIODevice::ReadOnly);
     if (ok) {
@@ -255,7 +255,7 @@ void GTFile::copy(GUITestOpStatus& os, const QString& from, const QString& to) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "copyDir"
-void GTFile::copyDir(GUITestOpStatus& os, const QString& dirToCopy, const QString& dirToPaste) {
+void GTFile::copyDir(const QString& dirToCopy, const QString& dirToPaste) {
 #ifdef Q_OS_LINUX
     QByteArray from = dirToCopy.toLocal8Bit();
     QByteArray to = dirToPaste.toLocal8Bit();
@@ -280,9 +280,9 @@ void GTFile::copyDir(GUITestOpStatus& os, const QString& dirToCopy, const QStrin
             continue;
         }
         if (info.isFile()) {
-            copy(os, info.filePath(), pastePath + '/' + info.fileName());
+            copy(info.filePath(), pastePath + '/' + info.fileName());
         } else if (info.isDir()) {
-            copyDir(os, info.filePath(), pastePath + '/' + info.fileName());
+            copyDir(info.filePath(), pastePath + '/' + info.fileName());
         }
     }
 #endif
@@ -336,10 +336,10 @@ void GTFile::removeDir(const QString& dirPath) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "backup"
-void GTFile::backup(GUITestOpStatus& os, const QString& path) {
+void GTFile::backup(const QString& path) {
     qDebug("Backup file %s", path.toLocal8Bit().constData());
     if (QFile(path).exists()) {
-        copy(os, path, path + backupPostfix);
+        copy(path, path + backupPostfix);
     } else {
         qDebug("Failed to backup. Files does not exist: %s", path.toLocal8Bit().constData());
     }
@@ -347,13 +347,13 @@ void GTFile::backup(GUITestOpStatus& os, const QString& path) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "backupDir"
-void GTFile::backupDir(GUITestOpStatus& os, const QString& path) {
-    copyDir(os, path, path + backupPostfix);
+void GTFile::backupDir(const QString& path) {
+    copyDir(path, path + backupPostfix);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "restore"
-void GTFile::restore(GUITestOpStatus& os, const QString& path) {
+void GTFile::restore(const QString& path) {
     qDebug("Restoring file %s", path.toLocal8Bit().constData());
     QFile backupFile(path + backupPostfix);
 
@@ -372,7 +372,7 @@ void GTFile::restore(GUITestOpStatus& os, const QString& path) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "restoreDir"
-void GTFile::restoreDir(GUITestOpStatus& os, const QString& path) {
+void GTFile::restoreDir(const QString& path) {
     QDir backupDir(path + backupPostfix);
     bool exists = backupDir.exists();
     if (!exists) {
@@ -391,30 +391,28 @@ void GTFile::restoreDir(GUITestOpStatus& os, const QString& path) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "check"
-bool GTFile::check(GUITestOpStatus& /*os*/, const QString& path) {
+bool GTFile::check(const QString& path) {
     QFile file(path);
     return file.exists();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "waitForFile"
-void GTFile::waitForFile(GUITestOpStatus& os, const QString& path, int timeout) {
-    for (int time = 0; time < timeout && !check(os, path); time += 500) {
+void GTFile::waitForFile(const QString& path, int timeout) {
+    for (int time = 0; time < timeout && !check(path); time += 500) {
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "create"
-void GTFile::create(GUITestOpStatus& os, const QString& filePath) {
-    Q_UNUSED(os);
+void GTFile::create(const QString& filePath) {
     bool success = QFile(filePath).open(QIODevice::WriteOnly);
     GT_CHECK(success, "Can't open file to write");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "readAll"
-QByteArray GTFile::readAll(GUITestOpStatus& os, const QString& filePath) {
-    Q_UNUSED(os);
+QByteArray GTFile::readAll(const QString& filePath) {
     QFile file(filePath);
     bool opened = file.open(QFile::ReadOnly);
     GT_CHECK_RESULT(opened, "Can't open file for read: '" + filePath + "'", "");

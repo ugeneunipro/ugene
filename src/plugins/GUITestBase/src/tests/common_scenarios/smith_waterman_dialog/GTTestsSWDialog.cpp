@@ -49,23 +49,23 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //  Steps:
     //
     //  1. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/query.txt. Get pattern sequence
-    GTFileDialog::openFile(os, testDir + "_common_data/smith_waterman2/multi/06/", "query.txt");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "query.txt");
+    GTFileDialog::openFile(testDir + "_common_data/smith_waterman2/multi/06/", "query.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("query.txt");
     QString patternSequence;
-    GTUtilsSequenceView::getSequenceAsString(os, patternSequence);
+    GTUtilsSequenceView::getSequenceAsString(patternSequence);
     CHECK_SET_ERR(!patternSequence.isEmpty(), "Pattern sequence is empty");
 
     // 2. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/search.txt
-    GTFileDialog::openFile(os, testDir + "_common_data/smith_waterman2/multi/06/", "search.txt");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "search.txt");
+    GTFileDialog::openFile(testDir + "_common_data/smith_waterman2/multi/06/", "search.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("search.txt");
 
     // 3. Run Smith-Waterman Search by SW dialog
-    Runnable* swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::MULTIPLE_ALIGNMENT, testDir + "_common_data/scenarios/sandbox/", patternSequence);
-    GTUtilsDialog::waitForDialog(os, swDialog);
+    Runnable* swDialog = new SmithWatermanDialogFiller(SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::MULTIPLE_ALIGNMENT, testDir + "_common_data/scenarios/sandbox/", patternSequence);
+    GTUtilsDialog::waitForDialog(swDialog);
 
-    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
 
     // 4. Check names of alignment files and names of found subsequences
     const QString seqNameMismatchErrorMessage = "sequences name list mismatch detected in file ";
@@ -74,12 +74,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     for (int i = 2; i > 0; i--) {
         const QString expectedFileName = "P1_S_" + QString::number(i) + "_test]" + alignmentFileExtension;
-        GTUtilsDocument::checkDocument(os, expectedFileName);
+        GTUtilsDocument::checkDocument(expectedFileName);
 
-        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, expectedFileName.left(expectedFileName.length() - alignmentFileExtension.length())));
+        GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(expectedFileName.left(expectedFileName.length() - alignmentFileExtension.length())));
         GTMouseDriver::doubleClick();
 
-        const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+        const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList();
         CHECK_SET_ERR(2 == sequencesNameList.length(), seqNumberMismatchErrorMessage + expectedFileName);
         switch (i) {
             case 1:
@@ -95,7 +95,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             default:
                 assert(0);
         }
-        GTUtilsMdi::click(os, GTGlobals::Close);
+        GTUtilsMdi::click(GTGlobals::Close);
         GTMouseDriver::click();
     }
 }
@@ -106,37 +106,37 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //  Steps:
     //
     //  1. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/query.txt. Get pattern sequence
-    GTFileDialog::openFile(os, testDir + "_common_data/smith_waterman2/multi/06/", "query.txt");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "query.txt");
+    GTFileDialog::openFile(testDir + "_common_data/smith_waterman2/multi/06/", "query.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("query.txt");
     QString patternSequence;
-    GTUtilsSequenceView::getSequenceAsString(os, patternSequence);
+    GTUtilsSequenceView::getSequenceAsString(patternSequence);
     CHECK_SET_ERR(!patternSequence.isEmpty(), "Pattern sequence is empty");
 
     // 2. Use menu {File->Open}. Open file _common_data/smith_waterman2/multi/06/search.txt
-    GTFileDialog::openFile(os, testDir + "_common_data/smith_waterman2/multi/06/", "search.txt");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDocument::checkDocument(os, "search.txt");
+    GTFileDialog::openFile(testDir + "_common_data/smith_waterman2/multi/06/", "search.txt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDocument::checkDocument("search.txt");
 
     // 3. Run Smith-Waterman Search by SW dialog
-    Runnable* swDialog = new SmithWatermanDialogFiller(os, SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::ANNOTATIONS, testDir + "_common_data/scenarios/sandbox/", patternSequence);
-    GTUtilsDialog::waitForDialog(os, swDialog);
+    Runnable* swDialog = new SmithWatermanDialogFiller(SmithWatermanDialogFiller::CLASSIC, SmithWatermanSettings::ANNOTATIONS, testDir + "_common_data/scenarios/sandbox/", patternSequence);
+    GTUtilsDialog::waitForDialog(swDialog);
 
-    GTMenu::clickMainMenuItem(os, {"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
 
     // 4. Close sequence view, then reopen it
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::click(GTGlobals::Close);
     GTMouseDriver::click();
 
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "S"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("S"));
     GTMouseDriver::doubleClick();
 
     // 5. Check names and count of annotations
-    QTreeWidget* treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
+    QTreeWidget* treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget();
     QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     int annotationsCounter = 0;
     foreach (QTreeWidgetItem* item, treeItems) {
-        QString treeItemName = GTUtilsAnnotationsTreeView::getAVItemName(os, (AVItem*)item);
+        QString treeItemName = GTUtilsAnnotationsTreeView::getAVItemName((AVItem*)item);
         if ("test" == treeItemName) {
             annotationsCounter++;
         }

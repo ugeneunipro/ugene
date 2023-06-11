@@ -49,34 +49,34 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::SmithWatermanDialogFiller"
 #define GT_METHOD_NAME "run"
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus& _os, SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s)
-    : Filler(_os, "SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s)
+    : Filler("SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
       resultView(_resultView), resultFilesPath(_resultFilesPath), autoSetupAlgorithmParams(true),
       realization(_realization) {
 }
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "SmithWatermanDialogBase", scenario) {
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(CustomScenario* scenario)
+    : Filler("SmithWatermanDialogBase", scenario) {
 }
 
-SmithWatermanDialogFiller::SmithWatermanDialogFiller(HI::GUITestOpStatus& _os, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s, SwRealization _realization)
-    : Filler(_os, "SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
+SmithWatermanDialogFiller::SmithWatermanDialogFiller(const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s, SwRealization _realization)
+    : Filler("SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
       resultView(SmithWatermanSettings::ANNOTATIONS), resultFilesPath(""),
       autoSetupAlgorithmParams(false), realization(_realization) {
 }
 
 void SmithWatermanDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (button == Cancel) {
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         return;
     }
 
-    auto tabWidget = GTWidget::findTabWidget(os, "tabWidget", dialog);
+    auto tabWidget = GTWidget::findTabWidget("tabWidget", dialog);
 
-    GTTabWidget::setCurrentIndex(os, tabWidget, 1);
-    auto resultViewVariants = GTWidget::findComboBox(os, "resultViewVariants", dialog);
+    GTTabWidget::setCurrentIndex(tabWidget, 1);
+    auto resultViewVariants = GTWidget::findComboBox("resultViewVariants", dialog);
     int resultViewIndex;
     if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
         resultViewIndex = 0;
@@ -85,41 +85,41 @@ void SmithWatermanDialogFiller::commonScenario() {
     } else {
         GT_FAIL("Unsupported mode: " + QString::number(resultView), );
     }
-    GTComboBox::selectItemByIndex(os, resultViewVariants, resultViewIndex);
+    GTComboBox::selectItemByIndex(resultViewVariants, resultViewIndex);
 
     if (!resultFilesPath.isEmpty()) {
         QLineEdit* resultFilePathContainer;
         if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
-            resultFilePathContainer = GTWidget::findLineEdit(os, "alignmentFilesPath", dialog);
+            resultFilePathContainer = GTWidget::findLineEdit("alignmentFilesPath", dialog);
         } else {
-            GTRadioButton::click(os, "rbCreateNewTable", dialog);
-            resultFilePathContainer = GTWidget::findLineEdit(os, "leNewTablePath", dialog);
+            GTRadioButton::click("rbCreateNewTable", dialog);
+            resultFilePathContainer = GTWidget::findLineEdit("leNewTablePath", dialog);
             resultFilesPath += ANNOTATION_RESULT_FILE_NAME;
         }
-        GTLineEdit::setText(os, resultFilePathContainer, resultFilesPath);
+        GTLineEdit::setText(resultFilePathContainer, resultFilesPath);
     }
 
     if (autoSetupAlgorithmParams) {
         if (resultView == SmithWatermanSettings::MULTIPLE_ALIGNMENT) {
-            GTGroupBox::setChecked(os, "advOptions", true, dialog);
-            GTLineEdit::setText(os, "mObjectNameTmpl", GTLineEdit::getText(os, "mObjectNameTmpl") + TEST_NAME_FOR_MA_RESULTS, dialog);
+            GTGroupBox::setChecked("advOptions", true, dialog);
+            GTLineEdit::setText("mObjectNameTmpl", GTLineEdit::getText("mObjectNameTmpl") + TEST_NAME_FOR_MA_RESULTS, dialog);
 
-            GTLineEdit::setText(os, "refSubseqNameTmpl", GTLineEdit::getText(os, "refSubseqNameTmpl") + TEST_NAME_FOR_MA_RESULTS, dialog);
+            GTLineEdit::setText("refSubseqNameTmpl", GTLineEdit::getText("refSubseqNameTmpl") + TEST_NAME_FOR_MA_RESULTS, dialog);
         } else {
-            GTLineEdit::setText(os, "leAnnotationName", TEST_NAME_FOR_ANNOT_RESULTS, dialog);
+            GTLineEdit::setText("leAnnotationName", TEST_NAME_FOR_ANNOT_RESULTS, dialog);
         }
     }
 
-    GTTabWidget::setCurrentIndex(os, tabWidget, 0);
+    GTTabWidget::setCurrentIndex(tabWidget, 0);
 
-    auto regionSelector = GTWidget::findExactWidget<RegionSelector*>(os, "range_selector", dialog);
-    GTRegionSelector::setRegion(os, regionSelector, s);
+    auto regionSelector = GTWidget::findExactWidget<RegionSelector*>("range_selector", dialog);
+    GTRegionSelector::setRegion(regionSelector, s);
 
-    auto textEdit = GTWidget::findTextEdit(os, "teditPattern", dialog);
-    GTTextEdit::setText(os, textEdit, pattern);
+    auto textEdit = GTWidget::findTextEdit("teditPattern", dialog);
+    GTTextEdit::setText(textEdit, pattern);
 
     if (autoSetupAlgorithmParams) {
-        auto comboRealization = GTWidget::findComboBox(os, "comboRealization", dialog);
+        auto comboRealization = GTWidget::findComboBox("comboRealization", dialog);
         QString realizationName;
         switch (realization) {
             case CLASSIC:
@@ -133,22 +133,22 @@ void SmithWatermanDialogFiller::commonScenario() {
         }
 
         const int swRealizationIndex = comboRealization->findText(realizationName);
-        GTComboBox::selectItemByIndex(os, comboRealization, swRealizationIndex);
+        GTComboBox::selectItemByIndex(comboRealization, swRealizationIndex);
 
-        auto comboResultFilter = GTWidget::findComboBox(os, "comboResultFilter", dialog);
-        GTComboBox::selectItemByText(os, comboResultFilter, "filter-intersections");
+        auto comboResultFilter = GTWidget::findComboBox("comboResultFilter", dialog);
+        GTComboBox::selectItemByText(comboResultFilter, "filter-intersections");
 
-        auto spinScorePercent = GTWidget::findSpinBox(os, "spinScorePercent", dialog);
-        GTSpinBox::setValue(os, spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);
+        auto spinScorePercent = GTWidget::findSpinBox("spinScorePercent", dialog);
+        GTSpinBox::setValue(spinScorePercent, RESULT_SCORE_PERCENTAGE, GTGlobals::UseKeyBoard);
 
-        auto dblSpinGapOpen = GTWidget::findSpinBox(os, "spinGapOpen", dialog);
-        GTSpinBox::setValue(os, dblSpinGapOpen, GAP_OPEN_PENALTY);
+        auto dblSpinGapOpen = GTWidget::findSpinBox("spinGapOpen", dialog);
+        GTSpinBox::setValue(dblSpinGapOpen, GAP_OPEN_PENALTY);
 
-        auto dblSpinGapExtd = GTWidget::findSpinBox(os, "spinGapExtd", dialog);
-        GTSpinBox::setValue(os, dblSpinGapExtd, GAP_EXTENDING_PENALTY);
+        auto dblSpinGapExtd = GTWidget::findSpinBox("spinGapExtd", dialog);
+        GTSpinBox::setValue(dblSpinGapExtd, GAP_EXTENDING_PENALTY);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

@@ -35,8 +35,8 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "ExportDocumentDialogFiller"
-ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, ExportDocumentDialogFiller::FormatToUse _format, bool compressFile, bool addToProject, GTGlobals::UseMethod method)
-    : Filler(_os, "ExportDocumentDialog"),
+ExportDocumentDialogFiller::ExportDocumentDialogFiller(const QString& _path, const QString& _name, ExportDocumentDialogFiller::FormatToUse _format, bool compressFile, bool addToProject, GTGlobals::UseMethod method)
+    : Filler("ExportDocumentDialog"),
       path(_path), name(_name), useMethod(method), format(_format), compressFile(compressFile), addToProject(addToProject) {
     if (!path.isEmpty()) {
         path = GTFileDialog::toAbsoluteNativePath(_path, true);
@@ -58,25 +58,25 @@ ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus& _os,
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportDocumentDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (!path.isEmpty()) {
-        GTLineEdit::setText(os, "fileNameEdit", path + name, dialog);
+        GTLineEdit::setText("fileNameEdit", path + name, dialog);
 
-        auto comboBox = GTWidget::findComboBox(os, "formatCombo", dialog);
+        auto comboBox = GTWidget::findComboBox("formatCombo", dialog);
         int index = comboBox->findText(comboBoxItems[format]);
 
         GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-        GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
+        GTComboBox::selectItemByIndex(comboBox, index, useMethod);
 
-        auto compressCheckBox = GTWidget::findCheckBox(os, "compressCheck", dialog);
-        GTCheckBox::setChecked(os, compressCheckBox, compressFile);
+        auto compressCheckBox = GTWidget::findCheckBox("compressCheck", dialog);
+        GTCheckBox::setChecked(compressCheckBox, compressFile);
 
-        auto addCheckBox = GTWidget::findCheckBox(os, "addToProjCheck", dialog);
-        GTCheckBox::setChecked(os, addCheckBox, addToProject);
+        auto addCheckBox = GTWidget::findCheckBox("addToProjCheck", dialog);
+        GTCheckBox::setChecked(addCheckBox, addToProject);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

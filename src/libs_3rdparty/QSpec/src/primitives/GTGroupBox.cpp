@@ -31,7 +31,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTGroupBox"
 
 #define GT_METHOD_NAME "getChecked"
-bool GTGroupBox::getChecked(GUITestOpStatus& os, QGroupBox* groupBox) {
+bool GTGroupBox::getChecked(QGroupBox* groupBox) {
     GT_CHECK_RESULT(groupBox != NULL, "QGroupBox is NULL", false);
     GT_CHECK_RESULT(groupBox->isEnabled(), "QGroupBox is disabled", false);
 
@@ -40,13 +40,13 @@ bool GTGroupBox::getChecked(GUITestOpStatus& os, QGroupBox* groupBox) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChecked"
-bool GTGroupBox::getChecked(GUITestOpStatus& os, const QString& groupBoxName, QWidget* parent) {
-    return GTGroupBox::getChecked(os, GTWidget::findGroupBox(os, groupBoxName, parent));
+bool GTGroupBox::getChecked(const QString& groupBoxName, QWidget* parent) {
+    return GTGroupBox::getChecked(GTWidget::findGroupBox(groupBoxName, parent));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTGroupBox::setChecked(GUITestOpStatus& os, QGroupBox* groupBox, bool checked) {
+void GTGroupBox::setChecked(QGroupBox* groupBox, bool checked) {
     GT_CHECK(groupBox != NULL, "QGroupBox is NULL");
 
     if (groupBox->isChecked() == checked) {
@@ -72,7 +72,7 @@ void GTGroupBox::setChecked(GUITestOpStatus& os, QGroupBox* groupBox, bool check
 
     const QRect checkboxRect = groupBox->style()->subControlRect(QStyle::CC_GroupBox, &options, QStyle::SC_GroupBoxCheckBox);
 
-    GTWidget::click(os, groupBox, Qt::LeftButton, checkboxRect.center());
+    GTWidget::click(groupBox, Qt::LeftButton, checkboxRect.center());
     GTGlobals::sleep(200);
 
     GT_CHECK(checked == groupBox->isChecked(), "Can't set a new state");
@@ -80,14 +80,14 @@ void GTGroupBox::setChecked(GUITestOpStatus& os, QGroupBox* groupBox, bool check
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTGroupBox::setChecked(GUITestOpStatus& os, const QString& groupBoxName, bool checked, QWidget* parent) {
-    GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, groupBoxName, parent), checked);
+void GTGroupBox::setChecked(const QString& groupBoxName, bool checked, QWidget* parent) {
+    GTGroupBox::setChecked(GTWidget::findGroupBox(groupBoxName, parent), checked);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setChecked"
-void GTGroupBox::setChecked(GUITestOpStatus& os, const QString& groupBoxName, QWidget* parent) {
-    GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, groupBoxName, parent));
+void GTGroupBox::setChecked(const QString& groupBoxName, QWidget* parent) {
+    GTGroupBox::setChecked(GTWidget::findGroupBox(groupBoxName, parent));
 }
 #undef GT_METHOD_NAME
 

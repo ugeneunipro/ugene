@@ -30,17 +30,17 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportChromatogramFiller"
-EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus& _os,
-                                                   AnnotationPolicy _policy,
-                                                   bool _recalculateQualifiers)
-    : Filler(_os, "EditSettingDialogForm"),
+EditSettingsDialogFiller::EditSettingsDialogFiller(
+    AnnotationPolicy _policy,
+    bool _recalculateQualifiers)
+    : Filler("EditSettingDialogForm"),
       policy(_policy),
       recalculateQualifiers(_recalculateQualifiers) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void EditSettingsDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QString radioButtonName;
     switch (policy) {
@@ -60,11 +60,11 @@ void EditSettingsDialogFiller::commonScenario() {
             GT_FAIL("An unexpected AnnotationPolicy", );
     }
 
-    GTRadioButton::click(os, radioButtonName, dialog);
+    GTRadioButton::click(radioButtonName, dialog);
 
-    GTCheckBox::setChecked(os, "recalculateQuals", recalculateQualifiers, dialog);
+    GTCheckBox::setChecked("recalculateQuals", recalculateQualifiers, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

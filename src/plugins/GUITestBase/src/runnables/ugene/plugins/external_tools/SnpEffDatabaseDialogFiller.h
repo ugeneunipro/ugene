@@ -28,7 +28,7 @@ using namespace HI;
 
 class SnpEffDatabaseDialogFiller : public Filler {
 public:
-    SnpEffDatabaseDialogFiller(HI::GUITestOpStatus& os, const QString& dbName, bool dbShouldBeFound = true);
+    SnpEffDatabaseDialogFiller(const QString& dbName, bool dbShouldBeFound = true);
     void commonScenario();
 
 private:

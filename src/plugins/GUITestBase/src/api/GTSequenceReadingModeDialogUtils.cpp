@@ -46,13 +46,13 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTSequenceReadingModeDialogUtils"
 
-GTSequenceReadingModeDialogUtils::GTSequenceReadingModeDialogUtils(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "MultipleDocumentsReadingModeSelectorController", scenario), dialog(nullptr) {
+GTSequenceReadingModeDialogUtils::GTSequenceReadingModeDialogUtils(CustomScenario* scenario)
+    : Filler("MultipleDocumentsReadingModeSelectorController", scenario), dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "run"
 void GTSequenceReadingModeDialogUtils::commonScenario() {
-    QWidget* openDialog = GTWidget::getActiveModalWidget(os);
+    QWidget* openDialog = GTWidget::getActiveModalWidget();
 
     dialog = openDialog;
 
@@ -72,23 +72,23 @@ void GTSequenceReadingModeDialogUtils::commonScenario() {
 #define GT_METHOD_NAME "selectMode"
 void GTSequenceReadingModeDialogUtils::selectMode() {
     QString buttonName = GTSequenceReadingModeDialog::mode == GTSequenceReadingModeDialog::Merge ? MERGE_MODE : SEPARATE_MODE;
-    auto radioButton = GTWidget::findRadioButton(os, buttonName, dialog);
+    auto radioButton = GTWidget::findRadioButton(buttonName, dialog);
 
     if (!radioButton->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
             case GTGlobals::UseMouse:
-                GTRadioButton::click(os, radioButton);
+                GTRadioButton::click(radioButton);
                 break;
 
             case GTGlobals::UseKey:
-                GTWidget::setFocus(os, radioButton);
+                GTWidget::setFocus(radioButton);
                 GTKeyboardDriver::keyClick(Qt::Key_Space);
                 break;
             default:
                 break;
         }
     }
-    GTRadioButton::checkIsChecked(os, radioButton);
+    GTRadioButton::checkIsChecked(radioButton);
 }
 #undef GT_METHOD_NAME
 
@@ -103,7 +103,7 @@ void GTSequenceReadingModeDialogUtils::setNumSymbolsParts() {
 
 #define GT_METHOD_NAME "setNumSymbolsFiles"
 void GTSequenceReadingModeDialogUtils::setNumSymbolsFiles() {
-    auto spinBox = GTWidget::findSpinBox(os, FILE_GAP, dialog);
+    auto spinBox = GTWidget::findSpinBox(FILE_GAP, dialog);
 
     changeSpinBoxValue(spinBox, GTSequenceReadingModeDialog::numSymbolFiles);
 }
@@ -115,13 +115,13 @@ void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
         return;
     }
 
-    GTLineEdit::setText(os, NEW_DOC_NAME, GTSequenceReadingModeDialog::newDocName, dialog);
+    GTLineEdit::setText(NEW_DOC_NAME, GTSequenceReadingModeDialog::newDocName, dialog);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSaveDocument"
 void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
-    auto saveBox = GTWidget::findCheckBox(os, SAVE_BOX, dialog);
+    auto saveBox = GTWidget::findCheckBox(SAVE_BOX, dialog);
 
     if (GTSequenceReadingModeDialog::saveDocument != saveBox->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
@@ -144,7 +144,7 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
 
 #define GT_METHOD_NAME "clickButton"
 void GTSequenceReadingModeDialogUtils::clickButton() {
-    auto buttonBox = GTWidget::findDialogButtonBox(os, "buttonBox", dialog);
+    auto buttonBox = GTWidget::findDialogButtonBox("buttonBox", dialog);
 
     QList<QAbstractButton*> buttonList = buttonBox->buttons();
     GT_CHECK(buttonList.size() != 0, "button not found");
@@ -158,7 +158,7 @@ void GTSequenceReadingModeDialogUtils::clickButton() {
     }
     GT_CHECK(btn != nullptr, "button not found");
 
-    GTWidget::click(os, btn /*, UseMethod*/);
+    GTWidget::click(btn /*, UseMethod*/);
 }
 #undef GT_METHOD_NAME
 
@@ -188,7 +188,7 @@ void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox* sb, int val)
             case GTGlobals::UseKey: {
                 Qt::Key key;
                 key = val > sb->value() ? Qt::Key_Up : Qt::Key_Down;
-                GTWidget::setFocus(os, sb);
+                GTWidget::setFocus(sb);
                 while (sb->value() != val && currentClickCount++ < maxClicksCount) {
                     GTKeyboardDriver::keyClick(key);
                 }

@@ -56,8 +56,8 @@ public:
         bool selectAll;
     };
 
-    FindQualifierFiller(HI::GUITestOpStatus& os, const FindQualifierFillerSettings& settings = FindQualifierFillerSettings());
-    FindQualifierFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    FindQualifierFiller(const FindQualifierFillerSettings& settings = FindQualifierFillerSettings());
+    FindQualifierFiller(CustomScenario* scenario);
 
     void commonScenario();
 

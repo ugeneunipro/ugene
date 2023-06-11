@@ -40,35 +40,35 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::replaceSubsequenceDialogFiller"
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool recalculateQuals, bool _expectAlphabetChanged)
-    : Filler(_os, "EditSequenceDialog"),
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(const QString& _pasteDataHere, bool recalculateQuals, bool _expectAlphabetChanged)
+    : Filler("EditSequenceDialog"),
       pasteDataHere(_pasteDataHere),
       recalculateQuals(recalculateQuals),
       expectAlphabetChanged(_expectAlphabetChanged) {
 }
 
-ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario, bool _expectAlphabetChanged)
-    : Filler(os, "EditSequenceDialog", scenario),
+ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(CustomScenario* scenario, bool _expectAlphabetChanged)
+    : Filler("EditSequenceDialog", scenario),
       recalculateQuals(false),
       expectAlphabetChanged(_expectAlphabetChanged) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ReplaceSubsequenceDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
+    auto plainText = GTWidget::findPlainTextEdit("sequenceEdit", dialog);
     // GTKeyboardDriver::keyClick( GTKeyboardDriver::key["a"], Qt::ControlModifier);
     // GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep();
-    GTPlainTextEdit::setText(os, plainText, pasteDataHere);
+    GTPlainTextEdit::setText(plainText, pasteDataHere);
 
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "recalculateQualsCheckBox"), recalculateQuals);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("recalculateQualsCheckBox"), recalculateQuals);
     if (expectAlphabetChanged) {
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
     }
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

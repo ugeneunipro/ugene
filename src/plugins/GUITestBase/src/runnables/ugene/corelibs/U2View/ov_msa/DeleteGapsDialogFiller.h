@@ -28,8 +28,8 @@ using namespace HI;
 
 class DeleteGapsDialogFiller : public Filler {
 public:
-    DeleteGapsDialogFiller(HI::GUITestOpStatus& os, int _radioButNum = 0)
-        : Filler(os, "DeleteGapsDialog"),
+    DeleteGapsDialogFiller(int _radioButNum = 0)
+        : Filler("DeleteGapsDialog"),
           radioButNum(_radioButNum) {
     }
     void commonScenario();
@@ -43,8 +43,8 @@ public:
     enum Radio { Number,
                  Percent,
                  Column };
-    RemoveGapColsDialogFiller(HI::GUITestOpStatus& os, Radio _button, int _spinValue = 1)
-        : Filler(os, "DeleteGapsDialog"),
+    RemoveGapColsDialogFiller(Radio _button, int _spinValue = 1)
+        : Filler("DeleteGapsDialog"),
           button(_button), spinValue(_spinValue) {
         radioMap[Number] = "absoluteRadioButton";
         radioMap[Percent] = "relativeRadioButton";

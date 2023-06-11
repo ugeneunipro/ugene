@@ -126,9 +126,9 @@ public:
     };
 
 public:
-    CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus& os,
-                                           const ElementWithCommandLineSettings& settings);
-    CreateElementWithCommandLineToolFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    CreateElementWithCommandLineToolFiller(
+        const ElementWithCommandLineSettings& settings);
+    CreateElementWithCommandLineToolFiller(CustomScenario* scenario);
     void commonScenario();
 
 private:
@@ -150,13 +150,13 @@ private:
 
     template<typename DataType>
     void setType(QTableView* table, int row, const DataType& type) {
-        GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(ColumnName::Type), row));
+        GTMouseDriver::moveTo(GTTableView::getCellPosition(table, static_cast<int>(ColumnName::Type), row));
         GTMouseDriver::doubleClick();
         GTThread::waitForMainThread();
 
         auto box = qobject_cast<QComboBox*>(QApplication::focusWidget());
         QString dataType = dataTypeToString(type);
-        GTComboBox::selectItemByText(os, box, dataType);
+        GTComboBox::selectItemByText(box, dataType);
         if (isOsWindows()) {
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
         }
@@ -170,7 +170,7 @@ private:
         int row = model->rowCount();
 
         foreach (const Data<DataType>& rowData, rowItems) {
-            GTWidget::click(os, addRowButton);
+            GTWidget::click(addRowButton);
             table->scrollTo(model->index(row, static_cast<int>(ColumnName::DisplayName)));
 
             processStringType(table, row, ColumnName::DisplayName, rowData.displayName);

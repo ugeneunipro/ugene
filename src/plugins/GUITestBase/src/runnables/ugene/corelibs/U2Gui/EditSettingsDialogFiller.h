@@ -35,7 +35,7 @@ public:
         SplitSeparateAnnotationParts
     };
 
-    EditSettingsDialogFiller(HI::GUITestOpStatus& os, AnnotationPolicy policy, bool recalculateQualifiers);
+    EditSettingsDialogFiller(AnnotationPolicy policy, bool recalculateQualifiers);
 
     void commonScenario();
 

@@ -1,6 +1,4 @@
-#ifndef _HI_GUI_TEST_H_
-#define _HI_GUI_TEST_H_
-
+#pragma once
 #include <QSet>
 #include <QTimer>
 
@@ -27,7 +25,7 @@ public:
     static const QString screenshotDir;
 
     /** Scenario of the test. Must be implemented in the child class. */
-    virtual void run(GUITestOpStatus& os) = 0;
+    virtual void run() = 0;
 
     /** Post-run cleanup. Optional. */
     virtual void cleanup() {
@@ -79,7 +77,7 @@ typedef QList<GUITest*> GUITests;
         } \
 \
     protected: \
-        virtual void run(HI::GUITestOpStatus& os); \
+        virtual void run(); \
     };
 
 #define TEST_CLASS_DECLARATION_SET_TIMEOUT(className, timeout) \
@@ -89,12 +87,10 @@ typedef QList<GUITest*> GUITests;
         } \
 \
     protected: \
-        virtual void run(HI::GUITestOpStatus& os); \
+        virtual void run(); \
     };
 
 #define TEST_CLASS_DEFINITION(className) \
-    void className::run(HI::GUITestOpStatus& os)
+    void className::run()
 
 }  // namespace HI
-
-#endif

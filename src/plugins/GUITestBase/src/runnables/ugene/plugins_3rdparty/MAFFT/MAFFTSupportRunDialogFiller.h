@@ -41,8 +41,8 @@ public:
         int spin_maxNumberIterRefinementSpinBox_value;
     };
 
-    MAFFTSupportRunDialogFiller(GUITestOpStatus& os, Parameters* parameters);
-    MAFFTSupportRunDialogFiller(GUITestOpStatus& os, CustomScenario* scenario);
+    MAFFTSupportRunDialogFiller(Parameters* parameters);
+    MAFFTSupportRunDialogFiller(CustomScenario* scenario);
 
     void commonScenario();
 

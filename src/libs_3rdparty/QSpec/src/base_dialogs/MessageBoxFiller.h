@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_RUNNABLES_MESSAGE_BOX_FILLER_H_
-#define _HI_GT_RUNNABLES_MESSAGE_BOX_FILLER_H_
+#pragma once
 
 #include <QMessageBox>
 
@@ -30,8 +29,8 @@ namespace HI {
 
 class HI_EXPORT MessageBoxDialogFiller : public Filler {
 public:
-    MessageBoxDialogFiller(GUITestOpStatus& os, QMessageBox::StandardButton b, const QString& message = "", const QString& objectName = "");
-    MessageBoxDialogFiller(GUITestOpStatus& os, const QString& buttonText, const QString& message = "");
+    MessageBoxDialogFiller(QMessageBox::StandardButton b, const QString& message = "", const QString& objectName = "");
+    MessageBoxDialogFiller(const QString& buttonText, const QString& message = "");
 
     virtual void commonScenario();
 
@@ -43,25 +42,25 @@ protected:
 
 class HI_EXPORT AppCloseMessageBoxDialogFiller : public Filler {
 public:
-    AppCloseMessageBoxDialogFiller(GUITestOpStatus& os);
+    AppCloseMessageBoxDialogFiller();
     void commonScenario();
 };
 
 class HI_EXPORT MessageBoxNoToAllOrNo : public Filler {
 public:
-    MessageBoxNoToAllOrNo(GUITestOpStatus& os);
+    MessageBoxNoToAllOrNo();
     void commonScenario();
 };
 
 class HI_EXPORT MessageBoxOpenAnotherProject : public Filler {
 public:
-    MessageBoxOpenAnotherProject(GUITestOpStatus& os);
+    MessageBoxOpenAnotherProject();
     void commonScenario();
 };
 
 class HI_EXPORT InputIntFiller : public Filler {
 public:
-    InputIntFiller(GUITestOpStatus& os, int value);
+    InputIntFiller(int value);
     void commonScenario();
 
 private:
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace HI
-
-#endif

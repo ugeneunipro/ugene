@@ -32,26 +32,26 @@ namespace U2 {
 #define GT_CLASS_NAME "CreateRulerDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 
-CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus& os, QString _rulerName, int _startPos)
-    : Filler(os, "CreateRulerDialog"),
+CreateRulerDialogFiller::CreateRulerDialogFiller(QString _rulerName, int _startPos)
+    : Filler("CreateRulerDialog"),
       rulerName(_rulerName),
       startPos(_startPos) {
 }
 
-CreateRulerDialogFiller::CreateRulerDialogFiller(GUITestOpStatus& os, CustomScenario* c)
-    : Filler(os, "CreateRulerDialog", c),
+CreateRulerDialogFiller::CreateRulerDialogFiller(CustomScenario* c)
+    : Filler("CreateRulerDialog", c),
       startPos(0) {
 }
 
 void CreateRulerDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "nameEdit", rulerName, dialog);
+    GTLineEdit::setText("nameEdit", rulerName, dialog);
 
-    auto spinBox = GTWidget::findSpinBox(os, "spinBox", dialog);
-    GTSpinBox::setValue(os, spinBox, startPos, GTGlobals::UseKeyBoard);
+    auto spinBox = GTWidget::findSpinBox("spinBox", dialog);
+    GTSpinBox::setValue(spinBox, startPos, GTGlobals::UseKeyBoard);
 
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

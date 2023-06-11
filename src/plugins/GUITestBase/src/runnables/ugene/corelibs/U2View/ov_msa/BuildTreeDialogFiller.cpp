@@ -45,8 +45,8 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::BuildTreeDialogFiller"
 
-BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus& os, const QString& saveTree, int model, double alpha, bool displayWithMsa)
-    : Filler(os, "CreatePhyTree"),
+BuildTreeDialogFiller::BuildTreeDialogFiller(const QString& saveTree, int model, double alpha, bool displayWithMsa)
+    : Filler("CreatePhyTree"),
       saveTree(saveTree),
       model(model),
       replicates(0),
@@ -57,13 +57,13 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus& os, const QStr
       displayWithMsa(displayWithMsa) {
 }
 
-BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus& os,
-                                             int replicates,
-                                             const QString& saveTree,
-                                             int seed,
-                                             BuildTreeDialogFiller::ConsensusType type,
-                                             double fraction)
-    : Filler(os, "CreatePhyTree"),
+BuildTreeDialogFiller::BuildTreeDialogFiller(
+    int replicates,
+    const QString& saveTree,
+    int seed,
+    BuildTreeDialogFiller::ConsensusType type,
+    double fraction)
+    : Filler("CreatePhyTree"),
       saveTree(saveTree),
       model(0),
       replicates(replicates),
@@ -74,8 +74,8 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus& os,
       displayWithMsa(false) {
 }
 
-BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "CreatePhyTree", scenario),
+BuildTreeDialogFiller::BuildTreeDialogFiller(CustomScenario* scenario)
+    : Filler("CreatePhyTree", scenario),
       model(0),
       replicates(0),
       seed(0),
@@ -87,40 +87,40 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(HI::GUITestOpStatus& os, CustomScen
 
 #define GT_METHOD_NAME "commonScenario"
 void BuildTreeDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (saveTree != "default") {
-        GTLineEdit::setText(os, "fileNameEdit", saveTree);
+        GTLineEdit::setText("fileNameEdit", saveTree);
     }
 
     if (model != 0) {
-        GTComboBox::selectItemByIndex(os, GTWidget::findComboBox(os, "cbModel", dialog), model);
+        GTComboBox::selectItemByIndex(GTWidget::findComboBox("cbModel", dialog), model);
     }
 
     if (alpha != 0) {
-        GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbGamma", dialog), true);
-        GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, "sbAlpha", dialog), alpha, GTGlobals::UseKeyBoard);
+        GTCheckBox::setChecked(GTWidget::findCheckBox("chbGamma", dialog), true);
+        GTDoubleSpinbox::setValue(GTWidget::findDoubleSpinBox("sbAlpha", dialog), alpha, GTGlobals::UseKeyBoard);
     } else {
-        GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbGamma", dialog), false);
+        GTCheckBox::setChecked(GTWidget::findCheckBox("chbGamma", dialog), false);
     }
 
     if (replicates != 0) {
-        GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 1);
-        GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "chbEnableBootstrapping"), true);
-        GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "sbReplicatesNumber"), replicates, GTGlobals::UseKeyBoard);
-        GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "sbSeed"), seed, GTGlobals::UseKeyBoard);
-        GTComboBox::selectItemByIndex(os, GTWidget::findComboBox(os, "cbConsensusType"), type);
+        GTTabWidget::setCurrentIndex(GTWidget::findTabWidget("tabWidget", dialog), 1);
+        GTCheckBox::setChecked(GTWidget::findCheckBox("chbEnableBootstrapping"), true);
+        GTSpinBox::setValue(GTWidget::findSpinBox("sbReplicatesNumber"), replicates, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(GTWidget::findSpinBox("sbSeed"), seed, GTGlobals::UseKeyBoard);
+        GTComboBox::selectItemByIndex(GTWidget::findComboBox("cbConsensusType"), type);
         if (type == M1) {
-            GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, "sbFraction"), fraction, GTGlobals::UseKeyBoard);
+            GTDoubleSpinbox::setValue(GTWidget::findDoubleSpinBox("sbFraction"), fraction, GTGlobals::UseKeyBoard);
         }
     }
 
     if (!displayWithMsa) {
-        GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "tabWidget", dialog), 2);
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "createNewView"));
+        GTTabWidget::setCurrentIndex(GTWidget::findTabWidget("tabWidget", dialog), 2);
+        GTRadioButton::click(GTWidget::findRadioButton("createNewView"));
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
@@ -128,27 +128,27 @@ void BuildTreeDialogFiller::commonScenario() {
 
 #define GT_CLASS_NAME "GTUtilsDialog::BuildTreeDialogFiller"
 
-BuildTreeDialogFillerPhyML::BuildTreeDialogFillerPhyML(HI::GUITestOpStatus& os, bool _freqOptimRadioPressed, int bootstrap)
-    : Filler(os, "CreatePhyTree"), freqOptimRadioPressed(_freqOptimRadioPressed), bootstrap(bootstrap) {
+BuildTreeDialogFillerPhyML::BuildTreeDialogFillerPhyML(bool _freqOptimRadioPressed, int bootstrap)
+    : Filler("CreatePhyTree"), freqOptimRadioPressed(_freqOptimRadioPressed), bootstrap(bootstrap) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void BuildTreeDialogFillerPhyML::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "algorithmBox", dialog), "PhyML Maximum Likelihood");
+    GTComboBox::selectItemByText(GTWidget::findComboBox("algorithmBox", dialog), "PhyML Maximum Likelihood");
 
     if (freqOptimRadioPressed) {
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "freqOptimRadio", dialog));
+        GTRadioButton::click(GTWidget::findRadioButton("freqOptimRadio", dialog));
     }
 
     if (bootstrap >= 0) {
-        GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "twSettings", dialog), 1);
-        GTRadioButton::click(os, GTWidget::findRadioButton(os, "bootstrapRadioButton"));
-        GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "bootstrapSpinBox"), bootstrap);
+        GTTabWidget::setCurrentIndex(GTWidget::findTabWidget("twSettings", dialog), 1);
+        GTRadioButton::click(GTWidget::findRadioButton("bootstrapRadioButton"));
+        GTSpinBox::setValue(GTWidget::findSpinBox("bootstrapSpinBox"), bootstrap);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

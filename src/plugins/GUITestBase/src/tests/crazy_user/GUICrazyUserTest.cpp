@@ -93,8 +93,6 @@ QList<GTAbstractGUIAction*> GTCrazyUserMonitor::formGUIActions(QWidget* widget) 
 }
 
 GUI_TEST_CLASS_DEFINITION(simple_crazy_user) {
-    Q_UNUSED(os);
-
     qsrand(QTime().msecsTo(QTime::currentTime()));
     GTCrazyUserMonitor m;
 

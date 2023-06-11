@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_GTACTION_H_
-#define _HI_GUI_GTACTION_H_
-
+#pragma once
 #include <QAction>
 
 #include "GTGlobals.h"
@@ -32,15 +30,13 @@ namespace HI {
 class HI_EXPORT GTAction {
 public:
     // returns first QAbstractButton associated with an action with a given name
-    static QAbstractButton* button(GUITestOpStatus& os, const QString& actionName, QWidget* parent = NULL, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QAbstractButton* button(const QString& actionName, QWidget* parent = NULL, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
-    static QAbstractButton* button(GUITestOpStatus& os, const QAction* action);
+    static QAbstractButton* button(const QAction* action);
 
-    static QAction* findAction(GUITestOpStatus& os, const QString& objectName, QWidget* parent = NULL, const GTGlobals::FindOptions& options = {});
+    static QAction* findAction(const QString& objectName, QWidget* parent = NULL, const GTGlobals::FindOptions& options = {});
 
-    static QAction* findActionByText(GUITestOpStatus& os, const QString& text, QWidget* parent = NULL);
+    static QAction* findActionByText(const QString& text, QWidget* parent = NULL);
 };
 
 }  // namespace HI
-
-#endif

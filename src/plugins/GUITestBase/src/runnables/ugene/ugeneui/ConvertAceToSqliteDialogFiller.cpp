@@ -48,18 +48,18 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
             button = "Cancel";
             break;
     }
-    MessageBoxDialogFiller* mbf = new MessageBoxDialogFiller(os, button);
+    MessageBoxDialogFiller* mbf = new MessageBoxDialogFiller(button);
     if (NOT_SET == action) {
         // when launching filler 2 or more times messagebox is caught by wrong filler
-        // GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, mbf);
+        // GTUtilsDialog::waitForDialogWhichMayRunOrNot(mbf);
     } else {
-        GTUtilsDialog::waitForDialog(os, mbf);
+        GTUtilsDialog::waitForDialog(mbf);
     }
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "leDest", leDestUrl, dialog);
+    GTLineEdit::setText("leDest", leDestUrl, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

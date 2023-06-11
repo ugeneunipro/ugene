@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTREEVIEW_H
-#define GTTREEVIEW_H
-
+#pragma once
 #include <QTreeView>
 
 #include "GTGlobals.h"
@@ -31,38 +29,36 @@ namespace HI {
 class HI_EXPORT GTTreeView {
 public:
     // find index with data and role in the tree view
-    static QModelIndex findIndex(GUITestOpStatus& os, QTreeView* tree, QVariant data, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QModelIndex findIndex(QTreeView* tree, QVariant data, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
     // find index with data and role for current parent index
-    static QModelIndex findIndex(GUITestOpStatus& os, QTreeView* tree, QVariant data, QModelIndex parent, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QModelIndex findIndex(QTreeView* tree, QVariant data, QModelIndex parent, Qt::ItemDataRole role = Qt::DisplayRole, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
-    static QPoint getItemCenter(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex);
+    static QPoint getItemCenter(QTreeView* tree, const QModelIndex& itemIndex);
 
     /** Expands given item. */
-    static void expand(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex);
+    static void expand(QTreeView* tree, const QModelIndex& itemIndex);
 
     /** Clicks given item. */
-    static void click(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex, const Qt::Key& keyModifier = Qt::Key_unknown);
+    static void click(QTreeView* tree, const QModelIndex& itemIndex, const Qt::Key& keyModifier = Qt::Key_unknown);
 
     /** Clicks given item. */
-    static void doubleClick(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex);
+    static void doubleClick(QTreeView* tree, const QModelIndex& itemIndex);
 
     /** Scrolls the item into view. */
-    static void scrollToItem(GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex);
+    static void scrollToItem(QTreeView* tree, const QModelIndex& itemIndex);
 
     /** Checks that tree item is expanded or fails. Waits for the item to be expanded if needed. */
-    static void checkItemIsExpanded(HI::GUITestOpStatus& os, QTreeView* tree, const QModelIndex& itemIndex);
+    static void checkItemIsExpanded(QTreeView* tree, const QModelIndex& itemIndex);
 
 private:
-    static QModelIndexList findIndexes(GUITestOpStatus& os,
-                                       QTreeView* tree,
-                                       QVariant data,
-                                       Qt::ItemDataRole role = Qt::DisplayRole,
-                                       QModelIndex parent = QModelIndex(),
-                                       int depth = 0,
-                                       const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QModelIndexList findIndexes(
+        QTreeView* tree,
+        QVariant data,
+        Qt::ItemDataRole role = Qt::DisplayRole,
+        QModelIndex parent = QModelIndex(),
+        int depth = 0,
+        const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 };
 
 }  // namespace HI
-
-#endif  // GTTREEVIEW_H

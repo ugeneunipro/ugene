@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_RADIOBUTTON_H_
-#define _HI_GT_RADIOBUTTON_H_
-
+#pragma once
 #include <QRadioButton>
 
 #include "GTGlobals.h"
@@ -33,15 +31,14 @@ namespace HI {
 class HI_EXPORT GTRadioButton {
 public:
     // fails if the radioButton is NULL or can't click
-    static void click(GUITestOpStatus& os, QRadioButton* radioButton);
-    static void click(GUITestOpStatus& os, const QString& radioButtonName, QWidget* parent = nullptr);
+    static void click(QRadioButton* radioButton);
+    static void click(const QString& radioButtonName, QWidget* parent = nullptr);
 
-    static QRadioButton* getRadioButtonByText(GUITestOpStatus& os, QString text, QWidget* parent = nullptr);
-    static QList<QRadioButton*> getAllButtonsByText(GUITestOpStatus& os, const QString& text, QWidget* parent = nullptr);
+    static QRadioButton* getRadioButtonByText(QString text, QWidget* parent = nullptr);
+    static QList<QRadioButton*> getAllButtonsByText(const QString& text, QWidget* parent = nullptr);
 
     /** Checks if the radio button is checked. */
-    static void checkIsChecked(GUITestOpStatus& os, QRadioButton* button, bool expectedState = true);
+    static void checkIsChecked(QRadioButton* button, bool expectedState = true);
 };
 
 }  // namespace HI
-#endif  // _HI_GT_RADIOBUTTON_H_

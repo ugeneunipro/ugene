@@ -36,7 +36,7 @@ namespace U2 {
 #define GT_METHOD_NAME "run"
 
 void RenameSequenceFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     GT_CHECK(dialog->windowTitle() == "Rename Read" || dialog->windowTitle() == "Rename Sequence", "dialog not found");
 
     QLineEdit* nameEdit = dialog->findChild<QLineEdit*>();
@@ -49,13 +49,13 @@ void RenameSequenceFiller::commonScenario() {
 
     if (oldName != newName) {
         // if filler used not for checking sequence name
-        GTLineEdit::setText(os, nameEdit, newName, false, useCopyPaste);
+        GTLineEdit::setText(nameEdit, newName, false, useCopyPaste);
     }
 
-    GTWidget::click(os, GTWidget::findButtonByText(os, "OK", dialog));
+    GTWidget::click(GTWidget::findButtonByText("OK", dialog));
     GTGlobals::sleep(500);
     if (nullptr != QApplication::activeModalWidget()) {
-        GTWidget::click(os, GTWidget::findButtonByText(os, "OK", QApplication::activeModalWidget()));
+        GTWidget::click(GTWidget::findButtonByText("OK", QApplication::activeModalWidget()));
     }
 }
 

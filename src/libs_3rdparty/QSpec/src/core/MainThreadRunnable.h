@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_MAIN_THREAD_RUNNABLE_H_
-#define _HI_MAIN_THREAD_RUNNABLE_H_
+#pragma once
 
 #include <core/CustomScenario.h>
 
@@ -34,19 +33,19 @@ namespace HI {
 class HI_EXPORT MainThreadRunnable : public QObject {
     Q_OBJECT
 public:
-    MainThreadRunnable(GUITestOpStatus& os, CustomScenario* scenario);
+    MainThreadRunnable(CustomScenario* scenario);
     ~MainThreadRunnable();
 
     void doRequest();
     void run();
 
-    static void runInMainThread(GUITestOpStatus& os, CustomScenario* scenario);
+    static void runInMainThread(CustomScenario* scenario);
 
 signals:
     void si_request(MainThreadRunnable* mainThreadRunnable);
 
 private:
-    GUITestOpStatus& os;
+    ;
     CustomScenario* scenario;
 };
 
@@ -60,5 +59,3 @@ public slots:
 };
 
 }  // namespace HI
-
-#endif

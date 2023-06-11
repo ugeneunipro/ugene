@@ -28,7 +28,7 @@ using namespace HI;
 
 class LicenseAgreementDialogFiller : public Filler {
 public:
-    LicenseAgreementDialogFiller(HI::GUITestOpStatus& os);
+    LicenseAgreementDialogFiller();
 
     void commonScenario();
 };

@@ -51,7 +51,7 @@ public:
     };
     typedef QPair<ActionType, QVariant> Action;
 
-    NcbiSearchDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
+    NcbiSearchDialogFiller(const QList<Action>& actions);
 
     void commonScenario() override;
 
@@ -82,12 +82,12 @@ private:
 
 class NCBISearchDialogSimpleFiller : public Filler {
 public:
-    NCBISearchDialogSimpleFiller(HI::GUITestOpStatus& os,
-                                 const QString& query,
-                                 bool doubleEnter = false,
-                                 int _esultLimit = -1,
-                                 const QString& term = "",
-                                 const QString& resultToLoad = "");
+    NCBISearchDialogSimpleFiller(
+        const QString& query,
+        bool doubleEnter = false,
+        int _esultLimit = -1,
+        const QString& term = "",
+        const QString& resultToLoad = "");
 
     void commonScenario() override;
 

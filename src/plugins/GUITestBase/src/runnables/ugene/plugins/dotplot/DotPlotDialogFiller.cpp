@@ -33,8 +33,8 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
 
-DotPlotFiller::DotPlotFiller(HI::GUITestOpStatus& _os, CustomScenario* customScenario)
-    : Filler(_os, "DotPlotDialog", customScenario),
+DotPlotFiller::DotPlotFiller(CustomScenario* customScenario)
+    : Filler("DotPlotDialog", customScenario),
       minLen(100),
       identity(0),
       invertedRepeats(false),
@@ -42,25 +42,25 @@ DotPlotFiller::DotPlotFiller(HI::GUITestOpStatus& _os, CustomScenario* customSce
 }
 
 void DotPlotFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto minLenBox = GTWidget::findSpinBox(os, "minLenBox", dialog);
+    auto minLenBox = GTWidget::findSpinBox("minLenBox", dialog);
     if (but1kpressed) {
-        GTWidget::click(os, GTWidget::findWidget(os, "minLenHeuristicsButton", dialog));
+        GTWidget::click(GTWidget::findWidget("minLenHeuristicsButton", dialog));
         GTGlobals::sleep();
         GT_CHECK(minLenBox->value() == 2, "minLem not 2, 1k button works wrong");
     } else
-        GTSpinBox::setValue(os, minLenBox, minLen, GTGlobals::UseKeyBoard);
+        GTSpinBox::setValue(minLenBox, minLen, GTGlobals::UseKeyBoard);
 
     if (identity) {
-        auto identityBox = GTWidget::findSpinBox(os, "identityBox", dialog);
-        GTSpinBox::setValue(os, identityBox, identity, GTGlobals::UseKeyBoard);
+        auto identityBox = GTWidget::findSpinBox("identityBox", dialog);
+        GTSpinBox::setValue(identityBox, identity, GTGlobals::UseKeyBoard);
     }
 
-    auto invertedCheckBox = GTWidget::findCheckBox(os, "invertedCheckBox", dialog);
-    GTCheckBox::setChecked(os, invertedCheckBox, invertedRepeats);
+    auto invertedCheckBox = GTWidget::findCheckBox("invertedCheckBox", dialog);
+    GTCheckBox::setChecked(invertedCheckBox, invertedRepeats);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

@@ -125,7 +125,7 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
 #    define GT_METHOD_NAME "press"
 bool GTMouseDriver::press(Qt::MouseButton button) {
     unsigned int btn = button == Qt::LeftButton ? MOUSEEVENTF_LEFTDOWN : button == Qt::RightButton ? MOUSEEVENTF_RIGHTDOWN
-                                                                     : button == Qt::MiddleButton     ? MOUSEEVENTF_MIDDLEDOWN
+                                                                     : button == Qt::MiddleButton  ? MOUSEEVENTF_MIDDLEDOWN
                                                                                                    : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 
@@ -149,7 +149,7 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
     // TODO: check if this key has been already pressed
     // unsigned int buttons[3] = {MOUSEEVENTF_LEFTUP, MOUSEEVENTF_RIGHTUP, MOUSEEVENTF_MIDDLEUP};
     unsigned int btn = button == Qt::LeftButton ? MOUSEEVENTF_LEFTUP : button == Qt::RightButton ? MOUSEEVENTF_RIGHTUP
-                                                                   : button == Qt::MiddleButton     ? MOUSEEVENTF_MIDDLEUP
+                                                                   : button == Qt::MiddleButton  ? MOUSEEVENTF_MIDDLEUP
                                                                                                  : 0;
     DRIVER_CHECK(btn != 0, "button is 0");
 

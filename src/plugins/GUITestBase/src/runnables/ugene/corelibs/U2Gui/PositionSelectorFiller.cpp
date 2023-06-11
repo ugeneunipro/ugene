@@ -31,10 +31,10 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::GoToDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void GoToDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "go_to_pos_line_edit", QString::number(goTo), dialog);
-    GTWidget::click(os, GTWidget::findButtonByText(os, "Go", dialog));
+    GTLineEdit::setText("go_to_pos_line_edit", QString::number(goTo), dialog);
+    GTWidget::click(GTWidget::findButtonByText("Go", dialog));
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

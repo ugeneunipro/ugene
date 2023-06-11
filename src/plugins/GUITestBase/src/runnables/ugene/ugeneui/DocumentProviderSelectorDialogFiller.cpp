@@ -42,12 +42,12 @@ const QMap<DocumentProviderSelectorDialogFiller::OpenWith, QString> DocumentProv
 #define GT_CLASS_NAME "DocumentProviderSelectorDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void DocumentProviderSelectorDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto radio = GTWidget::findRadioButton(os, openWithMap.value(openWith), dialog);
-    GTWidget::click(os, radio);
+    auto radio = GTWidget::findRadioButton(openWithMap.value(openWith), dialog);
+    GTWidget::click(radio);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

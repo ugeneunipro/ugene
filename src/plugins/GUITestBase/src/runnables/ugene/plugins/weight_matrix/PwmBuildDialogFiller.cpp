@@ -34,20 +34,20 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions)
-    : Filler(os, "PWMBuildDialog"),
+PwmBuildDialogFiller::PwmBuildDialogFiller(const QList<Action>& actions)
+    : Filler("PWMBuildDialog"),
       dialog(nullptr),
       actions(actions) {
 }
 
-PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
-    : Filler(os, "PWMBuildDialog", c),
+PwmBuildDialogFiller::PwmBuildDialogFiller(CustomScenario* c)
+    : Filler("PWMBuildDialog", c),
       dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "run"
 void PwmBuildDialogFiller::commonScenario() {
-    dialog = GTWidget::getActiveModalWidget(os);
+    dialog = GTWidget::getActiveModalWidget();
 
     foreach (const Action& action, actions) {
         switch (action.first) {
@@ -64,8 +64,7 @@ void PwmBuildDialogFiller::commonScenario() {
                 clickCancel();
                 break;
             default:
-                os.setError("An unimplemented action");
-                FAIL(false, );
+                FAIL("Not implemented action", );
         }
     }
 }
@@ -73,32 +72,29 @@ void PwmBuildDialogFiller::commonScenario() {
 
 #define GT_METHOD_NAME "enterInput"
 void PwmBuildDialogFiller::enterInput(const QVariant& actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the file path from the action data");
-    GTLineEdit::setText(os, "inputEdit", actionData.toString(), dialog);
+    GTLineEdit::setText("inputEdit", actionData.toString(), dialog);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectInput"
 void PwmBuildDialogFiller::selectInput(const QVariant& actionData) {
-    CHECK_OP(os, );
     GT_CHECK(actionData.canConvert<QString>(), "Can't get the file path from the action data");
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, actionData.toString()));
-    GTWidget::click(os, GTWidget::findWidget(os, "inputButton", dialog));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(actionData.toString()));
+    GTWidget::click(GTWidget::findWidget("inputButton", dialog));
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "expectInvalidFile"
 void PwmBuildDialogFiller::expectInvalidFile() {
-    CHECK_OP(os, );
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "There are no sequences in the file."));
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok, "There are no sequences in the file."));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickCancel"
 void PwmBuildDialogFiller::clickCancel() {
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
 #undef GT_METHOD_NAME
 

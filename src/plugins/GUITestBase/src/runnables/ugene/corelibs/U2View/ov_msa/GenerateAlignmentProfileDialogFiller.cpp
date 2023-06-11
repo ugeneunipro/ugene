@@ -39,37 +39,37 @@ namespace U2 {
 #define GT_METHOD_NAME "commonScenario"
 
 void GenerateAlignmentProfileDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTGlobals::sleep(500);
     if (counts) {
-        auto countsRB = GTWidget::findRadioButton(os, "countsRB", dialog);
-        GTRadioButton::click(os, countsRB);
+        auto countsRB = GTWidget::findRadioButton("countsRB", dialog);
+        GTRadioButton::click(countsRB);
     } else {
-        auto percentsRB = GTWidget::findRadioButton(os, "percentsRB", dialog);
-        GTRadioButton::click(os, percentsRB);
+        auto percentsRB = GTWidget::findRadioButton("percentsRB", dialog);
+        GTRadioButton::click(percentsRB);
     }
 
     if (format != NONE) {
-        GTGroupBox::setChecked(os, "saveBox", dialog);
+        GTGroupBox::setChecked("saveBox", dialog);
         GTGlobals::sleep(500);
 
-        GTLineEdit::setText(os, "fileEdit", filePath, dialog);
+        GTLineEdit::setText("fileEdit", filePath, dialog);
 
-        auto formatRB = GTWidget::findRadioButton(os, checkBoxItems[format], dialog);
-        GTRadioButton::click(os, formatRB);
+        auto formatRB = GTWidget::findRadioButton(checkBoxItems[format], dialog);
+        GTRadioButton::click(formatRB);
     }
 
-    auto gapCB = GTWidget::findCheckBox(os, "gapCB", dialog);
-    GTCheckBox::setChecked(os, gapCB, gapScore);
+    auto gapCB = GTWidget::findCheckBox("gapCB", dialog);
+    GTCheckBox::setChecked(gapCB, gapScore);
 
-    auto unusedCB = GTWidget::findCheckBox(os, "unusedCB", dialog);
-    GTCheckBox::setChecked(os, unusedCB, symdolScore);
+    auto unusedCB = GTWidget::findCheckBox("unusedCB", dialog);
+    GTCheckBox::setChecked(unusedCB, symdolScore);
 
-    auto skipGapPositionsCB = GTWidget::findCheckBox(os, "skipGapPositionsCB", dialog);
-    GTCheckBox::setChecked(os, skipGapPositionsCB, skipGaps);
+    auto skipGapPositionsCB = GTWidget::findCheckBox("skipGapPositionsCB", dialog);
+    GTCheckBox::setChecked(skipGapPositionsCB, skipGaps);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 }  // namespace U2

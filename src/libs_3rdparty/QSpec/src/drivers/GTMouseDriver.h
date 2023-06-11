@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_GTMOUSEDRIVER_H_
-#define _HI_GUI_GTMOUSEDRIVER_H_
-
+#pragma once
 #include <QtCore/QPoint>
 
 #include "GTGlobals.h"
@@ -61,5 +59,3 @@ private:
 };
 
 }  // namespace HI
-
-#endif

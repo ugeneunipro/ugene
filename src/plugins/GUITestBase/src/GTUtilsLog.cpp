@@ -87,7 +87,7 @@ bool GTLogTracer::hasError(const QString& substring) const {
 #define GT_CLASS_NAME "GTUtilsLog"
 
 #define GT_METHOD_NAME "checkMessageWithWait"
-void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer& lt, const QString& message, int timeoutMillis) {
+void GTUtilsLog::checkMessageWithWait(const GTLogTracer& lt, const QString& message, int timeoutMillis) {
     for (int time = 0; time < timeoutMillis; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
         if (lt.hasMessage(message)) {
@@ -99,7 +99,7 @@ void GTUtilsLog::checkMessageWithWait(HI::GUITestOpStatus& os, const GTLogTracer
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkMessageWithTextCount"
-void GTUtilsLog::checkMessageWithTextCount(HI::GUITestOpStatus& os, const QString& messagePart, int expectedMessageCount, const QString& context) {
+void GTUtilsLog::checkMessageWithTextCount(const QString& messagePart, int expectedMessageCount, const QString& context) {
     int messageCount = 0;
     const QList<LogMessage*>& messages = LogCache::getAppGlobalInstance()->messages;
     for (auto message : qAsConst(messages)) {

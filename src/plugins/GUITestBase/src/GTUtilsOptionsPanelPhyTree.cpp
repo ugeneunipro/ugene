@@ -35,49 +35,49 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsOptionPanelPhyTree"
 
 #define GT_METHOD_NAME "openTab"
-QWidget* GTUtilsOptionPanelPhyTree::openTab(HI::GUITestOpStatus& os) {
-    QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(os, TreeViewerFactory::ID);
-    QWidget* tabButton = GTWidget::findWidget(os, "OP_TREES_WIDGET", activeObjectViewWindow);
-    GTWidget::click(os, tabButton);
-    return getOptionsPanelWidget(os);
+QWidget* GTUtilsOptionPanelPhyTree::openTab() {
+    QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(TreeViewerFactory::ID);
+    QWidget* tabButton = GTWidget::findWidget("OP_TREES_WIDGET", activeObjectViewWindow);
+    GTWidget::click(tabButton);
+    return getOptionsPanelWidget();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getOptionsPanelWidget"
-QWidget* GTUtilsOptionPanelPhyTree::getOptionsPanelWidget(HI::GUITestOpStatus& os) {
-    QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(os, TreeViewerFactory::ID);
-    return GTWidget::findWidget(os, "TreeOptionsWidget", activeObjectViewWindow);
+QWidget* GTUtilsOptionPanelPhyTree::getOptionsPanelWidget() {
+    QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(TreeViewerFactory::ID);
+    return GTWidget::findWidget("TreeOptionsWidget", activeObjectViewWindow);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getFontSize"
-int GTUtilsOptionPanelPhyTree::getFontSize(HI::GUITestOpStatus& os) {
-    return GTSpinBox::getValue(os, "fontSizeSpinBox", getOptionsPanelWidget(os));
+int GTUtilsOptionPanelPhyTree::getFontSize() {
+    return GTSpinBox::getValue("fontSizeSpinBox", getOptionsPanelWidget());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setFontSize"
-void GTUtilsOptionPanelPhyTree::setFontSize(HI::GUITestOpStatus& os, int fontSize) {
-    GTSpinBox::setValue(os, "fontSizeSpinBox", fontSize, getOptionsPanelWidget(os));
+void GTUtilsOptionPanelPhyTree::setFontSize(int fontSize) {
+    GTSpinBox::setValue("fontSizeSpinBox", fontSize, getOptionsPanelWidget());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "changeTreeLayout"
-void GTUtilsOptionPanelPhyTree::changeTreeLayout(HI::GUITestOpStatus& os, const QString& layoutName) {
-    GTComboBox::selectItemByText(os, "layoutCombo", getOptionsPanelWidget(os), layoutName);
+void GTUtilsOptionPanelPhyTree::changeTreeLayout(const QString& layoutName) {
+    GTComboBox::selectItemByText("layoutCombo", getOptionsPanelWidget(), layoutName);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkBranchDepthScaleMode"
-void GTUtilsOptionPanelPhyTree::checkBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode) {
-    auto treeViewCombo = GTWidget::findComboBox(os, "treeViewCombo", getOptionsPanelWidget(os));
+void GTUtilsOptionPanelPhyTree::checkBranchDepthScaleMode(const QString& mode) {
+    auto treeViewCombo = GTWidget::findComboBox("treeViewCombo", getOptionsPanelWidget());
     CHECK_SET_ERR(mode == treeViewCombo->currentText(), QString("Unexpected mode. Expected: %1, got: %2").arg(mode).arg(treeViewCombo->currentText()));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "changeBranchDepthScaleMode"
-void GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(HI::GUITestOpStatus& os, const QString& mode) {
-    GTComboBox::selectItemByText(os, "treeViewCombo", getOptionsPanelWidget(os), mode);
+void GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(const QString& mode) {
+    GTComboBox::selectItemByText("treeViewCombo", getOptionsPanelWidget(), mode);
 }
 #undef GT_METHOD_NAME
 

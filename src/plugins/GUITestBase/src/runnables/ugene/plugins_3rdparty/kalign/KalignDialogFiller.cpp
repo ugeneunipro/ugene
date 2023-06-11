@@ -32,27 +32,27 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::KalignDialogFiller"
 
-KalignDialogFiller::KalignDialogFiller(HI::GUITestOpStatus& _os, int _gapOpenVal, bool _toAmino)
-    : Filler(_os, "KalignDialog"),
+KalignDialogFiller::KalignDialogFiller(int _gapOpenVal, bool _toAmino)
+    : Filler("KalignDialog"),
       gapOpenVal(_gapOpenVal), toAmino(_toAmino) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void KalignDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (gapOpenVal) {
-        auto gapOpenCheckBox = GTWidget::findCheckBox(os, "gapOpenCheckBox", dialog);
-        GTCheckBox::setChecked(os, gapOpenCheckBox, true);
+        auto gapOpenCheckBox = GTWidget::findCheckBox("gapOpenCheckBox", dialog);
+        GTCheckBox::setChecked(gapOpenCheckBox, true);
 
-        auto gapOpenSpinBox = GTWidget::findDoubleSpinBox(os, "gapOpenSpinBox", dialog);
-        GTDoubleSpinbox::setValue(os, gapOpenSpinBox, gapOpenVal, GTGlobals::UseKeyBoard);
+        auto gapOpenSpinBox = GTWidget::findDoubleSpinBox("gapOpenSpinBox", dialog);
+        GTDoubleSpinbox::setValue(gapOpenSpinBox, gapOpenVal, GTGlobals::UseKeyBoard);
     }
 
-    auto translateCheckBox = GTWidget::findCheckBox(os, "translateCheckBox", dialog);
-    GTCheckBox::setChecked(os, translateCheckBox, toAmino);
+    auto translateCheckBox = GTWidget::findCheckBox("translateCheckBox", dialog);
+    GTCheckBox::setChecked(translateCheckBox, toAmino);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

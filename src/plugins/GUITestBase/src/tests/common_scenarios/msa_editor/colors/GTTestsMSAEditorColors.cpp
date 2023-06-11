@@ -47,92 +47,92 @@ using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Use context menu {Colors->UGENE} in MSA editor area.
-    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "UGENE"}));
-    GTMenu::showContextMenu(os, seq);
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(0);
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "UGENE"}));
+    GTMenu::showContextMenu(seq);
 
     //    Expected state: background for symbols must be:
     //    A - yellow    G - blue    T - red    C - green    gap - no background
     // check A
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#fcff92");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(0, 1), "#fcff92");
 
     // check G
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#4eade1");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(2, 2), "#4eade1");
 
     // check T
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#ff99b1");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(0, 2), "#ff99b1");
 
     // check C
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 0), "#70f970");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(4, 0), "#70f970");
 
     // check gap
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 2), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(4, 2), "#ffffff");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     //    1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Use context menu {Colors->No Colors} in MSA editor area.
-    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "No colors"}));
-    GTMenu::showContextMenu(os, seq);
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(0);
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "No colors"}));
+    GTMenu::showContextMenu(seq);
     //    Expected state: background for symbols must be white
     // check A
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(0, 1), "#ffffff");
 
     // check G
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(2, 2), "#ffffff");
 
     // check T
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(0, 2), "#ffffff");
 
     // check C
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 0), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(4, 0), "#ffffff");
 
     // check gap
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 2), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(4, 2), "#ffffff");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Use context menu {Colors->Jalview} in MSA editor area.
-    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Jalview"}));
-    GTMenu::showContextMenu(os, seq);
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(0);
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "Jalview"}));
+    GTMenu::showContextMenu(seq);
     // Expected state: background for symbols must be:
     // A - green G - red T - blue  C - orange gap - no background
     // check A
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#64f73f");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(0, 1), "#64f73f");
 
     // check G
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 2), "#EB413C");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(2, 2), "#EB413C");
 
     // check T
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 2), "#3C88EE");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(0, 2), "#3C88EE");
 
     // check C
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 0), "#FFB340");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(4, 0), "#FFB340");
 
     // check gap
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 2), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(4, 2), "#ffffff");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Use context menu {Colors->Persentage identity} in MSA editor area.
     //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
     //    Intensity of colour depends on the frequency of appearance in the column.
-    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(os, 0);
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_APPEARANCE, "Colors", "Percentage identity"}));
-    GTMenu::showContextMenu(os, seq);
+    auto seq = GTUtilsMSAEditorSequenceArea::getSequenceArea(0);
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_APPEARANCE, "Colors", "Percentage identity"}));
+    GTMenu::showContextMenu(seq);
     //    Symbols and columns at the descending order
     //    1. A,G,T at 2,3,9
     //    2. A at 10
@@ -140,34 +140,34 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //    4. A,C,A,T,A,T,A at 1,4,7,8,11,12,14
 
     //    columns without colored symbols 5,13
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(0, 1), "#CCCCFF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(1, 1), "#6464FF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(2, 1), "#6464FF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(3, 1), "#CCCCFF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(4, 1), "#ffffff");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(5, 1), "#9999FF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(6, 1), "#CCCCFF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(7, 2), "#CCCCFF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(8, 2), "#6464FF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(9, 2), "#9999FF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(10, 1), "#CCCCFF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(11, 2), "#CCCCFF");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(12, 2), "#ffffff");
-    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(os, QPoint(13, 2), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(0, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(1, 1), "#6464FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(2, 1), "#6464FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(3, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(4, 1), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(5, 1), "#9999FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(6, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(7, 2), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(8, 2), "#6464FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(9, 2), "#9999FF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(10, 1), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(11, 2), "#CCCCFF");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(12, 2), "#ffffff");
+    GTUtilsMSAEditorSequenceArea::checkMsaCellColor(QPoint(13, 2), "#CCCCFF");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    Highlighting scheme options should be saved on the alphabet changing for a DNA MSA
 
     //    1. Open "data/samples/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "Highlighting" options panel tab.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
 
     //    3. Select "Conservation level" highlighting scheme.
-    GTUtilsOptionPanelMsa::setHighlightingScheme(os, "Conservation level");
+    GTUtilsOptionPanelMsa::setHighlightingScheme("Conservation level");
 
     //    4. Set the next highlighting scheme options:
     //        threshold: 70%
@@ -177,21 +177,21 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsOptionPanelMsa::ThresholdComparison expectedThresholdComparison = GTUtilsOptionPanelMsa::LessOrEqual;
     bool expectedIsUseDotsOptionsSet = true;
 
-    GTUtilsOptionPanelMsa::setThreshold(os, expectedThreshold);
-    GTUtilsOptionPanelMsa::setThresholdComparison(os, expectedThresholdComparison);
-    GTUtilsOptionPanelMsa::setUseDotsOption(os, expectedIsUseDotsOptionsSet);
+    GTUtilsOptionPanelMsa::setThreshold(expectedThreshold);
+    GTUtilsOptionPanelMsa::setThresholdComparison(expectedThresholdComparison);
+    GTUtilsOptionPanelMsa::setUseDotsOption(expectedIsUseDotsOptionsSet);
 
     //    5. Replace any symbol in the MSA to amino acid specific symbols, e.g. to 'Q'.
-    GTUtilsMSAEditorSequenceArea::replaceSymbol(os, QPoint(0, 0), 'q');
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMSAEditorSequenceArea::replaceSymbol(QPoint(0, 0), 'q');
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: the alignment alphabet is changed to Raw, highlighting scheme options are the same.
-    bool isAlphabetRaw = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isRaw();
+    bool isAlphabetRaw = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isRaw();
     CHECK_SET_ERR(isAlphabetRaw, "Alphabet is not RAW after the symbol replacing");
 
-    int threshold = GTUtilsOptionPanelMsa::getThreshold(os);
-    GTUtilsOptionPanelMsa::ThresholdComparison thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison(os);
-    bool isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet(os);
+    int threshold = GTUtilsOptionPanelMsa::getThreshold();
+    GTUtilsOptionPanelMsa::ThresholdComparison thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison();
+    bool isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet();
 
     CHECK_SET_ERR(expectedThreshold == threshold,
                   QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));
@@ -208,20 +208,20 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     expectedThresholdComparison = GTUtilsOptionPanelMsa::GreaterOrEqual;
     expectedIsUseDotsOptionsSet = false;
 
-    GTUtilsOptionPanelMsa::setThreshold(os, expectedThreshold);
-    GTUtilsOptionPanelMsa::setThresholdComparison(os, expectedThresholdComparison);
-    GTUtilsOptionPanelMsa::setUseDotsOption(os, expectedIsUseDotsOptionsSet);
+    GTUtilsOptionPanelMsa::setThreshold(expectedThreshold);
+    GTUtilsOptionPanelMsa::setThresholdComparison(expectedThresholdComparison);
+    GTUtilsOptionPanelMsa::setUseDotsOption(expectedIsUseDotsOptionsSet);
 
     //    7. Press "Undo" button on the toolbar.
-    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::undo();
 
     //    Expected state: the alignment alphabet is changed to DNA, highlighting scheme options are the same.
-    const bool isAlphabetDna = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isDNA();
+    const bool isAlphabetDna = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isDNA();
     CHECK_SET_ERR(isAlphabetDna, "Alphabet is not DNA after the undoing");
 
-    threshold = GTUtilsOptionPanelMsa::getThreshold(os);
-    thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison(os);
-    isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet(os);
+    threshold = GTUtilsOptionPanelMsa::getThreshold();
+    thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison();
+    isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet();
 
     CHECK_SET_ERR(expectedThreshold == threshold,
                   QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));
@@ -235,17 +235,17 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    Highlighting scheme options should be saved on the alphabet changing for an amino acid MSA
 
     //    1. Open "_common_data/fasta/RAW.fa".
-    GTUtilsProject::openFileExpectRawSequence(os, testDir + "_common_data/fasta/RAW.fa", "RAW263");
+    GTUtilsProject::openFileExpectRawSequence(testDir + "_common_data/fasta/RAW.fa", "RAW263");
 
     //    2. Open "data/samples/CLUSTALW/ty3.aln.gz".
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open "Highlighting" options panel tab.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
 
     //    4. Select "Conservation level" highlighting scheme.
-    GTUtilsOptionPanelMsa::setHighlightingScheme(os, "Conservation level");
+    GTUtilsOptionPanelMsa::setHighlightingScheme("Conservation level");
 
     //    5. Set the next highlighting scheme options:
     //        threshold: 70%
@@ -255,21 +255,21 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsOptionPanelMsa::ThresholdComparison expectedThresholdComparison = GTUtilsOptionPanelMsa::LessOrEqual;
     bool expectedIsUseDotsOptionsSet = true;
 
-    GTUtilsOptionPanelMsa::setThreshold(os, expectedThreshold);
-    GTUtilsOptionPanelMsa::setThresholdComparison(os, expectedThresholdComparison);
-    GTUtilsOptionPanelMsa::setUseDotsOption(os, expectedIsUseDotsOptionsSet);
+    GTUtilsOptionPanelMsa::setThreshold(expectedThreshold);
+    GTUtilsOptionPanelMsa::setThresholdComparison(expectedThresholdComparison);
+    GTUtilsOptionPanelMsa::setUseDotsOption(expectedIsUseDotsOptionsSet);
 
     //    6. Drag and drop "RAW263" sequence object from the Project View to the MSA Editor.
-    GTUtilsMsaEditor::dragAndDropSequenceFromProject(os, {"RAW.fa", "RAW263"});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::dragAndDropSequenceFromProject({"RAW.fa", "RAW263"});
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: the alignment alphabet is changed to Raw, highlighting scheme options are the same.
-    const bool isAlphabetRaw = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isRaw();
+    const bool isAlphabetRaw = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isRaw();
     CHECK_SET_ERR(isAlphabetRaw, "Alphabet is not RAW after the symbol replacing");
 
-    int threshold = GTUtilsOptionPanelMsa::getThreshold(os);
-    GTUtilsOptionPanelMsa::ThresholdComparison thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison(os);
-    bool isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet(os);
+    int threshold = GTUtilsOptionPanelMsa::getThreshold();
+    GTUtilsOptionPanelMsa::ThresholdComparison thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison();
+    bool isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet();
 
     CHECK_SET_ERR(expectedThreshold == threshold,
                   QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));
@@ -286,20 +286,20 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     expectedThresholdComparison = GTUtilsOptionPanelMsa::GreaterOrEqual;
     expectedIsUseDotsOptionsSet = false;
 
-    GTUtilsOptionPanelMsa::setThreshold(os, expectedThreshold);
-    GTUtilsOptionPanelMsa::setThresholdComparison(os, expectedThresholdComparison);
-    GTUtilsOptionPanelMsa::setUseDotsOption(os, expectedIsUseDotsOptionsSet);
+    GTUtilsOptionPanelMsa::setThreshold(expectedThreshold);
+    GTUtilsOptionPanelMsa::setThresholdComparison(expectedThresholdComparison);
+    GTUtilsOptionPanelMsa::setUseDotsOption(expectedIsUseDotsOptionsSet);
 
     //    7. Press "Undo" button on the toolbar.
-    GTUtilsMsaEditor::undo(os);
+    GTUtilsMsaEditor::undo();
 
     //    Expected state: the alignment alphabet is changed to Amino Acid, highlighting scheme options are the same.
-    const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
+    const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isAmino();
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino acid after the undoing");
 
-    threshold = GTUtilsOptionPanelMsa::getThreshold(os);
-    thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison(os);
-    isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet(os);
+    threshold = GTUtilsOptionPanelMsa::getThreshold();
+    thresholdComparison = GTUtilsOptionPanelMsa::getThresholdComparison();
+    isUseDotsOptionsSet = GTUtilsOptionPanelMsa::isUseDotsOptionSet();
 
     CHECK_SET_ERR(expectedThreshold == threshold,
                   QString("Threshold is incorrect: expected %1, got %2").arg(expectedThreshold).arg(threshold));

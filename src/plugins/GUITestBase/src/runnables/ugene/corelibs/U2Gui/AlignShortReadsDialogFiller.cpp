@@ -62,45 +62,39 @@ AlignShortReadsFiller::BwaSwParameters::BwaSwParameters(const QString& refDir, c
 void AlignShortReadsFiller::commonScenario() {
     SAFE_POINT_EXT(parameters, GT_CHECK(0, "Invalid input parameters: NULL pointer"), );
 
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     setCommonParameters(dialog);
-    CHECK_OP(os, );
-
     setAdditionalParameters(dialog);
-    CHECK_OP(os, );
-
     GTGlobals::sleep(500);
-
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setCommonParameters"
 void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "methodNamesBox", dialog), parameters->getAlignmentMethod());
+    GTComboBox::selectItemByText(GTWidget::findComboBox("methodNamesBox", dialog), parameters->getAlignmentMethod());
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters->referenceFile));
-    GTWidget::click(os, GTWidget::findWidget(os, "addRefButton", dialog));
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters->referenceFile));
+    GTWidget::click(GTWidget::findWidget("addRefButton", dialog));
 
     if (!parameters->useDefaultResultPath) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, parameters->resultDir, parameters->resultFileName, GTFileDialogUtils::Save));
-        GTWidget::click(os, GTWidget::findWidget(os, "setResultFileNameButton", dialog));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters->resultDir, parameters->resultFileName, GTFileDialogUtils::Save));
+        GTWidget::click(GTWidget::findWidget("setResultFileNameButton", dialog));
     }
 
     foreach (const QString& readsFile, parameters->readsFiles) {
-        GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, readsFile));
-        GTWidget::click(os, GTWidget::findWidget(os, "addShortreadsButton", dialog));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(readsFile));
+        GTWidget::click(GTWidget::findWidget("addShortreadsButton", dialog));
     }
 
-    auto libraryComboBox = GTWidget::findComboBox(os, "libraryComboBox", dialog);
+    auto libraryComboBox = GTWidget::findComboBox("libraryComboBox", dialog);
     if (libraryComboBox->isEnabled()) {
-        GTComboBox::selectItemByText(os, libraryComboBox, parameters->getLibrary());
+        GTComboBox::selectItemByText(libraryComboBox, parameters->getLibrary());
     }
 
-    auto samBox = GTWidget::findCheckBox(os, "samBox", dialog);
+    auto samBox = GTWidget::findCheckBox("samBox", dialog);
     if (samBox->isEnabled()) {
-        GTCheckBox::setChecked(os, samBox, parameters->samOutput);
+        GTCheckBox::setChecked(samBox, parameters->samOutput);
     }
 }
 #undef GT_METHOD_NAME
@@ -136,135 +130,118 @@ void AlignShortReadsFiller::setAdditionalParameters(QWidget* dialog) {
 #define GT_METHOD_NAME "setBowtie2AdditionalParameters"
 void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bowtie2Parameters, QWidget* dialog) {
     // Parameters
-    auto modeComboBox = GTWidget::findComboBox(os, "modeComboBox", dialog);
-    CHECK_OP(os, );
-    GTComboBox::selectItemByText(os, modeComboBox, bowtie2Parameters->getMode());
-    CHECK_OP(os, );
+    auto modeComboBox = GTWidget::findComboBox("modeComboBox", dialog);
 
-    auto mismatchesSpinBox = GTWidget::findSpinBox(os, "mismatchesSpinBox", dialog);
-    CHECK_OP(os, );
-    GTSpinBox::setValue(os, mismatchesSpinBox, bowtie2Parameters->numberOfMismatches);
-    CHECK_OP(os, );
+    GTComboBox::selectItemByText(modeComboBox, bowtie2Parameters->getMode());
 
-    auto seedlenCheckBox = GTWidget::findCheckBox(os, "seedlenCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, seedlenCheckBox, bowtie2Parameters->seedLengthCheckBox);
-    CHECK_OP(os, );
+    auto mismatchesSpinBox = GTWidget::findSpinBox("mismatchesSpinBox", dialog);
 
-    auto seedlenSpinBox = GTWidget::findSpinBox(os, "seedlenSpinBox", dialog);
-    CHECK_OP(os, );
+    GTSpinBox::setValue(mismatchesSpinBox, bowtie2Parameters->numberOfMismatches);
+
+    auto seedlenCheckBox = GTWidget::findCheckBox("seedlenCheckBox", dialog);
+
+    GTCheckBox::setChecked(seedlenCheckBox, bowtie2Parameters->seedLengthCheckBox);
+
+    auto seedlenSpinBox = GTWidget::findSpinBox("seedlenSpinBox", dialog);
+
     if (seedlenCheckBox->isChecked()) {
-        GTSpinBox::setValue(os, seedlenSpinBox, bowtie2Parameters->seedLength);
+        GTSpinBox::setValue(seedlenSpinBox, bowtie2Parameters->seedLength);
     }
-    CHECK_OP(os, );
 
-    auto dpadCheckBox = GTWidget::findCheckBox(os, "dpadCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, dpadCheckBox, bowtie2Parameters->addColumnsToAllowGapsCheckBox);
-    CHECK_OP(os, );
+    auto dpadCheckBox = GTWidget::findCheckBox("dpadCheckBox", dialog);
 
-    auto dpadSpinBox = GTWidget::findSpinBox(os, "dpadSpinBox", dialog);
-    CHECK_OP(os, );
+    GTCheckBox::setChecked(dpadCheckBox, bowtie2Parameters->addColumnsToAllowGapsCheckBox);
+
+    auto dpadSpinBox = GTWidget::findSpinBox("dpadSpinBox", dialog);
+
     if (dpadCheckBox->isChecked()) {
-        GTSpinBox::setValue(os, dpadSpinBox, bowtie2Parameters->addColumnsToAllowGaps);
+        GTSpinBox::setValue(dpadSpinBox, bowtie2Parameters->addColumnsToAllowGaps);
     }
-    CHECK_OP(os, );
 
-    auto gbarCheckBox = GTWidget::findCheckBox(os, "gbarCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, gbarCheckBox, bowtie2Parameters->disallowGapsCheckBox);
-    CHECK_OP(os, );
+    auto gbarCheckBox = GTWidget::findCheckBox("gbarCheckBox", dialog);
 
-    auto gbarSpinBox = GTWidget::findSpinBox(os, "gbarSpinBox", dialog);
-    CHECK_OP(os, );
+    GTCheckBox::setChecked(gbarCheckBox, bowtie2Parameters->disallowGapsCheckBox);
+
+    auto gbarSpinBox = GTWidget::findSpinBox("gbarSpinBox", dialog);
+
     if (gbarCheckBox->isChecked()) {
-        GTSpinBox::setValue(os, gbarSpinBox, bowtie2Parameters->disallowGaps);
+        GTSpinBox::setValue(gbarSpinBox, bowtie2Parameters->disallowGaps);
     }
-    CHECK_OP(os, );
 
-    auto seedCheckBox = GTWidget::findCheckBox(os, "seedCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, seedCheckBox, bowtie2Parameters->seedCheckBox);
-    CHECK_OP(os, );
+    auto seedCheckBox = GTWidget::findCheckBox("seedCheckBox", dialog);
 
-    auto seedSpinBox = GTWidget::findSpinBox(os, "seedSpinBox", dialog);
-    CHECK_OP(os, );
+    GTCheckBox::setChecked(seedCheckBox, bowtie2Parameters->seedCheckBox);
+
+    auto seedSpinBox = GTWidget::findSpinBox("seedSpinBox", dialog);
+
     if (seedCheckBox->isChecked()) {
-        GTSpinBox::setValue(os, seedSpinBox, bowtie2Parameters->seed);
+        GTSpinBox::setValue(seedSpinBox, bowtie2Parameters->seed);
     }
-    CHECK_OP(os, );
 
     if (!isOsWindows()) {
-        auto threadsSpinBox = GTWidget::findSpinBox(os, "threadsSpinBox", dialog);
-        CHECK_OP(os, );
+        auto threadsSpinBox = GTWidget::findSpinBox("threadsSpinBox", dialog);
+
         if (threadsSpinBox->minimum() <= bowtie2Parameters->threads && threadsSpinBox->maximum() >= bowtie2Parameters->threads) {
-            GTSpinBox::setValue(os, threadsSpinBox, bowtie2Parameters->threads);
-            CHECK_OP(os, );
+            GTSpinBox::setValue(threadsSpinBox, bowtie2Parameters->threads);
         }
     }
 
     // Flags
-    auto nomixedCheckBox = GTWidget::findCheckBox(os, "nomixedCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, nomixedCheckBox, bowtie2Parameters->noUnpairedAlignments);
-    CHECK_OP(os, );
+    auto nomixedCheckBox = GTWidget::findCheckBox("nomixedCheckBox", dialog);
 
-    auto nodiscordantCheckBox = GTWidget::findCheckBox(os, "nodiscordantCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, nodiscordantCheckBox, bowtie2Parameters->noDiscordantAlignments);
-    CHECK_OP(os, );
+    GTCheckBox::setChecked(nomixedCheckBox, bowtie2Parameters->noUnpairedAlignments);
 
-    auto nofwCheckBox = GTWidget::findCheckBox(os, "nofwCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, nofwCheckBox, bowtie2Parameters->noForwardOrientation);
-    CHECK_OP(os, );
+    auto nodiscordantCheckBox = GTWidget::findCheckBox("nodiscordantCheckBox", dialog);
 
-    auto norcCheckBox = GTWidget::findCheckBox(os, "norcCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, norcCheckBox, bowtie2Parameters->noReverseComplementOrientation);
-    CHECK_OP(os, );
+    GTCheckBox::setChecked(nodiscordantCheckBox, bowtie2Parameters->noDiscordantAlignments);
 
-    auto nooverlapCheckBox = GTWidget::findCheckBox(os, "nooverlapCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, nooverlapCheckBox, bowtie2Parameters->noOverlappingMates);
-    CHECK_OP(os, );
+    auto nofwCheckBox = GTWidget::findCheckBox("nofwCheckBox", dialog);
 
-    auto nocontainCheckBox = GTWidget::findCheckBox(os, "nocontainCheckBox", dialog);
-    CHECK_OP(os, );
-    GTCheckBox::setChecked(os, nocontainCheckBox, bowtie2Parameters->noMatesContainingOneAnother);
-    CHECK_OP(os, );
+    GTCheckBox::setChecked(nofwCheckBox, bowtie2Parameters->noForwardOrientation);
+
+    auto norcCheckBox = GTWidget::findCheckBox("norcCheckBox", dialog);
+
+    GTCheckBox::setChecked(norcCheckBox, bowtie2Parameters->noReverseComplementOrientation);
+
+    auto nooverlapCheckBox = GTWidget::findCheckBox("nooverlapCheckBox", dialog);
+
+    GTCheckBox::setChecked(nooverlapCheckBox, bowtie2Parameters->noOverlappingMates);
+
+    auto nocontainCheckBox = GTWidget::findCheckBox("nocontainCheckBox", dialog);
+
+    GTCheckBox::setChecked(nocontainCheckBox, bowtie2Parameters->noMatesContainingOneAnother);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setUgaAdditionalParameters"
 void AlignShortReadsFiller::setUgaAdditionalParameters(UgeneGenomeAlignerParams* ugaParameters, QWidget* dialog) {
     if (ugaParameters->mismatchesAllowed) {
-        GTGroupBox::setChecked(os, "groupBox_mismatches", dialog);
+        GTGroupBox::setChecked("groupBox_mismatches", dialog);
     }
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "firstMatchBox", dialog), ugaParameters->useBestMode);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("firstMatchBox", dialog), ugaParameters->useBestMode);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setBwaAdditionalParameters"
 void AlignShortReadsFiller::setBwaAdditionalParameters(AlignShortReadsFiller::BwaParameters* bwaParameters, QWidget* dialog) {
-    GTComboBox::selectItemByText(os, GTWidget::findComboBox(os, "indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
+    GTComboBox::selectItemByText(GTWidget::findComboBox("indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setAdditionalParameters"
 void AlignShortReadsFiller::setBwaSwAdditionalParameters(AlignShortReadsFiller::BwaSwParameters* bwaSwParameters, QWidget* dialog) {
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "matchScoreSpinbox", dialog), bwaSwParameters->matchScore);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "mismatchScoreSpinbox", dialog), bwaSwParameters->mismatchPenalty);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapOpenSpinbox", dialog), bwaSwParameters->gapOpenPenalty);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapExtSpinbox", dialog), bwaSwParameters->gapExtensionPenalty);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "bandWidthSpinbox", dialog), bwaSwParameters->bandWidth);
-    GTDoubleSpinbox::setValue(os, GTWidget::findDoubleSpinBox(os, "maskLevelSpinbox", dialog), bwaSwParameters->maskLevel);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "numThreadsSpinbox", dialog), bwaSwParameters->threadsNumber);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "chunkSizeSpinbox", dialog), bwaSwParameters->readsChunkSize);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "scoreThresholdSpinbox", dialog), bwaSwParameters->thresholdScore);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "zBestSpinbox", dialog), bwaSwParameters->zBest);
-    GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "revAlnThreshold", dialog), bwaSwParameters->seedsNumber);
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "hardClippingCheckBox", dialog), bwaSwParameters->preferHardClippingInSam);
+    GTSpinBox::setValue(GTWidget::findSpinBox("matchScoreSpinbox", dialog), bwaSwParameters->matchScore);
+    GTSpinBox::setValue(GTWidget::findSpinBox("mismatchScoreSpinbox", dialog), bwaSwParameters->mismatchPenalty);
+    GTSpinBox::setValue(GTWidget::findSpinBox("gapOpenSpinbox", dialog), bwaSwParameters->gapOpenPenalty);
+    GTSpinBox::setValue(GTWidget::findSpinBox("gapExtSpinbox", dialog), bwaSwParameters->gapExtensionPenalty);
+    GTSpinBox::setValue(GTWidget::findSpinBox("bandWidthSpinbox", dialog), bwaSwParameters->bandWidth);
+    GTDoubleSpinbox::setValue(GTWidget::findDoubleSpinBox("maskLevelSpinbox", dialog), bwaSwParameters->maskLevel);
+    GTSpinBox::setValue(GTWidget::findSpinBox("numThreadsSpinbox", dialog), bwaSwParameters->threadsNumber);
+    GTSpinBox::setValue(GTWidget::findSpinBox("chunkSizeSpinbox", dialog), bwaSwParameters->readsChunkSize);
+    GTSpinBox::setValue(GTWidget::findSpinBox("scoreThresholdSpinbox", dialog), bwaSwParameters->thresholdScore);
+    GTSpinBox::setValue(GTWidget::findSpinBox("zBestSpinbox", dialog), bwaSwParameters->zBest);
+    GTSpinBox::setValue(GTWidget::findSpinBox("revAlnThreshold", dialog), bwaSwParameters->seedsNumber);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("hardClippingCheckBox", dialog), bwaSwParameters->preferHardClippingInSam);
 }
 #undef GT_METHOD_NAME
 

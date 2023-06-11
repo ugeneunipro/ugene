@@ -32,48 +32,48 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
 #define GT_METHOD_NAME "run"
-ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus& os,
-                                         bool _isReadOnly,
-                                         QString dstUrl,
-                                         QString formatToConvertTo,
-                                         int timeoutMs)
-    : Filler(os, "Select Document Format"),
+ImportAPRFileFiller::ImportAPRFileFiller(
+    bool _isReadOnly,
+    QString dstUrl,
+    QString formatToConvertTo,
+    int timeoutMs)
+    : Filler("Select Document Format"),
       isReadOnly(_isReadOnly),
       destinationUrl(dstUrl),
       format(formatToConvertTo) {
     settings.timeout = timeoutMs;
 }
 
-ImportAPRFileFiller::ImportAPRFileFiller(HI::GUITestOpStatus& os, CustomScenario* _c)
-    : Filler(os, "Select Document Format", _c),
+ImportAPRFileFiller::ImportAPRFileFiller(CustomScenario* _c)
+    : Filler("Select Document Format", _c),
       isReadOnly(false) {
     settings.timeout = 120000;
 }
 
 void ImportAPRFileFiller::commonScenario() {
     GTGlobals::sleep(500);
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (isReadOnly) {
-        auto rb = GTWidget::findRadioButton(os, "0_radio", dialog);
-        GTRadioButton::click(os, rb);
+        auto rb = GTWidget::findRadioButton("0_radio", dialog);
+        GTRadioButton::click(rb);
         GTGlobals::sleep();
     } else {
-        auto rb = GTWidget::findRadioButton(os, "1_radio", dialog);
-        GTRadioButton::click(os, rb);
+        auto rb = GTWidget::findRadioButton("1_radio", dialog);
+        GTRadioButton::click(rb);
         GTGlobals::sleep();
 
         if (!destinationUrl.isEmpty()) {
-            GTLineEdit::setText(os, "fileNameEdit", destinationUrl, QApplication::activeModalWidget());
+            GTLineEdit::setText("fileNameEdit", destinationUrl, QApplication::activeModalWidget());
         }
 
         if (!format.isEmpty()) {
-            auto cb = GTWidget::findComboBox(os, "formatCombo", dialog);
-            GTComboBox::selectItemByText(os, cb, format);
+            auto cb = GTWidget::findComboBox("formatCombo", dialog);
+            GTComboBox::selectItemByText(cb, format);
         }
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

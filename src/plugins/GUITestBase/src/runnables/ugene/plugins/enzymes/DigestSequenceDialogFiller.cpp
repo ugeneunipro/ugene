@@ -29,17 +29,17 @@ namespace U2 {
 
 #define GT_CLASS_NAME "DigestSequenceDialogFiller"
 
-DigestSequenceDialogFiller::DigestSequenceDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "DigestSequenceDialog", scenario) {
+DigestSequenceDialogFiller::DigestSequenceDialogFiller(CustomScenario* scenario)
+    : Filler("DigestSequenceDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void DigestSequenceDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
+    GTWidget::click(GTWidget::findWidget("addAllButton", dialog));
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

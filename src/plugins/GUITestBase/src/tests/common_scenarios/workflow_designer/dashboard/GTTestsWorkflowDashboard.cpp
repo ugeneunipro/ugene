@@ -55,7 +55,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_workflow_dashboard {
 using namespace HI;
 
-static QString getExternalToolPath(GUITestOpStatus& os, const QString& toolName) {
+static QString getExternalToolPath(const QString& toolName) {
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     CHECK_SET_ERR_RESULT(etRegistry != nullptr, "ExternalToolRegistry is nullptr", QString());
 
@@ -69,8 +69,8 @@ static QString getExternalToolPath(GUITestOpStatus& os, const QString& toolName)
     return toolPath;
 }
 
-static QString getExternalToolDirPath(GUITestOpStatus& os, const QString& toolName, const QString& dirNamePart) {
-    QString toolPath = getExternalToolPath(os, toolName);
+static QString getExternalToolDirPath(const QString& toolName, const QString& dirNamePart) {
+    QString toolPath = getExternalToolPath(toolName);
     QDir toolDir = QFileInfo(toolPath).dir();
     while (!toolDir.dirName().contains(dirNamePart)) {
         if (!toolDir.cdUp()) {
@@ -80,8 +80,8 @@ static QString getExternalToolDirPath(GUITestOpStatus& os, const QString& toolNa
     return toolDir.path();
 }
 
-static QString putToolToFolderWithSpaces(GUITestOpStatus& os, const QString& toolName, const QString& toolDirPath, const QString& sandboxDir) {
-    QString toolPath = getExternalToolPath(os, toolName);
+static QString putToolToFolderWithSpaces(const QString& toolName, const QString& toolDirPath, const QString& sandboxDir) {
+    QString toolPath = getExternalToolPath(toolName);
     CHECK(!toolPath.contains(" "), toolPath);
 
     QTemporaryDir dirWithSpaces(QFileInfo(sandboxDir).absolutePath() + "/folder XXXXXX");
@@ -90,13 +90,13 @@ static QString putToolToFolderWithSpaces(GUITestOpStatus& os, const QString& too
     const QString newToolDirPath = dirWithSpaces.path() + "/" + QFileInfo(toolDirPath).fileName();
     QString newToolPath = toolPath;
     newToolPath.replace(toolDirPath, newToolDirPath);
-    GTFile::copyDir(os, toolDirPath, newToolDirPath);
+    GTFile::copyDir(toolDirPath, newToolDirPath);
 
     return newToolPath;
 }
 
-static QString putToolToFolderWithoutSpaces(GUITestOpStatus& os, const QString& toolName, const QString& toolDirPath, const QString& sandboxDir) {
-    const QString toolPath = getExternalToolPath(os, toolName);
+static QString putToolToFolderWithoutSpaces(const QString& toolName, const QString& toolDirPath, const QString& sandboxDir) {
+    const QString toolPath = getExternalToolPath(toolName);
     CHECK(toolPath.contains(" "), toolPath);
 
     CHECK_SET_ERR_RESULT(!sandboxDir.contains(" "),
@@ -117,28 +117,28 @@ static QString putToolToFolderWithoutSpaces(GUITestOpStatus& os, const QString& 
                              .arg(newToolPath),
                          QString());
 
-    GTFile::copyDir(os, toolDirPath, newToolDirPath);
+    GTFile::copyDir(toolDirPath, newToolDirPath);
 
     return newToolPath;
 }
 
-static QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOpStatus& os) {
-    const int firstLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, GTUtilsDashboard::TREE_ROOT_ID);
+static QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts() {
+    const int firstLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(GTUtilsDashboard::TREE_ROOT_ID);
     QMap<QString, QList<QPair<QString, QStringList>>> nodesTexts;
     for (int i = 0; i < firstLevelNodesCount; i++) {
-        const QString firstLevelNodeId = GTUtilsDashboard::getChildNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, i);
-        const QString firstLevelNodeText = GTUtilsDashboard::getNodeText(os, firstLevelNodeId);
+        const QString firstLevelNodeId = GTUtilsDashboard::getChildNodeId(GTUtilsDashboard::TREE_ROOT_ID, i);
+        const QString firstLevelNodeText = GTUtilsDashboard::getNodeText(firstLevelNodeId);
 
-        const int secondLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, firstLevelNodeId);
+        const int secondLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(firstLevelNodeId);
         QList<QPair<QString, QStringList>> subtree;
         for (int j = 0; j < secondLevelNodesCount; j++) {
-            const QString secondLevelNodeId = GTUtilsDashboard::getChildNodeId(os, firstLevelNodeId, j);
-            const QString secondLevelNodeText = GTUtilsDashboard::getNodeText(os, secondLevelNodeId);
+            const QString secondLevelNodeId = GTUtilsDashboard::getChildNodeId(firstLevelNodeId, j);
+            const QString secondLevelNodeText = GTUtilsDashboard::getNodeText(secondLevelNodeId);
 
-            const int thirdLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(os, secondLevelNodeId);
+            const int thirdLevelNodesCount = GTUtilsDashboard::getChildrenNodesCount(secondLevelNodeId);
             QStringList thirdLevelNodesTexts;
             for (int k = 0; k < thirdLevelNodesCount; k++) {
-                thirdLevelNodesTexts << GTUtilsDashboard::getNodeText(os, GTUtilsDashboard::getChildNodeId(os, secondLevelNodeId, k));
+                thirdLevelNodesTexts << GTUtilsDashboard::getNodeText(GTUtilsDashboard::getChildNodeId(secondLevelNodeId, k));
             }
             subtree << qMakePair(secondLevelNodeText, thirdLevelNodesTexts);
         }
@@ -147,8 +147,8 @@ static QMap<QString, QList<QPair<QString, QStringList>>> getNodesTexts(GUITestOp
     return nodesTexts;
 }
 
-static void checkTreeStructure(GUITestOpStatus& os, const QMap<QString, QList<QPair<QString, QStringList>>>& expectedNodesTexts) {
-    const QMap<QString, QList<QPair<QString, QStringList>>> nodesTexts = getNodesTexts(os);
+static void checkTreeStructure(const QMap<QString, QList<QPair<QString, QStringList>>>& expectedNodesTexts) {
+    const QMap<QString, QList<QPair<QString, QStringList>>> nodesTexts = getNodesTexts();
 
     // Do explicitely comparison to be able to log the incorrect values
     CHECK_SET_ERR(nodesTexts.size() == expectedNodesTexts.size(),
@@ -215,19 +215,19 @@ public:
         : CustomScenario(), path(_path) {
     }
 
-    void run(HI::GUITestOpStatus& os) override {
-        QWidget* dialog = GTWidget::getActiveModalWidget(os);
-        AppSettingsDialogFiller::setWorkflowOutputDirPath(os, path);
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    void run() override {
+        QWidget* dialog = GTWidget::getActiveModalWidget();
+        AppSettingsDialogFiller::setWorkflowOutputDirPath(path);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     }
 
 private:
     const QString path;
 };
 
-static void setWorkflowOutputDir(GUITestOpStatus& os, const QString& path) {
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetWorkflowOutputDirScenario(path)));
-    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."});
+static void setWorkflowOutputDir(const QString& path) {
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new SetWorkflowOutputDirScenario(path)));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
 
 static QString getQuotedString(const QString& string) {
@@ -238,74 +238,74 @@ static QString getQuotedString(const QString& string) {
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Open "_common_data/workflow/dashboard/external_tools_free_worfklow.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/external_tools_free_worfklow.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/external_tools_free_worfklow.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    3. Add "data/samples/FASTA/human_T1.fa" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTA/human_T1.fa", true);
 
     //    4. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    5. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected result: a dashboard appears, it has no "External Tools" tab.
-    const bool externalToolsTabExists = GTUtilsDashboard::hasTab(os, GTUtilsDashboard::ExternalTools);
+    const bool externalToolsTabExists = GTUtilsDashboard::hasTab(GTUtilsDashboard::ExternalTools);
     CHECK_SET_ERR(!externalToolsTabExists, "'External tools' dashboard tab unexpectedly is present on the dashboard");
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0002) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Open "_common_data/workflow/dashboard/clustulo.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
-    GTUtilsDialog::checkNoActiveWaiters(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/clustulo.uwl");
+    GTUtilsDialog::checkNoActiveWaiters();
 
     //    2. Click "Read Alignment" element.
-    GTUtilsWorkflowDesigner::click(os, "Read Alignment");
+    GTUtilsWorkflowDesigner::click("Read Alignment");
 
     //    3. Add "data/samples/CLUSTALW/COI.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    4. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    5. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected result: a dashboard appears, it has "External Tools" tab.
-    bool externalToolsTabExists = GTUtilsDashboard::hasTab(os, GTUtilsDashboard::ExternalTools);
+    bool externalToolsTabExists = GTUtilsDashboard::hasTab(GTUtilsDashboard::ExternalTools);
     CHECK_SET_ERR(externalToolsTabExists, "'External tools' dashboard tab unexpectedly is not present on the dashboard");
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0003) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Open "_common_data/workflow/dashboard/clustulo.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/clustulo.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Click "Read Alignment" element.
-    GTUtilsWorkflowDesigner::click(os, "Read Alignment");
+    GTUtilsWorkflowDesigner::click("Read Alignment");
 
     //    3. Add "data/samples/CLUSTALW/COI.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    4. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    5. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    6. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    Expected result:
     //    The tree looks like:
@@ -313,79 +313,79 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0003) {
     //    └Align with ClustalO run 1
     //      └ClustalO run
 
-    int childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, GTUtilsDashboard::TREE_ROOT_ID);
+    int childrenCount = GTUtilsDashboard::getChildrenNodesCount(GTUtilsDashboard::TREE_ROOT_ID);
     int expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(GTUtilsDashboard::TREE_ROOT_ID).arg(expectedChildrenCount).arg(childrenCount));
 
-    QString nodeId = GTUtilsDashboard::getChildNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, 0);
-    QString nodeText = GTUtilsDashboard::getNodeText(os, nodeId);
+    QString nodeId = GTUtilsDashboard::getChildNodeId(GTUtilsDashboard::TREE_ROOT_ID, 0);
+    QString nodeText = GTUtilsDashboard::getNodeText(nodeId);
     QString expectedNodeText = "Align with ClustalO";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeId).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeId);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeId);
     expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeId).arg(expectedChildrenCount).arg(childrenCount));
 
-    nodeId = GTUtilsDashboard::getChildNodeId(os, nodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeId);
+    nodeId = GTUtilsDashboard::getChildNodeId(nodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeId);
     expectedNodeText = "Align with ClustalO run 1";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeId).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeId);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeId);
     expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeId).arg(expectedChildrenCount).arg(childrenCount));
 
-    nodeId = GTUtilsDashboard::getChildNodeId(os, nodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeId);
+    nodeId = GTUtilsDashboard::getChildNodeId(nodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeId);
     expectedNodeText = "ClustalO run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeId).arg(expectedNodeText).arg(nodeText));
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0004) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Open "_common_data/workflow/dashboard/samtools_clustulo_clustalw.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/samtools_clustulo_clustalw.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/samtools_clustulo_clustalw.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    3. Add "data/samples/Assembly/chrM.sam.bam" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sorted.bam", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/Assembly/chrM.sorted.bam", true);
 
     //    4. Create a new dataset with name "Dataset 2".
-    GTUtilsWorkflowDesigner::createDataset(os, "Dataset 2");
+    GTUtilsWorkflowDesigner::createDataset("Dataset 2");
 
     //    5. Add "data/samples/Assembly/chrM.sam.bam" file to "Dataset 2" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/Assembly/chrM.sam", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/Assembly/chrM.sam", true);
 
     //    6. Click "Call Variants with SAMtools" element.
-    GTUtilsWorkflowDesigner::click(os, "Call Variants with SAMtools");
+    GTUtilsWorkflowDesigner::click("Call Variants with SAMtools");
 
     //    7. Set "Reference" attribute value to "data/samples/Assembly/chrM.fa".
-    GTUtilsWorkflowDesigner::setParameter(os, "Reference", dataDir + "samples/Assembly/chrM.fa", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter("Reference", dataDir + "samples/Assembly/chrM.fa", GTUtilsWorkflowDesigner::textValue);
 
     //    8. Set "Output variants file" attribute value to "misc_test_0004.vcf".
-    GTUtilsWorkflowDesigner::setParameter(os, "Output variants file", QFileInfo(sandBoxDir + "misc_test_0004.vcf").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter("Output variants file", QFileInfo(sandBoxDir + "misc_test_0004.vcf").absoluteFilePath(), GTUtilsWorkflowDesigner::textValue);
 
     //    9. Click "Read Alignment" element.
-    GTUtilsWorkflowDesigner::click(os, "Read Alignment");
+    GTUtilsWorkflowDesigner::click("Read Alignment");
 
     //    10. Add "data/samples/CLUSTALW/COI.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    11. Add "data/samples/CLUSTALW/COI.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    12. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    13. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    14. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    Expected result:
     //    The tree looks like:
@@ -410,193 +410,193 @@ GUI_TEST_CLASS_DEFINITION(misc_test_0004) {
     //     └ClustalW run
 
     // root
-    int childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, GTUtilsDashboard::TREE_ROOT_ID);
+    int childrenCount = GTUtilsDashboard::getChildrenNodesCount(GTUtilsDashboard::TREE_ROOT_ID);
     int expectedChildrenCount = 3;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(GTUtilsDashboard::TREE_ROOT_ID).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Call Variants with SAMtools
-    QString nodeLevel1Id = GTUtilsDashboard::getChildNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, 0);
-    QString nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel1Id);
+    QString nodeLevel1Id = GTUtilsDashboard::getChildNodeId(GTUtilsDashboard::TREE_ROOT_ID, 0);
+    QString nodeText = GTUtilsDashboard::getNodeText(nodeLevel1Id);
     QString expectedNodeText = "Call Variants with SAMtools";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel1Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel1Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel1Id);
     expectedChildrenCount = 2;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel1Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 1
-    QString nodeLevel2Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel1Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel2Id);
+    QString nodeLevel2Id = GTUtilsDashboard::getChildNodeId(nodeLevel1Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel2Id);
     expectedNodeText = "Call Variants with SAMtools run 1";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel2Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel2Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel2Id);
     expectedChildrenCount = 3;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel2Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 1 / SAMtools run
-    QString nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    QString nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "SAMtools run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 1 / BCFtools run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 1);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 1);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "BCFtools run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 1 / vcfutils run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 2);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 2);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "vcfutils run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 2
-    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel1Id, 1);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel2Id);
+    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(nodeLevel1Id, 1);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel2Id);
     expectedNodeText = "Call Variants with SAMtools run 2";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel2Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel2Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel2Id);
     expectedChildrenCount = 3;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel2Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 2 / SAMtools run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "SAMtools run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 2 / BCFtools run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 1);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 1);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "BCFtools run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Call Variants with SAMtools / Call Variants with SAMtools run 2 / vcfutils run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 2);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 2);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "vcfutils run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Align with ClustalO
-    nodeLevel1Id = GTUtilsDashboard::getChildNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, 1);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel1Id);
+    nodeLevel1Id = GTUtilsDashboard::getChildNodeId(GTUtilsDashboard::TREE_ROOT_ID, 1);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel1Id);
     expectedNodeText = "Align with ClustalO";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel1Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel1Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel1Id);
     expectedChildrenCount = 2;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel1Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Align with ClustalO / Align with ClustalO run 1
-    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel1Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel2Id);
+    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(nodeLevel1Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel2Id);
     expectedNodeText = "Align with ClustalO run 1";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel2Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel2Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel2Id);
     expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel2Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Align with ClustalO / Align with ClustalO run 1 / ClustalO run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "ClustalO run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Align with ClustalO / Align with ClustalO run 2
-    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel1Id, 1);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel2Id);
+    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(nodeLevel1Id, 1);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel2Id);
     expectedNodeText = "Align with ClustalO run 2";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel2Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel2Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel2Id);
     expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel2Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Align with ClustalO / Align with ClustalO run 2 / ClustalO run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "ClustalO run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Align with ClustalW
-    nodeLevel1Id = GTUtilsDashboard::getChildNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, 2);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel1Id);
+    nodeLevel1Id = GTUtilsDashboard::getChildNodeId(GTUtilsDashboard::TREE_ROOT_ID, 2);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel1Id);
     expectedNodeText = "Align with ClustalW";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel1Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel1Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel1Id);
     expectedChildrenCount = 2;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel1Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Align with ClustalW / Align with ClustalW run 1
-    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel1Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel2Id);
+    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(nodeLevel1Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel2Id);
     expectedNodeText = "Align with ClustalW run 1";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel2Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel2Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel2Id);
     expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel2Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Align with ClustalW / Align with ClustalW run 1 / ClustalW run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "ClustalW run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 
     // root / Align with ClustalO / Align with ClustalW run 2
-    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel1Id, 1);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel2Id);
+    nodeLevel2Id = GTUtilsDashboard::getChildNodeId(nodeLevel1Id, 1);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel2Id);
     expectedNodeText = "Align with ClustalW run 2";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel2Id).arg(expectedNodeText).arg(nodeText));
 
-    childrenCount = GTUtilsDashboard::getChildrenNodesCount(os, nodeLevel2Id);
+    childrenCount = GTUtilsDashboard::getChildrenNodesCount(nodeLevel2Id);
     expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == childrenCount, QString("There is an unexpected children count of node with ID '%1': expected %2, got %3").arg(nodeLevel2Id).arg(expectedChildrenCount).arg(childrenCount));
 
     // root / Align with ClustalO / Align with ClustalW run 2 / ClustalW run
-    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(os, nodeLevel2Id, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, nodeLevel3Id);
+    nodeLevel3Id = GTUtilsDashboard::getChildNodeId(nodeLevel2Id, 0);
+    nodeText = GTUtilsDashboard::getNodeText(nodeLevel3Id);
     expectedNodeText = "ClustalW run";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(nodeLevel3Id).arg(expectedNodeText).arg(nodeText));
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
     const QString cutadaptToolName = "cutadapt";
     const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, cutadaptToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(cutadaptToolName, cutadaptToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file 100 times to "Dataset 1" dataset.
     const QString inputDir = QFileInfo(sandBoxDir + "tree_nodes_creation_test_0002_input").absoluteFilePath();
     QDir().mkpath(inputDir);
     for (int i = 0; i < 100; i++) {
-        GTFile::copy(os, dataDir + "samples/FASTQ/eas.fastq", inputDir + "/" + QString("eas_%2.fastq").arg(i));
+        GTFile::copy(dataDir + "samples/FASTQ/eas.fastq", inputDir + "/" + QString("eas_%2.fastq").arg(i));
     }
-    GTUtilsWorkflowDesigner::setDatasetInputFolder(os, inputDir);
+    GTUtilsWorkflowDesigner::setDatasetInputFolder(inputDir);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    Expected result:
     //    The tree looks like:
@@ -615,36 +615,36 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0002) {
         secondLevelNodes << qMakePair(QString("Cut Adapter run %1").arg(i), QStringList({"cutadapt run"}));
     }
     expectedNodesTexts.insert("Cut Adapter", secondLevelNodes);
-    checkTreeStructure(os, expectedNodesTexts);
+    checkTreeStructure(expectedNodesTexts);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
     const QString cutadaptToolName = "cutadapt";
     const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, cutadaptToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(cutadaptToolName, cutadaptToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/50_cutadapts.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/50_cutadapts.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/50_cutadapts.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "_common_data/fastq/eas.fastq" and "_common_data/fastq/eas_broken.fastq" files to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFiles(os, {testDir + "_common_data/fastq/eas.fastq", testDir + "_common_data/fastq/eas_broken.fastq"});
+    GTUtilsWorkflowDesigner::setDatasetInputFiles({testDir + "_common_data/fastq/eas.fastq", testDir + "_common_data/fastq/eas_broken.fastq"});
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    Expected result:
     //    The tree looks like (note, that the elements order is not fixed):
@@ -670,36 +670,36 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0003) {
     for (int i = 1; i < 51; i++) {
         expectedNodesTexts.insert(QString("Cut Adapter %1").arg(i), {qMakePair(QString("Cut Adapter %1 run 1").arg(i), QStringList({"cutadapt run"})), qMakePair(QString("Cut Adapter %1 run 2").arg(i), QStringList({"cutadapt run"}))});
     }
-    checkTreeStructure(os, expectedNodesTexts);
+    checkTreeStructure(expectedNodesTexts);
 }
 
 GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py" as "cutadapt" external tool in the "Application Settings".
     const QString cutadaptToolName = "cutadapt";
     const QString cutadaptToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_cutadapt.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, cutadaptToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(cutadaptToolName, cutadaptToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/101_cutadapts.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/101_cutadapts.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/101_cutadapts.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    Expected result:
     //    The tree looks like (note, that the elements order is not fixed):
@@ -722,12 +722,12 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
     for (int i = 1; i <= 100; i++) {
         expectedNodesTexts.insert(QString("Cut Adapter %1").arg(i), {qMakePair(QString("Cut Adapter %1 run 1").arg(i), QStringList({"cutadapt run"}))});
     }
-    checkTreeStructure(os, expectedNodesTexts);
+    checkTreeStructure(expectedNodesTexts);
 
-    bool limitationMessageNodeExists = GTUtilsDashboard::hasLimitationMessage(os, GTUtilsDashboard::TREE_ROOT_ID);
+    bool limitationMessageNodeExists = GTUtilsDashboard::hasLimitationMessage(GTUtilsDashboard::TREE_ROOT_ID);
     CHECK_SET_ERR(limitationMessageNodeExists, QString("Message node unexpectedly not found, parent node ID: '%1'").arg(GTUtilsDashboard::TREE_ROOT_ID));
 
-    QString messageNodeText = GTUtilsDashboard::getLimitationMessage(os, GTUtilsDashboard::TREE_ROOT_ID);
+    QString messageNodeText = GTUtilsDashboard::getLimitationMessage(GTUtilsDashboard::TREE_ROOT_ID);
     QString expectedMessageNodeText = "Messages limit on the dashboard exceeded.";
     CHECK_SET_ERR(messageNodeText.startsWith(expectedMessageNodeText),
                   QString("Unexpected message node text: expected '%1', got '%2'; parent node ID: '%3'")
@@ -735,7 +735,7 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
                       .arg(messageNodeText)
                       .arg(GTUtilsDashboard::TREE_ROOT_ID));
 
-    QString logUrl = GTUtilsDashboard::getLogUrlFromNodeLimitationMessage(os, GTUtilsDashboard::TREE_ROOT_ID);
+    QString logUrl = GTUtilsDashboard::getLogUrlFromNodeLimitationMessage(GTUtilsDashboard::TREE_ROOT_ID);
 
     QFileInfo fileInfo(logUrl);
     CHECK_SET_ERR(fileInfo.exists(), QString("Dir with URL '%1' doesn't exist").arg(logUrl));
@@ -744,33 +744,33 @@ GUI_TEST_CLASS_DEFINITION(tree_nodes_creation_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Open "_common_data/workflow/dashboard/clustulo_clustalw.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo_clustalw.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/clustulo_clustalw.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Click "Read Alignment" element.
-    GTUtilsWorkflowDesigner::click(os, "Read Alignment");
+    GTUtilsWorkflowDesigner::click("Read Alignment");
 
     //    3. Add "data/samples/CLUSTALW/COI.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    4. Launch the workflow.
     GTLogTracer lt;
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    5. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    6. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    Expected result:
     //        the third-level node "ClustalO run" has a button to copy the command. The icon size is greater than 10x10 pixels.
     //        the third-level node "ClustalW run" has a button to copy the command. The icon size is greater than 10x10 pixels.
-    const QString clustaloRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    QSize copyButtonSize = GTUtilsDashboard::getCopyButtonSize(os, clustaloRunNodeId);
+    const QString clustaloRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    QSize copyButtonSize = GTUtilsDashboard::getCopyButtonSize(clustaloRunNodeId);
     QSize minimumCopyButtonSize(10, 10);
 
     CHECK_SET_ERR(minimumCopyButtonSize.width() <= copyButtonSize.width(),
@@ -784,8 +784,8 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                       .arg(minimumCopyButtonSize.height())
                       .arg(copyButtonSize.height()));
 
-    const QString clustalwRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {1, 0, 0});
-    copyButtonSize = GTUtilsDashboard::getCopyButtonSize(os, clustalwRunNodeId);
+    const QString clustalwRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {1, 0, 0});
+    copyButtonSize = GTUtilsDashboard::getCopyButtonSize(clustalwRunNodeId);
 
     CHECK_SET_ERR(minimumCopyButtonSize.width() <= copyButtonSize.width(),
                   QString("Copy button width of node with ID '%1' is less than %2 pixels: it's width is %3 pixels")
@@ -799,23 +799,23 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
                       .arg(copyButtonSize.height()));
 
     //    7. Expand the third-level node "ClustalO run".
-    GTUtilsDashboard::expandNode(os, clustaloRunNodeId);
+    GTUtilsDashboard::expandNode(clustaloRunNodeId);
 
     //    Expected result:
     //        the third-level node "ClustalO run" has a child node "Command".
     //        the "Command" node has a child node with the command that was used to launch the "ClustalO" external tool.
     //        log contains the command that is on the dashboard.
-    QString clustaloRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, clustaloRunCommandNodeId),
+    QString clustaloRunCommandNodeId = GTUtilsDashboard::getChildNodeId(clustaloRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(clustaloRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(clustaloRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(clustaloRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(clustaloRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandContentNodeId);
+    const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(clustaloRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(clustaloRunCommandContentNodeId);
     QString expectedNodeTextPart = "clustalo";
     CHECK_SET_ERR(nodeText.contains(expectedNodeTextPart),
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
@@ -824,35 +824,35 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
     CHECK_SET_ERR(lt.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    8. Click to the "Copy command" button that is in the third-level node "ClustalO run".
-    GTUtilsDashboard::clickCopyButton(os, clustaloRunNodeId);
+    GTUtilsDashboard::clickCopyButton(clustaloRunNodeId);
 
     //    Expected result: the clipboard contains the same command as the child of "Command" node that belongs to "ClustalO run" does.
-    QString clipboardData = GTClipboard::text(os);
+    QString clipboardData = GTClipboard::text();
     CHECK_SET_ERR(clipboardData == nodeText,
                   QString("Clipboard data is not the same as 'Command' node text: clipboard data is '%1', node text is '%2'")
                       .arg(clipboardData)
                       .arg(nodeText));
 
     //    9. Expand the third-level node "ClustalW run".
-    GTUtilsDashboard::collapseNode(os, clustaloRunNodeId);
-    GTUtilsDashboard::expandNode(os, clustalwRunNodeId);
+    GTUtilsDashboard::collapseNode(clustaloRunNodeId);
+    GTUtilsDashboard::expandNode(clustalwRunNodeId);
 
     //    Expected result:
     //        the third-level node "ClustalW run" has a child node "Command".
     //        the "Command" node has a child node with the command that was used to launch the "ClustalW" external tool.
     //        log contains the command that is on the dashboard.
-    const QString clustalwRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, clustalwRunNodeId, 0);
+    const QString clustalwRunCommandNodeId = GTUtilsDashboard::getChildNodeId(clustalwRunNodeId, 0);
 
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, clustalwRunCommandNodeId),
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(clustalwRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(clustalwRunCommandNodeId));
 
-    nodeText = GTUtilsDashboard::getNodeText(os, clustalwRunCommandNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(clustalwRunCommandNodeId);
     expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(clustalwRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString clustalwRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, clustalwRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, clustalwRunCommandContentNodeId);
+    const QString clustalwRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(clustalwRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(clustalwRunCommandContentNodeId);
     expectedNodeTextPart = "clustalw";
     CHECK_SET_ERR(nodeText.contains(expectedNodeTextPart),
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
@@ -861,10 +861,10 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
     CHECK_SET_ERR(lt.hasMessage(nodeText), QString("Log doesn't contain the following expected message: '%1'").arg(nodeText));
 
     //    10. Click to the "Copy command" button that is in the third-level node "ClustalW run".
-    GTUtilsDashboard::clickCopyButton(os, clustalwRunNodeId);
+    GTUtilsDashboard::clickCopyButton(clustalwRunNodeId);
 
     //    Expected result: the clipboard contains the same command as the child of "Command" node that belongs to "ClustalW run" does.
-    clipboardData = GTClipboard::text(os);
+    clipboardData = GTClipboard::text();
     CHECK_SET_ERR(clipboardData == nodeText,
                   QString("Clipboard data is not the same as 'Command' node text: clipboard data is '%1', node text is '%2'")
                       .arg(clipboardData)
@@ -872,17 +872,17 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0002) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Ensure that "ClustalO" tool doesn't contain spaces in its paths.
     const QString toolName = "ClustalO";
-    QString toolPath = getExternalToolPath(os, toolName);
+    QString toolPath = getExternalToolPath(toolName);
     if (toolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithoutSpaces(os, toolName, getExternalToolDirPath(os, toolName, "clustalo"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, toolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithoutSpaces(toolName, getExternalToolDirPath(toolName, "clustalo"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(toolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        toolPath = getExternalToolPath(os, toolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        toolPath = getExternalToolPath(toolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(toolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(toolName)
@@ -891,40 +891,40 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0002) {
     }
 
     //    2. Open "_common_data/workflow/dashboard/clustulo.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/clustulo.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read Alignment" element.
-    GTUtilsWorkflowDesigner::click(os, "Read Alignment");
+    GTUtilsWorkflowDesigner::click("Read Alignment");
 
     //    4. Add "data/samples/CLUSTALW/COI.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "ClustalO run".
-    const QString clustaloRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, clustaloRunNodeId);
+    const QString clustaloRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(clustaloRunNodeId);
 
     //    Expected result: the third-level node "ClustalO run" has a child node "Command", which has a child node with the command. The first argument in the command is the path to the "ClustalO" that was set at the beginning, the path is not wrapped with double quotes.
-    const QString clustaloRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, clustaloRunCommandNodeId),
+    const QString clustaloRunCommandNodeId = GTUtilsDashboard::getChildNodeId(clustaloRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(clustaloRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding").arg(clustaloRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(clustaloRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText,
                   QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(clustaloRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandContentNodeId);
+    const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(clustaloRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(clustaloRunCommandContentNodeId);
     const QString expectedNodeTextPart = QString("%1 ").arg(toolPath);
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
@@ -933,18 +933,18 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0003) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Copy external tool "ClustalO" to a folder with spaces in its path.
     //    2. Set the copied "ClustalO" in the "Application Settings".
     const QString toolName = "ClustalO";
-    QString toolPath = getExternalToolPath(os, toolName);
+    QString toolPath = getExternalToolPath(toolName);
     if (!toolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(os, toolName, getExternalToolDirPath(os, toolName, "clustalo"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, toolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithSpaces(toolName, getExternalToolDirPath(toolName, "clustalo"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(toolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        toolPath = getExternalToolPath(os, toolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        toolPath = getExternalToolPath(toolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(toolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(toolName)
@@ -953,40 +953,40 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0003) {
     }
 
     //    3. Open "_common_data/workflow/dashboard/clustulo.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/clustulo.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/clustulo.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    4. Click "Read Alignment" element.
-    GTUtilsWorkflowDesigner::click(os, "Read Alignment");
+    GTUtilsWorkflowDesigner::click("Read Alignment");
 
     //    5. Add "data/samples/CLUSTALW/COI.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln", true);
 
     //    6. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    7. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    8. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    9. Expand the third-level node "ClustalO run".
-    const QString clustaloRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, clustaloRunNodeId);
+    const QString clustaloRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(clustaloRunNodeId);
 
     //    Expected result: the third-level node "ClustalO run" has a child node "Command", which has a child node with the command. The first argument in the command is the path to the "ClustalO" that was set at the beginning, the path is wrapped with double quotes.
-    const QString clustaloRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, clustaloRunCommandNodeId),
+    const QString clustaloRunCommandNodeId = GTUtilsDashboard::getChildNodeId(clustaloRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(clustaloRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(clustaloRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(clustaloRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(clustaloRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandContentNodeId);
+    const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(clustaloRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(clustaloRunCommandContentNodeId);
 
     const QString expectedNodeTextPart = getQuotedString(toolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
@@ -996,17 +996,17 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Ensure that neither "python" nor "cutadapt" contain spaces in their paths.
     const QString pythonToolName = "python";
-    QString pythonToolPath = getExternalToolPath(os, pythonToolName);
+    QString pythonToolPath = getExternalToolPath(pythonToolName);
     if (pythonToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(os, pythonToolName, getExternalToolDirPath(os, pythonToolName, "python"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, pythonToolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithSpaces(pythonToolName, getExternalToolDirPath(pythonToolName, "python"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(pythonToolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        pythonToolPath = getExternalToolPath(os, pythonToolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        pythonToolPath = getExternalToolPath(pythonToolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(pythonToolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(pythonToolName)
@@ -1015,13 +1015,13 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
     }
 
     const QString cutadaptToolName = "cutadapt";
-    QString cutadaptToolPath = getExternalToolPath(os, cutadaptToolName);
+    QString cutadaptToolPath = getExternalToolPath(cutadaptToolName);
     if (cutadaptToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(os, cutadaptToolName, getExternalToolDirPath(os, cutadaptToolName, "cutadapt"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithSpaces(cutadaptToolName, getExternalToolDirPath(cutadaptToolName, "cutadapt"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(cutadaptToolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        cutadaptToolPath = getExternalToolPath(os, cutadaptToolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        cutadaptToolPath = getExternalToolPath(cutadaptToolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(cutadaptToolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(cutadaptToolName)
@@ -1030,40 +1030,40 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
     }
 
     //    1. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    3. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    4. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    5. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    6. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    7. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, cutadaptRunNodeId);
+    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
 
     //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The first argument in the command is the path to the "python", the second argument in the command is the path to "cutadapt". Neither the first nor the second argument is wrapped with double quotes.
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, cutadaptRunCommandNodeId),
+    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(cutadaptRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
+    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
     const QString expectedNodeTextPart = QString("%1 %2 ").arg(pythonToolPath).arg(cutadaptToolPath);
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
@@ -1072,18 +1072,18 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Copy external tool "python" to a folder with spaces in its path.
     //    2. Set the copied "python" in the "Application Settings".
     const QString pythonToolName = "python";
-    QString pythonToolPath = getExternalToolPath(os, pythonToolName);
+    QString pythonToolPath = getExternalToolPath(pythonToolName);
     if (!pythonToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(os, pythonToolName, getExternalToolDirPath(os, pythonToolName, "python"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, pythonToolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithSpaces(pythonToolName, getExternalToolDirPath(pythonToolName, "python"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(pythonToolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        pythonToolPath = getExternalToolPath(os, pythonToolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        pythonToolPath = getExternalToolPath(pythonToolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(pythonToolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(pythonToolName)
@@ -1092,40 +1092,40 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
     }
 
     //    3. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    4. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    5. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    6. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    7. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    8. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    9. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, cutadaptRunNodeId);
+    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
 
     //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The first argument in the command is the path to the "python" that was set at the beginning, the path is wrapped with double quotes.
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, cutadaptRunCommandNodeId),
+    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(cutadaptRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
+    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
     const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
@@ -1134,18 +1134,18 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Copy external tool "cutadapt" to a folder with spaces in its path.
     //    2. Set the copied "cutadapt" in the "Application Settings".
     const QString cutadaptToolName = "cutadapt";
-    QString cutadaptToolPath = getExternalToolPath(os, cutadaptToolName);
+    QString cutadaptToolPath = getExternalToolPath(cutadaptToolName);
     if (!cutadaptToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(os, cutadaptToolName, getExternalToolDirPath(os, cutadaptToolName, "cutadapt"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithSpaces(cutadaptToolName, getExternalToolDirPath(cutadaptToolName, "cutadapt"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(cutadaptToolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        cutadaptToolPath = getExternalToolPath(os, cutadaptToolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        cutadaptToolPath = getExternalToolPath(cutadaptToolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(cutadaptToolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(cutadaptToolName)
@@ -1154,40 +1154,40 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
     }
 
     //    3. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    4. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    5. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    6. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    7. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    8. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    9. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, cutadaptRunNodeId);
+    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
 
     //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The second argument in the command is the path to the "cutadapt" that was set at the beginning, the path is wrapped with double quotesos.setError("Not implemented");
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, cutadaptRunCommandNodeId),
+    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(cutadaptRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
+    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
     const QString expectedNodeTextPart = getQuotedString(cutadaptToolPath) + " ";
     CHECK_SET_ERR(nodeText.contains(expectedNodeTextPart),
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
@@ -1196,20 +1196,20 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Copy external tool "python" to a folder with spaces in its path.
     //    2. Copy external tool "cutadapt" to a folder with spaces in its path.
     //    3. Set the copied "python" in the "Application Settings".
     //    4. Set the copied "cutadapt" in the "Application Settings".
     const QString pythonToolName = "python";
-    QString pythonToolPath = getExternalToolPath(os, pythonToolName);
+    QString pythonToolPath = getExternalToolPath(pythonToolName);
     if (!pythonToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(os, pythonToolName, getExternalToolDirPath(os, pythonToolName, "python"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, pythonToolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithSpaces(pythonToolName, getExternalToolDirPath(pythonToolName, "python"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(pythonToolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        pythonToolPath = getExternalToolPath(os, pythonToolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        pythonToolPath = getExternalToolPath(pythonToolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(pythonToolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(pythonToolName)
@@ -1218,13 +1218,13 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
     }
 
     const QString cutadaptToolName = "cutadapt";
-    QString cutadaptToolPath = getExternalToolPath(os, cutadaptToolName);
+    QString cutadaptToolPath = getExternalToolPath(cutadaptToolName);
     if (!cutadaptToolPath.contains(" ")) {
-        const QString newToolPath = putToolToFolderWithSpaces(os, cutadaptToolName, getExternalToolDirPath(os, cutadaptToolName, "cutadapt"), sandBoxDir);
-        GTUtilsExternalTools::setToolUrl(os, cutadaptToolName, QDir::toNativeSeparators(newToolPath));
+        const QString newToolPath = putToolToFolderWithSpaces(cutadaptToolName, getExternalToolDirPath(cutadaptToolName, "cutadapt"), sandBoxDir);
+        GTUtilsExternalTools::setToolUrl(cutadaptToolName, QDir::toNativeSeparators(newToolPath));
 
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        cutadaptToolPath = getExternalToolPath(os, cutadaptToolName);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        cutadaptToolPath = getExternalToolPath(cutadaptToolName);
         CHECK_SET_ERR(QDir::toNativeSeparators(cutadaptToolPath) == QDir::toNativeSeparators(newToolPath),
                       QString("'%1' tool path wasn't set properly: expected '%2', got '%3'")
                           .arg(cutadaptToolName)
@@ -1233,40 +1233,40 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
     }
 
     //    5. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    6. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    7. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    8. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    9. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    10. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    11. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, cutadaptRunNodeId);
+    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
 
     //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The first argument in the command is the path to the "python", the second argument in the command is the path to the "cutadapt". Both of them are wrapped with double quotes.
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, cutadaptRunCommandNodeId),
+    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(cutadaptRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
+    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
     const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " " + getQuotedString(cutadaptToolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
@@ -1275,7 +1275,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0008) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Ensure that file "data/samples/FASTQ/eas.fastq' is in the folder without spaces in the path.
     QString inputFileUrl = QFileInfo(dataDir + "samples/FASTQ/eas.fastq").absoluteFilePath();
@@ -1283,45 +1283,45 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0008) {
         QString newInputFileUrl = QFileInfo(sandBoxDir + "eas.fastq").absoluteFilePath();
         CHECK_SET_ERR(!newInputFileUrl.contains(" "),
                       QString("Can't copy input file to a folder without spaces in the path, sandbox dir path contains spaces: %1").arg(sandBoxDir));
-        GTFile::copy(os, inputFileUrl, newInputFileUrl);
+        GTFile::copy(inputFileUrl, newInputFileUrl);
         inputFileUrl = newInputFileUrl;
     }
 
     //    2. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "eas.fastq" from the step 1 file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, inputFileUrl, true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(inputFileUrl, true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, cutadaptRunNodeId);
+    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
 
     //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The last argument in the command is the path to the input file. It is not wrapped with double quotes.
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, cutadaptRunCommandNodeId),
+    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(cutadaptRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
+    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
     const QString expectedNodeTextPart = QString(" %1").arg(inputFileUrl);
     CHECK_SET_ERR(nodeText.endsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't end with the following expected part: '%1'. Full command: '%2'")
@@ -1330,7 +1330,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0009) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Copy "data/samples/FASTQ/eas.fastq" to a folder with spaces in its path.
     QString inputFileUrl = QFileInfo(dataDir + "samples/FASTQ/eas.fastq").absoluteFilePath();
@@ -1338,45 +1338,45 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0009) {
         QString newInputFileUrl = QFileInfo(sandBoxDir + "tool launch nodes test 0009").absoluteFilePath();
         QDir().mkpath(newInputFileUrl);
         newInputFileUrl += "/" + QFileInfo(inputFileUrl).fileName();
-        GTFile::copy(os, inputFileUrl, newInputFileUrl);
+        GTFile::copy(inputFileUrl, newInputFileUrl);
         inputFileUrl = newInputFileUrl;
     }
 
     //    2. Open "_common_data/workflow/dashboard/cutadapt.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/cutadapt.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add the copied file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, inputFileUrl, true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(inputFileUrl, true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "cutadapt run".
-    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, cutadaptRunNodeId);
+    const QString cutadaptRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(cutadaptRunNodeId);
 
     //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The last argument in the command is the path to the input file. It is wrapped with double quotes.
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, cutadaptRunCommandNodeId),
+    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(cutadaptRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
+    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
     const QString expectedNodeTextPart = QString(" \"%1\"").arg(inputFileUrl);
     CHECK_SET_ERR(nodeText.endsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't end with the following expected part: '%1'. Full command: '%2'")
@@ -1385,39 +1385,39 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0009) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0010) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_no_output.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_spades_no_output.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, spadesToolName, spadesToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(spadesToolName, spadesToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/spades.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/spades.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/spades.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "SPAdes run".
-    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, spadesRunNodeId);
+    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(spadesRunNodeId);
 
     //    Expected result: the third-level node "SPAdes run" doesn't have child nodes "Output log (stdout)" and "Output log (stderr)".
-    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(os, spadesRunNodeId);
+    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(spadesRunNodeId);
     const int expectedChildrenCount = 1;
     CHECK_SET_ERR(expectedChildrenCount == spadesRunNodeChildrenCount,
                   QString("Node with ID '%1' has unexpected children count: expected %2, got %3")
@@ -1425,50 +1425,50 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0010) {
                       .arg(expectedChildrenCount)
                       .arg(spadesRunNodeChildrenCount));
 
-    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunCommandNodeId),
+    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, spadesRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(spadesRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0011) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_only.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, spadesToolName, spadesToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(spadesToolName, spadesToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/spades.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/spades.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/spades.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "SPAdes run".
-    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, spadesRunNodeId);
+    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(spadesRunNodeId);
 
     //    Expected result: the third-level node "SPAdes run" have a child node "Output log (stdout)" and doesn't have a child node "Output log (stderr)".
-    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(os, spadesRunNodeId);
+    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(spadesRunNodeId);
     const int expectedChildrenCount = 2;
     CHECK_SET_ERR(expectedChildrenCount == spadesRunNodeChildrenCount,
                   QString("Node with ID '%1' has unexpected children count: expected %2, got %3")
@@ -1476,59 +1476,59 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0011) {
                       .arg(expectedChildrenCount)
                       .arg(spadesRunNodeChildrenCount));
 
-    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunCommandNodeId),
+    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, spadesRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(spadesRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString spadesRunStdoutNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 1);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunStdoutNodeId),
+    const QString spadesRunStdoutNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 1);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunStdoutNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunStdoutNodeId));
 
-    nodeText = GTUtilsDashboard::getNodeText(os, spadesRunStdoutNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(spadesRunStdoutNodeId);
     expectedNodeText = "Output log (stdout)";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunStdoutNodeId).arg(expectedNodeText).arg(nodeText));
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0012) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stderr_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_spades_stderr_only.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, spadesToolName, spadesToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(spadesToolName, spadesToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/spades.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/spades.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/spades.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "SPAdes run".
-    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, spadesRunNodeId);
+    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(spadesRunNodeId);
 
     //    Expected result: the third-level node "SPAdes run" has a child node "Output log (stderr)" and doesn't have a child node "Output log (stdout)".
-    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(os, spadesRunNodeId);
+    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(spadesRunNodeId);
     const int expectedChildrenCount = 2;
     CHECK_SET_ERR(expectedChildrenCount == spadesRunNodeChildrenCount,
                   QString("Node with ID '%1' has unexpected children count: expected %2, got %3")
@@ -1536,59 +1536,59 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0012) {
                       .arg(expectedChildrenCount)
                       .arg(spadesRunNodeChildrenCount));
 
-    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunCommandNodeId),
+    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, spadesRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(spadesRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString spadesRunStderrNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 1);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunStderrNodeId),
+    const QString spadesRunStderrNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 1);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunStderrNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunStderrNodeId));
 
-    nodeText = GTUtilsDashboard::getNodeText(os, spadesRunStderrNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(spadesRunStderrNodeId);
     expectedNodeText = "Output log (stderr)";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunStderrNodeId).arg(expectedNodeText).arg(nodeText));
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0013) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_and_stderr.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_and_stderr.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, spadesToolName, spadesToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(spadesToolName, spadesToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/spades.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/spades.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/spades.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "SPAdes run".
-    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, spadesRunNodeId);
+    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(spadesRunNodeId);
 
     //    Expected result: the third-level node "SPAdes run" has child nodes "Output log (stdout)" and "Output log (stderr)".
-    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(os, spadesRunNodeId);
+    const int spadesRunNodeChildrenCount = GTUtilsDashboard::getChildrenNodesCount(spadesRunNodeId);
     const int expectedChildrenCount = 3;
     CHECK_SET_ERR(expectedChildrenCount == spadesRunNodeChildrenCount,
                   QString("Node with ID '%1' has unexpected children count: expected %2, got %3")
@@ -1596,17 +1596,17 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0013) {
                       .arg(expectedChildrenCount)
                       .arg(spadesRunNodeChildrenCount));
 
-    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 0);
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunCommandNodeId),
+    const QString spadesRunCommandNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 0);
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunCommandNodeId));
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, spadesRunCommandNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(spadesRunCommandNodeId);
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString oneOutNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 1);
-    const QString anotherOutNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 2);
+    const QString oneOutNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 1);
+    const QString anotherOutNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 2);
 
     QString spadesRunStdoutNodeId;
     QString spadesRunStderrNodeId;
@@ -1618,60 +1618,60 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0013) {
         spadesRunStderrNodeId = anotherOutNodeId;
     }
 
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunStdoutNodeId),
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunStdoutNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunStdoutNodeId));
 
-    nodeText = GTUtilsDashboard::getNodeText(os, spadesRunStdoutNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(spadesRunStdoutNodeId);
     expectedNodeText = "Output log (stdout)";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunStdoutNodeId).arg(expectedNodeText).arg(nodeText));
 
-    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(os, spadesRunStderrNodeId),
+    CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(spadesRunStderrNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(spadesRunStderrNodeId));
 
-    nodeText = GTUtilsDashboard::getNodeText(os, spadesRunStderrNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(spadesRunStderrNodeId);
     expectedNodeText = "Output log (stderr)";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(spadesRunStderrNodeId).arg(expectedNodeText).arg(nodeText));
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_only.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, spadesToolName, spadesToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(spadesToolName, spadesToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/spades.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/spades.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/spades.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "SPAdes run".
-    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, spadesRunNodeId);
+    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(spadesRunNodeId);
 
     //    Expected result:
     //        the third-level node "SPAdes run" has child node "Output log (stdout)".
-    const QString stdoutTitleNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 1);
+    const QString stdoutTitleNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 1);
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, stdoutTitleNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(stdoutTitleNodeId);
     QString expectedNodeText = "Output log (stdout)";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeText),
                   QString("Node with ID '%1' has unexpected text: expected '%2', got '%3'")
@@ -1679,10 +1679,10 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
                       .arg(expectedNodeText)
                       .arg(nodeText));
 
-    const QString stdoutDataNodeId = GTUtilsDashboard::getChildNodeId(os, stdoutTitleNodeId, 0);
+    const QString stdoutDataNodeId = GTUtilsDashboard::getChildNodeId(stdoutTitleNodeId, 0);
 
     //        the "Output log (stdout)" node content has significant size (~100 kb of text).
-    nodeText = GTUtilsDashboard::getNodeText(os, stdoutDataNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(stdoutDataNodeId);
     int expectedLength = 80000;
     CHECK_SET_ERR(nodeText.size() > expectedLength,
                   QString("Node with ID '%1' text is not long enough: expected length is at least %2, actual text length is %3")
@@ -1699,7 +1699,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
                       .arg(nodeText.right(300)));
 
     //        the link from the previous item is correct: it points to a file with the same data; the file size is not less than the node contents size; the file name contains "stdout".
-    const QString url = GTUtilsDashboard::getLogUrlFromOutputContent(os, stdoutDataNodeId);
+    const QString url = GTUtilsDashboard::getLogUrlFromOutputContent(stdoutDataNodeId);
 
     const QFileInfo fileInfo(url);
     CHECK_SET_ERR(fileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(url));
@@ -1714,7 +1714,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
                       .arg(url)
                       .arg(expectedFileNamePart));
 
-    QString fileData = GTFile::readAll(os, url).replace("\n", "<br/>").replace("\r", "");
+    QString fileData = GTFile::readAll(url).replace("\n", "<br/>").replace("\r", "");
     CHECK_SET_ERR(fileData.startsWith(nodeText.left(500)),
                   QString("File '%1' content is not equal to the expected text: '%2', file: '%3'")
                       .arg(url)
@@ -1723,42 +1723,42 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0015) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stderr_only.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_spades_stderr_only.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, spadesToolName, spadesToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(spadesToolName, spadesToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/spades.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/spades.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/spades.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "SPAdes run".
-    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, spadesRunNodeId);
+    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(spadesRunNodeId);
 
     //    Expected result:
     //        the third-level node "SPAdes run" has child node "Output log (stderr)".
-    const QString stderrTitleNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 1);
+    const QString stderrTitleNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 1);
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, stderrTitleNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(stderrTitleNodeId);
     QString expectedNodeText = "Output log (stderr)";
     CHECK_SET_ERR(expectedNodeText == nodeText,
                   QString("Node with ID '%1' has unexpected text: expected '%2', got '%3'")
@@ -1766,10 +1766,10 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
                       .arg(expectedNodeText)
                       .arg(nodeText));
 
-    const QString stderrDataNodeId = GTUtilsDashboard::getChildNodeId(os, stderrTitleNodeId, 0);
+    const QString stderrDataNodeId = GTUtilsDashboard::getChildNodeId(stderrTitleNodeId, 0);
 
     //        the "Output log (stderr)" node content has significant size (~100 kb of text).
-    nodeText = GTUtilsDashboard::getNodeText(os, stderrDataNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(stderrDataNodeId);
     int expectedLength = 80000;
     CHECK_SET_ERR(nodeText.size() > expectedLength,
                   QString("Node with ID '%1' text is not long enough: expected length is at least %2, actual text length is %3")
@@ -1786,7 +1786,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
                       .arg(nodeText.right(300)));
 
     //        the link from the previous item is correct: it points to a file with the same data; the file size is not less than the node contents size; the file name contains "stderr".
-    const QString url = GTUtilsDashboard::getLogUrlFromOutputContent(os, stderrDataNodeId);
+    const QString url = GTUtilsDashboard::getLogUrlFromOutputContent(stderrDataNodeId);
 
     const QFileInfo fileInfo(url);
     CHECK_SET_ERR(fileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(url));
@@ -1801,7 +1801,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
                       .arg(url)
                       .arg(expectedFileNamePart));
 
-    QString fileData = GTFile::readAll(os, url).replace("\n", "<br/>").replace("\r", "");
+    QString fileData = GTFile::readAll(url).replace("\n", "<br/>").replace("\r", "");
     ;
     CHECK_SET_ERR(fileData.startsWith(nodeText.left(500)),
                   QString("File '%1' content is not equal to the expected text: '%2', file: '%3'")
@@ -1811,41 +1811,41 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0016) {
 }
 
 GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
 
     //    1. Set the "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_and_stderr.py" as "SPAdes" external tool in the "Application Settings".
     const QString spadesToolName = "SPAdes";
     const QString spadesToolPath = QDir::toNativeSeparators(QFileInfo(testDir + "_common_data/workflow/dashboard/fake_tools/fake_spades_stdout_and_stderr.py").absoluteFilePath());
-    GTUtilsExternalTools::setToolUrl(os, spadesToolName, spadesToolPath);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsExternalTools::setToolUrl(spadesToolName, spadesToolPath);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    2. Open "_common_data/workflow/dashboard/spades.uwl".
-    GTFileDialog::openFile(os, testDir + "_common_data/workflow/dashboard/spades.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/workflow/dashboard/spades.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Click "Read File URL(s)" element.
-    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
+    GTUtilsWorkflowDesigner::click("Read File URL(s)");
 
     //    4. Add "data/samples/FASTQ/eas.fastq" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTQ/eas.fastq", true);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/FASTQ/eas.fastq", true);
 
     //    5. Launch the workflow.
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
 
     //    6. Wait the workflow execution finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    7. Switch to an "External Tools" tab.
-    GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
+    GTUtilsDashboard::openTab(GTUtilsDashboard::ExternalTools);
 
     //    8. Expand the third-level node "SPAdes run".
-    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(os, GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
-    GTUtilsDashboard::expandNode(os, spadesRunNodeId);
+    const QString spadesRunNodeId = GTUtilsDashboard::getDescendantNodeId(GTUtilsDashboard::TREE_ROOT_ID, {0, 0, 0});
+    GTUtilsDashboard::expandNode(spadesRunNodeId);
 
     //    Expected result:
     //        the third-level node "SPAdes run" has child nodes "Output log (stdout)" and "Output log (stderr)".
-    const QString oneOutNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 1);
-    const QString anotherOutNodeId = GTUtilsDashboard::getChildNodeId(os, spadesRunNodeId, 2);
+    const QString oneOutNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 1);
+    const QString anotherOutNodeId = GTUtilsDashboard::getChildNodeId(spadesRunNodeId, 2);
 
     QString stdoutTitleNodeId;
     QString stderrTitleNodeId;
@@ -1857,7 +1857,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
         stderrTitleNodeId = anotherOutNodeId;
     }
 
-    QString nodeText = GTUtilsDashboard::getNodeText(os, stderrTitleNodeId);
+    QString nodeText = GTUtilsDashboard::getNodeText(stderrTitleNodeId);
     QString expectedNodeText = "Output log (stderr)";
     CHECK_SET_ERR(expectedNodeText == nodeText,
                   QString("Node with ID '%1' has unexpected text: expected '%2', got '%3'")
@@ -1865,7 +1865,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                       .arg(expectedNodeText)
                       .arg(nodeText));
 
-    nodeText = GTUtilsDashboard::getNodeText(os, stdoutTitleNodeId);
+    nodeText = GTUtilsDashboard::getNodeText(stdoutTitleNodeId);
     expectedNodeText = "Output log (stdout)";
     CHECK_SET_ERR(expectedNodeText == nodeText,
                   QString("Node with ID '%1' has unexpected text: expected '%2', got '%3'")
@@ -1873,11 +1873,11 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                       .arg(expectedNodeText)
                       .arg(nodeText));
 
-    const QString stdoutDataNodeId = GTUtilsDashboard::getChildNodeId(os, stdoutTitleNodeId, 0);
-    const QString stderrDataNodeId = GTUtilsDashboard::getChildNodeId(os, stderrTitleNodeId, 0);
+    const QString stdoutDataNodeId = GTUtilsDashboard::getChildNodeId(stdoutTitleNodeId, 0);
+    const QString stderrDataNodeId = GTUtilsDashboard::getChildNodeId(stderrTitleNodeId, 0);
 
     //        both "Output log (stdout)" and "Output log (stderr)" nodes contents have significant size (~100 kb of text).
-    QString stdoutNodeText = GTUtilsDashboard::getNodeText(os, stdoutDataNodeId);
+    QString stdoutNodeText = GTUtilsDashboard::getNodeText(stdoutDataNodeId);
     int expectedLength = 80000;
     CHECK_SET_ERR(stdoutNodeText.size() > expectedLength,
                   QString("Node with ID '%1' text is not long enough: expected length is at least %2, actual text length is %3")
@@ -1885,7 +1885,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                       .arg(expectedLength)
                       .arg(stdoutNodeText.size()));
 
-    QString stderrNodeText = GTUtilsDashboard::getNodeText(os, stderrDataNodeId);
+    QString stderrNodeText = GTUtilsDashboard::getNodeText(stderrDataNodeId);
     expectedLength = 80000;
     CHECK_SET_ERR(stderrNodeText.size() > expectedLength,
                   QString("Node with ID '%1' text is not long enough: expected length is at least %2, actual text length is %3")
@@ -1908,7 +1908,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                       .arg(stderrNodeText.right(300)));
 
     //        the links from the previous item are correct: they point to files with the same data as in nodes; the file sizes are not less than the appropriate nodes contents size; the appropriate files names contain "stdout" and "stderr".
-    const QString stdoutLogUrl = GTUtilsDashboard::getLogUrlFromOutputContent(os, stdoutDataNodeId);
+    const QString stdoutLogUrl = GTUtilsDashboard::getLogUrlFromOutputContent(stdoutDataNodeId);
 
     const QFileInfo stdoutFileInfo(stdoutLogUrl);
     CHECK_SET_ERR(stdoutFileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(stdoutLogUrl));
@@ -1923,14 +1923,14 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                       .arg(stdoutLogUrl)
                       .arg(expectedFileNamePart));
 
-    QString fileData = GTFile::readAll(os, stdoutLogUrl).replace("\n", "<br/>").replace("\r", "");
+    QString fileData = GTFile::readAll(stdoutLogUrl).replace("\n", "<br/>").replace("\r", "");
     CHECK_SET_ERR(fileData.startsWith(stdoutNodeText.left(500)),
                   QString("File '%1' content is not equal to the expected text: '%2', file: '%3'")
                       .arg(stdoutLogUrl)
                       .arg(stdoutNodeText.left(500))
                       .arg(fileData.left(500)));
 
-    const QString stderrLogUrl = GTUtilsDashboard::getLogUrlFromOutputContent(os, stderrDataNodeId);
+    const QString stderrLogUrl = GTUtilsDashboard::getLogUrlFromOutputContent(stderrDataNodeId);
     const QFileInfo stderrFileInfo(stderrLogUrl);
     CHECK_SET_ERR(stderrFileInfo.exists(), QString("File with URL '%1' doesn't exist").arg(stderrLogUrl));
     CHECK_SET_ERR(stderrFileInfo.size() >= stderrNodeText.size(),
@@ -1944,7 +1944,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
                       .arg(stderrLogUrl)
                       .arg(expectedFileNamePart));
 
-    fileData = GTFile::readAll(os, stderrLogUrl).replace("\n", "<br/>").replace("\r", "");
+    fileData = GTFile::readAll(stderrLogUrl).replace("\n", "<br/>").replace("\r", "");
     ;
     CHECK_SET_ERR(fileData.startsWith(stderrNodeText.left(500)),
                   QString("File '%1' content is not equal to the expected text: '%2', file: '%3'")
@@ -1957,53 +1957,53 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is no "Go to Dashboard" button on the toolbar.
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "'Go to Dashboards' button is unexpectedly invisible");
 
     //    4. Click to the "Dashboards manager" button on the toolbar.
     //    5. Expected result: a messagebox appears. It contains the following text: "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."
     //    6. Close the messagebox.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller("OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
+    GTWidget::click(dashboardsManagerButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -2019,11 +2019,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     //    5. Cancel the dialog.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
-            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -2048,15 +2048,15 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    6. Click to the "Go to Dashboards" button on the toolbar.
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    Expected result:
     //        - There is "To Workflow Designer" button on the toolbar. The button text is exactly as written.
@@ -2073,7 +2073,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     int expectedTabsCount = 2;
@@ -2091,17 +2091,17 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
                       .arg(actualActiveTabIndex));
 
     QString expectedTabName = "Extract consensus as sequence 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     //    7. Click to the "To Workflow Designer" button on the toolbar.
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    Expected result: there is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -2119,23 +2119,23 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -2151,11 +2151,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     //    5. Cancel the dialog.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
-            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -2180,15 +2180,15 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    6. Click to the "Go to Dashboards" button on the toolbar.
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    Expected result:
     //        - There is "To Workflow Designer" button on the toolbar. The button text is exactly as written.
@@ -2205,7 +2205,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     int expectedTabsCount = 1;
@@ -2223,17 +2223,17 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
                       .arg(actualActiveTabIndex));
 
     QString expectedTabName = "Extract consensus as sequence 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     //    7. Click to the "To Workflow Designer" button on the toolbar.
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    Expected result: there is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -2251,23 +2251,23 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //    Expected result:
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is no "Go to Dashboard" button on the toolbar.
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "'Go to Dashboards' button is unexpectedly invisible");
 
     //    4. Click to the "Dashboards manager" button on the toolbar.
@@ -2275,11 +2275,11 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     //    5. Cancel the dialog.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
-            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -2304,118 +2304,118 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
 
     //    4. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected result:
     //        - The Workflow Designer switches to the scene view mode.
     //        - There is no scene/dashboards switch button on the toolbar.
     //        - The "Dashboards manager" button on the toolbar is active.
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(!viewSwitchButton2->isVisible(), "'Go to Dashboards' is visible");
 
     //    8. Click to the "Dashboards manager" button on the toolbar.
     //    Expected result: the "Dashboards Manager" dialog appears. It contains the following text: "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."
     //    9. Close the messagebox.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller("OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
+    GTWidget::click(dashboardsManagerButton);
 
     //    10. Switch to another Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    Expected result:
     //      - The Workflow Designer is in the scene view mode.
     //      - There is no scene/dashboards switch button on the toolbar.
     //      - The "Dashboards manager" button on the toolbar is active.
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(!viewSwitchButton2->isVisible(), "'Go to Dashboards' is visible");
 
     //    11. Click to the "Dashboards manager" button on the toolbar.
     //    Expected result: a messagebox appears. It contains the following text: "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."
     //    12. Close the messagebox.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller("OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
+    GTWidget::click(dashboardsManagerButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
 
     //    4. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected result:
     //    - The Workflow Designer is in the dashboards view mode.
@@ -2433,10 +2433,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     const int expectedTabsCount = 2;
     const int actualTabsCount = dashboardsView->count();
@@ -2453,16 +2453,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
                       .arg(actualActiveTabIndex));
 
     const QString expectedTabName = "Extract consensus as sequence 2";
-    const QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    const QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2471,11 +2471,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     //    9. Close the messagebox.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
-            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -2500,27 +2500,27 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    10. Switch to another Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    Expected result:
     //      - The Workflow Designer is in the scene view mode.
     //      - The "Dashboards manager" button on the toolbar is active.
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton2->isVisible(), "'Go to Dashboards' is invisible");
 
     //    11. Click to the "Dashboards manager" button on the toolbar.
@@ -2529,20 +2529,20 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     //    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    13. Click to the "Go to Dashboards" button on the toolbar.
     //    Expected result:
     //    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
 
     const int expectedTabsCount2 = 2;
@@ -2560,13 +2560,13 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
                       .arg(actualActiveTabIndex2));
 
     const QString expectedTabName2 = "Extract consensus as sequence 2";
-    const QString actualTabName2 = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex2);
+    const QString actualTabName2 = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex2);
     CHECK_SET_ERR(expectedTabName2 == actualTabName2,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName2)
                       .arg(actualTabName2));
 
-    const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
+    const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
 }
 
@@ -2574,35 +2574,35 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    4. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected result:
     //    - The Workflow Designer is in the dashboards view mode.
@@ -2620,7 +2620,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
 
     const int expectedTabsCount = 1;
@@ -2638,16 +2638,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
                       .arg(actualActiveTabIndex));
 
     const QString expectedTabName = "Extract consensus as sequence 2";
-    const QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    const QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2656,11 +2656,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    9. Close the messagebox.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
-            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -2685,23 +2685,23 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    10. Switch to another Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    Expected result:
     //      - The Workflow Designer is in the scene view mode.
     //      - The "Dashboards manager" button on the toolbar is active.
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2711,20 +2711,20 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    13. Click to the "Go to Dashboards" button on the toolbar.
     //    Expected result:
     //    - There is one tab with a dashboard. Its name is "Extract consensus as sequence 2".
     //    - The "Extract consensus as sequence 2" dashboard is active.
     //    - The dashboard is correctly displayed.
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
 
     const int expectedTabsCount2 = 1;
@@ -2742,13 +2742,13 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
                       .arg(actualActiveTabIndex2));
 
     const QString expectedTabName2 = "Extract consensus as sequence 2";
-    const QString actualTabName2 = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex2);
+    const QString actualTabName2 = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex2);
     CHECK_SET_ERR(expectedTabName2 == actualTabName2,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName2)
                       .arg(actualTabName2));
 
-    const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
+    const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
 }
 
@@ -2756,48 +2756,48 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    4. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    5. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected result:
     //    - The Workflow Designer is in the scene view mode.
     //    - There is no scene/dashboards switch button on the toolbar.
     //    - The "Dashboards manager" button on the toolbar is active.
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton != nullptr, "'Go to Dashboards' is nullptr");
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
 
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2806,11 +2806,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    9. Close the messagebox.
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
-            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -2835,30 +2835,30 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    10. Switch to another Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    Expected result:
     //      - The Workflow Designer is in the scene view mode.
     //      - There is no scene/dashboards switch button on the toolbar.
     //      - The "Dashboards manager" button on the toolbar is active.
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton == nullptr || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
-    QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
+    QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView2, "Dashboards view is nullptr");
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -2866,107 +2866,107 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    12. Cancel the dialog
     //    Expected result:
     //    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are unchecked. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
 
     //    4. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    5. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    6. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/200_sequences.aln");
 
     //    8. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex2 = GTUtilsMdi::getCurrentTab();
 
     //    9. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    10. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    11. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/200_sequences.aln");
 
     //    13. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    15. Switch to first Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    16. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #1");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    17. Switch to the second Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex2)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
-    GTUtilsMdi::clickTab(os, tabIndex2);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(tabIndex2);
 
     //    18. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #2");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 }
 
-static int setUpMuscleSchemeInNewWdWindow(GUITestOpStatus& os, const QString& file) {
+static int setUpMuscleSchemeInNewWdWindow(const QString& file) {
     //    Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex = GTUtilsMdi::getCurrentTab();
 
     // Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     // Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //  Add "file" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, file);
+    GTUtilsWorkflowDesigner::setDatasetInputFile(file);
 
     return tabIndex;
 }
@@ -2975,49 +2975,49 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //   Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
     //   Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     QString msaFilePath = testDir + "_common_data/clustal/100_sequences.aln";
-    int tabIndex1 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
-    int tabIndex2 = setUpMuscleSchemeInNewWdWindow(os, msaFilePath);
+    int tabIndex1 = setUpMuscleSchemeInNewWdWindow(msaFilePath);
+    int tabIndex2 = setUpMuscleSchemeInNewWdWindow(msaFilePath);
 
     //   Open en empty Workflow Designer window (number 3).
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex3 = GTUtilsMdi::getCurrentTab();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //   Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    Switch to first Workflow Designer.
-    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex1).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex1).arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    16. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #1");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    Switch to the second Workflow Designer.
-    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex2).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
-    GTUtilsMdi::clickTab(os, tabIndex2);
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex2).arg(GTUtilsMdi::getTabBar()->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(tabIndex2);
 
     //    Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #2");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
     QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
     QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
@@ -3025,9 +3025,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //          - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 2" and "Align sequence with MUSCLE 1".
     //          - The "Align sequence with MUSCLE 2" dashboard is active.
     //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os, 90000);
+    GTUtilsTaskTreeView::waitTaskFinished(90000);
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3038,9 +3038,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     int expectedTabsCount = 2;
     int actualTabsCount = dashboardsView->count();
@@ -3057,16 +3057,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                       .arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    Click to the "Dashboards manager" button on the toolbar.
@@ -3074,11 +3074,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //    Cancel the dialog
     class Scenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                        qMakePair(QString("Align sequences with MUSCLE 2"), true)});
-            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -3103,12 +3103,12 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    Switch to the first Workflow Designer.
     //    Expected result:
@@ -3116,11 +3116,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //     - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
     //     - The "Align sequence with MUSCLE 1" dashboard is active.
     //     - The "Dashboards manager" button on the toolbar is active.
-    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex1).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex1).arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3131,9 +3131,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 2;
     actualTabsCount = dashboardsView->count();
@@ -3150,16 +3150,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    Click to the "Dashboards manager" button on the toolbar.
@@ -3168,20 +3168,20 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //       It contains two items, both of them are checked.
     //       Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
     //     Cancel the dialog
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    Switch to the third Workflow Designer.
     //    Expected result:
     //     - The Workflow Designer is in the scene view mode.
     //     - The "Dashboards manager" button on the toolbar is active.
-    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex3).arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
-    GTUtilsMdi::clickTab(os, tabIndex3);
+    coreLog.info(QString("Try to switch to tab %1(%2)").arg(tabIndex3).arg(GTUtilsMdi::getTabBar()->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(tabIndex3);
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "'Go to Dashboards' is invisible");
 
     //    Click to the "Dashboards manager" button on the toolbar.
@@ -3190,8 +3190,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //     - It contains two items, both of them are checked.
     //     - Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
     //     Cancel the dialog.
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    Click to the "Go to Dashboards" button on the toolbar.
     //    Expected result:
@@ -3199,15 +3199,15 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     //       Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped,
     //       it depends on the task finish order, it is a correct situation).
     //     - The first dashboard is active.
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 2;
     actualTabsCount = dashboardsView->count();
@@ -3224,7 +3224,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
@@ -3235,86 +3235,86 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
 
     //    4. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    5. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    6. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/100_sequences.aln");
 
     //    8. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex2 = GTUtilsMdi::getCurrentTab();
 
     //    9. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    10. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    11. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/100_sequences.aln");
 
     //    13. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex3 = GTUtilsMdi::getCurrentTab();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    15. Switch to first Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    16. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #1");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    17. Switch to the second Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex2)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
-    GTUtilsMdi::clickTab(os, tabIndex2);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(tabIndex2);
 
     //    18. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #2");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
@@ -3326,9 +3326,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //                            "Align sequence with MUSCLE 1".
     //          - The "Align sequence with MUSCLE 2" dashboard is active.
     //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
+    GTUtilsTaskTreeView::waitTaskFinished(600000);
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3339,10 +3339,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     int expectedTabsCount = 4;
     int actualTabsCount = dashboardsView->count();
@@ -3359,16 +3359,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                       .arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3383,15 +3383,15 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
             return false;
         }
 
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), true)});
             std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
-            QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
             std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
@@ -3417,12 +3417,12 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    23. Switch to the first Workflow Designer.
     //    Expected result:
@@ -3432,11 +3432,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //     - The "Dashboards manager" button on the toolbar is active.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3447,10 +3447,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 4;
     actualTabsCount = dashboardsView->count();
@@ -3467,16 +3467,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3486,8 +3486,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //       It contains 4 items, all of them are checked.
     //       Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
     //    25. Cancel the dialog
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    26. Switch to the third Workflow Designer.
     //    Expected result:
@@ -3497,11 +3497,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //     - The "Extract consensus as sequence 2" dashboard is active.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex3)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
-    GTUtilsMdi::clickTab(os, tabIndex3);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(tabIndex3);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3512,10 +3512,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 4;
     actualTabsCount = dashboardsView->count();
@@ -3531,16 +3531,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Extract consensus as sequence 2";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3550,94 +3550,94 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //     - It contains two items, both of them are checked.
     //     - Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
     //    28. Cancel the dialog.
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
 
     //    4. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    5. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    6. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/100_sequences.aln");
 
     //    8. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex2 = GTUtilsMdi::getCurrentTab();
 
     //    9. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    10. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    11. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/100_sequences.aln");
 
     //    13. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex3 = GTUtilsMdi::getCurrentTab();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    15. Switch to first Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    16. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #1");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    17. Switch to the second Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex2)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
-    GTUtilsMdi::clickTab(os, tabIndex2);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(tabIndex2);
 
     //    18. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #2");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    19. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
@@ -3648,9 +3648,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //                            "Align sequence with MUSCLE 1".
     //          - The "Align sequence with MUSCLE 2" dashboard is active.
     //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
+    GTUtilsTaskTreeView::waitTaskFinished(600000);
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3661,10 +3661,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     int expectedTabsCount = 3;
     int actualTabsCount = dashboardsView->count();
@@ -3681,16 +3681,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                       .arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3705,15 +3705,15 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
             return false;
         }
 
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), true)});
             std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
-            QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
             std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
@@ -3739,12 +3739,12 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    23. Switch to the first Workflow Designer.
     //    Expected result:
@@ -3754,11 +3754,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //     - The "Dashboards manager" button on the toolbar is active.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3769,10 +3769,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 3;
     actualTabsCount = dashboardsView->count();
@@ -3789,16 +3789,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3808,8 +3808,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //       It contains 4 items, all of them are checked.
     //       Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
     //    25. Cancel the dialog
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    26. Switch to the third Workflow Designer.
     //    Expected result:
@@ -3819,11 +3819,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //     - The "Extract consensus as sequence 2" dashboard is active.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex3)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
-    GTUtilsMdi::clickTab(os, tabIndex3);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(tabIndex3);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3834,10 +3834,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 3;
     actualTabsCount = dashboardsView->count();
@@ -3853,16 +3853,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Extract consensus as sequence 2";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(actualActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -3872,94 +3872,94 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //     - It contains 4 items, not all of them are checked.
     //     - Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
     //    28. Cancel the dialog.
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
     const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
 
     //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex1 = GTUtilsMdi::getCurrentTab();
 
     //    4. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    5. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    6. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/100_sequences.aln");
 
     //    8. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    int tabIndex2 = GTUtilsMdi::getCurrentTab();
 
     //    9. Open "Align sequence with MUSCLE" sample.
-    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE", GTUtilsMdi::activeWindow());
 
     //    10. Cancel the wizard.
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     //    11. Click to the "Read alignment" element.
-    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter("Read alignment"));
     GTMouseDriver::click();
 
     //    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
-    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/100_sequences.aln");
+    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/clustal/100_sequences.aln");
 
     //    13. Open Workflow Designer.
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    int tabIndex3 = GTUtilsMdi::getCurrentTab();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    14. Click to the "Go to Dashboards" button on the toolbar.
-    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
     //    15. Switch to first Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
 
     //    16. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #1");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    17. Switch to the second Workflow Designer.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex2)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
-    GTUtilsMdi::clickTab(os, tabIndex2);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(tabIndex2);
 
     //    18. Launch the workflow. Do not wait for the task finish.
     coreLog.info("Try to start workflow #2");
-    GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
     //    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
     const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
     const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
 
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
@@ -3969,9 +3969,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //                            "Align sequence with MUSCLE 1".
     //          - The "Align sequence with MUSCLE 2" dashboard is active.
     //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
+    GTUtilsTaskTreeView::waitTaskFinished(600000);
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -3982,10 +3982,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     int expectedTabsCount = 2;
     int actualTabsCount = dashboardsView->count();
@@ -4002,16 +4002,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                       .arg(actualActiveTabIndex));
 
     QString expectedTabName = "Align sequences with MUSCLE 2";
-    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    QString actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -4026,15 +4026,15 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
             return false;
         }
 
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), false)});
             std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
-            QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState();
             std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
@@ -4060,12 +4060,12 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                                   .arg(actualDashboardState ? "visible" : "invisible"));
             }
 
-            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    23. Switch to the first Workflow Designer.
     //    Expected result:
@@ -4075,11 +4075,11 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //     - The "Dashboards manager" button on the toolbar is active.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex1)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
-    GTUtilsMdi::clickTab(os, tabIndex1);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
 
@@ -4090,10 +4090,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                       .arg(expectedButtonText)
                       .arg(actualButtonText));
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 2;
     actualTabsCount = dashboardsView->count();
@@ -4110,16 +4110,16 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
 
-    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    outputFiles = GTUtilsDashboard::getOutputFiles();
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
@@ -4129,8 +4129,8 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //       It contains 4 items, not all of them are checked.
     //       Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
     //    25. Cancel the dialog
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    26. Switch to the third Workflow Designer.
     //    Expected result:
@@ -4138,14 +4138,14 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //     - The "Dashboards manager" button on the toolbar is active.
     coreLog.info(QString("Try to switch to tab %1(%2)")
                      .arg(tabIndex3)
-                     .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
-    GTUtilsMdi::clickTab(os, tabIndex3);
+                     .arg(GTUtilsMdi::getTabBar()->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(tabIndex3);
 
-    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
     CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "'Go to Dashboards' is invisible");
 
     //    27. Click to the "Dashboards manager" button on the toolbar.
@@ -4153,22 +4153,22 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //     - the "Dashboards Manager" dialog appears. It contains four items. Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
     //     - "Extract consensus as sequence 1" and "Extract consensus as sequence 2" are unchecked, all other are checked.
     //    28. Cancel the dialog.
-    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
-    GTWidget::click(os, dashboardsManagerButton);
+    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new Scenario()));
+    GTWidget::click(dashboardsManagerButton);
 
     //    29. Click to the "Go to Dashboards" button on the toolbar.
     //    Expected result:
     //     - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped, it depends on the task finish order, it is a correct situation).
     //     - The first dashboard is active.
-    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton(os);
+    viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
-    GTWidget::click(os, viewSwitchButton);
+    GTWidget::click(viewSwitchButton);
 
-    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
-    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
+    dashboardsView = GTUtilsDashboard::getTabWidget();
     CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
-    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 2;
     actualTabsCount = dashboardsView->count();
@@ -4185,7 +4185,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                       .arg(actualActiveTabIndex));
 
     expectedTabName = "Align sequences with MUSCLE 1";
-    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    actualTabName = GTUtilsDashboard::getDashboardName(expectedActiveTabIndex);
     CHECK_SET_ERR(expectedTabName == actualTabName,
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)

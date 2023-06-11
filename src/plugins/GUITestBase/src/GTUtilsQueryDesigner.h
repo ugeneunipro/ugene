@@ -31,17 +31,17 @@ namespace U2 {
 
 class GTUtilsQueryDesigner {
 public:
-    static void openQueryDesigner(HI::GUITestOpStatus& os);
+    static void openQueryDesigner();
 
-    static QTreeWidgetItem* findAlgorithm(HI::GUITestOpStatus& os, const QString& itemName);
-    static void addAlgorithm(HI::GUITestOpStatus& os, const QString& algName);
-    static QPoint getItemCenter(HI::GUITestOpStatus& os, const QString& itemName);
-    static QRect getItemRect(HI::GUITestOpStatus& os, const QString& itemName);
+    static QTreeWidgetItem* findAlgorithm(const QString& itemName);
+    static void addAlgorithm(const QString& algName);
+    static QPoint getItemCenter(const QString& itemName);
+    static QRect getItemRect(const QString& itemName);
 
-    static int getItemLeft(HI::GUITestOpStatus& os, const QString& itemName);
-    static int getItemRight(HI::GUITestOpStatus& os, const QString& itemName);
-    static int getItemTop(HI::GUITestOpStatus& os, const QString& itemName);
-    static int getItemBottom(HI::GUITestOpStatus& os, const QString& itemName);
+    static int getItemLeft(const QString& itemName);
+    static int getItemRight(const QString& itemName);
+    static int getItemTop(const QString& itemName);
+    static int getItemBottom(const QString& itemName);
 };
 
 }  // namespace U2

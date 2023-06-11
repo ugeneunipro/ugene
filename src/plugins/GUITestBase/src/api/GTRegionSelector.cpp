@@ -31,7 +31,7 @@ using namespace HI;
 #define GT_CLASS_NAME "GTRegionSelector"
 
 #define GT_METHOD_NAME "setRegion"
-void GTRegionSelector::setRegion(HI::GUITestOpStatus& os, RegionSelector* regionSelector, const RegionSelectorSettings& s) {
+void GTRegionSelector::setRegion(RegionSelector* regionSelector, const RegionSelectorSettings& s) {
     GT_CHECK(regionSelector != nullptr, "RegionSelector is NULL");
 
     if (s.isUnset()) {
@@ -39,9 +39,9 @@ void GTRegionSelector::setRegion(HI::GUITestOpStatus& os, RegionSelector* region
         return;
     };
 
-    GTLineEdit::setText(os, "start_edit_line", QString::number(s.start), regionSelector);
+    GTLineEdit::setText("start_edit_line", QString::number(s.start), regionSelector);
 
-    GTLineEdit::setText(os, "end_edit_line", QString::number(s.end), regionSelector);
+    GTLineEdit::setText("end_edit_line", QString::number(s.end), regionSelector);
 }
 #undef GT_METHOD_NAME
 

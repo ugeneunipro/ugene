@@ -50,35 +50,35 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     class FilterShortScaffoldsWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* const wizard = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* const wizard = GTWidget::getActiveModalWidget();
 
             const QString dirPath = QDir(dataDir + "samples/Genbank").absolutePath();
-            const auto chooseDirDialog = new GTFileDialogUtils(os, dirPath, "", HI::GTFileDialogUtils::Choose);
-            GTUtilsDialog::waitForDialog(os, chooseDirDialog);
-            GTWidget::click(os, GTWidget::findWidget(os, "addDirButton", wizard));
+            const auto chooseDirDialog = new GTFileDialogUtils(dirPath, "", HI::GTFileDialogUtils::Choose);
+            GTUtilsDialog::waitForDialog(chooseDirDialog);
+            GTWidget::click(GTWidget::findWidget("addDirButton", wizard));
 
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Run);
         }
     };
 
     const GTLogTracer lt;
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Filter short sequences", new FilterShortScaffoldsWizard()));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Filter short scaffolds..."});
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsDialog::waitForDialog(new WizardFiller("Filter short sequences", new FilterShortScaffoldsWizard()));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Filter short scaffolds..."});
 
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
-                  "Notifications in dashboard: " /*+ GTUtilsDashboard::getJoinedNotificationsString(os)*/);
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(),
+                  "Notifications in dashboard: " /*+ GTUtilsDashboard::getJoinedNotificationsString()*/);
 
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsDashboard::clickOutputFile(os, "Dataset 1.fa");
-    GTUtilsProjectTreeView::getItemCenter(os, "NC_004718");
-    GTUtilsProjectTreeView::getItemCenter(os, "NC_014267");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsDashboard::clickOutputFile("Dataset 1.fa");
+    GTUtilsProjectTreeView::getItemCenter("NC_004718");
+    GTUtilsProjectTreeView::getItemCenter("NC_014267");
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 }  // namespace GUITest_common_scenarios_workflow_samples

@@ -30,17 +30,17 @@ using namespace HI;
 
 class DocumentFormatSelectorDialogFiller : public Filler {
 public:
-    DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus& os,
-                                       const QString& _format,
-                                       const int _score = -1,
-                                       const int _formatLineLable = -1)
-        : Filler(os, "DocumentFormatSelectorDialog"),
+    DocumentFormatSelectorDialogFiller(
+        const QString& _format,
+        const int _score = -1,
+        const int _formatLineLable = -1)
+        : Filler("DocumentFormatSelectorDialog"),
           format(_format),
           score(_score),
           formatLineLable(_formatLineLable) {
     }
-    DocumentFormatSelectorDialogFiller(HI::GUITestOpStatus& os, CustomScenario* custom)
-        : Filler(os, "DocumentFormatSelectorDialog", custom) {
+    DocumentFormatSelectorDialogFiller(CustomScenario* custom)
+        : Filler("DocumentFormatSelectorDialog", custom) {
     }
     virtual void commonScenario();
 
@@ -48,7 +48,7 @@ private:
     QString format;
     int score;
     int formatLineLable;
-    QRadioButton* getButton(HI::GUITestOpStatus& os);
+    QRadioButton* getButton();
 };
 
 }  // namespace U2

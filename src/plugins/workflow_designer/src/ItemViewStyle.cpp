@@ -23,7 +23,6 @@
 
 #include <QAbstractTextDocumentLayout>
 #include <QBitmap>
-#include <QColorDialog>
 #include <QDomDocument>
 #include <QFontDialog>
 #include <QGraphicsSceneMouseEvent>
@@ -36,6 +35,8 @@
 #include <QtMath>
 
 #include <U2Core/QVariantUtils.h>
+
+#include <U2Gui/DialogUtils.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/WorkflowSettings.h>
@@ -66,7 +67,7 @@ ItemViewStyle::ItemViewStyle(WorkflowProcessItem* p, const QString& id)
 }
 
 void ItemViewStyle::selectBGColor() {
-    QColor res = QColorDialog::getColor(bgColor, owner->scene()->views().first());
+    QColor res = U2ColorDialog::getColor(bgColor, owner->scene()->views().first());
     if (res.isValid()) {
         bgColor = res;
         auto sc = qobject_cast<WorkflowScene*>(owner->scene());
@@ -491,7 +492,7 @@ QList<QAction*> ExtendedProcStyle::getContextMenuActions() const {
     return ret;
 }
 
-//#define ARM QString("arm")
+// #define ARM QString("arm")
 #define BOUNDS QString("bounds")
 
 void ExtendedProcStyle::saveState(QDomElement& el) const {

@@ -43,7 +43,7 @@ public:
         VectorNTI
     };
 
-    ExportDocumentDialogFiller(HI::GUITestOpStatus& _os, const QString& _path = "", const QString& _name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    ExportDocumentDialogFiller(const QString& _path = "", const QString& _name = "", ExportDocumentDialogFiller::FormatToUse _format = ExportDocumentDialogFiller::Genbank, bool compressFile = false, bool addToProject = false, GTGlobals::UseMethod method = GTGlobals::UseMouse);
     void commonScenario();
 
 private:

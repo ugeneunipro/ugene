@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_CLIPBOARD_H_
-#define _HI_GT_CLIPBOARD_H_
-
+#pragma once
 #include "GTGlobals.h"
 
 namespace HI {
@@ -29,18 +27,16 @@ namespace HI {
 class HI_EXPORT GTClipboard {
 public:
     /** Returns clipboard text. Fails if can't get clipboard or clipboard doesn't contain text data. */
-    static QString text(GUITestOpStatus& os);
+    static QString text();
 
-    static void setText(GUITestOpStatus& os, QString text);
+    static void setText(QString text);
 
-    static void setUrls(GUITestOpStatus& os, const QList<QString>& urls);
+    static void setUrls(const QList<QString>& urls);
 
     /** Checks that there is an image in the system clipboard. */
-    static void checkHasNonEmptyImage(GUITestOpStatus& os);
+    static void checkHasNonEmptyImage();
 
-    static void clear(GUITestOpStatus& os);
+    static void clear();
 };
 
 }  // namespace HI
-
-#endif

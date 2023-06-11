@@ -32,23 +32,23 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ClustalWDialogFiller"
 
-ClustalWDialogFiller::ClustalWDialogFiller(HI::GUITestOpStatus& _os, int _gapOpenVal)
-    : Filler(_os, "ClustalWSupportRunDialog"),
+ClustalWDialogFiller::ClustalWDialogFiller(int _gapOpenVal)
+    : Filler("ClustalWSupportRunDialog"),
       gapOpenVal(_gapOpenVal) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ClustalWDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (gapOpenVal) {
-        auto gapOpenCheckBox = GTWidget::findCheckBox(os, "gapOpenCheckBox", dialog);
-        GTCheckBox::setChecked(os, gapOpenCheckBox, true);
+        auto gapOpenCheckBox = GTWidget::findCheckBox("gapOpenCheckBox", dialog);
+        GTCheckBox::setChecked(gapOpenCheckBox, true);
 
-        auto gapOpenSpinBox = GTWidget::findDoubleSpinBox(os, "gapOpenSpinBox", dialog);
-        GTDoubleSpinbox::setValue(os, gapOpenSpinBox, gapOpenVal, GTGlobals::UseKeyBoard);
+        auto gapOpenSpinBox = GTWidget::findDoubleSpinBox("gapOpenSpinBox", dialog);
+        GTDoubleSpinbox::setValue(gapOpenSpinBox, gapOpenVal, GTGlobals::UseKeyBoard);
     }
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

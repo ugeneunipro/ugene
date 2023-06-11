@@ -45,37 +45,37 @@ public:
     };
 
     /** Returns opened assembly browser window. Fails if not found. */
-    static QWidget* getActiveAssemblyBrowserWindow(HI::GUITestOpStatus& os);
+    static QWidget* getActiveAssemblyBrowserWindow();
 
     /** Checks that assembly browser view is opened and is active and fails if not. */
-    static void checkAssemblyBrowserWindowIsActive(HI::GUITestOpStatus& os);
+    static void checkAssemblyBrowserWindowIsActive();
 
-    static AssemblyBrowserUi* getView(HI::GUITestOpStatus& os, const QString& viewTitle = "");
+    static AssemblyBrowserUi* getView(const QString& viewTitle = "");
 
-    static void addRefFromProject(HI::GUITestOpStatus& os, QString docName, QModelIndex parent = QModelIndex());
+    static void addRefFromProject(QString docName, QModelIndex parent = QModelIndex());
 
-    static bool hasReference(HI::GUITestOpStatus& os, const QString& viewTitle);
-    static bool hasReference(HI::GUITestOpStatus& os, QWidget* view = nullptr);
-    static bool hasReference(HI::GUITestOpStatus& os, AssemblyBrowserUi* assemblyBrowser);
+    static bool hasReference(const QString& viewTitle);
+    static bool hasReference(QWidget* view = nullptr);
+    static bool hasReference(AssemblyBrowserUi* assemblyBrowser);
 
-    static qint64 getLength(HI::GUITestOpStatus& os);
-    static qint64 getReadsCount(HI::GUITestOpStatus& os);
+    static qint64 getLength();
+    static qint64 getReadsCount();
 
-    static bool isWelcomeScreenVisible(HI::GUITestOpStatus& os);
+    static bool isWelcomeScreenVisible();
 
-    static void zoomIn(HI::GUITestOpStatus& os, Method method = Button);
-    static void zoomToMax(HI::GUITestOpStatus& os);
-    static void zoomToMin(HI::GUITestOpStatus& os);
-    static void zoomToReads(HI::GUITestOpStatus& os);
+    static void zoomIn(Method method = Button);
+    static void zoomToMax();
+    static void zoomToMin();
+    static void zoomToReads();
 
-    static void goToPosition(HI::GUITestOpStatus& os, qint64 position, Method method = Hotkey);
+    static void goToPosition(qint64 position, Method method = Hotkey);
 
-    static void callContextMenu(HI::GUITestOpStatus& os, Area area = Consensus);
-    static void callExportCoverageDialog(HI::GUITestOpStatus& os, Area area = Consensus);
+    static void callContextMenu(Area area = Consensus);
+    static void callExportCoverageDialog(Area area = Consensus);
 
-    static QScrollBar* getScrollBar(HI::GUITestOpStatus& os, Qt::Orientation orientation);
+    static QScrollBar* getScrollBar(Qt::Orientation orientation);
 
-    static void scrollToStart(HI::GUITestOpStatus& os, Qt::Orientation orientation);
+    static void scrollToStart(Qt::Orientation orientation);
 };
 
 }  // namespace U2

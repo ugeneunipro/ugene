@@ -20,7 +20,6 @@
  */
 
 #include "GetSequenceByIdFiller.h"
-
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTWidget.h>
@@ -29,22 +28,23 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GetSequenceByIdFiller"
 
-GetSequenceByIdFiller::GetSequenceByIdFiller(HI::GUITestOpStatus& _os, const QString& _saveTo, bool _addToProject)
-    : Filler(_os, "getSequenceByIdDialog"), saveTo(_saveTo), addToProject(_addToProject) {}
+GetSequenceByIdFiller::GetSequenceByIdFiller(const QString& _saveTo, bool _addToProject)
+    : Filler("getSequenceByIdDialog"), saveTo(_saveTo), addToProject(_addToProject) {
+}
 
 #define GT_METHOD_NAME "commonScenario"
 void GetSequenceByIdFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (!saveTo.isEmpty()) {
-        GTLineEdit::setText(os, "directoryEdit", saveTo, dialog);
+        GTLineEdit::setText("directoryEdit", saveTo, dialog);
     }
 
-    GTCheckBox::setChecked(os, "addBox", addToProject, dialog);
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTCheckBox::setChecked("addBox", addToProject, dialog);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
-}
+}  // namespace U2

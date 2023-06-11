@@ -67,79 +67,79 @@ public:
     static const QMap<Tabs, QString> tabsNames;
     static const QMap<Tabs, QString> innerWidgetNames;
 
-    static void toggleTab(HI::GUITestOpStatus& os, Tabs tab);
-    static QWidget* openTab(HI::GUITestOpStatus& os, Tabs tab);
-    static void closeTab(HI::GUITestOpStatus& os, Tabs tab);
-    static bool isTabOpened(HI::GUITestOpStatus& os, Tabs tab);
+    static void toggleTab(Tabs tab);
+    static QWidget* openTab(Tabs tab);
+    static void closeTab(Tabs tab);
+    static bool isTabOpened(Tabs tab);
 
     /** Checks that the tab is opened and returns the inner tab widget .*/
-    static QWidget* checkTabIsOpened(HI::GUITestOpStatus& os, Tabs tab);
+    static QWidget* checkTabIsOpened(Tabs tab);
 
-    static void addReference(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method = Button);
-    static void addFirstSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method = Button);
-    static void addSecondSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method = Button);
-    static QString getSeqFromPAlineEdit(HI::GUITestOpStatus& os, int num);
-    static void removeReference(HI::GUITestOpStatus& os);
-    static QString getReference(HI::GUITestOpStatus& os);
-    static int getLength(HI::GUITestOpStatus& os);
-    static int getHeight(HI::GUITestOpStatus& os);
-    static void copySelection(HI::GUITestOpStatus& os, const CopyFormat& format = CopyFormat::CLUSTALW);
+    static void addReference(const QString& seqName, AddRefMethod method = Button);
+    static void addFirstSeqToPA(const QString& seqName, AddRefMethod method = Button);
+    static void addSecondSeqToPA(const QString& seqName, AddRefMethod method = Button);
+    static QString getSeqFromPAlineEdit(int num);
+    static void removeReference();
+    static QString getReference();
+    static int getLength();
+    static int getHeight();
+    static void copySelection(const CopyFormat& format = CopyFormat::CLUSTALW);
 
-    static void setColorScheme(HI::GUITestOpStatus& os, const QString& colorSchemeName, GTGlobals::UseMethod method = GTGlobals::UseKeyBoard);
-    static QString getColorScheme(HI::GUITestOpStatus& os);
+    static void setColorScheme(const QString& colorSchemeName, GTGlobals::UseMethod method = GTGlobals::UseKeyBoard);
+    static QString getColorScheme();
 
-    static void setHighlightingScheme(HI::GUITestOpStatus& os, const QString& highlightingSchemeName);
+    static void setHighlightingScheme(const QString& highlightingSchemeName);
 
     // functions for accessing PA gui elements
-    static QToolButton* getAddButton(HI::GUITestOpStatus& os, int number);
-    static QLineEdit* getSeqLineEdit(HI::GUITestOpStatus& os, int number);
-    static QToolButton* getDeleteButton(HI::GUITestOpStatus& os, int number);
-    static QPushButton* getAlignButton(HI::GUITestOpStatus& os);
-    static void setPairwiseAlignmentAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm);
+    static QToolButton* getAddButton(int number);
+    static QLineEdit* getSeqLineEdit(int number);
+    static QToolButton* getDeleteButton(int number);
+    static QPushButton* getAlignButton();
+    static void setPairwiseAlignmentAlgorithm(const QString& algorithm);
 
     // functions for accessing Highlighting schemes options elements
-    static void setThreshold(HI::GUITestOpStatus& os, int threshold);
-    static int getThreshold(HI::GUITestOpStatus& os);
+    static void setThreshold(int threshold);
+    static int getThreshold();
 
-    static void setThresholdComparison(HI::GUITestOpStatus& os, ThresholdComparison comparison);
-    static ThresholdComparison getThresholdComparison(HI::GUITestOpStatus& os);
+    static void setThresholdComparison(ThresholdComparison comparison);
+    static ThresholdComparison getThresholdComparison();
 
-    static void setUseDotsOption(HI::GUITestOpStatus& os, bool useDots);
-    static bool isUseDotsOptionSet(HI::GUITestOpStatus& os);
+    static void setUseDotsOption(bool useDots);
+    static bool isUseDotsOptionSet();
 
     // functions for accessing "Export consensus" options elements
-    static void setExportConsensusOutputPath(HI::GUITestOpStatus& os, const QString& filePath);
-    static QString getExportConsensusOutputPath(HI::GUITestOpStatus& os);
+    static void setExportConsensusOutputPath(const QString& filePath);
+    static QString getExportConsensusOutputPath();
 
-    static QString getExportConsensusOutputFormat(HI::GUITestOpStatus& os);
+    static QString getExportConsensusOutputFormat();
 
     // functions for accessing "Find pattern" options elements
-    static void enterPattern(HI::GUITestOpStatus& os, const QString& pattern, bool useCopyPaste = false);
-    static QString getPattern(HI::GUITestOpStatus& os);
-    static void setAlgorithm(HI::GUITestOpStatus& os, const QString& algorithm);
-    static void setMatchPercentage(HI::GUITestOpStatus& os, int percentage);
-    static void setCheckedRemoveOverlappedResults(HI::GUITestOpStatus& os, bool checkedState = true);
-    static void checkResultsText(HI::GUITestOpStatus& os, const QString& expectedText);
-    static void setRegionType(HI::GUITestOpStatus& os, const QString& regionType);
-    static void setRegion(HI::GUITestOpStatus& os, int from, int to);
-    static void setSearchContext(HI::GUITestOpStatus& os, const QString& context);
+    static void enterPattern(const QString& pattern, bool useCopyPaste = false);
+    static QString getPattern();
+    static void setAlgorithm(const QString& algorithm);
+    static void setMatchPercentage(int percentage);
+    static void setCheckedRemoveOverlappedResults(bool checkedState = true);
+    static void checkResultsText(const QString& expectedText);
+    static void setRegionType(const QString& regionType);
+    static void setRegion(int from, int to);
+    static void setSearchContext(const QString& context);
 
-    static void clickNext(HI::GUITestOpStatus& os);
-    static void clickPrev(HI::GUITestOpStatus& os);
+    static void clickNext();
+    static void clickPrev();
 
-    static bool isSearchInShowHideWidgetOpened(HI::GUITestOpStatus& os);
-    static void openSearchInShowHideWidget(HI::GUITestOpStatus& os, bool open = true);
+    static bool isSearchInShowHideWidgetOpened();
+    static void openSearchInShowHideWidget(bool open = true);
 
     /** Returns text of the label that shows alignment alphabet. Requires "General" options panel to be opened. */
-    static QString getAlphabetLabelText(HI::GUITestOpStatus& os);
+    static QString getAlphabetLabelText();
 
     /** Sets output file path. */
-    static void setOutputFile(HI::GUITestOpStatus& os, const QString& outputFilePath);
+    static void setOutputFile(const QString& outputFilePath);
 
 private:
-    static QWidget* getWidget(HI::GUITestOpStatus& os, const QString& widgetName, int number);
+    static QWidget* getWidget(const QString& widgetName, int number);
 
-    static void addSeqToPA(HI::GUITestOpStatus& os, const QString& seqName, AddRefMethod method, int number);
+    static void addSeqToPA(const QString& seqName, AddRefMethod method, int number);
 
     static QMap<Tabs, QString> initNames();
     static QMap<Tabs, QString> initInnerWidgetNames();

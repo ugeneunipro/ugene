@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_PLAINTEXTEDIT_H_
-#define _HI_GT_PLAINTEXTEDIT_H_
-
+#pragma once
 #include <QPlainTextEdit>
 
 #include "GTGlobals.h"
@@ -31,12 +29,10 @@ namespace HI {
 class HI_EXPORT GTPlainTextEdit {
 public:
     /** Sets new text to the 'textEdit'. */
-    static void setText(GUITestOpStatus& os, QPlainTextEdit* textEdit, const QString& text);
+    static void setText(QPlainTextEdit* textEdit, const QString& text);
 
     /** Clears 'textEdit'. */
-    static void clear(GUITestOpStatus& os, QPlainTextEdit* textEdit);
+    static void clear(QPlainTextEdit* textEdit);
 };
 
 }  // namespace HI
-
-#endif  // _HI_GT_PLAINTEXTEDIT_H_

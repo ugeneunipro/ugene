@@ -29,14 +29,14 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsStartPage"
 
 #define GT_METHOD_NAME "openStartPage"
-void GTUtilsStartPage::openStartPage(HI::GUITestOpStatus& os) {
-    GTUtilsMdi::activateWindow(os, "Start Page");
+void GTUtilsStartPage::openStartPage() {
+    GTUtilsMdi::activateWindow("Start Page");
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkRecentListUrl"
-void GTUtilsStartPage::checkRecentListUrl(HI::GUITestOpStatus& os, const QString& urlPart, bool isPresent) {
-    GTWidget::findLabelByText(os, urlPart, nullptr, {isPresent});
+void GTUtilsStartPage::checkRecentListUrl(const QString& urlPart, bool isPresent) {
+    GTWidget::findLabelByText(urlPart, nullptr, {isPresent});
 }
 #undef GT_METHOD_NAME
 

@@ -37,8 +37,8 @@
 
 namespace U2 {
 
-EditConnectionDialogFiller::EditConnectionDialogFiller(HI::GUITestOpStatus& os, const Parameters& parameters, ConnectionType type)
-    : Filler(os, "EditConnectionDialog"), parameters(parameters) {
+EditConnectionDialogFiller::EditConnectionDialogFiller(const Parameters& parameters, ConnectionType type)
+    : Filler("EditConnectionDialog"), parameters(parameters) {
     if (FROM_SETTINGS == type) {
         this->parameters.host = GTDatabaseConfig::host();
         this->parameters.port = QString::number(GTDatabaseConfig::port());
@@ -48,57 +48,57 @@ EditConnectionDialogFiller::EditConnectionDialogFiller(HI::GUITestOpStatus& os, 
     }
 }
 
-EditConnectionDialogFiller::EditConnectionDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "EditConnectionDialog", scenario) {
+EditConnectionDialogFiller::EditConnectionDialogFiller(CustomScenario* scenario)
+    : Filler("EditConnectionDialog", scenario) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditConnectionDialogFiller"
 #define GT_METHOD_NAME "run"
 
 void EditConnectionDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    auto lePort = GTWidget::findLineEdit(os, "lePort", dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    auto lePort = GTWidget::findLineEdit("lePort", dialog);
 
     if (parameters.checkDefaults) {
         GT_CHECK(lePort->text() == "3306", "Wrong default port");
     } else {
-        GTLineEdit::setText(os, "leName", parameters.connectionName, dialog);
-        GTLineEdit::setText(os, "leHost", parameters.host, dialog);
-        GTLineEdit::setText(os, lePort, parameters.port);
-        GTLineEdit::setText(os, "leDatabase", parameters.database, dialog);
-        GTLineEdit::setText(os, "leLogin", parameters.login, dialog);
-        GTLineEdit::setText(os, "lePassword", parameters.password, dialog);
-        GTCheckBox::setChecked(os, "cbRemember", parameters.rememberMe, dialog);
+        GTLineEdit::setText("leName", parameters.connectionName, dialog);
+        GTLineEdit::setText("leHost", parameters.host, dialog);
+        GTLineEdit::setText(lePort, parameters.port);
+        GTLineEdit::setText("leDatabase", parameters.database, dialog);
+        GTLineEdit::setText("leLogin", parameters.login, dialog);
+        GTLineEdit::setText("lePassword", parameters.password, dialog);
+        GTCheckBox::setChecked("cbRemember", parameters.rememberMe, dialog);
     }
 
     QString buttonName = parameters.accept ? "OK" : "Cancel";
-    GTWidget::click(os, GTWidget::findButtonByText(os, buttonName, dialog));
+    GTWidget::click(GTWidget::findButtonByText(buttonName, dialog));
 }
 
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-AuthenticationDialogFiller::AuthenticationDialogFiller(HI::GUITestOpStatus& os, const QString& login, const QString& password)
-    : Filler(os, "AuthenticationDialog"), login(login), password(password) {
+AuthenticationDialogFiller::AuthenticationDialogFiller(const QString& login, const QString& password)
+    : Filler("AuthenticationDialog"), login(login), password(password) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::AuthenticationDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 
 void AuthenticationDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto leLogin = GTWidget::findLineEdit(os, "leLogin", dialog);
+    auto leLogin = GTWidget::findLineEdit("leLogin", dialog);
     if (leLogin->isEnabled()) {
-        GTLineEdit::setText(os, leLogin, login);
+        GTLineEdit::setText(leLogin, login);
     }
 
-    GTLineEdit::setText(os, "lePassword", password, dialog);
+    GTLineEdit::setText("lePassword", password, dialog);
 
-    auto cbRemember = GTWidget::findCheckBox(os, "cbRemember", dialog);
-    GTCheckBox::setChecked(os, cbRemember, false);
+    auto cbRemember = GTWidget::findCheckBox("cbRemember", dialog);
+    GTCheckBox::setChecked(cbRemember, false);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

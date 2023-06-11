@@ -59,9 +59,9 @@ public:
         static const QString ACTION_DATA__PROJECT_ITEMS_LIST;
     };
 
-    ImportToDatabaseDialogFiller(HI::GUITestOpStatus& os, const QList<Action>& actions);
-    ImportToDatabaseDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
-        : Filler(os, "ImportToDatabaseDialog", c) {
+    ImportToDatabaseDialogFiller(const QList<Action>& actions);
+    ImportToDatabaseDialogFiller(CustomScenario* c)
+        : Filler("ImportToDatabaseDialog", c) {
     }
 
     void commonScenario();

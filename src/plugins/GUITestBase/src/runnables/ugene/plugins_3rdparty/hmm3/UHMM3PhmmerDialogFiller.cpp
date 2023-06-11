@@ -30,13 +30,13 @@ namespace U2 {
 #define GT_METHOD_NAME "commonScenario"
 
 void UHMM3PhmmerDialogFiller::commonScenario() {
-    auto dialog = GTWidget::getActiveModalWidget(os);
+    auto dialog = GTWidget::getActiveModalWidget();
 
-    GTTabWidget::setCurrentIndex(os, GTWidget::findTabWidget(os, "mainTabWidget", dialog), 0);
+    GTTabWidget::setCurrentIndex(GTWidget::findTabWidget("mainTabWidget", dialog), 0);
 
-    GTLineEdit::setText(os, "queryLineEdit", input, dialog);
+    GTLineEdit::setText("queryLineEdit", input, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

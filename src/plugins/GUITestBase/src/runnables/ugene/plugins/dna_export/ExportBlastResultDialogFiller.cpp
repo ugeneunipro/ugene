@@ -30,21 +30,21 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportAnnotationsFiller"
 
-ExportBlastResultDialogFiller::ExportBlastResultDialogFiller(HI::GUITestOpStatus& os, const QString& filePath, bool _addRefBoxChecked)
-    : Filler(os, "ExportBlastResultDialog"),
+ExportBlastResultDialogFiller::ExportBlastResultDialogFiller(const QString& filePath, bool _addRefBoxChecked)
+    : Filler("ExportBlastResultDialog"),
       filePath(filePath),
       addRefBoxChecked(_addRefBoxChecked) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportBlastResultDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
+    GTLineEdit::setText("fileNameEdit", filePath, dialog);
 
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "addRefBox", dialog), addRefBoxChecked);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("addRefBox", dialog), addRefBoxChecked);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 

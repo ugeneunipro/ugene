@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_LISTWIDGET_H_
-#define _HI_GT_LISTWIDGET_H_
-
+#pragma once
 #include <QListWidget>
 
 #include "GTGlobals.h"
@@ -30,37 +28,35 @@ namespace HI {
 
 class HI_EXPORT GTListWidget {
 public:
-    static void click(GUITestOpStatus& os, QListWidget* listWidget, const QString& text, Qt::MouseButton button = Qt::LeftButton, int foundItemsNum = 0);
-    static bool isItemChecked(GUITestOpStatus& os, QListWidget* listWidget, const QString& text);
-    static void checkItem(GUITestOpStatus& os, QListWidget* listWidget, const QString& text, bool newState);
-    static void checkAllItems(GUITestOpStatus& os, QListWidget* listWidget, bool newState);
-    static QStringList getItems(GUITestOpStatus& os, QListWidget* listWidget);
+    static void click(QListWidget* listWidget, const QString& text, Qt::MouseButton button = Qt::LeftButton, int foundItemsNum = 0);
+    static bool isItemChecked(QListWidget* listWidget, const QString& text);
+    static void checkItem(QListWidget* listWidget, const QString& text, bool newState);
+    static void checkAllItems(QListWidget* listWidget, bool newState);
+    static QStringList getItems(QListWidget* listWidget);
 
     /** Selects QListWidget items by text. */
-    static void selectItemsByText(GUITestOpStatus& os, QListWidget* listWidget, const QStringList& itemTexts);
+    static void selectItemsByText(QListWidget* listWidget, const QStringList& itemTexts);
 
     /** Selects QListWidget items with Control + mouse-click. */
-    static void selectItems(GUITestOpStatus& os, const QList<QListWidgetItem*>& items);
+    static void selectItems(const QList<QListWidgetItem*>& items);
 
     /** Scrolls the given item into view. */
-    static void scrollToItem(GUITestOpStatus& os, QListWidgetItem* item);
+    static void scrollToItem(QListWidgetItem* item);
 
     /** Finds QListWidget item by text. Asserts that there is only 1 item with the given text. */
-    static QListWidgetItem* findItemByText(GUITestOpStatus& os, QListWidget* listWidget, const QString& text);
+    static QListWidgetItem* findItemByText(QListWidget* listWidget, const QString& text);
 
     /** Returns list of items matched by text. Allow multiple items to have the same text. */
-    static QList<QListWidgetItem*> findItemsByText(GUITestOpStatus& os, QListWidget* listWidget, const QStringList& itemTexts);
+    static QList<QListWidgetItem*> findItemsByText(QListWidget* listWidget, const QStringList& itemTexts);
 
     /** Returns center point of the item in global coordinates. The item must be scrolled in into visible area to have a valid center point. */
-    static QPoint getItemCenter(GUITestOpStatus& os, QListWidgetItem* item);
+    static QPoint getItemCenter(QListWidgetItem* item);
 
     /** Returns bounding rect of the item in global coordinates. The item must be scrolled in into visible area to have a valid bounding rect. */
-    static QRect getItemRect(GUITestOpStatus& os, QListWidgetItem* item);
+    static QRect getItemRect(QListWidgetItem* item);
 
     /** Check that the current selection is equal to the texts list. */
-    static void checkSelection(GUITestOpStatus& os, QListWidget* listWidget, const QStringList& itemTexts);
+    static void checkSelection(QListWidget* listWidget, const QStringList& itemTexts);
 };
 
 }  // namespace HI
-
-#endif  // _HI_GT_LISTWIDGET_H_

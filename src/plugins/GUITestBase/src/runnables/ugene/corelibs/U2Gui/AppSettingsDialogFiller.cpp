@@ -60,8 +60,8 @@ QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::initMap() 
 
 const QMap<AppSettingsDialogFiller::Tabs, QString> AppSettingsDialogFiller::tabMap = initMap();
 
-AppSettingsDialogFiller::AppSettingsDialogFiller(HI::GUITestOpStatus& os, CustomScenario* customScenario)
-    : Filler(os, "AppSettingsDialog", customScenario),
+AppSettingsDialogFiller::AppSettingsDialogFiller(CustomScenario* customScenario)
+    : Filler("AppSettingsDialog", customScenario),
       itemStyle(none),
       r(-1),
       g(-1),
@@ -70,46 +70,46 @@ AppSettingsDialogFiller::AppSettingsDialogFiller(HI::GUITestOpStatus& os, Custom
 
 #define GT_METHOD_NAME "commonScenario"
 void AppSettingsDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto tree = GTWidget::findTreeWidget(os, "tree");
+    auto tree = GTWidget::findTreeWidget("tree");
 
     QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
     foreach (QTreeWidgetItem* item, items) {
         if (item->text(0) == "  Workflow Designer") {
-            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
             GTMouseDriver::click();
         }
     }
     if (itemStyle != none) {
-        auto styleCombo = GTWidget::findComboBox(os, "styleCombo", dialog);
-        GTComboBox::selectItemByIndex(os, styleCombo, itemStyle);
+        auto styleCombo = GTWidget::findComboBox("styleCombo", dialog);
+        GTComboBox::selectItemByIndex(styleCombo, itemStyle);
     }
 
     if (r != -1) {
-        GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, r, g, b));
-        auto colorWidget = GTWidget::findWidget(os, "colorWidget", dialog);
-        GTWidget::click(os, colorWidget);
+        GTUtilsDialog::waitForDialog(new ColorDialogFiller(r, g, b));
+        auto colorWidget = GTWidget::findWidget("colorWidget", dialog);
+        GTWidget::click(colorWidget);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setExternalToolPath"
-void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const QString& toolName, const QString& toolPath) {
-    auto dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::setExternalToolPath(const QString& toolName, const QString& toolPath) {
+    auto dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, ExternalTools);
+    openTab(ExternalTools);
 
-    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     for (QTreeWidgetItem* item : qAsConst(listOfItems)) {
         if (item->text(0) == toolName) {
-            GTTreeWidget::scrollToItem(os, item);
+            GTTreeWidget::scrollToItem(item);
             QWidget* itemWid = treeWidget->itemWidget(item, 1);
-            GTLineEdit::setText(os, "PathLineEdit", toolPath, itemWid);
-            GTTreeWidget::click(os, item, 0);
+            GTLineEdit::setText("PathLineEdit", toolPath, itemWid);
+            GTTreeWidget::click(item, 0);
             return;
         }
     }
@@ -118,20 +118,20 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setExternalToolPath"
-void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const QString& toolName, const QString& path, const QString& name) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::setExternalToolPath(const QString& toolName, const QString& path, const QString& name) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, ExternalTools);
+    openTab(ExternalTools);
 
-    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     bool set = false;
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
             treeWidget->scrollToItem(item);
             GTThread::waitForMainThread();
-            GTFileDialogUtils* ob = new GTFileDialogUtils(os, path, name, (GTFileDialogUtils::Button)GTFileDialog::Open, GTGlobals::UseMouse);
-            GTUtilsDialog::waitForDialog(os, ob);
+            GTFileDialogUtils* ob = new GTFileDialogUtils(path, name, (GTFileDialogUtils::Button)GTFileDialog::Open, GTGlobals::UseMouse);
+            GTUtilsDialog::waitForDialog(ob);
 
             QWidget* itemWid = treeWidget->itemWidget(item, 1);
             GT_CHECK(itemWid, "itemWid is NULL");
@@ -142,7 +142,7 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const
             QToolButton* clearToolPathButton = lineEdit->parentWidget()->findChild<QToolButton*>("ResetExternalTool");
             GT_CHECK(clearToolPathButton, "clearToolPathButton is NULL");
 
-            GTWidget::click(os, clearToolPathButton);
+            GTWidget::click(clearToolPathButton);
             set = true;
         }
     }
@@ -151,18 +151,18 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus& os, const
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getExternalToolPath"
-QString AppSettingsDialogFiller::getExternalToolPath(HI::GUITestOpStatus& os, const QString& toolName) {
-    auto dialog = GTWidget::getActiveModalWidget(os);
+QString AppSettingsDialogFiller::getExternalToolPath(const QString& toolName) {
+    auto dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, ExternalTools);
+    openTab(ExternalTools);
 
-    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
 
     for (QTreeWidgetItem* item : qAsConst(listOfItems)) {
         if (item->text(0) == toolName) {
             auto itemWid = treeWidget->itemWidget(item, 1);
-            return GTWidget::findLineEdit(os, "PathLineEdit", itemWid)->text();
+            return GTWidget::findLineEdit("PathLineEdit", itemWid)->text();
         }
     }
     return "";
@@ -170,18 +170,18 @@ QString AppSettingsDialogFiller::getExternalToolPath(HI::GUITestOpStatus& os, co
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isExternalToolValid"
-bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const QString& toolName) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+bool AppSettingsDialogFiller::isExternalToolValid(const QString& toolName) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, ExternalTools);
+    openTab(ExternalTools);
 
-    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     for (QTreeWidgetItem* item : qAsConst(listOfItems)) {
         if (item->text(0) == toolName) {
-            GTTreeWidget::click(os, item);
+            GTTreeWidget::click(item);
             GTMouseDriver::doubleClick();
-            auto descriptionTextBrowser = GTWidget::findTextBrowser(os, "descriptionTextBrowser", dialog);
+            auto descriptionTextBrowser = GTWidget::findTextBrowser("descriptionTextBrowser", dialog);
             return descriptionTextBrowser->toPlainText().contains("Version:");
         }
     }
@@ -190,12 +190,12 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus& os, const
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clearToolPath"
-void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus& os, const QString& toolName) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::clearToolPath(const QString& toolName) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, ExternalTools);
+    openTab(ExternalTools);
 
-    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
@@ -205,7 +205,7 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus& os, const QStri
             treeWidget->scrollToItem(item);
             GTThread::waitForMainThread();
             if (clearPathButton->isEnabled()) {
-                GTWidget::click(os, clearPathButton);
+                GTWidget::click(clearPathButton);
             }
         }
     }
@@ -213,12 +213,12 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus& os, const QStri
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isToolDescriptionContainsString"
-bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatus& os, const QString& toolName, const QString& checkIfContains) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+bool AppSettingsDialogFiller::isToolDescriptionContainsString(const QString& toolName, const QString& checkIfContains) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    clickOnTool(os, toolName);
+    clickOnTool(toolName);
 
-    auto textBrowser = GTWidget::findTextBrowser(os, "descriptionTextBrowser", dialog);
+    auto textBrowser = GTWidget::findTextBrowser("descriptionTextBrowser", dialog);
 
     QString plainText = textBrowser->toPlainText();
     return plainText.contains(checkIfContains);
@@ -226,45 +226,45 @@ bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatu
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setTemporaryDirPath"
-void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus& os, const QString& path) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::setTemporaryDirPath(const QString& path) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, Directories);
+    openTab(Directories);
 
-    GTLineEdit::setText(os, "tmpDirPathEdit", path, dialog);
+    GTLineEdit::setText("tmpDirPathEdit", path, dialog);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDocumentsDirPath"
-void AppSettingsDialogFiller::setDocumentsDirPath(GUITestOpStatus& os, const QString& path) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::setDocumentsDirPath(const QString& path) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, Directories);
+    openTab(Directories);
 
-    GTLineEdit::setText(os, "documentsDirectoryEdit", path, dialog);
+    GTLineEdit::setText("documentsDirectoryEdit", path, dialog);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setWorkflowOutputDirPath"
-void AppSettingsDialogFiller::setWorkflowOutputDirPath(GUITestOpStatus& os, const QString& path) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::setWorkflowOutputDirPath(const QString& path) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, WorkflowDesigner);
+    openTab(WorkflowDesigner);
 
-    GTLineEdit::setText(os, "workflowOutputEdit", path, dialog);
+    GTLineEdit::setText("workflowOutputEdit", path, dialog);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openTab"
-void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus& os, Tabs tab) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::openTab(Tabs tab) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QString itemText = tabMap.value(tab);
     GT_CHECK(!itemText.isEmpty(), "tree element for item not found");
 
-    auto mainTree = GTWidget::findTreeWidget(os, "tree", dialog);
+    auto mainTree = GTWidget::findTreeWidget("tree", dialog);
     if (mainTree->selectedItems().first()->text(0) != itemText) {
-        GTTreeWidget::click(os, GTTreeWidget::findItem(os, mainTree, itemText));
+        GTTreeWidget::click(GTTreeWidget::findItem(mainTree, itemText));
     }
     GTGlobals::sleep(300);
     GTThread::waitForMainThread();
@@ -272,16 +272,16 @@ void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus& os, Tabs tab) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickOnTool"
-void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus& os, const QString& toolName) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::clickOnTool(const QString& toolName) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, ExternalTools);
+    openTab(ExternalTools);
 
-    auto treeWidget = GTWidget::findTreeWidget(os, "twIntegratedTools", dialog);
+    auto treeWidget = GTWidget::findTreeWidget("twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems) {
         if (item->text(0) == toolName) {
-            GTTreeWidget::click(os, item);
+            GTTreeWidget::click(item);
             return;
         }
     }
@@ -289,30 +289,30 @@ void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus& os, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setExternalToolsDir"
-void AppSettingsDialogFiller::setExternalToolsDir(HI::GUITestOpStatus& os, const QString& dirPath) {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+void AppSettingsDialogFiller::setExternalToolsDir(const QString& dirPath) {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    openTab(os, ExternalTools);
+    openTab(ExternalTools);
 
-    auto selectExToolsDirButton = GTWidget::findWidget(os, "selectToolPackButton", dialog);
+    auto selectExToolsDirButton = GTWidget::findWidget("selectToolPackButton", dialog);
     while (!selectExToolsDirButton->isEnabled()) {
         uiLog.trace("selectToolPackButton is disabled");
         GTGlobals::sleep(100);
     }
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dirPath, "", GTFileDialogUtils::Choose));
-    GTWidget::click(os, selectExToolsDirButton);
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dirPath, "", GTFileDialogUtils::Choose));
+    GTWidget::click(selectExToolsDirButton);
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
-NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus& _os, QString _schemeName, alphabet _al, Action _act, bool cancel)
-    : Filler(_os, "AppSettingsDialog"), schemeName(_schemeName), al(_al), act(_act), cancel(cancel) {
+NewColorSchemeCreator::NewColorSchemeCreator(QString _schemeName, alphabet _al, Action _act, bool cancel)
+    : Filler("AppSettingsDialog"), schemeName(_schemeName), al(_al), act(_act), cancel(cancel) {
 }
 
-NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus& os, CustomScenario* c)
-    : Filler(os, "AppSettingsDialog", c),
+NewColorSchemeCreator::NewColorSchemeCreator(CustomScenario* c)
+    : Filler("AppSettingsDialog", c),
       al(nucl),
       act(Create),
       cancel(true) {
@@ -321,59 +321,59 @@ NewColorSchemeCreator::NewColorSchemeCreator(HI::GUITestOpStatus& os, CustomScen
 #define GT_CLASS_NAME "NewColorSchemeCreator"
 #define GT_METHOD_NAME "commonScenario"
 void NewColorSchemeCreator::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto tree = GTWidget::findTreeWidget(os, "tree");
+    auto tree = GTWidget::findTreeWidget("tree");
 
     QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
     foreach (QTreeWidgetItem* item, items) {
         if (item->text(0) == "  Alignment Color Scheme") {
-            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
             GTMouseDriver::click();
         }
     }
 
     switch (act) {
         case Delete: {
-            auto colorSchemas = GTWidget::findListWidget(os, "colorSchemas", dialog);
-            GTListWidget::click(os, colorSchemas, schemeName);
+            auto colorSchemas = GTWidget::findListWidget("colorSchemas", dialog);
+            GTListWidget::click(colorSchemas, schemeName);
             GTGlobals::sleep(500);
 
-            auto deleteSchemaButton = GTWidget::findWidget(os, "deleteSchemaButton", dialog);
+            auto deleteSchemaButton = GTWidget::findWidget("deleteSchemaButton", dialog);
             while (!deleteSchemaButton->isEnabled()) {
                 uiLog.trace("deleteSchemaButton is disabled");
                 GTGlobals::sleep(100);
             }
-            GTWidget::click(os, deleteSchemaButton);
+            GTWidget::click(deleteSchemaButton);
             break;
         }
         case Create: {
-            auto addSchemaButton = GTWidget::findWidget(os, "addSchemaButton");
+            auto addSchemaButton = GTWidget::findWidget("addSchemaButton");
 
-            GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, schemeName, al));
-            GTWidget::click(os, addSchemaButton);
+            GTUtilsDialog::waitForDialog(new CreateAlignmentColorSchemeDialogFiller(schemeName, al));
+            GTWidget::click(addSchemaButton);
             break;
         }
         case Change: {
-            GTListWidget::click(os, GTWidget::findListWidget(os, "colorSchemas", dialog), schemeName);
+            GTListWidget::click(GTWidget::findListWidget("colorSchemas", dialog), schemeName);
 
             class Scenario : public CustomScenario {
             public:
-                void run(HI::GUITestOpStatus& os) {
-                    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-                    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
-                    GTWidget::click(os, GTWidget::findWidget(os, "alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));
+                void run() {
+                    QWidget* dialog = GTWidget::getActiveModalWidget();
+                    GTUtilsDialog::waitForDialog(new ColorDialogFiller(255, 0, 0));
+                    GTWidget::click(GTWidget::findWidget("alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));
 
-                    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+                    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
                 }
             };
 
-            GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os, new Scenario));
-            GTWidget::click(os, GTWidget::findWidget(os, "changeSchemaButton", dialog));
+            GTUtilsDialog::waitForDialog(new ColorSchemeDialogFiller(new Scenario));
+            GTWidget::click(GTWidget::findWidget("changeSchemaButton", dialog));
         }
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, cancel ? QDialogButtonBox::Cancel : QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, cancel ? QDialogButtonBox::Cancel : QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -381,22 +381,22 @@ void NewColorSchemeCreator::commonScenario() {
 #define GT_CLASS_NAME "CreateAlignmentColorSchemeDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto w = GTWidget::findWidget(os, "schemeName", dialog);
+    auto w = GTWidget::findWidget("schemeName", dialog);
     auto schemeNameLine = qobject_cast<QLineEdit*>(w);
     GT_CHECK(schemeNameLine, "schemeName lineEdit not found ");
 
-    GTLineEdit::setText(os, schemeNameLine, schemeName);
+    GTLineEdit::setText(schemeNameLine, schemeName);
 
-    auto alphabetComboBox = GTWidget::findComboBox(os, "alphabetComboBox", dialog);
+    auto alphabetComboBox = GTWidget::findComboBox("alphabetComboBox", dialog);
 
-    GTComboBox::selectItemByIndex(os, alphabetComboBox, al);
+    GTComboBox::selectItemByIndex(alphabetComboBox, al);
     GTGlobals::sleep(500);
 
-    GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os));
+    GTUtilsDialog::waitForDialog(new ColorSchemeDialogFiller());
 
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -404,12 +404,12 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
 #define GT_CLASS_NAME "ColorSchemeDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
 void ColorSchemeDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QList<QAbstractButton*> list = dialog->findChildren<QAbstractButton*>();
     foreach (QAbstractButton* b, list) {
         if (b->text().contains("ok", Qt::CaseInsensitive)) {
-            GTWidget::click(os, b);
+            GTWidget::click(b);
             return;
         }
     }

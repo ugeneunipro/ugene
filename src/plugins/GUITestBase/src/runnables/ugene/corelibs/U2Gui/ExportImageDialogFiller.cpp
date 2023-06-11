@@ -40,32 +40,32 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportImage"
 
-ExportImage::ExportImage(HI::GUITestOpStatus& os, const QString& filePath, const QString& comboValue, int spinValue)
-    : Filler(os, "ImageExportForm"),
+ExportImage::ExportImage(const QString& filePath, const QString& comboValue, int spinValue)
+    : Filler("ImageExportForm"),
       filePath(QDir::toNativeSeparators(filePath)),
       comboValue(comboValue),
       spinValue(spinValue) {
 }
 
-ExportImage::ExportImage(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "ImageExportForm", scenario),
+ExportImage::ExportImage(CustomScenario* scenario)
+    : Filler("ImageExportForm", scenario),
       spinValue(0) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportImage::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTLineEdit::setText("fileNameEdit", filePath, dialog);
 
     if (comboValue != "") {
-        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
+        GTComboBox::selectItemByText("formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
+        GTSpinBox::setValue("qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -73,21 +73,21 @@ void ExportImage::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::CircularViewExportImage"
 #define GT_METHOD_NAME "commonScenario"
 void CircularViewExportImage::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTLineEdit::setText("fileNameEdit", filePath, dialog);
 
     if (!comboValue.isEmpty()) {
-        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
+        GTComboBox::selectItemByText("formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
+        GTSpinBox::setValue("qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
 
     if (!exportedSequenceName.isEmpty()) {
-        GTComboBox::selectItemByText(os, "Exported_sequence_combo", dialog, exportedSequenceName);
+        GTComboBox::selectItemByText("Exported_sequence_combo", dialog, exportedSequenceName);
     }
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -97,34 +97,34 @@ void CircularViewExportImage::commonScenario() {
 void ExportMsaImage::commonScenario() {
     GT_CHECK((exportWholeAlignment && exportCurrentSelection) != true, "Wrong filler parameters");
 
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (!exportWholeAlignment) {
         if (!exportCurrentSelection) {
-            GTUtilsDialog::waitForDialog(os, new SelectSubalignmentFiller(os, region));
+            GTUtilsDialog::waitForDialog(new SelectSubalignmentFiller(region));
         }
-        GTComboBox::selectItemByText(os, "comboBox", dialog, "Custom region");
+        GTComboBox::selectItemByText("comboBox", dialog, "Custom region");
     }
 
-    GTCheckBox::setChecked(os, "exportSeqNames", settings.includeNames, dialog);
-    GTCheckBox::setChecked(os, "exportConsensus", settings.includeConsensus, dialog);
-    GTCheckBox::setChecked(os, "exportRuler", settings.includeRuler, dialog);
-    GTCheckBox::setChecked(os, "multilineModeCheckbox", settings.multilineMode, dialog);
+    GTCheckBox::setChecked("exportSeqNames", settings.includeNames, dialog);
+    GTCheckBox::setChecked("exportConsensus", settings.includeConsensus, dialog);
+    GTCheckBox::setChecked("exportRuler", settings.includeRuler, dialog);
+    GTCheckBox::setChecked("multilineModeCheckbox", settings.multilineMode, dialog);
 
     if (settings.basesPerLine != 0) {
-        GTSpinBox::setValue(os, "multilineWidthSpinbox", settings.basesPerLine, dialog);
+        GTSpinBox::setValue("multilineWidthSpinbox", settings.basesPerLine, dialog);
     }
 
-    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
+    GTLineEdit::setText("fileNameEdit", filePath, dialog);
 
     if (!comboValue.isEmpty()) {
-        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
+        GTComboBox::selectItemByText("formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
+        GTSpinBox::setValue("qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -132,7 +132,7 @@ void ExportMsaImage::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceImage"
 #define GT_METHOD_NAME "commonScenario"
 void ExportSequenceImage::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     QString radioButtonName;
     switch (settings.type) {
@@ -147,25 +147,25 @@ void ExportSequenceImage::commonScenario() {
             break;
     }
 
-    GTRadioButton::click(os, radioButtonName, dialog);
+    GTRadioButton::click(radioButtonName, dialog);
 
     if (settings.type != CurrentView) {
         // Set region.
-        GTLineEdit::setText(os, "start_edit_line", QString::number(settings.region.startPos), dialog);
-        GTLineEdit::setText(os, "end_edit_line", QString::number(settings.region.endPos()), dialog);
+        GTLineEdit::setText("start_edit_line", QString::number(settings.region.startPos), dialog);
+        GTLineEdit::setText("end_edit_line", QString::number(settings.region.endPos()), dialog);
     }
 
-    GTLineEdit::setText(os, "fileNameEdit", filePath, dialog);
+    GTLineEdit::setText("fileNameEdit", filePath, dialog);
 
     if (comboValue != "") {
-        GTComboBox::selectItemByText(os, "formatsBox", dialog, comboValue);
+        GTComboBox::selectItemByText("formatsBox", dialog, comboValue);
     }
 
     if (spinValue) {
-        GTSpinBox::setValue(os, "qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
+        GTSpinBox::setValue("qualitySpinBox", spinValue, GTGlobals::UseKeyBoard, dialog);
     }
 
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
@@ -173,13 +173,13 @@ void ExportSequenceImage::commonScenario() {
 #define GT_CLASS_NAME "GTUtilsDialog::SelectSubalignmentFiller"
 #define GT_METHOD_NAME "commonScenario"
 void SelectSubalignmentFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    GTSpinBox::setValue(os, "startLineEdit", msaRegion.region.startPos, GTGlobals::UseKeyBoard, dialog);
-    GTSpinBox::setValue(os, "endLineEdit", msaRegion.region.endPos(), GTGlobals::UseKeyBoard, dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTSpinBox::setValue("startLineEdit", msaRegion.region.startPos, GTGlobals::UseKeyBoard, dialog);
+    GTSpinBox::setValue("endLineEdit", msaRegion.region.endPos(), GTGlobals::UseKeyBoard, dialog);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "noneButton", dialog));
+    GTWidget::click(GTWidget::findWidget("noneButton", dialog));
 
-    auto table = GTWidget::findTableWidget(os, "sequencesTableWidget", dialog);
+    auto table = GTWidget::findTableWidget("sequencesTableWidget", dialog);
 
     QPoint p = table->geometry().topRight();
     p.setX(p.x() - 2);
@@ -193,32 +193,32 @@ void SelectSubalignmentFiller::commonScenario() {
             auto box = qobject_cast<QCheckBox*>(table->cellWidget(i, 0));
             GT_CHECK(box != nullptr, "Not a QCheckBox cell");
             if (sequence == box->text()) {
-                GTWidget::scrollToIndex(os, table, table->model()->index(i, 0));
+                GTWidget::scrollToIndex(table, table->model()->index(i, 0));
                 GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
-                GTCheckBox::setChecked(os, box, true);
+                GTCheckBox::setChecked(box, true);
             }
         }
     }
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
-ImageExportFormFiller::ImageExportFormFiller(HI::GUITestOpStatus& os, const Parameters& parameters)
-    : Filler(os, "ImageExportForm"), parameters(parameters) {
+ImageExportFormFiller::ImageExportFormFiller(const Parameters& parameters)
+    : Filler("ImageExportForm"), parameters(parameters) {
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImageExportFormFiller"
 #define GT_METHOD_NAME "commonScenario"
 
 void ImageExportFormFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    GTLineEdit::setText(os, "fileNameEdit", QDir::toNativeSeparators(parameters.fileName), dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTLineEdit::setText("fileNameEdit", QDir::toNativeSeparators(parameters.fileName), dialog);
 
-    auto formatsBox = GTWidget::findComboBox(os, "formatsBox", dialog);
-    GTComboBox::selectItemByText(os, formatsBox, parameters.format);
+    auto formatsBox = GTWidget::findComboBox("formatsBox", dialog);
+    GTComboBox::selectItemByText(formatsBox, parameters.format);
 
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

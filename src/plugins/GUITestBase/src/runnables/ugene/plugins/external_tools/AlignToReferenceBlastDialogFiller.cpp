@@ -41,50 +41,47 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::AlignToReferenceBlastDialogFiller"
 
-AlignToReferenceBlastDialogFiller::AlignToReferenceBlastDialogFiller(const Settings& settings, HI::GUITestOpStatus& os)
-    : Filler(os, "AlignToReferenceBlastDialog"), settings(settings) {
+AlignToReferenceBlastDialogFiller::AlignToReferenceBlastDialogFiller(const Settings& settings)
+    : Filler("AlignToReferenceBlastDialog"), settings(settings) {
 }
 
-AlignToReferenceBlastDialogFiller::AlignToReferenceBlastDialogFiller(HI::GUITestOpStatus& os, CustomScenario* c)
-    : Filler(os, "AlignToReferenceBlastDialog", c) {
+AlignToReferenceBlastDialogFiller::AlignToReferenceBlastDialogFiller(CustomScenario* c)
+    : Filler("AlignToReferenceBlastDialog", c) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void AlignToReferenceBlastDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    setReference(os, settings.referenceUrl, dialog);
-    CHECK_OP(os, );
+    setReference(settings.referenceUrl, dialog);
 
-    setReads(os, settings.readUrls, dialog);
-    CHECK_OP(os, );
+    setReads(settings.readUrls, dialog);
 
-    auto settingSpinBox = GTWidget::findSpinBox(os, "minIdentitySpinBox", dialog);
-    GTSpinBox::setValue(os, settingSpinBox, settings.minIdentity);
+    auto settingSpinBox = GTWidget::findSpinBox("minIdentitySpinBox", dialog);
+    GTSpinBox::setValue(settingSpinBox, settings.minIdentity);
 
-    settingSpinBox = GTWidget::findSpinBox(os, "qualitySpinBox", dialog);
-    GTSpinBox::setValue(os, settingSpinBox, settings.qualityThreshold);
+    settingSpinBox = GTWidget::findSpinBox("qualitySpinBox", dialog);
+    GTSpinBox::setValue(settingSpinBox, settings.qualityThreshold);
 
-    auto checkBox = GTWidget::findCheckBox(os, "addToProjectCheckbox", dialog);
-    GTCheckBox::setChecked(os, checkBox, settings.addResultToProject);
+    auto checkBox = GTWidget::findCheckBox("addToProjectCheckbox", dialog);
+    GTCheckBox::setChecked(checkBox, settings.addResultToProject);
 
-    setDestination(os, settings.outAlignment, dialog);
-    CHECK_OP(os, );
+    setDestination(settings.outAlignment, dialog);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setReference"
-void AlignToReferenceBlastDialogFiller::setReference(GUITestOpStatus& os, const QString& referenceUrl, QWidget* dialog) {
-    GTLineEdit::setText(os, "referenceLineEdit", referenceUrl, dialog);
+void AlignToReferenceBlastDialogFiller::setReference(const QString& referenceUrl, QWidget* dialog) {
+    GTLineEdit::setText("referenceLineEdit", referenceUrl, dialog);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setReads"
-void AlignToReferenceBlastDialogFiller::setReads(GUITestOpStatus& os, const QStringList& readUrls, QWidget* dialog) {
-    auto addReadButton = GTWidget::findWidget(os, "addReadButton");
-    auto readsListWidget = GTWidget::findListWidget(os, "readsListWidget", dialog);
+void AlignToReferenceBlastDialogFiller::setReads(const QStringList& readUrls, QWidget* dialog) {
+    auto addReadButton = GTWidget::findWidget("addReadButton");
+    auto readsListWidget = GTWidget::findListWidget("readsListWidget", dialog);
 
     QStringList uniqueReads;
     for (const QString& read : qAsConst(readUrls)) {
@@ -94,14 +91,14 @@ void AlignToReferenceBlastDialogFiller::setReads(GUITestOpStatus& os, const QStr
     }
     GT_CHECK(!uniqueReads.isEmpty(), "List of unique reads is empty!");
 
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, uniqueReads));
-    GTWidget::click(os, addReadButton);
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(uniqueReads));
+    GTWidget::click(addReadButton);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setDestination"
-void AlignToReferenceBlastDialogFiller::setDestination(GUITestOpStatus& os, const QString& destinationUrl, QWidget* dialog) {
-    GTLineEdit::setText(os, "outputLineEdit", destinationUrl, dialog);
+void AlignToReferenceBlastDialogFiller::setDestination(const QString& destinationUrl, QWidget* dialog) {
+    GTLineEdit::setText("outputLineEdit", destinationUrl, dialog);
 }
 #undef GT_METHOD_NAME
 

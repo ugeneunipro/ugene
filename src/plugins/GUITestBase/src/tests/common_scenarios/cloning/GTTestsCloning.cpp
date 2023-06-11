@@ -53,39 +53,39 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //        right_end_type,
     //        right_end_strand
 
-    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, {"SacII"}));
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"SacII"}));
+    GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::waitForDialog(os, new DigestSequenceDialogFiller(os));
-    GTMenu::clickMainMenuItem(os, {"Tools", "Cloning", "Digest into fragments..."});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new DigestSequenceDialogFiller());
+    GTMenu::clickMainMenuItem({"Tools", "Cloning", "Digest into fragments..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QTreeWidgetItem* fr1 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 1");
-    QTreeWidgetItem* fr2 = GTUtilsAnnotationsTreeView::findItem(os, "Fragment 2");
+    QTreeWidgetItem* fr1 = GTUtilsAnnotationsTreeView::findItem("Fragment 1");
+    QTreeWidgetItem* fr2 = GTUtilsAnnotationsTreeView::findItem("Fragment 2");
 
-    GTTreeWidget::expand(os, fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_seq", fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_strand", fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_term", fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_type", fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_seq", fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_strand", fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_term", fr1);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_type", fr1);
+    GTTreeWidget::expand(fr1);
+    GTUtilsAnnotationsTreeView::findItem("left_end_seq", fr1);
+    GTUtilsAnnotationsTreeView::findItem("left_end_strand", fr1);
+    GTUtilsAnnotationsTreeView::findItem("left_end_term", fr1);
+    GTUtilsAnnotationsTreeView::findItem("left_end_type", fr1);
+    GTUtilsAnnotationsTreeView::findItem("right_end_seq", fr1);
+    GTUtilsAnnotationsTreeView::findItem("right_end_strand", fr1);
+    GTUtilsAnnotationsTreeView::findItem("right_end_term", fr1);
+    GTUtilsAnnotationsTreeView::findItem("right_end_type", fr1);
 
-    GTTreeWidget::expand(os, fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_seq", fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_strand", fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_term", fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "left_end_type", fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_seq", fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_strand", fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_term", fr2);
-    GTUtilsAnnotationsTreeView::findItem(os, "right_end_type", fr2);
+    GTTreeWidget::expand(fr2);
+    GTUtilsAnnotationsTreeView::findItem("left_end_seq", fr2);
+    GTUtilsAnnotationsTreeView::findItem("left_end_strand", fr2);
+    GTUtilsAnnotationsTreeView::findItem("left_end_term", fr2);
+    GTUtilsAnnotationsTreeView::findItem("left_end_type", fr2);
+    GTUtilsAnnotationsTreeView::findItem("right_end_seq", fr2);
+    GTUtilsAnnotationsTreeView::findItem("right_end_strand", fr2);
+    GTUtilsAnnotationsTreeView::findItem("right_end_term", fr2);
+    GTUtilsAnnotationsTreeView::findItem("right_end_type", fr2);
 }
 
 }  // namespace GUITest_common_scenarios_cloning

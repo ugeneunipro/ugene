@@ -28,8 +28,8 @@ using namespace HI;
 
 class GoToDialogFiller : public Filler {
 public:
-    GoToDialogFiller(HI::GUITestOpStatus& _os, int _goTo)
-        : Filler(_os, ""), goTo(_goTo) {
+    GoToDialogFiller(int _goTo)
+        : Filler(""), goTo(_goTo) {
     }
     void commonScenario();
 

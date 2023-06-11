@@ -31,7 +31,7 @@ namespace HI {
 #define GT_CLASS_NAME "GTMainWindow"
 
 #define GT_METHOD_NAME "getMainWindows"
-QList<QMainWindow*> GTMainWindow::getMainWindows(GUITestOpStatus& os) {
+QList<QMainWindow*> GTMainWindow::getMainWindows() {
     QList<QMainWindow*> list;
     foreach (QWindow* window, qApp->topLevelWindows()) {
         if (window->inherits("QMainWindow")) {
@@ -45,7 +45,7 @@ QList<QMainWindow*> GTMainWindow::getMainWindows(GUITestOpStatus& os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getMainWindowsAsWidget"
-QList<QWidget*> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus& os) {
+QList<QWidget*> GTMainWindow::getMainWindowsAsWidget() {
     QList<QWidget*> mainWindows;
     QList<QWidget*> topLevelWidgets = qApp->topLevelWidgets();
     for (QWidget* widget : qAsConst(topLevelWidgets)) {
@@ -60,14 +60,14 @@ QList<QWidget*> GTMainWindow::getMainWindowsAsWidget(GUITestOpStatus& os) {
 #ifdef _DEBUG
     if (mainWindows.isEmpty())
 #endif
-    GT_CHECK_RESULT(!mainWindows.isEmpty(), "No main window widget found", mainWindows);
+        GT_CHECK_RESULT(!mainWindows.isEmpty(), "No main window widget found", mainWindows);
     return mainWindows;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getMainWindowWidgetByName"
-QWidget* GTMainWindow::getMainWindowWidgetByName(GUITestOpStatus& os, const QString& name) {
-    for (QWidget* w : GTMainWindow::getMainWindowsAsWidget(os)) {
+QWidget* GTMainWindow::getMainWindowWidgetByName(const QString& name) {
+    for (QWidget* w : GTMainWindow::getMainWindowsAsWidget()) {
         if (w->objectName() == name) {
             return w;
         }
@@ -77,8 +77,8 @@ QWidget* GTMainWindow::getMainWindowWidgetByName(GUITestOpStatus& os, const QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkTitle"
-void GTMainWindow::checkTitle(GUITestOpStatus& os, const QString& title) {
-    QList<QWidget*> mainWindowWidgets = getMainWindowsAsWidget(os);
+void GTMainWindow::checkTitle(const QString& title) {
+    QList<QWidget*> mainWindowWidgets = getMainWindowsAsWidget();
     for (const QWidget* widget : qAsConst(mainWindowWidgets)) {
         if (widget->windowTitle() == title) {
             return;

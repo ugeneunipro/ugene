@@ -36,53 +36,52 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportPrimersDialogFiller"
 
-ImportPrimersDialogFiller::ImportPrimersDialogFiller(HI::GUITestOpStatus& os,
-                                                     const QStringList& _fileList,
-                                                     const QMap<QString, QStringList>& _objectNameList)
-    : Filler(os, "ImportPrimersDialog"),
+ImportPrimersDialogFiller::ImportPrimersDialogFiller(
+    const QStringList& _fileList,
+    const QMap<QString, QStringList>& _objectNameList)
+    : Filler("ImportPrimersDialog"),
       fileList(_fileList),
       objectNameList(_objectNameList) {
 }
 
-ImportPrimersDialogFiller::ImportPrimersDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "ImportPrimersDialog", scenario) {
+ImportPrimersDialogFiller::ImportPrimersDialogFiller(CustomScenario* scenario)
+    : Filler("ImportPrimersDialog", scenario) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ImportPrimersDialogFiller::commonScenario() {
     if (fileList.isEmpty() && objectNameList.isEmpty()) {
-        GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         return;
     }
 
     for (const QString& file : qAsConst(fileList)) {
-        addFile(os, file);
+        addFile(file);
     }
 
-    addObjects(os, objectNameList);
+    addObjects(objectNameList);
 
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addFile"
-void ImportPrimersDialogFiller::addFile(HI::GUITestOpStatus& os, const QString& filePath) {
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, filePath));
-    GTWidget::click(os, GTWidget::findWidget(os, "pbAddFile", getDialog(os)));
+void ImportPrimersDialogFiller::addFile(const QString& filePath) {
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(filePath));
+    GTWidget::click(GTWidget::findWidget("pbAddFile", getDialog()));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "addObject"
-void ImportPrimersDialogFiller::addObjects(HI::GUITestOpStatus& os, const QMap<QString, QStringList>& databaseAndObjectNames) {
-    GTUtilsDialog::add(os, new ProjectTreeItemSelectorDialogFiller(os, databaseAndObjectNames, QSet<GObjectType>() << GObjectTypes::SEQUENCE, ProjectTreeItemSelectorDialogFiller::Separate));
-    GTWidget::click(os, GTWidget::findWidget(os, "pbAddObject", getDialog(os)));
+void ImportPrimersDialogFiller::addObjects(const QMap<QString, QStringList>& databaseAndObjectNames) {
+    GTUtilsDialog::add(new ProjectTreeItemSelectorDialogFiller(databaseAndObjectNames, QSet<GObjectType>() << GObjectTypes::SEQUENCE, ProjectTreeItemSelectorDialogFiller::Separate));
+    GTWidget::click(GTWidget::findWidget("pbAddObject", getDialog()));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDialog"
-QWidget* ImportPrimersDialogFiller::getDialog(HI::GUITestOpStatus& os) {
-    Q_UNUSED(os);
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+QWidget* ImportPrimersDialogFiller::getDialog() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     return dialog;
 }
 #undef GT_METHOD_NAME

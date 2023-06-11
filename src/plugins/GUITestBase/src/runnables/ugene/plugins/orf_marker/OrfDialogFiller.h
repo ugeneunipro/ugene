@@ -28,8 +28,8 @@ using namespace HI;
 
 class OrfDialogFiller : public Filler {
 public:
-    OrfDialogFiller(HI::GUITestOpStatus& os);
-    OrfDialogFiller(HI::GUITestOpStatus& os, CustomScenario* scenario);
+    OrfDialogFiller();
+    OrfDialogFiller(CustomScenario* scenario);
 
     void commonScenario();
 };

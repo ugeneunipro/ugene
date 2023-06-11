@@ -36,10 +36,10 @@ namespace U2 {
 namespace GUITest_common_scenarios_query_designer {
 using namespace HI;
 
-void test1(HI::GUITestOpStatus& os, QString s = "") {
+void test1(QString s = "") {
     // Bug: QD: Crash while resizing and deleting elements (0002402)
     // 1. Open Query Designer
-    GTUtilsQueryDesigner::openQueryDesigner(os);
+    GTUtilsQueryDesigner::openQueryDesigner();
 
     QString array[] = {"CDD", "Base Content", "HMM2", "ORF"};
     QPoint p;
@@ -48,25 +48,25 @@ void test1(HI::GUITestOpStatus& os, QString s = "") {
         // 3. Reduce any elements size by dragging its right corner as far to the left as possible
         //   (or a bit less than as far as possible)
         if (s == "arr") {
-            GTUtilsQueryDesigner::addAlgorithm(os, array[i]);
+            GTUtilsQueryDesigner::addAlgorithm(array[i]);
 
-            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, array[i]));
+            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(array[i]));
             p = GTMouseDriver::getMousePosition();
-            p.setX(GTUtilsQueryDesigner::getItemRight(os, array[i]));
+            p.setX(GTUtilsQueryDesigner::getItemRight(array[i]));
         } else {
-            GTUtilsQueryDesigner::addAlgorithm(os, s);
+            GTUtilsQueryDesigner::addAlgorithm(s);
 
-            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, s));
+            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(s));
             p = GTMouseDriver::getMousePosition();
-            p.setX(GTUtilsQueryDesigner::getItemRight(os, s));
+            p.setX(GTUtilsQueryDesigner::getItemRight(s));
         }
         GTMouseDriver::moveTo(p);
 
         GTMouseDriver::press();
         if (s == "arr") {
-            p.setX(GTUtilsQueryDesigner::getItemLeft(os, array[i]) + 100);
+            p.setX(GTUtilsQueryDesigner::getItemLeft(array[i]) + 100);
         } else {
-            p.setX(GTUtilsQueryDesigner::getItemLeft(os, s) + 100);
+            p.setX(GTUtilsQueryDesigner::getItemLeft(s) + 100);
         }
         GTMouseDriver::moveTo(p);
 
@@ -74,14 +74,14 @@ void test1(HI::GUITestOpStatus& os, QString s = "") {
 
         // 4. Select the resized element and press <Del>
         if (s == "arr") {
-            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, array[i]));
+            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(array[i]));
         } else {
-            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(os, s));
+            GTMouseDriver::moveTo(GTUtilsQueryDesigner::getItemCenter(s));
         }
         GTMouseDriver::click();
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         // check no elements on scene
-        auto sceneView = GTWidget::findGraphicsView(os, "sceneView");
+        auto sceneView = GTWidget::findGraphicsView("sceneView");
         QList<QGraphicsItem*> items = sceneView->items();
         CHECK_SET_ERR(items.size() == 2, "Delete shortcut is not working");  // 2 - is equal empty scene
     }
@@ -90,15 +90,15 @@ void test1(HI::GUITestOpStatus& os, QString s = "") {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    test1(os, "Pattern");
+    test1("Pattern");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
-    test1(os, "CDD");
+    test1("CDD");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_2) {
-    test1(os, "arr");
+    test1("arr");
 }
 
 }  // namespace GUITest_common_scenarios_query_designer

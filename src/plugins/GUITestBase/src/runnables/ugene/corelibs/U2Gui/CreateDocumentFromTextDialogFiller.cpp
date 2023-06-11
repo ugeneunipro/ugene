@@ -41,19 +41,19 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::createDocumentFiller"
-CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus& _os,
-                                           const QString& _pasteDataHere,
-                                           bool _customSettings = false,
-                                           documentAlphabet _alphabet = StandardDNA,
-                                           bool _skipUnknownSymbols = true,
-                                           bool _replaceUnknownSymbols = false,
-                                           const QString _symbol = "",
-                                           const QString& _documentLocation = QString(),
-                                           documentFormat _format = FASTA,
-                                           const QString& _sequenceName = QString(),
-                                           bool saveFile = false,
-                                           GTGlobals::UseMethod method)
-    : Filler(_os, "CreateDocumentFromTextDialog"),
+CreateDocumentFiller::CreateDocumentFiller(
+    const QString& _pasteDataHere,
+    bool _customSettings = false,
+    documentAlphabet _alphabet = StandardDNA,
+    bool _skipUnknownSymbols = true,
+    bool _replaceUnknownSymbols = false,
+    const QString _symbol = "",
+    const QString& _documentLocation = QString(),
+    documentFormat _format = FASTA,
+    const QString& _sequenceName = QString(),
+    bool saveFile = false,
+    GTGlobals::UseMethod method)
+    : Filler("CreateDocumentFromTextDialog"),
       customSettings(_customSettings),
       alphabet(_alphabet),
       skipUnknownSymbols(_skipUnknownSymbols),
@@ -75,8 +75,8 @@ CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus& _os,
     comboBoxAlphabetItems[AllSymbols] = "Raw";
 }
 
-CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus& os, CustomScenario* scenario)
-    : Filler(os, "CreateDocumentFromTextDialog", scenario),
+CreateDocumentFiller::CreateDocumentFiller(CustomScenario* scenario)
+    : Filler("CreateDocumentFromTextDialog", scenario),
       customSettings(false),
       alphabet(StandardDNA),
       skipUnknownSymbols(false),
@@ -88,47 +88,47 @@ CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus& os, CustomScenar
 
 #define GT_METHOD_NAME "commonScenario"
 void CreateDocumentFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
-    GTPlainTextEdit::setText(os, plainText, pasteDataHere);
+    auto plainText = GTWidget::findPlainTextEdit("sequenceEdit", dialog);
+    GTPlainTextEdit::setText(plainText, pasteDataHere);
     GTGlobals::sleep();
 
     if (customSettings) {
-        GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, "groupBox", dialog), true);
+        GTGroupBox::setChecked(GTWidget::findGroupBox("groupBox", dialog), true);
         if (skipUnknownSymbols) {
-            GTRadioButton::click(os, "skipRB", dialog);
+            GTRadioButton::click("skipRB", dialog);
         } else if (replaceUnknownSymbols) {
-            GTRadioButton::click(os, "replaceRB", dialog);
-            GTLineEdit::setText(os, "symbolToReplaceEdit", symbol, dialog);
+            GTRadioButton::click("replaceRB", dialog);
+            GTLineEdit::setText("symbolToReplaceEdit", symbol, dialog);
         } else {
             GT_FAIL("Unsupported state", );  // replace skipUnknownSymbols and replaceUnknownSymbols variables with enum
         }
 
-        auto alphabetComboBox = GTWidget::findComboBox(os, "alphabetBox", dialog);
+        auto alphabetComboBox = GTWidget::findComboBox("alphabetBox", dialog);
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
         GT_CHECK(alphabetIndex != -1, QString("item \"%1\" in combobox not found").arg(comboBoxAlphabetItems[alphabet]));
 
-        GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
+        GTComboBox::selectItemByIndex(alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
+    GTLineEdit::setText("filepathEdit", documentLocation, dialog);
 
-    auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
+    auto comboBox = GTWidget::findComboBox("formatBox", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
-    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
+    GTComboBox::selectItemByIndex(comboBox, index, useMethod);
 
-    GTLineEdit::setText(os, "nameEdit", sequenceName, dialog);
+    GTLineEdit::setText("nameEdit", sequenceName, dialog);
 
     if (saveFile) {
-        auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);
-        GTCheckBox::setChecked(os, saveFileCheckBox);
+        auto saveFileCheckBox = GTWidget::findCheckBox("saveImmediatelyBox", dialog);
+        GTCheckBox::setChecked(saveFileCheckBox);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     GTThread::waitForMainThread();
 }
 
@@ -136,8 +136,8 @@ void CreateDocumentFiller::commonScenario() {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::cancelCreateDocumentFiller"
-CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus& _os, const QString& _pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString& _documentLocation = QString(), documentFormat _format = FASTA, const QString& _sequenceName = QString(), bool saveFile = false, GTGlobals::UseMethod method)
-    : Filler(_os, "CreateDocumentFromTextDialog"), customSettings(_customSettings), alphabet(_alphabet), skipUnknownSymbols(_skipUnknownSymbols), replaceUnknownSymbols(_replaceUnknownSymbols),
+CancelCreateDocumentFiller::CancelCreateDocumentFiller(const QString& _pasteDataHere, bool _customSettings = false, documentAlphabet _alphabet = StandardDNA, bool _skipUnknownSymbols = true, bool _replaceUnknownSymbols = false, const QString _symbol = "", const QString& _documentLocation = QString(), documentFormat _format = FASTA, const QString& _sequenceName = QString(), bool saveFile = false, GTGlobals::UseMethod method)
+    : Filler("CreateDocumentFromTextDialog"), customSettings(_customSettings), alphabet(_alphabet), skipUnknownSymbols(_skipUnknownSymbols), replaceUnknownSymbols(_replaceUnknownSymbols),
       symbol(_symbol), format(_format), saveFile(saveFile), useMethod(method) {
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
@@ -154,47 +154,47 @@ CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus& _os,
 
 #define GT_METHOD_NAME "commonScenario"
 void CancelCreateDocumentFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    auto plainText = GTWidget::findPlainTextEdit(os, "sequenceEdit", dialog);
-    GTPlainTextEdit::setText(os, plainText, pasteDataHere);
+    auto plainText = GTWidget::findPlainTextEdit("sequenceEdit", dialog);
+    GTPlainTextEdit::setText(plainText, pasteDataHere);
 
     if (customSettings) {
-        GTGroupBox::setChecked(os, GTWidget::findGroupBox(os, "groupBox", dialog), true);
+        GTGroupBox::setChecked(GTWidget::findGroupBox("groupBox", dialog), true);
 
         if (skipUnknownSymbols) {
-            GTRadioButton::click(os, "skipRB", dialog);
+            GTRadioButton::click("skipRB", dialog);
         } else if (replaceUnknownSymbols) {
-            GTRadioButton::click(os, "replaceRB", dialog);
-            GTLineEdit::setText(os, "symbolToReplaceEdit", symbol, dialog);
+            GTRadioButton::click("replaceRB", dialog);
+            GTLineEdit::setText("symbolToReplaceEdit", symbol, dialog);
         } else {
             GT_FAIL("Unsupported state", );
         }
 
-        auto alphabetComboBox = GTWidget::findComboBox(os, "alphabetBox", dialog);
+        auto alphabetComboBox = GTWidget::findComboBox("alphabetBox", dialog);
         int alphabetIndex = alphabetComboBox->findText(comboBoxAlphabetItems[alphabet]);
         GT_CHECK(alphabetIndex != -1, QString("item \"%1\" in combobox not found").arg(comboBoxAlphabetItems[alphabet]));
 
-        GTComboBox::selectItemByIndex(os, alphabetComboBox, alphabetIndex, useMethod);
+        GTComboBox::selectItemByIndex(alphabetComboBox, alphabetIndex, useMethod);
     }
 
-    GTLineEdit::setText(os, "filepathEdit", documentLocation, dialog);
+    GTLineEdit::setText("filepathEdit", documentLocation, dialog);
 
-    auto comboBox = GTWidget::findComboBox(os, "formatBox", dialog);
+    auto comboBox = GTWidget::findComboBox("formatBox", dialog);
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
 
-    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
+    GTComboBox::selectItemByIndex(comboBox, index, useMethod);
 
-    GTLineEdit::setText(os, "nameEdit", sequenceName, dialog);
+    GTLineEdit::setText("nameEdit", sequenceName, dialog);
 
     if (saveFile) {
-        auto saveFileCheckBox = GTWidget::findCheckBox(os, "saveImmediatelyBox", dialog);
-        GTCheckBox::setChecked(os, saveFileCheckBox);
+        auto saveFileCheckBox = GTWidget::findCheckBox("saveImmediatelyBox", dialog);
+        GTCheckBox::setChecked(saveFileCheckBox);
     }
 
-    GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+    GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
 }
 
 #undef GT_METHOD_NAME

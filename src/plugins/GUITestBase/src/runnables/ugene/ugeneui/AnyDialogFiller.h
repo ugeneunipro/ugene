@@ -30,8 +30,8 @@ using namespace HI;
 
 class AnyDialogFiller : public Filler {
 public:
-    AnyDialogFiller(HI::GUITestOpStatus& os, const QString& objectName, QDialogButtonBox::StandardButton _b)
-        : Filler(os, objectName), b(_b) {
+    AnyDialogFiller(const QString& objectName, QDialogButtonBox::StandardButton _b)
+        : Filler(objectName), b(_b) {
     }
     void commonScenario();
 

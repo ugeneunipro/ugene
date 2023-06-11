@@ -19,9 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GT_MENU_BAR_H_
-#define _HI_GT_MENU_BAR_H_
-
+#pragma once
 #include <QMenuBar>
 
 #include "GTGlobals.h"
@@ -32,9 +30,7 @@ class HI_EXPORT GTMenuBar {
 public:
     // clicks cornerMenu of QMenuBar as if it is a standard {Minimize, Maximize, Close} buttons widget
     // fails if menuBar is NULL or action as int value is not one of GTGlobals::WindowAction values
-    static void clickCornerMenu(GUITestOpStatus& os, QMenuBar* mBar, GTGlobals::WindowAction action);
+    static void clickCornerMenu(QMenuBar* mBar, GTGlobals::WindowAction action);
 };
 
 }  // namespace HI
-
-#endif

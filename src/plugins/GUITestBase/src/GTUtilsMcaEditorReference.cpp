@@ -28,12 +28,10 @@
 #include <U2View/BaseWidthController.h>
 #include <U2View/McaEditorReferenceArea.h>
 #include <U2View/McaEditorSequenceArea.h>
-#include <U2View/McaEditorWgt.h>
 #include <U2View/ScrollController.h>
 
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMcaEditorReference.h"
-#include "GTUtilsMcaEditorSequenceArea.h"
 
 using namespace HI;
 namespace U2 {
@@ -41,12 +39,12 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsMcaEditorReference"
 
 #define GT_METHOD_NAME "clickToPosition"
-void GTUtilsMcaEditorReference::clickToPosition(HI::GUITestOpStatus& os, int position) {
-    McaEditorReferenceArea* referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
-    McaEditorWgt* mcaEditorWgt = GTUtilsMcaEditor::getEditorUi(os);
+void GTUtilsMcaEditorReference::clickToPosition(int position) {
+    McaEditorReferenceArea* referenceArea = GTUtilsMcaEditor::getReferenceArea();
+    McaEditorWgt* mcaEditorWgt = GTUtilsMcaEditor::getEditorUi();
     GT_CHECK(mcaEditorWgt->getSequenceArea()->isInRange(QPoint(position, 0)), QString("Position %1 is out of range").arg(position));
 
-    scrollToPosition(os, position);
+    scrollToPosition(position);
 
     const QPoint positionCenter(mcaEditorWgt->getBaseWidthController()->getBaseScreenCenter(position),
                                 referenceArea->height() / 2);
@@ -58,12 +56,11 @@ void GTUtilsMcaEditorReference::clickToPosition(HI::GUITestOpStatus& os, int pos
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "scrollToPosition"
-void GTUtilsMcaEditorReference::scrollToPosition(HI::GUITestOpStatus& os, int position) {
-    const int scrollBarValue = GTUtilsMcaEditor::getEditorUi(os)->getBaseWidthController()->getBaseGlobalRange(position).center() -
-                               GTUtilsMcaEditor::getEditorUi(os)->getSequenceArea()->width() / 2;
-    CHECK(!GTUtilsMcaEditor::getReferenceArea(os)->getVisibleRange().contains(position), );
-    GTScrollBar::moveSliderWithMouseToValue(os,
-                                            GTUtilsMcaEditor::getHorizontalScrollBar(os),
+void GTUtilsMcaEditorReference::scrollToPosition(int position) {
+    const int scrollBarValue = GTUtilsMcaEditor::getEditorUi()->getBaseWidthController()->getBaseGlobalRange(position).center() -
+                               GTUtilsMcaEditor::getEditorUi()->getSequenceArea()->width() / 2;
+    CHECK(!GTUtilsMcaEditor::getReferenceArea()->getVisibleRange().contains(position), );
+    GTScrollBar::moveSliderWithMouseToValue(GTUtilsMcaEditor::getHorizontalScrollBar(),
                                             scrollBarValue);
 }
 #undef GT_METHOD_NAME

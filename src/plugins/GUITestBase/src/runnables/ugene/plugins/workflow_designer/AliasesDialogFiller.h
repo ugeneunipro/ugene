@@ -28,8 +28,8 @@ using namespace HI;
 
 class AliasesDialogFiller : public Filler {
 public:
-    AliasesDialogFiller(HI::GUITestOpStatus& _os, QMap<QPoint*, QString> _map)
-        : Filler(_os, "SchemaAliasesConfigurationDialog"),
+    AliasesDialogFiller(QMap<QPoint*, QString> _map)
+        : Filler("SchemaAliasesConfigurationDialog"),
           map(_map) {
     }
     void commonScenario();

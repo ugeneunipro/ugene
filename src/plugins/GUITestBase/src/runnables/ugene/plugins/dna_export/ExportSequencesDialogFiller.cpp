@@ -36,46 +36,46 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSelectedRegionFiller"
-ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus& _os, const QString& _path, const QString& _name, bool translate, const QString& seqName, bool saveAllAminoFrames)
-    : Filler(_os, "U2__ExportSequencesDialog"), name(_name), seqName(seqName), translate(translate),
+ExportSelectedRegionFiller::ExportSelectedRegionFiller(const QString& _path, const QString& _name, bool translate, const QString& seqName, bool saveAllAminoFrames)
+    : Filler("U2__ExportSequencesDialog"), name(_name), seqName(seqName), translate(translate),
       saveAllAminoFrames(saveAllAminoFrames) {
     path = GTFileDialog::toAbsoluteNativePath(_path, true);
 }
 
-ExportSelectedRegionFiller::ExportSelectedRegionFiller(GUITestOpStatus& os, const QString& filePath)
-    : Filler(os, "U2__ExportSequencesDialog"),
+ExportSelectedRegionFiller::ExportSelectedRegionFiller(const QString& filePath)
+    : Filler("U2__ExportSequencesDialog"),
       translate(false),
       saveAllAminoFrames(true) {
     path = QFileInfo(filePath).dir().path() + "/";
     name = QFileInfo(filePath).fileName();
 }
 
-ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus& os, CustomScenario* customScenario)
-    : Filler(os, "U2__ExportSequencesDialog", customScenario),
+ExportSelectedRegionFiller::ExportSelectedRegionFiller(CustomScenario* customScenario)
+    : Filler("U2__ExportSequencesDialog", customScenario),
       translate(false), saveAllAminoFrames(true) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportSelectedRegionFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "fileNameEdit", path + name, dialog);
+    GTLineEdit::setText("fileNameEdit", path + name, dialog);
 
     if (!seqName.isEmpty()) {
-        auto customSeqCheckBox = GTWidget::findCheckBox(os, "customSeqNameBox", dialog);
-        GTCheckBox::setChecked(os, customSeqCheckBox, true);
-        GTLineEdit::setText(os, "sequenceNameEdit", seqName, dialog);
+        auto customSeqCheckBox = GTWidget::findCheckBox("customSeqNameBox", dialog);
+        GTCheckBox::setChecked(customSeqCheckBox, true);
+        GTLineEdit::setText("sequenceNameEdit", seqName, dialog);
     }
 
-    auto translateButton = GTWidget::findCheckBox(os, "translateButton");
-    GTCheckBox::setChecked(os, translateButton, translate);
+    auto translateButton = GTWidget::findCheckBox("translateButton");
+    GTCheckBox::setChecked(translateButton, translate);
 
     if (translate) {
-        auto allTFramesButton = GTWidget::findCheckBox(os, "allTFramesButton");
-        GTCheckBox::setChecked(os, allTFramesButton, saveAllAminoFrames);
+        auto allTFramesButton = GTWidget::findCheckBox("allTFramesButton");
+        GTCheckBox::setChecked(allTFramesButton, saveAllAminoFrames);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 
@@ -90,16 +90,16 @@ void ExportSelectedRegionFiller::setName(const QString& value) {
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::exportSequenceOfSelectedAnnotationsFiller"
-ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFiller(HI::GUITestOpStatus& _os,
-                                                                                     const QString& _path,
-                                                                                     FormatToUse _format,
-                                                                                     MergeOptions _options,
-                                                                                     int _gapLength,
-                                                                                     bool _addDocToProject,
-                                                                                     bool _exportWithAnnotations,
-                                                                                     GTGlobals::UseMethod method,
-                                                                                     bool _translate)
-    : Filler(_os, "U2__ExportSequencesDialog"), gapLength(_gapLength), format(_format), addToProject(_addDocToProject),
+ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFiller(
+    const QString& _path,
+    FormatToUse _format,
+    MergeOptions _options,
+    int _gapLength,
+    bool _addDocToProject,
+    bool _exportWithAnnotations,
+    GTGlobals::UseMethod method,
+    bool _translate)
+    : Filler("U2__ExportSequencesDialog"), gapLength(_gapLength), format(_format), addToProject(_addDocToProject),
       exportWithAnnotations(false), options(_options), useMethod(method), translate(_translate) {
     exportWithAnnotations = _exportWithAnnotations;
     path = GTFileDialog::toAbsoluteNativePath(_path);
@@ -115,9 +115,9 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
 
 #define GT_METHOD_NAME "commonScenario"
 void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "fileNameEdit", path, dialog);
+    GTLineEdit::setText("fileNameEdit", path, dialog);
 
     GTGlobals::sleep(200);
 
@@ -126,40 +126,40 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     int index = comboBox->findText(comboBoxItems[format]);
 
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
-    GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
+    GTComboBox::selectItemByIndex(comboBox, index, useMethod);
 
     GTGlobals::sleep(200);
 
-    auto projectCheckBox = GTWidget::findCheckBox(os, "addToProjectBox", dialog);
-    GTCheckBox::setChecked(os, projectCheckBox, addToProject);
+    auto projectCheckBox = GTWidget::findCheckBox("addToProjectBox", dialog);
+    GTCheckBox::setChecked(projectCheckBox, addToProject);
 
     GTGlobals::sleep(200);
 
-    auto annotationsCheckBox = GTWidget::findCheckBox(os, "withAnnotationsBox", dialog);
+    auto annotationsCheckBox = GTWidget::findCheckBox("withAnnotationsBox", dialog);
     if (annotationsCheckBox->isEnabled()) {
-        GTCheckBox::setChecked(os, annotationsCheckBox, exportWithAnnotations);
+        GTCheckBox::setChecked(annotationsCheckBox, exportWithAnnotations);
     }
 
     GTGlobals::sleep(200);
 
-    GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "translateButton"), translate);
+    GTCheckBox::setChecked(GTWidget::findCheckBox("translateButton"), translate);
 
-    auto mergeButton = GTWidget::findRadioButton(os, mergeRadioButtons[options], dialog);
+    auto mergeButton = GTWidget::findRadioButton(mergeRadioButtons[options], dialog);
 
     if (mergeButton->isEnabled()) {
-        GTRadioButton::click(os, mergeButton);
+        GTRadioButton::click(mergeButton);
     }
 
     GTGlobals::sleep(200);
 
     if (gapLength) {
-        auto mergeSpinBox = GTWidget::findSpinBox(os, "mergeSpinBox", dialog);
-        GTSpinBox::setValue(os, mergeSpinBox, gapLength, useMethod);
+        auto mergeSpinBox = GTWidget::findSpinBox("mergeSpinBox", dialog);
+        GTSpinBox::setValue(mergeSpinBox, gapLength, useMethod);
     }
 
     GTGlobals::sleep(200);
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

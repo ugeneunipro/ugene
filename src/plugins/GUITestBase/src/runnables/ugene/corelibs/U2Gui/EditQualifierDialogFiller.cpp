@@ -43,25 +43,25 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::EditQualifierFiller"
 #define GT_METHOD_NAME "commonScenario"
 void EditQualifierFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    GTLineEdit::setText(os, "nameEdit", qualifierName, dialog, noCheck);
+    GTLineEdit::setText("nameEdit", qualifierName, dialog, noCheck);
 
-    auto valueEdit = GTWidget::findTextEdit(os, "valueEdit", dialog);
+    auto valueEdit = GTWidget::findTextEdit("valueEdit", dialog);
     if (!valueName.isEmpty()) {
-        GTTextEdit::setText(os, valueEdit, valueName);
+        GTTextEdit::setText(valueEdit, valueName);
     }
 
     if (closeErrormessageBox) {
-        GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+        GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
         GTGlobals::sleep();
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
         GTGlobals::sleep();
 
-        GTLineEdit::setText(os, "nameEdit", "nice_name", dialog, noCheck);
-        GTTextEdit::setText(os, valueEdit, "nice_val");
+        GTLineEdit::setText("nameEdit", "nice_name", dialog, noCheck);
+        GTTextEdit::setText(valueEdit, "nice_val");
     }
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

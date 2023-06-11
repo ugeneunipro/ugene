@@ -45,6 +45,9 @@
 
 #include <U2Core/AppContext.h>
 
+#include <U2View/BaseWidthController.h>
+#include <U2View/RowHeightController.h>
+
 #include "GTTestsOptionPanelMSAMultiline.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -56,8 +59,6 @@
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
-#include <U2View/BaseWidthController.h>
-#include <U2View/RowHeightController.h>
 
 namespace U2 {
 
@@ -65,255 +66,250 @@ namespace GUITest_common_scenarios_MSA_editor_multiline_options {
 using namespace HI;
 
 namespace {
-void setHighlightingType(HI::GUITestOpStatus &os, const QString &type)
-{
-    auto highlightingScheme = GTWidget::findComboBox(os, "highlightingScheme");
-    GTComboBox::selectItemByText(os, highlightingScheme, type);
+void setHighlightingType(const QString& type) {
+    auto highlightingScheme = GTWidget::findComboBox("highlightingScheme");
+    GTComboBox::selectItemByText(highlightingScheme, type);
 }
-}
+}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     const QString seqName = "Phaneroptera_falcata";
 
     //    1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    1.1. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsMsaEditor::setMultilineMode(true);
 
     //    2. Open general option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
     //    3. Use button to add Phaneroptera_falcata as referene
-    GTUtilsOptionPanelMsa::addReference(os, seqName);
+    GTUtilsOptionPanelMsa::addReference(seqName);
     //    Expected state:
     //    reference sequence line edit is empty
-    auto sequenceLineEdit = GTWidget::findLineEdit(os, "sequenceLineEdit");
+    auto sequenceLineEdit = GTWidget::findLineEdit("sequenceLineEdit");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(seqName), "sequence not highlighted");
     //    Expected state: Phaneroptera_falcata highlighted as reference
 
     //    4. Use button to remove reference
-    GTUtilsOptionPanelMsa::removeReference(os);
+    GTUtilsOptionPanelMsa::removeReference();
     //    Expected state:
     //    reference sequence line edit contains "select and add"
     //    Phaneroptera_falcata is not highlighted as reference
     text = sequenceLineEdit->text();
     CHECK_SET_ERR(text.isEmpty(), QString("sequenceLineEdit contains %1, no text expected").arg(text));
-    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(seqName), "sequence not highlighted");
 
-    GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsMsaEditor::setMultilineMode(false);
 }
 
-GUI_TEST_CLASS_DEFINITION(general_test_0003)
-{
+GUI_TEST_CLASS_DEFINITION(general_test_0003) {
     // UGENE-7591
 
     const QString seqName = "IXI_234";
 
     //    1. Open file test/_common_data/clustal/align.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "align.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "align.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Select seq.
-    GTUtilsMsaEditor::selectRowsByName(os, {seqName});
+    GTUtilsMsaEditor::selectRowsByName({seqName});
 
     //    2. Open general option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
 
     // 3. Copy seq
-    GTUtilsDialog::waitForDialog(os,
-                                 new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(
+        new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsMsaEditor::setMultilineMode(true);
 
     // 4. Insert seq from clipboard
-    QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "align.aln");
+    QPoint p = GTUtilsProjectTreeView::getItemCenter("align.aln");
     p.setY(p.y() + 44);
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
 
     // 5. Select new item
-    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView(os);
+    QTreeView* treeView = GTUtilsProjectTreeView::getTreeView();
     GTGlobals::FindOptions options = GTGlobals::FindOptions(true, Qt::MatchStartsWith);
-    QModelIndex index = GTUtilsProjectTreeView::findIndex(os, treeView, "clipboard_", options);
-    GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(os, treeView, index);
-    p = GTUtilsProjectTreeView::getItemCenter(os, index);
+    QModelIndex index = GTUtilsProjectTreeView::findIndex(treeView, "clipboard_", options);
+    GTUtilsProjectTreeView::scrollToIndexAndMakeExpanded(treeView, index);
+    p = GTUtilsProjectTreeView::getItemCenter(index);
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 6. Delete item
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Must not crash
 
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsMsaEditor::setMultilineMode(os, false);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMsaEditor::setMultilineMode(false);
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
-GUI_TEST_CLASS_DEFINITION(statistic_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(statistic_test_0001) {
     // UGENE-7588
 
     const QString seqName = "IXI_234";
 
     //    1. Open file test/_common_data/clustal/align.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "align.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "align.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Open general option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Statistics);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Statistics);
     //    3. Use button to add Phaneroptera_falcata as reference
-    GTUtilsOptionPanelMsa::addReference(os, seqName, GTUtilsOptionPanelMsa::Completer);
+    GTUtilsOptionPanelMsa::addReference(seqName, GTUtilsOptionPanelMsa::Completer);
     //    Expected state:
     //    reference sequence line edit contains IXI_234
-    auto sequenceLineEdit = GTWidget::findLineEdit(os, "sequenceLineEdit");
+    auto sequenceLineEdit = GTWidget::findLineEdit("sequenceLineEdit");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
-    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(seqName), "sequence not highlighted");
     //    IXI_234 highlighted as reference
 
     //    4. check showDistancesColumn checkbox
-    auto showDistancesColumnCheck = GTWidget::findCheckBox(os, "showDistancesColumnCheck");
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
+    auto showDistancesColumnCheck = GTWidget::findCheckBox("showDistancesColumnCheck");
+    GTCheckBox::setChecked(showDistancesColumnCheck, true);
 
     //    5. Switch multiline mode
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsMsaEditor::setMultilineMode(true);
 
     //    6. uncheck showDistancesColumn checkbox
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
+    GTCheckBox::setChecked(showDistancesColumnCheck, false);
+    GTCheckBox::setChecked(showDistancesColumnCheck, true);
+    GTCheckBox::setChecked(showDistancesColumnCheck, false);
 
     //    7. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsMsaEditor::setMultilineMode(false);
 
     //    8. uncheck showDistancesColumn checkbox
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
+    GTCheckBox::setChecked(showDistancesColumnCheck, true);
+    GTCheckBox::setChecked(showDistancesColumnCheck, false);
+    GTCheckBox::setChecked(showDistancesColumnCheck, true);
 
     //    9. Switch multiline mode
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsMsaEditor::setMultilineMode(true);
 
     //    10. uncheck showDistancesColumn checkbox
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
-    GTCheckBox::setChecked(os, showDistancesColumnCheck, false);
+    GTCheckBox::setChecked(showDistancesColumnCheck, false);
+    GTCheckBox::setChecked(showDistancesColumnCheck, true);
+    GTCheckBox::setChecked(showDistancesColumnCheck, false);
 
     //    Expected state:
     // Must not crash
 
-    GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsMsaEditor::setMultilineMode(false);
 }
 
-GUI_TEST_CLASS_DEFINITION(highlighting_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(highlighting_test_0001) {
     // UGENE-7603
 
     //    1. Open file data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Open highlighting option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-    auto w = GTUtilsMsaEditor::getSequenceArea(os);
-    QImage initImg = GTWidget::getImage(os, w);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Highlighting);
+    auto w = GTUtilsMsaEditor::getSequenceArea();
+    QImage initImg = GTWidget::getImage(w);
 
     // 3. Check "use dots" checkbox
-    setHighlightingType(os, "Agreements");
-    auto useDots = GTWidget::findCheckBox(os, "useDots");
-    GTCheckBox::setChecked(os, useDots, true);
+    setHighlightingType("Agreements");
+    auto useDots = GTWidget::findCheckBox("useDots");
+    GTCheckBox::setChecked(useDots, true);
 
     // Expected state: no effect
-    QImage img = GTWidget::getImage(os, w);
+    QImage img = GTWidget::getImage(w);
     CHECK_SET_ERR(img == initImg, "sequence area unexpectedly changed");
 
     // 4. Select Phaneroptera_falcata as reference.
-    GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
+    GTUtilsOptionPanelMsa::addReference("Phaneroptera_falcata");
 
     // Expected state: not highlighted changed to dots
-    img = GTWidget::getImage(os, w);
+    img = GTWidget::getImage(w);
     CHECK_SET_ERR(img != initImg,
-                  "image not changed"); // no way to check dots. Can only check that sequence area changed
+                  "image not changed");  // no way to check dots. Can only check that sequence area changed
 
     // 5. Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsMsaEditor::setMultilineMode(true);
 
     // 4. Remove Phaneroptera_falcata as reference.
-    GTUtilsOptionPanelMsa::removeReference(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::removeReference();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    w = GTUtilsMsaEditor::getSequenceArea(os);
-    initImg = GTWidget::getImage(os, w);
+    w = GTUtilsMsaEditor::getSequenceArea();
+    initImg = GTWidget::getImage(w);
 
     // 6. Check "use dots" checkbox
-    setHighlightingType(os, "Agreements");
-    useDots = GTWidget::findCheckBox(os, "useDots");
-    GTCheckBox::setChecked(os, useDots, true);
+    setHighlightingType("Agreements");
+    useDots = GTWidget::findCheckBox("useDots");
+    GTCheckBox::setChecked(useDots, true);
 
     // Expected state: no effect
-    img = GTWidget::getImage(os, w);
+    img = GTWidget::getImage(w);
     CHECK_SET_ERR(img == initImg, "sequence area unexpectedly changed");
 
     // 4. Select Phaneroptera_falcata as reference.
-    GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
+    GTUtilsOptionPanelMsa::addReference("Phaneroptera_falcata");
 
     // Expected state: not highlighted changed to dots
-    img = GTWidget::getImage(os, w);
+    img = GTWidget::getImage(w);
     CHECK_SET_ERR(img != initImg,
-                  "image not changed"); // no way to check dots. Can only check that sequence area changed
+                  "image not changed");  // no way to check dots. Can only check that sequence area changed
 
-    GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsMsaEditor::setMultilineMode(false);
 }
 
-GUI_TEST_CLASS_DEFINITION(search_test_0001)
-{
+GUI_TEST_CLASS_DEFINITION(search_test_0001) {
     // UGENE-7525
 
     // Open file test/_common_data/clustal/align.aln
-    GTFileDialog::openFile(os, testDir + "_common_data/clustal", "align.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(testDir + "_common_data/clustal", "align.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Open the OP's "General" tab to enable the "Wrap mode" button.
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
 
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
-    GTUtilsMsaEditor::setMultilineMode(os, true);
+    GTUtilsMsaEditor::setMultilineMode(true);
 
     // Open search option panel tab
-    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::Search);
 
     // Set search string
-    GTUtilsOptionPanelMsa::enterPattern(os, "RHR");
+    GTUtilsOptionPanelMsa::enterPattern("RHR");
 
     // Check selection
     QRect expectedRect(66, 0, 3, 1);
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, expectedRect);
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(expectedRect);
 
     // Check visible bases and selection
-    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(os, 0);
-    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(os,
-                            GTUtilsMsaEditor::getEditor(os)->getUI()->getChildrenCount() - 1);
+    int firstBaseIdx = GTUtilsMSAEditorSequenceArea::getFirstVisibleBaseIndex(0);
+    int lastBaseIdx = GTUtilsMSAEditorSequenceArea::getLastVisibleBaseIndex(
+        GTUtilsMsaEditor::getEditor()->getUI()->getChildrenCount() - 1);
 
     CHECK_SET_ERR(firstBaseIdx < 66 && 68 < lastBaseIdx,
                   "Selection must be between fist and last bases");
 
-    GTUtilsMsaEditor::setMultilineMode(os, false);
+    GTUtilsMsaEditor::setMultilineMode(false);
 }
 
 }  // namespace GUITest_common_scenarios_MSA_editor_multiline_options

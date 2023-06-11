@@ -251,24 +251,26 @@ void GUITestService::runAllGUITests() {
         HI::GUITestOpStatus os;
         log.trace("GTRUNNER - runAllGUITests - going to run initial checks before " + testName);
         for (GUITest* initTest : qAsConst(initTests)) {
-            initTest->run(os);
+            initTest->run();
         }
 
         clearSandbox();
         log.trace("GTRUNNER - runAllGUITests - going to run test " + testName);
-        test->run(os);
+        test->run();
         log.trace("GTRUNNER - runAllGUITests - finished running test " + testName);
 
         for (GUITest* postCheckTest : qAsConst(postCheckTests)) {
-            postCheckTest->run(os);
+            postCheckTest->run();
         }
 
-        HI::GUITestOpStatus os2;
+        QString testResult = GTGlobals::getOpStatus().getError();
+        if (testResult.isEmpty()) {
+            testResult = GUITestTeamcityLogger::successResult;
+        }
+        GTGlobals::resetOpStatus();
         for (GUITest* postActionTest : qAsConst(postActionTests)) {
-            postActionTest->run(os2);
+            postActionTest->run();
         }
-
-        QString testResult = os.hasError() ? os.getError() : GUITestTeamcityLogger::successResult;
 
         qint64 finishTime = GTimer::currentTimeMicros();
         GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testResult, GTimer::millisBetween(startTime, finishTime));

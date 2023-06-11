@@ -55,9 +55,9 @@ namespace GUITest_common_scenarios_create_shortcut {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Use main menu: Help->Create desktop shortcut & click OK.
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-    GTMenu::clickMainMenuItem(os, {"Help", "Create desktop shortcut"});
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+    GTMenu::clickMainMenuItem({"Help", "Create desktop shortcut"});
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: the shortcut file is created.
 #if defined(Q_OS_WIN)

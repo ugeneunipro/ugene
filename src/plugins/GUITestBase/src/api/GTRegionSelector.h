@@ -48,7 +48,7 @@ public:
         bool unset;
     };
 
-    static void setRegion(HI::GUITestOpStatus& os, RegionSelector* regionSelector, const RegionSelectorSettings& s);
+    static void setRegion(RegionSelector* regionSelector, const RegionSelectorSettings& s);
 };
 
 }  // namespace U2

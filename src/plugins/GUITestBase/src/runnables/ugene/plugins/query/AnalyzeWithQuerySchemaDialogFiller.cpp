@@ -29,22 +29,22 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::AnalyzeWithQuerySchemaDialogFiller"
 
-AnalyzeWithQuerySchemaDialogFiller::AnalyzeWithQuerySchemaDialogFiller(HI::GUITestOpStatus& os, const QString& _fileWithQuery, bool _expectBadSchema)
-    : Filler(os, "QDDialog"), fileWithQuery(_fileWithQuery), expectBadSchema(_expectBadSchema) {
+AnalyzeWithQuerySchemaDialogFiller::AnalyzeWithQuerySchemaDialogFiller(const QString& _fileWithQuery, bool _expectBadSchema)
+    : Filler("QDDialog"), fileWithQuery(_fileWithQuery), expectBadSchema(_expectBadSchema) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void AnalyzeWithQuerySchemaDialogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
-    GTLineEdit::setText(os, "queryFileEdit", fileWithQuery, dialog);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+    GTLineEdit::setText("queryFileEdit", fileWithQuery, dialog);
     if (expectBadSchema) {
-        GTUtilsTaskTreeView::waitTaskFinished(os);
-        auto okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);
+        GTUtilsTaskTreeView::waitTaskFinished();
+        auto okButton = GTUtilsDialog::buttonBox(dialog)->button(QDialogButtonBox::Ok);
         CHECK_SET_ERR(okButton != nullptr, "Search button is not found");
         CHECK_SET_ERR(!okButton->isEnabled(), "Search button must be disabled");
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
     } else {
-        GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     }
 }
 #undef GT_METHOD_NAME

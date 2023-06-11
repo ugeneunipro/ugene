@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _HI_GUI_TOOLTIP_UTILS_H_
-#define _HI_GUI_TOOLTIP_UTILS_H_
+#pragma once
 
 #include <QToolTip>
 
@@ -30,11 +29,9 @@ namespace HI {
 
 class HI_EXPORT GTUtilsToolTip {
 public:
-    static void checkExistingToolTip(GUITestOpStatus& os, const QString& tooltip);
+    static void checkExistingToolTip(const QString& tooltip);
 
     static QString getToolTip();
 };
 
 }  // namespace HI
-
-#endif

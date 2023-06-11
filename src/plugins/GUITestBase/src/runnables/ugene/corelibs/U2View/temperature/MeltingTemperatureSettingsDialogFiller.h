@@ -22,9 +22,8 @@
 
 #include <QPointer>
 
-#include "utils/GTUtilsDialog.h"
-
 #include "GTUtilsMeltingTemperature.h"
+#include "utils/GTUtilsDialog.h"
 
 class QTreeWidgetItem;
 
@@ -33,14 +32,12 @@ using namespace HI;
 
 class MeltingTemperatureSettingsDialogFiller : public Filler {
 public:
-    MeltingTemperatureSettingsDialogFiller(HI::GUITestOpStatus& os, const QMap<GTUtilsMeltingTemperature::Parameter, QString>& parameters);
+    MeltingTemperatureSettingsDialogFiller(const QMap<GTUtilsMeltingTemperature::Parameter, QString>& parameters);
 
     void commonScenario() override;
 
 private:
     QMap<GTUtilsMeltingTemperature::Parameter, QString> parameters;
-
-
 };
 
-}
+}  // namespace U2

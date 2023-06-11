@@ -291,6 +291,9 @@ void MaEditorNameList::keyPressEvent(QKeyEvent* e) {
     int cursorRow = editor->getCursorPosition().y();
 
     switch (key) {
+        case Qt::Key_Delete:
+            sl_removeSelectedRows();
+            break;
         case Qt::Key_Space:
         case Qt::Key_Enter:
         case Qt::Key_Return:

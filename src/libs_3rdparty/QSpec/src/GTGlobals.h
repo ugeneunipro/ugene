@@ -76,12 +76,18 @@ public:
     static void sendEvent(QObject* obj, QEvent* e);
 
     /** Takes a screenshot and saves to file. */
-    static void takeScreenShot(HI::GUITestOpStatus& os, const QString& path);
+    static void takeScreenShot(const QString& path);
 
     /** Takes a screenshot and returns an image. */
-    static QImage takeScreenShot(HI::GUITestOpStatus& os);
+    static QImage takeScreenShot();
 
     static void GUITestFail();
+
+    /** Returns active GUITestOpStatus instance. */
+    static GUITestOpStatus& getOpStatus();
+
+    /** Resets active GUITestOpStatus instance to a new one with no error inside. */
+    static void resetOpStatus();
 };
 
 #define GT_DEBUG_MESSAGE(condition, errorMessage, result) \
@@ -100,57 +106,51 @@ public:
 #define CHECK_SET_ERR(condition, errorMessage) \
     CHECK_SET_ERR_RESULT(condition, errorMessage, )
 
-#define CHECK_OP_SET_ERR(os, errorMessage) \
-    CHECK_SET_ERR(!os.isCoR(), errorMessage)
+#define CHECK_OP_SET_ERR(errorMessage) \
+    CHECK_SET_ERR(!HI::GTGlobals::getOpStatus(), errorMessage)
 
 #define CHECK_SET_ERR_RESULT(condition, errorMessage, result) \
     { \
         GT_DEBUG_MESSAGE(condition, errorMessage, result); \
-        if (os.hasError()) { \
+        if (HI::GTGlobals::getOpStatus().hasError()) { \
             HI::GTGlobals::GUITestFail(); \
             return result; \
         } \
         if (!(condition)) { \
-            os.setError(errorMessage); \
+            HI::GTGlobals::getOpStatus().setError(errorMessage); \
             HI::GTGlobals::GUITestFail(); \
             return result; \
         } \
     }
 
 #define CHECK_NO_OS_ERROR(result) \
-    if (os.hasError()) { \
-        os.setError(QString("Can't continue when os.hasError. Location: %1:%2").arg(__FILE__).arg(__LINE__)); \
-        return result;\
+    if (HI::GTGlobals::getOpStatus().hasError()) { \
+        HI::GTGlobals::getOpStatus().setError(QString("Can't continue when os.hasError. Location: %1:%2").arg(__FILE__).arg(__LINE__)); \
+        return result; \
     }
 
 /** Unconditionally marks active test as failed. Prints 'errorMessage' into the log. */
 #define GT_FAIL(errorMessage, result) \
     GT_DEBUG_MESSAGE(false, errorMessage, result); \
     HI::GTGlobals::GUITestFail(); \
-    os.setError(errorMessage); \
+    HI::GTGlobals::getOpStatus().setError(errorMessage); \
     return result;
-
-#define CHECK_OP_SET_ERR_RESULT(os, errorMessage, result) \
-    CHECK_SET_ERR_RESULT(!os.isCoR(), errorMessage, result)
 
 /** Used in util methods */
 #define GT_CHECK(condition, errorMessage) \
     GT_CHECK_RESULT(condition, errorMessage, )
 
-#define GT_CHECK_NO_MESSAGE(condition, errorMessage) \
-    if (!(condition)) { \
-        GT_CHECK(condition, errorMessage) \
-    }
-
 #define GT_CHECK_RESULT(condition, errorMessage, result) \
     CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME " __ " GT_METHOD_NAME " _  " + QString(errorMessage), result)
 
-#define GT_CHECK_OP_RESULT(os, errorMessage, result) \
-    GT_CHECK_RESULT(!(os).isCoR(), errorMessage, result)
+#define GT_CHECK_OP_RESULT(errorMessage, result) \
+    GT_CHECK_RESULT(!HI::GTGlobals::getOpStatus().isCoR(), errorMessage, result)
 
 #define DRIVER_CHECK(condition, errorMessage) \
     if (!(condition)) { \
         qCritical("Driver error: '%s'", QString(errorMessage).toLocal8Bit().constData()); \
+        HI::GTGlobals::GUITestFail(); \
+        HI::GTGlobals::getOpStatus().setError(errorMessage); \
         return false; \
     }
 

@@ -56,49 +56,49 @@ public:
         }
     }
 
-    void run(HI::GUITestOpStatus& os) override {
-        QWidget* dialog = GTWidget::getActiveModalWidget(os);
-        GTLineEdit::setText(os, "Assembly widget", inputPaths.join(';'), dialog);
-        GTLineEdit::setText(os, "Output file widget", outFile, dialog);
+    void run() override {
+        QWidget* dialog = GTWidget::getActiveModalWidget();
+        GTLineEdit::setText("Assembly widget", inputPaths.join(';'), dialog);
+        GTLineEdit::setText("Output file widget", outFile, dialog);
 
-        GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        GTUtilsWizard::clickButton(GTUtilsWizard::Run);
     }
 };
 
 GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     const GTLogTracer lt;
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
     //  2. Set "samples/Assembly/chrM.sorted.bam" as an input
     //  3. Click "Run"
     const auto bamScenario =
         new ExtractConsensusWizardScenario({dataDir + "samples/Assembly/chrM.sorted.bam"});
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", bamScenario));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsDialog::waitForDialog(new WizardFiller("Extract Consensus Wizard", bamScenario));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  4. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 120000);
+    GTUtilsTaskTreeView::waitTaskFinished(120000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString());
 
     //  5. Return to workflow and call the Extract consensus wizard
-    GTUtilsWorkflowDesigner::returnToWorkflow(os);
+    GTUtilsWorkflowDesigner::returnToWorkflow();
     //  6. Set "_common_data/ugenedb/scerevisiae.bam.ugenedb" as an input and "" as an output
     //  7. Click "Run"
     const auto ugenedbScenario =
         new ExtractConsensusWizardScenario({testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb"}, "");
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", ugenedbScenario));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
+    GTUtilsDialog::waitForDialog(new WizardFiller("Extract Consensus Wizard", ugenedbScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
     //  8. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    GTUtilsTaskTreeView::waitTaskFinished(60000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
@@ -115,22 +115,22 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
             }
         }
 
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* const dialog = GTWidget::getActiveModalWidget(os);
+        void run() override {
+            QWidget* const dialog = GTWidget::getActiveModalWidget();
 
             // Dialog filling
-            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "Assembly widget", dialog), inputPaths.join(';'));
+            GTLineEdit::setText(GTWidget::findLineEdit("Assembly widget", dialog), inputPaths.join(';'));
 
-            GTWidget::click(os, GTWidget::findButtonByText(os, "Add", dialog));
-            GTUtilsDialog::waitForDialog(os,
-                                         new GTFileDialogUtils(os, testDir + "_common_data/bam/small.bam.sorted.bam"));
+            GTWidget::click(GTWidget::findButtonByText("Add", dialog));
+            GTUtilsDialog::waitForDialog(
+                new GTFileDialogUtils(testDir + "_common_data/bam/small.bam.sorted.bam"));
 
-            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+            GTUtilsWizard::clickButton(GTUtilsWizard::Run);
         }
     };
 
     const GTLogTracer lt;
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
     //  2. Set "_common_data/ugenedb/scerevisiae.bam.ugenedb" and "samples/Assembly/chrM.sorted.bam" as an input
@@ -140,15 +140,15 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
                                                                        << testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb"
                                                                        << dataDir + "samples/Assembly/chrM.sorted.bam");
 
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", multiInputScenario));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsDialog::waitForDialog(new WizardFiller("Extract Consensus Wizard", multiInputScenario));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  5. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 180000);
+    GTUtilsTaskTreeView::waitTaskFinished(180000);
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
@@ -156,45 +156,45 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     QString dashboardErrMsg = "Unsupported document format: ";
 
     auto hasDashboardNotification = [&](const QString& errMsg) {
-        auto notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", GTUtilsDashboard::getDashboard(os));
-        return !GTWidget::findLabelByText(os, errMsg, notificationsWidget).isEmpty();
+        auto notificationsWidget = GTWidget::findWidget("NotificationsDashboardWidget", GTUtilsDashboard::getDashboard());
+        return !GTWidget::findLabelByText(errMsg, notificationsWidget).isEmpty();
     };
 
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     //  1. Select "Tools->NGS data analysis->Extract consensus from assemblies..."
     //  2. Set "samples/Assembly/chrM.sorted.bam" and "samples/Assembly/chrM.fa" as an input
     //  3. Click "Run"
     auto wrongInputScenario = new ExtractConsensusWizardScenario({dataDir + "samples/Assembly/chrM.sorted.bam", dataDir + "samples/Assembly/chrM.fa"});
 
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", wrongInputScenario));
-    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
+    GTUtilsDialog::waitForDialog(new WizardFiller("Extract Consensus Wizard", wrongInputScenario));
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract consensus from assemblies..."});
 
     //  4. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 120000);
+    GTUtilsTaskTreeView::waitTaskFinished(120000);
     //  Expected state: There should be an error about unsupported format in the log
     CHECK_SET_ERR(lt.hasError(dashboardErrMsg), "Expected error is not found");
     //  There should be a notification about this error in the dashboard
     CHECK_SET_ERR(hasDashboardNotification(dashboardErrMsg), "Expected dashboard notification \"" + dashboardErrMsg + "\"");
 
     //  5. Return to workflow and call the Extract consensus wizard
-    GTUtilsWorkflowDesigner::returnToWorkflow(os);
+    GTUtilsWorkflowDesigner::returnToWorkflow();
     //  6. Clear input assemblies
     //  7. Click "Run"
     auto emptyInputScenario = new ExtractConsensusWizardScenario();
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", emptyInputScenario));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
+    GTUtilsDialog::waitForDialog(new WizardFiller("Extract Consensus Wizard", emptyInputScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
     //  8. Wait for workflow finished
-    GTUtilsTaskTreeView::waitTaskFinished(os, 60000);
+    GTUtilsTaskTreeView::waitTaskFinished(60000);
     //  Expected state: There should be dialog "Workflow cannot be executed"
-    CHECK_SET_ERR(GTWidget::getActiveModalWidget(os), "activeModalWidget is nullptr");
+    CHECK_SET_ERR(GTWidget::getActiveModalWidget(), "activeModalWidget is nullptr");
 
     //  9. Click "Ok" in this dialog
-    GTUtilsDialog::waitForDialog(os, new HI::MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(new HI::MessageBoxDialogFiller(QMessageBox::Ok));
     //  Expected state: There should also be an error about missing required input parameter in the workflow
-    GTUtilsWorkflowDesigner::checkErrorList(os,
-                                            "Read Assembly: Required parameter has no input urls specified: Input file(s)");
+    GTUtilsWorkflowDesigner::checkErrorList(
+        "Read Assembly: Required parameter has no input urls specified: Input file(s)");
 }
 
 }  // namespace GUITest_assembly_extract_consensus

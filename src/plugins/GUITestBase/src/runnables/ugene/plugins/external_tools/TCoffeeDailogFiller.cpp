@@ -32,41 +32,41 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
 
-TCoffeeDailogFiller::TCoffeeDailogFiller(HI::GUITestOpStatus& os, int gapOpen, int gapExt, int numOfIters)
-    : Filler(os, "TCoffeeSupportRunDialog"),
+TCoffeeDailogFiller::TCoffeeDailogFiller(int gapOpen, int gapExt, int numOfIters)
+    : Filler("TCoffeeSupportRunDialog"),
       gapOpen(gapOpen),
       gapExt(gapExt),
       numOfIters(numOfIters) {
 }
 
 void TCoffeeDailogFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget(os);
+    QWidget* dialog = GTWidget::getActiveModalWidget();
 
     if (gapOpen != INT_MAX) {
-        auto gapOpenCheckBox = GTWidget::findCheckBox(os, "gapOpenCheckBox", dialog);
-        GTCheckBox::setChecked(os, gapOpenCheckBox, true);
+        auto gapOpenCheckBox = GTWidget::findCheckBox("gapOpenCheckBox", dialog);
+        GTCheckBox::setChecked(gapOpenCheckBox, true);
 
-        auto gapOpenSpinBox = GTWidget::findSpinBox(os, "gapOpenSpinBox", dialog);
-        GTSpinBox::setValue(os, gapOpenSpinBox, gapOpen);
+        auto gapOpenSpinBox = GTWidget::findSpinBox("gapOpenSpinBox", dialog);
+        GTSpinBox::setValue(gapOpenSpinBox, gapOpen);
     }
 
     if (gapExt != INT_MAX) {
-        auto gapExtCheckBox = GTWidget::findCheckBox(os, "gapExtCheckBox", dialog);
-        GTCheckBox::setChecked(os, gapExtCheckBox, true);
+        auto gapExtCheckBox = GTWidget::findCheckBox("gapExtCheckBox", dialog);
+        GTCheckBox::setChecked(gapExtCheckBox, true);
 
-        auto gapExtSpinBox = GTWidget::findSpinBox(os, "gapExtSpinBox", dialog);
-        GTSpinBox::setValue(os, gapExtSpinBox, gapExt);
+        auto gapExtSpinBox = GTWidget::findSpinBox("gapExtSpinBox", dialog);
+        GTSpinBox::setValue(gapExtSpinBox, gapExt);
     }
 
     if (numOfIters != INT_MAX) {
-        auto maxNumberIterRefinementCheckBox = GTWidget::findCheckBox(os, "maxNumberIterRefinementCheckBox", dialog);
-        GTCheckBox::setChecked(os, maxNumberIterRefinementCheckBox, true);
+        auto maxNumberIterRefinementCheckBox = GTWidget::findCheckBox("maxNumberIterRefinementCheckBox", dialog);
+        GTCheckBox::setChecked(maxNumberIterRefinementCheckBox, true);
 
-        auto maxNumberIterRefinementSpinBox = GTWidget::findSpinBox(os, "maxNumberIterRefinementSpinBox", dialog);
-        GTSpinBox::setValue(os, maxNumberIterRefinementSpinBox, numOfIters);
+        auto maxNumberIterRefinementSpinBox = GTWidget::findSpinBox("maxNumberIterRefinementSpinBox", dialog);
+        GTSpinBox::setValue(maxNumberIterRefinementSpinBox, numOfIters);
     }
 
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+    GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
 #undef GT_METHOD_NAME

@@ -30,8 +30,8 @@ using namespace HI;
 
 class SaveProjectDialogFiller : public Filler {
 public:
-    SaveProjectDialogFiller(HI::GUITestOpStatus& os, QDialogButtonBox::StandardButton _b)
-        : Filler(os, "SaveProjectDialog"), b(_b) {
+    SaveProjectDialogFiller(QDialogButtonBox::StandardButton _b)
+        : Filler("SaveProjectDialog"), b(_b) {
     }
     void commonScenario();
 
