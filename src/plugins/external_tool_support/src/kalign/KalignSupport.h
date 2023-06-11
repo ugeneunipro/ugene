@@ -25,18 +25,18 @@
 
 #include <U2View/MSAEditor.h>
 
-#include "utils/ExternalToolSupportAction.h"
-
 namespace U2 {
 
-class KalignSupport : public ExternalTool {
+class Kalign3Support : public ExternalTool {
     Q_OBJECT
 public:
-    KalignSupport();
+    Kalign3Support();
 
-    GObjectViewWindowContext* getViewContext();
+    GObjectViewWindowContext* getViewContext() const;
 
     static const QString ET_KALIGN_ID;
+    static const QString KALIGN_TMP_DIR;
+
 public slots:
     void sl_runWithExternalFile();
 
@@ -44,10 +44,10 @@ private:
     GObjectViewWindowContext* viewCtx = nullptr;
 };
 
-class KAlignSupportContext : public GObjectViewWindowContext {
+class Kalign3SupportContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    KAlignSupportContext(QObject* p);
+    Kalign3SupportContext(QObject* p);
 
 protected slots:
     void sl_align();

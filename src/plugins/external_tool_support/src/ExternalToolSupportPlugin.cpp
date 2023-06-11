@@ -94,6 +94,8 @@
 #include "hmmer/HmmerTests.h"
 #include "iqtree/IQTreeSupport.h"
 #include "java/JavaSupport.h"
+#include "kalign/KalignSupport.h"
+#include "kalign/KalignWorker.h"
 #include "mafft/MAFFTSupport.h"
 #include "mafft/MAFFTWorker.h"
 #include "mrbayes/MrBayesSupport.h"
@@ -120,8 +122,6 @@
 #include "vcftools/VcfConsensusSupport.h"
 #include "vcftools/VcfConsensusWorker.h"
 #include "vcfutils/VcfutilsSupport.h"
-
-#define TOOLS "tools"
 
 namespace U2 {
 
@@ -164,6 +164,10 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     // T-Coffee
     TCoffeeSupport* tCoffeeTool = new TCoffeeSupport();
     etRegistry->registerEntry(tCoffeeTool);
+
+    // Kalign
+    auto kalignTool = new Kalign3Support();
+    etRegistry->registerEntry(kalignTool);
 
     // MrBayes
     etRegistry->registerEntry(new MrBayesSupport());
@@ -209,6 +213,14 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         tCoffeeAction->setObjectName(ToolsMenu::MALIGN_TCOFFEE);
         connect(tCoffeeAction, SIGNAL(triggered()), tCoffeeTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
+
+        kalignTool->getViewContext()->setParent(this);
+        kalignTool->getViewContext()->init();
+
+        auto kalignAction = new ExternalToolSupportAction(tr("Align with Kalign..."), this, QStringList(Kalign3Support::ET_KALIGN_ID));
+        kalignAction->setObjectName(ToolsMenu::MALIGN_KALIGN);
+        connect(kalignAction, &QAction::triggered, kalignTool, &Kalign3Support::sl_runWithExternalFile);
+        ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, kalignAction);
     }
 
     // Blast tools.
@@ -432,6 +444,7 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::BlastWorkerFactory::init();
 
     LocalWorkflow::TCoffeeWorkerFactory::init();
+    LocalWorkflow::Kalign3WorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();
     LocalWorkflow::CufflinksWorkerFactory::init();
     LocalWorkflow::CuffmergeWorkerFactory::init();

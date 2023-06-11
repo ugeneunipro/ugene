@@ -47,17 +47,17 @@ namespace LocalWorkflow {
 /****************************
  * KalignWorkerFactory
  ****************************/
-const QString KalignWorkerFactory::ACTOR_ID("kalign");
+const QString Kalign2WorkerFactory::ACTOR_ID("kalign");
 const QString GAP_OPEN_PENALTY("gap-open-penalty");
 const QString GAP_EXT_PENALTY("gap-ext-penalty");
 const QString TERM_GAP_PENALTY("terminal-gap-penalty");
 const QString BONUS_SCORE("bonus-score");
 
-void KalignWorkerFactory::init() {
+void Kalign2WorkerFactory::init() {
     QList<PortDescriptor*> p;
     QList<Attribute*> a;
-    Descriptor ind(BasePorts::IN_MSA_PORT_ID(), KalignWorker::tr("Input MSA"), KalignWorker::tr("Input MSA to process."));
-    Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), KalignWorker::tr("Kalign result MSA"), KalignWorker::tr("The result of the Kalign alignment."));
+    Descriptor ind(BasePorts::IN_MSA_PORT_ID(), Kalign2Worker::tr("Input MSA"), Kalign2Worker::tr("Input MSA to process."));
+    Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), Kalign2Worker::tr("Kalign result MSA"), Kalign2Worker::tr("The result of the Kalign alignment."));
 
     QMap<Descriptor, DataTypePtr> inM;
     inM[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
@@ -66,17 +66,17 @@ void KalignWorkerFactory::init() {
     outM[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
     p << new PortDescriptor(oud, DataTypePtr(new MapDataType("kalign.out.msa", outM)), false /*input*/, true /*multi*/);
 
-    Descriptor gop(GAP_OPEN_PENALTY, KalignWorker::tr("Gap open penalty"), KalignWorker::tr("The penalty for opening/closing a gap. Half the value will be subtracted from the alignment score when opening, and half when closing a gap."));
-    Descriptor gep(GAP_EXT_PENALTY, KalignWorker::tr("Gap extension penalty"), KalignWorker::tr("The penalty for extending a gap."));
-    Descriptor tgp(TERM_GAP_PENALTY, KalignWorker::tr("Terminal gap penalty"), KalignWorker::tr("The penalty to extend gaps from the N/C terminal of protein or 5'/3' terminal of nucleotide sequences."));
-    Descriptor secret(BONUS_SCORE, KalignWorker::tr("Bonus score"), KalignWorker::tr("A bonus score that is added to each pair of aligned residues."));
+    Descriptor gop(GAP_OPEN_PENALTY, Kalign2Worker::tr("Gap open penalty"), Kalign2Worker::tr("The penalty for opening/closing a gap. Half the value will be subtracted from the alignment score when opening, and half when closing a gap."));
+    Descriptor gep(GAP_EXT_PENALTY, Kalign2Worker::tr("Gap extension penalty"), Kalign2Worker::tr("The penalty for extending a gap."));
+    Descriptor tgp(TERM_GAP_PENALTY, Kalign2Worker::tr("Terminal gap penalty"), Kalign2Worker::tr("The penalty to extend gaps from the N/C terminal of protein or 5'/3' terminal of nucleotide sequences."));
+    Descriptor secret(BONUS_SCORE, Kalign2Worker::tr("Bonus score"), Kalign2Worker::tr("A bonus score that is added to each pair of aligned residues."));
 
     a << new Attribute(gop, BaseTypes::NUM_TYPE(), false, QVariant(54.90));
     a << new Attribute(gep, BaseTypes::NUM_TYPE(), false, QVariant(8.52));
     a << new Attribute(tgp, BaseTypes::NUM_TYPE(), false, QVariant(4.42));
     a << new Attribute(secret, BaseTypes::NUM_TYPE(), false, QVariant(0.02));
 
-    Descriptor desc(ACTOR_ID, KalignWorker::tr("Align with Kalign"), KalignWorker::tr("Aligns multiple sequence alignments (MSAs) supplied with Kalign."
+    Descriptor desc(ACTOR_ID, Kalign2Worker::tr("Align with Kalign"), Kalign2Worker::tr("Aligns multiple sequence alignments (MSAs) supplied with Kalign."
                                                                                       "<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"http://msa->sbc.su.se\">http://msa->sbc.su.se</a>."));
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
@@ -112,18 +112,18 @@ void KalignWorkerFactory::init() {
     }
 
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new KalignPrompter());
+    proto->setPrompter(new Kalign2Prompter());
     proto->setIconPath(":kalign/images/kalign_16.png");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->registerEntry(new KalignWorkerFactory());
+    localDomain->registerEntry(new Kalign2WorkerFactory());
 }
 
 /****************************
  * KalignPrompter
  ****************************/
-QString KalignPrompter::composeRichDoc() {
+QString Kalign2Prompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
@@ -137,16 +137,16 @@ QString KalignPrompter::composeRichDoc() {
 /****************************
  * KalignWorker
  ****************************/
-KalignWorker::KalignWorker(Actor* a)
+Kalign2Worker::Kalign2Worker(Actor* a)
     : BaseWorker(a), input(NULL), output(NULL) {
 }
 
-void KalignWorker::init() {
+void Kalign2Worker::init() {
     input = ports.value(BasePorts::IN_MSA_PORT_ID());
     output = ports.value(BasePorts::OUT_MSA_PORT_ID());
 }
 
-Task* KalignWorker::tick() {
+Task* Kalign2Worker::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
@@ -168,7 +168,7 @@ Task* KalignWorker::tick() {
             algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa->getName()));
             return NULL;
         }
-        Task* t = new NoFailTaskWrapper(new KalignTask(msa, cfg));
+        Task* t = new NoFailTaskWrapper(new Kalign2Task(msa, cfg));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     } else if (input->isEnded()) {
@@ -178,10 +178,10 @@ Task* KalignWorker::tick() {
     return NULL;
 }
 
-void KalignWorker::sl_taskFinished() {
+void Kalign2Worker::sl_taskFinished() {
     auto wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
     CHECK(wrapper->isFinished(), );
-    auto t = qobject_cast<KalignTask*>(wrapper->originalTask());
+    auto t = qobject_cast<Kalign2Task*>(wrapper->originalTask());
     if (t->hasError()) {
         coreLog.error(t->getError());
         return;
@@ -196,10 +196,10 @@ void KalignWorker::sl_taskFinished() {
     algoLog.info(tr("Aligned %1 with Kalign").arg(t->resultMA->getName()));
 }
 
-void KalignWorker::cleanup() {
+void Kalign2Worker::cleanup() {
 }
 
-void KalignWorker::send(const MultipleSequenceAlignment& msa) {
+void Kalign2Worker::send(const MultipleSequenceAlignment& msa) {
     SAFE_POINT(NULL != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;

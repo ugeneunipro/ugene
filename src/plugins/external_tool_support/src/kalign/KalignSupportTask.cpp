@@ -45,11 +45,11 @@
 
 namespace U2 {
 
-KalignSupportTaskSettings::KalignSupportTaskSettings() {
+Kalign3Settings::Kalign3Settings() {
     reset();
 }
 
-void KalignSupportTaskSettings::reset() {
+void Kalign3Settings::reset() {
     gapExtenstionPenalty = -1;
     gapOpenPenalty = -1;
     termGapPenalty = -1;
@@ -57,24 +57,19 @@ void KalignSupportTaskSettings::reset() {
     inputFilePath = "";
 }
 
-KalignSupportTask::KalignSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const KalignSupportTaskSettings& _settings)
+Kalign3SupportTask::Kalign3SupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const Kalign3Settings& _settings)
     : ExternalToolSupportTask("Run Kalign tool task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
       lock(nullptr) {
     GCOUNTER(cvar, "ExternalTool_Kalign");
-    loadTmpDocumentTask = nullptr;
-    KalignTask = nullptr;
-    tmpDoc = nullptr;
     resultMA->setAlphabet(inputMsa->getAlphabet());
     resultMA->setName(inputMsa->getName());
 }
 
-KalignSupportTask::~KalignSupportTask() {
-    if (tmpDoc != nullptr) {
-        delete tmpDoc;
-    }
+Kalign3SupportTask::~Kalign3SupportTask() {
+    delete tmpDoc;
     // Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (objRef.isValid()) {
@@ -92,9 +87,9 @@ KalignSupportTask::~KalignSupportTask() {
     }
 }
 
-void KalignSupportTask::prepare() {
+void Kalign3SupportTask::prepare() {
     if (inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
-        inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
+        inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {  // TODO: recheck is extended alphabet is supported.
         setError(tr("Unsupported alphabet: %1").arg(inputMsa->getAlphabet()->getName()));
         return;
     }
@@ -103,10 +98,10 @@ void KalignSupportTask::prepare() {
 
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-        if (nullptr != obj) {
+        if (obj != nullptr) {
             auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
-            lock = new StateLock("ClustalWAlignment");
+            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying Kalign results!", );
+            lock = new StateLock("KalignAlignment");
             alObj->lockState(lock);
         }
     }
@@ -118,7 +113,7 @@ void KalignSupportTask::prepare() {
                          QDate::currentDate().toString("dd.MM.yyyy") + "_" +
                          QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
                          QString::number(QCoreApplication::applicationPid()) + "/";
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(KalignSupport::Kalign_TMP_DIR) + "/" + tmpDirName;
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(Kalign3Support::KALIGN_TMP_DIR) + "/" + tmpDirName;
     url = tmpDirPath + "tmp.fa";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(url));
 
@@ -142,7 +137,8 @@ void KalignSupportTask::prepare() {
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
 }
-QList<Task*> KalignSupportTask::onSubTaskFinished(Task* subTask) {
+
+QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -151,45 +147,42 @@ QList<Task*> KalignSupportTask::onSubTaskFinished(Task* subTask) {
     if (hasError() || isCanceled()) {
         return res;
     }
-    QString outputUrl = url + ".msf";
-    QString outputDNDUrl = url + ".dnd";
+    QString outputUrl = url + ".out.aln";
     if (subTask == saveTemporaryDocumentTask) {
         QStringList arguments;
         if (url.contains(" ")) {
             stateInfo.setError("Temporary folder path have space(s). Try select any other folder without spaces.");
             return res;
         }
-        arguments << url;
-        arguments << "-output"
-                  << "msf";
-        if (settings.gapOpenPenalty != -1) {
-            arguments << "-gapopen" << QString::number(settings.gapOpenPenalty);
-        }
-        if (settings.gapExtenstionPenalty != -1) {
-            arguments << "-gapext" << QString::number(settings.gapExtenstionPenalty);
-        }
-        if (settings.numIterations != -1) {
-            arguments << "-iterate" << QString::number(settings.numIterations);
-        }
-        arguments << "-outfile" << outputUrl;
-        arguments << "-newtree" << outputDNDUrl;
-        KalignTask = new ExternalToolRunTask(KalignSupport::ET_Kalign_ID, arguments, new KalignLogParser());
-        if (isOsWindows()) {
-            QMap<QString, QString> env;
-            env["LOCKDIR_4_Kalign"] = QFileInfo(url).absolutePath();
-            KalignTask->setAdditionalEnvVariables(env);
-        }
-        setListenerForTask(KalignTask);
-        KalignTask->setSubtaskProgressWeight(95);
-        res.append(KalignTask);
-    } else if (subTask == KalignTask) {
+        // TODO: pass params
+        //        arguments << url;
+        //        arguments << "-output"
+        //                  << "msf";
+        //        if (settings.gapOpenPenalty != -1) {
+        //            arguments << "-gapopen" << QString::number(settings.gapOpenPenalty);
+        //        }
+        //        if (settings.gapExtenstionPenalty != -1) {
+        //            arguments << "-gapext" << QString::number(settings.gapExtenstionPenalty);
+        //        }
+        //        if (settings.numIterations != -1) {
+        //            arguments << "-iterate" << QString::number(settings.numIterations);
+        //        }
+        arguments << "-i" << url;
+        arguments << "-f"
+                  << "clu";
+        arguments << "-o" << outputUrl;
+        kalignTask = new ExternalToolRunTask(Kalign3Support::ET_KALIGN_ID, arguments, new KalignLogParser());
+        setListenerForTask(kalignTask);
+        kalignTask->setSubtaskProgressWeight(95);
+        res.append(kalignTask);
+    } else if (subTask == kalignTask) {
         if (!QFileInfo(outputUrl).exists()) {
-            if (AppContext::getExternalToolRegistry()->getById(KalignSupport::ET_Kalign_ID)->isValid()) {
+            if (AppContext::getExternalToolRegistry()->getById(Kalign3Support::ET_KALIGN_ID)->isValid()) {
                 stateInfo.setError(tr("Output file %1 not found").arg(outputUrl));
             } else {
                 stateInfo.setError(tr("Output file %3 not found. May be %1 tool path '%2' not valid?")
-                                       .arg(AppContext::getExternalToolRegistry()->getById(KalignSupport::ET_Kalign_ID)->getName())
-                                       .arg(AppContext::getExternalToolRegistry()->getById(KalignSupport::ET_Kalign_ID)->getPath())
+                                       .arg(AppContext::getExternalToolRegistry()->getById(Kalign3Support::ET_KALIGN_ID)->getName())
+                                       .arg(AppContext::getExternalToolRegistry()->getById(Kalign3Support::ET_KALIGN_ID)->getPath())
                                        .arg(outputUrl));
             }
             emit si_stateChanged();
@@ -198,9 +191,7 @@ QList<Task*> KalignSupportTask::onSubTaskFinished(Task* subTask) {
         ioLog.details(tr("Loading output file '%1'").arg(outputUrl));
 
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-        QVariantMap hints;
-        loadTmpDocumentTask = new LoadDocumentTask(BaseDocumentFormats::MSF, outputUrl, iof, hints);
-
+        loadTmpDocumentTask = new LoadDocumentTask(BaseDocumentFormats::CLUSTAL_ALN, outputUrl, iof);
         loadTmpDocumentTask->setSubtaskProgressWeight(5);
         res.append(loadTmpDocumentTask);
     } else if (subTask == loadTmpDocumentTask) {
@@ -280,7 +271,8 @@ QList<Task*> KalignSupportTask::onSubTaskFinished(Task* subTask) {
     }
     return res;
 }
-Task::ReportResult KalignSupportTask::report() {
+
+Task::ReportResult Kalign3SupportTask::report() {
     // Remove subdir for temporary files, that created in prepare
     if (!url.isEmpty()) {
         QDir tmpDir(QFileInfo(url).absoluteDir());
@@ -297,23 +289,19 @@ Task::ReportResult KalignSupportTask::report() {
 }
 ////////////////////////////////////////
 // KalignWithExtFileSpecifySupportTask
-KalignWithExtFileSpecifySupportTask::KalignWithExtFileSpecifySupportTask(const KalignSupportTaskSettings& _settings)
+Kalign3WithExternalFileSupportTask::Kalign3WithExternalFileSupportTask(const Kalign3Settings& _settings)
     : Task("Run Kalign tool task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
-    GCOUNTER(cvar, "KalignSupportTask");
-    mAObject = nullptr;
-    currentDocument = nullptr;
-    saveDocumentTask = nullptr;
-    loadDocumentTask = nullptr;
-    KalignSupportTask = nullptr;
-    cleanDoc = true;
+    GCOUNTER(cvar, "Kalign3SupportTask");
 }
-KalignWithExtFileSpecifySupportTask::~KalignWithExtFileSpecifySupportTask() {
+
+Kalign3WithExternalFileSupportTask::~Kalign3WithExternalFileSupportTask() {
     if (cleanDoc) {
         delete currentDocument;
     }
 }
-void KalignWithExtFileSpecifySupportTask::prepare() {
+
+void Kalign3WithExternalFileSupportTask::prepare() {
     DocumentFormatConstraints c;
     c.checkRawData = true;
     c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -334,7 +322,8 @@ void KalignWithExtFileSpecifySupportTask::prepare() {
     loadDocumentTask = new LoadDocumentTask(alnFormat, settings.inputFilePath, iof, hints);
     addSubTask(loadDocumentTask);
 }
-QList<Task*> KalignWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask) {
+
+QList<Task*> Kalign3WithExternalFileSupportTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -351,13 +340,13 @@ QList<Task*> KalignWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTas
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
-        KalignSupportTask = new KalignSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
-        res.append(KalignSupportTask);
-    } else if (subTask == KalignSupportTask) {
+        kalign3SupportTask = new Kalign3SupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
+        res.append(kalign3SupportTask);
+    } else if (subTask == kalign3SupportTask) {
         // Set the result alignment to the alignment object of the current document
         mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
-        mAObject->updateGapModel(KalignSupportTask->resultMA->getMsaRows());
+        mAObject->updateGapModel(kalign3SupportTask->resultMA->getMsaRows());
 
         // Save the current document
         saveDocumentTask = new SaveDocumentTask(currentDocument,
@@ -372,7 +361,8 @@ QList<Task*> KalignWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTas
     }
     return res;
 }
-Task::ReportResult KalignWithExtFileSpecifySupportTask::report() {
+
+Task::ReportResult Kalign3WithExternalFileSupportTask::report() {
     return ReportResult_Finished;
 }
 
@@ -382,36 +372,33 @@ KalignLogParser::KalignLogParser() {
     progress = 0;
 }
 
-void KalignLogParser::parseOutput(const QString& partOfLog) {
-    Q_UNUSED(partOfLog)
+void KalignLogParser::parseOutput(const QString&) {
 }
 
-void KalignLogParser::parseErrOutput(const QString& partOfLog) {
-    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
-    lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
-    lastErrLine = lastPartOfLog.takeLast();
-    foreach (QString buf, lastPartOfLog) {
-        if (buf.contains("WARNING")) {
-            algoLog.info("Kalign: " + buf);
-        } else {
-            algoLog.trace(buf);
-        }
-    }
+void KalignLogParser::parseErrOutput(const QString&) {
+    // TODO
+    //    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
+    //    lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
+    //    lastErrLine = lastPartOfLog.takeLast();
+    //    foreach (QString buf, lastPartOfLog) {
+    //        if (buf.contains("WARNING")) {
+    //            algoLog.info("Kalign: " + buf);
+    //        } else {
+    //            algoLog.trace(buf);
+    //        }
+    //    }
 }
 
 int KalignLogParser::getProgress() {
-    /* parse progress string:
-        [Submit   Job][TOT= 18][ 22 %][ELAPSED TIME: 0 sec.]
-    */
-    if (!lastPartOfLog.isEmpty()) {
-        QString lastMessage = lastPartOfLog.last();
-        if (lastMessage.contains(QRegExp("\\[Submit +Job\\]\\[TOT="))) {
-            QRegExp rx("(.*)\\[ +(\\d+) %\\](.*)");
-            rx.indexIn(lastMessage);
-            CHECK(rx.captureCount() > 1, 0);
-            return rx.cap(2).toInt();
-        }
-    }
+    // TODO    if (!lastPartOfLog.isEmpty()) {
+    //        QString lastMessage = lastPartOfLog.last();
+    //        if (lastMessage.contains(QRegExp("\\[Submit +Job\\]\\[TOT="))) {
+    //            QRegExp rx("(.*)\\[ +(\\d+) %\\](.*)");
+    //            rx.indexIn(lastMessage);
+    //            CHECK(rx.captureCount() > 1, 0);
+    //            return rx.cap(2).toInt();
+    //        }
+    //    }
     return progress;
 }
 }  // namespace U2

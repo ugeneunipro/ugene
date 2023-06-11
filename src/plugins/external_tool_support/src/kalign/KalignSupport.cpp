@@ -37,18 +37,19 @@
 
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "KalignDialog.h"
+#include "KalignSupportRunDialog.h"
 #include "KalignSupportTask.h"
 #include "utils/AlignMsaAction.h"
 
 namespace U2 {
 
-const QString KalignSupport::ET_KALIGN_ID = "USUPP_KALIGN";
+const QString Kalign3Support::ET_KALIGN_ID = "USUPP_KALIGN";
+const QString Kalign3Support::KALIGN_TMP_DIR = "kalign";
 
-KalignSupport::KalignSupport()
-    : ExternalTool(KalignSupport::ET_KALIGN_ID, "kalign", "Kalign") {
+Kalign3Support::Kalign3Support()
+    : ExternalTool(Kalign3Support::ET_KALIGN_ID, "kalign", "Kalign") {
     if (AppContext::getMainWindow() != nullptr) {
-        viewCtx = new KAlignSupportContext(this);
+        viewCtx = new Kalign3SupportContext(this);
         icon = QIcon(":external_tool_support/images/kalign.png");
     }
     executableFileName = isOsWindows() ? "kalign.exe" : "kalign";
@@ -59,11 +60,11 @@ KalignSupport::KalignSupport()
     toolKitName = "Kalign";
 }
 
-GObjectViewWindowContext* KalignSupport::getViewContext() const {
+GObjectViewWindowContext* Kalign3Support::getViewContext() const {
     return viewCtx;
 }
 
-void KalignSupport::sl_runWithExternalFile() {
+void Kalign3Support::sl_runWithExternalFile() {
     // Check that the tool path and temporary folder path defined
     if (path.isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox();
@@ -83,34 +84,34 @@ void KalignSupport::sl_runWithExternalFile() {
     CHECK_OP(os, );
 
     // Call select input file and setup settings dialog
-    KalignSupportTaskSettings settings;
-    QObjectScopedPointer<KalignDialogWithFileInput> dialog(new KalignDialogWithFileInput(AppContext::getMainWindow()->getQMainWindow(), settings));
+    Kalign3Settings settings;
+    QObjectScopedPointer<Kalign3DialogWithFileInput> dialog(new Kalign3DialogWithFileInput(AppContext::getMainWindow()->getQMainWindow(), settings));
     dialog->exec();
     CHECK(!dialog.isNull() && dialog->result() == QDialog::Accepted, );
-    AppContext::getTaskScheduler()->registerTopLevelTask(new TCoffeeWithExtFileSpecifySupportTask(settings));
+    AppContext::getTaskScheduler()->registerTopLevelTask(new Kalign3WithExternalFileSupportTask(settings));
 }
 
 ////////////////////////////////////////
-// KAlignSupportContext
-KAlignSupportContext::KAlignSupportContext(QObject* p)
+// Kalign3SupportContext
+Kalign3SupportContext::Kalign3SupportContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void KAlignSupportContext::initViewContext(GObjectViewController* view) {
+void Kalign3SupportContext::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
     msaEditor->registerActionProvider(this);
 
-    auto alignAction = new AlignMsaAction(this, KalignSupport::ET_KALIGN_ID, msaEditor, tr("Align with Kalign..."), 6000);
+    auto alignAction = new AlignMsaAction(this, Kalign3Support::ET_KALIGN_ID, msaEditor, tr("Align with Kalign..."), 6000);
     alignAction->setObjectName("align_with_kalign_action");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
-    connect(alignAction, &QAction::triggered, this, &KAlignSupportContext::sl_align);
+    connect(alignAction, &QAction::triggered, this, &Kalign3SupportContext::sl_align);
     addViewAction(alignAction);
 }
 
-void KAlignSupportContext::sl_align() {
+void Kalign3SupportContext::sl_align() {
     // Check that T-Coffee and temporary folder path defined
-    if (AppContext::getExternalToolRegistry()->getById(KalignSupport::ET_KALIGN_ID)->getPath().isEmpty()) {
+    if (AppContext::getExternalToolRegistry()->getById(Kalign3Support::ET_KALIGN_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox();
         msgBox->setWindowTitle("Kalign");
         msgBox->setText(tr("Path for Kalign tool is not selected."));
@@ -121,7 +122,7 @@ void KAlignSupportContext::sl_align() {
         CHECK(!msgBox.isNull() && rc == QMessageBox::Yes, );
         AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
     }
-    if (AppContext::getExternalToolRegistry()->getById(KalignSupport::ET_KALIGN_ID)->getPath().isEmpty()) {
+    if (AppContext::getExternalToolRegistry()->getById(Kalign3Support::ET_KALIGN_ID)->getPath().isEmpty()) {
         return;
     }
     U2OpStatus2Log os(LogLevel_DETAILS);
@@ -136,12 +137,12 @@ void KAlignSupportContext::sl_align() {
     MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
     CHECK(obj != nullptr && !obj->isStateLocked(), )
 
-    KalignSupportTaskSettings settings;
-    QObjectScopedPointer<KalignDialogWithMsaInput> dialog(new KalignDialogWithMsaInput(AppContext::getMainWindow()->getQMainWindow(), obj->getMsa(), settings));
+    Kalign3Settings settings;
+    QObjectScopedPointer<Kalign3DialogWithMsaInput> dialog(new Kalign3DialogWithMsaInput(AppContext::getMainWindow()->getQMainWindow(), obj->getMsa(), settings));
     dialog->exec();
     CHECK(!dialog.isNull() && dialog->result() == QDialog::Accepted, );
 
-    auto kalignTask = new KalignSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    auto kalignTask = new Kalign3SupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, &QObject::destroyed, kalignTask, &Task::cancel);
     AppContext::getTaskScheduler()->registerTopLevelTask(kalignTask);
 

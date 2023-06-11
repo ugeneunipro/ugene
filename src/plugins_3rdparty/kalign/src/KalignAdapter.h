@@ -30,7 +30,7 @@ namespace U2 {
 
 class TaskStateInfo;
 
-class KalignAdapter : public QObject {
+class Kalign2Adapter : public QObject {
     Q_OBJECT
 public:
     static void align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti);

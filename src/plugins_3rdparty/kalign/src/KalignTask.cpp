@@ -47,7 +47,7 @@ extern "C" {
 #include <U2Lang/SimpleWorkflowTask.h>
 
 extern "C" kalign_context* getKalignContext() {
-    auto ctx = static_cast<U2::KalignContext*>(U2::TLSUtils::current(KALIGN_CONTEXT_ID));
+    auto ctx = static_cast<U2::Kalign2Context*>(U2::TLSUtils::current(KALIGN_CONTEXT_ID));
     assert(ctx->d != NULL);
     return ctx->d;
 }
@@ -56,7 +56,7 @@ namespace U2 {
 
 static const QString KALIGN_LOCK_REASON("Kalign lock");
 
-void KalignTaskSettings::reset() {
+void Kalign2TaskSettings::reset() {
     gapExtenstionPenalty = -1;
     gapOpenPenalty = -1;
     termGapPenalty = -1;
@@ -64,7 +64,7 @@ void KalignTaskSettings::reset() {
     inputFilePath = "";
 }
 
-KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSettings& _config)
+Kalign2Task::Kalign2Task(const MultipleSequenceAlignment& ma, const Kalign2TaskSettings& _config)
     : TLSTask(tr("KALIGN alignment"), TaskFlags_FOSCOE),
       config(_config),
       inputMA(ma->getExplicitCopy()) {
@@ -80,7 +80,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment& ma, const KalignTaskSett
     addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, (profileMem + (mem * mem + 3 * mem)) / (1024 * 1024), TaskResourceStage::Run));
 }
 
-void KalignTask::_run() {
+void Kalign2Task::_run() {
     SAFE_POINT_EXT(inputMA->getAlphabet() != NULL, stateInfo.setError("The alphabet is NULL"), );
     if (!isAlphabetSupported(inputMA->getAlphabet()->getId())) {
         setError(tr("Unsupported alphabet: %1").arg(inputMA->getAlphabet()->getName()));
@@ -96,22 +96,22 @@ void KalignTask::_run() {
     algoLog.info(tr("Kalign alignment successfully finished"));
 }
 
-void KalignTask::doAlign() {
+void Kalign2Task::doAlign() {
     SAFE_POINT_EXT(resultSubMA->isEmpty(), stateInfo.setError("Incorrect result state"), );
-    KalignAdapter::align(inputSubMA, resultSubMA, stateInfo);
+    Kalign2Adapter::align(inputSubMA, resultSubMA, stateInfo);
     CHECK(!hasError() && !isCanceled(), )
 
     resultMA = resultSubMA;
     MSAUtils::assignOriginalDataIds(inputMA, resultMA, stateInfo);
 }
 
-Task::ReportResult KalignTask::report() {
-    auto ctx = static_cast<KalignContext*>(taskContext);
+Task::ReportResult Kalign2Task::report() {
+    auto ctx = static_cast<Kalign2Context*>(taskContext);
     delete ctx->d;
     return ReportResult_Finished;
 }
 
-bool KalignTask::isAlphabetSupported(const QString& alphabetId) {
+bool Kalign2Task::isAlphabetSupported(const QString& alphabetId) {
     return (alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() ||
             alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() ||
             alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() ||
@@ -119,7 +119,7 @@ bool KalignTask::isAlphabetSupported(const QString& alphabetId) {
             alphabetId == BaseDNAAlphabetIds::AMINO_DEFAULT());
 }
 
-TLSContext* KalignTask::createContextInstance() {
+TLSContext* Kalign2Task::createContextInstance() {
     kalign_context* ctx = new kalign_context;
     init_context(ctx, &stateInfo);
     if (config.gapOpenPenalty != -1) {
@@ -134,13 +134,13 @@ TLSContext* KalignTask::createContextInstance() {
     if (config.secret != -1) {
         ctx->secret = config.secret;
     }
-    return new KalignContext(ctx);
+    return new Kalign2Context(ctx);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // KalignGObjectTask
 
-KalignGObjectTask::KalignGObjectTask(MultipleSequenceAlignmentObject* _obj, const KalignTaskSettings& _config)
+Kalign2GObjectTask::Kalign2GObjectTask(MultipleSequenceAlignmentObject* _obj, const Kalign2TaskSettings& _config)
     : AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj),
       lock(NULL),
       kalignTask(NULL),
@@ -154,7 +154,7 @@ KalignGObjectTask::KalignGObjectTask(MultipleSequenceAlignmentObject* _obj, cons
     setVerboseLogMode(true);
 }
 
-KalignGObjectTask::~KalignGObjectTask() {
+Kalign2GObjectTask::~Kalign2GObjectTask() {
     // Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (!obj.isNull()) {
@@ -167,17 +167,17 @@ KalignGObjectTask::~KalignGObjectTask() {
     }
 }
 
-void KalignGObjectTask::prepare() {
+void Kalign2GObjectTask::prepare() {
     CHECK_EXT(!obj.isNull(), stateInfo.setError("Object is removed!"), );
     CHECK_EXT(!obj->isStateLocked(), stateInfo.setError("Object is state-locked!"), );
 
     lock = new StateLock(KALIGN_LOCK_REASON, StateLockFlag_LiveLock);
     obj->lockState(lock);
-    kalignTask = new KalignTask(obj->getMultipleAlignment(), config);
+    kalignTask = new Kalign2Task(obj->getMultipleAlignment(), config);
     addSubTask(kalignTask);
 }
 
-Task::ReportResult KalignGObjectTask::report() {
+Task::ReportResult Kalign2GObjectTask::report() {
     propagateSubtaskError();
     CHECK_OP(stateInfo, ReportResult_Finished);
 
@@ -236,28 +236,28 @@ Task::ReportResult KalignGObjectTask::report() {
 ///////////////////////////////////
 // KalignGObjectRunFromSchemaTask
 
-KalignGObjectRunFromSchemaTask::KalignGObjectRunFromSchemaTask(MultipleSequenceAlignmentObject* obj, const KalignTaskSettings& c)
+Kalign2GObjectRunFromSchemaTask::Kalign2GObjectRunFromSchemaTask(MultipleSequenceAlignmentObject* obj, const Kalign2TaskSettings& c)
     : AlignGObjectTask("", TaskFlags_NR_FOSCOE, obj), config(c) {
     setMAObject(obj);
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);
 }
 
-void KalignGObjectRunFromSchemaTask::prepare() {
+void Kalign2GObjectRunFromSchemaTask::prepare() {
     SimpleMSAWorkflowTaskConfig conf;
     conf.schemaName = "align-kalign";
     conf.schemaArgs << QString("--bonus-score=%1").arg(config.secret);
     conf.schemaArgs << QString("--gap-ext-penalty=%1").arg(config.gapExtenstionPenalty);
     conf.schemaArgs << QString("--gap-open-penalty=%1").arg(config.gapOpenPenalty);
     conf.schemaArgs << QString("--gap-terminal-penalty=%1").arg(config.termGapPenalty);
-    if (!KalignTask::isAlphabetSupported(obj->getAlphabet()->getId())) {
+    if (!Kalign2Task::isAlphabetSupported(obj->getAlphabet()->getId())) {
         setError(tr("Unsupported alphabet: %1").arg(obj->getAlphabet()->getName()));
         return;
     }
     addSubTask(new SimpleMSAWorkflow4GObjectTask(tr("Workflow wrapper '%1'").arg(getTaskName()), obj, conf));
 }
 
-void KalignGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject* maobj) {
+void Kalign2GObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject* maobj) {
     SAFE_POINT_EXT(maobj != NULL, setError("Invalid MSA object detected"), );
     const Document* maDoc = maobj->getDocument();
     SAFE_POINT_EXT(NULL != maDoc, setError("Invalid MSA document detected"), );
@@ -271,7 +271,7 @@ void KalignGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject
 //////////////////////////////////////////////////////////////////////////
 /// KalignWithExtFileSpecifySupportTask
 
-KalignWithExtFileSpecifySupportTask::KalignWithExtFileSpecifySupportTask(const KalignTaskSettings& _config)
+Kalign2WithExtFileSpecifySupportTask::Kalign2WithExtFileSpecifySupportTask(const Kalign2TaskSettings& _config)
     : Task("Run KAlign alignment task on external file", TaskFlags_NR_FOSCOE), config(_config) {
     mAObject = NULL;
     currentDocument = NULL;
@@ -281,13 +281,13 @@ KalignWithExtFileSpecifySupportTask::KalignWithExtFileSpecifySupportTask(const K
     kalignGObjectTask = NULL;
 }
 
-KalignWithExtFileSpecifySupportTask::~KalignWithExtFileSpecifySupportTask() {
+Kalign2WithExtFileSpecifySupportTask::~Kalign2WithExtFileSpecifySupportTask() {
     if (cleanDoc) {
         delete currentDocument;
     }
 }
 
-void KalignWithExtFileSpecifySupportTask::prepare() {
+void Kalign2WithExtFileSpecifySupportTask::prepare() {
     DocumentFormatConstraints c;
     c.checkRawData = true;
     c.supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -308,7 +308,7 @@ void KalignWithExtFileSpecifySupportTask::prepare() {
     addSubTask(loadDocumentTask);
 }
 
-QList<Task*> KalignWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask) {
+QList<Task*> Kalign2WithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if (subTask->hasError()) {
         stateInfo.setError(subTask->getError());
@@ -324,7 +324,7 @@ QList<Task*> KalignWithExtFileSpecifySupportTask::onSubTaskFinished(Task* subTas
         mAObject = qobject_cast<MultipleSequenceAlignmentObject*>(currentDocument->getObjects().first());
         SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
-        kalignGObjectTask = new KalignGObjectRunFromSchemaTask(mAObject, config);
+        kalignGObjectTask = new Kalign2GObjectRunFromSchemaTask(mAObject, config);
         res.append(kalignGObjectTask);
     } else if (subTask == kalignGObjectTask) {
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.outputFilePath));

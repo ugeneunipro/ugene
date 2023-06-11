@@ -56,18 +56,18 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    KalignPlugin* plug = new KalignPlugin();
+    Kalign2Plugin* plug = new Kalign2Plugin();
     return plug;
 }
 
-KalignPlugin::KalignPlugin()
+Kalign2Plugin::Kalign2Plugin()
     : Plugin(tr("Kalign"),
-             tr("A port of Kalign package for multiple sequence alignment. Check https://msa.sbc.su.se for the original version")),
+             tr("A port of Kalign package for multiple sequence alignment. Check https://msa.sbc.su.se for the original version"))
 {
     bool guiMode = AppContext::getMainWindow() != NULL;
 
     if (guiMode) {
-        ctx = new KalignMSAEditorContext(this);
+        ctx = new Kalign2MSAEditorContext(this);
         ctx->init();
 
         QAction* kalignAction = new QAction(tr("Align with Kalign..."), this);
@@ -77,7 +77,7 @@ KalignPlugin::KalignPlugin()
         connect(kalignAction, SIGNAL(triggered()), SLOT(sl_runWithExtFileSpecify()));
     }
 
-    LocalWorkflow::KalignWorkerFactory::init();  // TODO
+    LocalWorkflow::Kalign2WorkerFactory::init();  // TODO
     // TODO:
     // Kalign Test
 
@@ -94,13 +94,13 @@ KalignPlugin::KalignPlugin()
         assert(res);
     }
 
-    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new KalignPairwiseAligmnentAlgorithm());
+    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new Kalign2PairwiseAligmnentAlgorithm());
 }
 
-void KalignPlugin::sl_runWithExtFileSpecify() {
+void Kalign2Plugin::sl_runWithExtFileSpecify() {
     // Call select input file and setup settings dialog
 
-    KalignTaskSettings settings;
+    Kalign2TaskSettings settings;
     QObjectScopedPointer<KalignAlignWithExtFileSpecifyDialogController> kalignRunDialog = new KalignAlignWithExtFileSpecifyDialogController(AppContext::getMainWindow()->getQMainWindow(), settings);
     kalignRunDialog->exec();
     CHECK(!kalignRunDialog.isNull(), );
@@ -108,21 +108,21 @@ void KalignPlugin::sl_runWithExtFileSpecify() {
     if (kalignRunDialog->result() != QDialog::Accepted) {
         return;
     }
-    KalignWithExtFileSpecifySupportTask* kalignTask = new KalignWithExtFileSpecifySupportTask(settings);
+    Kalign2WithExtFileSpecifySupportTask* kalignTask = new Kalign2WithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(kalignTask);
 }
 
-KalignPlugin::~KalignPlugin() {
+Kalign2Plugin::~Kalign2Plugin() {
     // nothing to do
 }
 
-MSAEditor* KalignAction::getMSAEditor() const {
+MSAEditor* Kalign2Action::getMSAEditor() const {
     auto e = qobject_cast<MSAEditor*>(getObjectView());
     SAFE_POINT(e != NULL, "Can't get an appropriate MSA Editor", NULL);
     return e;
 }
 
-void KalignAction::sl_updateState() {
+void Kalign2Action::sl_updateState() {
     auto item = qobject_cast<StateLockableItem*>(sender());
     SAFE_POINT(item != NULL, "Unexpected sender: expect StateLockableItem", );
     MSAEditor* msaEditor = getMSAEditor();
@@ -130,11 +130,11 @@ void KalignAction::sl_updateState() {
     setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
-KalignMSAEditorContext::KalignMSAEditorContext(QObject* p)
+Kalign2MSAEditorContext::Kalign2MSAEditorContext(QObject* p)
     : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void KalignMSAEditorContext::initViewContext(GObjectViewController* view) {
+void Kalign2MSAEditorContext::initViewContext(GObjectViewController* view) {
     auto msaed = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );
@@ -143,7 +143,7 @@ void KalignMSAEditorContext::initViewContext(GObjectViewController* view) {
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
-    auto alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 4000);
+    auto alignAction = new Kalign2Action(this, view, tr("Align with Kalign..."), 4000);
     alignAction->setObjectName("align_with_kalign");
     alignAction->setIcon(QIcon(":kalign/images/kalign_16.png"));
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
@@ -155,20 +155,20 @@ void KalignMSAEditorContext::initViewContext(GObjectViewController* view) {
     addViewAction(alignAction);
 }
 
-void KalignMSAEditorContext::sl_align() {
-    auto action = qobject_cast<KalignAction*>(sender());
+void Kalign2MSAEditorContext::sl_align() {
+    auto action = qobject_cast<Kalign2Action*>(sender());
     assert(action != NULL);
     MSAEditor* ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject* obj = ed->getMaObject();
-    if (!KalignTask::isAlphabetSupported(obj->getAlphabet()->getId())) {
+    if (!Kalign2Task::isAlphabetSupported(obj->getAlphabet()->getId())) {
         QMessageBox::information(ed->getWidget(),
                                  tr("Unable to align with Kalign"),
                                  tr("Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from %1 alphabet to supported one and try again.")
                                      .arg(obj->getAlphabet()->getName()));
         return;
     }
-    KalignTaskSettings s;
-    QObjectScopedPointer<KalignDialog> dlg = new KalignDialog(ed->getWidget(), obj->getMultipleAlignment(), s);
+    Kalign2TaskSettings s;
+    QObjectScopedPointer<Kalign2Dialog> dlg = new Kalign2Dialog(ed->getWidget(), obj->getMultipleAlignment(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
 
@@ -176,7 +176,7 @@ void KalignMSAEditorContext::sl_align() {
         return;
     }
 
-    AlignGObjectTask* kalignTask = new KalignGObjectRunFromSchemaTask(obj, s);
+    AlignGObjectTask* kalignTask = new Kalign2GObjectRunFromSchemaTask(obj, s);
     Task* alignTask = NULL;
 
     if (dlg->translateToAmino()) {
@@ -192,17 +192,17 @@ void KalignMSAEditorContext::sl_align() {
     ed->resetCollapseModel();
 }
 
-KalignPairwiseAligmnentAlgorithm::KalignPairwiseAligmnentAlgorithm()
+Kalign2PairwiseAligmnentAlgorithm::Kalign2PairwiseAligmnentAlgorithm()
     : AlignmentAlgorithm(PairwiseAlignment,
                          "Hirschberg (KAlign)",
-                         KalignPlugin::tr("Hirschberg (KAlign)"),
+                         Kalign2Plugin::tr("Hirschberg (KAlign)"),
                          new PairwiseAlignmentHirschbergTaskFactory(),
                          new PairwiseAlignmentHirschbergGUIExtensionFactory(),
                          "KAlign") {
 }
 
-bool KalignPairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet* al) const {
-    return KalignTask::isAlphabetSupported(al->getId());
+bool Kalign2PairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet* al) const {
+    return Kalign2Task::isAlphabetSupported(al->getId());
 }
 
 }  // namespace U2

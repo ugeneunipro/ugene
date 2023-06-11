@@ -19,8 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include "KalignDialog.h"
-
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
@@ -34,9 +32,11 @@
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
 
+#include "KalignSupportRunDialog.h"
+
 namespace U2 {
 
-KalignDialogWithMsaInput::KalignDialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& _ma, KalignSupportTaskSettings& _settings)
+Kalign3DialogWithMsaInput::Kalign3DialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& _ma, Kalign3Settings& _settings)
     : QDialog(w), ma(_ma->getExplicitCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930935");
@@ -76,7 +76,7 @@ KalignDialogWithMsaInput::KalignDialogWithMsaInput(QWidget* w, const MultipleSeq
     }
 }
 
-void KalignDialogWithMsaInput::accept() {
+void Kalign3DialogWithMsaInput::accept() {
     if (gapOpenCheckBox->isChecked()) {
         settings.gapOpenPenalty = gapOpenSpinBox->value();
     }
@@ -89,11 +89,11 @@ void KalignDialogWithMsaInput::accept() {
     QDialog::accept();
 }
 
-bool KalignDialogWithMsaInput::isTranslateToAmino() const {
+bool Kalign3DialogWithMsaInput::isTranslateToAmino() const {
     return translateCheckBox->isChecked();
 }
 
-QString KalignDialogWithMsaInput::getTranslationId() const {
+QString Kalign3DialogWithMsaInput::getTranslationId() const {
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     QStringList ids = tr->getDNATranslationIds(translationTableBox->currentText());
     SAFE_POINT(!ids.empty(), "No translations found!", "");
@@ -101,7 +101,7 @@ QString KalignDialogWithMsaInput::getTranslationId() const {
 }
 
 // KalignAlignWithExtFileSpecifyDialogController
-KalignDialogWithFileInput::KalignDialogWithFileInput(QWidget* w, KalignSupportTaskSettings& _settings)
+Kalign3DialogWithFileInput::Kalign3DialogWithFileInput(QWidget* w, Kalign3Settings& _settings)
     : QDialog(w),
       settings(_settings) {
     setupUi(this);
@@ -112,7 +112,7 @@ KalignDialogWithFileInput::KalignDialogWithFileInput(QWidget* w, KalignSupportTa
 
     initSaveController();
 
-    connect(inputFilePathButton, &QToolButton::clicked, this, &KalignDialogWithFileInput::sl_inputPathButtonClicked);
+    connect(inputFilePathButton, &QToolButton::clicked, this, &Kalign3DialogWithFileInput::sl_inputPathButtonClicked);
 
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
@@ -122,14 +122,14 @@ KalignDialogWithFileInput::KalignDialogWithFileInput(QWidget* w, KalignSupportTa
     }
 }
 
-void KalignDialogWithFileInput::sl_inputPathButtonClicked() {
+void Kalign3DialogWithFileInput::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}));
     CHECK(!lod.url.isEmpty(), );
     inputFileLineEdit->setText(lod.url);
 }
 
-void KalignDialogWithFileInput::initSaveController() {
+void Kalign3DialogWithFileInput::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
     config.fileDialogButton = outputFilePathButton;
@@ -143,7 +143,7 @@ void KalignDialogWithFileInput::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-void KalignDialogWithFileInput::accept() {
+void Kalign3DialogWithFileInput::accept() {
     if (gapOpenCheckBox->isChecked()) {
         settings.gapOpenPenalty = gapOpenSpinBox->value();
     }

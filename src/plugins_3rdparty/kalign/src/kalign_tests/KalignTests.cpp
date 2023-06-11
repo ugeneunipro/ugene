@@ -78,7 +78,7 @@ struct GTestBoolProperty {
         return; \
     }
 
-Kalign_Load_Align_Compare_Task::Kalign_Load_Align_Compare_Task(QString inFileURL, QString patFileURL, KalignTaskSettings& _config, QString _name)
+Kalign_Load_Align_Compare_Task::Kalign_Load_Align_Compare_Task(QString inFileURL, QString patFileURL, Kalign2TaskSettings& _config, QString _name)
     : Task(_name, TaskFlags_FOSCOE), str_inFileURL(inFileURL), str_patFileURL(patFileURL), kalignTask(nullptr), config(_config) {
     // QFileInfo fInf(inFileURL);
     // setTaskName("Kalign_Load_Align_Compare_Task: " + fInf.fileName());
@@ -160,7 +160,7 @@ QList<Task*> Kalign_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             setError(kalignTask->getError());
             return res;
         }
-        auto localKalign = qobject_cast<KalignTask*>(subTask);
+        auto localKalign = qobject_cast<Kalign2Task*>(subTask);
         assert(nullptr != localKalign);
         ma1->updateGapModel(localKalign->resultMA->getMsaRows());
     } else if (subTask == loadTask2) {
@@ -250,7 +250,7 @@ void GTest_Kalign_Load_Align_Compare::init(XMLTestFormat*, const QDomElement& el
 }
 
 void GTest_Kalign_Load_Align_Compare::prepare() {
-    KalignTaskSettings mSettings;
+    Kalign2TaskSettings mSettings;
     QFileInfo inFile(env->getVar("COMMON_DATA_DIR") + "/" + inFileURL);
     if (!inFile.exists()) {
         stateInfo.setError(QString("file not exist %1").arg(inFile.absoluteFilePath()));
@@ -396,7 +396,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             return res;
         }
 
-        kalignTask = new KalignTask(ma1->getMultipleAlignment(), config);
+        kalignTask = new Kalign2Task(ma1->getMultipleAlignment(), config);
         res << kalignTask;
         this->connect(kalignTask, SIGNAL(si_progressChanged()), SLOT(sl_kalignProgressChg()));
     } else if (subTask == kalignTask) {
@@ -404,7 +404,7 @@ QList<Task*> GTest_Kalign_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
             setError(kalignTask->getError());
             return res;
         }
-        auto localKalign = qobject_cast<KalignTask*>(subTask);
+        auto localKalign = qobject_cast<Kalign2Task*>(subTask);
         assert(nullptr != localKalign);
         ma1->updateGapModel(localKalign->resultMA->getMsaRows());
     } else if (subTask == loadTask2) {

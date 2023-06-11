@@ -24,9 +24,9 @@
 
 namespace U2 {
 
-struct KalignException {
-    KalignException();
-    KalignException(const char* str);
+struct Kalign2Exception {
+    Kalign2Exception();
+    Kalign2Exception(const char* str);
     char str[4096];
 };
 

@@ -51,7 +51,7 @@ public:
     }
 };
 
-KalignDialog::KalignDialog(QWidget* w, const MultipleSequenceAlignment& _ma, KalignTaskSettings& _settings)
+Kalign2Dialog::Kalign2Dialog(QWidget* w, const MultipleSequenceAlignment& _ma, Kalign2TaskSettings& _settings)
     : QDialog(w), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930935");
@@ -71,7 +71,7 @@ KalignDialog::KalignDialog(QWidget* w, const MultipleSequenceAlignment& _ma, Kal
     }
 }
 
-void KalignDialog::setupUiExt() {
+void Kalign2Dialog::setupUiExt() {
     gapOpenSpinBox->setEnabled(false);
     gapExtensionPenaltySpinBox->setEnabled(false);
     terminalGapSpinBox->setEnabled(false);
@@ -95,7 +95,7 @@ void KalignDialog::setupUiExt() {
     QObject::connect(bonusScoreCheckBox, SIGNAL(clicked(bool)), bonusScoreSpinBox, SLOT(setEnabled(bool)));
 }
 
-void KalignDialog::accept() {
+void Kalign2Dialog::accept() {
     if (gapOpenCheckBox->isChecked()) {
         settings.gapOpenPenalty = gapOpenSpinBox->value();
     }
@@ -109,7 +109,7 @@ void KalignDialog::accept() {
 }
 
 // KalignAlignWithExtFileSpecifyDialogController
-KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDialogController(QWidget* w, KalignTaskSettings& _settings)
+KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDialogController(QWidget* w, Kalign2TaskSettings& _settings)
     : QDialog(w),
       settings(_settings),
       saveController(NULL) {
@@ -155,11 +155,11 @@ void KalignAlignWithExtFileSpecifyDialogController::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-bool KalignDialog::translateToAmino() {
+bool Kalign2Dialog::translateToAmino() {
     return translateCheckBox->isChecked();
 }
 
-QString KalignDialog::getTranslationId() {
+QString Kalign2Dialog::getTranslationId() {
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     QStringList ids = tr->getDNATranslationIds(translationTableBox->currentText());
     assert(!ids.empty());

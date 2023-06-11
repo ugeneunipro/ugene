@@ -84,13 +84,13 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 
-    KalignTaskSettings kalignSettings;
+    Kalign2TaskSettings kalignSettings;
     kalignSettings.gapOpenPenalty = settings->gapOpen;
     kalignSettings.gapExtenstionPenalty = settings->gapExtd;
     kalignSettings.termGapPenalty = settings->gapTerm;
     kalignSettings.secret = settings->bonusScore;
 
-    kalignSubTask = new KalignTask(ma, kalignSettings);
+    kalignSubTask = new Kalign2Task(ma, kalignSettings);
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);
     addSubTask(kalignSubTask);

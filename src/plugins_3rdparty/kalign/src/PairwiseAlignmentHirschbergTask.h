@@ -30,8 +30,8 @@
 namespace U2 {
 
 class DNAAlphabet;
-class KalignGObjectRunFromSchemaTask;
-class KalignTask;
+class Kalign2GObjectRunFromSchemaTask;
+class Kalign2Task;
 class Project;
 
 class PairwiseAlignmentHirschbergTaskSettings : public PairwiseAlignmentTaskSettings {
@@ -67,7 +67,7 @@ protected:
 
 protected:
     PairwiseAlignmentHirschbergTaskSettings* settings;
-    KalignTask* kalignSubTask;
+    Kalign2Task* kalignSubTask;
     MultipleSequenceAlignment ma;
     const DNAAlphabet* alphabet;
 };

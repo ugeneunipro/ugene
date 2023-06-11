@@ -33,14 +33,14 @@
 
 namespace U2 {
 
-class KalignGObjectTask;
+class Kalign2GObjectTask;
 class LoadDocumentTask;
 class MultipleSequenceAlignmentObject;
 
 class Kalign_Load_Align_Compare_Task : public Task {
     Q_OBJECT
 public:
-    Kalign_Load_Align_Compare_Task(QString inFileURL, QString patFileURL, KalignTaskSettings& config, QString _name = QString("Kalign_Load_Align_Compare_Task"));
+    Kalign_Load_Align_Compare_Task(QString inFileURL, QString patFileURL, Kalign2TaskSettings& config, QString _name = QString("Kalign_Load_Align_Compare_Task"));
     ~Kalign_Load_Align_Compare_Task() {
         cleanup();
     }
@@ -62,7 +62,7 @@ private:
     LoadDocumentTask* loadTask1;
     LoadDocumentTask* loadTask2;
     Task* kalignTask;
-    KalignTaskSettings config;
+    Kalign2TaskSettings config;
     MultipleSequenceAlignmentObject* ma1;
     MultipleSequenceAlignmentObject* ma2;
 };
@@ -106,7 +106,7 @@ private:
     LoadDocumentTask* loadTask1;
     LoadDocumentTask* loadTask2;
     Task* kalignTask;
-    KalignTaskSettings config;
+    Kalign2TaskSettings config;
     MultipleSequenceAlignmentObject* ma1;
     MultipleSequenceAlignmentObject* ma2;
 };

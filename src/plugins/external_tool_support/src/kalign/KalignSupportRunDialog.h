@@ -27,17 +27,17 @@
 
 #include "KalignSupportTask.h"
 
-#include <ui_KalignDialog.h>
+#include <ui_KalignSupportRunDialog.h>
 
 namespace U2 {
 
 class SaveDocumentController;
 
-class KalignDialogWithMsaInput : public QDialog, public Ui_KalignDialog {
+class Kalign3DialogWithMsaInput : public QDialog, public Ui_KalignSupportRunDialog {
     Q_OBJECT
 
 public:
-    KalignDialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& ma, KalignSupportTaskSettings& settings);
+    Kalign3DialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& ma, Kalign3Settings& settings);
 
 public slots:
     void accept() override;
@@ -46,14 +46,14 @@ private:
     bool isTranslateToAmino() const;
     QString getTranslationId() const;
     MultipleSequenceAlignment ma;
-    KalignSupportTaskSettings& settings;
+    Kalign3Settings& settings;
 };
 
-class KalignDialogWithFileInput : public QDialog, public Ui_KalignDialog {
+class Kalign3DialogWithFileInput : public QDialog, public Ui_KalignSupportRunDialog {
     Q_OBJECT
 
 public:
-    KalignDialogWithFileInput(QWidget* w, KalignSupportTaskSettings& settings);
+    Kalign3DialogWithFileInput(QWidget* w, Kalign3Settings& settings);
 
 public slots:
     void accept() override;
@@ -63,7 +63,7 @@ private slots:
 
 private:
     void initSaveController();
-    KalignSupportTaskSettings& settings;
+    Kalign3Settings& settings;
     SaveDocumentController* saveController = nullptr;
 };
 

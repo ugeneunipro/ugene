@@ -36,25 +36,25 @@
 namespace U2 {
 
 class MSAEditor;
-class KalignMSAEditorContext;
+class Kalign2MSAEditorContext;
 class XMLTestFactory;
 
-class KalignPlugin : public Plugin {
+class Kalign2Plugin : public Plugin {
     Q_OBJECT
 public:
-    KalignPlugin();
-    ~KalignPlugin() override;
+    Kalign2Plugin();
+    ~Kalign2Plugin() override;
 public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    KalignMSAEditorContext* ctx = nullptr;
+    Kalign2MSAEditorContext* ctx = nullptr;
 };
 
-class KalignMSAEditorContext : public GObjectViewWindowContext {
+class Kalign2MSAEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    KalignMSAEditorContext(QObject* p);
+    Kalign2MSAEditorContext(QObject* p);
 
 protected slots:
     void sl_align();
@@ -63,10 +63,10 @@ protected:
     void initViewContext(GObjectViewController* view) override;
 };
 
-class KalignAction : public GObjectViewAction {
+class Kalign2Action : public GObjectViewAction {
     Q_OBJECT
 public:
-    KalignAction(QObject* p, GObjectViewController* v, const QString& text, int order)
+    Kalign2Action(QObject* p, GObjectViewController* v, const QString& text, int order)
         : GObjectViewAction(p, v, text, order) {
     }
     MSAEditor* getMSAEditor() const;
@@ -75,9 +75,9 @@ private slots:
     void sl_updateState();
 };
 
-class KalignPairwiseAligmnentAlgorithm : public AlignmentAlgorithm {
+class Kalign2PairwiseAligmnentAlgorithm : public AlignmentAlgorithm {
 public:
-    KalignPairwiseAligmnentAlgorithm();
+    Kalign2PairwiseAligmnentAlgorithm();
     bool checkAlphabet(const DNAAlphabet* alphabet) const;
 };
 

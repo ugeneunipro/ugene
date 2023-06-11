@@ -24,25 +24,25 @@
 #include <string.h>
 
 extern "C" void throwKalignException(char* message) {
-    throw U2::KalignException(message);
+    throw U2::Kalign2Exception(message);
 }
 
 extern "C" void checkAllocatedMemory(void* ptr) {
     if (NULL == ptr) {
-        throw U2::KalignException("Not enough memory to finish KAlign task");
+        throw U2::Kalign2Exception("Not enough memory to finish KAlign task");
     }
 }
 
 namespace U2 {
 
-KalignException::KalignException(const char* _str) {
+Kalign2Exception::Kalign2Exception(const char* _str) {
     int len = strlen(_str);
     assert(len < 4096);
     memcpy(str, _str, len);
     str[len] = '\0';
 }
 
-KalignException::KalignException() {
+Kalign2Exception::Kalign2Exception() {
     memset(str, '\0', 4096);
 }
 

@@ -32,9 +32,9 @@
 
 namespace U2 {
 
-class KalignSupportTaskSettings {
+class Kalign3Settings {
 public:
-    KalignSupportTaskSettings();
+    Kalign3Settings();
     void reset();
 
     double gapOpenPenalty;
@@ -47,12 +47,12 @@ public:
 
 class LoadDocumentTask;
 
-class KalignSupportTask : public ExternalToolSupportTask {
+class Kalign3SupportTask : public ExternalToolSupportTask {
     Q_OBJECT
-    Q_DISABLE_COPY(KalignSupportTask)
+    Q_DISABLE_COPY(Kalign3SupportTask)
 public:
-    KalignSupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const KalignSupportTaskSettings& _settings);
-    ~KalignSupportTask() override;
+    Kalign3SupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const Kalign3Settings& _settings);
+    ~Kalign3SupportTask() override;
 
     void prepare() override;
     Task::ReportResult report() override;
@@ -67,34 +67,35 @@ private:
     QPointer<Document> tmpDoc;
     QString url;
 
-    ExternalToolRunTask* KalignTask;
-    LoadDocumentTask* loadTmpDocumentTask;
-    KalignSupportTaskSettings settings;
+    SaveMSA2SequencesTask* saveTemporaryDocumentTask = nullptr;
+    ExternalToolRunTask* kalignTask = nullptr;
+    LoadDocumentTask* loadTmpDocumentTask = nullptr;
+    Kalign3Settings settings;
     QPointer<StateLock> lock;
 };
 
 class MultipleSequenceAlignmentObject;
 
-class KalignWithExtFileSpecifySupportTask : public Task {
+class Kalign3WithExternalFileSupportTask : public Task {
     Q_OBJECT
-    Q_DISABLE_COPY(KalignWithExtFileSpecifySupportTask)
+    Q_DISABLE_COPY(Kalign3WithExternalFileSupportTask)
 public:
-    KalignWithExtFileSpecifySupportTask(const KalignSupportTaskSettings& settings);
-    ~KalignWithExtFileSpecifySupportTask() override;
+    Kalign3WithExternalFileSupportTask(const Kalign3Settings& settings);
+    ~Kalign3WithExternalFileSupportTask() override;
     void prepare() override;
     Task::ReportResult report() override;
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private:
-    MultipleSequenceAlignmentObject* mAObject;
-    Document* currentDocument;
-    bool cleanDoc;
+    MultipleSequenceAlignmentObject* mAObject = nullptr;
+    Document* currentDocument = nullptr;
+    bool cleanDoc = true;
 
-    SaveDocumentTask* saveDocumentTask;
-    LoadDocumentTask* loadDocumentTask;
-    KalignSupportTask* KalignSupportTask;
-    KalignSupportTaskSettings settings;
+    SaveDocumentTask* saveDocumentTask = nullptr;
+    LoadDocumentTask* loadDocumentTask = nullptr;
+    Kalign3SupportTask* kalign3SupportTask = nullptr;
+    Kalign3Settings settings;
 };
 
 class KalignLogParser : public ExternalToolLogParser {

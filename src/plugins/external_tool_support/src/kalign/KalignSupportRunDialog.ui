@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>KalignDialog</class>
- <widget class="QDialog" name="KalignDialog">
+ <class>KalignSupportRunDialog</class>
+ <widget class="QDialog" name="KalignSupportRunDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -447,7 +447,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>KalignDialog</receiver>
+   <receiver>KalignSupportRunDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -463,7 +463,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>KalignDialog</receiver>
+   <receiver>KalignSupportRunDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

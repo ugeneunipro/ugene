@@ -22,7 +22,7 @@
 #include "TaskLocalStorage.h"
 #include <assert.h>
 
-class KalignContext* getKalignContext() {
+class Kalign2Context* getKalignContext() {
     return U2::TaskLocalData::current();
 }
 int getKalignWorkerID() {
@@ -33,7 +33,7 @@ namespace U2 {
 
 QThreadStorage<KalignContextTLSRef*> TaskLocalData::tls;
 
-class KalignContext* TaskLocalData::current() {
+class Kalign2Context* TaskLocalData::current() {
     KalignContextTLSRef* ref = tls.localData();
     if (ref != NULL) {
         assert(ref->ctx != NULL);
@@ -52,7 +52,7 @@ unsigned TaskLocalData::currentWorkerID() {
     return -1;
 }
 
-void TaskLocalData::bindToKalignTLSContext(KalignContext* ctx, int workerID) {
+void TaskLocalData::bindToKalignTLSContext(Kalign2Context* ctx, int workerID) {
     assert(ctx != NULL);
     assert(!tls.hasLocalData());
     tls.setLocalData(new KalignContextTLSRef(ctx, workerID));

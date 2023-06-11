@@ -31,21 +31,21 @@ namespace U2 {
 
 namespace LocalWorkflow {
 
-class KalignPrompter : public PrompterBase<KalignPrompter> {
+class Kalign2Prompter : public PrompterBase<Kalign2Prompter> {
     Q_OBJECT
 public:
-    KalignPrompter(Actor* p = 0)
-        : PrompterBase<KalignPrompter>(p) {
+    Kalign2Prompter(Actor* p = 0)
+        : PrompterBase<Kalign2Prompter>(p) {
     }
 
 protected:
     QString composeRichDoc();
 };
 
-class KalignWorker : public BaseWorker {
+class Kalign2Worker : public BaseWorker {
     Q_OBJECT
 public:
-    KalignWorker(Actor* a);
+    Kalign2Worker(Actor* a);
 
     virtual void init();
     virtual Task* tick();
@@ -57,21 +57,21 @@ private slots:
 private:
     IntegralBus *input, *output;
     QString resultName, transId;
-    KalignTaskSettings cfg;
+    Kalign2TaskSettings cfg;
 
 private:
     void send(const MultipleSequenceAlignment& msa);
 };
 
-class KalignWorkerFactory : public DomainFactory {
+class Kalign2WorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
-    KalignWorkerFactory()
+    Kalign2WorkerFactory()
         : DomainFactory(ACTOR_ID) {
     }
     virtual Worker* createWorker(Actor* a) {
-        return new KalignWorker(a);
+        return new Kalign2Worker(a);
     }
 };
 

@@ -43,11 +43,11 @@ extern "C" {
 namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
-void KalignAdapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void Kalign2Adapter::align(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     CHECK(!ti.hasError() && !ti.isCanceled(), )
     try {
         alignUnsafe(ma, res, ti);
-    } catch (const KalignException& e) {
+    } catch (const Kalign2Exception& e) {
         if (!ti.cancelFlag) {
             ti.setError(tr("Internal Kalign error: %1").arg(e.str));
         }
@@ -80,7 +80,7 @@ void cleanupMemory(float** /*submatrix*/, unsigned int /*numseq*/, float** /*dm*
 
 }  // namespace
 
-void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
+void Kalign2Adapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSequenceAlignment& res, TaskStateInfo& ti) {
     ti.progress = 0;
     int* tree = 0;
     quint32 a, b, c;
@@ -104,7 +104,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
             k_printf("Only one sequence found.\n\n");
         }
         free_param(param);
-        throw KalignException("Can't align less then 2 sequences");
+        throw Kalign2Exception("Can't align less then 2 sequences");
     }
 
     if (ctx->gpo != -1) {
@@ -198,7 +198,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
                 // k_printf("Dna/Rna alignments are only supported for sequences longer than 6.");
                 free(param);
                 free_aln(aln);
-                throw KalignException("Dna/Rna alignments are only supported for sequences longer than 6.");
+                throw Kalign2Exception("Dna/Rna alignments are only supported for sequences longer than 6.");
             }
         }
         aln = make_dna(aln);
@@ -237,7 +237,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
             // }else{
             try {
                 dm = protein_wu_distance(aln, dm, param, 0);
-            } catch (const KalignException&) {
+            } catch (const Kalign2Exception&) {
                 cleanupMemory(submatrix, numseq, dm, aln, param);
                 throw;
             }
@@ -245,7 +245,7 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
         }
         if (check_task_canceled(ctx)) {
             cleanupMemory(submatrix, numseq, dm, aln, param);
-            throw KalignException("Align task has been cancelled");
+            throw Kalign2Exception("Align task has been cancelled");
         }
         /*int j;
         for (int i = 0; i< numseq;i++){
@@ -365,14 +365,14 @@ void KalignAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
         map = hirschberg_alignment(aln, tree, submatrix, map, param->smooth_window, param->gap_inc);
     }
     if (map == NULL) {
-        throw KalignException("Failed to build alignment.");
+        throw Kalign2Exception("Failed to build alignment.");
     }
     if (check_task_canceled(ctx)) {
         free_param(param);
         free_aln(aln);
         free(map);
         free(tree);
-        throw KalignException("Align task has been cancelled");
+        throw Kalign2Exception("Align task has been cancelled");
     }
 
     // clear up sequence array to be reused as gap array....

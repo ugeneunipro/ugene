@@ -34,11 +34,11 @@ namespace U2 {
 
 class SaveDocumentController;
 
-class KalignDialog : public QDialog, public Ui_KalignDialog {
+class Kalign2Dialog : public QDialog, public Ui_KalignDialog {
     Q_OBJECT
 
 public:
-    KalignDialog(QWidget* w, const MultipleSequenceAlignment& ma, KalignTaskSettings& settings);
+    Kalign2Dialog(QWidget* w, const MultipleSequenceAlignment& ma, Kalign2TaskSettings& settings);
     bool translateToAmino();
     QString getTranslationId();
 
@@ -48,14 +48,14 @@ public slots:
 private:
     void setupUiExt();
     MultipleSequenceAlignment ma;
-    KalignTaskSettings& settings;
+    Kalign2TaskSettings& settings;
 };
 
 class KalignAlignWithExtFileSpecifyDialogController : public QDialog, public Ui_KalignDialog {
     Q_OBJECT
 
 public:
-    KalignAlignWithExtFileSpecifyDialogController(QWidget* w, KalignTaskSettings& settings);
+    KalignAlignWithExtFileSpecifyDialogController(QWidget* w, Kalign2TaskSettings& settings);
 
 public slots:
     void accept();
@@ -66,7 +66,7 @@ private slots:
 private:
     void initSaveController();
 
-    KalignTaskSettings& settings;
+    Kalign2TaskSettings& settings;
     SaveDocumentController* saveController;
 };
 
