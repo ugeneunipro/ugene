@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "KalignDialogController.h"
+#include "KalignDialog.h"
 
 #include <QMessageBox>
 
@@ -27,7 +27,6 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/DocumentUtils.h>
 #include <U2Core/FileFilters.h>
 
 #include <U2Gui/HelpButton.h>
@@ -37,41 +36,13 @@
 
 namespace U2 {
 
-class QClearableDoubleSpinBox : public QDoubleSpinBox {
-public:
-    QString textFromValue(double val) const {
-        return isEnabled() ? QDoubleSpinBox::textFromValue(val) : "";
-    }
-
-    bool event(QEvent* ev) {
-        if (ev->type() == QEvent::EnabledChange) {
-            this->setValue(this->value());
-        }
-        return QDoubleSpinBox::event(ev);
-    }
-};
-
-KalignDialog::KalignDialog(QWidget* w, const MultipleSequenceAlignment& _ma, KalignTaskSettings& _settings)
-    : QDialog(w), ma(_ma->getCopy()), settings(_settings) {
+KalignDialogWithMsaInput::KalignDialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& _ma, KalignSupportTaskSettings& _settings)
+    : QDialog(w), ma(_ma->getExplicitCopy()), settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930935");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    setupUiExt();
-    inputGroupBox->setVisible(false);
-    this->adjustSize();
-    translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
-    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
-    assert(!aminoTs.empty());
-    foreach (DNATranslation* t, aminoTs) {
-        translationTableBox->addItem(t->getTranslationName());
-    }
-}
-
-void KalignDialog::setupUiExt() {
     gapOpenSpinBox->setEnabled(false);
     gapExtensionPenaltySpinBox->setEnabled(false);
     terminalGapSpinBox->setEnabled(false);
@@ -89,13 +60,23 @@ void KalignDialog::setupUiExt() {
         bonusScoreSpinBox->setValue(28.3);
     }
 
-    QObject::connect(gapOpenCheckBox, SIGNAL(clicked(bool)), gapOpenSpinBox, SLOT(setEnabled(bool)));
-    QObject::connect(gapExtensionPenaltyCheckBox, SIGNAL(clicked(bool)), gapExtensionPenaltySpinBox, SLOT(setEnabled(bool)));
-    QObject::connect(terminalGapCheckBox, SIGNAL(clicked(bool)), terminalGapSpinBox, SLOT(setEnabled(bool)));
-    QObject::connect(bonusScoreCheckBox, SIGNAL(clicked(bool)), bonusScoreSpinBox, SLOT(setEnabled(bool)));
+    QObject::connect(gapOpenCheckBox, &QCheckBox::clicked, gapOpenSpinBox, &QDoubleSpinBox::setEnabled);
+    QObject::connect(gapExtensionPenaltyCheckBox, &QCheckBox::clicked, gapExtensionPenaltySpinBox, &QDoubleSpinBox::setEnabled);
+    QObject::connect(terminalGapCheckBox, &QCheckBox::clicked, terminalGapSpinBox, &QDoubleSpinBox::setEnabled);
+    QObject::connect(bonusScoreCheckBox, &QCheckBox::clicked, bonusScoreSpinBox, &QDoubleSpinBox::setEnabled);
+
+    inputGroupBox->setVisible(false);
+    this->adjustSize();
+    translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
+    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
+    for (DNATranslation* t : qAsConst(aminoTs)) {
+        translationTableBox->addItem(t->getTranslationName());
+    }
 }
 
-void KalignDialog::accept() {
+void KalignDialogWithMsaInput::accept() {
     if (gapOpenCheckBox->isChecked()) {
         settings.gapOpenPenalty = gapOpenSpinBox->value();
     }
@@ -108,11 +89,21 @@ void KalignDialog::accept() {
     QDialog::accept();
 }
 
+bool KalignDialogWithMsaInput::isTranslateToAmino() const {
+    return translateCheckBox->isChecked();
+}
+
+QString KalignDialogWithMsaInput::getTranslationId() const {
+    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
+    QStringList ids = tr->getDNATranslationIds(translationTableBox->currentText());
+    SAFE_POINT(!ids.empty(), "No translations found!", "");
+    return ids.first();
+}
+
 // KalignAlignWithExtFileSpecifyDialogController
-KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDialogController(QWidget* w, KalignTaskSettings& _settings)
+KalignDialogWithFileInput::KalignDialogWithFileInput(QWidget* w, KalignSupportTaskSettings& _settings)
     : QDialog(w),
-      settings(_settings),
-      saveController(NULL) {
+      settings(_settings) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930983");
 
@@ -121,27 +112,24 @@ KalignAlignWithExtFileSpecifyDialogController::KalignAlignWithExtFileSpecifyDial
 
     initSaveController();
 
-    connect(inputFilePathButton, SIGNAL(clicked()), SLOT(sl_inputPathButtonClicked()));
+    connect(inputFilePathButton, &QToolButton::clicked, this, &KalignDialogWithFileInput::sl_inputPathButtonClicked);
 
     const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
     QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
-    assert(!aminoTs.empty());
-    foreach (DNATranslation* t, aminoTs) {
+    for (DNATranslation* t : qAsConst(aminoTs)) {
         translationTableBox->addItem(t->getTranslationName());
     }
 }
 
-void KalignAlignWithExtFileSpecifyDialogController::sl_inputPathButtonClicked() {
+void KalignDialogWithFileInput::sl_inputPathButtonClicked() {
     LastUsedDirHelper lod;
     lod.url = U2FileDialog::getOpenFileName(this, tr("Open an alignment file"), lod.dir, FileFilters::createFileFilterByObjectTypes({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}));
-    if (lod.url.isEmpty()) {
-        return;
-    }
+    CHECK(!lod.url.isEmpty(), );
     inputFileLineEdit->setText(lod.url);
 }
 
-void KalignAlignWithExtFileSpecifyDialogController::initSaveController() {
+void KalignDialogWithFileInput::initSaveController() {
     SaveDocumentControllerConfig config;
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
     config.fileDialogButton = outputFilePathButton;
@@ -155,19 +143,7 @@ void KalignAlignWithExtFileSpecifyDialogController::initSaveController() {
     saveController = new SaveDocumentController(config, formats, this);
 }
 
-bool KalignDialog::translateToAmino() {
-    return translateCheckBox->isChecked();
-}
-
-QString KalignDialog::getTranslationId() {
-    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
-    QStringList ids = tr->getDNATranslationIds(translationTableBox->currentText());
-    assert(!ids.empty());
-
-    return ids.first();
-}
-
-void KalignAlignWithExtFileSpecifyDialogController::accept() {
+void KalignDialogWithFileInput::accept() {
     if (gapOpenCheckBox->isChecked()) {
         settings.gapOpenPenalty = gapOpenSpinBox->value();
     }

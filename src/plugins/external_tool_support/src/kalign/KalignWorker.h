@@ -19,56 +19,56 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_KALIGN_ALIGN_DIALOG_CONTROLLER_H_
-#define _U2_KALIGN_ALIGN_DIALOG_CONTROLLER_H_
+#pragma once
 
-#include <QDialog>
+#include <U2Lang/LocalDomain.h>
+#include <U2Lang/WorkflowUtils.h>
 
-#include <U2Core/GAutoDeleteList.h>
-
-#include "KalignTask.h"
-
-#include <ui_KalignDialog.h>
+#include "KalignSupportTask.h"
 
 namespace U2 {
 
-class SaveDocumentController;
+namespace LocalWorkflow {
 
-class KalignDialog : public QDialog, public Ui_KalignDialog {
+class KalignPrompter : public PrompterBase<KalignPrompter> {
     Q_OBJECT
-
 public:
-    KalignDialog(QWidget* w, const MultipleSequenceAlignment& ma, KalignTaskSettings& settings);
-    bool translateToAmino();
-    QString getTranslationId();
+    KalignPrompter(Actor* p = 0)
+        : PrompterBase<KalignPrompter>(p) {
+    }
 
-public slots:
-    void accept();
-
-private:
-    void setupUiExt();
-    MultipleSequenceAlignment ma;
-    KalignTaskSettings& settings;
+protected:
+    QString composeRichDoc() override;
 };
 
-class KalignAlignWithExtFileSpecifyDialogController : public QDialog, public Ui_KalignDialog {
+class KalignWorker : public BaseWorker {
     Q_OBJECT
-
 public:
-    KalignAlignWithExtFileSpecifyDialogController(QWidget* w, KalignTaskSettings& settings);
+    KalignWorker(Actor* a);
 
-public slots:
-    void accept();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private slots:
-    void sl_inputPathButtonClicked();
+    void sl_taskFinished();
 
 private:
-    void initSaveController();
+    IntegralBus *input, *output;
+    QString resultName, transId;
+    KalignSupportTaskSettings cfg;
 
-    KalignTaskSettings& settings;
-    SaveDocumentController* saveController;
+private:
+    void send(const MultipleSequenceAlignment& msa);
 };
 
+class KalignWorkerFactory : public DomainFactory {
+public:
+    static const QString ACTOR_ID;
+    static void init();
+    KalignWorkerFactory();
+    Worker* createWorker(Actor* a) override;
+};
+
+}  // namespace LocalWorkflow
 }  // namespace U2
-#endif

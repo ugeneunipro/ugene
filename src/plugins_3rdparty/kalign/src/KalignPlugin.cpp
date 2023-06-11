@@ -168,7 +168,7 @@ void KalignMSAEditorContext::sl_align() {
         return;
     }
     KalignTaskSettings s;
-    QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
+    QObjectScopedPointer<KalignDialog> dlg = new KalignDialog(ed->getWidget(), obj->getMultipleAlignment(), s);
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
 

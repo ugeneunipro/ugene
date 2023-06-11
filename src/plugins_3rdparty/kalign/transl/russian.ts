@@ -122,7 +122,7 @@
     <message>
         <location filename="../src/KalignDialogController.cpp" line="181"/>
         <location filename="../src/KalignDialogController.cpp" line="183"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>

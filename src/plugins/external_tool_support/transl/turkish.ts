@@ -4645,7 +4645,7 @@ Başka bir adla kaydetmek için &apos;İptal&apos;e basın ve&apos; Sonuç kontr
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="132"/>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="134"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Kalign ile Hizala</translation>
     </message>
     <message>
@@ -11090,7 +11090,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="113"/>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="115"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Kalign ile Hizala</translation>
     </message>
     <message>
@@ -12019,7 +12019,7 @@ Tüm giriş okumaları için Tophat&apos;i bir kez çalıştırmak istiyorsanız
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="114"/>
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="116"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Kalign ile Hizala</translation>
     </message>
     <message>

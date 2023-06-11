@@ -1,19 +1,23 @@
 <RCC>
     <qresource prefix="/external_tool_support">
-        <file>images/clustalx.png</file>
-        <file>images/clustalx_gray.png</file>
+        <file>images/add.png</file>
+        <file>images/cancel.png</file>
         <file>images/clustalo.png</file>
         <file>images/clustalo_gray.png</file>
+        <file>images/clustalo_warn.png</file>
+        <file>images/clustalx.png</file>
+        <file>images/clustalx_gray.png</file>
+        <file>images/clustalx_warn.png</file>
         <file>images/cmdline.png</file>
         <file>images/cmdline_gray.png</file>
-        <file>images/ncbi.png</file>
-        <file>images/tcoffee_gray.png</file>
-        <file>images/tcoffee.png</file>
-        <file>images/clustalx_warn.png</file>
-        <file>images/clustalo_warn.png</file>
         <file>images/cmdline_warn.png</file>
-        <file>images/tcoffee_warn.png</file>
-        <file>images/cancel.png</file>
+        <file>images/down.png</file>
+        <file>images/hmmer.png</file>
+        <file>images/kalign.png</file>
+        <file>images/mrbayes.png</file>
+        <file>images/mrbayes_gray.png</file>
+        <file>images/mrbayes_warn.png</file>
+        <file>images/ncbi.png</file>
         <file>images/ncbi_gray.png</file>
         <file>images/ncbi_warn.png</file>
         <file>images/perl.png</file>
@@ -22,15 +26,9 @@
         <file>images/python.png</file>
         <file>images/python_gray.png</file>
         <file>images/python_warn.png</file>
-        <file>images/mrbayes.png</file>
-        <file>images/mrbayes_gray.png</file>
-        <file>images/mrbayes_warn.png</file>
-        <file>images/R_gray.png</file>
-        <file>images/R.png</file>
-        <file>images/R_warn.png</file>
-        <file>images/hmmer.png</file>
-        <file>images/add.png</file>
-        <file>images/down.png</file>
+        <file>images/tcoffee.png</file>
+        <file>images/tcoffee_gray.png</file>
+        <file>images/tcoffee_warn.png</file>
         <file>images/up.png</file>
         <file>schemas/CustomExternalToolConfig.xsd</file>
     </qresource>
