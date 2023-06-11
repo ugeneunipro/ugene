@@ -154,6 +154,7 @@ void EntropyCalculationTask::writeEntropyToFile() {
         //PDB rows have 80 symbols
         const int max_size = 81;
         QByteArray byteLine(max_size + 1, 0);
+        readIO->readLine(byteLine.data(), max_size);
         QString line(byteLine);
         CHECK_CONTINUE(!line.isEmpty());
        
