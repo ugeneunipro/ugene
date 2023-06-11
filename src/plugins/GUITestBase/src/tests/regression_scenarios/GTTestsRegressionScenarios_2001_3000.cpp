@@ -2370,7 +2370,6 @@ GUI_TEST_CLASS_DEFINITION(test_2406) {
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setParameter("Output file", "TEST", GTUtilsWorkflowDesigner::textValue);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
     const QString expectedPreValue = "TEST";
     const QString resultPreValue = GTUtilsWorkflowDesigner::getParameter("Output file", true);
