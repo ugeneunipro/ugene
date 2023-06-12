@@ -3959,7 +3959,10 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     GTFileDialog::openFile(dataDir + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"AaaI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.clickSelectAllSuppliers = true;
+    settings.enzymes = QStringList{ "AaaI" };
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -3967,7 +3970,6 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     QTreeWidgetItem* item = GTTreeWidget::findItem(tree, "76105..76110");
     GTTreeWidget::click(item);
 
-    FindEnzymesDialogFillerSettings settings;
     settings.enzymes = QStringList{ "AacLI" };
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
