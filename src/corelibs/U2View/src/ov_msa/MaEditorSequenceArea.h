@@ -172,7 +172,7 @@ public slots:
 
 protected slots:
     void sl_changeColorScheme();
-    void sl_insertGaps2SelectedArea();
+    void sl_insertGapBeforeSelection();
     void sl_replaceSelectionWithGaps();
 
     void sl_alignmentChanged(const MultipleAlignment& ma, const MaModificationInfo& modInfo);
@@ -231,31 +231,27 @@ protected:
 
     /**
      * Inserts a region consisting of gaps only before the selection. The inserted region width
-     * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
+     * is specified by 'countOfGaps' parameter if 'countOfGaps' > 0, its height is equal to the
      * current selection's height.
      *
      * If there is no selection in MSA then the method does nothing.
      *
-     * If -1 == @countOfGaps then the inserting region width is equal to
-     * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
+     * If 'countOfGaps' = -1 then the inserted region width is equal to the selection's width.
      *
-     * If @moveSelectedRect is true, then selection will be moved to the right to the selection length
-     * and won't be moved otherwise.
-     *
+     * If 'moveSelectionFrame' is true, then selection will be moved to the right to the selection length and won't be moved otherwise.
      */
-    void insertGapsBeforeSelection(int countOfGaps = -1, bool moveSelectedRect = true);
+    void insertGapsBeforeSelection(int countOfGaps, bool moveSelectionFrame = true);
 
     /**
-     * Reverse operation for @insertGapsBeforeSelection( ),
+     * Reverse operation for @insertGapsBeforeSelection(),
      * removes the region preceding the selection if it consists of gaps only.
      *
      * If there is no selection in MSA then the method does nothing.
      *
-     * @countOfGaps specifies maximum width of the removed region.
-     * If -1 == @countOfGaps then count of removed gap columns is equal to
-     * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
+     * 'countOfGaps' specifies maximum width of the removed region.
+     * If 'countOfGaps' = -1 then count of removed gap columns is equal to the selection width.
      */
-    void removeGapsPrecedingSelection(int countOfGaps = -1);
+    void removeGapsBeforeSelection(int countOfGaps);
 
     /*
      * Interrupts the tracking of MSA modifications caused by a region shifting,

@@ -104,7 +104,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     insertGapsAction->setObjectName("insert_gaps");
     insertGapsAction->setShortcut(QKeySequence(Qt::Key_Space));
     insertGapsAction->setShortcutContext(Qt::WidgetShortcut);
-    connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGaps2SelectedArea);
+    connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGapBeforeSelection);
     addAction(insertGapsAction);
 
     replaceWithGapsAction = new QAction(tr("Replace with gaps"), this);
@@ -634,12 +634,12 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_stopMaChanging(true);
 }
 
-void MaEditorSequenceArea::sl_insertGaps2SelectedArea() {
-    GCounter::increment("Insert gaps", editor->getFactoryId());
+void MaEditorSequenceArea::sl_insertGapBeforeSelection() {
+    GCounter::increment("Insert gap", editor->getFactoryId());
     CHECK(!isAlignmentLocked(), );
 
     emit si_startMaChanging();
-    insertGapsBeforeSelection();
+    insertGapsBeforeSelection(1);
     emit si_stopMaChanging(true);
 }
 
@@ -1033,7 +1033,6 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
     bool isMsaEditor = qobject_cast<MSAEditor*>(getEditor()) != nullptr;
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     bool isCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
-    bool isAltPressed = e->modifiers().testFlag(Qt::AltModifier);
 
     // Arrow keys with control work as page-up/page-down.
     if (isCtrlPressed && (key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up || key == Qt::Key_Down)) {
@@ -1143,38 +1142,33 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             if (isShiftPressed) {
                 ui->getScrollController()->scrollToEnd(ScrollController::Down);
-                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(),
-                                                 getViewRowCount() - 1));
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getViewRowCount() - 1));
             } else {
                 ui->getScrollController()->scrollToEnd(ScrollController::Right);
-                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1,
-                                                 editor->getCursorPosition().y()));
+                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1, editor->getCursorPosition().y()));
             }
             break;
         case Qt::Key_PageUp:
             if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
-            ui->getScrollController()->scrollPage(isShiftPressed
-                                                      ? ScrollController::Up
-                                                      : ScrollController::Left);
+            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Up : ScrollController::Left);
             break;
         case Qt::Key_PageDown:
             if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
-            ui->getScrollController()->scrollPage(isShiftPressed
-                                                      ? ScrollController::Down
-                                                      : ScrollController::Right);
+            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Down : ScrollController::Right);
             break;
         case Qt::Key_Backspace:
-            removeGapsPrecedingSelection(isAltPressed ? 1 : -1);
+            emit si_startMaChanging();
+            removeGapsBeforeSelection(1);
+            emit si_stopMaChanging(true);
             break;
         case Qt::Key_Space:
-            if (!isAlignmentLocked()) {
-                emit si_startMaChanging();
-                insertGapsBeforeSelection(isAltPressed ? 1 : -1);
-            }
+            emit si_startMaChanging();
+            insertGapsBeforeSelection(1);
+            emit si_stopMaChanging(true);
             break;
     }
     QWidget::keyPressEvent(e);
@@ -1191,7 +1185,7 @@ void MaEditorSequenceArea::keyReleaseEvent(QKeyEvent* ke) {
 void MaEditorSequenceArea::drawBackground(QPainter&) {
 }
 
-void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveSelectedRect) {
+void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveSelectionFrame) {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
     QRect selectionRect = selection.toRect();
@@ -1207,12 +1201,10 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
     cancelShiftTracking();
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    if (maObj == nullptr || maObj->isStateLocked()) {
-        return;
-    }
+    CHECK(maObj != nullptr || !maObj->isStateLocked(), );
+
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
     const MultipleAlignment& ma = maObj->getMultipleAlignment();
@@ -1224,7 +1216,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
     maObj->insertGapByRowIndexList(selectedMaRowIndexes, selectionRect.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os, );
-    if (moveSelectedRect) {
+    if (moveSelectionFrame) {
         moveSelection(countOfGaps, 0, true);
     }
     if (!editor->getSelection().isEmpty()) {
@@ -1244,7 +1236,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
     }
 }
 
-void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
+void MaEditorSequenceArea::removeGapsBeforeSelection(int countOfGaps) {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
     MultipleAlignmentObject* maObj = editor->getMaObject();

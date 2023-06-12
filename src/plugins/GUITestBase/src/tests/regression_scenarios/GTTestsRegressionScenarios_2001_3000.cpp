@@ -856,24 +856,23 @@ GUI_TEST_CLASS_DEFINITION(test_2128) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 17));
     GTKeyboardUtils::copy();
-    const QString initialMsaContent = GTClipboard::text();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    QString initialMsaContent = GTClipboard::text();
 
-    // 2. Select a region in the sequence area
+    // 2. Select a region in the sequence area.
     QRect currentSelection(QPoint(2, 5), QPoint(8, 11));
     GTUtilsMSAEditorSequenceArea::selectArea(currentSelection.topLeft(), currentSelection.bottomRight());
 
-    // 3. Add gaps by pressing "Alt + Space" key
-    const int totalShiftCount = 3;
+    // 3. Add gaps by pressing "Space" key.
+    int totalShiftCount = 3;
     for (int shiftCounter = 0; shiftCounter < totalShiftCount; ++shiftCounter) {
-        GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::AltModifier);
+        GTKeyboardDriver::keyClick(Qt::Key_Space);
         currentSelection.moveRight(currentSelection.right() + 1);
         GTUtilsMSAEditorSequenceArea::checkSelectedRect(currentSelection);
     }
 
-    // 4. Remove gaps with "Ctrl + Backspace" key
+    // 4. Remove gaps with "Backspace" key.
     for (int shiftCounter = 0; shiftCounter < totalShiftCount; ++shiftCounter) {
-        GTKeyboardDriver::keyClick(Qt::Key_Backspace, Qt::AltModifier);
+        GTKeyboardDriver::keyClick(Qt::Key_Backspace);
         currentSelection.moveLeft(currentSelection.left() - 1);
         GTUtilsMSAEditorSequenceArea::checkSelectedRect(currentSelection);
     }
@@ -881,7 +880,7 @@ GUI_TEST_CLASS_DEFINITION(test_2128) {
     // 5. Check that alignment content has returned to initial state
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 17));
     GTKeyboardUtils::copy();
-    const QString finalMsaContent = GTClipboard::text();
+    QString finalMsaContent = GTClipboard::text();
     CHECK_SET_ERR(initialMsaContent == finalMsaContent, "MSA has unexpectedly changed");
 }
 
@@ -894,48 +893,39 @@ GUI_TEST_CLASS_DEFINITION(test_2128_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(5, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    // Expected state: The first symbol T is on the 7 position.
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    const QPoint initialSelectionPos(6, 0);
-    GTUtilsMSAEditorSequenceArea::click(initialSelectionPos);
+    // Expected state: The first symbol T is on the 2nd position.
+    GTUtilsMSAEditorSequenceArea::click({1, 0});
     GTKeyboardUtils::copy();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     QString finalMsaContent = GTClipboard::text();
-    CHECK_SET_ERR(finalMsaContent == "T", "Unexpected MSA content has occurred");
+    CHECK_SET_ERR(finalMsaContent == "T", "1. Unexpected MSA content");
 
-    // 3. Press the Alt + Space.
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(6, 0), QPoint(12, 0));
-    GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::AltModifier);
+    // 3. Press the Space.
+    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(1, 0), QPoint(4, 0));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    // Expected state: The first symbol T is on the 8 position.
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(7, 0), QPoint(7, 0));
+    // Expected state: The first symbol T is on the 3rd position.
+    GTUtilsMSAEditorSequenceArea::click({2, 0});
     GTKeyboardUtils::copy();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     QString finalMsaContent1 = GTClipboard::text();
-    CHECK_SET_ERR(finalMsaContent1 == "T", "Unexpected MSA content has occurred");
+    CHECK_SET_ERR(finalMsaContent1 == "T", "2. Unexpected MSA content");
 
-    // 4. Press the Ctrl + Backspace.
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(7, 0), QPoint(13, 0));
-    GTKeyboardDriver::keyClick(Qt::Key_Backspace, Qt::AltModifier);
+    // 4. Press the Backspace.
+    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(2, 0), QPoint(5, 0));
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
-    // Expected state: The first symbol T is on the 8 position.
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(6, 0), QPoint(6, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    // Expected state: The first symbol T is on the 2nd position.
+    GTUtilsMSAEditorSequenceArea::click({1, 0});
+    GTKeyboardUtils::copy();
     QString finalMsaContent2 = GTClipboard::text();
-    CHECK_SET_ERR(finalMsaContent2 == "T", "Unexpected MSA content has occurred");
+    CHECK_SET_ERR(finalMsaContent2 == "T", "3. Unexpected MSA content");
 
     // 5. Press the Backspace.
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(6, 0), QPoint(12, 0));
+    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(1, 0), QPoint(5, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
     // Expected state: The first symbol T is on the 1 position.
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(0, 0));
+    GTUtilsMSAEditorSequenceArea::click({0, 0});
     GTKeyboardUtils::copy();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
     QString finalMsaContent3 = GTClipboard::text();
     CHECK_SET_ERR(finalMsaContent3 == "T", "Unexpected MSA content has occurred");
 }
@@ -950,7 +940,7 @@ GUI_TEST_CLASS_DEFINITION(test_2138) {
     // Expected state: alignment has been opened and whole msa alphabet is amino
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet();
-    CHECK_SET_ERR(isAmino, "Aligment has wrong alphabet type");
+    CHECK_SET_ERR(isAmino, "Alignment has wrong alphabet type");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2140) {

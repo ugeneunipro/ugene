@@ -296,7 +296,7 @@ void McaEditorSequenceArea::sl_addInsertion() {
 void McaEditorSequenceArea::sl_removeGapBeforeSelection() {
     GCOUNTER(cvar, "Remove gap at the left");
     emit si_startMaChanging();
-    removeGapsPrecedingSelection(1);
+    removeGapsBeforeSelection(1);
     emit si_stopMaChanging(true);
 }
 
