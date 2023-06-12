@@ -297,42 +297,40 @@ GUI_TEST_CLASS_DEFINITION(test_2021_2) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString initialMsaContent = GTClipboard::text();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTKeyboardUtils::copy();
+    QString initialMsaContent = GTClipboard::text();
 
     // 2. Select a region in the sequence area
-    const QPoint initialSelectionLeftTop(5, 5);
-    const QPoint initialSelectionRightBottom(11, 10);
-    const int selectionWidth = initialSelectionRightBottom.x() - initialSelectionLeftTop.x() + 1;
+    QPoint initialSelectionLeftTop(5, 5);
+    QPoint initialSelectionRightBottom(11, 10);
     GTUtilsMSAEditorSequenceArea::selectArea(initialSelectionLeftTop, initialSelectionRightBottom);
 
     // 3. Add gaps by pressing "Space" key
-    const int totalShiftCount = 3;
+    int totalShiftCount = 3;
     int shiftCounter = 0;
     QPoint currentSelectionLeftTop = initialSelectionLeftTop;
     QPoint currentSelectionRightBottom = initialSelectionRightBottom;
     while (shiftCounter++ < totalShiftCount) {
         GTKeyboardDriver::keyClick(Qt::Key_Space);
     }
-    currentSelectionLeftTop.rx() += totalShiftCount * selectionWidth;
-    currentSelectionRightBottom.rx() += totalShiftCount * selectionWidth;
+    currentSelectionLeftTop.rx() += totalShiftCount;
+    currentSelectionRightBottom.rx() += totalShiftCount;
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(QRect(currentSelectionLeftTop, currentSelectionRightBottom));
 
     // 4. Remove gaps with "Backspace" key
     shiftCounter = 0;
     while (shiftCounter++ < totalShiftCount) {
         GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-        currentSelectionLeftTop.rx() -= selectionWidth;
-        currentSelectionRightBottom.rx() -= selectionWidth;
+        currentSelectionLeftTop.rx() -= 1;
+        currentSelectionRightBottom.rx() -= 1;
         GTUtilsMSAEditorSequenceArea::checkSelectedRect(QRect(currentSelectionLeftTop, currentSelectionRightBottom));
     }
 
     // 5. Check that alignment content has returned to initial state
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString finalMsaContent = GTClipboard::text();
-    CHECK_SET_ERR(initialMsaContent == finalMsaContent, "MSA has unexpectedly changed");
+    GTKeyboardUtils::copy();
+    QString finalMsaContent = GTClipboard::text();
+    CHECK_SET_ERR(finalMsaContent == initialMsaContent, "MSA has unexpectedly changed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2021_3) {
@@ -398,20 +396,32 @@ GUI_TEST_CLASS_DEFINITION(test_2021_5) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    // 2. Select a column in the sequence area
+    // 2. Select a column in the sequence area.
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(9, 0), QPoint(16, 9));
 
-    // 3. Remove gap columns by pressing "Backspace" key
+    // 3. Remove gap columns by pressing "Backspace" key.
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
     // 4. Check that all the empty columns were removed
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(14, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString finalMsaContent = GTClipboard::text();
-    CHECK_SET_ERR("AAGCTTCTTTTAA--\nAAGTTACTAA-----\nTAG---TTATTAA--\nAAGC---TATTAA--\n"
-                  "TAGTTATTAA-----\nTAGTTATTAA-----\nTAGTTATTAA-----\nAAGCTTT---TAA--\n"
-                  "A--AGAATAATTA--\nAAGCTTTTAA-----" == finalMsaContent,
-                  "Unexpected MSA content has occurred");
+    GTKeyboardUtils::copy();
+    QString finalMsaContent = GTClipboard::text();
+    CHECK_SET_ERR(finalMsaContent == "AAGCTTCTTTTAA--\n"
+                                     "AAGTTACTAA-----\n"
+                                     "TAG---TTATTAA--\n"
+                                     "AAGC---TATTAA--\n"
+                                     "TAGTTATTAA-----\n"
+                                     "TAGTTATTAA-----\n"
+                                     "TAGTTATTAA-----\n"
+                                     "AAGCTTT---TAA--\n"
+                                     "A--AGAATAATTA--\n"
+                                     "AAGCTTTTAA-----",
+                  "Unexpected MSA content has occurred: " + finalMsaContent);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2021_6) {
@@ -432,10 +442,10 @@ GUI_TEST_CLASS_DEFINITION(test_2021_6) {
 
     // 4. Expected state: the gap was deleted, selection moves to the previous symbol.
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(43, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
-    const QString finalMsaContent = GTClipboard::text();
-    CHECK_SET_ERR("TAAGACTTCTAATTCGAGCCGAATTAGGTCAACCAGGATAC--C" == finalMsaContent,
+    QString finalMsaContent = GTClipboard::text();
+    CHECK_SET_ERR(finalMsaContent == "TAAGACTTCTAATTCGAGCCGAATTAGGTCAACCAGGATAC--C",
                   QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
 }
 
@@ -449,12 +459,13 @@ GUI_TEST_CLASS_DEFINITION(test_2021_7) {
 
     // 3. Press BACKSPACE
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
     // 4. Expected state: the gap was deleted, selection moves to the previous symbol.
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 2), QPoint(13, 2));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString finalMsaContent = GTClipboard::text();
-    CHECK_SET_ERR("TAG--TTATTAA--" == finalMsaContent,
+    GTKeyboardUtils::copy();
+    QString finalMsaContent = GTClipboard::text();
+    CHECK_SET_ERR(finalMsaContent == "TAG--TTATTAA--",
                   QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
 }
 
@@ -471,34 +482,13 @@ GUI_TEST_CLASS_DEFINITION(test_2021_8) {
 
     // 3. Press BACKSPACE
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-
-    // 4. Expected state: the gap was deleted, selection moves to the previous symbol.
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 1), QPoint(44, 1));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString finalMsaContent = GTClipboard::text();
-    CHECK_SET_ERR("TAAGCTTACTAATCCGGGCCGAATTAGGTCAACCTGGTTAT-CTA" == finalMsaContent,
-                  QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_2021_9) {
-    // 1. Open "data/samples/CLUSTAL/COI.aln".
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished();
-    if (GTUtilsProjectTreeView::isVisible()) {
-        GTUtilsProjectTreeView::toggleView();
-    }
-
-    // 2. Select the 45 and 46 of the second line (two symbols after gaps).
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(44, 2), QPoint(46, 2));
-
-    // 3. Press BACKSPACE
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
     // 4. Expected state: the gap was deleted, selection moves to the previous symbol.
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 2), QPoint(46, 2));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString finalMsaContent = GTClipboard::text();
-    CHECK_SET_ERR("TTAGTTTATTAATTCGAGCTGAACTAGGTCAACCAGGCTATTTAATT" == finalMsaContent,
+    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 1), QPoint(44, 1));
+    GTKeyboardUtils::copy();
+    QString finalMsaContent = GTClipboard::text();
+    CHECK_SET_ERR(finalMsaContent == "TAAGCTTACTAATCCGGGCCGAATTAGGTCAACCTGGTTAT-CTA",
                   QString("Unexpected MSA content has occurred: got %1").arg(finalMsaContent));
 }
 
@@ -1051,18 +1041,21 @@ GUI_TEST_CLASS_DEFINITION(test_2152) {
 
 GUI_TEST_CLASS_DEFINITION(test_2156) {
     //    1. Open "data/samples/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::openView();
     GTUtilsProjectTreeView::toggleView();
     //    2. Select six symbols (45-50) of the first line.
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(44, 0), QPoint(49, 0));
-    //    3. Press BACKSPACE.
+    //    3. Press BACKSPACE 4 times.
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
+    GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
     //    Expected state: three gaps before the selected area are removed.
     GTWidget::click(GTUtilsMdi::activeWindow());
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(41, 0), QPoint(44, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "CTAA", QString("Expected: CTAA, found: %1").arg(clipboardText));
 }
