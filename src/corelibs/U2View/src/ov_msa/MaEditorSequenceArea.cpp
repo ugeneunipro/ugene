@@ -334,7 +334,6 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
     maObj->removeRegion(selectedMaRowIndexes, selectionRect.x(), selectionRect.width(), true);
     GCounter::increment("Delete current selection", editor->getFactoryId());
@@ -647,8 +646,13 @@ void U2::MaEditorSequenceArea::sl_replaceSelectionWithGaps() {
     GCounter::increment("Replace with gaps", editor->getFactoryId());
     CHECK(!isAlignmentLocked(), );
 
+    const MaEditorSelection& selection = editor->getSelection();
+    int selectionWidth = selection.getWidth();
+    CHECK(selectionWidth > 0, );
+
     emit si_startMaChanging();
-    insertGapsBeforeSelection(-1, false);
+    insertGapsBeforeSelection(selectionWidth);
+    deleteCurrentSelection();
     emit si_stopMaChanging(true);
 }
 
@@ -1185,16 +1189,12 @@ void MaEditorSequenceArea::keyReleaseEvent(QKeyEvent* ke) {
 void MaEditorSequenceArea::drawBackground(QPainter&) {
 }
 
-void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveSelectionFrame) {
+void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
+    CHECK(countOfGaps > 0, );
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
     QRect selectionRect = selection.toRect();
     SAFE_POINT(isInRange(selectionRect), "Selection is not in range", );
-
-    if (countOfGaps == -1) {
-        countOfGaps = selectionRect.width();
-    }
-    CHECK(countOfGaps > 0, );
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled
@@ -1216,18 +1216,14 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
     maObj->insertGapByRowIndexList(selectedMaRowIndexes, selectionRect.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os, );
-    if (moveSelectionFrame) {
-        moveSelection(countOfGaps, 0, true);
-    }
+    moveSelection(countOfGaps, 0, true);
     if (!editor->getSelection().isEmpty()) {
         if (editor->isMultilineMode()) {
             // TODO:ichebyki
             // ?
             QPoint cursorPosition = editor->getCursorPosition();
             const MaEditorSelection& sel = editor->getSelection();
-            QRect rect = sel.isEmpty()
-                             ? QRect(cursorPosition, cursorPosition)
-                             : sel.toRect();
+            QRect rect = sel.isEmpty() ? QRect(cursorPosition, cursorPosition) : sel.toRect();
             QPoint newPos(rect.topLeft());
             editor->getMaEditorMultilineWgt()->getScrollController()->scrollToPoint(newPos);
         } else {

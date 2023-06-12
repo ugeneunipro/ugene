@@ -229,28 +229,10 @@ protected:
     virtual void initRenderer() = 0;
     virtual void drawBackground(QPainter& p);
 
-    /**
-     * Inserts a region consisting of gaps only before the selection. The inserted region width
-     * is specified by 'countOfGaps' parameter if 'countOfGaps' > 0, its height is equal to the
-     * current selection's height.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * If 'countOfGaps' = -1 then the inserted region width is equal to the selection's width.
-     *
-     * If 'moveSelectionFrame' is true, then selection will be moved to the right to the selection length and won't be moved otherwise.
-     */
-    void insertGapsBeforeSelection(int countOfGaps, bool moveSelectionFrame = true);
+    /** Inserts a region consisting of gaps only before the selection. */
+    void insertGapsBeforeSelection(int countOfGaps);
 
-    /**
-     * Reverse operation for @insertGapsBeforeSelection(),
-     * removes the region preceding the selection if it consists of gaps only.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * 'countOfGaps' specifies maximum width of the removed region.
-     * If 'countOfGaps' = -1 then count of removed gap columns is equal to the selection width.
-     */
+    /** Removes the region preceding the selection if it consists of gaps only up to 'countOfGaps'. */
     void removeGapsBeforeSelection(int countOfGaps);
 
     /*
