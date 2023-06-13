@@ -66,15 +66,16 @@ EnzymesSelectorWidget::EnzymesSelectorWidget() {
     setupUi(this);
     ignoreItemChecks = false;
 
-    splitter->setStretchFactor(0, 5);
-    splitter->setStretchFactor(1, 1);
+    splitter->setStretchFactor(0, 3);
+    splitter->setStretchFactor(1, 2);
 
     tree->setSortingEnabled(true);
     tree->sortByColumn(0, Qt::AscendingOrder);
     tree->setUniformRowHeights(true);
-    tree->setColumnWidth(0, 110);  // id
+    tree->setColumnWidth(0, 160);  // id
     tree->setColumnWidth(1, 75);  // accession
     tree->setColumnWidth(2, 50);  // type
+    tree->setColumnWidth(4, 270);  // organism
 
     totalEnzymes = 0;
     minLength = 1;
@@ -93,8 +94,6 @@ EnzymesSelectorWidget::EnzymesSelectorWidget() {
     if (loadedEnzymes.isEmpty()) {
         QString lastUsedFile = AppContext::getSettings()->getValue(EnzymeSettings::DATA_FILE_KEY).toString();
         loadFile(lastUsedFile);
-    } else {
-        setEnzymesList(loadedEnzymes);
     }
 }
 
@@ -197,8 +196,6 @@ void EnzymesSelectorWidget::loadFile(const QString& url) {
         }
         AppContext::getSettings()->setValue(EnzymeSettings::DATA_FILE_KEY, url);
     }
-
-    setEnzymesList(loadedEnzymes);
     emit si_newEnzimeFileLoaded();
 }
 
@@ -268,6 +265,20 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     t3.stop();
 
     connect(tree, SIGNAL(itemChanged(QTreeWidgetItem*, int)), SLOT(sl_itemChanged(QTreeWidgetItem*, int)));
+    connect(tree, &QTreeWidget::itemSelectionChanged, this, [this]() {
+        auto item = tree->currentItem();
+        EnzymeTreeItem* ei = dynamic_cast<EnzymeTreeItem*>(item);
+        EnzymeGroupTreeItem* gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
+        if (ei != nullptr) {
+            teSelectedEnzymeInfo->setHtml(ei->getEnzymeInfo());
+        } else if (gi != nullptr) {
+            teSelectedEnzymeInfo->clear();
+        } else {
+            FAIL("Unexpected item type", );
+        }
+
+    });
+
 
     //     GTIMER(c4,t4,"FindEnzymesDialog::loadFile [resize tree]");
     //     tree->header()->resizeSections(QHeaderView::ResizeToContents);
@@ -347,7 +358,6 @@ void EnzymesSelectorWidget::sl_openEnzymesFile() {
         }
         loadFile(dir.url);
         if (!loadedEnzymes.isEmpty()) {
-            setEnzymesList(loadedEnzymes);
             emit si_newEnzimeFileLoaded();
         }
     }
@@ -463,6 +473,7 @@ void EnzymesSelectorWidget::sl_itemChanged(QTreeWidgetItem* item, int col) {
     EnzymeTreeItem* ei = static_cast<EnzymeTreeItem*>(item);
     EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(ei->parent());
     gi->updateVisual();
+    auto groupItem = dynamic_cast<EnzymeGroupTreeItem*>(item);
     updateStatus();
 }
 
@@ -753,21 +764,20 @@ static const QString TOOLTIP_SPACE = "<sub>&nbsp;</sub>";
 
 EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     : enzyme(ed) {
-    auto tt = generateEnzymeTooltip();
-    setText(0, enzyme->id);
-    setData(0, Qt::ToolTipRole, tt);
-    setCheckState(0, Qt::Unchecked);
-    setText(1, enzyme->accession);
-    setData(1, Qt::ToolTipRole, tt);
-    setText(2, enzyme->type);
-    setData(2, Qt::ToolTipRole, tt);
-    setText(3, enzyme->seq);
-    setData(3, Qt::ToolTipRole, tt);
-    setText(4, enzyme->organizm);
-    setData(4, Qt::ToolTipRole, enzyme->organizm);
+    setText(Column::Id, enzyme->id);
+    setData(Column::Id, Qt::ToolTipRole, enzyme->id);
+    setCheckState(Column::Id, Qt::Unchecked);
+    setText(Column::Accession, enzyme->accession);
+    setData(Column::Accession, Qt::ToolTipRole, enzyme->accession);
+    setText(Column::Type, enzyme->type);
+    setData(Column::Type, Qt::ToolTipRole, getTypeInfo());
+    setText(Column::Sequence, enzyme->seq);
+    setData(Column::Sequence, Qt::ToolTipRole, generateEnzymeTooltip());
+    setText(Column::Organism, enzyme->organizm);
+    setData(Column::Organism, Qt::ToolTipRole, enzyme->organizm);
     auto suppliers = enzyme->suppliers.join("; ");
-    setText(5, suppliers);
-    setData(5, Qt::ToolTipRole, suppliers);
+    setText(Column::Suppliers, suppliers);
+    setData(Column::Suppliers, Qt::ToolTipRole, suppliers);
 }
 
 bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
@@ -781,6 +791,22 @@ bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
         return this < &ei;
     }
     return text(col) < ei.text(col);
+}
+
+QString EnzymeTreeItem::getEnzymeInfo() const {
+    QString result;
+    auto accession = text(Column::Accession);
+    accession = accession.right(accession.size() - 2);
+    result += QString("<a href=\"http://rebase.neb.com/rebase/enz/%1.html\">%1</a>")
+        .arg(text(Column::Id));
+    auto typeString = data(Column::Type, Qt::ToolTipRole).toString();
+    if (!typeString.isEmpty()) {
+        auto lower = typeString.front().toLower();
+        typeString = typeString.replace(0, 1, lower);
+        result += ": " + typeString;
+    }
+    result += data(Column::Sequence, Qt::ToolTipRole).toString();
+    return result;
 }
 
 QString EnzymeTreeItem::generateEnzymeTooltip() const {
@@ -1019,6 +1045,38 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     }
 
     return TOOLTIP_TAG.arg(forwardTooltip).arg(reverseTooltip);
+}
+
+QString EnzymeTreeItem::getTypeInfo() const {
+    auto type = text(Column::Type);
+    QString result;
+    static constexpr const char* UNEXPECTED_TYPE_ERROR = QT_TR_NOOP("Unexpected enzyme type: %1");
+    if (type == "M") {
+        result = tr("An orphan methylase,<br>not associated with a restriction enzyme or specificity subunit");
+
+    } else if (type.size() == 2) {
+        if (type == "IE") {
+            result = tr("An intron-encoded (homing) endonuclease");
+        } else if (type.startsWith("R")) {
+            result = tr("The restriction enzyme of the %1 type").arg(type.back());
+        } else if (type.startsWith("M")) {
+            result = tr("The methylase of the %1 type").arg(type.back());
+        } else {
+            coreLog.error(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+        }
+    } else if (type.size() == 3) {
+        if (type.startsWith("R") && type.endsWith("*")) {
+            result = tr("The restriction enzyme of the %1 type,<br>but only recognizes the sequence when it is methylated").arg(type.at(1));
+        } else if (type.startsWith("RM")) {
+            result = tr("The enzyme of the %1 type, which acts as both -<br>a restriction enzyme and a methylase").arg(type.back());
+        } else {
+            coreLog.error(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+        }
+    } else {
+        coreLog.error(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+    }
+
+    return result;
 }
 
 EnzymeGroupTreeItem::EnzymeGroupTreeItem(const QString& _s)
