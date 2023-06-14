@@ -104,7 +104,7 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt* ui, GScrollBar* hb, GScr
     insertGapsAction->setObjectName("insert_gaps");
     insertGapsAction->setShortcut(QKeySequence(Qt::Key_Space));
     insertGapsAction->setShortcutContext(Qt::WidgetShortcut);
-    connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGaps2SelectedArea);
+    connect(insertGapsAction, &QAction::triggered, this, &MaEditorSequenceArea::sl_insertGapBeforeSelection);
     addAction(insertGapsAction);
 
     replaceWithGapsAction = new QAction(tr("Replace with gaps"), this);
@@ -334,7 +334,6 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
 
     U2OpStatusImpl os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
     maObj->removeRegion(selectedMaRowIndexes, selectionRect.x(), selectionRect.width(), true);
     GCounter::increment("Delete current selection", editor->getFactoryId());
@@ -634,12 +633,12 @@ void MaEditorSequenceArea::sl_delCurrentSelection() {
     emit si_stopMaChanging(true);
 }
 
-void MaEditorSequenceArea::sl_insertGaps2SelectedArea() {
-    GCounter::increment("Insert gaps", editor->getFactoryId());
+void MaEditorSequenceArea::sl_insertGapBeforeSelection() {
+    GCounter::increment("Insert gap", editor->getFactoryId());
     CHECK(!isAlignmentLocked(), );
 
     emit si_startMaChanging();
-    insertGapsBeforeSelection();
+    insertGapsBeforeSelection(1);
     emit si_stopMaChanging(true);
 }
 
@@ -647,8 +646,13 @@ void U2::MaEditorSequenceArea::sl_replaceSelectionWithGaps() {
     GCounter::increment("Replace with gaps", editor->getFactoryId());
     CHECK(!isAlignmentLocked(), );
 
+    const MaEditorSelection& selection = editor->getSelection();
+    int selectionWidth = selection.getWidth();
+    CHECK(selectionWidth > 0, );
+
     emit si_startMaChanging();
-    insertGapsBeforeSelection(-1, false);
+    insertGapsBeforeSelection(selectionWidth);
+    deleteCurrentSelection();
     emit si_stopMaChanging(true);
 }
 
@@ -1033,13 +1037,6 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
     bool isMsaEditor = qobject_cast<MSAEditor*>(getEditor()) != nullptr;
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     bool isCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
-#ifdef Q_OS_DARWIN
-    // In one case it is better to use a Command key as modifier,
-    // in another - a Control key. genuineCtrl - Control key on Mac OS X.
-    bool isGenuineCtrlPressed = e->modifiers().testFlag(Qt::MetaModifier);
-#else
-    bool isGenuineCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
-#endif
 
     // Arrow keys with control work as page-up/page-down.
     if (isCtrlPressed && (key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up || key == Qt::Key_Down)) {
@@ -1149,39 +1146,33 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent* e) {
             }
             if (isShiftPressed) {
                 ui->getScrollController()->scrollToEnd(ScrollController::Down);
-                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(),
-                                                 getViewRowCount() - 1));
+                editor->setCursorPosition(QPoint(editor->getCursorPosition().x(), getViewRowCount() - 1));
             } else {
                 ui->getScrollController()->scrollToEnd(ScrollController::Right);
-                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1,
-                                                 editor->getCursorPosition().y()));
+                editor->setCursorPosition(QPoint(editor->getAlignmentLen() - 1, editor->getCursorPosition().y()));
             }
             break;
         case Qt::Key_PageUp:
             if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
-            ui->getScrollController()->scrollPage(isShiftPressed
-                                                      ? ScrollController::Up
-                                                      : ScrollController::Left);
+            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Up : ScrollController::Left);
             break;
         case Qt::Key_PageDown:
             if (isMsaEditor && !isShiftPressed && editor->isMultilineMode()) {
                 break;
             }
-            ui->getScrollController()->scrollPage(isShiftPressed
-                                                      ? ScrollController::Down
-                                                      : ScrollController::Right);
+            ui->getScrollController()->scrollPage(isShiftPressed ? ScrollController::Down : ScrollController::Right);
             break;
         case Qt::Key_Backspace:
-            removeGapsPrecedingSelection(isGenuineCtrlPressed ? 1 : -1);
+            emit si_startMaChanging();
+            removeGapsBeforeSelection(1);
+            emit si_stopMaChanging(true);
             break;
-        case Qt::Key_Insert:
         case Qt::Key_Space:
-            if (!isAlignmentLocked()) {
-                emit si_startMaChanging();
-                insertGapsBeforeSelection(isGenuineCtrlPressed ? 1 : -1);
-            }
+            emit si_startMaChanging();
+            insertGapsBeforeSelection(1);
+            emit si_stopMaChanging(true);
             break;
     }
     QWidget::keyPressEvent(e);
@@ -1198,28 +1189,22 @@ void MaEditorSequenceArea::keyReleaseEvent(QKeyEvent* ke) {
 void MaEditorSequenceArea::drawBackground(QPainter&) {
 }
 
-void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveSelectedRect) {
+void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
+    CHECK(countOfGaps > 0, );
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
     QRect selectionRect = selection.toRect();
     SAFE_POINT(isInRange(selectionRect), "Selection is not in range", );
-
-    if (countOfGaps == -1) {
-        countOfGaps = selectionRect.width();
-    }
-    CHECK(countOfGaps > 0, );
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled
     cancelShiftTracking();
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    if (maObj == nullptr || maObj->isStateLocked()) {
-        return;
-    }
+    CHECK(maObj != nullptr || !maObj->isStateLocked(), );
+
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
-    Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
     const MultipleAlignment& ma = maObj->getMultipleAlignment();
@@ -1231,18 +1216,14 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
     maObj->insertGapByRowIndexList(selectedMaRowIndexes, selectionRect.x(), countOfGaps);
     adjustReferenceLength(os);
     CHECK_OP(os, );
-    if (moveSelectedRect) {
-        moveSelection(countOfGaps, 0, true);
-    }
+    moveSelection(countOfGaps, 0, true);
     if (!editor->getSelection().isEmpty()) {
         if (editor->isMultilineMode()) {
             // TODO:ichebyki
             // ?
             QPoint cursorPosition = editor->getCursorPosition();
             const MaEditorSelection& sel = editor->getSelection();
-            QRect rect = sel.isEmpty()
-                             ? QRect(cursorPosition, cursorPosition)
-                             : sel.toRect();
+            QRect rect = sel.isEmpty() ? QRect(cursorPosition, cursorPosition) : sel.toRect();
             QPoint newPos(rect.topLeft());
             editor->getMaEditorMultilineWgt()->getScrollController()->scrollToPoint(newPos);
         } else {
@@ -1251,7 +1232,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps, bool moveS
     }
 }
 
-void MaEditorSequenceArea::removeGapsPrecedingSelection(int countOfGaps) {
+void MaEditorSequenceArea::removeGapsBeforeSelection(int countOfGaps) {
     const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
     MultipleAlignmentObject* maObj = editor->getMaObject();

@@ -172,7 +172,7 @@ public slots:
 
 protected slots:
     void sl_changeColorScheme();
-    void sl_insertGaps2SelectedArea();
+    void sl_insertGapBeforeSelection();
     void sl_replaceSelectionWithGaps();
 
     void sl_alignmentChanged(const MultipleAlignment& ma, const MaModificationInfo& modInfo);
@@ -229,33 +229,11 @@ protected:
     virtual void initRenderer() = 0;
     virtual void drawBackground(QPainter& p);
 
-    /**
-     * Inserts a region consisting of gaps only before the selection. The inserted region width
-     * is specified by @countOfGaps parameter if 0 < @countOfGaps, its height is equal to the
-     * current selection's height.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * If -1 == @countOfGaps then the inserting region width is equal to
-     * the selection's width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     *
-     * If @moveSelectedRect is true, then selection will be moved to the right to the selection length
-     * and won't be moved otherwise.
-     *
-     */
-    void insertGapsBeforeSelection(int countOfGaps = -1, bool moveSelectedRect = true);
+    /** Inserts a region consisting of gaps only before the selection. */
+    void insertGapsBeforeSelection(int countOfGaps);
 
-    /**
-     * Reverse operation for @insertGapsBeforeSelection( ),
-     * removes the region preceding the selection if it consists of gaps only.
-     *
-     * If there is no selection in MSA then the method does nothing.
-     *
-     * @countOfGaps specifies maximum width of the removed region.
-     * If -1 == @countOfGaps then count of removed gap columns is equal to
-     * the selection width. If 1 > @countOfGaps and -1 != @countOfGaps then nothing happens.
-     */
-    void removeGapsPrecedingSelection(int countOfGaps = -1);
+    /** Removes the region preceding the selection if it consists of gaps only up to 'countOfGaps'. */
+    void removeGapsBeforeSelection(int countOfGaps);
 
     /*
      * Interrupts the tracking of MSA modifications caused by a region shifting,

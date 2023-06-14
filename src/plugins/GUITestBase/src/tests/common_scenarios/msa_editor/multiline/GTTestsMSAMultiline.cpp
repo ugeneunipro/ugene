@@ -27,16 +27,11 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
-#include <primitives/GTComboBox.h>
-#include <primitives/GTDoubleSpinBox.h>
-#include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTRadioButton.h>
-#include <primitives/GTSlider.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
 
@@ -45,14 +40,11 @@
 #include <QGraphicsItem>
 #include <QMainWindow>
 
-#include <U2Core/AppContext.h>
-
 #include <U2View/BaseWidthController.h>
 #include <U2View/RowHeightController.h>
 
 #include "GTTestsMSAMultiline.h"
 #include "GTUtilsBookmarksTreeView.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -60,7 +52,6 @@
 #include "GTUtilsPhyTree.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "api/GTBaseCompleter.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "system/GTClipboard.h"
@@ -70,8 +61,7 @@ namespace U2 {
 namespace GUITest_common_scenarios_MSA_editor_multiline {
 using namespace HI;
 
-namespace {
-void enumerateMenu(QMenu* menu, QList<QString>* textItems) {
+static void enumerateMenu(QMenu* menu, QList<QString>* textItems) {
     foreach (QAction* action, menu->actions()) {
         if (action->isSeparator()) {
             qDebug("this action is a separator");
@@ -87,7 +77,6 @@ void enumerateMenu(QMenu* menu, QList<QString>* textItems) {
         }
     }
 }
-}  // namespace
 
 GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     // UGENE-7042
@@ -1156,11 +1145,8 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(true);
 
-    static constexpr QPoint TOP_LEFT = QPoint(0, 0);
-    static constexpr QPoint BOTTOM_RIGHT = QPoint(10, 10);
-
     // 2. Select area from (0, 0) to (10, 10)
-    GTUtilsMSAEditorSequenceArea::selectArea(TOP_LEFT, BOTTOM_RIGHT);
+    GTUtilsMSAEditorSequenceArea::selectArea({0, 0}, {10, 10});
 
     // 3. Click "Replace with gaps" with popup menu
     GTUtilsDialog::waitForDialog(new PopupChooser({"MSAE_MENU_EDIT", "replace_with_gaps"}));
@@ -1170,28 +1156,26 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
     auto check = [&]() {
         auto selectedRect = GTUtilsMSAEditorSequenceArea::getSelectedRect();
         auto tl = selectedRect.topLeft();
-        CHECK_SET_ERR(tl == TOP_LEFT, QString("Expected top-left selection: 0, 0; current: %1, %2").arg(tl.x()).arg(tl.y()));
+        CHECK_SET_ERR(tl.x() == 11 && tl.y() == 0, QString("Expected top-left selection: 11, 0; current: %1, %2").arg(tl.x()).arg(tl.y()));
 
         auto br = selectedRect.bottomRight();
-        CHECK_SET_ERR(br == BOTTOM_RIGHT, QString("Expected bottom-right selection: 0, 0; current: %1, %2").arg(br.x()).arg(br.y()));
+        CHECK_SET_ERR(br.x() == 21 && br.y() == 10, QString("Expected bottom-right selection: 21, 0; current: %1, %2").arg(br.x()).arg(br.y()));
 
-        static const QStringList GAPPED_DATA = {
-            "-----------TAAGACTTC",
-            "-----------TAAGCTTAC",
-            "-----------TTAGTTTAT",
-            "-----------TCAGTCTAT",
-            "-----------TCAGTTTAT",
-            "-----------TTAGTCTAC",
-            "-----------TCAGATTAT",
-            "-----------TTAGATTGC",
-            "-----------TTAGATTAT",
-            "-----------TAAGTCTAT",
-            "-----------TTAGCTTAT"};
+        const QStringList GAPPED_DATA = {
+            "-----------ATTCGAGCCGA",
+            "-----------ATCCGGGCCGA",
+            "-----------ATTCGAGCTGA",
+            "-----------ATTCGAGCAGA",
+            "-----------ATTCGAGCTGA",
+            "-----------ATTCGAGCTGA",
+            "-----------ATTCGAGCTGA",
+            "-----------ATTCGAGCCGA",
+            "-----------ATCCGGGCTGA",
+            "-----------ATTCGAGCTGA",
+            "-----------ATTCGTGCTGA"};
 
-        static constexpr QPoint BOTTOM_RIGHT_CHECK = QPoint(20, 10);
-
-        GTUtilsMSAEditorSequenceArea::selectArea(TOP_LEFT, BOTTOM_RIGHT_CHECK);
-        GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+        GTUtilsMSAEditorSequenceArea::selectArea({0, 0}, {22, 10});
+        GTKeyboardUtils::copy();
         auto result = GTClipboard::text().split("\n");
         for (int i = 0; i < 11; i++) {
             CHECK_SET_ERR(result[i].startsWith(GAPPED_DATA[i]), QString("Expected sequence beginning: %1; current: %2").arg(GAPPED_DATA[i]).arg(result[i].left(20)));
@@ -1201,9 +1185,10 @@ GUI_TEST_CLASS_DEFINITION(edit_test_0001) {
 
     // 4. Click undo
     GTWidget::click(GTAction::button("msa_action_undo"));
+    GTWidget::click(GTAction::button("msa_action_undo"));
 
     // 5. Select area from (0, 0) to (10, 10)
-    GTUtilsMSAEditorSequenceArea::selectArea(TOP_LEFT, BOTTOM_RIGHT);
+    GTUtilsMSAEditorSequenceArea::selectArea({0, 0}, {10, 10});
 
     // 6. Click "Replace with gaps" with shortcut
     GTKeyboardDriver::keyClick(Qt::Key_Space, Qt::ShiftModifier);

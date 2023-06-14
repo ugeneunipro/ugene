@@ -10,12 +10,6 @@
     <height>373</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
   <property name="windowTitle">
    <string>Search using local BLAST database</string>
   </property>
@@ -34,6 +28,12 @@
    </property>
    <item>
     <widget class="QTabWidget" name="optionsTab">
+     <property name="minimumSize">
+      <size>
+       <width>600</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
@@ -48,13 +48,10 @@
        <string>General options</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetFixedSize</enum>
-       </property>
        <item>
         <layout class="QGridLayout" name="settingsGridLayout">
          <property name="sizeConstraint">
-          <enum>QLayout::SetFixedSize</enum>
+          <enum>QLayout::SetDefaultConstraint</enum>
          </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label_2">
