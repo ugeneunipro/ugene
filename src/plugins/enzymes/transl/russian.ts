@@ -414,7 +414,7 @@
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="1071"/>
         <source>The enzyme of the %1 type, which acts as both -&lt;br&gt;a restriction enzyme and a methylase</source>
-        <translation type="unfinished">Сайт %1 типа, действующий как&lt;br&gt; сайт рестрикции, так и как метилаза</translation>
+        <translation>Сайт %1 типа, действующий как&lt;br&gt; сайт рестрикции, так и как метилаза</translation>
     </message>
 </context>
 <context>

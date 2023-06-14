@@ -473,7 +473,6 @@ void EnzymesSelectorWidget::sl_itemChanged(QTreeWidgetItem* item, int col) {
     EnzymeTreeItem* ei = static_cast<EnzymeTreeItem*>(item);
     EnzymeGroupTreeItem* gi = static_cast<EnzymeGroupTreeItem*>(ei->parent());
     gi->updateVisual();
-    auto groupItem = dynamic_cast<EnzymeGroupTreeItem*>(item);
     updateStatus();
 }
 
