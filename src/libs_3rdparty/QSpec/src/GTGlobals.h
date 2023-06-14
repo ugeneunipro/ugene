@@ -81,7 +81,7 @@ public:
     /** Takes a screenshot and returns an image. */
     static QImage takeScreenShot();
 
-    static void GUITestFail();
+    static void logFirstFail();
 
     /** Returns active GUITestOpStatus instance. */
     static GUITestOpStatus& getOpStatus();
@@ -113,12 +113,11 @@ public:
     { \
         GT_DEBUG_MESSAGE(condition, errorMessage, result); \
         if (HI::GTGlobals::getOpStatus().hasError()) { \
-            HI::GTGlobals::GUITestFail(); \
             return result; \
         } \
-        if (!(condition)) { \
+        if (!(condition)) {                                   \
+            HI::GTGlobals::logFirstFail(); \
             HI::GTGlobals::getOpStatus().setError(errorMessage); \
-            HI::GTGlobals::GUITestFail(); \
             return result; \
         } \
     }
@@ -132,7 +131,9 @@ public:
 /** Unconditionally marks active test as failed. Prints 'errorMessage' into the log. */
 #define GT_FAIL(errorMessage, result) \
     GT_DEBUG_MESSAGE(false, errorMessage, result); \
-    HI::GTGlobals::GUITestFail(); \
+    if (HI::GTGlobals::getOpStatus().hasError()) { \
+        HI::GTGlobals::logFirstFail();\
+    }                                 \
     HI::GTGlobals::getOpStatus().setError(errorMessage); \
     return result;
 
@@ -149,7 +150,7 @@ public:
 #define DRIVER_CHECK(condition, errorMessage) \
     if (!(condition)) { \
         qCritical("Driver error: '%s'", QString(errorMessage).toLocal8Bit().constData()); \
-        HI::GTGlobals::GUITestFail(); \
+        HI::GTGlobals::logFirstFail(); \
         HI::GTGlobals::getOpStatus().setError(errorMessage); \
         return false; \
     }

@@ -50,8 +50,6 @@ CreateAnnotationDialog::CreateAnnotationDialog(QWidget* p, CreateAnnotationModel
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
 
     ui->mainLayout->insertWidget(0, annWidgetController->getWidget());
-
-    annWidgetController->setFocusToAnnotationType();
 }
 
 CreateAnnotationDialog::~CreateAnnotationDialog() {
