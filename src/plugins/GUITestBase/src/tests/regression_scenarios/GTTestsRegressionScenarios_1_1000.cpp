@@ -1572,7 +1572,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
             GTWidget::click(GTWidget::findButtonByText("Finish"));
 
             // Same wizard is shown now. The first page is opened.
-
+            nextButton = GTWidget::findWidget("__qt__passive_wizardbutton1");
             GTWidget::click(nextButton);
             GTWidget::click(GTWidget::findWidget("pbDeleteInput"));
             GTWidget::click(nextButton);

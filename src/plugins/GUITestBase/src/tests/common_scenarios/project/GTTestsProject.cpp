@@ -597,30 +597,33 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
 
     // check for first document
     GTUtilsProjectTreeView::doubleClickItem("Contig1");
+    GTUtilsTaskTreeView::waitTaskFinished();
     QString title1 = GTUtilsMdi::activeWindowTitle();
-    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "unexpected title for doc1: " + title1);
+    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "1. unexpected title for doc1: " + title1);
 
     // check for first document
     GTUtilsProjectTreeView::doubleClickItem("Contig2");
+    GTUtilsTaskTreeView::waitTaskFinished();
     QString title2 = GTUtilsMdi::activeWindowTitle();
-    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
+    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "2. unexpected title for doc2: " + title2);
 
     // reopening windows
-    while (GTUtilsMdi::activeWindow({false}) != nullptr) {
-        GTUtilsMdi::closeActiveWindow();
-    }
+    GTUtilsMdi::closeAllWindows();
+
     GTUtilsDialog::waitForDialog(new PopupChooser({"openInMenu", "action_open_view"}));
     GTUtilsProjectTreeView::click("test_3637_1.ugenedb", Qt::RightButton);
 
     // check for first document
     GTUtilsProjectTreeView::doubleClickItem("Contig1");
+    GTUtilsTaskTreeView::waitTaskFinished();
     title1 = GTUtilsMdi::activeWindowTitle();
-    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "unexpected title for doc1: " + title1);
+    CHECK_SET_ERR(title1 == "Contig1 [test_3637_1.ugenedb]", "3. unexpected title for doc1: " + title1);
 
     // check for second document
     GTUtilsProjectTreeView::doubleClickItem("Contig2");
+    GTUtilsTaskTreeView::waitTaskFinished();
     title2 = GTUtilsMdi::activeWindowTitle();
-    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
+    CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "4. unexpected title for doc2: " + title2);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0039) {
