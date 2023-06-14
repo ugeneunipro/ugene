@@ -2059,12 +2059,12 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0075);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0076);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0077);
-
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0078);
-
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0079_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0079_2);
+
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0080);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0081);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence edit/
