@@ -118,6 +118,7 @@ void ExternalToolRunTask::run() {
         }
         return;
     }
+    externalToolProcess->closeWriteChannel();
     while (!externalToolProcess->waitForFinished(1000)) {
         if (isCanceled()) {
             killProcess(externalToolProcess);
