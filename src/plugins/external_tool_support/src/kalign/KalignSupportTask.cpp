@@ -147,7 +147,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
     if (hasError() || isCanceled()) {
         return res;
     }
-    QString outputUrl = url + ".out.aln";
+    QString outputUrl = url + ".out.msf";
     if (subTask == saveTemporaryDocumentTask) {
         QStringList arguments;
         if (url.contains(" ")) {
@@ -168,7 +168,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
         //            arguments << "-iterate" << QString::number(settings.numIterations);
         //        }
         arguments << "-i" << url;
-        arguments << "-f" << "clu";
+        arguments << "-f" << "msf";
         arguments << "-o" << outputUrl;
         kalignTask = new ExternalToolRunTask(Kalign3Support::ET_KALIGN_ID, arguments, new KalignLogParser());
         setListenerForTask(kalignTask);
@@ -190,7 +190,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
         ioLog.details(tr("Loading output file '%1'").arg(outputUrl));
 
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-        loadTmpDocumentTask = new LoadDocumentTask(BaseDocumentFormats::CLUSTAL_ALN, outputUrl, iof);
+        loadTmpDocumentTask = new LoadDocumentTask(BaseDocumentFormats::MSF, outputUrl, iof);
         loadTmpDocumentTask->setSubtaskProgressWeight(5);
         res.append(loadTmpDocumentTask);
     } else if (subTask == loadTmpDocumentTask) {
@@ -371,10 +371,12 @@ KalignLogParser::KalignLogParser() {
     progress = 0;
 }
 
-void KalignLogParser::parseOutput(const QString&) {
+void KalignLogParser::parseOutput(const QString& out) {
+    uiLog.info("LOG-out:" + out);
 }
 
-void KalignLogParser::parseErrOutput(const QString&) {
+void KalignLogParser::parseErrOutput(const QString& err) {
+    uiLog.info("LOG-err:" + err);
     // TODO
     //    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
     //    lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();

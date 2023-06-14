@@ -118,12 +118,8 @@ void ExternalToolRunTask::run() {
         }
         return;
     }
-    uiLog.info("ERR:" + externalToolProcess->readAllStandardError());
-    uiLog.info("OUT:" + externalToolProcess->readAllStandardOutput());
-
+    externalToolProcess->closeWriteChannel();
     while (!externalToolProcess->waitForFinished(1000)) {
-        uiLog.info("ERR:" + externalToolProcess->readAllStandardError());
-        uiLog.info("OUT:" + externalToolProcess->readAllStandardOutput());
         if (isCanceled()) {
             killProcess(externalToolProcess);
             if (!externalToolProcess->waitForFinished(2000)) {  // wait 2 seconds to let OS kill process in previous method
