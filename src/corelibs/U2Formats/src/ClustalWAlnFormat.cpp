@@ -47,10 +47,9 @@
 
 namespace U2 {
 
-/* TRANSLATOR U2::ClustalWAlnFormat */
-/* TRANSLATOR U2::IOAdapter */
+/** Valid suffix of the first line in the file. Used for format detection and as a multi-document part separator. */
+const QString CLUSTAL_FIRST_LINE_SUFFIX = " multiple sequence alignment";
 
-const QString ClustalWAlnFormat::CLUSTAL_HEADER = "CLUSTAL";
 const int ClustalWAlnFormat::MAX_LINE_LEN = 190;
 // The sequence name's length maximum is defined in the "clustalw.h" file of the "CLUSTALW" source code
 const int ClustalWAlnFormat::MAX_NAME_LEN = 150;
@@ -83,14 +82,14 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
     reader.read(os, buf, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
     CHECK_OP(os, )
 
-    if (!lineOk || !buf.startsWith(CLUSTAL_HEADER)) {
+    if (!lineOk || !buf.trimmed().endsWith(CLUSTAL_FIRST_LINE_SUFFIX)) {
         os.setError(ClustalWAlnFormat::tr("Illegal header line"));
         return;
     }
 
     // Read names and sequences.
     while (reader.read(os, buf, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk) > 0 && !os.isCoR()) {
-        if (buf.startsWith(CLUSTAL_HEADER)) {
+        if (buf.trimmed().endsWith(CLUSTAL_FIRST_LINE_SUFFIX)) {
             reader.undo(os);  // Start of the next document in the stream.
             CHECK_OP(os, )
             break;
@@ -304,13 +303,10 @@ void ClustalWAlnFormat::storeTextDocument(IOAdapterWriter& writer, Document* d, 
 }
 
 FormatCheckResult ClustalWAlnFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    if (!dataPrefix.startsWith(CLUSTAL_HEADER)) {
-        return FormatDetection_NotMatched;
-    }
-    QString line = TextUtils::readFirstLine(dataPrefix);
-    return line == CLUSTAL_HEADER || line.endsWith("multiple sequence alignment")
+    QString line = TextUtils::readFirstLine(dataPrefix).trimmed();
+    return line.endsWith(CLUSTAL_FIRST_LINE_SUFFIX)
                ? FormatDetection_Matched
-               : FormatDetection_AverageSimilarity;
+               : FormatDetection_NotMatched;
 }
 
 }  // namespace U2

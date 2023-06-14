@@ -33,8 +33,6 @@ class IOAdapter;
 class U2FORMATS_EXPORT ClustalWAlnFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    static const QString CLUSTAL_HEADER;
-
     ClustalWAlnFormat(QObject* p);
 
     void storeTextDocument(IOAdapterWriter& writer, Document* d, U2OpStatus& os) override;
