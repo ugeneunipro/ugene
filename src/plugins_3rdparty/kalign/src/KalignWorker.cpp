@@ -47,7 +47,7 @@ namespace LocalWorkflow {
 /****************************
  * KalignWorkerFactory
  ****************************/
-const QString Kalign2WorkerFactory::ACTOR_ID("kalign");
+const QString Kalign2WorkerFactory::ACTOR_ID("kalign2");
 const QString GAP_OPEN_PENALTY("gap-open-penalty");
 const QString GAP_EXT_PENALTY("gap-ext-penalty");
 const QString TERM_GAP_PENALTY("terminal-gap-penalty");

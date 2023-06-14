@@ -55,7 +55,7 @@ MrBayesSupport::MrBayesSupport()
 #endif
 
     validationArguments << "";  // anything to get info and exit with error
-    validMessage = "MrBayes";
+    validationMessageRegExp = "MrBayes";
     description = tr("<i>MrBayes</i> is a program for the Bayesian estimation of phylogeny."
                      "Bayesian inference of phylogeny is based upon a quantity called the posterior "
                      "probability distribution of trees, which is the probability of a tree conditioned "

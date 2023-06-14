@@ -190,7 +190,7 @@ void HmmerSupport::initBuild() {
 #endif
 
     validationArguments << "-h";
-    validMessage = "hmmbuild";
+    validationMessageRegExp = "hmmbuild";
     description = tr("<i>HMMER build</i> constructs HMM profiles from multiple sequence alignments.");
 
     MainWindow* mainWindow = AppContext::getMainWindow();
@@ -210,7 +210,7 @@ void HmmerSupport::initSearch() {
 #endif
 
     validationArguments << "-h";
-    validMessage = "hmmsearch";
+    validationMessageRegExp = "hmmsearch";
     description = tr("<i>HMMER search</i> searches profile(s) against a sequence database.");
 
     MainWindow* mainWindow = AppContext::getMainWindow();
@@ -230,7 +230,7 @@ void HmmerSupport::initPhmmer() {
 #endif
 
     validationArguments << "-h";
-    validMessage = "phmmer";
+    validationMessageRegExp = "phmmer";
     description = tr("<i>PHMMER search</i> searches a protein sequence against a protein database.");
 
     MainWindow* mainWindow = AppContext::getMainWindow();

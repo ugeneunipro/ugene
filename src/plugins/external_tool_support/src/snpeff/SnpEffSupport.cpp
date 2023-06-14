@@ -51,7 +51,7 @@ SnpEffSupport::SnpEffSupport()
 
     executableFileName = "snpEff.jar";
 
-    validMessage = "Usage: snpEff \\[command\\] \\[options\\] \\[files\\]";
+    validationMessageRegExp = "Usage: snpEff \\[command\\] \\[options\\] \\[files\\]";
     description = tr("<i>SnpEff</i>: Genetic variant annotation and effect prediction toolbox.");
 
     versionRegExp = QRegExp("version SnpEff (\\d+.\\d+[a-zA-Z]?)");

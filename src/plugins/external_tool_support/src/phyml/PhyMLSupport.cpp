@@ -44,7 +44,7 @@ PhyMLSupport::PhyMLSupport()
 
     executableFileName = isOsWindows() ? "PhyML.exe" : "phyml";
     validationArguments << "--help";
-    validMessage = "PhyML";
+    validationMessageRegExp = "PhyML";
     description = tr("<i>PhyML</i> is a simple, fast, and accurate algorithm to estimate large phylogenies by maximum likelihood");
     versionRegExp = QRegExp("- PhyML (\\d+)");
     toolKitName = "PhyML";

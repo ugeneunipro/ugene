@@ -36,15 +36,23 @@ namespace U2 {
 // additional tool validations. Even with other executables
 class U2CORE_EXPORT ExternalToolValidation {
 public:
-    ExternalToolValidation(const QString& _toolRunnerProgram, const QString& _executableFile, const QStringList& _arguments, const QString& _expectedMsg, const StrStrMap& _possibleErrorsDescr = StrStrMap())
-        : toolRunnerProgram(_toolRunnerProgram), executableFile(_executableFile), arguments(_arguments), expectedMsg(_expectedMsg), possibleErrorsDescr(_possibleErrorsDescr) {
+    ExternalToolValidation(const QString& _toolRunnerProgram,
+                           const QString& _executableFile,
+                           const QStringList& _arguments,
+                           const QString& _validationMessageRegExp,
+                           const StrStrMap& _possibleErrorsDescr = StrStrMap())
+        : toolRunnerProgram(_toolRunnerProgram),
+          executableFile(_executableFile),
+          arguments(_arguments),
+          validationMessageRegExp(_validationMessageRegExp),
+          possibleErrorsDescr(_possibleErrorsDescr) {
     }
 
 public:
     QString toolRunnerProgram;
     QString executableFile;
     QStringList arguments;
-    QString expectedMsg;
+    QString validationMessageRegExp;
     StrStrMap possibleErrorsDescr;
 
     static const QString DEFAULT_DESCR_KEY;
@@ -82,7 +90,7 @@ public:
     virtual void extractAdditionalParameters(const QString& output);
     virtual void performAdditionalChecks(const QString& toolPath);
     /* Check external tool for path compatibility. */
-    void checkPaths(const QStringList& arguments, U2OpStatus &os) const;
+    void checkPaths(const QStringList& arguments, U2OpStatus& os) const;
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const;
@@ -123,7 +131,7 @@ protected:
     QString toolRunnerProgram;  // starter program (e.g. python for scripts)
     QString executableFileName;  // executable file name (without path)
     QStringList validationArguments;  // arguments to validation run (such as --version)
-    QString validMessage;  // expected message in the validation run output
+    QString validationMessageRegExp;  // expected message in the validation run output
     QString version;  // tool version
     QString predefinedVersion;  // tool's predefined version, this value is used if tool is not validated and there is no possibility to get actual version
     QRegExp versionRegExp;  // RegExp to get the version from the validation run output
@@ -216,11 +224,6 @@ public:
         NotValidByDependency,
     };
 
-    ExternalToolManager() {
-    }
-    virtual ~ExternalToolManager() {
-    }
-
     virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr) = 0;
 
     virtual bool isValid(const QString& toolName) const = 0;
@@ -241,7 +244,7 @@ class U2CORE_EXPORT ExternalToolRegistry : public QObject {
     Q_OBJECT
 public:
     ExternalToolRegistry();
-    ~ExternalToolRegistry();
+    ~ExternalToolRegistry() override;
 
     ExternalTool* getByName(const QString& name) const;
     ExternalTool* getById(const QString& id) const;

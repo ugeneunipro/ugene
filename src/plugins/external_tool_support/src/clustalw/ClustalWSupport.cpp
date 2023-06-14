@@ -62,7 +62,7 @@ ClustalWSupport::ClustalWSupport()
 #    endif
 #endif
     validationArguments << "-help";
-    validMessage = "CLUSTAL";
+    validationMessageRegExp = "CLUSTAL";
     description = tr("<i>ClustalW</i> is a free sequence alignment software for DNA or proteins.");
     versionRegExp = QRegExp("CLUSTAL (\\d+\\.\\d+) Multiple Sequence Alignments");
     toolKitName = "ClustalW";

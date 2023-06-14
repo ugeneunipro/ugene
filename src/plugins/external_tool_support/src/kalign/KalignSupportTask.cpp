@@ -168,8 +168,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
         //            arguments << "-iterate" << QString::number(settings.numIterations);
         //        }
         arguments << "-i" << url;
-        arguments << "-f"
-                  << "clu";
+        arguments << "-f" << "clu";
         arguments << "-o" << outputUrl;
         kalignTask = new ExternalToolRunTask(Kalign3Support::ET_KALIGN_ID, arguments, new KalignLogParser());
         setListenerForTask(kalignTask);

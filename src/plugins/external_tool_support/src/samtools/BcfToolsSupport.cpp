@@ -42,7 +42,7 @@ BcfToolsSupport::BcfToolsSupport()
     executableFileName = "bcftools";
 #endif
 
-    validMessage = "bcftools \\(Tools for data in the VCF/BCF formats\\)";
+    validationMessageRegExp = "bcftools \\(Tools for data in the VCF/BCF formats\\)";
     description = "<i>BCFtools</i> is a set of utilities for data in the VCF/BCF formats";
     versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
 

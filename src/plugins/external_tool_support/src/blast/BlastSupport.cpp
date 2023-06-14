@@ -82,44 +82,44 @@ BlastSupport::BlastSupport(const QString& id)
 
     if (id == ET_BLASTN_ID) {
         executableFileName = isOsWindows() ? "blastn.exe" : "blastn";
-        validMessage = "Nucleotide-Nucleotide BLAST";
+        validationMessageRegExp = "Nucleotide-Nucleotide BLAST";
         description = tr("The <i>blastn</i> tool searches a nucleotide database using a nucleotide query.");
         versionRegExp = QRegExp("Nucleotide-Nucleotide BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_BLASTP_ID) {
         executableFileName = isOsWindows() ? "blastp.exe" : "blastp";
-        validMessage = "Protein-Protein BLAST";
+        validationMessageRegExp = "Protein-Protein BLAST";
         description = tr("The <i>blastp</i> tool searches a protein database using a protein query.");
         versionRegExp = QRegExp("Protein-Protein BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_BLASTX_ID) {
         executableFileName = isOsWindows() ? "blastx.exe" : "blastx";
-        validMessage = "Translated Query-Protein Subject";
+        validationMessageRegExp = "Translated Query-Protein Subject";
         description = tr("The <i>blastx</i> tool searches a protein database using a translated nucleotide query.");
         versionRegExp = QRegExp("Translated Query-Protein Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_TBLASTN_ID) {
         executableFileName = isOsWindows() ? "tblastn.exe" : "tblastn";
-        validMessage = "Protein Query-Translated Subject";
+        validationMessageRegExp = "Protein Query-Translated Subject";
         description = tr("The <i>tblastn</i> compares a protein query against a translated nucleotide database");
         versionRegExp = QRegExp("Protein Query-Translated Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_TBLASTX_ID) {
         executableFileName = isOsWindows() ? "tblastx.exe" : "tblastx";
-        validMessage = "Translated Query-Translated Subject";
+        validationMessageRegExp = "Translated Query-Translated Subject";
         description = tr("The <i>tblastx</i> translates the query nucleotide sequence in all six possible frames and compares it against the six-frame translations of a nucleotide sequence database.");
         versionRegExp = QRegExp("Translated Query-Translated Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_RPSBLAST_ID) {
         executableFileName = isOsWindows() ? "rpsblast.exe" : "rpsblast";
-        validMessage = "Reverse Position Specific BLAST";
+        validationMessageRegExp = "Reverse Position Specific BLAST";
         description = "";
         versionRegExp = QRegExp("Reverse Position Specific BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_BLASTDBCMD_ID) {
         executableFileName = isOsWindows() ? "blastdbcmd.exe" : "blastdbcmd";
         validationArguments << "--help";
-        validMessage = "blastdbcmd";
+        validationMessageRegExp = "blastdbcmd";
         description = tr("The <i>BlastDBCmd</i> fetches protein or nucleotide sequences from BLAST database based on a query.");
         versionRegExp = QRegExp("BLAST database client, version (\\d+\\.\\d+\\.\\d+\\+?)");
     } else if (id == ET_MAKEBLASTDB_ID) {
         executableFileName = isOsWindows() ? "makeblastdb.exe" : "makeblastdb";
         validationArguments << "-help";
-        validMessage = "makeblastdb";
+        validationMessageRegExp = "makeblastdb";
         description = tr("The <i>makeblastdb</i> formats protein or nucleotide source databases before these databases can be searched by other BLAST tools.");
         versionRegExp = QRegExp("Application to create BLAST databases, version (\\d+\\.\\d+\\.\\d+\\+?)");
     } else {

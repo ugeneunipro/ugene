@@ -171,7 +171,7 @@ void ExternalTool::checkPaths(const QStringList& arguments, U2OpStatus& os) cons
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {
-    ExternalToolValidation result(toolRunnerProgram, executableFileName, validationArguments, validMessage, errorDescriptions);
+    ExternalToolValidation result(toolRunnerProgram, executableFileName, validationArguments, validationMessageRegExp, errorDescriptions);
     return result;
 }
 

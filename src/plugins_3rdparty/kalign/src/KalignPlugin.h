@@ -43,36 +43,6 @@ class Kalign2Plugin : public Plugin {
     Q_OBJECT
 public:
     Kalign2Plugin();
-    ~Kalign2Plugin() override;
-public slots:
-    void sl_runWithExtFileSpecify();
-
-private:
-    Kalign2MSAEditorContext* ctx = nullptr;
-};
-
-class Kalign2MSAEditorContext : public GObjectViewWindowContext {
-    Q_OBJECT
-public:
-    Kalign2MSAEditorContext(QObject* p);
-
-protected slots:
-    void sl_align();
-
-protected:
-    void initViewContext(GObjectViewController* view) override;
-};
-
-class Kalign2Action : public GObjectViewAction {
-    Q_OBJECT
-public:
-    Kalign2Action(QObject* p, GObjectViewController* v, const QString& text, int order)
-        : GObjectViewAction(p, v, text, order) {
-    }
-    MSAEditor* getMSAEditor() const;
-
-private slots:
-    void sl_updateState();
 };
 
 class Kalign2PairwiseAligmnentAlgorithm : public AlignmentAlgorithm {

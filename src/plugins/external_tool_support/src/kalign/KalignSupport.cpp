@@ -53,10 +53,10 @@ Kalign3Support::Kalign3Support()
         icon = QIcon(":external_tool_support/images/kalign.png");
     }
     executableFileName = isOsWindows() ? "kalign.exe" : "kalign";
-    validationArguments << "-help";
-    validMessage = "Kalign (";
-    description = tr("<i>Kalign</i> is a fast multiple sequence alignment program for biological sequences..");
-    versionRegExp = QRegExp("Kalign (\\d+\\.\\d+)");
+    validationMessageRegExp = "kalign \\d+\\.\\d+\\.\\d+";
+    validationArguments << "--version";
+    description = tr("<i>Kalign</i> is a fast multiple sequence alignment program for biological sequences.");
+    versionRegExp = QRegExp("kalign \\d+\\.\\d+\\.\\d+");
     toolKitName = "Kalign";
 }
 

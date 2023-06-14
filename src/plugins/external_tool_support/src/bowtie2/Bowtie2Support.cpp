@@ -52,7 +52,7 @@ Bowtie2Support::Bowtie2Support(const QString& id)
         dependencies << PerlSupport::ET_PERL_ID;
         executableFileName = "bowtie2";
         validationArguments << "--help";
-        validMessage = "bowtie2";
+        validationMessageRegExp = "bowtie2";
         description = tr("<i>Bowtie 2 aligner</i> takes a Bowtie 2 index"
                          " and a set of sequencing read files and outputs a set of alignments.");
     } else if (id == ET_BOWTIE2_BUILD_ID) {  // Bowtie2-build
@@ -61,7 +61,7 @@ Bowtie2Support::Bowtie2Support(const QString& id)
         dependencies << PythonSupport::ET_PYTHON_ID;
         executableFileName = "bowtie2-build";
         validationArguments << "--version";
-        validMessage = "bowtie2-build";
+        validationMessageRegExp = "bowtie2-build";
         description = tr("<i>Bowtie 2 build indexer</i> "
                          " builds a Bowtie index from a set of DNA sequences. It outputs"
                          " a set of 6 files with suffixes .1.bt2, .2.bt2, .3.bt2, .4.bt2,"
@@ -75,7 +75,7 @@ Bowtie2Support::Bowtie2Support(const QString& id)
         dependencies << PythonSupport::ET_PYTHON_ID;
         executableFileName = "bowtie2-inspect";
         validationArguments << "--version";
-        validMessage = "bowtie2-inspect";
+        validationMessageRegExp = "bowtie2-inspect";
         description = tr("<i>Bowtie 2 index inspector</i>"
                          " extracts information from a Bowtie index about what kind"
                          " of index it is and what reference sequence were used to build it.");

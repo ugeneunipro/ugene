@@ -40,7 +40,7 @@ PerlSupport::PerlSupport()
 #elif defined(Q_OS_UNIX)
     executableFileName = "perl";
 #endif
-    validMessage = "This is perl";
+    validationMessageRegExp = "This is perl";
     validationArguments << "--version";
 
     description += tr("Perl scripts interpreter");

@@ -48,7 +48,7 @@ VcfConsensusSupport::VcfConsensusSupport()
 
     muted = true;
     validationArguments << "-help";
-    validMessage = "vcf-consensus";
+    validationMessageRegExp = "vcf-consensus";
     description = tr("Apply VCF variants to a fasta file to create consensus sequence.");
     versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
     toolKitName = "VCFtools";

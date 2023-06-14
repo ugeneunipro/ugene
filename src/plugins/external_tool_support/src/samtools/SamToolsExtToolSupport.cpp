@@ -47,7 +47,7 @@ SamToolsExtToolSupport::SamToolsExtToolSupport()
 #    endif
 #endif
 
-    validMessage = "samtools \\(Tools for alignments in the SAM format\\)";
+    validationMessageRegExp = "samtools \\(Tools for alignments in the SAM format\\)";
     description = "<i>SAMtools</i> is a set of utilities for interacting"
                   " with and post-processing short DNA sequence read alignments."
                   " This external tool is required to run <i>TopHat</i> external tool.";
