@@ -91,7 +91,7 @@ private:
         void parseSecondaryStructure(BioStruct3D& biostruct, U2OpStatus& ti);
         void parseHet(BioStruct3D& biostruct, U2OpStatus& ti);
         void parseAtomConnections(BioStruct3D& biostruct, U2OpStatus& ti);
-        void parseAtom(BioStruct3D& biostruct, U2OpStatus& ti, QList<int>& idSequence);
+        void parseAtom(BioStruct3D& biostruct, U2OpStatus& ti, QList<int>& sequenceIds);
         void parseSplitSection(U2OpStatus& ti);
 
         void createMolecule(char chainIdentifier, BioStruct3D& biostruct, int chainIndex);
@@ -104,9 +104,7 @@ private:
 
         // Returns the end-of-name index for `specification`. Changes `readingMoleculeName` if needed.
         int returnEndOfNameIndexAndUpdateParserState(const QString& specification);
-        
-        // Check if IDs in list follows natural order
-        void checkIdsOrder(QList<int>& idSequence, U2OpStatus& ti);
+
     public:
         PDBParser(IOAdapter* io);
         void parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& ts);

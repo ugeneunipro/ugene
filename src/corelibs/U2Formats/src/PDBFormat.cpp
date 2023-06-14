@@ -185,6 +185,18 @@ PDBFormat::PDBParser::PDBParser(IOAdapter* _io)
     flagAtomRecordPresent = false;
 }
 
+// Checks if IDs in list follows natural order, keep in mind - list will be cleared after
+static void checkIdsOrder(QList<int>& sequenceIds, U2OpStatus& ti) {
+    QList<int> sortedIdSequence(sequenceIds);
+    std::sort(sortedIdSequence.begin(), sortedIdSequence.end());
+    if (sortedIdSequence != sequenceIds) {
+        ti.addWarning(QObject::tr("The atoms in the file are not located according to the order of their identifiers."
+                                  " Atoms are added to the molecule in the order they appear in the file. Get in order"
+                                  " the atoms and their IDs in the model to dismiss this message."));
+    }
+    sequenceIds.clear();
+}
+
 void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& ti) {
     QByteArray readBuff(DocumentFormat::READ_BUFF_SIZE + 1, 0);
     char* buf = readBuff.data();
@@ -268,17 +280,6 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
     updateSecStructChainIndexes(biostruct);
 }
 
-void PDBFormat::PDBParser::checkIdsOrder(QList<int>& idSequence, U2OpStatus& ti) {
-    QList<int> sortedIdSequence(idSequence);
-    std::sort(sortedIdSequence.begin(), sortedIdSequence.end());
-    if (sortedIdSequence != idSequence) {
-        ti.addWarning(PDBFormat::tr("The atoms in the file are not located according to the order of their identifiers."
-                         " Atoms are added to the molecule in the order they appear in the file. Get in order"
-                         " the atoms and their IDs in the model to dismiss this message."));
-    }
-    idSequence.clear();
-}
-
 namespace {
 const QString MOLECULE_TAG = "MOLECULE";
 const QString CHAIN_TAG = "CHAIN";
@@ -352,7 +353,7 @@ bool PDBFormat::PDBParser::seqResContains(char chainIdentifier, int residueIndex
     }
 }
 
-void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<int>& idSequence) {
+void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<int>& sequenceIds) {
     /*
     Record Format
 
@@ -448,7 +449,7 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<
         SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
         Molecule3DModel& model3D = mol->models[modelId];
         model3D.atoms.append(a);
-        idSequence.append(id);
+        sequenceIds.append(id);
     }
 }
 
