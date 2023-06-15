@@ -501,7 +501,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             GTKeyboardDriver::keySequence("tel");
 
             //    Expected state: "telomere" type is selected. Cancel the dialog.
-            const QString type = getTypeFromFullWidget(dialog);
+            QString type = getTypeFromFullWidget(dialog);
             CHECK_SET_ERR("telomere" == type,
                           QString("1: An unexpected feature type: expect '%1', got '%2'")
                               .arg("telomere")
@@ -511,7 +511,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new CreateAnnotationDialogScenario));
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new CreateAnnotationDialogScenario()));
     openFileAndCallCreateAnnotationDialog(dataDir + "samples/FASTA/human_T1.fa");
 
     //    4. Call "Smith-Waterman Search" dialog. Open "Input and output" tab.
