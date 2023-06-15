@@ -2386,7 +2386,7 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
                 }
                 auto name = "A" + id;
                 auto item = GTTreeWidget::findItem(tree, name);
-                auto tooltip = item->data(0, Qt::ToolTipRole).toString();
+                auto tooltip = item->data(3, Qt::ToolTipRole).toString();
                 auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips/" + name + ".html");
                 CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip").arg(name));
             }
