@@ -31,7 +31,6 @@ class WDWizardPage : public QWizardPage {
     Q_OBJECT
 public:
     WDWizardPage(WizardPageController* controller, QWidget* parent = nullptr);
-    virtual ~WDWizardPage();
 
     virtual void initializePage();
     virtual int nextId() const;

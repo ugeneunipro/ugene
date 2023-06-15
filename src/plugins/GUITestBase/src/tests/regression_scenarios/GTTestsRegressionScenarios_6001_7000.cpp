@@ -2971,7 +2971,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             // 3. Skip the first page
             auto rbIntegratedTool = GTWidget::findRadioButton("rbIntegratedTool", dialog);
@@ -2997,7 +2997,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
 
                 GTKeyboardDriver::keySequence("name");
                 QAbstractItemModel* baseModel = table->model();
-                CHECK_SET_ERR(nullptr != baseModel, "QItemSelectionModel not found");
+                CHECK_SET_ERR(baseModel != nullptr, "QItemSelectionModel not found");
 
                 QString expectedString = baseModel->data(baseModel->index(1, 0)).toString();
                 CHECK_SET_ERR(expectedString == "name", QString("Expected string not found, expected: name, current: %1").arg(expectedString));
@@ -3007,7 +3007,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
                 GTWidget::click(del);
                 GTWidget::click(del);
 
-                // 5. Go to the nex page and process 4 again
+                // 5. Go to the next page and process 4 again
                 GTUtilsWizard::clickButton(GTUtilsWizard::Next);
                 // 6. 4-5 should be done 3 times in general
             }
@@ -3027,7 +3027,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_2) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
 
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             // 3. Skip the first page
             auto rbIntegratedTool = GTWidget::findRadioButton("rbIntegratedTool", dialog);
