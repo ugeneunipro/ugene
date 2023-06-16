@@ -393,12 +393,8 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7121) {
-    QApplication::clipboard()->clear();
-
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
-    GTUtilsProjectTreeView::toggleView();
 
     GTUtilsMSAEditorSequenceArea::selectSequence("Phaneroptera_falcata");
 
