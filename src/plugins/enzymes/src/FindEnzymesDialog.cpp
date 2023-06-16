@@ -764,10 +764,8 @@ static const QString TOOLTIP_SPACE = "<sub>&nbsp;</sub>";
 EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     : enzyme(ed) {
     setText(Column::Id, enzyme->id);
-    setData(Column::Id, Qt::ToolTipRole, enzyme->id);
     setCheckState(Column::Id, Qt::Unchecked);
     setText(Column::Accession, enzyme->accession);
-    setData(Column::Accession, Qt::ToolTipRole, enzyme->accession);
     setText(Column::Type, enzyme->type);
     setData(Column::Type, Qt::ToolTipRole, getTypeInfo());
     setText(Column::Sequence, enzyme->seq);
@@ -794,8 +792,6 @@ bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
 
 QString EnzymeTreeItem::getEnzymeInfo() const {
     QString result;
-    auto accession = text(Column::Accession);
-    accession = accession.right(accession.size() - 2);
     result += QString("<a href=\"http://rebase.neb.com/rebase/enz/%1.html\">%1</a>")
         .arg(text(Column::Id));
     auto typeString = data(Column::Type, Qt::ToolTipRole).toString();
@@ -1061,7 +1057,7 @@ QString EnzymeTreeItem::getTypeInfo() const {
         } else if (type.startsWith("M")) {
             result = tr("The methylase of the %1 type").arg(type.back());
         } else {
-            coreLog.error(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+            coreLog.details(tr(UNEXPECTED_TYPE_ERROR).arg(type));
         }
     } else if (type.size() == 3) {
         if (type.startsWith("R") && type.endsWith("*")) {
@@ -1069,10 +1065,10 @@ QString EnzymeTreeItem::getTypeInfo() const {
         } else if (type.startsWith("RM")) {
             result = tr("The enzyme of the %1 type, which acts as both -<br>a restriction enzyme and a methylase").arg(type.back());
         } else {
-            coreLog.error(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+            coreLog.details(tr(UNEXPECTED_TYPE_ERROR).arg(type));
         }
     } else {
-        coreLog.error(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+        coreLog.details(tr(UNEXPECTED_TYPE_ERROR).arg(type));
     }
 
     return result;
