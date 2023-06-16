@@ -398,6 +398,8 @@ GUI_TEST_CLASS_DEFINITION(test_7121) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
+    GTUtilsProjectTreeView::toggleView();
+
     GTUtilsMSAEditorSequenceArea::selectSequence("Phaneroptera_falcata");
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
