@@ -87,7 +87,9 @@ void GTLineEdit::clear(QLineEdit* lineEdit) {
     GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
     GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
 
-    GTWidget::setFocus(lineEdit);
+    if (lineEdit != QApplication::focusWidget()) {
+        GTWidget::setFocus(lineEdit);
+    }
     if (lineEdit->text().isEmpty()) {
         return;
     }

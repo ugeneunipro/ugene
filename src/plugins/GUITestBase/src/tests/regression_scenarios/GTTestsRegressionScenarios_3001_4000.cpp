@@ -2309,41 +2309,13 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
 
     GTWidget::click(GTWidget::findWidget("ArrowHeader_Output settings"));
 
-    auto outputFilePathEdit = GTWidget::findLineEdit("outputFileLineEdit");
+    GTLineEdit::setText("outputFileLineEdit", "///123/123/123");
 
-    GTWidget::setFocus(outputFilePathEdit);
-    if (!isOsMac()) {
-        GTKeyboardDriver::keyClick(Qt::Key_Home);
-    } else {
-        GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);
-    }
-
-    GTKeyboardDriver::keySequence("///123/123/123");
-
-    int deleteCounter = 100;
-    while (--deleteCounter > 0) {
-        GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    }
-
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok));
     GTWidget::click(GTWidget::findWidget("alignButton"));
-
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTWidget::setFocus(outputFilePathEdit);
-    if (!isOsMac()) {
-        GTKeyboardDriver::keyClick(Qt::Key_Home);
-    } else {
-        GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);
-    }
-
-    GTKeyboardDriver::keySequence(sandBoxDir + "123/123/123/1.aln");
-
-    deleteCounter = 15;
-    while (--deleteCounter > 0) {
-        GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    }
-
+    GTLineEdit::setText("outputFileLineEdit", sandBoxDir + "123/123/123/1.aln");
     GTWidget::click(GTWidget::findWidget("alignButton"));
 
     QString expected = "TTAGCTTATTAATT\n"
@@ -3084,7 +3056,7 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
 
     GTUtilsDialog::add(new PopupChooser({"Select", "Sequence region"}));
     GTUtilsDialog::add(new SelectSequenceRegionDialogFiller(1, 199950));
-    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTThread::waitForMainThread();
 
     class ReplaceSequenceScenario : public CustomScenario {

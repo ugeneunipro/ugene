@@ -497,17 +497,10 @@ GUI_TEST_CLASS_DEFINITION(test_4047) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
-            if (isOsMac()) {
-                // dirty hack for mac
-                if (GTWidget::getActiveModalWidget() != nullptr) {
-                    GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
-                }
-            }
         }
     };
-
     GTUtilsDialog::waitForDialog(new ConfigurationWizardFiller("Configure Raw DNA-Seq Data Processing", new custom()));
     GTUtilsWorkflowDesigner::addSample("Raw DNA-Seq data processing");
     GTThread::waitForMainThread();
