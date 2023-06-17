@@ -54,7 +54,11 @@ Notification::Notification(NotificationStack* _stack,
 
     setFrameStyle(QFrame::StyledPanel);
     if (isFloatingMode) {
-        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
+        if (isOsMac()) {
+            setWindowFlags(Qt::WindowDoesNotAcceptFocus | Qt::FramelessWindowHint | Qt::Tool);
+        } else {
+            setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
+        }
     } else {
         setAttribute(Qt::WA_Hover);
     }
