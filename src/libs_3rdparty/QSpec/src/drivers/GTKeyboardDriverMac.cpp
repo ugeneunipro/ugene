@@ -19,20 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTGlobals.h"
-#include "GTKeyboardDriver.h"
+#include "QtGlobal"
 
 #ifdef Q_OS_DARWIN
+
 #    include <ApplicationServices/ApplicationServices.h>
 #    include <Carbon/Carbon.h>
-#endif
+
+#    include "GTGlobals.h"
+#    include "GTKeyboardDriver.h"
 
 namespace HI {
 
-#ifdef Q_OS_DARWIN
 static int asciiToVirtual(char key) {
     if (isalpha(key)) {
-        key = tolower(key);
+        key = (char)tolower(key);
     }
     switch (key) {
         case ' ':
@@ -131,6 +132,8 @@ static int asciiToVirtual(char key) {
             return kVK_ANSI_Period;
         case '\n':
             return kVK_Return;
+        default:
+            break;
     }
     return key;
 }
@@ -175,6 +178,8 @@ static char toKeyWithNoShift(char key) {
             return '[';
         case '}':
             return ']';
+        default:
+            break;
     }
     return key;
 }
@@ -184,12 +189,18 @@ static void patchModKeyFlags(CGKeyCode key, bool isPress, CGEventRef& event, con
     if ((modKeys.contains(Qt::Key_Shift) && isPress) || (key == kVK_Shift && isPress)) {
         flags |= kCGEventFlagMaskShift;
     }
+    // Note: On macOS, references to "Ctrl", Qt::CTRL, Qt::Key_Control and Qt::ControlModifier correspond to the Command keys on the Macintosh keyboard,
+    // and references to "Meta", Qt::META, Qt::Key_Meta and Qt::MetaModifier correspond to the Control keys.
+    // Developers on macOS can use the same shortcut descriptions across all platforms, and their applications will automatically work as expected on macOS.
+//    if ((modKeys.contains(Qt::Key_Control) && isPress) || (key == kVK_Command && isPress)) {
+//        flags |= kCGEventFlagMaskCommand;
+//    }
     CGEventSetFlags(event, flags);
 }
 
 static bool keyPressMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
     CGEventRef event = CGEventCreateKeyboardEvent(nullptr, key, true);
-    DRIVER_CHECK(event != NULL, "Can't create event");
+    DRIVER_CHECK(event != nullptr, "Can't create event");
     patchModKeyFlags(key, true, event, modKeys);
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
@@ -199,7 +210,7 @@ static bool keyPressMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
 
 static bool keyReleaseMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
     CGEventRef event = CGEventCreateKeyboardEvent(nullptr, key, false);
-    DRIVER_CHECK(event != NULL, "Can't create event");
+    DRIVER_CHECK(event != nullptr, "Can't create event");
     patchModKeyFlags(key, false, event, modKeys);
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
@@ -225,7 +236,7 @@ static void dumpState() {
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
 #    define GT_METHOD_NAME "keyPress_char"
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
-    //    printf("Key press %c\n", origKey);
+    //    printf("GTKeyboardDriver::keyPress %c\n", origKey);
     dumpState();
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
@@ -318,5 +329,6 @@ GTKeyboardDriver::keys::keys() {
 }
 #    undef GT_CLASS_NAME
 
-#endif
 }  // namespace HI
+
+#endif

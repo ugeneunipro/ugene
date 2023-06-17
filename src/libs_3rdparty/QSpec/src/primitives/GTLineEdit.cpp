@@ -107,22 +107,6 @@ void GTLineEdit::clear(QLineEdit* lineEdit) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "pasteClipboard"
-void GTLineEdit::pasteClipboard(QLineEdit* lineEdit, PasteMethod pasteMethod) {
-    clear(lineEdit);
-    switch (pasteMethod) {
-        case Mouse:
-            GT_FAIL("GTLineEdit::pasteClipboard: Not implemented: Paste by mouse", )
-        default:
-        case Shortcut:
-            GTKeyboardUtils::paste();
-            break;
-    }
-
-    GTGlobals::sleep(500);
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "checkText"
 void GTLineEdit::checkText(QLineEdit* lineEdit, const QString& expectedText) {
     GT_CHECK(lineEdit != nullptr, "Line edit is NULL");
