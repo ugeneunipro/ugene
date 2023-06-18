@@ -54,15 +54,9 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
     }
 
     GTUtilsDialog::cleanup(GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
-
-    if (!isOsWindows()) {
-        GTMouseDriver::release(Qt::RightButton);
-        GTMouseDriver::release(Qt::LeftButton);
-        GTKeyboardDriver::keyRelease(Qt::Key_Control);
-        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-        GTKeyboardDriver::keyRelease(Qt::Key_Alt);
-        uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
-    }
+    GTMouseDriver::releasePressedButtons();
+    GTKeyboardDriver::releasePressedKeys();
+    uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0001) {

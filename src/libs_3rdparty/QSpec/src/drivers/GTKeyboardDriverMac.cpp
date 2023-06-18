@@ -31,6 +31,11 @@
 
 namespace HI {
 
+static bool shiftDown = false;
+static bool ctrlDown = false;
+static bool altDown = false;
+static bool cmdDown = false;
+
 static int asciiToVirtual(char key) {
     if (isalpha(key)) {
         key = (char)tolower(key);
@@ -184,99 +189,120 @@ static char toKeyWithNoShift(char key) {
     return key;
 }
 
-static void patchModKeyFlags(CGKeyCode key, bool isPress, CGEventRef& event, const QList<Qt::Key>& modKeys = {}) {
-    auto flags = CGEventGetFlags(event) & (~kCGEventFlagMaskNumericPad) & (~kCGEventFlagMaskSecondaryFn);
-    if ((modKeys.contains(Qt::Key_Shift) && isPress) || (key == kVK_Shift && isPress)) {
-        flags |= kCGEventFlagMaskShift;
+static void keyPressMac(CGKeyCode key) {
+    if (key == kVK_Shift) {
+        shiftDown = true;
+    } else if (key == kVK_Control) {
+        ctrlDown = true;
+    } else if (key == kVK_Option) {
+        altDown = true;
+    } else if (key == kVK_Command) {
+        cmdDown = true;
     }
-    // Note: On macOS, references to "Ctrl", Qt::CTRL, Qt::Key_Control and Qt::ControlModifier correspond to the Command keys on the Macintosh keyboard,
-    // and references to "Meta", Qt::META, Qt::Key_Meta and Qt::MetaModifier correspond to the Control keys.
-    // Developers on macOS can use the same shortcut descriptions across all platforms, and their applications will automatically work as expected on macOS.
-//    if ((modKeys.contains(Qt::Key_Control) && isPress) || (key == kVK_Command && isPress)) {
-//        flags |= kCGEventFlagMaskCommand;
-//    }
-    CGEventSetFlags(event, flags);
+
+    CGEventFlags flags = 0;
+    if (shiftDown) {
+        flags = flags | kCGEventFlagMaskShift;
+    }
+    if (ctrlDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskControl);
+    }
+    if (altDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskAlternate);
+    }
+    if (cmdDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskCommand);
+    }
+    CGEventSourceRef source = flags == 0 ? nullptr : CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+    CGEventRef command = CGEventCreateKeyboardEvent(source, key, true);
+    if (flags != 0) {
+        CGEventSetFlags(command, flags);
+    }
+    CGEventPost(kCGAnnotatedSessionEventTap, command);
+    CFRelease(command);
+    if (source != nullptr) {
+        CFRelease(source);
+    }
 }
 
-static bool keyPressMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
-    CGEventRef event = CGEventCreateKeyboardEvent(nullptr, key, true);
-    DRIVER_CHECK(event != nullptr, "Can't create event");
-    patchModKeyFlags(key, true, event, modKeys);
-    CGEventPost(kCGSessionEventTap, event);
-    CFRelease(event);
-    GTGlobals::sleep(10);
-    return true;
+static bool keyReleaseMac(CGKeyCode key) {
+    if (key == kVK_Shift) {
+        shiftDown = false;
+    } else if (key == kVK_Control) {
+        ctrlDown = false;
+    } else if (key == kVK_Option) {
+        altDown = false;
+    } else if (key == kVK_Command) {
+        cmdDown = false;
+    }
+    CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
+    CGEventPost(kCGAnnotatedSessionEventTap, command);
+    CFRelease(command);
 }
 
-static bool keyReleaseMac(CGKeyCode key, const QList<Qt::Key>& modKeys = {}) {
-    CGEventRef event = CGEventCreateKeyboardEvent(nullptr, key, false);
-    DRIVER_CHECK(event != nullptr, "Can't create event");
-    patchModKeyFlags(key, false, event, modKeys);
-    CGEventPost(kCGSessionEventTap, event);
-    CFRelease(event);
-    GTGlobals::sleep(10);
-    return true;
-}
+static void dumpState(const char* action) {
+    auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
 
-static void dumpState() {
-    //    printf("============= Dump keyboard state start\n");
-    //    auto state = CGEventSourceFlagsState(kCGEventSourceStateHIDSystemState);
-    //    printf("maskAlphaShift %d\n", state & kCGEventFlagMaskAlphaShift);
-    //    printf("maskShift %d\n", state & kCGEventFlagMaskShift);
-    //    printf("maskControl %d\n", state & kCGEventFlagMaskControl);
-    //    printf("maskCommand %d\n", state & kCGEventFlagMaskCommand);
-    //    printf("maskAlternate %d\n", state & kCGEventFlagMaskAlternate);
-    //    printf("maskHelp %d\n", state & kCGEventFlagMaskHelp);
-    //    printf("maskSecondaryFn %d\n", state & kCGEventFlagMaskSecondaryFn);
-    //    printf("maskNumericPad %d\n", state & kCGEventFlagMaskNumericPad);
-    //    printf("maskNonCoalesced %d\n", state & kCGEventFlagMaskNonCoalesced);
-    //    printf("============= Dump keyboard state end\n");
+    printf("============= Dump keyboard state %s\n", action);
+    printf("maskAlphaShift %d\n", state & kCGEventFlagMaskAlphaShift);
+    printf("maskShift %d\n", state & kCGEventFlagMaskShift);
+    printf("maskControl %d\n", state & kCGEventFlagMaskControl);
+    printf("maskCommand %d\n", state & kCGEventFlagMaskCommand);
+    printf("maskAlternate %d\n", state & kCGEventFlagMaskAlternate);
+    printf("maskHelp %d\n", state & kCGEventFlagMaskHelp);
+    printf("maskSecondaryFn %d\n", state & kCGEventFlagMaskSecondaryFn);
+    printf("maskNumericPad %d\n", state & kCGEventFlagMaskNumericPad);
+    printf("maskNonCoalesced %d\n", state & kCGEventFlagMaskNonCoalesced);
+    printf("=============\n");
 }
 
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
 #    define GT_METHOD_NAME "keyPress_char"
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
-    //    printf("GTKeyboardDriver::keyPress %c\n", origKey);
-    dumpState();
+    // printf("GTKeyboardDriver::keyPress %c\n", origKey);
+    // dumpState("before press");
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
     if (origKey != keyWithNoShift && modKeys.isEmpty()) {
+        // printf("Adding SHIFT modifier\n");
         modKeys.append(Qt::Key_Shift);
     }
     foreach (Qt::Key mod, modKeys) {
         keyPressMac(GTKeyboardDriver::key[mod]);
+        // dumpState("after modifier");
     }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
-    keyPressMac(keyCode, modKeys);
-    dumpState();
+    keyPressMac(keyCode);
+    // dumpState("after press");
     return true;
 }
 #    undef GT_METHOD_NAME
 
 #    define GT_METHOD_NAME "keyRelease_char"
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
-    //    printf("Key release %c\n", origKey);
-    dumpState();
+    // printf("GTKeyboardDriver::key release %c\n", origKey);
+    // dumpState("before release");
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
     if (origKey != keyWithNoShift && modKeys.isEmpty()) {
+        // printf("Adding SHIFT modifier\n");
         modKeys.append(Qt::Key_Shift);
     }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
-    keyReleaseMac(keyCode, modKeys);
+    keyReleaseMac(keyCode);
     foreach (Qt::Key mod, modKeys) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
-    dumpState();
+    // dumpState("after release");
     return true;
 }
 #    undef GT_METHOD_NAME
 
 bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    foreach (Qt::Key mod, modKeys) {
+    for (const Qt::Key& mod: qAsConst(modKeys)) {
         keyPressMac(GTKeyboardDriver::key[mod]);
     }
     keyPressMac(GTKeyboardDriver::key[key]);
@@ -286,7 +312,7 @@ bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
 bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
     keyReleaseMac(GTKeyboardDriver::key[key]);
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    foreach (Qt::Key mod, modKeys) {
+    for (const Qt::Key& mod: qAsConst(modKeys)) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
     return true;
@@ -327,6 +353,10 @@ GTKeyboardDriver::keys::keys() {
     // feel free to add other keys
     // macro kVK_* defined in Carbon.framework/Frameworks/HIToolbox.framework/Headers/Events.h
 }
+
+bool GTKeyboardDriver::releasePressedKeys() {
+}
+
 #    undef GT_CLASS_NAME
 
 }  // namespace HI

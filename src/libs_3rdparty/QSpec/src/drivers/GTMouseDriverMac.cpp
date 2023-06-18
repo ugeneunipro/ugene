@@ -198,5 +198,8 @@ bool GTMouseDriver::scroll(int value) {
 #    undef GT_METHOD_NAME
 #    undef GT_CLASS_NAME
 
+void GTMouseDriver::releasePressedButtons() {
+}
+
 #endif  // Q_OS_DARWIN
 }  // namespace HI
