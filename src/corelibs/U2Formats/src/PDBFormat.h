@@ -101,12 +101,13 @@ private:
         void updateResidueIndexes(BioStruct3D& biostruc);
         bool seqResContains(char chainIdentier, int residueIndex, char acronym);
         QByteArray getNextSpecLine();
+        QString filename;
 
         // Returns the end-of-name index for `specification`. Changes `readingMoleculeName` if needed.
         int returnEndOfNameIndexAndUpdateParserState(const QString& specification);
 
     public:
-        PDBParser(IOAdapter* io);
+        PDBParser(IOAdapter* io, const QString& filename);
         void parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& ts);
     };
 };
