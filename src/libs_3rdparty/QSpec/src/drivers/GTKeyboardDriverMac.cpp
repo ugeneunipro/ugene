@@ -253,17 +253,17 @@ static bool keyReleaseMac(CGKeyCode key) {
 static void dumpState(const char* action) {
     auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
 
-    printf("============= Dump keyboard state %s\n", action);
-    printf("maskAlphaShift %d\n", state & kCGEventFlagMaskAlphaShift);
-    printf("maskShift %d\n", state & kCGEventFlagMaskShift);
-    printf("maskControl %d\n", state & kCGEventFlagMaskControl);
-    printf("maskCommand %d\n", state & kCGEventFlagMaskCommand);
-    printf("maskAlternate %d\n", state & kCGEventFlagMaskAlternate);
-    printf("maskHelp %d\n", state & kCGEventFlagMaskHelp);
-    printf("maskSecondaryFn %d\n", state & kCGEventFlagMaskSecondaryFn);
-    printf("maskNumericPad %d\n", state & kCGEventFlagMaskNumericPad);
-    printf("maskNonCoalesced %d\n", state & kCGEventFlagMaskNonCoalesced);
-    printf("=============\n");
+    qDebug("============= Dump keyboard state %s", action);
+    qDebug("maskAlphaShift %d", state & kCGEventFlagMaskAlphaShift);
+    qDebug("maskShift %d", state & kCGEventFlagMaskShift);
+    qDebug("maskControl %d", state & kCGEventFlagMaskControl);
+    qDebug("maskCommand %d", state & kCGEventFlagMaskCommand);
+    qDebug("maskAlternate %d", state & kCGEventFlagMaskAlternate);
+    qDebug("maskHelp %d", state & kCGEventFlagMaskHelp);
+    qDebug("maskSecondaryFn %d", state & kCGEventFlagMaskSecondaryFn);
+    qDebug("maskNumericPad %d", state & kCGEventFlagMaskNumericPad);
+    qDebug("maskNonCoalesced %d", state & kCGEventFlagMaskNonCoalesced);
+    qDebug("=============");
 }
 
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
