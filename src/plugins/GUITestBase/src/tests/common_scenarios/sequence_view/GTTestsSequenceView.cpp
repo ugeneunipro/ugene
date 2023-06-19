@@ -2391,7 +2391,7 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
                 auto item = GTTreeWidget::findItem(tree, name);
                 auto tooltip = item->data(3, Qt::ToolTipRole).toString();
                 auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/all_possible_tooltips/" + name + ".html");
-                CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip").arg(name));
+                CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip %1").arg(name));
             }
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -2424,12 +2424,12 @@ GUI_TEST_CLASS_DEFINITION(test_0081) {
             }
 
             static const QMap<QString, QString> TYPE_MAP = {
-                {"R1", "the restriction enzyme of the 1 type"},
-                {"R2", "the restriction enzyme of the 2 type"},
-                {"R3", "the restriction enzyme of the 3 type"},
-                {"RM1", "the enzyme of the 1 type, which acts as both -<br />a restriction enzyme and a methylase"},
-                {"RM2", "the enzyme of the 2 type, which acts as both -<br />a restriction enzyme and a methylase"},
-                {"R2*", "the restriction enzyme of the 2 type,<br />but only recognizes the sequence when it is methylated"},
+                {"R1", "type 1 restriction enzyme"},
+                {"R2", "type 2 restriction enzyme"},
+                {"R3", "type 3 restriction enzyme"},
+                {"RM1", "type 1 enzyme, which acts as both -<br />a restriction enzyme and a methylase"},
+                {"RM2", "type 2 enzyme, which acts as both -<br />a restriction enzyme and a methylase"},
+                {"R2*", "type 2 restriction enzyme,<br />but only recognizes the sequence when it is methylated"},
                 {"IE", "an intron-encoded (homing) endonuclease"},
                 {"M", "an orphan methylase,<br />not associated with a restriction enzyme or specificity subunit"}};
             for (const auto& item : qAsConst(items)) {
@@ -2441,9 +2441,10 @@ GUI_TEST_CLASS_DEFINITION(test_0081) {
                 CHECK_SET_ERR(TYPE_MAP.contains(type), QString("Unexpected type").arg(type));
 
                 auto text = GTWidget::findTextBrowser("teSelectedEnzymeInfo", dialog)->toHtml();
-                CHECK_SET_ERR(text.contains(TYPE_MAP.value(type)), QString("Incorrect type descriptions, enzyme name:").arg(item->text(0)));
-                CHECK_SET_ERR(text.contains("http://rebase.neb.com/rebase/enz/" + item->text(0) + ".html"),
-                             QString("Enzyme info doesn't contain link, enzyme name:").arg(item->text(0)));
+                auto name = item->text(0);
+                CHECK_SET_ERR(text.contains(TYPE_MAP.value(type)), QString("Incorrect type descriptions, enzyme name:").arg(name));
+                CHECK_SET_ERR(text.contains("http://rebase.neb.com/rebase/enz/" + name + ".html"),
+                             QString("Enzyme info doesn't contain link, enzyme name:").arg(name));
             }
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
