@@ -55,11 +55,15 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
         dfc.supportedObjectTypes << GObjectTypes::SEQUENCE;
         sequenceFound = dr.format->checkConstraints(dfc);
     }
+    DocumentFormatConstraints dfc;
+    dfc.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
+    bool msaObjSupported = msaObjSupported = dr.format->checkConstraints(dfc);
     bool multipleSequences = props.value(RawDataCheckResult_MultipleSequences).toBool();
     bool sequenceWithGaps = props.value(RawDataCheckResult_SequenceWithGaps).toBool();
     int minSequenceSize = props.value(RawDataCheckResult_MinSequenceSize).toInt();
     int maxSequenceSize = props.value(RawDataCheckResult_MinSequenceSize).toInt();
-    bool supportWriting = dr.format->checkFlags(DocumentFormatFlag_SupportWriting);
+    bool onlyOneObjPerType = dr.format->checkFlags(DocumentFormatFlag_OnlyOneObject);
+    bool possibleToOpenAsAlignment = !onlyOneObjPerType || msaObjSupported;
 
     if (!sequenceFound) {
         return true;
@@ -71,7 +75,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
             return true;
         }
         // if sequence contains gap chars -> open it as alignment
-        if (sequenceWithGaps && supportWriting) {
+        if (sequenceWithGaps && possibleToOpenAsAlignment) {
             props[DocumentReadingMode_SequenceAsAlignmentHint] = true;
             return true;
         }
@@ -89,12 +93,19 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     bool mostProbableAreShortReads = canBeShortReads && (dr.format != nullptr && dr.format->getFormatId() == BaseDocumentFormats::FASTQ);  // TODO: move to separate function
     ui.refalignmentRB->setChecked(ui.refalignmentRB->isEnabled() && mostProbableAreShortReads);
 
-    bool canBeMsa = (forceOptions || (multipleSequences && maxSequenceSize / (minSequenceSize + 1) < 20)) && supportWriting;
+    bool canBeMsa = (forceOptions || (multipleSequences && maxSequenceSize / (minSequenceSize + 1) < 20)) && possibleToOpenAsAlignment;
     ui.malignmentRB->setEnabled(canBeMsa);
     bool mostProbableIsMsa = sequenceWithGaps;
     ui.malignmentRB->setChecked(ui.malignmentRB->isEnabled() && mostProbableIsMsa);
 
+    ui.mergeRB->setDisabled(onlyOneObjPerType);
     ui.previewEdit->setPlainText(dr.getRawDataPreviewText());
+
+    //if there is only one option left
+    if (!ui.mergeRB->isEnabled() && !ui.malignmentRB->isEnabled() && !ui.refalignmentRB->isEnabled()) {
+        props[DocumentReadingMode_SequenceAsSeparateHint] = true;
+        return true;
+    }
 
     const int rc = d->exec();
     CHECK(!d.isNull(), false);
