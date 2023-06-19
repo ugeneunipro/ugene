@@ -218,7 +218,7 @@ static void keyPressMac(CGKeyCode key) {
     if (flags != 0) {
         CGEventSetFlags(command, flags);
     }
-    CGEventPost(kCGAnnotatedSessionEventTap, command);
+    CGEventPost(kCGSessionEventTap, command);
     CFRelease(command);
     if (source != nullptr) {
         CFRelease(source);
@@ -236,7 +236,7 @@ static bool keyReleaseMac(CGKeyCode key) {
         cmdDown = false;
     }
     CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
-    CGEventPost(kCGAnnotatedSessionEventTap, command);
+    CGEventPost(kCGSessionEventTap, command);
     CFRelease(command);
 }
 
