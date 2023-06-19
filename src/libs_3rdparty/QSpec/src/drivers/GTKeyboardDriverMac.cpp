@@ -219,6 +219,7 @@ static void keyPressMac(CGKeyCode key) {
         CGEventSetFlags(command, flags);
     }
     CGEventPost(kCGSessionEventTap, command);
+    GTGlobals::sleep(1);
     CFRelease(command);
     if (source != nullptr) {
         CFRelease(source);
@@ -237,6 +238,7 @@ static bool keyReleaseMac(CGKeyCode key) {
     }
     CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
     CGEventPost(kCGSessionEventTap, command);
+    GTGlobals::sleep(1);
     CFRelease(command);
 }
 
@@ -331,7 +333,7 @@ GTKeyboardDriver::keys::keys() {
     ADD_KEY(Qt::Key_Up, kVK_UpArrow);
     ADD_KEY(Qt::Key_Right, kVK_RightArrow);
     ADD_KEY(Qt::Key_Down, kVK_DownArrow);
-    ADD_KEY(Qt::Key_Delete, kVK_ForwardDelete);
+    ADD_KEY(Qt::Key_Delete, kVK_Delete);
     ADD_KEY(Qt::Key_Backspace, kVK_Delete);
     ADD_KEY(Qt::Key_Help, kVK_Help);
     ADD_KEY(Qt::Key_F1, kVK_F1);
@@ -355,6 +357,7 @@ GTKeyboardDriver::keys::keys() {
 }
 
 bool GTKeyboardDriver::releasePressedKeys() {
+//    dumpState("releasePressedKeys");
 }
 
 #    undef GT_CLASS_NAME

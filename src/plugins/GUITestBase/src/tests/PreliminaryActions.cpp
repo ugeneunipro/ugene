@@ -53,10 +53,10 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
         QProcess::execute("closeAllErrors.exe");  // this exe file, compiled Autoit script
     }
 
+    uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
     GTUtilsDialog::cleanup(GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
     GTMouseDriver::releasePressedButtons();
     GTKeyboardDriver::releasePressedKeys();
-    uiLog.trace(QString("pre_action_0000: next keyboard modifiers are pressed before test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0001) {

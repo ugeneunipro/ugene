@@ -291,6 +291,8 @@ void GTUtilsMsaEditor::clickSequenceName(const QString& sequenceName, const Qt::
         GTKeyboardDriver::keyPress(key);
     }
     GTMouseDriver::click(mouseButton);
+
+    std::reverse(modifierKeys.begin(), modifierKeys.end());
     for (auto key : qAsConst(modifierKeys)) {
         GTKeyboardDriver::keyRelease(key);
     }

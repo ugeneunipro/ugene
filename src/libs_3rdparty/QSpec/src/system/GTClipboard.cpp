@@ -163,11 +163,8 @@ void GTClipboard::setUrls(const QList<QString>& urls) {
 void GTClipboard::clear() {
     class Scenario : public CustomScenario {
     public:
-        Scenario() {
-        }
-        void run() {
-            QClipboard* clipboard = QApplication::clipboard();
-            clipboard->clear();
+        void run() override{
+            QApplication::clipboard()->clear();
         }
     };
 
