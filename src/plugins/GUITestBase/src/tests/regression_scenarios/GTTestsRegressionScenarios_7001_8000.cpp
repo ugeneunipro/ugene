@@ -4255,6 +4255,25 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
     CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7793) {
+    // 1. Click "File ->Open as..."
+    // 2. Choose "samples/ABIF/A01.abi"
+    // Expected state 'join sequences...' option is disabled
+    class CheckJoinRBScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto malignmentRB = GTWidget::findRadioButton("malignmentRB", dialog);
+            CHECK_SET_ERR(!malignmentRB->isEnabled(), "'join sequences...' radio button should be disabled.");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
+    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(new CheckJoinRBScenario()));
+    GTMenu::clickMainMenuItem({"File", "Open as..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7797) {
     // Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
