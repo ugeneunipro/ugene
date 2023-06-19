@@ -755,7 +755,7 @@ void FindEnzymesDialog::saveSettings() {
 //////////////////////////////////////////////////////////////////////////
 // Tree item
 
-static const QString TOOLTIP_TAG = "<p style='font-family:Courier,monospace'><br>%1<br>%2<br></p>";
+static const QString TOOLTIP_TAG = "<p style='font-family:Courier,monospace'><br><strong>3'&nbsp;</strong>%1<strong>&nbsp;5'</strong><br><strong>5'&nbsp;</strong>%2<strong>&nbsp;3'</strong><br></p>";
 static const QString TOOLTIP_N_MARKER = "(N)<sub>%1</sub>";
 static const QString TOOLTIP_FORWARD_MARKER = "<sup>&#x25BC;</sup>";
 static const QString TOOLTIP_REVERSE_MARKER = "<sub>&#x25B2;</sub>";
@@ -850,7 +850,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     // generates tooltop elements, which are located outside of enzyme
     // these elements will be joined in the end
     // returns list of elements
-    auto generateTooltipElements = [](int out, int in, bool forward, Ns type, bool otherHasLeftOut, bool otherHasLeftIn) -> QStringList {
+    auto generateTooltipElements = [](int out, int in, bool forward, Ns type, bool otherHasLeftOut, bool otherHasLeftIn, bool otherHasRightIn, bool otherHasRightOut) -> QStringList {
         // Look at the enxyme:
         // N N N N N A C G T
         //       N N T G C A
@@ -861,7 +861,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         // @generateOutPartElements generates the "Out" part
         // Returns the list, wich contails the cut elements and Ns if this enzyme has the "Out" part,
         // Or spaces if does not have
-        auto generateOutPartElements = [out, in, forward, type, otherHasLeftOut]() -> QStringList {
+        auto generateOutPartElements = [out, in, forward, type, otherHasLeftOut, otherHasRightOut]() -> QStringList {
             QStringList generateOutPartElementsResult;
             if (out != 0) {
                 switch (type) {
@@ -876,11 +876,13 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
                 }
             } else if (out == 0 && otherHasLeftOut && type == Ns::Left) {
                 generateOutPartElementsResult << QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
+            } else if (out == 0 && otherHasRightOut && type == Ns::Right) {
+                generateOutPartElementsResult << QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
             }
             return generateOutPartElementsResult;
         };
         // THe same as @generateOutPartElements but for the "In" part
-        auto generateInPartElements = [out, in, forward, type, otherHasLeftOut, otherHasLeftIn]() -> QStringList {
+        auto generateInPartElements = [out, in, forward, type, otherHasLeftOut, otherHasLeftIn, otherHasRightIn, otherHasRightOut]() -> QStringList {
             QStringList generateInPartElementsResult;
             if (in != 0) {
                 if (out == 0) {
@@ -899,6 +901,12 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
                 }
             } else if (in == 0 && otherHasLeftIn && type == Ns::Left) {
                 if (otherHasLeftOut) {
+                    generateInPartElementsResult << QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
+                } else {
+                    generateInPartElementsResult << QString("&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
+                }
+            } else if (in == 0 && otherHasRightIn && type == Ns::Right) {
+                if (otherHasRightOut) {
                     generateInPartElementsResult << QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
                 } else {
                     generateInPartElementsResult << QString("&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
@@ -947,20 +955,28 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
 
          forwardTooltipElements = generateTooltipElements(forwardNOut, forwardNIn, true, forwardNShift.first,
                                                          (reverseNOut != 0 && reverseNShift.first == Ns::Left),
-                                                         (reverseNIn != 0 && reverseNShift.first == Ns::Left));
+                                                         (reverseNIn != 0 && reverseNShift.first == Ns::Left),
+                                                         (reverseNIn != 0 && reverseNShift.first == Ns::Right),
+                                                         (reverseNOut != 0 && reverseNShift.first == Ns::Right));
          reverseTooltipElements = generateTooltipElements(reverseNOut, reverseNIn, false, reverseNShift.first,
                                                          (forwardNOut != 0 && forwardNShift.first == Ns::Left),
-                                                         (forwardNIn != 0 && forwardNShift.first == Ns::Left));
+                                                         (forwardNIn != 0 && forwardNShift.first == Ns::Left),
+                                                         (forwardNIn != 0 && forwardNShift.first == Ns::Right),
+                                                         (forwardNOut != 0 && forwardNShift.first == Ns::Right));
     } else {
         if (forwardNShift.first != Ns::No) {
             forwardTooltipElements = generateTooltipElements(0, forwardNShift.second, true, forwardNShift.first,
                                                             false,
-                                                            (reverseNShift.second != 0 && reverseNShift.first == Ns::Left));
+                                                            (reverseNShift.second != 0 && reverseNShift.first == Ns::Left),
+                                                            (reverseNShift.second != 0 && reverseNShift.first == Ns::Right),
+                                                            false);
         }
         if (reverseNShift.first != Ns::No) {
             reverseTooltipElements = generateTooltipElements(0, reverseNShift.second, false, reverseNShift.first,
                                                             false,
-                                                            (forwardNShift.second != 0 && forwardNShift.first == Ns::Left));
+                                                            (forwardNShift.second != 0 && forwardNShift.first == Ns::Left),
+                                                            (forwardNShift.second != 0 && forwardNShift.first == Ns::Right),
+                                                            false);
         }
     }
     // generates the "Main" part (see @generateOutPartElements for details)
@@ -1034,9 +1050,15 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     QString forwardTooltip = generateTooltip(forwardNShift.first, forwardTooltipElements, forwardMainPart);
     QString reverseTooltip = generateTooltip(reverseNShift.first, reverseTooltipElements, reverseMainPart);
     if (forwardNShift.first == Ns::Left && reverseNShift.first != Ns::Left) {
+        if (reverseNShift.first == Ns::Right) {
+            forwardTooltip += QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
+        }
         reverseTooltip.insert(0, QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE));
     } else if (reverseNShift.first == Ns::Left && forwardNShift.first != Ns::Left) {
         forwardTooltip.insert(0, QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE));
+        if (forwardNShift.first == Ns::Right) {
+            reverseTooltip += QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
+        }
     }
 
     return TOOLTIP_TAG.arg(forwardTooltip).arg(reverseTooltip);
@@ -1045,7 +1067,6 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
 QString EnzymeTreeItem::getTypeInfo() const {
     auto type = text(Column::Type);
     QString result;
-    static constexpr const char* UNEXPECTED_TYPE_ERROR = QT_TR_NOOP("Unexpected enzyme type: %1");
     if (type == "M") {
         result = tr("An orphan methylase,<br>not associated with a restriction enzyme or specificity subunit");
 
@@ -1053,22 +1074,16 @@ QString EnzymeTreeItem::getTypeInfo() const {
         if (type == "IE") {
             result = tr("An intron-encoded (homing) endonuclease");
         } else if (type.startsWith("R")) {
-            result = tr("The restriction enzyme of the %1 type").arg(type.back());
+            result = tr("Type %1 restriction enzyme").arg(type.back());
         } else if (type.startsWith("M")) {
-            result = tr("The methylase of the %1 type").arg(type.back());
-        } else {
-            coreLog.details(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+            result = tr("Type %1 methylase").arg(type.back());
         }
     } else if (type.size() == 3) {
         if (type.startsWith("R") && type.endsWith("*")) {
-            result = tr("The restriction enzyme of the %1 type,<br>but only recognizes the sequence when it is methylated").arg(type.at(1));
+            result = tr("Type %1 restriction enzyme,<br>but only recognizes the sequence when it is methylated").arg(type.at(1));
         } else if (type.startsWith("RM")) {
-            result = tr("The enzyme of the %1 type, which acts as both -<br>a restriction enzyme and a methylase").arg(type.back());
-        } else {
-            coreLog.details(tr(UNEXPECTED_TYPE_ERROR).arg(type));
+            result = tr("Type %1 enzyme, which acts as both -<br>a restriction enzyme and a methylase").arg(type.back());
         }
-    } else {
-        coreLog.details(tr(UNEXPECTED_TYPE_ERROR).arg(type));
     }
 
     return result;
