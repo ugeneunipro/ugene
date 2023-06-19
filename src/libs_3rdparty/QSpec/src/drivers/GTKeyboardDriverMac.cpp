@@ -35,6 +35,7 @@ static bool shiftDown = false;
 static bool ctrlDown = false;
 static bool altDown = false;
 static bool cmdDown = false;
+static bool fnDown = false;
 
 static int asciiToVirtual(char key) {
     if (isalpha(key)) {
@@ -198,6 +199,8 @@ static void keyPressMac(CGKeyCode key) {
         altDown = true;
     } else if (key == kVK_Command) {
         cmdDown = true;
+    } else if (key == kVK_Function) {
+        fnDown = true;
     }
 
     CGEventFlags flags = 0;
@@ -212,6 +215,9 @@ static void keyPressMac(CGKeyCode key) {
     }
     if (cmdDown) {
         flags = CGEventFlags(flags | kCGEventFlagMaskCommand);
+    }
+    if (fnDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskSecondaryFn);
     }
     CGEventSourceRef source = flags == 0 ? nullptr : CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
     CGEventRef command = CGEventCreateKeyboardEvent(source, key, true);
@@ -235,6 +241,8 @@ static bool keyReleaseMac(CGKeyCode key) {
         altDown = false;
     } else if (key == kVK_Command) {
         cmdDown = false;
+    } else if (key == kVK_Function) {
+        fnDown = false;
     }
     CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
     CGEventPost(kCGSessionEventTap, command);
@@ -313,6 +321,11 @@ bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
 
 bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
     keyReleaseMac(GTKeyboardDriver::key[key]);
+    if (key == Qt::Key_Delete) {
+        // For some reason MacOS does not release FN key used for the internal ForwardDelete emulation (Fn + Delete).
+        // Check GUITest_regression_scenarios_test_2971 as an example.
+        keyReleaseMac(kVK_Function);
+    }
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     for (const Qt::Key& mod: qAsConst(modKeys)) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
@@ -333,7 +346,7 @@ GTKeyboardDriver::keys::keys() {
     ADD_KEY(Qt::Key_Up, kVK_UpArrow);
     ADD_KEY(Qt::Key_Right, kVK_RightArrow);
     ADD_KEY(Qt::Key_Down, kVK_DownArrow);
-    ADD_KEY(Qt::Key_Delete, kVK_Delete);
+    ADD_KEY(Qt::Key_Delete, kVK_ForwardDelete);
     ADD_KEY(Qt::Key_Backspace, kVK_Delete);
     ADD_KEY(Qt::Key_Help, kVK_Help);
     ADD_KEY(Qt::Key_F1, kVK_F1);
@@ -357,7 +370,7 @@ GTKeyboardDriver::keys::keys() {
 }
 
 bool GTKeyboardDriver::releasePressedKeys() {
-//    dumpState("releasePressedKeys");
+    dumpState("releasePressedKeys");
 }
 
 #    undef GT_CLASS_NAME
