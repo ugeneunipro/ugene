@@ -321,9 +321,10 @@ bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
 
 bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
     keyReleaseMac(GTKeyboardDriver::key[key]);
-    if (key == Qt::Key_Delete) {
+    if (key == Qt::Key_Delete || key >= Qt::Key_F1 && key <= Qt::Key_F12) {
         // For some reason MacOS does not release FN key used for the internal ForwardDelete emulation (Fn + Delete).
-        // Check GUITest_regression_scenarios_test_2971 as an example.
+        // Check GUITest_regression_scenarios_test_2971 as an example of Delete
+        // or GUITest_regression_scenarios_test_3335 as an example of F2.
         keyReleaseMac(kVK_Function);
     }
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
