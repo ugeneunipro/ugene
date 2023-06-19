@@ -59,6 +59,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     bool sequenceWithGaps = props.value(RawDataCheckResult_SequenceWithGaps).toBool();
     int minSequenceSize = props.value(RawDataCheckResult_MinSequenceSize).toInt();
     int maxSequenceSize = props.value(RawDataCheckResult_MinSequenceSize).toInt();
+    bool supportWriting = dr.format->checkFlags(DocumentFormatFlag_SupportWriting);
 
     if (!sequenceFound) {
         return true;
@@ -70,7 +71,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
             return true;
         }
         // if sequence contains gap chars -> open it as alignment
-        if (sequenceWithGaps) {
+        if (sequenceWithGaps && (supportWriting || multipleSequences)) {
             props[DocumentReadingMode_SequenceAsAlignmentHint] = true;
             return true;
         }
@@ -88,7 +89,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     bool mostProbableAreShortReads = canBeShortReads && (dr.format != nullptr && dr.format->getFormatId() == BaseDocumentFormats::FASTQ);  // TODO: move to separate function
     ui.refalignmentRB->setChecked(ui.refalignmentRB->isEnabled() && mostProbableAreShortReads);
 
-    bool canBeMsa = forceOptions || (multipleSequences && maxSequenceSize / (minSequenceSize + 1) < 20);
+    bool canBeMsa = (forceOptions || (multipleSequences && maxSequenceSize / (minSequenceSize + 1) < 20)) && (supportWriting || multipleSequences);
     ui.malignmentRB->setEnabled(canBeMsa);
     bool mostProbableIsMsa = sequenceWithGaps;
     ui.malignmentRB->setChecked(ui.malignmentRB->isEnabled() && mostProbableIsMsa);
