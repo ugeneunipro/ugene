@@ -1201,7 +1201,7 @@ void MaEditorSequenceArea::insertGapsBeforeSelection(int countOfGaps) {
     cancelShiftTracking();
 
     MultipleAlignmentObject* maObj = editor->getMaObject();
-    CHECK(maObj != nullptr || !maObj->isStateLocked(), );
+    CHECK(maObj != nullptr && !maObj->isStateLocked(), );
 
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);

@@ -2482,6 +2482,7 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/archive/2013_08_01.bairoch.gz"));
             GTWidget::click(GTWidget::findWidget("enzymesFileButton", dialog));
+            GTWidget::click(GTWidget::findWidget("pbSelectAll", dialog));
             auto totalNumberOfEnzymesLabel = GTWidget::findLabel("statusLabel");
             QString labelText = totalNumberOfEnzymesLabel->text();
             QString s = QString("4862");

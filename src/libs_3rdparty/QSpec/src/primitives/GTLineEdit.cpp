@@ -87,7 +87,9 @@ void GTLineEdit::clear(QLineEdit* lineEdit) {
     GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
     GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
 
-    GTWidget::setFocus(lineEdit);
+    if (lineEdit != QApplication::focusWidget()) {
+        GTWidget::setFocus(lineEdit);
+    }
     if (lineEdit->text().isEmpty()) {
         return;
     }
@@ -102,22 +104,6 @@ void GTLineEdit::clear(QLineEdit* lineEdit) {
         currentText = lineEdit->text();
     }
     GT_CHECK(currentText.isEmpty(), "Can't clear text, lineEdit is not empty: " + currentText);
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "pasteClipboard"
-void GTLineEdit::pasteClipboard(QLineEdit* lineEdit, PasteMethod pasteMethod) {
-    clear(lineEdit);
-    switch (pasteMethod) {
-        case Mouse:
-            GT_FAIL("GTLineEdit::pasteClipboard: Not implemented: Paste by mouse", )
-        default:
-        case Shortcut:
-            GTKeyboardUtils::paste();
-            break;
-    }
-
-    GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 

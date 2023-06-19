@@ -94,7 +94,7 @@ CreateCmdlineBasedWorkerWizard::CreateCmdlineBasedWorkerWizard(SchemaConfig* _sc
       initialConfig(nullptr),
       config(nullptr),
       schemaConfig(_schemaConfig) {
-    SAFE_POINT(nullptr != _initialConfig, "Initial config of the element to edit is nullptr", );
+    SAFE_POINT(_initialConfig != nullptr, "Initial config of the element to edit is nullptr", );
     GCOUNTER(cvar, "\"Configure Element with External Tool\" dialog is opened for editing");
     initialConfig = new ExternalProcessConfig(*_initialConfig);
     init();
@@ -246,6 +246,8 @@ void CreateCmdlineBasedWorkerWizard::init() {
     setWindowTitle(tr("Configure Element with External Tool"));
     setObjectName("CreateExternalProcessWorkerDialog");
     setWizardStyle(ClassicStyle);
+
+    setButtonLayout({QWizard::Stretch, QWizard::BackButton, QWizard::NextButton, QWizard::FinishButton, QWizard::CancelButton});
     setOption(IndependentPages);
 
     setOption(QWizard::HaveHelpButton, true);

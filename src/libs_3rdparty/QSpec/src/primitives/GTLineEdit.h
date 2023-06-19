@@ -30,26 +30,18 @@ namespace HI {
  */
 class HI_EXPORT GTLineEdit {
 public:
-    enum PasteMethod { Shortcut,
-                       Mouse };
+    enum PasteMethod {
+        Shortcut,
+        Mouse
+    };
 
-    // fails if lineEdit is NULL, GTLineEdit::clear fails
-    // or a set text differs from a given string
-#ifdef Q_OS_DARWIN
-    static void setText(QLineEdit* lineEdit, const QString& str, bool noCheck = false, bool useCopyPaste = true);
-    static void setText(const QString& lineEditName, const QString& text, QWidget* parent = nullptr, bool noCheck = false, bool useCopyPaste = true);
-#else
     static void setText(QLineEdit* lineEdit, const QString& text, bool noCheck = false, bool useCopyPaste = false);
     static void setText(const QString& lineEditName, const QString& text, QWidget* parent = nullptr, bool noCheck = false, bool useCopyPaste = false);
-#endif
     static QString getText(QLineEdit* lineEdit);
-    static QString getText(const QString& lineEditName, QWidget* parent = NULL);
+    static QString getText(const QString& lineEditName, QWidget* parent = nullptr);
 
     // fails if lineEdit is NULL, or lineEdit's text wasn't cleared
     static void clear(QLineEdit* lineEdit);
-
-    // fails if GTLineEdit::clear fails
-    static void pasteClipboard(QLineEdit* lineEdit, PasteMethod pasteMethod = Shortcut);
 
     // fails if lineEdit is NULL or lineEdit text is not in lineEdit's rect
     // considering lineEdit's fontMetrics and textMargins

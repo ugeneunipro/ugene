@@ -79,7 +79,7 @@ GTGlobals::FindOptions::FindOptions(bool _failIfNotFound, Qt::MatchFlags _matchP
       depth(_depth) {
 }
 
-void GTGlobals::GUITestFail() {
+void GTGlobals::logFirstFail() {
     qCritical("\nGT_DEBUG_MESSAGE !!!FIRST FAIL");
 }
 

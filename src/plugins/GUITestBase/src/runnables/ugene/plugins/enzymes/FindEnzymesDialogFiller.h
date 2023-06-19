@@ -40,6 +40,7 @@ struct FindEnzymesDialogFillerSettings {
     bool clickFindAll = false;
     // Show suppliers from this list
     QStringList suppliers;
+    bool clickSelectAllSuppliers = false;
 };
 
 class FindEnzymesDialogFiller : public Filler {

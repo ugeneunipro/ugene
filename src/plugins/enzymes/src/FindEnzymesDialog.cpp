@@ -681,6 +681,9 @@ void FindEnzymesDialog::sl_updateSuppliers() {
     if (suppliersList.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
         suppliersList.replace(suppliersList.indexOf(EnzymesIO::NOT_DEFINED_SIGN), notDefinedTr);
     }
+    if (selStr.isEmpty()) {
+        suppliersList.removeOne(notDefinedTr);
+    }
     cbSuppliers->setCheckedItems(suppliersList);
 }
 
@@ -772,9 +775,8 @@ EnzymeTreeItem::EnzymeTreeItem(const SEnzymeData& ed)
     setData(Column::Sequence, Qt::ToolTipRole, generateEnzymeTooltip());
     setText(Column::Organism, enzyme->organizm);
     setData(Column::Organism, Qt::ToolTipRole, enzyme->organizm);
-    auto suppliers = enzyme->suppliers.join("; ");
-    setText(Column::Suppliers, suppliers);
-    setData(Column::Suppliers, Qt::ToolTipRole, suppliers);
+    setText(5, enzyme->suppliers.join("; "));
+    setData(5, Qt::ToolTipRole, enzyme->suppliers.join("\n"));
 }
 
 bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
@@ -830,7 +832,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     auto seqComplement = DNASequenceUtils::reverseComplement(enzyme->seq, alphabet);
     if (enzyme->cutDirect == ENZYME_CUT_UNKNOWN) {
-        return TOOLTIP_TAG.arg(QString(enzyme->seq)).arg(QString(seqComplement));
+        return TOOLTIP_TAG.arg(QString(enzyme->seq)).arg(QString(DNASequenceUtils::complement(enzyme->seq, alphabet)));
     }
 
     auto enzymeSize = enzyme->seq.size();

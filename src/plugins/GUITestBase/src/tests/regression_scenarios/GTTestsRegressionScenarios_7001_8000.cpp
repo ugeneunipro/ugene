@@ -1775,7 +1775,10 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // 2. Open the "Find restriction sites" dialog, choose "AaaI" (vary first one) only and click OK.
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"AaaI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "AaaI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 

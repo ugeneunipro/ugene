@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Read a file with a custom (Kalign) header -->
+
+    <load-document index="doc" url="clustal/kalign.aln" io="local_file" format="clustal"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="kalign"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

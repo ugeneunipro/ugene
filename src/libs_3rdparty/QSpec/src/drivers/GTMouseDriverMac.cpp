@@ -38,7 +38,7 @@ static bool isPointInsideScreen(const QPoint& point) {
     CGDirectDisplayID displayID = CGMainDisplayID();
     int horres = CGDisplayPixelsWide(displayID);
     int vertres = CGDisplayPixelsHigh(displayID);
-    QRect screen(1, 1, horres - 2, vertres - 2);  // Exclude border pixels like (0,0)
+    QRect screen(1, 1, horres - 2, vertres - 2);  // Exclude border pixels like (0,0).
     return screen.contains(point);
 }
 
@@ -49,7 +49,7 @@ static bool isPointInsideScreen(int x, int y) {
 #    define GT_METHOD_NAME "selectAreaMac"
 static bool selectAreaMac(int x, int y) {
     qDebug("selectAreaMac %d %d", x, y);
-    DRIVER_CHECK(isPointInsideScreen(x, y), "Invalid coordinates");
+    DRIVER_CHECK(isPointInsideScreen(x, y), QString("selectAreaMac: Invalid coordinates %1 %2").arg(x).arg(y));
 
     CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);
     DRIVER_CHECK(event != NULL, "Can't create event");
@@ -71,7 +71,7 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
     }
     qDebug("GTMouseDriver::moveTo %d %d", x, y);
 
-    DRIVER_CHECK(isPointInsideScreen(x, y), "Invalid coordinates");
+    DRIVER_CHECK(isPointInsideScreen(x, y), QString("moveTo: Invalid coordinates %1 %2").arg(x).arg(y));
 
     CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);
     DRIVER_CHECK(event != NULL, "Can't create event");

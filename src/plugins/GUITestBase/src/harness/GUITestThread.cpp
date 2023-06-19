@@ -81,6 +81,7 @@ void GUITestThread::sl_testTimeOut() {
 }
 
 QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
+    GTGlobals::resetOpStatus();
     QTimer::singleShot(testToRun->timeout, this, SLOT(sl_testTimeOut()));
 
     // Start all tests with some common mouse position.
@@ -89,7 +90,6 @@ QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
     try {
         for (GUITest* test : qAsConst(tests)) {
             qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
-            GTGlobals::resetOpStatus();
             test->run();
             qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
         }
@@ -97,18 +97,18 @@ QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
     }
     // Run post checks if there is an error.
     QString error = GTGlobals::getOpStatus().getError();
-    if (!error.isEmpty()) {
+    if (error.isEmpty()) {
         try {
             UGUITestBase* testBase = UGUITestBase::getInstance();
             const QList<GUITest*> postCheckList = testBase->getTests(UGUITestBase::PostAdditionalChecks);
             for (GUITest* test : qAsConst(postCheckList)) {
                 qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
-                GTGlobals::resetOpStatus();
                 test->run();
                 qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
             }
         } catch (HI::GUITestOpStatus*) {
         }
+        error = GTGlobals::getOpStatus().getError();
     }
     qDebug("launchTest for all tests/checks is finished, error: '%s', isEmpty: %d", error.toLocal8Bit().constData(), error.isEmpty());
     return error;
@@ -164,7 +164,7 @@ void GUITestThread::cleanup() {
     qDebug("Running cleanup after the test");
     testToRun->cleanup();
     UGUITestBase* testBase = UGUITestBase::getInstance();
-    const QList<GUITest*> postActionList = testBase->getTests(UGUITestBase::PostAdditionalActions);
+    QList<GUITest*> postActionList = testBase->getTests(UGUITestBase::PostAdditionalActions);
     for (HI::GUITest* postAction : qAsConst(postActionList)) {
         try {
             qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());
