@@ -146,39 +146,6 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
 }
 #    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "doubleClick"
-bool GTMouseDriver::doubleClick() {
-    QPoint mousePos = QCursor::pos();
-    CGEventType eventTypeMouseDown = kCGEventLeftMouseDown;
-    CGEventRef eventPress = CGEventCreateMouseEvent(NULL, eventTypeMouseDown, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft);
-    DRIVER_CHECK(eventPress != NULL, "Can't create event");
-
-    CGEventType eventTypeMouseUp = kCGEventLeftMouseUp;
-    CGEventRef eventRelease = CGEventCreateMouseEvent(NULL, eventTypeMouseUp, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft);
-    DRIVER_CHECK(eventRelease != NULL, "Can't create event");
-
-    CGEventPost(kCGSessionEventTap, eventPress);
-    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
-    CGEventPost(kCGSessionEventTap, eventRelease);
-    GTGlobals::sleep(0);
-
-    CGEventSetDoubleValueField(eventPress, kCGMouseEventClickState, 2);
-    CGEventSetDoubleValueField(eventRelease, kCGMouseEventClickState, 2);
-
-    CGEventPost(kCGSessionEventTap, eventPress);
-    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
-    CGEventPost(kCGSessionEventTap, eventRelease);
-    GTGlobals::sleep(0);
-
-    GTGlobals::sleep(100);
-
-    CFRelease(eventPress);
-    CFRelease(eventRelease);
-
-    return true;
-}
-#    undef GT_METHOD_NAME
-
 #    define GT_METHOD_NAME "scroll"
 bool GTMouseDriver::scroll(int value) {
     CGEventRef event = CGEventCreateScrollWheelEvent(NULL, kCGScrollEventUnitPixel, 1, value > 0 ? 10 : -10);

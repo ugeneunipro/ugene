@@ -78,7 +78,6 @@ bool GTMouseDriver::selectArea(const QPoint& start, const QPoint& end) {
     return true;
 }
 
-#ifndef Q_OS_DARWIN
 bool GTMouseDriver::doubleClick() {
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on first click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on first click");
@@ -90,7 +89,6 @@ bool GTMouseDriver::doubleClick() {
     GTThread::waitForMainThread();
     return true;
 }
-#endif
 
 QPoint GTMouseDriver::getMousePosition() {
     return QCursor::pos();
