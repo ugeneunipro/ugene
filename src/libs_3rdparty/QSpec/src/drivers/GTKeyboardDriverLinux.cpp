@@ -30,7 +30,7 @@ namespace HI {
 
 #if defined __linux__
 
-bool GTKeyboardDriver::releasePressedKeys() {
+void GTKeyboardDriver::releasePressedKeys() {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);

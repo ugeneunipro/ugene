@@ -232,24 +232,6 @@ static void keyPressMac(CGKeyCode key) {
     }
 }
 
-static bool keyReleaseMac(CGKeyCode key) {
-    if (key == kVK_Shift) {
-        shiftDown = false;
-    } else if (key == kVK_Control) {
-        ctrlDown = false;
-    } else if (key == kVK_Option) {
-        altDown = false;
-    } else if (key == kVK_Command) {
-        cmdDown = false;
-    } else if (key == kVK_Function) {
-        fnDown = false;
-    }
-    CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
-    CGEventPost(kCGSessionEventTap, command);
-    GTGlobals::sleep(10);
-    CFRelease(command);
-}
-
 static void dumpState(const char* action) {
     auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
 
@@ -264,6 +246,43 @@ static void dumpState(const char* action) {
     qDebug("maskNumericPad %llu", state & kCGEventFlagMaskNumericPad);
     qDebug("maskNonCoalesced %llu", state & kCGEventFlagMaskNonCoalesced);
     qDebug("=============");
+}
+
+static bool keyReleaseMac(CGKeyCode key, int attempt = 1) { // NOLINT(misc-no-recursion)
+    CGEventFlags modifierFlagToClean = 0;
+    if (key == kVK_Shift) {
+        shiftDown = false;
+        modifierFlagToClean = kCGEventFlagMaskShift;
+    } else if (key == kVK_Control) {
+        ctrlDown = false;
+        modifierFlagToClean = kCGEventFlagMaskControl;
+    } else if (key == kVK_Option) {
+        altDown = false;
+        modifierFlagToClean = kCGEventFlagMaskAlternate;
+    } else if (key == kVK_Command) {
+        cmdDown = false;
+        modifierFlagToClean = kCGEventFlagMaskCommand;
+    } else if (key == kVK_Function) {
+        fnDown = false;
+        modifierFlagToClean = kCGEventFlagMaskSecondaryFn;
+    }
+    CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
+    CGEventPost(kCGSessionEventTap, command);
+    GTGlobals::sleep(10);
+    CFRelease(command);
+
+    if (modifierFlagToClean != 0) {
+        // Sometimes (unclear why?) MacOS does not remove modifier. This may be a timing issue.
+        // In this case we repeat the request to clean.
+        auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
+        if (state & modifierFlagToClean) {
+            DRIVER_CHECK(attempt < 10, QString("Failed to clean modifier in 10 attempts: %1").arg(key));
+            GTGlobals::sleep(50);
+            dumpState("keyReleaseMac before retry");
+            keyReleaseMac(key, attempt + 1);
+            dumpState("keyReleaseMac after retry");
+        }
+    }
 }
 
 #    define GT_CLASS_NAME "GTKeyboardDriverMac"
@@ -373,7 +392,7 @@ GTKeyboardDriver::keys::keys() {
     // macro kVK_* defined in Carbon.framework/Frameworks/HIToolbox.framework/Headers/Events.h
 }
 
-bool GTKeyboardDriver::releasePressedKeys() {
+void GTKeyboardDriver::releasePressedKeys() {
     auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
     if (state & kCGEventFlagMaskShift) {
         keyReleaseMac(kVK_Shift);

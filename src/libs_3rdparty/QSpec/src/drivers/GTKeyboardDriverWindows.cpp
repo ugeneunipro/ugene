@@ -396,7 +396,7 @@ GTKeyboardDriver::keys::keys() {
     // macro VK_* defined in WinUser.h
 }
 
-bool GTKeyboardDriver::releasePressedKeys() {
+void GTKeyboardDriver::releasePressedKeys() {
 }
 
 #    undef GT_CLASS_NAME
