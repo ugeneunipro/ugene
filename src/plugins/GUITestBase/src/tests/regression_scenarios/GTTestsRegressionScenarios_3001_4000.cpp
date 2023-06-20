@@ -1523,9 +1523,7 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     GTCheckBox::setChecked(useDotsCheckBox);
 
     // 7. Drag the reference sequence in the list of sequences.
-    QPoint mouseDragPosition(-5, 18);
-    GTUtilsMSAEditorSequenceArea::moveTo(mouseDragPosition);
-
+    GTUtilsMsaEditor::moveToSequence(18);
     GTMouseDriver::click();
     GTGlobals::sleep(1000);  // To avoid double click.
     GTMouseDriver::press();

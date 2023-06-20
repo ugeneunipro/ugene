@@ -708,12 +708,12 @@ bool GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(const QString& seqName)
     while (names[row] != seqName) {
         row++;
     }
-    QPoint center = convertCoordinates(QPoint(-5, row));
+
+    QPoint center = GTUtilsMsaEditor::getSequenceNameRect(row).center();
 
     // There are more than one name list in multiline mode, so at first we get line #0 widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(0);
-    QWidget* nameList = GTWidget::findExactWidget<QWidget*>("msa_editor_name_list", activeWindow);
-
+    auto nameList = GTWidget::findExactWidget<QWidget*>("msa_editor_name_list", activeWindow);
     GT_CHECK_RESULT(nameList != nullptr, "name list is NULL", false);
 
     int initCoord = center.y() - getRowHeight(row) / 2;

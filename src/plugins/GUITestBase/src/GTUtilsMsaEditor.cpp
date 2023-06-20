@@ -263,7 +263,7 @@ void GTUtilsMsaEditor::removeRows(int firstRowNumber, int lastRowNumber) {
 
 #define GT_METHOD_NAME "moveToSequence"
 void GTUtilsMsaEditor::moveToSequence(int rowNumber) {
-    const QRect sequenceNameRect = getSequenceNameRect(rowNumber);
+    QRect sequenceNameRect = getSequenceNameRect(rowNumber);
     GTMouseDriver::moveTo(sequenceNameRect.center());
 }
 #undef GT_METHOD_NAME
