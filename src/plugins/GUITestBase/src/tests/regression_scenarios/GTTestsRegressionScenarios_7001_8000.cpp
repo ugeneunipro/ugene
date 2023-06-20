@@ -4258,10 +4258,11 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
 GUI_TEST_CLASS_DEFINITION(test_7793) {
     // 1. Click "File ->Open as..."
     // 2. Choose "samples/ABIF/A01.abi"
-    // Expected state file opened without dealogue
+    // Expected state file opened without dialogue
     GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(GTWidget::findWidget("ADV_single_sequence_widget_0") != nullptr, "Sequence view not found.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7797) {
