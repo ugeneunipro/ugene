@@ -225,7 +225,7 @@ static void keyPressMac(CGKeyCode key) {
         CGEventSetFlags(command, flags);
     }
     CGEventPost(kCGSessionEventTap, command);
-    GTGlobals::sleep(1);
+    GTGlobals::sleep(10);
     CFRelease(command);
     if (source != nullptr) {
         CFRelease(source);
@@ -246,7 +246,7 @@ static bool keyReleaseMac(CGKeyCode key) {
     }
     CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
     CGEventPost(kCGSessionEventTap, command);
-    GTGlobals::sleep(1);
+    GTGlobals::sleep(10);
     CFRelease(command);
 }
 
@@ -254,15 +254,15 @@ static void dumpState(const char* action) {
     auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
 
     qDebug("============= Dump keyboard state %s", action);
-    qDebug("maskAlphaShift %d", state & kCGEventFlagMaskAlphaShift);
-    qDebug("maskShift %d", state & kCGEventFlagMaskShift);
-    qDebug("maskControl %d", state & kCGEventFlagMaskControl);
-    qDebug("maskCommand %d", state & kCGEventFlagMaskCommand);
-    qDebug("maskAlternate %d", state & kCGEventFlagMaskAlternate);
-    qDebug("maskHelp %d", state & kCGEventFlagMaskHelp);
-    qDebug("maskSecondaryFn %d", state & kCGEventFlagMaskSecondaryFn);
-    qDebug("maskNumericPad %d", state & kCGEventFlagMaskNumericPad);
-    qDebug("maskNonCoalesced %d", state & kCGEventFlagMaskNonCoalesced);
+    qDebug("maskAlphaShift %llu", state & kCGEventFlagMaskAlphaShift);
+    qDebug("maskShift %llu", state & kCGEventFlagMaskShift);
+    qDebug("maskControl %llu", state & kCGEventFlagMaskControl);
+    qDebug("maskCommand %llu", state & kCGEventFlagMaskCommand);
+    qDebug("maskAlternate %llu", state & kCGEventFlagMaskAlternate);
+    qDebug("maskHelp %llu", state & kCGEventFlagMaskHelp);
+    qDebug("maskSecondaryFn %llu", state & kCGEventFlagMaskSecondaryFn);
+    qDebug("maskNumericPad %llu", state & kCGEventFlagMaskNumericPad);
+    qDebug("maskNonCoalesced %llu", state & kCGEventFlagMaskNonCoalesced);
     qDebug("=============");
 }
 
@@ -310,25 +310,28 @@ bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers)
 }
 #    undef GT_METHOD_NAME
 
-bool GTKeyboardDriver::keyPress(Qt::Key key, Qt::KeyboardModifiers modifiers) {
+bool GTKeyboardDriver::keyPress(Qt::Key qtKey, Qt::KeyboardModifiers modifiers) {
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    for (const Qt::Key& mod: qAsConst(modKeys)) {
+    for (const Qt::Key& mod : qAsConst(modKeys)) {
         keyPressMac(GTKeyboardDriver::key[mod]);
     }
-    keyPressMac(GTKeyboardDriver::key[key]);
+    keyPressMac(GTKeyboardDriver::key[qtKey]);
     return true;
 }
 
-bool GTKeyboardDriver::keyRelease(Qt::Key key, Qt::KeyboardModifiers modifiers) {
-    keyReleaseMac(GTKeyboardDriver::key[key]);
-    if (key == Qt::Key_Delete || key >= Qt::Key_F1 && key <= Qt::Key_F12) {
-        // For some reason MacOS does not release FN key used for the internal ForwardDelete emulation (Fn + Delete).
+bool GTKeyboardDriver::keyRelease(Qt::Key qtKey, Qt::KeyboardModifiers modifiers) {
+    keyReleaseMac(GTKeyboardDriver::key[qtKey]);
+    if (qtKey == Qt::Key_Delete || qtKey >= Qt::Key_F1 && qtKey <= Qt::Key_F12) {
+        // For some reason MacOS does not release FN qtKey used for the internal ForwardDelete emulation (Fn + Delete).
         // Check GUITest_regression_scenarios_test_2971 as an example of Delete
         // or GUITest_regression_scenarios_test_3335 as an example of F2.
-        keyReleaseMac(kVK_Function);
+        auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
+        if (state & kCGEventFlagMaskSecondaryFn) {
+            keyReleaseMac(kVK_Function);
+        }
     }
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
-    for (const Qt::Key& mod: qAsConst(modKeys)) {
+    for (const Qt::Key& mod : qAsConst(modKeys)) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
     return true;
@@ -371,6 +374,22 @@ GTKeyboardDriver::keys::keys() {
 }
 
 bool GTKeyboardDriver::releasePressedKeys() {
+    auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
+    if (state & kCGEventFlagMaskShift) {
+        keyReleaseMac(kVK_Shift);
+    }
+    if (state & kCGEventFlagMaskControl) {
+        keyReleaseMac(kVK_Control);
+    }
+    if (state & kCGEventFlagMaskAlternate) {
+        keyReleaseMac(kVK_Option);
+    }
+    if (state & kCGEventFlagMaskCommand) {
+        keyReleaseMac(kVK_Command);
+    }
+    if (state & kCGEventFlagMaskSecondaryFn) {
+        keyReleaseMac(kVK_Function);
+    }
     dumpState("releasePressedKeys");
 }
 
