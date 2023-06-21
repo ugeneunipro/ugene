@@ -99,7 +99,7 @@ private:
     qint64 getProductSize(const PrimerBind& leftBind, const PrimerBind& rightBind) const;
     FindAlgorithmTaskSettings getFindPatternSettings(U2Strand::Direction direction);
     bool isCorrectProductSize(qint64 productSize, qint64 minPrimerSize) const;
-    bool filter(const PrimerBind& leftBind, const PrimerBind& rightBind, qint64 productSize) const;
+    bool isProductAcceptable(const PrimerBind& leftBind, const PrimerBind& rightBind, const U2Region& product) const;
     bool checkPerfectMatch(const PrimerBind& bind, U2Strand::Direction direction) const;
     QByteArray getSequence(const U2Region& region, U2Strand::Direction direction) const;
     InSilicoPcrProduct createResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) const;
