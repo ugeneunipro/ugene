@@ -38,6 +38,7 @@
 #include "GTUtilsDocument.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
@@ -56,7 +57,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         }
         void commonScenario() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            GTWidget::findRadioButton("rbExistingTable", dialog);
             auto comboBox = GTWidget::findComboBox("cbExistingTable", dialog);
             CHECK_SET_ERR(comboBox->count() == 0, "ComboBox is not empty");
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
@@ -65,13 +65,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTFileDialog::openFile(testDir + "_common_data/scenarios/project/proj5.uprj");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsDocument::checkDocument("1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTUtilsDocument::checkDocument("1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTUtilsDialog::waitForDialog(new CreateAnnotationDialogComboBoxChecker());
+    GTUtilsDialog::add(new CreateAnnotationDialogComboBoxChecker());
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
     GTUtilsDialog::checkNoActiveWaiters();
 }
@@ -84,7 +84,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
         void commonScenario() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            GTWidget::findRadioButton("rbExistingTable", dialog);
             auto comboBox = GTWidget::findComboBox("cbExistingTable", dialog);
             CHECK_SET_ERR(comboBox->count() != 0, "ComboBox is empty");
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
@@ -92,7 +91,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     };
     GTFileDialog::openFile(testDir + "_common_data/scenarios/project/", "proj3.uprj");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsDocument::checkDocument("1.gb");
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex("1.gb");
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter("1.gb");
@@ -100,8 +98,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"openInMenu", "action_open_view"}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
-
-    GTUtilsDocument::checkDocument("1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     QIcon itemIconBefore = qvariant_cast<QIcon>(item.data(Qt::DecorationRole));
 
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_DOCUMENT__UNLOCK}));

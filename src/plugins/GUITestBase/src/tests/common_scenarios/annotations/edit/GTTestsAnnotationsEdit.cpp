@@ -490,6 +490,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // 6. CHECK if misc_feature annotation is removed
     // TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
+    GTUtilsTaskTreeView::waitTaskFinished();
     QTreeWidgetItem* annotationItem = GTUtilsAnnotationsTreeView::findItem("misc_feature", groupItem, {false});
     CHECK_SET_ERR(annotationItem == nullptr, "The annotation 'misc_feature' unexpectedly was not removed");
 
@@ -546,6 +547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 6. CHECK if misc_feature annotation is removed
     // TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
