@@ -50,6 +50,7 @@ QDScheduler::QDScheduler(const QDRunSettings& _settings)
     createAnnsTask = nullptr;
     linker = new QDResultLinker(this);
     settings.scheme->adaptActorsOrder();
+    SAFE_POINT(!settings.scheme->getActors().isEmpty(), "QDScheduler: scheme has no actors", );
     currentStep = new QDStep(settings.scheme);
 
     tpm = Progress_Manual;
@@ -658,9 +659,9 @@ void QDResultLinker::pushToTable() {
 //////////////////////////////////////////////////////////////////////////
 QDStep::QDStep(QDScheme* _scheme)
     : scheme(_scheme) {
-    assert(!scheme->getActors().isEmpty());
-    actor = scheme->getActors().first();
     initTotalMap();
+    SAFE_POINT(!scheme->getActors().isEmpty(), "QDScheme has no actors", );
+    actor = scheme->getActors().first();
 }
 
 void QDStep::initTotalMap() {
@@ -727,6 +728,7 @@ QList<QDConstraint*> QDStep::getConstraints(QDSchemeUnit* subj, QDSchemeUnit* li
 }
 
 void QDStep::next() {
+    SAFE_POINT(actor != nullptr, "Actor is null!", );
     linkedActors.append(actor);
     const QList<QDActor*>& actors = scheme->getActors();
     int idx = actors.indexOf(actor) + 1;

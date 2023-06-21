@@ -183,13 +183,16 @@ Task* QDWorker::tick() {
         return nullptr;
     }
 
-    scheme = new QDScheme;
+    scheme = new QDScheme();
 
     QList<QDDocument*> docs;
     docs << &doc;
     bool ok = QDSceneSerializer::doc2scheme(docs, scheme);
     if (!ok) {
         return nullptr;
+    }
+    if (scheme->getActors().isEmpty()) {
+        return new FailTask(tr("Failed to read QueryDesigner schema from %1").arg(schemaUri));
     }
 
     if (input->hasMessage()) {

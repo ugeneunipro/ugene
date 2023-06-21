@@ -3713,6 +3713,8 @@ GUI_TEST_CLASS_DEFINITION(test_7708) {
     GTUtilsWorkflowDesigner::setParameter("Schema", dataDir + "samples/FASTA/human_T1.fa", GTUtilsWorkflowDesigner::textValue);
 
     GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::checkErrorList("Failed to read QueryDesigner schema from");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7712) {
