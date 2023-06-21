@@ -1934,7 +1934,6 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
 
     GTUtilsDialog::add(new GTFileDialogUtils(testDir + "_common_data/text/text.txt"));
     GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("ABIF"));
-    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
