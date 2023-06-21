@@ -129,6 +129,7 @@
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
@@ -1776,7 +1777,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
 
     // 2. Open the "Find restriction sites" dialog, choose "AaaI" (vary first one) only and click OK.
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "AaaI" };
+    settings.enzymes = QStringList {"AaaI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
@@ -3699,6 +3700,19 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTCheckBox::getState("showDistancesCheck", panel2) == false, "showDistancesCheck state is not restored");
     CHECK_SET_ERR(GTWidget::findSlider("curvatureSlider", panel2)->value() == 20, "curvatureSlider state is not restored");
     CHECK_SET_ERR(GTComboBox::getCurrentText("treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7708) {
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708", "7708.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::addInputFile("Read Sequence", dataDir + "samples/FASTA/human_T1.fa");
+
+    GTUtilsWorkflowDesigner::click("Annotate with UQL");
+    GTUtilsWorkflowDesigner::setParameter("Schema", dataDir + "samples/FASTA/human_T1.fa", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7712) {
