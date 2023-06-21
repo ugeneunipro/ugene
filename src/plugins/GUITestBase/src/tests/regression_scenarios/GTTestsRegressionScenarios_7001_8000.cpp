@@ -4680,5 +4680,41 @@ GUI_TEST_CLASS_DEFINITION(test_7885) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum() != 0, "No selected sequences");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7892_1) {
+    // 1. Open "_common_data/scenarios/_regression/7892/example1.fa"
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7892/example1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // 2. Open "Find restriction sites..." dialog.
+    // 3. Select "PflFI"
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "PflFI" };
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
+    GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    //Expected: enzyme has been found.
+    auto ar = GTUtilsAnnotationsTreeView::getAnnotatedRegions();
+    CHECK_SET_ERR(!ar.isEmpty(), "No sites has been found");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7892_2) {
+    // 1. Open "_common_data/scenarios/_regression/7892/example2.fa"
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7892/example2.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    // 2. Open "Find restriction sites..." dialog.
+    // 3. Select "PflFI"
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "PflFI" };
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
+    GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    //Expected: enzyme has been found.
+    auto qual = GTUtilsAnnotationsTreeView::getQualifierValue("db_xref", "PflFI");
+    CHECK_SET_ERR(qual == "REBASE:2886", QString("Unexpected qualifier, expected: \"REBASE:2886\", currect: \"%1\"").arg(qual));
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
