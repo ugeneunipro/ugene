@@ -60,6 +60,8 @@ public:
     static const QString DATA_FILE_KEY;
     static const QString LAST_SELECTION;
     static const QString CHECKED_SUPPLIERS;
+    static const QString ENZYMES_LENGTH;
+    static const QString SHOW_SHORT_ENZYMES;
     static const QString ENABLE_HIT_COUNT;
     static const QString MAX_HIT_VALUE;
     static const QString MIN_HIT_VALUE;
