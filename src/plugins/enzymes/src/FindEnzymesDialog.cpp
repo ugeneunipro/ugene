@@ -605,8 +605,8 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
     connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
     connect(cbShowShort, &QCheckBox::stateChanged, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
-    connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateVisibilityWidgets);
-    sl_updateVisibilityWidgets();
+    connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
+    sl_updateEnzymesVisibilityWidgets();
 
     connect(pbSelectAll, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectAll);
     connect(pbSelectNone, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectNone);
@@ -656,15 +656,6 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
         }
     }
     enzSel->setEnzymesList(visibleEnzymes);
-    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
-    if (checkedSuppliers.contains(notDefinedTr)) {
-        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
-    }
-    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
-    auto settings = AppContext::getSettings();
-    settings->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
-    settings->setValue(EnzymeSettings::ENZYMES_LENGTH, regions.front().toString(U2Region::FormatDots));
-    settings->setValue(EnzymeSettings::SHOW_SHORT_ENZYMES, regions.size() == 2);
 }
 
 void FindEnzymesDialog::accept() {
@@ -716,7 +707,7 @@ void FindEnzymesDialog::accept() {
     QDialog::accept();
 }
 
-void FindEnzymesDialog::sl_updateVisibilityWidgets() {
+void FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets() {
     const auto& loadedSuppliers = EnzymesSelectorWidget::getLoadedSuppliers();
     cbSuppliers->clear();
     cbSuppliers->addItems(loadedSuppliers);
@@ -731,22 +722,6 @@ void FindEnzymesDialog::sl_updateVisibilityWidgets() {
         suppliersList.removeOne(notDefinedTr);
     }
     cbSuppliers->setCheckedItems(suppliersList);
-    auto region = settings->getValue(EnzymeSettings::ENZYMES_LENGTH).toString();
-    if (!region.isEmpty()) {
-        auto split = region.split("..");
-        if (split.size() == 2) {
-            if (RESTRICTION_SEQUENCE_LENGTH_VALUES.contains(split.first())) {
-                cbMinLength->setCurrentText(split.first());
-            } else {
-                cbMinLength->setCurrentIndex(0);
-            }
-            if (RESTRICTION_SEQUENCE_LENGTH_VALUES.contains(split.last())) {
-                cbMaxLength->setCurrentText(split.first());
-            } else {
-                cbMaxLength->setCurrentIndex(RESTRICTION_SEQUENCE_LENGTH_VALUES.size() - 1);
-            }
-        }
-    }
 }
 
 void FindEnzymesDialog::sl_selectAll() {
@@ -789,9 +764,16 @@ void FindEnzymesDialog::sl_maxLengthChanged(int index) {
 
 void FindEnzymesDialog::initSettings() {
     EnzymesSelectorWidget::initSelection();
-    bool useHitCountControl = AppContext::getSettings()->getValue(EnzymeSettings::ENABLE_HIT_COUNT, false).toBool();
-    int minHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
-    int maxHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, 2).toInt();
+    auto settings = AppContext::getSettings();
+    bool useHitCountControl = settings->getValue(EnzymeSettings::ENABLE_HIT_COUNT, false).toBool();
+    int minHitValue = settings->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
+    int maxHitValue = settings->getValue(EnzymeSettings::MAX_HIT_VALUE, 2).toInt();
+    auto min = settings->getValue(EnzymeSettings::MIN_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.first()).toString();
+    cbMinLength->setCurrentText(min);
+    auto max = settings->getValue(EnzymeSettings::MAX_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.last()).toString();
+    cbMaxLength->setCurrentText(max);
+    auto showShort = settings->getValue(EnzymeSettings::SHOW_SHORT_ENZYMES, "false").toString();
+    cbShowShort->setChecked(showShort == "true");
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     U2Region searchRegion = FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(sequenceObject);
@@ -818,14 +800,26 @@ void FindEnzymesDialog::initSettings() {
 }
 
 void FindEnzymesDialog::saveSettings() {
-    AppContext::getSettings()->setValue(EnzymeSettings::ENABLE_HIT_COUNT, filterGroupBox->isChecked());
+    auto settings = AppContext::getSettings();
+    settings->setValue(EnzymeSettings::ENABLE_HIT_COUNT, filterGroupBox->isChecked());
     if (filterGroupBox->isChecked()) {
-        AppContext::getSettings()->setValue(EnzymeSettings::MIN_HIT_VALUE, minHitSB->value());
-        AppContext::getSettings()->setValue(EnzymeSettings::MAX_HIT_VALUE, maxHitSB->value());
+        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, minHitSB->value());
+        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, maxHitSB->value());
     } else {
-        AppContext::getSettings()->setValue(EnzymeSettings::MIN_HIT_VALUE, 1);
-        AppContext::getSettings()->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
+        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, 1);
+        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
     }
+
+    QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+    if (checkedSuppliers.contains(notDefinedTr)) {
+        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
+    }
+    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
+    settings->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
+    settings->setValue(EnzymeSettings::MIN_ENZYME_LENGTH, cbMinLength->currentText());
+    settings->setValue(EnzymeSettings::MAX_ENZYME_LENGTH, cbMaxLength->currentText());
+    settings->setValue(EnzymeSettings::SHOW_SHORT_ENZYMES, cbShowShort->isChecked() ? "true" : "false");
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     // Empty search region is processed as 'Whole sequence' by auto-annotation task.

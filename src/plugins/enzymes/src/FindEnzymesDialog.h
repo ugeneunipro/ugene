@@ -103,7 +103,7 @@ public:
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
     void sl_updateVisibleEnzymes();
-    void sl_updateVisibilityWidgets();
+    void sl_updateEnzymesVisibilityWidgets();
     void sl_selectAll();
     void sl_selectNone();
     void sl_invertSelection();
