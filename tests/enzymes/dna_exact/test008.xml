@@ -1,7 +1,5 @@
 <multi-test>
 
-    <!-- Find 1 enzyme in a middle of a sequence -->
-
     <load-document index="doc" url="enzymes/7892_1.fa" io="local_file" format="fasta"/>
 
     <find-object-by-name index="seq" doc="doc" name="exmple1" type="OT_SEQUENCE"/>
