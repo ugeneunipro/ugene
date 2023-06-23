@@ -23,6 +23,7 @@
 
 #include <QFileInfo>
 #include <QTemporaryFile>
+#include <QRegularExpression>
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
@@ -123,13 +124,25 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
             return;
         }
 
-        QRegExp rx2("(\\d+)(..)(\\d+)");
-        int pos = 0;
-        while ((pos = rx2.indexIn(regions, pos)) != -1) {
-            int start = rx2.cap(1).toInt();
-            int end = rx2.cap(3).toInt();
-            resultsPerEnzyme.insert(enzymeId, U2Region(start - 1, end - start + 1));
-            pos += rx2.matchedLength();
+        QRegularExpression regExp("(\\d+)\\.\\.(\\d+)(\\((.+)->(.+)\\))?");
+        QRegularExpressionMatch match = regExp.match(regions);
+        int offset = 0;
+        while (match.hasMatch()) {
+            auto full = match.captured(0);
+            int start = match.captured(1).toInt();
+            int end = match.captured(2).toInt();
+            AnnData d;
+            d.reg = U2Region(start - 1, end - start + 1);
+            auto fullQual = match.captured(3);
+            if (!fullQual.isEmpty()) {
+                d.qualName = match.captured(4);
+                d.qualValue = match.captured(5);
+            }
+            auto values = resultsPerEnzyme.value(enzymeId);
+            values.append(d);
+            resultsPerEnzyme.insert(enzymeId, values);
+            offset += full.size() + 1;
+            match = regExp.match(regions, offset);
         }
         if (!resultsPerEnzyme.contains(enzymeId)) {
             stateInfo.setError(QString("Can't parse regions in results token: %1").arg(enzymeResult));
@@ -191,25 +204,42 @@ Task::ReportResult GTest_FindEnzymes::report() {
         return Task::ReportResult_Finished;
     }
     // for each enzyme from resultsPerEnzyme check that all annotations are present
-    foreach (const QString& enzymeId, resultsPerEnzyme.keys()) {
-        QList<U2Region> regions = resultsPerEnzyme.values(enzymeId);
+    const auto& enzymeIds = resultsPerEnzyme.keys();
+    for (const auto& enzymeId : qAsConst(enzymeIds)) {
+        auto dataList = resultsPerEnzyme.value(enzymeId);
         AnnotationGroup* ag = aObj->getRootGroup()->getSubgroup(enzymeId, false);
         if (ag == nullptr) {
             stateInfo.setError(QString("Group not found %1").arg(enzymeId));
             break;
         }
         QList<Annotation*> anns = ag->getAnnotations();
-        if (anns.size() != regions.size()) {
-            stateInfo.setError(QString("Number of results not matched for :%1, results: %2, expected %3")
-                                   .arg(enzymeId)
-                                   .arg(anns.size())
-                                   .arg(regions.size()));
-            break;
-        }
-        for (Annotation* a : qAsConst(anns)) {
-            U2Region r = a->getRegions().first();
-            if (!regions.contains(r)) {
-                stateInfo.setError(QString("Illegal region! Enzyme :%1, region %2..%3").arg(enzymeId).arg(r.startPos + 1).arg(r.endPos()));
+
+        for (const auto& data : qAsConst(dataList)) {
+            bool found = false;
+            for (Annotation* a : qAsConst(anns)) {
+                U2Region r = a->getRegions().first();
+                CHECK_CONTINUE(data.reg == r);
+
+                if (!data.qualName.isEmpty()) {
+                    const auto& quals = a->getQualifiers();
+                    bool qualFound = false;
+                    for (const auto& qual : qAsConst(quals)) {
+                        CHECK_CONTINUE(qual.name == data.qualName && qual.value == data.qualValue);
+
+                        qualFound = true;
+                        break;
+                    }
+                    if (qualFound) {
+                        found = true;
+                        break;
+                    }
+                } else {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                stateInfo.setError(QString("Illegal region! Enzyme :%1, region %2..%3").arg(enzymeId).arg(data.reg.startPos).arg(data.reg.endPos()));
                 break;
             }
         }

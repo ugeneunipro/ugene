@@ -72,9 +72,10 @@ public:
     void run(const DNASequence& sequence, const U2Region& region, const SEnzymeData& enzyme, const char* pattern, U2Strand stand, FindEnzymesAlgListener* resultListener, TaskStateInfo& ti, int resultPosShift = 0) {
         CompareFN fn(sequence.alphabet, enzyme->alphabet);
         const char* seq = sequence.constData();
+        char unknownChar = sequence.alphabet->getDefaultSymbol();
         int plen = enzyme->seq.length();
         for (int pos = region.startPos, endPos = region.endPos() - plen + 1; pos < endPos; pos++) {
-            bool match = matchSite(seq + pos, pattern, plen, fn);
+            bool match = matchSite(seq + pos, pattern, plen, unknownChar, fn);
             if (match) {
                 resultListener->onResult(resultPosShift + pos, enzyme, stand);
             }
@@ -89,7 +90,7 @@ public:
                 buf.append(dnaseq.mid(startPos));
                 buf.append(dnaseq.mid(0, size));
                 for (int s = 0; s < size; s++) {
-                    bool match = matchSite(buf.constData() + s, pattern, plen, fn);
+                    bool match = matchSite(buf.constData() + s, pattern, plen, unknownChar, fn);
                     if (match) {
                         resultListener->onResult(resultPosShift + s + startPos, enzyme, stand);
                     }
@@ -99,12 +100,22 @@ public:
         }
     }
 
-    bool matchSite(const char* seq, const char* pattern, int plen, const CompareFN& fn) const {
+    bool matchSite(const char* seq, const char* pattern, int plen, char unknownChar, const CompareFN& fn) const {
         bool match = true;
         for (int p = 0; p < plen && match; p++) {
             char c1 = seq[p];
             char c2 = pattern[p];
-            match = fn.equals(c2, c1);
+            bool seqUnknown = c1 == unknownChar;
+            bool patternUnknown = c2 == unknownChar;
+            if (seqUnknown && patternUnknown) {
+                match = true;
+            } else if (seqUnknown && !patternUnknown) {
+                match = false;
+            } else if (!seqUnknown && patternUnknown) {
+                match = true;
+            } else if (!seqUnknown && !patternUnknown) {
+                match = fn.equals(c2, c1);
+            }
         }
         return match;
     }

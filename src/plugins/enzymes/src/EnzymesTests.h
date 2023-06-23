@@ -59,7 +59,12 @@ private:
     AnnotationTableObject* aObj;
     LoadEnzymeFileTask* loadTask;
     bool contextIsAdded;
-    QMultiMap<QString, U2Region> resultsPerEnzyme;
+    struct AnnData {
+        U2Region reg;
+        QString qualName;
+        QString qualValue;
+    };
+    QMap<QString, QList<AnnData>> resultsPerEnzyme;
 };
 
 // cppcheck-suppress noConstructor
