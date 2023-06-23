@@ -110,7 +110,7 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
         return;
     }
     QStringList perEnzymeResults = resultsStr.split(";", QString::SkipEmptyParts);
-    foreach (const QString& enzymeResult, perEnzymeResults) {
+    for (const QString& enzymeResult : qAsConst(perEnzymeResults)) {
         int nameIdx = enzymeResult.indexOf(':');
         if (nameIdx <= 0 || nameIdx + 1 == enzymeResult.size()) {
             stateInfo.setError(QString("Error parsing results token %1").arg(enzymeResult));
@@ -148,6 +148,11 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
             stateInfo.setError(QString("Can't parse regions in results token: %1").arg(enzymeResult));
             return;
         }
+    }
+
+    QString ean = el.attribute("exact-ann-number");
+    if (!ean.isEmpty()) {
+        exactAnnotationsNumber = true;
     }
 }
 
@@ -205,15 +210,18 @@ Task::ReportResult GTest_FindEnzymes::report() {
     }
     // for each enzyme from resultsPerEnzyme check that all annotations are present
     const auto& enzymeIds = resultsPerEnzyme.keys();
+    int annsNumber = 0;
+    int dataAnnsNumber = 0;
     for (const auto& enzymeId : qAsConst(enzymeIds)) {
         auto dataList = resultsPerEnzyme.value(enzymeId);
+        dataAnnsNumber += dataList.size();
         AnnotationGroup* ag = aObj->getRootGroup()->getSubgroup(enzymeId, false);
         if (ag == nullptr) {
             stateInfo.setError(QString("Group not found %1").arg(enzymeId));
             break;
         }
         QList<Annotation*> anns = ag->getAnnotations();
-
+        annsNumber += anns.size();
         for (const auto& data : qAsConst(dataList)) {
             bool found = false;
             for (Annotation* a : qAsConst(anns)) {
@@ -243,6 +251,9 @@ Task::ReportResult GTest_FindEnzymes::report() {
                 break;
             }
         }
+    }
+    if (exactAnnotationsNumber && annsNumber != dataAnnsNumber) {
+        stateInfo.setError(QString("Unexpected annotations number, expected: %1, current: %2").arg(dataAnnsNumber).arg(annsNumber));
     }
 
     addContext(aObjName, aObj);
