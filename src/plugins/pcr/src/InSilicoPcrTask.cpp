@@ -197,8 +197,11 @@ bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const Prim
         }
     }
 
+    // Check product is not out of sequence bounds
     if (product.intersect(U2Region(0, settings->sequence.length())).length < product.length && !settings->isCircular) {
-        CHECK(leftBind.ledge > 0 || rightBind.ledge > 0, false);
+        if (leftBind.ledge + rightBind.ledge == 0) {
+            return false;
+        }
     }
     return true;
 }
