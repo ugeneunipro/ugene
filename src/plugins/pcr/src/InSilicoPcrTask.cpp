@@ -197,8 +197,7 @@ bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const Prim
         }
     }
 
-    QByteArray productSequence = settings->sequence.mid(product.startPos, product.length);
-    if (productSequence.length() < product.length && !settings->isCircular) {
+    if (product.intersect(U2Region(0, settings->sequence.length())).length < product.length && !settings->isCircular) {
         CHECK(leftBind.ledge > 0 || rightBind.ledge > 0, false);
     }
     return true;
