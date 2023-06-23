@@ -560,7 +560,7 @@ void GTUtilsMsaEditor::clickBuildTreeButton() {
 void GTUtilsMsaEditor::closeActiveTreeTab() {
     auto treeTabWidget = GTWidget::findWidget("msa_editor_tree_tab_area", getActiveMsaEditorWindow());
 
-    QTabBar* tabBar = treeTabWidget->findChild<QTabBar*>();
+    auto tabBar = treeTabWidget->findChild<QTabBar*>();
     GT_CHECK(tabBar != nullptr, "Tree tab widget must have a tab bar!");
 
     int tabIndex = tabBar->currentIndex();
@@ -568,7 +568,7 @@ void GTUtilsMsaEditor::closeActiveTreeTab() {
 
     QWidget* closeTabButton = tabBar->tabButton(tabIndex, QTabBar::RightSide);
     if (closeTabButton == nullptr) {
-        closeTabButton = tabBar->tabButton(tabIndex, QTabBar::RightSide);
+        closeTabButton = tabBar->tabButton(tabIndex, QTabBar::LeftSide);
         GT_CHECK(closeTabButton != nullptr, "TabBar must have close button!");
     }
     GTWidget::click(closeTabButton);

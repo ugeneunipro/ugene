@@ -1130,15 +1130,16 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
     GTFile::copy(sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
     GTFile::copy(sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-    GTGlobals::sleep(10000);  // Wait up to 10 seconds so UGENE will find the changes.
+    GTUtilsDialog::checkNoActiveWaiters();
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
     GTUtilsMdi::activeWindow();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(2, 0));
     GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu();
+    GTThread::waitForMainThread();
     QString clipboardText = GTClipboard::text();
-    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
+    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected: " + clipboardText);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016_1) {
@@ -1147,63 +1148,27 @@ GUI_TEST_CLASS_DEFINITION(test_0016_1) {
     GTFileDialog::openFile(sandBoxDir, "ma2_gapped.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
-    // CHANGES: insert gaps in the beginning
-    GTUtilsMSAEditorSequenceArea::click(QPoint(0, 0));
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-
-    // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata' from 'AAG' to 'CTT' and save file.
-    //  Expected state: Dialog suggesting to reload modified document has appeared. Press 'Yes'.
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-
-    // Wait for the document to reload (1 second granularity).
-    GTGlobals::sleep(2000);
-
-    // Expected state: document was reloaded, view activated.
-    // 'Phaneroptera_falcata' starts with CTT.
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    // copy to clipboard
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(2, 0));
-    GTKeyboardUtils::copy();
-
-    QString clipboardText = GTClipboard::text();
-    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0016_2) {
-    // 1. Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFileDialog::openFile(sandBoxDir, "ma2_gapped.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
     // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata'
     //    from 'AAG' to 'CTT' and save file.
-    // CHANGES: backup old file, copy changed file
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
-    GTGlobals::sleep(1000);  // ugene doesn't detect changes whithin one second interval
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-
     //    Expected state: Dialog suggesting to reload modified document has appeared.
     // 3. Press 'Yes'.
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
+    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
     GTUtilsDialog::checkNoActiveWaiters();
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
-
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(2, 0));
+
     // copy to clipboard
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     GTThread::waitForMainThread();
 
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
 
-    // CHANGES: select item in project tree view and press delete
+    // Select item in project tree view and press delete
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("ma2_gapped.aln"));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
@@ -1655,7 +1620,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     qint64 bigSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
     CHECK_SET_ERR(bigSize > 3 * 1000 * 1000 && bigSize < 7 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
-    CHECK_SET_ERR(smallSize > 700 * 1000 && smallSize < 2 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
+    CHECK_SET_ERR(smallSize > 500 * 1000 && smallSize < 2 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {

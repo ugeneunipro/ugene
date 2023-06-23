@@ -60,6 +60,7 @@ void GTTreeWidget::expand(QTreeWidgetItem* item) {
 void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMethod method) {
     GT_CHECK(item != nullptr, "treeWidgetItem is NULL");
     GT_CHECK(column >= 0, "The column number is invalid");
+    GT_CHECK(item->data(column, Qt::CheckStateRole).toInt() != Qt::Checked, "Tree item is already checked");
 
     QTreeWidget* tree = item->treeWidget();
     GT_CHECK(tree != nullptr, "The tree widget is NULL");
@@ -70,17 +71,16 @@ void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMe
     QPoint itemStartPos = QPoint(itemRect.left(), itemRect.center().y()) - indentationOffset;
     QPoint columnOffset(tree->columnViewportPosition(column), 0);
     QPoint itemLevelOffset(getItemLevel(item) * tree->indentation(), 0);
-
     switch (method) {
         case GTGlobals::UseKeyBoard: {
-            const QPoint cellCenterOffset(tree->columnWidth(column) / 2, itemRect.height() / 2);
+            QPoint cellCenterOffset(tree->columnWidth(column) / 2, itemRect.height() / 2);
             GTMouseDriver::moveTo(itemStartPos + itemLevelOffset + columnOffset + cellCenterOffset);
             GTMouseDriver::click();
             GTKeyboardDriver::keyClick(Qt::Key_Space);
             break;
         }
         case GTGlobals::UseMouse: {
-            const QPoint magicCheckBoxOffset = QPoint(15, 0);
+            QPoint magicCheckBoxOffset = QPoint(15, 0);
             GTMouseDriver::moveTo(tree->viewport()->mapToGlobal(itemStartPos + itemLevelOffset + columnOffset + magicCheckBoxOffset));
             GTMouseDriver::click();
             break;
@@ -88,6 +88,7 @@ void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMe
         default:
             GT_FAIL("Method is not implemented", );
     }
+    GT_CHECK(item->data(column, Qt::CheckStateRole).toInt() == Qt::Checked, "Failed to check tree item.");
 }
 #undef GT_METHOD_NAME
 
