@@ -27,6 +27,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
@@ -1776,7 +1777,7 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
 
     // 2. Open the "Find restriction sites" dialog, choose "AaaI" (vary first one) only and click OK.
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "AaaI" };
+    settings.enzymes = QStringList {"AaaI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
@@ -3699,6 +3700,17 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTCheckBox::getState("showDistancesCheck", panel2) == false, "showDistancesCheck state is not restored");
     CHECK_SET_ERR(GTWidget::findSlider("curvatureSlider", panel2)->value() == 20, "curvatureSlider state is not restored");
     CHECK_SET_ERR(GTComboBox::getCurrentText("treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7699) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract transcript sequences..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::click("Extract Transcript Sequences with Gffread");
+
+    QWidget* wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
+    GTGroupBox::setChecked("inputPortBox", true, wdWindow);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7712) {
