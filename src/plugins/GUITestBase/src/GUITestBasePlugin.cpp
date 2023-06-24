@@ -121,17 +121,13 @@ static QStringList labels(const QStringList& labelList) {
 /** Converts list of label args into QStringList and adds 'Nightly' and all supported platform labels to the list. */
 static QStringList nightly(const QStringList& labelList = QStringList()) {
     QStringList resultLabelList = labelList;
-    resultLabelList << UGUITestLabels::Nightly << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
+    resultLabelList << UGUITestLabels::Precommit << UGUITestLabels::Linux << UGUITestLabels::MacOS << UGUITestLabels::Windows;
     return resultLabelList;
 }
 
 /** Registers a GUI test included into nightly build with a default timeout. */
 #define REGISTER_TEST(TestClass) \
     guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, nightly()));
-
-/** Registers a GUI test included into nightly build with a custom timeout. */
-#define REGISTER_TEST_WITH_TIMEOUT(TestClass, TIMEOUT) \
-    guiTestBase->registerTest(new TestClass(TIMEOUT, nightly()));
 
 /** Registers a GUI test with a given set of labels and description. Usually used to pass some non-default labels and the reason to the test. */
 #define REGISTER_TEST_EXT(TestClass, LABELS, DESCRIPTION) \
@@ -145,24 +141,18 @@ static QStringList nightly(const QStringList& labelList = QStringList()) {
 #define REGISTER_TEST_TL(TestClass, TIMEOUT, LABELS) \
     guiTestBase->registerTest(new TestClass(TIMEOUT, LABELS));
 
-/** Registers a GUI test with the TIMEOUT provided as a part of nightly build.*/
-#define REGISTER_TEST_T(TestClass, TIMEOUT) REGISTER_TEST_TL(TestClass, TIMEOUT, nightly());
-
 /** Registers a GUI test with the labels provided.*/
 #define REGISTER_TEST_L(TestClass, LABELS) REGISTER_TEST_TL(TestClass, DEFAULT_GUI_TEST_TIMEOUT, LABELS);
-
-/**  Registers test on all platforms but with an IgnoredOnWindows label. */
-#define REGISTER_TEST_IGNORED_WINDOWS(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly({IgnoredOnWindows}), MESSAGE)
 
 /**  Registers test on all platforms but with an IgnoredOnMacOS label. */
 #define REGISTER_TEST_IGNORED_MAC(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly({IgnoredOnMacOS}), MESSAGE)
 
 /** Registers test only for the specified platforms only. */
-#define REGISTER_TEST_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux}))
-#define REGISTER_TEST_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, MacOS}))
-#define REGISTER_TEST_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Windows}))
-#define REGISTER_TEST_LINUX_AND_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, MacOS}))
-#define REGISTER_TEST_LINUX_AND_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, Windows}))
+#define REGISTER_TEST_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Precommit, Linux}))
+#define REGISTER_TEST_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Precommit, MacOS}))
+#define REGISTER_TEST_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Precommit, Windows}))
+#define REGISTER_TEST_LINUX_AND_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Precommit, Linux, MacOS}))
+#define REGISTER_TEST_LINUX_AND_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Precommit, Linux, Windows}))
 
 extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
     CHECK(AppContext::getMainWindow() != nullptr, nullptr);
@@ -226,6 +216,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_0889);  //"Spidey tool is not available on Mac"
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_2140);
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_create_shortcut::test_0001);
 
     REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0001);
     REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0002);  //"Restore when this tool becomes available");
@@ -3389,11 +3380,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_cloning::test_0011);
 
     /////////////////////////////////////////////////////////////////////////
-    // common_scenarios/create_shortcut
-    /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST(GUITest_common_scenarios_create_shortcut::test_0001);
-
-    /////////////////////////////////////////////////////////////////////////
     // common_scenarios/options_panel/sequence_view
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_options_panel_sequence_view::test_0001);
@@ -3507,7 +3493,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 }
 
 void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {
-    // TODO: add custom timeouts for actions.
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0000, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0001, UGUITestBase::PreAdditional);
     guiTestBase->registerTest(new GUITest_preliminary_actions::pre_action_0002, UGUITestBase::PreAdditional);

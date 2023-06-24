@@ -57,10 +57,12 @@ void GTTreeWidget::expand(QTreeWidgetItem* item) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkItem"
-void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMethod method) {
+void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMethod method, bool isCheck, bool validateCheckResult) {
     GT_CHECK(item != nullptr, "treeWidgetItem is NULL");
     GT_CHECK(column >= 0, "The column number is invalid");
-    GT_CHECK(item->data(column, Qt::CheckStateRole).toInt() != Qt::Checked, "Tree item is already checked");
+    auto targetState = isCheck ? Qt::Checked : Qt::Unchecked;
+    GT_CHECK(item->data(column, Qt::CheckStateRole).toInt() != targetState,
+             isCheck ? "Tree item is already checked" : "Tree item is already unchecked");
 
     QTreeWidget* tree = item->treeWidget();
     GT_CHECK(tree != nullptr, "The tree widget is NULL");
@@ -88,7 +90,8 @@ void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMe
         default:
             GT_FAIL("Method is not implemented", );
     }
-    GT_CHECK(item->data(column, Qt::CheckStateRole).toInt() == Qt::Checked, "Failed to check tree item.");
+    GT_CHECK(!validateCheckResult || item->data(column, Qt::CheckStateRole).toInt() == targetState,
+             isCheck ? "Failed to check tree item." : "Failed to uncheck tree item.");
 }
 #undef GT_METHOD_NAME
 

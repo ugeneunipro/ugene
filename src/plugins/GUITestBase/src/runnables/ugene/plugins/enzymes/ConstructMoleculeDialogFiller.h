@@ -47,7 +47,7 @@ private:
     void clickCancel();
     void clickOk();
 
-    QWidget* dialog;
+    QWidget* dialog = nullptr;
     const QList<Action> actions;
 };
 
