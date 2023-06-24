@@ -333,7 +333,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     auto toggleAutoAnnotationsButton = GTWidget::findWidget("toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
-    QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
+    auto extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
@@ -368,7 +368,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     auto toggleAutoAnnotationsButton = GTWidget::findWidget("toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
-    QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
+    auto extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
@@ -430,7 +430,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     auto toggleAutoAnnotationsButton = GTWidget::findWidget("toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
-    QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
+    auto extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
@@ -1065,7 +1065,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTMouseDriver::doubleClick();
     //    Expected: Sequence scrolled to clicked position
     auto det = GTWidget::findWidget("det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    QScrollBar* scrollBar = det->findChild<QScrollBar*>();
+    auto scrollBar = det->findChild<QScrollBar*>();
     CHECK_SET_ERR(scrollBar->value() > 150000, QString("Unexpected value: %1").arg(scrollBar->value()));
 }
 
@@ -2189,11 +2189,11 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
 GUI_TEST_CLASS_DEFINITION(test_0076) {
     // UGENE-3267: Specifying a region when searching for restriction sites
     // 1. Open /_common_data/genbank/pBR322.gb
-    // 2. Search the defauult set of the restriction site: "EcoRI"
+    // 2. Search the default set of the restriction site: "EcoRI"
     // Expected state: the EcoRI restriction site is found on the zero-end position
     // 4. Remove the circular mark
     // 5. Search for the restriction site again
-    // Expected state: restriciton sites were recalculated and the is no annotation on zero position
+    // Expected state: restriction sites were recalculated and the is no annotation on zero position
 
     GTFileDialog::openFile(testDir + "_common_data/genbank/pBR322.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
@@ -2346,7 +2346,7 @@ GUI_TEST_CLASS_DEFINITION(test_0079_2) {
 
             GTWidget::click(GTWidget::findWidget("pbSelectNone"));
             auto chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts("cbSuppliers", dialog);
-            CHECK_SET_ERR(chekedValues.size() == 0, QString("Current checked size after pbSelectNone: %1").arg(chekedValues.size()));
+            CHECK_SET_ERR(chekedValues.empty(), QString("Current checked size after pbSelectNone: %1").arg(chekedValues.size()));
 
             GTWidget::click(GTWidget::findWidget("pbSelectAll"));
             chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts("cbSuppliers", dialog);

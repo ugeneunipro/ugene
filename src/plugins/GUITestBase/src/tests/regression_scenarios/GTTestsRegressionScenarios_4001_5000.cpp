@@ -3762,7 +3762,7 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
 
     // Change sequences order by re-sorting.
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_SORT, "action_sort_by_length"}));
-    GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
+    GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
 
