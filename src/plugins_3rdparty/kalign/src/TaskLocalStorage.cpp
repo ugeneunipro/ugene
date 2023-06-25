@@ -25,9 +25,6 @@
 class Kalign2Context* getKalignContext() {
     return U2::TaskLocalData::current();
 }
-int getKalignWorkerID() {
-    return U2::TaskLocalData::currentWorkerID();
-}
 
 namespace U2 {
 
@@ -50,19 +47,6 @@ unsigned TaskLocalData::currentWorkerID() {
     }
     assert(0);
     return -1;
-}
-
-void TaskLocalData::bindToKalignTLSContext(Kalign2Context* ctx, int workerID) {
-    assert(ctx != NULL);
-    assert(!tls.hasLocalData());
-    tls.setLocalData(new KalignContextTLSRef(ctx, workerID));
-}
-
-void TaskLocalData::detachKalignTLSContext() {
-    KalignContextTLSRef* ref = tls.localData();
-    assert(ref != NULL && ref->ctx != NULL);
-    ref->ctx = NULL;
-    tls.setLocalData(NULL);
 }
 
 }  // namespace U2

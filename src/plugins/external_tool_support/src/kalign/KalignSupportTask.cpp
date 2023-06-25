@@ -45,20 +45,8 @@
 
 namespace U2 {
 
-Kalign3Settings::Kalign3Settings() {
-    reset();
-}
-
-void Kalign3Settings::reset() {
-    gapExtenstionPenalty = -1;
-    gapOpenPenalty = -1;
-    termGapPenalty = -1;
-    secret = -1;
-    inputFilePath = "";
-}
-
 Kalign3SupportTask::Kalign3SupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const Kalign3Settings& _settings)
-    : ExternalToolSupportTask("Run Kalign tool task", TaskFlags_NR_FOSCOE),
+    : ExternalToolSupportTask("Kalign external tool task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
@@ -138,6 +126,19 @@ void Kalign3SupportTask::prepare() {
     addSubTask(saveTemporaryDocumentTask);
 }
 
+static const char* getAlignmentTypeParameterValue(const DNAAlphabet* alphabet) {
+    if (alphabet->isRNA()) {
+        return "rna";
+    }
+    if (alphabet->isDNA()) {
+        return "dna";
+    }
+    if (alphabet->isAmino()) {
+        return "protein";
+    }
+    return nullptr;
+}
+
 QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if (subTask->hasError()) {
@@ -154,22 +155,30 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
             stateInfo.setError("Temporary folder path have space(s). Try select any other folder without spaces.");
             return res;
         }
-        // TODO: pass params
-        //        arguments << url;
-        //        arguments << "-output"
-        //                  << "msf";
-        //        if (settings.gapOpenPenalty != -1) {
-        //            arguments << "-gapopen" << QString::number(settings.gapOpenPenalty);
-        //        }
-        //        if (settings.gapExtenstionPenalty != -1) {
-        //            arguments << "-gapext" << QString::number(settings.gapExtenstionPenalty);
-        //        }
-        //        if (settings.numIterations != -1) {
-        //            arguments << "-iterate" << QString::number(settings.numIterations);
-        //        }
         arguments << "-i" << url;
-        arguments << "-f" << "msf";
+        const DNAAlphabet* alphabet = this->inputMsa->getAlphabet();
+        const char* alphabetType = getAlignmentTypeParameterValue(alphabet);
+        if (alphabetType == nullptr) {
+            stateInfo.setError(tr("Illegal MSA alphabet: %1").arg(alphabet->getName()));
+            return res;
+        }
+        arguments << "--type" << alphabetType;
+        arguments << "--format"
+                  << "msf";
         arguments << "-o" << outputUrl;
+        if (settings.gapOpenPenalty != Kalign3Settings::VALUE_IS_NOT_SET) {
+            arguments << "--gpo" << QString::number(settings.gapOpenPenalty);
+        }
+        if (settings.gapExtensionPenalty != Kalign3Settings::VALUE_IS_NOT_SET) {
+            arguments << "--gpe" << QString::number(settings.gapExtensionPenalty);
+        }
+        if (settings.terminalGapExtensionPenalty != Kalign3Settings::VALUE_IS_NOT_SET) {
+            arguments << "--tgpe" << QString::number(settings.terminalGapExtensionPenalty);
+        }
+        if (settings.nThreads > 0) {
+            arguments << "--nthreads" << QString::number(settings.nThreads);
+        }
+
         kalignTask = new ExternalToolRunTask(Kalign3Support::ET_KALIGN_ID, arguments, new KalignLogParser());
         setListenerForTask(kalignTask);
         kalignTask->setSubtaskProgressWeight(95);
@@ -201,72 +210,68 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
         // Get the result alignment
         const QList<GObject*>& newDocumentObjects = tmpDoc->getObjects();
         SAFE_POINT(!newDocumentObjects.empty(), "No objects in the temporary document!", res);
+        SAFE_POINT(newDocumentObjects.size() == 1, "Result file contains multiple objects", res);
+        auto newMsaObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
+        SAFE_POINT(newMsaObject != nullptr, "Failed to cast object from temporary document to alignment!", res);
 
-        auto newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
-        SAFE_POINT(nullptr != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
-
-        resultMA = newMAligmentObject->getMsaCopy();
+        resultMA = newMsaObject->getMsaCopy();
         bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
-        // If an alignment object has been specified, save the result to it
+        // If an alignment object has been specified, save the result to it.
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (nullptr != obj) {
-                auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-                SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying Kalign results!", res);
-
-                MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
-                CHECK_OP(stateInfo, res);
-
-                QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
-                for (int i = 0, n = resultMA->getRowCount(); i < n; ++i) {
-                    qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
-                    const QVector<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGaps();
-                    rowsGapModel.insert(rowId, newGapModel);
-                }
-
-                // Save data to the database
-                {
-                    if (!lock.isNull()) {
-                        if (alObj->isStateLocked()) {
-                            alObj->unlockState(lock);
-                        }
-                        delete lock;
-                        lock = nullptr;
-                    } else {
-                        stateInfo.setError("MultipleSequenceAlignment object has been changed");
-                        return res;
-                    }
-
-                    U2OpStatus2Log os;
-                    U2UseCommonUserModStep userModStep(obj->getEntityRef(), os);
-                    if (os.hasError()) {
-                        stateInfo.setError("Failed to apply the result of the alignment!");
-                        return res;
-                    }
-
-                    alObj->updateGapModel(stateInfo, rowsGapModel);
-                    SAFE_POINT_OP(stateInfo, res);
-
-                    QList<qint64> resultRowIds = resultMA->getRowsIds();
-                    if (resultRowIds != inputMsa->getRowsIds()) {
-                        alObj->updateRowsOrder(stateInfo, resultRowIds);
-                        SAFE_POINT_OP(stateInfo, res);
-                    }
-                }
-
-                Document* currentDocument = alObj->getDocument();
-                SAFE_POINT(nullptr != currentDocument, "Document is NULL!", res);
-                currentDocument->setModified(true);
-            } else {
+            if (obj == nullptr) {
                 algoLog.error(tr("Failed to apply the result of Kalign: alignment object is not available!"));
                 return res;
             }
+            auto targetMsaObject = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
+            SAFE_POINT(targetMsaObject != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying Kalign results!", res);
+
+            MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
+            CHECK_OP(stateInfo, res);
+
+            QMap<qint64, QVector<U2MsaGap>> rowsGapModel;
+            for (int i = 0, n = resultMA->getRowCount(); i < n; ++i) {
+                qint64 rowId = resultMA->getMsaRow(i)->getRowDbInfo().rowId;
+                const QVector<U2MsaGap>& newGapModel = resultMA->getMsaRow(i)->getGaps();
+                rowsGapModel.insert(rowId, newGapModel);
+            }
+
+            // Save data to the database
+            if (!lock.isNull()) {
+                if (targetMsaObject->isStateLocked()) {
+                    targetMsaObject->unlockState(lock);
+                }
+                delete lock;
+                lock = nullptr;
+            } else {
+                stateInfo.setError("MultipleSequenceAlignment object has been changed");
+                return res;
+            }
+
+            U2OpStatus2Log os;
+            U2UseCommonUserModStep userModStep(obj->getEntityRef(), os);
+            if (os.hasError()) {
+                stateInfo.setError("Failed to apply the result of the alignment!");
+                return res;
+            }
+
+            targetMsaObject->updateGapModel(stateInfo, rowsGapModel);
+            SAFE_POINT_OP(stateInfo, res);
+
+            QList<qint64> resultRowIds = resultMA->getRowsIds();
+            if (resultRowIds != inputMsa->getRowsIds()) {
+                targetMsaObject->updateRowsOrder(stateInfo, resultRowIds);
+                SAFE_POINT_OP(stateInfo, res);
+            }
+
+            Document* currentDocument = targetMsaObject->getDocument();
+            SAFE_POINT(currentDocument != nullptr, "Document is NULL!", res);
+            currentDocument->setModified(true);
         }
 
         algoLog.info(tr("KAlign alignment successfully finished"));
-        // new document deleted in destructor of LoadDocumentTask
     }
     return res;
 }
@@ -286,10 +291,11 @@ Task::ReportResult Kalign3SupportTask::report() {
 
     return ReportResult_Finished;
 }
+
 ////////////////////////////////////////
-// KalignWithExtFileSpecifySupportTask
+// Kalign3WithExternalFileSupportTask
 Kalign3WithExternalFileSupportTask::Kalign3WithExternalFileSupportTask(const Kalign3Settings& _settings)
-    : Task("Run Kalign tool task", TaskFlags_NR_FOSCOE),
+    : Task(tr("Kalign external tool task"), TaskFlags_NR_FOSCOE),
       settings(_settings) {
     GCOUNTER(cvar, "Kalign3SupportTask");
 }

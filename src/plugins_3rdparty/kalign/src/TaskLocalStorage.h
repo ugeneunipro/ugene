@@ -43,10 +43,6 @@ public:
 
     static unsigned currentWorkerID();
 
-    static void bindToKalignTLSContext(Kalign2Context* ctx, int workerID = 0);
-
-    static void detachKalignTLSContext();
-
 private:
     static QThreadStorage<KalignContextTLSRef*> tls;
 };

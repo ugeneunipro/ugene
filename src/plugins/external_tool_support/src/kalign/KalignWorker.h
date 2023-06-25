@@ -56,8 +56,6 @@ private slots:
 private:
     IntegralBus* input = nullptr;
     IntegralBus* output = nullptr;
-    QString resultName;
-    QString transId;
     Kalign3Settings cfg;
 
 private:

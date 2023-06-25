@@ -129,8 +129,8 @@ void SpinBoxDelegate::sl_commit() {
  ********************************/
 const int DoubleSpinBoxDelegate::DEFAULT_DECIMALS_VALUE = 5;
 
-DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(const QVariantMap& props, QObject* parent)
-    : PropertyDelegate(parent), spinProperties(props) {
+DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(const QVariantMap& props, QObject* parent, const QSharedPointer<DoubleFormatter>& formatter)
+    : PropertyDelegate(parent), spinProperties(props), valueFormatter(formatter) {
     if (!spinProperties.contains("decimals")) {
         spinProperties["decimals"] = DEFAULT_DECIMALS_VALUE;
     }
@@ -138,6 +138,10 @@ DoubleSpinBoxDelegate::DoubleSpinBoxDelegate(const QVariantMap& props, QObject* 
 
 PropertyWidget* DoubleSpinBoxDelegate::createWizardWidget(U2OpStatus& /*os*/, QWidget* parent) const {
     return (PropertyWidget*)createEditor(parent, QStyleOptionViewItem(), QModelIndex());
+}
+
+PropertyDelegate* DoubleSpinBoxDelegate::clone() {
+    return new DoubleSpinBoxDelegate(spinProperties, parent(), valueFormatter);
 }
 
 QWidget* DoubleSpinBoxDelegate::createEditor(QWidget* parent,
@@ -162,9 +166,16 @@ void DoubleSpinBoxDelegate::setModelData(QWidget* editor, QAbstractItemModel* mo
 }
 
 QVariant DoubleSpinBoxDelegate::getDisplayValue(const QVariant& v) const {
+    double doubleValue = v.toDouble();
+    if (!valueFormatter.isNull()) {
+        QString formatterValue = valueFormatter->format(doubleValue);
+        if (!formatterValue.isEmpty()) {
+            return formatterValue;
+        }
+    }
     QDoubleSpinBox editor;
     WorkflowUtils::setQObjectProperties(editor, spinProperties);
-    editor.setValue(v.toDouble());
+    editor.setValue(doubleValue);
     return editor.text();
 }
 

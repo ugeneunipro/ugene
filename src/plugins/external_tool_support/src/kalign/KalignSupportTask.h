@@ -31,21 +31,21 @@
 #include "utils/ExportTasks.h"
 
 namespace U2 {
+class LoadDocumentTask;
 
 class Kalign3Settings {
 public:
-    Kalign3Settings();
-    void reset();
+    static constexpr double VALUE_IS_NOT_SET = -1000000;
 
-    double gapOpenPenalty;
-    double gapExtenstionPenalty;
-    double termGapPenalty;
-    double secret;
+    double gapOpenPenalty = VALUE_IS_NOT_SET;
+    double gapExtensionPenalty = VALUE_IS_NOT_SET;
+    double terminalGapExtensionPenalty = VALUE_IS_NOT_SET;
+
+    double nThreads = 4;
+
     QString inputFilePath;
     QString outputFilePath;
 };
-
-class LoadDocumentTask;
 
 class Kalign3SupportTask : public ExternalToolSupportTask {
     Q_OBJECT

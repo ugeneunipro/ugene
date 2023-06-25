@@ -50,14 +50,6 @@ void URLAttribute::setAttributeValue(const QVariant& newVal) {
     value = qVariantFromValue<QList<Dataset>>(sets);
 }
 
-const QVariant& URLAttribute::getAttributePureValue() const {
-    return value;
-}
-
-const QVariant& URLAttribute::getDefaultPureValue() const {
-    return defaultValue;
-}
-
 bool URLAttribute::isEmpty() const {
     if (Attribute::isEmpty()) {
         return true;

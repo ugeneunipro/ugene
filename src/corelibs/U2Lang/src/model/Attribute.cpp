@@ -141,7 +141,7 @@ const QVariant& Attribute::getDefaultPureValue() const {
 }
 
 bool Attribute::isDefaultValue() const {
-    return (value == defaultValue);
+    return value == defaultValue;
 }
 
 const AttributeScript& Attribute::getAttributeScript() const {

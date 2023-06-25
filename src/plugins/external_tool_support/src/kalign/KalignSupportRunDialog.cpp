@@ -19,20 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "KalignSupportRunDialog.h"
+
 #include <QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNATranslation.h>
 #include <U2Core/FileFilters.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
-
-#include "KalignSupportRunDialog.h"
 
 namespace U2 {
 
@@ -43,64 +42,43 @@ Kalign3DialogWithMsaInput::Kalign3DialogWithMsaInput(QWidget* w, const MultipleS
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    gapOpenSpinBox->setEnabled(false);
-    gapExtensionPenaltySpinBox->setEnabled(false);
-    terminalGapSpinBox->setEnabled(false);
-    bonusScoreSpinBox->setEnabled(false);
-
+    // Set defaults.
     if (ma->getAlphabet()->isAmino()) {
-        gapOpenSpinBox->setValue(53.9);
-        gapExtensionPenaltySpinBox->setValue(8.52);
-        terminalGapSpinBox->setValue(4.42);
-        bonusScoreSpinBox->setValue(0.02);
-    } else {
-        gapOpenSpinBox->setValue(217);
+        // See set_subm_gaps_CorBLOSUM66_13plus.
+        gapOpenPenaltySpinBox->setValue(5.5);
+        gapExtensionPenaltySpinBox->setValue(2.0);
+        terminalGapExtensionPenaltySpinBox->setValue(1.0);
+    } else if (ma->getAlphabet()->isRNA()) {
+        // See set_subm_gaps_RNA.
+        gapOpenPenaltySpinBox->setValue(217);
         gapExtensionPenaltySpinBox->setValue(39.4);
-        terminalGapSpinBox->setValue(292.6);
-        bonusScoreSpinBox->setValue(28.3);
+        terminalGapExtensionPenaltySpinBox->setValue(292.6);
+    } else if (ma->getAlphabet()->isDNA()) {
+        // See set_subm_gaps_DNA.
+        gapOpenPenaltySpinBox->setValue(8);
+        gapExtensionPenaltySpinBox->setValue(6);
+        terminalGapExtensionPenaltySpinBox->setValue(0);
     }
+    threadCountSpinBox->setValue(4);
 
-    QObject::connect(gapOpenCheckBox, &QCheckBox::clicked, gapOpenSpinBox, &QDoubleSpinBox::setEnabled);
+    QObject::connect(gapOpenPenaltyCheckBox, &QCheckBox::clicked, gapOpenPenaltySpinBox, &QDoubleSpinBox::setEnabled);
     QObject::connect(gapExtensionPenaltyCheckBox, &QCheckBox::clicked, gapExtensionPenaltySpinBox, &QDoubleSpinBox::setEnabled);
-    QObject::connect(terminalGapCheckBox, &QCheckBox::clicked, terminalGapSpinBox, &QDoubleSpinBox::setEnabled);
-    QObject::connect(bonusScoreCheckBox, &QCheckBox::clicked, bonusScoreSpinBox, &QDoubleSpinBox::setEnabled);
+    QObject::connect(terminalGapExtensionPenaltyCheckBox, &QCheckBox::clicked, terminalGapExtensionPenaltySpinBox, &QDoubleSpinBox::setEnabled);
+    QObject::connect(threadCountCheckBox, &QCheckBox::clicked, threadCountSpinBox, &QSpinBox::setEnabled);
 
     inputGroupBox->setVisible(false);
     this->adjustSize();
-    translateCheckBox->setEnabled(ma->getAlphabet()->isNucleic());
-    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
-    for (DNATranslation* t : qAsConst(aminoTs)) {
-        translationTableBox->addItem(t->getTranslationName());
-    }
 }
 
 void Kalign3DialogWithMsaInput::accept() {
-    if (gapOpenCheckBox->isChecked()) {
-        settings.gapOpenPenalty = gapOpenSpinBox->value();
-    }
-    if (gapExtensionPenaltyCheckBox->isChecked()) {
-        settings.gapExtenstionPenalty = gapExtensionPenaltySpinBox->value();
-    }
-    if (terminalGapCheckBox->isChecked()) {
-        settings.termGapPenalty = terminalGapSpinBox->value();
-    }
+    settings.gapOpenPenalty = gapOpenPenaltyCheckBox->isChecked() ? gapOpenPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.gapExtensionPenalty = gapExtensionPenaltyCheckBox->isChecked() ? gapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.terminalGapExtensionPenalty = terminalGapExtensionPenaltyCheckBox->isChecked() ? terminalGapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.nThreads = threadCountCheckBox->isChecked() ? threadCountSpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
     QDialog::accept();
 }
 
-bool Kalign3DialogWithMsaInput::isTranslateToAmino() const {
-    return translateCheckBox->isChecked();
-}
-
-QString Kalign3DialogWithMsaInput::getTranslationId() const {
-    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
-    QStringList ids = tr->getDNATranslationIds(translationTableBox->currentText());
-    SAFE_POINT(!ids.empty(), "No translations found!", "");
-    return ids.first();
-}
-
-// KalignAlignWithExtFileSpecifyDialogController
+// Kalign3DialogWithFileInput
 Kalign3DialogWithFileInput::Kalign3DialogWithFileInput(QWidget* w, Kalign3Settings& _settings)
     : QDialog(w),
       settings(_settings) {
@@ -113,13 +91,6 @@ Kalign3DialogWithFileInput::Kalign3DialogWithFileInput(QWidget* w, Kalign3Settin
     initSaveController();
 
     connect(inputFilePathButton, &QToolButton::clicked, this, &Kalign3DialogWithFileInput::sl_inputPathButtonClicked);
-
-    const DNAAlphabet* al = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    DNATranslationRegistry* tr = AppContext::getDNATranslationRegistry();
-    QList<DNATranslation*> aminoTs = tr->lookupTranslation(al, DNATranslationType_NUCL_2_AMINO);
-    for (DNATranslation* t : qAsConst(aminoTs)) {
-        translationTableBox->addItem(t->getTranslationName());
-    }
 }
 
 void Kalign3DialogWithFileInput::sl_inputPathButtonClicked() {
@@ -144,24 +115,21 @@ void Kalign3DialogWithFileInput::initSaveController() {
 }
 
 void Kalign3DialogWithFileInput::accept() {
-    if (gapOpenCheckBox->isChecked()) {
-        settings.gapOpenPenalty = gapOpenSpinBox->value();
-    }
-    if (gapExtensionPenaltyCheckBox->isChecked()) {
-        settings.gapExtenstionPenalty = gapExtensionPenaltySpinBox->value();
-    }
-    if (terminalGapCheckBox->isChecked()) {
-        settings.termGapPenalty = terminalGapSpinBox->value();
-    }
     if (inputFileLineEdit->text().isEmpty()) {
         QMessageBox::information(this, tr("Align with Kalign"), tr("Input file is not set!"));
-    } else if (saveController->getSaveFileName().isEmpty()) {
-        QMessageBox::information(this, tr("Align with Kalign"), tr("Output file is not set!"));
-    } else {
-        settings.outputFilePath = saveController->getSaveFileName();
-        settings.inputFilePath = inputFileLineEdit->text();
-        QDialog::accept();
+        return;
     }
+    if (saveController->getSaveFileName().isEmpty()) {
+        QMessageBox::information(this, tr("Align with Kalign"), tr("Output file is not set!"));
+        return;
+    }
+    settings.outputFilePath = saveController->getSaveFileName();
+    settings.inputFilePath = inputFileLineEdit->text();
+    settings.gapOpenPenalty = gapOpenPenaltyCheckBox->isChecked() ? gapOpenPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.gapExtensionPenalty = gapExtensionPenaltyCheckBox->isChecked() ? gapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.terminalGapExtensionPenalty = terminalGapExtensionPenaltyCheckBox->isChecked() ? terminalGapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.nThreads = threadCountCheckBox->isChecked() ? threadCountSpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    QDialog::accept();
 }
 
 }  // namespace U2

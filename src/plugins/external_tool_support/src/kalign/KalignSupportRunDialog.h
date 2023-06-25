@@ -35,7 +35,6 @@ class SaveDocumentController;
 
 class Kalign3DialogWithMsaInput : public QDialog, public Ui_KalignSupportRunDialog {
     Q_OBJECT
-
 public:
     Kalign3DialogWithMsaInput(QWidget* w, const MultipleSequenceAlignment& ma, Kalign3Settings& settings);
 
@@ -43,15 +42,12 @@ public slots:
     void accept() override;
 
 private:
-    bool isTranslateToAmino() const;
-    QString getTranslationId() const;
     MultipleSequenceAlignment ma;
     Kalign3Settings& settings;
 };
 
 class Kalign3DialogWithFileInput : public QDialog, public Ui_KalignSupportRunDialog {
     Q_OBJECT
-
 public:
     Kalign3DialogWithFileInput(QWidget* w, Kalign3Settings& settings);
 

@@ -99,7 +99,7 @@ Kalign3SupportContext::Kalign3SupportContext(QObject* p)
 
 void Kalign3SupportContext::initViewContext(GObjectViewController* view) {
     auto msaEditor = qobject_cast<MSAEditor*>(view);
-    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView: not MSAEditor", );
     msaEditor->registerActionProvider(this);
 
     auto alignAction = new AlignMsaAction(this, Kalign3Support::ET_KALIGN_ID, msaEditor, tr("Align with Kalign..."), 6000);

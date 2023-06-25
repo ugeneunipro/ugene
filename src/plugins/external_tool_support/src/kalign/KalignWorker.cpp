@@ -50,70 +50,74 @@ const QString Kalign3WorkerFactory::ACTOR_ID("kalign");
 const QString GAP_OPEN_PENALTY("gap-open-penalty");
 const QString GAP_EXT_PENALTY("gap-ext-penalty");
 const QString TERM_GAP_PENALTY("terminal-gap-penalty");
-const QString BONUS_SCORE("bonus-score");
+const QString THREAD_COUNT("nthreads");
 
 void Kalign3WorkerFactory::init() {
-    QList<PortDescriptor*> p;
-    QList<Attribute*> a;
+    QList<PortDescriptor*> portDescriptors;
+    QList<Attribute*> attributes;
     Descriptor ind(BasePorts::IN_MSA_PORT_ID(), Kalign3Worker::tr("Input MSA"), Kalign3Worker::tr("Input MSA to process."));
-    Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), Kalign3Worker::tr("Kalign result MSA"), Kalign3Worker::tr("The result of the Kalign alignment."));
+    Descriptor oud(BasePorts::OUT_MSA_PORT_ID(), Kalign3Worker::tr("Kalign result MSA"), Kalign3Worker::tr("The result of Kalign alignment."));
 
-    QMap<Descriptor, DataTypePtr> inM;
-    inM[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
-    p << new PortDescriptor(ind, DataTypePtr(new MapDataType("kalign.in.msa", inM)), true /*input*/);
-    QMap<Descriptor, DataTypePtr> outM;
-    outM[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
-    p << new PortDescriptor(oud, DataTypePtr(new MapDataType("kalign.out.msa", outM)), false /*input*/, true /*multi*/);
+    QMap<Descriptor, DataTypePtr> inputPortMap;
+    inputPortMap[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
+    portDescriptors << new PortDescriptor(ind, DataTypePtr(new MapDataType("kalign.in.msa", inputPortMap)), true /*input*/);
 
-    Descriptor gop(GAP_OPEN_PENALTY, Kalign3Worker::tr("Gap open penalty"), Kalign3Worker::tr("The penalty for opening/closing a gap. Half the value will be subtracted from the alignment score when opening, and half when closing a gap."));
-    Descriptor gep(GAP_EXT_PENALTY, Kalign3Worker::tr("Gap extension penalty"), Kalign3Worker::tr("The penalty for extending a gap."));
-    Descriptor tgp(TERM_GAP_PENALTY, Kalign3Worker::tr("Terminal gap penalty"), Kalign3Worker::tr("The penalty to extend gaps from the N/C terminal of protein or 5'/3' terminal of nucleotide sequences."));
-    Descriptor secret(BONUS_SCORE, Kalign3Worker::tr("Bonus score"), Kalign3Worker::tr("A bonus score that is added to each pair of aligned residues."));
+    QMap<Descriptor, DataTypePtr> outputPortMap;
+    outputPortMap[BaseSlots::MULTIPLE_ALIGNMENT_SLOT()] = BaseTypes::MULTIPLE_ALIGNMENT_TYPE();
+    portDescriptors << new PortDescriptor(oud, DataTypePtr(new MapDataType("kalign.out.msa", outputPortMap)), false /*input*/, true /*multi*/);
 
-    a << new Attribute(gop, BaseTypes::NUM_TYPE(), false, QVariant(54.90));
-    a << new Attribute(gep, BaseTypes::NUM_TYPE(), false, QVariant(8.52));
-    a << new Attribute(tgp, BaseTypes::NUM_TYPE(), false, QVariant(4.42));
-    a << new Attribute(secret, BaseTypes::NUM_TYPE(), false, QVariant(0.02));
+    Descriptor gop(GAP_OPEN_PENALTY, Kalign3Worker::tr("Gap open penalty"), Kalign3Worker::tr("The penalty for opening/closing a gap. Kalign parameter '--gpo'."));
+    Descriptor gep(GAP_EXT_PENALTY, Kalign3Worker::tr("Gap extension penalty"), Kalign3Worker::tr("The penalty for extending a gap. Kalign parameter '--gpe'."));
+    Descriptor tgp(TERM_GAP_PENALTY, Kalign3Worker::tr("Terminal gap penalty"), Kalign3Worker::tr("The penalty to extend gaps from the N/C terminal of protein or 5'/3' terminal of nucleotide sequences. Kalign parameter '--tgpe'."));
+    Descriptor threadCount(THREAD_COUNT, Kalign3Worker::tr("Number of threads"), Kalign3Worker::tr("Number of threads to use by the kalign algorithm. Kalign parameter '--nthreads'."));
 
-    Descriptor desc(ACTOR_ID, Kalign3Worker::tr("Align with Kalign"), Kalign3Worker::tr("Aligns multiple sequence alignments (MSAs) supplied with Kalign."
-                                                                                        "<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"http://msa->sbc.su.se\">http://msa->sbc.su.se</a>."));
+    attributes << new Attribute(gop, BaseTypes::NUM_TYPE(), false, QVariant(0.0));
+    attributes << new Attribute(gep, BaseTypes::NUM_TYPE(), false, QVariant(0.0));
+    attributes << new Attribute(tgp, BaseTypes::NUM_TYPE(), false, QVariant(0.0));
+    attributes << new Attribute(threadCount, BaseTypes::NUM_TYPE(), false, QVariant(4));
 
-    ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
+    Descriptor actorDescription(ACTOR_ID,
+                                Kalign3Worker::tr("Align with Kalign"),
+                                Kalign3Worker::tr("Aligns multiple sequence alignments (MSAs) with Kalign."
+                                                  "<p>Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on <a href=\"https://github.com/TimoLassmann/kalign\">https://github.com/TimoLassmann/kalign</a>."));
+
+    auto actorPrototype = new IntegralBusActorPrototype(actorDescription, portDescriptors, attributes);
+
+    QSharedPointer<DoubleFormatter> defaultValueFormatter(new DefaultDoubleFormatter(0, Kalign3Worker::tr("auto"), ""));
 
     QMap<QString, PropertyDelegate*> delegates;
     {
         QVariantMap m;
-        m["minimum"] = double(.00);
-        m["maximum"] = double(100.00);
+        m["minimum"] = double(0);
+        m["maximum"] = double(1000);
         m["decimals"] = 2;
-        delegates[GAP_OPEN_PENALTY] = new DoubleSpinBoxDelegate(m);
+        delegates[GAP_OPEN_PENALTY] = new DoubleSpinBoxDelegate(m, nullptr, defaultValueFormatter);
     }
     {
         QVariantMap m;
-        m["minimum"] = double(.00);
-        m["maximum"] = double(10.00);
+        m["minimum"] = double(0);
+        m["maximum"] = double(1000);
         m["decimals"] = 2;
-        delegates[GAP_EXT_PENALTY] = new DoubleSpinBoxDelegate(m);
+        delegates[GAP_EXT_PENALTY] = new DoubleSpinBoxDelegate(m, nullptr, defaultValueFormatter);
     }
     {
         QVariantMap m;
-        m["minimum"] = double(.00);
-        m["maximum"] = double(99.99);
+        m["minimum"] = double(0);
+        m["maximum"] = double(1000);
         m["decimals"] = 2;
-        delegates[TERM_GAP_PENALTY] = new DoubleSpinBoxDelegate(m);
+        delegates[TERM_GAP_PENALTY] = new DoubleSpinBoxDelegate(m, nullptr, defaultValueFormatter);
     }
     {
         QVariantMap m;
-        m["minimum"] = double(.00);
-        m["maximum"] = double(99.99);
-        m["decimals"] = 2;
-        delegates[BONUS_SCORE] = new DoubleSpinBoxDelegate(m);
+        m["minimum"] = 1;
+        m["maximum"] = 128;
+        delegates[THREAD_COUNT] = new SpinBoxDelegate(m);
     }
 
-    proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new Kalign3Prompter());
-    proto->setIconPath(":kalign/images/kalign_16.png");
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
+    actorPrototype->setEditor(new DelegateEditor(delegates));
+    actorPrototype->setPrompter(new Kalign3Prompter());
+    actorPrototype->setIconPath(":kalign/images/kalign_16.png");
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), actorPrototype);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new Kalign3WorkerFactory());
@@ -126,18 +130,14 @@ QString Kalign3Prompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_MSA_PORT_ID()));
     Actor* producer = input->getProducer(BasePorts::IN_MSA_PORT_ID());
     QString producerName = producer ? tr(" from %1").arg(producer->getLabel()) : "";
-
-    QString doc = tr("Aligns each MSA supplied <u>%1</u> with \"<u>Kalign</u>\".")
-                      .arg(producerName);
-
-    return doc;
+    return tr("Aligns each input MSA <u>%1</u> with \"<u>Kalign</u>\".").arg(producerName);
 }
 
 /****************************
  * KalignWorker
  ****************************/
 Kalign3Worker::Kalign3Worker(Actor* a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a) {
 }
 
 void Kalign3Worker::init() {
@@ -150,12 +150,24 @@ Task* Kalign3Worker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
-        cfg.gapOpenPenalty = actor->getParameter(GAP_OPEN_PENALTY)->getAttributeValue<float>(context);
-        cfg.gapExtenstionPenalty = actor->getParameter(GAP_EXT_PENALTY)->getAttributeValue<float>(context);
-        cfg.termGapPenalty = actor->getParameter(TERM_GAP_PENALTY)->getAttributeValue<float>(context);
-        cfg.secret = actor->getParameter(BONUS_SCORE)->getAttributeValue<float>(context);
+        cfg.gapOpenPenalty = actor->getParameter(GAP_OPEN_PENALTY)->getAttributeValue<double>(context);
+        if (cfg.gapOpenPenalty <= 0) {
+            cfg.gapOpenPenalty = Kalign3Settings::VALUE_IS_NOT_SET;
+        }
+        cfg.gapExtensionPenalty = actor->getParameter(GAP_EXT_PENALTY)->getAttributeValue<double>(context);
+        if (cfg.gapExtensionPenalty <= 0) {
+            cfg.gapExtensionPenalty = Kalign3Settings::VALUE_IS_NOT_SET;
+        }
+        cfg.terminalGapExtensionPenalty = actor->getParameter(TERM_GAP_PENALTY)->getAttributeValue<double>(context);
+        if (cfg.terminalGapExtensionPenalty <= 0) {
+            cfg.terminalGapExtensionPenalty = Kalign3Settings::VALUE_IS_NOT_SET;
+        }
+        cfg.nThreads = actor->getParameter(TERM_GAP_PENALTY)->getAttributeValue<int>(context);
+        if (cfg.nThreads == 0) {
+            cfg.nThreads = 4;
+        }
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
@@ -165,16 +177,16 @@ Task* Kalign3Worker::tick() {
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to Kalign.").arg(msa->getName()));
-            return NULL;
+            return nullptr;
         }
-        Task* t = new NoFailTaskWrapper(new Kalign3SupportTask(msa, GObjectReference(), cfg));
-        connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
+        auto t = new NoFailTaskWrapper(new Kalign3SupportTask(msa, GObjectReference(), cfg));
+        connect(t, &Task::si_stateChanged, this, &Kalign3Worker::sl_taskFinished);
         return t;
     } else if (input->isEnded()) {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void Kalign3Worker::sl_taskFinished() {
@@ -185,12 +197,8 @@ void Kalign3Worker::sl_taskFinished() {
         coreLog.error(t->getError());
         return;
     }
-
-    if (t->isCanceled()) {
-        return;
-    }
-
-    SAFE_POINT(NULL != output, "NULL output!", );
+    CHECK(!t->isCanceled(), );
+    SAFE_POINT(output != nullptr, "NULL output!", );
     send(t->resultMA);
     algoLog.info(tr("Aligned %1 with Kalign").arg(t->resultMA->getName()));
 }
@@ -199,7 +207,7 @@ void Kalign3Worker::cleanup() {
 }
 
 void Kalign3Worker::send(const MultipleSequenceAlignment& msa) {
-    SAFE_POINT(NULL != output, "NULL output!", );
+    SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;
     m[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);
@@ -209,8 +217,10 @@ void Kalign3Worker::send(const MultipleSequenceAlignment& msa) {
 Kalign3WorkerFactory::Kalign3WorkerFactory()
     : DomainFactory(ACTOR_ID) {
 }
+
 Worker* Kalign3WorkerFactory::createWorker(Actor* a) {
     return new Kalign3Worker(a);
 }
+
 }  // namespace LocalWorkflow
 }  // namespace U2

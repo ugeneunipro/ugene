@@ -176,22 +176,20 @@ private:
 class U2DESIGNER_EXPORT DoubleSpinBoxDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    DoubleSpinBoxDelegate(const QVariantMap& props = QVariantMap(), QObject* parent = 0);
-    virtual ~DoubleSpinBoxDelegate() {
-    }
+    DoubleSpinBoxDelegate(const QVariantMap& props = {}, QObject* parent = nullptr, const QSharedPointer<DoubleFormatter>& formatter = nullptr);
 
-    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const;
-    virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
+    QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const override;
 
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
-    QVariant getDisplayValue(const QVariant&) const;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
 
-    virtual PropertyDelegate* clone() {
-        return new DoubleSpinBoxDelegate(spinProperties, parent());
-    }
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
-    void getItems(QVariantMap& items) const;
+    QVariant getDisplayValue(const QVariant&) const override;
+
+    PropertyDelegate* clone() override;
+
+    void getItems(QVariantMap& items) const override;
 
     static const int DEFAULT_DECIMALS_VALUE;
 
@@ -200,6 +198,7 @@ private slots:
 
 private:
     QVariantMap spinProperties;
+    QSharedPointer<DoubleFormatter> valueFormatter;
 };
 
 /** Base class for all combo-box delegates. Includes item name formatter and other common features. */
