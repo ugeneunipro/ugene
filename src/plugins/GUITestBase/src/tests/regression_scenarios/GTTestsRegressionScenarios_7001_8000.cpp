@@ -4274,6 +4274,16 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
     CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7793) {
+    // 1. Click "File ->Open as..."
+    // 2. Choose "samples/ABIF/A01.abi"
+    // Expected state file opened without dialogue
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
+    GTMenu::clickMainMenuItem({"File", "Open as..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened()
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7797) {
     // Open "samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
