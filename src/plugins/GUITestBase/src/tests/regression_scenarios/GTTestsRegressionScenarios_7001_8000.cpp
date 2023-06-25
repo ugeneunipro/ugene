@@ -4265,7 +4265,7 @@ GUI_TEST_CLASS_DEFINITION(test_7793) {
     GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(GTWidget::findWidget("ADV_single_sequence_widget_0") != nullptr, "Sequence view not found.");
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened()
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7797) {
