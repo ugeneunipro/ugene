@@ -197,7 +197,7 @@ bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const Prim
         }
     }
 
-    // Check product is not out of sequence bounds  
+    // Check if the product has ledge(s) if it is out of sequence
     if (product.endPos() > settings->sequence.length() && !settings->isCircular) {
         if (leftBind.ledge + rightBind.ledge == 0) {
             return false;
