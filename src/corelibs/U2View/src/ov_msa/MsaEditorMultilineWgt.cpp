@@ -266,7 +266,7 @@ void MsaEditorMultilineWgt::updateSize() {
 void MsaEditorMultilineWgt::addPhylTreeWidget(MSAEditorMultiTreeViewer* newMultiTreeViewer) {
     multiTreeViewer = newMultiTreeViewer;
     treeSplitter->insertWidget(0, newMultiTreeViewer);
-    treeSplitter->setSizes(QList<int>({500, 600}));
+    treeSplitter->setSizes(QList<int>({isOsMac() ? 600 : 550, 550}));
     treeSplitter->setStretchFactor(0, 1);
     treeSplitter->setStretchFactor(1, 3);
 

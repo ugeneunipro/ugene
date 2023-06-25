@@ -333,7 +333,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     auto toggleAutoAnnotationsButton = GTWidget::findWidget("toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
-    QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
+    auto extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
@@ -368,7 +368,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     auto toggleAutoAnnotationsButton = GTWidget::findWidget("toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
-    QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
+    auto extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
@@ -430,7 +430,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     auto toggleAutoAnnotationsButton = GTWidget::findWidget("toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     auto tb = qobject_cast<QToolBar*>(toggleAutoAnnotationsButton->parent());
-    QToolButton* extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
+    auto extensionButton = tb->findChild<QToolButton*>("qt_toolbar_ext_button");
     //
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"Restriction Sites"}));
@@ -749,7 +749,10 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"YkrI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "YkrI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1062,7 +1065,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
     GTMouseDriver::doubleClick();
     //    Expected: Sequence scrolled to clicked position
     auto det = GTWidget::findWidget("det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
-    QScrollBar* scrollBar = det->findChild<QScrollBar*>();
+    auto scrollBar = det->findChild<QScrollBar*>();
     CHECK_SET_ERR(scrollBar->value() > 150000, QString("Unexpected value: %1").arg(scrollBar->value()));
 }
 
@@ -2186,11 +2189,11 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
 GUI_TEST_CLASS_DEFINITION(test_0076) {
     // UGENE-3267: Specifying a region when searching for restriction sites
     // 1. Open /_common_data/genbank/pBR322.gb
-    // 2. Search the defauult set of the restriction site: "EcoRI"
+    // 2. Search the default set of the restriction site: "EcoRI"
     // Expected state: the EcoRI restriction site is found on the zero-end position
     // 4. Remove the circular mark
     // 5. Search for the restriction site again
-    // Expected state: restriciton sites were recalculated and the is no annotation on zero position
+    // Expected state: restriction sites were recalculated and the is no annotation on zero position
 
     GTFileDialog::openFile(testDir + "_common_data/genbank/pBR322.gb");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
@@ -2343,7 +2346,7 @@ GUI_TEST_CLASS_DEFINITION(test_0079_2) {
 
             GTWidget::click(GTWidget::findWidget("pbSelectNone"));
             auto chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts("cbSuppliers", dialog);
-            CHECK_SET_ERR(chekedValues.size() == 0, QString("Current checked size after pbSelectNone: %1").arg(chekedValues.size()));
+            CHECK_SET_ERR(chekedValues.empty(), QString("Current checked size after pbSelectNone: %1").arg(chekedValues.size()));
 
             GTWidget::click(GTWidget::findWidget("pbSelectAll"));
             chekedValues = GTComboBoxWithCheckBoxes::getCheckedItemsTexts("cbSuppliers", dialog);
@@ -2386,9 +2389,9 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
                 }
                 auto name = "A" + id;
                 auto item = GTTreeWidget::findItem(tree, name);
-                auto tooltip = item->data(0, Qt::ToolTipRole).toString();
-                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips/" + name + ".html");
-                CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip").arg(name));
+                auto tooltip = item->data(3, Qt::ToolTipRole).toString();
+                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/all_possible_tooltips/" + name + ".html");
+                CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip %1").arg(name));
             }
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -2397,6 +2400,62 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList {}, new custom()));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Analyze", "Find restriction sites..."}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0081) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/enzymes/all_possible_types.bairoch"));
+            GTWidget::click(GTWidget::findWidget("enzymesFileButton", dialog));
+
+            auto tree = GTWidget::findTreeWidget("tree", dialog);
+            auto items = GTTreeWidget::getItems(tree);
+            for (const auto& item : qAsConst(items)) {
+                auto accession = item->text(1);
+                CHECK_CONTINUE(accession.isEmpty());
+
+                GTTreeWidget::expand(item);
+            }
+
+            static const QMap<QString, QString> TYPE_MAP = {
+                {"R1", "type 1 restriction enzyme"},
+                {"R2", "type 2 restriction enzyme"},
+                {"R3", "type 3 restriction enzyme"},
+                {"RM1", "type 1 enzyme, which acts as both -<br />a restriction enzyme and a methylase"},
+                {"RM2", "type 2 enzyme, which acts as both -<br />a restriction enzyme and a methylase"},
+                {"R2*", "type 2 restriction enzyme,<br />but only recognizes the sequence when it is methylated"},
+                {"IE", "an intron-encoded (homing) endonuclease"},
+                {"M", "an orphan methylase,<br />not associated with a restriction enzyme or specificity subunit"}};
+            for (const auto& item : qAsConst(items)) {
+                auto accession = item->text(1);
+                CHECK_CONTINUE(!accession.isEmpty());
+
+                GTTreeWidget::click(item);
+                auto type = item->text(2);
+                CHECK_SET_ERR(TYPE_MAP.contains(type), QString("Unexpected type").arg(type));
+
+                auto text = GTWidget::findTextBrowser("teSelectedEnzymeInfo", dialog)->toHtml();
+                auto name = item->text(0);
+                CHECK_SET_ERR(text.contains(TYPE_MAP.value(type)), QString("Incorrect type descriptions, enzyme name:").arg(name));
+                CHECK_SET_ERR(text.contains("http://rebase.neb.com/rebase/enz/" + name + ".html"),
+                             QString("Enzyme info doesn't contain link, enzyme name:").arg(name));
+            }
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+
+
 }
 
 }  // namespace GUITest_common_scenarios_sequence_view

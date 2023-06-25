@@ -186,5 +186,8 @@ bool GTMouseDriver::scroll(int value) {
 
 #    undef GT_CLASS_NAME
 
+void GTMouseDriver::releasePressedButtons() {
+}
+
 #endif
 }  // namespace HI

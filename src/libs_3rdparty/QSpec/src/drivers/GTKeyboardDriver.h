@@ -62,6 +62,9 @@ public:
     static bool keyPress(Qt::Key, Qt::KeyboardModifiers = Qt::NoModifier);
     static bool keyRelease(Qt::Key, Qt::KeyboardModifiers = Qt::NoModifier);
 
+    /** Releases all currently pressed keyboard keys. Run before every test to reset keyboard state. */
+    static void releasePressedKeys();
+
     class HI_EXPORT keys : private QMap<Qt::Key, int> {
     public:
         keys();

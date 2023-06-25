@@ -51,6 +51,9 @@ public:
     // Linux: fails if there is an opening X display error
     static bool scroll(int value);  // positive values for scrolling up, negative for scrolling down
 
+    /** Releases all currently pressed buttons. Run before every test to reset mouse state. */
+    static void releasePressedButtons();
+
     static QPoint getMousePosition();
 
 private:

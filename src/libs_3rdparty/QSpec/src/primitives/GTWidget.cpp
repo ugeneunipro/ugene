@@ -74,10 +74,19 @@ void GTWidget::moveToAndClick(const QPoint& point) {
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(QWidget* w) {
     GT_CHECK(w != nullptr, "widget is NULL");
+#ifdef Q_OS_DARWIN
+    GTGlobals::sleep(300);
+#endif
     GTWidget::click(w);
-    GTGlobals::sleep(200);
     if (!qobject_cast<QComboBox*>(w)) {
-        GT_CHECK(w->hasFocus(), QString("Can't set focus on widget '%1'").arg(w->objectName()));
+        for (int time = 0; time < 3000 && !w->hasFocus(); time += GT_OP_CHECK_MILLIS) {
+            GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        }
+        if (!w->hasFocus()) {
+            auto focusedWidget = QApplication::focusWidget();
+            GT_FAIL(QString("Can't set focus on widget '%1', focused widget: %2")
+                        .arg(w->objectName()).arg(focusedWidget == nullptr ? QString("null"): focusedWidget->objectName()), );
+        }
     }
 }
 #undef GT_METHOD_NAME
@@ -225,15 +234,23 @@ QProgressBar* GTWidget::findProgressBar(const QString& widgetName, QWidget* pare
     return findExactWidget<QProgressBar*>(widgetName, parentWidget, options);
 }
 
+#define GT_METHOD_NAME "getWidgetCenter"
 QPoint GTWidget::getWidgetCenter(QWidget* widget) {
+    GT_CHECK_RESULT(widget!= nullptr, "getWidgetCenter: widget is null!", {});
     return widget->mapToGlobal(widget->rect().center());
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getWidgetVisibleCenter"
 QPoint GTWidget::getWidgetVisibleCenter(QWidget* widget) {
+    GT_CHECK_RESULT(widget!= nullptr, "getWidgetVisibleCenter: widget is null!", {});
     return widget->mapFromGlobal(getWidgetVisibleCenterGlobal(widget));
 }
+#undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getWidgetVisibleCenterGlobal"
 QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
+    GT_CHECK_RESULT(widget!= nullptr, "getWidgetVisibleCenterGlobal: widget is null!", {});
     QRect rect = widget->rect();
     QRect gRect(widget->mapToGlobal(rect.topLeft()), rect.size());
     QWidget* parent = widget->parentWidget();
@@ -246,6 +263,7 @@ QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
     }
     return gRect.center();
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findButtonByText"
 QAbstractButton* GTWidget::findButtonByText(const QString& text, QWidget* parentWidget, const GTGlobals::FindOptions& options) {

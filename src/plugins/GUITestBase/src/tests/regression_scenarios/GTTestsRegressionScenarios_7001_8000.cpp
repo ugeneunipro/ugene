@@ -129,6 +129,7 @@
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
@@ -1775,7 +1776,10 @@ GUI_TEST_CLASS_DEFINITION(test_7455) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     // 2. Open the "Find restriction sites" dialog, choose "AaaI" (vary first one) only and click OK.
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"AaaI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList {"AaaI"};
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -3698,6 +3702,21 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTComboBox::getCurrentText("treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7708) {
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708", "7708.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::addInputFile("Read Sequence", dataDir + "samples/FASTA/human_T1.fa");
+
+    GTUtilsWorkflowDesigner::click("Annotate with UQL");
+    GTUtilsWorkflowDesigner::setParameter("Schema", dataDir + "samples/FASTA/human_T1.fa", GTUtilsWorkflowDesigner::textValue);
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::checkErrorList("Failed to read QueryDesigner schema from");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7712) {
     class FilterShortScaffoldsWizard : public CustomScenario {
     public:
@@ -4253,6 +4272,16 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
     CHECK_SET_ERR(expansionSlider->value() == 100, "9. The expansion should be 100");
     QImage imageAfter4 = GTUtilsPhyTree::captureTreeImage();
     CHECK_SET_ERR(imageAfter4 == imageBefore, "10. Image is changed");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7793) {
+    // 1. Click "File ->Open as..."
+    // 2. Choose "samples/ABIF/A01.abi"
+    // Expected state file opened without dialogue
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
+    GTMenu::clickMainMenuItem({"File", "Open as..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7797) {

@@ -37,11 +37,7 @@ namespace HI {
 
 #    define GT_CLASS_NAME "GTKeyboardDriver Windows"
 
-namespace {
-
-namespace {
-
-QList<int> initExtendedKeys() {
+static QList<int> initExtendedKeys() {
     // The list is taken from here: https://msdn.microsoft.com/en-us/library/windows/desktop/ms646267(v=vs.85).aspx#_win32_Keystroke_Message_Flags
     // There also sohuld be the numpad enter key in the list, but I don't know its code
     return QList<int>() << VK_RCONTROL
@@ -62,18 +58,16 @@ QList<int> initExtendedKeys() {
                         << VK_DIVIDE;
 }
 
-bool isExtended(int key) {
+static bool isExtended(int key) {
     static const QList<int> extendedKeys = initExtendedKeys();
     return extendedKeys.contains(key);
 }
 
-bool isExtended(Qt::Key key) {
+static bool isExtended(Qt::Key key) {
     return isExtended(GTKeyboardDriver::key[key]);
 }
 
-}  // namespace
-
-INPUT getKeyEvent(int key, bool keyUp = false, bool extended = false) {
+static INPUT getKeyEvent(int key, bool keyUp = false, bool extended = false) {
     INPUT event;
     event.type = INPUT_KEYBOARD;
     event.ki.wVk = key;
@@ -88,7 +82,7 @@ INPUT getKeyEvent(int key, bool keyUp = false, bool extended = false) {
     return event;
 }
 
-bool keyPressWindows(int key, int modifiers = 0, bool extended = false) {
+static bool keyPressWindows(int key, int modifiers = 0, bool extended = false) {
     DRIVER_CHECK(key != 0, " Error: key = 0 in GTKeyboardDriver::keyPress()");
 
     if (modifiers) {
@@ -104,7 +98,7 @@ bool keyPressWindows(int key, int modifiers = 0, bool extended = false) {
 #    undef GT_METHOD_NAME
 
 #    define GT_METHOD_NAME "keyRelease"
-bool keyReleaseWindows(int key, int modifiers = 0, bool extended = false) {
+static bool keyReleaseWindows(int key, int modifiers = 0, bool extended = false) {
     DRIVER_CHECK(key != 0, " Error: key = 0 in GTKeyboardDriver::keyRelease()");
 
     if (modifiers) {
@@ -118,7 +112,6 @@ bool keyReleaseWindows(int key, int modifiers = 0, bool extended = false) {
     return true;
 }
 #    undef GT_METHOD_NAME
-}  // namespace
 
 bool GTKeyboardDriver::keyPress(char key, Qt::KeyboardModifiers modifiers) {
     if (isalpha(key)) {
@@ -401,6 +394,9 @@ GTKeyboardDriver::keys::keys() {
 
     // feel free to add other keys
     // macro VK_* defined in WinUser.h
+}
+
+void GTKeyboardDriver::releasePressedKeys() {
 }
 
 #    undef GT_CLASS_NAME

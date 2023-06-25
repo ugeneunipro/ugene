@@ -130,13 +130,26 @@ public:
 };
 
 class EnzymeTreeItem : public QTreeWidgetItem {
+    Q_DECLARE_TR_FUNCTIONS(EnzymeTreeItem)
 public:
     EnzymeTreeItem(const SEnzymeData& ed);
     SEnzymeData enzyme;
     bool operator<(const QTreeWidgetItem& other) const;
+    // Get text information about this enzyme
+    QString getEnzymeInfo() const;
 
 private:
+    enum Column {
+        Id = 0,
+        Accession,
+        Type,
+        Sequence,
+        Organism,
+        Suppliers
+    };
+
     QString generateEnzymeTooltip() const;
+    QString getTypeInfo() const;
 };
 
 #define ANY_VALUE -1

@@ -503,29 +503,13 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     // Creating joined annotation
-    //
-    // Steps:
-    //
-    // 1. Use menu {File->Open}. Open project _common_data/scenarios/project/proj2.uprj
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/project/", "proj2.uprj");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/project/proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished();
-    // Expected state:
-    //     1) Project view with document "1.gb" has been opened
     GTUtilsDocument::checkDocument("1.gb");
-    //
-    // 2. Open view for "1.gb"
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
     GTMouseDriver::doubleClick();
-    //
-    // 3. Do menu {Actions->Add->New Annotation}
-    // Expected state: "Create annotation" dialog has appeared
-    //
-    // 3. Fill the next field in dialog:
-    //     {Group Name} DDD
-    //     {Annotation Name} D
-    //     {Location} join(10..16,18..20)
-    //
-    // 4. Click Create button
+
     GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(false, "DDD", "D", "join(10..16,18..20)"));
     GTMenu::clickMainMenuItem({"Actions", "Add", "New annotation..."});
 

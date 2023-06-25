@@ -159,5 +159,10 @@ bool GTMouseDriver::scroll(int value) {
     return true;
 }
 
+void GTMouseDriver::releasePressedButtons() {
+    GTMouseDriver::release(Qt::RightButton);
+    GTMouseDriver::release(Qt::LeftButton);
+}
+
 #endif
 }  // namespace HI

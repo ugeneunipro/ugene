@@ -37,9 +37,6 @@
 
 namespace U2 {
 
-FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings() {
-}
-
 FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings(const QStringList& _enzymes)
     : enzymes(_enzymes) {
 }
@@ -61,6 +58,10 @@ FindEnzymesDialogFiller::FindEnzymesDialogFiller(
 #define GT_METHOD_NAME "run"
 void FindEnzymesDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget();
+
+    if (settings.clickSelectAllSuppliers) {
+        GTWidget::click(GTWidget::findWidget("pbSelectAll", dialog));
+    }
 
     if (!settings.suppliers.isEmpty()) {
         GTComboBoxWithCheckBoxes::selectItemByText("cbSuppliers", dialog, settings.suppliers, GTGlobals::UseMouse);

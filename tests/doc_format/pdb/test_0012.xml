@@ -1,5 +1,5 @@
 <multi-test>
 
-    <load-document index="doc" url="pdb/broken/Helix_wrong_order.pdb" io="local_file" format="pdb" no-message="error" />
+    <load-document index="doc" url="pdb/broken/Helix_wrong_order.pdb" io="local_file" format="pdb" message="Inconsistent atom indexes in pdb file:" />
 
 </multi-test>

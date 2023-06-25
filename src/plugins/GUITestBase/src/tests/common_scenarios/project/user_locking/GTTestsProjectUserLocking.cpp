@@ -38,6 +38,7 @@
 #include "GTUtilsDocument.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
+#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
@@ -49,98 +50,56 @@ namespace GUITest_common_scenarios_project_user_locking {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-#define GT_CLASS_NAME "GUITest_common_scenarios_project_user_locking_test_0002::CreateAnnnotationDialogComboBoxChecker"
-#define GT_METHOD_NAME "run"
-    class CreateAnnnotationDialogComboBoxChecker : public Filler {
+    class CreateAnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnnotationDialogComboBoxChecker(const QString& radioButtonName)
-            : Filler("CreateAnnotationDialog"), buttonName(radioButtonName) {
+        CreateAnnotationDialogComboBoxChecker()
+            : Filler("CreateAnnotationDialog") {
         }
-        void commonScenario() {
+        void commonScenario() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            auto btn = GTWidget::findRadioButton("rbExistingTable", dialog);
-
-            if (!btn->isEnabled()) {
-                GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
-                GTMouseDriver::click();
-            }
-
-            QComboBox* comboBox = dialog->findChild<QComboBox*>();
-            GT_CHECK(comboBox != nullptr, "ComboBox not found");
-
-            GT_CHECK(comboBox->count() == 0, "ComboBox is not empty");
+            auto comboBox = GTWidget::findComboBox("cbExistingTable", dialog);
+            CHECK_SET_ERR(comboBox->count() == 0, "ComboBox is not empty");
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         }
-
-    private:
-        QString buttonName;
     };
-#undef GT_METHOD_NAME
-#undef GT_CLASS_NAME
 
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/project/", "proj5.uprj");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/project/proj5.uprj");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsDocument::checkDocument("1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("NC_001363 features"));
-    GTGlobals::sleep(200);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(200);
-    GTUtilsDocument::checkDocument("1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTGlobals::sleep(2000);
-
-    GTUtilsDialog::waitForDialog(new CreateAnnnotationDialogComboBoxChecker(""));
+    GTUtilsDialog::add(new CreateAnnotationDialogComboBoxChecker());
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep(1000);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-#define GT_CLASS_NAME "GUITest_common_scenarios_project_user_locking_test_0002::CreateAnnnotationDialogComboBoxChecker"
-#define GT_METHOD_NAME "run"
-    class CreateAnnnotationDialogComboBoxChecker : public Filler {
+    class CreateAnnotationDialogComboBoxChecker : public Filler {
     public:
-        CreateAnnnotationDialogComboBoxChecker(const QString& radioButtonName)
-            : Filler("CreateAnnotationDialog"), buttonName(radioButtonName) {
+        CreateAnnotationDialogComboBoxChecker()
+            : Filler("CreateAnnotationDialog") {
         }
-        void commonScenario() {
+        void commonScenario() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            auto btn = GTWidget::findRadioButton("rbExistingTable", dialog);
-
-            if (!btn->isEnabled()) {
-                GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
-                GTMouseDriver::click();
-            }
-
-            QComboBox* comboBox = dialog->findChild<QComboBox*>();
-            GT_CHECK(comboBox != nullptr, "ComboBox not found");
-
-            GT_CHECK(comboBox->count() != 0, "ComboBox is empty");
+            auto comboBox = GTWidget::findComboBox("cbExistingTable", dialog);
+            CHECK_SET_ERR(comboBox->count() != 0, "ComboBox is empty");
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         }
-
-    private:
-        QString buttonName;
     };
-#undef GT_METHOD_NAME
-#undef GT_CLASS_NAME
-
-    // backup proj3 first
-    //     GTFile::backup(testDir + "_common_data/scenarios/project/proj3.uprj");
-
     GTFileDialog::openFile(testDir + "_common_data/scenarios/project/", "proj3.uprj");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsDocument::checkDocument("1.gb");
 
     QModelIndex item = GTUtilsProjectTreeView::findIndex("1.gb");
-
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter("1.gb");
 
     GTUtilsDialog::waitForDialog(new PopupChooser({"openInMenu", "action_open_view"}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
-
-    GTUtilsDocument::checkDocument("1.gb", AnnotatedDNAViewFactory::ID);
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
     QIcon itemIconBefore = qvariant_cast<QIcon>(item.data(Qt::DecorationRole));
 
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_DOCUMENT__UNLOCK}));
@@ -148,16 +107,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::click(Qt::RightButton);
 
     QIcon itemIconAfter = qvariant_cast<QIcon>(item.data(Qt::DecorationRole));
-    if (itemIconBefore.cacheKey() == itemIconAfter.cacheKey()) {
-        GT_FAIL("Lock icon has not disappear", );
-    }
+    CHECK_SET_ERR(itemIconBefore.cacheKey() != itemIconAfter.cacheKey(), "Lock icon has not disappear");
 
-    GTUtilsDialog::waitForDialog(new CreateAnnnotationDialogComboBoxChecker(""));
+    GTUtilsDialog::waitForDialog(new CreateAnnotationDialogComboBoxChecker());
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTUtilsDialog::checkNoActiveWaiters();
 
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_DOCUMENT__LOCK}));
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::click(Qt::RightButton);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {

@@ -497,17 +497,10 @@ GUI_TEST_CLASS_DEFINITION(test_4047) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
-            if (isOsMac()) {
-                // dirty hack for mac
-                if (GTWidget::getActiveModalWidget() != nullptr) {
-                    GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
-                }
-            }
         }
     };
-
     GTUtilsDialog::waitForDialog(new ConfigurationWizardFiller("Configure Raw DNA-Seq Data Processing", new custom()));
     GTUtilsWorkflowDesigner::addSample("Raw DNA-Seq data processing");
     GTThread::waitForMainThread();
@@ -2510,7 +2503,10 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
     GTUtilsCv::commonCvBtn::click();
 
     // 3. Find some restriction sites.
-    GTUtilsDialog::add(new FindEnzymesDialogFiller({"AaaI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "AaaI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -3766,7 +3762,7 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
 
     // Change sequences order by re-sorting.
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_SORT, "action_sort_by_length"}));
-    GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
+    GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
 
@@ -3963,7 +3959,10 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     GTFileDialog::openFile(dataDir + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"AaaI"}));
+    FindEnzymesDialogFillerSettings settings;
+    settings.clickSelectAllSuppliers = true;
+    settings.enzymes = QStringList{ "AaaI" };
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -3971,7 +3970,9 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     QTreeWidgetItem* item = GTTreeWidget::findItem(tree, "76105..76110");
     GTTreeWidget::click(item);
 
-    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller({"AacLI"}));
+    settings.enzymes = QStringList{ "AacLI" };
+    settings.clickSelectAllSuppliers = true;
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
 

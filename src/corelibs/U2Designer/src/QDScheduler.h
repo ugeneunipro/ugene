@@ -73,8 +73,8 @@ private:
     void initTotalMap();
 
 private:
-    QDScheme* scheme;
-    QDActor* actor;
+    QDScheme* scheme = nullptr;
+    QDActor* actor = nullptr;
     QList<QDActor*> linkedActors;
     QMap<QPair<QDSchemeUnit*, QDSchemeUnit*>, QList<QDConstraint*>> constraintsMap;
 };

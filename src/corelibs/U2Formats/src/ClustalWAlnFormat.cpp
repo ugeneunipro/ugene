@@ -47,10 +47,18 @@
 
 namespace U2 {
 
-/* TRANSLATOR U2::ClustalWAlnFormat */
-/* TRANSLATOR U2::IOAdapter */
+/**
+ * Valid prefix of the first line in the file.
+ * Used for format detection and as a multi-document part separator.
+ */
+const QString CLUSTAL_FIRST_LINE_PREFIX = "CLUSTAL W";
 
-const QString ClustalWAlnFormat::CLUSTAL_HEADER = "CLUSTAL";
+/**
+ * Valid suffix of the first line in the file.
+ * Used for format detection and as a multi-document part separator.
+ */
+const QString CLUSTAL_FIRST_LINE_SUFFIX = " multiple sequence alignment";
+
 const int ClustalWAlnFormat::MAX_LINE_LEN = 190;
 // The sequence name's length maximum is defined in the "clustalw.h" file of the "CLUSTALW" source code
 const int ClustalWAlnFormat::MAX_NAME_LEN = 150;
@@ -62,6 +70,11 @@ ClustalWAlnFormat::ClustalWAlnFormat(QObject* p)
     formatName = tr("CLUSTALW");
     formatDescription = tr("Clustalw is a format for storing multiple sequence alignments");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
+}
+
+/** Returns true if the line can be a valid header of the ClustalW file. */
+static bool isValidFirstLineString(const QString& line) {
+    return line.startsWith(CLUSTAL_FIRST_LINE_PREFIX) || line.trimmed().endsWith(CLUSTAL_FIRST_LINE_SUFFIX);
 }
 
 void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QList<GObject*>& objects, const QVariantMap& fs, U2OpStatus& os) {
@@ -76,21 +89,20 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
     bool firstBlock = true;
     int sequenceIdx = 0;
     int valStartPos = 0;
-    int valEndPos = 0;
     int currentLen = 0;
 
     // Skip the first line.
     reader.read(os, buf, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk);
     CHECK_OP(os, )
 
-    if (!lineOk || !buf.startsWith(CLUSTAL_HEADER)) {
+    if (!lineOk || !isValidFirstLineString(buf)) {
         os.setError(ClustalWAlnFormat::tr("Illegal header line"));
         return;
     }
 
     // Read names and sequences.
     while (reader.read(os, buf, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk) > 0 && !os.isCoR()) {
-        if (buf.startsWith(CLUSTAL_HEADER)) {
+        if (isValidFirstLineString(buf)) {
             reader.undo(os);  // Start of the next document in the stream.
             CHECK_OP(os, )
             break;
@@ -125,7 +137,7 @@ void ClustalWAlnFormat::load(IOAdapterReader& reader, const U2DbiRef& dbiRef, QL
             valStartPos = valIdx;
         }
 
-        valEndPos = valStartPos + 1;  // not inclusive
+        int valEndPos = valStartPos + 1;  // not inclusive
         while (valEndPos < len && !TextUtils::isWhiteSpace(buf, valEndPos)) {
             valEndPos++;
         }
@@ -304,13 +316,8 @@ void ClustalWAlnFormat::storeTextDocument(IOAdapterWriter& writer, Document* d, 
 }
 
 FormatCheckResult ClustalWAlnFormat::checkRawTextData(const QString& dataPrefix, const GUrl&) const {
-    if (!dataPrefix.startsWith(CLUSTAL_HEADER)) {
-        return FormatDetection_NotMatched;
-    }
     QString line = TextUtils::readFirstLine(dataPrefix);
-    return line == CLUSTAL_HEADER || line.endsWith("multiple sequence alignment")
-               ? FormatDetection_Matched
-               : FormatDetection_AverageSimilarity;
+    return isValidFirstLineString(line) ? FormatDetection_Matched : FormatDetection_NotMatched;
 }
 
 }  // namespace U2

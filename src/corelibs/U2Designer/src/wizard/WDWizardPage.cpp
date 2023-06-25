@@ -32,9 +32,6 @@ WDWizardPage::WDWizardPage(WizardPageController* controller, QWidget* parent)
     controller->setQtPage(this);
 }
 
-WDWizardPage::~WDWizardPage() {
-}
-
 void WDWizardPage::initializePage() {
     controller->applyLayout();
 }

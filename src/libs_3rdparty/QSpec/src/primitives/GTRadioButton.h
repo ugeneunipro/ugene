@@ -34,9 +34,6 @@ public:
     static void click(QRadioButton* radioButton);
     static void click(const QString& radioButtonName, QWidget* parent = nullptr);
 
-    static QRadioButton* getRadioButtonByText(QString text, QWidget* parent = nullptr);
-    static QList<QRadioButton*> getAllButtonsByText(const QString& text, QWidget* parent = nullptr);
-
     /** Checks if the radio button is checked. */
     static void checkIsChecked(QRadioButton* button, bool expectedState = true);
 };

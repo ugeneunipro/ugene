@@ -22,7 +22,7 @@
 #include <GTGlobals.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTMenu.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
@@ -30,11 +30,9 @@
 
 #include <QApplication>
 #include <QDir>
-#include <QGuiApplication>
 #include <QProcess>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
@@ -46,23 +44,9 @@ namespace U2 {
 namespace GUITest_posterior_actions {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
-    // Release all hold keyboard modifier keys
-    Qt::KeyboardModifiers modifiers = QGuiApplication::queryKeyboardModifiers();
-    if (modifiers & Qt::ShiftModifier) {
-        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    }
-
-    if (modifiers & Qt::ControlModifier) {
-        GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    }
-
-    if (modifiers & Qt::AltModifier) {
-        GTKeyboardDriver::keyRelease(Qt::Key_Alt);
-    }
-
-    if (modifiers != 0) {
-        coreLog.info(QString("post_action_0000: next keyboard modifiers were pressed after the test: %1").arg(modifiers));
-    }
+    uiLog.trace(QString("post_action_0000: next keyboard modifiers are pressed after the test: %1").arg(QGuiApplication::queryKeyboardModifiers()));
+    GTMouseDriver::releasePressedButtons();
+    GTKeyboardDriver::releasePressedKeys();
 }
 
 POSTERIOR_ACTION_DEFINITION(post_action_0001) {

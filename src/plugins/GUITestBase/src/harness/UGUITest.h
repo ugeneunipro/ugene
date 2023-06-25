@@ -43,7 +43,7 @@ public:
      * A label to mark test as included into the default nightly GUI test suite.
      * Only tests with this labels are executed as a part of nightly GUI testing.
      */
-    static const QString Nightly;
+    static const QString Precommit;
 
     /** A test with this label is safe to run on Linux. */
     static const QString Linux;

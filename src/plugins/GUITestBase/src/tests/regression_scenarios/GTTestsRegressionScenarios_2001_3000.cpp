@@ -5174,11 +5174,14 @@ GUI_TEST_CLASS_DEFINITION(test_2971) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"MSAE_MENU_LOAD_SEQ", "Sequence from file"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
-    // Close file - UGENE does not crash.
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("COI.aln"));
     GTMouseDriver::click();
+
+    // Close file - UGENE does not crash.
+    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2972) {

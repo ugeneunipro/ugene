@@ -27,7 +27,7 @@ namespace U2 {
 using namespace HI;
 
 struct FindEnzymesDialogFillerSettings {
-    FindEnzymesDialogFillerSettings();
+    FindEnzymesDialogFillerSettings() = default;
     FindEnzymesDialogFillerSettings(const QStringList& enzymes);
 
     QStringList enzymes;
@@ -40,6 +40,7 @@ struct FindEnzymesDialogFillerSettings {
     bool clickFindAll = false;
     // Show suppliers from this list
     QStringList suppliers;
+    bool clickSelectAllSuppliers = false;
 };
 
 class FindEnzymesDialogFiller : public Filler {

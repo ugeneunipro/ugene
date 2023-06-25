@@ -103,7 +103,7 @@ Document* PDBFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, con
     ioLog.trace("Start PDB parsing: " + url.getURLString());
 
     BioStruct3D bioStruct;
-    PDBParser pdbParser(io);
+    PDBParser pdbParser(io, url.fileName());
     clock_t t1 = clock();
     pdbParser.parseBioStruct3D(bioStruct, os);
     clock_t t2 = clock();
@@ -172,17 +172,27 @@ void PDBFormat::initUtilityMaps() {
     }
 }
 
-PDBFormat::PDBParser::PDBParser(IOAdapter* _io)
+PDBFormat::PDBParser::PDBParser(IOAdapter* _io, const QString& _filename)
     : io(_io),
       currentPDBLine(""),
       currentChainIndex(1),
       currentMoleculeIndex(0),
       residueOrder(0),
-      readingMoleculeName(false) {
+      readingMoleculeName(false),
+      filename(_filename){
     currentModelIndex = 0;
     currentChainIndentifier = ' ';
     flagMultipleModels = false;
     flagAtomRecordPresent = false;
+}
+
+// Checks if IDs in list follows natural order
+static void checkIdsOrder(const QList<int>& sequenceIds, const QString& filename) {
+    QList<int> sortedsequenceIds(sequenceIds);
+    std::sort(sortedsequenceIds.begin(), sortedsequenceIds.end());
+    if (sortedsequenceIds != sequenceIds) {
+        ioLog.info(PDBFormat::tr("Inconsistent atom indexes in pdb file: %1.").arg(filename));
+    }
 }
 
 void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& ti) {
@@ -190,6 +200,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
     char* buf = readBuff.data();
     qint64 len = 0;
     bool firstCompndLine = true;
+    QList<int> sequenceIds;
     while (!ti.isCoR()) {
         bool lineOk = true;
 
@@ -229,7 +240,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
         }
 
         if (currentPDBLine.startsWith("ATOM  ") || currentPDBLine.startsWith("HETATM")) {
-            parseAtom(biostruct, ti);
+            parseAtom(biostruct, ti, sequenceIds);
             continue;
         }
 
@@ -246,6 +257,8 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
         if (currentPDBLine.startsWith("MODEL")) {
             currentChainIndex = 1;
             parseModel(biostruct, ti);
+            checkIdsOrder(sequenceIds, filename);            
+            sequenceIds.clear();
             continue;
         }
 
@@ -256,6 +269,7 @@ void PDBFormat::PDBParser::parseBioStruct3D(BioStruct3D& biostruct, U2OpStatus& 
         }
     }
 
+    checkIdsOrder(sequenceIds, filename);
     CHECK_OP(ti, );
 
     if (!flagAtomRecordPresent) {
@@ -338,7 +352,7 @@ bool PDBFormat::PDBParser::seqResContains(char chainIdentifier, int residueIndex
     }
 }
 
-void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&) {
+void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&, QList<int>& sequenceIds) {
     /*
     Record Format
 
@@ -434,6 +448,7 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D& biostruct, U2OpStatus&) {
         SharedMolecule& mol = biostruct.moleculeMap[chainIndex];
         Molecule3DModel& model3D = mol->models[modelId];
         model3D.atoms.append(a);
+        sequenceIds.append(id);
     }
 }
 

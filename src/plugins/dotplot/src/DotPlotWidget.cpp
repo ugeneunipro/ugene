@@ -967,50 +967,56 @@ void DotPlotWidget::drawAll(QPainter& p, QSize& size, qreal fontScale, DotPlotIm
 
 // draw everything
 void DotPlotWidget::drawAll(QPainter& p, qreal rulerFontScale, bool _drawFocus, bool drawAreaSelection, bool drawRepeatSelection) {
-    if (sequenceX == nullptr || sequenceY == nullptr) {
-        return;
-    }
+    CHECK(sequenceX != nullptr && sequenceY != nullptr, );
+    CHECK(!visibleRegion().isEmpty(), );
 
     QFontMetrics fm = p.fontMetrics();
-    // min textSpace is 4 characters: this is important for sequence name labels
+    // min textSpace is 4 characters: this is important for sequence name labels.
     textSpace = fm.width("0") * qMax(4, qRound(1 + log10(sequenceX->getSequenceLength())));
-    // border around view
-    w = width() - 2 * textSpace;
-    h = height() - 2 * textSpace;
 
-    if (dotPlotIsCalculating) {
-        GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
-    } else {
-        p.save();
-        p.setRenderHint(QPainter::Antialiasing);
-
-        p.setBrush(QBrush(palette().window().color()));
-
-        drawNames(p);
-        p.translate(textSpace, textSpace);
-
-        drawAxises(p);
-        drawDots(p);
-        if (drawAreaSelection) {
-            drawSelection(p);
-        }
-        drawMiniMap(p);
-        if (drawRepeatSelection) {
-            drawNearestRepeat(p);
-        }
-
-        p.translate(-textSpace, -textSpace);
-        drawRulers(p, rulerFontScale);
-
-        p.restore();
-
-        if (hasFocus() && _drawFocus) {
-            drawFocus(p);
-        }
+    int newPlotWidth = width() - 2 * textSpace;
+    int newPlotHeight = height() - 2 * textSpace;
+    if (newPlotWidth <= 10 || newPlotHeight <= 10) {
+        GUIUtils::showMessage(this, p, tr("Dotplot widget is too small"));
+        return;
     }
+    w = newPlotWidth;
+    h = newPlotHeight;
+
 #define DP_MARGIN 2
 #define DP_EXIT_BUTTON_SIZE 20
     exitButton->setGeometry(width() - DP_MARGIN - DP_EXIT_BUTTON_SIZE, DP_MARGIN, DP_EXIT_BUTTON_SIZE, DP_EXIT_BUTTON_SIZE);
+
+    if (dotPlotIsCalculating) {
+        GUIUtils::showMessage(this, p, tr("Dotplot is calculating..."));
+        return;
+    }
+    p.save();
+    p.setRenderHint(QPainter::Antialiasing);
+
+    p.setBrush(QBrush(palette().window().color()));
+
+    drawNames(p);
+    p.translate(textSpace, textSpace);
+
+    drawAxises(p);
+    drawDots(p);
+    if (drawAreaSelection) {
+        drawSelection(p);
+    }
+    drawMiniMap(p);
+    if (drawRepeatSelection) {
+        drawNearestRepeat(p);
+    }
+
+    p.translate(-textSpace, -textSpace);
+    drawRulers(p, rulerFontScale);
+
+    p.restore();
+
+    if (hasFocus() && _drawFocus) {
+        drawFocus(p);
+    }
 }
 
 void DotPlotWidget::drawFocus(QPainter& p) const {
