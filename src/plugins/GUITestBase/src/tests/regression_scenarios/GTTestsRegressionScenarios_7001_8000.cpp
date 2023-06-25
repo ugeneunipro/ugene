@@ -4281,7 +4281,7 @@ GUI_TEST_CLASS_DEFINITION(test_7793) {
     GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened()
+    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7797) {
