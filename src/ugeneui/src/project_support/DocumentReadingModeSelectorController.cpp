@@ -57,7 +57,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     }
     DocumentFormatConstraints dfc;
     dfc.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
-    bool msaObjSupported = msaObjSupported = dr.format->checkConstraints(dfc);
+    bool msaObjSupported = dr.format->checkConstraints(dfc);
     bool multipleSequences = props.value(RawDataCheckResult_MultipleSequences).toBool();
     bool sequenceWithGaps = props.value(RawDataCheckResult_SequenceWithGaps).toBool();
     int minSequenceSize = props.value(RawDataCheckResult_MinSequenceSize).toInt();
