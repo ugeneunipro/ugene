@@ -90,8 +90,9 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
     }
 
     result.maxErr = getMaxError(settings, direction);
-    if (!result.searchIsCircular) {
-        QByteArray ledge(result.pattern.size() - settings->perfectMatch - 1, 'N');
+    int ledgeSize = result.pattern.size() - settings->perfectMatch - 1;
+    if (!result.searchIsCircular && ledgeSize > 0) {
+        QByteArray ledge(ledgeSize, 'N');
         result.sequence.insert(pos, ledge);
     }
     result.searchRegion.length = result.sequence.length();
@@ -175,7 +176,7 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
             result.ledge = forward.region.startPos;
         } else {
             result.region = U2Region(forward.region.startPos, forward.region.length);
-            if (!settings->isCircular) {
+            if (!settings->isCircular && ledge > 0) {
                 result.region.startPos -= (ledge);
             }
             result.ledge = 0;
@@ -185,8 +186,8 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
     return result;
 }
 
-bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const PrimerBind& rightBind, const U2Region& product) const {
-    CHECK(isCorrectProductSize(product.length, minProductSize), false);
+bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const PrimerBind& rightBind, const U2Region& productRegion) const {
+    CHECK(isCorrectProductSize(productRegion.length, minProductSize), false);
 
     if (settings->perfectMatch > 0) {
         if (leftBind.mismatches > 0) {
@@ -196,10 +197,8 @@ bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const Prim
             CHECK(checkPerfectMatch(rightBind, U2Strand::Complementary), false);
         }
     }
-
-    // Check if the product has ledge(s) if it is out of sequence
-    if (product.endPos() > settings->sequence.length() && !settings->isCircular) {
-        if (leftBind.ledge + rightBind.ledge == 0) {
+    for (const InSilicoPcrProduct& product : qAsConst(results)) {
+        if (productRegion == product.region) {
             return false;
         }
     }
