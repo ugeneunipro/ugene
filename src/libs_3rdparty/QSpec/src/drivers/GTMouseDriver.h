@@ -57,7 +57,6 @@ public:
     static QPoint getMousePosition();
 
 private:
-    static QPoint mousePos;
     static Qt::MouseButtons bp;
 };
 
