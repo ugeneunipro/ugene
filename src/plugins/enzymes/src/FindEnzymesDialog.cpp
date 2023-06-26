@@ -558,7 +558,7 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
     }
 }
 
-static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = { "4", "5", "6", "7", "8", "9+" };
+static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = { "1", "2", "3", "4", "5", "6", "7", "8", "9+" };
 
 FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext)
     : QDialog(advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(advSequenceContext) {
@@ -604,7 +604,6 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
     connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
     connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
-    connect(cbShowShort, &QCheckBox::stateChanged, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
     connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
     sl_updateEnzymesVisibilityWidgets();
 
@@ -623,11 +622,7 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
     QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
     int min = cbMinLength->itemData(cbMinLength->currentIndex()).toInt();
     int max = cbMaxLength->itemData(cbMaxLength->currentIndex()).toInt();
-    QVector<U2Region> regions = { U2Region(min, max - min + 1) };
-    if (cbShowShort->isChecked()) {
-        regions << U2Region(1, 3);
-    }
-
+    U2Region region(min, max - min + 1);
     const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
     QList<SEnzymeData> visibleEnzymes;
     for (const auto& enzyme : qAsConst(enzymes)) {
@@ -645,11 +640,7 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
 
             recognitionSequenceLength++;
         }
-        bool okRSLength = false;
-        for (const auto& r : qAsConst(regions)) {
-            okRSLength |= r.intersects(U2Region(recognitionSequenceLength, 1));
-            CHECK_BREAK(!okRSLength);
-        }
+        bool okRSLength = region.intersects(U2Region(recognitionSequenceLength, 1));
 
         if (okSupplier && okRSLength) {
             visibleEnzymes.append(enzyme);
@@ -772,8 +763,6 @@ void FindEnzymesDialog::initSettings() {
     cbMinLength->setCurrentText(min);
     auto max = settings->getValue(EnzymeSettings::MAX_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.last()).toString();
     cbMaxLength->setCurrentText(max);
-    auto showShort = settings->getValue(EnzymeSettings::SHOW_SHORT_ENZYMES, "false").toString();
-    cbShowShort->setChecked(showShort == "true");
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     U2Region searchRegion = FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(sequenceObject);
@@ -819,7 +808,6 @@ void FindEnzymesDialog::saveSettings() {
     settings->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
     settings->setValue(EnzymeSettings::MIN_ENZYME_LENGTH, cbMinLength->currentText());
     settings->setValue(EnzymeSettings::MAX_ENZYME_LENGTH, cbMaxLength->currentText());
-    settings->setValue(EnzymeSettings::SHOW_SHORT_ENZYMES, cbShowShort->isChecked() ? "true" : "false");
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     // Empty search region is processed as 'Whole sequence' by auto-annotation task.

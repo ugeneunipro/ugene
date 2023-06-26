@@ -2465,9 +2465,9 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
-            static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = { "4", "5", "6", "7", "8", "9+" };
-            static const QList<QString> MIN_INCREASING_VALUES = { "649", "519", "445", "67", "34", "5" };
-            static const QList<QString> MAX_DECREASING_VALUES = { "130", "74", "378", "33", "29", "5" };
+            static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = { "1", "2", "3", "4", "5", "6", "7", "8", "9+" };
+            static const QList<QString> MIN_INCREASING_VALUES = { "656", "654", "649", "649", "519", "445", "67", "34", "5" };
+            static const QList<QString> MAX_DECREASING_VALUES = { "2", "5", "0", "130", "74", "378", "33", "29", "5" };
 
             for (int i = 0; i < RESTRICTION_SEQUENCE_LENGTH_VALUES.size(); i++) {
                 const auto& v = RESTRICTION_SEQUENCE_LENGTH_VALUES.at(i);
@@ -2486,11 +2486,6 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
                 CHECK_SET_ERR(labelText.contains(ev),
                     QString("Incorrect number on max %1, expected number: %2, current text: %3").arg(v).arg(ev).arg(labelText));
             }
-            GTCheckBox::setChecked("cbShowShort", dialog);
-            auto labelText = GTLabel::getText("statusLabel", dialog);
-            CHECK_SET_ERR(labelText.contains("137"),
-                QString("Incorrect number on \"show short\", expected number: 137, current text: %3").arg(labelText));
-
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
