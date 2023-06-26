@@ -21,7 +21,6 @@
 
 #include <core/GUITest.h>
 #include <core/GUITestOpStatus.h>
-#include <core/MainThreadRunnable.h>
 #include <drivers/GTMouseDriver.h>
 
 #include <QApplication>
@@ -33,6 +32,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "GTUtilsTaskTreeView.h"
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 #include "GUITestThread.h"
@@ -51,28 +51,18 @@ GUITestThread::GUITestThread(GUITest* test, bool isRunPostActionsAndCleanup)
 void GUITestThread::run() {
     SAFE_POINT(testToRun != nullptr, "GUITest is NULL", );
 
-    UGUITestBase* db = UGUITestBase::getInstance();
-
-    QList<GUITest*> testList;
-    testList << db->getTests(UGUITestBase::PreAdditional);
-    testList << testToRun;
-    testList << db->getTests(UGUITestBase::PostAdditionalChecks);
-
     clearSandbox();
-
-    QString error = launchTest(testList);
+    QString error = launchTest(testToRun);
     if (isRunPostActionsAndCleanup) {
         cleanup();
     }
-
     testResult = error.isEmpty() ? GUITestTeamcityLogger::successResult : error;
     writeTestResult();
-
     exit();
 }
 
 void GUITestThread::sl_testTimeOut() {
-    qDebug("Test is timed out");
+    GT_LOG("Test is timed out");
     saveScreenshot();
     cleanup();
     testResult = QString("test timed out");
@@ -80,37 +70,37 @@ void GUITestThread::sl_testTimeOut() {
     exit();
 }
 
-QString GUITestThread::launchTest(const QList<GUITest*>& tests) {
+QString GUITestThread::launchTest(GUITest* test) {
     GTGlobals::resetOpStatus();
     QTimer::singleShot(testToRun->timeout, this, SLOT(sl_testTimeOut()));
 
     // Start all tests with some common mouse position.
     GTMouseDriver::moveTo({400, 300});
+    UGUITestBase* testBase = UGUITestBase::getInstance();
 
     try {
-        for (GUITest* test : qAsConst(tests)) {
-            qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
-            test->run();
-            qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
+        QList<GUITest*> preCheckList = testBase->getTests(UGUITestBase::PreCheck);
+        for (GUITest* preCheck : qAsConst(preCheckList)) {
+            GT_LOG("running pre check: " + preCheck->getFullName());
+            preCheck->run();
+            GT_LOG("pre check is finished: " + preCheck->getFullName());
+        }
+
+        GT_LOG("test->run() started: " + test->getFullName());
+        test->run();
+        GT_LOG("test->run() finished with no errors: " + test->getFullName());
+
+        QList<GUITest*> postCheckList = testBase->getTests(UGUITestBase::PostCheck);
+        for (GUITest* postCheck : qAsConst(postCheckList)) {
+            GT_LOG("running post check: " + postCheck->getFullName());
+            postCheck->run();
+            GT_LOG("post check is finished: " + postCheck->getFullName());
         }
     } catch (HI::GUITestOpStatus*) {
+        GT_LOG("Got exception while running the test.");
     }
-    // Run post checks if there is an error.
     QString error = GTGlobals::getOpStatus().getError();
-    if (error.isEmpty()) {
-        try {
-            UGUITestBase* testBase = UGUITestBase::getInstance();
-            const QList<GUITest*> postCheckList = testBase->getTests(UGUITestBase::PostAdditionalChecks);
-            for (GUITest* test : qAsConst(postCheckList)) {
-                qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
-                test->run();
-                qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
-            }
-        } catch (HI::GUITestOpStatus*) {
-        }
-        error = GTGlobals::getOpStatus().getError();
-    }
-    qDebug("launchTest for all tests/checks is finished, error: '%s', isEmpty: %d", error.toLocal8Bit().constData(), error.isEmpty());
+    GT_LOG(QString("launchTest finished '%1").arg(error.isEmpty() ? "with no error" : "with error: " + error));
     return error;
 }
 
@@ -161,10 +151,10 @@ void GUITestThread::saveScreenshot() {
 }
 
 void GUITestThread::cleanup() {
-    qDebug("Running cleanup after the test");
+    GT_LOG("Running cleanup after the test");
     testToRun->cleanup();
     UGUITestBase* testBase = UGUITestBase::getInstance();
-    QList<GUITest*> postActionList = testBase->getTests(UGUITestBase::PostAdditionalActions);
+    QList<GUITest*> postActionList = testBase->getTests(UGUITestBase::PostAction);
     for (HI::GUITest* postAction : qAsConst(postActionList)) {
         try {
             qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());
@@ -175,7 +165,7 @@ void GUITestThread::cleanup() {
             coreLog.error(opStatus->getError());
         }
     }
-    qDebug("Cleanup is finished");
+    GT_LOG("Cleanup is finished");
 }
 
 void GUITestThread::writeTestResult() {

@@ -92,20 +92,20 @@ public:
 
 #define GT_LOG(message) \
     { \
-        QByteArray _time = QTime::currentTime().toString().toLocal8Bit(); \
+        QByteArray _time = QTime::currentTime().toString("hh:mm:ss.zzz").toLocal8Bit(); \
         QByteArray _message = QString(message).toLocal8Bit(); \
-        qDebug("[%s] GT_LOG: '%s'", _time.constData(), _message.constData()); \
+        qDebug("[%s] GT_LOG: %s", _time.constData(), _message.constData()); \
     }
 
 #define GT_DEBUG_MESSAGE(condition, errorMessage, result) \
     { \
         QByteArray _cond = QString(#condition).toLocal8Bit(); \
-        QByteArray _time = QTime::currentTime().toString().toLocal8Bit(); \
+        QByteArray _time = QTime::currentTime().toString("hh:mm:ss.zzz").toLocal8Bit(); \
         QByteArray _error = QString(errorMessage).toLocal8Bit(); \
         if (condition) { \
-            qDebug("[%s] GT_OK: (%s) for '%s'", _time.constData(), _cond.constData(), _error.constData()); \
+            qDebug("[%s] GT_OK: (%s) for %s", _time.constData(), _cond.constData(), _error.constData()); \
         } else { \
-            qWarning("[%s] GT_FAIL: (%s) for '%s'", _time.constData(), _cond.constData(), _error.constData()); \
+            qWarning("[%s] GT_FAIL: (%s) for %s", _time.constData(), _cond.constData(), _error.constData()); \
         } \
     }
 

@@ -91,7 +91,6 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 
         GTKeyboardDriver::keyClick(isOsMac() ? 'e' : 'q', Qt::ControlModifier);
         GTUtilsTaskTreeView::waitTaskFinished(3000);
-        GTUtilsDialog::cleanup(GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
     }
 
     GTUtilsMdi::closeAllWindows();

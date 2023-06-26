@@ -33,9 +33,10 @@ namespace HI {
 #define GT_CLASS_NAME "PopupChooser"
 
 PopupChooser::PopupChooser(const QStringList& namePath, GTGlobals::UseMethod useMethod)
-    : Filler(GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::DialogType::Popup)),
+    : Filler(GUIDialogWaiter::WaitSettings("", GUIDialogWaiter::DialogType::Popup)),
       namePath(namePath),
       useMethod(useMethod) {
+    settings.logName = "PopupChooser: " + namePath.join(",");
 }
 
 #define GT_METHOD_NAME "getMenuPopup"
@@ -59,6 +60,7 @@ void PopupChooser::commonScenario() {
 
 #define GT_METHOD_NAME "clickEsc"
 void PopupChooser::clickEsc() {
+    GT_LOG("PopupChooser clicks Escape");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GT_METHOD_NAME
@@ -67,17 +69,20 @@ void PopupChooser::clickEsc() {
 
 #define GT_CLASS_NAME "PopupChooserByText"
 
-PopupChooserByText::PopupChooserByText(const QStringList& namePath, GTGlobals::UseMethod useMethod, Qt::MatchFlag matchFlag)
-    : Filler(GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::DialogType::Popup)),
-      namePath(namePath),
-      useMethod(useMethod),
-      matchFlag(matchFlag) {
+PopupChooserByText::PopupChooserByText(const QStringList& _namePath, GTGlobals::UseMethod _useMethod, Qt::MatchFlag _matchFlag)
+    : Filler(GUIDialogWaiter::WaitSettings("", GUIDialogWaiter::DialogType::Popup)),
+      namePath(_namePath),
+      useMethod(_useMethod),
+      matchFlag(_matchFlag) {
+    settings.logName = "PopupChooserByText: " + namePath.join(",");
 }
 
 #define GT_METHOD_NAME "commonScenario"
 void PopupChooserByText::commonScenario() {
+    GT_LOG("PopupChooserByText started for '" + namePath.join(",") + ";");
     QMenu* activePopupMenu = PopupChooser::getMenuPopup();
     if (namePath.isEmpty()) {
+        GT_LOG("PopupChooserByText path is empty, clicking Escape");
         PopupChooser::clickEsc();
         return;
     }
@@ -92,11 +97,12 @@ PopupChecker::PopupChecker(CustomScenario* scenario)
     : Filler(GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::DialogType::Popup), scenario), useMethod(GTGlobals::UseMouse) {
 }
 
-PopupChecker::PopupChecker(const QStringList& namePath, CheckOptions options, GTGlobals::UseMethod useMethod)
-    : Filler(GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::DialogType::Popup)),
-      namePath(namePath),
-      options(options),
-      useMethod(useMethod) {
+PopupChecker::PopupChecker(const QStringList& _namePath, CheckOptions _options, GTGlobals::UseMethod _useMethod)
+    : Filler(GUIDialogWaiter::WaitSettings("", GUIDialogWaiter::DialogType::Popup)),
+      namePath(_namePath),
+      options(_options),
+      useMethod(_useMethod) {
+    settings.logName = "PopupChecker: " + namePath.join(",");
 }
 
 #define GT_METHOD_NAME "commonScenario"
@@ -157,44 +163,47 @@ void PopupChecker::commonScenario() {
 #define GT_CLASS_NAME "PopupCheckerByText"
 
 PopupCheckerByText::PopupCheckerByText(CustomScenario* scenario)
-    : Filler(GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::DialogType::Popup), scenario) {
+    : Filler(GUIDialogWaiter::WaitSettings("", GUIDialogWaiter::DialogType::Popup), scenario) {
+    settings.logName = "PopupCheckerByText with scenario";
 }
 
 PopupCheckerByText::PopupCheckerByText(
-    const QStringList& namePath,
-    PopupChecker::CheckOptions options,
-    GTGlobals::UseMethod useMethod,
+    const QStringList& _namePath,
+    PopupChecker::CheckOptions _options,
+    GTGlobals::UseMethod _useMethod,
     Qt::MatchFlag _matchFlag)
-    : Filler(GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::DialogType::Popup)),
-      menuPath(namePath.mid(0, namePath.size() - 1)),
-      itemsNames(namePath.isEmpty() ? "" : namePath.last()),
-      options(options),
-      useMethod(useMethod),
+    : Filler(GUIDialogWaiter::WaitSettings("", GUIDialogWaiter::DialogType::Popup)),
+      menuPath(_namePath.mid(0, _namePath.size() - 1)),
+      itemsNames(_namePath.isEmpty() ? "" : _namePath.last()),
+      options(_options),
+      useMethod(_useMethod),
       matchFlag(_matchFlag) {
+    settings.logName = "PopupCheckerByText: " + menuPath.join(",");
 }
 
 PopupCheckerByText::PopupCheckerByText(
-    const QStringList& menuPath,
-    const QStringList& itemsNames,
-    PopupChecker::CheckOptions options,
-    GTGlobals::UseMethod useMethod,
+    const QStringList& _menuPath,
+    const QStringList& _itemsNames,
+    PopupChecker::CheckOptions _options,
+    GTGlobals::UseMethod _useMethod,
     Qt::MatchFlag _matchFlag)
-    : Filler(GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::DialogType::Popup)),
-      menuPath(menuPath),
-      itemsNames(itemsNames),
-      options(options),
-      useMethod(useMethod),
+    : Filler(GUIDialogWaiter::WaitSettings("", GUIDialogWaiter::DialogType::Popup)),
+      menuPath(_menuPath),
+      itemsNames(_itemsNames),
+      options(_options),
+      useMethod(_useMethod),
       matchFlag(_matchFlag) {
+    settings.logName = "PopupCheckerByText: " + menuPath.join(",");
 }
 
 PopupCheckerByText::PopupCheckerByText(
-    const QStringList& menuPath,
-    const QMap<QString, QKeySequence>& namesAndShortcuts,
-    PopupChecker::CheckOptions options,
-    GTGlobals::UseMethod useMethod,
+    const QStringList& _menuPath,
+    const QMap<QString, QKeySequence>& _namesAndShortcuts,
+    PopupChecker::CheckOptions _options,
+    GTGlobals::UseMethod _useMethod,
     Qt::MatchFlag _matchFlag)
-    : PopupCheckerByText(menuPath, namesAndShortcuts.keys(), options, useMethod, _matchFlag) {
-    itemsShortcuts = namesAndShortcuts.values();
+    : PopupCheckerByText(_menuPath, _namesAndShortcuts.keys(), _options, _useMethod, _matchFlag) {
+    itemsShortcuts = _namesAndShortcuts.values();
 }
 
 #define GT_METHOD_NAME "commonScenario"

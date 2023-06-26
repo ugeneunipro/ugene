@@ -23,29 +23,35 @@
 
 #include <QApplication>
 
+#include "GTUtilsTaskTreeView.h"
 #include "PosteriorChecks.h"
 
 namespace U2 {
 namespace GUITest_posterior_checks {
 
 POSTERIOR_CHECK_DEFINITION(post_check_0000) {
-    // Check dialog waiters state
-    // Stop dialogs hang checking
+    GT_LOG("wait all active waiters to resolve");
+    // All unprocessed handlers must be resolved.
+    GTUtilsDialog::checkNoActiveWaiters();
+    GT_LOG("wait all active waiters to resolve DONE");
 
-    GTUtilsDialog::cleanup(GTUtilsDialog::CleanupMode::FailOnUnfinished);
-}
+    GT_LOG("wait all tasks finished");
+    // All active tasks must finish.
+    // Allow only short-lived tasks left by the test. Otherwise, wait in the test.
+    GTUtilsTaskTreeView::waitTaskFinished(30000);
+    GT_LOG("wait all tasks finished DONE");
 
-POSTERIOR_CHECK_DEFINITION(post_check_0001) {
     // Check there are no modal widgets
     // Check there are no popup widgets
-
     QWidget* modalWidget = QApplication::activeModalWidget();
     if (modalWidget != nullptr) {
-        CHECK_SET_ERR(modalWidget == nullptr, QString("There is a modal widget after test finish: %1").arg(modalWidget->windowTitle()));
+        GT_FAIL("There is a modal widget after test finish: " + modalWidget->windowTitle(), );
     }
 
     QWidget* popupWidget = QApplication::activePopupWidget();
-    CHECK_SET_ERR(popupWidget == nullptr, "There is a popup widget after test finish");
+    if (popupWidget != nullptr) {
+        GT_FAIL("There is a popup widget after test finish: " + popupWidget->objectName(), );
+    }
 }
 
 }  // namespace GUITest_posterior_checks
