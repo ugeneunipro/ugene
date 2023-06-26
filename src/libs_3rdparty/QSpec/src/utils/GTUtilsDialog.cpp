@@ -60,8 +60,8 @@ static GUIDialogWaiter* getFirstOrNull(const QList<GUIDialogWaiter*>& waiterList
 }
 
 static bool checkDialogNameMatches(const QString& widgetObjectName, const QString& expectedObjectName) {
-    if (expectedObjectName.isEmpty()) {
-        GT_LOG(QString("checkDialogNameMatches widget name '%1', but expected any (empty object name). Resolving as MATCH.").arg(widgetObjectName));
+    if (expectedObjectName.isNull()) {
+        GT_LOG(QString("checkDialogNameMatches widget name '%1', but expected any. Resolving as MATCH.").arg(widgetObjectName));
         return true;
     }
     GT_LOG(QString("checkDialogNameMatches: widget name '%1', expected '%2'.").arg(widgetObjectName).arg(expectedObjectName));

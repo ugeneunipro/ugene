@@ -234,13 +234,12 @@ void GUITestService::runAllGUITests() {
         QString testName = test->getFullName();
         QString testNameForTeamCity = test->suite + "_" + test->name;
 
-        if (!runOneTestOnly.isNull() &&
-            !runOneTestOnly.isEmpty() &&
-            runOneTestOnly != testName) {
+        if (!runOneTestOnly.isNull() && !runOneTestOnly.isEmpty() && runOneTestOnly != testName) {
             continue;
         }
 
         if (UGUITestLabels::hasIgnoredLabel(test)) {
+            coreLog.details("Test has ignored label: " + test->getFullName());
             GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getDescription());
             continue;
         }
