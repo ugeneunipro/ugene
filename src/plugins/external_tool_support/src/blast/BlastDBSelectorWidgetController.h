@@ -41,6 +41,8 @@ private slots:
     void sl_lineEditChanged();
 
 private:
+    bool checkValidPathLE(QLineEdit *le, const QString& errorTooltip);
+
     bool isNuclDB;
     bool inputDataValid;
 };

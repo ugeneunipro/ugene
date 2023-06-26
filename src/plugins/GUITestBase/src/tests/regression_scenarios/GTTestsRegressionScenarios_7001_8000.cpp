@@ -4654,6 +4654,66 @@ GUI_TEST_CLASS_DEFINITION(test_7863) {
     CHECK_SET_ERR(restoredImage == savedImage, "Bookmarked image is not equal expected image")
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7866) {
+    /*
+    1. Open murine.gb
+    2. Open Analyze->Query with local BLAST from context menu
+    3. Fill database path and name with correct data
+    Expected state: "Search" button is enabled
+    4. Set database path with not latin symbols, move cursor to this line edit
+    Expected state: "Search" button is disabled, corresponding tooltip is shown
+    5. Return back correct data do database path
+    6. Set database name with not latin symbols, move cursor to this line edit
+    Expected state: "Search" button is disabled, corresponding tooltip is shown
+    7. Return back correct data do database mane
+    Expected state: "Search" button is enabled
+    */
+    class CheckWrongPathsAndNamesScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            QPoint pointToResetTooltip = dialog->rect().topLeft();
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget("buttonBox", dialog));
+            QPushButton* okButton = box->button(QDialogButtonBox::Ok);
+
+            auto databasePathLineEdit = GTWidget::findLineEdit("databasePathLineEdit");
+            GTLineEdit::setText(databasePathLineEdit, "ee");
+            auto baseNameLineEdit = GTWidget::findLineEdit("baseNameLineEdit");
+            GTLineEdit::setText(baseNameLineEdit, "ee");
+            CHECK_SET_ERR(okButton->isEnabled(), "Search button should be enabled");
+
+            GTLineEdit::setText(databasePathLineEdit, "飛艇", false, true);
+            GTMouseDriver::moveTo(pointToResetTooltip);
+            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(databasePathLineEdit));
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database path contains spaces or/and not Latin characters.", "Expected tooltip not found.");
+            CHECK_SET_ERR(!okButton->isEnabled(), "Search button should be disabled");
+
+            GTLineEdit::setText(databasePathLineEdit, "TT");
+            GTMouseDriver::moveTo(pointToResetTooltip);
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip().isEmpty(), "Tooltip should be empty");
+            CHECK_SET_ERR(okButton->isEnabled(), "Search button should be enabled");
+
+            GTLineEdit::setText(baseNameLineEdit, "A A O O O A A");
+            GTMouseDriver::moveTo(pointToResetTooltip);
+            GTMouseDriver::moveTo(GTWidget::getWidgetCenter(baseNameLineEdit));
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database name contains spaces or/and not Latin characters.", "Expected tooltip not found.");
+            CHECK_SET_ERR(!okButton->isEnabled(), "Search button should be disabled");
+
+            GTLineEdit::setText(baseNameLineEdit, "zz");
+            GTMouseDriver::moveTo(pointToResetTooltip);
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip().isEmpty(), "Tooltip should be empty");
+            CHECK_SET_ERR(okButton->isEnabled(), "Search button should be enabled");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTFileDialog::openFile(dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsDialog::waitForDialog(new BlastLocalSearchDialogFiller(new CheckWrongPathsAndNamesScenario()));
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Query with local BLAST..."});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7867) {
     // Open In Silico PCR element in Workflow Designer
     // Melting temperature by default is Primer3 in Option Panel instead of Rough like in 46.0

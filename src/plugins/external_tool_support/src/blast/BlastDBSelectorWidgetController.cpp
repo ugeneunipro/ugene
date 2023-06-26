@@ -24,6 +24,7 @@
 #include <QDirIterator>
 #include <QMessageBox>
 
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/L10n.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -40,21 +41,27 @@ BlastDBSelectorWidgetController::BlastDBSelectorWidgetController(QWidget* parent
 }
 
 void BlastDBSelectorWidgetController::sl_lineEditChanged() {
-    bool pathWarning = databasePathLineEdit->text().contains(' ');
-    QString pathTooltip = pathWarning ? tr("Database path contains space characters.") : "";
-    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, pathWarning);
-    databasePathLineEdit->setToolTip(pathTooltip);
+    static QString pathTooltip = tr("Database path contains spaces or/and not Latin characters.");
+    static QString nameTooltip = tr("Database name contains spaces or/and not Latin characters.");
 
-    bool nameWarning = baseNameLineEdit->text().contains(' ');
-    QString nameTooltip = nameWarning ? tr("Database name contains space characters.") : "";
-    GUIUtils::setWidgetWarningStyle(baseNameLineEdit, nameWarning);
-    baseNameLineEdit->setToolTip(nameTooltip);
+    bool pathWarning = !checkValidPathLE(databasePathLineEdit, pathTooltip);
+    bool nameWarning = !checkValidPathLE(baseNameLineEdit, nameTooltip);
 
     bool isFilledDatabasePathLineEdit = !databasePathLineEdit->text().isEmpty();
     bool isFilledBaseNameLineEdit = !baseNameLineEdit->text().isEmpty();
-    bool hasSpacesInDBPath = pathWarning || nameWarning;
-    inputDataValid = isFilledBaseNameLineEdit && isFilledDatabasePathLineEdit && !hasSpacesInDBPath;
+    bool hasProblemsInDBPath = pathWarning || nameWarning;
+
+    inputDataValid = isFilledBaseNameLineEdit && isFilledDatabasePathLineEdit && !hasProblemsInDBPath;
     emit si_dbChanged();
+}
+
+bool BlastDBSelectorWidgetController::checkValidPathLE(QLineEdit *le, const QString& errorTooltip) {
+    bool isOkay = ExternalToolSupportUtils::checkArgumentPathLatinSymbols({le->text()}).isEmpty() &&
+                  ExternalToolSupportUtils::checkArgumentPathSpaces({le->text()}).isEmpty();
+
+    GUIUtils::setWidgetWarningStyle(le, !isOkay);
+    le->setToolTip(isOkay ? "" : errorTooltip);
+    return isOkay;
 }
 
 bool BlastDBSelectorWidgetController::isNuclDatabase() const {
