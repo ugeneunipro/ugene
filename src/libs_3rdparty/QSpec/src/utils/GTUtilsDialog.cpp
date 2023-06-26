@@ -37,14 +37,18 @@ namespace HI {
 /** Check for dialog every twice as fast as ACTIVATION_TIME. */
 static const int DIALOG_CHECK_PERIOD = GUIDialogWaiter::ACTIVATION_TIME / 2;
 
+#define GT_METHOD_NAME "GUIDialogWaiter"
 GUIDialogWaiter::GUIDialogWaiter(Runnable* _r, const WaitSettings& _settings)
     : runnable(_r), settings(_settings) {
+    GT_CHECK(runnable != nullptr, "Runnable is NULL");
+
     static int totalWaiterCount = 0;
     waiterId = totalWaiterCount++;
 
     connect(&timer, &QTimer::timeout, this, &GUIDialogWaiter::checkDialog);
     timer.start(DIALOG_CHECK_PERIOD);
 }
+#undef GT_METHOD_NAME
 
 GUIDialogWaiter::~GUIDialogWaiter() {
     delete runnable;
@@ -83,45 +87,41 @@ void GUIDialogWaiter::checkDialog() {
     if (!settings.isRandomOrderWaiter && this != getFirstOrNull(GTUtilsDialog::waiterList)) {
         return;
     }
-    try {
-        QWidget* widget = nullptr;
-        GT_CHECK(runnable != nullptr, "Runnable is NULL");
+    GT_LOG(QString("checkDialog: tick: waiterId: %1, objectName: %2").arg(waiterId).arg(settings.objectName));
 
-        switch (settings.dialogType) {
-            case DialogType::Modal:
-                widget = QApplication::activeModalWidget();
-                break;
-            case DialogType::Popup:
-                widget = QApplication::activePopupWidget();
-                break;
-            default:
-                break;
-        }
+    QWidget* widget;
+    switch (settings.dialogType) {
+        case DialogType::Modal:
+            widget = QApplication::activeModalWidget();
+            break;
+        case DialogType::Popup:
+            widget = QApplication::activePopupWidget();
+            break;
+        default:
+            GT_FAIL("Unexpected dialog type.", );
+    }
 
-        QString widgetObjectName = widget != nullptr ? widget->objectName() : "";
-        bool isDialogMatched = widget != nullptr && checkDialogNameMatches(widgetObjectName, settings.objectName);
-        if (isDialogMatched) {
-            qDebug("-------------------------");
-            qDebug("GT_DEBUG_MESSAGE GUIDialogWaiter::wait ID = %d, name = '%s' going to RUN", waiterId, settings.objectName.toLocal8Bit().constData());
-            qDebug("-------------------------");
+    QString widgetObjectName = widget != nullptr ? widget->objectName() : "";
+    bool isDialogMatched = widget != nullptr && checkDialogNameMatches(widgetObjectName, settings.objectName);
+    if (isDialogMatched) {
+        qDebug("-------------------------");
+        qDebug("GT_DEBUG_MESSAGE GUIDialogWaiter::wait ID = %d, name = '%s' going to RUN", waiterId, settings.objectName.toLocal8Bit().constData());
+        qDebug("-------------------------");
 
+        timer.stop();
+        GTUtilsDialog::waiterList.removeOne(this);
+        GTThread::waitForMainThread();
+        runnable->run();
+    } else {
+        waitingTime += DIALOG_CHECK_PERIOD;
+        if (waitingTime > settings.timeout) {
             timer.stop();
             GTUtilsDialog::waiterList.removeOne(this);
-            GTThread::waitForMainThread();
-            runnable->run();
-        } else {
-            waitingTime += DIALOG_CHECK_PERIOD;
-            if (waitingTime > settings.timeout) {
-                timer.stop();
-                GTUtilsDialog::waiterList.removeOne(this);
-                qDebug("-------------------------");
-                qDebug("GT_DEBUG_MESSAGE !!! GUIDialogWaiter::TIMEOUT Id = %d, going to finish waiting", waiterId);
-                qDebug("-------------------------");
-                GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId) + ", objectName = " + settings.objectName, );
-            }
+            qDebug("-------------------------");
+            qDebug("GT_DEBUG_MESSAGE !!! GUIDialogWaiter::TIMEOUT Id = %d, going to finish waiting", waiterId);
+            qDebug("-------------------------");
+            GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId) + ", objectName = " + settings.objectName, );
         }
-    } catch (GUITestOpStatus*) {
-        qWarning("Caught exception in GUIDialogWaiter::checkDialog");
     }
 }
 #undef GT_METHOD_NAME
@@ -267,18 +267,6 @@ void Filler::run() {
         scenario->run();
     }
     GTThread::waitForMainThread();
-}
-
-void Filler::releaseMouseButtons() {
-    Qt::MouseButtons buttons = QGuiApplication::mouseButtons();
-
-    if (buttons | Qt::LeftButton) {
-        GTMouseDriver::release(Qt::LeftButton);
-    }
-
-    if (buttons | Qt::RightButton) {
-        GTMouseDriver::release(Qt::RightButton);
-    }
 }
 
 }  // namespace HI

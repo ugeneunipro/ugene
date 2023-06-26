@@ -104,10 +104,7 @@ public:
 
 protected:
     GUIDialogWaiter::WaitSettings settings;
-    CustomScenario* scenario;
-
-private:
-    void releaseMouseButtons();
+    CustomScenario* scenario = nullptr;
 };
 
 class HI_EXPORT GTUtilsDialog {
