@@ -1034,7 +1034,7 @@ GUI_TEST_CLASS_DEFINITION(test_4118) {
     GTUtilsWorkflowDesigner::addSample("Raw RNA-Seq data processing");
 
     GTUtilsWorkflowDesigner::runWorkflow();
-    // GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
 }
 
