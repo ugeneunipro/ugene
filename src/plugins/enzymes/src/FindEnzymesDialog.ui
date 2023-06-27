@@ -117,10 +117,7 @@
      <property name="title">
       <string>Show/hide enzymes:</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <property name="spacing">
-       <number>6</number>
-      </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -175,24 +172,28 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget_4" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <property name="spacing">
-            <number>12</number>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
            </property>
            <item>
             <widget class="QLabel" name="label_6">
@@ -202,29 +203,25 @@
             </widget>
            </item>
            <item>
-            <layout class="QFormLayout" name="formLayout">
-             <item row="0" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
               <widget class="QLabel" name="label">
                <property name="text">
                 <string>Minimum</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
+             <item>
               <widget class="QComboBox" name="cbMinLength"/>
              </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QFormLayout" name="formLayout_2">
-             <item row="0" column="0">
+             <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
                 <string>Maximum</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
+             <item>
               <widget class="QComboBox" name="cbMaxLength">
                <property name="currentText">
                 <string/>
@@ -233,23 +230,45 @@
              </item>
             </layout>
            </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget_3" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <spacer name="horizontalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Overhang type:</string>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbOverhangType"/>
            </item>
           </layout>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
