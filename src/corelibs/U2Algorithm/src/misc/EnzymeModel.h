@@ -85,15 +85,15 @@ public:
 
     // Cuts (cleavages) on direct and reverse-complementary strands
     // form overhang (located between these two cuts).
-    // These overhangs could have following types:
+    // These overhang could have following types:
     enum OverhangType {
-        // Enzyme has no cuts and, consequently, no overhangs.
+        // Enzyme has no cuts and, consequently, no overhangs
         NoOverhang = 1 << 1,
-        // Both cuts are located in the middle of the site.
+        // Both cuts are located in the middle of the site
         Blunt = 1 << 2,
         // Both cuts are located anywhere but the middle of the site.
         Sticky = 1 << 3,
-        // The same as "Sticky", but overhang between cuts has only A, C, G or T (no extended or N) symbols.
+        // The save as "Sticky", but overhang between cuts has only A, C, G or T (no extended or N) symbols.
         NondegenerateSticky = 1 << 4,
         // The cut of the forward strand is to the left of the cut of the reverse-complementary strand.
         Cut5 = 1 << 5,

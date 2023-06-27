@@ -97,22 +97,21 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
             if (d->cutDirect == ENZYME_CUT_UNKNOWN) {
                 d->overhangTypes |= EnzymeData::OverhangType::NoOverhang;
             } else {
-                bool directCutInTheMiddleOfSequence = (seqSize % 2 == 0) && (seqSize / 2 == d->cutDirect);
-                if (directCutInTheMiddleOfSequence && d->cutDirect == d->cutComplement) {
+                if (qFuzzyCompare((double)seqSize / 2, d->cutDirect) && d->cutDirect == d->cutComplement) {
                     d->overhangTypes |= EnzymeData::OverhangType::Blunt;
+                } else if ((0 <= d->cutDirect && d->cutDirect < seqSize) &&
+                    (0 <= d->cutComplement && d->cutComplement < seqSize)) {
+                    auto first = d->cutDirect;
+                    auto second = seqSize - d->cutComplement;
+                    auto overhang = d->seq.mid(qMin(first, second), qAbs(first - second));
+                    auto overhangAlphabet = U2AlphabetUtils::findBestAlphabet(overhang);
+                    if (overhangAlphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() &&
+                        !overhang.contains(EnzymeData::UNDEFINED_BASE)) {
+                        d->overhangTypes |= EnzymeData::OverhangType::NondegenerateSticky;
+                    }
+                    d->overhangTypes |= EnzymeData::OverhangType::Sticky;
                 } else {
                     d->overhangTypes |= EnzymeData::OverhangType::Sticky;
-                    if ((0 <= d->cutDirect && d->cutDirect < seqSize) &&
-                        (0 <= d->cutComplement && d->cutComplement < seqSize)) {
-                        auto first = d->cutDirect;
-                        auto second = seqSize - d->cutComplement;
-                        auto overhang = d->seq.mid(qMin(first, second), qAbs(first - second));
-                        auto overhangAlphabet = d->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() ? d->alphabet : U2AlphabetUtils::findBestAlphabet(overhang);
-                        if (overhangAlphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() &&
-                            !overhang.contains(EnzymeData::UNDEFINED_BASE)) {
-                            d->overhangTypes |= EnzymeData::OverhangType::NondegenerateSticky;
-                        }
-                    }
                 }
                 auto complementPosOnDirectStrand = seqSize - d->cutComplement;
                 if (d->cutDirect < complementPosOnDirectStrand) {
