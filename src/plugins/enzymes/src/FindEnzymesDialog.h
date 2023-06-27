@@ -102,11 +102,13 @@ public:
 
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
-    void sl_handleSupplierSelectionChange(QStringList checkedSuppliers);
-    void sl_updateSuppliers();
+    void sl_updateVisibleEnzymes();
+    void sl_updateEnzymesVisibilityWidgets();
     void sl_selectAll();
     void sl_selectNone();
     void sl_invertSelection();
+    void sl_minLengthChanged(int index);
+    void sl_maxLengthChanged(int index);
 
 private:
     void initSettings();
@@ -133,7 +135,7 @@ class EnzymeTreeItem : public QTreeWidgetItem {
     Q_DECLARE_TR_FUNCTIONS(EnzymeTreeItem)
 public:
     EnzymeTreeItem(const SEnzymeData& ed);
-    SEnzymeData enzyme;
+    const SEnzymeData enzyme;
     bool operator<(const QTreeWidgetItem& other) const;
     // Get text information about this enzyme
     QString getEnzymeInfo() const;
