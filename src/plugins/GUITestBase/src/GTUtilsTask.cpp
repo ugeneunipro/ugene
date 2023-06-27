@@ -68,5 +68,17 @@ void GTUtilsTask::waitTaskStart(const QString& taskName, int timeout) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "cancelAllTasks"
+void GTUtilsTask::cancelAllTasks() {
+    class CancelAllTasksScenario : public CustomScenario {
+    public:
+        void run() override {
+            AppContext::getTaskScheduler()->cancelAllTasks();
+        }
+    };
+    GTThread::runInMainThread(new CancelAllTasksScenario());
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 }  // namespace U2

@@ -44,6 +44,7 @@
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -2947,6 +2948,9 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     coreLog.info("Try to start workflow #2");
     GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
+
+    // Cancel a long-running task before exiting from the test.
+    GTUtilsTask::cancelAllTasks();
 }
 
 static int setUpMuscleSchemeInNewWdWindow(const QString& file) {

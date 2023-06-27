@@ -37,28 +37,22 @@ namespace HI {
 /** Check for dialog every twice as fast as ACTIVATION_TIME. */
 static const int DIALOG_CHECK_PERIOD = GUIDialogWaiter::ACTIVATION_TIME / 2;
 
+#define GT_METHOD_NAME "GUIDialogWaiter"
 GUIDialogWaiter::GUIDialogWaiter(Runnable* _r, const WaitSettings& _settings)
     : runnable(_r), settings(_settings) {
+    GT_LOG(QString("Created a new GUIDialogWaiter for '%1' ('%2')").arg(settings.objectName).arg(settings.logName));
+    GT_CHECK(runnable != nullptr, "Check that runnable is not null");
+
     static int totalWaiterCount = 0;
     waiterId = totalWaiterCount++;
 
     connect(&timer, &QTimer::timeout, this, &GUIDialogWaiter::checkDialog);
     timer.start(DIALOG_CHECK_PERIOD);
 }
+#undef GT_METHOD_NAME
 
 GUIDialogWaiter::~GUIDialogWaiter() {
     delete runnable;
-}
-
-static QString getWaiterInfo(GUIDialogWaiter* waiter) {
-    QString info = waiter->getSettings().objectName;
-    if (info.isEmpty()) {
-        if (auto qObject = dynamic_cast<QObject*>(waiter->getRunnable())) {
-            const QMetaObject* metaObject = qObject->metaObject();
-            info = metaObject != nullptr ? metaObject->className() : qObject->objectName();
-        }
-    }
-    return info.isEmpty() ? "unnamed waiter " + QString::number(waiter->waiterId) : info;
 }
 
 static GUIDialogWaiter* getFirstOrNull(const QList<GUIDialogWaiter*>& waiterList) {
@@ -67,14 +61,10 @@ static GUIDialogWaiter* getFirstOrNull(const QList<GUIDialogWaiter*>& waiterList
 
 static bool checkDialogNameMatches(const QString& widgetObjectName, const QString& expectedObjectName) {
     if (expectedObjectName.isNull()) {
-        qWarning("GT_DEBUG_MESSAGE GUIDialogWaiter Warning!! Checking name, widget name '%s', but expected any, saying it's expected",
-                 widgetObjectName.toLocal8Bit().constData());
+        GT_LOG(QString("checkDialogNameMatches widget name '%1', but expected any. Resolving as MATCH.").arg(widgetObjectName));
         return true;
     }
-    qDebug("GT_DEBUG_MESSAGE GUIDialogWaiter Checking name, widget name '%s', expected '%s'",
-           widgetObjectName.toLocal8Bit().constData(),
-           expectedObjectName.toLocal8Bit().constData());
-
+    GT_LOG(QString("checkDialogNameMatches: widget name '%1', expected '%2'.").arg(widgetObjectName).arg(expectedObjectName));
     return widgetObjectName == expectedObjectName;
 }
 
@@ -83,45 +73,45 @@ void GUIDialogWaiter::checkDialog() {
     if (!settings.isRandomOrderWaiter && this != getFirstOrNull(GTUtilsDialog::waiterList)) {
         return;
     }
-    try {
-        QWidget* widget = nullptr;
-        GT_CHECK(runnable != nullptr, "Runnable is NULL");
+    QWidget* widget;
+    switch (settings.dialogType) {
+        case DialogType::Modal:
+            widget = QApplication::activeModalWidget();
+            break;
+        case DialogType::Popup:
+            widget = QApplication::activePopupWidget();
+            break;
+        default:
+            GT_FAIL("Unexpected dialog type: " + QString::number((int)settings.dialogType), );
+    }
 
-        switch (settings.dialogType) {
-            case DialogType::Modal:
-                widget = QApplication::activeModalWidget();
-                break;
-            case DialogType::Popup:
-                widget = QApplication::activePopupWidget();
-                break;
-            default:
-                break;
-        }
-
-        QString widgetObjectName = widget != nullptr ? widget->objectName() : "";
-        bool isDialogMatched = widget != nullptr && checkDialogNameMatches(widgetObjectName, settings.objectName);
-        if (isDialogMatched) {
-            qDebug("-------------------------");
-            qDebug("GT_DEBUG_MESSAGE GUIDialogWaiter::wait ID = %d, name = '%s' going to RUN", waiterId, settings.objectName.toLocal8Bit().constData());
-            qDebug("-------------------------");
-
+    QString currentWidgetObjectName = widget != nullptr ? widget->objectName() : "";
+    bool isDialogMatched = widget != nullptr && checkDialogNameMatches(currentWidgetObjectName, settings.objectName);
+    GT_LOG(QString("checkDialog: tick: waiterId: %1, waiting for: '%2' ('%3'), current widget: '%4'")
+               .arg(waiterId)
+               .arg(settings.objectName)
+               .arg(settings.logName)
+               .arg(widget == nullptr ? "nullptr" : currentWidgetObjectName));
+    if (isDialogMatched) {
+        GT_LOG(QString("checkDialog: MATCH: waiterId: %1, objectName: '%2' ('%3')")
+                   .arg(waiterId)
+                   .arg(settings.objectName)
+                   .arg(settings.logName));
+        timer.stop();
+        GTUtilsDialog::waiterList.removeOne(this);
+        GTThread::waitForMainThread();
+        runnable->run();
+    } else {
+        waitingTime += DIALOG_CHECK_PERIOD;
+        if (waitingTime > settings.timeout) {
             timer.stop();
             GTUtilsDialog::waiterList.removeOne(this);
-            GTThread::waitForMainThread();
-            runnable->run();
-        } else {
-            waitingTime += DIALOG_CHECK_PERIOD;
-            if (waitingTime > settings.timeout) {
-                timer.stop();
-                GTUtilsDialog::waiterList.removeOne(this);
-                qDebug("-------------------------");
-                qDebug("GT_DEBUG_MESSAGE !!! GUIDialogWaiter::TIMEOUT Id = %d, going to finish waiting", waiterId);
-                qDebug("-------------------------");
-                GT_FAIL("TIMEOUT, waiterId = " + QString::number(waiterId) + ", objectName = " + settings.objectName, );
-            }
+            GT_FAIL(QString("checkDialog: TIMEOUT: waiterId: %1, objectName: '%2' ('%3'), timeout: '%4')")
+                        .arg(waiterId)
+                        .arg(settings.objectName)
+                        .arg(settings.logName)
+                        .arg(settings.timeout), );
         }
-    } catch (GUITestOpStatus*) {
-        qWarning("Caught exception in GUIDialogWaiter::checkDialog");
     }
 }
 #undef GT_METHOD_NAME
@@ -210,10 +200,13 @@ void GTUtilsDialog::checkNoActiveWaiters(int timeoutMillis) {
         notFinishedWaiter = getFirstOrNull(waiterList);
     }
     if (notFinishedWaiter != nullptr && !GTGlobals::getOpStatus().hasError()) {
-        GT_FAIL(QString("There are active waiters after: %1ms. First waiter details: %2")
+        const GUIDialogWaiter::WaitSettings& settings = notFinishedWaiter->getSettings();
+        GT_FAIL(QString("There are active waiters after: %1ms. First waiter details: %2 (%3)")
                     .arg(timeoutMillis)
-                    .arg(notFinishedWaiter->getSettings().objectName), );
+                    .arg(settings.objectName)
+                    .arg(settings.logName), );
     }
+    GT_LOG("checkNoActiveWaiters found no active waiters");
 }
 #undef GT_METHOD_NAME
 
@@ -228,28 +221,20 @@ void GTUtilsDialog::removeRunnable(Runnable* runnable) {
 }
 
 #define GT_METHOD_NAME "cleanup"
-void GTUtilsDialog::cleanup(const CleanupMode& cleanupMode) {
-    auto nonFinishedWaiter = getFirstOrNull(waiterList);
-    bool hasNonFinishedWaiter = nonFinishedWaiter != nullptr;
-    QString nonFinishedWaiterInfo = nonFinishedWaiter == nullptr ? "" : getWaiterInfo(nonFinishedWaiter);
-
+void GTUtilsDialog::cleanup() {
     qDeleteAll(waiterList);
     waiterList.clear();
-
-    if (cleanupMode == CleanupMode::FailOnUnfinished && hasNonFinishedWaiter) {
-        GT_FAIL(QString("Expected dialog was not found: \"%1\"").arg(nonFinishedWaiterInfo), );
-    }
 }
 #undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
-Filler::Filler(const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario)
-    : settings(settings), scenario(scenario) {
+Filler::Filler(const GUIDialogWaiter::WaitSettings& _settings, CustomScenario* _scenario)
+    : settings(_settings), scenario(_scenario) {
 }
 
-Filler::Filler(const QString& objectName, CustomScenario* scenario)
-    : settings(GUIDialogWaiter::WaitSettings(objectName)), scenario(scenario) {
+Filler::Filler(const QString& objectName, CustomScenario* _scenario)
+    : settings(objectName, GUIDialogWaiter::DialogType::Modal), scenario(_scenario) {
 }
 
 Filler::~Filler() {
@@ -267,18 +252,6 @@ void Filler::run() {
         scenario->run();
     }
     GTThread::waitForMainThread();
-}
-
-void Filler::releaseMouseButtons() {
-    Qt::MouseButtons buttons = QGuiApplication::mouseButtons();
-
-    if (buttons | Qt::LeftButton) {
-        GTMouseDriver::release(Qt::LeftButton);
-    }
-
-    if (buttons | Qt::RightButton) {
-        GTMouseDriver::release(Qt::RightButton);
-    }
 }
 
 }  // namespace HI

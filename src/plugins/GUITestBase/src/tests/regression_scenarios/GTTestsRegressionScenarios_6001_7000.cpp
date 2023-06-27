@@ -89,6 +89,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -1225,6 +1226,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsLog::checkMessageWithWait(lt, "GET https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
@@ -5714,7 +5716,7 @@ GUI_TEST_CLASS_DEFINITION(test_6875) {
     // 2. Select "Actions > Analyze > Find restriction sites", check "DraRI" enzyme in the appeared dialog, click "OK".
     // Expected state: ugene not crashed
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "DraRI" };
+    settings.enzymes = QStringList {"DraRI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);

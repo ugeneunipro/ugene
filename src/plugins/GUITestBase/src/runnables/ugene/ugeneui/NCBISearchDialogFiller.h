@@ -37,7 +37,7 @@ public:
         CheckQuery,  // QString with the expected query
         ClickResultByNum,  // int with a result's number (0-based)
         ClickResultById,  // QString with a result's ID
-        ClickResultByDesc,  // QString with a result's description (exact case sensitive comparison)
+        ClickResultByDesc,  // QString with a result's description (exact case-sensitive comparison)
         ClickResultBySize,  // int with a result's size (the first results with this size will be clicked)
         SelectResultsByNumbers,  // QList<int> with results numbers (0-based)
         SelectResultsByIds,  // QStringList with results IDs
@@ -85,7 +85,7 @@ public:
     NCBISearchDialogSimpleFiller(
         const QString& query,
         bool doubleEnter = false,
-        int _esultLimit = -1,
+        int _resultLimit = -1,
         const QString& term = "",
         const QString& resultToLoad = "");
 
@@ -101,7 +101,6 @@ private:
     /** If not empty the filler will look for this result (Qt::MatchContains) and load it. */
     QString resultToLoad;
 
-    bool shownCorrect();
     int getResultNumber();
 };
 

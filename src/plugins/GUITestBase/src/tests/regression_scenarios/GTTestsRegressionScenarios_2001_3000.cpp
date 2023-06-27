@@ -1170,7 +1170,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
 
     GTUtilsDialog::waitForDialog(new FindTandemsDialogFiller(testDir + "_common_data/scenarios/sandbox/result_2187.gb"));
 
-    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find tandem repeats..."}, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find tandem repeats..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QTreeWidgetItem* annotationsRoot = GTUtilsAnnotationsTreeView::findItem("repeat_unit  (0, 5)");
@@ -4494,9 +4494,7 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 
 GUI_TEST_CLASS_DEFINITION(test_2853) {
     GTUtilsDialog::waitForDialog(new NCBISearchDialogSimpleFiller("rat"));
-
     GTMenu::clickMainMenuItem({"File", "Search NCBI GenBank..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2863) {
@@ -4508,7 +4506,7 @@ GUI_TEST_CLASS_DEFINITION(test_2863) {
     WorkflowProcessItem* conversion = GTUtilsWorkflowDesigner::addElement("File Format Conversion");
     //    4. Connect the elements.
     GTUtilsWorkflowDesigner::connect(fileList, conversion);
-    //    Expected: the converter's input slot "Source URL" is binded with the "Source URL" slot of the Read File URL(s).
+    //    Expected: the converter's input slot "Source URL" is bound with the "Source URL" slot of the Read File URL(s).
     GTUtilsWorkflowDesigner::click(conversion);
     QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(0);
     QString s1 = table->item(0, 0)->text();
