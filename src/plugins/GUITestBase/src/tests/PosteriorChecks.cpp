@@ -38,7 +38,7 @@ POSTERIOR_CHECK_DEFINITION(post_check_0000) {
     GT_LOG("wait all tasks finished");
     // All active tasks must finish.
     // Allow only short-lived tasks left by the test. Otherwise, wait in the test.
-    GTUtilsTaskTreeView::waitTaskFinished(30000);
+    GTUtilsTaskTreeView::waitTaskFinished(20000);
     GT_LOG("wait all tasks finished DONE");
 
     // Check there are no modal widgets

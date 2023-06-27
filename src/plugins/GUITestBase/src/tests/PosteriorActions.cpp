@@ -34,6 +34,7 @@
 
 #include <U2Core/AppContext.h>
 
+#include "GTUtilsTask.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -94,7 +95,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     }
 
     GTUtilsMdi::closeAllWindows();
-    AppContext::getTaskScheduler()->cancelAllTasks();
+    GTUtilsTask::cancelAllTasks();
     GTUtilsTaskTreeView::waitTaskFinished(10000);
 }
 
