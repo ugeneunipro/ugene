@@ -27,6 +27,8 @@ const QString EnzymeSettings::DATA_DIR_KEY("enzymes");
 const QString EnzymeSettings::DATA_FILE_KEY("plugin_enzymes/lastFile");
 const QString EnzymeSettings::LAST_SELECTION("plugin_enzymes/selection");
 const QString EnzymeSettings::CHECKED_SUPPLIERS("plugin_enzymes/checkedSuppliers");
+const QString EnzymeSettings::MIN_ENZYME_LENGTH("plugin_enzymes/min_enzyme_length");
+const QString EnzymeSettings::MAX_ENZYME_LENGTH("plugin_enzymes/max_enzyme_length");
 const QString EnzymeSettings::ENABLE_HIT_COUNT("plugin_enzymes/enable_hit_count");
 const QString EnzymeSettings::MAX_HIT_VALUE("plugin_enzymes/max_hit_value");
 const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");
