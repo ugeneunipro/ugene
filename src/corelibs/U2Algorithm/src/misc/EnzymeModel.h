@@ -85,7 +85,7 @@ public:
 
     // Cuts (cleavages) on direct and reverse-complementary strands
     // form overhang (located between these two cuts).
-    // These overhang could have following types:
+    // These overhangs could have following types:
     enum OverhangType {
         // Enzyme has no cuts and, consequently, no overhangs
         NoOverhang = 1 << 1,
