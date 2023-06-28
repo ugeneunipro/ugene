@@ -93,6 +93,8 @@ linux-g++ {
         QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
         QMAKE_CXXFLAGS += -Werror=parentheses
         QMAKE_CXXFLAGS += -Werror=return-type
+        QMAKE_CXXFLAGS += -Werror=sequence-point
+        QMAKE_CXXFLAGS += -Werror=switch
         QMAKE_CXXFLAGS += -Werror=uninitialized
         QMAKE_CXXFLAGS += -Werror=unused-parameter
         QMAKE_CXXFLAGS += -Werror=unused-value
