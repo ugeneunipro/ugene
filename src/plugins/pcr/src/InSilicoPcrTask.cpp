@@ -41,7 +41,8 @@ InSilicoPcrProduct::InSilicoPcrProduct()
 
 bool InSilicoPcrProduct::operator==(const InSilicoPcrProduct& anotherProduct) const {
     return region == anotherProduct.region &&
-           ta == anotherProduct.ta &&
+           //simple doubles comparsion for temperature
+           (int)(ta * 1000) == (int)(anotherProduct.ta * 1000) &&
            forwardPrimer == anotherProduct.forwardPrimer &&
            reversePrimer == anotherProduct.reversePrimer &&
            forwardPrimerMatchLength == anotherProduct.forwardPrimerMatchLength &&
