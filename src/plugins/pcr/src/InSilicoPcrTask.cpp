@@ -39,6 +39,17 @@ InSilicoPcrProduct::InSilicoPcrProduct()
       reversePrimerMatchLength(0) {
 }
 
+bool InSilicoPcrProduct::operator==(const InSilicoPcrProduct& anotherProduct) const {
+    return region == anotherProduct.region &&
+           ta == anotherProduct.ta &&
+           forwardPrimer == anotherProduct.forwardPrimer &&
+           reversePrimer == anotherProduct.reversePrimer &&
+           forwardPrimerMatchLength == anotherProduct.forwardPrimerMatchLength &&
+           reversePrimerMatchLength == anotherProduct.reversePrimerMatchLength &&
+           forwardPrimerLedge == anotherProduct.forwardPrimerLedge &&
+           reversePrimerLedge == anotherProduct.reversePrimerLedge;
+}
+
 bool InSilicoPcrProduct::isValid() const {
     return ta != Primer::INVALID_TM;
 }
@@ -141,10 +152,7 @@ void InSilicoPcrTask::run() {
             const qint64 productSize = getProductSize(leftBind, rightBind);
             U2Region productRegion(leftBind.region.startPos, productSize);
             if (isProductAcceptable(leftBind, rightBind, productRegion)) {
-                InSilicoPcrProduct product = createResult(leftBind, productRegion, rightBind, forward.strand.getDirection());
-                CHECK_CONTINUE(product.isValid());
-
-                results << product;
+                createAndAddResult(leftBind, productRegion, rightBind, forward.strand.getDirection());
             }
         }
     }
@@ -195,11 +203,6 @@ bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const Prim
         }
         if (rightBind.mismatches > 0) {
             CHECK(checkPerfectMatch(rightBind, U2Strand::Complementary), false);
-        }
-    }
-    for (const InSilicoPcrProduct& product : qAsConst(results)) {
-        if (productRegion == product.region) {
-            return false;
         }
     }
     return true;
@@ -264,13 +267,13 @@ QString InSilicoPcrTask::generateReport() const {
         .arg(results.size());
 }
 
-InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) const {
+void InSilicoPcrTask::createAndAddResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) {
     QByteArray productSequence = settings->sequence.mid(product.startPos, product.length);
     if (productSequence.length() < product.length) {
         if (settings->isCircular) {
             productSequence += settings->sequence.left(product.endPos() - settings->sequence.length());
         } else {
-            CHECK(updateSequenceByPrimers(leftPrimer, rightPrimer, productSequence), InSilicoPcrProduct());
+            CHECK(updateSequenceByPrimers(leftPrimer, rightPrimer, productSequence), );
         }
     }
 
@@ -289,7 +292,14 @@ InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, c
         qSwap(result.forwardPrimer, result.reversePrimer);
     }
 
-    return result;
+    CHECK(result.isValid(), );
+
+    for (const InSilicoPcrProduct& existingProduct : qAsConst(results)) {
+        if (existingProduct == result) {
+            return;
+        }
+    }
+    results.append(result);
 }
 
 bool InSilicoPcrTask::updateSequenceByPrimers(const PrimerBind& leftPrimer, const PrimerBind& rightPrimer, QByteArray& productSequence) const {
