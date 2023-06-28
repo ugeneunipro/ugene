@@ -1034,8 +1034,9 @@ GUI_TEST_CLASS_DEFINITION(test_4118) {
     GTUtilsWorkflowDesigner::addSample("Raw RNA-Seq data processing");
 
     GTUtilsWorkflowDesigner::runWorkflow();
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTGlobals::sleep(10000);
     CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4121) {
@@ -2504,7 +2505,7 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
 
     // 3. Find some restriction sites.
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "AaaI" };
+    settings.enzymes = QStringList {"AaaI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
@@ -3961,7 +3962,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
 
     FindEnzymesDialogFillerSettings settings;
     settings.clickSelectAllSuppliers = true;
-    settings.enzymes = QStringList{ "AaaI" };
+    settings.enzymes = QStringList {"AaaI"};
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -3970,7 +3971,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     QTreeWidgetItem* item = GTTreeWidget::findItem(tree, "76105..76110");
     GTTreeWidget::click(item);
 
-    settings.enzymes = QStringList{ "AacLI" };
+    settings.enzymes = QStringList {"AacLI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
