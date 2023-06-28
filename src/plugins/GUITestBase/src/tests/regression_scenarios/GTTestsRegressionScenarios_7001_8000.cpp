@@ -4708,5 +4708,30 @@ GUI_TEST_CLASS_DEFINITION(test_7885) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum() != 0, "No selected sequences");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7896) {
+    /*
+     1. Do menu File->Open as... samples/PDB/1CF7.PDB
+     2. Select Pdb format
+     3. Select option to join sequnces as multiple alignment and press OK
+     Expected state: msa view with read only msa object opened
+     4. Do menu File->Open as... samples/SCF/90-JRI-07.scf
+     5. Select option to join sequnces as multiple alignment and press OK
+     Expected state: msa view with read only msa object opened
+    */
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "samples/PDB/1CF7.PDB"));
+    GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("PDB"));
+    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Join));
+    GTMenu::clickMainMenuItem({"File", "Open as..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    GTUtilsMdi::closeActiveWindow();
+
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "samples/SCF/90-JRI-07.scf"));
+    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Join));
+    GTMenu::clickMainMenuItem({"File", "Open as..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
