@@ -31,14 +31,14 @@ namespace HI {
 
 #ifdef Q_OS_DARWIN
 #    define GT_CLASS_NAME "GTMouseDriverMac"
-QPoint GTMouseDriver::mousePos = QPoint(-1, -1);
+
 Qt::MouseButtons GTMouseDriver::bp = Qt::NoButton;
 
 static bool isPointInsideScreen(const QPoint& point) {
     CGDirectDisplayID displayID = CGMainDisplayID();
-    int horres = CGDisplayPixelsWide(displayID);
-    int vertres = CGDisplayPixelsHigh(displayID);
-    QRect screen(1, 1, horres - 2, vertres - 2);  // Exclude border pixels like (0,0).
+    int hRes = (int)CGDisplayPixelsWide(displayID);
+    int vRes = (int)CGDisplayPixelsHigh(displayID);
+    QRect screen(1, 1, hRes - 2, vRes - 2);  // Exclude border pixels like (0,0).
     return screen.contains(point);
 }
 
@@ -51,8 +51,8 @@ static bool selectAreaMac(int x, int y) {
     qDebug("selectAreaMac %d %d", x, y);
     DRIVER_CHECK(isPointInsideScreen(x, y), QString("selectAreaMac: Invalid coordinates %1 %2").arg(x).arg(y));
 
-    CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDragged, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);
-    DRIVER_CHECK(event != NULL, "Can't create event");
+    CGEventRef event = CGEventCreateMouseEvent(nullptr, kCGEventLeftMouseDragged, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);
+    DRIVER_CHECK(event != nullptr, "Can't create event");
 
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
@@ -73,8 +73,8 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
 
     DRIVER_CHECK(isPointInsideScreen(x, y), QString("moveTo: Invalid coordinates %1 %2").arg(x).arg(y));
 
-    CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);
-    DRIVER_CHECK(event != NULL, "Can't create event");
+    CGEventRef event = CGEventCreateMouseEvent(nullptr, kCGEventMouseMoved, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);
+    DRIVER_CHECK(event != nullptr, "Can't create event");
 
     CGEventPost(kCGSessionEventTap, event);
     CFRelease(event);
@@ -103,8 +103,8 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
         DRIVER_CHECK(false, "Unknown mouse button");
     }
     CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
-    CGEventRef event = CGEventCreateMouseEvent(NULL, eventType, pt, btn);
-    DRIVER_CHECK(event != NULL, "Can't create event");
+    CGEventRef event = CGEventCreateMouseEvent(nullptr, eventType, pt, btn);
+    DRIVER_CHECK(event != nullptr, "Can't create event");
     CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
@@ -134,8 +134,8 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
         DRIVER_CHECK(false, "Unknown mouse button");
     }
     CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
-    CGEventRef event = CGEventCreateMouseEvent(NULL, eventType, pt, btn);
-    DRIVER_CHECK(event != NULL, "Can't create event");
+    CGEventRef event = CGEventCreateMouseEvent(nullptr, eventType, pt, btn);
+    DRIVER_CHECK(event != nullptr, "Can't create event");
     CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
@@ -148,17 +148,15 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
 
 #    define GT_METHOD_NAME "scroll"
 bool GTMouseDriver::scroll(int value) {
-    CGEventRef event = CGEventCreateScrollWheelEvent(NULL, kCGScrollEventUnitPixel, 1, value > 0 ? 10 : -10);
-    DRIVER_CHECK(event != NULL, "Can't create event");
-    //  Scrolling movement is generally represented by small signed integer values, typically in a range from -10 to +10.
-    //  Large values may have unexpected results, depending on the application that processes the event.
-    value = value > 0 ? value : -value;
-    for (int i = 0; i < value; i += 10) {
+    int wheelDeviceCount = 1;
+    int wheelDevice1Change = value > 0 ? 1 : -1;
+    for (int i = 0; i < qAbs(value); i++) {
+        CGEventRef event = CGEventCreateScrollWheelEvent(nullptr, kCGScrollEventUnitLine, wheelDeviceCount, wheelDevice1Change);
+        DRIVER_CHECK(event != nullptr, "Can't create event");
         CGEventPost(kCGSessionEventTap, event);
-        GTGlobals::sleep(0);  // don't touch, it's Mac's magic
+        GTGlobals::sleep(10);
+        CFRelease(event);
     }
-
-    CFRelease(event);
     GTGlobals::sleep(100);
     return true;
 }

@@ -22,6 +22,7 @@
 #include "EnzymesIO.h"
 
 #include <QDir>
+#include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -36,8 +37,6 @@
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 
-#include <QRegularExpression>
-
 #include <U2Gui/ComboBoxWithCheckBoxes.h>
 
 namespace U2 {
@@ -49,6 +48,7 @@ QString EnzymesIO::getFileDialogFilter() {
 }
 
 QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
+    coreLog.trace(QString("Reading enzymes from: %1").arg(url));
     QList<SEnzymeData> res;
 
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
@@ -76,7 +76,8 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
     for (int i = 0, n = res.count(); i < n; i++) {
         SEnzymeData& d = res[i];
         if (d->seq == QByteArray("?")) {
-            algoLog.trace(tr("The enzyme '%1' has unknown sequence").arg(d->id));
+            // TODO: Re-enabled after bad enzymes are removed from the database supplied with UGENE (we have ~100 messages on every load).
+            //  algoLog.trace(tr("The enzyme '%1' has unknown sequence").arg(d->id));
             resToDelete.append(d);
         } else {
             if (d->alphabet == nullptr) {
@@ -143,7 +144,7 @@ EnzymeFileFormat EnzymesIO::detectFileFormat(const QString& url) {
 QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFactory* iof, U2OpStatus& os) {
     QList<SEnzymeData> res;
 
-    QScopedPointer <IOAdapter> io(iof->createIOAdapter());
+    QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
         os.setError(L10N::errorOpeningFileRead(url));
         return res;

@@ -117,6 +117,7 @@ void GUITestLauncher::run() {
             }
         } else if (isValidPlatform) {
             // If the test should run on the current platform but has ignored label -> report it to the teamcity.
+            coreLog.details("Test has ignored on the current platform: " + test->getFullName());
             GUITestTeamcityLogger::testIgnored(teamcityTestName, test->getDescription());
         }
 
@@ -163,12 +164,12 @@ bool GUITestLauncher::initTestList() {
     QStringList labelList = labelEnvVar.isEmpty() ? QStringList() : labelEnvVar.split(",");
 
     if (suiteNumber != 0) {
-        // If no label is provided 'Nightly' (UGUITestLabels::Nightly) label is used by default.
+        // If no label is provided 'Nightly' (UGUITestLabels::Precommit) label is used by default.
         if (labelList.isEmpty()) {
-            labelList << UGUITestLabels::Nightly;
+            labelList << UGUITestLabels::Precommit;
         }
         int testSuiteCount = 1;
-        if (labelList.contains(UGUITestLabels::Nightly)) {
+        if (labelList.contains(UGUITestLabels::Precommit)) {
             // TODO: make configurable via ENV.
             testSuiteCount = isOsWindows() ? 3
                              : isOsMac()   ? 3
@@ -182,7 +183,7 @@ bool GUITestLauncher::initTestList() {
         }
 
         QList<GUITest*> labeledTestList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
-        if (labelList.contains(UGUITestLabels::Nightly)) {
+        if (labelList.contains(UGUITestLabels::Precommit)) {
             testList = getIdealNightlyTestsSplit(suiteNumber - 1, testSuiteCount, labeledTestList);
         }
         if (testList.isEmpty()) {

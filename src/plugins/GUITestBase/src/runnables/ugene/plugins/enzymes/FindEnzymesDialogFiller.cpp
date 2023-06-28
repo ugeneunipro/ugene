@@ -37,9 +37,6 @@
 
 namespace U2 {
 
-FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings() {
-}
-
 FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings(const QStringList& _enzymes)
     : enzymes(_enzymes) {
 }

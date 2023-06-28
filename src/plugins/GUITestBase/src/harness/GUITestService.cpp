@@ -222,9 +222,9 @@ void GUITestService::sl_allStartUpPluginsLoaded() {
 
 void GUITestService::runAllGUITests() {
     UGUITestBase* db = UGUITestBase::getInstance();
-    QList<GUITest*> initTests = db->getTests(UGUITestBase::PreAdditional);
-    QList<GUITest*> postCheckTests = db->getTests(UGUITestBase::PostAdditionalChecks);
-    QList<GUITest*> postActionTests = db->getTests(UGUITestBase::PostAdditionalActions);
+    QList<GUITest*> preChecks = db->getTests(UGUITestBase::PreCheck);
+    QList<GUITest*> postChecks = db->getTests(UGUITestBase::PostCheck);
+    QList<GUITest*> postActions = db->getTests(UGUITestBase::PostAction);
 
     QList<GUITest*> tests = db->getTests(UGUITestBase::Normal);
     SAFE_POINT(!tests.isEmpty(), "", );
@@ -234,13 +234,12 @@ void GUITestService::runAllGUITests() {
         QString testName = test->getFullName();
         QString testNameForTeamCity = test->suite + "_" + test->name;
 
-        if (!runOneTestOnly.isNull() &&
-            !runOneTestOnly.isEmpty() &&
-            runOneTestOnly != testName) {
+        if (!runOneTestOnly.isNull() && !runOneTestOnly.isEmpty() && runOneTestOnly != testName) {
             continue;
         }
 
         if (UGUITestLabels::hasIgnoredLabel(test)) {
+            coreLog.details("Test has ignored label: " + test->getFullName());
             GUITestTeamcityLogger::testIgnored(testNameForTeamCity, test->getDescription());
             continue;
         }
@@ -250,7 +249,7 @@ void GUITestService::runAllGUITests() {
 
         HI::GUITestOpStatus os;
         log.trace("GTRUNNER - runAllGUITests - going to run initial checks before " + testName);
-        for (GUITest* initTest : qAsConst(initTests)) {
+        for (GUITest* initTest : qAsConst(preChecks)) {
             initTest->run();
         }
 
@@ -259,7 +258,7 @@ void GUITestService::runAllGUITests() {
         test->run();
         log.trace("GTRUNNER - runAllGUITests - finished running test " + testName);
 
-        for (GUITest* postCheckTest : qAsConst(postCheckTests)) {
+        for (GUITest* postCheckTest : qAsConst(postChecks)) {
             postCheckTest->run();
         }
 
@@ -268,7 +267,7 @@ void GUITestService::runAllGUITests() {
             testResult = GUITestTeamcityLogger::successResult;
         }
         GTGlobals::resetOpStatus();
-        for (GUITest* postActionTest : qAsConst(postActionTests)) {
+        for (GUITest* postActionTest : qAsConst(postActions)) {
             postActionTest->run();
         }
 

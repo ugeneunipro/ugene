@@ -33,7 +33,6 @@ namespace GUITest_posterior_checks {
 #define GUI_TEST_SUITE "GUITest_posterior_checks"
 
 POSTERIOR_CHECK_DECLARATION(post_check_0000)
-POSTERIOR_CHECK_DECLARATION(post_check_0001)
 
 #undef GUI_TEST_SUITE
 

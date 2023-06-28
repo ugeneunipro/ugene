@@ -44,8 +44,12 @@ public:
     /** Checks that tree item is expanded or fails. Waits for the item to be expanded if needed. */
     static void checkItemIsExpanded(QTreeWidgetItem* item);
 
-    // Checks the tree item or unchecks it if it is already checked
-    static void checkItem(QTreeWidgetItem* item, int column = 0, GTGlobals::UseMethod method = GTGlobals::UseMouse);
+    /** Checks or unchecks the tree item. Fails if the item already checked. */
+    static void checkItem(QTreeWidgetItem* item,
+                          int column = 0,
+                          GTGlobals::UseMethod method = GTGlobals::UseMouse,
+                          bool isCheck = true,
+                          bool validateCheckResult = true);
 
     // gets all items under root recursively and returns a list of them
     static QList<QTreeWidgetItem*> getItems(QTreeWidgetItem* root);

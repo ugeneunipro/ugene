@@ -171,7 +171,7 @@ void EnzymesSelectorWidget::loadFile(const QString& url) {
     U2OpStatus2Log os;
     {
         QList<SEnzymeData> enzymes;
-        if (!QFileInfo(url).exists()) {
+        if (!QFileInfo::exists(url)) {
             os.setError(tr("File not exists: %1").arg(url));
         } else {
             GTIMER(c1, t1, "FindEnzymesDialog::loadFile [EnzymesIO::readEnzymes]");
@@ -276,9 +276,7 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
         } else {
             FAIL("Unexpected item type", );
         }
-
     });
-
 
     //     GTIMER(c4,t4,"FindEnzymesDialog::loadFile [resize tree]");
     //     tree->header()->resizeSections(QHeaderView::ResizeToContents);
@@ -558,6 +556,8 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
     }
 }
 
+static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4", "5", "6", "7", "8", "9+"};
+
 FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext)
     : QDialog(advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(advSequenceContext) {
     setupUi(this);
@@ -570,6 +570,18 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
 
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
+
+    for (const auto& k : qAsConst(RESTRICTION_SEQUENCE_LENGTH_VALUES)) {
+        if (k != RESTRICTION_SEQUENCE_LENGTH_VALUES.back()) {
+            cbMinLength->addItem(k, k.toInt());
+            cbMaxLength->addItem(k, k.toInt());
+        } else {
+            cbMinLength->addItem(k, 9);
+            cbMaxLength->addItem(k, INT_MAX);
+        }
+    }
+    cbMinLength->setCurrentIndex(0);
+    cbMaxLength->setCurrentIndex(RESTRICTION_SEQUENCE_LENGTH_VALUES.size() - 1);
 
     regionSelector = new RegionSelectorWithExcludedRegion(this,
                                                           advSequenceContext->getSequenceLength(),
@@ -586,20 +598,52 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     enzymesSelectorWidget->setLayout(vl);
     enzymesSelectorWidget->setMinimumSize(enzSel->size());
 
-    connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_handleSupplierSelectionChange);
-    connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateSuppliers);
-    sl_updateSuppliers();
+    connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
+    connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
+    connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
+    connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
+    sl_updateEnzymesVisibilityWidgets();
 
     connect(pbSelectAll, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectAll);
     connect(pbSelectNone, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectNone);
     connect(pbInvertSelection, &QPushButton::clicked, this, &FindEnzymesDialog::sl_invertSelection);
-
     connect(enzSel, SIGNAL(si_selectionModified(int, int)), SLOT(sl_onSelectionModified(int, int)));
     sl_onSelectionModified(enzSel->getTotalNumber(), enzSel->getNumSelected());
 }
 
 void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
     statusLabel->setText(tr("Total number of enzymes: %1, selected %2").arg(total).arg(nChecked));
+}
+
+void FindEnzymesDialog::sl_updateVisibleEnzymes() {
+    QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
+    int min = cbMinLength->itemData(cbMinLength->currentIndex()).toInt();
+    int max = cbMaxLength->itemData(cbMaxLength->currentIndex()).toInt();
+    U2Region region(min, max - min + 1);
+    const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
+    QList<SEnzymeData> visibleEnzymes;
+    for (const auto& enzyme : qAsConst(enzymes)) {
+        bool okSupplier = false;
+        for (const auto& supplier : qAsConst(enzyme->suppliers)) {
+            CHECK_CONTINUE(checkedSuppliers.contains(supplier));
+
+            okSupplier = true;
+            break;
+        }
+
+        int recognitionSequenceLength = 0;
+        for (const auto& ch : qAsConst(enzyme->seq)) {
+            CHECK_CONTINUE(ch != 'N');
+
+            recognitionSequenceLength++;
+        }
+        bool okRSLength = region.intersects(U2Region(recognitionSequenceLength, 1));
+
+        if (okSupplier && okRSLength) {
+            visibleEnzymes.append(enzyme);
+        }
+    }
+    enzSel->setEnzymesList(visibleEnzymes);
 }
 
 void FindEnzymesDialog::accept() {
@@ -651,31 +695,12 @@ void FindEnzymesDialog::accept() {
     QDialog::accept();
 }
 
-void FindEnzymesDialog::sl_handleSupplierSelectionChange(QStringList checkedSuppliers) {
-    const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
-    QList<SEnzymeData> visibleEnzymes;
-    for (const auto& enzyme : qAsConst(enzymes)) {
-        for (const auto& supplier : qAsConst(enzyme->suppliers)) {
-            CHECK_CONTINUE(checkedSuppliers.contains(supplier));
-
-            visibleEnzymes.append(enzyme);
-            break;
-        }
-    }
-    enzSel->setEnzymesList(visibleEnzymes);
-    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
-    if (checkedSuppliers.contains(notDefinedTr)) {
-        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
-    }
-    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
-    AppContext::getSettings()->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
-}
-
-void FindEnzymesDialog::sl_updateSuppliers() {
+void FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets() {
     const auto& loadedSuppliers = EnzymesSelectorWidget::getLoadedSuppliers();
     cbSuppliers->clear();
     cbSuppliers->addItems(loadedSuppliers);
-    QString selStr = AppContext::getSettings()->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
+    auto settings = AppContext::getSettings();
+    QString selStr = settings->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
     static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
     auto suppliersList = selStr.isEmpty() ? loadedSuppliers : selStr.split(SUPPLIERS_LIST_SEPARATOR);
     if (suppliersList.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
@@ -707,11 +732,34 @@ void FindEnzymesDialog::sl_invertSelection() {
     cbSuppliers->setCheckedItems(newSelectedSuppliers);
 }
 
+void FindEnzymesDialog::sl_minLengthChanged(int index) {
+    if (cbMaxLength->currentIndex() <= index) {
+        disconnect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
+        cbMaxLength->setCurrentIndex(index);
+        connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
+    }
+    sl_updateVisibleEnzymes();
+}
+
+void FindEnzymesDialog::sl_maxLengthChanged(int index) {
+    if (cbMinLength->currentIndex() >= index) {
+        disconnect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
+        cbMinLength->setCurrentIndex(index);
+        connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
+    }
+    sl_updateVisibleEnzymes();
+}
+
 void FindEnzymesDialog::initSettings() {
     EnzymesSelectorWidget::initSelection();
-    bool useHitCountControl = AppContext::getSettings()->getValue(EnzymeSettings::ENABLE_HIT_COUNT, false).toBool();
-    int minHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
-    int maxHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, 2).toInt();
+    auto settings = AppContext::getSettings();
+    bool useHitCountControl = settings->getValue(EnzymeSettings::ENABLE_HIT_COUNT, false).toBool();
+    int minHitValue = settings->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
+    int maxHitValue = settings->getValue(EnzymeSettings::MAX_HIT_VALUE, 2).toInt();
+    auto min = settings->getValue(EnzymeSettings::MIN_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.first()).toString();
+    cbMinLength->setCurrentText(min);
+    auto max = settings->getValue(EnzymeSettings::MAX_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.last()).toString();
+    cbMaxLength->setCurrentText(max);
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     U2Region searchRegion = FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(sequenceObject);
@@ -738,14 +786,25 @@ void FindEnzymesDialog::initSettings() {
 }
 
 void FindEnzymesDialog::saveSettings() {
-    AppContext::getSettings()->setValue(EnzymeSettings::ENABLE_HIT_COUNT, filterGroupBox->isChecked());
+    auto settings = AppContext::getSettings();
+    settings->setValue(EnzymeSettings::ENABLE_HIT_COUNT, filterGroupBox->isChecked());
     if (filterGroupBox->isChecked()) {
-        AppContext::getSettings()->setValue(EnzymeSettings::MIN_HIT_VALUE, minHitSB->value());
-        AppContext::getSettings()->setValue(EnzymeSettings::MAX_HIT_VALUE, maxHitSB->value());
+        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, minHitSB->value());
+        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, maxHitSB->value());
     } else {
-        AppContext::getSettings()->setValue(EnzymeSettings::MIN_HIT_VALUE, 1);
-        AppContext::getSettings()->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
+        settings->setValue(EnzymeSettings::MIN_HIT_VALUE, 1);
+        settings->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
     }
+
+    QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
+    static const QString notDefinedTr = EnzymesIO::tr(EnzymesIO::NOT_DEFINED_SIGN);
+    if (checkedSuppliers.contains(notDefinedTr)) {
+        checkedSuppliers.replace(checkedSuppliers.indexOf(notDefinedTr), EnzymesIO::NOT_DEFINED_SIGN);
+    }
+    auto value = checkedSuppliers.join(SUPPLIERS_LIST_SEPARATOR);
+    settings->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
+    settings->setValue(EnzymeSettings::MIN_ENZYME_LENGTH, cbMinLength->currentText());
+    settings->setValue(EnzymeSettings::MAX_ENZYME_LENGTH, cbMaxLength->currentText());
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     // Empty search region is processed as 'Whole sequence' by auto-annotation task.
@@ -795,7 +854,7 @@ bool EnzymeTreeItem::operator<(const QTreeWidgetItem& other) const {
 QString EnzymeTreeItem::getEnzymeInfo() const {
     QString result;
     result += QString("<a href=\"http://rebase.neb.com/rebase/enz/%1.html\">%1</a>")
-        .arg(text(Column::Id));
+                  .arg(text(Column::Id));
     auto typeString = data(Column::Type, Qt::ToolTipRole).toString();
     if (!typeString.isEmpty()) {
         auto lower = typeString.front().toLower();
@@ -832,14 +891,24 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
     auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     auto seqComplement = DNASequenceUtils::reverseComplement(enzyme->seq, alphabet);
     if (enzyme->cutDirect == ENZYME_CUT_UNKNOWN) {
-        return TOOLTIP_TAG.arg(QString(enzyme->seq)).arg(QString(DNASequenceUtils::complement(enzyme->seq, alphabet)));
+        auto getColoredSequence = [](const QString& sequence) -> QString {
+            QString result;
+            for (QString ch : qAsConst(sequence)) {
+                if (ch != "N") {
+                    ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+                }
+                result += ch;
+            }
+            return result;
+        };
+        return TOOLTIP_TAG.arg(getColoredSequence(enzyme->seq)).arg(getColoredSequence(DNASequenceUtils::complement(enzyme->seq, alphabet)));
     }
 
     auto enzymeSize = enzyme->seq.size();
     // Calculates nubmer of Ns outside of enzyme
     // returns side to shift and shift number
     auto calculateNShift = [enzymeSize](int cut, bool forward) -> QPair<Ns, int> {
-        QPair<Ns, int> calculateNShiftRes = { Ns::No, 0 };
+        QPair<Ns, int> calculateNShiftRes = {Ns::No, 0};
         if (cut < 0) {
             calculateNShiftRes.first = forward ? Ns::Left : Ns::Right;
             calculateNShiftRes.second = qAbs(cut);
@@ -861,20 +930,22 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         // |N N N| |N N| |A C G T|
         //         |N N| |T G C A|
         // @generateOutPartElements generates the "Out" part
-        // Returns the list, wich contails the cut elements and Ns if this enzyme has the "Out" part,
-        // Or spaces if does not have
-        auto generateOutPartElements = [out, in, forward, type, otherHasLeftOut, otherHasRightOut]() -> QStringList {
+        // Returns the list, which contains the cut elements and Ns if this enzyme has the "Out" part,
+        // Or spaces if it does not have.
+        auto generateOutPartElements = [out, forward, type, otherHasLeftOut, otherHasRightOut]() -> QStringList {
             QStringList generateOutPartElementsResult;
             if (out != 0) {
                 switch (type) {
-                case Ns::Left:
-                    generateOutPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
-                    generateOutPartElementsResult << TOOLTIP_N_MARKER.arg(out);
-                    break;
-                case Ns::Right:
-                    generateOutPartElementsResult << TOOLTIP_N_MARKER.arg(out);
-                    generateOutPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
-                    break;
+                    case Ns::Left:
+                        generateOutPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                        generateOutPartElementsResult << TOOLTIP_N_MARKER.arg(out);
+                        break;
+                    case Ns::Right:
+                        generateOutPartElementsResult << TOOLTIP_N_MARKER.arg(out);
+                        generateOutPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                        break;
+                    case Ns::No:
+                        break;
                 }
             } else if (out == 0 && otherHasLeftOut && type == Ns::Left) {
                 generateOutPartElementsResult << QString("%1&nbsp;&nbsp;&nbsp;%1").arg(TOOLTIP_SPACE);
@@ -889,14 +960,16 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
             if (in != 0) {
                 if (out == 0) {
                     switch (type) {
-                    case Ns::Left:
-                        generateInPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
-                        generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
-                        break;
-                    case Ns::Right:
-                        generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
-                        generateInPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
-                        break;
+                        case Ns::Left:
+                            generateInPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                            generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
+                            break;
+                        case Ns::Right:
+                            generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
+                            generateInPartElementsResult << (forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
+                            break;
+                        case Ns::No:
+                            break;
                     }
                 } else if (out != 0) {
                     generateInPartElementsResult << TOOLTIP_N_MARKER.arg(in);
@@ -918,14 +991,16 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         };
         QStringList result;
         switch (type) {
-        case Ns::Left:
-            result << generateOutPartElements();
-            result << generateInPartElements();
-            break;
-        case Ns::Right:
-            result << generateInPartElements();
-            result << generateOutPartElements();
-            break;
+            case Ns::Left:
+                result << generateOutPartElements();
+                result << generateInPartElements();
+                break;
+            case Ns::Right:
+                result << generateInPartElements();
+                result << generateOutPartElements();
+                break;
+            case Ns::No:
+                break;
         }
         return result;
     };
@@ -955,30 +1030,14 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
             reverseNIn = forwardNShift.second;
         }
 
-         forwardTooltipElements = generateTooltipElements(forwardNOut, forwardNIn, true, forwardNShift.first,
-                                                         (reverseNOut != 0 && reverseNShift.first == Ns::Left),
-                                                         (reverseNIn != 0 && reverseNShift.first == Ns::Left),
-                                                         (reverseNIn != 0 && reverseNShift.first == Ns::Right),
-                                                         (reverseNOut != 0 && reverseNShift.first == Ns::Right));
-         reverseTooltipElements = generateTooltipElements(reverseNOut, reverseNIn, false, reverseNShift.first,
-                                                         (forwardNOut != 0 && forwardNShift.first == Ns::Left),
-                                                         (forwardNIn != 0 && forwardNShift.first == Ns::Left),
-                                                         (forwardNIn != 0 && forwardNShift.first == Ns::Right),
-                                                         (forwardNOut != 0 && forwardNShift.first == Ns::Right));
+        forwardTooltipElements = generateTooltipElements(forwardNOut, forwardNIn, true, forwardNShift.first, (reverseNOut != 0 && reverseNShift.first == Ns::Left), (reverseNIn != 0 && reverseNShift.first == Ns::Left), (reverseNIn != 0 && reverseNShift.first == Ns::Right), (reverseNOut != 0 && reverseNShift.first == Ns::Right));
+        reverseTooltipElements = generateTooltipElements(reverseNOut, reverseNIn, false, reverseNShift.first, (forwardNOut != 0 && forwardNShift.first == Ns::Left), (forwardNIn != 0 && forwardNShift.first == Ns::Left), (forwardNIn != 0 && forwardNShift.first == Ns::Right), (forwardNOut != 0 && forwardNShift.first == Ns::Right));
     } else {
         if (forwardNShift.first != Ns::No) {
-            forwardTooltipElements = generateTooltipElements(0, forwardNShift.second, true, forwardNShift.first,
-                                                            false,
-                                                            (reverseNShift.second != 0 && reverseNShift.first == Ns::Left),
-                                                            (reverseNShift.second != 0 && reverseNShift.first == Ns::Right),
-                                                            false);
+            forwardTooltipElements = generateTooltipElements(0, forwardNShift.second, true, forwardNShift.first, false, (reverseNShift.second != 0 && reverseNShift.first == Ns::Left), (reverseNShift.second != 0 && reverseNShift.first == Ns::Right), false);
         }
         if (reverseNShift.first != Ns::No) {
-            reverseTooltipElements = generateTooltipElements(0, reverseNShift.second, false, reverseNShift.first,
-                                                            false,
-                                                            (forwardNShift.second != 0 && forwardNShift.first == Ns::Left),
-                                                            (forwardNShift.second != 0 && forwardNShift.first == Ns::Right),
-                                                            false);
+            reverseTooltipElements = generateTooltipElements(0, reverseNShift.second, false, reverseNShift.first, false, (forwardNShift.second != 0 && forwardNShift.first == Ns::Left), (forwardNShift.second != 0 && forwardNShift.first == Ns::Right), false);
         }
     }
     // generates the "Main" part (see @generateOutPartElements for details)
@@ -1004,7 +1063,11 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
                 removeSpaceFromResult();
                 append2Result(forward ? TOOLTIP_FORWARD_MARKER : TOOLTIP_REVERSE_MARKER);
             }
-            append2Result(QString(seq.at(i)));
+            QString ch(seq.at(i));
+            if (ch != "N") {
+                ch = QString("<span style=\"color: #ff0000; \">%1</span>").arg(ch);
+            }
+            append2Result(ch);
             append2Result(TOOLTIP_SPACE);
         }
         if (seq.size() == cut) {
@@ -1022,7 +1085,7 @@ QString EnzymeTreeItem::generateEnzymeTooltip() const {
         // Join elements which are calculated in @generateTooltipElements
         auto joinElements = [&elements]() -> QString {
             QString joinElementsResult;
-            for (const auto el : qAsConst(elements)) {
+            for (const auto& el : qAsConst(elements)) {
                 if (el == TOOLTIP_FORWARD_MARKER || el == TOOLTIP_REVERSE_MARKER) {
                     if (!joinElementsResult.isEmpty()) {
                         joinElementsResult = joinElementsResult.left(joinElementsResult.size() - TOOLTIP_SPACE.size());

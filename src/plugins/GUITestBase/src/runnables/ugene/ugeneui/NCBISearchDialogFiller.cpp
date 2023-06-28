@@ -339,12 +339,6 @@ void NCBISearchDialogSimpleFiller::commonScenario() {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "shownCorrect"
-bool NCBISearchDialogSimpleFiller::shownCorrect() {
-    return true;
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "NCBISearchDialogFiller::getResultNumber"
 int NCBISearchDialogSimpleFiller::getResultNumber() {
     QWidget* dialog = GTWidget::getActiveModalWidget();

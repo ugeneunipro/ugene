@@ -1,0 +1,10 @@
+<multi-test>
+
+    <load-document index="doc" url="enzymes/7892_3.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="seq" doc="doc" name="exmple3" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/2023_02_25.bairoch.gz" sequence="seq" enzymes="PflFI"
+                  result="PflFI:1..9" exact-ann-number="true"/>
+
+</multi-test>

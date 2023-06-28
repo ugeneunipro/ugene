@@ -86,6 +86,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -962,7 +963,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Find next restriction sites "AaaI" and "AagI"
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "AaaI", "AagI" };
+    settings.enzymes = QStringList {"AaaI", "AagI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
@@ -1934,7 +1935,6 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
 
     GTUtilsDialog::add(new GTFileDialogUtils(testDir + "_common_data/text/text.txt"));
     GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("ABIF"));
-    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -4112,6 +4112,8 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
     //    Expected state: there is an only "-b" parameter in the phyML arguments, it is equal to "-2".
     CHECK_SET_ERR(!lt.hasMessage("-b 5"), "Found unexpected message");
     CHECK_SET_ERR(lt.hasMessage("-b -2"), "Expected message is not found");
+
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5789_1) {

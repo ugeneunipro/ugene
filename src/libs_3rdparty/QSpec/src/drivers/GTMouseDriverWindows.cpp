@@ -31,9 +31,6 @@ namespace HI {
 
 #ifdef _WIN32
 
-#    define GT_CLASS_NAME "GTMouseDriver Windows"
-QPoint GTMouseDriver::mousePos = QPoint(-1, -1);
-
 #    define GT_METHOD_NAME "moveToP"
 bool GTMouseDriver::moveTo(const QPoint& p) {
     int x = p.x();

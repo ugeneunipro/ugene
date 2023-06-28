@@ -2568,8 +2568,10 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             GTRadioButton::click(rbSimpleFormat);
             GTCheckBox::setChecked(chbComplement, true);
             //    Expected state: Simple format checked, Genbank format unchecked.
-            CHECK_SET_ERR(rbSimpleFormat->isChecked() && !rbGenbankFormat->isChecked(), "76. Unexpected switch between formats");
-
+            bool simpleFormatIsChecked = rbSimpleFormat->isChecked();
+            bool genbankFormatIsChecked = rbGenbankFormat->isChecked();
+            CHECK_SET_ERR(simpleFormatIsChecked && !genbankFormatIsChecked,
+                          QString("76. Unexpected switch between formats: rbSimpleFormat: %1, rbGenbankFormat: %2").arg(simpleFormatIsChecked).arg(genbankFormatIsChecked));
             //    24. Check if destination table widgets are enabled or disabled.
             //    Expected state:
             //        Existing table radio button - disabled

@@ -39,6 +39,9 @@ public:
 
     static void waitTaskStart(const QString& taskName, int timeout = 180000);
 
+    /** Cancels all active tasks using direct call to TaskScheduler. */
+    static void cancelAllTasks();
+
 private:
     static Task* getTaskByName(const QString& taskName, const GTGlobals::FindOptions& options = {});
 };

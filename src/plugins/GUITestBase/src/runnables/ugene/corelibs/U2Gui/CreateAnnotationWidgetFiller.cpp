@@ -20,18 +20,13 @@
  */
 
 #include "CreateAnnotationWidgetFiller.h"
-#include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
 
-#include <QAbstractButton>
-#include <QApplication>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QPushButton>
-#include <QRadioButton>
 
 namespace U2 {
 
@@ -65,23 +60,21 @@ void CreateAnnotationWidgetFiller::commonScenario() {
 
     if (newTableRB) {
         GTRadioButton::click(GTWidget::findRadioButton("rbCreateNewTable", dialog));
-
         if (!saveTo.isEmpty()) {
             QDir().mkpath(QFileInfo(saveTo).dir().absolutePath());
             GTLineEdit::setText("leNewTablePath", saveTo, dialog);
         }
-    } else {
+    } else if (!saveTo.isEmpty()) {
         GTRadioButton::click(GTWidget::findRadioButton("rbExistingTable", dialog));
-
-        if (!saveTo.isEmpty()) {
-            GTComboBox::selectItemByText(GTWidget::findComboBox("cbExistingTable", dialog), saveTo);
-        }
+        GTComboBox::selectItemByText(GTWidget::findComboBox("cbExistingTable", dialog), saveTo);
     }
 
     GTLineEdit::setText("leGroupName", groupName, dialog);
     GTLineEdit::setText("leAnnotationName", annotationName, dialog);
-    GTRadioButton::click(GTWidget::findRadioButton("rbGenbankFormat", dialog));
-    GTLineEdit::setText("leLocation", location, dialog);
+    if (!location.isEmpty()) {
+        GTRadioButton::click(GTWidget::findRadioButton("rbGenbankFormat", dialog));
+        GTLineEdit::setText("leLocation", location, dialog);
+    }
     if (!description.isEmpty()) {
         GTLineEdit::setText("leDescription", description, dialog);
     }

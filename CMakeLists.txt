@@ -29,6 +29,8 @@ endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
+set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
+
 # Use to disable -isystem support and work in qmake mode.
 # set(CMAKE_NO_SYSTEM_FROM_IMPORTED True)
 
@@ -36,11 +38,13 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
-            " -Werror=deprecated-copy" # Requires GCC 9.1+
+            " -Werror=deprecated-copy"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
             " -Werror=return-type"
-            " -Werror=shadow=local" # Requires GCC 7.1+
+            " -Werror=sequence-point"
+            " -Werror=shadow=local"
+            " -Werror=switch"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
             " -Werror=unused-value"

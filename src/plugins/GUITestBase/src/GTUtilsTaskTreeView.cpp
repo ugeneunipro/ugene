@@ -59,7 +59,7 @@ void GTUtilsTaskTreeView::waitTaskFinished(long timeoutMillis) {
     }
 
     GT_CHECK_RESULT(scheduler->getTopLevelTasks().isEmpty(),
-                    "waitTaskFinished failed, there are active tasks: " + getTasksInfo(scheduler->getTopLevelTasks(), 0), );
+                    "waitTaskFinished active tasks count: " + getTasksInfo(scheduler->getTopLevelTasks(), 0), );
 }
 #undef GT_METHOD_NAME
 

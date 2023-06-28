@@ -140,6 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
 
     GTUtilsMsaEditor::buildPhylogeneticTree(sandBoxDir + "msa_editor_tree_test_0003_1");
     GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsOptionPanelMsa::closeTab(GTUtilsOptionPanelMsa::TreeOptions);
 
     QStringList byTreeSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames();
     CHECK_SET_ERR(originalSequenceNames1 != byTreeSequenceNames1, "MSA must be re-ordered by tree");

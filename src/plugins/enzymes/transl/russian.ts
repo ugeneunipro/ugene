@@ -382,39 +382,54 @@
 <context>
     <name>EnzymeTreeItem</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="1053"/>
         <source>Unexpected enzyme type: %1</source>
-        <translation>Неподдерживаемый тип сайта: %1</translation>
+        <translation type="vanished">Неподдерживаемый тип сайта: %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="1055"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="1149"/>
         <source>An orphan methylase,&lt;br&gt;not associated with a restriction enzyme or specificity subunit</source>
         <translation>Ничейная (orphan) метилаза,&lt;br&gt;не ассоциированная с сайтом рестрикции или чем-то еще</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="1059"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="1153"/>
         <source>An intron-encoded (homing) endonuclease</source>
         <translation>Интрон-кодируемая (homing) эндонуклеаза</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="1061"/>
-        <source>The restriction enzyme of the %1 type</source>
+        <location filename="../src/FindEnzymesDialog.cpp" line="1155"/>
+        <source>Type %1 restriction enzyme</source>
         <translation>Сайт рестрикции %1 типа</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="1063"/>
-        <source>The methylase of the %1 type</source>
+        <location filename="../src/FindEnzymesDialog.cpp" line="1157"/>
+        <source>Type %1 methylase</source>
         <translation>Метилаза %1 типа</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="1069"/>
-        <source>The restriction enzyme of the %1 type,&lt;br&gt;but only recognizes the sequence when it is methylated</source>
+        <location filename="../src/FindEnzymesDialog.cpp" line="1161"/>
+        <source>Type %1 restriction enzyme,&lt;br&gt;but only recognizes the sequence when it is methylated</source>
         <translation>Сайт рестрикции %1 типа,&lt;br&gt;распознающий только метилированную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="1071"/>
-        <source>The enzyme of the %1 type, which acts as both -&lt;br&gt;a restriction enzyme and a methylase</source>
+        <location filename="../src/FindEnzymesDialog.cpp" line="1163"/>
+        <source>Type %1 enzyme, which acts as both -&lt;br&gt;a restriction enzyme and a methylase</source>
         <translation>Сайт %1 типа, действующий как&lt;br&gt; сайт рестрикции, так и как метилаза</translation>
+    </message>
+    <message>
+        <source>The restriction enzyme of the %1 type</source>
+        <translation type="vanished">Сайт рестрикции %1 типа</translation>
+    </message>
+    <message>
+        <source>The methylase of the %1 type</source>
+        <translation type="vanished">Метилаза %1 типа</translation>
+    </message>
+    <message>
+        <source>The restriction enzyme of the %1 type,&lt;br&gt;but only recognizes the sequence when it is methylated</source>
+        <translation type="vanished">Сайт рестрикции %1 типа,&lt;br&gt;распознающий только метилированную последовательность</translation>
+    </message>
+    <message>
+        <source>The enzyme of the %1 type, which acts as both -&lt;br&gt;a restriction enzyme and a methylase</source>
+        <translation type="vanished">Сайт %1 типа, действующий как&lt;br&gt; сайт рестрикции, так и как метилаза</translation>
     </message>
 </context>
 <context>
@@ -604,31 +619,51 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="118"/>
+        <source>Show/hide enzymes:</source>
+        <translation>Показать/скрыть сайты:</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.ui" line="142"/>
         <source>Show only selected suppliers:</source>
         <translation>Показать только выбранных поставщиков:</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="129"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="154"/>
         <source>Select all</source>
         <translation>Выбрать всех</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="136"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="161"/>
         <source>Select none</source>
         <translation>Очистить выборку</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="143"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="168"/>
         <source>Invert selection</source>
         <translation>Инвертировать</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="155"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="200"/>
+        <source>Length of recognition sequence:</source>
+        <translation>Длина сайте распознавания:</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.ui" line="209"/>
+        <source>Minimum</source>
+        <translation>Минимум</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.ui" line="223"/>
+        <source>Maximum</source>
+        <translation>Максимум</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.ui" line="260"/>
         <source>Search  in:</source>
         <translation>Поиск в:</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="165"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="270"/>
         <source>&lt;status label&gt;</source>
         <translation>&lt;статус&gt;</translation>
     </message>
@@ -1080,7 +1115,7 @@ To start ligation create a project or open an existing.</source>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="353"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="556"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="555"/>
         <source>Select enzyme database file</source>
         <translation>Выбор базы ферментов рестрикции</translation>
     </message>
@@ -1107,7 +1142,7 @@ To start ligation create a project or open an existing.</source>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="442"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="506"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="505"/>
         <source>Select enzymes selection</source>
         <translation>Выбрать ферменты</translation>
     </message>
@@ -1132,23 +1167,23 @@ To start ligation create a project or open an existing.</source>
         <translation>Выбранный фермент не имеет идентификатора!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="510"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="525"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="509"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="524"/>
         <source>Load selection</source>
         <translation>Загрузить выделение</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="510"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="509"/>
         <source>Failed to open selection file %1</source>
         <translation>Невозможно открыть файл %1</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="525"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="524"/>
         <source>Enzymes selection is empty!</source>
         <translation>Выделение пусто!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="549"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="548"/>
         <source>Failed to load %1 from selection.</source>
         <translation>Невозможно загрузить %1 из выделения.</translation>
     </message>
@@ -1164,43 +1199,43 @@ To start ligation create a project or open an existing.</source>
 <context>
     <name>U2::FindEnzymesDialog</name>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="566"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="567"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="567"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="568"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="603"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="618"/>
         <source>Total number of enzymes: %1, selected %2</source>
         <translation>Число ферментов в базе: %1, выбрано %2</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="610"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="656"/>
         <source>Invalid &apos;Search&apos; region!</source>
         <translation>Invalid &apos;Search&apos; region!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="618"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="664"/>
         <source>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body align=&quot;center&quot;&gt;No enzymes are selected! Do you want to turn off &lt;br&gt;enzymes annotations highlighting?&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="638"/>
-        <location filename="../src/FindEnzymesDialog.cpp" line="644"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="684"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="690"/>
         <source>Error!</source>
         <translation>Проблема!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="638"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="684"/>
         <source>Minimum hit value must be lesser or equal then maximum!</source>
         <translation>Минимальное значение должно быть меньше либо равно максимального!</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.cpp" line="643"/>
+        <location filename="../src/FindEnzymesDialog.cpp" line="689"/>
         <source>Too many results to render. Please reduce the search region or number of selected enzymes.</source>
         <translation>Слишком много результатов для отрисовки. Необходимо уменьшить регион поиска или число искомых ферментов.</translation>
     </message>

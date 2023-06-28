@@ -34,6 +34,7 @@
 
 #include <U2Core/AppContext.h>
 
+#include "GTUtilsTask.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -91,11 +92,10 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 
         GTKeyboardDriver::keyClick(isOsMac() ? 'e' : 'q', Qt::ControlModifier);
         GTUtilsTaskTreeView::waitTaskFinished(3000);
-        GTUtilsDialog::cleanup(GTUtilsDialog::CleanupMode::NoFailOnUnfinished);
     }
 
     GTUtilsMdi::closeAllWindows();
-    AppContext::getTaskScheduler()->cancelAllTasks();
+    GTUtilsTask::cancelAllTasks();
     GTUtilsTaskTreeView::waitTaskFinished(10000);
 }
 
