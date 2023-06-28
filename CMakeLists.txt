@@ -38,11 +38,13 @@ set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
-            " -Werror=deprecated-copy" # Requires GCC 9.1+
+            " -Werror=deprecated-copy"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
             " -Werror=return-type"
-            " -Werror=shadow=local" # Requires GCC 7.1+
+            " -Werror=sequence-point"
+            " -Werror=shadow=local"
+            " -Werror=switch"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
             " -Werror=unused-value"
