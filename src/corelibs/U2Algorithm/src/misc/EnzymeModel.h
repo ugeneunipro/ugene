@@ -87,9 +87,9 @@ public:
     // form overhang (located between these two cuts).
     // These overhangs could have following types:
     enum OverhangType {
-        // Enzyme has no cuts and, consequently, no overhangs
+        // Enzyme has no cuts and, consequently, no overhangs.
         NoOverhang = 1 << 1,
-        // Both cuts are located in the middle of the site
+        // Both cuts are located in the middle of the site.
         Blunt = 1 << 2,
         // Both cuts are located anywhere but the middle of the site.
         Sticky = 1 << 3,
