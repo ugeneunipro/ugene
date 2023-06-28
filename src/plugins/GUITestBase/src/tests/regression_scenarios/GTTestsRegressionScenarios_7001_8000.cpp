@@ -431,6 +431,8 @@ GUI_TEST_CLASS_DEFINITION(test_7125) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsDialog::waitForDialog(new BuildTreeDialogFillerPhyML(false));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running tasks.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7126) {
@@ -944,7 +946,7 @@ GUI_TEST_CLASS_DEFINITION(test_7279) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7293) {
-    // Open a multi-byte unicode file that triggers format selection dialog with a raw data preview.
+    // Open a multibyte unicode file that triggers format selection dialog with a raw data preview.
     // Check that raw data is shown correctly for both Open... & Open As... dialog (these are 2 different dialogs).
 
     class CheckDocumentReadingModeSelectorTextScenario : public CustomScenario {
@@ -2201,7 +2203,7 @@ GUI_TEST_CLASS_DEFINITION(test_7499) {
     QStringList nameListAfter = GTUtilsMSAEditorSequenceArea::getNameList();
     CHECK_SET_ERR(nameListBefore == nameListAfter, "Name list changed");
 
-    // The only the first sequence must be changed (alignment back).
+    // Only the first sequence must be changed (alignment back).
     QString sequence1v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(1).left(10);
     QString sequence8v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(8).left(10);
     CHECK_SET_ERR(sequence1v3 == sequence1v1, "Sequence 1 was not aligned as expected.");
@@ -2823,7 +2825,7 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7582) {
-    // Check that UGENE can build a tree for a MSA with non-unique sequence names.
+    // Check that UGENE can build a tree for an MSA with non-unique sequence names.
     GTFileDialog::openFile(testDir + "_common_data/clustal/same_name_sequences.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
@@ -2876,7 +2878,7 @@ GUI_TEST_CLASS_DEFINITION(test_7584) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7607) {
-    // Check that UGENE can build a tree for a MSA with non-unique sequence names.
+    // Check that UGENE can build a tree for an MSA with non-unique sequence names.
     GTFileDialog::openFile(testDir + "_common_data/clustal/align.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
@@ -3105,7 +3107,7 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     GTUtilsDialog::waitForDialog(filler);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-    // Right click on the sequence->Replace subsequence... "Replace sequence" dialog appears.
+    // Right-click on the sequence->Replace subsequence... "Replace sequence" dialog appears.
     // Paste clipboard into text field (Cmd-V).
     // Press Enter.
     // Dialog closed, sequence changed. Now only 1 annotation remains (5' terminal repeat).
@@ -3258,7 +3260,7 @@ GUI_TEST_CLASS_DEFINITION(test_7645) {
 GUI_TEST_CLASS_DEFINITION(test_7650) {
     // 1. Open samples/CLUSTALW/COI.aln
     // 2. Press 'Save as', and save file to its own path.
-    // Expected state: message box with warinig appears.
+    // Expected state: message box with warning appears.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsDialog::add(new MessageBoxDialogFiller("Ok"));
@@ -4277,11 +4279,11 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
 GUI_TEST_CLASS_DEFINITION(test_7793) {
     // 1. Click "File ->Open as..."
     // 2. Choose "samples/ABIF/A01.abi"
-    // Expected state file opened without dialogue
+    // Expected state file opened without a dialog.
     GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7797) {

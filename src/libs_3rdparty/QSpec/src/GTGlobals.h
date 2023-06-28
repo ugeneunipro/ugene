@@ -90,15 +90,22 @@ public:
     static void resetOpStatus();
 };
 
+#define GT_LOG(message) \
+    { \
+        QByteArray _time = QTime::currentTime().toString("hh:mm:ss.zzz").toLocal8Bit(); \
+        QByteArray _message = QString(message).toLocal8Bit(); \
+        qDebug("[%s] GT_LOG: %s", _time.constData(), _message.constData()); \
+    }
+
 #define GT_DEBUG_MESSAGE(condition, errorMessage, result) \
     { \
         QByteArray _cond = QString(#condition).toLocal8Bit(); \
-        QByteArray _time = QTime::currentTime().toString().toLocal8Bit(); \
+        QByteArray _time = QTime::currentTime().toString("hh:mm:ss.zzz").toLocal8Bit(); \
         QByteArray _error = QString(errorMessage).toLocal8Bit(); \
         if (condition) { \
-            qDebug("[%s] GT_OK: (%s) for '%s'", _time.constData(), _cond.constData(), _error.constData()); \
+            qDebug("[%s] GT_OK: (%s) for %s", _time.constData(), _cond.constData(), _error.constData()); \
         } else { \
-            qWarning("[%s] GT_FAIL: (%s) for '%s'", _time.constData(), _cond.constData(), _error.constData()); \
+            qWarning("[%s] GT_FAIL: (%s) for %s", _time.constData(), _cond.constData(), _error.constData()); \
         } \
     }
 
@@ -106,16 +113,13 @@ public:
 #define CHECK_SET_ERR(condition, errorMessage) \
     CHECK_SET_ERR_RESULT(condition, errorMessage, )
 
-#define CHECK_OP_SET_ERR(errorMessage) \
-    CHECK_SET_ERR(!HI::GTGlobals::getOpStatus(), errorMessage)
-
 #define CHECK_SET_ERR_RESULT(condition, errorMessage, result) \
     { \
         GT_DEBUG_MESSAGE(condition, errorMessage, result); \
         if (HI::GTGlobals::getOpStatus().hasError()) { \
             return result; \
         } \
-        if (!(condition)) {                                   \
+        if (!(condition)) { \
             HI::GTGlobals::logFirstFail(); \
             HI::GTGlobals::getOpStatus().setError(errorMessage); \
             return result; \
@@ -132,8 +136,8 @@ public:
 #define GT_FAIL(errorMessage, result) \
     GT_DEBUG_MESSAGE(false, errorMessage, result); \
     if (HI::GTGlobals::getOpStatus().hasError()) { \
-        HI::GTGlobals::logFirstFail();\
-    }                                 \
+        HI::GTGlobals::logFirstFail(); \
+    } \
     HI::GTGlobals::getOpStatus().setError(errorMessage); \
     return result;
 
@@ -142,7 +146,7 @@ public:
     GT_CHECK_RESULT(condition, errorMessage, )
 
 #define GT_CHECK_RESULT(condition, errorMessage, result) \
-    CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME " __ " GT_METHOD_NAME " _  " + QString(errorMessage), result)
+    CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME "." GT_METHOD_NAME " " + QString(errorMessage), result)
 
 #define GT_CHECK_OP_RESULT(errorMessage, result) \
     GT_CHECK_RESULT(!HI::GTGlobals::getOpStatus().isCoR(), errorMessage, result)

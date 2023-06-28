@@ -50,11 +50,11 @@ GUITest* UGUITestBase::getTest(const QString& suite, const QString& name, TestTy
 
 const QMap<QString, GUITest*>& UGUITestBase::getConstMap(TestType testType) const {
     switch (testType) {
-        case PreAdditional:
+        case PreCheck:
             return preAdditional;
-        case PostAdditionalChecks:
+        case PostCheck:
             return postAdditionalChecks;
-        case PostAdditionalActions:
+        case PostAction:
             return postAdditionalActions;
         case Normal:
         default:
@@ -64,11 +64,11 @@ const QMap<QString, GUITest*>& UGUITestBase::getConstMap(TestType testType) cons
 
 QMap<QString, GUITest*>& UGUITestBase::getMap(TestType testType) {
     switch (testType) {
-        case PreAdditional:
+        case PreCheck:
             return preAdditional;
-        case PostAdditionalChecks:
+        case PostCheck:
             return postAdditionalChecks;
-        case PostAdditionalActions:
+        case PostAction:
             return postAdditionalActions;
         case Normal:
         default:

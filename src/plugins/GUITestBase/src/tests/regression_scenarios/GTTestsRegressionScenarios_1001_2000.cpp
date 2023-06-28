@@ -98,6 +98,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -2131,7 +2132,7 @@ GUI_TEST_CLASS_DEFINITION(test_1204) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             auto maxResultsSpinBox = GTWidget::findSpinBox("quantitySpinBox");
             GTSpinBox::setValue(maxResultsSpinBox, 5000, GTGlobals::UseKeyBoard);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
@@ -2140,6 +2141,9 @@ GUI_TEST_CLASS_DEFINITION(test_1204) {
     GTUtilsDialog::add(new PopupChooserByText({"Analyze", "Query NCBI BLAST database..."}));
     GTUtilsDialog::add(new RemoteBLASTDialogFiller(new Scenario));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+
+    // Cancel all tasks: there is no need to wait for the completion.
+    GTUtilsTask::cancelAllTasks();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1209) {
@@ -7015,8 +7019,8 @@ GUI_TEST_CLASS_DEFINITION(test_1738) {
 GUI_TEST_CLASS_DEFINITION(test_1747) {
     // 1. Open \data\samples\CLUSTALW\ty3.aln.gz
     // 2. Enable the distances column in options panel or create distances matrix by using menu {statistics->Generate distance matrix}
-    // Expected state: progress for "Generete distance matrix" correctly displays current state of calculation
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "ty3.aln.gz");
+    // Expected state: progress for "Generate distance matrix" correctly displays current state of calculation
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDialog::add(new PopupChooserByText({"Statistics", "Generate distance matrix..."}));
     GTUtilsDialog::add(new DistanceMatrixDialogFiller());
@@ -7041,7 +7045,8 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(isNumber, QString("The progress must be a number: %1").arg(text));
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
 
-    CHECK_SET_ERR(progress > oldProgress, "Progress didn't groving up");
+    CHECK_SET_ERR(progress > oldProgress, "Progress didn't change");
+    GTUtilsTask::cancelAllTasks();  // Cancel long running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1751) {

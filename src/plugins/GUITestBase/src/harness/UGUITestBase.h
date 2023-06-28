@@ -44,13 +44,13 @@ public:
         Normal,
 
         /** A pre-check. Runs before the Normal test. */
-        PreAdditional,
+        PreCheck,
 
         /** A post-check. Runs after the Normal test. Validates UGENE state after the Normal test is finished. */
-        PostAdditionalChecks,
+        PostCheck,
 
         /** A post-action. Runs after the Normal & PostCheck tests. Used to perform additional cleanup with no checks. */
-        PostAdditionalActions
+        PostAction
     } type;
 
     /**

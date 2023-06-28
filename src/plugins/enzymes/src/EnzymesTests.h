@@ -59,7 +59,20 @@ private:
     AnnotationTableObject* aObj;
     LoadEnzymeFileTask* loadTask;
     bool contextIsAdded;
-    QMultiMap<QString, U2Region> resultsPerEnzyme;
+    // Annotation data representation
+    struct AnnData {
+        // Annotation region
+        U2Region reg;
+        // Annotation qualifier's name
+        QString qualName;
+        // The corresponding annotation's value
+        QString qualValue;
+    };
+    QMap<QString, QList<AnnData>> resultsPerEnzyme;
+    // if this parameter is true, the test will pass
+    // only if the annotations number from the XML file
+    // will be the same that number of real found annotations
+    bool exactAnnotationsNumber = false;
 };
 
 // cppcheck-suppress noConstructor

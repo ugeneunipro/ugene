@@ -2390,7 +2390,7 @@ GUI_TEST_CLASS_DEFINITION(test_0080) {
                 auto name = "A" + id;
                 auto item = GTTreeWidget::findItem(tree, name);
                 auto tooltip = item->data(3, Qt::ToolTipRole).toString();
-                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/all_possible_tooltips/" + name + ".html");
+                auto toltipFromFile = GTFile::readAll(testDir + "_common_data/enzymes/tooltips/" + name + ".html");
                 CHECK_SET_ERR(tooltip == toltipFromFile, QString("Incorrect tooltip %1").arg(name));
             }
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
@@ -2454,7 +2454,46 @@ GUI_TEST_CLASS_DEFINITION(test_0081) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
 
+GUI_TEST_CLASS_DEFINITION(test_0082) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = { "1", "2", "3", "4", "5", "6", "7", "8", "9+" };
+            static const QList<QString> MIN_INCREASING_VALUES = { "656", "654", "649", "649", "519", "445", "67", "34", "5" };
+            static const QList<QString> MAX_DECREASING_VALUES = { "2", "5", "0", "130", "74", "378", "33", "29", "5" };
+
+            for (int i = 0; i < RESTRICTION_SEQUENCE_LENGTH_VALUES.size(); i++) {
+                const auto& v = RESTRICTION_SEQUENCE_LENGTH_VALUES.at(i);
+                GTComboBox::selectItemByText("cbMinLength", dialog, v);
+                auto labelText = GTLabel::getText("statusLabel", dialog);
+                const auto& ev = MIN_INCREASING_VALUES.at(i);
+                CHECK_SET_ERR(labelText.contains(ev),
+                    QString("Incorrect number on min %1, expected number: %2, current text: %3").arg(v).arg(ev).arg(labelText));
+            }
+
+            for (int i = RESTRICTION_SEQUENCE_LENGTH_VALUES.size() - 1; i >= 0; i--) {
+                const auto& v = RESTRICTION_SEQUENCE_LENGTH_VALUES.at(i);
+                GTComboBox::selectItemByText("cbMaxLength", dialog, v);
+                auto labelText = GTLabel::getText("statusLabel", dialog);
+                const auto& ev = MAX_DECREASING_VALUES.at(i);
+                CHECK_SET_ERR(labelText.contains(ev),
+                    QString("Incorrect number on max %1, expected number: %2, current text: %3").arg(v).arg(ev).arg(labelText));
+            }
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
 }
 

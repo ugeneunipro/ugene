@@ -52,7 +52,7 @@ private slots:
     void sl_testTimeOut();
 
 private:
-    QString launchTest(const QList<GUITest*>& tests);
+    QString launchTest(GUITest* test);
     void clearSandbox();
     static void removeDir(const QString& dirName);
     void saveScreenshot();

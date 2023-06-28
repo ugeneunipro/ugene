@@ -117,6 +117,7 @@ void GUITestLauncher::run() {
             }
         } else if (isValidPlatform) {
             // If the test should run on the current platform but has ignored label -> report it to the teamcity.
+            coreLog.details("Test has ignored on the current platform: " + test->getFullName());
             GUITestTeamcityLogger::testIgnored(teamcityTestName, test->getDescription());
         }
 
