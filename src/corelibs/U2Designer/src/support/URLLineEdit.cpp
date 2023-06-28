@@ -22,7 +22,6 @@
 #include "URLLineEdit.h"
 
 #include <QFocusEvent>
-#include <QLayout>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
@@ -32,8 +31,6 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/SuggestCompleter.h>
 #include <U2Gui/U2FileDialog.h>
-
-#include <U2Lang/SchemaConfig.h>
 
 #include "PropertyWidget.h"
 
@@ -45,7 +42,7 @@ public:
         : CompletionFiller(), widget(_widget) {
     }
 
-    virtual QStringList getSuggestions(const QString& str) {
+    QStringList getSuggestions(const QString& str) override {
         QString fileName = str;
         if (fileName.endsWith(".")) {
             fileName = fileName.left(fileName.size() - 1);
@@ -58,16 +55,16 @@ public:
 
         const QStringList presetExtensions = DelegateTags::getStringList(widget->tags(), "extensions");
         if (presetExtensions.isEmpty()) {
-            bool ok = fillChoisesWithFormatExtensions(fileName, choices);
+            bool ok = fillChoicesWithFormatExtensions(fileName, choices);
             CHECK(ok, QStringList());
         } else {
-            fillChoisesWithPresetExtensions(fileName, presetExtensions, choices);
+            fillChoicesWithPresetExtensions(fileName, presetExtensions, choices);
         }
 
         return choices;
     }
 
-    bool fillChoisesWithFormatExtensions(const QString& fileName, QStringList& choices) {
+    bool fillChoicesWithFormatExtensions(const QString& fileName, QStringList& choices) {
         const QFileInfo f(fileName);
         const QString curExt = f.suffix();
         const QString baseName = f.completeBaseName();
@@ -78,7 +75,7 @@ public:
         CHECK(format != nullptr, false);
 
         QStringList formats = format->getSupportedDocumentFileExtensions();
-        CHECK(formats.size() > 0, false);
+        CHECK(!formats.empty(), false);
         formats.append("gz");
 
         foreach (const QString& ext, formats) {
@@ -103,16 +100,16 @@ public:
         return true;
     }
 
-    static void fillChoisesWithPresetExtensions(const QString& fileName, const QStringList& presetExtensions, QStringList& choices) {
+    static void fillChoicesWithPresetExtensions(const QString& fileName, const QStringList& presetExtensions, QStringList& choices) {
         const QFileInfo f(fileName);
         const QString baseName = f.completeBaseName();
 
-        foreach (const QString& extenstion, presetExtensions) {
-            choices << baseName + "." + extenstion;
+        foreach (const QString& extension, presetExtensions) {
+            choices << baseName + "." + extension;
         }
     }
 
-    virtual QString finalyze(const QString& editorText, const QString& suggestion) {
+    QString handleNewUrlInput(const QString& editorText, const QString& suggestion) override {
         QString path = editorText;
         path.replace("\\", "/");
 
@@ -144,7 +141,7 @@ URLLineEdit::URLLineEdit(const QString& type,
     setPlaceholderText(DelegateTags::getString(parent->tags(), DelegateTags::PLACEHOLDER_TEXT));
 }
 
-CompletionFiller* URLLineEdit::getCompletionFillerInstance() {
+CompletionFiller* URLLineEdit::getCompletionFillerInstance() const {
     if (saveFile && parent != nullptr) {
         return new FilenameCompletionFiller(parent);
     }
@@ -200,15 +197,10 @@ void URLLineEdit::browse(bool addFiles) {
         }
     } else {
         if (saveFile) {
-            lod.url = name = U2FileDialog::getSaveFileName(nullptr, tr("Select a file"), lastDir, FileFilter, 0, QFileDialog::DontConfirmOverwrite);
+            lod.url = name = U2FileDialog::getSaveFileName(nullptr, tr("Select a file"), lastDir, FileFilter, nullptr, QFileDialog::DontConfirmOverwrite);
             this->checkExtension(name);
         } else {
-#ifdef Q_OS_DARWIN
-            if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-                lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter, 0, QFileDialog::DontUseNativeDialog);
-            } else
-#endif
-                lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
+            lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir, FileFilter);
         }
     }
     if (!name.isEmpty()) {
@@ -233,7 +225,7 @@ void URLLineEdit::keyPressEvent(QKeyEvent* event) {
     QLineEdit::keyPressEvent(event);
 }
 
-void URLLineEdit::checkExtension(QString& name) {
+void URLLineEdit::checkExtension(QString& name) const {
     QString fileFormat;
     if (parent != nullptr) {
         fileFormat = DelegateTags::getString(parent->tags(), DelegateTags::FORMAT);
@@ -269,7 +261,7 @@ void URLLineEdit::checkExtension(QString& name) {
     }
 }
 
-bool URLLineEdit::isMulti() {
+bool URLLineEdit::isMulti() const {
     return multi;
 }
 

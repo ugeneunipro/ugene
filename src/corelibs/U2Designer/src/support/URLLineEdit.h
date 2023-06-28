@@ -41,8 +41,8 @@ public:
                 bool isPath,
                 bool saveFile,
                 URLWidget* parent);
-    bool isMulti();
-    CompletionFiller* getCompletionFillerInstance();
+    bool isMulti() const;
+    CompletionFiller* getCompletionFillerInstance() const;
 
 protected:
     void focusOutEvent(QFocusEvent* event);
@@ -68,7 +68,7 @@ public:
 
 private:
     void browse(bool addFiles = false);
-    void checkExtension(QString& name);
+    void checkExtension(QString& name) const;
 };
 
 }  // namespace U2

@@ -40,7 +40,7 @@ private slots:
     void sl_browse();
 
 private:
-    QString finalyze(const QString& url);
+    QString handleNewUrlInput(const QString& url);
 
 private:
     BowtieWidget* bw;

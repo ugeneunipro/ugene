@@ -82,13 +82,13 @@ void BowtieWidgetController::sl_browse() {
     }
     lod.url = url;
 
-    QString dirUrl = finalyze(url);
+    QString dirUrl = handleNewUrlInput(url);
     dirCtrl->updateGUI(dirUrl);
     wc->setAttributeValue(bw->idxDir, dirUrl);
 }
 
-QString BowtieWidgetController::finalyze(const QString& url) {
-    return NoFileURLWidget::finalyze(url, wc->getTags(bw->idxDir));
+QString BowtieWidgetController::handleNewUrlInput(const QString& url) {
+    return NoFileURLWidget::handleNewUrlInput(url, wc->getTags(bw->idxDir));
 }
 
 }  // namespace U2

@@ -2705,7 +2705,7 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
 
     class PhyMLMaximumLikelihoodScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTComboBox::selectItemByText("algorithmBox", dialog, "PhyML Maximum Likelihood");
             GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_7572.nwk", dialog);
@@ -3089,7 +3089,7 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // In CVU55762 select region 1001-1000.
-    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(1001, 1000);
+    auto filler = new SelectSequenceRegionDialogFiller(1001, 1000);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
@@ -3284,7 +3284,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     class SimpleExport : public CustomScenario {
-        void run() {
+        void run() override {
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
         }
     };
@@ -3709,11 +3709,24 @@ GUI_TEST_CLASS_DEFINITION(test_7699) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract transcript sequences..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-
     GTUtilsWorkflowDesigner::click("Extract Transcript Sequences with Gffread");
 
+    // Expand 'Inputs'.
     QWidget* wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
     GTGroupBox::setChecked("inputPortBox", true, wdWindow);
+
+    // Enter some text into 'Output sequences' line edit. Do not submit the change (do not press Enter).
+    GTUtilsWorkflowDesigner::clickParameter("Output sequences");
+    GTKeyboardDriver::keySequence("123.fa");
+
+    // Click to the label above the inputs table.
+    auto inputScrollArea = GTWidget::findScrollArea("inputScrollArea", wdWindow);
+    auto labelAboveInputsTable = GTWidget::findLabelByText("Input transcripts", inputScrollArea).first();
+    GTWidget::click(labelAboveInputsTable);
+    // Expected state: no crash.
+
+    QString parameterValue = GTUtilsWorkflowDesigner::getParameter("Output sequences");
+    CHECK_SET_ERR(parameterValue == "123.fa", "Parameter must be set to '123.fa'");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7708) {
