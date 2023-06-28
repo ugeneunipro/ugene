@@ -4693,7 +4693,7 @@ GUI_TEST_CLASS_DEFINITION(test_7866) {
             CHECK_SET_ERR(GTUtilsToolTip::getToolTip().isEmpty(), "Tooltip should be empty");
             CHECK_SET_ERR(okButton->isEnabled(), "Search button should be enabled");
 
-            GTLineEdit::setText(baseNameLineEdit, "A A O O O A A");
+            GTLineEdit::setText(baseNameLineEdit, "AAюЯOПA", false, true);
             GTMouseDriver::moveTo(pointToResetTooltip);
             GTMouseDriver::moveTo(GTWidget::getWidgetCenter(baseNameLineEdit));
             CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database name contains spaces or/and not Latin characters.", "Expected tooltip not found.");

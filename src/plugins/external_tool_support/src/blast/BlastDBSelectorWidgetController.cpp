@@ -20,12 +20,15 @@
  */
 
 #include "BlastDBSelectorWidgetController.h"
+#include "BlastSupport.h"
 
 #include <QDirIterator>
 #include <QMessageBox>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -40,12 +43,23 @@ BlastDBSelectorWidgetController::BlastDBSelectorWidgetController(QWidget* parent
     connect(baseNameLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
 }
 
-void BlastDBSelectorWidgetController::sl_lineEditChanged() {
-    static QString pathTooltip = tr("Database path contains spaces or/and not Latin characters.");
-    static QString nameTooltip = tr("Database name contains spaces or/and not Latin characters.");
+bool checkValidPathAndSetTooltipToLE(QLineEdit* le, const QString& errorTooltip) {
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
+    ExternalTool* blast = etRegistry->getById(BlastSupport::ET_BLASTN_ID);
+    U2OpStatusImpl osImpl;
+    blast->checkPaths({le->text()}, osImpl);
 
-    bool pathWarning = !checkValidPathLE(databasePathLineEdit, pathTooltip);
-    bool nameWarning = !checkValidPathLE(baseNameLineEdit, nameTooltip);
+    GUIUtils::setWidgetWarningStyle(le, osImpl.hasError());
+    le->setToolTip(osImpl.hasError() ? errorTooltip : "");
+    return !osImpl.hasError();
+}
+
+void BlastDBSelectorWidgetController::sl_lineEditChanged() {
+    static QString pathTooltip = tr("Database path contains spaces or/and non-Latin characters.");
+    static QString nameTooltip = tr("Database name contains spaces or/and non-Latin characters.");
+
+    bool pathWarning = !checkValidPathAndSetTooltipToLE(databasePathLineEdit, pathTooltip);
+    bool nameWarning = !checkValidPathAndSetTooltipToLE(baseNameLineEdit, nameTooltip);
 
     bool isFilledDatabasePathLineEdit = !databasePathLineEdit->text().isEmpty();
     bool isFilledBaseNameLineEdit = !baseNameLineEdit->text().isEmpty();
@@ -53,15 +67,6 @@ void BlastDBSelectorWidgetController::sl_lineEditChanged() {
 
     inputDataValid = isFilledBaseNameLineEdit && isFilledDatabasePathLineEdit && !hasProblemsInDBPath;
     emit si_dbChanged();
-}
-
-bool BlastDBSelectorWidgetController::checkValidPathLE(QLineEdit *le, const QString& errorTooltip) {
-    bool isOkay = ExternalToolSupportUtils::checkArgumentPathLatinSymbols({le->text()}).isEmpty() &&
-                  ExternalToolSupportUtils::checkArgumentPathSpaces({le->text()}).isEmpty();
-
-    GUIUtils::setWidgetWarningStyle(le, !isOkay);
-    le->setToolTip(isOkay ? "" : errorTooltip);
-    return isOkay;
 }
 
 bool BlastDBSelectorWidgetController::isNuclDatabase() const {
