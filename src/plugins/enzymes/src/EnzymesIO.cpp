@@ -107,7 +107,7 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
                         auto first = d->cutDirect;
                         auto second = seqSize - d->cutComplement;
                         auto overhang = d->seq.mid(qMin(first, second), qAbs(first - second));
-                        auto overhangAlphabet = U2AlphabetUtils::findBestAlphabet(overhang);
+                        auto overhangAlphabet = d->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() ? d->alphabet : U2AlphabetUtils::findBestAlphabet(overhang);
                         if (overhangAlphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() &&
                             !overhang.contains(EnzymeData::UNDEFINED_BASE)) {
                             d->overhangTypes |= EnzymeData::OverhangType::NondegenerateSticky;
