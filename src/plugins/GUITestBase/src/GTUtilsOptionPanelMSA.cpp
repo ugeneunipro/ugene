@@ -122,7 +122,7 @@ QWidget* GTUtilsOptionPanelMsa::checkTabIsOpened(Tabs tab) {
 #define GT_METHOD_NAME "addReference"
 void GTUtilsOptionPanelMsa::addReference(const QString& seqName, AddRefMethod method) {
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
-    // Option panel should be opned to use this method
+    // Option panel should be opened to use this method.
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList();
 
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
