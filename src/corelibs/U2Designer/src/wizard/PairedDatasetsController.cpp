@@ -53,7 +53,7 @@ QWidget* PairedDatasetsController::createGUI(U2OpStatus& os) {
     }
     dsc = new PairedReadsController(sets1, sets2, info1.hints[AttributeInfo::LABEL].toString(), info2.hints[AttributeInfo::LABEL].toString());
     connect(dsc, SIGNAL(si_attributeChanged()), SLOT(sl_datasetsChanged()));
-    return dsc->getWigdet();
+    return dsc->getWidget();
 }
 
 void PairedDatasetsController::sl_datasetsChanged() {

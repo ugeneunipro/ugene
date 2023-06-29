@@ -934,18 +934,11 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0008) {
     QString g = GTUtilsMSAEditorSequenceArea::getColor(QPoint(2, 0));
     QString gap2 = GTUtilsMSAEditorSequenceArea::getColor(QPoint(3, 1));
     QString gap3 = GTUtilsMSAEditorSequenceArea::getColor(QPoint(4, 2));
-    CHECK_SET_ERR(a == "#fdff6a", QString("a has color %1 intead of %2").arg(a).arg("#fcff92"));
-    CHECK_SET_ERR(gap1 == "#ffffff", QString("gap1 has color %1 intead of %2").arg(gap1).arg("#ffffff"));
-    CHECK_SET_ERR(g == "#2aa1e1", QString("g has color %1 intead of %2").arg(g).arg("#4eade1"));
-    CHECK_SET_ERR(gap2 == "#ffffff", QString("gap2 has color%1 intead of %2").arg(gap2).arg("#ffffff"));
-    CHECK_SET_ERR(gap3 == "#ffffff", QString("gap3 has color %1 intead of %2").arg(gap3).arg("#ffffff"));
-    /*
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(0,0), "#fcff92");
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(0,2), "#ffffff");
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(2,0), "#4eade1");
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(3,1), "#ffffff");
-    GTUtilsMSAEditorSequenceArea::checkColor(QPoint(4,2), "#ffffff");
-    */
+    CHECK_SET_ERR(a == "#fdff6a", QString("a has color %1 instead of %2").arg(a).arg("#fcff92"));
+    CHECK_SET_ERR(gap1 == "#ffffff", QString("gap1 has color %1 intend of %2").arg(gap1).arg("#ffffff"));
+    CHECK_SET_ERR(g == "#2aa1e1", QString("g has color %1 instead of %2").arg(g).arg("#4eade1"));
+    CHECK_SET_ERR(gap2 == "#ffffff", QString("gap2 has color%1 instead of %2").arg(gap2).arg("#ffffff"));
+    CHECK_SET_ERR(gap3 == "#ffffff", QString("gap3 has color %1 instead of %2").arg(gap3).arg("#ffffff"));
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0008_1) {

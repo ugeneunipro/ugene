@@ -50,12 +50,10 @@ QWidget* UrlAndDatasetWizardController::createGUI(U2OpStatus& os) {
     QList<Dataset> urls = value1.value<QList<Dataset>>();
     QList<Dataset> sets = value2.value<QList<Dataset>>();
 
-    if (dsc != nullptr) {
-        delete dsc;
-    }
+    delete dsc;
     dsc = new UrlAndDatasetController(urls, sets, info1.hints[AttributeInfo::LABEL].toString(), info2.hints[AttributeInfo::LABEL].toString());
     connect(dsc, SIGNAL(si_attributeChanged()), SLOT(sl_datasetsChanged()));
-    return dsc->getWigdet();
+    return dsc->getWidget();
 }
 
 void UrlAndDatasetWizardController::sl_datasetsChanged() {

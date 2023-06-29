@@ -32,12 +32,10 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/EditConnectionDialog.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2Lang/SchemaConfig.h>
-#include <U2Lang/SharedDbUrlUtils.h>
 #include <U2Lang/URLContainer.h>
 #include <U2Lang/WorkflowUtils.h>
 
@@ -311,21 +309,21 @@ ComboBoxWithUrlWidget::ComboBoxWithUrlWidget(const QVariantMap& items, bool _isP
         comboBox->addItem(key, items[key]);
     }
 
-    QToolButton* toolButton = new QToolButton(this);
+    auto toolButton = new QToolButton(this);
     toolButton->setObjectName("browsePathBtn");
     toolButton->setText("...");
     toolButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_browse()));
     layout()->addWidget(toolButton);
 
-#ifdef Q_OS_DARWIN
-    toolButton->setMinimumHeight(18);
-    QString style = "QComboBox {"
-                    "min-height: 19px;"
-                    "max-height: 24px;"
-                    "}";
-    comboBox->setStyleSheet(style);
-#endif
+    if (isOsMac()) {
+        toolButton->setMinimumHeight(18);
+        QString style = "QComboBox {"
+                        "min-height: 19px;"
+                        "max-height: 24px;"
+                        "}";
+        comboBox->setStyleSheet(style);
+    }
 
     connect(comboBox, SIGNAL(activated(const QString&)), this, SIGNAL(valueChanged(const QString&)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
@@ -488,6 +486,7 @@ URLWidget::URLWidget(const QString& type, bool multi, bool isPath, bool saveFile
     urlLine = new URLLineEdit(type, multi, isPath, saveFile, this);
     urlLine->setObjectName("urlLine");
     urlLine->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    connect(urlLine, &QLineEdit::editingFinished, this, &URLWidget::sl_finished);
     connect(urlLine, SIGNAL(si_finished()), SLOT(sl_finished()));
     connect(urlLine, SIGNAL(textChanged(const QString&)), SLOT(sl_textChanged(const QString&)));
     addMainWidget(urlLine);
@@ -561,10 +560,10 @@ void URLWidget::sl_browse() {
         urlLine->sl_onBrowse();
     } else {
         QObjectScopedPointer<OutputFileDialog> d = new OutputFileDialog(rfs, urlLine->isPath, urlLine->getCompletionFillerInstance(), this);
-        const int dialogResult = d->exec();
+        int dialogResult = d->exec();
         CHECK(!d.isNull(), );
 
-        if (QDialog::Accepted == dialogResult) {
+        if (dialogResult == QDialog::Accepted) {
             urlLine->setText(d->getResult());
         } else if (d->isSaveToFileSystem()) {
             urlLine->sl_onBrowse();
@@ -586,7 +585,9 @@ void URLWidget::sl_finished() {
             }
         }
     }
-    urlLine->setText(finalyze(urlLine->text()));
+    QString resultText = handleNewUrlInput(urlLine->text());
+    urlLine->setText(resultText);
+
     emit si_valueChanged(urlLine->text());
     emit finished();
 }
@@ -596,7 +597,7 @@ RunFileSystem* URLWidget::getRFS() {
     return schemaConfig->getRFS();
 }
 
-QString URLWidget::finalyze(const QString& url) {
+QString URLWidget::handleNewUrlInput(const QString& url) {
     return url;
 }
 
@@ -609,7 +610,7 @@ NoFileURLWidget::NoFileURLWidget(const QString& type, bool multi, bool isPath, b
 
 static const QString FILE_TAG("file");
 
-QString NoFileURLWidget::finalyze(const QString& url, DelegateTags* tags) {
+QString NoFileURLWidget::handleNewUrlInput(const QString& url, DelegateTags* tags) {
     QFileInfo info(url);
     if (url.isEmpty() || info.isDir() || info.isRelative() || !info.exists()) {
         if (tags != nullptr) {
@@ -624,8 +625,8 @@ QString NoFileURLWidget::finalyze(const QString& url, DelegateTags* tags) {
     return info.dir().absolutePath();
 }
 
-QString NoFileURLWidget::finalyze(const QString& url) {
-    return finalyze(url, const_cast<DelegateTags*>(tags()));
+QString NoFileURLWidget::handleNewUrlInput(const QString& url) {
+    return handleNewUrlInput(url, const_cast<DelegateTags*>(tags()));
 }
 
 }  // namespace U2

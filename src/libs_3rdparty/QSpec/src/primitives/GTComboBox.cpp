@@ -71,7 +71,7 @@ void GTComboBox::selectItemByIndex(QComboBox* comboBox, int index, GTGlobals::Us
                     break;
                 }
                 case GTGlobals::UseMouse: {
-                    QListView* listView = comboBox->findChild<QListView*>();
+                    auto listView = comboBox->findChild<QListView*>();
                     GT_CHECK(listView != nullptr, "list view not found");
                     QModelIndex modelIndex = listView->model()->index(index, 0);
                     GTWidget::scrollToIndex(listView, modelIndex);
@@ -122,7 +122,7 @@ void GTComboBox::selectItemByText(const QString& comboBoxName, QWidget* parent, 
 #define GT_METHOD_NAME "getCurrentText"
 QString GTComboBox::getCurrentText(QComboBox* const comboBox) {
 
-    GT_CHECK_RESULT(comboBox != NULL, "comboBox is NULL", "");
+    GT_CHECK_RESULT(comboBox != nullptr, "comboBox is NULL", "");
     return comboBox->currentText();
 }
 #undef GT_METHOD_NAME
@@ -136,7 +136,7 @@ QString GTComboBox::getCurrentText(const QString& comboBoxName, QWidget* parent)
 #define GT_METHOD_NAME "getValues"
 QStringList GTComboBox::getValues(QComboBox* comboBox) {
     QStringList result;
-    GT_CHECK_RESULT(NULL != comboBox, "Combobox is NULL", result);
+    GT_CHECK_RESULT(comboBox != nullptr, "Combobox is NULL", result);
     for (int i = 0; i < comboBox->count(); i++) {
         result << comboBox->itemText(i);
     }
@@ -147,15 +147,15 @@ QStringList GTComboBox::getValues(QComboBox* comboBox) {
 
 #define GT_METHOD_NAME "checkValues"
 void GTComboBox::checkValues(QComboBox* comboBox, const QStringList& values) {
-    GT_CHECK(NULL != comboBox, "comboBox is NULL");
+    GT_CHECK(comboBox != nullptr, "comboBox is NULL");
 
     GTWidget::setFocus(comboBox);
     GTGlobals::sleep();
 
-    QListView* view = comboBox->findChild<QListView*>();
-    GT_CHECK(NULL != view, "list view is not found");
+    auto view = comboBox->findChild<QListView*>();
+    GT_CHECK(view != nullptr, "list view is not found");
     auto model = dynamic_cast<QStandardItemModel*>(view->model());
-    GT_CHECK(NULL != model, "model is not found");
+    GT_CHECK(model != nullptr, "model is not found");
     QList<QStandardItem*> items = model->findItems("", Qt::MatchContains);
 
     for (QStandardItem* item : items) {

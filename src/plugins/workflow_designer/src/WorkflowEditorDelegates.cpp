@@ -32,7 +32,7 @@ QWidget* ProxyDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem
     // if (owner->custom)
     QWidget* editor;
     {
-        PropertyDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        auto itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (itemDelegate) {
             connect(itemDelegate, SIGNAL(commitData(QWidget*)), SIGNAL(commitData(QWidget*)));
             editor = itemDelegate->createEditor(parent, option, index);
@@ -46,7 +46,7 @@ QWidget* ProxyDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem
 void ProxyDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const {
     // if (owner->custom)
     {
-        PropertyDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        auto itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (itemDelegate) {
             itemDelegate->setEditorData(editor, index);
             return;
@@ -58,7 +58,7 @@ void ProxyDelegate::setEditorData(QWidget* editor, const QModelIndex& index) con
 void ProxyDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const {
     QVariant old;
     QVariant expanded;
-    PropertyDelegate* propertyDelegate = model->data(index, DelegateRole).value<PropertyDelegate*>();
+    auto propertyDelegate = model->data(index, DelegateRole).value<PropertyDelegate*>();
     if (/*owner->custom &&*/ propertyDelegate) {
         old = model->data(index, ConfigurationEditor::ItemValueRole);
         propertyDelegate->setModelData(editor, model, index);

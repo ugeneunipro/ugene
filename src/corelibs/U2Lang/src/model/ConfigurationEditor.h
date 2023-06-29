@@ -101,7 +101,6 @@ class U2LANG_EXPORT PropertyWidget : public QWidget {
     Q_OBJECT
 public:
     PropertyWidget(QWidget* parent = nullptr, DelegateTags* tags = nullptr);
-    virtual ~PropertyWidget();
 
     virtual QVariant value() = 0;
     virtual void setRequired();
@@ -149,7 +148,6 @@ public:
         SHARED_DB_URL
     };
     PropertyDelegate(QObject* parent = 0);
-    virtual ~PropertyDelegate();
     virtual QVariant getDisplayValue(const QVariant& v) const;
     virtual PropertyDelegate* clone();
     virtual PropertyWidget* createWizardWidget(U2OpStatus& os, QWidget* parent) const;
