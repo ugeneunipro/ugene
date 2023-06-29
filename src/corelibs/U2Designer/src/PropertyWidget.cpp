@@ -486,6 +486,7 @@ URLWidget::URLWidget(const QString& type, bool multi, bool isPath, bool saveFile
     urlLine = new URLLineEdit(type, multi, isPath, saveFile, this);
     urlLine->setObjectName("urlLine");
     urlLine->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    connect(urlLine, &QLineEdit::editingFinished, this, &URLWidget::sl_finished);
     connect(urlLine, SIGNAL(si_finished()), SLOT(sl_finished()));
     connect(urlLine, SIGNAL(textChanged(const QString&)), SLOT(sl_textChanged(const QString&)));
     addMainWidget(urlLine);
@@ -559,10 +560,10 @@ void URLWidget::sl_browse() {
         urlLine->sl_onBrowse();
     } else {
         QObjectScopedPointer<OutputFileDialog> d = new OutputFileDialog(rfs, urlLine->isPath, urlLine->getCompletionFillerInstance(), this);
-        const int dialogResult = d->exec();
+        int dialogResult = d->exec();
         CHECK(!d.isNull(), );
 
-        if (QDialog::Accepted == dialogResult) {
+        if (dialogResult == QDialog::Accepted) {
             urlLine->setText(d->getResult());
         } else if (d->isSaveToFileSystem()) {
             urlLine->sl_onBrowse();
@@ -587,11 +588,8 @@ void URLWidget::sl_finished() {
     QString resultText = handleNewUrlInput(urlLine->text());
     urlLine->setText(resultText);
 
-    // Let the current 'edit' cycle to finish and emit a change notification.
-    QTimer::singleShot(0, this, [this] {
-        emit si_valueChanged(urlLine->text());
-        emit finished();
-    });
+    emit si_valueChanged(urlLine->text());
+    emit finished();
 }
 
 RunFileSystem* URLWidget::getRFS() {

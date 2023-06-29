@@ -158,7 +158,7 @@ void WorkflowProcessItem::setStyle(StyleId s) {
     update();
 }
 
-QRectF WorkflowProcessItem::boundingRect(void) const {
+QRectF WorkflowProcessItem::boundingRect() const {
     QRectF brect = currentStyle->boundingRect();
     brect.setTop(brect.top() - QFontMetrics(QFont()).height() * 2 - 2);
     return brect;

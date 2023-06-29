@@ -40,7 +40,6 @@ class U2DESIGNER_EXPORT DatasetsController : public QObject {
     Q_OBJECT
 public:
     DatasetsController(const QSet<GObjectType>& compatibleObjTypes = QSet<GObjectType>(), QObject* parent = nullptr);
-    virtual ~DatasetsController();
 
     virtual void update();
     virtual void renameDataset(int dsNum, const QString& newName, U2OpStatus& os) = 0;
@@ -66,16 +65,16 @@ class U2DESIGNER_EXPORT AttributeDatasetsController : public DatasetsController 
     Q_OBJECT
 public:
     AttributeDatasetsController(QList<Dataset>& sets, const QSet<GObjectType>& compatibleObjTypes);
-    virtual ~AttributeDatasetsController();
+    ~AttributeDatasetsController() override;
 
-    virtual void renameDataset(int dsNum, const QString& newName, U2OpStatus& os);
-    virtual void deleteDataset(int dsNum);
-    virtual void addDataset(const QString& name, U2OpStatus& os);
-    virtual void onUrlAdded(URLListController* ctrl, URLContainer* url);
+    void renameDataset(int dsNum, const QString& newName, U2OpStatus& os) override;
+    void deleteDataset(int dsNum) override;
+    void addDataset(const QString& name, U2OpStatus& os) override;
+    void onUrlAdded(URLListController* ctrl, URLContainer* url) override;
 
-    QWidget* getWigdet();
+    QWidget* getWidget();
     QList<Dataset> getDatasets();
-    virtual QStringList names() const;
+    QStringList names() const override;
 
 private:
     DatasetsListWidget* datasetsWidget;
@@ -90,19 +89,19 @@ private:
 class U2DESIGNER_EXPORT PairedReadsController : public DatasetsController {
 public:
     PairedReadsController(const QList<Dataset>& sets1, const QList<Dataset>& sets2, const QString& label1, const QString& label2);
-    virtual ~PairedReadsController();
+    ~PairedReadsController() override;
 
-    virtual void renameDataset(int dsNum, const QString& newName, U2OpStatus& os);
-    virtual void deleteDataset(int dsNum);
-    virtual void addDataset(const QString& name, U2OpStatus& os);
-    virtual void onUrlAdded(URLListController* ctrl, URLContainer* url);
+    void renameDataset(int dsNum, const QString& newName, U2OpStatus& os) override;
+    void deleteDataset(int dsNum) override;
+    void addDataset(const QString& name, U2OpStatus& os) override;
+    void onUrlAdded(URLListController* ctrl, URLContainer* url) override;
 
-    QWidget* getWigdet();
+    QWidget* getWidget();
     /** num == 0 || num == 1*/
     QList<Dataset> getDatasets(int num);
 
 protected:
-    virtual QStringList names() const;
+    QStringList names() const override;
 
 private:
     QString label1;
@@ -125,20 +124,20 @@ class U2DESIGNER_EXPORT UrlAndDatasetController : public DatasetsController {
     Q_OBJECT
 public:
     UrlAndDatasetController(const QList<Dataset>& urls, const QList<Dataset>& sets, const QString& _urlLabel, const QString& _datasetLabel);
-    virtual ~UrlAndDatasetController();
+    ~UrlAndDatasetController() override;
 
-    virtual void renameDataset(int dsNum, const QString& newName, U2OpStatus& os);
-    virtual void deleteDataset(int dsNum);
-    virtual void addDataset(const QString& name, U2OpStatus& os);
-    virtual void onUrlAdded(URLListController* /*ctrl*/, URLContainer* /*url*/) {
+    void renameDataset(int dsNum, const QString& newName, U2OpStatus& os) override;
+    void deleteDataset(int dsNum) override;
+    void addDataset(const QString& name, U2OpStatus& os) override;
+    void onUrlAdded(URLListController* /*ctrl*/, URLContainer* /*url*/) override {
     }
 
-    QWidget* getWigdet();
+    QWidget* getWidget();
     QList<Dataset> getDatasets() const;
     QList<Dataset> getUrls() const;
 
 protected:
-    virtual QStringList names() const;
+    QStringList names() const override;
 
 private slots:
     void sl_urlChanged(QWidget* widget);

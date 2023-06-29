@@ -44,16 +44,11 @@ public:
     bool isMulti() const;
     CompletionFiller* getCompletionFillerInstance() const;
 
-protected:
-    void focusOutEvent(QFocusEvent* event);
-    void keyPressEvent(QKeyEvent* event);
-
 public slots:
     void sl_onBrowse();
 
 private slots:
     void sl_onBrowseWithAdding();
-    void sl_completionFinished();
 
 signals:
     void si_finished();

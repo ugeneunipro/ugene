@@ -213,18 +213,6 @@ void URLLineEdit::browse(bool addFiles) {
     emit si_finished();
 }
 
-void URLLineEdit::focusOutEvent(QFocusEvent* event) {
-    sl_completionFinished();
-    QLineEdit::focusOutEvent(event);
-}
-
-void URLLineEdit::keyPressEvent(QKeyEvent* event) {
-    if (Qt::Key_Enter == event->key()) {
-        sl_completionFinished();
-    }
-    QLineEdit::keyPressEvent(event);
-}
-
 void URLLineEdit::checkExtension(QString& name) const {
     QString fileFormat;
     if (parent != nullptr) {
@@ -235,7 +223,7 @@ void URLLineEdit::checkExtension(QString& name) const {
         QString newName(name);
         GUrl url(newName);
         QString lastSuffix = url.lastFileSuffix();
-        if ("gz" == lastSuffix) {
+        if (lastSuffix == "gz") {
             int dotPos = newName.length() - lastSuffix.length() - 1;
             if ((dotPos >= 0) && (QChar('.') == newName[dotPos])) {
                 newName = url.getURLString().left(dotPos);
@@ -245,7 +233,7 @@ void URLLineEdit::checkExtension(QString& name) const {
         }
         bool foundExt = false;
         foreach (QString supExt, format->getSupportedDocumentFileExtensions()) {
-            if (lastSuffix == supExt) {
+            if (supExt == lastSuffix) {
                 foundExt = true;
                 break;
             }
@@ -263,10 +251,6 @@ void URLLineEdit::checkExtension(QString& name) const {
 
 bool URLLineEdit::isMulti() const {
     return multi;
-}
-
-void URLLineEdit::sl_completionFinished() {
-    emit si_finished();
 }
 
 }  // namespace U2

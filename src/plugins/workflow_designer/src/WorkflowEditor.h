@@ -90,7 +90,7 @@ private:
     QPointer<ConfigurationEditor> custom;
     QWidget* customWidget;
     Configuration* subject;
-    Actor* actor;
+    QPointer<Actor> actor = nullptr;
     friend class SuperDelegate;
     ActorCfgModel* actorModel;
     QSortFilterProxyModel* proxyModel;
@@ -105,7 +105,7 @@ class SpecialParametersPanel : public QWidget {
     Q_OBJECT
 public:
     SpecialParametersPanel(WorkflowEditor* parent);
-    virtual ~SpecialParametersPanel();
+    ~SpecialParametersPanel() override;
 
     void editActor(Actor* a, const QList<Actor*>& allActors);
     void reset();

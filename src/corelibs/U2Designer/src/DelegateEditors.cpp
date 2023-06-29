@@ -523,7 +523,7 @@ QWidget* URLDelegate::createEditor(QWidget* parent,
                                    const QStyleOptionViewItem& /* option */,
                                    const QModelIndex& /* index */) const {
     URLWidget* editor = createWidget(parent);
-    connect(editor, SIGNAL(finished()), SLOT(sl_commit()));
+    connect(editor, &URLWidget::finished, this, &URLDelegate::sl_commit);
     return editor;
 }
 
@@ -758,7 +758,7 @@ StingListWidget::StingListWidget(QWidget* parent)
     edit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     addMainWidget(edit);
 
-    QToolButton* button = new QToolButton(this);
+    auto button = new QToolButton(this);
     button->setText("...");
     button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     connect(button, SIGNAL(clicked()), edit, SLOT(sl_onExpand()));
