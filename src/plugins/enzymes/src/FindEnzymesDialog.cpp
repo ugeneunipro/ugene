@@ -598,7 +598,6 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     }
     cbOverhangType->setCurrentIndex(0);
 
-
     regionSelector = new RegionSelectorWithExcludedRegion(this,
                                                           advSequenceContext->getSequenceLength(),
                                                           advSequenceContext->getSequenceSelection(),
@@ -619,6 +618,9 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
     connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
     connect(cbOverhangType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
+    connect(cbShowPalindromic, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
+    connect(cbShowUninterrupted, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
+    connect(cbShowNondegenerate, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
     sl_updateEnzymesVisibilityWidgets();
 
     connect(pbSelectAll, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectAll);
@@ -654,8 +656,11 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
         }
         bool okRSLength = region.contains(recognitionSequenceLength);
         bool okOverhangType = enzyme->overhangTypes & overhangType;
+        bool okPalindromic = !cbShowPalindromic->isChecked() || (cbShowPalindromic->isChecked() && enzyme->palindromic);
+        bool okUninterrupted = !cbShowUninterrupted->isChecked() || (cbShowUninterrupted->isChecked() && enzyme->uninterrupted);
+        bool okNondegenerate = !cbShowNondegenerate->isChecked() || (cbShowNondegenerate->isChecked() && enzyme->nondegenerate);
 
-        if (okSupplier && okRSLength && okOverhangType) {
+        if (okSupplier && okRSLength && okOverhangType && okPalindromic && okUninterrupted && okNondegenerate) {
             visibleEnzymes.append(enzyme);
         }
     }
@@ -778,6 +783,9 @@ void FindEnzymesDialog::initSettings() {
     cbMaxLength->setCurrentText(max);
     auto overhangTypeIndex = settings->getValue(EnzymeSettings::OVERHANG_TYPE, 0).toInt();
     cbOverhangType->setCurrentIndex(overhangTypeIndex);
+    cbShowPalindromic->setChecked(settings->getValue(EnzymeSettings::SHOW_PALINDROMIC, 0).toBool());
+    cbShowUninterrupted->setChecked(settings->getValue(EnzymeSettings::SHOW_UNINTERRUPTED, 0).toBool());
+    cbShowNondegenerate->setChecked(settings->getValue(EnzymeSettings::SHOW_NONDEGENERATE, 0).toBool());
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     U2Region searchRegion = FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(sequenceObject);
@@ -824,6 +832,9 @@ void FindEnzymesDialog::saveSettings() {
     settings->setValue(EnzymeSettings::MIN_ENZYME_LENGTH, cbMinLength->currentText());
     settings->setValue(EnzymeSettings::MAX_ENZYME_LENGTH, cbMaxLength->currentText());
     settings->setValue(EnzymeSettings::OVERHANG_TYPE, cbOverhangType->currentIndex());
+    settings->setValue(EnzymeSettings::SHOW_PALINDROMIC, cbShowPalindromic->isChecked());
+    settings->setValue(EnzymeSettings::SHOW_UNINTERRUPTED, cbShowUninterrupted->isChecked());
+    settings->setValue(EnzymeSettings::SHOW_NONDEGENERATE, cbShowNondegenerate->isChecked());
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     // Empty search region is processed as 'Whole sequence' by auto-annotation task.

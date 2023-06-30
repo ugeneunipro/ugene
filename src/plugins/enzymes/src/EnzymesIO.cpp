@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
@@ -121,6 +122,10 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
                     d->overhangTypes |= EnzymeData::OverhangType::Cut3;
                 }
             }
+            //calculate additional parameters
+            d->palindromic = d->seq == DNASequenceUtils::reverseComplement(d->seq, d->alphabet);
+            d->uninterrupted = !d->seq.contains(EnzymeData::UNDEFINED_BASE);
+            d->nondegenerate = d->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() && !d->seq.contains(EnzymeData::UNDEFINED_BASE);
         }
     }
     // Remove not needed elements

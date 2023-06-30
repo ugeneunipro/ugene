@@ -64,6 +64,9 @@ public:
     static const QString MIN_ENZYME_LENGTH;
     static const QString MAX_ENZYME_LENGTH;
     static const QString OVERHANG_TYPE;
+    static const QString SHOW_PALINDROMIC;
+    static const QString SHOW_UNINTERRUPTED;
+    static const QString SHOW_NONDEGENERATE;
     static const QString ENABLE_HIT_COUNT;
     static const QString MAX_HIT_VALUE;
     static const QString MIN_HIT_VALUE;
@@ -102,6 +105,13 @@ public:
     };
     Q_DECLARE_FLAGS(OverhangTypes, OverhangType);
     OverhangTypes overhangTypes;
+    // Forward and reverse-complementary enzymes are equal
+    bool palindromic = false;
+    // No insternal N's
+    bool uninterrupted = false;
+    // A, C, G and T only
+    bool nondegenerate = false;
+
     static constexpr const char UNDEFINED_BASE = 'N';
 };
 

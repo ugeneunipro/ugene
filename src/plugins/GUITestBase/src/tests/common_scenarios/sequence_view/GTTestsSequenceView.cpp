@@ -2528,6 +2528,51 @@ GUI_TEST_CLASS_DEFINITION(test_0083) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0084) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTCheckBox::setChecked("cbShowPalindromic", dialog);
+            auto labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("519"),
+                QString("Incorrect number of palindromic enzymes, expected number: 519, current text: %1").arg(labelText));
+
+            GTCheckBox::setChecked("cbShowUninterrupted", dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("410"),
+                QString("Incorrect number of palindromic and uninterrupted enzymes, expected number: 410, current text: %1").arg(labelText));
+
+            GTCheckBox::setChecked("cbShowPalindromic", false, dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("527"),
+                QString("Incorrect number of uninterrupted enzymes, expected number: 527, current text: %1").arg(labelText));
+
+            GTCheckBox::setChecked("cbShowNondegenerate", dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("401"),
+                QString("Incorrect number of uninterrupted and nondegenerate enzymes, expected number: 401, current text: %1").arg(labelText));
+
+
+            GTCheckBox::setChecked("cbShowUninterrupted", false, dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("401"),
+                QString("Incorrect number of nondegenerate enzymes, expected number: 401, current text: %1").arg(labelText));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
+
+
 }  // namespace GUITest_common_scenarios_sequence_view
 
 }  // namespace U2
