@@ -29,7 +29,6 @@
 #    include <windows.h>
 #    define VIRTUAL_TO_SCAN_CODE 0
 #endif
-#define GT_METHOD_NAME "keyPress"
 
 namespace HI {
 

@@ -38,7 +38,6 @@ EditSettingsDialogFiller::EditSettingsDialogFiller(
       recalculateQualifiers(_recalculateQualifiers) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void EditSettingsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -66,7 +65,6 @@ void EditSettingsDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

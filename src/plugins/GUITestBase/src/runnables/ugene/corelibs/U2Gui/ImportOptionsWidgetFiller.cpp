@@ -40,7 +40,6 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportOptionsWidgetFiller"
 
-#define GT_METHOD_NAME "fill"
 void ImportOptionsWidgetFiller::fill(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     GT_CHECK(nullptr != optionsWidget, "optionsWidget is NULL");
 
@@ -54,57 +53,43 @@ void ImportOptionsWidgetFiller::fill(ImportOptionsWidget* optionsWidget, const Q
     setAceFormatPolicy(optionsWidget, data);
     setCreateSubfolderForDocument(optionsWidget, data);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setDestinationFolder"
 void ImportOptionsWidgetFiller::setDestinationFolder(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::DESTINATION_FOLDER), );
     QString destinationPath = data.value(ImportToDatabaseOptions::DESTINATION_FOLDER).toString();
     GTLineEdit::setText("leBaseFolder", destinationPath, optionsWidget);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setKeepFoldersStructure"
 void ImportOptionsWidgetFiller::setKeepFoldersStructure(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::KEEP_FOLDERS_STRUCTURE), );
     auto keepStructure = GTWidget::findCheckBox("cbKeepStructure", optionsWidget);
     GTCheckBox::setChecked(keepStructure, data.value(ImportToDatabaseOptions::KEEP_FOLDERS_STRUCTURE).toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setProcessFoldersRecursively"
 void ImportOptionsWidgetFiller::setProcessFoldersRecursively(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::PROCESS_FOLDERS_RECUSIVELY), );
     auto processRecursively = GTWidget::findCheckBox("cbRecursively", optionsWidget);
     GTCheckBox::setChecked(processRecursively, data.value(ImportToDatabaseOptions::PROCESS_FOLDERS_RECUSIVELY).toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setCreateSubfolderForTopLevelFolder"
 void ImportOptionsWidgetFiller::setCreateSubfolderForTopLevelFolder(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::CREATE_SUBFOLDER_FOR_TOP_LEVEL_FOLDER), );
     auto subfolderForEachFolder = GTWidget::findCheckBox("cbCreateSubfoldersForTopLevelFolder", optionsWidget);
     GTCheckBox::setChecked(subfolderForEachFolder, data.value(ImportToDatabaseOptions::CREATE_SUBFOLDER_FOR_TOP_LEVEL_FOLDER).toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setCreateSubfolderForEachFile"
 void ImportOptionsWidgetFiller::setCreateSubfolderForEachFile(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::CREATE_SUBFOLDER_FOR_EACH_FILE), );
     auto subfolderForEachFile = GTWidget::findCheckBox("cbCreateSubfoldersForFiles", optionsWidget);
     GTCheckBox::setChecked(subfolderForEachFile, data.value(ImportToDatabaseOptions::CREATE_SUBFOLDER_FOR_EACH_FILE).toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setImportUnknownAsUdr"
 void ImportOptionsWidgetFiller::setImportUnknownAsUdr(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::IMPORT_UNKNOWN_AS_UDR), );
     auto importUnknown = GTWidget::findCheckBox("cbImportUnrecognized", optionsWidget);
     GTCheckBox::setChecked(importUnknown, data.value(ImportToDatabaseOptions::IMPORT_UNKNOWN_AS_UDR).toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setMultiSequencePolicy"
 void ImportOptionsWidgetFiller::setMultiSequencePolicy(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::MULTI_SEQUENCE_POLICY), );
 
@@ -128,9 +113,7 @@ void ImportOptionsWidgetFiller::setMultiSequencePolicy(ImportOptionsWidget* opti
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setAceFormatPolicy"
 void ImportOptionsWidgetFiller::setAceFormatPolicy(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::PREFERRED_FORMATS), );
 
@@ -144,23 +127,18 @@ void ImportOptionsWidgetFiller::setAceFormatPolicy(ImportOptionsWidget* optionsW
         GTRadioButton::click(rbAceAsAssembly);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setCreateSubfolderForDocument"
 void ImportOptionsWidgetFiller::setCreateSubfolderForDocument(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::CREATE_SUBFOLDER_FOR_DOCUMENT), );
     auto subfolderForDocument = GTWidget::findCheckBox("cbCreateSubfoldersforDocs", optionsWidget);
     GTCheckBox::setChecked(subfolderForDocument, data.value(ImportToDatabaseOptions::CREATE_SUBFOLDER_FOR_DOCUMENT).toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setMergeMultiSequencePolicySeparatorSize"
 void ImportOptionsWidgetFiller::setMergeMultiSequencePolicySeparatorSize(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
     CHECK(data.contains(ImportToDatabaseOptions::MERGE_MULTI_SEQUENCE_POLICY_SEPARATOR_SIZE), );
     auto separatorSize = GTWidget::findSpinBox("sbMerge", optionsWidget);
     GTSpinBox::setValue(separatorSize, data.value(ImportToDatabaseOptions::MERGE_MULTI_SEQUENCE_POLICY_SEPARATOR_SIZE).toInt());
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

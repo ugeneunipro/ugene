@@ -48,7 +48,6 @@ ImportPrimersDialogFiller::ImportPrimersDialogFiller(CustomScenario* scenario)
     : Filler("ImportPrimersDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ImportPrimersDialogFiller::commonScenario() {
     if (fileList.isEmpty() && objectNameList.isEmpty()) {
         GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
@@ -63,28 +62,21 @@ void ImportPrimersDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addFile"
 void ImportPrimersDialogFiller::addFile(const QString& filePath) {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(filePath));
     GTWidget::click(GTWidget::findWidget("pbAddFile", getDialog()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addObject"
 void ImportPrimersDialogFiller::addObjects(const QMap<QString, QStringList>& databaseAndObjectNames) {
     GTUtilsDialog::add(new ProjectTreeItemSelectorDialogFiller(databaseAndObjectNames, QSet<GObjectType>() << GObjectTypes::SEQUENCE, ProjectTreeItemSelectorDialogFiller::Separate));
     GTWidget::click(GTWidget::findWidget("pbAddObject", getDialog()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getDialog"
 QWidget* ImportPrimersDialogFiller::getDialog() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     return dialog;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

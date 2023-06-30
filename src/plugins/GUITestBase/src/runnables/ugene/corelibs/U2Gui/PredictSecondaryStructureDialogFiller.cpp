@@ -52,7 +52,6 @@ PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(Cus
       onlyPressOk(0) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void PredictSecondaryStructureDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -87,7 +86,6 @@ void PredictSecondaryStructureDialogFiller::commonScenario() {
     GTWidget::click(saveButton);
     GTUtilsTaskTreeView::waitTaskFinished();
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

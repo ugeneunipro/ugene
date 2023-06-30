@@ -37,7 +37,6 @@ CommonImportOptionsDialogFiller::CommonImportOptionsDialogFiller(const QVariantM
       data(data) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void CommonImportOptionsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTWidget::clickWindowTitle(dialog);
@@ -49,7 +48,6 @@ void CommonImportOptionsDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

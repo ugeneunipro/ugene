@@ -39,7 +39,6 @@ ConstructMoleculeDialogFiller::ConstructMoleculeDialogFiller(CustomScenario* sce
     : Filler("ConstructMoleculeDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ConstructMoleculeDialogFiller::commonScenario() {
     dialog = GTWidget::getActiveModalWidget();
 
@@ -62,16 +61,12 @@ void ConstructMoleculeDialogFiller::commonScenario() {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addAllFragments"
 void ConstructMoleculeDialogFiller::addAllFragments() {
     GTWidget::click(GTWidget::findWidget("takeAllButton", dialog));
     GTGlobals::sleep();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "invertAddedFragment"
 void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a fragment name's part from the action data");
     GTGlobals::FindOptions options;
@@ -80,19 +75,14 @@ void ConstructMoleculeDialogFiller::invertAddedFragment(const QVariant& actionDa
     bool isCheck = item->data(3, Qt::CheckStateRole).toInt() == Qt::Unchecked;
     GTTreeWidget::checkItem(item, 3, GTGlobals::UseMouse, isCheck, false);  // Do not validate the result. The item is replaced on toggle.
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickCancel"
 void ConstructMoleculeDialogFiller::clickCancel() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickOk"
 void ConstructMoleculeDialogFiller::clickOk() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

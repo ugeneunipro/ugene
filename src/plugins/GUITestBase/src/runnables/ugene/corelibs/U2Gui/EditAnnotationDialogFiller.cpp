@@ -35,7 +35,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditAnnotationFiller"
-#define GT_METHOD_NAME "run"
 void EditAnnotationFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -53,12 +52,10 @@ void EditAnnotationFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditAnnotationChecker"
 
-#define GT_METHOD_NAME "commonScenario"
 void EditAnnotationChecker::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -82,7 +79,6 @@ void EditAnnotationChecker::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

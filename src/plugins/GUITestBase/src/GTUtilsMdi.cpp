@@ -45,7 +45,6 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsMdi"
 
-#define GT_METHOD_NAME "click"
 void GTUtilsMdi::click(GTGlobals::WindowAction action) {
     if (action == GTGlobals::Close) {
         GTMenu::clickMainMenuItem({"Window", "Close active view"});
@@ -67,9 +66,7 @@ void GTUtilsMdi::click(GTGlobals::WindowAction action) {
         GTMenuBar::clickCornerMenu(mainWindow->menuBar(), action);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findWindow"
 QWidget* GTUtilsMdi::findWindow(const QString& windowName, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(!windowName.isEmpty(), "windowname is empty", nullptr);
 
@@ -107,15 +104,11 @@ QWidget* GTUtilsMdi::findWindow(const QString& windowName, const GTGlobals::Find
     GT_CHECK_RESULT(!options.failIfNotFound, "Widget " + windowName + " not found", nullptr);
     return nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "closeActiveWindow"
 void GTUtilsMdi::closeActiveWindow() {
     closeWindow(activeWindowTitle());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "closeWindow"
 void GTUtilsMdi::closeWindow(const QString& windowName, const GTGlobals::FindOptions& options) {
     GT_CHECK(windowName.isEmpty() == false, "windowname is empty");
 
@@ -126,9 +119,7 @@ void GTUtilsMdi::closeWindow(const QString& windowName, const GTGlobals::FindOpt
     GT_CHECK(window != nullptr, "Cannot find MDI window");
     GTWidget::close(window->parentWidget());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "closeAllWindows"
 void GTUtilsMdi::closeAllWindows() {
     class Scenario : public CustomScenario {
     public:
@@ -146,9 +137,7 @@ void GTUtilsMdi::closeAllWindows() {
 
     GTThread::runInMainThread(new Scenario());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "activeWindow"
 QWidget* GTUtilsMdi::activeWindow(const GTGlobals::FindOptions& options) {
     MainWindow* mw = AppContext::getMainWindow();
     GT_CHECK_RESULT(mw != nullptr, "MainWindow == NULL", nullptr);
@@ -159,7 +148,6 @@ QWidget* GTUtilsMdi::activeWindow(const GTGlobals::FindOptions& options) {
     }
     return w;
 }
-#undef GT_METHOD_NAME
 
 static QString getActiveMdiWindowTitle() {
     MainWindow* mainWindow = AppContext::getMainWindow();
@@ -167,7 +155,6 @@ static QString getActiveMdiWindowTitle() {
     return mdiWindow == nullptr ? "<no active window>" : mdiWindow->windowTitle();
 }
 
-#define GT_METHOD_NAME "getActiveObjectViewWindow"
 QWidget* GTUtilsMdi::getActiveObjectViewWindow(const QString& viewId) {
     GObjectViewWindow* viewWindow = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && viewWindow == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -185,9 +172,7 @@ QWidget* GTUtilsMdi::getActiveObjectViewWindow(const QString& viewId) {
     GT_CHECK_RESULT(viewWindow != nullptr, "View window is not found: " + viewId + ", active window: " + getActiveMdiWindowTitle(), nullptr);
     return viewWindow;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNoObjectViewWindowIsOpened"
 void GTUtilsMdi::checkNoObjectViewWindowIsOpened(const QString& viewId) {
     QList<QWidget*> allWindows = getAllObjectViewWindows(viewId);
     for (int time = 0; time < GT_OP_WAIT_MILLIS && !allWindows.isEmpty(); time += GT_OP_CHECK_MILLIS) {
@@ -197,9 +182,7 @@ void GTUtilsMdi::checkNoObjectViewWindowIsOpened(const QString& viewId) {
     GT_CHECK(allWindows.isEmpty(), "Found object view windows: " + viewId + ", when expected no window to be present");
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAllObjectViewWindows"
 QList<QWidget*> GTUtilsMdi::getAllObjectViewWindows(const QString& viewId) {
     MainWindow* mainWindow = AppContext::getMainWindow();
     QList<QWidget*> result;
@@ -213,18 +196,14 @@ QList<QWidget*> GTUtilsMdi::getAllObjectViewWindows(const QString& viewId) {
     }
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "activeWindowTitle"
 QString GTUtilsMdi::activeWindowTitle() {
     QWidget* w = activeWindow();
     auto mdi = qobject_cast<MWMDIWindow*>(w);
     GT_CHECK_RESULT(mdi, "unexpected object type", QString());
     return mdi->windowTitle();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "activateAppWindow"
 void GTUtilsMdi::activateWindow(const QString& windowTitlePart) {
     MainWindow* mainWindow = AppContext::getMainWindow();
 
@@ -238,9 +217,7 @@ void GTUtilsMdi::activateWindow(const QString& windowTitlePart) {
     GTMenu::clickMainMenuItem({"Window", window->windowTitle()}, GTGlobals::UseMouse, Qt::MatchContains);
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkWindowIsActive"
 QWidget* GTUtilsMdi::checkWindowIsActive(const QString& windowTitlePart) {
     GT_CHECK_RESULT(!windowTitlePart.isEmpty(), "windowTitlePart is empty", nullptr);
 
@@ -259,18 +236,14 @@ QWidget* GTUtilsMdi::checkWindowIsActive(const QString& windowTitlePart) {
     GTThread::waitForMainThread();
     return window;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getMdiItemPosition"
 QPoint GTUtilsMdi::getMdiItemPosition(const QString& windowName) {
     QWidget* w = findWindow(windowName);
     GT_CHECK_RESULT(w != nullptr, "MDI window not found", QPoint());
     const QRect r = w->rect();
     return w->mapToGlobal(r.center());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectRandomRegion"
 void GTUtilsMdi::selectRandomRegion(const QString& windowName) {
     QWidget* w = findWindow(windowName);
     GT_CHECK(w != nullptr, "MDI window not found");
@@ -282,7 +255,6 @@ void GTUtilsMdi::selectRandomRegion(const QString& windowName) {
     GTMouseDriver::release();
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
 namespace {
 
@@ -304,14 +276,11 @@ bool isWidgetPartVisible(QWidget* widget) {
 
 }  // namespace
 
-#define GT_METHOD_NAME "isAnyPartOfWindowVisible"
 bool GTUtilsMdi::isAnyPartOfWindowVisible(const QString& windowName) {
     QWidget* window = findWindow(windowName, {false});
     return isWidgetPartVisible(window);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getTabBar"
 QTabBar* GTUtilsMdi::getTabBar() {
     MainWindow* mainWindow = AppContext::getMainWindow();
     GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", nullptr);
@@ -323,25 +292,20 @@ QTabBar* GTUtilsMdi::getTabBar() {
 
     return tabBar;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getTabBar"
 int GTUtilsMdi::getCurrentTab() {
     QTabBar* tabBar = getTabBar();
     GT_CHECK_RESULT(tabBar != nullptr, "tabBar == NULL", -1);
 
     return tabBar->currentIndex();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickTab"
 void GTUtilsMdi::clickTab(int tabIndex) {
     QTabBar* tabBar = getTabBar();
     QPoint tabCenter = tabBar->mapToGlobal(tabBar->tabRect(tabIndex).center());
     GTMouseDriver::moveTo(tabCenter);
     GTMouseDriver::click();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

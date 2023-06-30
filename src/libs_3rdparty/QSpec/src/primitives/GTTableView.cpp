@@ -26,16 +26,13 @@
 namespace HI {
 
 #define GT_CLASS_NAME "GTSpinBox"
-#define GT_METHOD_NAME "getCellPosition"
 QPoint GTTableView::getCellPosition(QTableView* table, int column, int row) {
     GT_CHECK_RESULT(table, "table view is NULL", {});
     QPoint p(table->columnViewportPosition(column) + table->columnWidth(column) / 2,
              table->rowViewportPosition(row) + table->rowHeight(row) * 1.5);
     return table->mapToGlobal(p);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "scrollTo"
 void GTTableView::scrollTo(QTableView* table, const QModelIndex& index) {
     // TODO: set index by mouse/keyboard
     class MainThreadAction : public CustomScenario {
@@ -51,9 +48,7 @@ void GTTableView::scrollTo(QTableView* table, const QModelIndex& index) {
     };
     GTThread::runInMainThread(new MainThreadAction(table, index));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getCellPoint"
 QPoint GTTableView::getCellPoint(QTableView* table, int row, int column) {
     QModelIndex idx = table->model()->index(row, column);
     scrollTo(table, idx);
@@ -61,17 +56,13 @@ QPoint GTTableView::getCellPoint(QTableView* table, int row, int column) {
     QWidget* viewport = table->viewport();
     return viewport->mapToGlobal(cellRect.center());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "rowCount"
 int GTTableView::rowCount(QTableView* table) {
     GT_CHECK_RESULT(table != nullptr, "Table view is NULL", -1);
     GT_CHECK_RESULT(table->model() != nullptr, "Table view model is NULL", -1);
     return table->model()->rowCount(QModelIndex());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "data"
 QString GTTableView::data(QTableView* table, int row, int column) {
     GT_CHECK_RESULT(table != nullptr, "Table view is NULL", "");
     GT_CHECK_RESULT(table->model() != nullptr, "Table view model is NULL", "");
@@ -80,9 +71,7 @@ QString GTTableView::data(QTableView* table, int row, int column) {
     GT_CHECK_RESULT(idx.isValid(), "Item index is invalid", "");
     return table->model()->data(idx, Qt::DisplayRole).toString();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "click"
 void GTTableView::click(QTableView* table, int row, int column) {
     GT_CHECK(table != nullptr, "Table is nullptr");
     GT_CHECK(table->model() != nullptr, "Table model is nullptr");
@@ -108,7 +97,6 @@ void GTTableView::click(QTableView* table, int row, int column) {
     GTWidget::scrollToIndex(table, modelIndex);
     GTWidget::moveToAndClick(GTTableView::getCellPosition(table, column, row));
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace HI

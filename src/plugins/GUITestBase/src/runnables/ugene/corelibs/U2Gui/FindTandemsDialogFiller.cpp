@@ -36,7 +36,6 @@ FindTandemsDialogFiller::FindTandemsDialogFiller(const QString& _resultFilesPath
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::FindTandemsDialogFiller"
-#define GT_METHOD_NAME "run"
 
 FindTandemsDialogFiller::FindTandemsDialogFiller(CustomScenario* scenario)
     : Filler("FindTandemsDialog", scenario),
@@ -60,7 +59,6 @@ void FindTandemsDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -84,7 +84,6 @@ void ExportAnnotationsFiller::init(const QString& exportToFileParam) {
     comboBoxItems[ugenedb] = "UGENE Database";
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -110,7 +109,6 @@ void ExportAnnotationsFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -41,7 +41,6 @@ SnpEffDatabaseDialogFiller::SnpEffDatabaseDialogFiller(const QString& dbName, bo
 }
 
 #define GT_CLASS_NAME "SnpEffDatabaseDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void SnpEffDatabaseDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 

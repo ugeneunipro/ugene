@@ -41,7 +41,6 @@ AddNewDocumentDialogFiller::AddNewDocumentDialogFiller(CustomScenario* scenario)
     : Filler("AddNewDocumentDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void AddNewDocumentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -50,7 +49,6 @@ void AddNewDocumentDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

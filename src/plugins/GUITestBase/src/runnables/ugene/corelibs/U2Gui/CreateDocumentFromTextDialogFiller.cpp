@@ -86,7 +86,6 @@ CreateDocumentFiller::CreateDocumentFiller(CustomScenario* scenario)
       useMethod(GTGlobals::UseMouse) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void CreateDocumentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -132,7 +131,6 @@ void CreateDocumentFiller::commonScenario() {
     GTThread::waitForMainThread();
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::cancelCreateDocumentFiller"
@@ -152,7 +150,6 @@ CancelCreateDocumentFiller::CancelCreateDocumentFiller(const QString& _pasteData
     comboBoxAlphabetItems[AllSymbols] = "All symbols";
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void CancelCreateDocumentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -197,7 +194,6 @@ void CancelCreateDocumentFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

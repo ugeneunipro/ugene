@@ -32,7 +32,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::FindRepeatsDialogFiller"
-#define GT_METHOD_NAME "run"
 
 FindRepeatsDialogFiller::FindRepeatsDialogFiller(
     const QString& _resultFilesPath,
@@ -84,7 +83,6 @@ void FindRepeatsDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -445,7 +445,6 @@ QString EventFilter::generateFillerSource() const {
 
     result.append(QString("namespace U2 {\n\n"
                           "#define GT_CLASS_NAME \"GTUtilsDialog::%1\"\n"
-                          "#define GT_METHOD_NAME \"run\"\n\n"
                           "void %1::run() {\n")
                       .arg(fillerName));
     result.append("    QWidget* dialog = QApplication::activeModalWidget();\n"
@@ -454,7 +453,6 @@ QString EventFilter::generateFillerSource() const {
     result.append(generateWidgetsProcessing());
 
     result.append("}\n"
-                  "#undef GT_METHOD_NAME\n"
                   "#undef GT_CLASS_NAME\n\n"
                   "}\n\n");
     result.append("\n\nEND OF SOURCE\n\n");

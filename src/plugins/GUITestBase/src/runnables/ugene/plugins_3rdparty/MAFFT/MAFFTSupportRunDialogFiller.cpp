@@ -57,7 +57,6 @@ MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(CustomScenario* scenari
       parameters(nullptr) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void MAFFTSupportRunDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -81,7 +80,6 @@ void MAFFTSupportRunDialogFiller::commonScenario() {
 
     GTWidget::click(GTWidget::findButtonByText("Align", dialog));
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -42,7 +42,6 @@ FindQualifierFiller::FindQualifierFiller(CustomScenario* scenario)
     : Filler("SearchQualifierDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void FindQualifierFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -85,7 +84,6 @@ void FindQualifierFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Close);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -63,7 +63,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTSequenceReader"
-#define GT_METHOD_NAME "commonScenario"
 class GTSequenceReader : public Filler {
 public:
     GTSequenceReader(QString* _str)
@@ -83,32 +82,24 @@ public:
 private:
     QString* str;
 };
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsSequenceView"
 
-#define GT_METHOD_NAME "getActiveSequenceViewWindow"
 QWidget* GTUtilsSequenceView::getActiveSequenceViewWindow() {
     QWidget* widget = GTUtilsMdi::getActiveObjectViewWindow(AnnotatedDNAViewFactory::ID);
     GTThread::waitForMainThread();
     return widget;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkSequenceViewWindowIsActive"
 void GTUtilsSequenceView::checkSequenceViewWindowIsActive() {
     getActiveSequenceViewWindow();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNoSequenceViewWindowIsOpened"
 void GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened() {
     GTUtilsMdi::checkNoObjectViewWindowIsOpened(AnnotatedDNAViewFactory::ID);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceAsString"
 void GTUtilsSequenceView::getSequenceAsString(QString& sequence) {
     QWidget* sequenceWidget = getPanOrDetView();
     GTWidget::click(sequenceWidget);
@@ -122,9 +113,7 @@ void GTUtilsSequenceView::getSequenceAsString(QString& sequence) {
     GTMenu::showContextMenu(sequenceWidget);
     GTUtilsDialog::checkNoActiveWaiters();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceAsString"
 QString GTUtilsSequenceView::getSequenceAsString(int number) {
     getActiveSequenceViewWindow();
     GTWidget::click(getSeqWidgetByNumber(number));
@@ -142,9 +131,7 @@ QString GTUtilsSequenceView::getSequenceAsString(int number) {
     QString result = GTClipboard::text();
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getBeginOfSequenceAsString"
 
 QString GTUtilsSequenceView::getBeginOfSequenceAsString(int length) {
     checkSequenceViewWindowIsActive();
@@ -160,9 +147,7 @@ QString GTUtilsSequenceView::getBeginOfSequenceAsString(int length) {
 
     return sequence;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getEndOfSequenceAsString"
 QString GTUtilsSequenceView::getEndOfSequenceAsString(int length) {
     QWidget* mdiWindow = getActiveSequenceViewWindow();
     GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
@@ -184,9 +169,7 @@ QString GTUtilsSequenceView::getEndOfSequenceAsString(int length) {
 
     return sequence;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLengthOfSequence"
 int GTUtilsSequenceView::getLengthOfSequence() {
     MainWindow* mw = AppContext::getMainWindow();
     GT_CHECK_RESULT(mw != nullptr, "MainWindow == NULL", 0);
@@ -206,30 +189,24 @@ int GTUtilsSequenceView::getLengthOfSequence() {
 
     return length;
 }
-#undef GT_METHOD_NAME
 
 int GTUtilsSequenceView::getVisibleStart(int widgetNumber) {
     return getSeqWidgetByNumber(widgetNumber)->getDetView()->getVisibleRange().startPos;
 }
 
-#define GT_METHOD_NAME "getVisibleRange"
 U2Region GTUtilsSequenceView::getVisibleRange(int widgetNumber) {
     ADVSingleSequenceWidget* seqWgt = getSeqWidgetByNumber(widgetNumber);
     GT_CHECK_RESULT(seqWgt != nullptr, "Cannot find sequence view", U2Region());
     return seqWgt->getDetView()->getVisibleRange();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkSequence"
 void GTUtilsSequenceView::checkSequence(const QString& expectedSequence) {
     QString actualSequence;
     getSequenceAsString(actualSequence);
 
     GT_CHECK(expectedSequence == actualSequence, "Actual sequence does not match with expected sequence");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectSequenceRegion"
 void GTUtilsSequenceView::selectSequenceRegion(int from, int to, bool useHotkey) {
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller(from, to));
     if (useHotkey) {
@@ -240,35 +217,27 @@ void GTUtilsSequenceView::selectSequenceRegion(int from, int to, bool useHotkey)
         GTMenu::showContextMenu(getPanOrDetView());
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectSeveralRegionsByDialog"
 void GTUtilsSequenceView::selectSeveralRegionsByDialog(const QString& multipleRangeString) {
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller(multipleRangeString));
     clickMouseOnTheSafeSequenceViewArea();
     GTKeyboardUtils::selectAll();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openSequenceView"
 void GTUtilsSequenceView::openSequenceView(const QString& sequenceName) {
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(sequenceName);
     GTMouseDriver::moveTo(itemPos);
     GTUtilsDialog::waitForDialog(new PopupChooser({"openInMenu", "action_open_view"}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addSequenceView"
 void GTUtilsSequenceView::addSequenceView(const QString& sequenceName) {
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(sequenceName);
     GTMouseDriver::moveTo(itemPos);
     GTUtilsDialog::waitForDialog(new PopupChooser({"submenu_add_view", "action_add_view"}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "goToPosition"
 void GTUtilsSequenceView::goToPosition(qint64 position) {
     QToolBar* toolbar = GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(nullptr != toolbar, "Can't find the toolbar");
@@ -276,27 +245,21 @@ void GTUtilsSequenceView::goToPosition(qint64 position) {
     GTLineEdit::setText("go_to_pos_line_edit", QString::number(position), toolbar);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMouseOnTheSafeSequenceViewArea"
 void GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea() {
     QWidget* panOrDetView = getPanOrDetView();
     GT_CHECK(panOrDetView != nullptr, "No pan or det-view found!");
     GTMouseDriver::moveTo(panOrDetView->mapToGlobal(panOrDetView->rect().center()));
     GTMouseDriver::click();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMouseOnTheSafeSequenceViewArea"
 void GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(int number) {
     QWidget* panOrDetView = getPanOrDetView(number);
     GT_CHECK(panOrDetView != nullptr, "No pan or det-view found!");
     GT_CHECK(panOrDetView->isVisible(), "Pan or det-view is not visible!");
     GTWidget::click(panOrDetView, Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getPanOrDetView"
 QWidget* GTUtilsSequenceView::getPanOrDetView(int number) {
     QWidget* panOrDetView = getDetViewByNumber(number, {false});
     if (panOrDetView == nullptr) {
@@ -304,9 +267,7 @@ QWidget* GTUtilsSequenceView::getPanOrDetView(int number) {
     }
     return panOrDetView;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSeqWidgetByNumber"
 ADVSingleSequenceWidget* GTUtilsSequenceView::getSeqWidgetByNumber(int number, const GTGlobals::FindOptions& options) {
     auto widget = GTWidget::findWidget(
         QString("ADV_single_sequence_widget_%1").arg(number),
@@ -321,9 +282,7 @@ ADVSingleSequenceWidget* GTUtilsSequenceView::getSeqWidgetByNumber(int number, c
 
     return seqWidget;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getDetViewByNumber"
 DetView* GTUtilsSequenceView::getDetViewByNumber(int number, const GTGlobals::FindOptions& options) {
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(number, options);
     if (options.failIfNotFound) {
@@ -340,9 +299,7 @@ DetView* GTUtilsSequenceView::getDetViewByNumber(int number, const GTGlobals::Fi
     }
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getPanViewByNumber"
 PanView* GTUtilsSequenceView::getPanViewByNumber(int number, const GTGlobals::FindOptions& options) {
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(number, options);
     if (options.failIfNotFound) {
@@ -360,9 +317,7 @@ PanView* GTUtilsSequenceView::getPanViewByNumber(int number, const GTGlobals::Fi
 
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getOverViewByNumber"
 Overview* GTUtilsSequenceView::getOverviewByNumber(int number, const GTGlobals::FindOptions& options) {
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(number, options);
     if (options.failIfNotFound) {
@@ -380,14 +335,11 @@ Overview* GTUtilsSequenceView::getOverviewByNumber(int number, const GTGlobals::
 
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSeqWidgetsNumber"
 int GTUtilsSequenceView::getSeqWidgetsNumber() {
     QList<ADVSingleSequenceWidget*> seqWidgets = getActiveSequenceViewWindow()->findChildren<ADVSingleSequenceWidget*>();
     return seqWidgets.size();
 }
-#undef GT_METHOD_NAME
 
 QVector<U2Region> GTUtilsSequenceView::getSelection(int number) {
     PanView* panView = getPanViewByNumber(number);
@@ -395,13 +347,10 @@ QVector<U2Region> GTUtilsSequenceView::getSelection(int number) {
     return result;
 }
 
-#define GT_METHOD_NAME "getSeqName"
 QString GTUtilsSequenceView::getSeqName(int number) {
     return getSeqName(getSeqWidgetByNumber(number));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSeqName"
 QString GTUtilsSequenceView::getSeqName(ADVSingleSequenceWidget* seqWidget) {
     GT_CHECK_RESULT(nullptr != seqWidget, "Sequence widget is NULL!", "");
     auto nameLabel = GTWidget::findLabel("nameLabel", seqWidget);
@@ -410,11 +359,9 @@ QString GTUtilsSequenceView::getSeqName(ADVSingleSequenceWidget* seqWidget) {
     QString result = labelText.left(labelText.indexOf("[") - 1);  // detachment of name from label text
     return result;
 }
-#undef GT_METHOD_NAME
 
 #define MIN_ANNOTATION_WIDTH 5
 
-#define GT_METHOD_NAME "moveMouseToAnnotationInDetView"
 void GTUtilsSequenceView::moveMouseToAnnotationInDetView(
     const QString& annotationName,
     int annotationRegionStartPos,
@@ -478,9 +425,7 @@ void GTUtilsSequenceView::moveMouseToAnnotationInDetView(
     const QRect clickRect(x1, yRegion.startPos, x2 - x1, yRegion.length);
     GTMouseDriver::moveTo(renderArea->mapToGlobal(clickRect.center()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickAnnotationDet"
 void GTUtilsSequenceView::clickAnnotationDet(
     const QString& annotationName,
     int annotationRegionStartPos,
@@ -494,9 +439,7 @@ void GTUtilsSequenceView::clickAnnotationDet(
         GTMouseDriver::click(button);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickAnnotationPan"
 void GTUtilsSequenceView::clickAnnotationPan(const QString& name, int startPos, int number, const bool isDoubleClick, Qt::MouseButton button) {
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(number);
     GSequenceLineViewRenderArea* area = seq->getPanView()->getRenderArea();
@@ -556,15 +499,12 @@ void GTUtilsSequenceView::clickAnnotationPan(const QString& name, int startPos, 
         GTMouseDriver::click(button);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getGraphView"
 GSequenceGraphView* GTUtilsSequenceView::getGraphView() {
     auto graph = getSeqWidgetByNumber()->findChild<GSequenceGraphView*>();
     GT_CHECK_RESULT(graph != nullptr, "Graph view is NULL", nullptr);
     return graph;
 }
-#undef GT_METHOD_NAME
 
 QList<QVariant> GTUtilsSequenceView::getLabelPositions(GSequenceGraphView* graph) {
     QList<QVariant> list;
@@ -583,24 +523,19 @@ QColor GTUtilsSequenceView::getGraphColor(GSequenceGraphView* graph) {
     return result;
 }
 
-#define GT_METHOD_NAME "toggleGraphByName"
 void GTUtilsSequenceView::toggleGraphByName(const QString& graphName, int sequenceViewIndex) {
     QWidget* sequenceWidget = getSeqWidgetByNumber(sequenceViewIndex);
     auto graphAction = GTWidget::findWidget("GraphMenuAction", sequenceWidget, false);
     GTUtilsDialog::waitForDialog(new PopupChooser({graphName}));
     GTWidget::click(graphAction);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "zoomIn"
 void GTUtilsSequenceView::zoomIn(int sequenceViewIndex) {
     QWidget* sequenceWidget = getSeqWidgetByNumber(sequenceViewIndex);
     QAction* zoomInAction = GTAction::findActionByText("Zoom In", sequenceWidget);
     GTWidget::click(GTAction::button(zoomInAction));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "enableEditingMode"
 void GTUtilsSequenceView::enableEditingMode(bool enable, int sequenceNumber) {
     DetView* detView = getDetViewByNumber(sequenceNumber);
 
@@ -622,9 +557,7 @@ void GTUtilsSequenceView::enableEditingMode(bool enable, int sequenceNumber) {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "insertSubsequence"
 void GTUtilsSequenceView::insertSubsequence(qint64 offset, const QString& subsequence, bool isDirectStrand) {
     makeDetViewVisible();
     enableEditingMode(true);
@@ -632,9 +565,7 @@ void GTUtilsSequenceView::insertSubsequence(qint64 offset, const QString& subseq
     GTKeyboardDriver::keySequence(subsequence);
     enableEditingMode(false);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setCursor"
 void GTUtilsSequenceView::setCursor(qint64 position, bool clickOnDirectLine, bool doubleClick) {
     // Multiline view is not supported correctly.
 
@@ -696,9 +627,7 @@ void GTUtilsSequenceView::setCursor(qint64 position, bool clickOnDirectLine, boo
         GTMouseDriver::click();
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getCursor"
 qint64 GTUtilsSequenceView::getCursor() {
     DetView* detView = getDetViewByNumber(0);
 
@@ -710,9 +639,7 @@ qint64 GTUtilsSequenceView::getCursor() {
 
     return dwSequenceEditor->getCursorPosition();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRegionAsString"
 QString GTUtilsSequenceView::getRegionAsString(const U2Region& region) {
     GTUtilsSequenceView::selectSequenceRegion(region.startPos, region.endPos() - 1);
     GTGlobals::sleep();
@@ -721,9 +648,7 @@ QString GTUtilsSequenceView::getRegionAsString(const U2Region& region) {
 
     return GTClipboard::text();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickOnDetView"
 void GTUtilsSequenceView::clickOnDetView() {
     MainWindow* mw = AppContext::getMainWindow();
     GT_CHECK(mw != nullptr, "MainWindow == NULL");
@@ -736,25 +661,20 @@ void GTUtilsSequenceView::clickOnDetView() {
 
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "makeDetViewVisible"
 void GTUtilsSequenceView::makeDetViewVisible() {
     auto toggleDetViewButton = GTWidget::findToolButton("show_hide_details_view");
     if (!toggleDetViewButton->isChecked()) {
         GTWidget::click(toggleDetViewButton);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "makePanViewVisible"
 void GTUtilsSequenceView::makePanViewVisible(bool enable) {
     auto toggleZoomViewButton = GTWidget::findToolButton("show_hide_zoom_view");
     if (toggleZoomViewButton->isChecked() != enable) {
         GTWidget::click(toggleZoomViewButton);
     }
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

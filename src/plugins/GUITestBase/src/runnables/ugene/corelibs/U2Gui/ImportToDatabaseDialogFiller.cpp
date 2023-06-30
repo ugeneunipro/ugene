@@ -71,7 +71,6 @@ ImportToDatabaseDialogFiller::ImportToDatabaseDialogFiller(const QList<Action>& 
       actions(actions) {
 }
 
-#define GT_METHOD_NAME "run"
 void ImportToDatabaseDialogFiller::commonScenario() {
     dialog = GTWidget::getActiveModalWidget();
 
@@ -117,9 +116,7 @@ void ImportToDatabaseDialogFiller::commonScenario() {
         GTGlobals::sleep(200);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addFiles"
 void ImportToDatabaseDialogFiller::addFiles(const Action& action) {
     GT_CHECK(Action::ADD_FILES == action.type, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__PATHS_LIST), "Not enough parameters to perform the action");
@@ -134,9 +131,7 @@ void ImportToDatabaseDialogFiller::addFiles(const Action& action) {
         GTGlobals::sleep(200);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addDirs"
 void ImportToDatabaseDialogFiller::addDirs(const Action& action) {
     GT_CHECK(Action::ADD_DIRS == action.type, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__PATHS_LIST), "Not enough parameters to perform the action");
@@ -152,9 +147,7 @@ void ImportToDatabaseDialogFiller::addDirs(const Action& action) {
         GTGlobals::sleep(200);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addProjectItems"
 void ImportToDatabaseDialogFiller::addProjectItems(const Action& action) {
     GT_CHECK(action.type == Action::ADD_PROJECT_ITEMS, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__PROJECT_ITEMS_LIST), "Not enough parameters to perform the action");
@@ -165,9 +158,7 @@ void ImportToDatabaseDialogFiller::addProjectItems(const Action& action) {
     auto addProjectItemsButton = GTWidget::findWidget("pbAddObjects");
     GTWidget::click(addProjectItemsButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItems"
 void ImportToDatabaseDialogFiller::selectItems(const Action& action) {
     GT_CHECK(Action::SELECT_ITEMS == action.type, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__ITEMS_LIST), "Not enough parameters to perform the action");
@@ -187,9 +178,7 @@ void ImportToDatabaseDialogFiller::selectItems(const Action& action) {
 
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "editDestinationFolder"
 void ImportToDatabaseDialogFiller::editDestinationFolder(const Action& action) {
     GT_CHECK(Action::EDIT_DESTINATION_FOLDER == action.type, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__ITEM), "Not enough parameters to perform the action");
@@ -203,9 +192,7 @@ void ImportToDatabaseDialogFiller::editDestinationFolder(const Action& action) {
     GTKeyboardDriver::keySequence(dstFolder);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "editGeneralOptions"
 void ImportToDatabaseDialogFiller::editGeneralOptions(const Action& action) {
     GT_CHECK(Action::EDIT_GENERAL_OPTIONS == action.type, "Invalid action type");
 
@@ -214,9 +201,7 @@ void ImportToDatabaseDialogFiller::editGeneralOptions(const Action& action) {
     auto optionsButton = GTWidget::findWidget("pbOptions");
     GTWidget::click(optionsButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "editPrivateOptions"
 void ImportToDatabaseDialogFiller::editPrivateOptions(const Action& action) {
     GT_CHECK(Action::EDIT_PRIVATE_OPTIONS == action.type, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__ITEM), "Not enough parameters to perform the action");
@@ -228,9 +213,7 @@ void ImportToDatabaseDialogFiller::editPrivateOptions(const Action& action) {
     GTMouseDriver::moveTo(itemCenter);
     GTMouseDriver::click(Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "resetPrivateOptions"
 void ImportToDatabaseDialogFiller::resetPrivateOptions(const Action& action) {
     GT_CHECK(Action::RESET_PRIVATE_OPTIONS == action.type, "Invalid action type");
     GT_CHECK(action.data.contains(Action::ACTION_DATA__ITEM), "Not enough parameters to perform the action");
@@ -240,36 +223,28 @@ void ImportToDatabaseDialogFiller::resetPrivateOptions(const Action& action) {
     GTMouseDriver::moveTo(itemCenter);
     GTMouseDriver::click(Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "remove"
 void ImportToDatabaseDialogFiller::remove(const Action& action) {
     GT_CHECK(Action::REMOVE == action.type, "Invalid action type");
 
     auto removeButton = GTWidget::findWidget("pbRemove");
     GTWidget::click(removeButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "import"
 void ImportToDatabaseDialogFiller::import(const Action& action) {
     GT_CHECK(Action::IMPORT == action.type, "Invalid action type");
 
     auto importButton = GTWidget::findWidget("import_button");
     GTWidget::click(importButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "cancel"
 void ImportToDatabaseDialogFiller::cancel(const Action& action) {
     GT_CHECK(Action::CANCEL == action.type, "Invalid action type");
 
     auto cancelButton = GTWidget::findWidget("cancel_button");
     GTWidget::click(cancelButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemCenter"
 QPoint ImportToDatabaseDialogFiller::getItemCenter(const QString& text) {
     auto treeWidget = GTWidget::findTreeWidget("twOrders", dialog);
 
@@ -278,9 +253,7 @@ QPoint ImportToDatabaseDialogFiller::getItemCenter(const QString& text) {
     const QPoint headerOffset = QPoint(0, treeWidget->header()->height());
     return treeWidget->mapToGlobal(treeWidget->visualItemRect(item).center() + headerOffset);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getFolderColumnCenter"
 QPoint ImportToDatabaseDialogFiller::getFolderColumnCenter(const QString& text) {
     auto treeWidget = GTWidget::findTreeWidget("twOrders", dialog);
 
@@ -288,9 +261,7 @@ QPoint ImportToDatabaseDialogFiller::getFolderColumnCenter(const QString& text) 
     const QPoint columnCenter(treeWidget->columnViewportPosition(1) + treeWidget->columnWidth(1) / 2, itemCenter.y());
     return treeWidget->mapToGlobal(columnCenter);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
 QTreeWidgetItem* ImportToDatabaseDialogFiller::findItem(const QString& text) {
     auto treeWidget = GTWidget::findTreeWidget("twOrders", dialog);
 
@@ -299,7 +270,6 @@ QTreeWidgetItem* ImportToDatabaseDialogFiller::findItem(const QString& text) {
     GT_CHECK_RESULT(items.size() == 1, "Several items were found unexpectedly", nullptr);
     return items.first();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

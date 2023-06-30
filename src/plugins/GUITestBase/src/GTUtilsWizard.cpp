@@ -64,7 +64,6 @@ const QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::buttonMap = GTUt
 
 #define GT_CLASS_NAME "GTUtilsWizard"
 
-#define GT_METHOD_NAME "setInputFiles"
 void GTUtilsWizard::setInputFiles(const QList<QStringList>& inputFiles) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     int i = 0;
@@ -93,9 +92,7 @@ void GTUtilsWizard::setInputFiles(const QList<QStringList>& inputFiles) {
         i++;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setAllParameters"
 void GTUtilsWizard::setAllParameters(QMap<QString, QVariant> map) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     auto wizard = qobject_cast<QWizard*>(dialog);
@@ -127,9 +124,7 @@ void GTUtilsWizard::setAllParameters(QMap<QString, QVariant> map) {
         }
     } while (nextButton != nullptr && nextButton->isVisible());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setParameter"
 void GTUtilsWizard::setParameter(const QString& parameterName, const QVariant& parameterValue) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     auto wizard = qobject_cast<QWizard*>(dialog);
@@ -145,9 +140,7 @@ void GTUtilsWizard::setParameter(const QString& parameterName, const QVariant& p
 
     setValue(w, parameterValue);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getParameter"
 QVariant GTUtilsWizard::getParameter(const QString& parameterName) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     auto wizard = qobject_cast<QWizard*>(dialog);
@@ -175,9 +168,7 @@ QVariant GTUtilsWizard::getParameter(const QString& parameterName) {
     }
     GT_FAIL(QString("unsupported widget class: %1").arg(w->metaObject()->className()), {});
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setValue"
 void GTUtilsWizard::setValue(QWidget* w, QVariant value) {
     auto combo = qobject_cast<QComboBox*>(w);
     if (combo != nullptr) {
@@ -207,17 +198,13 @@ void GTUtilsWizard::setValue(QWidget* w, QVariant value) {
     }
     GT_FAIL(QString("unsupported widget class: %1").arg(w->metaObject()->className()), );
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickButton"
 void GTUtilsWizard::clickButton(WizardButton button) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     QWidget* buttonWidget = GTWidget::findButtonByText(buttonMap.key(button), dialog);
     GTWidget::click(buttonWidget);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getPageTitle"
 QString GTUtilsWizard::getPageTitle() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     auto wizard = qobject_cast<QWizard*>(dialog);
@@ -226,7 +213,6 @@ QString GTUtilsWizard::getPageTitle() {
     auto pageTitle = GTWidget::findLabel("pageTitle", wizard->currentPage());
     return pageTitle->text();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

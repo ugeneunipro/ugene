@@ -35,7 +35,6 @@ PrimerLibrarySelectorFiller::PrimerLibrarySelectorFiller(int number, bool double
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::PrimerLibrarySelectorFiller"
-#define GT_METHOD_NAME "run"
 void PrimerLibrarySelectorFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     QAbstractButton* okButton = GTUtilsDialog::buttonBox(dialog)->button(QDialogButtonBox::Ok);
@@ -53,7 +52,6 @@ void PrimerLibrarySelectorFiller::commonScenario() {
         GTWidget::click(okButton);
     }
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2
