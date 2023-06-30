@@ -97,7 +97,7 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
             if (d->cutDirect == ENZYME_CUT_UNKNOWN) {
                 d->overhangTypes |= EnzymeData::OverhangType::NoOverhang;
             } else {
-                bool directCutInTheMiddleOfSequence = qFuzzyCompare((double)seqSize / 2, d->cutDirect);
+                bool directCutInTheMiddleOfSequence = (seqSize % 2 == 0) && (seqSize / 2 == d->cutDirect);
                 if (directCutInTheMiddleOfSequence && d->cutDirect == d->cutComplement) {
                     d->overhangTypes |= EnzymeData::OverhangType::Blunt;
                 } else {
