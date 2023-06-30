@@ -46,7 +46,6 @@ const QString GTUtilsDocument::DocumentUnloaded = "Unloaded";
 
 #define GT_CLASS_NAME "GTUtilsDocument"
 
-#define GT_METHOD_NAME "getDocument"
 Document* GTUtilsDocument::getDocument(const QString& documentName, const GTGlobals::FindOptions& options) {
     Project* project = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
@@ -72,9 +71,7 @@ Document* GTUtilsDocument::getDocument(const QString& documentName, const GTGlob
     }
     GT_FAIL("Document is not found: " + documentName, nullptr);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkDocument"
 void GTUtilsDocument::checkDocument(const QString& documentName, const GObjectViewFactoryId& id) {
     // TODO: rework the whole method to use ProjectTreeView to check if document is available.
     Document* document = getDocument(documentName);
@@ -94,9 +91,7 @@ void GTUtilsDocument::checkDocument(const QString& documentName, const GObjectVi
     GObjectViewFactoryId viewFactoryId = view->getFactoryId();
     GT_CHECK(viewFactoryId == id, "View's GObjectViewFactoryId is " + viewFactoryId + ", not " + id + ", document: " + documentName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "removeDocument"
 void GTUtilsDocument::removeDocument(const QString& documentName, GTGlobals::UseMethod method) {
     switch (method) {
         case GTGlobals::UseMouse: {
@@ -114,9 +109,7 @@ void GTUtilsDocument::removeDocument(const QString& documentName, GTGlobals::Use
     }
     GTUtilsTaskTreeView::waitTaskFinished();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getDocumentGObjectView"
 GObjectViewController* GTUtilsDocument::getDocumentGObjectView(Document* d) {
     GT_CHECK_RESULT(d != nullptr, "Document* is NULL", nullptr);
 
@@ -129,17 +122,13 @@ GObjectViewController* GTUtilsDocument::getDocumentGObjectView(Document* d) {
 
     return nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isDocumentLoaded"
 bool GTUtilsDocument::isDocumentLoaded(const QString& documentName) {
     QModelIndex index = GTUtilsProjectTreeView::findIndex(GTUtilsProjectTreeView::getTreeView(), documentName);
     QString s = index.data().toString();
     return !s.contains("unloaded");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "saveDocument"
 void GTUtilsDocument::saveDocument(const QString& documentName) {
     Runnable* popupChooser = new PopupChooser({ACTION_PROJECT__SAVE_DOCUMENT}, GTGlobals::UseMouse);
 
@@ -149,9 +138,7 @@ void GTUtilsDocument::saveDocument(const QString& documentName) {
 
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "unloadDocument"
 void GTUtilsDocument::unloadDocument(const QString& documentName, bool waitForMessageBox) {
     GT_CHECK_RESULT(isDocumentLoaded(documentName), "Document is not loaded", );
 
@@ -168,9 +155,7 @@ void GTUtilsDocument::unloadDocument(const QString& documentName, bool waitForMe
 
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "loadDocument"
 void GTUtilsDocument::loadDocument(const QString& documentName) {
     GT_CHECK_RESULT(!isDocumentLoaded(documentName), "Document is loaded", );
 
@@ -179,23 +164,17 @@ void GTUtilsDocument::loadDocument(const QString& documentName) {
 
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "lockDocument"
 void GTUtilsDocument::lockDocument(const QString& documentName) {
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Lock document for editing"}));
     GTUtilsProjectTreeView::click(documentName, Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "unlockDocument"
 void GTUtilsDocument::unlockDocument(const QString& documentName) {
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Unlock document for editing"}));
     GTUtilsProjectTreeView::click(documentName, Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkIfDocumentIsLocked"
 void GTUtilsDocument::checkIfDocumentIsLocked(const QString& documentName, bool isLocked) {
     const QIcon actualIcon = GTUtilsProjectTreeView::getIcon(GTUtilsProjectTreeView::findIndex({documentName}));
     const QIcon unlockedDocumentIcon(":/core/images/document.png");
@@ -206,7 +185,6 @@ void GTUtilsDocument::checkIfDocumentIsLocked(const QString& documentName, bool 
         GT_CHECK(actualIcon.pixmap(16).toImage() == unlockedDocumentIcon.pixmap(16).toImage(), QString("The '%1' document is unexpectedly locked").arg(documentName));
     }
 }
-#undef GT_METHOD_NAME
 
 QList<GObjectViewController*> GTUtilsDocument::getAllGObjectViews() {
     QList<GObjectViewController*> gObjectViews;

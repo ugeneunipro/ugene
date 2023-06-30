@@ -102,7 +102,6 @@ TrimmomaticDialogFiller::TrimmomaticDialogFiller(CustomScenario* customScenario)
     a = U2::TrimmomaticDialogFiller::Action::AddSteps;
 }
 
-#define GT_METHOD_NAME "run"
 void TrimmomaticDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -243,7 +242,6 @@ void TrimmomaticDialogFiller::removeSteps() {
     }
 }
 
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace U2

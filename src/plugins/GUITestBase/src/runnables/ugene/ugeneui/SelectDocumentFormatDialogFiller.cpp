@@ -34,13 +34,11 @@ SelectDocumentFormatDialogFiller::SelectDocumentFormatDialogFiller(CustomScenari
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::SelectDocumentFormatDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void SelectDocumentFormatDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

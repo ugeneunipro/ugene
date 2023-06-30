@@ -33,7 +33,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTClipboard"
 
-#define GT_METHOD_NAME "text"
 QString GTClipboard::text() {
     GTGlobals::sleep(300);
 
@@ -63,9 +62,7 @@ QString GTClipboard::text() {
     GTThread::waitForMainThread();
     return clipboardText;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkHasNonEmptyImage"
 void GTClipboard::checkHasNonEmptyImage() {
     class Scenario : public CustomScenario {
     public:
@@ -89,9 +86,7 @@ void GTClipboard::checkHasNonEmptyImage() {
     GTThread::waitForMainThread();
     GT_CHECK(!image.isNull(), "Clipboard image is empty");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setText"
 void GTClipboard::setText(QString text) {
     class Scenario : public CustomScenario {
     public:
@@ -112,7 +107,6 @@ void GTClipboard::setText(QString text) {
     GTThread::waitForMainThread();
 }
 
-#undef GT_METHOD_NAME
 
 namespace {
 QList<QUrl> toLocalQUrls(const QList<QString>& urls) {
@@ -132,7 +126,6 @@ QList<QUrl> toLocalQUrls(const QList<QString>& urls) {
 }
 }  // namespace
 
-#define GT_METHOD_NAME "setUrls"
 void GTClipboard::setUrls(const QList<QString>& urls) {
     class Scenario : public CustomScenario {
         QList<QUrl> urls;
@@ -157,9 +150,7 @@ void GTClipboard::setUrls(const QList<QString>& urls) {
     GTThread::waitForMainThread();
 }
 
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clear"
 void GTClipboard::clear() {
     class Scenario : public CustomScenario {
     public:
@@ -171,7 +162,6 @@ void GTClipboard::clear() {
     GTThread::runInMainThread(new Scenario());
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

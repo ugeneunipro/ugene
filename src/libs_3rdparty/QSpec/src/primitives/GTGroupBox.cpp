@@ -30,22 +30,17 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTGroupBox"
 
-#define GT_METHOD_NAME "getChecked"
 bool GTGroupBox::getChecked(QGroupBox* groupBox) {
     GT_CHECK_RESULT(groupBox != NULL, "QGroupBox is NULL", false);
     GT_CHECK_RESULT(groupBox->isEnabled(), "QGroupBox is disabled", false);
 
     return groupBox->isChecked();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getChecked"
 bool GTGroupBox::getChecked(const QString& groupBoxName, QWidget* parent) {
     return GTGroupBox::getChecked(GTWidget::findGroupBox(groupBoxName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setChecked"
 void GTGroupBox::setChecked(QGroupBox* groupBox, bool checked) {
     GT_CHECK(groupBox != NULL, "QGroupBox is NULL");
 
@@ -77,19 +72,14 @@ void GTGroupBox::setChecked(QGroupBox* groupBox, bool checked) {
 
     GT_CHECK(checked == groupBox->isChecked(), "Can't set a new state");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setChecked"
 void GTGroupBox::setChecked(const QString& groupBoxName, bool checked, QWidget* parent) {
     GTGroupBox::setChecked(GTWidget::findGroupBox(groupBoxName, parent), checked);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setChecked"
 void GTGroupBox::setChecked(const QString& groupBoxName, QWidget* parent) {
     GTGroupBox::setChecked(GTWidget::findGroupBox(groupBoxName, parent));
 }
-#undef GT_METHOD_NAME
 
 QRect GTGroupBox::getCheckBoxRect(QGroupBox* groupBox) {
     QStyleOptionGroupBox options;

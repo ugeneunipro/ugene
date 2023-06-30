@@ -34,7 +34,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTMenu"
 
-#define GT_METHOD_NAME "clickMainMenuItem"
 void GTMenuPrivate::clickMainMenuItem(const QStringList& itemPath, GTGlobals::UseMethod popupChooserMethod, Qt::MatchFlag matchFlag) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path validation: { %1 }").arg(itemPath.join(" -> ")));
     QStringList cutItemPath = itemPath;
@@ -42,9 +41,7 @@ void GTMenuPrivate::clickMainMenuItem(const QStringList& itemPath, GTGlobals::Us
     GTUtilsDialog::waitForDialog(new PopupChooserByText(cutItemPath, popupChooserMethod, matchFlag));
     showMainMenu(menuName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkMainMenuItemState"
 void GTMenuPrivate::checkMainMenuItemState(const QStringList& itemPath, PopupChecker::CheckOption expectedState) {
     GT_CHECK(itemPath.count() > 1, QString("Menu item path validation: { %1 }").arg(itemPath.join(" -> ")));
 
@@ -54,9 +51,7 @@ void GTMenuPrivate::checkMainMenuItemState(const QStringList& itemPath, PopupChe
     showMainMenu(menuName);
     GTGlobals::sleep(100);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkMainMenuItemState"
 void GTMenuPrivate::checkMainMenuItemsState(const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState) {
     GT_CHECK(menuPath.count() > 0, QString("Menu path is too short: { %1 }").arg(menuPath.join(" -> ")));
     GT_CHECK(itemsNames.count() > 0, QString("There are no menu items to check: %1").arg(itemsNames.join(", ")));
@@ -67,9 +62,7 @@ void GTMenuPrivate::checkMainMenuItemsState(const QStringList& menuPath, const Q
     showMainMenu(menuName);
     GTGlobals::sleep(100);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "showMainMenu"
 void GTMenuPrivate::showMainMenu(const QString& menuName) {
     QMainWindow* mainWindow = nullptr;
     QList<QAction*> resultList;
@@ -97,7 +90,6 @@ void GTMenuPrivate::showMainMenu(const QString& menuName) {
     GTMouseDriver::click(gPos);
     GTGlobals::sleep(1000);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

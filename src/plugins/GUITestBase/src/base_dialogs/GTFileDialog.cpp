@@ -70,7 +70,6 @@ GTFileDialogUtils::GTFileDialogUtils(CustomScenario* customScenario)
       textInput(Typing) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void GTFileDialogUtils::commonScenario() {
     fileDialog = GTWidget::getActiveModalWidget();
 
@@ -100,9 +99,7 @@ void GTFileDialogUtils::commonScenario() {
         clickButton(button);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "init"
 void GTFileDialogUtils::init(const QString& filePath) {
     const QFileInfo fileInfo(filePath);
     path = fileInfo.absoluteDir().absolutePath();
@@ -111,7 +108,6 @@ void GTFileDialogUtils::init(const QString& filePath) {
         path += '/';
     }
 }
-#undef GT_METHOD_NAME
 
 GTFileDialogUtils_list::GTFileDialogUtils_list(const QString& _path, const QStringList& _fileNamesList)
     : GTFileDialogUtils(_path, "", Open, GTGlobals::UseMouse),
@@ -126,7 +122,6 @@ GTFileDialogUtils_list::GTFileDialogUtils_list(const QStringList& _filePaths)
       filePaths(_filePaths) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void GTFileDialogUtils_list::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget();
 
@@ -134,9 +129,7 @@ void GTFileDialogUtils_list::commonScenario() {
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setNameList"
 void GTFileDialogUtils_list::setNameList(const QStringList& nameList, QWidget* parent) {
     QString str;
     for (QString name : qAsConst(nameList)) {
@@ -147,7 +140,6 @@ void GTFileDialogUtils_list::setNameList(const QStringList& nameList, QWidget* p
     }
     GTLineEdit::setText(FILE_NAME_LINE_EDIT, str, parent, false, true);
 }
-#undef GT_METHOD_NAME
 
 void GTFileDialogUtils_list::selectFile() {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
@@ -171,7 +163,6 @@ void GTFileDialogUtils::openFileDialog() {
     }
 }
 
-#define GT_METHOD_NAME "setPath"
 bool GTFileDialogUtils::setPath() {
     auto comboBox = GTWidget::findComboBox(CURRENT_FODLER_COMBO_BOX, fileDialog);
     if (QDir::toNativeSeparators(comboBox->currentText()) + QDir::separator() == QDir::toNativeSeparators(path)) {
@@ -185,17 +176,13 @@ bool GTFileDialogUtils::setPath() {
     GT_CHECK_RESULT(lineEdit->text() == path, "Can't open file \"" + lineEdit->text() + "\"", false);
     return true;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setName"
 void GTFileDialogUtils::setName() {
     auto lineEdit = GTWidget::findLineEdit(FILE_NAME_LINE_EDIT, fileDialog);
     lineEdit->setCompleter(nullptr);
     GTLineEdit::setText(lineEdit, fileName, false, textInput == CopyPaste);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectFile"
 void GTFileDialogUtils::selectFile() {
     auto treeWidget = GTWidget::findTreeView("treeView", fileDialog);
 
@@ -226,9 +213,7 @@ void GTFileDialogUtils::selectFile() {
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickButton"
 void GTFileDialogUtils::clickButton(const Button& buttonType) {
     static const QMap<Button, QString> BUTTON_NAME_MAP = {
         {Open, "Open"},
@@ -253,9 +238,7 @@ void GTFileDialogUtils::clickButton(const Button& buttonType) {
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setViewMode"
 void GTFileDialogUtils::setViewMode(const ViewMode& viewMode) {
     static const QMap<ViewMode, QString> BUTTON_NAME_MAP = {
         {List, "listModeButton"},
@@ -278,9 +261,7 @@ void GTFileDialogUtils::setViewMode(const ViewMode& viewMode) {
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "applyFilter"
 void GTFileDialogUtils::applyFilter() {
     if (filter.isEmpty()) {
         return;
@@ -288,9 +269,7 @@ void GTFileDialogUtils::applyFilter() {
     auto comboBox = GTWidget::findComboBox(FILE_TYPE_COMBO_BOX, fileDialog);
     GTComboBox::selectItemByText(comboBox, filter, GTGlobals::UseMouse);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openFile"
 void GTFileDialog::openFile(const QString& path, const QString& fileName, Button button, GTGlobals::UseMethod m) {
     bool isDirectApiMode = button == Open && qgetenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES") == "1";
     if (!isDirectApiMode) {
@@ -314,18 +293,14 @@ void GTFileDialog::openFile(const QString& path, const QString& fileName, Button
     GTThread::runInMainThread(new OpenFileScenario(path + "/" + fileName));
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openFileWithDialog"
 void GTFileDialog::openFileWithDialog(const QString& path, const QString& fileName, Button button, GTGlobals::UseMethod m) {
     auto utils = new GTFileDialogUtils(path, fileName, (GTFileDialogUtils::Button)button, m);
     GTUtilsDialog::waitForDialog(utils);
     utils->openFileDialog();
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openFileByPath"
 void GTFileDialog::openFile(const QString& filePath, Button button, GTGlobals::UseMethod m) {
     int num = filePath.lastIndexOf('/');
     if (num == -1) {
@@ -337,7 +312,6 @@ void GTFileDialog::openFile(const QString& filePath, Button button, GTGlobals::U
 
     openFile(path, name, button, m);
 }
-#undef GT_METHOD_NAME
 
 void GTFileDialog::openFileList(const QString& path, const QStringList& fileNameList) {
     auto fileListFiller = new GTFileDialogUtils_list(path, fileNameList);

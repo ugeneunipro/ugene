@@ -78,14 +78,11 @@ const QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::innerWid
 
 #define GT_CLASS_NAME "GTUtilsOptionPanelMSA"
 
-#define GT_METHOD_NAME "toggleTab"
 void GTUtilsOptionPanelMsa::toggleTab(GTUtilsOptionPanelMsa::Tabs tab) {
     GTWidget::click(GTWidget::findWidget(tabsNames[tab]));
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openTab"
 QWidget* GTUtilsOptionPanelMsa::openTab(Tabs tab) {
     if (!isTabOpened(tab)) {
         toggleTab(tab);
@@ -94,32 +91,24 @@ QWidget* GTUtilsOptionPanelMsa::openTab(Tabs tab) {
     QString widgetName = innerWidgetNames[tab];
     return GTWidget::findWidget(widgetName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "closeTab"
 void GTUtilsOptionPanelMsa::closeTab(Tabs tab) {
     checkTabIsOpened(tab);
     toggleTab(tab);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isTabOpened"
 bool GTUtilsOptionPanelMsa::isTabOpened(Tabs tab) {
     auto innerTabWidget = GTWidget::findWidget(innerWidgetNames[tab], nullptr, {false});
     return innerTabWidget != nullptr && innerTabWidget->isVisible();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkTabIsOpened"
 QWidget* GTUtilsOptionPanelMsa::checkTabIsOpened(Tabs tab) {
     QString name = innerWidgetNames[tab];
     auto innerTabWidget = GTWidget::findWidget(name);
     GT_CHECK_RESULT(innerTabWidget->isVisible(), "MSA Editor options panel is not opened: " + name, nullptr);
     return innerTabWidget;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addReference"
 void GTUtilsOptionPanelMsa::addReference(const QString& seqName, AddRefMethod method) {
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
     // Option panel should be opened to use this method.
@@ -142,22 +131,16 @@ void GTUtilsOptionPanelMsa::addReference(const QString& seqName, AddRefMethod me
     }
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "removeReference"
 void GTUtilsOptionPanelMsa::removeReference() {
     GTWidget::click(GTWidget::findWidget("deleteSeq"));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReference"
 QString GTUtilsOptionPanelMsa::getReference() {
     openTab(General);
     return GTLineEdit::getText("sequenceLineEdit");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLength"
 int GTUtilsOptionPanelMsa::getLength() {
     auto alignmentLengthLabel = GTWidget::findLabel("alignmentLength");
     bool ok;
@@ -165,9 +148,7 @@ int GTUtilsOptionPanelMsa::getLength() {
     GT_CHECK_RESULT(ok, "label text is not int", -1);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getHeight"
 int GTUtilsOptionPanelMsa::getHeight() {
     auto alignmentHeightLabel = GTWidget::findLabel("alignmentHeight");
     bool ok;
@@ -175,9 +156,7 @@ int GTUtilsOptionPanelMsa::getHeight() {
     GT_CHECK_RESULT(ok, "label text is not int", -1);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "copySelection"
 void GTUtilsOptionPanelMsa::copySelection(const CopyFormat& format) {
     openTab(General);
     auto copyType = GTWidget::findComboBox("copyType");
@@ -220,48 +199,36 @@ void GTUtilsOptionPanelMsa::copySelection(const CopyFormat& format) {
 
     GTWidget::click(copyButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setColorScheme"
 void GTUtilsOptionPanelMsa::setColorScheme(const QString& colorSchemeName, GTGlobals::UseMethod method) {
     openTab(Highlighting);
     GTComboBox::selectItemByText(GTWidget::findComboBox("colorScheme"), colorSchemeName, method);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getColorScheme"
 QString GTUtilsOptionPanelMsa::getColorScheme() {
     openTab(Highlighting);
     auto colorScheme = GTWidget::findComboBox("colorScheme");
     return colorScheme->currentText();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setHighlightingScheme"
 void GTUtilsOptionPanelMsa::setHighlightingScheme(const QString& highlightingSchemeName) {
     openTab(Highlighting);
     GTComboBox::selectItemByText(GTWidget::findComboBox("highlightingScheme"), highlightingSchemeName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addFirstSeqToPA"
 void GTUtilsOptionPanelMsa::addFirstSeqToPA(const QString& seqName, AddRefMethod method) {
     addSeqToPA(seqName, method, 1);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addSecondSeqToPA"
 void GTUtilsOptionPanelMsa::addSecondSeqToPA(const QString& seqName, AddRefMethod method) {
     addSeqToPA(seqName, method, 2);
 }
-#undef GT_METHOD_NAME
 
 QString GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(int num) {
     auto le = qobject_cast<QLineEdit*>(getWidget("sequenceLineEdit", num));
     return le->text();
 }
 
-#define GT_METHOD_NAME "addSeqToPA"
 void GTUtilsOptionPanelMsa::addSeqToPA(const QString& seqName, AddRefMethod method, int number) {
     GT_CHECK(number == 1 || number == 2, "number must be 1 or 2");
     GT_CHECK(!seqName.isEmpty(), "sequence name is empty");
@@ -284,54 +251,40 @@ void GTUtilsOptionPanelMsa::addSeqToPA(const QString& seqName, AddRefMethod meth
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAddButton"
 QToolButton* GTUtilsOptionPanelMsa::getAddButton(int number) {
     auto result = qobject_cast<QToolButton*>(getWidget("addSeq", number));
     GT_CHECK_RESULT(result != nullptr, "toolbutton is NULL", nullptr);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getDeleteButton"
 QToolButton* GTUtilsOptionPanelMsa::getDeleteButton(int number) {
     auto result = qobject_cast<QToolButton*>(getWidget("deleteSeq", number));
     GT_CHECK_RESULT(result != nullptr, "toolbutton is NULL", nullptr);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAlignButton"
 QPushButton* GTUtilsOptionPanelMsa::getAlignButton() {
     openTab(PairwiseAlignment);
     return GTWidget::findPushButton("alignButton");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setPairwiseAlignmentAlgorithm"
 void GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm(const QString& algorithm) {
     openTab(PairwiseAlignment);
     GTComboBox::selectItemByText(GTWidget::findComboBox("algorithmListComboBox"), algorithm);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setThreshold"
 void GTUtilsOptionPanelMsa::setThreshold(int threshold) {
     openTab(General);
     GTSlider::setValue(GTWidget::findSlider("thresholdSlider"), threshold);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getThreshold"
 int GTUtilsOptionPanelMsa::getThreshold() {
     openTab(General);
     auto thresholdSlider = GTWidget::findSlider("thresholdSlider");
     return thresholdSlider->value();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setThresholdComparison"
 void GTUtilsOptionPanelMsa::setThresholdComparison(GTUtilsOptionPanelMsa::ThresholdComparison comparison) {
     openTab(Highlighting);
     switch (comparison) {
@@ -345,9 +298,7 @@ void GTUtilsOptionPanelMsa::setThresholdComparison(GTUtilsOptionPanelMsa::Thresh
             GT_FAIL(QString("An unknown threshold comparison type: %1").arg(comparison), );
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getThresholdComparison"
 GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdComparison() {
     openTab(Highlighting);
     auto thresholdLessRb = GTWidget::findRadioButton("thresholdLessRb");
@@ -357,43 +308,31 @@ GTUtilsOptionPanelMsa::ThresholdComparison GTUtilsOptionPanelMsa::getThresholdCo
     GT_CHECK_RESULT(lessOrEqual ^ greaterOrEqual, "Incorrect state of threshold comparison radiobuttons", LessOrEqual);
     return lessOrEqual ? LessOrEqual : GreaterOrEqual;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setUseDotsOption"
 void GTUtilsOptionPanelMsa::setUseDotsOption(bool useDots) {
     openTab(Highlighting);
     GTCheckBox::setChecked(GTWidget::findCheckBox("useDots"), useDots);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isUseDotsOptionSet"
 bool GTUtilsOptionPanelMsa::isUseDotsOptionSet() {
     openTab(Highlighting);
     auto useDots = GTWidget::findCheckBox("useDots");
     return useDots->isChecked();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExportConsensusOutputPath"
 void GTUtilsOptionPanelMsa::setExportConsensusOutputPath(const QString& filePath) {
     openTab(ExportConsensus);
     GTLineEdit::setText("pathLe", filePath, nullptr);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getExportConsensusOutputPath"
 QString GTUtilsOptionPanelMsa::getExportConsensusOutputPath() {
     return GTLineEdit::getText("pathLe");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getExportConsensusOutputFormat"
 QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat() {
     return GTComboBox::getCurrentText("formatCb");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "enterPattern"
 void GTUtilsOptionPanelMsa::enterPattern(const QString& pattern, bool useCopyPaste /*= false*/) {
     auto patternEdit = GTWidget::findPlainTextEdit("textPattern");
     GTWidget::click(patternEdit);
@@ -408,16 +347,12 @@ void GTUtilsOptionPanelMsa::enterPattern(const QString& pattern, bool useCopyPas
         GTPlainTextEdit::setText(patternEdit, pattern);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getPattern"
 QString GTUtilsOptionPanelMsa::getPattern() {
     auto patternEdit = GTWidget::findPlainTextEdit("textPattern");
     return patternEdit->toPlainText();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setAlgorithm"
 void GTUtilsOptionPanelMsa::setAlgorithm(const QString& algorithm) {
     auto algoBox = GTWidget::findComboBox("boxAlgorithm");
 
@@ -427,18 +362,14 @@ void GTUtilsOptionPanelMsa::setAlgorithm(const QString& algorithm) {
     GTComboBox::selectItemByText(algoBox, algorithm);
     GTGlobals::sleep(2500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setMatchPercentage"
 void GTUtilsOptionPanelMsa::setMatchPercentage(int percentage) {
     auto spinMatchBox = GTWidget::findSpinBox("spinBoxMatch");
 
     GTSpinBox::setValue(spinMatchBox, percentage, GTGlobals::UseKeyBoard);
     GTGlobals::sleep(2500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setCheckedRemoveOverlappedResults"
 void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(bool setChecked) {
     auto overlapsBox = GTWidget::findCheckBox("removeOverlapsBox");
 
@@ -447,78 +378,58 @@ void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(bool setChecked) {
     }
     GTCheckBox::setChecked("removeOverlapsBox", setChecked);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkResultsText"
 void GTUtilsOptionPanelMsa::checkResultsText(const QString& expectedText) {
     GTUtilsTaskTreeView::waitTaskFinished();
     auto label = GTWidget::findLabel("resultLabel");
     QString actualText = label->text();
     CHECK_SET_ERR(actualText == expectedText, QString("Wrong result. Expected: %1, got: %2").arg(expectedText).arg(actualText));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickNext"
 
 void GTUtilsOptionPanelMsa::clickNext() {
     auto next = GTWidget::findPushButton("nextPushButton");
     GTWidget::click(next);
 }
 
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickPrev"
 void GTUtilsOptionPanelMsa::clickPrev() {
     auto prev = GTWidget::findPushButton("prevPushButton");
     GTWidget::click(prev);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSeqLineEdit"
 QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(int number) {
     auto result = qobject_cast<QLineEdit*>(getWidget("sequenceLineEdit", number));
     GT_CHECK_RESULT(result != nullptr, "sequenceLineEdit is NULL", nullptr);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isSearchInShowHideWidgetOpened"
 bool GTUtilsOptionPanelMsa::isSearchInShowHideWidgetOpened() {
     auto searchInInnerWidget = GTWidget::findWidget("widgetSearchIn");
     return searchInInnerWidget->isVisible();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openSearchInShowHideWidget"
 void GTUtilsOptionPanelMsa::openSearchInShowHideWidget(bool open) {
     CHECK(open != isSearchInShowHideWidgetOpened(), );
     GTWidget::click(GTWidget::findWidget("ArrowHeader_Search in"));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setRegionType"
 void GTUtilsOptionPanelMsa::setRegionType(const QString& regionType) {
     openSearchInShowHideWidget();
     GTComboBox::selectItemByText(GTWidget::findComboBox("boxRegion"), regionType);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setRegion"
 void GTUtilsOptionPanelMsa::setRegion(int from, int to) {
     openSearchInShowHideWidget();
     GTLineEdit::setText("editStart", QString::number(from));
     GTLineEdit::setText("editEnd", QString::number(to));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setSearchContext"
 void GTUtilsOptionPanelMsa::setSearchContext(const QString& context) {
     auto searchContextBox = GTWidget::findComboBox("searchContextComboBox");
     GTComboBox::selectItemByText(searchContextBox, context);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getWidget"
 QWidget* GTUtilsOptionPanelMsa::getWidget(const QString& widgetName, int number) {
     auto sequenceContainerWidget = GTWidget::findWidget("sequenceContainerWidget");
     QList<QWidget*> widgetList = sequenceContainerWidget->findChildren<QWidget*>(widgetName);
@@ -536,17 +447,13 @@ QWidget* GTUtilsOptionPanelMsa::getWidget(const QString& widgetName, int number)
     }
     GT_FAIL("Number should be 1 or 2", nullptr);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAlphabetLabelText"
 QString GTUtilsOptionPanelMsa::getAlphabetLabelText() {
     checkTabIsOpened(General);
     auto label = GTWidget::findLabel("alignmentAlphabet");
     return label->text();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setOutputFile"
 void GTUtilsOptionPanelMsa::setOutputFile(const QString& outputFilePath) {
     auto tabWidget = checkTabIsOpened(PairwiseAlignment);
     auto outputLineEdit = GTWidget::findLineEdit("outputFileLineEdit");
@@ -556,7 +463,6 @@ void GTUtilsOptionPanelMsa::setOutputFile(const QString& outputFilePath) {
 
     GTLineEdit::setText(outputLineEdit, outputFilePath, tabWidget);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace U2

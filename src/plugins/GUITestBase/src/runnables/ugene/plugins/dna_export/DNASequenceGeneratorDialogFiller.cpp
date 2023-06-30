@@ -44,7 +44,6 @@ DNASequenceGeneratorDialogFiller::DNASequenceGeneratorDialogFiller(
     : Filler("DNASequenceGeneratorDialog"), model(_model) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void DNASequenceGeneratorDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -78,7 +77,6 @@ void DNASequenceGeneratorDialogFiller::commonScenario() {
     GTWidget::click(GTWidget::findButtonByText("Generate", dialog));
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

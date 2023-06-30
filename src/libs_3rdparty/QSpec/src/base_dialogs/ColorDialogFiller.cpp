@@ -32,7 +32,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ColorDialogFiller"
 
-#define GT_METHOD_NAME "commonScenario"
 void ColorDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     QList<QSpinBox*> spinList = dialog->findChildren<QSpinBox*>();
@@ -41,7 +40,6 @@ void ColorDialogFiller::commonScenario() {
     GTSpinBox::setValue(spinList.at(5), b, GTGlobals::UseKeyBoard);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace HI

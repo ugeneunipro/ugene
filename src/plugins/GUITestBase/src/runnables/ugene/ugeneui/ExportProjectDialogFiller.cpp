@@ -33,7 +33,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportProjectDialogChecker"
-#define GT_METHOD_NAME "commonScenario"
 void ExportProjectDialogChecker::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -43,11 +42,9 @@ void ExportProjectDialogChecker::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportProjectDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void ExportProjectDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -56,7 +53,6 @@ void ExportProjectDialogFiller::commonScenario() {
     }
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

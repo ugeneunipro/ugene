@@ -37,7 +37,6 @@ namespace HI {
 /** Check for dialog every twice as fast as ACTIVATION_TIME. */
 static const int DIALOG_CHECK_PERIOD = GUIDialogWaiter::ACTIVATION_TIME / 2;
 
-#define GT_METHOD_NAME "GUIDialogWaiter"
 GUIDialogWaiter::GUIDialogWaiter(Runnable* _r, const WaitSettings& _settings)
     : runnable(_r), settings(_settings) {
     GT_LOG(QString("Created a new GUIDialogWaiter for '%1' ('%2')").arg(settings.objectName).arg(settings.logName));
@@ -49,7 +48,6 @@ GUIDialogWaiter::GUIDialogWaiter(Runnable* _r, const WaitSettings& _settings)
     connect(&timer, &QTimer::timeout, this, &GUIDialogWaiter::checkDialog);
     timer.start(DIALOG_CHECK_PERIOD);
 }
-#undef GT_METHOD_NAME
 
 GUIDialogWaiter::~GUIDialogWaiter() {
     delete runnable;
@@ -68,7 +66,6 @@ static bool checkDialogNameMatches(const QString& widgetObjectName, const QStrin
     return widgetObjectName == expectedObjectName;
 }
 
-#define GT_METHOD_NAME "checkDialog"
 void GUIDialogWaiter::checkDialog() {
     if (!settings.isRandomOrderWaiter && this != getFirstOrNull(GTUtilsDialog::waiterList)) {
         return;
@@ -114,28 +111,22 @@ void GUIDialogWaiter::checkDialog() {
         }
     }
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog"
 
 QList<GUIDialogWaiter*> GTUtilsDialog::waiterList = QList<GUIDialogWaiter*>();
 
-#define GT_METHOD_NAME "buttonBox"
 QDialogButtonBox* GTUtilsDialog::buttonBox(QWidget* dialog) {
     auto buttonBox = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget("buttonBox", dialog));
     GT_CHECK_RESULT(buttonBox != nullptr, "buttonBox is nullptr", nullptr);
     return buttonBox;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickButtonBox"
 void GTUtilsDialog::clickButtonBox(QDialogButtonBox::StandardButton button) {
     clickButtonBox(QApplication::activeModalWidget(), button);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickButtonBox"
 void GTUtilsDialog::clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardButton button) {
 #ifdef Q_OS_DARWIN
     auto mbox = qobject_cast<QMessageBox*>(dialog);
@@ -161,7 +152,6 @@ void GTUtilsDialog::clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardBu
     GTWidget::click(pushButton);
 #endif
 }
-#undef GT_METHOD_NAME
 
 void GTUtilsDialog::waitForDialog(Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList) {
     auto waiter = new GUIDialogWaiter(r, settings);
@@ -192,7 +182,6 @@ void GTUtilsDialog::waitForDialog(Runnable* r, int timeout, bool isRandomOrderWa
     waitForDialog(r, settings, isPrependToList);
 }
 
-#define GT_METHOD_NAME "checkNoActiveWaiters"
 void GTUtilsDialog::checkNoActiveWaiters(int timeoutMillis) {
     GUIDialogWaiter* notFinishedWaiter = getFirstOrNull(waiterList);
     for (int time = 0; time < timeoutMillis && notFinishedWaiter != nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -208,7 +197,6 @@ void GTUtilsDialog::checkNoActiveWaiters(int timeoutMillis) {
     }
     GT_LOG("checkNoActiveWaiters found no active waiters");
 }
-#undef GT_METHOD_NAME
 
 void GTUtilsDialog::removeRunnable(Runnable* runnable) {
     for (GUIDialogWaiter* waiter : qAsConst(waiterList)) {
@@ -220,12 +208,10 @@ void GTUtilsDialog::removeRunnable(Runnable* runnable) {
     }
 }
 
-#define GT_METHOD_NAME "cleanup"
 void GTUtilsDialog::cleanup() {
     qDeleteAll(waiterList);
     waiterList.clear();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

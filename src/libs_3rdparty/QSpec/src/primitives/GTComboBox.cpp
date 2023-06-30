@@ -33,7 +33,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTComboBox"
 
-#define GT_METHOD_NAME "selectItemByIndex"
 void GTComboBox::selectItemByIndex(QComboBox* comboBox, int index, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
     if (comboBox->currentIndex() == index) {
@@ -102,38 +101,28 @@ void GTComboBox::selectItemByIndex(QComboBox* comboBox, int index, GTGlobals::Us
         GTKeyboardDriver::keyClick(Qt::Key_Enter);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItemByText"
 void GTComboBox::selectItemByText(QComboBox* comboBox, const QString& text, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
     int index = comboBox->findText(text, Qt::MatchExactly);
     GT_CHECK(index != -1, "Text " + text + " was not found");
     selectItemByIndex(comboBox, index, method);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItemByText"
 void GTComboBox::selectItemByText(const QString& comboBoxName, QWidget* parent, const QString& text, GTGlobals::UseMethod method) {
     selectItemByText(GTWidget::findComboBox(comboBoxName, parent), text, method);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getCurrentText"
 QString GTComboBox::getCurrentText(QComboBox* const comboBox) {
 
     GT_CHECK_RESULT(comboBox != nullptr, "comboBox is NULL", "");
     return comboBox->currentText();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getCurrentText"
 QString GTComboBox::getCurrentText(const QString& comboBoxName, QWidget* parent) {
     return getCurrentText(GTWidget::findComboBox(comboBoxName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getValues"
 QStringList GTComboBox::getValues(QComboBox* comboBox) {
     QStringList result;
     GT_CHECK_RESULT(comboBox != nullptr, "Combobox is NULL", result);
@@ -143,9 +132,7 @@ QStringList GTComboBox::getValues(QComboBox* comboBox) {
     return result;
 }
 
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkValues"
 void GTComboBox::checkValues(QComboBox* comboBox, const QStringList& values) {
     GT_CHECK(comboBox != nullptr, "comboBox is NULL");
 
@@ -186,9 +173,7 @@ void GTComboBox::checkValues(QComboBox* comboBox, const QStringList& values) {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkValuesPresence"
 void GTComboBox::checkValuesPresence(QComboBox* comboBox, const QStringList& values) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
 
@@ -197,23 +182,18 @@ void GTComboBox::checkValuesPresence(QComboBox* comboBox, const QStringList& val
         GT_CHECK(index != -1, "ComboBox item with text not found: " + s);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkCurrentValue"
 void GTComboBox::checkCurrentValue(QComboBox* comboBox, const QString& expectedText) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
     QString currentText = comboBox->currentText();
     GT_CHECK(currentText == expectedText, QString("Unexpected value: expected '%1', got '%2'").arg(expectedText).arg(currentText));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkCurrentUserDataValue"
 void GTComboBox::checkCurrentUserDataValue(QComboBox* comboBox, const QString& expectedValue) {
     GT_CHECK(comboBox != nullptr, "ComboBox is NULL");
     QString dataValue = comboBox->currentData(Qt::UserRole).toString();
     GT_CHECK(dataValue == expectedValue, QString("Unexpected user data value: expected '%1', got '%2'").arg(expectedValue).arg(dataValue));
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

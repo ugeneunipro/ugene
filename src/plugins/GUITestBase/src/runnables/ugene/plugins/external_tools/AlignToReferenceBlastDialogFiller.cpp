@@ -49,7 +49,6 @@ AlignToReferenceBlastDialogFiller::AlignToReferenceBlastDialogFiller(CustomScena
     : Filler("AlignToReferenceBlastDialog", c) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void AlignToReferenceBlastDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -70,15 +69,11 @@ void AlignToReferenceBlastDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setReference"
 void AlignToReferenceBlastDialogFiller::setReference(const QString& referenceUrl, QWidget* dialog) {
     GTLineEdit::setText("referenceLineEdit", referenceUrl, dialog);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setReads"
 void AlignToReferenceBlastDialogFiller::setReads(const QStringList& readUrls, QWidget* dialog) {
     auto addReadButton = GTWidget::findWidget("addReadButton");
     auto readsListWidget = GTWidget::findListWidget("readsListWidget", dialog);
@@ -94,13 +89,10 @@ void AlignToReferenceBlastDialogFiller::setReads(const QStringList& readUrls, QW
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(uniqueReads));
     GTWidget::click(addReadButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setDestination"
 void AlignToReferenceBlastDialogFiller::setDestination(const QString& destinationUrl, QWidget* dialog) {
     GTLineEdit::setText("outputLineEdit", destinationUrl, dialog);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

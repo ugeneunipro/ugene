@@ -55,7 +55,6 @@ ExportSelectedRegionFiller::ExportSelectedRegionFiller(CustomScenario* customSce
       translate(false), saveAllAminoFrames(true) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportSelectedRegionFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -77,7 +76,6 @@ void ExportSelectedRegionFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 void ExportSelectedRegionFiller::setPath(const QString& value) {
     path = value;
@@ -113,7 +111,6 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
     mergeRadioButtons[Merge] = "mergeButton";
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -161,7 +158,6 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

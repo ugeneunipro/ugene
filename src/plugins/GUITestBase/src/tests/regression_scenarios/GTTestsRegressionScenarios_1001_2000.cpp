@@ -3345,7 +3345,6 @@ GUI_TEST_CLASS_DEFINITION(test_1326) {
             : Filler("Call Variants Wizard") {
         }
 #define GT_CLASS_NAME "GTUtilsDialog::CallVariantsWizardFiller"
-#define GT_METHOD_NAME "run"
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             QSizePolicy actualPolicy = dialog->sizePolicy();
@@ -3362,7 +3361,6 @@ GUI_TEST_CLASS_DEFINITION(test_1326) {
             CHECK_SET_ERR(prevSize == dialog->size(), "size should not change");
             GTWidget::click(GTWidget::findButtonByText("Cancel"));
         }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
     };
     GTUtilsDialog::waitForDialog(new CallVariantsWizardFiller());

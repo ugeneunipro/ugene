@@ -31,7 +31,6 @@
 namespace HI {
 #define GT_CLASS_NAME "GTRadioButton"
 
-#define GT_METHOD_NAME "click"
 void GTRadioButton::click(QRadioButton* radioButton) {
     GT_CHECK(radioButton != nullptr, "RadioButton is NULL");
     if (radioButton->isChecked()) {
@@ -44,15 +43,11 @@ void GTRadioButton::click(QRadioButton* radioButton) {
     GTMouseDriver::click();
     checkIsChecked(radioButton, true);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "click"
 void GTRadioButton::click(const QString& radioButtonName, QWidget* parent) {
     click(GTWidget::findRadioButton(radioButtonName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkIsChecked"
 void GTRadioButton::checkIsChecked(QRadioButton* button, bool expectedState) {
     GT_CHECK(button != nullptr, "QRadioButton == NULL");
     bool state = button->isChecked();
@@ -62,7 +57,6 @@ void GTRadioButton::checkIsChecked(QRadioButton* button, bool expectedState) {
     }
     GT_CHECK(state == expectedState, QString("Incorrect radio button state: expected '%1', got '%2', button: %3").arg(expectedState).arg(state).arg(button->objectName()));
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

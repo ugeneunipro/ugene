@@ -30,7 +30,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTPlainTextEdit"
 
-#define GT_METHOD_NAME "setText"
 void GTPlainTextEdit::setText(QPlainTextEdit* textEdit, const QString& text) {
     GT_CHECK(textEdit != nullptr, "textEdit is NULL");
     GT_CHECK(!textEdit->isReadOnly(), "textEdit is read-only: " + textEdit->objectName());
@@ -44,9 +43,7 @@ void GTPlainTextEdit::setText(QPlainTextEdit* textEdit, const QString& text) {
     GTWidget::setFocus(textEdit);
     GTKeyboardDriver::keySequence(text);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clear"
 void GTPlainTextEdit::clear(QPlainTextEdit* textEdit) {
     GT_CHECK(textEdit != nullptr, "textEdit is NULL");
     GT_CHECK(!textEdit->isReadOnly(), "textEdit is read-only: " + textEdit->objectName());
@@ -67,6 +64,5 @@ void GTPlainTextEdit::clear(QPlainTextEdit* textEdit) {
     }
     GT_CHECK(currentText.isEmpty(), "Can't clear text, plainTextEdit is not empty: " + currentText);
 }
-#undef GT_METHOD_NAME
 
 }  // namespace HI

@@ -37,7 +37,6 @@ SequenceReadingModeSelectorDialogFiller::SequenceReadingModeSelectorDialogFiller
       cancel(false) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void SequenceReadingModeSelectorDialogFiller::commonScenario() {
     GTGlobals::sleep(1000);
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -66,7 +65,6 @@ void SequenceReadingModeSelectorDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

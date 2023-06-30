@@ -30,7 +30,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTMainWindow"
 
-#define GT_METHOD_NAME "getMainWindows"
 QList<QMainWindow*> GTMainWindow::getMainWindows() {
     QList<QMainWindow*> list;
     foreach (QWindow* window, qApp->topLevelWindows()) {
@@ -42,9 +41,7 @@ QList<QMainWindow*> GTMainWindow::getMainWindows() {
     GT_CHECK_RESULT(!list.isEmpty(), "No one main window found", list);
     return list;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getMainWindowsAsWidget"
 QList<QWidget*> GTMainWindow::getMainWindowsAsWidget() {
     QList<QWidget*> mainWindows;
     QList<QWidget*> topLevelWidgets = qApp->topLevelWidgets();
@@ -63,9 +60,7 @@ QList<QWidget*> GTMainWindow::getMainWindowsAsWidget() {
         GT_CHECK_RESULT(!mainWindows.isEmpty(), "No main window widget found", mainWindows);
     return mainWindows;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getMainWindowWidgetByName"
 QWidget* GTMainWindow::getMainWindowWidgetByName(const QString& name) {
     for (QWidget* w : GTMainWindow::getMainWindowsAsWidget()) {
         if (w->objectName() == name) {
@@ -74,9 +69,7 @@ QWidget* GTMainWindow::getMainWindowWidgetByName(const QString& name) {
     }
     GT_FAIL(QString("There is no window named '%1'").arg(name), nullptr)
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkTitle"
 void GTMainWindow::checkTitle(const QString& title) {
     QList<QWidget*> mainWindowWidgets = getMainWindowsAsWidget();
     for (const QWidget* widget : qAsConst(mainWindowWidgets)) {
@@ -86,7 +79,6 @@ void GTMainWindow::checkTitle(const QString& title) {
     }
     GT_FAIL(QString("Can't find window with the title: '%1'").arg(title), );
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

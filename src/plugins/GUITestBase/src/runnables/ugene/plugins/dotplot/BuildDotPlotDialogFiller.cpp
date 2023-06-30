@@ -48,7 +48,6 @@ BuildDotPlotFiller::BuildDotPlotFiller(
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
-#define GT_METHOD_NAME "commonScenario"
 void BuildDotPlotFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -72,7 +71,6 @@ void BuildDotPlotFiller::commonScenario() {
         GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
     }
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

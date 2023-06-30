@@ -32,7 +32,6 @@ StructuralAlignmentDialogFiller::StructuralAlignmentDialogFiller(const QStringLi
     : Filler("StructuralAlignmentDialog"), chainIndexes(chainIndexes) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void StructuralAlignmentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -47,7 +46,6 @@ void StructuralAlignmentDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

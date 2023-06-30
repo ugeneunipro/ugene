@@ -53,7 +53,6 @@ EditConnectionDialogFiller::EditConnectionDialogFiller(CustomScenario* scenario)
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditConnectionDialogFiller"
-#define GT_METHOD_NAME "run"
 
 void EditConnectionDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -75,7 +74,6 @@ void EditConnectionDialogFiller::commonScenario() {
     GTWidget::click(GTWidget::findButtonByText(buttonName, dialog));
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 AuthenticationDialogFiller::AuthenticationDialogFiller(const QString& login, const QString& password)
@@ -83,7 +81,6 @@ AuthenticationDialogFiller::AuthenticationDialogFiller(const QString& login, con
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::AuthenticationDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 
 void AuthenticationDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -101,7 +98,6 @@ void AuthenticationDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

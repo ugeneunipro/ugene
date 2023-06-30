@@ -85,7 +85,6 @@ BuildTreeDialogFiller::BuildTreeDialogFiller(CustomScenario* scenario)
       displayWithMsa(false) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void BuildTreeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -122,7 +121,6 @@ void BuildTreeDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -132,7 +130,6 @@ BuildTreeDialogFillerPhyML::BuildTreeDialogFillerPhyML(bool _freqOptimRadioPress
     : Filler("CreatePhyTree"), freqOptimRadioPressed(_freqOptimRadioPressed), bootstrap(bootstrap) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void BuildTreeDialogFillerPhyML::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -150,7 +147,6 @@ void BuildTreeDialogFillerPhyML::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

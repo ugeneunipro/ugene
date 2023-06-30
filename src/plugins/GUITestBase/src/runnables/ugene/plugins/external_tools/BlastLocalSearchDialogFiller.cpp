@@ -42,7 +42,6 @@ BlastLocalSearchDialogFiller::BlastLocalSearchDialogFiller(CustomScenario* scena
     : Filler("BlastLocalSearchDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void BlastLocalSearchDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget();
     if (!parameters.runBlast) {
@@ -70,7 +69,6 @@ void BlastLocalSearchDialogFiller::commonScenario() {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

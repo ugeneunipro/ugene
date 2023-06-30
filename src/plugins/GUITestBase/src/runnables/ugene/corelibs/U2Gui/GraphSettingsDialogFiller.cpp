@@ -33,7 +33,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::GraphSettingsDialogFiller"
-#define GT_METHOD_NAME "run"
 
 GraphSettingsDialogFiller::GraphSettingsDialogFiller(
     int _window,
@@ -101,7 +100,6 @@ void GraphSettingsDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

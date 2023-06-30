@@ -31,7 +31,6 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsMeltingTemperature"
 
-#define GT_METHOD_NAME "setParameters"
 void GTUtilsMeltingTemperature::setParameters(const QMap<Parameter, QString>& parameters, QWidget* parent) {
     QList<Parameter> parameterKeys = parameters.keys();
     if (parameterKeys.contains(Parameter::Algorithm)) {
@@ -70,7 +69,6 @@ void GTUtilsMeltingTemperature::setParameters(const QMap<Parameter, QString>& pa
     }
 }
 
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

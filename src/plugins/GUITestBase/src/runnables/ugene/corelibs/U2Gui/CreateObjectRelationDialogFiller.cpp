@@ -29,7 +29,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::FindRepeatsDialogFiller"
-#define GT_METHOD_NAME "run"
 
 CreateObjectRelationDialogFiller::CreateObjectRelationDialogFiller()
     : Filler("CreateObjectRelationDialog") {
@@ -44,7 +43,6 @@ void CreateObjectRelationDialogFiller::commonScenario() {
     }
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -29,7 +29,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ZoomToRangeDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void ZoomToRangeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -42,7 +41,6 @@ void ZoomToRangeDialogFiller::commonScenario() {
 
     GTWidget::click(GTWidget::findButtonByText("Ok", dialog));
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

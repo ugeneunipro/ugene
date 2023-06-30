@@ -37,7 +37,6 @@ AddPrimerDialogFiller::AddPrimerDialogFiller(const Parameters& parameters)
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::AddPrimerDialogFiller"
-#define GT_METHOD_NAME "run"
 void AddPrimerDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -49,7 +48,6 @@ void AddPrimerDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

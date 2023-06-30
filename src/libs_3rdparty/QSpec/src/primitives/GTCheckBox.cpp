@@ -27,7 +27,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTCheckBox"
 
-#define GT_METHOD_NAME "setChecked"
 void GTCheckBox::setChecked(QCheckBox* checkBox, bool checked) {
     GT_CHECK(checkBox != nullptr, "QCheckBox == NULL");
     if (checkBox->isChecked() == checked) {  // TODO: this should not be used this way: setChecked() must not be called on the disabled checkbox.
@@ -39,34 +38,24 @@ void GTCheckBox::setChecked(QCheckBox* checkBox, bool checked) {
         checkState(checkBox, checked);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setChecked"
 void GTCheckBox::setChecked(const QString& checkBoxName, bool checked, QWidget* parent) {
     GTCheckBox::setChecked(GTWidget::findCheckBox(checkBoxName, parent), checked);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setChecked"
 void GTCheckBox::setChecked(const QString& checkBoxName, QWidget* parent) {
     GTCheckBox::setChecked(GTWidget::findCheckBox(checkBoxName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getState"
 bool GTCheckBox::getState(QCheckBox* checkBox) {
     GT_CHECK_RESULT(checkBox != NULL, "QCheckBox == NULL", false);
     return checkBox->isChecked();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getState"
 bool GTCheckBox::getState(const QString& checkBoxName, QWidget* parent) {
     return getState(GTWidget::findCheckBox(checkBoxName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkIsChecked"
 void GTCheckBox::checkState(QCheckBox* checkBox, bool expectedState) {
     GT_CHECK(checkBox != nullptr, "QCheckBox == NULL");
     bool state = checkBox->isChecked();
@@ -76,13 +65,10 @@ void GTCheckBox::checkState(QCheckBox* checkBox, bool expectedState) {
     }
     GT_CHECK(state == expectedState, QString("Incorrect checkbox state: expected '%1', got '%2'").arg(expectedState).arg(state));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkIsChecked"
 void GTCheckBox::checkState(const QString& checkBoxName, bool expectedState, QWidget* parent) {
     checkState(GTWidget::findCheckBox(checkBoxName, parent), expectedState);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

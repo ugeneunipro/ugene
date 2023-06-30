@@ -41,7 +41,6 @@
 namespace HI {
 #define GT_CLASS_NAME "GTWidget"
 
-#define GT_METHOD_NAME "click"
 void GTWidget::click(QWidget* widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(widget != nullptr, "widget is NULL");
 
@@ -57,9 +56,7 @@ void GTWidget::click(QWidget* widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(clickIsOk, QString("GTWidget::click Successfully clicked position: %1 %2").arg(globalPoint.x()).arg(globalPoint.y()));
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "moveToAndClick"
 void GTWidget::moveToAndClick(const QPoint& point) {
     bool moveIsOk = GTMouseDriver::moveTo(point);
     GT_CHECK(moveIsOk, QString("GTWidget::moveToAndClick: move is OK: %1 %2").arg(point.x()).arg(point.y()));
@@ -69,9 +66,7 @@ void GTWidget::moveToAndClick(const QPoint& point) {
     bool clickIsOk = GTMouseDriver::click();
     GT_CHECK(clickIsOk, QString("GTWidget::moveToAndClick: click is OK"));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(QWidget* w) {
     GT_CHECK(w != nullptr, "widget is NULL");
 #ifdef Q_OS_DARWIN
@@ -89,9 +84,7 @@ void GTWidget::setFocus(QWidget* w) {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findWidget"
 QWidget* GTWidget::findWidget(const QString& objectName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     CHECK_NO_OS_ERROR(nullptr);
     QPointer<QWidget> parentWidgetPtr(parentWidget);
@@ -116,7 +109,6 @@ QWidget* GTWidget::findWidget(const QString& objectName, QWidget* parentWidget, 
     }
     return widget;
 }
-#undef GT_METHOD_NAME
 
 QRadioButton* GTWidget::findRadioButton(const QString& widgetName, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     return findExactWidget<QRadioButton*>(widgetName, parentWidget, options);
@@ -234,21 +226,16 @@ QProgressBar* GTWidget::findProgressBar(const QString& widgetName, QWidget* pare
     return findExactWidget<QProgressBar*>(widgetName, parentWidget, options);
 }
 
-#define GT_METHOD_NAME "getWidgetCenter"
 QPoint GTWidget::getWidgetCenter(QWidget* widget) {
     GT_CHECK_RESULT(widget!= nullptr, "getWidgetCenter: widget is null!", {});
     return widget->mapToGlobal(widget->rect().center());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getWidgetVisibleCenter"
 QPoint GTWidget::getWidgetVisibleCenter(QWidget* widget) {
     GT_CHECK_RESULT(widget!= nullptr, "getWidgetVisibleCenter: widget is null!", {});
     return widget->mapFromGlobal(getWidgetVisibleCenterGlobal(widget));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getWidgetVisibleCenterGlobal"
 QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
     GT_CHECK_RESULT(widget!= nullptr, "getWidgetVisibleCenterGlobal: widget is null!", {});
     QRect rect = widget->rect();
@@ -263,9 +250,7 @@ QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
     }
     return gRect.center();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findButtonByText"
 QAbstractButton* GTWidget::findButtonByText(const QString& text, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
     QList<QAbstractButton*> resultButtonList;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && resultButtonList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
@@ -283,9 +268,7 @@ QAbstractButton* GTWidget::findButtonByText(const QString& text, QWidget* parent
     }
     return resultButtonList.isEmpty() ? nullptr : resultButtonList.first();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findLabelByText"
 QList<QLabel*> GTWidget::findLabelByText(
     const QString& text,
     QWidget* parentWidget,
@@ -303,9 +286,7 @@ QList<QLabel*> GTWidget::findLabelByText(
     GT_CHECK_RESULT(!options.failIfNotFound || !resultLabelList.isEmpty(), QString("Label with text <%1> not found").arg(text), {});
     return resultLabelList;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "close"
 void GTWidget::close(QWidget* widget) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
@@ -325,9 +306,7 @@ void GTWidget::close(QWidget* widget) {
     };
     GTThread::runInMainThread(new Scenario(widget));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "showMaximized"
 void GTWidget::showMaximized(QWidget* widget) {
     class ShowMaximizedScenario : public CustomScenario {
     public:
@@ -343,9 +322,7 @@ void GTWidget::showMaximized(QWidget* widget) {
     GTThread::runInMainThread(new ShowMaximizedScenario(widget));
     GTGlobals::sleep(1000);  // Wait for OS to complete the op.
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "showMinimized"
 void GTWidget::showMinimized(QWidget* widget) {
     class ShowMinimizedScenario : public CustomScenario {
     public:
@@ -360,9 +337,7 @@ void GTWidget::showMinimized(QWidget* widget) {
     GTThread::runInMainThread(new ShowMinimizedScenario(widget));
     GTGlobals::sleep(1000);  // Wait for OS to complete the op.
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "showNormal"
 void GTWidget::showNormal(QWidget* widget) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
@@ -385,16 +360,12 @@ void GTWidget::showNormal(QWidget* widget) {
 
     GTThread::runInMainThread(new Scenario(widget));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getColor"
 QColor GTWidget::getColor(QWidget* widget, const QPoint& point) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QColor());
     return QColor(getImage(widget).pixel(point));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getImage"
 QImage GTWidget::getImage(QWidget* widget, bool useGrabWindow) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QImage());
 
@@ -423,9 +394,7 @@ QImage GTWidget::getImage(QWidget* widget, bool useGrabWindow) {
     GTThread::runInMainThread(new GrabImageScenario(widget, image, useGrabWindow));
     return image;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "createSubImage"
 QImage GTWidget::createSubImage(const QImage& image, const QRect& rect) {
 #ifdef _DEBUG
     if (!image.rect().contains(rect))
@@ -434,9 +403,7 @@ QImage GTWidget::createSubImage(const QImage& image, const QRect& rect) {
     int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
     return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "hasSingleFillColor"
 bool GTWidget::hasSingleFillColor(const QImage& image, const QColor& color) {
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
@@ -448,9 +415,7 @@ bool GTWidget::hasSingleFillColor(const QImage& image, const QColor& color) {
     }
     return true;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "countColors"
 QSet<QRgb> GTWidget::countColors(const QImage& image, int maxColors) {
     QSet<QRgb> colorSet;
     for (int i = 0; i < image.width() && colorSet.size() < maxColors; i++) {
@@ -460,16 +425,12 @@ QSet<QRgb> GTWidget::countColors(const QImage& image, int maxColors) {
     }
     return colorSet;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "hasPixelWithColor"
 bool GTWidget::hasPixelWithColor(QWidget* widget, const QColor& expectedColor) {
     QImage image = getImage(widget);
     return hasPixelWithColor(image, expectedColor);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "hasPixelWithColorInImage"
 bool GTWidget::hasPixelWithColor(const QImage& image, const QColor& expectedColor) {
     for (int x = 0; x < image.width(); x++) {
         for (int y = 0; y < image.height(); y++) {
@@ -481,9 +442,7 @@ bool GTWidget::hasPixelWithColor(const QImage& image, const QColor& expectedColo
     }
     return false;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickLabelLink"
 void GTWidget::clickLabelLink(QWidget* label, int step, int indent) {
     QRect r = label->rect();
 
@@ -503,9 +462,7 @@ void GTWidget::clickLabelLink(QWidget* label, int step, int indent) {
     }
     GT_FAIL("label does not contain link", );
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickWindowTitle"
 void GTWidget::clickWindowTitle(QWidget* window) {
     GT_CHECK(window != nullptr, "Window is NULL");
 
@@ -515,9 +472,7 @@ void GTWidget::clickWindowTitle(QWidget* window) {
     GTMouseDriver::moveTo(getWidgetGlobalTopLeftPoint(window) + titleLabelRect.center());
     GTMouseDriver::click();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "resizeWidget"
 void GTWidget::resizeWidget(QWidget* widget, const QSize& size) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
 
@@ -542,16 +497,12 @@ void GTWidget::resizeWidget(QWidget* widget, const QSize& size) {
     GT_CHECK(isRequiredPositionFound, "Required mouse position to start window resize was not found");
     GTGlobals::sleep(1000);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getWidgetGlobalTopLeftPoint"
 QPoint GTWidget::getWidgetGlobalTopLeftPoint(QWidget* widget) {
     GT_CHECK_RESULT(widget != nullptr, "Widget is NULL", QPoint());
     return (widget->isWindow() ? widget->pos() : widget->parentWidget()->mapToGlobal(QPoint(0, 0)));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getActiveModalWidget"
 QWidget* GTWidget::getActiveModalWidget() {
     QWidget* modalWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && modalWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -561,9 +512,7 @@ QWidget* GTWidget::getActiveModalWidget() {
     GT_CHECK_RESULT(modalWidget != nullptr, "Active modal widget is NULL", nullptr);
     return modalWidget;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getActivePopupMenu"
 QMenu* GTWidget::getActivePopupMenu() {
     QMenu* popupWidget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && popupWidget == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -573,9 +522,7 @@ QMenu* GTWidget::getActivePopupMenu() {
     GT_CHECK_RESULT(popupWidget != nullptr, "Active popup menu is NULL", nullptr);
     return popupWidget;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkEnabled"
 void GTWidget::checkEnabled(QWidget* widget, bool expectedEnabledState) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
     GT_CHECK(widget->isVisible(), "Widget is not visible");
@@ -589,15 +536,11 @@ void GTWidget::checkEnabled(QWidget* widget, bool expectedEnabledState) {
                  .arg(expectedEnabledState ? "enabled" : "disabled")
                  .arg(actualEnabledState ? "enabled" : "disabled"));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkEnabled"
 void GTWidget::checkEnabled(const QString& widgetName, bool expectedEnabledState, QWidget* parent) {
     checkEnabled(GTWidget::findWidget(widgetName, parent), expectedEnabledState);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "scrollToIndex"
 void GTWidget::scrollToIndex(QAbstractItemView* itemView, const QModelIndex& index) {
     GT_CHECK(itemView != nullptr, "ItemView is nullptr");
     GT_CHECK(index.isValid(), "Model index is invalid");
@@ -617,7 +560,6 @@ void GTWidget::scrollToIndex(QAbstractItemView* itemView, const QModelIndex& ind
     GTThread::runInMainThread(new MainThreadActionScroll(itemView, index));
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -33,14 +33,11 @@ namespace U2 {
 
 #define GT_CLASS_NAME "DocumentFormatSelectorDialogFiller"
 
-#define GT_METHOD_NAME "getNodeItem"
 QRadioButton* DocumentFormatSelectorDialogFiller::getButton() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     return GTWidget::findRadioButton(format, dialog, {false});
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "run"
 void DocumentFormatSelectorDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTGlobals::sleep(500);
@@ -71,6 +68,5 @@ void DocumentFormatSelectorDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 #undef GT_CLASS_NAME
-#undef GT_METHOD_NAME
 
 }  // namespace U2

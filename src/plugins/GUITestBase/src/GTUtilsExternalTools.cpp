@@ -88,26 +88,20 @@ private:
 
 #define GT_CLASS_NAME "GTUtilsExternalTools"
 
-#define GT_METHOD_NAME "removeTool"
 void GTUtilsExternalTools::removeTool(const QString& toolName) {
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new RemoveToolScenario(toolName)));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isValid"
 void GTUtilsExternalTools::checkValidation(const QString& toolName) {
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new CheckValidationScenario(toolName)));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setToolUrl"
 void GTUtilsExternalTools::setToolUrl(const QString& toolName, const QString& url) {
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new SetToolUrlScenario(toolName, url)));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

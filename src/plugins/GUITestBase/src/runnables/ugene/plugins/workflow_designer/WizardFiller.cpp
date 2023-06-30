@@ -35,7 +35,6 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::WizardFiller"
 
-#define GT_METHOD_NAME "commonScenario"
 void WizardFiller::commonScenario() {
     if (!inputFiles.isEmpty() && !inputFiles.first().isEmpty()) {
         GTUtilsWizard::setInputFiles(inputFiles);
@@ -44,7 +43,6 @@ void WizardFiller::commonScenario() {
     GTUtilsWizard::clickButton(GTUtilsWizard::Apply);
 }
 
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace U2

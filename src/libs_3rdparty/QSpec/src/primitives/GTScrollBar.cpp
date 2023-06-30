@@ -28,13 +28,10 @@
 namespace HI {
 #define GT_CLASS_NAME "GTScrollBar"
 
-#define GT_METHOD_NAME "getScrollBar"
 QScrollBar* GTScrollBar::getScrollBar(const QString& scrollBarName) {
     return GTWidget::findScrollBar(scrollBarName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "pageUp"
 void GTScrollBar::pageUp(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod) {
     GT_CHECK(scrollbar != NULL, "scrollbar is NULL");
     switch (useMethod) {
@@ -53,9 +50,7 @@ void GTScrollBar::pageUp(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod) 
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "pageDown"
 void GTScrollBar::pageDown(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod) {
     GT_CHECK(scrollbar != NULL, "scrollbar is NULL");
     switch (useMethod) {
@@ -74,9 +69,7 @@ void GTScrollBar::pageDown(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "lineUp"
 void GTScrollBar::lineUp(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod) {
     GT_CHECK(scrollbar != NULL, "scrollbar is NULL");
     switch (useMethod) {
@@ -95,9 +88,7 @@ void GTScrollBar::lineUp(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod) 
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "lineDown"
 void GTScrollBar::lineDown(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod) {
     GT_CHECK(scrollbar != NULL, "scrollbar is NULL");
     switch (useMethod) {
@@ -116,9 +107,7 @@ void GTScrollBar::lineDown(QScrollBar* scrollbar, GTGlobals::UseMethod useMethod
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "moveSliderWithMouseUp"
 void GTScrollBar::moveSliderWithMouseUp(QScrollBar* scrollbar, int nPix) {
     GT_CHECK(scrollbar != NULL, "scrollbar is NULL");
     GTMouseDriver::moveTo(GTScrollBar::getSliderPosition(scrollbar));
@@ -132,9 +121,7 @@ void GTScrollBar::moveSliderWithMouseUp(QScrollBar* scrollbar, int nPix) {
     GTMouseDriver::moveTo(newPosition);
     GTMouseDriver::release();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "moveSliderWithMouseDown"
 void GTScrollBar::moveSliderWithMouseDown(QScrollBar* scrollbar, int nPix) {
     GT_CHECK(scrollbar != NULL, "scrollbar is NULL");
     GTMouseDriver::moveTo(GTScrollBar::getSliderPosition(scrollbar));
@@ -148,9 +135,7 @@ void GTScrollBar::moveSliderWithMouseDown(QScrollBar* scrollbar, int nPix) {
     GTMouseDriver::moveTo(newPosition);
     GTMouseDriver::release();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "moveSliderWithMouseToValue"
 void GTScrollBar::moveSliderWithMouseToValue(QScrollBar* scrollbar, int value) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", );
     QStyleOptionSlider options = initScrollbarOptions(scrollbar);
@@ -181,7 +166,6 @@ void GTScrollBar::moveSliderWithMouseToValue(QScrollBar* scrollbar, int value) {
     GTMouseDriver::moveTo(scrollbar->mapToGlobal(newPosition));
     GTMouseDriver::release();
 }
-#undef GT_METHOD_NAME
 
 void GTScrollBar::moveSliderWithMouseWheelUp(QScrollBar* scrollbar, int nScrolls) {
     GTMouseDriver::moveTo(GTScrollBar::getSliderPosition(scrollbar));
@@ -195,24 +179,19 @@ void GTScrollBar::moveSliderWithMouseWheelDown(QScrollBar* scrollbar, int nScrol
     GTMouseDriver::scroll((-1 * nScrolls));  // since scrolling down means negative value for GTMouseDriver::scroll
 }
 
-#define GT_METHOD_NAME "getSliderPosition"
 QPoint GTScrollBar::getSliderPosition(QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());
     QStyleOptionSlider options = initScrollbarOptions(scrollbar);
     QRect sliderRect = scrollbar->style()->subControlRect(QStyle::CC_ScrollBar, &options, QStyle::SC_ScrollBarSlider);
     return scrollbar->mapToGlobal(sliderRect.center());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getUpArrowPosition"
 QPoint GTScrollBar::getUpArrowPosition(QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());
     QStyleOptionSlider options = initScrollbarOptions(scrollbar);
     return scrollbar->mapToGlobal(scrollbar->rect().topLeft() + QPoint(5, 5));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getValue"
 int GTScrollBar::getValue(QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", 0);
     class GetValueScenario : public CustomScenario {
@@ -231,17 +210,13 @@ int GTScrollBar::getValue(QScrollBar* scrollbar) {
     GTThread::runInMainThread(new GetValueScenario(scrollbar, value));
     return value;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getDownArrowPosition"
 QPoint GTScrollBar::getDownArrowPosition(QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());
     QStyleOptionSlider options = initScrollbarOptions(scrollbar);
     return scrollbar->mapToGlobal(scrollbar->rect().bottomRight() - QPoint(5, 5));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAreaUnderSliderPosition"
 QPoint GTScrollBar::getAreaUnderSliderPosition(QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());
     QStyleOptionSlider options = initScrollbarOptions(scrollbar);
@@ -264,9 +239,7 @@ QPoint GTScrollBar::getAreaUnderSliderPosition(QScrollBar* scrollbar) {
     }
     return scrollbar->mapToGlobal(underSliderRect.center());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAreaOverSliderPosition"
 QPoint GTScrollBar::getAreaOverSliderPosition(QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QPoint());
     QStyleOptionSlider options = initScrollbarOptions(scrollbar);
@@ -289,9 +262,7 @@ QPoint GTScrollBar::getAreaOverSliderPosition(QScrollBar* scrollbar) {
     }
     return scrollbar->mapToGlobal(overSliderRect.center() + QPoint(1, 0));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "initScrollbarOptions"
 QStyleOptionSlider GTScrollBar::initScrollbarOptions(QScrollBar* scrollbar) {
     GT_CHECK_RESULT(scrollbar != NULL, "scrollbar is NULL", QStyleOptionSlider());
     QStyleOptionSlider options;
@@ -308,7 +279,6 @@ QStyleOptionSlider GTScrollBar::initScrollbarOptions(QScrollBar* scrollbar) {
 
     return options;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
