@@ -53,7 +53,7 @@ void BioStruct3D::calcCenterAndMaxDistance() {
     double dist;
     radius = 0.0;
     int numberOfAtoms = 0;
-    // loop trough all atoms twice - once to get average center, then once to
+    // loop through all atoms twice - once to get average center, then once to
     // find max distance from this center
     for (int i = 0; i < 2; ++i) {
         for (const SharedMolecule& molecule : qAsConst(moleculeMap)) {
@@ -88,14 +88,11 @@ void BioStruct3D::calcCenterAndMaxDistance() {
 }
 
 int BioStruct3D::getNumberOfAtoms() const {
-    // get first coordinates set
-    const AtomCoordSet& coordSet = modelMap.begin().value();
-    return coordSet.count();
+    return modelMap.first().count();
 }
 
 QList<SharedAtom> BioStruct3D::getAllAtoms() const {
-    const AtomCoordSet& coordSet = modelMap.begin().value();
-    return coordSet.values();
+    return modelMap.first().values();
 }
 
 QMap<int, QList<SharedAnnotationData>> BioStruct3D::generateAnnotations() const {
@@ -138,7 +135,7 @@ int BioStruct3D::getNumberOfResidues() const {
     return numResidues;
 }
 
-const SharedAtom BioStruct3D::getAtomById(int atomIndex, int modelIndex) const {
+SharedAtom BioStruct3D::getAtomById(int atomIndex, int modelIndex) const {
     if (modelMap.contains(modelIndex)) {
         const AtomCoordSet& coordSet = modelMap.value(modelIndex);
         if (coordSet.contains(atomIndex)) {
@@ -149,7 +146,7 @@ const SharedAtom BioStruct3D::getAtomById(int atomIndex, int modelIndex) const {
     return SharedAtom(nullptr);
 }
 
-const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex residueIndex) const {
+SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex residueIndex) const {
     const SharedMolecule mol = moleculeMap.value(chainIndex);
     foreach (const ResidueIndex& id, mol->residueMap.keys()) {
         if (id.toInt() == residueIndex.toInt()) {
@@ -160,7 +157,7 @@ const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex res
     return SharedResidue(nullptr);
 }
 
-const QString BioStruct3D::getSecStructTypeName(SecondaryStructure::Type type) {
+QString BioStruct3D::getSecStructTypeName(SecondaryStructure::Type type) {
     switch (type) {
         case SecondaryStructure::Type_AlphaHelix:
             return BioStruct3D::AlphaHelixAnnotationTag;
@@ -186,21 +183,21 @@ void BioStruct3D::generateSecStructureAnnotations(QMap<int, QList<SharedAnnotati
     if (moleculeMap.isEmpty())
         return;
 
-    foreach (const SharedSecondaryStructure& struc, secondaryStructures) {
+    foreach (const SharedSecondaryStructure& secondaryStructure, secondaryStructures) {
         SharedAnnotationData sd(nullptr);
-        int chainId = struc->chainIndex;
+        int chainId = secondaryStructure->chainIndex;
         assert(chainId != 0);
         int initResidueId = moleculeMap.value(chainId)->residueMap.constBegin().key().toInt();
         sd = new AnnotationData;
         sd->name = BioStruct3D::SecStructAnnotationTag;
-        U2Qualifier qual(SecStructTypeQualifierName, getSecStructTypeName(struc->type));
-        sd->qualifiers.append(qual);
-        int numResidues = struc->endSequenceNumber - struc->startSequenceNumber + 1;
+        U2Qualifier qualifier(SecStructTypeQualifierName, getSecStructTypeName(secondaryStructure->type));
+        sd->qualifiers.append(qualifier);
+        int numResidues = secondaryStructure->endSequenceNumber - secondaryStructure->startSequenceNumber + 1;
         // TODO: determine why can it happen and fix if it's a bug
         if (numResidues < 0) {
             continue;
         }
-        int startIndex = struc->startSequenceNumber - initResidueId;
+        int startIndex = secondaryStructure->startSequenceNumber - initResidueId;
         U2Region chainRegion(startIndex, numResidues);
         sd->location->regions << chainRegion;
         Q_ASSERT(moleculeMap.contains(chainId));
@@ -256,10 +253,6 @@ void BioStruct3D::setCenter(const Vector3D& value) {
 
 BioStruct3DChainSelection::BioStruct3DChainSelection(const BioStruct3D& biostruct_)
     : biostruct(biostruct_), data(new BioStruct3DChainSelectionData()) {
-}
-
-BioStruct3DChainSelection::BioStruct3DChainSelection(const BioStruct3DChainSelection& other)
-    : biostruct(other.biostruct), data(other.data) {
 }
 
 bool BioStruct3DChainSelection::inSelection(int chainId, int residueId) const {
