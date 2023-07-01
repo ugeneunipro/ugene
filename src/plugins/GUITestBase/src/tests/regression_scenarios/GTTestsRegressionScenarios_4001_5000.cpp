@@ -4658,7 +4658,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     //    Expected state: UGENE doesn't crash, all views are closed, all documents are removed from the project.
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProject::checkProject(GTUtilsProject::Empty);
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
 
     findOptions.matchPolicy = Qt::MatchContains;
     QWidget* sarsMdi = GTUtilsMdi::findWindow(sarsMdiTitle, findOptions);

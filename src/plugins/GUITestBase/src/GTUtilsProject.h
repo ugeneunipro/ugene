@@ -39,29 +39,29 @@ public:
     class OpenFileSettings {
     public:
         enum OpenMethod {
-            Dialog,
-            DragDrop
+            Dialog = 1,
+            DragDrop = 2,
         };
         OpenFileSettings();
-        OpenMethod openMethod;
+        OpenMethod openMethod = Dialog;
     };
 
     enum ProjectCheckType {
-        Exists,
-        Empty,
-        NotExists
+        Exists = 1,
+        ExistsAndEmpty = 2,
+        NotExists = 3,
     };
 
     /* Initiates file open dialog for a single file and waits until all tasks finished before the return. Asserts that the project exists. */
-    static void openFile(const GUrl& path, const OpenFileSettings& s = OpenFileSettings(), ProjectCheckType checkType = Exists);
+    static void openFile(const GUrl& path, const OpenFileSettings& settings = {}, const ProjectCheckType& checkType = Exists);
 
     /* Initiates file open dialog for multiple files and waits until all tasks finished before the return. Asserts that the project exists. */
-    static void openFiles(const QList<QUrl>& urls, const OpenFileSettings& s = OpenFileSettings(), ProjectCheckType checkType = Exists);
+    static void openFiles(const QList<QUrl>& urls, const OpenFileSettings& settings = {}, const ProjectCheckType& checkType = Exists);
 
     /* Initiates file open dialog for a single file and waits until all tasks finished before the return. Asserts that the project does not exist. */
-    static void openFileExpectNoProject(const GUrl& path, const OpenFileSettings& s = OpenFileSettings());
+    static void openFileExpectNoProject(const GUrl& path, const OpenFileSettings& s = {});
 
-    static void checkProject(ProjectCheckType checkType = Exists);
+    static void checkProject(const ProjectCheckType& checkType = Exists);
 
     /**
      * Opens file @path\@fileName.
@@ -101,9 +101,13 @@ public:
     static QList<ADVSingleSequenceWidget*> openFileExpectSequences(const QString& path, const QString& fileName, const QList<QString>& seqNames);
 
     static void openMultiSequenceFileAsSequences(const QString& path, const QString& fileName);
+
     static void openMultiSequenceFileAsSequences(const QString& filePath);
+
     static void openMultiSequenceFileAsMergedSequence(const QString& filePath);
+
     static void openMultiSequenceFileAsMalignment(const QString& dirPath, const QString& fileName);
+
     static void openMultiSequenceFileAsMalignment(const QString& filePath);
 
     static void saveProjectAs(const QString& path);
