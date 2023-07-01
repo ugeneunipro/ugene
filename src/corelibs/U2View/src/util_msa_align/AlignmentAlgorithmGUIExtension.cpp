@@ -36,7 +36,7 @@ void AlignmentAlgorithmMainWidget::sl_externSettingsInvalide() {
 }
 
 QMap<QString, QVariant> AlignmentAlgorithmMainWidget::getAlignmentAlgorithmCustomSettings(bool append = false) {
-    if (append == true && externSettingsExists == true) {
+    if (append && externSettingsExists) {
         foreach (QString key, innerSettings.keys()) {
             externSettings->insert(key, innerSettings.value(key));
         }

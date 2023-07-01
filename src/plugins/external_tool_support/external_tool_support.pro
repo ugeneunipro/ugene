@@ -122,6 +122,8 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/kalign/KalignSupportRunDialog.h \
            src/kalign/KalignSupportTask.h \
            src/kalign/KalignWorker.h \
+           src/kalign/pairwise/KalignPairwiseAlignmentGUIExtensionFactory.h \
+           src/kalign/pairwise/KalignPairwiseAlignmentTask.h \
            src/mafft/MAFFTSupport.h \
            src/mafft/MAFFTSupportRunDialog.h \
            src/mafft/MAFFTSupportTask.h \
@@ -229,6 +231,7 @@ FORMS += src/ETSSettingsWidget.ui \
          src/hmmer/HmmerSearchDialog.ui \
          src/hmmer/PhmmerSearchDialog.ui \
          src/kalign/KalignSupportRunDialog.ui \
+         src/kalign/pairwise/KalignPairwiseAlignmentOptionsWidget.ui \
          src/mafft/MAFFTSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
@@ -363,6 +366,8 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/kalign/KalignSupportRunDialog.cpp \
            src/kalign/KalignSupportTask.cpp \
            src/kalign/KalignWorker.cpp \
+           src/kalign/pairwise/KalignPairwiseAlignmentGUIExtensionFactory.cpp \
+           src/kalign/pairwise/KalignPairwiseAlignmentTask.cpp \
            src/mafft/MAFFTSupport.cpp \
            src/mafft/MAFFTSupportRunDialog.cpp \
            src/mafft/MAFFTSupportTask.cpp \

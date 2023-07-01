@@ -54,16 +54,16 @@ public:
      * Don't delete logParser, it will be deleted automatically.
      */
     ExternalToolRunTask(const QString& toolId, const QStringList& arguments, ExternalToolLogParser* logParser, const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(), bool parseOutputFile = false);
-    ~ExternalToolRunTask();
+    ~ExternalToolRunTask() override;
 
     void addOutputListener(ExternalToolListener* outputListener);
 
-    void run();
+    void run() override;
 
-    void setStandartInputFile(const QString& file) {
+    void setStandardInputFile(const QString& file) {
         inputFile = file;
     }
-    void setStandartOutputFile(const QString& file) {
+    void setStandardOutputFile(const QString& file) {
         outputFile = file;
     }
     void setAdditionalEnvVariables(const QMap<QString, QString>& envVariable) {
@@ -73,8 +73,7 @@ public:
     static void killProcess(QProcess* process);
 
 private:
-    static QList<long> getChildPidsRecursive(long parentPid);
-    QString parseStandartOutputFile() const;
+    QString parseStandardOutputFile() const;
     void parseError(const QString& error) const;
 
     QStringList arguments;
@@ -98,9 +97,6 @@ public:
     ExternalToolSupportTask(const QString& _name, TaskFlags f)
         : Task(_name, f) {
     }
-    virtual ~ExternalToolSupportTask() {
-    }
-
     void addListeners(const QList<ExternalToolListener*>& _listeners) {
         listeners.append(_listeners);
     }
@@ -146,7 +142,7 @@ private:
 class U2CORE_EXPORT ExternalToolSupportUtils : public QObject {
     Q_OBJECT
 public:
-    static void removeTmpDir(const QString& absoulutePath, U2OpStatus& os);
+    static void removeTmpDir(const QString& absolutePath, U2OpStatus& os);
     static QString createTmpDir(const QString& domain, U2OpStatus& os);
     /**
      * Creates a new folder: prePath/domain/tmp_dir_name

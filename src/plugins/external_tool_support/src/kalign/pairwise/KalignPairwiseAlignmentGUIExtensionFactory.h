@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_GUI_EXTENSION_FACTORY_H_
-#define _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_GUI_EXTENSION_FACTORY_H_
+#pragma once
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -30,17 +29,26 @@
 
 #include <U2View/AlignmentAlgorithmGUIExtension.h>
 
-#include "ui_PairwiseAlignmentHirschbergOptionsPanelMainWidget.h"
+#include "ui_KalignPairwiseAlignmentOptionsWidget.h"
+#include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 
 namespace U2 {
 
-class PairwiseAlignmentHirschbergMainWidget : public AlignmentAlgorithmMainWidget,
-                                              public Ui_PairwiseAlignmentHirschbergOptionsPanelMainWidget {
+
+class Kalign3PairwiseAlignmentAlgorithm : public AlignmentAlgorithm {
+public:
+    Kalign3PairwiseAlignmentAlgorithm();
+    bool checkAlphabet(const DNAAlphabet* alphabet) const override;
+};
+
+
+class KalignPairwiseAlignmentOptionsWidget : public AlignmentAlgorithmMainWidget,
+                                              public Ui_KalignPairwiseAlignmentOptionsWidget {
     Q_OBJECT
 
 public:
-    PairwiseAlignmentHirschbergMainWidget(QWidget* parent, QVariantMap* s);
-    virtual ~PairwiseAlignmentHirschbergMainWidget();
+    KalignPairwiseAlignmentOptionsWidget(QWidget* parent, QVariantMap* s);
+    virtual ~KalignPairwiseAlignmentOptionsWidget();
 
     virtual QVariantMap getAlignmentAlgorithmCustomSettings(bool append);
 
@@ -68,16 +76,13 @@ protected:
     static const qint64 H_DEFAULT_BONUS_SCORE = 0.2;  // taken from kalign2_misc.c
 };
 
-class PairwiseAlignmentHirschbergGUIExtensionFactory : public AlignmentAlgorithmGUIExtensionFactory {
+class KalignPairwiseAlignmentGUIExtensionFactory : public AlignmentAlgorithmGUIExtensionFactory {
     Q_OBJECT
 
 public:
-    PairwiseAlignmentHirschbergGUIExtensionFactory();
-    virtual ~PairwiseAlignmentHirschbergGUIExtensionFactory();
+    KalignPairwiseAlignmentGUIExtensionFactory();
 
-    virtual AlignmentAlgorithmMainWidget* createMainWidget(QWidget* parent, QVariantMap* s);
+    AlignmentAlgorithmMainWidget* createMainWidget(QWidget* parent, QVariantMap* s) override;
 };
 
 }  // namespace U2
-
-#endif  // _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_GUI_EXTENSION_FACTORY_H_

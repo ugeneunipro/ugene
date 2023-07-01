@@ -138,7 +138,7 @@ void ExternalToolRunTask::run() {
         QProcess::ExitStatus status = externalToolProcess->exitStatus();
         int exitCode = externalToolProcess->exitCode();
         if (status == QProcess::CrashExit && !hasError()) {
-            QString error = parseStandartOutputFile();
+            QString error = parseStandardOutputFile();
             if (error.isEmpty()) {
                 QString intendedError = tr("%1 tool exited with the following error: %2 (Code: %3)")
                                             .arg(toolName)
@@ -150,7 +150,7 @@ void ExternalToolRunTask::run() {
 
             setError(error);
         } else if (status == QProcess::NormalExit && exitCode != EXIT_SUCCESS && !hasError()) {
-            QString error = parseStandartOutputFile();
+            QString error = parseStandardOutputFile();
             setError(error.isEmpty() ? tr("%1 tool exited with code %2").arg(toolName).arg(exitCode) : error);
         } else if (status == QProcess::NormalExit && exitCode == EXIT_SUCCESS && !hasError()) {
             algoLog.details(tr("Tool %1 finished successfully").arg(toolName));
@@ -162,10 +162,6 @@ void ExternalToolRunTask::killProcess(QProcess* process) {
     CmdlineTaskRunner::killProcessTree(process);
 }
 
-QList<long> ExternalToolRunTask::getChildPidsRecursive(long parentPid) {
-    return CmdlineTaskRunner::getChildrenProcesses(parentPid);
-}
-
 void ExternalToolRunTask::addOutputListener(ExternalToolListener* outputListener) {
     if (helper) {
         helper->addOutputListener(outputListener);
@@ -173,7 +169,7 @@ void ExternalToolRunTask::addOutputListener(ExternalToolListener* outputListener
     listener = outputListener;
 }
 
-QString ExternalToolRunTask::parseStandartOutputFile() const {
+QString ExternalToolRunTask::parseStandardOutputFile() const {
     CHECK(parseOutputFile, QString());
 
     QFile f(outputFile);
@@ -337,12 +333,12 @@ void ExternalToolLogParser::setLastError(const QString& value) {
 
 ////////////////////////////////////////
 // ExternalToolSupportUtils
-void ExternalToolSupportUtils::removeTmpDir(const QString& tmpDirUrl, U2OpStatus& os) {
-    if (tmpDirUrl.isEmpty()) {
+void ExternalToolSupportUtils::removeTmpDir(const QString& absolutePath, U2OpStatus& os) {
+    if (absolutePath.isEmpty()) {
         os.setError(tr("Can not remove temporary folder: path is empty."));
         return;
     }
-    QDir tmpDir(tmpDirUrl);
+    QDir tmpDir(absolutePath);
     if (!tmpDir.removeRecursively()) {
         os.setError(tr("Can not remove folder for temporary files, folder \"%1\".").arg(tmpDir.absolutePath()));
     }

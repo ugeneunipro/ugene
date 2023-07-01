@@ -35,7 +35,6 @@ SUBDIRS += \
           src/plugins_3rdparty/psipred \
           src/plugins_3rdparty/primer3 \
           src/plugins_3rdparty/phylip \
-          src/plugins_3rdparty/kalign \
           src/plugins_3rdparty/ptools \
           src/plugins_3rdparty/variants \
           src/plugins/CoreTests \

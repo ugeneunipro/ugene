@@ -49,8 +49,7 @@ Kalign3SupportTask::Kalign3SupportTask(const MultipleSequenceAlignment& _inputMs
     : ExternalToolSupportTask("Kalign external tool task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
-      settings(_settings),
-      lock(nullptr) {
+      settings(_settings) {
     GCOUNTER(cvar, "ExternalTool_Kalign");
     resultMA->setAlphabet(inputMsa->getAlphabet());
     resultMA->setName(inputMsa->getName());
@@ -62,9 +61,9 @@ Kalign3SupportTask::~Kalign3SupportTask() {
     if (!lock.isNull()) {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (nullptr != obj) {
+            if (obj != nullptr) {
                 auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-                CHECK(nullptr != alObj, );
+                CHECK(alObj != nullptr, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
                 }
@@ -75,9 +74,16 @@ Kalign3SupportTask::~Kalign3SupportTask() {
     }
 }
 
+bool Kalign3SupportTask::isAlphabetSupported(const QString& alphabetId) {
+    return (alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() ||
+            alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() ||
+            alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() ||
+            alphabetId == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED() ||
+            alphabetId == BaseDNAAlphabetIds::AMINO_DEFAULT());  // TODO: recheck is extended alphabet is supported.
+}
+
 void Kalign3SupportTask::prepare() {
-    if (inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
-        inputMsa->getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {  // TODO: recheck is extended alphabet is supported.
+    if (!isAlphabetSupported(inputMsa->getAlphabet()->getId())) {
         setError(tr("Unsupported alphabet: %1").arg(inputMsa->getAlphabet()->getName()));
         return;
     }

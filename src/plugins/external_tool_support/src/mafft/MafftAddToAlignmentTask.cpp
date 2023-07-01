@@ -159,7 +159,7 @@ QList<Task*> MafftAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
 
         logParser = new MAFFTLogParser(inputMsa->getRowCount(), 1, outputUrl);
         mafftTask = new ExternalToolRunTask(MAFFTSupport::ET_MAFFT_ID, arguments, logParser);
-        mafftTask->setStandartOutputFile(resultFilePath);
+        mafftTask->setStandardOutputFile(resultFilePath);
         mafftTask->setSubtaskProgressWeight(65);
         subTasks.append(mafftTask);
     } else if (subTask == mafftTask) {

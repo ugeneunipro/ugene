@@ -148,7 +148,7 @@ void SnpEffTask::prepare() {
 
     ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), true);
     setListenerForTask(etTask);
-    etTask->setStandartOutputFile(getResFileUrl());
+    etTask->setStandardOutputFile(getResFileUrl());
     addSubTask(etTask);
 }
 

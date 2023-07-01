@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_TASK_H_
-#define _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_TASK_H_
+#pragma once
 
 #include <U2Algorithm/PairwiseAlignmentTask.h>
 
@@ -29,15 +28,17 @@
 
 namespace U2 {
 
-class DNAAlphabet;
-class Kalign2GObjectRunFromSchemaTask;
-class Kalign2Task;
 class Project;
+class Kalign3SupportTask;
 
-class PairwiseAlignmentHirschbergTaskSettings : public PairwiseAlignmentTaskSettings {
+class KalignPairwiseAlignmentTaskFactory : public AbstractAlignmentTaskFactory {
 public:
-    PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings& s);
-    ~PairwiseAlignmentHirschbergTaskSettings() override;
+    AbstractAlignmentTask* getTaskInstance(AbstractAlignmentTaskSettings* _settings) const override;
+};
+
+class KalignPairwiseAlignmentTaskSettings : public PairwiseAlignmentTaskSettings {
+public:
+    KalignPairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings& s);
 
     bool convertCustomSettings() override;
 
@@ -45,7 +46,6 @@ public:
     int gapOpen;
     int gapExtd;
     int gapTerm;
-    int bonusScore;
 
     static const QString PA_H_GAP_OPEN;
     static const QString PA_H_GAP_EXTD;
@@ -54,10 +54,10 @@ public:
     static const QString PA_H_REALIZATION_NAME;
 };
 
-class PairwiseAlignmentHirschbergTask : public PairwiseAlignmentTask {
+class KalignPairwiseAlignmentTask : public PairwiseAlignmentTask {
 public:
-    PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings);
-    ~PairwiseAlignmentHirschbergTask() override;
+    KalignPairwiseAlignmentTask(KalignPairwiseAlignmentTaskSettings* _settings);
+    ~KalignPairwiseAlignmentTask() override;
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
     ReportResult report() override;
@@ -66,12 +66,11 @@ protected:
     void changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject);
 
 protected:
-    PairwiseAlignmentHirschbergTaskSettings* settings;
-    Kalign2Task* kalignSubTask;
+    KalignPairwiseAlignmentTaskSettings* settings;
+    Kalign3SupportTask* kalignSubTask;
     MultipleSequenceAlignment ma;
     const DNAAlphabet* alphabet;
 };
 
 }  // namespace U2
 
-#endif  // _U2_PAIRWISE_ALIGNMENT_HIRSCHBERG_TASK_H_

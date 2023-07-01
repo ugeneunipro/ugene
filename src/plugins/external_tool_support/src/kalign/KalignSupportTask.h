@@ -51,13 +51,15 @@ class Kalign3SupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(Kalign3SupportTask)
 public:
-    Kalign3SupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const Kalign3Settings& _settings);
+    Kalign3SupportTask(const MultipleSequenceAlignment& inputMsa, const GObjectReference& objRef, const Kalign3Settings& settings);
     ~Kalign3SupportTask() override;
 
     void prepare() override;
     Task::ReportResult report() override;
 
     QList<Task*> onSubTaskFinished(Task* subTask) override;
+
+    static bool isAlphabetSupported(const QString& alphabetId);
 
     MultipleSequenceAlignment resultMA;
 

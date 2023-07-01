@@ -39,6 +39,8 @@
 #include "ExternalToolSupportSettingsController.h"
 #include "KalignSupportRunDialog.h"
 #include "KalignSupportTask.h"
+#include "kalign/pairwise/KalignPairwiseAlignmentGUIExtensionFactory.h"
+#include "kalign/pairwise/KalignPairwiseAlignmentTask.h"
 #include "utils/AlignMsaAction.h"
 
 namespace U2 {
@@ -58,6 +60,8 @@ Kalign3Support::Kalign3Support()
     description = tr("<i>Kalign</i> is a fast multiple sequence alignment program for biological sequences.");
     versionRegExp = QRegExp("kalign \\d+\\.\\d+\\.\\d+");
     toolKitName = "Kalign";
+
+    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new Kalign3PairwiseAlignmentAlgorithm());
 }
 
 GObjectViewWindowContext* Kalign3Support::getViewContext() const {

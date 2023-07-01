@@ -1,4 +1,4 @@
-#include "PairwiseAlignmentHirschbergTask.h"
+#include "KalignPairwiseAlignmentTask.h"
 
 #include <QRegExp>
 #include <QString>
@@ -20,40 +20,44 @@
 #include <U2Core/U2SequenceDbi.h>
 
 #include <U2Lang/SimpleWorkflowTask.h>
-
-#include "KalignTask.h"
+#include "../KalignSupportTask.h"
 
 namespace U2 {
 
-const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_GAP_OPEN("H_gapOpen");
-const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_GAP_EXTD("H_gapExtd");
-const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_GAP_TERM("H_gapTerm");
-const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_BONUS_SCORE("H_bonusScore");
-const QString PairwiseAlignmentHirschbergTaskSettings::PA_H_REALIZATION_NAME("H_realizationName");
+const QString KalignPairwiseAlignmentTaskSettings::PA_H_GAP_OPEN("H_gapOpen");
+const QString KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD("H_gapExtd");
+const QString KalignPairwiseAlignmentTaskSettings::PA_H_GAP_TERM("H_gapTerm");
+const QString KalignPairwiseAlignmentTaskSettings::PA_H_BONUS_SCORE("H_bonusScore");
+const QString KalignPairwiseAlignmentTaskSettings::PA_H_REALIZATION_NAME("H_realizationName");
 
-PairwiseAlignmentHirschbergTaskSettings::PairwiseAlignmentHirschbergTaskSettings(const PairwiseAlignmentTaskSettings& s)
+AbstractAlignmentTask* KalignPairwiseAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
+    auto pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings*>(_settings);
+    SAFE_POINT(pairwiseSettings != NULL,
+               "Pairwise alignment: incorrect settings",
+               NULL);
+    auto settings = new KalignPairwiseAlignmentTaskSettings(*pairwiseSettings);
+    SAFE_POINT(!settings->inNewWindow || !settings->resultFileName.isEmpty(),
+               "Pairwise alignment: incorrect settings, empty output file name",
+               NULL);
+    return new KalignPairwiseAlignmentTask(settings);
+}
+
+KalignPairwiseAlignmentTaskSettings::KalignPairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings& s)
     : PairwiseAlignmentTaskSettings(s),
       gapOpen(0),
       gapExtd(0),
-      gapTerm(0),
-      bonusScore(0) {
+      gapTerm(0) {
 }
 
-PairwiseAlignmentHirschbergTaskSettings::~PairwiseAlignmentHirschbergTaskSettings() {
-    // all dynamic objects will be destroyed by the task
-}
-
-bool PairwiseAlignmentHirschbergTaskSettings::convertCustomSettings() {
+bool KalignPairwiseAlignmentTaskSettings::convertCustomSettings() {
     gapOpen = customSettings.value(PA_H_GAP_OPEN, 217).toInt();
     gapExtd = customSettings.value(PA_H_GAP_EXTD, 39).toInt();
     gapTerm = customSettings.value(PA_H_GAP_TERM, 292).toInt();
-    bonusScore = customSettings.value(PA_H_BONUS_SCORE, 283).toInt();
-
     PairwiseAlignmentTaskSettings::convertCustomSettings();
     return true;
 }
 
-PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignmentHirschbergTaskSettings* _settings)
+KalignPairwiseAlignmentTask::KalignPairwiseAlignmentTask(KalignPairwiseAlignmentTaskSettings* _settings)
     : PairwiseAlignmentTask(TaskFlag_NoRun),
       settings(_settings),
       kalignSubTask(nullptr),
@@ -84,23 +88,22 @@ PairwiseAlignmentHirschbergTask::PairwiseAlignmentHirschbergTask(PairwiseAlignme
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 
-    Kalign2TaskSettings kalignSettings;
+    Kalign3Settings kalignSettings;
     kalignSettings.gapOpenPenalty = settings->gapOpen;
-    kalignSettings.gapExtenstionPenalty = settings->gapExtd;
-    kalignSettings.termGapPenalty = settings->gapTerm;
-    kalignSettings.secret = settings->bonusScore;
+    kalignSettings.gapExtensionPenalty = settings->gapExtd;
+    kalignSettings.terminalGapExtensionPenalty = settings->gapTerm;
 
-    kalignSubTask = new Kalign2Task(ma, kalignSettings);
+    kalignSubTask = new Kalign3SupportTask(ma, GObjectReference(), kalignSettings);
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);
     addSubTask(kalignSubTask);
 }
 
-PairwiseAlignmentHirschbergTask::~PairwiseAlignmentHirschbergTask() {
+KalignPairwiseAlignmentTask::~KalignPairwiseAlignmentTask() {
     delete settings;
 }
 
-QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task* subTask) {
+QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if (hasError() || isCanceled()) {
         return res;
@@ -156,12 +159,12 @@ QList<Task*> PairwiseAlignmentHirschbergTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-Task::ReportResult PairwiseAlignmentHirschbergTask::report() {
+Task::ReportResult KalignPairwiseAlignmentTask::report() {
     propagateSubtaskError();
     return ReportResult_Finished;
 }
 
-void PairwiseAlignmentHirschbergTask::changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject) {
+void KalignPairwiseAlignmentTask::changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject) {
     if (curProject->findDocumentByURL(GUrl(givenUrl)) != nullptr) {
         for (size_t i = 1;; i++) {
             QString tmpUrl = givenUrl;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PairwiseAlignmentHirschbergOptionsPanelMainWidget</class>
+ <class>KalignPairwiseAlignmentOptionsWidget</class>
  <widget class="QWidget" name="PairwiseAlignmentHirschbergOptionsPanelMainWidget">
   <property name="geometry">
    <rect>
@@ -80,26 +80,6 @@
      </item>
      <item>
       <widget class="QDoubleSpinBox" name="gapTerm"/>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="bonusScoreLayout">
-     <property name="spacing">
-      <number>3</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMinAndMaxSize</enum>
-     </property>
-     <item>
-      <widget class="QLabel" name="bonusScoreLabel">
-       <property name="text">
-        <string>Bonus score</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="bonusScore"/>
      </item>
     </layout>
    </item>
