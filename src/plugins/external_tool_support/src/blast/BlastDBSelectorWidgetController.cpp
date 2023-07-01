@@ -47,7 +47,7 @@ bool checkValidPathAndSetTooltipToLE(QLineEdit* le, const QString& errorTooltip)
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     ExternalTool* blast = etRegistry->getById(BlastSupport::ET_BLASTN_ID);
     U2OpStatusImpl osImpl;
-    blast->checkPaths({le->text()}, osImpl);
+    blast->checkArgs({le->text()}, osImpl);
 
     GUIUtils::setWidgetWarningStyle(le, osImpl.hasError());
     le->setToolTip(osImpl.hasError() ? errorTooltip : "");

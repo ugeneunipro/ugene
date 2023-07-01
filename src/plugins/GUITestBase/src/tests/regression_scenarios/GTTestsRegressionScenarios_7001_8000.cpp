@@ -4685,7 +4685,7 @@ GUI_TEST_CLASS_DEFINITION(test_7866) {
             GTLineEdit::setText(databasePathLineEdit, "飛艇", false, true);
             GTMouseDriver::moveTo(pointToResetTooltip);
             GTMouseDriver::moveTo(GTWidget::getWidgetCenter(databasePathLineEdit));
-            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database path contains spaces or/and not Latin characters.", "Expected tooltip not found.");
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database path contains spaces or/and non-Latin characters.", "Expected tooltip not found.");
             CHECK_SET_ERR(!okButton->isEnabled(), "Search button should be disabled");
 
             GTLineEdit::setText(databasePathLineEdit, "TT");
@@ -4696,7 +4696,7 @@ GUI_TEST_CLASS_DEFINITION(test_7866) {
             GTLineEdit::setText(baseNameLineEdit, "AAюЯOПA", false, true);
             GTMouseDriver::moveTo(pointToResetTooltip);
             GTMouseDriver::moveTo(GTWidget::getWidgetCenter(baseNameLineEdit));
-            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database name contains spaces or/and not Latin characters.", "Expected tooltip not found.");
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database name contains spaces or/and non-Latin characters.", "Expected tooltip not found.");
             CHECK_SET_ERR(!okButton->isEnabled(), "Search button should be disabled");
 
             GTLineEdit::setText(baseNameLineEdit, "zz");
