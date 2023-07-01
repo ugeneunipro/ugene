@@ -23,7 +23,7 @@
 
 #include "GTUtilsCircularView.h"
 #include "GTUtilsProject.h"
-
+#include "GTUtilsSequenceView.h"
 namespace U2 {
 namespace GUITest_common_scenarios_circular_view {
 
