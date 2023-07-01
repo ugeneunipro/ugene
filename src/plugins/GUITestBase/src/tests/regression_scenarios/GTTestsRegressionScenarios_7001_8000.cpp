@@ -4124,6 +4124,20 @@ GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTUtilsTaskTreeView::waitTaskFinished(5000);  // Check the task is canceled fast enough with no crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7781) {
+    // Open "_common_data/scenarios/_regression/7781/7781.bam".
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "test_7781.ugenedb", "", "", false));
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7781/7781.bam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
+    QString textFromLabel = coveredRegionsLabel->text();
+    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
+    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
+    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7785) {
     class InSilicoWizardScenario : public CustomScenario {
     public:
@@ -4167,18 +4181,20 @@ GUI_TEST_CLASS_DEFINITION(test_7785) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7781) {
-    // Open "_common_data/scenarios/_regression/7781/7781.bam".
-    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "test_7781.ugenedb", "", "", false));
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7781/7781.bam");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+GUI_TEST_CLASS_DEFINITION(test_7786) {
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7786/7786.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
-    QString textFromLabel = coveredRegionsLabel->text();
-    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
-    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
-    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    GTUtilsOptionPanelSequenceView::setForwardPrimer("AAAAAAAAAAAAAAA");
+    GTUtilsOptionPanelSequenceView::setReversePrimer("AAAAAAAAAAAAAAA");
+
+    GTUtilsOptionPanelSequenceView::pressFindProducts();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    const int count = GTUtilsOptionPanelSequenceView::productsCount();
+    CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7789) {
