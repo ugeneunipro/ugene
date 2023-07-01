@@ -27,6 +27,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
@@ -2704,7 +2705,7 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
 
     class PhyMLMaximumLikelihoodScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTComboBox::selectItemByText("algorithmBox", dialog, "PhyML Maximum Likelihood");
             GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_7572.nwk", dialog);
@@ -3088,7 +3089,7 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // In CVU55762 select region 1001-1000.
-    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(1001, 1000);
+    auto filler = new SelectSequenceRegionDialogFiller(1001, 1000);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
@@ -3283,7 +3284,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     class SimpleExport : public CustomScenario {
-        void run() {
+        void run() override {
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
         }
     };
@@ -3704,6 +3705,30 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTComboBox::getCurrentText("treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7699) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract transcript sequences..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::click("Extract Transcript Sequences with Gffread");
+
+    // Expand 'Inputs'.
+    QWidget* wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
+    GTGroupBox::setChecked("inputPortBox", true, wdWindow);
+
+    // Enter some text into 'Output sequences' line edit. Do not submit the change (do not press Enter).
+    GTUtilsWorkflowDesigner::clickParameter("Output sequences");
+    GTKeyboardDriver::keySequence("123.fa");
+
+    // Click to the label above the inputs table.
+    auto inputScrollArea = GTWidget::findScrollArea("inputScrollArea", wdWindow);
+    auto labelAboveInputsTable = GTWidget::findLabelByText("Input transcripts", inputScrollArea).first();
+    GTWidget::click(labelAboveInputsTable);
+    // Expected state: no crash.
+
+    QString parameterValue = GTUtilsWorkflowDesigner::getParameter("Output sequences");
+    CHECK_SET_ERR(parameterValue == "123.fa", "Parameter must be set to '123.fa'");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7708) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708", "7708.uwl");
@@ -4099,6 +4124,20 @@ GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTUtilsTaskTreeView::waitTaskFinished(5000);  // Check the task is canceled fast enough with no crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7781) {
+    // Open "_common_data/scenarios/_regression/7781/7781.bam".
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "test_7781.ugenedb", "", "", false));
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7781/7781.bam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
+    QString textFromLabel = coveredRegionsLabel->text();
+    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
+    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
+    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7785) {
     class InSilicoWizardScenario : public CustomScenario {
     public:
@@ -4142,18 +4181,20 @@ GUI_TEST_CLASS_DEFINITION(test_7785) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7781) {
-    // Open "_common_data/scenarios/_regression/7781/7781.bam".
-    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "test_7781.ugenedb", "", "", false));
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7781/7781.bam");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+GUI_TEST_CLASS_DEFINITION(test_7786) {
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7786/7786.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
-    QString textFromLabel = coveredRegionsLabel->text();
-    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
-    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
-    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    GTUtilsOptionPanelSequenceView::setForwardPrimer("AAAAAAAAAAAAAAA");
+    GTUtilsOptionPanelSequenceView::setReversePrimer("AAAAAAAAAAAAAAA");
+
+    GTUtilsOptionPanelSequenceView::pressFindProducts();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    const int count = GTUtilsOptionPanelSequenceView::productsCount();
+    CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7789) {

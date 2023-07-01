@@ -56,7 +56,6 @@ ExportDocumentDialogFiller::ExportDocumentDialogFiller(const QString& _path, con
     comboBoxItems[VectorNTI] = "Vector NTI sequence";
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportDocumentDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -78,7 +77,6 @@ void ExportDocumentDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

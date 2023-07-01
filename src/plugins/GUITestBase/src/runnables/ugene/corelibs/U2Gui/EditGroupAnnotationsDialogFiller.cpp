@@ -39,7 +39,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditGroupAnnotationsFiller"
-#define GT_METHOD_NAME "commonScenario"
 void EditGroupAnnotationsFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -49,7 +48,6 @@ void EditGroupAnnotationsFiller::commonScenario() {
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

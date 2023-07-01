@@ -39,30 +39,22 @@ ExportPrimersDialogFiller::ExportPrimersDialogFiller(CustomScenario* scenario)
     : Filler("ExportPrimersDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportPrimersDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(getDialog(), QDialogButtonBox::Cancel);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getDialog"
 QWidget* ExportPrimersDialogFiller::getDialog() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     return dialog;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setFormat"
 void ExportPrimersDialogFiller::setFormat(const QString& format) {
     GTComboBox::selectItemByText(GTWidget::findComboBox("cbFormat", getDialog()), format);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setFilePath"
 void ExportPrimersDialogFiller::setFilePath(const QString& filePath) {
     GTLineEdit::setText("leFilePath", filePath, getDialog());
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

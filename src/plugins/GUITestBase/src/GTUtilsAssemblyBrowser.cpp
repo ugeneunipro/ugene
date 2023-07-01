@@ -49,21 +49,16 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsAssemblyBrowser"
 
-#define GT_METHOD_NAME "getActiveAssemblyBrowserWindow"
 QWidget* GTUtilsAssemblyBrowser::getActiveAssemblyBrowserWindow() {
     QWidget* widget = GTUtilsMdi::getActiveObjectViewWindow(AssemblyBrowserFactory::ID);
     GTThread::waitForMainThread();
     return widget;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkAssemblyBrowserWindowIsActive"
 void GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive() {
     getActiveAssemblyBrowserWindow();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getView"
 AssemblyBrowserUi* GTUtilsAssemblyBrowser::getView(const QString& viewTitle) {
     if (viewTitle.isEmpty()) {
         checkAssemblyBrowserWindowIsActive();
@@ -75,7 +70,6 @@ AssemblyBrowserUi* GTUtilsAssemblyBrowser::getView(const QString& viewTitle) {
     QString objectName = "assembly_browser_" + viewTitle;
     return GTWidget::findExactWidget<AssemblyBrowserUi*>(objectName);
 }
-#undef GT_METHOD_NAME
 
 void GTUtilsAssemblyBrowser::addRefFromProject(QString docName, QModelIndex parent) {
     checkAssemblyBrowserWindowIsActive();
@@ -84,15 +78,12 @@ void GTUtilsAssemblyBrowser::addRefFromProject(QString docName, QModelIndex pare
     GTUtilsProjectTreeView::dragAndDrop(ref, renderArea);
 }
 
-#define GT_METHOD_NAME "hasReference"
 bool GTUtilsAssemblyBrowser::hasReference(const QString& viewTitle) {
     AssemblyBrowserUi* view = getView(viewTitle);
     GT_CHECK_RESULT(nullptr != view, "Assembly browser wasn't found", false);
     return hasReference(view);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "hasReference"
 bool GTUtilsAssemblyBrowser::hasReference(QWidget* view) {
     if (view == nullptr) {
         view = getActiveAssemblyBrowserWindow();
@@ -101,9 +92,7 @@ bool GTUtilsAssemblyBrowser::hasReference(QWidget* view) {
     auto assemblyBrowser = GTWidget::findExactWidget<AssemblyBrowserUi*>(objectName);
     return hasReference(assemblyBrowser);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "hasReference"
 bool GTUtilsAssemblyBrowser::hasReference(AssemblyBrowserUi* assemblyBrowser) {
     GT_CHECK_RESULT(assemblyBrowser != nullptr, "Assembly browser is NULL", false);
 
@@ -112,9 +101,7 @@ bool GTUtilsAssemblyBrowser::hasReference(AssemblyBrowserUi* assemblyBrowser) {
 
     return model->hasReference();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLength"
 qint64 GTUtilsAssemblyBrowser::getLength() {
     QWidget* mdi = getActiveAssemblyBrowserWindow();
 
@@ -133,9 +120,7 @@ qint64 GTUtilsAssemblyBrowser::getLength() {
 
     return value;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReadsCount"
 qint64 GTUtilsAssemblyBrowser::getReadsCount() {
     QWidget* mdi = getActiveAssemblyBrowserWindow();
 
@@ -154,17 +139,13 @@ qint64 GTUtilsAssemblyBrowser::getReadsCount() {
 
     return value;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isWelcomeScreenVisible"
 bool GTUtilsAssemblyBrowser::isWelcomeScreenVisible() {
     QWidget* window = getActiveAssemblyBrowserWindow();
     auto coveredRegionsLabel = GTWidget::findWidget("CoveredRegionsLabel", window);
     return coveredRegionsLabel->isVisible();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "zoomIn"
 void GTUtilsAssemblyBrowser::zoomIn(Method method) {
     checkAssemblyBrowserWindowIsActive();
     switch (method) {
@@ -181,9 +162,7 @@ void GTUtilsAssemblyBrowser::zoomIn(Method method) {
             break;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "zoomToMax"
 void GTUtilsAssemblyBrowser::zoomToMax() {
     checkAssemblyBrowserWindowIsActive();
     QToolBar* toolbar = GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI);
@@ -196,9 +175,7 @@ void GTUtilsAssemblyBrowser::zoomToMax() {
         GTWidget::click(zoomInButton);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "zoomToMin"
 void GTUtilsAssemblyBrowser::zoomToMin() {
     checkAssemblyBrowserWindowIsActive();
 
@@ -212,18 +189,14 @@ void GTUtilsAssemblyBrowser::zoomToMin() {
         GTWidget::click(zoomOutButton);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "zoomToReads"
 void GTUtilsAssemblyBrowser::zoomToReads() {
     checkAssemblyBrowserWindowIsActive();
     auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel");
     emit coveredRegionsLabel->linkActivated("zoom");
     GTGlobals::sleep(1000);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "goToPosition"
 void GTUtilsAssemblyBrowser::goToPosition(qint64 position, Method method) {
     checkAssemblyBrowserWindowIsActive();
 
@@ -243,9 +216,7 @@ void GTUtilsAssemblyBrowser::goToPosition(qint64 position, Method method) {
     GTGlobals::sleep(1000);
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "callContextMenu"
 void GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Area area) {
     checkAssemblyBrowserWindowIsActive();
     QString widgetName;
@@ -266,9 +237,7 @@ void GTUtilsAssemblyBrowser::callContextMenu(GTUtilsAssemblyBrowser::Area area) 
     GTWidget::click(GTWidget::findWidget(widgetName), Qt::RightButton);
     GTGlobals::sleep(300);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "callExportCoverageDialog"
 void GTUtilsAssemblyBrowser::callExportCoverageDialog(Area area) {
     checkAssemblyBrowserWindowIsActive();
 
@@ -288,9 +257,7 @@ void GTUtilsAssemblyBrowser::callExportCoverageDialog(Area area) {
 
     callContextMenu(area);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getScrollBar"
 QScrollBar* GTUtilsAssemblyBrowser::getScrollBar(Qt::Orientation orientation) {
     AssemblyBrowserUi* ui = getView();
     QList<QScrollBar*> scrollBars = ui->findChildren<QScrollBar*>();
@@ -301,9 +268,7 @@ QScrollBar* GTUtilsAssemblyBrowser::getScrollBar(Qt::Orientation orientation) {
     }
     GT_FAIL(QString("Scrollbar with orientation %1 not found").arg(orientation), nullptr);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "scrollToStart"
 void GTUtilsAssemblyBrowser::scrollToStart(Qt::Orientation orientation) {
     QScrollBar* scrollBar = getScrollBar(orientation);
     class MainThreadAction : public CustomScenario {
@@ -319,7 +284,6 @@ void GTUtilsAssemblyBrowser::scrollToStart(Qt::Orientation orientation) {
     GTThread::runInMainThread(new MainThreadAction(scrollBar));
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

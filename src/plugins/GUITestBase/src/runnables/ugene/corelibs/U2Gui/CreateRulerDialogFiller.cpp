@@ -30,7 +30,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "CreateRulerDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 
 CreateRulerDialogFiller::CreateRulerDialogFiller(QString _rulerName, int _startPos)
     : Filler("CreateRulerDialog"),
@@ -54,7 +53,6 @@ void CreateRulerDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

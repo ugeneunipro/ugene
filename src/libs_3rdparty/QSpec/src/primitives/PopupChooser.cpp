@@ -39,15 +39,12 @@ PopupChooser::PopupChooser(const QStringList& namePath, GTGlobals::UseMethod use
     settings.logName = "PopupChooser: " + namePath.join(",");
 }
 
-#define GT_METHOD_NAME "getMenuPopup"
 QMenu* PopupChooser::getMenuPopup() {
     GTGlobals::sleep(100);  // TODO: do we need this sleep?
     GTMouseDriver::release();  // TODO: do we need this release?
     return GTWidget::getActivePopupMenu();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "commonScenario"
 void PopupChooser::commonScenario() {
     QMenu* activePopupMenu = getMenuPopup();
     if (namePath.isEmpty()) {
@@ -56,14 +53,11 @@ void PopupChooser::commonScenario() {
     }
     GTMenu::clickMenuItemByName(activePopupMenu, namePath, useMethod);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickEsc"
 void PopupChooser::clickEsc() {
     GT_LOG("PopupChooser clicks Escape");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -77,7 +71,6 @@ PopupChooserByText::PopupChooserByText(const QStringList& _namePath, GTGlobals::
     settings.logName = "PopupChooserByText: " + namePath.join(",");
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void PopupChooserByText::commonScenario() {
     GT_LOG("PopupChooserByText started for '" + namePath.join(",") + ";");
     QMenu* activePopupMenu = PopupChooser::getMenuPopup();
@@ -88,7 +81,6 @@ void PopupChooserByText::commonScenario() {
     }
     GTMenu::clickMenuItemByText(activePopupMenu, namePath, useMethod, matchFlag);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "PopupChecker"
@@ -105,7 +97,6 @@ PopupChecker::PopupChecker(const QStringList& _namePath, CheckOptions _options, 
     settings.logName = "PopupChecker: " + namePath.join(",");
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void PopupChecker::commonScenario() {
     QMenu* activePopupMenu = PopupChooser::getMenuPopup();
     if (namePath.isEmpty()) {
@@ -156,7 +147,6 @@ void PopupChecker::commonScenario() {
     }
     PopupChooser::clickEsc();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -206,7 +196,6 @@ PopupCheckerByText::PopupCheckerByText(
     itemsShortcuts = _namesAndShortcuts.values();
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void PopupCheckerByText::commonScenario() {
     QMenu* activePopupMenu = PopupChooser::getMenuPopup();
     if (menuPath.isEmpty()) {
@@ -276,7 +265,6 @@ void PopupCheckerByText::commonScenario() {
         GTGlobals::sleep(250);
     }
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace HI

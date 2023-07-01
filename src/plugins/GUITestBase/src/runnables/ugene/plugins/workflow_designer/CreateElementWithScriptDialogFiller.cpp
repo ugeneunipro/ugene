@@ -34,7 +34,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "CreateElementWithScriptDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void CreateElementWithScriptDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -42,11 +41,9 @@ void CreateElementWithScriptDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "ScriptEditorDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void ScriptEditorDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -68,11 +65,9 @@ void ScriptEditorDialogFiller::commonScenario() {
     }
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "ScriptEditorDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void ScriptEditorDialogSyntaxChecker::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -92,6 +87,5 @@ void ScriptEditorDialogSyntaxChecker::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 }  // namespace U2

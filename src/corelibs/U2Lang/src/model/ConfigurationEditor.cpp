@@ -29,13 +29,10 @@ namespace U2 {
 
 PropertyWidget::PropertyWidget(QWidget* parent, DelegateTags* _tags)
     : QWidget(parent), _tags(_tags), schemaConfig(nullptr) {
-    QHBoxLayout* l = new QHBoxLayout();
+    auto l = new QHBoxLayout();
     l->setContentsMargins(0, 0, 0, 0);
     l->setSpacing(0);
     this->setLayout(l);
-}
-
-PropertyWidget::~PropertyWidget() {
 }
 
 void PropertyWidget::addMainWidget(QWidget* w) {
@@ -72,9 +69,6 @@ PropertyDelegate::PropertyDelegate(QObject* parent)
     : QItemDelegate(parent), schemaConfig(nullptr) {
     _tags = new DelegateTags();
     _tags->setParent(this);
-}
-
-PropertyDelegate::~PropertyDelegate() {
 }
 
 QVariant PropertyDelegate::getDisplayValue(const QVariant& v) const {

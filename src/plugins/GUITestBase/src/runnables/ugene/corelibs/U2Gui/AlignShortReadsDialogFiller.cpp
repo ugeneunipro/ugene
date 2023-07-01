@@ -58,7 +58,6 @@ AlignShortReadsFiller::BwaSwParameters::BwaSwParameters(const QString& refDir, c
 
 #define GT_CLASS_NAME "GTUtilsDialog::AlignShortReadsFiller"
 
-#define GT_METHOD_NAME "run"
 void AlignShortReadsFiller::commonScenario() {
     SAFE_POINT_EXT(parameters, GT_CHECK(0, "Invalid input parameters: NULL pointer"), );
 
@@ -68,9 +67,7 @@ void AlignShortReadsFiller::commonScenario() {
     GTGlobals::sleep(500);
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setCommonParameters"
 void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
     GTComboBox::selectItemByText(GTWidget::findComboBox("methodNamesBox", dialog), parameters->getAlignmentMethod());
 
@@ -97,9 +94,7 @@ void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
         GTCheckBox::setChecked(samBox, parameters->samOutput);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setAdditionalParameters"
 void AlignShortReadsFiller::setAdditionalParameters(QWidget* dialog) {
     auto bowtie2Parameters = dynamic_cast<Bowtie2Parameters*>(parameters);
     if (nullptr != bowtie2Parameters) {
@@ -125,9 +120,7 @@ void AlignShortReadsFiller::setAdditionalParameters(QWidget* dialog) {
         return;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setBowtie2AdditionalParameters"
 void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bowtie2Parameters, QWidget* dialog) {
     // Parameters
     auto modeComboBox = GTWidget::findComboBox("modeComboBox", dialog);
@@ -211,24 +204,18 @@ void AlignShortReadsFiller::setBowtie2AdditionalParameters(Bowtie2Parameters* bo
 
     GTCheckBox::setChecked(nocontainCheckBox, bowtie2Parameters->noMatesContainingOneAnother);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setUgaAdditionalParameters"
 void AlignShortReadsFiller::setUgaAdditionalParameters(UgeneGenomeAlignerParams* ugaParameters, QWidget* dialog) {
     if (ugaParameters->mismatchesAllowed) {
         GTGroupBox::setChecked("groupBox_mismatches", dialog);
     }
     GTCheckBox::setChecked(GTWidget::findCheckBox("firstMatchBox", dialog), ugaParameters->useBestMode);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setBwaAdditionalParameters"
 void AlignShortReadsFiller::setBwaAdditionalParameters(AlignShortReadsFiller::BwaParameters* bwaParameters, QWidget* dialog) {
     GTComboBox::selectItemByText(GTWidget::findComboBox("indexAlgorithmComboBox", dialog), bwaParameters->getIndexAlgorithmString());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setAdditionalParameters"
 void AlignShortReadsFiller::setBwaSwAdditionalParameters(AlignShortReadsFiller::BwaSwParameters* bwaSwParameters, QWidget* dialog) {
     GTSpinBox::setValue(GTWidget::findSpinBox("matchScoreSpinbox", dialog), bwaSwParameters->matchScore);
     GTSpinBox::setValue(GTWidget::findSpinBox("mismatchScoreSpinbox", dialog), bwaSwParameters->mismatchPenalty);
@@ -243,7 +230,6 @@ void AlignShortReadsFiller::setBwaSwAdditionalParameters(AlignShortReadsFiller::
     GTSpinBox::setValue(GTWidget::findSpinBox("revAlnThreshold", dialog), bwaSwParameters->seedsNumber);
     GTCheckBox::setChecked(GTWidget::findCheckBox("hardClippingCheckBox", dialog), bwaSwParameters->preferHardClippingInSam);
 }
-#undef GT_METHOD_NAME
 
 AlignShortReadsFiller::UgeneGenomeAlignerParams::UgeneGenomeAlignerParams(const QString& refDir,
                                                                           const QString& refFileName,

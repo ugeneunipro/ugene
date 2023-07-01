@@ -30,7 +30,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
-#define GT_METHOD_NAME "run"
 ImportACEFileFiller::ImportACEFileFiller(
     bool _isReadOnly,
     QString dstUrl,
@@ -74,7 +73,6 @@ void ImportACEFileFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

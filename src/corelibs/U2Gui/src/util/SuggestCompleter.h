@@ -31,9 +31,9 @@ namespace U2 {
 
 class U2GUI_EXPORT CompletionFiller {
 public:
-    virtual ~CompletionFiller() {};
+    virtual ~CompletionFiller() = default;
     virtual QStringList getSuggestions(const QString& str) = 0;
-    virtual QString finalyze(const QString& editorText, const QString& suggestion) = 0;
+    virtual QString handleNewUrlInput(const QString& editorText, const QString& suggestion) = 0;
 };
 
 class U2GUI_EXPORT MSACompletionFiller : public CompletionFiller {
@@ -43,11 +43,11 @@ public:
     MSACompletionFiller(QStringList& _seqNameList, const QString& defVal = "")
         : CompletionFiller(), seqNameList(_seqNameList), defaultValue(defVal) {};
 
-    QStringList getSuggestions(const QString& str);
-    void updateSeqList(QStringList list) {
+    QStringList getSuggestions(const QString& str) override;
+    void updateSeqList(const QStringList& list) {
         seqNameList = list;
     };
-    QString finalyze(const QString& editorText, const QString& suggestion);
+    QString handleNewUrlInput(const QString& editorText, const QString& suggestion) override;
 
 private:
     QStringList seqNameList;
@@ -57,9 +57,9 @@ private:
 class U2GUI_EXPORT BaseCompleter : public QObject {
     Q_OBJECT
 public:
-    BaseCompleter(CompletionFiller* filler, QLineEdit* parent = 0);
-    ~BaseCompleter();
-    bool eventFilter(QObject* obj, QEvent* ev);
+    BaseCompleter(CompletionFiller* filler, QLineEdit* parent = nullptr);
+    ~BaseCompleter() override;
+    bool eventFilter(QObject* obj, QEvent* ev) override;
     void showCompletion(const QStringList& choices);
     int getLastChosenItemIndex() const;
 

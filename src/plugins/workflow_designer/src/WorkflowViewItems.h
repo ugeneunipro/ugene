@@ -40,7 +40,6 @@ class WorkflowHighlightItem;
 typedef QString StyleId;
 
 #define GRID_STEP 15
-#define ANGLE_STEP 10
 
 inline qreal round(qreal val, int step) {
     int tmp = int(val) + step / 2;
@@ -64,12 +63,10 @@ public:
 
 class StyledItem : public QGraphicsItem {
 public:
-    StyledItem(QGraphicsItem* p = 0)
+    StyledItem(QGraphicsItem* p = nullptr)
         : QGraphicsItem(p) {
     }
     WorkflowScene* getWorkflowScene() const;
-    virtual ~StyledItem() {
-    }
     virtual void setStyle(StyleId) {
     }
     virtual StyleId getStyle() const {
@@ -99,7 +96,7 @@ class WorkflowProcessItem : public QObject, public StyledItem {
     Q_OBJECT
 public:
     WorkflowProcessItem(Actor* process);
-    virtual ~WorkflowProcessItem();
+    ~WorkflowProcessItem() override;
     Actor* getProcess() const {
         return process;
     }
@@ -107,25 +104,25 @@ public:
     QList<WorkflowPortItem*> getPortItems() const {
         return ports;
     }
-    QRectF boundingRect(void) const;
+    QRectF boundingRect() const override;
     QRectF portsBoundingRect() const;
-    QPainterPath shape() const;
+    QPainterPath shape() const override;
 
-    virtual void setStyle(StyleId);
-    virtual StyleId getStyle() const {
+    void setStyle(StyleId) override;
+    StyleId getStyle() const override {
         return styles.key(currentStyle);
     }
 
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
     enum { Type = WorkflowProcessItemType };
-    int type() const {
+    int type() const override {
         return Type;
     }
     void prepareUpdate() {
         prepareGeometryChange();
     }
 
-    virtual QList<QAction*> getContextMenuActions() const;
+    QList<QAction*> getContextMenuActions() const override;
 
     void saveState(QDomElement&) const;
     void loadState(QDomElement&);
@@ -142,10 +139,10 @@ public:
     void highlightItem();
 
 protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
-    virtual bool sceneEvent(QEvent* event);
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+    bool sceneEvent(QEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
 public slots:
     void sl_update();
@@ -169,7 +166,7 @@ class WorkflowPortItem : public QObject, public StyledItem {
     Q_OBJECT
 public:
     WorkflowPortItem(WorkflowProcessItem* owner, Port* port);
-    virtual ~WorkflowPortItem();
+    ~WorkflowPortItem() override;
     Port* getPort() const {
         return port;
     }
@@ -190,16 +187,16 @@ public:
     QPointF headToScene() const;
     // direction of the arrow in items coordinates
     QLineF arrow(const QGraphicsItem* item) const;
-    QRectF boundingRect(void) const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+    QRectF boundingRect() const override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
     qreal getOrientarion() const {
         return orientation;
     }
     void setOrientation(qreal);
 
-    virtual void setStyle(StyleId);
-    virtual StyleId getStyle() const {
+    void setStyle(StyleId) override;
+    StyleId getStyle() const override {
         return currentStyle;
     }
     void adaptOwnerShape();
@@ -209,18 +206,18 @@ public:
     }
 
     enum { Type = WorkflowPortItemType };
-    int type() const {
+    int type() const override {
         return Type;
     }
 
 protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-    void mousePressEvent(QGraphicsSceneMouseEvent* event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
-    void focusOutEvent(QFocusEvent* event);
-    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 public slots:
     void sl_onVisibleChanged(bool);
 
@@ -247,7 +244,7 @@ class WorkflowBusItem : public QObject, public StyledItem {
 
 public:
     WorkflowBusItem(WorkflowPortItem* p1, WorkflowPortItem* p2, Link* link);
-    virtual ~WorkflowBusItem();
+    ~WorkflowBusItem() override;
     WorkflowPortItem* getInPort() const {
         return dst;
     }
@@ -257,11 +254,11 @@ public:
     Link* getBus() const {
         return bus;
     }
-    QRectF boundingRect(void) const;
-    QPainterPath shape() const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
     enum { Type = WorkflowBusItemType };
-    int type() const {
+    int type() const override {
         return Type;
     }
     bool validate();
@@ -275,12 +272,12 @@ public:
     void updatePos();
 
 protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant& value);
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
     // void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
     // void mousePressEvent ( QGraphicsSceneMouseEvent * event );
     // void mouseReleaseEvent ( QGraphicsSceneMouseEvent * event );
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
 private slots:
     void sl_update();
@@ -296,8 +293,8 @@ private:
 class WorkflowHighlightItem : public StyledItem {
 public:
     WorkflowHighlightItem(WorkflowProcessItem* owner);
-    QRectF boundingRect() const;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+    QRectF boundingRect() const override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
     void replay();
 

@@ -32,7 +32,6 @@ GetSequenceByIdFiller::GetSequenceByIdFiller(const QString& _saveTo, bool _addTo
     : Filler("getSequenceByIdDialog"), saveTo(_saveTo), addToProject(_addToProject) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void GetSequenceByIdFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -43,7 +42,6 @@ void GetSequenceByIdFiller::commonScenario() {
     GTCheckBox::setChecked("addBox", addToProject, dialog);
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

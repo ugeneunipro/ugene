@@ -37,7 +37,6 @@ ItemToImportEditDialogFiller::ItemToImportEditDialogFiller(const QVariantMap& da
       data(data) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ItemToImportEditDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -45,7 +44,6 @@ void ItemToImportEditDialogFiller::commonScenario() {
 
     ImportOptionsWidgetFiller::fill(optionsWidget, data);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

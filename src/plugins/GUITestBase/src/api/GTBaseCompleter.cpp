@@ -31,7 +31,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTBaseCompleter"
-#define GT_METHOD_NAME "click"
 void GTBaseCompleter::click(QWidget* widgetCompleterFor, const QString& seqName) {
     QTreeWidget* tree = getCompleter(widgetCompleterFor);
     GT_CHECK(tree != nullptr, "tree widget is NULL");
@@ -43,9 +42,7 @@ void GTBaseCompleter::click(QWidget* widgetCompleterFor, const QString& seqName)
     GTMouseDriver::moveTo(globalCenter);
     GTMouseDriver::click();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getNames"
 QStringList GTBaseCompleter::getNames(QWidget* widgetCompleterFor) {
     QTreeWidget* tree = getCompleter(widgetCompleterFor);
     GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", QStringList());
@@ -56,9 +53,7 @@ QStringList GTBaseCompleter::getNames(QWidget* widgetCompleterFor) {
     }
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isEmpty"
 bool GTBaseCompleter::isEmpty(QWidget* widgetCompleterFor) {
     QTreeWidget* tree = getCompleter(widgetCompleterFor);
     GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", true);
@@ -66,16 +61,13 @@ bool GTBaseCompleter::isEmpty(QWidget* widgetCompleterFor) {
     bool result = (items.count() == 1) && (items.at(0) == "");
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getCompleter"
 QTreeWidget* GTBaseCompleter::getCompleter(QWidget* widgetCompleterFor) {
     GT_CHECK_RESULT(widgetCompleterFor != nullptr, "Widget associated with completer not found", nullptr);
     QTreeWidget* completer = widgetCompleterFor->findChild<QTreeWidget*>();
     GT_CHECK_RESULT(completer != nullptr, "auto completer widget not found", nullptr);
     return completer;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

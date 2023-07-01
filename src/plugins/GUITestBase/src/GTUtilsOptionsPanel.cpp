@@ -39,7 +39,6 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsOptionsPanel"
 
-#define GT_METHOD_NAME "runFindPatternWithHotKey"
 void GTUtilsOptionsPanel::runFindPatternWithHotKey(const QString& pattern) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
     GTGlobals::sleep();
@@ -52,9 +51,7 @@ void GTUtilsOptionsPanel::runFindPatternWithHotKey(const QString& pattern) {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "resizeToMaximum"
 void GTUtilsOptionsPanel::resizeToMaximum() {
     auto optionsPanelSplitter = GTWidget::findSplitter("OPTIONS_PANEL_SPLITTER");
     QSplitterHandle* handle = optionsPanelSplitter->handle(1);
@@ -64,15 +61,12 @@ void GTUtilsOptionsPanel::resizeToMaximum() {
     const int delta = 500;
     GTMouseDriver::dragAndDrop(handleCenter, handleCenter - QPoint(delta, 0));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getActiveOptionsWidget"
 QWidget* GTUtilsOptionsPanel::getActiveOptionsWidget() {
     auto contentWidget = GTWidget::findWidget("object_view_window_content_widget");
     auto optionsPanelWidget = GTWidget::findWidgetByType<OptionsPanelWidget*>(contentWidget, "OptionsPanelWidget is not found!");
     return optionsPanelWidget->getOptionsWidget();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -37,7 +37,6 @@ ClustalWDialogFiller::ClustalWDialogFiller(int _gapOpenVal)
       gapOpenVal(_gapOpenVal) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ClustalWDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -50,7 +49,6 @@ void ClustalWDialogFiller::commonScenario() {
     }
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

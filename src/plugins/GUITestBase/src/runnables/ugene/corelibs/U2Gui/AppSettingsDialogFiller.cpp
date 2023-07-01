@@ -68,7 +68,6 @@ AppSettingsDialogFiller::AppSettingsDialogFiller(CustomScenario* customScenario)
       b(-1) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void AppSettingsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -94,9 +93,7 @@ void AppSettingsDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExternalToolPath"
 void AppSettingsDialogFiller::setExternalToolPath(const QString& toolName, const QString& toolPath) {
     auto dialog = GTWidget::getActiveModalWidget();
 
@@ -115,9 +112,7 @@ void AppSettingsDialogFiller::setExternalToolPath(const QString& toolName, const
     }
     GT_FAIL("tool " + toolName + " not found in tree view", );
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExternalToolPath"
 void AppSettingsDialogFiller::setExternalToolPath(const QString& toolName, const QString& path, const QString& name) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -148,9 +143,7 @@ void AppSettingsDialogFiller::setExternalToolPath(const QString& toolName, const
     }
     GT_CHECK(set, "tool " + toolName + " not found in tree view");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getExternalToolPath"
 QString AppSettingsDialogFiller::getExternalToolPath(const QString& toolName) {
     auto dialog = GTWidget::getActiveModalWidget();
 
@@ -167,9 +160,7 @@ QString AppSettingsDialogFiller::getExternalToolPath(const QString& toolName) {
     }
     return "";
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isExternalToolValid"
 bool AppSettingsDialogFiller::isExternalToolValid(const QString& toolName) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -187,9 +178,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(const QString& toolName) {
     }
     GT_FAIL("external tool " + toolName + " not found in tree view", false);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clearToolPath"
 void AppSettingsDialogFiller::clearToolPath(const QString& toolName) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -210,9 +199,7 @@ void AppSettingsDialogFiller::clearToolPath(const QString& toolName) {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isToolDescriptionContainsString"
 bool AppSettingsDialogFiller::isToolDescriptionContainsString(const QString& toolName, const QString& checkIfContains) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -223,9 +210,7 @@ bool AppSettingsDialogFiller::isToolDescriptionContainsString(const QString& too
     QString plainText = textBrowser->toPlainText();
     return plainText.contains(checkIfContains);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setTemporaryDirPath"
 void AppSettingsDialogFiller::setTemporaryDirPath(const QString& path) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -233,9 +218,7 @@ void AppSettingsDialogFiller::setTemporaryDirPath(const QString& path) {
 
     GTLineEdit::setText("tmpDirPathEdit", path, dialog);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setDocumentsDirPath"
 void AppSettingsDialogFiller::setDocumentsDirPath(const QString& path) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -243,9 +226,7 @@ void AppSettingsDialogFiller::setDocumentsDirPath(const QString& path) {
 
     GTLineEdit::setText("documentsDirectoryEdit", path, dialog);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setWorkflowOutputDirPath"
 void AppSettingsDialogFiller::setWorkflowOutputDirPath(const QString& path) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -253,9 +234,7 @@ void AppSettingsDialogFiller::setWorkflowOutputDirPath(const QString& path) {
 
     GTLineEdit::setText("workflowOutputEdit", path, dialog);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openTab"
 void AppSettingsDialogFiller::openTab(Tabs tab) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -269,9 +248,7 @@ void AppSettingsDialogFiller::openTab(Tabs tab) {
     GTGlobals::sleep(300);
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickOnTool"
 void AppSettingsDialogFiller::clickOnTool(const QString& toolName) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -286,9 +263,7 @@ void AppSettingsDialogFiller::clickOnTool(const QString& toolName) {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExternalToolsDir"
 void AppSettingsDialogFiller::setExternalToolsDir(const QString& dirPath) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -303,7 +278,6 @@ void AppSettingsDialogFiller::setExternalToolsDir(const QString& dirPath) {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dirPath, "", GTFileDialogUtils::Choose));
     GTWidget::click(selectExToolsDirButton);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -319,7 +293,6 @@ NewColorSchemeCreator::NewColorSchemeCreator(CustomScenario* c)
 }
 
 #define GT_CLASS_NAME "NewColorSchemeCreator"
-#define GT_METHOD_NAME "commonScenario"
 void NewColorSchemeCreator::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -375,11 +348,9 @@ void NewColorSchemeCreator::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, cancel ? QDialogButtonBox::Cancel : QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "CreateAlignmentColorSchemeDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -398,11 +369,9 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "ColorSchemeDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void ColorSchemeDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -415,7 +384,6 @@ void ColorSchemeDialogFiller::commonScenario() {
     }
     GTKeyboardDriver::keyClick(Qt::Key_Enter);  // if ok button not found
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 // QDialogButtonBox *buttonBox;
 }  // namespace U2

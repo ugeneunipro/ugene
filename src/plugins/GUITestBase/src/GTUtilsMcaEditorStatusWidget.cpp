@@ -32,23 +32,18 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsMcaEditorStatusWidget"
 
-#define GT_METHOD_NAME "getStatusWidget"
 QWidget* GTUtilsMcaEditorStatusWidget::getStatusWidget() {
     QWidget* editor = GTUtilsMcaEditor::getEditorUi();
     return GTWidget::findWidget("mca_editor_status_bar", editor);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRowNumberString"
 QString GTUtilsMcaEditorStatusWidget::getRowNumberString() {
     auto lineLabel = GTWidget::findLabel("Line", getStatusWidget());
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Ln ").length() - 1).section('/', 0, 0).trimmed();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRowNumber"
 int GTUtilsMcaEditorStatusWidget::getRowNumber() {
     const QString rowNumberString = getRowNumberString();
 
@@ -58,18 +53,14 @@ int GTUtilsMcaEditorStatusWidget::getRowNumber() {
 
     return rowNumber;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRowsCountString"
 QString GTUtilsMcaEditorStatusWidget::getRowsCountString() {
     auto lineLabel = GTWidget::findLabel("Line", getStatusWidget());
 
     const QString labelText = lineLabel->text();
     return labelText.mid(QString("Ln ").length() - 1).section('/', 1, 1).trimmed();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getRowsCount"
 int GTUtilsMcaEditorStatusWidget::getRowsCount() {
     const QString rowsCountString = getRowsCountString();
 
@@ -79,18 +70,14 @@ int GTUtilsMcaEditorStatusWidget::getRowsCount() {
 
     return rowsCount;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReferenceUngappedPositionString"
 QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedPositionString() {
     auto columnLabel = GTWidget::findLabel("Column", getStatusWidget());
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("RefPos ").length() - 1).section('/', 0, 0).trimmed();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReferenceUngappedPosition"
 int GTUtilsMcaEditorStatusWidget::getReferenceUngappedPosition() {
     const QString referencePositionString = getReferenceUngappedPositionString();
 
@@ -100,18 +87,14 @@ int GTUtilsMcaEditorStatusWidget::getReferenceUngappedPosition() {
 
     return referencePosition;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReferenceUngappedLengthString"
 QString GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString() {
     auto columnLabel = GTWidget::findLabel("Column", getStatusWidget());
 
     const QString labelText = columnLabel->text();
     return labelText.mid(QString("RefPos ").length() - 1).section('/', 1, 1).trimmed();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReferenceUngappedLength"
 int GTUtilsMcaEditorStatusWidget::getReferenceUngappedLength() {
     const QString referenceLengthString = getReferenceUngappedLengthString();
 
@@ -121,24 +104,18 @@ int GTUtilsMcaEditorStatusWidget::getReferenceUngappedLength() {
 
     return referenceLength;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isGapInReference"
 bool GTUtilsMcaEditorStatusWidget::isGapInReference() {
     return "gap" == getReferenceUngappedPositionString();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReadUngappedPositionString"
 QString GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString() {
     auto positionLabel = GTWidget::findLabel("Position", getStatusWidget());
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("ReadPos ").length() - 1).section('/', 0, 0).trimmed();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReadUngappedPosition"
 int GTUtilsMcaEditorStatusWidget::getReadUngappedPosition() {
     const QString readPositionString = getReadUngappedPositionString();
 
@@ -148,18 +125,14 @@ int GTUtilsMcaEditorStatusWidget::getReadUngappedPosition() {
 
     return readPosition;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReadUngappedLengthString"
 QString GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString() {
     auto positionLabel = GTWidget::findLabel("Position", getStatusWidget());
 
     const QString labelText = positionLabel->text();
     return labelText.mid(QString("ReadPos ").length() - 1).section('/', 1, 1).trimmed();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getReadUngappedLength"
 int GTUtilsMcaEditorStatusWidget::getReadUngappedLength() {
     const QString readPositionString = getReadUngappedLengthString();
 
@@ -169,13 +142,10 @@ int GTUtilsMcaEditorStatusWidget::getReadUngappedLength() {
 
     return readPosition;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isGapInRead"
 bool GTUtilsMcaEditorStatusWidget::isGapInRead() {
     return "gap" == getReadUngappedPositionString();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -40,7 +40,6 @@ const QMap<DocumentProviderSelectorDialogFiller::OpenWith, QString> DocumentProv
     DocumentProviderSelectorDialogFiller::initMap();
 
 #define GT_CLASS_NAME "DocumentProviderSelectorDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void DocumentProviderSelectorDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -49,7 +48,6 @@ void DocumentProviderSelectorDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

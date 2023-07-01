@@ -130,12 +130,9 @@ void MusclePrepareTask::_run() {
             refinePrepareUnsafe();
             break;
         case MuscleTaskOp_AddUnalignedToProfile:
-            assert(0);
-            // doAddUnalignedToProfile();
-            break;
         case MuscleTaskOp_ProfileToProfile:
-            assert(0);
-            // doProfile2Profile();
+        case MuscleTaskOp_OwnRowsToAlignment:
+            // Do nothing.
             break;
     }
 }

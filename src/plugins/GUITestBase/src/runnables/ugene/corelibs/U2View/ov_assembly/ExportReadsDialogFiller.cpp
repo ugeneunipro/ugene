@@ -41,7 +41,6 @@ ExportReadsDialogFiller::ExportReadsDialogFiller(const QString& filePath, const 
       addToProject(addToProject) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportReadsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -56,7 +55,6 @@ void ExportReadsDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

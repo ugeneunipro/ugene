@@ -146,7 +146,7 @@ public:
     GT_CHECK_RESULT(condition, errorMessage, )
 
 #define GT_CHECK_RESULT(condition, errorMessage, result) \
-    CHECK_SET_ERR_RESULT(condition, GT_CLASS_NAME "." GT_METHOD_NAME " " + QString(errorMessage), result)
+    CHECK_SET_ERR_RESULT(condition, QString("%1.%2 [%3]").arg(GT_CLASS_NAME).arg(__FUNCTION__).arg(errorMessage), result)
 
 #define GT_CHECK_OP_RESULT(errorMessage, result) \
     GT_CHECK_RESULT(!HI::GTGlobals::getOpStatus().isCoR(), errorMessage, result)

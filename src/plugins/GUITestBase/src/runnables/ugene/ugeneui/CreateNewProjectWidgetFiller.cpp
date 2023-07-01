@@ -31,7 +31,6 @@
 namespace U2 {
 using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::SaveProjectAsDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void SaveProjectAsDialogFiller::commonScenario() {
     GTGlobals::sleep();
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -40,7 +39,6 @@ void SaveProjectAsDialogFiller::commonScenario() {
     GTLineEdit::setText("projectFilePathEdit", projectFile, dialog);
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

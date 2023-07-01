@@ -35,7 +35,6 @@ MakeBlastDbDialogFiller::MakeBlastDbDialogFiller(const Parameters& parameters)
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::MakeBlastDbDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 
 void MakeBlastDbDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -69,7 +68,6 @@ void MakeBlastDbDialogFiller::commonScenario() {
     GTWidget::click(GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog)));
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

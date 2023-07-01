@@ -30,15 +30,12 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTMouse"
 
-#define GT_METHOD_NAME "moveCursorToWidget"
 void GTMouseUtils::moveCursorToWidget(QWidget* widget) {
     GT_CHECK(widget != NULL, "Provided widget is null");
     QPoint widgetCenter = widget->rect().center();
     GTMouseDriver::moveTo(widgetCenter);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "moveCursorOutOfWidget"
 void GTMouseUtils::moveCursorOutOfWidget(QWidget* widget) {
     GT_CHECK(widget != NULL, "Provided widget is null");
     QPoint currentPosition = QCursor::pos();
@@ -46,7 +43,6 @@ void GTMouseUtils::moveCursorOutOfWidget(QWidget* widget) {
     QPoint finalPosition = widget->rect().topLeft() + QPoint(1, 1);  // top left + offset
     GTMouseDriver::moveTo(finalPosition);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

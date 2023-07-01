@@ -33,7 +33,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImportBAMFileFiller"
-#define GT_METHOD_NAME "run"
 ImportBAMFileFiller::ImportBAMFileFiller(const QString destinationUrl, const QString referenceFolderPath, const QString referenceFileName, bool importUnmappedReads, bool deselectAll, int timeoutMs)
     : Filler("Import BAM File"),
       referenceFolderPath(referenceFolderPath),
@@ -78,7 +77,6 @@ void ImportBAMFileFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

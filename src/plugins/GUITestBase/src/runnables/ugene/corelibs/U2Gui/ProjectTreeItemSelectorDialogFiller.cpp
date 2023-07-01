@@ -73,7 +73,6 @@ static bool checkTreeRowCount(QTreeView* tree, int expectedDocCount) {
     return visibleItemCount == expectedDocCount;
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ProjectTreeItemSelectorDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget();
     auto treeView = GTWidget::findTreeView("treeView", dialog);
@@ -105,7 +104,6 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario() {
     // Close the dialog.
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

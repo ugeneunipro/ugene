@@ -33,7 +33,6 @@ DigestSequenceDialogFiller::DigestSequenceDialogFiller(CustomScenario* scenario)
     : Filler("DigestSequenceDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void DigestSequenceDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -41,7 +40,6 @@ void DigestSequenceDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

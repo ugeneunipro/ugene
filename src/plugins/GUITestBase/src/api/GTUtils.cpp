@@ -36,7 +36,6 @@ QString GTUtils::genUniqueString(const QString& prefix) {
     return prefix + "_" + QString ::number(counter);
 }
 
-#define GT_METHOD_NAME "checkServiceIsEnabled"
 void GTUtils::checkServiceIsEnabled(const QString& serviceName) {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -49,9 +48,7 @@ void GTUtils::checkServiceIsEnabled(const QString& serviceName) {
     }
     GT_FAIL("Service was not enabled within required period: " + serviceName, );
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "matchText"
 bool GTUtils::matchText(const QString& textInTest, const QString& textInUi, const Qt::MatchFlags& matchFlags) {
     Qt::CaseSensitivity caseSensitivity = matchFlags.testFlag(Qt::MatchCaseSensitive) ? Qt::CaseSensitive : Qt::CaseInsensitive;
     if (matchFlags.testFlag(Qt::MatchExactly)) {
@@ -65,7 +62,6 @@ bool GTUtils::matchText(const QString& textInTest, const QString& textInUi, cons
     }
     GT_FAIL("Unsupported match method: " + QString::number(matchFlags), false);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

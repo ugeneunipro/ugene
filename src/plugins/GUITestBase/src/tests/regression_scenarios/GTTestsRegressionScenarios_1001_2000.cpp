@@ -1286,14 +1286,14 @@ GUI_TEST_CLASS_DEFINITION(test_1083) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     // Expected state: UGENE is not crashed
-    GTUtilsProject::checkProject(GTUtilsProject::Empty);
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1093) {
-    //    1. do menu "tools->Align to refrence->Align short reads"
+    //    1. do menu "tools->Align to reference->Align short reads"
 
     //    2. fill next fields in appeared dialog:
-    //        Refrence sequence "_common_data\scenarios\_regression\1093\refrence.fa"
+    //        Reference sequence "_common_data\scenarios\_regression\1093\reference.fa"
     //        SAM output checkbox {set checked}
     //        Short reads add next file: "_common_data\scenarios\_regression\1093\read.fa"
 
@@ -2042,7 +2042,7 @@ GUI_TEST_CLASS_DEFINITION(test_1199) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Expected state: document removed, UGENE not crashes.
-    GTUtilsProject::checkProject(GTUtilsProject::Empty);
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1203_1) {
@@ -3345,7 +3345,6 @@ GUI_TEST_CLASS_DEFINITION(test_1326) {
             : Filler("Call Variants Wizard") {
         }
 #define GT_CLASS_NAME "GTUtilsDialog::CallVariantsWizardFiller"
-#define GT_METHOD_NAME "run"
         virtual void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             QSizePolicy actualPolicy = dialog->sizePolicy();
@@ -3362,7 +3361,6 @@ GUI_TEST_CLASS_DEFINITION(test_1326) {
             CHECK_SET_ERR(prevSize == dialog->size(), "size should not change");
             GTWidget::click(GTWidget::findButtonByText("Cancel"));
         }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
     };
     GTUtilsDialog::waitForDialog(new CallVariantsWizardFiller());

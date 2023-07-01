@@ -34,7 +34,6 @@ SiteconBuildDialogFiller::SiteconBuildDialogFiller(const QString& _inputFilePath
       modelFilePath(_modelFilePath) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void SiteconBuildDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -43,7 +42,6 @@ void SiteconBuildDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

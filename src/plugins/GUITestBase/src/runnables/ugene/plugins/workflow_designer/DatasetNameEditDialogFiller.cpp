@@ -31,7 +31,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "DatasetNameEditDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void DatasetNameEditDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -42,7 +41,6 @@ void DatasetNameEditDialogFiller::commonScenario() {
     }
     GTWidget::click(GTWidget::findButtonByText("OK", dialog));
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2
