@@ -148,9 +148,6 @@ public:
 #define GT_CHECK_RESULT(condition, errorMessage, result) \
     CHECK_SET_ERR_RESULT(condition, QString("%1.%2 [%3]").arg(GT_CLASS_NAME).arg(__FUNCTION__).arg(errorMessage), result)
 
-#define GT_CHECK_OP_RESULT(errorMessage, result) \
-    GT_CHECK_RESULT(!HI::GTGlobals::getOpStatus().isCoR(), errorMessage, result)
-
 #define DRIVER_CHECK(condition, errorMessage) \
     if (!(condition)) { \
         qCritical("Driver error: '%s'", QString(errorMessage).toLocal8Bit().constData()); \

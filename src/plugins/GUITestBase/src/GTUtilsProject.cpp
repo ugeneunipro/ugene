@@ -126,19 +126,15 @@ ADVSingleSequenceWidget* GTUtilsProject::openFileExpectSequence(
 ADVSingleSequenceWidget* GTUtilsProject::openFileExpectSequence(const QString& filePath, const QString& seqName) {
     GTFileDialog::openFile(filePath);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GT_CHECK_OP_RESULT("Error opening file!", nullptr);
 
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     int seqWidgetNum = GTUtilsSequenceView::getSeqWidgetsNumber();
-    GT_CHECK_OP_RESULT("Error getting the number of sequence widgets!", nullptr);
     GT_CHECK_RESULT(seqWidgetNum == 1, QString("Number of sequences is %1").arg(seqWidgetNum), nullptr);
 
     ADVSingleSequenceWidget* seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber();
-    GT_CHECK_OP_RESULT("Error getting sequence widget!", nullptr);
 
     QString actualName = GTUtilsSequenceView::getSeqName(seqWidget);
-    GT_CHECK_OP_RESULT("Error getting sequence widget name!", nullptr);
     GT_CHECK_RESULT(seqName == actualName, QString("Expected sequence name: %1, actual: %2!").arg(seqName).arg(actualName), nullptr);
 
     return seqWidget;
@@ -160,18 +156,14 @@ QList<ADVSingleSequenceWidget*> GTUtilsProject::openFileExpectSequences(const QS
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(path + fileName);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GT_CHECK_OP_RESULT("Error opening file!", QList<ADVSingleSequenceWidget*>());
 
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     int seqWidgetNum = GTUtilsSequenceView::getSeqWidgetsNumber();
-    GT_CHECK_OP_RESULT("Error getting the number of sequence widgets!", QList<ADVSingleSequenceWidget*>());
     GT_CHECK_RESULT(seqWidgetNum == seqNames.size(), QString("Expected number of sequences: %1, actual: %2!").arg(seqNames.size()).arg(seqWidgetNum), QList<ADVSingleSequenceWidget*>());
 
     for (int i = 0; i < seqNames.size(); ++i) {
         ADVSingleSequenceWidget* seqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(i);
-        GT_CHECK_OP_RESULT(QString("Error getting sequence widget: %1!").arg(i), QList<ADVSingleSequenceWidget*>());
-
         QString actualName = GTUtilsSequenceView::getSeqName(seqWidget);
         GT_CHECK_RESULT(seqNames.at(i) == actualName,
                         QString("Unexpected sequence widget at position %1. Expected sequence name: %2, actual: %3!").arg(i).arg(seqNames.at(i)).arg(actualName),
