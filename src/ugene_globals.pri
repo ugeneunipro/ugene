@@ -90,18 +90,25 @@ linux-g++ {
         # These warnings are processed as errors.
         # All entries must be added to "disable-warnings.h" to ignore problems in 3rd-party code.
 
-        QMAKE_CXXFLAGS += -Werror=dangling-reference
-        QMAKE_CXXFLAGS += -Werror=deprecated-copy
         QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
         QMAKE_CXXFLAGS += -Werror=parentheses
         QMAKE_CXXFLAGS += -Werror=return-type
         QMAKE_CXXFLAGS += -Werror=sequence-point
-        QMAKE_CXXFLAGS += -Werror=shadow=local
         QMAKE_CXXFLAGS += -Werror=switch
         QMAKE_CXXFLAGS += -Werror=uninitialized
         QMAKE_CXXFLAGS += -Werror=unused-parameter
         QMAKE_CXXFLAGS += -Werror=unused-value
         QMAKE_CXXFLAGS += -Werror=unused-variable
+
+        versionAtLeast(GCC_VERSION, 7.1) {
+            QMAKE_CXXFLAGS += -Werror=shadow=local
+        }
+        versionAtLeast(GCC_VERSION, 9.1) {
+            QMAKE_CXXFLAGS += -Werror=deprecated-copy
+        }
+        versionAtLeast(GCC_VERSION, 13.1) {
+            QMAKE_CXXFLAGS += -Werror=dangling-reference
+        }
     }
 
     # Check for undefined symbols during the build.
