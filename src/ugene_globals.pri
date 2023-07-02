@@ -106,14 +106,11 @@ linux-g++ {
         versionAtLeast(GCC_VERSION, 9.1) {
             QMAKE_CXXFLAGS += -Werror=deprecated-copy
         }
+        versionAtLeast(GCC_VERSION, 13.1) {
+            QMAKE_CXXFLAGS += -Werror=dangling-reference
+        }
     }
 
-    # Build with coverage (gcov) support, now for Linux only.
-    equals(UGENE_GCOV_ENABLE, 1) {
-        message("Build with gcov support. See gcov/lcov doc for generating coverage info")
-        QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
-        QMAKE_LFLAGS += -lgcov --coverage
-    }
     # Check for undefined symbols during the build.
     QMAKE_LFLAGS += "-Wl,--no-undefined"
 }

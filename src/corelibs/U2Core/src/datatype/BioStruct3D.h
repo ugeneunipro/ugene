@@ -229,8 +229,8 @@ public:
     QList<SharedAtom> getAllAtoms() const;
     int getNumberOfResidues() const;
     static int residueIndexToInt(const ResidueIndex& idx);
-    const SharedAtom getAtomById(int index, int modelIndex) const;
-    const SharedResidue getResidueById(int chainIndex, ResidueIndex residueIndex) const;
+    SharedAtom getAtomById(int index, int modelIndex) const;
+    SharedResidue getResidueById(int chainIndex, ResidueIndex residueIndex) const;
 
     /** Return list of model ids (same as in PDB). */
     QList<int> getModelsIds() const;
@@ -254,7 +254,7 @@ public:
 
 public:
     // Static methods
-    static const QString getSecStructTypeName(SecondaryStructure::Type type);
+    static QString getSecStructTypeName(SecondaryStructure::Type type);
 
 private:
     QMap<int, QList<SharedAnnotationData>> generateChainAnnotations() const;
@@ -289,7 +289,7 @@ public:
 class U2CORE_EXPORT BioStruct3DChainSelection {
 public:
     BioStruct3DChainSelection(const BioStruct3D& biostruct);
-    BioStruct3DChainSelection(const BioStruct3DChainSelection& other);
+    BioStruct3DChainSelection(const BioStruct3DChainSelection& other) = default;
 
     const BioStruct3D& getBioStruct3D() const {
         return biostruct;
@@ -312,6 +312,6 @@ public:
 private:
     const BioStruct3D& biostruct;
     QSharedDataPointer<BioStruct3DChainSelectionData> data;
-};  // class U2CORE_EXPORT BioStruct3DChainSelection
+};
 
 }  // namespace U2
