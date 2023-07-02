@@ -128,29 +128,10 @@ void GTUtilsDialog::clickButtonBox(QDialogButtonBox::StandardButton button) {
 }
 
 void GTUtilsDialog::clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardButton button) {
-#ifdef Q_OS_DARWIN
-    auto mbox = qobject_cast<QMessageBox*>(dialog);
-    if (mbox != NULL && (button == QDialogButtonBox::Yes || button == QDialogButtonBox::No || button == QDialogButtonBox::NoToAll)) {
-        QMessageBox::StandardButton btn =
-            button == QDialogButtonBox::Yes       ? QMessageBox::Yes
-            : button == QDialogButtonBox::NoToAll ? QMessageBox::NoToAll
-                                                  : QMessageBox::No;
-        QAbstractButton* pushButton = mbox->button(btn);
-        GT_CHECK(pushButton != NULL, "pushButton is NULL");
-        GTWidget::click(pushButton);
-    } else {
-        QDialogButtonBox* box = buttonBox(dialog);
-        GT_CHECK(box != NULL, "buttonBox is NULL");
-        QPushButton* pushButton = box->button(button);
-        GT_CHECK(pushButton != NULL, "pushButton is NULL");
-        GTWidget::click(pushButton);
-    }
-#else
     QDialogButtonBox* box = buttonBox(dialog);
     QPushButton* pushButton = box->button(button);
     GT_CHECK(pushButton != nullptr, "pushButton is NULL");
     GTWidget::click(pushButton);
-#endif
 }
 
 void GTUtilsDialog::waitForDialog(Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList) {
