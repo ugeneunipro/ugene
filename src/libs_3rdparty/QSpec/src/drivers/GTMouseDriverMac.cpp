@@ -19,18 +19,15 @@
  * MA 02110-1301, USA.
  */
 
-#include <QCursor>
+#include <QtGlobal>
 
 #include "GTMouseDriver.h"
 
 #ifdef Q_OS_DARWIN
 #    include <ApplicationServices/ApplicationServices.h>
-#endif
 
-namespace HI {
-
-#ifdef Q_OS_DARWIN
 #    define GT_CLASS_NAME "GTMouseDriverMac"
+namespace HI {
 
 Qt::MouseButtons GTMouseDriver::bp = Qt::NoButton;
 
@@ -46,7 +43,6 @@ static bool isPointInsideScreen(int x, int y) {
     return isPointInsideScreen(QPoint(x, y));
 }
 
-#    define GT_METHOD_NAME "selectAreaMac"
 static bool selectAreaMac(int x, int y) {
     qDebug("selectAreaMac %d %d", x, y);
     DRIVER_CHECK(isPointInsideScreen(x, y), QString("selectAreaMac: Invalid coordinates %1 %2").arg(x).arg(y));
@@ -60,9 +56,7 @@ static bool selectAreaMac(int x, int y) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "moveToP"
 bool GTMouseDriver::moveTo(const QPoint& p) {
     int x = p.x();
     int y = p.y();
@@ -82,9 +76,7 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "press"
 bool GTMouseDriver::press(Qt::MouseButton button) {
     bp |= button;
     QPoint mousePos = QCursor::pos();
@@ -113,9 +105,7 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "release"
 bool GTMouseDriver::release(Qt::MouseButton button) {
     bp &= (Qt::MouseButtonMask ^ button);
     QPoint mousePos = QCursor::pos();
@@ -144,9 +134,7 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
 
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "scroll"
 bool GTMouseDriver::scroll(int value) {
     int wheelDeviceCount = 1;
     int wheelDevice1Change = value > 0 ? 1 : -1;
@@ -160,11 +148,14 @@ bool GTMouseDriver::scroll(int value) {
     GTGlobals::sleep(100);
     return true;
 }
-#    undef GT_METHOD_NAME
-#    undef GT_CLASS_NAME
 
 void GTMouseDriver::releasePressedButtons() {
+    release(Qt::LeftButton);
+    release(Qt::RightButton);
+    release(Qt::MiddleButton);
 }
+
+#    undef GT_CLASS_NAME
 
 #endif  // Q_OS_DARWIN
 }  // namespace HI
