@@ -2560,8 +2560,8 @@ GUI_TEST_CLASS_DEFINITION(test_0084) {
 
             GTCheckBox::setChecked("cbShowUninterrupted", false, dialog);
             labelText = GTLabel::getText("statusLabel", dialog);
-            CHECK_SET_ERR(labelText.contains("401"),
-                QString("Incorrect number of nondegenerate enzymes, expected number: 401, current text: %1").arg(labelText));
+            CHECK_SET_ERR(labelText.contains("520"),
+                QString("Incorrect number of nondegenerate enzymes, expected number: 520, current text: %1").arg(labelText));
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }

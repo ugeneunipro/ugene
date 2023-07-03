@@ -689,8 +689,12 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="318"/>
+        <source>No extended DNA alphabet symbols (A, C, G, T and N only)</source>
+        <translation>Нет символов расширенного алфавита ДНК (только A, C, G, T и N)</translation>
+    </message>
+    <message>
         <source>A, C, G and T only</source>
-        <translation>Только A, C, G и T</translation>
+        <translation type="vanished">Только A, C, G и T</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="321"/>

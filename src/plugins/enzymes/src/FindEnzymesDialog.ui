@@ -315,7 +315,7 @@
         <item>
          <widget class="QCheckBox" name="cbShowNondegenerate">
           <property name="toolTip">
-           <string>A, C, G and T only</string>
+           <string>No extended DNA alphabet symbols (A, C, G, T and N only)</string>
           </property>
           <property name="text">
            <string>Show nondegenerate sites</string>

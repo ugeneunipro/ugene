@@ -125,7 +125,7 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
             //calculate additional parameters
             d->palindromic = d->seq == DNASequenceUtils::reverseComplement(d->seq, d->alphabet);
             d->uninterrupted = !d->seq.contains(EnzymeData::UNDEFINED_BASE);
-            d->nondegenerate = d->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() && !d->seq.contains(EnzymeData::UNDEFINED_BASE);
+            d->nondegenerate = d->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
         }
     }
     // Remove not needed elements
