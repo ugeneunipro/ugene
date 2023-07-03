@@ -26,7 +26,6 @@
 namespace HI {
 #define GT_CLASS_NAME "GTMenuBar"
 
-#define GT_METHOD_NAME "clickCornerMenu"
 void GTMenuBar::clickCornerMenu(QMenuBar* mBar, GTGlobals::WindowAction action) {
     GT_CHECK(mBar != NULL, "QMenuBar is NULL");
     QWidget* cWidget = mBar->cornerWidget();
@@ -47,7 +46,6 @@ void GTMenuBar::clickCornerMenu(QMenuBar* mBar, GTGlobals::WindowAction action) 
     GTMouseDriver::click();
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

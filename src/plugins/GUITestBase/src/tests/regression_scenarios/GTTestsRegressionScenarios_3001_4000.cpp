@@ -52,7 +52,6 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QTextStream>
-#include <QThreadPool>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -89,6 +88,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -166,10 +166,10 @@ GUI_TEST_CLASS_DEFINITION(test_3014) {
 GUI_TEST_CLASS_DEFINITION(test_3017) {
     // 1. Open 'HIV-1.aln';
     // 2. Select few columns;
-    // 3. Run ClastulW, ClustalO, Mafft or T-Coffee alignment task;
+    // 3. Run ClustalW, ClustalO, Mafft or T-Coffee alignment task;
     // 4. Try to change an alignment while the task is running: move region, delete region etc.;
     // Current state: there is no results of your actions because msa is blocked, overview is not recalculated.
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "ty3.aln.gz");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new MuscleDialogFiller(MuscleDialogFiller::Refine));
@@ -182,7 +182,9 @@ GUI_TEST_CLASS_DEFINITION(test_3017) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     QString clipboardText = GTClipboard::text();
-    CHECK_SET_ERR("S" == clipboardText, "Alignment is not locked" + clipboardText);
+    CHECK_SET_ERR(clipboardText == "S", "Alignment is not locked: " + clipboardText);
+
+    GTUtilsTask::cancelAllTasks();  // Cancel the long running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3031) {
@@ -1576,38 +1578,18 @@ GUI_TEST_CLASS_DEFINITION(test_3321) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3328) {
-    //    1. Open "test/_common_data/fasta/human_T1_cutted.fa".
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    //    2. Click the "Find restriction sites" button on the main toolbar.
-    //    3. Select a single enzyme: "AbaBGI". Start the search.
-    class Scenario : public CustomScenario {
-    public:
-        void run() override {
-            // 3. Press "Select by length"
-            // 4. Input "7" and press "Ok"
-            GTUtilsDialog::waitForDialog(new InputIntFiller(8));
-            GTWidget::click(GTWidget::findWidget("selectByLengthButton"));
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");  // disable overflow to create a long-running "Find Enzymes task".
 
-            GTWidget::click(GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Find restriction sites..."));
-
-            //    4. Close the sequence view until task has finished.
-            GTUtilsMdi::click(GTGlobals::Close);
-
-            //    Expected state: the task is canceled.
-            CHECK_SET_ERR(0 == GTUtilsTaskTreeView::getTopLevelTasksCount(), "There are unfinished tasks");
-        }
-    };
-
-    QThreadPool threadPool(this);
-    QEventLoop waiter(this);
-
-    if (GTUtilsTaskTreeView::getTopLevelTasksCount() != 0) {
-        QString s = GTUtilsTaskTreeView::getTaskStatus("Auto-annotations update task");
-        //    Expected state: the task is canceled.
-        CHECK_SET_ERR(s == "Canceling...", "Unexpected task status: " + s);
-    }
+    FindEnzymesDialogFillerSettings settings;
+    settings.clickFindAll = true;
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
+    GTUtilsTaskTreeView::checkTaskIsPresent("Auto-annotations update task");
+    GTUtilsMdi::closeActiveWindow();
+    GTUtilsTaskTreeView::waitTaskFinished(5000);  // Cancelled.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3332) {
@@ -2648,7 +2630,7 @@ GUI_TEST_CLASS_DEFINITION(test_3552) {
 
 GUI_TEST_CLASS_DEFINITION(test_3553) {
     // 1. Open "_common_data/clustal/big.aln".
-    GTFileDialog::openFile(testDir + "_common_data/clustal", "big.aln");
+    GTFileDialog::openFile(testDir + "_common_data/clustal/big.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Select both sequences.
@@ -2663,6 +2645,8 @@ GUI_TEST_CLASS_DEFINITION(test_3553) {
         GTWidget::click(GTWidget::findWidget("alignButton"));
     }
     // Expected: UGENE does not crash.
+    GTGlobals::sleep(2000);
+    GTUtilsTask::cancelAllTasks();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3555) {

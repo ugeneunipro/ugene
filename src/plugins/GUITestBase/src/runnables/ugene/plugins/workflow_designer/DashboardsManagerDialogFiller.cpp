@@ -32,15 +32,12 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "DashboardsManagerDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void DashboardsManagerDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectDashboards"
 void DashboardsManagerDialogFiller::selectDashboards(QStringList names) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -52,9 +49,7 @@ void DashboardsManagerDialogFiller::selectDashboards(QStringList names) {
         GTKeyboardDriver::keyRelease(Qt::Key_Control);
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "isDashboardPresent"
 bool DashboardsManagerDialogFiller::isDashboardPresent(QString name) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -62,9 +57,7 @@ bool DashboardsManagerDialogFiller::isDashboardPresent(QString name) {
     QTreeWidgetItem* item = GTTreeWidget::findItem(listWidget, name, nullptr, 0, {false});
     return item != nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getDashboardsState"
 QList<QPair<QString, bool>> DashboardsManagerDialogFiller::getDashboardsState() {
     QList<QPair<QString, bool>> result;
 
@@ -77,7 +70,6 @@ QList<QPair<QString, bool>> DashboardsManagerDialogFiller::getDashboardsState() 
     }
     return result;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

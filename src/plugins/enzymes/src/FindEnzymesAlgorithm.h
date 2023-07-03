@@ -105,7 +105,17 @@ public:
         for (int p = 0; p < plen && match; p++) {
             char c1 = seq[p];
             char c2 = pattern[p];
-            match = (c1 != unknownChar && fn.equals(c2, c1));
+            bool seqUnknown = c1 == unknownChar;
+            bool patternUnknown = c2 == unknownChar;
+            if (seqUnknown && patternUnknown) {
+                match = true;
+            } else if (seqUnknown && !patternUnknown) {
+                match = false;
+            } else if (!seqUnknown && patternUnknown) {
+                match = true;
+            } else if (!seqUnknown && !patternUnknown) {
+                match = fn.equals(c2, c1);
+            }
         }
         return match;
     }

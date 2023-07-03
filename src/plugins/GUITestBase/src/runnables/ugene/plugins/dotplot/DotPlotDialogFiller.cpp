@@ -31,7 +31,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
-#define GT_METHOD_NAME "commonScenario"
 
 DotPlotFiller::DotPlotFiller(CustomScenario* customScenario)
     : Filler("DotPlotDialog", customScenario),
@@ -62,7 +61,6 @@ void DotPlotFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

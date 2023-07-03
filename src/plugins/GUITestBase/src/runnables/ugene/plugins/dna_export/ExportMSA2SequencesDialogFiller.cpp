@@ -48,7 +48,6 @@ ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(const QString& _path,
     comboBoxItems[Swiss_Prot] = "Swiss_Prot";
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportToSequenceFormatFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -77,7 +76,6 @@ void ExportToSequenceFormatFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

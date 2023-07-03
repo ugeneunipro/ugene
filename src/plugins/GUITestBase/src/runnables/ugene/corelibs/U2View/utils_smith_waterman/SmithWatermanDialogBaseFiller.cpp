@@ -47,7 +47,6 @@ const int RESULT_SCORE_PERCENTAGE = 45;
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::SmithWatermanDialogFiller"
-#define GT_METHOD_NAME "run"
 
 SmithWatermanDialogFiller::SmithWatermanDialogFiller(SwRealization _realization, const SmithWatermanSettings::SWResultView _resultView, const QString& _resultFilesPath, const QString& _pattern, const GTRegionSelector::RegionSelectorSettings& _s)
     : Filler("SmithWatermanDialogBase"), button(Search), pattern(_pattern), s(_s),
@@ -150,7 +149,6 @@ void SmithWatermanDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

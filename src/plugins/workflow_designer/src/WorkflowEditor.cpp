@@ -21,14 +21,12 @@
 
 #include "WorkflowEditor.h"
 
-#include <QAction>
 #include <QHeaderView>
 #include <QKeyEvent>
 #include <QScrollArea>
 
 #include <U2Core/Counter.h>
 #include <U2Core/Log.h>
-#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DatasetsController.h>
@@ -40,7 +38,6 @@
 
 #include "ActorCfgFilterProxyModel.h"
 #include "ActorCfgModel.h"
-#include "TableViewTabKey.h"
 #include "WorkflowEditorDelegates.h"
 #include "WorkflowViewController.h"
 
@@ -55,7 +52,6 @@ WorkflowEditor::WorkflowEditor(WorkflowView* p)
       custom(nullptr),
       customWidget(nullptr),
       subject(nullptr),
-      actor(nullptr),
       onFirstTableShow(true) {
     GCOUNTER(cvar, "WorkflowEditor");
     setupUi(this);
@@ -66,12 +62,12 @@ WorkflowEditor::WorkflowEditor(WorkflowView* p)
     table->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     specialParameters->hide();
 
-#ifdef Q_OS_DARWIN
-    QString style("QGroupBox::title {margin-bottom: 9px;}");
-    editorBox->setStyleSheet(style);
-#endif
+    if (isOsMac()) {
+        QString style("QGroupBox::title {margin-bottom: 9px;}");
+        editorBox->setStyleSheet(style);
+    }
 
-    QVBoxLayout* inputScrollAreaContainerLayout = new QVBoxLayout();
+    auto inputScrollAreaContainerLayout = new QVBoxLayout();
     inputScrollAreaContainerLayout->setContentsMargins(0, 0, 0, 0);
     inputScrollAreaContainerLayout->setSpacing(0);
     inputScrollAreaContainerLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -81,7 +77,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView* p)
     inputPortBox->setVisible(true);
     connect(inputPortBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleInput(bool)));
 
-    QVBoxLayout* outputScrollAreaContainerLayout = new QVBoxLayout();
+    auto outputScrollAreaContainerLayout = new QVBoxLayout();
     outputScrollAreaContainerLayout->setContentsMargins(0, 0, 0, 0);
     outputScrollAreaContainerLayout->setSpacing(0);
     outputScrollAreaContainerLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -123,8 +119,12 @@ WorkflowEditor::WorkflowEditor(WorkflowView* p)
 
 void WorkflowEditor::setEditable(bool editable) {
     table->setDisabled(!editable);
-    foreach (QWidget* w, inputPortWidget) { w->setDisabled(!editable); }
-    foreach (QWidget* w, outputPortWidget) { w->setDisabled(!editable); }
+    foreach (QWidget* w, inputPortWidget) {
+        w->setDisabled(!editable);
+    }
+    foreach (QWidget* w, outputPortWidget) {
+        w->setDisabled(!editable);
+    }
 }
 
 void WorkflowEditor::sl_updatePortTable() {
@@ -288,7 +288,7 @@ void WorkflowEditor::sl_showPropDoc() {
 
 void WorkflowEditor::editingLabelFinished() {
     QString newLabel = nameEdit->text();
-    if (!newLabel.isEmpty() && newLabel != actor->getLabel()) {
+    if (!actor.isNull() && !newLabel.isEmpty() && newLabel != actor->getLabel()) {
         actor->setLabel(newLabel);
         owner->getScene()->setModified(true);
         owner->refreshView();
@@ -299,11 +299,11 @@ void WorkflowEditor::reset() {
     caption->setText("");
     nameEdit->hide();
     paramBox->setTitle(tr("Parameters"));
+    if (!actor.isNull()) {
+        disconnect(actor.data(), &Actor::si_modified, this, &WorkflowEditor::sl_updatePortTable);
+    }
     setDescriptor(nullptr);
     edit(nullptr);
-    if (nullptr != actor) {
-        disconnect(actor, SIGNAL(si_modified()), this, SLOT(sl_updatePortTable()));
-    }
     actor = nullptr;
     actorModel->setActor(nullptr);
     propDoc->setText("");
@@ -352,7 +352,7 @@ void WorkflowEditor::reset() {
 }
 
 void WorkflowEditor::commitDatasets(const QString& attrId, const QList<Dataset>& sets) {
-    assert(nullptr != actor);
+    assert(!actor.isNull());
     Attribute* attr = actor->getParameter(attrId);
     attr->setAttributeValue(qVariantFromValue<QList<Dataset>>(sets));
     sendModified();
@@ -374,28 +374,28 @@ void WorkflowEditor::commit() {
 void WorkflowEditor::editActor(Actor* a, const QList<Actor*>& allActors) {
     reset();
     actor = a;
-    if (a) {
-        connect(actor, SIGNAL(si_modified()), SLOT(sl_updatePortTable()));
+    CHECK(actor, );
 
-        caption->setText(tr("Element name:"));
-        nameEdit->setText(a->getLabel());
-        nameEdit->show();
-        setDescriptor(a->getProto(), tr("To configure the parameters of the element go to \"Parameters\" area below."));
-        edit(a);
-        if (nullptr != specialParameters) {
-            specialParameters->editActor(a, allActors);
-        }
+    connect(actor.data(), &Actor::si_modified, this, &WorkflowEditor::sl_updatePortTable, Qt::QueuedConnection);
 
-        createInputPortTable(a);
-        createOutputPortTable(a);
-        paramHeight = table->rowHeight(0) * (table->model()->rowCount() + 3);
-        if (nullptr != specialParameters && specialParameters->isVisible()) {
-            paramHeight += specialParameters->contentHeight();
-        }
-        paramBox->setTitle(tr("Parameters"));
-        if (paramBox->isChecked()) {
-            changeSizes(paramBox, paramHeight);
-        }
+    caption->setText(tr("Element name:"));
+    nameEdit->setText(a->getLabel());
+    nameEdit->show();
+    setDescriptor(a->getProto(), tr("To configure the parameters of the element go to \"Parameters\" area below."));
+    edit(a);
+    if (specialParameters != nullptr) {
+        specialParameters->editActor(a, allActors);
+    }
+
+    createInputPortTable(a);
+    createOutputPortTable(a);
+    paramHeight = table->rowHeight(0) * (table->model()->rowCount() + 3);
+    if (specialParameters != nullptr && specialParameters->isVisible()) {
+        paramHeight += specialParameters->contentHeight();
+    }
+    paramBox->setTitle(tr("Parameters"));
+    if (paramBox->isChecked()) {
+        changeSizes(paramBox, paramHeight);
     }
 }
 
@@ -457,7 +457,7 @@ void WorkflowEditor::editPort(Port* p) {
         paramHeight = ed->getOptimalHeight();
 
         edit(p);
-        bool invisible = ((nullptr != ed && ed->isEmpty()) || !p->isEnabled());
+        bool invisible = (ed->isEmpty() || !p->isEnabled());
         paramBox->setVisible(!invisible);
         if (invisible) {
             paramHeight = 0;
@@ -484,12 +484,12 @@ void WorkflowEditor::setDescriptor(Descriptor* d, const QString& hint) {
 
 void WorkflowEditor::edit(Configuration* cfg) {
     paramBox->setEnabled(true);
-    if (nullptr != specialParameters) {
+    if (specialParameters != nullptr) {
         specialParameters->setEnabled(true);
     }
     disconnect(paramBox, SIGNAL(toggled(bool)), tableSplitter, SLOT(setVisible(bool)));
 
-    if (nullptr != custom) {
+    if (custom != nullptr) {
         custom->commit();
     }
     delete customWidget;
@@ -506,7 +506,7 @@ void WorkflowEditor::edit(Configuration* cfg) {
     }
 
     if (subject && !customWidget) {
-        assert(actor);
+        assert(!actor.isNull());
         actorModel->setActor(actor);
         updateEditingData();
         tableSplitter->setVisible(paramBox->isChecked());
@@ -574,7 +574,7 @@ void WorkflowEditor::setSpecialPanelEnabled(bool isEnabled) {
 /************************************************************************/
 SpecialParametersPanel::SpecialParametersPanel(WorkflowEditor* parent)
     : QWidget(parent), editor(parent) {
-    QVBoxLayout* l = new QVBoxLayout(this);
+    auto l = new QVBoxLayout(this);
     l->setContentsMargins(0, 0, 0, 0);
     this->setLayout(l);
 }
@@ -656,7 +656,7 @@ void SpecialParametersPanel::reset() {
 
 void SpecialParametersPanel::addWidget(AttributeDatasetsController* controller) {
     CHECK(nullptr != controller, );
-    QWidget* newWidget = controller->getWigdet();
+    QWidget* newWidget = controller->getWidget();
     if (!editor->isEnabled()) {
         newWidget->setEnabled(false);
     }
@@ -667,13 +667,13 @@ void SpecialParametersPanel::removeWidget(AttributeDatasetsController* controlle
     CHECK(nullptr != controller, );
     disconnect(controller, SIGNAL(si_attributeChanged()), this, SLOT(sl_datasetsChanged()));
     disconnect(controller, SIGNAL(si_datasetRenamed(QPair<QString, QString>&)), this, SLOT(sl_datasetRenamed(QPair<QString, QString>&)));
-    this->layout()->removeWidget(controller->getWigdet());
+    this->layout()->removeWidget(controller->getWidget());
 }
 
 void SpecialParametersPanel::setDatasetsEnabled(bool isEnabled) {
     setEnabled(isEnabled);
     foreach (AttributeDatasetsController* dataset, controllers.values()) {
-        dataset->getWigdet()->setEnabled(isEnabled);
+        dataset->getWidget()->setEnabled(isEnabled);
     }
 }
 

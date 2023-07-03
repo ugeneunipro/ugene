@@ -40,7 +40,6 @@ StartupDialogFiller::StartupDialogFiller(const QString& path, bool isPathValid)
       isPathValid(isPathValid) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void StartupDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     if (path != UGUITest::sandBoxDir) {
@@ -57,7 +56,6 @@ void StartupDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

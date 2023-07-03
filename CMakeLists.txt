@@ -38,11 +38,14 @@ set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
-            " -Werror=deprecated-copy" # Requires GCC 9.1+
+            " -Werror=dangling-reference"
+            " -Werror=deprecated-copy"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
             " -Werror=return-type"
-            " -Werror=shadow=local" # Requires GCC 7.1+
+            " -Werror=sequence-point"
+            " -Werror=shadow=local"
+            " -Werror=switch"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
             " -Werror=unused-value"
@@ -50,7 +53,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Wno-deprecated-declarations"
             )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
-    LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined )
+    LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
 endif ()
 
 # 3rd party libraries.

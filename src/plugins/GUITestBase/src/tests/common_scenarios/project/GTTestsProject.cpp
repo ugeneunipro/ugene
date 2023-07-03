@@ -175,7 +175,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsDocument::checkDocument("1CF7.pdb");
 
     GTUtilsDocument::removeDocument("1CF7.pdb", GTGlobals::UseMouse);
-    GTUtilsProject::checkProject(GTUtilsProject::Empty);
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {

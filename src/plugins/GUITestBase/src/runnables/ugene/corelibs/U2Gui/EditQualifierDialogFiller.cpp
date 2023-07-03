@@ -41,7 +41,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::EditQualifierFiller"
-#define GT_METHOD_NAME "commonScenario"
 void EditQualifierFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -63,7 +62,6 @@ void EditQualifierFiller::commonScenario() {
     }
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

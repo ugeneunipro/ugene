@@ -27,7 +27,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTSplitter"
 
-#define GT_METHOD_NAME "getHandleRect"
 QRect GTSplitter::getHandleRect(QSplitter* splitter, int handleNumber) {
     GT_CHECK_RESULT(splitter != nullptr, "splitter is nullptr", QRect());
 
@@ -40,9 +39,7 @@ QRect GTSplitter::getHandleRect(QSplitter* splitter, int handleNumber) {
     QRect handleRect = handle->rect();
     return QRect(handle->mapToGlobal(handleRect.topLeft()), handle->mapToGlobal(handleRect.bottomRight()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "moveHandle"
 void GTSplitter::moveHandle(QSplitter* splitter, int pixels, int handleNumber) {
     QRect handleRect = getHandleRect(splitter, handleNumber);
     QPoint mouseOffset(0, 0);
@@ -53,6 +50,5 @@ void GTSplitter::moveHandle(QSplitter* splitter, int pixels, int handleNumber) {
     }
     GTMouseDriver::dragAndDrop(handleRect.center(), handleRect.center() + mouseOffset);
 }
-#undef GT_METHOD_NAME
 
 }  // namespace HI

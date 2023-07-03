@@ -33,7 +33,6 @@ using namespace HI;
 
 #define GT_CLASS_NAME "ConfigurationWizardFiller"
 
-#define GT_METHOD_NAME "commonScenario"
 void ConfigurationWizardFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTGlobals::sleep(500);
@@ -47,7 +46,6 @@ void ConfigurationWizardFiller::commonScenario() {
 
     GTUtilsWizard::clickButton(GTUtilsWizard::Setup);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -45,13 +45,11 @@ RemoteBLASTDialogFiller::RemoteBLASTDialogFiller(CustomScenario* scenario)
     : Filler("RemoteBLASTDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void RemoteBLASTDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

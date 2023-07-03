@@ -55,7 +55,6 @@ RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(RemoveTyp
     : Filler("RemovePartFromSequenceDialog"), removeType(_removeType), format(FASTA), recalculateQuals(false) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void RemovePartFromSequenceDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -88,7 +87,6 @@ void RemovePartFromSequenceDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

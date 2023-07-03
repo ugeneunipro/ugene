@@ -36,7 +36,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::GenerateAlignmentProfileDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 
 void GenerateAlignmentProfileDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -73,5 +72,4 @@ void GenerateAlignmentProfileDialogFiller::commonScenario() {
 }
 
 }  // namespace U2
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME

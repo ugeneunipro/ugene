@@ -88,7 +88,6 @@ ImportAnnotationsToCsvFiller::ImportAnnotationsToCsvFiller(CustomScenario* c)
       useMethod(GTGlobals::UseKey) {
 }
 
-#define GT_METHOD_NAME "run"
 void RoleFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     auto addOffsetCheckBox = GTWidget::findCheckBox("startOffsetCheck", dialog);
@@ -147,7 +146,6 @@ void RoleFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 class GTTableWidget {
 public:
@@ -162,7 +160,6 @@ public:
     }
 };
 
-#define GT_METHOD_NAME "run"
 void ImportAnnotationsToCsvFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -222,7 +219,6 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

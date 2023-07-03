@@ -48,7 +48,6 @@ using namespace HI;
 
 const QString GTUtilsAnnotHighlightingTreeView::widgetName = "OP_ANNOT_HIGHLIGHT_TREE";
 
-#define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget* GTUtilsAnnotHighlightingTreeView::getTreeWidget() {
     auto treeWidget = GTWidget::findTreeWidget(widgetName, nullptr, false);
 
@@ -59,9 +58,7 @@ QTreeWidget* GTUtilsAnnotHighlightingTreeView::getTreeWidget() {
 
     return GTWidget::findTreeWidget(widgetName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
 QTreeWidgetItem* GTUtilsAnnotHighlightingTreeView::findItem(const QString& itemName, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", nullptr);
 
@@ -78,9 +75,7 @@ QTreeWidgetItem* GTUtilsAnnotHighlightingTreeView::findItem(const QString& itemN
 
     return nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSelectedItem"
 QString GTUtilsAnnotHighlightingTreeView::getSelectedItem() {
     QTreeWidget* treeWidget = getTreeWidget();
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
@@ -94,16 +89,13 @@ QString GTUtilsAnnotHighlightingTreeView::getSelectedItem() {
 
     return QString();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsAnnotHighlightingTreeView::getItemCenter(const QString& itemName) {
     QTreeWidgetItem* item = findItem(itemName);
     GT_CHECK_RESULT(item != nullptr, "Item " + itemName + " is NULL", QPoint());
 
     return GTTreeWidget::getItemCenter(item);
 }
-#undef GT_METHOD_NAME
 
 void GTUtilsAnnotHighlightingTreeView::click(const QString& itemName) {
     QTreeWidgetItem* item = findItem(itemName);
@@ -116,7 +108,6 @@ void GTUtilsAnnotHighlightingTreeView::click(const QString& itemName) {
     GTMouseDriver::click();
 }
 
-#define GT_METHOD_NAME "getItemCenter"
 QColor GTUtilsAnnotHighlightingTreeView::getItemColor(const QString& itemName) {
     QTreeWidgetItem* item = findItem(itemName);
     QIcon icon = item->icon(1);
@@ -126,7 +117,6 @@ QColor GTUtilsAnnotHighlightingTreeView::getItemColor(const QString& itemName) {
     QColor result = QColor(rgb);
     return result;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

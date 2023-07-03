@@ -68,7 +68,7 @@ PropertyWidget* SpinBoxDelegate::createWizardWidget(U2OpStatus& /*os*/, QWidget*
 QWidget* SpinBoxDelegate::createEditor(QWidget* parent,
                                        const QStyleOptionViewItem& /* option */,
                                        const QModelIndex& /* index */) const {
-    SpinBoxWidget* editor = new SpinBoxWidget(getProperties(), parent);
+    auto editor = new SpinBoxWidget(getProperties(), parent);
     connect(editor, SIGNAL(valueChanged(int)), SIGNAL(si_valueChanged(int)));
     connect(editor, SIGNAL(valueChanged(int)), SLOT(sl_commit()));
 
@@ -143,7 +143,7 @@ PropertyWidget* DoubleSpinBoxDelegate::createWizardWidget(U2OpStatus& /*os*/, QW
 QWidget* DoubleSpinBoxDelegate::createEditor(QWidget* parent,
                                              const QStyleOptionViewItem& /* option */,
                                              const QModelIndex& /* index */) const {
-    DoubleSpinBoxWidget* editor = new DoubleSpinBoxWidget(spinProperties, parent);
+    auto editor = new DoubleSpinBoxWidget(spinProperties, parent);
     connect(editor, SIGNAL(si_valueChanged(QVariant)), SLOT(sl_commit()));
     return editor;
 }
@@ -523,7 +523,7 @@ QWidget* URLDelegate::createEditor(QWidget* parent,
                                    const QStyleOptionViewItem& /* option */,
                                    const QModelIndex& /* index */) const {
     URLWidget* editor = createWidget(parent);
-    connect(editor, SIGNAL(finished()), SLOT(sl_commit()));
+    connect(editor, &URLWidget::finished, this, &URLDelegate::sl_commit);
     return editor;
 }
 
@@ -758,7 +758,7 @@ StingListWidget::StingListWidget(QWidget* parent)
     edit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     addMainWidget(edit);
 
-    QToolButton* button = new QToolButton(this);
+    auto button = new QToolButton(this);
     button->setText("...");
     button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     connect(button, SIGNAL(clicked()), edit, SLOT(sl_onExpand()));
@@ -784,7 +784,7 @@ PropertyWidget* StringListDelegate::createWizardWidget(U2OpStatus& /*os*/, QWidg
 }
 
 QWidget* StringListDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const {
-    StingListWidget* widget = new StingListWidget(parent);
+    auto widget = new StingListWidget(parent);
     connect(widget, SIGNAL(finished()), SLOT(sl_commit()));
 
     currentEditor = widget;
@@ -821,20 +821,20 @@ void StringListDelegate::setModelData(QWidget* editor, QAbstractItemModel* model
  * StringSelectorDelegate
  ********************************/
 QWidget* StringSelectorDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const {
-    QWidget* editor = new QWidget(parent);
+    auto editor = new QWidget(parent);
     valueEdit = new QLineEdit(editor);
     valueEdit->setObjectName("valueEdit");
     // valueEdit->setReadOnly(true);
     valueEdit->setFrame(false);
     valueEdit->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
     editor->setFocusProxy(valueEdit);
-    QToolButton* toolButton = new QToolButton(editor);
+    auto toolButton = new QToolButton(editor);
     toolButton->setVisible(true);
     toolButton->setText("...");
     toolButton->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_onClick()));
 
-    QHBoxLayout* layout = new QHBoxLayout(editor);
+    auto layout = new QHBoxLayout(editor);
     layout->setSpacing(0);
     layout->setMargin(0);
     layout->addWidget(valueEdit);
@@ -913,7 +913,7 @@ LineEditWithValidatorDelegate::LineEditWithValidatorDelegate(const QRegularExpre
 
 QWidget* LineEditWithValidatorDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& /*option*/, const QModelIndex& /*index*/) const {
     QScopedPointer<IgnoreUpDownPropertyWidget> editor(new IgnoreUpDownPropertyWidget(NO_LIMIT, parent));
-    QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");
+    auto lineEdit = editor->findChild<QLineEdit*>("mainWidget");
     SAFE_POINT(lineEdit != nullptr, "Line edit is nullptr", nullptr);
 
     lineEdit->setValidator(new QRegularExpressionValidator(regExp, lineEdit));
@@ -940,7 +940,7 @@ void LineEditWithValidatorDelegate::sl_valueChanged() {
     auto editor = qobject_cast<IgnoreUpDownPropertyWidget*>(sender());
     CHECK(editor != nullptr, );
 
-    QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");
+    auto lineEdit = editor->findChild<QLineEdit*>("mainWidget");
     SAFE_POINT(lineEdit != nullptr, "Line edit is nullptr", );
 
     const int cursorPos = lineEdit->cursorPosition();

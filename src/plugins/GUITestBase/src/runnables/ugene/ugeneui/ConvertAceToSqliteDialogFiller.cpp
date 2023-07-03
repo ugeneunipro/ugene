@@ -31,7 +31,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::SaveProjectAsDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void ConvertAceToSqliteDialogFiller::commonScenario() {
     QString button;
     switch (action) {
@@ -61,7 +60,6 @@ void ConvertAceToSqliteDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

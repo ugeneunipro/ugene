@@ -35,13 +35,11 @@ PrimersDetailsDialogFiller::PrimersDetailsDialogFiller(CustomScenario* scenario)
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::PrimersDetailsDialogFiller"
-#define GT_METHOD_NAME "commonScenario"
 void PrimersDetailsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

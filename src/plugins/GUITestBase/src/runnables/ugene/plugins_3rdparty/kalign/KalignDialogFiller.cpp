@@ -37,7 +37,6 @@ KalignDialogFiller::KalignDialogFiller(int _gapOpenVal, bool _toAmino)
       gapOpenVal(_gapOpenVal), toAmino(_toAmino) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void KalignDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -54,7 +53,6 @@ void KalignDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

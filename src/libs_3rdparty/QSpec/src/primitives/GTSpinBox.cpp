@@ -30,20 +30,15 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTSpinBox"
 
-#define GT_METHOD_NAME "getValue"
 int GTSpinBox::getValue(QSpinBox* spinBox) {
     GT_CHECK_RESULT(spinBox != nullptr, "spinBox is NULL", -1);
     return spinBox->value();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getValue"
 int GTSpinBox::getValue(const QString& spinBoxName, QWidget* parent) {
     return GTSpinBox::getValue(GTWidget::findSpinBox(spinBoxName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setValue"
 void GTSpinBox::setValue(QSpinBox* spinBox, int v, GTGlobals::UseMethod useMethod) {
     GT_CHECK(spinBox != nullptr, "spinBox is NULL");
     qDebug("GTSpinBox::setValue %d", v);
@@ -107,21 +102,15 @@ void GTSpinBox::setValue(QSpinBox* spinBox, int v, GTGlobals::UseMethod useMetho
     GT_CHECK(currIndex == v, QString("Can't set index. Expected: %1 actual: %2").arg(v).arg(currIndex));
     GTGlobals::sleep(100);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setValue"
 void GTSpinBox::setValue(const QString& spinBoxName, int v, GTGlobals::UseMethod useMethod, QWidget* parent) {
     GTSpinBox::setValue(GTWidget::findSpinBox(spinBoxName, parent), v, useMethod);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setValue"
 void GTSpinBox::setValue(const QString& spinBoxName, int v, QWidget* parent) {
     GTSpinBox::setValue(GTWidget::findSpinBox(spinBoxName, parent), v);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkLimits"
 void GTSpinBox::checkLimits(QSpinBox* spinBox, int min, int max) {
     GT_CHECK(spinBox != NULL, "spinbox is NULL");
     int actualMin = spinBox->minimum();
@@ -129,13 +118,10 @@ void GTSpinBox::checkLimits(QSpinBox* spinBox, int min, int max) {
     GT_CHECK(actualMin == min, QString("wrong minimum. Expected: %1, actual: %2").arg(min).arg(actualMin));
     GT_CHECK(actualMax == max, QString("wrong maximum. Expected: %1, actual: %2").arg(max).arg(actualMax));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkLimits"
 void GTSpinBox::checkLimits(const QString& spinBoxName, int min, int max, QWidget* parent) {
     GTSpinBox::checkLimits(GTWidget::findSpinBox(spinBoxName, parent), min, max);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

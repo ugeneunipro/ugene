@@ -30,7 +30,6 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsTask"
 
-#define GT_METHOD_NAME "getTaskByName"
 Task* GTUtilsTask::getTaskByName(const QString& taskName, const GTGlobals::FindOptions& options) {
     TaskScheduler* scheduler = AppContext::getTaskScheduler();
     GT_CHECK_RESULT(scheduler != nullptr, "task scheduler is NULL", {});
@@ -48,16 +47,12 @@ Task* GTUtilsTask::getTaskByName(const QString& taskName, const GTGlobals::FindO
     GT_CHECK_RESULT(result != nullptr || !options.failIfNotFound, "No top-level with name " + taskName, nullptr);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNoTask"
 void GTUtilsTask::checkNoTask(const QString& taskName) {
     Task* task = getTaskByName(taskName, {false});
     GT_CHECK(task == nullptr, "task " + taskName + " unexpectedly found");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "waitTaskStart"
 void GTUtilsTask::waitTaskStart(const QString& taskName, int timeout) {
     Task* task = nullptr;
     for (int time = 0; time < timeout && task == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -66,7 +61,16 @@ void GTUtilsTask::waitTaskStart(const QString& taskName, int timeout) {
     }
     GT_CHECK(task != nullptr, "waitTaskStart: task '" + taskName + "' is not found");
 }
-#undef GT_METHOD_NAME
+
+void GTUtilsTask::cancelAllTasks() {
+    class CancelAllTasksScenario : public CustomScenario {
+    public:
+        void run() override {
+            AppContext::getTaskScheduler()->cancelAllTasks();
+        }
+    };
+    GTThread::runInMainThread(new CancelAllTasksScenario());
+}
 
 #undef GT_CLASS_NAME
 }  // namespace U2

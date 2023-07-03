@@ -41,7 +41,6 @@ ExportChromatogramFiller::ExportChromatogramFiller(const QString& _path, const Q
     comboBoxItems[SCF] = "SCF";
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportChromatogramFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -74,7 +73,6 @@ void ExportChromatogramFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

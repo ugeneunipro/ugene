@@ -161,6 +161,9 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
             if (accession.startsWith("RB")) {
                 accession = accession.mid(2);
             }
+            while (accession.startsWith("0")) {
+                accession.remove(0, 1);
+            }
             dbxrefStr = "REBASE:" + accession;
         } else if (!enzyme->id.isEmpty()) {
             dbxrefStr = "REBASE:" + enzyme->id;

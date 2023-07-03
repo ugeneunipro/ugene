@@ -29,7 +29,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "StructuralAlignmentDialogFiller"
-#define GT_METHOD_NAME "run"
 
 void CAP3SupportDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -60,7 +59,6 @@ void CAP3SupportDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -92,7 +92,7 @@ public:
         All
     };
 
-    const QList<Actor*> getActors(ActorsSelector selector) const;
+    QList<Actor*> getActors(ActorsSelector selector) const;
 
     void clearScene();
     void onModified();
@@ -300,7 +300,6 @@ private:
     // setup ui
     void setupScene();
     void setupPalette();
-    void setupPropertyEditor();
     void setupErrorList();
     void setupMainSplitter();
     void loadSceneFromObject();

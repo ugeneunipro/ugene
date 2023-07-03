@@ -30,15 +30,12 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::FindAnnotationCollocationsDialogFiller"
 
-#define GT_METHOD_NAME "commonScenario"
 void FindAnnotationCollocationsDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getPlusButton"
 QToolButton* FindAnnotationCollocationsDialogFiller::getPlusButton() const {
     QToolButton* result = nullptr;
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -53,9 +50,7 @@ QToolButton* FindAnnotationCollocationsDialogFiller::getPlusButton() const {
     GT_CHECK_RESULT(result, "PlusButton not found", nullptr);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getMinusButtons"
 QList<QToolButton*> FindAnnotationCollocationsDialogFiller::getMinusButtons() const {
     QList<QToolButton*> result;
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -69,7 +64,6 @@ QList<QToolButton*> FindAnnotationCollocationsDialogFiller::getMinusButtons() co
 
     return result;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

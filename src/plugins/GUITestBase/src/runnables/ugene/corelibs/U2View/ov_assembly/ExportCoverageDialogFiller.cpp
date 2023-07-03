@@ -47,7 +47,6 @@ ExportCoverageDialogFiller::ExportCoverageDialogFiller(const QList<Action>& acti
       actions(actions) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportCoverageDialogFiller::commonScenario() {
     dialog = GTWidget::getActiveModalWidget();
     QPointer<QWidget> dialogPtr(dialog);
@@ -114,16 +113,12 @@ void ExportCoverageDialogFiller::commonScenario() {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "enterFilePath"
 void ExportCoverageDialogFiller::enterFilePath(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't a get file path from the action data");
     GTLineEdit::setText("leFilePath", actionData.toString(), dialog);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectFile"
 void ExportCoverageDialogFiller::selectFile(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't a get file path from the action data");
     const QString dirPath = QFileInfo(actionData.toString()).dir().path();
@@ -132,125 +127,92 @@ void ExportCoverageDialogFiller::selectFile(const QVariant& actionData) {
     GTWidget::click(GTWidget::findWidget("tbFilePath", dialog));
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setFormat"
 void ExportCoverageDialogFiller::setFormat(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't get a format name from the action data");
     GTComboBox::selectItemByText(GTWidget::findComboBox("cbFormat", dialog), actionData.toString());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setCompress"
 void ExportCoverageDialogFiller::setCompress(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get a checkbox state from the action data");
     GTCheckBox::setChecked(GTWidget::findCheckBox("chbCompress", dialog), actionData.toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExportCoverage"
 void ExportCoverageDialogFiller::setExportCoverage(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get a checkbox state from the action data");
     GTCheckBox::setChecked(GTWidget::findCheckBox("chbExportCoverage", dialog), actionData.toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setExportBasesQuantity"
 void ExportCoverageDialogFiller::setExportBasesQuantity(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get a checkbox state from the action data");
     GTCheckBox::setChecked(GTWidget::findCheckBox("chbExportBasesQuantity", dialog), actionData.toBool());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setThreshold"
 void ExportCoverageDialogFiller::setThreshold(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<int>(), "Can't get a threshold value from the action data");
     GTSpinBox::setValue(GTWidget::findSpinBox("sbThreshold", dialog), actionData.toInt());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkFilePath"
 void ExportCoverageDialogFiller::checkFilePath(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't get an expected file path from the action data");
     auto leFilePath = GTWidget::findLineEdit("leFilePath", dialog);
     GT_CHECK(leFilePath->text() == actionData.toString(), QString("An unexpected file path: expected '%1', got '%2'").arg(actionData.toString()).arg(leFilePath->text()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkFormat"
 void ExportCoverageDialogFiller::checkFormat(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't get an expected format name from the action data");
     auto cbFormat = GTWidget::findComboBox("cbFormat", dialog);
     GT_CHECK(cbFormat->currentText() == actionData.toString(), QString("An unexpected format is set: expect '%1' got '%2'").arg(actionData.toString()).arg(cbFormat->currentText()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkCompress"
 void ExportCoverageDialogFiller::checkCompress(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
     auto chbCompress = GTWidget::findCheckBox("chbCompress", dialog);
     GT_CHECK(chbCompress->isChecked() == actionData.toBool(), "An unexpected checkbox state");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkOptionsVisibility"
 void ExportCoverageDialogFiller::checkOptionsVisibility(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected groupbox visibility state from the action data");
     auto gbAdditionalOptions = GTWidget::findWidget("gbAdditionalOptions", dialog);
     GT_CHECK(gbAdditionalOptions->isVisible() == actionData.toBool(), "An unexpected additional options groupbox visibility state");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkExportCoverage"
 void ExportCoverageDialogFiller::checkExportCoverage(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
     auto chbExportCoverage = GTWidget::findCheckBox("chbExportCoverage", dialog);
     GT_CHECK(chbExportCoverage->isChecked() == actionData.toBool(), "An unexpected checkbox state");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkExportBasesQuantity"
 void ExportCoverageDialogFiller::checkExportBasesQuantity(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get an expected checkbox state from the action data");
     auto chbExportBasesQuantity = GTWidget::findCheckBox("chbExportBasesQuantity", dialog);
     GT_CHECK(chbExportBasesQuantity->isChecked() == actionData.toBool(), "An unexpected checkbox state");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkThreshold"
 void ExportCoverageDialogFiller::checkThreshold(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<int>(), "Can't get an expected spinbox value from the action data");
     auto sbThreshold = GTWidget::findSpinBox("sbThreshold", dialog);
     GT_CHECK(sbThreshold->value() == actionData.toInt(), "An unexpected spinbox value");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkThresholdBounds"
 void ExportCoverageDialogFiller::checkThresholdBounds(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QPoint>(), "Can't get a QPoint with expected spinbox bounds values from the action data");
     auto sbThreshold = GTWidget::findSpinBox("sbThreshold", dialog);
     const QPoint spinboxBounds = actionData.value<QPoint>();
     GTSpinBox::checkLimits(sbThreshold, spinboxBounds.x(), spinboxBounds.y());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "expectMessageBox"
 void ExportCoverageDialogFiller::expectMessageBox() {
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickOk"
 void ExportCoverageDialogFiller::clickOk() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickCancel"
 void ExportCoverageDialogFiller::clickCancel() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

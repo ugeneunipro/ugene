@@ -45,7 +45,6 @@ ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(int _formatVal, QString _pa
       frame(_frame) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportMSA2MSADialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -84,7 +83,6 @@ void ExportMSA2MSADialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

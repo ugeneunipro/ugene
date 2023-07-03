@@ -30,21 +30,16 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTDoubleSpinBox"
 
-#define GT_METHOD_NAME "getValue"
 int GTDoubleSpinbox::getValue(QDoubleSpinBox* spinBox) {
 
     GT_CHECK_RESULT(spinBox != NULL, "spinBox is NULL", -1);
     return spinBox->value();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getValue"
 int GTDoubleSpinbox::getValue(const QString& spinBoxName, QWidget* parent) {
     return GTDoubleSpinbox::getValue(GTWidget::findDoubleSpinBox(spinBoxName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setValue"
 void GTDoubleSpinbox::setValue(QDoubleSpinBox* spinBox, double v, GTGlobals::UseMethod useMethod) {
     GT_CHECK(spinBox != NULL, "spinBox is NULL");
     if (spinBox->value() == v) {
@@ -106,21 +101,15 @@ void GTDoubleSpinbox::setValue(QDoubleSpinBox* spinBox, double v, GTGlobals::Use
     double currIndex = spinBox->value();
     GT_CHECK(QString().setNum(currIndex) == QString().setNum(v), "Expected: " + QString().setNum(v) + " Found: " + QString().setNum(currIndex));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setValue"
 void GTDoubleSpinbox::setValue(const QString& spinBoxName, double v, GTGlobals::UseMethod useMethod, QWidget* parent) {
     GTDoubleSpinbox::setValue(GTWidget::findDoubleSpinBox(spinBoxName, parent), v, useMethod);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setValue"
 void GTDoubleSpinbox::setValue(const QString& spinBoxName, double v, QWidget* parent) {
     GTDoubleSpinbox::setValue(GTWidget::findDoubleSpinBox(spinBoxName, parent), v);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkLimits"
 void GTDoubleSpinbox::checkLimits(QDoubleSpinBox* spinBox, double min, double max) {
     GT_CHECK(spinBox != NULL, "spinbox is NULL");
     int actualMin = spinBox->minimum();
@@ -128,13 +117,10 @@ void GTDoubleSpinbox::checkLimits(QDoubleSpinBox* spinBox, double min, double ma
     GT_CHECK(actualMin == min, QString("wrong minimum. Expected: %1, actual: 2").arg(min).arg(actualMin));
     GT_CHECK(actualMax == max, QString("wrong maximum. Expected: %1, actual: 2").arg(max).arg(actualMax));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkLimits"
 void GTDoubleSpinbox::checkLimits(const QString& spinBoxName, int min, int max, QWidget* parent) {
     GTDoubleSpinbox::checkLimits(GTWidget::findDoubleSpinBox(spinBoxName, parent), min, max);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

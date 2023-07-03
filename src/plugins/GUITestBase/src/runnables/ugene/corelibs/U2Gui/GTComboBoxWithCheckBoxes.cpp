@@ -36,7 +36,6 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTComboBoxWithCheckBoxes"
 
-#define GT_METHOD_NAME "selectItemByIndex"
 void GTComboBoxWithCheckBoxes::selectItemByIndex(QComboBox* comboBox, const QList<int>& indexes, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
 
@@ -100,9 +99,7 @@ void GTComboBoxWithCheckBoxes::selectItemByIndex(QComboBox* comboBox, const QLis
     GTThread::runInMainThread(new MainThreadAction(comboBox, indexes, method));
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItemByText"
 void GTComboBoxWithCheckBoxes::selectItemByText(QComboBox* comboBox, const QStringList& texts, GTGlobals::UseMethod method) {
     GT_CHECK(comboBox != nullptr, "QComboBox* == NULL");
 
@@ -116,15 +113,11 @@ void GTComboBoxWithCheckBoxes::selectItemByText(QComboBox* comboBox, const QStri
 
     selectItemByIndex(comboBox, indexes, method);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItemByText"
 void GTComboBoxWithCheckBoxes::selectItemByText(const QString& comboBoxName, QWidget* parent, const QStringList& texts, GTGlobals::UseMethod method) {
     selectItemByText(GTWidget::findComboBox(comboBoxName, parent), texts, method);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getCheckedItemsTexts"
 QStringList GTComboBoxWithCheckBoxes::getCheckedItemsTexts(const QString& comboBoxName, QWidget* parent) {
     auto cb = GTWidget::findComboBox(comboBoxName, parent);
     GT_CHECK_RESULT(cb != nullptr, "QComboBox* == nullptr", QStringList());
@@ -147,7 +140,6 @@ QStringList GTComboBoxWithCheckBoxes::getCheckedItemsTexts(const QString& comboB
 
     return result;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

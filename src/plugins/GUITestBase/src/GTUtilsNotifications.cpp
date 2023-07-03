@@ -44,7 +44,6 @@ NotificationChecker::NotificationChecker() {
     t->start(100);
 }
 
-#define GT_METHOD_NAME "sl_checkNotification"
 void NotificationChecker::sl_checkNotification() {
     CHECK(QApplication::activeModalWidget() == nullptr, );  // Active modal widget will prevent click on the notification.
     // Activate floating notification.
@@ -59,7 +58,6 @@ void NotificationChecker::sl_checkNotification() {
         }
     }
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "NotificationDialogFiller"
@@ -70,7 +68,6 @@ NotificationDialogFiller::NotificationDialogFiller(const QString& message)
     settings.timeout = 350000;
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void NotificationDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     if (!message.isEmpty()) {
@@ -89,27 +86,21 @@ void NotificationDialogFiller::commonScenario() {
         }
     }
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "NotificationChecker"
 
-#define GT_METHOD_NAME "waitForNotification"
 void GTUtilsNotifications::waitForNotification(bool dialogExpected, const QString& message) {
     if (dialogExpected) {
         GTUtilsDialog::waitForDialog(new NotificationDialogFiller(message));
     }
     new NotificationChecker();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNotificationReportText"
 void GTUtilsNotifications::checkNotificationReportText(const QString& textToken) {
     checkNotificationReportText(QStringList(textToken));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNotificationReportTextList"
 void GTUtilsNotifications::checkNotificationReportText(const QStringList& textTokens) {
     clickOnNotificationWidget();
 
@@ -121,16 +112,12 @@ void GTUtilsNotifications::checkNotificationReportText(const QStringList& textTo
     }
     GTUtilsMdi::closeActiveWindow();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNotificationDialogText"
 void GTUtilsNotifications::checkNotificationDialogText(const QString& textToken) {
     GTUtilsDialog::waitForDialog(new NotificationDialogFiller(textToken));
     clickOnNotificationWidget();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickOnNotificationWidget"
 void GTUtilsNotifications::clickOnNotificationWidget() {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -145,7 +132,6 @@ void GTUtilsNotifications::clickOnNotificationWidget() {
     }
     GT_FAIL("Notification widget is not found!", );
 }
-#undef GT_METHOD_NAME
 
 /** Returns any visible notification popover widget or nullptr if no widget is found.*/
 static QWidget* findAnyVisibleNotificationWidget() {
@@ -159,7 +145,6 @@ static QWidget* findAnyVisibleNotificationWidget() {
     return nullptr;
 }
 
-#define GT_METHOD_NAME "waitAllNotificationsClosed"
 void GTUtilsNotifications::waitAllNotificationsClosed() {
     QWidget* notification = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
@@ -171,30 +156,23 @@ void GTUtilsNotifications::waitAllNotificationsClosed() {
     }
     GT_CHECK(notification == nullptr, "Notification is still active after timeout!");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNoVisibleNotifications"
 void GTUtilsNotifications::checkNoVisibleNotifications() {
     QWidget* notification = findAnyVisibleNotificationWidget();
     GT_CHECK(notification == nullptr, "Found active notification!");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getNotificationCounterValue"
 QString GTUtilsNotifications::getNotificationCounterValue() {
     auto statusBar = GTWidget::findWidget("taskStatusBar");
     return GTWidget::findLabel("notificationLabel", statusBar)->property("notifications-count").toString();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openNotificationContainerWidget"
 QWidget* GTUtilsNotifications::openNotificationContainerWidget() {
     auto statusBar = GTWidget::findWidget("taskStatusBar");
     auto label = GTWidget::findLabel("notificationLabel", statusBar);
     GTWidget::click(label);
     return GTWidget::findWidget("NotificationWidget");
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -27,6 +27,7 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTDoubleSpinBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
 #include <primitives/GTMainWindow.h>
@@ -431,6 +432,8 @@ GUI_TEST_CLASS_DEFINITION(test_7125) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsDialog::waitForDialog(new BuildTreeDialogFillerPhyML(false));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running tasks.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7126) {
@@ -944,7 +947,7 @@ GUI_TEST_CLASS_DEFINITION(test_7279) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7293) {
-    // Open a multi-byte unicode file that triggers format selection dialog with a raw data preview.
+    // Open a multibyte unicode file that triggers format selection dialog with a raw data preview.
     // Check that raw data is shown correctly for both Open... & Open As... dialog (these are 2 different dialogs).
 
     class CheckDocumentReadingModeSelectorTextScenario : public CustomScenario {
@@ -2201,7 +2204,7 @@ GUI_TEST_CLASS_DEFINITION(test_7499) {
     QStringList nameListAfter = GTUtilsMSAEditorSequenceArea::getNameList();
     CHECK_SET_ERR(nameListBefore == nameListAfter, "Name list changed");
 
-    // The only the first sequence must be changed (alignment back).
+    // Only the first sequence must be changed (alignment back).
     QString sequence1v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(1).left(10);
     QString sequence8v3 = GTUtilsMSAEditorSequenceArea::getSequenceData(8).left(10);
     CHECK_SET_ERR(sequence1v3 == sequence1v1, "Sequence 1 was not aligned as expected.");
@@ -2702,7 +2705,7 @@ GUI_TEST_CLASS_DEFINITION(test_7572) {
 
     class PhyMLMaximumLikelihoodScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTComboBox::selectItemByText("algorithmBox", dialog, "PhyML Maximum Likelihood");
             GTLineEdit::setText("fileNameEdit", sandBoxDir + "test_7572.nwk", dialog);
@@ -2823,7 +2826,7 @@ GUI_TEST_CLASS_DEFINITION(test_7576) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7582) {
-    // Check that UGENE can build a tree for a MSA with non-unique sequence names.
+    // Check that UGENE can build a tree for an MSA with non-unique sequence names.
     GTFileDialog::openFile(testDir + "_common_data/clustal/same_name_sequences.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
@@ -2876,7 +2879,7 @@ GUI_TEST_CLASS_DEFINITION(test_7584) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7607) {
-    // Check that UGENE can build a tree for a MSA with non-unique sequence names.
+    // Check that UGENE can build a tree for an MSA with non-unique sequence names.
     GTFileDialog::openFile(testDir + "_common_data/clustal/align.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
@@ -3086,7 +3089,7 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // In CVU55762 select region 1001-1000.
-    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(1001, 1000);
+    auto filler = new SelectSequenceRegionDialogFiller(1001, 1000);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
@@ -3105,7 +3108,7 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     GTUtilsDialog::waitForDialog(filler);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
-    // Right click on the sequence->Replace subsequence... "Replace sequence" dialog appears.
+    // Right-click on the sequence->Replace subsequence... "Replace sequence" dialog appears.
     // Paste clipboard into text field (Cmd-V).
     // Press Enter.
     // Dialog closed, sequence changed. Now only 1 annotation remains (5' terminal repeat).
@@ -3258,7 +3261,7 @@ GUI_TEST_CLASS_DEFINITION(test_7645) {
 GUI_TEST_CLASS_DEFINITION(test_7650) {
     // 1. Open samples/CLUSTALW/COI.aln
     // 2. Press 'Save as', and save file to its own path.
-    // Expected state: message box with warinig appears.
+    // Expected state: message box with warning appears.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsDialog::add(new MessageBoxDialogFiller("Ok"));
@@ -3281,7 +3284,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     class SimpleExport : public CustomScenario {
-        void run() {
+        void run() override {
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
         }
     };
@@ -3702,6 +3705,30 @@ GUI_TEST_CLASS_DEFINITION(test_7697) {
     CHECK_SET_ERR(GTComboBox::getCurrentText("treeViewCombo", panel2) == "Cladogram", "treeViewCombo state is not restored");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7699) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Extract transcript sequences..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::click("Extract Transcript Sequences with Gffread");
+
+    // Expand 'Inputs'.
+    QWidget* wdWindow = GTUtilsWorkflowDesigner::getActiveWorkflowDesignerWindow();
+    GTGroupBox::setChecked("inputPortBox", true, wdWindow);
+
+    // Enter some text into 'Output sequences' line edit. Do not submit the change (do not press Enter).
+    GTUtilsWorkflowDesigner::clickParameter("Output sequences");
+    GTKeyboardDriver::keySequence("123.fa");
+
+    // Click to the label above the inputs table.
+    auto inputScrollArea = GTWidget::findScrollArea("inputScrollArea", wdWindow);
+    auto labelAboveInputsTable = GTWidget::findLabelByText("Input transcripts", inputScrollArea).first();
+    GTWidget::click(labelAboveInputsTable);
+    // Expected state: no crash.
+
+    QString parameterValue = GTUtilsWorkflowDesigner::getParameter("Output sequences");
+    CHECK_SET_ERR(parameterValue == "123.fa", "Parameter must be set to '123.fa'");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7708) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708", "7708.uwl");
@@ -4097,6 +4124,20 @@ GUI_TEST_CLASS_DEFINITION(test_7770) {
     GTUtilsTaskTreeView::waitTaskFinished(5000);  // Check the task is canceled fast enough with no crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7781) {
+    // Open "_common_data/scenarios/_regression/7781/7781.bam".
+    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "test_7781.ugenedb", "", "", false));
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7781/7781.bam");
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
+    QString textFromLabel = coveredRegionsLabel->text();
+    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
+    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
+    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7785) {
     class InSilicoWizardScenario : public CustomScenario {
     public:
@@ -4140,18 +4181,20 @@ GUI_TEST_CLASS_DEFINITION(test_7785) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7781) {
-    // Open "_common_data/scenarios/_regression/7781/7781.bam".
-    GTUtilsDialog::add(new ImportBAMFileFiller(sandBoxDir + "test_7781.ugenedb", "", "", false));
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7781/7781.bam");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+GUI_TEST_CLASS_DEFINITION(test_7786) {
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7786/7786.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    auto coveredRegionsLabel = GTWidget::findLabel("CoveredRegionsLabel", GTUtilsMdi::activeWindow());
-    QString textFromLabel = coveredRegionsLabel->text();
-    CHECK_SET_ERR(textFromLabel.contains(">206<"), "expected coverage value not found: 206");
-    CHECK_SET_ERR(textFromLabel.contains(">10<"), "expected coverage value not found: 10");
-    CHECK_SET_ERR(textFromLabel.contains(">2<"), "expected coverage value not found: 2");
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::InSilicoPcr);
+
+    GTUtilsOptionPanelSequenceView::setForwardPrimer("AAAAAAAAAAAAAAA");
+    GTUtilsOptionPanelSequenceView::setReversePrimer("AAAAAAAAAAAAAAA");
+
+    GTUtilsOptionPanelSequenceView::pressFindProducts();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    const int count = GTUtilsOptionPanelSequenceView::productsCount();
+    CHECK_SET_ERR(count == 1, QString("Unexpected products quantity, expected: 1, current: %1").arg(count));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7789) {
@@ -4277,11 +4320,11 @@ GUI_TEST_CLASS_DEFINITION(test_7792) {
 GUI_TEST_CLASS_DEFINITION(test_7793) {
     // 1. Click "File ->Open as..."
     // 2. Choose "samples/ABIF/A01.abi"
-    // Expected state file opened without dialogue
+    // Expected state file opened without a dialog.
     GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "/samples/ABIF/A01.abi"));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7797) {
@@ -4764,6 +4807,31 @@ GUI_TEST_CLASS_DEFINITION(test_7885) {
     GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
     CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum() != 0, "No selected sequences");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7896) {
+    /*
+     1. Do menu File->Open as... samples/PDB/1CF7.PDB
+     2. Select Pdb format
+     3. Select option to join sequnces as multiple alignment and press OK
+     Expected state: msa view with read only msa object opened
+     4. Do menu File->Open as... samples/SCF/90-JRI-07.scf
+     5. Select option to join sequnces as multiple alignment and press OK
+     Expected state: msa view with read only msa object opened
+    */
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "samples/PDB/1CF7.PDB"));
+    GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("PDB"));
+    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Join));
+    GTMenu::clickMainMenuItem({"File", "Open as..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+    GTUtilsMdi::closeActiveWindow();
+
+    GTUtilsDialog::add(new GTFileDialogUtils(dataDir + "samples/SCF/90-JRI-07.scf"));
+    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Join));
+    GTMenu::clickMainMenuItem({"File", "Open as..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 }
 
 }  // namespace GUITest_regression_scenarios

@@ -46,7 +46,6 @@ void GTGlobals::sendEvent(QObject* obj, QEvent* e) {
     qApp->notify(obj, e);
 }
 
-#define GT_METHOD_NAME "takeScreenShot"
 QImage GTGlobals::takeScreenShot() {
     if (GTThread::isMainThread()) {
         return QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId()).toImage();
@@ -65,7 +64,6 @@ QImage GTGlobals::takeScreenShot() {
     GTThread::runInMainThread(new TakeScreenshotScenario(image));
     return image;
 }
-#undef GT_METHOD_NAME
 
 void GTGlobals::takeScreenShot(const QString& path) {
     QImage originalImage = takeScreenShot();
