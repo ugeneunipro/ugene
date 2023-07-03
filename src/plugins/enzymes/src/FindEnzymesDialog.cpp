@@ -556,7 +556,7 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
     }
 }
 
-static const QList<QString> RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4", "5", "6", "7", "8", "9+"};
+static const QStringList RESTRICTION_SEQUENCE_LENGTH_VALUES = { "1", "2", "3", "4", "5", "6", "7", "8", "9+" };
 
 FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext)
     : QDialog(advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(advSequenceContext) {
@@ -583,6 +583,22 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     cbMinLength->setCurrentIndex(0);
     cbMaxLength->setCurrentIndex(RESTRICTION_SEQUENCE_LENGTH_VALUES.size() - 1);
 
+    const QList<QPair<QString, EnzymeData::OverhangTypes>> overhangTypeValues =
+      { {tr("Any"), (EnzymeData::OverhangType::NoOverhang | EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::Sticky)},
+        {tr("No overhang"), EnzymeData::OverhangType::NoOverhang},
+        {tr("Blunt or Sticky"), (EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::Sticky)},
+        {tr("Blunt or Nondegenerate Sticky"), (EnzymeData::OverhangType::Blunt | EnzymeData::OverhangType::NondegenerateSticky)},
+        {tr("Blunt"), EnzymeData::OverhangType::Blunt},
+        {tr("Sticky"), EnzymeData::OverhangType::Sticky},
+        {tr("Nondegenerate Sticky"), EnzymeData::OverhangType::NondegenerateSticky},
+        {"5'", EnzymeData::OverhangType::Cut5},
+        {"3'", EnzymeData::OverhangType::Cut3} };
+    for (const auto& ov : qAsConst(overhangTypeValues)) {
+        cbOverhangType->addItem(ov.first, QVariant(ov.second));
+    }
+    cbOverhangType->setCurrentIndex(0);
+
+
     regionSelector = new RegionSelectorWithExcludedRegion(this,
                                                           advSequenceContext->getSequenceLength(),
                                                           advSequenceContext->getSequenceSelection(),
@@ -602,6 +618,7 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
     connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
     connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
+    connect(cbOverhangType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
     sl_updateEnzymesVisibilityWidgets();
 
     connect(pbSelectAll, &QPushButton::clicked, this, &FindEnzymesDialog::sl_selectAll);
@@ -620,26 +637,25 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
     int min = cbMinLength->itemData(cbMinLength->currentIndex()).toInt();
     int max = cbMaxLength->itemData(cbMaxLength->currentIndex()).toInt();
     U2Region region(min, max - min + 1);
+    auto overhangType = static_cast<EnzymeData::OverhangTypes>(cbOverhangType->itemData(cbOverhangType->currentIndex()).toInt());
     const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
     QList<SEnzymeData> visibleEnzymes;
     for (const auto& enzyme : qAsConst(enzymes)) {
-        bool okSupplier = false;
-        for (const auto& supplier : qAsConst(enzyme->suppliers)) {
-            CHECK_CONTINUE(checkedSuppliers.contains(supplier));
-
-            okSupplier = true;
-            break;
-        }
+        bool okSupplier = std::find_if(enzyme->suppliers.begin(), enzyme->suppliers.end(),
+            [&checkedSuppliers](const QString& s) {
+            return checkedSuppliers.contains(s);
+        }) != enzyme->suppliers.end();
 
         int recognitionSequenceLength = 0;
         for (const auto& ch : qAsConst(enzyme->seq)) {
-            CHECK_CONTINUE(ch != 'N');
+            CHECK_CONTINUE(ch != EnzymeData::UNDEFINED_BASE);
 
             recognitionSequenceLength++;
         }
-        bool okRSLength = region.intersects(U2Region(recognitionSequenceLength, 1));
+        bool okRSLength = region.contains(recognitionSequenceLength);
+        bool okOverhangType = enzyme->overhangTypes & overhangType;
 
-        if (okSupplier && okRSLength) {
+        if (okSupplier && okRSLength && okOverhangType) {
             visibleEnzymes.append(enzyme);
         }
     }
@@ -760,6 +776,8 @@ void FindEnzymesDialog::initSettings() {
     cbMinLength->setCurrentText(min);
     auto max = settings->getValue(EnzymeSettings::MAX_ENZYME_LENGTH, RESTRICTION_SEQUENCE_LENGTH_VALUES.last()).toString();
     cbMaxLength->setCurrentText(max);
+    auto overhangTypeIndex = settings->getValue(EnzymeSettings::OVERHANG_TYPE, 0).toInt();
+    cbOverhangType->setCurrentIndex(overhangTypeIndex);
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     U2Region searchRegion = FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(sequenceObject);
@@ -805,6 +823,7 @@ void FindEnzymesDialog::saveSettings() {
     settings->setValue(EnzymeSettings::CHECKED_SUPPLIERS, value);
     settings->setValue(EnzymeSettings::MIN_ENZYME_LENGTH, cbMinLength->currentText());
     settings->setValue(EnzymeSettings::MAX_ENZYME_LENGTH, cbMaxLength->currentText());
+    settings->setValue(EnzymeSettings::OVERHANG_TYPE, cbOverhangType->currentIndex());
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     // Empty search region is processed as 'Whole sequence' by auto-annotation task.
