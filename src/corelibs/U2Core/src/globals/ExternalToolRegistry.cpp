@@ -152,6 +152,14 @@ void ExternalTool::checkArgs(const QStringList& arguments, U2OpStatus& os) const
             case ExternalTool::PathChecks::SpacesArguments:
                 error = ExternalToolSupportUtils::checkArgumentPathSpaces(arguments);
                 break;
+            case ExternalTool::PathChecks::NonLatinTemporaryDirPath:
+            case ExternalTool::PathChecks::NonLatinToolPath:
+            case ExternalTool::PathChecks::NonLatinIndexPath:
+            case ExternalTool::PathChecks::SpacesTemporaryDirPath:
+            case ExternalTool::PathChecks::SpacesToolPath:
+                continue;
+            default:
+                break;
         }
         if (!error.isEmpty()) {
             error = error.arg(getName());
@@ -179,6 +187,11 @@ void ExternalTool::checkPaths(U2OpStatus& os) const {
                 break;
             case ExternalTool::PathChecks::SpacesToolPath:
                 error = ExternalToolSupportUtils::checkToolPathSpaces(this);
+                break;
+            case ExternalTool::PathChecks::NonLatinArguments:
+            case ExternalTool::PathChecks::SpacesArguments:
+                continue;
+            default:
                 break;
         }
         if (!error.isEmpty()) {
