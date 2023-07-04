@@ -160,5 +160,6 @@ void GTMouseDriver::releasePressedButtons() {
 
 #    undef GT_CLASS_NAME
 
-#endif  // Q_OS_DARWIN
 }  // namespace HI
+
+#endif  // Q_OS_DARWIN
