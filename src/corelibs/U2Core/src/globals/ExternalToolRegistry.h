@@ -81,8 +81,12 @@ public:
 
     virtual void extractAdditionalParameters(const QString& output);
     virtual void performAdditionalChecks(const QString& toolPath);
-    /* Check external tool for path compatibility. */
-    void checkPaths(const QStringList& arguments, U2OpStatus &os) const;
+    /* Check external tool for paths compatibility. */
+    void checkArgsAndPaths(const QStringList& arguments, U2OpStatus &os) const;
+    /* Check paths which passed as arguments */
+    void checkArgs(const QStringList& arguments, U2OpStatus &os) const;
+    /* Check "static" paths e.g. path to tool, temp directory */
+    void checkPaths(U2OpStatus &os) const;
 
     ExternalToolValidation getToolValidation();
     const QList<ExternalToolValidation>& getToolAdditionalValidations() const;

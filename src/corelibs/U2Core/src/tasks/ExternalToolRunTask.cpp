@@ -62,7 +62,7 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
     CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(toolId)), );
     CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
     
-    tool->checkPaths(arguments, stateInfo);
+    tool->checkArgsAndPaths(arguments, stateInfo);
     if (!stateInfo.hasError()) {
         toolName = tool->getName();
         coreLog.trace("Creating run task for: " + toolName);
@@ -404,7 +404,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     result.arguments = arguments;
 
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    tool->checkPaths(arguments, os);
+    tool->checkArgsAndPaths(arguments, os);
     if (os.hasError()) {
         return result;
     }
