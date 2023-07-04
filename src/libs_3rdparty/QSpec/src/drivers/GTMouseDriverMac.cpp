@@ -152,9 +152,10 @@ bool GTMouseDriver::scroll(int value) {
 }
 
 void GTMouseDriver::releasePressedButtons() {
-    release(Qt::LeftButton);
-    release(Qt::RightButton);
-    release(Qt::MiddleButton);
+    //    The code below was tested and had shown no benefits in July, 2023.
+    //    release(Qt::LeftButton);
+    //    release(Qt::RightButton);
+    //    release(Qt::MiddleButton);
 }
 
 #    undef GT_CLASS_NAME
