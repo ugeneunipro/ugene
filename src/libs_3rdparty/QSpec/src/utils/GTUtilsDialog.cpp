@@ -128,9 +128,13 @@ void GTUtilsDialog::clickButtonBox(QDialogButtonBox::StandardButton button) {
 }
 
 void GTUtilsDialog::clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardButton button) {
+#ifdef Q_OS_DARWIN
+    GTGlobals::sleep(500);
+#endif
     QDialogButtonBox* box = buttonBox(dialog);
     QPushButton* pushButton = box->button(button);
     GT_CHECK(pushButton != nullptr, "pushButton is NULL");
+    GT_CHECK(pushButton->isEnabled(), "Button must be enabled");
     GTWidget::click(pushButton);
 }
 
