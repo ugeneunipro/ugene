@@ -96,6 +96,7 @@ linux-g++ {
         QMAKE_CXXFLAGS += -Werror=sequence-point
         QMAKE_CXXFLAGS += -Werror=switch
         QMAKE_CXXFLAGS += -Werror=uninitialized
+        QMAKE_CXXFLAGS += -Werror=unused-but-set-variable
         QMAKE_CXXFLAGS += -Werror=unused-parameter
         QMAKE_CXXFLAGS += -Werror=unused-value
         QMAKE_CXXFLAGS += -Werror=unused-variable

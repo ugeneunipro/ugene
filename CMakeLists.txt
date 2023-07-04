@@ -48,6 +48,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=switch"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
+            " -Werror=unused-but-set-variable"
             " -Werror=unused-value"
             " -Werror=unused-variable"
             " -Wno-deprecated-declarations"
