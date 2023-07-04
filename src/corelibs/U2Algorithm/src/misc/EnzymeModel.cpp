@@ -30,6 +30,9 @@ const QString EnzymeSettings::CHECKED_SUPPLIERS("plugin_enzymes/checkedSuppliers
 const QString EnzymeSettings::MIN_ENZYME_LENGTH("plugin_enzymes/min_enzyme_length");
 const QString EnzymeSettings::MAX_ENZYME_LENGTH("plugin_enzymes/max_enzyme_length");
 const QString EnzymeSettings::OVERHANG_TYPE("plugin_enzymes/overhang_type");
+const QString EnzymeSettings::SHOW_PALINDROMIC("plugin_enzymes/show_palindromic");
+const QString EnzymeSettings::SHOW_UNINTERRUPTED("plugin_enzymes/show_uninterrupted");
+const QString EnzymeSettings::SHOW_NONDEGENERATE("plugin_enzymes/show_nondegenerate");
 const QString EnzymeSettings::ENABLE_HIT_COUNT("plugin_enzymes/enable_hit_count");
 const QString EnzymeSettings::MAX_HIT_VALUE("plugin_enzymes/max_hit_value");
 const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");

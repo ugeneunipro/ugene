@@ -270,6 +270,76 @@
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Keep only:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbShowPalindromic">
+          <property name="toolTip">
+           <string>Forward and reverse-complementary enzyme strands are equal</string>
+          </property>
+          <property name="text">
+           <string>Palindromic</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbShowUninterrupted">
+          <property name="toolTip">
+           <string>No internal N's</string>
+          </property>
+          <property name="text">
+           <string>Uninterrupted</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbShowNondegenerate">
+          <property name="toolTip">
+           <string>No extended DNA alphabet symbols (A, C, G, T and N only)</string>
+          </property>
+          <property name="text">
+           <string>Nondegenerate</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
