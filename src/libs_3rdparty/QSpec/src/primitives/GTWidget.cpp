@@ -80,7 +80,8 @@ void GTWidget::setFocus(QWidget* w) {
         if (!w->hasFocus()) {
             auto focusedWidget = QApplication::focusWidget();
             GT_FAIL(QString("Can't set focus on widget '%1', focused widget: %2")
-                        .arg(w->objectName()).arg(focusedWidget == nullptr ? QString("null"): focusedWidget->objectName()), );
+                        .arg(w->objectName())
+                        .arg(focusedWidget == nullptr ? QString("null") : focusedWidget->objectName()), );
         }
     }
 }
@@ -95,10 +96,7 @@ QWidget* GTWidget::findWidget(const QString& objectName, QWidget* parentWidget, 
             break;  // Parent widget was removed while waiting.
         }
         QList<QWidget*> matchedWidgets = findChildren<QWidget>(parentWidget, [&objectName](QWidget* w) { return w->objectName() == objectName; });
-#ifdef _DEBUG
-        if (matchedWidgets.size() >= 2)
-#endif
-            GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
+        GT_CHECK_RESULT(matchedWidgets.size() < 2, QString("There are %1 widgets with name '%2'").arg(matchedWidgets.size()).arg(objectName), nullptr);
         widget = matchedWidgets.isEmpty() ? nullptr : matchedWidgets[0];
         if (!options.failIfNotFound) {
             break;
@@ -227,17 +225,17 @@ QProgressBar* GTWidget::findProgressBar(const QString& widgetName, QWidget* pare
 }
 
 QPoint GTWidget::getWidgetCenter(QWidget* widget) {
-    GT_CHECK_RESULT(widget!= nullptr, "getWidgetCenter: widget is null!", {});
+    GT_CHECK_RESULT(widget != nullptr, "getWidgetCenter: widget is null!", {});
     return widget->mapToGlobal(widget->rect().center());
 }
 
 QPoint GTWidget::getWidgetVisibleCenter(QWidget* widget) {
-    GT_CHECK_RESULT(widget!= nullptr, "getWidgetVisibleCenter: widget is null!", {});
+    GT_CHECK_RESULT(widget != nullptr, "getWidgetVisibleCenter: widget is null!", {});
     return widget->mapFromGlobal(getWidgetVisibleCenterGlobal(widget));
 }
 
 QPoint GTWidget::getWidgetVisibleCenterGlobal(QWidget* widget) {
-    GT_CHECK_RESULT(widget!= nullptr, "getWidgetVisibleCenterGlobal: widget is null!", {});
+    GT_CHECK_RESULT(widget != nullptr, "getWidgetVisibleCenterGlobal: widget is null!", {});
     QRect rect = widget->rect();
     QRect gRect(widget->mapToGlobal(rect.topLeft()), rect.size());
     QWidget* parent = widget->parentWidget();
@@ -348,7 +346,6 @@ void GTWidget::showNormal(QWidget* widget) {
         }
 
         void run() {
-
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->showNormal();
             GTGlobals::sleep(100);
