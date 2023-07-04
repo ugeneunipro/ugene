@@ -2494,8 +2494,84 @@ GUI_TEST_CLASS_DEFINITION(test_0082) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
-
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0083) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            static const QList<QString> OVERHANG_TYPE_VALUES = { "656", "16", "640", "351", "119", "521", "232", "343", "176" };
+            auto cbOverhangType = GTWidget::findComboBox("cbOverhangType", dialog);
+            auto values = GTComboBox::getValues(cbOverhangType);
+
+            CHECK_SET_ERR(values.size() == OVERHANG_TYPE_VALUES.size(),
+                QString("Unexpected overhang values options size, expected: %1, current: %2").arg(OVERHANG_TYPE_VALUES.size()).arg(values.size()));
+
+            for (int i = 0; i < values.size(); i++) {
+                GTComboBox::selectItemByText(cbOverhangType, values.at(i));
+                auto labelText = GTLabel::getText("statusLabel", dialog);
+                CHECK_SET_ERR(labelText.contains(OVERHANG_TYPE_VALUES.at(i)),
+                    QString("Incorrect number on overhang type %1, expected number: %2, current text: %3").arg(values.at(i)).arg(OVERHANG_TYPE_VALUES.at(i)).arg(labelText));
+            }
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0084) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            GTCheckBox::setChecked("cbShowPalindromic", dialog);
+            auto labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("519"),
+                QString("Incorrect number of palindromic enzymes, expected number: 519, current text: %1").arg(labelText));
+
+            GTCheckBox::setChecked("cbShowUninterrupted", dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("410"),
+                QString("Incorrect number of palindromic and uninterrupted enzymes, expected number: 410, current text: %1").arg(labelText));
+
+            GTCheckBox::setChecked("cbShowPalindromic", false, dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("527"),
+                QString("Incorrect number of uninterrupted enzymes, expected number: 527, current text: %1").arg(labelText));
+
+            GTCheckBox::setChecked("cbShowNondegenerate", dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("401"),
+                QString("Incorrect number of uninterrupted and nondegenerate enzymes, expected number: 401, current text: %1").arg(labelText));
+
+
+            GTCheckBox::setChecked("cbShowUninterrupted", false, dialog);
+            labelText = GTLabel::getText("statusLabel", dialog);
+            CHECK_SET_ERR(labelText.contains("520"),
+                QString("Incorrect number of nondegenerate enzymes, expected number: 520, current text: %1").arg(labelText));
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+}
+
 
 }  // namespace GUITest_common_scenarios_sequence_view
 

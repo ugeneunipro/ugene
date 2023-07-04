@@ -273,7 +273,7 @@ void UserActionsWriter::logKeyEventMessage(QKeyEvent* keyEvent, const QString& m
 
 QString UserActionsWriter::getActiveModalWidgetInfo() {
     auto dialog = qobject_cast<QDialog*>(QApplication::activeModalWidget());
-    CHECK(dialog != nullptr, "");
+    CHECK(dialog != nullptr, "<no active modal> ");
 
     QString message;
     message.append(QString("DIALOG: \"%1\" ").arg(dialog->windowTitle()));

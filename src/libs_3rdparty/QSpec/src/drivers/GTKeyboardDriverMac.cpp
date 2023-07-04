@@ -37,6 +37,8 @@ static bool altDown = false;
 static bool cmdDown = false;
 static bool fnDown = false;
 
+#    define GT_CLASS_NAME "GTKeyboardDriverMac"
+
 static int asciiToVirtual(char key) {
     if (isalpha(key)) {
         key = (char)tolower(key);
@@ -285,8 +287,6 @@ static bool keyReleaseMac(CGKeyCode key, int attempt = 1) { // NOLINT(misc-no-re
     }
 }
 
-#    define GT_CLASS_NAME "GTKeyboardDriverMac"
-#    define GT_METHOD_NAME "keyPress_char"
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
     // printf("GTKeyboardDriver::keyPress %c\n", origKey);
     // dumpState("before press");
@@ -306,9 +306,7 @@ bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
     // dumpState("after press");
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "keyRelease_char"
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
     // printf("GTKeyboardDriver::key release %c\n", origKey);
     // dumpState("before release");
@@ -327,7 +325,6 @@ bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers)
     // dumpState("after release");
     return true;
 }
-#    undef GT_METHOD_NAME
 
 bool GTKeyboardDriver::keyPress(Qt::Key qtKey, Qt::KeyboardModifiers modifiers) {
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);

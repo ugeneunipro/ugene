@@ -22,6 +22,7 @@
 #pragma once
 
 #include <QByteArray>
+#include <QFlags>
 #include <QSharedData>
 #include <QSharedDataPointer>
 #include <QString>
@@ -62,6 +63,10 @@ public:
     static const QString CHECKED_SUPPLIERS;
     static const QString MIN_ENZYME_LENGTH;
     static const QString MAX_ENZYME_LENGTH;
+    static const QString OVERHANG_TYPE;
+    static const QString SHOW_PALINDROMIC;
+    static const QString SHOW_UNINTERRUPTED;
+    static const QString SHOW_NONDEGENERATE;
     static const QString ENABLE_HIT_COUNT;
     static const QString MAX_HIT_VALUE;
     static const QString MIN_HIT_VALUE;
@@ -71,19 +76,47 @@ public:
 
 class U2ALGORITHM_EXPORT EnzymeData : public QSharedData {
 public:
-    EnzymeData();
-
     QString id;
     QString accession;
     QString type;
     QByteArray seq;
-    int cutDirect;  // starts from the first char in direct strand
-    int cutComplement;  // starts from the first char in complement strand, negative->right offset
+    int cutDirect = ENZYME_CUT_UNKNOWN;  // starts from the first char in direct strand
+    int cutComplement = ENZYME_CUT_UNKNOWN;  // starts from the first char in complement strand, negative->right offset
     QString organizm;
     QStringList suppliers; // commercial sources of the current enzyme
-    const DNAAlphabet* alphabet;
+    const DNAAlphabet* alphabet = nullptr;
+
+    // Cuts (cleavages) on direct and reverse-complementary strands
+    // form overhang (located between these two cuts).
+    // These overhangs could have following types:
+    enum OverhangType {
+        // Enzyme has no cuts and, consequently, no overhangs.
+        NoOverhang = 1 << 1,
+        // Both cuts are located in the middle of the site.
+        Blunt = 1 << 2,
+        // Both cuts are located anywhere but the middle of the site.
+        Sticky = 1 << 3,
+        // The same as "Sticky", but overhang between cuts has only A, C, G or T (no extended or N) symbols.
+        NondegenerateSticky = 1 << 4,
+        // The cut of the forward strand is to the left of the cut of the reverse-complementary strand.
+        Cut5 = 1 << 5,
+        // The cut of the forward strand is to the right of the cut of the reverse-complementary strand.
+        Cut3 = 1 << 6
+    };
+    Q_DECLARE_FLAGS(OverhangTypes, OverhangType);
+    OverhangTypes overhangTypes;
+    // Forward and reverse-complementary enzymes are equal
+    bool palindromic = false;
+    // No insternal N's
+    bool uninterrupted = false;
+    // A, C, G and T only
+    bool nondegenerate = false;
+
+    static constexpr const char UNDEFINED_BASE = 'N';
 };
 
 typedef QSharedDataPointer<EnzymeData> SEnzymeData;
 
 }  // namespace U2
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::EnzymeData::OverhangTypes)
