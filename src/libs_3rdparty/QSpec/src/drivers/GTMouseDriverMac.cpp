@@ -95,12 +95,13 @@ bool GTMouseDriver::press(Qt::MouseButton button) {
         DRIVER_CHECK(false, "Unknown mouse button");
     }
     CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
+    qDebug("GTMouseDriver::press %s button at %d,%d", button == Qt::LeftButton ? "left" : (button == Qt::RightButton ? "right" : "other"), mousePos.x(), mousePos.y());
     CGEventRef event = CGEventCreateMouseEvent(nullptr, eventType, pt, btn);
     DRIVER_CHECK(event != nullptr, "Can't create event");
     CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
-    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
+    GTGlobals::sleep(10);
     CFRelease(event);
 
     return true;
@@ -124,12 +125,13 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
         DRIVER_CHECK(false, "Unknown mouse button");
     }
     CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
+    qDebug("GTMouseDriver::release %s button at %d,%d", button == Qt::LeftButton ? "left" : (button == Qt::RightButton ? "right" : "other"), mousePos.x(), mousePos.y());
     CGEventRef event = CGEventCreateMouseEvent(nullptr, eventType, pt, btn);
     DRIVER_CHECK(event != nullptr, "Can't create event");
     CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
 
     CGEventPost(kCGSessionEventTap, event);
-    GTGlobals::sleep(0);  // don't touch, it's Mac's magic
+    GTGlobals::sleep(10);
     CFRelease(event);
 
     return true;
