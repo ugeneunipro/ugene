@@ -282,7 +282,7 @@
         <item>
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Additional parametes:</string>
+           <string>Keep only:</string>
           </property>
          </widget>
         </item>
@@ -292,7 +292,7 @@
            <string>Forward and reverse-complementary enzyme strands are equal</string>
           </property>
           <property name="text">
-           <string>Show palindromic sites</string>
+           <string>Palindromic</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -305,7 +305,7 @@
            <string>No internal N's</string>
           </property>
           <property name="text">
-           <string>Show uninterrupted sites</string>
+           <string>Uninterrupted</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -318,7 +318,7 @@
            <string>No extended DNA alphabet symbols (A, C, G, T and N only)</string>
           </property>
           <property name="text">
-           <string>Show nondegenerate sites</string>
+           <string>Nondegenerate</string>
           </property>
           <property name="checked">
            <bool>false</bool>

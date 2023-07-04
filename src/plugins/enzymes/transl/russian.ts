@@ -664,8 +664,27 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="285"/>
+        <source>Keep only:</source>
+        <translation>Показать только:</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.ui" line="295"/>
+        <source>Palindromic</source>
+        <translation>Палиндромные</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.ui" line="308"/>
+        <source>Uninterrupted</source>
+        <translation>Неразрывные</translation>
+    </message>
+    <message>
+        <location filename="../src/FindEnzymesDialog.ui" line="321"/>
+        <source>Nondegenerate</source>
+        <translation>Невырожденные</translation>
+    </message>
+    <message>
         <source>Additional parametes:</source>
-        <translation>Дополнительные параметры:</translation>
+        <translation type="vanished">Дополнительные параметры:</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="292"/>
@@ -673,9 +692,8 @@ p, li { white-space: pre-wrap; }
         <translation>Прямая и обратно-комплементарная последовательности сайта совпадают</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="295"/>
         <source>Show palindromic sites</source>
-        <translation>Показать палиндромные сайты</translation>
+        <translation type="vanished">Показать палиндромные сайты</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="305"/>
@@ -683,9 +701,8 @@ p, li { white-space: pre-wrap; }
         <translation>Нет внутренних N</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="308"/>
         <source>Show uninterrupted sites</source>
-        <translation>Показать неразрывные сайты</translation>
+        <translation type="vanished">Показать неразрывные сайты</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="318"/>
@@ -697,9 +714,8 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Только A, C, G и T</translation>
     </message>
     <message>
-        <location filename="../src/FindEnzymesDialog.ui" line="321"/>
         <source>Show nondegenerate sites</source>
-        <translation>Показать невырожденные сайты</translation>
+        <translation type="vanished">Показать невырожденные сайты</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.ui" line="349"/>
