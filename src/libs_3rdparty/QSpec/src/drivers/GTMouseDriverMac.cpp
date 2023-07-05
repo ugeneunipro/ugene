@@ -80,60 +80,20 @@ bool GTMouseDriver::moveTo(const QPoint& p) {
 bool GTMouseDriver::press(Qt::MouseButton button) {
     bp |= button;
     QPoint mousePos = QCursor::pos();
-    CGEventType eventType;
-    CGMouseButton btn;
-    if (button == Qt::LeftButton) {
-        eventType = kCGEventLeftMouseDown;
-        btn = kCGMouseButtonLeft;
-    } else if (button == Qt::RightButton) {
-        eventType = kCGEventRightMouseDown;
-        btn = kCGMouseButtonRight;
-    } else if (button == Qt::MiddleButton) {
-        eventType = kCGEventOtherMouseDown;
-        btn = kCGMouseButtonCenter;
-    } else {
-        DRIVER_CHECK(false, "Unknown mouse button");
-    }
     CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
-    qDebug("GTMouseDriver::press %s button at %d,%d", button == Qt::LeftButton ? "left" : (button == Qt::RightButton ? "right" : "other"), mousePos.x(), mousePos.y());
-    CGEventRef event = CGEventCreateMouseEvent(nullptr, eventType, pt, btn);
-    DRIVER_CHECK(event != nullptr, "Can't create event");
-    CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
-
-    CGEventPost(kCGSessionEventTap, event);
+    qDebug("GTMouseDriver::press %s button at %f,%f", button == Qt::LeftButton ? "left" : (button == Qt::RightButton ? "right" : "other"), pt.x, pt.y);
+    CGPostMouseEvent(pt, false, 3, bp & Qt::LeftButton ? 1 : 0, bp & Qt::RightButton ? 1 : 0, bp & Qt::MiddleButton ? 1 : 0);
     GTGlobals::sleep(10);
-    CFRelease(event);
-
     return true;
 }
 
 bool GTMouseDriver::release(Qt::MouseButton button) {
     bp &= (Qt::MouseButtonMask ^ button);
     QPoint mousePos = QCursor::pos();
-    CGEventType eventType;
-    CGMouseButton btn;
-    if (button == Qt::LeftButton) {
-        eventType = kCGEventLeftMouseUp;
-        btn = kCGMouseButtonLeft;
-    } else if (button == Qt::RightButton) {
-        eventType = kCGEventRightMouseUp;
-        btn = kCGMouseButtonRight;
-    } else if (button == Qt::MiddleButton) {
-        eventType = kCGEventOtherMouseUp;
-        btn = kCGMouseButtonCenter;
-    } else {
-        DRIVER_CHECK(false, "Unknown mouse button");
-    }
     CGPoint pt = CGPointMake(mousePos.x(), mousePos.y());
-    qDebug("GTMouseDriver::release %s button at %d,%d", button == Qt::LeftButton ? "left" : (button == Qt::RightButton ? "right" : "other"), mousePos.x(), mousePos.y());
-    CGEventRef event = CGEventCreateMouseEvent(nullptr, eventType, pt, btn);
-    DRIVER_CHECK(event != nullptr, "Can't create event");
-    CGEventSetIntegerValueField(event, kCGMouseEventClickState, 1);
-
-    CGEventPost(kCGSessionEventTap, event);
+    qDebug("GTMouseDriver::release %s button at %f,%f", button == Qt::LeftButton ? "left" : (button == Qt::RightButton ? "right" : "other"), pt.x, pt.y);
+    CGPostMouseEvent(pt, false, 3, bp & Qt::LeftButton ? 1 : 0, bp & Qt::RightButton ? 1 : 0, bp & Qt::MiddleButton ? 1 : 0);
     GTGlobals::sleep(10);
-    CFRelease(event);
-
     return true;
 }
 
