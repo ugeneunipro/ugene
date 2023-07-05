@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>KalignPairwiseAlignmentOptionsWidget</class>
- <widget class="QWidget" name="PairwiseAlignmentHirschbergOptionsPanelMainWidget">
+ <widget class="QWidget" name="KalignPairwiseAlignmentOptionsWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>144</width>
+    <width>165</width>
     <height>199</height>
    </rect>
   </property>
@@ -20,7 +20,7 @@
    <property name="sizeConstraint">
     <enum>QLayout::SetMinAndMaxSize</enum>
    </property>
-   <property name="margin">
+   <property name="margin" stdset="0">
     <number>0</number>
    </property>
    <item>
@@ -39,7 +39,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="gapOpen"/>
+      <widget class="QDoubleSpinBox" name="gapOpen">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -59,7 +63,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="gapExtd"/>
+      <widget class="QDoubleSpinBox" name="gapExtd">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -74,12 +82,16 @@
      <item>
       <widget class="QLabel" name="gapTermLabel">
        <property name="text">
-        <string>Terminate gap penalty</string>
+        <string>Terminal gap extension penalty</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="gapTerm"/>
+      <widget class="QDoubleSpinBox" name="gapTerm">
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

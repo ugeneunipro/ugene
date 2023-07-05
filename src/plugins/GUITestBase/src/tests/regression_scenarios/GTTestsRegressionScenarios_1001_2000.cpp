@@ -6766,7 +6766,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
                         "TAAG-CTTAC");
 
     // 2. Align with KAlign
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseKey));
     GTUtilsDialog::add(new KalignDialogFiller(10));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
     GTUtilsTaskTreeView::waitTaskFinished();

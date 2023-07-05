@@ -917,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_7276) {
     CHECK_SET_ERR(sequenceNameList2 != sequenceNameList1, "Name list must change as the result of sorting");
 
     // Align with KAlign now.
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2617,9 +2617,8 @@ GUI_TEST_CLASS_DEFINITION(test_7550) {
     class Click103TimesScenario : public CustomScenario {
     public:
         void run() override {
-            auto stack = AppContext::getMainWindow()->getNotificationStack();
             for (int i = 0; i < 103; i++) {
-                stack->addNotification("Notification " + QString::number(i + 1));
+                U2::NotificationStack::addNotification("Notification " + QString::number(i + 1));
                 GTGlobals::sleep(200);
             }
         }
@@ -3200,9 +3199,8 @@ GUI_TEST_CLASS_DEFINITION(test_7635) {
     class Create10NotificationsScenario : public CustomScenario {
     public:
         void run() override {
-            auto stack = AppContext::getMainWindow()->getNotificationStack();
             for (int i = 0; i < 10; i++) {
-                stack->addNotification("Notification " + QString::number(i + 1));
+                U2::NotificationStack::addNotification("Notification " + QString::number(i + 1));
                 GTGlobals::sleep(200);
             }
         }

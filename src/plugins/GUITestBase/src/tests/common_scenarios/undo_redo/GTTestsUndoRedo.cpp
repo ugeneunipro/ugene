@@ -588,7 +588,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     const QStringList expectedChangedMsa = {"AAGACTTCTTTTAA", "AAGCTTACT---AA", "TAGTTTATT---AA", "AAGTCTATT---AA", "TAGCTTATT---AA", "TAGCTTATT---AA", "TAGCTTATT---AA", "AAGTCTTTT---AA", "AAGAATAAT---TA", "AAGCCTTTT---AA"};
 
     // Use context {Edit->Align with Kalign}
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseKey));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseKey));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -616,28 +616,38 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     const QStringList originalMsa = GTUtilsMsaEditor::getWholeData();
-    const QStringList expectedChangedMsa = {"AAGACTTCTTTTAA", "AAG-CTTACT--AA", "TAG-TTTATT--AA", "AAG-TCTATT--AA", "TAG-CTTATT--AA", "TAG-CTTATT--AA", "TAG-CTTATT--AA", "AAG-TCTTTT--AA", "AAG-AATAAT--TA", "AAG-CCTTTT--AA"};
+    const QStringList expectedChangedMsa = {
+        "AAGACTTCTTTTAA",
+        "AAG-CTTACT--AA",
+        "TAG-TTTATT--AA",
+        "AAG-TCTATT--AA",
+        "TAG-CTTATT--AA",
+        "TAG-CTTATT--AA",
+        "TAG-CTTATT--AA",
+        "AAG-TCTTTT--AA",
+        "AAG-AATAAT--TA",
+        "AAG-CCTTTT--AA"};
 
     // Use context {Edit->Align with Kalign}
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(new KalignDialogFiller(100));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    const QStringList changedMsa = GTUtilsMsaEditor::getWholeData();
+    QStringList changedMsa = GTUtilsMsaEditor::getWholeData();
     CHECK_SET_ERR(changedMsa == expectedChangedMsa, "Unexpected alignment:\n" + changedMsa.join("\n"));
 
     // undo
     GTUtilsMsaEditor::undo();
 
-    const QStringList undoneMsa = GTUtilsMsaEditor::getWholeData();
+    QStringList undoneMsa = GTUtilsMsaEditor::getWholeData();
     CHECK_SET_ERR(undoneMsa == originalMsa, "Undo works wrong:\n" + undoneMsa.join("\n"));
 
     // redo
     GTUtilsMsaEditor::redo();
 
-    const QStringList redoneMsa = GTUtilsMsaEditor::getWholeData();
+    QStringList redoneMsa = GTUtilsMsaEditor::getWholeData();
     CHECK_SET_ERR(redoneMsa == expectedChangedMsa, "Redo works wrong:\n" + redoneMsa.join("\n"));
 }
 

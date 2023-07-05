@@ -5459,7 +5459,7 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/1798", "1.4k.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Align with Kalign
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     // 3. while aligning lock document for editing
@@ -5470,7 +5470,7 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsDocument::unlockDocument("1.4k.aln");
 
     // 5. Align with Kalign again
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();

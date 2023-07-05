@@ -2624,8 +2624,9 @@ GUI_TEST_CLASS_DEFINITION(test_5657) {
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Try to align it with Kalign
     // Expected state: there is messagebox about incompatible alphabet
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
-    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok, "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to supported one and try again."));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok,
+                                                  "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to supported one and try again."));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
 }
 

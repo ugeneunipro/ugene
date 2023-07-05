@@ -24,32 +24,24 @@
 #include <primitives/GTDoubleSpinBox.h>
 #include <primitives/GTWidget.h>
 
-#include <QApplication>
 #include <QDialogButtonBox>
-#include <QPushButton>
 
 namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::KalignDialogFiller"
 
-KalignDialogFiller::KalignDialogFiller(int _gapOpenVal, bool _toAmino)
-    : Filler("KalignDialog"),
-      gapOpenVal(_gapOpenVal), toAmino(_toAmino) {
+KalignDialogFiller::KalignDialogFiller(int _gapOpenVal)
+    : Filler("KalignSupportRunDialog"),
+      gapOpenVal(_gapOpenVal) {
 }
 
 void KalignDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
-    if (gapOpenVal) {
-        auto gapOpenCheckBox = GTWidget::findCheckBox("gapOpenCheckBox", dialog);
-        GTCheckBox::setChecked(gapOpenCheckBox, true);
-
-        auto gapOpenSpinBox = GTWidget::findDoubleSpinBox("gapOpenSpinBox", dialog);
-        GTDoubleSpinbox::setValue(gapOpenSpinBox, gapOpenVal, GTGlobals::UseKeyBoard);
+    if (gapOpenVal > 0) {
+        GTCheckBox::setChecked("gapOpenPenaltyCheckBox", true, dialog);
+        GTDoubleSpinbox::setValue("gapOpenPenaltySpinBox", gapOpenVal, GTGlobals::UseKeyBoard, dialog);
     }
-
-    auto translateCheckBox = GTWidget::findCheckBox("translateCheckBox", dialog);
-    GTCheckBox::setChecked(translateCheckBox, toAmino);
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }

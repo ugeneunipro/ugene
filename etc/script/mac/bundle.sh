@@ -144,7 +144,6 @@ PLUGIN_LIST="annotator \
              genome_aligner \
              gor4 \
              hmm2 \
-             kalign \
              linkdata_support \
              orf_marker \
              pcr \

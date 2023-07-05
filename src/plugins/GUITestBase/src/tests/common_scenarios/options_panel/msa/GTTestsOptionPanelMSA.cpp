@@ -24,7 +24,6 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
@@ -1248,12 +1247,10 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0006) {
     auto gapOpen = GTWidget::findDoubleSpinBox("gapOpen");
     auto gapExtd = GTWidget::findDoubleSpinBox("gapExtd");
     auto gapTerm = GTWidget::findDoubleSpinBox("gapTerm");
-    auto bonusScore = GTWidget::findDoubleSpinBox("bonusScore");
 
     GTDoubleSpinbox::checkLimits(gapOpen, 0, 65535);
     GTDoubleSpinbox::checkLimits(gapExtd, 0, 65535);
     GTDoubleSpinbox::checkLimits(gapTerm, 0, 65535);
-    GTDoubleSpinbox::checkLimits(bonusScore, 0, 65535);
     //    3. Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
@@ -1264,41 +1261,18 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0006) {
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 0), QPoint(13, 1), expected);
 }
 
-namespace {
-
-void setSpinValue(double value, const QString& spinName) {
+static void setSpinValue(double value, const QString& spinName) {
     expandAlgoSettings();
     auto spinBox = GTWidget::findDoubleSpinBox(spinName);
     GTDoubleSpinbox::setValue(spinBox, value, GTGlobals::UseKeyBoard);
 }
 
-void setGapOpen(double value) {
-    setSpinValue(value, "gapOpen");
-}
-
-void setGapExtd(double value) {
-    setSpinValue(value, "gapExtd");
-}
-
-void setGapTerm(double value) {
-    setSpinValue(value, "gapTerm");
-}
-
-void setBonusScore(double value) {
-    setSpinValue(value, "bonusScore");
-}
-
-void inNewWindow(bool inNew) {
+static void inNewWindow(bool inNew) {
     expandOutputSettings();
     auto inNewWindowCheckBox = GTWidget::findCheckBox("inNewWindowCheckBox");
     GTCheckBox::setChecked(inNewWindowCheckBox, inNew);
 }
 
-void align() {
-    GTWidget::click(GTWidget::findWidget("alignButton"));
-}
-
-}  // namespace
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007) {
     //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
@@ -1309,9 +1283,9 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
     //    4. Set gapOpen to 1. Press align button
-    setGapOpen(1);
+    setSpinValue(1, "gapOpen");
     inNewWindow(false);
-    align();
+    GTWidget::click(GTWidget::findWidget("alignButton"));
     //    Expected state: Isophya_altaica_EF540820 is AAG-CTTA-CT-AA
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(13, 1), "AAG-CTTA-CT-AA");
 }
@@ -1326,9 +1300,9 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_1) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
     //    4. Set gap extension penalty to 1000. Press align button
-    setGapExtd(1000);
+    setSpinValue(1000, "gapExtd");
     inNewWindow(false);
-    align();
+    GTWidget::click(GTWidget::findWidget("alignButton"));
     //    Expected state: Isophya_altaica_EF540820 is AAG-CT--TACTAA
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(13, 1), "AAG-CT--TACTAA");
 }
@@ -1343,9 +1317,9 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_2) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
     //    4. Set terminate gap penalty to 1000. Press align button
-    setGapTerm(1000);
+    setSpinValue(1000, "gapTerm");
     inNewWindow(false);
-    align();
+    GTWidget::click(GTWidget::findWidget("alignButton"));
     //    Expected state: Isophya_altaica_EF540820 is AAGCTTACT---AA
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(13, 1), "AAGCTTACT---AA");
 }
@@ -1360,11 +1334,10 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_3) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
     //    4. Set gap open to 10, gap ext to 1, bonus score to 1. Press align button
-    setGapOpen(10);
-    setGapExtd(1);
-    setBonusScore(1);
+    setSpinValue(10, "gapOpen");
+    setSpinValue(1, "gapExtd");
     inNewWindow(false);
-    align();
+    GTWidget::click(GTWidget::findWidget("alignButton"));
     //    Expected state: Isophya_altaica_EF540820 is AAG-CTTACT---AA
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(14, 1), "AAG-CTTACT---AA");
 }
@@ -1399,7 +1372,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008) {
     f.close();
 
     setOutputPath(sandBoxDir, fileName);
-    align();
+    GTWidget::click(GTWidget::findWidget("alignButton"));
     //    Expected state: file is rewritten.
     qint64 size = GTFile::getSize(sandBoxDir + fileName);
     CHECK_SET_ERR(size == 185, QString("unexpected file size %1").arg(size));
@@ -1432,7 +1405,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
     GTFile::setReadOnly(filePath);
 
     setOutputPath(sandBoxDir + dirName, fileName);
-    align();
+    GTWidget::click(GTWidget::findWidget("alignButton"));
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
     QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
@@ -1465,7 +1438,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
     const QString filePath = dirPath + "/" + fileName;
 
     setOutputPath(dirPath, fileName, false);
-    align();
+    GTWidget::click(GTWidget::findWidget("alignButton"));
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = lt.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
@@ -2192,14 +2165,12 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003) {
     auto gapOpen = GTWidget::findDoubleSpinBox("gapOpen");
     auto gapExtd = GTWidget::findDoubleSpinBox("gapExtd");
     auto gapTerm = GTWidget::findDoubleSpinBox("gapTerm");
-    auto bonusScore = GTWidget::findDoubleSpinBox("bonusScore");
     auto inNewWindowCheckBox = GTWidget::findCheckBox("inNewWindowCheckBox");
 
     // set values
     GTDoubleSpinbox::setValue(gapOpen, 100, GTGlobals::UseKeyBoard);
     GTDoubleSpinbox::setValue(gapExtd, 100, GTGlobals::UseKeyBoard);
     GTDoubleSpinbox::setValue(gapTerm, 100, GTGlobals::UseKeyBoard);
-    GTDoubleSpinbox::setValue(bonusScore, 100, GTGlobals::UseKeyBoard);
     GTCheckBox::setChecked(inNewWindowCheckBox, false);
 
     // close and open option panel
@@ -2212,7 +2183,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003) {
     gapOpen = GTWidget::findDoubleSpinBox("gapOpen");
     gapExtd = GTWidget::findDoubleSpinBox("gapExtd");
     gapTerm = GTWidget::findDoubleSpinBox("gapTerm");
-    bonusScore = GTWidget::findDoubleSpinBox("bonusScore");
     inNewWindowCheckBox = GTWidget::findCheckBox("inNewWindowCheckBox");
 
     CHECK_SET_ERR(l1->text() == "Phaneroptera_falcata", QString("unexpected seq1: %1").arg(l1->text()));
@@ -2220,7 +2190,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003) {
     CHECK_SET_ERR(gapOpen->value() == 100, QString("unexpected gapOpen value: %1").arg(gapOpen->value()));
     CHECK_SET_ERR(gapExtd->value() == 100, QString("unexpected gapExtd value: %1").arg(gapExtd->value()));
     CHECK_SET_ERR(gapTerm->value() == 100, QString("unexpected gapTerm value: %1").arg(gapTerm->value()));
-    CHECK_SET_ERR(bonusScore->value() == 100, QString("unexpected bonusScore value: %1").arg(bonusScore->value()));
     CHECK_SET_ERR(!inNewWindowCheckBox->isChecked(), "inNewWindowCheckBox is unexpectidly checked");
 }
 

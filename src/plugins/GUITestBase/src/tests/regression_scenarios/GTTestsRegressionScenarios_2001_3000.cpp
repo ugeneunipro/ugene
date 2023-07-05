@@ -2626,7 +2626,7 @@ GUI_TEST_CLASS_DEFINITION(test_2460) {
     GTUtilsMsaEditor::removeRows(1, list.size() - 1);
 
     // 3. Align the result one-line-msa by kalign with default values.
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTMouseDriver::click(Qt::RightButton);
 
@@ -3347,7 +3347,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_5) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
 
     GTUtilsMSAEditorSequenceArea::moveTo(QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);

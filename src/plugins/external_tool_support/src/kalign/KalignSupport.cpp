@@ -107,7 +107,7 @@ void Kalign3SupportContext::initViewContext(GObjectViewController* view) {
     msaEditor->registerActionProvider(this);
 
     auto alignAction = new AlignMsaAction(this, Kalign3Support::ET_KALIGN_ID, msaEditor, tr("Align with Kalign..."), 6000);
-    alignAction->setObjectName("align_with_kalign_action");
+    alignAction->setObjectName("alignWithKalignAction");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignAction, &QAction::triggered, this, &Kalign3SupportContext::sl_align);
     addViewAction(alignAction);
