@@ -43,23 +43,11 @@ Kalign3DialogWithMsaInput::Kalign3DialogWithMsaInput(QWidget* w, const MultipleS
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     // Set defaults.
-    if (ma->getAlphabet()->isAmino()) {
-        // See set_subm_gaps_CorBLOSUM66_13plus.
-        gapOpenPenaltySpinBox->setValue(5.5);
-        gapExtensionPenaltySpinBox->setValue(2.0);
-        terminalGapExtensionPenaltySpinBox->setValue(1.0);
-    } else if (ma->getAlphabet()->isRNA()) {
-        // See set_subm_gaps_RNA.
-        gapOpenPenaltySpinBox->setValue(217);
-        gapExtensionPenaltySpinBox->setValue(39.4);
-        terminalGapExtensionPenaltySpinBox->setValue(292.6);
-    } else if (ma->getAlphabet()->isDNA()) {
-        // See set_subm_gaps_DNA.
-        gapOpenPenaltySpinBox->setValue(8);
-        gapExtensionPenaltySpinBox->setValue(6);
-        terminalGapExtensionPenaltySpinBox->setValue(0);
-    }
-    threadCountSpinBox->setValue(4);
+    Kalign3Settings defaultSettings = Kalign3Settings::getDefaultSettings(ma->getAlphabet());
+    gapOpenPenaltySpinBox->setValue(defaultSettings.gapOpenPenalty);
+    gapExtensionPenaltySpinBox->setValue(defaultSettings.gapExtensionPenalty);
+    terminalGapExtensionPenaltySpinBox->setValue(defaultSettings.terminalGapExtensionPenalty);
+    threadCountSpinBox->setValue(defaultSettings.nThreads);
 
     QObject::connect(gapOpenPenaltyCheckBox, &QCheckBox::clicked, gapOpenPenaltySpinBox, &QDoubleSpinBox::setEnabled);
     QObject::connect(gapExtensionPenaltyCheckBox, &QCheckBox::clicked, gapExtensionPenaltySpinBox, &QDoubleSpinBox::setEnabled);
@@ -74,7 +62,7 @@ void Kalign3DialogWithMsaInput::accept() {
     settings.gapOpenPenalty = gapOpenPenaltyCheckBox->isChecked() ? gapOpenPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
     settings.gapExtensionPenalty = gapExtensionPenaltyCheckBox->isChecked() ? gapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
     settings.terminalGapExtensionPenalty = terminalGapExtensionPenaltyCheckBox->isChecked() ? terminalGapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
-    settings.nThreads = threadCountCheckBox->isChecked() ? threadCountSpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.nThreads = threadCountCheckBox->isChecked() ? threadCountSpinBox->value() : (int)Kalign3Settings::VALUE_IS_NOT_SET;
     QDialog::accept();
 }
 
@@ -128,7 +116,7 @@ void Kalign3DialogWithFileInput::accept() {
     settings.gapOpenPenalty = gapOpenPenaltyCheckBox->isChecked() ? gapOpenPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
     settings.gapExtensionPenalty = gapExtensionPenaltyCheckBox->isChecked() ? gapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
     settings.terminalGapExtensionPenalty = terminalGapExtensionPenaltyCheckBox->isChecked() ? terminalGapExtensionPenaltySpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
-    settings.nThreads = threadCountCheckBox->isChecked() ? threadCountSpinBox->value() : Kalign3Settings::VALUE_IS_NOT_SET;
+    settings.nThreads = threadCountCheckBox->isChecked() ? threadCountSpinBox->value() : (int)Kalign3Settings::VALUE_IS_NOT_SET;
     QDialog::accept();
 }
 

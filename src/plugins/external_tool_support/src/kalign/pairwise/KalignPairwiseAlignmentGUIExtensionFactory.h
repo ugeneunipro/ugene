@@ -48,32 +48,13 @@ class KalignPairwiseAlignmentOptionsWidget : public AlignmentAlgorithmMainWidget
 
 public:
     KalignPairwiseAlignmentOptionsWidget(QWidget* parent, QVariantMap* s);
-    virtual ~KalignPairwiseAlignmentOptionsWidget();
+    ~KalignPairwiseAlignmentOptionsWidget() override;
 
-    virtual QVariantMap getAlignmentAlgorithmCustomSettings(bool append);
+    QVariantMap getAlignmentAlgorithmCustomSettings(bool append) final;
 
 protected:
     void initParameters();
-    virtual void fillInnerSettings();
-
-protected:
-    // default values were taken from kalign files
-    static const qint64 H_MIN_GAP_OPEN = 0;
-    static const qint64 H_MAX_GAP_OPEN = 65535;  // it isn`t the maximum, it may be less
-    static const qint64 H_DEFAULT_GAP_OPEN_DNA = 217;  // taken from kalign2_misc.c
-    static const qint64 H_DEFAULT_GAP_OPEN = 54.94941;
-    static const qint64 H_MIN_GAP_EXTD = 0;
-    static const qint64 H_MAX_GAP_EXTD = 65535;  // it isn`t the maximum, it may be less
-    static const qint64 H_DEFAULT_GAP_EXTD_DNA = 39.4;  // taken from kalign2_misc.c
-    static const qint64 H_DEFAULT_GAP_EXTD = 8.52492;  // taken from kalign2_misc.c
-    static const qint64 H_MIN_GAP_TERM = 0;
-    static const qint64 H_MAX_GAP_TERM = 65535;  // it isn`t the maximum, it may be less
-    static const qint64 H_DEFAULT_GAP_TERM_DNA = 292.6;  // taken from kalign2_misc.c
-    static const qint64 H_DEFAULT_GAP_TERM = 4.42410;  // taken from kalign2_misc.c
-    static const qint64 H_MIN_BONUS_SCORE = 0;
-    static const qint64 H_MAX_BONUS_SCORE = 65535;  // it isn`t the maximum, it may be less
-    static const qint64 H_DEFAULT_BONUS_SCORE_DNA = 283;  // taken from kalign2_misc.c
-    static const qint64 H_DEFAULT_BONUS_SCORE = 0.2;  // taken from kalign2_misc.c
+    void fillInnerSettings() override;
 };
 
 class KalignPairwiseAlignmentGUIExtensionFactory : public AlignmentAlgorithmGUIExtensionFactory {

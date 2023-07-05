@@ -20,48 +20,43 @@
 #include <U2Core/U2SequenceDbi.h>
 
 #include <U2Lang/SimpleWorkflowTask.h>
-#include "../KalignSupportTask.h"
 
 namespace U2 {
 
-const QString KalignPairwiseAlignmentTaskSettings::PA_H_GAP_OPEN("H_gapOpen");
-const QString KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD("H_gapExtd");
-const QString KalignPairwiseAlignmentTaskSettings::PA_H_GAP_TERM("H_gapTerm");
-const QString KalignPairwiseAlignmentTaskSettings::PA_H_BONUS_SCORE("H_bonusScore");
-const QString KalignPairwiseAlignmentTaskSettings::PA_H_REALIZATION_NAME("H_realizationName");
+const QString KalignPairwiseAlignmentTaskSettings::GAP_OPEN_PENALTY_KEY("KALIGN_GAP_OPEN_PENALTY_KEY");
+const QString KalignPairwiseAlignmentTaskSettings::GAP_EXTENSION_PENALTY_KEY("KALIGN_GAP_EXTENSION_PENALTY_KEY");
+const QString KalignPairwiseAlignmentTaskSettings::TERMINAL_GAP_EXTENSION_PENALTY_KEY("KALIGN_TERMINAL_GAP_EXTENSION_PENALTY_KEY");
 
 AbstractAlignmentTask* KalignPairwiseAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings* _settings) const {
     auto pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings*>(_settings);
-    SAFE_POINT(pairwiseSettings != NULL,
-               "Pairwise alignment: incorrect settings",
-               NULL);
+    SAFE_POINT(pairwiseSettings != nullptr, "Pairwise alignment: incorrect settings", nullptr);
     auto settings = new KalignPairwiseAlignmentTaskSettings(*pairwiseSettings);
-    SAFE_POINT(!settings->inNewWindow || !settings->resultFileName.isEmpty(),
-               "Pairwise alignment: incorrect settings, empty output file name",
-               NULL);
+    SAFE_POINT(!settings->inNewWindow || !settings->resultFileName.isEmpty(), "Pairwise alignment: incorrect settings, empty output file name", nullptr);
     return new KalignPairwiseAlignmentTask(settings);
 }
 
 KalignPairwiseAlignmentTaskSettings::KalignPairwiseAlignmentTaskSettings(const PairwiseAlignmentTaskSettings& s)
-    : PairwiseAlignmentTaskSettings(s),
-      gapOpen(0),
-      gapExtd(0),
-      gapTerm(0) {
+    : PairwiseAlignmentTaskSettings(s) {
 }
 
 bool KalignPairwiseAlignmentTaskSettings::convertCustomSettings() {
-    gapOpen = customSettings.value(PA_H_GAP_OPEN, 217).toInt();
-    gapExtd = customSettings.value(PA_H_GAP_EXTD, 39).toInt();
-    gapTerm = customSettings.value(PA_H_GAP_TERM, 292).toInt();
+    kalign3Settings.gapOpenPenalty = customSettings.value(GAP_OPEN_PENALTY_KEY, -1).toDouble();
+    kalign3Settings.gapExtensionPenalty = customSettings.value(GAP_EXTENSION_PENALTY_KEY, -1).toDouble();
+    kalign3Settings.terminalGapExtensionPenalty = customSettings.value(TERMINAL_GAP_EXTENSION_PENALTY_KEY, -1).toDouble();
     PairwiseAlignmentTaskSettings::convertCustomSettings();
     return true;
 }
 
+bool KalignPairwiseAlignmentTaskSettings::isValid() const {
+    return PairwiseAlignmentTaskSettings::isValid() &&
+           kalign3Settings.gapOpenPenalty >= 0 &&
+           kalign3Settings.gapExtensionPenalty >= 0 &&
+           kalign3Settings.terminalGapExtensionPenalty >= 0;
+}
+
 KalignPairwiseAlignmentTask::KalignPairwiseAlignmentTask(KalignPairwiseAlignmentTaskSettings* _settings)
     : PairwiseAlignmentTask(TaskFlag_NoRun),
-      settings(_settings),
-      kalignSubTask(nullptr),
-      alphabet(nullptr) {
+      settings(_settings) {
     SAFE_POINT(settings != nullptr, "Task settings are not defined.", );
     SAFE_POINT(settings->convertCustomSettings() && settings->isValid(), "Invalid task settings.", );
 
@@ -88,12 +83,7 @@ KalignPairwiseAlignmentTask::KalignPairwiseAlignmentTask(KalignPairwiseAlignment
     ma->addRow(firstName, first);
     ma->addRow(secondName, second);
 
-    Kalign3Settings kalignSettings;
-    kalignSettings.gapOpenPenalty = settings->gapOpen;
-    kalignSettings.gapExtensionPenalty = settings->gapExtd;
-    kalignSettings.terminalGapExtensionPenalty = settings->gapTerm;
-
-    kalignSubTask = new Kalign3SupportTask(ma, GObjectReference(), kalignSettings);
+    kalignSubTask = new Kalign3SupportTask(ma, GObjectReference(), settings->kalign3Settings);
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);
     addSubTask(kalignSubTask);
@@ -120,20 +110,16 @@ QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
             DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
 
             QString newFileUrl = settings->resultFileName.getURLString();
-            changeGivenUrlIfDocumentExists(newFileUrl, currentProject);
+            makeUniqueUrl(newFileUrl, currentProject);
 
             Document* alignmentDoc = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(newFileUrl), localStateInfo);
             CHECK_OP(localStateInfo, res);
 
             MultipleSequenceAlignment resultMa = kalignSubTask->resultMA;
-
             MultipleSequenceAlignmentObject* docObject = MultipleSequenceAlignmentImporter::createAlignment(alignmentDoc->getDbiRef(), resultMa, localStateInfo);
             CHECK_OP(localStateInfo, res);
-
             alignmentDoc->addObject(docObject);
-
-            SaveDocFlags flags = SaveDoc_OpenAfter;
-            res << new SaveDocumentTask(alignmentDoc, flags);
+            res << new SaveDocumentTask(alignmentDoc, SaveDoc_OpenAfter);
         } else {  // in current window
             U2OpStatus2Log os;
             DbiConnection con(settings->msaRef.dbiRef, os);
@@ -142,7 +128,6 @@ QList<Task*> KalignPairwiseAlignmentTask::onSubTaskFinished(Task* subTask) {
             QList<U2MsaRow> rows = con.dbi->getMsaDbi()->getRows(settings->msaRef.entityId, os);
             CHECK_OP(os, res);
             U2UseCommonUserModStep userModStep(settings->msaRef, os);
-            Q_UNUSED(userModStep);
             SAFE_POINT_OP(os, res);
             for (int rowNumber = 0; rowNumber < rows.length(); ++rowNumber) {
                 if (rows[rowNumber].sequenceId == settings->firstSequenceRef.entityId) {
@@ -164,7 +149,7 @@ Task::ReportResult KalignPairwiseAlignmentTask::report() {
     return ReportResult_Finished;
 }
 
-void KalignPairwiseAlignmentTask::changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject) {
+void KalignPairwiseAlignmentTask::makeUniqueUrl(QString& givenUrl, const Project* curProject) {
     if (curProject->findDocumentByURL(GUrl(givenUrl)) != nullptr) {
         for (size_t i = 1;; i++) {
             QString tmpUrl = givenUrl;

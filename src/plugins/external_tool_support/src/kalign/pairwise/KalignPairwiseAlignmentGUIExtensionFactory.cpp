@@ -14,7 +14,7 @@ namespace U2 {
 
 Kalign3PairwiseAlignmentAlgorithm::Kalign3PairwiseAlignmentAlgorithm()
     : AlignmentAlgorithm(PairwiseAlignment,
-                         "KAlign3",
+                         "Kalign3",
                          KalignPairwiseAlignmentGUIExtensionFactory::tr("Kalign3"),
                          new KalignPairwiseAlignmentTaskFactory(),
                          new KalignPairwiseAlignmentGUIExtensionFactory(),
@@ -36,58 +36,25 @@ KalignPairwiseAlignmentOptionsWidget::~KalignPairwiseAlignmentOptionsWidget() {
 }
 
 void KalignPairwiseAlignmentOptionsWidget::initParameters() {
-    double defaultGapOpen;
-    double defaultGapExtd;
-    double defaultGapTerm;
-
-    gapOpen->setMinimum(H_MIN_GAP_OPEN);
-    gapOpen->setMaximum(H_MAX_GAP_OPEN);
-
-    gapExtd->setMinimum(H_MIN_GAP_EXTD);
-    gapExtd->setMaximum(H_MAX_GAP_EXTD);
-
-    gapTerm->setMinimum(H_MIN_GAP_TERM);
-    gapTerm->setMaximum(H_MAX_GAP_TERM);
-
-    DNAAlphabetRegistry* alphabetReg = AppContext::getDNAAlphabetRegistry();
-    SAFE_POINT(NULL != alphabetReg, "DNAAlphabetRegistry is NULL.", );
+    DNAAlphabetRegistry* alphabetRegistry = AppContext::getDNAAlphabetRegistry();
     QString alphabetId = externSettings->value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString();
-    const DNAAlphabet* alphabet = alphabetReg->findById(alphabetId);
-    SAFE_POINT(NULL != alphabet, QString("Alphabet %1 not found").arg(alphabetId), );
-
-    if (alphabet->isNucleic()) {
-        defaultGapOpen = H_DEFAULT_GAP_OPEN_DNA;
-        defaultGapExtd = H_DEFAULT_GAP_EXTD_DNA;
-        defaultGapTerm = H_DEFAULT_GAP_TERM_DNA;
-    } else {
-        defaultGapOpen = H_DEFAULT_GAP_OPEN;
-        defaultGapExtd = H_DEFAULT_GAP_EXTD;
-        defaultGapTerm = H_DEFAULT_GAP_TERM;
+    const DNAAlphabet* alphabet = alphabetRegistry->findById(alphabetId);
+    if (alphabet == nullptr) {
+        alphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     }
 
-    if (externSettings->contains(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_OPEN) &&
-        externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_OPEN, 0).toInt() >= H_MIN_GAP_OPEN &&
-        externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_OPEN, 0).toInt() <= H_MAX_GAP_OPEN) {
-        gapOpen->setValue(externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_OPEN, 0).toInt());
-    } else {
-        gapOpen->setValue(defaultGapOpen);
-    }
+    Kalign3Settings defaultSettings = Kalign3Settings::getDefaultSettings(alphabet);
+    gapOpen->setMinimum(0);
+    gapOpen->setMaximum(65535);
+    gapOpen->setValue(externSettings->value(KalignPairwiseAlignmentTaskSettings::GAP_OPEN_PENALTY_KEY, defaultSettings.gapOpenPenalty).toDouble());
 
-    if (externSettings->contains(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD) &&
-        externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD, 0).toInt() >= H_MIN_GAP_EXTD &&
-        externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD, 0).toInt() <= H_MAX_GAP_EXTD) {
-        gapExtd->setValue(externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD, 0).toInt());
-    } else {
-        gapExtd->setValue(defaultGapExtd);
-    }
+    gapExtd->setMinimum(0);
+    gapExtd->setMaximum(65535);
+    gapExtd->setValue(externSettings->value(KalignPairwiseAlignmentTaskSettings::GAP_EXTENSION_PENALTY_KEY, defaultSettings.gapExtensionPenalty).toDouble());
 
-    if (externSettings->contains(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_TERM) &&
-        externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_TERM, 0).toInt() >= H_MIN_GAP_TERM &&
-        externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_TERM, 0).toInt() <= H_MAX_GAP_TERM) {
-        gapTerm->setValue(externSettings->value(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD, 0).toInt());
-    } else {
-        gapTerm->setValue(defaultGapTerm);
-    }
+    gapTerm->setMinimum(0);
+    gapTerm->setMaximum(65535);
+    gapTerm->setValue(externSettings->value(KalignPairwiseAlignmentTaskSettings::GAP_EXTENSION_PENALTY_KEY, defaultSettings.terminalGapExtensionPenalty).toDouble());
 
     fillInnerSettings();
 }
@@ -98,11 +65,10 @@ QMap<QString, QVariant> KalignPairwiseAlignmentOptionsWidget::getAlignmentAlgori
 }
 
 void KalignPairwiseAlignmentOptionsWidget::fillInnerSettings() {
-    innerSettings.insert(PairwiseAlignmentTaskSettings::REALIZATION_NAME, "KAlign3");
-    innerSettings.insert(KalignPairwiseAlignmentTaskSettings::PA_H_REALIZATION_NAME, "KAlign3");
-    innerSettings.insert(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_OPEN, gapOpen->value());
-    innerSettings.insert(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_EXTD, gapExtd->value());
-    innerSettings.insert(KalignPairwiseAlignmentTaskSettings::PA_H_GAP_TERM, gapTerm->value());
+    innerSettings.insert(PairwiseAlignmentTaskSettings::REALIZATION_NAME, "Kalign3");
+    innerSettings.insert(KalignPairwiseAlignmentTaskSettings::GAP_OPEN_PENALTY_KEY, gapOpen->value());
+    innerSettings.insert(KalignPairwiseAlignmentTaskSettings::GAP_EXTENSION_PENALTY_KEY, gapExtd->value());
+    innerSettings.insert(KalignPairwiseAlignmentTaskSettings::TERMINAL_GAP_EXTENSION_PENALTY_KEY, gapTerm->value());
 }
 
 KalignPairwiseAlignmentGUIExtensionFactory::KalignPairwiseAlignmentGUIExtensionFactory()

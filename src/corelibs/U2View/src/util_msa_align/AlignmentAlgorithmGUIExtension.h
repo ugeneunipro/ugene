@@ -51,7 +51,7 @@ public:
     }
 
 public slots:
-    void sl_externSettingsInvalide();
+    void sl_externSettingsInvalidate();
 
 protected:
     virtual void fillInnerSettings();

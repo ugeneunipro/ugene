@@ -376,9 +376,9 @@ PairwiseAlignmentSmithWatermanTaskSettings::PairwiseAlignmentSmithWatermanTaskSe
 }
 
 bool PairwiseAlignmentSmithWatermanTaskSettings::convertCustomSettings() {
-    if ((customSettings.contains(PA_SW_GAP_OPEN) == false) ||
-        (customSettings.contains(PA_SW_GAP_EXTD) == false) ||
-        (customSettings.contains(PA_SW_SCORING_MATRIX_NAME) == false)) {
+    if (!customSettings.contains(PA_SW_GAP_OPEN) ||
+        !customSettings.contains(PA_SW_GAP_EXTD) ||
+        !customSettings.contains(PA_SW_SCORING_MATRIX_NAME)) {
         return false;
     }
     gapOpen = customSettings.value(PA_SW_GAP_OPEN).toInt();

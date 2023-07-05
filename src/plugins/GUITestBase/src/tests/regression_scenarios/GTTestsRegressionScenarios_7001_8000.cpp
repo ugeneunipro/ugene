@@ -772,9 +772,9 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     // Click the Pairwise Alignment tab of the Options Panel.
     // Select two sequence from the original alignment and click on the Align button.
     // Until the task completes, click the Pairwise Alignment tab again.
-    // Wait for task finish. A new document "PairwiseAlignmentResult.aln" has been added to the project.
+    // Wait for task finish. A new document "pairwise_alignment_result.aln" has been added to the project.
     //
-    // Remove PairwiseAlignmentResult.aln from project.
+    // Remove pairwise_alignment_result.aln from project.
     // Return to shortened_big.aln and click the Pairwise Alignment tab of the Options Panel.
     // Click Align.
     //     Expected state: no crash.
@@ -783,7 +783,7 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsOptionPanelMsa::toggleTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTUtilsOptionPanelMsa::addFirstSeqToPA("seq1");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("seq2");
-    QString documentName = GTUtils::genUniqueString("PairwiseAlignmentResult");
+    QString documentName = GTUtils::genUniqueString("pairwise_alignment_result");
     GTUtilsOptionPanelMsa::setOutputFile(sandBoxDir + documentName + ".aln");
 
     GTWidget::click(GTUtilsOptionPanelMsa::getAlignButton());

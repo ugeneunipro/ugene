@@ -26,6 +26,8 @@
 #include <U2Core/DNATranslation.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 
+#include "../KalignSupportTask.h"
+
 namespace U2 {
 
 class Project;
@@ -42,16 +44,13 @@ public:
 
     bool convertCustomSettings() override;
 
-    // all settings except translationTable must be set up through customSettings and then must be converted by convertCustomSettings().
-    int gapOpen;
-    int gapExtd;
-    int gapTerm;
+    bool isValid() const override;
 
-    static const QString PA_H_GAP_OPEN;
-    static const QString PA_H_GAP_EXTD;
-    static const QString PA_H_GAP_TERM;
-    static const QString PA_H_BONUS_SCORE;
-    static const QString PA_H_REALIZATION_NAME;
+    Kalign3Settings kalign3Settings;
+
+    static const QString GAP_OPEN_PENALTY_KEY;
+    static const QString GAP_EXTENSION_PENALTY_KEY;
+    static const QString TERMINAL_GAP_EXTENSION_PENALTY_KEY;
 };
 
 class KalignPairwiseAlignmentTask : public PairwiseAlignmentTask {
@@ -63,14 +62,13 @@ public:
     ReportResult report() override;
 
 protected:
-    void changeGivenUrlIfDocumentExists(QString& givenUrl, const Project* curProject);
+    void makeUniqueUrl(QString& givenUrl, const Project* curProject);
 
 protected:
-    KalignPairwiseAlignmentTaskSettings* settings;
-    Kalign3SupportTask* kalignSubTask;
+    KalignPairwiseAlignmentTaskSettings* settings = nullptr;
+    Kalign3SupportTask* kalignSubTask = nullptr;
     MultipleSequenceAlignment ma;
-    const DNAAlphabet* alphabet;
+    const DNAAlphabet* alphabet = nullptr;
 };
 
 }  // namespace U2
-

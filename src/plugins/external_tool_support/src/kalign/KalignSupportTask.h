@@ -41,10 +41,25 @@ public:
     double gapExtensionPenalty = VALUE_IS_NOT_SET;
     double terminalGapExtensionPenalty = VALUE_IS_NOT_SET;
 
-    double nThreads = 4;
+    int nThreads = 4;
 
     QString inputFilePath;
     QString outputFilePath;
+
+    /** See set_subm_gaps_CorBLOSUM66_13plus. */
+    static Kalign3Settings getDefaultAminoSettings();
+
+    /* See set_subm_gaps_DNA. */
+    static Kalign3Settings getDefaultDnaSettings();
+
+    /** See set_subm_gaps_RNA. */
+    static Kalign3Settings getDefaultRnaSettings();
+
+    /**
+     * Returns settings per alphabet.
+     * Returns VALUE_IS_NOT_SET-initialized settings for the unsupported (RAW) alphabet.
+     */
+    static Kalign3Settings getDefaultSettings(const DNAAlphabet* alphabet);
 };
 
 class Kalign3SupportTask : public ExternalToolSupportTask {

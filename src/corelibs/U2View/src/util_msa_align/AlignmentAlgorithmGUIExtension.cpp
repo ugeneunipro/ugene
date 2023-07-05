@@ -31,7 +31,7 @@ AlignmentAlgorithmMainWidget::~AlignmentAlgorithmMainWidget() {
     getAlignmentAlgorithmCustomSettings(true);
 }
 
-void AlignmentAlgorithmMainWidget::sl_externSettingsInvalide() {
+void AlignmentAlgorithmMainWidget::sl_externSettingsInvalidate() {
     externSettingsExists = false;
 }
 

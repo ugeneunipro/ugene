@@ -45,6 +45,43 @@
 
 namespace U2 {
 
+Kalign3Settings Kalign3Settings::getDefaultAminoSettings() {
+    Kalign3Settings result;
+    result.gapOpenPenalty = 5.5;
+    result.gapExtensionPenalty = 2.0;
+    result.terminalGapExtensionPenalty = 1;
+    return result;
+}
+
+Kalign3Settings Kalign3Settings::getDefaultDnaSettings() {
+    Kalign3Settings result;
+    result.gapOpenPenalty = 8;
+    result.gapExtensionPenalty = 6;
+    result.terminalGapExtensionPenalty = 0;
+    return result;
+}
+
+Kalign3Settings Kalign3Settings::getDefaultRnaSettings() {
+    Kalign3Settings result;
+    result.gapOpenPenalty = 217;
+    result.gapExtensionPenalty = 39.4;
+    result.terminalGapExtensionPenalty = 292.6;
+    return result;
+}
+
+Kalign3Settings Kalign3Settings::getDefaultSettings(const DNAAlphabet* alphabet) {
+    if (alphabet->isAmino()) {
+        return getDefaultAminoSettings();
+    }
+    if (alphabet->isDNA()) {
+        return getDefaultDnaSettings();
+    }
+    if (alphabet->isRNA()) {
+        return getDefaultRnaSettings();
+    }
+    return {};
+}
+
 Kalign3SupportTask::Kalign3SupportTask(const MultipleSequenceAlignment& _inputMsa, const GObjectReference& _objRef, const Kalign3Settings& _settings)
     : ExternalToolSupportTask("Kalign external tool task", TaskFlags_NR_FOSCOE),
       inputMsa(_inputMsa->getExplicitCopy()),
