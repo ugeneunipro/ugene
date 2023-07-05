@@ -26,11 +26,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FormatUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
@@ -203,7 +200,6 @@ void DigestSequenceTask::run() {
     CHECK(!cutSiteMap.isEmpty(), );
 
     QMap<GenomicPosition, SEnzymeData>::const_iterator prev = cutSiteMap.constBegin(), current = cutSiteMap.constBegin();
-    int count = 2;
     qint64 seqLen = dnaObj->getSequenceLength();
 
     while ((++current) != cutSiteMap.constEnd()) {
@@ -255,7 +251,6 @@ void DigestSequenceTask::run() {
         }
         SharedAnnotationData ad = createFragment(leftCutPos, leftTerm, rightCutPos, rightTerm);
         results.append(ad);
-        ++count;
         ++prev;
     }
 

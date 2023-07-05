@@ -38,7 +38,6 @@ set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
-            " -Werror=dangling-reference"
             " -Werror=deprecated-copy"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
@@ -48,10 +47,15 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=switch"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
+            " -Werror=unused-but-set-variable"
             " -Werror=unused-value"
             " -Werror=unused-variable"
             " -Wno-deprecated-declarations"
             )
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 13.1)
+        LIST(APPEND GCC_WARNING_FLAGS -Werror=dangling-reference)
+    endif ()
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
     LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
 endif ()

@@ -388,7 +388,7 @@ void SQLiteDbi::init(const QHash<QString, QString>& props, const QVariantMap&, U
         if (!os.hasError()) {
             ioLog.trace(QString("SQLite: initialized: %1\n").arg(url));
         }
-    } while (0);
+    } while (false);
 
     if (os.hasError()) {
         sqlite3_close(db->handle);

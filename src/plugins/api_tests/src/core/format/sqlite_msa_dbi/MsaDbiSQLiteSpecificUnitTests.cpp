@@ -23,7 +23,6 @@
 
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2DbiPackUtils.h>
-#include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/SQLiteDbi.h>
@@ -751,20 +750,16 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
     }
 
     // Undo and redo gap model updating
-    int totalUndo = 0;
-    int totalRedo = 0;
     for (int i = 0; i < steps.length(); ++i) {
         if (steps[i] < 0) {
             for (int j = 0; j < -steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
             for (int j = 0; j < steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1082,20 +1077,16 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     }
 
     // Undo and redo gap model updating
-    int totalUndo = 0;
-    int totalRedo = 0;
     for (int i = 0; i < steps.length(); ++i) {
         if (steps[i] < 0) {
             for (int j = 0; j < -steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
             for (int j = 0; j < steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1614,20 +1605,16 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
     }
 
     // Undo and redo row order updating
-    int totalUndo = 0;
-    int totalRedo = 0;
     for (int i = 0; i < steps.length(); ++i) {
         if (steps[i] < 0) {
             for (int j = 0; j < -steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
             for (int j = 0; j < steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1914,20 +1901,16 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     }
 
     // Undo and redo row order updating
-    int totalUndo = 0;
-    int totalRedo = 0;
     for (int i = 0; i < steps.length(); ++i) {
         if (steps[i] < 0) {
             for (int j = 0; j < -steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
             for (int j = 0; j < steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -2785,20 +2768,16 @@ IMPLEMENT_TEST(MsaDbiSQLiteSpecificUnitTests, addRow_several_Steps) {
     }
 
     // Undo and redo row order updating
-    int totalUndo = 0;
-    int totalRedo = 0;
     for (int i = 0; i < steps.length(); ++i) {
         if (steps[i] < 0) {
             for (int j = 0; j < -steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
             for (int j = 0; j < steps[i]; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
