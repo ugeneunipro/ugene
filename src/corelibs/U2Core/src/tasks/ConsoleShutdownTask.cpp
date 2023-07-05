@@ -26,6 +26,7 @@
 #include <U2Core/PluginModel.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/ServiceModel.h>
+#include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
@@ -39,7 +40,7 @@ void ConsoleShutdownTask::startShutdown() {
     if (sender() == app) {
         coreLog.info("Shutdown initiated by user");
     } else {
-        if (AppContext::getTaskScheduler()->getTopLevelTasks().size() != 0) {
+        if (!AppContext::getTaskScheduler()->getTopLevelTasks().empty()) {
             return;
         }
         coreLog.info("All tasks finished, shutting down");
@@ -72,7 +73,7 @@ static Service* findServiceToDisable(ServiceRegistry* sr) {
             return s;
         }
     }
-    assert(nEnabled == 0);
+    SAFE_POINT(nEnabled == 0, "No services must be enabled", nullptr);
     return nullptr;
 }
 
@@ -81,7 +82,7 @@ public:
     CancelAllTask()
         : Task(ConsoleShutdownTask::tr("Cancel active tasks"), TaskFlag_NoRun) {
     }
-    void prepare() {
+    void prepare() override {
         // cancel all tasks but ShutdownTask
         QList<Task*> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
         activeTopTasks.removeOne(getTopLevelParentTask());
@@ -91,7 +92,7 @@ public:
         }
     }
 
-    ReportResult report() {
+    ReportResult report() override {
         foreach (Task* t, AppContext::getTaskScheduler()->getTopLevelTasks()) {
             if (t->isCanceled() && !t->isFinished()) {
                 return ReportResult_CallMeAgain;
@@ -138,7 +139,7 @@ Task::ReportResult ConsoleShutdownTask::report() {
         assert(s->isDisabled());
     }
 #endif
-    app->quit();
+    QCoreApplication::quit();
     return Task::ReportResult_Finished;
 }
 

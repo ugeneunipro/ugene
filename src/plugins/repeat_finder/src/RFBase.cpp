@@ -43,7 +43,7 @@ RFAlgorithmBase* RFAlgorithmBase::createTask(RFResultsListener* l, const char* s
                       .arg(mismatches)
                       .arg(nThreads));
 
-    RFAlgorithmBase* res = nullptr;
+    RFAlgorithmBase* res;
     if (alg == RFAlgorithm_Auto) {
         // alg = RFAlgorithm_Diagonal; //the slowest but tested better
         alg = RFAlgorithm_Suffix;
@@ -188,7 +188,7 @@ bool RFAlgorithmBase::checkResult(const RFResult& r) {
         assert(CHAR_MATCHES(cx, cy));
     }
 
-    // check that for every window W inside of the result the match rate is valid
+    // check that for every window W inside the result the match rate is valid
     int c = 0;
     int allMatches = 0;
     for (int i = 0; i < r.l; i++) {
@@ -202,9 +202,9 @@ bool RFAlgorithmBase::checkResult(const RFResult& r) {
             char cyp = seqY[r.y + i - WINDOW_SIZE];
             c -= CHAR_MATCHES(cxp, cyp) ? 0 : 1;
         }
-        assert(c <= C);
+        SAFE_POINT(c <= C, "Illegal state: c <= C", false);
     }
-    assert(allMatches == r.c);
+    SAFE_POINT(allMatches == r.c, "Illegal state: allMatches == r.c", false);
     return true;
 }
 

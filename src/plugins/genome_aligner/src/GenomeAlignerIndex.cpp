@@ -105,8 +105,7 @@ inline quint32 getNextInt(QByteArray& data, bool& eol, bool& intErr) {
     QByteArray result = data.left(commaIdx).trimmed();
     data = data.mid(commaIdx + 1).trimmed();
 
-    for (int i = 0; i < result.length(); i++) {
-        char c = result[i];
+    for (char c : qAsConst(result)) {
         if (c < '0' || c > '9') {
             intErr = true;
             return -1;
@@ -273,13 +272,13 @@ BinarySearchResult GenomeAlignerIndex::bitMaskBinarySearch(BMType bitValue, BMTy
     return -1;
 }
 
-bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAType& fisrtSymbol, SearchQuery* qu, SAType& loadedSeqStart) {
+bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAType& firstSymbol, SearchQuery* qu, SAType& loadedSeqStart) {
     assert(offset < objLens[objCount - 1]);
     if ((qint64)offset - loadedSeqStart < startPos) {
         return false;
     }
-    fisrtSymbol = offset - startPos;
-    if (qu->contains(fisrtSymbol)) {
+    firstSymbol = offset - startPos;
+    if (qu->contains(firstSymbol)) {
         return false;
     }
 
@@ -287,11 +286,10 @@ bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAT
     int low = 0;
     int high = objCount;
     int mid = 0;
-    qint64 rc = 0;
     SAType minBorder = 0;
     while (low <= high) {
         mid = (low + high) / 2;
-        rc = objLens[mid] - (qint64)offset;
+        qint64 rc = objLens[mid] - (qint64)offset;
         minBorder = mid > 0 ? objLens[mid - 1] : 0;
         if (((qint64)offset >= minBorder) && (rc > 0)) {
             break;
@@ -302,7 +300,7 @@ bool GenomeAlignerIndex::isValidPos(SAType offset, int startPos, int length, SAT
         }
     }
 
-    if (fisrtSymbol < minBorder) {
+    if (firstSymbol < minBorder) {
         return false;
     }
     if (offset + (length - startPos - 1) >= objLens[mid]) {
@@ -330,16 +328,15 @@ bool GenomeAlignerIndex::compare(const char* sourceSeq, const char* querySeq, in
     return false;
 }
 
-// this method contains big copy-paste but it works very fast because of it.
+// this method contains big copy-paste, but it works very fast because of it.
 void GenomeAlignerIndex::alignShortRead(SearchQuery* qu, BMType bitValue, int startPos, BinarySearchResult firstResult, AlignContext* settings, BMType bitFilter, int w) {
     if (firstResult < 0) {
         return;
     }
 
-    SAType fisrtSymbol = 0;
+    SAType firstSymbol = 0;
     const char* querySeq = qu->constData();
     const int queryLen = qu->length();
-    char* refBuff = nullptr;
 
     int CMAX = settings->nMismatches;
     if (!settings->absMismatches) {
@@ -368,18 +365,18 @@ void GenomeAlignerIndex::alignShortRead(SearchQuery* qu, BMType bitValue, int st
         rightOverlapStart -= 2 * overlapSize;
     }
     for (SAType k = firstResult; (k < loadedPartSize) && (bitValue & bitFilter) == (indexPart.bitMask[k] & bitFilter); k++) {
-        if (!isValidPos(indexPart.sArray[k] + loadedSeqStart, startPos, queryLen, fisrtSymbol, qu, loadedSeqStart)) {
+        if (!isValidPos(indexPart.sArray[k] + loadedSeqStart, startPos, queryLen, firstSymbol, qu, loadedSeqStart)) {
             continue;
         }
 
-        refBuff = &(indexPart.seq[fisrtSymbol - loadedSeqStart]);
+        char* refBuff = &(indexPart.seq[firstSymbol - loadedSeqStart]);
 
         int c = 0;
         if (compare(refBuff, querySeq, startPos, w, c, CMAX, queryLen)) {
             if (settings->bestMode) {
                 found = true;
                 bestC = c;
-                bestResult = fisrtSymbol;
+                bestResult = firstSymbol;
                 CMAX = bestC - 1;
 
                 if (0 == c) {
@@ -388,10 +385,10 @@ void GenomeAlignerIndex::alignShortRead(SearchQuery* qu, BMType bitValue, int st
                     continue;
                 }
             }
-            if (fisrtSymbol >= rightOverlapStart) {
-                qu->addOveplapResult(fisrtSymbol);
+            if (firstSymbol >= rightOverlapStart) {
+                qu->addOveplapResult(firstSymbol);
             } else {
-                qu->addResult(fisrtSymbol, c);
+                qu->addResult(firstSymbol, c);
             }
         }
     }
@@ -448,7 +445,6 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType& arrLen)
     SAType* arunner = sArray;
     SAType idx = start;
     SAType seqIdx = 0;
-    SAType tmpIdx = 0;
 
     int curObj = 0;
     for (; curObj < objCount; curObj++) {
@@ -461,7 +457,7 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType& arrLen)
     bool goodSuff = false;
     arrLen = 0;
     SAType last = start + length - w;
-    for (quint32 i = 0; idx <= last; i++) {  // initializing sArray and arrLen
+    while (idx <= last) {  // initializing sArray and arrLen
         if (idx > (objLens[curObj] - w) && idx < objLens[curObj]) {
             seqIdx += objLens[curObj] - idx;
             idx = objLens[curObj];
@@ -477,13 +473,12 @@ void GenomeAlignerIndex::initSArray(SAType start, SAType length, SAType& arrLen)
                 goodSuff = false;
                 seqIdx += w;
                 idx += w;
-                i--;
                 continue;
             }
         }
         if (!goodSuff) {
             int goodChars = 0;
-            tmpIdx = idx;
+            SAType tmpIdx = idx;
             SAType j = seqIdx;
             for (; j < length && goodChars < w; j++) {
                 if (tmpIdx == objLens[curObj]) {

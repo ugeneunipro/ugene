@@ -22,9 +22,7 @@
 #include "ModDbiSQLiteSpecificUnitTests.h"
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/U2AbstractDbi.h>
 #include <U2Core/U2DbiPackUtils.h>
-#include <U2Core/U2MsaDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Formats/SQLiteDbi.h>
@@ -305,10 +303,6 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaName_severalSteps) {
     int valuesCount = names.length();  // changes = valuesCount - 1;
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -4 << 2 << -1 << 1;
-    int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
-    }
 
     // Prepare modStep list
     QList<U2SingleModStep> modSteps;
@@ -330,20 +324,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaName_severalSteps) {
     }
 
     // Undo and redo msa renaming
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -385,8 +375,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaName_severalUndoThenActio
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -4;
     int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
+    for (int step : qAsConst(steps)) {
+        expectedIndex += step;
     }
 
     // Prepare modStep list
@@ -419,20 +409,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaName_severalUndoThenActio
     }
 
     // Undo and redo msa renaming
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -494,10 +480,6 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaAlphabet_severalSteps) {
     int valuesCount = alphabets.length();  // changes = valuesCount - 1;
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -3 << 2 << -2 << 1;
-    int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
-    }
 
     // Prepare modStep list
     QList<U2SingleModStep> modSteps;
@@ -519,20 +501,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaAlphabet_severalSteps) {
     }
 
     // Undo and redo alphabet updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -575,8 +553,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaAlphabet_severalUndoThenA
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -2;
     int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
+    for (int step : qAsConst(steps)) {
+        expectedIndex += step;
     }
 
     // Prepare modStep list
@@ -611,20 +589,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateMsaAlphabet_severalUndoThenA
     }
 
     // Undo and redo alphabet updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -697,10 +671,6 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
     int valuesCount = gapModels.length();  // changes = valuesCount - 1;
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -4 << 2 << -1 << 3;
-    int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
-    }
 
     // Prepare modStep list
     QList<U2SingleModStep> modSteps;
@@ -741,20 +711,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalSteps) {
     }
 
     // Undo and redo gap model updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -802,8 +768,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -4 << 2 << -1 << 3;
     int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
+    for (int step : qAsConst(steps)) {
+        expectedIndex += step;
     }
 
     // Prepare modStep list
@@ -876,20 +842,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateGapModel_severalUndoThenActi
     }
 
     // Undo and redo gap model updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -984,10 +946,6 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     int valuesCount = seqDataList.length();  // changes = valuesCount - 1;
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -6 << 4 << -3 << 2;
-    int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
-    }
 
     // Prepare modStep list
     // msa singleModSteps
@@ -1033,20 +991,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalSteps) {
     }
 
     // Undo and redo gap model updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1133,8 +1087,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -6 << 4 << -3 << 2;
     int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
+    for (int step : qAsConst(steps)) {
+        expectedIndex += step;
     }
 
     // Prepare modStep list
@@ -1213,20 +1167,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowContent_severalUndoThenAc
     }
 
     // Undo and redo gap model updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1319,10 +1269,6 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
     int valuesCount = rowOrders.length();  // changes = valuesCount - 1;
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -5 << 3 << -4 << 3;
-    int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
-    }
 
     // Prepare modStep list
     QList<U2SingleModStep> modSteps;
@@ -1363,20 +1309,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalSteps) {
     }
 
     // Undo and redo row order updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1435,8 +1377,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalUndoThenAct
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -5 << 3 << -4 << 3;
     int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
+    for (int step : qAsConst(steps)) {
+        expectedIndex += step;
     }
 
     // Prepare modStep list
@@ -1509,20 +1451,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, setNewRowsOrder_severalUndoThenAct
     }
 
     // Undo and redo row order updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1597,10 +1535,6 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     int valuesCount = rowNames.length();  // changes = valuesCount - 1;
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -3 << 1 << -4 << 3;
-    int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
-    }
 
     // Prepare modStep list
     QList<U2SingleModStep> modSteps;
@@ -1622,20 +1556,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalSteps) {
     }
 
     // Undo and redo row order updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
@@ -1683,8 +1613,8 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenActio
     QList<int> steps;  // negative - undo steps, positive - redo steps;
     steps << -3 << 1 << -4 << 3;
     int expectedIndex = valuesCount - 1;
-    for (int i = 0; i < steps.length(); ++i) {
-        expectedIndex += steps[i];
+    for (int step : qAsConst(steps)) {
+        expectedIndex += step;
     }
 
     // Prepare modStep list
@@ -1719,20 +1649,16 @@ IMPLEMENT_TEST(ModDbiSQLiteSpecificUnitTests, updateRowName_severalUndoThenActio
     }
 
     // Undo and redo row order updating
-    int totalUndo = 0;
-    int totalRedo = 0;
-    for (int i = 0; i < steps.length(); ++i) {
-        if (steps[i] < 0) {
-            for (int j = 0; j < -steps[i]; ++j) {
+    for (int step : qAsConst(steps)) {
+        if (step < 0) {
+            for (int j = 0; j < -step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->undo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalUndo++;
             }
         } else {
-            for (int j = 0; j < steps[i]; ++j) {
+            for (int j = 0; j < step; ++j) {
                 sqliteDbi->getSQLiteObjectDbi()->redo(msaId, os);
                 CHECK_NO_ERROR(os);
-                totalRedo++;
             }
         }
     }
