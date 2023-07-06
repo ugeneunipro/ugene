@@ -58,6 +58,9 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 # python2.7: "The signature does not include a secure timestamp."
 rm -rf "${APP_EXE_DIR}/tools/python2"
 
+# The patch with Kalign3 support is not merged into master yet.
+rm -rf "${APP_EXE_DIR}/tools/kalign"
+
 echo " ##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Validate bundle content']"
