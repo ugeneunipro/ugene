@@ -1855,7 +1855,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
 
     // 2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
-    int end = row->getCoreStart() + row->getCoreLength() - 1;
+    int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(end, 0));
 
     int i = 15;
@@ -1866,22 +1866,22 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
 
     // 4. Select the last symbol again, press "Insert character" and insert gap
     row = GTUtilsMcaEditor::getMcaRow(0);
-    end = row->getCoreStart() + row->getCoreLength() - 1;
+    end = int(row->getCoreStart() + row->getCoreLength() - 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(end, 0));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Replace character/gap"});
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
     // Expected : all gaps since a place when you started to insert, will turn into trailing
     row = GTUtilsMcaEditor::getMcaRow(0);
-    int newRowLength = row->getCoreStart() + row->getCoreLength() - 1;
+    int newRowLength = int(row->getCoreStart() + row->getCoreLength() - 1);
     CHECK_SET_ERR(newRowLength < end, "Incorrect length");
 
-    int refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    int refLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     // 5. Press "Remove all coloumns of gaps "
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove all columns of gaps"});
 
     // Expected: Reference will be trimmed
-    int newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    int newRefLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     CHECK_SET_ERR(newRefLength < refLength, QString("Expected: New ref length is less then old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
 
     // 6. Press "undo"
@@ -2619,14 +2619,11 @@ GUI_TEST_CLASS_DEFINITION(test_5640) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5657) {
-    // 1. Open _common_data/clustal/COI_sub_asterisks.aln
     GTFileDialog::openFile(testDir + "_common_data/clustal/COI_sub_asterisks.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    // 2. Try to align it with Kalign
-    // Expected state: there is messagebox about incompatible alphabet
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok,
-                                                  "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to supported one and try again."));
+                                                  "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to DNA, RNA or Amino and try again."));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
 }
 
@@ -3570,7 +3567,7 @@ GUI_TEST_CLASS_DEFINITION(test_5755) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected : Trailing gaps were inserted into the end of reference.
-    qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    int refLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     QString refReg = GTUtilsMcaEditorSequenceArea::getReferenceReg(refLength - 20, 20);
     bool isGap = std::all_of(refReg.begin(), refReg.end(), [](const auto& c) { return c == U2Mca::GAP_CHAR; });
     CHECK_SET_ERR(isGap, "Expected only gaps, got: " + refReg);
@@ -3702,7 +3699,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
     GTLogTracer lt;
     // 2. Select the last char of the first row
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
-    int end = row->getCoreStart() + row->getCoreLength() - 1;
+    int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     QPoint p(end, 0);
     GTUtilsMcaEditorSequenceArea::clickToPosition(p);
     QPoint curPos = GTMouseDriver::getMousePosition();
@@ -3799,7 +3796,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_5769_2) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             QString expected = "80";

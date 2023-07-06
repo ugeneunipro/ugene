@@ -115,17 +115,13 @@ private:
     Kalign3Settings settings;
 };
 
+/**
+ * Kalign does not share useful progress info in log.
+ * The first error is the log contains most meaningful details.
+ */
 class KalignLogParser : public ExternalToolLogParser {
 public:
-    KalignLogParser();
-
-    int getProgress() override;
-    void parseOutput(const QString& partOfLog) override;
     void parseErrOutput(const QString& partOfLog) override;
-
-private:
-    QString lastErrLine;
-    int progress;
 };
 
 }  // namespace U2

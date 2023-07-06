@@ -1237,10 +1237,8 @@ void expandOutputSettings() {
 
 }  // namespace
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0006) {
-    //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    //    2. Open Pairwise alignment option panel tab. check spinboxes limits for KAilign
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
     expandAlgoSettings();
 
@@ -1251,13 +1249,14 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0006) {
     GTDoubleSpinbox::checkLimits(gapOpen, 0, 65535);
     GTDoubleSpinbox::checkLimits(gapExtd, 0, 65535);
     GTDoubleSpinbox::checkLimits(gapTerm, 0, 65535);
-    //    3. Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
+    // Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
-    //    4. Align with KAlign
+    // Align with KAlign
     GTWidget::click(GTWidget::findWidget("alignButton"));
+    GTUtilsTaskTreeView::waitTaskFinished();
     QString expected = "AAGACTTCTTTTAA\n"
-                       "AAGCTTACT---AA";
+                       "AAG-CT--TACTAA";
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 0), QPoint(13, 1), expected);
 }
 
@@ -1267,79 +1266,62 @@ static void setSpinValue(double value, const QString& spinName) {
     GTDoubleSpinbox::setValue(spinBox, value, GTGlobals::UseKeyBoard);
 }
 
-static void inNewWindow(bool inNew) {
+static void setOpenPairwiseAlignmentResultInNewWindow(bool inNew) {
     expandOutputSettings();
     auto inNewWindowCheckBox = GTWidget::findCheckBox("inNewWindowCheckBox");
     GTCheckBox::setChecked(inNewWindowCheckBox, inNew);
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007) {
-    //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    //    2. Open Pairwise alignment option panel tab
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
-    //    3. Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
-    //    4. Set gapOpen to 1. Press align button
     setSpinValue(1, "gapOpen");
-    inNewWindow(false);
+    setOpenPairwiseAlignmentResultInNewWindow(false);
     GTWidget::click(GTWidget::findWidget("alignButton"));
-    //    Expected state: Isophya_altaica_EF540820 is AAG-CTTA-CT-AA
-    GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(13, 1), "AAG-CTTA-CT-AA");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(13, 1), "AAG-CTTAC-T--A");
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_1) {
-    //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    //    2. Open Pairwise alignment option panel tab
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
-    //    3. Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
-    //    4. Set gap extension penalty to 1000. Press align button
     setSpinValue(1000, "gapExtd");
-    inNewWindow(false);
+    setOpenPairwiseAlignmentResultInNewWindow(false);
     GTWidget::click(GTWidget::findWidget("alignButton"));
-    //    Expected state: Isophya_altaica_EF540820 is AAG-CT--TACTAA
+    GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(13, 1), "AAG-CT--TACTAA");
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_2) {
-    //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    //    2. Open Pairwise alignment option panel tab
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
-    //    3. Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
-    //    4. Set terminate gap penalty to 1000. Press align button
     setSpinValue(1000, "gapTerm");
-    inNewWindow(false);
+    setOpenPairwiseAlignmentResultInNewWindow(false);
     GTWidget::click(GTWidget::findWidget("alignButton"));
-    //    Expected state: Isophya_altaica_EF540820 is AAGCTTACT---AA
+    GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(13, 1), "AAGCTTACT---AA");
 }
 
 GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0007_3) {
-    //    1. Open file test/_common_data/scenarios/msa/ma2_gapped.aln
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    //    2. Open Pairwise alignment option panel tab
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
-    //    3. Add Phaneroptera_falcata and Isophya_altaica_EF540820 sequences to PA
     GTUtilsOptionPanelMsa::addFirstSeqToPA("Phaneroptera_falcata");
-    GTUtilsOptionPanelMsa::addSecondSeqToPA("Isophya_altaica_EF540820");
-    //    4. Set gap open to 10, gap ext to 1, bonus score to 1. Press align button
-    setSpinValue(10, "gapOpen");
-    setSpinValue(1, "gapExtd");
-    inNewWindow(false);
+    GTUtilsOptionPanelMsa::addSecondSeqToPA("Bicolorana_bicolor_EF540830");
+    setSpinValue(100, "gapOpen");
+    setSpinValue(100, "gapExtd");
+    setOpenPairwiseAlignmentResultInNewWindow(false);
     GTWidget::click(GTWidget::findWidget("alignButton"));
-    //    Expected state: Isophya_altaica_EF540820 is AAG-CTTACT---AA
-    GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 1), QPoint(14, 1), "AAG-CTTACT---AA");
+    GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 2), QPoint(13, 2), "---TAGTTTATTAA");
 }
 namespace {
 void setOutputPath(const QString& path, const QString& name, bool clickYes = true) {

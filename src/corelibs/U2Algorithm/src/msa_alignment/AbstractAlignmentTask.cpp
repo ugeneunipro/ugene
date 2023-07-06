@@ -26,7 +26,7 @@ namespace U2 {
 const QString AbstractAlignmentTaskSettings::RESULT_FILE_NAME("resultFileName");
 const QString AbstractAlignmentTaskSettings::ALGORITHM_NAME("algorithmName");
 const QString AbstractAlignmentTaskSettings::REALIZATION_NAME("realizationName");
-const QString AbstractAlignmentTaskSettings::IN_NEW_WINDOW("inNewWindow");
+const QString AbstractAlignmentTaskSettings::IN_NEW_WINDOW("setOpenPairwiseAlignmentResultInNewWindow");
 const QString AbstractAlignmentTaskSettings::ALPHABET("alphabet");
 
 AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings()

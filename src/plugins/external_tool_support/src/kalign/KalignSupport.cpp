@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -140,6 +141,15 @@ void Kalign3SupportContext::sl_align() {
     MSAEditor* msaEditor = action->getMsaEditor();
     MultipleSequenceAlignmentObject* obj = msaEditor->getMaObject();
     CHECK(obj != nullptr && !obj->isStateLocked(), )
+
+    const DNAAlphabet* alphabet = obj->getAlphabet();
+    if (!Kalign3SupportTask::isAlphabetSupported(alphabet->getId())) {
+        QMessageBox::information(msaEditor->getWidget(),
+                                 tr("Unable to align with Kalign"),
+                                 tr("Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from %1 alphabet to DNA, RNA or Amino and try again.")
+                                     .arg(alphabet->getName()));
+        return;
+    }
 
     Kalign3Settings settings;
     QObjectScopedPointer<Kalign3DialogWithMsaInput> dialog(new Kalign3DialogWithMsaInput(AppContext::getMainWindow()->getQMainWindow(), obj->getMsa(), settings));

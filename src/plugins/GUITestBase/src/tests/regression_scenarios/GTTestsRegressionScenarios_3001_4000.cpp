@@ -4715,11 +4715,11 @@ GUI_TEST_CLASS_DEFINITION(test_3983) {
 
     GTLogTracer lt;
 
-    GTFileDialog::openFile(testDir + "_common_data/fasta", "amino_multy.aln");
+    GTFileDialog::openFile(testDir + "_common_data/fasta/amino_multy.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
-    GTUtilsOptionPanelMsa::checkTabIsOpened(GTUtilsOptionPanelMsa::PairwiseAlignment);
+
     GTUtilsOptionPanelMsa::addFirstSeqToPA("chr1_gl000191_random_Amino_translation_");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -4732,7 +4732,7 @@ GUI_TEST_CLASS_DEFINITION(test_3983) {
     GTWidget::click(GTUtilsOptionPanelMsa::getAlignButton());
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(lt.hasErrors(), "Expected to have errors in the log, but no errors found");
+    CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3988) {

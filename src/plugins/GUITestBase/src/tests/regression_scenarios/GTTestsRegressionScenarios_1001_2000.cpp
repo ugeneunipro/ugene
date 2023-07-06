@@ -6755,15 +6755,15 @@ GUI_TEST_CLASS_DEFINITION(test_1704) {
 
 GUI_TEST_CLASS_DEFINITION(test_1708) {
     // 1. Open COI.aln or HIV-1.aln from samples
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(9, 1));
+    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(38, 0), QPoint(48, 1));  // Area updated during the alignment.
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    QString initAln = GTClipboard::text();
+    QString originalAlignment = GTClipboard::text();
 
-    QString expectedAln("TAAGACTT-C\n"
-                        "TAAG-CTTAC");
+    QString kalignAlignment("T---ACCTAAT\n"
+                            "T---ATCTAAT");
 
     // 2. Align with KAlign
     GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseKey));
@@ -6772,21 +6772,21 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTWidget::click(GTUtilsMdi::activeWindow());
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(9, 1));
+    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(38, 0), QPoint(48, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    QString changedAln = GTClipboard::text();
-    CHECK_SET_ERR(changedAln == expectedAln, "Unexpected alignment\n" + changedAln);
+    QString currentAlignment = GTClipboard::text();
+    CHECK_SET_ERR(currentAlignment == kalignAlignment, "Unexpected alignment\n" + currentAlignment);
 
     QAbstractButton* undo = GTAction::button("msa_action_undo");
 
     // 3. Press Undo
     GTWidget::click(undo);
     GTWidget::click(GTUtilsMdi::activeWindow());
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(9, 1));
+    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(38, 0), QPoint(48, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    changedAln = GTClipboard::text();
+    currentAlignment = GTClipboard::text();
 
-    CHECK_SET_ERR(changedAln == initAln, "Undo works wrong\n" + changedAln);
+    CHECK_SET_ERR(currentAlignment == originalAlignment, "Undo works wrong\n" + currentAlignment);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1710_1) {

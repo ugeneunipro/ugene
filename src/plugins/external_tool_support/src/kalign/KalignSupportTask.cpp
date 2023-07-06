@@ -292,6 +292,13 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
                 stateInfo.setError("MultipleSequenceAlignment object has been changed");
                 return res;
             }
+            Document* targetDocument = targetMsaObject->getDocument();
+            SAFE_POINT(targetDocument != nullptr, "Document is NULL!", res);
+
+            if (targetDocument->isStateLocked()) {
+                stateInfo.setError(tr("Document '%1' is locked").arg(targetDocument->getName()));
+                return res;
+            }
 
             U2OpStatus2Log os;
             U2UseCommonUserModStep userModStep(obj->getEntityRef(), os);
@@ -309,9 +316,7 @@ QList<Task*> Kalign3SupportTask::onSubTaskFinished(Task* subTask) {
                 SAFE_POINT_OP(stateInfo, res);
             }
 
-            Document* currentDocument = targetMsaObject->getDocument();
-            SAFE_POINT(currentDocument != nullptr, "Document is NULL!", res);
-            currentDocument->setModified(true);
+            targetDocument->setModified(true);
         }
 
         algoLog.info(tr("KAlign alignment successfully finished"));
@@ -416,39 +421,26 @@ Task::ReportResult Kalign3WithExternalFileSupportTask::report() {
 
 ////////////////////////////////////////
 // KalignLogParser
-KalignLogParser::KalignLogParser() {
-    progress = 0;
-}
-
-void KalignLogParser::parseOutput(const QString& out) {
-    uiLog.info("LOG-out:" + out);
-}
-
 void KalignLogParser::parseErrOutput(const QString& err) {
-    uiLog.info("LOG-err:" + err);
-    // TODO
-    //    lastPartOfLog = partOfLog.split(QRegExp("(\n|\r)"));
-    //    lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
-    //    lastErrLine = lastPartOfLog.takeLast();
-    //    foreach (QString buf, lastPartOfLog) {
-    //        if (buf.contains("WARNING")) {
-    //            algoLog.info("Kalign: " + buf);
-    //        } else {
-    //            algoLog.trace(buf);
-    //        }
-    //    }
+    // Error output example:
+    //[2023-07-06 16:36:21] :   ERROR : File: 12345 does not exist. (/home/ugene/yalgaer/kalign/kalign-3.3.5/lib/src/msa_io.c line 86)
+    //[2023-07-06 16:36:21] :   ERROR : Function "kalign_read_input(param->infile[0], &msa,param->quiet)" failed. (/home/ugene/yalgaer/kalign/kalign-3.3.5/src/run_kalign.c line 346)
+    //[2023-07-06 16:36:21] :   ERROR : Function "run_kalign(param)" failed. (/home/ugene/yalgaer/kalign/kalign-3.3.5/src/run_kalign.c line 326)
+    QString firstErrorLine = err.split("\n")[0];
+    QString prefixToken = "ERROR : ";
+    int prefixTokenIndex = firstErrorLine.indexOf(prefixToken);
+    if (prefixToken > 0) {
+        firstErrorLine = firstErrorLine.mid(prefixTokenIndex + prefixToken.length()).trimmed();
+        int suffixToken = firstErrorLine.lastIndexOf("(");
+        if (suffixToken > 0) {
+            firstErrorLine = firstErrorLine.mid(0, suffixToken - 1).trimmed();
+        }
+    }
+    if (!firstErrorLine.isEmpty()) {
+        setLastError(firstErrorLine);
+    } else {
+        ExternalToolLogParser::parseErrOutput(err);
+    }
 }
 
-int KalignLogParser::getProgress() {
-    // TODO    if (!lastPartOfLog.isEmpty()) {
-    //        QString lastMessage = lastPartOfLog.last();
-    //        if (lastMessage.contains(QRegExp("\\[Submit +Job\\]\\[TOT="))) {
-    //            QRegExp rx("(.*)\\[ +(\\d+) %\\](.*)");
-    //            rx.indexIn(lastMessage);
-    //            CHECK(rx.captureCount() > 1, 0);
-    //            return rx.cap(2).toInt();
-    //        }
-    //    }
-    return progress;
-}
 }  // namespace U2
