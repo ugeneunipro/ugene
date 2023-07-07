@@ -5453,7 +5453,7 @@ GUI_TEST_CLASS_DEFINITION(test_4918_1) {
 GUI_TEST_CLASS_DEFINITION(test_4934) {
     // 1. Open samples/CLUSTALW/ty3.aln.gz
     GTLogTracer lt1;
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/1798/1.4k.aln");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/4934/4934.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Align with Kalign
@@ -5462,16 +5462,16 @@ GUI_TEST_CLASS_DEFINITION(test_4934) {
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     // 3. While aligning lock document for editing.
-    GTUtilsDocument::lockDocument("1.4k.aln");
+    GTUtilsDocument::lockDocument("4934.aln");
 
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(lt1.hasError("Document '1.4k.aln' is locked"), "Expected error is not found");
+    CHECK_SET_ERR(lt1.hasError("Document '4934.aln' is locked"), "Expected error is not found");
     int errorNum = lt1.errorMessages.size();
     CHECK_SET_ERR(errorNum == 1, QString("1 error is expected in the log. Got: %1, %2").arg(errorNum).arg(lt1.errorMessages.join("\n")));
 
     // 4. Unlock document after alignment finished
-    GTUtilsDocument::unlockDocument("1.4k.aln");
+    GTUtilsDocument::unlockDocument("4934.aln");
 
     // 5. Align with Kalign again
     GTLogTracer lt2;
