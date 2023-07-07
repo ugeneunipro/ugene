@@ -347,10 +347,10 @@ void MainWindowImpl::prepareGUI() {
 #endif
     helpMenu->addAction(welcomePageAction);
     helpMenu->addAction(aboutAction);
-    if (qgetenv(ENV_TEST_CRASH_HANDLER) == "1") {
+    //if (qgetenv(ENV_TEST_CRASH_HANDLER) == "1") {
         helpMenu->addSeparator();
         helpMenu->addAction(crashUgeneAction);
-    }
+    //}
 
     if (qgetenv(ENV_TEST_NOTIFICATIONS) == "1") {
         helpMenu->addSeparator();
