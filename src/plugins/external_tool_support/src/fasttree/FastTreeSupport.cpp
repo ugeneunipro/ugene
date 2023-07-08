@@ -40,7 +40,7 @@ FastTreeSupport::FastTreeSupport()
     : ExternalTool(FastTreeSupport::FAST_TREE_ID, "fasttree", "FastTree") {
     executableFileName = isOsWindows() ? "FastTree.exe" : "FastTree";
     validationArguments << "-expert";
-    validMessage = "Detailed usage for FastTree";
+    validationMessageRegExp = "Detailed usage for FastTree";
     description = tr("<i>FastTree</i> builds phylogenetic trees from alignments of nucleotide or protein sequences.<br>FastTree can handle alignments with up to a million of sequences.");
     versionRegExp = QRegExp(R"(Detailed usage for FastTree (\d+\.\d+\.\d+).*)");
     toolKitName = "FastTree";

@@ -429,7 +429,7 @@ GUI_TEST_CLASS_DEFINITION(test_0490) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
 }
@@ -666,7 +666,7 @@ GUI_TEST_CLASS_DEFINITION(test_0610) {
 
     //    4.  Modify MSA: align with any algorithm
     //    Expected state: UGENE not crashed
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 

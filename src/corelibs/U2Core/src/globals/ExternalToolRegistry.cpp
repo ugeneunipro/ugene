@@ -203,7 +203,7 @@ void ExternalTool::checkPaths(U2OpStatus& os) const {
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {
-    ExternalToolValidation result(toolRunnerProgram, executableFileName, validationArguments, validMessage, errorDescriptions);
+    ExternalToolValidation result(toolRunnerProgram, executableFileName, validationArguments, validationMessageRegExp, errorDescriptions);
     return result;
 }
 

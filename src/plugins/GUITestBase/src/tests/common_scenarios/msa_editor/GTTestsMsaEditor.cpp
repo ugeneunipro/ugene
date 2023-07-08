@@ -896,7 +896,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
 
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
 
     // Expected state: UGENE not crash
@@ -928,7 +928,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -966,7 +966,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -1026,7 +1026,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -1076,7 +1076,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -2952,16 +2952,12 @@ GUI_TEST_CLASS_DEFINITION(test_0054_1) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Use context menu:
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
-    GTUtilsDialog::add(new KalignDialogFiller(0, true));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
+    GTUtilsDialog::add(new KalignDialogFiller());
     GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
     GTUtilsTaskTreeView::waitTaskFinished();
     QString actual = GTUtilsMSAEditorSequenceArea::getSequenceData("Phaneroptera_falcata");
-    CHECK_SET_ERR(actual.startsWith("TAAGACTTCTAATTCGAGCCGAATTAGGTCAAC---CAGGATACCTAATTGGAGATGATCAAATTTATAATG"), "unexpected sequence: " + actual);
-
-    //    {Align->Align with MUSCLE}
-    //    Check "Translate to amino when aligning" checkbox
-    //    Align
+    CHECK_SET_ERR(actual.startsWith("TAAGACTTCTAATTCGAGCCGAATTAGGTCAACCAGGAT---ACCTAATTGGAGATGATCAAATTTATAA"), "unexpected sequence: " + actual);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0055) {
@@ -3100,7 +3096,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             QString finalColor = "#ffffff";
 
             GTWidget::click(GTWidget::findWidget("clearButton", dialog));
-            for (double i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 QPoint p = QPoint((i + 0.5) * cellWidth, 10);
                 QColor c = GTWidget::getColor(dialog, alphabetColorsFrame->mapTo(dialog, p));
                 CHECK_SET_ERR(c.name() == finalColor, QString("unexpected color at cell %1 after clearing: %2").arg(i).arg(c.name()));
@@ -3108,7 +3104,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             }
 
             GTWidget::click(GTWidget::findWidget("restoreButton", dialog));
-            for (double i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 QPoint p = QPoint((i + 0.5) * cellWidth, 10);
                 QColor c = GTWidget::getColor(dialog, alphabetColorsFrame->mapTo(dialog, p));
                 CHECK_SET_ERR(c.name() == initialColors[i], QString("unexpected color at cell %1 after clearing: %2, expected: %3").arg(i).arg(c.name()).arg(initialColors[i]));
@@ -3120,7 +3116,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             GTMouseDriver::moveTo(alphabetColorsFrame->mapToGlobal(cell2));
             GTMouseDriver::click();
             QColor cell2Color = GTWidget::getColor(dialog, alphabetColorsFrame->mapTo(dialog, cell2));
-            CHECK_SET_ERR(cell2Color.name() == "#ff0000", "color was chanded wrong: " + cell2Color.name());
+            CHECK_SET_ERR(cell2Color.name() == "#ff0000", "color was changed incorrectly: " + cell2Color.name());
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -3361,7 +3357,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
         "Align with ClustalO",
         "Align with MAFFT",
         "Align with T-Coffee",
-        "align_with_kalign",
+        "alignWithKalignAction",
     })));
     GTWidget::click(GTAction::button("Align"));
 

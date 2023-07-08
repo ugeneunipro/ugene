@@ -50,7 +50,7 @@ TrimmomaticSupport::TrimmomaticSupport()
 
     executableFileName = "trimmomatic.jar";
     validationArguments << "-h";
-    validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
+    validationMessageRegExp = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
 
     toolRunnerProgram = JavaSupport::ET_JAVA_ID;
     dependencies << JavaSupport::ET_JAVA_ID;

@@ -101,8 +101,8 @@ void TCoffeeSupportTask::prepare() {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (nullptr != obj) {
             auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
-            lock = new StateLock("ClustalWAlignment");
+            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", );
+            lock = new StateLock("TCoffeeAlignment");
             alObj->lockState(lock);
         }
     }

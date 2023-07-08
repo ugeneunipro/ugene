@@ -111,6 +111,9 @@ static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Moni
             bool isDir = false;
             bool isDataset = false;
             QVariant valueVariant = p->getAttributePureValue();
+            if (valueVariant == p->getDefaultPureValue()) {
+                valueVariant = "default";
+            }
             if (valueVariant.canConvert<QList<Dataset>>()) {
                 QList<Dataset> sets = valueVariant.value<QList<Dataset>>();
                 for (const Dataset& set : qAsConst(sets)) {

@@ -36,11 +36,24 @@ public:
 };
 
 typedef U2Formatter<QString> StringFormatter;
+typedef U2Formatter<double> DoubleFormatter;
 
 /** Interprets property name as document format id and returns the related document format name. */
 class U2CORE_EXPORT DocumentNameByIdFormatter : public StringFormatter {
 public:
     QString format(const QString& documentFormatId) const override;
+};
+
+/*** Return 'defaultText' if the value is equal to defaultValue or 'nonDefaultText' text otherwise.  */
+class U2CORE_EXPORT DefaultDoubleFormatter : public DoubleFormatter {
+public:
+    DefaultDoubleFormatter(int defaultValue, const QString& defaultText, const QString& nonDefaultText);
+
+    QString format(const double& value) const override;
+
+    double defaultValue = 0;
+    QString defaultText;
+    QString nonDefaultText;
 };
 
 }  // namespace U2

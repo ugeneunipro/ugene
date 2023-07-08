@@ -468,7 +468,7 @@
     <message>
         <location filename="../src/MuscleAlignDialogController.cpp" line="224"/>
         <location filename="../src/MuscleAlignDialogController.cpp" line="226"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Kalign ile Hizala</translation>
     </message>
     <message>

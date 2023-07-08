@@ -4608,7 +4608,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="132"/>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="134"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
@@ -4752,7 +4752,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="196"/>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="198"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
@@ -11003,7 +11003,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="113"/>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="115"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
@@ -11934,7 +11934,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     <message>
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="114"/>
         <location filename="../src/tcoffee/TCoffeeSupportRunDialog.cpp" line="116"/>
-        <source>Kalign with Align</source>
+        <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>

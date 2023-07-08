@@ -68,7 +68,7 @@ void SnpEffDatabaseListTask::prepare() {
     QStringList args("databases");
     ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(), "", QStringList(), true);
     setListenerForTask(etTask);
-    etTask->setStandartOutputFile(dbListFilePath);
+    etTask->setStandardOutputFile(dbListFilePath);
     addSubTask(etTask);
 }
 

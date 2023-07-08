@@ -31,8 +31,6 @@ public:
     URLAttribute(const Descriptor& d, const DataTypePtr type, bool required = false);
 
     virtual void setAttributeValue(const QVariant& newVal);
-    virtual const QVariant& getAttributePureValue() const;
-    virtual const QVariant& getDefaultPureValue() const;
     virtual bool isDefaultValue() const;
     virtual bool isEmpty() const;
     virtual URLAttribute* clone();

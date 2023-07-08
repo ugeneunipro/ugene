@@ -416,11 +416,11 @@ void BwaMemAlignTask::prepare() {
             arguments.append(downStreamList[pairedReadsCounter].url.getURLString());
             ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
             if (upStreamList.size() == 1) {
-                alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
+                alignTask->setStandardOutputFile(settings.resultFileName.getURLString());
             } else {
                 QString resultFilePathWithpartNumber = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" +
                                                        QString::number(pairedReadsCounter++) + "." + resultFileInfo.completeSuffix();
-                alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
+                alignTask->setStandardOutputFile(resultFilePathWithpartNumber);
             }
             setListenerForTask(alignTask);
             alignTasks.append(alignTask);
@@ -429,13 +429,13 @@ void BwaMemAlignTask::prepare() {
             ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
             QString resultFilePathWithpartNumber = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" +
                                                    QString::number(resultPartsCounter) + "." + resultFileInfo.completeSuffix();
-            alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
+            alignTask->setStandardOutputFile(resultFilePathWithpartNumber);
             setListenerForTask(alignTask);
             alignTasks.append(alignTask);
         } else {
             arguments.append(currentReadSet.url.getURLString());
             ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), nullptr);
-            alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
+            alignTask->setStandardOutputFile(settings.resultFileName.getURLString());
             setListenerForTask(alignTask);
             alignTasks.append(alignTask);
         }

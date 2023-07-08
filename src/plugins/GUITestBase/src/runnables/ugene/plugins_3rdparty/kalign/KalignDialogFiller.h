@@ -28,12 +28,11 @@ using namespace HI;
 
 class KalignDialogFiller : public Filler {
 public:
-    KalignDialogFiller(int _gapOpenVal = 0, bool _toAmino = false);
-    void commonScenario();
+    KalignDialogFiller(int _gapOpenVal = 0);
+    void commonScenario() override;
 
 private:
-    int gapOpenVal;
-    bool toAmino;
+    int gapOpenVal = 0;
 };
 
 }  // namespace U2

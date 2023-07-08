@@ -48,7 +48,7 @@ TabixSupport::TabixSupport()
 
     muted = true;
     validationArguments << "-help";
-    validMessage = "tabix";
+    validationMessageRegExp = "tabix";
     description = tr("<i>Tabix</i> is a generic indexer for TAB-delimited genome position files");
     versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
     toolKitName = "SAMtools";

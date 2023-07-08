@@ -114,7 +114,7 @@ void RunFastTreeExternalToolTask::prepare() {
 
     QString resultTreeFilePath = context->alignmentFilePath + ".treefile";
     externalToolTask = new ExternalToolRunTask(FastTreeSupport::FAST_TREE_ID, arguments, new ExternalToolLogParser());
-    externalToolTask->setStandartOutputFile(resultTreeFilePath);
+    externalToolTask->setStandardOutputFile(resultTreeFilePath);
     externalToolTask->setSubtaskProgressWeight(99);
     addSubTask(externalToolTask);
 

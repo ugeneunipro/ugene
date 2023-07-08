@@ -45,7 +45,7 @@ PythonSupport::PythonSupport()
 
     static const QString PYTHON_VERSION_REGEXP = "(\\d+.\\d+.\\d+)";
 
-    validMessage = "Python " + PYTHON_VERSION_REGEXP;
+    validationMessageRegExp = "Python " + PYTHON_VERSION_REGEXP;
     validationArguments << "--version";
 
     description += tr("Python scripts interpreter");
@@ -89,7 +89,7 @@ PythonModuleBioSupport::PythonModuleBioSupport()
     description += "Bio" + tr(" (or biopython) is a python module for biological computations.");
 
     validationArguments << "import Bio;print(\"Bio version: \", Bio.__version__);";
-    validMessage = "Bio version:";
+    validationMessageRegExp = "Bio version:";
     versionRegExp = QRegExp("(\\d+.\\d+)");
 }
 

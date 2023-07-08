@@ -51,7 +51,7 @@ SpadesSupport::SpadesSupport()
     }
 
     executableFileName = "spades.py";
-    validMessage = "SPAdes";
+    validationMessageRegExp = "SPAdes";
     description = tr("<i>SPAdes</i> - St. Petersburg genome assembler - is intended for both standard isolates and single-cell MDA bacteria assemblies. Official site: http://bioinf.spbau.ru/spades");
     validationArguments << "--version";
     versionRegExp = QRegExp("SPAdes.* v(\\d+.\\d+.\\d+)");

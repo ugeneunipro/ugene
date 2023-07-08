@@ -772,9 +772,9 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     // Click the Pairwise Alignment tab of the Options Panel.
     // Select two sequence from the original alignment and click on the Align button.
     // Until the task completes, click the Pairwise Alignment tab again.
-    // Wait for task finish. A new document "PairwiseAlignmentResult.aln" has been added to the project.
+    // Wait for task finish. A new document "pairwise_alignment_result.aln" has been added to the project.
     //
-    // Remove PairwiseAlignmentResult.aln from project.
+    // Remove pairwise_alignment_result.aln from project.
     // Return to shortened_big.aln and click the Pairwise Alignment tab of the Options Panel.
     // Click Align.
     //     Expected state: no crash.
@@ -783,7 +783,7 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsOptionPanelMsa::toggleTab(GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTUtilsOptionPanelMsa::addFirstSeqToPA("seq1");
     GTUtilsOptionPanelMsa::addSecondSeqToPA("seq2");
-    QString documentName = GTUtils::genUniqueString("PairwiseAlignmentResult");
+    QString documentName = GTUtils::genUniqueString("pairwise_alignment_result");
     GTUtilsOptionPanelMsa::setOutputFile(sandBoxDir + documentName + ".aln");
 
     GTWidget::click(GTUtilsOptionPanelMsa::getAlignButton());
@@ -917,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_7276) {
     CHECK_SET_ERR(sequenceNameList2 != sequenceNameList1, "Name list must change as the result of sorting");
 
     // Align with KAlign now.
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2617,9 +2617,8 @@ GUI_TEST_CLASS_DEFINITION(test_7550) {
     class Click103TimesScenario : public CustomScenario {
     public:
         void run() override {
-            auto stack = AppContext::getMainWindow()->getNotificationStack();
             for (int i = 0; i < 103; i++) {
-                stack->addNotification("Notification " + QString::number(i + 1));
+                U2::NotificationStack::addNotification("Notification " + QString::number(i + 1));
                 GTGlobals::sleep(200);
             }
         }
@@ -3200,9 +3199,8 @@ GUI_TEST_CLASS_DEFINITION(test_7635) {
     class Create10NotificationsScenario : public CustomScenario {
     public:
         void run() override {
-            auto stack = AppContext::getMainWindow()->getNotificationStack();
             for (int i = 0; i < 10; i++) {
-                stack->addNotification("Notification " + QString::number(i + 1));
+                U2::NotificationStack::addNotification("Notification " + QString::number(i + 1));
                 GTGlobals::sleep(200);
             }
         }

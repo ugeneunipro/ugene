@@ -62,7 +62,7 @@ TCoffeeSupport::TCoffeeSupport()
 #    endif
 #endif
     validationArguments << "-help";
-    validMessage = "PROGRAM: T-COFFEE";
+    validationMessageRegExp = "PROGRAM: T-COFFEE";
     description = tr("<i>T-Coffee</i> is a multiple sequence alignment package.");
     versionRegExp = QRegExp("PROGRAM: T-COFFEE Version_(\\d+\\.\\d+)");
     toolKitName = "T-Coffee";

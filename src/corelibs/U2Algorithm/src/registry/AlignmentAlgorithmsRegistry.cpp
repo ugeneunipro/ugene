@@ -76,7 +76,7 @@ AlignmentAlgorithm::~AlignmentAlgorithm() {
 
 AbstractAlignmentTaskFactory* AlignmentAlgorithm::getFactory(const QString& _realizationId) const {
     QMutexLocker locker(&mutex);
-    SAFE_POINT(realizations.keys().contains(_realizationId), "Realization is not registered", nullptr);
+    SAFE_POINT(realizations.contains(_realizationId), "Realization is not registered", nullptr);
     return realizations.value(_realizationId)->getTaskFactory();
 }
 
