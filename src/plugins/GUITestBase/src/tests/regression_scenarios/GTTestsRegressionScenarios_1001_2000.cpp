@@ -6757,6 +6757,7 @@ GUI_TEST_CLASS_DEFINITION(test_1708) {
     // 1. Open COI.aln or HIV-1.aln from samples
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::toggleView();
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(38, 0), QPoint(48, 1));  // Area updated during the alignment.
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
