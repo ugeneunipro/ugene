@@ -34,8 +34,21 @@ namespace HI {
 
 #define GT_CLASS_NAME "GUIDialogWaiter"
 
-/** Check for dialog every twice as fast as ACTIVATION_TIME. */
+/** Check for dialog twice as fast as ACTIVATION_TIME. */
 static const int DIALOG_CHECK_PERIOD = GUIDialogWaiter::ACTIVATION_TIME / 2;
+
+GUIDialogWaiter::WaitSettings::WaitSettings(
+    const QString& _objectName,
+    const DialogType& _dialogType,
+    int _timeout,
+    bool _isRandomOrderWaiter,
+    const QString& _logName)
+    : objectName(_objectName),
+      dialogType(_dialogType),
+      timeout(_timeout),
+      isRandomOrderWaiter(_isRandomOrderWaiter),
+      logName(_logName.isEmpty() ? _objectName : _logName) {
+}
 
 GUIDialogWaiter::GUIDialogWaiter(Runnable* _r, const WaitSettings& _settings)
     : runnable(_r), settings(_settings) {
@@ -119,7 +132,7 @@ QList<GUIDialogWaiter*> GTUtilsDialog::waiterList = QList<GUIDialogWaiter*>();
 
 QDialogButtonBox* GTUtilsDialog::buttonBox(QWidget* dialog) {
     auto buttonBox = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget("buttonBox", dialog));
-    GT_CHECK_RESULT(buttonBox != nullptr, "buttonBox is nullptr", nullptr);
+    GT_CHECK_RESULT(buttonBox != nullptr, "buttonBox is nullptr. " + Filler::generateFillerStackInfo(), nullptr);
     return buttonBox;
 }
 
@@ -129,13 +142,19 @@ void GTUtilsDialog::clickButtonBox(QDialogButtonBox::StandardButton button) {
 
 void GTUtilsDialog::clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardButton button) {
 #ifdef Q_OS_DARWIN
-    GTGlobals::sleep(500);
+    GTGlobals::sleep(500);  // TODO: check is a separate PR/test-run that this condition is still needed.
 #endif
-    QDialogButtonBox* box = buttonBox(dialog);
-    QPushButton* pushButton = box->button(button);
-    GT_CHECK(pushButton != nullptr, "pushButton is NULL");
-    GT_CHECK(pushButton->isEnabled(), "Button must be enabled");
-    GTWidget::click(pushButton);
+    for (int time = 0; time < 3000; time += GT_OP_CHECK_MILLIS) {
+        QDialogButtonBox* box = buttonBox(dialog);
+        QPushButton* pushButton = box->button(button);
+        GT_CHECK(pushButton != nullptr, "pushButton is NULL");
+        if (pushButton->isEnabled()) {
+            GTWidget::click(pushButton);
+            return;
+        }
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+    }
+    GT_FAIL("Button was not enabled. " + Filler::generateFillerStackInfo(), );
 }
 
 void GTUtilsDialog::waitForDialog(Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList) {
@@ -200,6 +219,8 @@ void GTUtilsDialog::cleanup() {
 
 #undef GT_CLASS_NAME
 
+QStack<QString> Filler::activeFillerLogNamesStack;
+
 Filler::Filler(const GUIDialogWaiter::WaitSettings& _settings, CustomScenario* _scenario)
     : settings(_settings), scenario(_scenario) {
 }
@@ -212,16 +233,25 @@ Filler::~Filler() {
     delete scenario;
 }
 
+void Filler::commonScenario() {
+}
+
+QString Filler::generateFillerStackInfo() {
+    return activeFillerLogNamesStack.isEmpty() ? "Active fillers: none" : "Active fillers: " + activeFillerLogNamesStack.toList().join(",");
+}
+
 GUIDialogWaiter::WaitSettings Filler::getSettings() const {
     return settings;
 }
 
 void Filler::run() {
+    activeFillerLogNamesStack.push(settings.logName);
     if (scenario == nullptr) {
         commonScenario();
     } else {
         scenario->run();
     }
+    activeFillerLogNamesStack.pop();
     GTThread::waitForMainThread();
 }
 

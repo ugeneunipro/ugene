@@ -23,6 +23,7 @@
 #include <core/CustomScenario.h>
 
 #include <QDialogButtonBox>
+#include <QStack>
 #include <QTimer>
 
 #include "GTGlobals.h"
@@ -32,8 +33,7 @@ namespace HI {
 class HI_EXPORT Runnable {
 public:
     virtual void run() = 0;
-    virtual ~Runnable() {
-    }
+    virtual ~Runnable() = default;
 };
 
 class HI_EXPORT GUIDialogWaiter : public QObject {
@@ -50,17 +50,11 @@ public:
         Popup = 2,
     };
     struct WaitSettings {
-        WaitSettings(const QString& _objectName = "",
-                     const DialogType& _dialogType = DialogType::Modal,
-                     int _timeout = 20000,
-                     bool _isRandomOrderWaiter = false,
-                     const QString _loggingName = "")
-            : objectName(_objectName),
-              dialogType(_dialogType),
-              timeout(_timeout),
-              isRandomOrderWaiter(_isRandomOrderWaiter),
-              logName(_loggingName) {
-        }
+        WaitSettings(const QString& objectName = "",
+                     const DialogType& dialogType = DialogType::Modal,
+                     int timeout = 20000,
+                     bool isRandomOrderWaiter = false,
+                     const QString& logName = "");
 
         QString objectName;
         DialogType dialogType;
@@ -71,7 +65,7 @@ public:
     };
 
     GUIDialogWaiter(Runnable* _r, const WaitSettings& settings = WaitSettings());
-    virtual ~GUIDialogWaiter();
+    ~GUIDialogWaiter() override;
 
     const WaitSettings& getSettings() const {
         return settings;
@@ -97,14 +91,20 @@ private:
 
 class HI_EXPORT Filler : public Runnable {
 public:
-    Filler(const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario = NULL);
-    Filler(const QString& objectName, CustomScenario* scenario = NULL);
-    ~Filler();
+    Filler(const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario = nullptr);
+    Filler(const QString& objectName, CustomScenario* scenario = nullptr);
+    ~Filler() override;
 
     GUIDialogWaiter::WaitSettings getSettings() const;
     void run() override;
-    virtual void commonScenario() {
-    }
+
+    /** Scenario to run. Empty by default. */
+    virtual void commonScenario();
+
+    /** Stack of the active fillers inside 'run()'. Can be used to improve logging. */
+    static QStack<QString> activeFillerLogNamesStack;
+
+    static QString generateFillerStackInfo();
 
 protected:
     GUIDialogWaiter::WaitSettings settings;
