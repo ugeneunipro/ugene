@@ -50,11 +50,17 @@ public:
         Popup = 2,
     };
     struct WaitSettings {
-        WaitSettings(const QString& objectName = "",
-                     const DialogType& dialogType = DialogType::Modal,
-                     int timeout = 20000,
-                     bool isRandomOrderWaiter = false,
-                     const QString& logName = "");
+        WaitSettings(const QString& _objectName = "",
+                     const DialogType& _dialogType = DialogType::Modal,
+                     int _timeout = 20000,
+                     bool _isRandomOrderWaiter = false,
+                     const QString& _logName = "")
+            : objectName(_objectName),
+              dialogType(_dialogType),
+              timeout(_timeout),
+              isRandomOrderWaiter(_isRandomOrderWaiter),
+              logName(_logName.isEmpty() ? _objectName : _logName) {
+        }
 
         QString objectName;
         DialogType dialogType;

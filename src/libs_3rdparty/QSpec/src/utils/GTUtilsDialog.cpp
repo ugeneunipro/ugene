@@ -37,19 +37,6 @@ namespace HI {
 /** Check for dialog twice as fast as ACTIVATION_TIME. */
 static const int DIALOG_CHECK_PERIOD = GUIDialogWaiter::ACTIVATION_TIME / 2;
 
-GUIDialogWaiter::WaitSettings::WaitSettings(
-    const QString& _objectName,
-    const DialogType& _dialogType,
-    int _timeout,
-    bool _isRandomOrderWaiter,
-    const QString& _logName)
-    : objectName(_objectName),
-      dialogType(_dialogType),
-      timeout(_timeout),
-      isRandomOrderWaiter(_isRandomOrderWaiter),
-      logName(_logName.isEmpty() ? _objectName : _logName) {
-}
-
 GUIDialogWaiter::GUIDialogWaiter(Runnable* _r, const WaitSettings& _settings)
     : runnable(_r), settings(_settings) {
     GT_LOG(QString("Created a new GUIDialogWaiter for '%1' ('%2')").arg(settings.objectName).arg(settings.logName));
