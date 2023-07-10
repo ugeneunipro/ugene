@@ -1428,6 +1428,7 @@ tools/fasttree
 tools/hmmer3
 tools/iqtree
 tools/java
+tools/kalign
 tools/mafft
 tools/mrbayes
 tools/perl5
