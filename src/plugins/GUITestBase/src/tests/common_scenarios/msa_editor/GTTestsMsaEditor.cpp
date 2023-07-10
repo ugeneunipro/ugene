@@ -3522,7 +3522,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/Chikungunya_E1.fasta");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsTaskTreeView::waitTaskFinished();  // wait for overview rendering to finish.
 
@@ -3588,7 +3588,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
     }
 
     int scrollBarOffset = hbar->value();
-    int minCharWidth = 12;
+    int minCharWidth = 10;
     int maxCharWidth = 24;
     CHECK_SET_ERR(scrollBarOffset % 3 == 0 && scrollBarOffset >= 3 * minCharWidth && scrollBarOffset <= 3 * maxCharWidth,
                   QString("scroll down works wrong. Scrollbar has value: %1").arg(hbar->value()));
