@@ -1295,8 +1295,6 @@ plugins/gor4.license
 plugins/gor4.plugin
 plugins/hmm2.license
 plugins/hmm2.plugin
-plugins/kalign.license
-plugins/kalign.plugin
 plugins/libannotator.so
 plugins/libball.so
 plugins/libbiostruct3d_view.so
@@ -1314,7 +1312,6 @@ plugins/libgenecut.so
 plugins/libgenome_aligner.so
 plugins/libgor4.so
 plugins/libhmm2.so
-plugins/libkalign.so
 plugins/liblinkdata_support.so
 plugins/liborf_marker.so
 plugins/libpcr.so

@@ -1342,10 +1342,6 @@ plugins/hmm2.dll
 plugins/hmm2.license
 plugins/hmm2.map
 plugins/hmm2.plugin
-plugins/kalign.dll
-plugins/kalign.license
-plugins/kalign.map
-plugins/kalign.plugin
 plugins/linkdata_support.dll
 plugins/linkdata_support.license
 plugins/linkdata_support.map
