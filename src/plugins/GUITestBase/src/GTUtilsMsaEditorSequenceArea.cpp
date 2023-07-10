@@ -136,10 +136,10 @@ QRect GTUtilsMSAEditorSequenceArea::getPositionRect(
     QPoint topLeftGlobalPoint = msaEditArea->mapToGlobal(QPoint(regX.startPos, regY.startPos));
     QPoint bottomRightGlobalPoint = msaEditArea->mapToGlobal(QPoint(regX.endPos(), regY.endPos()));
 
-    return QRect(topLeftGlobalPoint, bottomRightGlobalPoint);
+    return {topLeftGlobalPoint, bottomRightGlobalPoint};
 }
 
-QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(const QPoint p, int index) {
+QPoint GTUtilsMSAEditorSequenceArea::convertCoordinates(const QPoint& p, int index) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #0 widget
     MaEditorWgt* activeWindow = GTUtilsMsaEditor::getEditor()->getUI()->getUI(index);
@@ -407,7 +407,7 @@ QString GTUtilsMSAEditorSequenceArea::getSimilarityValue(int row, int index) {
     return simCol->getTextForRow(row);
 }
 
-void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(QString seqName) {
+void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(const QString& seqName) {
     auto msaEditArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(0);
     auto msaEditWgt = msaEditArea->getEditor()->getUI()->getUI(0);
 
@@ -420,7 +420,7 @@ void GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(QString seqName) {
     GTMouseDriver::click();
 }
 
-bool GTUtilsMSAEditorSequenceArea::isCollapsed(QString seqName) {
+bool GTUtilsMSAEditorSequenceArea::isCollapsed(const QString& seqName) {
     QStringList names = getNameList();
     QStringList visiable = getVisibleNames();
     GT_CHECK_RESULT(names.contains(seqName), "sequence " + seqName + " not found", false);
@@ -498,7 +498,7 @@ bool GTUtilsMSAEditorSequenceArea::offsetsVisible() {
 
     return leftOffsetWidget->isVisible();
 }
-void GTUtilsMSAEditorSequenceArea::checkConsensus(QString cons, int index) {
+void GTUtilsMSAEditorSequenceArea::checkConsensus(const QString& cons, int index) {
     auto consArea = getConsensusArea(index);
 
     QSharedPointer<MSAEditorConsensusCache> cache = consArea->getConsensusCache();
@@ -705,7 +705,7 @@ void GTUtilsMSAEditorSequenceArea::replaceSymbol(const QPoint& maPoint, char new
     GTThread::waitForMainThread();
 }
 
-void GTUtilsMSAEditorSequenceArea::createColorScheme(const QString& colorSchemeName, const NewColorSchemeCreator::alphabet al) {
+void GTUtilsMSAEditorSequenceArea::createColorScheme(const QString& colorSchemeName, const NewColorSchemeCreator::alphabet& al) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsMSAEditorSequenceArea::moveTo(QPoint(1, 1));
     GTUtilsDialog::waitForDialog(new NewColorSchemeCreator(colorSchemeName, al));

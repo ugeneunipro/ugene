@@ -36,6 +36,7 @@ MessageBoxDialogFiller::MessageBoxDialogFiller(QMessageBox::StandardButton b, co
     : Filler(objectName),
       b(b),
       message(_message) {
+    settings.logName = "MessageBoxDialogFiller, message: '" + message + "', button code: " + QString::number(b);
 }
 
 MessageBoxDialogFiller::MessageBoxDialogFiller(const QString& _buttonText, const QString& _message)
@@ -43,6 +44,7 @@ MessageBoxDialogFiller::MessageBoxDialogFiller(const QString& _buttonText, const
       b(QMessageBox::NoButton),
       buttonText(_buttonText),
       message(_message) {
+    settings.logName = "MessageBoxDialogFiller, message: '" + message + "', buttonText: '" + buttonText + "'";
 }
 
 void MessageBoxDialogFiller::commonScenario() {
