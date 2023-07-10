@@ -1377,6 +1377,7 @@ tools/fasttree
 tools/hmmer3
 tools/iqtree
 tools/java8
+tools/kalign
 tools/mafft
 tools/mrbayes
 tools/phyml
