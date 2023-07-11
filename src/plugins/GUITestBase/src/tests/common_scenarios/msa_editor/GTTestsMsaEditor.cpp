@@ -1270,14 +1270,13 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // UGENE crashes when all columns in MSAEditor are deleted (UGENE-329)
     //
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Select Edit -> remove columns of gaps -> remove columns with number of gaps 1.
     // 3. Click OK
     GTUtilsDialog::waitForDialog(new DeleteGapsDialogFiller());
     GTUtilsDialog::waitForDialog(new PopupChooser({"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTMouseDriver::click(Qt::RightButton);
-
+    GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsDialog::checkNoActiveWaiters();
 
     // Expected state: UGENE not crashes, deletion is not performed
