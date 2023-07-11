@@ -1126,7 +1126,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    Expected state: Dialog suggesting to reload modified document has appeared.
     //    Press 'Yes'.
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
+    GTGlobals::sleep(1000);  // UGENE detects changes with 1 second granularity only.
+    GTFile::replaceInFile(sandBoxDir + "ma2_gapped.aln", "AAGACTTCTTTTAA", "CTTACTTCTTTTAA");
     GTUtilsDialog::checkNoActiveWaiters();
 
     //    Expected state: document was reloaded, view activated.

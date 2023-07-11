@@ -388,6 +388,22 @@ QByteArray GTFile::readAll(const QString& filePath) {
 
     return file.readAll();
 }
+
+void GTFile::writeFile(const QString& filePath, const QByteArray& data) {
+    QFile file(filePath);
+    bool opened = file.open(QFile::WriteOnly);
+    GT_CHECK_RESULT(opened, "Can't open file for write: '" + filePath + "'", );
+    qint64 sizeWriten = file.write(data);
+    GT_CHECK_RESULT(sizeWriten == data.size(),
+                    "Failed to write data to file, input size" + QString::number(data.length()) + ", written: " + QString::number(sizeWriten), );
+}
+
+void GTFile::replaceInFile(const QString& filePath, const QString& fromText, const QString& toText) {
+    QString content = QString::fromLocal8Bit(readAll(filePath));
+    content.replace(fromText, toText);
+    writeFile(filePath, content.toLocal8Bit());
+}
+
 #undef GT_CLASS_NAME
 
 }  // namespace HI
