@@ -43,7 +43,7 @@ public:
     static void checkSelectedRect(int multilineIndex, const QRect& expectedRect);
     static void checkSelectedRect(const QRect& expectedRect);
 
-    static void checkConsensus(QString cons, int index = 0);
+    static void checkConsensus(const QString& cons, int index = 0);
     // may be used for selecting visible columns only
     static void selectColumnInConsensus(int columnNumber, int index = 0);
 
@@ -69,8 +69,8 @@ public:
 
     // "index" is a line index in multiline mode
     static QString getSimilarityValue(int row, int index = 0);
-    static void clickCollapseTriangle(QString seqName);
-    static bool isCollapsed(QString seqName);
+    static void clickCollapseTriangle(const QString& seqName);
+    static bool isCollapsed(const QString& seqName);
     static bool collapsingMode();
 
     static int getFirstVisibleBaseIndex(int multilineIndex = 0, bool countClipped = true);
@@ -97,7 +97,7 @@ public:
     static void cancelSelection();
     /** Returns on-screen (global) bounding rectangle for the base position. */
     static QRect getPositionRect(const QPoint& position, int index = 0);
-    static QPoint convertCoordinates(const QPoint p, int index = 0);
+    static QPoint convertCoordinates(const QPoint& p, int index = 0);
     static void click(const QPoint& screenMaPoint = QPoint(0, 0));
 
     /** Calls context menu Copy/Paste->Copy. */
@@ -110,7 +110,7 @@ public:
     static void clickToPosition(const QPoint& globalMaPosition);
 
     static void selectSequence(const QString& seqName);
-    static void selectSequence(const int row);
+    static void selectSequence(int row);
     static bool isSequenceSelected(const QString& seqName);
     static void removeSequence(const QString& sequenceName);
     static int getSelectedSequencesNum();
@@ -132,7 +132,7 @@ public:
     static void renameSequence(const QString& seqToRename, const QString& newName, bool useCopyPaste = false);
     static void replaceSymbol(const QPoint& maPoint, char newSymbol);
 
-    static void createColorScheme(const QString& schemeName, const NewColorSchemeCreator::alphabet al);
+    static void createColorScheme(const QString& schemeName, const NewColorSchemeCreator::alphabet& al);
     static void deleteColorScheme(const QString& schemeName);
 
     static void checkSelection(const QPoint& start, const QPoint& end, const QString& expected);
@@ -142,7 +142,7 @@ public:
     /*
      *expandedBorder: 0 - top, 1 - right, 2 - bottom, 3 - left, 4 - right top, 5 - right bottom, 6 - left bottom, 7 - left top
      */
-    static void expandSelectedRegion(const int expandedBorder, const int symbolsToExpand);
+    static void expandSelectedRegion(int expandedBorder, int symbolsToExpand);
 
     static void zoomIn();
     static void zoomOut();
