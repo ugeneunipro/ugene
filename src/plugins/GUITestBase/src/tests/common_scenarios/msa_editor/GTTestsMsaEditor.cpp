@@ -1126,7 +1126,8 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    Expected state: Dialog suggesting to reload modified document has appeared.
     //    Press 'Yes'.
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
+    GTGlobals::sleep(1000);  // UGENE detects changes with 1 second granularity only.
+    GTFile::replaceInFile(sandBoxDir + "ma2_gapped.aln", "AAGACTTCTTTTAA", "CTTACTTCTTTTAA");
     GTUtilsDialog::checkNoActiveWaiters();
 
     //    Expected state: document was reloaded, view activated.
@@ -1269,14 +1270,13 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // UGENE crashes when all columns in MSAEditor are deleted (UGENE-329)
     //
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Select Edit -> remove columns of gaps -> remove columns with number of gaps 1.
     // 3. Click OK
     GTUtilsDialog::waitForDialog(new DeleteGapsDialogFiller());
     GTUtilsDialog::waitForDialog(new PopupChooser({"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTMouseDriver::click(Qt::RightButton);
-
+    GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsDialog::checkNoActiveWaiters();
 
     // Expected state: UGENE not crashes, deletion is not performed

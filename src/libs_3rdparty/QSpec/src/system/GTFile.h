@@ -69,6 +69,11 @@ public:
 
     static QByteArray readAll(const QString& filePath);
 
+    static void writeFile(const QString& filePath, const QByteArray& data);
+
+    /** Replaces 'fromText' to 'toText' in the file. */
+    static void replaceInFile(const QString& filePath, const QString& fromText, const QString& toText);
+
     static const QString backupPostfix;
 };
 
