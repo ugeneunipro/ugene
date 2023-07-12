@@ -112,7 +112,21 @@ protected:
 
     void drawAnnotationConnections(QPainter& p, Annotation* a, const AnnotationSettings* as, const AnnotationDisplaySettings& drawSettings, const QSize& canvasSize, const U2Region& visibleRange);
 
-    void drawCutSite(QPainter& p, const SharedAnnotationData& aData, const U2Region& r, const QRect& annotationRect, const QColor& color, const QSize& canvasSize, const U2Region& visibleRange);
+    /**
+     * Calculates restriction cuts positions depends on visible area and calls drawCutSite.
+     * Calculates each cuts separately and draws cut if and only if it is visible.
+     *
+     * \param p An object, which draws restriction cuts.
+     * \param aData Information about annotation, which contains restriction cuts.
+     * \param r Region of the annotation, which sites should be drawn.
+     * \param annotationRect Rect, which performs annotation positions.
+     * \param color Color of restriction cuts.
+     * \param canvasSize Size of the whole details view part, where all annotations are drawn.
+     * \param visibleRange Sequence visible range.
+     * \param drawDirect Draw direct cut if true and do not draw if false.
+     * \param drawComplement Draw complement cut if true do not draw if false.
+     */
+    void drawCutSite(QPainter& p, const SharedAnnotationData& aData, const U2Region& r, const QRect& annotationRect, const QColor& color, const QSize& canvasSize, const U2Region& visibleRange, bool drawDirect = true, bool drawComplement = true);
     void drawCutSite(QPainter& p, const CutSiteDrawData& cData, const QSize& canvasSize, const U2Region& visibleRange);
 
     QString prepareAnnotationText(const SharedAnnotationData& a, const AnnotationSettings* as) const;

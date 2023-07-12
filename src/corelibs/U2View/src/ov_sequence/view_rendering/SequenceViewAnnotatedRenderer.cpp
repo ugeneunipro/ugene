@@ -142,7 +142,6 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
 
     const bool isRestrictionSite = a->getType() == U2FeatureTypes::RestrictionSite;
     QVector<U2Region> location = aData->getRegions();
-    bool simple = location.size() == 1;
     int availableHeight = canvasSize.height();
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region& r = location.at(ri);
@@ -188,16 +187,56 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
                     const QString aText = prepareAnnotationText(aData, as);
                     drawBoundedText(p, annotationRect, aText);
                 }
-                if (simple &&
-                    annotationRect.width() > MIN_WIDTH_TO_DRAW_EXTRA_FEATURES &&
-                    displaySettings.displayCutSites) {
-                    drawCutSite(p, aData, r, annotationRect, as->color, canvasSize, visibleRange);
-                }
             }
             drawAnnotationConnections(p, a, as, displaySettings, canvasSize, visibleRange);
-        } else if (isRestrictionSite && simple && displaySettings.displayCutSites) {
-            p.setPen(borderPen);
-            drawCutSite(p, aData, r, QRect(), as->color, canvasSize, visibleRange);
+        }
+    }
+    // draw restriction sites
+    /**
+     * Calculates restriction cuts positions depends on visible area and calls drawCutSite.
+     *
+     * \param reg Region of the annotation, which sites should be drawn.
+     * \param drawDirect Draw direct cut if true and do not draw if false.
+     * \param drawComplement Draw complement cut if true do not draw if false.
+     */
+    auto drawCutSiteLambda = [this, &p, &visibleRange, &a, &as, &availableHeight, &canvasSize, selected, &aData](const U2Region& reg, bool drawDirect = true, bool drawComplement = true) {
+        if (reg.intersects(visibleRange)) {
+
+            const U2Region visibleLocation = reg.intersect(visibleRange);
+            const U2Region y = getAnnotationYRange(a, 0, as, availableHeight);
+            CHECK(y.startPos >= 0, );
+
+            const int x1 = posToXCoord(visibleLocation.startPos, canvasSize, visibleRange);
+            const int x2 = posToXCoord(visibleLocation.endPos(), canvasSize, visibleRange);
+
+            const int rw = qMax(selected ? MIN_SELECTED_ANNOTATION_WIDTH : MIN_ANNOTATION_WIDTH, x2 - x1);
+            SAFE_POINT(rw > 0, "Negative length of annotationYRange", );
+
+            const QRect annotationRect(x1, y.startPos, rw, y.length);
+            if (annotationRect.width() > MIN_WIDTH_TO_DRAW_EXTRA_FEATURES) {
+                drawCutSite(p, aData, reg, annotationRect, as->color, canvasSize, visibleRange, drawDirect, drawComplement);
+            }
+        } else {
+            drawCutSite(p, aData, reg, QRect(), as->color, canvasSize, visibleRange);
+        }
+    };
+
+    if (isRestrictionSite && displaySettings.displayCutSites) {
+        p.setPen(borderPen);
+        const bool isCircular = ctx->getSequenceObject()->isCircular();
+        auto seqLength = ctx->getSequenceLength();
+        auto merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(location, seqLength);
+        if (isCircular && U1AnnotationUtils::isAnnotationContainsJunctionPoint(merged)) {
+            SAFE_POINT(merged.size() == 1, "Unexpected merged enzyme region", );
+
+            auto regionPair = merged.front();
+            drawCutSiteLambda(regionPair.first, true, false);
+            drawCutSiteLambda(regionPair.second, false, true);
+        } else {
+            int length = 0;
+            SAFE_POINT(location.size() == 1, "Unexpected enzyme region", );
+
+            drawCutSiteLambda(location.first());
         }
     }
 }
@@ -288,7 +327,10 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter& p, Annot
     }
 }
 
-void SequenceViewAnnotatedRenderer::drawCutSite(QPainter& p, const SharedAnnotationData& aData, const U2Region& r, const QRect& annotationRect, const QColor& color, const QSize& canvasSize, const U2Region& visibleRange) {
+void SequenceViewAnnotatedRenderer::drawCutSite(QPainter& p, const SharedAnnotationData& aData, const U2Region& r, const QRect& annotationRect, const QColor& color,
+                                                const QSize& canvasSize, const U2Region& visibleRange, bool drawDirect, bool drawComplement) {
+    SAFE_POINT(drawDirect || drawComplement, "At least direct or complement site should be drawn", );
+
     const QString cutStr = aData->findFirstQualifierValue(GBFeatureUtils::QUALIFIER_CUT);
     bool hasD = false;
     bool hasC = false;
@@ -297,13 +339,20 @@ void SequenceViewAnnotatedRenderer::drawCutSite(QPainter& p, const SharedAnnotat
     if (!cutStr.isEmpty()) {
         int complSplit = cutStr.indexOf('/');
         if (-1 != complSplit) {
-            cutD = cutStr.left(complSplit).toInt(&hasD);
-            cutC = cutStr.mid(qMin(cutStr.length(), complSplit + 1))
-                       .toInt(&hasC);
+            if (drawDirect) {
+                cutD = cutStr.left(complSplit).toInt(&hasD);
+            }
+            if (drawComplement) {
+                cutC = cutStr.mid(qMin(cutStr.length(), complSplit + 1))
+                    .toInt(&hasC);
+            }
         } else {
-            cutD = cutStr.toInt(&hasD);
-            cutC = cutD;
-            hasC = hasD;
+            if (drawDirect) {
+                cutD = cutStr.toInt(&hasD);
+            }
+            if (drawComplement) {
+                cutC = cutStr.toInt(&hasC);
+            }
         }
     }
 
