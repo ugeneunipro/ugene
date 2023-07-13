@@ -129,19 +129,11 @@ void ReportSender::parse(const QString& htmlReport, const QString& dumpUrl) {
         }
     }
 
-    QFile fp("/tmp/UGENEstacktrace.txt");
+    QFile fp(QDir::tempPath() + "/ugene_crashes/UGENEstacktrace.txt");
     if (fp.open(QIODevice::ReadOnly)) {
         QByteArray stacktrace = fp.readAll();
         report += "Stack trace:\n";
         report += stacktrace.data();
-        if (stacktrace.isEmpty()) {
-            QFile err("/tmp/UGENEerror");
-            if (err.open(QIODevice::ReadOnly)) {
-                stacktrace = err.readAll();
-                report += stacktrace.data();
-                err.close();
-            }
-        }
         fp.close();
     }
 }
