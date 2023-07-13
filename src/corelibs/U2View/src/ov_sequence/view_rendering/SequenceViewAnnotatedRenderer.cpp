@@ -225,15 +225,17 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
         p.setPen(borderPen);
         const bool isCircular = ctx->getSequenceObject()->isCircular();
         auto seqLength = ctx->getSequenceLength();
-        auto merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(location, seqLength);
-        if (isCircular && U1AnnotationUtils::isAnnotationContainsJunctionPoint(merged)) {
+        if (isCircular && U1AnnotationUtils::isAnnotationContainsJunctionPoint(a, seqLength)) {
+            auto merged = U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(location, seqLength);
             SAFE_POINT(merged.size() == 1, "Unexpected merged enzyme region", );
 
             auto regionPair = merged.front();
+            // draw cuts separatelly,
+            // because they are located one on the 3' end of the direct sequence,
+            // and the other one on the 3' end of reverse-complementary sequence
             drawCutSiteLambda(regionPair.first, true, false);
             drawCutSiteLambda(regionPair.second, false, true);
         } else {
-            int length = 0;
             SAFE_POINT(location.size() == 1, "Unexpected enzyme region", );
 
             drawCutSiteLambda(location.first());
