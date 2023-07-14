@@ -178,6 +178,8 @@ GUI_TEST_CLASS_DEFINITION(vscroll_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(vscroll_test_0002) {
+    GTUtilsMdi::closeAllWindows();
+
     // Open file data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
