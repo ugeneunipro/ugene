@@ -39,7 +39,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Filter by name:</string>
+          <string>Name filter</string>
          </property>
         </widget>
        </item>
@@ -106,12 +106,15 @@
        </widget>
        <widget class="QWidget" name="layoutWidget">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="topMargin">
+          <number>10</number>
+         </property>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>Selected enzymes:</string>
+              <string>Checked enzymes</string>
              </property>
             </widget>
            </item>
@@ -132,7 +135,7 @@
            <item>
             <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>Selected enzyme info:</string>
+              <string>Selected enzyme info</string>
              </property>
             </widget>
            </item>
