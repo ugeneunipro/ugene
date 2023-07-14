@@ -291,7 +291,7 @@ GUI_TEST_CLASS_DEFINITION(test_5026) {
     CHECK_SET_ERR(modifiedNames.contains("Mecopoda_elongata__Ishigaki__J"), "Sequence Mecopoda_elongata__Ishigaki__J is not present in multiple alignment.");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5027_1) {
+GUI_TEST_CLASS_DEFINITION(test_5027) {
     // 1. Open preferences and set memory limit per task 500000MB
     // 2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
     // 3. Run schema.
@@ -312,61 +312,17 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
         }
 
     private:
-        int memValue;
+        int memValue = 0;
     };
 
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new MemorySetter(200)));  // 200mb
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
-    GTUtilsWorkflowDesigner::openWorkflowDesigner();
-    GTUtilsWorkflowDesigner::addSample("SnpEff");
-    GTThread::waitForMainThread();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // close wizard
-
-    GTUtilsWorkflowDesigner::click("Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/vcf/valid.vcf");
-
-    GTUtilsWorkflowDesigner::click("Annotate and Predict Effects with SnpEff");
-    GTUtilsDialog::waitForDialog(new SnpEffDatabaseDialogFiller("hg19"));
-    GTUtilsWorkflowDesigner::setParameter("Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
-
-    GTUtilsWorkflowDesigner::runWorkflow();
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    GTWidget::findLabelByText("There is not enough memory to complete the SnpEff execution.", GTUtilsDashboard::getDashboard());
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5027_2) {
-    // 1. Open preferences and set memory limit per task 512MB
-    // 2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
-    // 3. Run schema.
-    // Expected state : there is problem on dashboard "There is not enough memory to complete the SnpEff execution."
-    class MemorySetter : public CustomScenario {
-    public:
-        MemorySetter(int memValue)
-            : memValue(memValue) {
-        }
-        void run() override {
-            QWidget* dialog = GTWidget::getActiveModalWidget();
-            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::Resources);
-
-            auto memSpinBox = GTWidget::findSpinBox("memBox");
-            GTSpinBox::setValue(memSpinBox, memValue, GTGlobals::UseKeyBoard);
-
-            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
-        }
-
-    private:
-        int memValue;
-    };
-
-    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new MemorySetter(256)));
-    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::addSample("SnpEff");
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-    GTThread::waitForMainThread();
+    GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
+
     GTUtilsWorkflowDesigner::click("Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/vcf/valid.vcf");
 
@@ -1888,7 +1844,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
     GTUtilsMcaEditor::undo();
 
     // Expected: reference will be restored with gaps
-    newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    newRefLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     CHECK_SET_ERR(newRefLength == refLength, QString("Expected: New ref length is equal old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
 }
 
