@@ -198,7 +198,7 @@
      <item>
       <widget class="QPushButton" name="selectAllButton">
        <property name="toolTip">
-        <string>Select all enzymes in database</string>
+        <string>Select all enzymes in the table</string>
        </property>
        <property name="text">
         <string>Select All</string>

@@ -991,7 +991,7 @@
 <context>
     <name>U2::TandemFinder_Region</name>
     <message>
-        <location filename="../src/RF_SArray_TandemFinder.h" line="137"/>
+        <location filename="../src/RF_SArray_TandemFinder.h" line="136"/>
         <source>Find tandems in %1 region</source>
         <translation>Поиск тандемов в %1 регионе</translation>
     </message>

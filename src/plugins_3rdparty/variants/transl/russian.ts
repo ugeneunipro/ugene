@@ -643,37 +643,37 @@
         <translation>Samtool mpileup для %1 </translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="167"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="168"/>
         <source>No reference sequence URL to do pileup</source>
         <translation>No reference sequence URL to do pileup</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="172"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="173"/>
         <source>No assembly URL to do pileup</source>
         <translation>No assembly URL to do pileup</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="178"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="179"/>
         <source>There is an assembly with an empty path</source>
         <translation>There is an assembly with an empty path</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="187"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="188"/>
         <source>Can not create the folder: </source>
         <translation>Can not create the folder: </translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="242"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="243"/>
         <source>Can not run %1 tool</source>
         <translation>Can not run %1 tool</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="248"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="249"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 tool exited with code %2</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="250"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="251"/>
         <source>Tool %1 finished successfully</source>
         <translation>Tool %1 finished successfully</translation>
     </message>

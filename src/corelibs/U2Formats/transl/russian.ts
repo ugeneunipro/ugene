@@ -40,32 +40,31 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="151"/>
+        <location filename="../src/BAMUtils.cpp" line="243"/>
         <source>Fail to open &quot;%1&quot; for reading</source>
         <translation>Невозможно открыть &quot;%1&quot; для чтения</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="155"/>
+        <location filename="../src/BAMUtils.cpp" line="247"/>
         <source>Fail to read the header from the file: &quot;%1&quot;</source>
         <translation>Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="159"/>
         <source>Can not build the fasta index for the file: &quot;%1&quot;</source>
-        <translation>Невозможно построить индекс для файла: &quot;%1&quot;</translation>
+        <translation type="vanished">Невозможно построить индекс для файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="163"/>
+        <location filename="../src/BAMUtils.cpp" line="251"/>
         <source>Error parsing the reads from the file: &quot;%1&quot;</source>
         <translation>Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="167"/>
+        <location filename="../src/BAMUtils.cpp" line="255"/>
         <source>Truncated file: &quot;%1&quot;</source>
         <translation>Обрезанный файл: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="950"/>
+        <location filename="../src/BAMUtils.cpp" line="1058"/>
         <source>Can&apos;t open file with given url: %1.</source>
         <translation>Can&apos;t open file with given url: %1.</translation>
     </message>
@@ -96,27 +95,27 @@
 <context>
     <name>U2::ABIFormat</name>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="50"/>
+        <location filename="../src/ABIFormat.cpp" line="51"/>
         <source>ABIF</source>
         <translation>ABIF</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="51"/>
+        <location filename="../src/ABIFormat.cpp" line="52"/>
         <source>A chromatogram file format</source>
         <translation>Формат типа хромотограмма</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="92"/>
+        <location filename="../src/ABIFormat.cpp" line="93"/>
         <source>Not a valid ABIF file: %1</source>
         <translation>Некорректный ABIF файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="119"/>
+        <location filename="../src/ABIFormat.cpp" line="120"/>
         <source>Failed to load sequence from ABI file %1</source>
         <translation>Невозможно загрузить последоватлеьность из ABI файла %1</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="451"/>
+        <location filename="../src/ABIFormat.cpp" line="452"/>
         <source>Undefined sequence alphabet</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -251,12 +250,12 @@
         <translation>MMDB</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.h" line="149"/>
+        <location filename="../src/ASNFormat.h" line="148"/>
         <source>read error occurred</source>
         <translation>Ошибка чтения</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.h" line="161"/>
+        <location filename="../src/ASNFormat.h" line="160"/>
         <source>biostruct3d obj loading error: %1</source>
         <translation>Ошибка загрузки трехмерной структуры: %1</translation>
     </message>
@@ -434,7 +433,7 @@
 <context>
     <name>U2::BAMUtils</name>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="230"/>
+        <location filename="../src/BAMUtils.cpp" line="299"/>
         <source>There is no header in the SAM file &quot;%1&quot;. The header information will be generated automatically.</source>
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
@@ -443,7 +442,7 @@
         <translation type="vanished">Сортировка bam файла: &quot;%1&quot; использует %2 Mb памяти. Сортированный файл: &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="544"/>
+        <location filename="../src/BAMUtils.cpp" line="501"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
@@ -452,58 +451,63 @@
         <translation type="vanished">Удаление PCR повторов в BAM файле: &quot;%1&quot;. Результирующий файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="356"/>
+        <location filename="../src/BAMUtils.cpp" line="417"/>
         <source>[sort_blocks] fail to create file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="369"/>
+        <location filename="../src/BAMUtils.cpp" line="431"/>
         <source>Failed to open file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="377"/>
+        <location filename="../src/BAMUtils.cpp" line="435"/>
         <source>[bam_sort_core] fail to open file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="454"/>
+        <location filename="../src/BAMUtils.cpp" line="533"/>
         <source>[bam_merge_core] fail to open file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="472"/>
+        <location filename="../src/BAMUtils.cpp" line="555"/>
         <source>[bam_merge_core] different target sequence name: &apos;%1&apos; != &apos;%2&apos; in file &apos;%3&apos;
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="505"/>
+        <location filename="../src/BAMUtils.cpp" line="593"/>
         <source>Failed to create the output file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="527"/>
+        <location filename="../src/BAMUtils.cpp" line="621"/>
         <source>[bam_merge_core] &apos;%1&apos; is truncated. Continue anyway.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="549"/>
+        <location filename="../src/BAMUtils.cpp" line="506"/>
         <source>Failed to merge BAM files: %1 into %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="640"/>
+        <location filename="../src/BAMUtils.cpp" line="671"/>
+        <source>Can&apos;t remove temporary file: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/BAMUtils.cpp" line="743"/>
         <source>Build index for bam file: &quot;%1&quot;</source>
         <translation>Построение индекса для bam файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="643"/>
+        <location filename="../src/BAMUtils.cpp" line="746"/>
         <source>Can&apos;t build the index: %1</source>
         <translation>Невозможно посмтроить индекс: %1</translation>
     </message>
     <message>
-        <location filename="../src/BAMUtils.cpp" line="891"/>
+        <location filename="../src/BAMUtils.cpp" line="999"/>
         <source>Wrong line in a SAM file.</source>
         <translation>Wrong line in a SAM file.</translation>
     </message>
@@ -634,62 +638,62 @@
 <context>
     <name>U2::BgzipTask</name>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="49"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="50"/>
         <source>Bgzip Compression task</source>
         <translation>Bgzip Compression task</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="55"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="56"/>
         <source>Start bgzip compression &apos;%1&apos;</source>
         <translation>Начало сжатия bgzip &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="57"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="58"/>
         <source>IOAdapterRegistry is NULL!</source>
         <translation>IOAdapterRegistry is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="60"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="61"/>
         <source>IOAdapterFactory is NULL!</source>
         <translation>IOAdapterFactory is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="62"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="63"/>
         <source>Can not create IOAdapter!</source>
         <translation>Can not create IOAdapter!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="66"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="67"/>
         <source>Can not open input file &apos;%1&apos;</source>
         <translation>Can not open input file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="76"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="77"/>
         <source>Can not open output file &apos;%2&apos;</source>
         <translation>Невозможно открыть выходной файл &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="90"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="93"/>
         <source>Error reading file</source>
         <translation>Ошибка чтения файла</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="95"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="98"/>
         <source>Error writing to file</source>
         <translation>Ошибка записи в файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="102"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="105"/>
         <source>Bgzip compression finished</source>
         <translation>Сжатие bgzip завершено</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="107"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="110"/>
         <source>Bgzip compression task was finished with an error: %1</source>
         <translation>Сжатие bgzip закончилось с ошибкой: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="109"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="112"/>
         <source>Bgzip compression task was finished. A new bgzf file is: &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</source>
         <translation>Сжатие bgzip завершено. Новый bgzf файл: &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
@@ -745,57 +749,57 @@
 <context>
     <name>U2::ClustalWAlnFormat</name>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="63"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="71"/>
         <source>Clustalw is a format for storing multiple sequence alignments</source>
         <translation>Clustalw это формат для сохранения множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="87"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="99"/>
         <source>Illegal header line</source>
         <translation>Неправильная строка заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="111"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="123"/>
         <source>Error parsing file</source>
         <translation>Ошибка разбора файла</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="122"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="134"/>
         <source>Invalid alignment format</source>
         <translation>Неверный формат выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="160"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="172"/>
         <source>Incorrect number of sequences in block</source>
         <translation>Неверное количество последовательностей в блоке</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="166"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="178"/>
         <source>Sequence names are not matched: &apos;%1&apos; vs &apos;%2&apos;, row index: %3</source>
         <translation>Имена последовательностей не совпадают:&apos;%1&apos; и &apos;%2&apos;, индекс: %3</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="296"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="308"/>
         <source>No data to write</source>
         <translation>Нет данных для записи</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="296"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="308"/>
         <source>Too many objects: %1</source>
         <translation>Слишком много объектов: %1</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="299"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="311"/>
         <source>Not a multiple alignment object</source>
         <translation>Объект не является выравниванием</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="189"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="201"/>
         <source>Alphabet is unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="62"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="70"/>
         <source>CLUSTALW</source>
         <translation>CLUSTALW</translation>
     </message>
@@ -1796,69 +1800,69 @@
 <context>
     <name>U2::GzipDecompressTask</name>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="125"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="131"/>
         <source>Decompression task</source>
         <translation>Задача разархивации</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="129"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="135"/>
         <source>&apos;%1&apos; is not zipped file</source>
         <translation>&apos;%1&apos; не является zip файлом</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="134"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="140"/>
         <source>Start decompression &apos;%1&apos;</source>
         <translation>Начало разархивации &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="136"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="142"/>
         <source>IOAdapterRegistry is NULL!</source>
         <translation>IOAdapterRegistry is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="139"/>
-        <location filename="../src/tasks/BgzipTask.cpp" line="141"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="145"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="147"/>
         <source>IOAdapterFactory is NULL!</source>
         <translation>IOAdapterFactory is NULL!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="144"/>
-        <location filename="../src/tasks/BgzipTask.cpp" line="147"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="150"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="153"/>
         <source>Can not create IOAdapter!</source>
         <translation>Can not create IOAdapter!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="159"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="165"/>
         <source>Can not open output file &apos;%1&apos;</source>
         <translation>Невозможно открыть выходной файл &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="165"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="171"/>
         <source>Can not open input file &apos;%1&apos;</source>
         <translation>Can not open input file &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="180"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="186"/>
         <source>Error reading file</source>
         <translation>Ошибка чтения файла</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="186"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="192"/>
         <source>Error writing to file</source>
         <translation>Ошибка записи в файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="191"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="197"/>
         <source>Decompression finished</source>
         <translation>Разархивация завершена</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="196"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="202"/>
         <source>Decompression task was finished with an error: %1</source>
         <translation>Задача разархивации завершилась с ошибкой : %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="198"/>
+        <location filename="../src/tasks/BgzipTask.cpp" line="204"/>
         <source>Decompression task was finished. A new decompressed file is: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
         <translation>Задача разархивации завершена. Новый файл: &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
@@ -2073,7 +2077,7 @@
 <context>
     <name>U2::PDBFormat</name>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="203"/>
+        <location filename="../src/PDBFormat.cpp" line="214"/>
         <source>Line is too long</source>
         <translation>Слишком длинная строка</translation>
     </message>
@@ -2083,22 +2087,27 @@
         <translation>The Protein Data Bank (PDB) формат обеспечивает стандартное представление для данных высокомолекулярных структур, полученных из рентгеновской дифракции и исследований ЯМР.</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="262"/>
+        <location filename="../src/PDBFormat.cpp" line="194"/>
+        <source>Inconsistent atom indexes in pdb file: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/PDBFormat.cpp" line="276"/>
         <source>Some mandatory records are absent</source>
         <translation>Некоторые обязательные записи отсутствуют</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="403"/>
+        <location filename="../src/PDBFormat.cpp" line="417"/>
         <source>PDB warning: unknown residue name: %1</source>
         <translation>PDB предупреждение: неизвестное имя остатка: %1</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="489"/>
+        <location filename="../src/PDBFormat.cpp" line="504"/>
         <source>Invalid secondary structure record</source>
         <translation>Неверная запись вторичной структуры</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="523"/>
+        <location filename="../src/PDBFormat.cpp" line="538"/>
         <source>Invalid SEQRES: less then 24 characters</source>
         <translation>Неверный SEQRES: меньше чем 24 символа</translation>
     </message>
@@ -2711,8 +2720,8 @@
         <translation>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="54"/>
-        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="65"/>
+        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>
+        <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="67"/>
         <source>An error occurred during updating UDR</source>
         <translation>An error occurred during updating UDR</translation>
     </message>

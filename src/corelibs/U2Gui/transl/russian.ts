@@ -1485,24 +1485,24 @@ The items cannot be recovered once deleted.</source>
 <context>
     <name>U2::AddDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="348"/>
-        <location filename="../src/OpenViewTask.cpp" line="361"/>
+        <location filename="../src/OpenViewTask.cpp" line="337"/>
+        <location filename="../src/OpenViewTask.cpp" line="350"/>
         <source>Opening view for document: &apos;NONAME&apos;</source>
         <translation>Открытие документа: &apos;NONAME&apos;</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="351"/>
-        <location filename="../src/OpenViewTask.cpp" line="363"/>
+        <location filename="../src/OpenViewTask.cpp" line="340"/>
+        <location filename="../src/OpenViewTask.cpp" line="352"/>
         <source>Opening view for document: %1</source>
         <translation>Открытие документа: %1</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="353"/>
+        <location filename="../src/OpenViewTask.cpp" line="342"/>
         <source>Provided document is NULL</source>
         <translation>Provided document is NULL</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="365"/>
+        <location filename="../src/OpenViewTask.cpp" line="354"/>
         <source>Document provider is NULL</source>
         <translation>Document provider is NULL</translation>
     </message>
@@ -1587,6 +1587,19 @@ The items cannot be recovered once deleted.</source>
         <location filename="../src/util/BreakpointConditionEditDialog.cpp" line="43"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
+    </message>
+</context>
+<context>
+    <name>U2::ComboBoxWithCheckBoxes</name>
+    <message>
+        <location filename="../src/ComboBoxWithCheckBoxes.cpp" line="40"/>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ComboBoxWithCheckBoxes.cpp" line="42"/>
+        <source>%1 items</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1763,49 +1776,49 @@ complement(5..15)</translation>
 <context>
     <name>U2::DownloadRemoteFileDialog</name>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="62"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="61"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="63"/>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="202"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="62"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="128"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="131"/>
         <source>Select folder to save</source>
         <translation>Папка для сохранения</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="166"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="169"/>
         <source>Resource id is empty!</source>
         <translation>Идентификатор ресурса пуст!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="172"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="175"/>
         <source>No folder selected for saving file!</source>
         <translation>Не задана папка для сохранения файла!</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="201"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="203"/>
         <source>There are more than 100 files found for download.
 Are you sure you want to open all of them?</source>
         <translation>Найдено более 100 файлов для скачивания. Открыть их все?</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="202"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="202"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
         <source>Open anyway</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="202"/>
+        <location filename="../src/util/DownloadRemoteFileDialog.cpp" line="204"/>
         <source>Don&apos;t open</source>
         <translation>Не открывать</translation>
     </message>
@@ -2129,8 +2142,8 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::FileLineEdit</name>
     <message>
-        <location filename="../src/util/DialogUtils.cpp" line="61"/>
-        <location filename="../src/util/DialogUtils.cpp" line="67"/>
+        <location filename="../src/util/DialogUtils.cpp" line="65"/>
+        <location filename="../src/util/DialogUtils.cpp" line="71"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
@@ -2442,30 +2455,26 @@ Are you sure you want to open all of them?</source>
     <name>U2::LoadRemoteDocumentAndAddToProjectTask</name>
     <message>
         <location filename="../src/OpenViewTask.cpp" line="221"/>
-        <location filename="../src/OpenViewTask.cpp" line="228"/>
-        <location filename="../src/OpenViewTask.cpp" line="234"/>
+        <location filename="../src/OpenViewTask.cpp" line="231"/>
         <source>Load remote document and add to project</source>
         <translation>Load remote document and add to project</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="239"/>
         <source>Load remote document</source>
-        <translation>Load remote document</translation>
+        <translation type="vanished">Load remote document</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="284"/>
+        <location filename="../src/OpenViewTask.cpp" line="283"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="334"/>
         <source>Failed to download %1 from %2. Error: %3</source>
-        <translation>Невозможно скачать %1 из %2. Ошибка: %3</translation>
+        <translation type="vanished">Невозможно скачать %1 из %2. Ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/OpenViewTask.cpp" line="340"/>
         <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</source>
-        <translation>Документ был успешно загружен: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</translation>
+        <translation type="vanished">Документ был успешно загружен: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%4&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2550,17 +2559,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::NotificationStack</name>
     <message>
-        <location filename="../src/Notification.cpp" line="378"/>
+        <location filename="../src/Notification.cpp" line="382"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="379"/>
+        <location filename="../src/Notification.cpp" line="383"/>
         <source>Remove notification after closing</source>
         <translation>Удалить уведомление после закрытия</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="395"/>
+        <location filename="../src/Notification.cpp" line="399"/>
         <source>Detailed message</source>
         <translation>Детальное сообщение</translation>
     </message>
@@ -3142,7 +3151,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::SearchBox</name>
     <message>
-        <location filename="../src/util/SearchBox.cpp" line="55"/>
+        <location filename="../src/util/SearchBox.cpp" line="60"/>
         <source>Search...</source>
         <translation>Поиск...</translation>
     </message>

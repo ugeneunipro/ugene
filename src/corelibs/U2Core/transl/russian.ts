@@ -4,52 +4,52 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="560"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="579"/>
         <source>This is not ESearch result!</source>
         <translation>Это не является результатом ESearch!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="601"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="620"/>
         <source>This is not a ESummary result!</source>
         <translation>Это не является результатом ESummary!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="679"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="698"/>
         <source>Use Ensembl ID. For example: %1 or %2</source>
         <translation>Используйте Ensembl ID. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="680"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="699"/>
         <source>Use Genbank DNA accession number. For example: %1 or %2</source>
         <translation>Используйте Genbank DNA Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="681"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="700"/>
         <source>Use Genbank protein accession number. For example: %1</source>
         <translation>Используйте Genbank Protein Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="682"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="701"/>
         <source>Use PDB molecule four-letter identifier. For example: %1 or %2</source>
         <translation>Используйте 4-х символьный идентификатор PDB. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="683"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="702"/>
         <source>Use SWISS-PROT accession number. For example: %1 or %2</source>
         <translation>Используйте SWISS-PROT Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="684"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="703"/>
         <source>Use UniProtKB/Swiss-Prot accession number. For example: %1</source>
         <translation>Используйте UniProtKB/Swiss-Prot Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="685"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="704"/>
         <source>Use UniProtKB/TrEMBL accession number. For example: %1</source>
         <translation>Используйте UniProtKB/TrEMBL Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="713"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="732"/>
         <source>Use %1 unique identifier.</source>
         <translation>Используйте уникальный идентификатор %1.</translation>
     </message>
@@ -768,27 +768,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ConsoleShutdownTask</name>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="33"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="34"/>
         <source>Shutdown</source>
         <translation>Выключение</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="82"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="83"/>
         <source>Cancel active tasks</source>
         <translation>Отмена активных задач</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="105"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="106"/>
         <source>Starting shutdown process...</source>
         <translation>Выключение в процессе...</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="127"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="128"/>
         <source>Shutdown was canceled</source>
         <translation>Выключение отменено</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="131"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="132"/>
         <source>Shutdown failed, error: %1</source>
         <translation>Выключение не произошло, ошибка: %1</translation>
     </message>
@@ -855,12 +855,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DBXRefRegistry</name>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="38"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="40"/>
         <source>File with db_xref mappings not found: %1</source>
         <translation>Не найден файл реестра db_xref: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/DBXRefRegistry.cpp" line="49"/>
+        <location filename="../src/globals/DBXRefRegistry.cpp" line="51"/>
         <source>Illegal db_xref file entry: %1</source>
         <translation>Неверный формат элемента: &quot;%1&quot;</translation>
     </message>
@@ -1307,7 +1307,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::EntrezQueryTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="532"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="551"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление в %1</translation>
     </message>
@@ -1352,27 +1352,27 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Невозможно запустить %1 инструмент. Возможно путь до инструмента &apos;%2&apos; указан неверно?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="128"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="129"/>
         <source>Unable to cancel tool %1 for 10 seconds. Stop &quot;%2&quot; process manually by your OS task manager.</source>
         <translation>Невозможно отменить инструмент %1 в течение 10 секунд. Остановите процесс &quot;%2&quot; вручную с помощью диспетчера задач ОС.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="130"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="131"/>
         <source>Tool %1 is cancelled</source>
         <translation>Инструмент %1 отменен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="142"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="143"/>
         <source>%1 tool exited with the following error: %2 (Code: %3)</source>
         <translation>Инструмент %1 завершил работу со следующей ошибкой: %2 (Код: %3)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="153"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="154"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 инструмент завершил работу с кодом %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="155"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="156"/>
         <source>Tool %1 finished successfully</source>
         <translation>Инструмент %1 завершил работу корректно</translation>
     </message>
@@ -1380,77 +1380,77 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="341"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="338"/>
         <source>Can not remove temporary folder: path is empty.</source>
         <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="346"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="343"/>
         <source>Can not remove folder for temporary files, folder &quot;%1&quot;.</source>
         <translation>Не удается удалить папку для временных файлов, папка &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="359"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="356"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="390"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="387"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="410"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="407"/>
         <source>A tool with the ID %1 is absent</source>
         <translation>Инструмент %1 отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="414"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="411"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="458"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="450"/>
         <source>Working folder is &quot;%1&quot;</source>
         <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="464"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="456"/>
         <source>Launching %1 tool: %2</source>
         <translation>Запуск инструмента %1: %2 {1 ?}</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="602"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="594"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool is not in Latin alphabet. Make sure that the input and output files and folders are located in the paths which contain only Latin characters. Current problem path is: &quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="614"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="606"/>
         <source>Your &quot;Temporary files&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="624"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="617"/>
         <source>&quot;%1&quot; external tool located in path which contains non-latin symbols. Please change it location to path which contains only latin symbols, set the new path in Preferences on the External tools and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="634"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="628"/>
         <source>Your &quot;Build indexes&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="644"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="638"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool contains spaces. Make sure that the input and output files and folders are located in the paths which contain no spaces. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="656"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="650"/>
         <source>Your &quot;Temporary files&quot; directory contains spaces, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="666"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="660"/>
         <source>&quot;%1&quot; external tool located in path which contains spaces symbols. Please change it location to path which contains no spaces,  set the new path in Preferences on the External tools and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2041,17 +2041,17 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDataFromEntrezTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="426"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="445"/>
         <source>Downloading file %1</source>
         <translation>Загрузка с %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="435"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="454"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="475"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="494"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление на %1</translation>
     </message>
@@ -2100,17 +2100,17 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="466"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="467"/>
         <source>Maximum number of objects per document limit reached for %1. Try different options for opening the document!</source>
         <translation>Максимальное количество объектов в документе достигнуто для %1. Попробуйте другие способы для открытия документа!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="497"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="498"/>
         <source>Object not found: %1</source>
         <translation>Объект не найден: &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="505"/>
+        <location filename="../src/tasks/LoadDocumentTask.cpp" line="506"/>
         <source>Can&apos;t add object. Document format constraints check failed: %1</source>
         <translation>Невозможно добавить объект. Проверка ограничений формата завершилась неудачно: %1</translation>
     </message>
@@ -2118,27 +2118,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadRemoteDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="222"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="229"/>
         <source>Undefined database: &apos;%1&apos;</source>
         <translation>Неопределенная база данных: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="233"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="240"/>
         <source>Failed to download %1 from %2. Error: %3</source>
         <translation>Невозможно скачать %1 из %2. Ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="236"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="251"/>
         <source>Document was successfully downloaded: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</source>
         <translation>Документ был успешно загружен: [%1, %2] -&gt; &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="242"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="257"/>
         <source>External database link: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</source>
         <translation>Внешняя ссылка на базу данных: &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="284"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="303"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
     </message>
