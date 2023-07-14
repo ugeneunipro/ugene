@@ -394,11 +394,11 @@ void ReportSender::setFailedTest(const QString& failedTestStr) {
 QString ReportSender::getArchSuffix() const {
 #ifdef Q_PROCESSOR_X86_64
     return " x64";
-#elif Q_PROCESSOR_X86_32
+#elif defined(Q_PROCESSOR_X86_32)
     return " x86";
-#elif Q_PROCESSOR_ARM_64
+#elif defined(Q_PROCESSOR_ARM_64)
     return " arm-64";
-#elif Q_PROCESSOR_ARM_32
+#elif defined(Q_PROCESSOR_ARM_32)
     return " arm-32";
 #else
     return " unknown-arch";
