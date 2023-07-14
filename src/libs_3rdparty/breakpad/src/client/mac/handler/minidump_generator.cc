@@ -928,7 +928,12 @@ bool MinidumpGenerator::GetThreadState(thread_act_t target_thread,
         default:
             return false;
     }
-    return thread_get_state(target_thread, flavor, state, count) == KERN_SUCCESS;
+    // For some unknown reason,
+    // sometimes thread_get_state returns this value on Rosetta,
+    // but still succeeds
+    const int ROSETTA_SUCCESS = 268435459;
+    auto tgs = thread_get_state(target_thread, flavor, state, count);
+    return tgs == KERN_SUCCESS || tgs == ROSETTA_SUCCESS;
 }
 
 bool MinidumpGenerator::WriteThreadStream(mach_port_t thread_id,
