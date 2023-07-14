@@ -21,6 +21,7 @@
 
 #include "CrashHandler.h"
 
+#include <QApplication>
 #include <QTextStream>
 
 #include <U2Core/AppContext.h>
@@ -227,9 +228,15 @@ void CrashHandler::runMonitorProcess(const CrashHandlerArgsHelper& helper) {
     const QString path = AppContext::getWorkingDirectoryPath() + "/ugenem.exe";
 #endif
 
+    auto args = helper.getArguments();
+    if (qobject_cast<QApplication*>(qApp) != nullptr) {
+        // See ugenem -> main.cpp -> useGui
+        args << "--use-gui";
+    }
+
     static QMutex mutex;
     QMutexLocker lock(&mutex);
-    QProcess::startDetached(path, helper.getArguments());
+    QProcess::startDetached(path, args);
 }
 
 void CrashHandler::getSubTasks(Task* t, QString& list, int lvl) {
