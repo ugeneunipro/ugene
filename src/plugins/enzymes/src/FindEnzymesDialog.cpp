@@ -196,7 +196,7 @@ void EnzymesSelectorWidget::loadFile(const QString& url) {
         }
         AppContext::getSettings()->setValue(EnzymeSettings::DATA_FILE_KEY, url);
     }
-    emit si_newEnzimeFileLoaded();
+    emit si_newEnzymeFileLoaded();
 }
 
 void EnzymesSelectorWidget::saveFile(const QString& url) {
@@ -338,7 +338,7 @@ void EnzymesSelectorWidget::updateStatus() {
     QString checkedNamesListString;
     int nChecked = gatherCheckedNamesListString(checkedNamesListString);
     if (nChecked > 1000) {
-        checkedEnzymesEdit->setPlainText(tr("%1 sites selected. Click \"Save selection\" to export them to the separate file").arg(nChecked));
+        checkedEnzymesEdit->setPlainText(tr("%1 sites selected. Click \"Save selection\" to export checked enzymes to a file").arg(nChecked));
     } else {
         checkedEnzymesEdit->setPlainText(checkedNamesListString);
     }
@@ -356,7 +356,7 @@ void EnzymesSelectorWidget::sl_openEnzymesFile() {
         }
         loadFile(dir.url);
         if (!loadedEnzymes.isEmpty()) {
-            emit si_newEnzimeFileLoaded();
+            emit si_newEnzymeFileLoaded();
         }
     }
 }
@@ -558,6 +558,8 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
 
 static const QStringList RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4", "5", "6", "7", "8", "9+"};
 
+static const int ANY_VALUE = -1;
+
 FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext)
     : QDialog(advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(advSequenceContext) {
     setupUi(this);
@@ -606,17 +608,21 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
 
     initSettings();
 
-    QVBoxLayout* vl = new QVBoxLayout();
+    auto vl = new QVBoxLayout();
     enzSel = new EnzymesSelectorWidget();
     vl->setMargin(0);
     vl->addWidget(enzSel);
     enzymesSelectorWidget->setLayout(vl);
     enzymesSelectorWidget->setMinimumSize(enzSel->size());
 
+    cbSuppliers->allSelectedText = tr("All suppliers");
+    cbSuppliers->noneSelectedText = tr("No suppliers");
+    cbSuppliers->nSelectedText = tr("%1 suppliers");
+
     connect(cbSuppliers, &ComboBoxWithCheckBoxes::si_checkedChanged, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
     connect(cbMinLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_minLengthChanged);
     connect(cbMaxLength, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_maxLengthChanged);
-    connect(enzSel, &EnzymesSelectorWidget::si_newEnzimeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
+    connect(enzSel, &EnzymesSelectorWidget::si_newEnzymeFileLoaded, this, &FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets);
     connect(cbOverhangType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
     connect(cbShowPalindromic, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
     connect(cbShowUninterrupted, &QCheckBox::toggled, this, &FindEnzymesDialog::sl_updateVisibleEnzymes);
@@ -636,7 +642,6 @@ void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
 
 void FindEnzymesDialog::sl_updateVisibleEnzymes() {
     QStringList checkedSuppliers = cbSuppliers->getCheckedItems();
-    bool isAllSuppliersEnabled = checkedSuppliers.isEmpty();
     int min = cbMinLength->itemData(cbMinLength->currentIndex()).toInt();
     int max = cbMaxLength->itemData(cbMaxLength->currentIndex()).toInt();
     U2Region region(min, max - min + 1);
@@ -644,8 +649,7 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
     const auto enzymes = EnzymesSelectorWidget::getLoadedEnzymes();
     QList<SEnzymeData> visibleEnzymes;
     for (const auto& enzyme : qAsConst(enzymes)) {
-        bool okSupplier = isAllSuppliersEnabled ||
-                          std::find_if(enzyme->suppliers.begin(), enzyme->suppliers.end(), [&checkedSuppliers](const QString& s) {
+        bool okSupplier = std::find_if(enzyme->suppliers.begin(), enzyme->suppliers.end(), [&checkedSuppliers](const QString& s) {
                               return checkedSuppliers.contains(s);
                           }) != enzyme->suppliers.end();
 
@@ -730,8 +734,11 @@ void FindEnzymesDialog::sl_updateEnzymesVisibilityWidgets() {
     cbSuppliers->addItems(loadedSuppliers);
     auto settings = AppContext::getSettings();
     QString suppliersSettingString = settings->getValue(EnzymeSettings::CHECKED_SUPPLIERS).toString();
-    auto checkedSuppliers = suppliersSettingString.split(SUPPLIERS_LIST_SEPARATOR);
-    if (checkedSuppliers.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
+    auto checkedSuppliers = suppliersSettingString.isEmpty() ? loadedSuppliers
+                                                             : suppliersSettingString.split(SUPPLIERS_LIST_SEPARATOR);
+    if (suppliersSettingString.isEmpty()) {
+        checkedSuppliers.removeOne(EnzymesIO::NOT_DEFINED_SIGN);  // Do not enable "Non defined" by default.
+    } else if (checkedSuppliers.contains(EnzymesIO::NOT_DEFINED_SIGN)) {
         checkedSuppliers.replace(checkedSuppliers.indexOf(EnzymesIO::NOT_DEFINED_SIGN), notDefinedTr);
     }
     cbSuppliers->setCheckedItems(checkedSuppliers);

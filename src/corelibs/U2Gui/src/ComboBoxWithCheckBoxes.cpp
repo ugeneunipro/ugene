@@ -37,6 +37,9 @@ ComboBoxWithCheckBoxes::ComboBoxWithCheckBoxes(QWidget* parent)
 
     auto standardModel = qobject_cast<QStandardItemModel*>(model());
     connect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
+    allSelectedText = tr("All");
+    noneSelectedText = "";
+    nSelectedText = tr("%1 items");
 }
 
 const QStringList& ComboBoxWithCheckBoxes::getCheckedItems() const {
@@ -137,9 +140,9 @@ void ComboBoxWithCheckBoxes::updateDisplayText() {
     QFontMetrics fontMetrics(font());
 
     displayText = checkedItems.length() == 1         ? checkedItems[0]
-                  : checkedItems.isEmpty()           ? ""
-                  : checkedItems.length() == count() ? tr("All")
-                                                     : tr("%1 items").arg(checkedItems.length());
+                  : checkedItems.isEmpty()           ? noneSelectedText
+                  : checkedItems.length() == count() ? allSelectedText
+                                                     : nSelectedText.arg(checkedItems.length());
 
     if (fontMetrics.size(Qt::TextSingleLine, displayText).width() > textRect.width()) {
         while (displayText != "" && fontMetrics.size(Qt::TextSingleLine, displayText + "...").width() > textRect.width()) {

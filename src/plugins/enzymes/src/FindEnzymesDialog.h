@@ -42,7 +42,7 @@ class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
     EnzymesSelectorWidget();
-    ~EnzymesSelectorWidget();
+    ~EnzymesSelectorWidget() override;
 
     static void setupSettings();
     static void saveSettings();
@@ -51,7 +51,7 @@ public:
     static QStringList getLoadedSuppliers();
     QList<SEnzymeData> getSelectedEnzymes();
     int getNumSelected();
-    int getTotalNumber() {
+    int getTotalNumber() const {
         return totalEnzymes;
     }
 
@@ -59,7 +59,7 @@ public:
 
 signals:
     void si_selectionModified(int, int);
-    void si_newEnzimeFileLoaded();
+    void si_newEnzymeFileLoaded();
 
 private slots:
     void sl_openEnzymesFile();
@@ -98,7 +98,7 @@ class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
     Q_OBJECT
 public:
     FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext);
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
@@ -128,7 +128,7 @@ public:
     void updateVisual();
     QString s;
     QSet<EnzymeTreeItem*> checkedEnzymes;
-    bool operator<(const QTreeWidgetItem& other) const;
+    bool operator<(const QTreeWidgetItem& other) const override;
 };
 
 class EnzymeTreeItem : public QTreeWidgetItem {
@@ -136,7 +136,7 @@ class EnzymeTreeItem : public QTreeWidgetItem {
 public:
     EnzymeTreeItem(const SEnzymeData& ed);
     const SEnzymeData enzyme;
-    bool operator<(const QTreeWidgetItem& other) const;
+    bool operator<(const QTreeWidgetItem& other) const override;
     // Get text information about this enzyme
     QString getEnzymeInfo() const;
 
@@ -147,13 +147,10 @@ private:
         Type,
         Sequence,
         Organism,
-        Suppliers
     };
 
     QString generateEnzymeTooltip() const;
     QString getTypeInfo() const;
 };
-
-#define ANY_VALUE -1
 
 }  // namespace U2
