@@ -267,22 +267,16 @@ QAbstractButton* GTWidget::findButtonByText(const QString& text, QWidget* parent
     return resultButtonList.isEmpty() ? nullptr : resultButtonList.first();
 }
 
-QList<QLabel*> GTWidget::findLabelByText(
-    const QString& text,
-    QWidget* parentWidget,
-    const GTGlobals::FindOptions& options) {
-    QList<QLabel*> resultLabelList;
-    for (int time = 0; time < GT_OP_WAIT_MILLIS && resultLabelList.isEmpty(); time += GT_OP_CHECK_MILLIS) {
+QList<QLabel*> GTWidget::findLabelByText(const QString& text, QWidget* parentWidget, const GTGlobals::FindOptions& options) {
+    for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
-        resultLabelList = findChildren<QLabel>(
-            parentWidget,
-            [text](auto label) { return label->text().contains(text, Qt::CaseInsensitive); });
-        if (!options.failIfNotFound) {
-            break;
+        QList<QLabel*> resultLabelList = findChildren<QLabel>(parentWidget, [text](auto label) { return label->text().contains(text, Qt::CaseInsensitive); });
+        if (!options.failIfNotFound || !resultLabelList.isEmpty()) {
+            return resultLabelList;
         }
     }
-    GT_CHECK_RESULT(!options.failIfNotFound || !resultLabelList.isEmpty(), QString("Label with text <%1> not found").arg(text), {});
-    return resultLabelList;
+    GT_FAIL(QString("Label with text <%1> not found").arg(text), {});
+    return {};
 }
 
 void GTWidget::close(QWidget* widget) {
