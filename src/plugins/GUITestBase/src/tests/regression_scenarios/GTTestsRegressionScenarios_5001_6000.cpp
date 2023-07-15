@@ -549,8 +549,7 @@ GUI_TEST_CLASS_DEFINITION(test_5136) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5137) {
-    // 1. Open document test/_common_data/clustal/big.aln
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -563,7 +562,6 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTUtilsProjectTreeView::click("COI");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsDialog::checkNoActiveWaiters();
-    GTUtilsTaskTreeView::waitTaskFinished(20000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5149) {
