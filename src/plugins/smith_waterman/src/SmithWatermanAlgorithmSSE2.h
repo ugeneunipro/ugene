@@ -29,21 +29,18 @@ namespace U2 {
 
 class SmithWatermanAlgorithmSSE2 : public SmithWatermanAlgorithm {
 public:
-    typedef qint16 ScoreType;
-
-    virtual void launch(const SMatrix& substitutionMatrix, const QByteArray& _patternSeq, const QByteArray& _searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView resultView);
+    void launch(const SMatrix& substitutionMatrix, const QByteArray& _patternSeq, const QByteArray& _searchSeq, int _gapOpen, int _gapExtension, int _minScore, SmithWatermanSettings::SWResultView resultView) override;
 
     static quint64 estimateNeededRamAmount(const QByteArray& _patternSeq,
                                            const QByteArray& _searchSeq,
-                                           const qint32 gapOpen,
-                                           const qint32 gapExtension,
-                                           const quint32 minScore,
-                                           const quint32 maxScore,
-                                           const SmithWatermanSettings::SWResultView resultView);
+                                           qint32 gapOpen,
+                                           qint32 gapExtension,
+                                           quint32 minScore,
+                                           quint32 maxScore,
+                                           SmithWatermanSettings::SWResultView resultView);
 
 private:
     static const int nElementsInVec = 8;
-    void printVector(__m128i& toprint, int add);
     void calculateMatrixForMultipleAlignmentResultWithShort();
     void calculateMatrixForAnnotationsResultWithShort();
     void calculateMatrixForMultipleAlignmentResultWithInt();

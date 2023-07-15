@@ -23,6 +23,7 @@
 
 #include <QMap>
 #include <QMutexLocker>
+#include <qprocessordetection.h>
 
 #include <U2Algorithm/SmithWatermanResult.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
@@ -37,7 +38,10 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceDbi.h>
 
-#include "SmithWatermanAlgorithmSSE2.h"
+#ifdef Q_PROCESSOR_X86
+#    include "SmithWatermanAlgorithmSSE2.h"
+#    define UGENE_HAS_SSE_SW
+#endif
 
 using namespace std;
 
@@ -65,7 +69,7 @@ SWAlgorithmTask::SWAlgorithmTask(const SmithWatermanSettings& s,
 
     int maxScore = calculateMaxScore(s.ptrn, s.pSm);
 
-    minScore = (maxScore * s.percentOfScore) / 100;
+    minScore = int((float(maxScore) * s.percentOfScore) / 100);
     if ((maxScore * (int)s.percentOfScore) % 100 != 0)
         minScore += 1;
 
@@ -88,30 +92,30 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     c.strandToWalk = sWatermanConfig.strand;
     algoLog.details(QString("Strand: %1 ").arg(c.strandToWalk));
 
-    quint64 overlapSize = calculateMatrixLength(sWatermanConfig.sqnc.length(),
-                                                sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == nullptr ? 1 : 3),
-                                                sWatermanConfig.gapModel.scoreGapOpen,
-                                                sWatermanConfig.gapModel.scoreGapExtd,
-                                                maxScore,
-                                                minScore);
+    qint64 overlapSize = calculateMatrixLength(sWatermanConfig.sqnc.length(),
+                                               sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == nullptr ? 1 : 3),
+                                               sWatermanConfig.gapModel.scoreGapOpen,
+                                               sWatermanConfig.gapModel.scoreGapExtd,
+                                               maxScore,
+                                               minScore);
 
     // divide sequence by PARTS_NUMBER parts
     int idealThreadCount = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
 
-    qint64 partsNumber = 0;
-    double computationMatrixSquare = 0.0;
+    qint64 partsNumber;
+    double computationMatrixSquare;
 
     switch (algType) {
         case SW_sse2:
             computationMatrixSquare = 1619582300.0;  // this constant is considered to be optimal computation matrix square (square = localSequence.length * pattern.length) for given algorithm realization and the least minimum score value
-            c.nThreads = idealThreadCount * 2.5;
+            c.nThreads = int(idealThreadCount * 2.5);
             break;
         case SW_classic:
             computationMatrixSquare = 751948900.29;  // the same as previous
             c.nThreads = idealThreadCount;
             break;
         default:
-            assert(0);
+            SAFE_POINT(false, QString("Unsupported algorithm type: %1").arg(algType), );
     }
 
     c.walkCircular = sWatermanConfig.searchCircular;
@@ -123,7 +127,7 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     }
 
     c.chunkSize = (c.seqSize + c.walkCircularDistance + overlapSize * (partsNumber - 1)) / partsNumber;
-    if (c.chunkSize <= overlapSize) {
+    if (c.chunkSize <= (quint64)overlapSize) {
         c.chunkSize = overlapSize + 1;
     }
     if (c.chunkSize < (quint64)sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == nullptr ? 1 : 3)) {
@@ -146,6 +150,7 @@ void SWAlgorithmTask::setupTask(int maxScore) {
                                                                         sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
                                                                         sWatermanConfig.resultView);
             break;
+#ifdef UGENE_HAS_SSE_SW
         case SW_sse2:
             neededRam = SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(sWatermanConfig.ptrn,
                                                                             sWatermanConfig.sqnc.left(c.chunkSize * c.nThreads),
@@ -154,9 +159,10 @@ void SWAlgorithmTask::setupTask(int maxScore) {
                                                                             minScore,
                                                                             maxScore,
                                                                             sWatermanConfig.resultView);
+#endif
             break;
         default:
-            assert(0);
+            SAFE_POINT(false, QString("Unsupported algorithm type: %1").arg(algType), );
     }
     if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
@@ -180,13 +186,11 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
     int regionLen = t->getRegionSequenceLen();
     QByteArray localSeq(t->getRegionSequence(), regionLen);
 
-    SmithWatermanAlgorithm* sw = nullptr;
-    if (algType == SW_sse2) {
-        sw = new SmithWatermanAlgorithmSSE2;
-    } else {
-        assert(algType == SW_classic);
-        sw = new SmithWatermanAlgorithm;
-    }
+#ifdef UGENE_HAS_SSE_SW
+    SmithWatermanAlgorithm* sw = algType == SW_sse2 ? new SmithWatermanAlgorithmSSE2() : new SmithWatermanAlgorithm();
+#else
+    SmithWatermanAlgorithm* sw = new SmithWatermanAlgorithm();
+#endif
 
     // this substitution is needed for the case when annotation are required as result
     // as well as pattern subsequence
@@ -258,7 +262,7 @@ void SWAlgorithmTask::addResult(QList<PairAlignSequences>& res) {
 }
 
 int SWAlgorithmTask::calculateMatrixLength(int searchSeqLen, int patternSeqLen, int gapOpen, int gapExtension, int maxScore, int minScore) {
-    int matrixLength = 0;
+    int matrixLength;
 
     int gap = gapOpen;
     if (gapOpen < gapExtension)
@@ -277,7 +281,7 @@ int SWAlgorithmTask::calculateMatrixLength(int searchSeqLen, int patternSeqLen, 
 int SWAlgorithmTask::calculateMaxScore(const QByteArray& seq, const SMatrix& substitutionMatrix) {
     int maxScore = 0;
     int max;
-    int substValue = 0;
+    int substValue;
 
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
     for (int i = 0; i < seq.length(); i++) {
@@ -450,19 +454,15 @@ PairwiseAlignmentSmithWatermanTask::~PairwiseAlignmentSmithWatermanTask() {
     delete settings;
 }
 
-void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
-    Q_UNUSED(ti);
-
+void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo&) {
     int regionLen = t->getRegionSequenceLen();
     QByteArray localSeq(t->getRegionSequence(), regionLen);
 
-    SmithWatermanAlgorithm* sw = nullptr;
-    if (algType == SW_sse2) {
-        sw = new SmithWatermanAlgorithmSSE2;
-    } else {
-        assert(algType == SW_classic);
-        sw = new SmithWatermanAlgorithm;
-    }
+#ifdef UGENE_HAS_SSE_SW
+    SmithWatermanAlgorithm* sw = algType == SW_sse2 ? new SmithWatermanAlgorithmSSE2() : new SmithWatermanAlgorithm();
+#else
+    SmithWatermanAlgorithm* sw = new SmithWatermanAlgorithm();
+#endif
 
     qint64 t1 = GTimer::currentTimeMicros();
     sw->launch(settings->sMatrix, *ptrn, localSeq, settings->gapOpen + settings->gapExtd, settings->gapExtd, minScore, SmithWatermanSettings::MULTIPLE_ALIGNMENT);
@@ -547,14 +547,14 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     switch (algType) {
         case SW_sse2:
             computationMatrixSquare = 16195823.0;  // this constant is considered to be optimal computation matrix square (square = localSequence.length * pattern.length) for given algorithm realization and the least minimum score value
-            c.nThreads = idealThreadCount * 2.5;
+            c.nThreads = int(idealThreadCount * 2.5);
             break;
         case SW_classic:
             computationMatrixSquare = 7519489.29;  // the same as previous
             c.nThreads = idealThreadCount;
             break;
         default:
-            assert(0);
+            SAFE_POINT(false, QString("Unsupported algorithm type: %1").arg(algType), );
     }
 
     partsNumber = static_cast<qint64>(sqnc->size() / (computationMatrixSquare / ptrn->size()) + 1.0);
@@ -571,7 +571,7 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     c.lastChunkExtraLen = partsNumber - 1;
 
     // acquiring memory resources for computations
-    quint64 neededRam = 0;
+    qint64 neededRam;
     switch (algType) {
         case SW_classic:
             neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(settings->gapOpen,
@@ -583,6 +583,8 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
                                                                         SmithWatermanSettings::MULTIPLE_ALIGNMENT);
             break;
         case SW_sse2:
+#ifdef UGENE_HAS_SSE_SW
+
             neededRam = SmithWatermanAlgorithmSSE2::estimateNeededRamAmount(*ptrn,
                                                                             sqnc->left(c.chunkSize * c.nThreads),
                                                                             settings->gapOpen,
@@ -591,8 +593,9 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
                                                                             maxScore,
                                                                             SmithWatermanSettings::MULTIPLE_ALIGNMENT);
             break;
+#endif
         default:
-            assert(0);
+            SAFE_POINT(false, QString("Unsupported algorithm type: %1").arg(algType), );
     }
     if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
         stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
