@@ -42,12 +42,11 @@
         <translation>Файл схемы запроса</translation>
     </message>
     <message>
-        <location filename="../src/QDDialog.ui" line="36"/>
+        <location filename="../src/QDDialog.ui" line="32"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/QDDialog.ui" line="54"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -55,7 +54,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Hint: &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Queries can be created using the Query Designer tool. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;To launch the Query Designer select the&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;&amp;quot;Tools &amp;gt; Query Designer&amp;quot;  &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;item.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -204,7 +203,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::CompareAnnotationGroupsTask</name>
     <message>
-        <location filename="../src/QDTests.h" line="67"/>
+        <location filename="../src/QDTests.h" line="66"/>
         <source>Compare annotation tables task</source>
         <translation>Задача сравнения аннотаций</translation>
     </message>
@@ -212,7 +211,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::FindGcRegionsTask</name>
     <message>
-        <location filename="../src/library/QDGcContentActor.h" line="51"/>
+        <location filename="../src/library/QDGcContentActor.h" line="50"/>
         <source>Find base content task</source>
         <translation>Поиск основного состава</translation>
     </message>
@@ -220,7 +219,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::FindPolyRegionsTask</name>
     <message>
-        <location filename="../src/library/QDFindPolyRegionsActor.h" line="51"/>
+        <location filename="../src/library/QDFindPolyRegionsActor.h" line="50"/>
         <source>Find base content task</source>
         <translation>Поиск основного состава</translation>
     </message>
@@ -328,48 +327,58 @@ p, li { white-space: pre-wrap; }
         <source>Query schemes</source>
         <translation>Схемы запросов</translation>
     </message>
+    <message>
+        <location filename="../src/QDWorker.cpp" line="195"/>
+        <source>Failed to read QueryDesigner schema from %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>U2::QDDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="293"/>
+        <location filename="../src/QDRunDialog.cpp" line="292"/>
+        <source>Query Designer preview area.&lt;br&gt;&lt;br&gt;&lt;b&gt;Hint:&lt;/b&gt;&lt;br&gt;Queries can be created by Query Designer tool.&lt;br&gt;To launch Query Designer use &quot;Tools/Query Designer&quot; menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/QDRunDialog.cpp" line="295"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="294"/>
+        <location filename="../src/QDRunDialog.cpp" line="297"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="334"/>
+        <location filename="../src/QDRunDialog.cpp" line="337"/>
         <source>Select query</source>
         <translation>Выбор схемы запроса</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="350"/>
-        <location filename="../src/QDRunDialog.cpp" line="357"/>
+        <location filename="../src/QDRunDialog.cpp" line="354"/>
+        <location filename="../src/QDRunDialog.cpp" line="358"/>
         <source>Can not load %1</source>
         <translation>Не удаётся загрузить схему %1</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="387"/>
+        <location filename="../src/QDRunDialog.cpp" line="385"/>
         <source>File with query is not selected!</source>
         <translation>Не выбран файл схемы!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="392"/>
+        <location filename="../src/QDRunDialog.cpp" line="390"/>
         <source>Error in schema!</source>
         <translation>Ошибка в схеме!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="398"/>
-        <location filename="../src/QDRunDialog.cpp" line="410"/>
+        <location filename="../src/QDRunDialog.cpp" line="396"/>
+        <location filename="../src/QDRunDialog.cpp" line="408"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="410"/>
+        <location filename="../src/QDRunDialog.cpp" line="408"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -755,32 +764,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialog</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="127"/>
+        <location filename="../src/QDRunDialog.cpp" line="126"/>
         <source>Select output file</source>
         <translation>Выбрать выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="103"/>
+        <location filename="../src/QDRunDialog.cpp" line="102"/>
         <source>Select input file</source>
         <translation>Выбрать входной файл</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="80"/>
+        <location filename="../src/QDRunDialog.cpp" line="79"/>
         <source>Run</source>
         <translation>Выполнить</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="81"/>
+        <location filename="../src/QDRunDialog.cpp" line="80"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="139"/>
+        <location filename="../src/QDRunDialog.cpp" line="138"/>
         <source>The sequence is not specified!</source>
         <translation>Не задана последовательность!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="143"/>
+        <location filename="../src/QDRunDialog.cpp" line="142"/>
         <source>The output file is not selected!</source>
         <translation>Не задан выходной файл!</translation>
     </message>
@@ -788,17 +797,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRunDialogTask</name>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="157"/>
+        <location filename="../src/QDRunDialog.cpp" line="156"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="207"/>
+        <location filename="../src/QDRunDialog.cpp" line="206"/>
         <source>Sequence not found!</source>
         <translation>Последовательность не найдена!</translation>
     </message>
     <message>
-        <location filename="../src/QDRunDialog.cpp" line="216"/>
+        <location filename="../src/QDRunDialog.cpp" line="215"/>
         <source>Sequence not found, document: %1</source>
         <translation>Последовательность не найдена, документ: %1</translation>
     </message>
@@ -827,7 +836,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryDesignerPlugin</name>
     <message>
-        <location filename="../src/QDDocumentFormat.h" line="84"/>
+        <location filename="../src/QDDocumentFormat.h" line="83"/>
         <location filename="../src/QueryDesignerPlugin.cpp" line="57"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
@@ -838,12 +847,12 @@ p, li { white-space: pre-wrap; }
         <translation>Анализирует нуклеотидную последовательность используя различные алгоритмы учитывая ограничения на взаимное расположение результатов.</translation>
     </message>
     <message>
-        <location filename="../src/QueryDesignerPlugin.cpp" line="126"/>
+        <location filename="../src/QueryDesignerPlugin.cpp" line="125"/>
         <source>Close Designer</source>
         <translation>Закрыть дизайнер запросов</translation>
     </message>
     <message>
-        <location filename="../src/QueryDesignerPlugin.cpp" line="137"/>
+        <location filename="../src/QueryDesignerPlugin.cpp" line="136"/>
         <source>Close Designer canceled</source>
         <translation>Закрытие дизайнера запросов отменено</translation>
     </message>
@@ -851,12 +860,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryDesignerService</name>
     <message>
-        <location filename="../src/QueryDesignerPlugin.h" line="64"/>
+        <location filename="../src/QueryDesignerPlugin.h" line="63"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
     </message>
     <message>
-        <location filename="../src/QueryDesignerPlugin.cpp" line="156"/>
+        <location filename="../src/QueryDesignerPlugin.cpp" line="155"/>
         <source>Query Designer...</source>
         <translation>Дизайнер запросов...</translation>
     </message>
@@ -864,7 +873,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryDesignerViewContext</name>
     <message>
-        <location filename="../src/QueryDesignerPlugin.cpp" line="108"/>
+        <location filename="../src/QueryDesignerPlugin.cpp" line="107"/>
         <source>Analyze with query schema...</source>
         <translation>Поиск сигналов с помощью дизайнера запросов...</translation>
     </message>
@@ -937,12 +946,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryProcCfgModel</name>
     <message>
-        <location filename="../src/QueryProcCfgModel.h" line="97"/>
+        <location filename="../src/QueryProcCfgModel.h" line="96"/>
         <source>Name</source>
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="../src/QueryProcCfgModel.h" line="99"/>
+        <location filename="../src/QueryProcCfgModel.h" line="98"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>

@@ -2538,12 +2538,10 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="821"/>
-        <source>The following errors are possible:
+        <source>The following errors are possible: 
 
 </source>
-        <translation>Возможны следующие ошибки:
-
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="872"/>

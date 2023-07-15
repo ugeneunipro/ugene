@@ -350,38 +350,38 @@
         <translation>Групповая статистика множественного выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="256"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="257"/>
         <source>Legend:</source>
         <translation>Легенда:</translation>
     </message>
     <message>
         <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="188"/>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="276"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="277"/>
         <source>Can&apos;t open file for write: %1</source>
         <translation>Не могу открыть файл для записи: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="317"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="318"/>
         <source>There is not enough groups to create distance matrix!</source>
         <translation>Недостаточно групп для того, чтобы создать матрицу расстояний!</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="369"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="370"/>
         <source>Task was finished with an error: %1</source>
         <translation>Task was finished with an error: %1</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="373"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="374"/>
         <source>Distanse matrix for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation>Distanse matrix for %1: &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="386"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="387"/>
         <source>Distance matrix</source>
         <translation>Матрица расстояний</translation>
     </message>
     <message>
-        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="386"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.cpp" line="387"/>
         <source>Distance matrix for %1</source>
         <translation>Матрица расстояний для %1</translation>
     </message>

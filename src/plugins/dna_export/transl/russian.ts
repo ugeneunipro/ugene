@@ -421,173 +421,178 @@
 <context>
     <name>U2::ADVExportContext</name>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="111"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="113"/>
         <source>Export selected sequence region...</source>
         <translation>Экспорт выбранных участков последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="115"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="117"/>
         <source>Export sequence of selected annotations...</source>
         <translation>Экспорт последовательностей выбранных аннотаций...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="119"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="121"/>
         <source>Export annotations...</source>
         <translation>Экспорт аннотации...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="123"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="125"/>
         <source>Align selected annotations...</source>
         <translation>Выровнять выбранные аннотации...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="127"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="129"/>
         <source>Align selected annotations (amino acids)...</source>
         <translation>Выровнять выбранные аннотации (аминокислоты)...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="131"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="133"/>
         <source>Align selected sequence regions...</source>
         <translation>Выровнять выбранные последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="135"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="137"/>
         <source>Align selected sequence regions (amino acids)...</source>
         <translation>Выровнять выбранные регионы (аминокислоты)...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="139"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="141"/>
         <source>Export sequences by &apos;id&apos;</source>
         <translation>Экспортировать последовательности по &apos;id&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="141"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="143"/>
         <source>Export sequences by &apos;accession&apos;</source>
         <translation>Экспортировать последовательности по &apos;accession&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="143"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="145"/>
         <source>Export sequences by &apos;db_xref&apos;</source>
         <translation>Экспортировать последовательности по &apos;db_xref&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="146"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="148"/>
         <source>Export BLAST result to alignment</source>
         <translation>Экспорт результатов BLAST в множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="250"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="252"/>
         <source>from &apos;</source>
         <translation>из &apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="251"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="253"/>
         <source>Fetch sequences from remote database</source>
         <translation>Загрузить последовательности из удаленной базы данных</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="254"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="256"/>
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Загрузить по &apos;id&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="258"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="260"/>
         <source>Fetch sequences by &apos;accession&apos; %1</source>
         <translation>Загрузить по &apos;accsession&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="262"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="264"/>
         <source>Fetch sequences by &apos;db_xref&apos; %1</source>
         <translation>Загрузить по &apos;db_xref&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="330"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="332"/>
         <source>Export Sequence of Selected Annotations</source>
         <translation>Экспорт последовательностей выбранных аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="394"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="396"/>
         <source>Export Selected Sequence Region</source>
         <translation>Экспорт выбранных участков последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="470"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="522"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="472"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="524"/>
         <source>Illegal parameter: input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="482"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="484"/>
         <source>%1 is not a BLAST annotation</source>
         <translation>%1 не является BLAST аннотацией</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="486"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="488"/>
         <source>Can not export BLAST annotations from different sequences</source>
         <translation>Невозможно экспортировать BLAST аннотации из разных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="489"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="491"/>
         <source>Can not find qualifier to set as a name for BLAST sequence</source>
         <translation>Невозможно найти квалификатор, чтобы установить в качестве имени для BLAST последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="564"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="566"/>
         <source>Illegal parameter: Input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="640"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="642"/>
         <source>Create alignment</source>
         <translation>Создать выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="641"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="643"/>
         <source>Save alignment to file</source>
         <translation>Сохранить выравнивание в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="282"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="422"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="767"/>
+        <source>Download remote documents by qualifiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="284"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="424"/>
         <source>No annotations selected!</source>
         <translation>Сначала выберите аннотации!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="368"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="370"/>
         <source>No sequence regions selected!</source>
         <translation>Нет выбранных участков!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="472"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="524"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="474"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="526"/>
         <source>At least 2 annotations are required</source>
         <translation>Нужно выбрать хотя бы 2 аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="537"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="539"/>
         <source>Different sequence alphabets</source>
         <translation>Несопоставимые алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="592"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="594"/>
         <source>At least 2 sequences required</source>
         <translation>Необходимо как минимум 2 последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="485"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="531"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="487"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="533"/>
         <source>No sequence object found</source>
         <translation>Последовательность недоступна</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="495"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="551"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="607"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="497"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="553"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="609"/>
         <source>Alignment is too large</source>
         <translation>Слишком большой размер выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="586"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="588"/>
         <source>Can&apos;t derive alignment alphabet</source>
         <translation>Невозможно определить алфавит выравнивания</translation>
     </message>
@@ -963,57 +968,73 @@
 <context>
     <name>U2::ExportMSA2SequencesDialog</name>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="14"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="20"/>
         <source>Convert Alignment to Separate Sequences</source>
         <translation>Конвертировать выравнивание в разные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="25"/>
         <source>Export to file</source>
-        <translation>Записать в файл</translation>
+        <translation type="vanished">Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="35"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="51"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="42"/>
         <source>File format to use</source>
-        <translation>Формат файла</translation>
+        <translation type="vanished">Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="54"/>
         <source>Add document to the project</source>
-        <translation>Добавить документ к проекту</translation>
+        <translation type="vanished">Добавить документ к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="64"/>
         <source>Gap characters (&apos;-&apos;)</source>
-        <translation>Символы пробела (&quot;-&quot;)</translation>
+        <translation type="vanished">Символы пробела (&quot;-&quot;)</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="70"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="31"/>
+        <source>Export format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="41"/>
+        <source>Export file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="58"/>
+        <source>Gap characters (&apos;-&apos;)  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="67"/>
         <source>Keep</source>
         <translation>Сохранять</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.ui" line="80"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="77"/>
         <source>Trim</source>
         <translation>Удалять</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="43"/>
+        <location filename="../src/ExportMSA2SequencesDialog.ui" line="101"/>
+        <source>Add exported document to the project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="44"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="55"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
+        <location filename="../src/ExportMSA2SequencesDialog.cpp" line="65"/>
         <source>File name is empty!</source>
         <translation>Не указано имя файла!</translation>
     </message>
@@ -1129,7 +1150,7 @@
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="382"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="608"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="598"/>
         <source>No sequence objects selected!</source>
         <translation>Выделите один или более объектов!</translation>
     </message>
@@ -1145,27 +1166,27 @@
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="446"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="492"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="482"/>
         <source>Select one alignment object to export</source>
         <translation>Выберите один объект выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="474"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="464"/>
         <source>Select one chromatogram alignment object to export</source>
         <translation>Выберите одну хроматограмму для экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="548"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="538"/>
         <source>Select one chromatogram object to export</source>
         <translation>Выберите один объект для экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="584"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="574"/>
         <source>Select one annotation object to export</source>
         <translation>Выберите один объект аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="613"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="603"/>
         <source>Set output quality file</source>
         <translation>Укажите качество выходного файла</translation>
     </message>
@@ -1272,112 +1293,112 @@
         <translation>Экспорт выбранных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="50"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="53"/>
         <source>Export to file</source>
         <translation>Записать в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="60"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="67"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="70"/>
         <source>File format to use</source>
         <translation>Формат файла</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="43"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="46"/>
         <source>Export with annotations</source>
         <translation>Экспортировать с аннотациями</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="98"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="101"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="84"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="87"/>
         <source>Use custom sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="116"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="127"/>
         <source>Save direct strand</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="126"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="137"/>
         <source>Save complement strand</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="133"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="144"/>
         <source>Save both strands</source>
         <translation>Обе</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="140"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="168"/>
         <source>Translate to amino alphabet</source>
         <translation>Транслировать</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="150"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="178"/>
         <source>Save all amino frames</source>
         <translation>Сохранить все рамки трансляции</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="186"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="239"/>
         <source>Back translation options</source>
         <translation>Настройки обратной трансляции</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="192"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="245"/>
         <source>Translate back to nucleic alphabet</source>
         <translation>Транслировать обратно в алфавит нуклеотидов</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="204"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="257"/>
         <source>Most frequently used codons</source>
         <translation>Наиболее часто используемые кодоны</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="231"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="297"/>
         <source>Organism:</source>
         <translation>Организм:</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="272"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="339"/>
         <source>Save as separate sequences</source>
         <translation>Отдельные последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="217"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="270"/>
         <source>Frequency distribution</source>
         <translation>Частотное распределение</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="110"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="119"/>
         <source>Convertion options</source>
         <translation>Опции конвертации</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="176"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="208"/>
         <source>Use custom translation table</source>
         <translation>Таблица трансляций</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="259"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="331"/>
         <source>Merge options</source>
         <translation>Настройки соединения последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="284"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="373"/>
         <source>Add gap symbols between sequences</source>
         <translation>Добавить пробелы между последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequencesDialog.ui" line="265"/>
+        <location filename="../src/ExportSequencesDialog.ui" line="349"/>
         <source>Merge sequences</source>
         <translation>Объединить последовательности</translation>
     </message>
@@ -2014,9 +2035,23 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>U2::MSAExportContext</name>
     <message>
-        <location filename="../src/ExportAlignmentViewItems.cpp" line="78"/>
         <source>Amino translation...</source>
-        <translation>Экспортировать транслированное выравнивание...</translation>
+        <translation type="vanished">Экспортировать транслированное выравнивание...</translation>
+    </message>
+    <message>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="80"/>
+        <source>Export amino acid translated alignment...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="84"/>
+        <source>Export whole alignment to a sequence file format...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportAlignmentViewItems.cpp" line="88"/>
+        <source>Export selected rows to separate sequence files...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2091,6 +2126,72 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
         <location filename="../src/ImportQualityScoresTask.cpp" line="136"/>
         <source>File  %1 is not a quality file</source>
         <translation>File  %1 is not a quality file</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SaveSelectedSequenceFromMSADialog</name>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="14"/>
+        <source>Export Selected Sequence(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="25"/>
+        <source>Export to folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="37"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="46"/>
+        <source>File format</source>
+        <translation type="unfinished">Формат файла</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="56"/>
+        <source>File name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="62"/>
+        <source>Sequence name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="85"/>
+        <source>Custom name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="117"/>
+        <source>Keep gaps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="127"/>
+        <source>Add to project</source>
+        <translation type="unfinished">Добавить в проект</translation>
+    </message>
+</context>
+<context>
+    <name>U2::SaveSelectedSequenceFromMSADialogController</name>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialogController.cpp" line="54"/>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialogController.cpp" line="55"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialogController.cpp" line="80"/>
+        <source>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

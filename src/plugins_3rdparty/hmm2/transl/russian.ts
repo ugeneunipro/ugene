@@ -1093,12 +1093,12 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::LocalWorkflow::HMMBuildWorker</name>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="327"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="328"/>
         <source>Built HMM profile</source>
         <translation>Построен профайл HMM</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="333"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="334"/>
         <source>Calibrated HMM profile</source>
         <translation>Откалиброван профайл HMM</translation>
     </message>
@@ -1173,13 +1173,12 @@ The default is instead to generate sequences with a variety of different lengths
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="247"/>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="248"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="249"/>
         <source>Incorrect value for seed parameter</source>
         <translation>Некорректное значение для параметра затравки</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="266"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="267"/>
         <source>Schema name not specified. Using default value: &apos;%1&apos;</source>
         <translation>Не задано имя схемы. Использовано значение по умолчанию: &apos;%1&apos;</translation>
     </message>

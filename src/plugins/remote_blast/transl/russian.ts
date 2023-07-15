@@ -4,75 +4,80 @@
 <context>
     <name>HttpRequestBLAST</name>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="35"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="36"/>
         <source>Cannot open the IO adapter</source>
         <translation>Не удалось открыть адаптер</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="54"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="55"/>
         <source>Cannot load a page. %1</source>
         <translation>Не удалось загрузить страницу. %1</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="71"/>
-        <location filename="../src/HttpRequestBLAST.cpp" line="125"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="72"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="124"/>
         <source>The response is empty</source>
         <translation>Пустой ответ</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="85"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="86"/>
         <source>Nucleotide FASTA provided for protein sequence</source>
         <translation>Nucleotide FASTA provided for protein sequence</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="93"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="94"/>
         <source>Cannot get the request ID</source>
         <translation>Не удалось получить ID для поиска</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="101"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="102"/>
         <source>Cannot get the waiting time</source>
         <translation>Не удалось получить время ожидания</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="140"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="137"/>
         <source>Database couldn&apos;t prepare the response. You can increase timeout and perform search again.</source>
         <translation>База данных не готова для запроса. Вы можете увеличить таймаут и запустить снова.</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="145"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="142"/>
         <source>NCBI BLAST web server returned &quot;CPU usage limit was exceeded&quot; error. Probably, the query sequence is too large.</source>
         <translation>NCBI BLAST web server returned &quot;CPU usage limit was exceeded&quot; error. Probably, the query sequence is too large.</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="162"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="146"/>
+        <source>NCBI BLAST received result in %1 seconds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/HttpRequestBLAST.cpp" line="160"/>
         <source>Cannot read the response</source>
         <translation>Не удалось прочитать ответ</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="227"/>
-        <location filename="../src/HttpRequestBLAST.cpp" line="234"/>
-        <location filename="../src/HttpRequestBLAST.cpp" line="251"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="223"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="230"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="247"/>
         <source>Cannot get the location</source>
         <translation>Не удалось получитьь локацию</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="261"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="257"/>
         <source>Cannot get the identity</source>
         <translation>Не удалось получить идентификатор последовательности</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="268"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="264"/>
         <source>Cannot evaluate the gaps</source>
         <translation>Не удалось вычислить пробелы</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="275"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="271"/>
         <source>Cannot get the alignment length</source>
         <translation>Не удалось получить длину выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="288"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="284"/>
         <source>Cannot evaluate the location</source>
         <translation>Не удалось вычислить локацию</translation>
     </message>
@@ -80,7 +85,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="93"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="92"/>
         <source>Incorrect list of Blastn databases</source>
         <translation>Некорректный список баз данных Blastn</translation>
     </message>
@@ -485,12 +490,12 @@ p, li { white-space: pre-wrap; }
         <translation>ID пуст</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="566"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="567"/>
         <source>Can not check if sequence is circular! Sequence is considered to be linear.</source>
         <translation>Невозможно проверить циркулярность последовательности! Последовательность считается линейной.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="570"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="571"/>
         <source>Can not remove temporary file.</source>
         <translation>Невозможно удалить временный файл.</translation>
     </message>
@@ -550,143 +555,200 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::LocalWorkflow::RemoteBLASTWorker</name>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="54"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="53"/>
         <source>Input sequence</source>
         <translation>Входная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="54"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="53"/>
         <source>The sequence to search the annotations for</source>
         <translation>Последовательность, для которой ищутся аннотации</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="55"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="54"/>
         <source>Annotations</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="55"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="54"/>
         <source>Found annotations</source>
         <translation>Найденные аннотации</translation>
     </message>
     <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="63"/>
+        <source>Program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="63"/>
+        <source>Select program. Available programs are &apos;ncbi-blastn&apos;, &apos;ncbi-blastp&apos; and &apos;ncbi-cdd&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="64"/>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="65"/>
         <source>Database</source>
         <translation>База данных</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="64"/>
+        <source>Select database to search. Example: &apos;nr&apos;, &apos;est_human&apos;, &apos;refseq_protein&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="68"/>
+        <source>Optimize search for short sequences. Valid values: &apos;true&apos;, &apos;false&apos;, &apos;1&apos;, &apos;0&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="69"/>
+        <source>An Entrez query to limit search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="70"/>
+        <source>Result annotation name.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="71"/>
+        <source>Location of the BLAST output file. Not used for ncbi-cdd search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="221"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="230"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="235"/>
+        <source>Incorrect &apos;%1&apos; parameter value: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="274"/>
+        <source>Failed to read sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="287"/>
+        <source>Error: using amino sequence with blastn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="289"/>
+        <source>Error: using nucleic sequence with blastp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Select the database to search through. Available databases are blastn, blastp and cdd.</source>
-        <translation>Выбрать базу данных для поиска. Доступные базы данных blastn, blastp и cdd.</translation>
+        <translation type="vanished">Выбрать базу данных для поиска. Доступные базы данных blastn, blastp и cdd.</translation>
+    </message>
+    <message>
+        <source>Select the database to search through.</source>
+        <translation type="vanished">Выберите базу данных в которой будет производиться поиск.</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="65"/>
-        <source>Select the database to search through.</source>
-        <translation>Выберите базу данных в которой будет производиться поиск.</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="66"/>
         <source>Expected value</source>
         <translation>Мат. ожидание</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="66"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="65"/>
         <source>This parameter specifies the statistical significance threshold of reporting matches against the database sequences.</source>
         <translation>Этот параметр устанавливает порог статистического соответствия для совпадений в найденных последовательностях.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="69"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="66"/>
+        <source>Maximum number of results.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="67"/>
+        <source>Enables megablast search.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="68"/>
         <source>Short sequence</source>
         <translation>Короткая последовательность</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="69"/>
         <source>Optimize search for short sequences.</source>
-        <translation>Оптимизировать поиск для коротких последовательностей.</translation>
+        <translation type="vanished">Оптимизировать поиск для коротких последовательностей.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="70"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="69"/>
         <source>Entrez query</source>
         <translation>Entrez запрос</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="70"/>
         <source>Enter an Entrez query to limit search.</source>
-        <translation>Введите Entrez запрос чтобы ограничить поиск.</translation>
+        <translation type="vanished">Введите Entrez запрос чтобы ограничить поиск.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="71"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="70"/>
         <source>Annotate as</source>
         <translation>Аннотации</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="71"/>
         <source>Name for annotations.</source>
-        <translation>Имя для аннотаций.</translation>
+        <translation type="vanished">Имя для аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="67"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="66"/>
         <source>Results limit</source>
         <translation>Предел результатов</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="67"/>
         <source>The maximum number of results.</source>
-        <translation>Максимальное число результатов.</translation>
+        <translation type="vanished">Максимальное число результатов.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="68"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="67"/>
         <source>Megablast</source>
         <translation>Megablast</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="68"/>
         <source>Use megablast.</source>
-        <translation>Использовать megablast.</translation>
+        <translation type="vanished">Использовать megablast.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="72"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="71"/>
         <source>BLAST output</source>
         <translation>Вывод BLAST</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="72"/>
         <source>Location of BLAST output file. This parameter insignificant for cdd search.</source>
-        <translation>Путь к выходному файлу BLAST. Этот параметр не учитывается при cdd поиске.</translation>
+        <translation type="vanished">Путь к выходному файлу BLAST. Этот параметр не учитывается при cdd поиске.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="74"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="73"/>
         <source>Gap costs</source>
         <translation>Вес пробела</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="74"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="73"/>
         <source>Cost to create and extend a gap in an alignment.</source>
         <translation>Стоимость создания и расширения пробела.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="75"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="74"/>
         <source>Match scores</source>
         <translation>Веса совпадений</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="75"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="74"/>
         <source>Reward and penalty for matching and mismatching bases.</source>
         <translation>Штрафы и награждения за соответствие или несоответствие баз.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="129"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="128"/>
         <source>Remote BLAST</source>
         <translation>Удаленный поиск с помощью BLAST</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="229"/>
         <source>Incorrect value for the &apos;e-value&apos; parameter, default value passed to the workflow</source>
-        <translation>Неккоректное значение параметра &quot;мат. ожидание&quot;, значение по умолчанию передано схеме</translation>
+        <translation type="vanished">Неккоректное значение параметра &quot;мат. ожидание&quot;, значение по умолчанию передано схеме</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="129"/>
+        <location filename="../src/RemoteBLASTWorker.cpp" line="128"/>
         <source>Finds annotations for DNA sequence in remote database.</source>
         <translation>Находит аннотации для ДНК последовательностей в удаленной базе данных.</translation>
     </message>
@@ -696,51 +758,49 @@ p, li { white-space: pre-wrap; }
         <translation>Имя аннотации пусто, использовано значение по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="285"/>
         <source>Selected nucleotide database</source>
-        <translation>Выбрана нуклеотидная база данных</translation>
+        <translation type="vanished">Выбрана нуклеотидная база данных</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="290"/>
         <source>Selected amino acid database</source>
-        <translation>Выбрана аминная база данных</translation>
+        <translation type="vanished">Выбрана аминная база данных</translation>
     </message>
 </context>
 <context>
     <name>U2::Merge</name>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="613"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="614"/>
         <source>Qualifier %1 not found</source>
         <translation>Квалификатор %1 не найден</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="614"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="615"/>
         <source>Can not merge %1 qualifiers: values are not the same.</source>
         <translation>Can not merge %1 qualifiers: values are not the same.</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="621"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="627"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="651"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="657"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="622"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="628"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="652"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="658"/>
         <source>Can not find &apos;%1&apos; qualifier</source>
         <translation>Can not find &apos;%1&apos; qualifier</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="654"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="659"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="669"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="673"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="655"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="660"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="670"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="674"/>
         <source>Can not convert qualifier value &apos;%1&apos; to double</source>
         <translation>Can not convert qualifier value &apos;%1&apos; to double</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="666"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="667"/>
         <source>Can not find &apos;E-value&apos; qualifier</source>
         <translation>Can not find &apos;E-value&apos; qualifier</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="677"/>
+        <location filename="../src/RemoteBLASTTask.cpp" line="678"/>
         <source>Can not convert qualifier value &apos;%1&apos; to int</source>
         <translation>Can not convert qualifier value &apos;%1&apos; to int</translation>
     </message>

@@ -90,17 +90,17 @@ this merge sequence slot:</source>
         <translation>Добавить директорию</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="116"/>
+        <location filename="../src/DatasetWidget.ui" line="94"/>
         <source>Up url(s)</source>
         <translation>Переместить путь(и) выше</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="141"/>
+        <location filename="../src/DatasetWidget.ui" line="119"/>
         <source>Down url(s)</source>
         <translation>Переместить путь(и) ниже</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.ui" line="166"/>
+        <location filename="../src/DatasetWidget.ui" line="144"/>
         <source>Delete urls(s)</source>
         <translation>Удалить путь(и)</translation>
     </message>
@@ -461,22 +461,22 @@ this merge sequence slot:</source>
         <translation>Двойной щелчок загрузит пример</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="459"/>
+        <location filename="../src/DatasetsController.cpp" line="451"/>
         <source>Paired reads</source>
         <translation>Парные риды</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="461"/>
+        <location filename="../src/DatasetsController.cpp" line="453"/>
         <source>file</source>
         <translation>файл</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="461"/>
+        <location filename="../src/DatasetsController.cpp" line="453"/>
         <source>folder</source>
         <translation>папка</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="462"/>
+        <location filename="../src/DatasetsController.cpp" line="454"/>
         <source>UGENE has found &quot;%1&quot; on the file system. Do you want to add it as a second %2 with paired reads?</source>
         <translation>UGENE обнаружил &quot;%1&quot; в файловой системе. Хотите дабавить в качестве %2 с парными ридами?</translation>
     </message>
@@ -660,12 +660,12 @@ bowtie index file</source>
 <context>
     <name>U2::ComboBoxWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="240"/>
+        <location filename="../src/PropertyWidget.cpp" line="238"/>
         <source>False</source>
         <translation>Ложь</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="241"/>
+        <location filename="../src/PropertyWidget.cpp" line="239"/>
         <source>True</source>
         <translation>Истина</translation>
     </message>
@@ -673,12 +673,12 @@ bowtie index file</source>
 <context>
     <name>U2::ComboBoxWithUrlWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="366"/>
+        <location filename="../src/PropertyWidget.cpp" line="364"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
     </message>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="371"/>
+        <location filename="../src/PropertyWidget.cpp" line="369"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -807,17 +807,17 @@ bowtie index file</source>
 <context>
     <name>U2::DatasetsController</name>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="169"/>
+        <location filename="../src/DatasetsController.cpp" line="166"/>
         <source>Dataset name is empty</source>
         <translation>Имя набора данных пустое</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="173"/>
+        <location filename="../src/DatasetsController.cpp" line="170"/>
         <source>Dataset name can not contain &apos;:&apos; and &apos;;&apos; symbols</source>
         <translation>Имя набора данных не может содержать &apos;:&apos; и &apos;;&apos; символы</translation>
     </message>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="178"/>
+        <location filename="../src/DatasetsController.cpp" line="175"/>
         <source>This dataset name already exists</source>
         <translation>Это имя набора данных уже существует</translation>
     </message>
@@ -897,23 +897,23 @@ bowtie index file</source>
 <context>
     <name>U2::EditMarkerDialog</name>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="402"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="403"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="403"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="404"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="411"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="412"/>
         <source>Create Marker</source>
         <translation>Создание маркера</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="449"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="454"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="451"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="456"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -937,9 +937,9 @@ bowtie index file</source>
     </message>
     <message>
         <location filename="../src/EditMarkerGroupDialog.cpp" line="190"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="290"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="297"/>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="302"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="291"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="298"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="303"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -977,7 +977,7 @@ bowtie index file</source>
         <translation>Повторящееся имя маркера: %1</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="290"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="291"/>
         <source>Parameter &apos;%1&apos; is not set</source>
         <translation>Параметр &apos;%1&apos; не установлен</translation>
     </message>
@@ -1044,13 +1044,13 @@ bowtie index file</source>
 <context>
     <name>U2::MarkerEditorWidget</name>
     <message>
-        <location filename="../src/MarkerEditorWidget.cpp" line="123"/>
-        <location filename="../src/MarkerEditorWidget.cpp" line="138"/>
+        <location filename="../src/MarkerEditorWidget.cpp" line="127"/>
+        <location filename="../src/MarkerEditorWidget.cpp" line="143"/>
         <source>Duplicate marker&apos;s name: %1</source>
         <translation>Повторящееся имя маркера: %1</translation>
     </message>
     <message>
-        <location filename="../src/MarkerEditorWidget.cpp" line="145"/>
+        <location filename="../src/MarkerEditorWidget.cpp" line="150"/>
         <source>Marker&apos;s name contains spaces: %1</source>
         <translation>Имя маркера содержит пробелы: %1</translation>
     </message>
@@ -1058,12 +1058,12 @@ bowtie index file</source>
 <context>
     <name>U2::MarkerListCfgModel</name>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="349"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="350"/>
         <source>Marker name</source>
         <translation>Имя маркера</translation>
     </message>
     <message>
-        <location filename="../src/EditMarkerGroupDialog.cpp" line="351"/>
+        <location filename="../src/EditMarkerGroupDialog.cpp" line="352"/>
         <source>Marker value</source>
         <translation>Значение маркера</translation>
     </message>
@@ -1206,14 +1206,14 @@ Set up the folder:</source>
 <context>
     <name>U2::ParametersDashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="221"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="287"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="224"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="290"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="221"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="287"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="224"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="290"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
@@ -1221,7 +1221,7 @@ Set up the folder:</source>
 <context>
     <name>U2::QDCreateAnnotationsTask</name>
     <message>
-        <location filename="../src/QDScheduler.h" line="196"/>
+        <location filename="../src/QDScheduler.h" line="195"/>
         <source>Prepare annotations task</source>
         <translation>Подготовка задачи аннотирования</translation>
     </message>
@@ -1229,7 +1229,7 @@ Set up the folder:</source>
 <context>
     <name>U2::QDFindLocationTask</name>
     <message>
-        <location filename="../src/QDScheduler.h" line="138"/>
+        <location filename="../src/QDScheduler.h" line="137"/>
         <source>Find resultLocation</source>
         <translation>Поиск расположения результата</translation>
     </message>
@@ -1237,7 +1237,7 @@ Set up the folder:</source>
 <context>
     <name>U2::QDLinkResultsTask</name>
     <message>
-        <location filename="../src/QDScheduler.h" line="163"/>
+        <location filename="../src/QDScheduler.h" line="162"/>
         <source>Link results</source>
         <translation>Ссылка на результаты</translation>
     </message>
@@ -1250,22 +1250,22 @@ Set up the folder:</source>
         <translation>QDScheduler</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="76"/>
+        <location filename="../src/QDScheduler.cpp" line="77"/>
         <source>Can&apos;t find annotation object: %1 in document: %2</source>
         <translation>Невозможно найти объект аннотация: %1 в документе: %2</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="109"/>
+        <location filename="../src/QDScheduler.cpp" line="110"/>
         <source>Annotation object is not available</source>
         <translation>Объект аннотация недоступен</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="368"/>
+        <location filename="../src/QDScheduler.cpp" line="369"/>
         <source>No results have been found for this scheme</source>
         <translation>Для этой схемы результатов не найдено</translation>
     </message>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="485"/>
+        <location filename="../src/QDScheduler.cpp" line="486"/>
         <source>Too many results have been found for this scheme. Try to set stricter search conditions.</source>
         <translation>Было найдено очень много результатов для этой схемы. Попробуйте изменить условия поиска.</translation>
     </message>
@@ -1273,7 +1273,7 @@ Set up the folder:</source>
 <context>
     <name>U2::QDTask</name>
     <message>
-        <location filename="../src/QDScheduler.cpp" line="758"/>
+        <location filename="../src/QDScheduler.cpp" line="760"/>
         <source>Query task: %1</source>
         <translation>Запрос: %1</translation>
     </message>
@@ -1297,12 +1297,12 @@ Set up the folder:</source>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="587"/>
+        <location filename="../src/DelegateEditors.cpp" line="600"/>
         <source>This computer</source>
         <translation>Данный компьютер</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="588"/>
+        <location filename="../src/DelegateEditors.cpp" line="601"/>
         <source>Remote computer</source>
         <translation>Удаленный компьютер</translation>
     </message>
@@ -1396,17 +1396,17 @@ Set up the folder:</source>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="713"/>
+        <location filename="../src/DelegateEditors.cpp" line="726"/>
         <source>Enter items</source>
         <translation>Введите элементы</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="715"/>
+        <location filename="../src/DelegateEditors.cpp" line="728"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="717"/>
+        <location filename="../src/DelegateEditors.cpp" line="730"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1445,19 +1445,18 @@ Set up the folder:</source>
 <context>
     <name>U2::URLLineEdit</name>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="185"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="182"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
     </message>
     <message>
+        <location filename="../src/support/URLLineEdit.cpp" line="200"/>
         <location filename="../src/support/URLLineEdit.cpp" line="203"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="208"/>
-        <location filename="../src/support/URLLineEdit.cpp" line="211"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
     <message>
-        <location filename="../src/support/URLLineEdit.cpp" line="188"/>
+        <location filename="../src/support/URLLineEdit.cpp" line="185"/>
         <source>Select file(s)</source>
         <translation>Выберите файл(ы)</translation>
     </message>
@@ -1465,7 +1464,7 @@ Set up the folder:</source>
 <context>
     <name>U2::URLListController</name>
     <message>
-        <location filename="../src/DatasetsController.cpp" line="764"/>
+        <location filename="../src/DatasetsController.cpp" line="756"/>
         <source>This file or folder does not exist: %1</source>
         <translation>Этот файл или папка не существует: %1</translation>
     </message>
@@ -1473,18 +1472,18 @@ Set up the folder:</source>
 <context>
     <name>U2::URLListWidget</name>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="114"/>
-        <location filename="../src/DatasetWidget.cpp" line="116"/>
+        <location filename="../src/DatasetWidget.cpp" line="108"/>
+        <location filename="../src/DatasetWidget.cpp" line="110"/>
         <source>Select file</source>
         <translation>Выберите файл</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="126"/>
+        <location filename="../src/DatasetWidget.cpp" line="120"/>
         <source>Select a folder</source>
         <translation>Укажите папку</translation>
     </message>
     <message>
-        <location filename="../src/DatasetWidget.cpp" line="174"/>
+        <location filename="../src/DatasetWidget.cpp" line="131"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -1492,7 +1491,7 @@ Set up the folder:</source>
 <context>
     <name>U2::URLWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="506"/>
+        <location filename="../src/PropertyWidget.cpp" line="505"/>
         <source>add</source>
         <translation>добавить</translation>
     </message>
@@ -1536,17 +1535,17 @@ Set up the folder:</source>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="575"/>
+        <location filename="../src/DelegateEditors.cpp" line="588"/>
         <source>Overwrite</source>
         <translation>Переписать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="576"/>
+        <location filename="../src/DelegateEditors.cpp" line="589"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="578"/>
+        <location filename="../src/DelegateEditors.cpp" line="591"/>
         <source>Append</source>
         <translation>Дописать</translation>
     </message>

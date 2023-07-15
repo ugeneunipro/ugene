@@ -18,7 +18,7 @@
 <context>
     <name>RoughTmCalculatorCmdFactory</name>
     <message>
-        <location filename="../src/temperature/rough/RoughTmCalculatorCmdFactory.cpp" line="27"/>
+        <location filename="../src/temperature/rough/RoughTmCalculatorCmdFactory.cpp" line="28"/>
         <source>Rough</source>
         <translation>Приблизительный</translation>
     </message>
@@ -485,7 +485,7 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::PairwiseAlignmentTask</name>
     <message>
-        <location filename="../src/pairwise_alignment/PairwiseAlignmentTask.cpp" line="48"/>
+        <location filename="../src/pairwise_alignment/PairwiseAlignmentTask.cpp" line="46"/>
         <source>Pairwise alignment task</source>
         <translation>Задача парного выравнивания</translation>
     </message>

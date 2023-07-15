@@ -280,37 +280,37 @@
 <context>
     <name>U2::BioStruct3DSettingsDialog</name>
     <message>
-        <location filename="../src/SettingsDialog.cpp" line="47"/>
+        <location filename="../src/SettingsDialog.cpp" line="48"/>
         <source>Custom</source>
         <translation>Выбранные</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.cpp" line="49"/>
+        <location filename="../src/SettingsDialog.cpp" line="50"/>
         <source>Red - Blue</source>
         <translation>Красный - Синий</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.cpp" line="50"/>
+        <location filename="../src/SettingsDialog.cpp" line="51"/>
         <source>Cyan - Red</source>
         <translation>Голубой - Красный</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.cpp" line="51"/>
+        <location filename="../src/SettingsDialog.cpp" line="52"/>
         <source>Red - Dark Cyan</source>
         <translation>Красный - Темно-голубой</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.cpp" line="52"/>
+        <location filename="../src/SettingsDialog.cpp" line="53"/>
         <source>Red - Green</source>
         <translation>Красный - Зеленый</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.cpp" line="53"/>
+        <location filename="../src/SettingsDialog.cpp" line="54"/>
         <source>Magenta - Green</source>
         <translation>Пурпурный - Зеленый</translation>
     </message>
     <message>
-        <location filename="../src/SettingsDialog.cpp" line="222"/>
+        <location filename="../src/SettingsDialog.cpp" line="223"/>
         <source>(not supported by your videocard)</source>
         <translation>(не поддерживается видеокартой)</translation>
     </message>
