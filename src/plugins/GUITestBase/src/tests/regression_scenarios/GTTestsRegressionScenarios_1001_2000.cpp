@@ -6089,7 +6089,7 @@ GUI_TEST_CLASS_DEFINITION(test_1662) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     //    2. Add sample: Multiple dataset tuxedo: Single-end
     QMap<QString, QVariant> map;
-    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index/"));
+    map.insert("Bowtie index folder", QDir().absoluteFilePath(testDir + "_common_data/bowtie/index"));
     map.insert("Bowtie index basename", "e_coli");
     map.insert("Bowtie version", "Bowtie1");
     GTUtilsDialog::add(new ConfigurationWizardFiller("Configure Tuxedo Workflow", {"Full", "Single-end"}));
@@ -6524,8 +6524,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
     //    2. Add sample: Single dataset tuxedo: Paired-end
     class customWizard : public CustomScenario {
     public:
-        void run() {
-            GTGlobals::sleep();
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
