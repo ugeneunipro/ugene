@@ -34,7 +34,7 @@ class HI_EXPORT MainThreadRunnable : public QObject {
     Q_OBJECT
 public:
     MainThreadRunnable(CustomScenario* scenario);
-    ~MainThreadRunnable();
+    ~MainThreadRunnable() override;
 
     void doRequest();
     void run();
@@ -52,7 +52,6 @@ private:
 class MainThreadRunnableObject : public QObject {
     Q_OBJECT
 public:
-    MainThreadRunnableObject();
 
 public slots:
     void sl_requestAsked(MainThreadRunnable* mainThreadRunnable);

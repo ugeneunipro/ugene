@@ -183,10 +183,9 @@ void GTUtilsProjectTreeView::doubleClickItem(const QString& itemName) {
 }
 
 void GTUtilsProjectTreeView::click(const QString& itemName, Qt::MouseButton button) {
-    QModelIndex itemIndex = findIndex(itemName);
-    scrollToIndexAndMakeExpanded(getTreeView(), itemIndex);
-
-    QPoint p = getItemCenter(itemIndex);  // clicking on the center does not select the item (Linux)
+    QTreeView* treeView = getTreeView();
+    QModelIndex itemIndex = findIndex(treeView, itemName);
+    QPoint p = getItemCenter(treeView, itemIndex);  // clicking in the center does not select the item (Linux).
     p.setX(p.x() + 1);
     p.setY(p.y() + 5);
     GTMouseDriver::moveTo(p);
@@ -221,7 +220,6 @@ void GTUtilsProjectTreeView::callContextMenu(const QModelIndex& itemIndex) {
 
 QTreeView* GTUtilsProjectTreeView::getTreeView() {
     openView();
-
     return GTWidget::findTreeView(widgetName);
 }
 
@@ -260,7 +258,7 @@ QModelIndex GTUtilsProjectTreeView::findIndex(
     }
     if (foundIndexes.isEmpty()) {
         GT_CHECK_RESULT(!options.failIfNotFound, QString("Item with name %1 not found").arg(itemName), QModelIndex());
-        return QModelIndex();
+        return {};
     }
     GT_CHECK_RESULT(foundIndexes.size() == 1, QString("there are %1 items with name %2").arg(foundIndexes.size()).arg(itemName), QModelIndex());
 
