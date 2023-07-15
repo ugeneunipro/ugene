@@ -14,7 +14,17 @@ file(GLOB_RECURSE HDRS src/*.h)
 
 add_library(QSpec SHARED ${HDRS} ${SRCS})
 
-target_link_libraries(QSpec
-        Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Test
-        Xtst X11 stdc++fs)
+target_link_libraries(QSpec Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Test)
 
+if (UNIX AND NOT APPLE)
+    target_link_libraries(QSpec
+            Xtst
+            X11
+            stdc++fs)
+endif ()
+
+if (APPLE)
+    target_link_libraries(QSpec
+            "-framework AppKit"
+            "-framework ApplicationServices")
+endif ()
