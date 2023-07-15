@@ -193,7 +193,7 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
     const SmithWatermanSettings::SWResultView resultView =
         (SmithWatermanSettings::ANNOTATIONS == sWatermanConfig.resultView && sWatermanConfig.includePatternContent) ? SmithWatermanSettings::MULTIPLE_ALIGNMENT : sWatermanConfig.resultView;
 
-    quint64 t1 = GTimer::currentTimeMicros();
+    qint64 t1 = GTimer::currentTimeMicros();
     sw->launch(sWatermanConfig.pSm, sWatermanConfig.ptrn, localSeq, sWatermanConfig.gapModel.scoreGapOpen + sWatermanConfig.gapModel.scoreGapExtd, sWatermanConfig.gapModel.scoreGapExtd, minScore, resultView);
     QString algName = "Classic";
     QString testName;
@@ -202,7 +202,7 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) {
     } else {
         testName = "SW alg";
     }
-    perfLog.details(QString("\n%1 %2 run time is %3\n").arg(testName).arg(algName).arg(GTimer::secsBetween(t1, GTimer::currentTimeMicros())));
+    perfLog.details(QString("\n%1 %2 run time is %3ms\n").arg(testName).arg(algName).arg(GTimer::millisBetween(t1, GTimer::currentTimeMicros())));
     if (sw->getCalculationError().isEmpty()) {
         QList<PairAlignSequences> res = sw->getResults();
 
@@ -464,7 +464,7 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, Task
         sw = new SmithWatermanAlgorithm;
     }
 
-    quint64 t1 = GTimer::currentTimeMicros();
+    qint64 t1 = GTimer::currentTimeMicros();
     sw->launch(settings->sMatrix, *ptrn, localSeq, settings->gapOpen + settings->gapExtd, settings->gapExtd, minScore, SmithWatermanSettings::MULTIPLE_ALIGNMENT);
     QString algName = "Classic";
     QString testName;
@@ -473,7 +473,7 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, Task
     } else {
         testName = "SW alg";
     }
-    perfLog.details(QString("\n%1 %2 run time is %3\n").arg(testName).arg(algName).arg(GTimer::secsBetween(t1, GTimer::currentTimeMicros())));
+    perfLog.trace(QString("\n%1 %2 run time is %3ms\n").arg(testName).arg(algName).arg(GTimer::millisBetween(t1, GTimer::currentTimeMicros())));
     if (sw->getCalculationError().isEmpty()) {
         QList<PairAlignSequences> res = sw->getResults();
         res = expandResults(res);
