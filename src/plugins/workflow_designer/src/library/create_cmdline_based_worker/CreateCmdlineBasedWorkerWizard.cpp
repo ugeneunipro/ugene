@@ -905,12 +905,12 @@ void ExternalToolSelectComboBox::modifyMenuAccordingToData(const QString& data) 
         model()->removeRows(model()->rowCount() - 2, 2);
         addSupportedToolsPopupMenu();
         insertSeparator(model()->rowCount() + 1);
-        U2::GroupedComboBoxDelegate::addUngroupedItem(standardModel, tr("Show customs tools only"), SHOW_CUSTOM_TOOLS);
+        GroupedComboBoxDelegate::addUngroupedItem(standardModel, tr("Show customs tools only"), SHOW_CUSTOM_TOOLS);
         setCurrentIndex(findData(firstClickableRowData));
     } else if (data == SHOW_CUSTOM_TOOLS) {
         model()->removeRows(customTools.size() + 1, model()->rowCount() - customTools.size() - 1);
         insertSeparator(customTools.size() + 1);
-        U2::GroupedComboBoxDelegate::addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
+        GroupedComboBoxDelegate::addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
         setCurrentIndex(findData(firstClickableRowData));
     }
 }
@@ -922,18 +922,18 @@ void ExternalToolSelectComboBox::addSupportedToolsPopupMenu() {
     auto standardModel = qobject_cast<QStandardItemModel*>(model());
     SAFE_POINT(standardModel != nullptr, "Can't cast combobox model to a QStandardItemModel", );
 
-    U2::GroupedComboBoxDelegate::addParentItem(standardModel, tr("Supported tools"), false);
+    GroupedComboBoxDelegate::addParentItem(standardModel, tr("Supported tools"), false);
     QList<QString> keys = supportedTools.keys();
     std::sort(keys.begin(), keys.end(), [](const QString& a, const QString& b) { return a.compare(b, Qt::CaseInsensitive) < 0; });
     foreach (const QString& toolKitName, keys) {
         QList<ExternalTool*> currentToolKitTools = supportedTools.value(toolKitName);
         if (currentToolKitTools.size() == 1) {
             ExternalTool* tool = currentToolKitTools.first();
-            U2::GroupedComboBoxDelegate::addUngroupedItem(standardModel, tool->getName(), tool->getId());
+            GroupedComboBoxDelegate::addUngroupedItem(standardModel, tool->getName(), tool->getId());
         } else {
-            U2::GroupedComboBoxDelegate::addParentItem(standardModel, toolKitName, false, false);
+            GroupedComboBoxDelegate::addParentItem(standardModel, toolKitName, false, false);
             for (ExternalTool* tool : qAsConst(currentToolKitTools)) {
-                U2::GroupedComboBoxDelegate::addChildItem(standardModel, tool->getName(), tool->getId());
+                GroupedComboBoxDelegate::addChildItem(standardModel, tool->getName(), tool->getId());
             }
         }
     }
@@ -953,12 +953,12 @@ void ExternalToolSelectComboBox::initPopupMenu() {
     SAFE_POINT(standardModel != nullptr, "Can't cast combobox model to a QStandardItemModel", );
 
     if (!customTools.isEmpty()) {
-        U2::GroupedComboBoxDelegate::addParentItem(standardModel, tr("Custom tools"), false);
+        GroupedComboBoxDelegate::addParentItem(standardModel, tr("Custom tools"), false);
         foreach (ExternalTool* tool, customTools) {
-            U2::GroupedComboBoxDelegate::addUngroupedItem(standardModel, tool->getName(), tool->getId());
+            GroupedComboBoxDelegate::addUngroupedItem(standardModel, tool->getName(), tool->getId());
         }
         insertSeparator(customTools.size() + 1);
-        U2::GroupedComboBoxDelegate::addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
+        GroupedComboBoxDelegate::addUngroupedItem(standardModel, tr("Show all tools"), SHOW_ALL_TOOLS);
     } else {
         addSupportedToolsPopupMenu();
     }
