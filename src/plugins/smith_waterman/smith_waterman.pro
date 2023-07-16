@@ -30,14 +30,3 @@ TRANSLATIONS += transl/russian.ts
 
 FORMS += \
     src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui
-
-
-
-
-
-
-
-
-
-
-

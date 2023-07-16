@@ -108,18 +108,18 @@ void PopupChecker::commonScenario() {
     if (namePath.size() > 1) {
         actName = namePath.takeLast();
         GTMenu::clickMenuItemByName(activePopupMenu, namePath, useMethod);
-        QMenu* activePopupMenuToCheck = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+        auto activePopupMenuToCheck = qobject_cast<QMenu*>(QApplication::activePopupWidget());
         act = GTMenu::getMenuItem(activePopupMenuToCheck, actName);
     } else {
-        QMenu* activePopupMenuToCheck = qobject_cast<QMenu*>(QApplication::activePopupWidget());
+        auto activePopupMenuToCheck = qobject_cast<QMenu*>(QApplication::activePopupWidget());
         actName = namePath.last();
         act = GTMenu::getMenuItem(activePopupMenuToCheck, actName);
     }
     if (options.testFlag(Exists)) {
-        GT_CHECK(act != NULL, "action '" + actName + "' not found");
+        GT_CHECK(act != nullptr, "action '" + actName + "' not found");
         qDebug("GT_DEBUG_MESSAGE options.testFlag(Exists)");
     } else {
-        GT_CHECK(act == NULL, "action '" + actName + "' unexpectedly found");
+        GT_CHECK(act == nullptr, "action '" + actName + "' unexpectedly found");
     }
     if (options.testFlag(IsEnabled)) {
         GT_CHECK(act->isEnabled(), "action '" + act->objectName() + "' is not enabled");
@@ -202,20 +202,17 @@ void PopupCheckerByText::commonScenario() {
         PopupChooser::clickEsc();
         return;
     }
-    QAction* act = NULL;
     if (!menuPath.isEmpty()) {
         GTMenu::clickMenuItemByText(activePopupMenu, menuPath, useMethod, matchFlag);
     }
-
-    QMenu* activePopupMenuToCheck = qobject_cast<QMenu*>(QApplication::activePopupWidget());
-
+    auto activePopupMenuToCheck = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     foreach (const QString& itemName, itemsNames) {
-        act = GTMenu::getMenuItem(activePopupMenuToCheck, itemName, true, matchFlag);
+        QAction* act = GTMenu::getMenuItem(activePopupMenuToCheck, itemName, true, matchFlag);
         if (options.testFlag(PopupChecker::Exists)) {
-            GT_CHECK(act != NULL, "action '" + itemName + "' not found");
+            GT_CHECK(act != nullptr, "action '" + itemName + "' not found");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(Exists)");
         } else {
-            GT_CHECK(act == NULL, "action '" + itemName + "' unexpectedly found");
+            GT_CHECK(act == nullptr, "action '" + itemName + "' unexpectedly found");
         }
 
         if (options.testFlag(PopupChecker::IsEnabled)) {
