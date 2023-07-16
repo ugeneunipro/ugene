@@ -21,7 +21,7 @@ SOURCES += src/PairAlignSequences.cpp \
            src/SWQuery.cpp \
            src/PairwiseAlignmentSmithWatermanGUIExtension.cpp
 
-contains(QMAKE_TARGET.arch, x86_64):{
+target_platform_has_sse() {
     HEADERS +=  src/SmithWatermanAlgorithmSSE2.h
     SOURCES +=  src/SmithWatermanAlgorithmSSE2.cpp
 }

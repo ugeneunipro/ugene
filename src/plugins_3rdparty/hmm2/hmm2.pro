@@ -19,7 +19,7 @@ HEADERS += src/HMMIO.h \
            src/u_search/HMMSearchWorker.h \
            src/u_search/HMMSearchQDActor.h \
            src/u_search/uhmmsearch.h \
-           src/u_search/uhmmsearch_opt.h
+           src/u_search/uhmmsearch_opt.h \
            src/u_tests/uhmmerTests.h
 
 FORMS += src/u_build/HMMBuildDialog.ui \
@@ -67,7 +67,7 @@ SOURCES += src/HMMIO.cpp \
            src/u_search/uhmmsearch_opt.cpp \
            src/u_tests/uhmmerTests.cpp
 
-contains(QMAKE_TARGET.arch, x86_64):{
+target_platform_has_sse() {
     HEADERS +=  src/u_search/uhmmsearch_sse.h
     SOURCES +=  src/u_search/uhmmsearch_sse.cpp
 }

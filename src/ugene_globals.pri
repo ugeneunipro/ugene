@@ -163,6 +163,11 @@ defineTest( use_system_sqlite ) {
     return (false)
 }
 
+defineTest( target_platform_has_sse ) {
+    contains(QMAKE_TARGET.arch, x86_64) : return (true)
+    return (false)
+}
+
 use_system_sqlite() {
     DEFINES += UGENE_USE_SYSTEM_SQLITE
 }
