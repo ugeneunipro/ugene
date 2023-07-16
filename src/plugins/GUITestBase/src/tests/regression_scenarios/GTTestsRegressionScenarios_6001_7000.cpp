@@ -3177,7 +3177,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // 3. Close the project and open it again
-    GTUtilsProject::closeProject(false);
+    GTUtilsProject::closeProject(true);
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
