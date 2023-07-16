@@ -339,7 +339,7 @@ void GTWidget::showNormal(QWidget* widget) {
             : widget(widget) {
         }
 
-        void run() {
+        void run() override {
             CHECK_SET_ERR(widget != nullptr, "Widget is NULL");
             widget->showNormal();
             GTGlobals::sleep(100);

@@ -53,7 +53,7 @@ public:
         GTGlobals::UseMethod useMethod = GTGlobals::UseMouse,
         Qt::MatchFlag _matchFlag = Qt::MatchExactly);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 protected:
     QStringList namePath;
@@ -81,7 +81,7 @@ public:
         CheckOptions options = CheckOptions(IsEnabled),
         GTGlobals::UseMethod _useMethod = GTGlobals::UseMouse);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 protected:
     QStringList namePath;
