@@ -2,10 +2,16 @@
 #include <HMMIO.h>
 #include <hmmer2/funcs.h>
 
+#include <qprocessordetection.h>
+
 #include <U2Core/Task.h>
 
 #include "uhmmsearch_opt.h"
-#include "uhmmsearch_sse.h"
+
+#if Q_PROCESSOR_X86
+#    include "uhmmsearch_sse.h"
+#    define UGENE_HAS_SSE
+#endif
 
 namespace U2 {
 
@@ -56,9 +62,12 @@ QList<UHMMSearchResult> UHMMSearch::search(plan7_s* _hmm, const char* seq, int s
     tophit_s* dhit = AllocTophits(200);  // domain hits:  200=lumpsize
 
     int nseq = 0;  // number of sequences searched
+#ifdef UGENE_HAS_SSE
     if (s.alg == HMMSearchAlgo_SSEOptimized) {
         main_loop_opt(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si, sseScoring);
-    } else if (s.alg == HMMSearchAlgo_Conservative) {
+    } else
+#endif
+        if (s.alg == HMMSearchAlgo_Conservative) {
         main_loop_serial(hmm, seq, seqLen, &thresh, do_forward, do_null2, do_xnu, histogram, ghit, dhit, &nseq, si);
     } else {
         assert(false && "bad hmmsearch algorithm selected");

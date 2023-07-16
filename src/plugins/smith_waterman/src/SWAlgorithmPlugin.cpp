@@ -18,8 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
 #include "SWAlgorithmPlugin.h"
+
+#include <qprocessordetection.h>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 #include <U2Algorithm/SmithWatermanTaskFactoryRegistry.h>
@@ -44,11 +45,14 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "PairwiseAlignmentSmithWatermanGUIExtension.h"
-#include "SWAlgorithmTask.h"
 #include "SWQuery.h"
 #include "SWTaskFactory.h"
 #include "SWWorker.h"
 #include "SmithWatermanTests.h"
+
+#if Q_PROCESSOR_X86
+#    define UGENE_HAS_SSE_SW
+#endif
 
 namespace U2 {
 
@@ -90,6 +94,7 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     swar->registerFactory(new SWTaskFactory(SW_classic), QString("Classic 2"));  // ADV search register
     par->registerAlgorithm(new SWPairwiseAlignmentAlgorithm());
 
+#ifdef UGENE_HAS_SSE_SW
     coreLog.trace("Registering SSE2 SW implementation");
     swar->registerFactory(new SWTaskFactory(SW_sse2), QString("SSE2"));
     par->getAlgorithm("Smith-Waterman")
@@ -97,6 +102,7 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
             new PairwiseAlignmentSmithWatermanTaskFactory(SW_sse2),
             new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_sse2),
             "SSE2");
+#endif
 }
 
 QList<XMLTestFactory*> SWAlgorithmTests::createTestFactories() {
