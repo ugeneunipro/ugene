@@ -822,7 +822,7 @@ GUI_TEST_CLASS_DEFINITION(test_1049) {
     //    Expected state: the "Generate Distance matrix" dialog appeared.
 
     //    Expected state: Statistics View opened, it contains two tables: full statistics and additional group statistics.
-    QTextBrowser* v = GTUtilsMdi::activeWindow()->findChild<QTextBrowser*>();
+    auto v = GTUtilsMdi::activeWindow()->findChild<QTextBrowser*>();
     QString text = v->toHtml();
     CHECK_SET_ERR(text.contains("Group statistics of multiple alignment"), text);
 }
@@ -1333,7 +1333,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {  // commit AboutDialogController.cpp
         EscClicker()
             : Filler("AboutDialog") {
         }
-        virtual void run() {
+        void run() override {
             if (isOsMac()) {
                 GTKeyboardDriver::keyRelease(GTKeyboardDriver::key[Qt::Key_F1]);
             }
@@ -1342,10 +1342,10 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {  // commit AboutDialogController.cpp
             // getting an info string
             auto w = GTWidget::findWidget("about_widget", dialog);
 
-            QObject* parent = w->findChild<QObject*>("parent");
+            auto parent = w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent != nullptr, "parentObject not found");
 
-            QObject* child = parent->findChild<QObject*>();
+            auto child = parent->findChild<QObject*>();
             CHECK_SET_ERR(child != nullptr, "childObject not found");
 
             QString text = child->objectName();
@@ -1379,7 +1379,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {  // commit AboutDialogController.cpp
         EscClicker()
             : Filler("AboutDialog") {
         }
-        virtual void run() {
+        void run() override {
             if (isOsMac()) {
                 GTMouseDriver::release();
             }
@@ -1387,10 +1387,10 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {  // commit AboutDialogController.cpp
             // getting an info string
             auto w = GTWidget::findWidget("about_widget", dialog);
 
-            QObject* parent = w->findChild<QObject*>("parent");
+            auto parent = w->findChild<QObject*>("parent");
             CHECK_SET_ERR(parent != nullptr, "parentObject not found");
 
-            QObject* child = parent->findChild<QObject*>();
+            auto child = parent->findChild<QObject*>();
             CHECK_SET_ERR(child != nullptr, "childObject not found");
 
             QString text = child->objectName();
@@ -1535,7 +1535,7 @@ GUI_TEST_CLASS_DEFINITION(test_1124) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    2. Hover the {Input files (long DNA reads to assembly)} field with mouse and wait the tooltip appeares.
@@ -1652,7 +1652,7 @@ GUI_TEST_CLASS_DEFINITION(test_1154) {
 GUI_TEST_CLASS_DEFINITION(test_1156) {
     class DigestCircularSequenceScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto availableEnzymeWidget = GTWidget::findListWidget("availableEnzymeWidget", dialog);
 
@@ -1855,7 +1855,7 @@ GUI_TEST_CLASS_DEFINITION(test_1182) {
     GTMouseDriver::click();
 
     auto paramBox = GTWidget::findWidget("paramBox");
-    QTableWidget* table = paramBox->findChild<QTableWidget*>();
+    auto table = paramBox->findChild<QTableWidget*>();
     QList<QTableWidgetItem*> tableItems = table->findItems("Group size (by Grouper)", Qt::MatchExactly);
     CHECK_SET_ERR(tableItems.size() == 1, QString("unexpected items number: %1").arg(tableItems.size()));
 }
@@ -1891,7 +1891,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_1) {
     //     Expected state: "Result file name" is 'test.sam'
     class Scenario_test_1186_1 : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, "test_1186_1.sam", GTFileDialogUtils::Save, GTGlobals::UseMouse));
 
@@ -1922,7 +1922,7 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
 
     class Scenario_test_1186_2 : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto samBox = GTWidget::findCheckBox("samBox", dialog);
 
@@ -2089,7 +2089,7 @@ GUI_TEST_CLASS_DEFINITION(test_1203_2) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    3) Set "Search the search type" to "blastn"
             //    Expected state: "Entrez query" presents on "Advanced options" tab
@@ -2222,7 +2222,7 @@ GUI_TEST_CLASS_DEFINITION(test_1219) {
     //    2. Open Smith-Waterman search dialog
     //    Excepted state: default value of combobox "Save result as" is "Annotations"
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTTextEdit::setText(GTWidget::findTextEdit("teditPattern", dialog), "CTAAGGG");
 
@@ -2275,7 +2275,7 @@ GUI_TEST_CLASS_DEFINITION(test_1220) {
     GTUtilsTaskTreeView::waitTaskFinished();
     //    2) Run Smith-waterman search using:
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    pattern: "ATCGAT"; note that pattern length is 6.
             GTTextEdit::setText(GTWidget::findTextEdit("teditPattern", dialog), "ATCGAT");
@@ -2403,7 +2403,7 @@ GUI_TEST_CLASS_DEFINITION(test_1245) {
         ExportDocumentCustomFiller()
             : Filler("ExportDocumentDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto comboBox = GTWidget::findComboBox("formatCombo", dialog);
             int index = comboBox->findText("FASTA");
@@ -2447,7 +2447,7 @@ GUI_TEST_CLASS_DEFINITION(test_1246) {
         ExportDocumentCustomFiller()
             : Filler("ExportDocumentDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(sandBoxDir, "test_1246", GTFileDialogUtils::Save));
             GTWidget::click(GTWidget::findWidget("browseButton"));
@@ -2482,7 +2482,7 @@ GUI_TEST_CLASS_DEFINITION(test_1249) {
 
     class Scenario_test_1249 : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/archive/2013_08_01.bairoch.gz"));
             GTWidget::click(GTWidget::findWidget("enzymesFileButton", dialog));
@@ -2808,7 +2808,7 @@ GUI_TEST_CLASS_DEFINITION(test_1273) {
     GTMenu::clickMainMenuItem({"Window", "Window layout", "Tabbed documents"});
 
     // Expected: the name of the sequence view tab starts with "JQ040024.1", but not with "JQ040024".
-    QTabBar* tabs = AppContext::getMainWindow()->getQMainWindow()->findChild<QTabBar*>("");
+    auto tabs = AppContext::getMainWindow()->getQMainWindow()->findChild<QTabBar*>("");
     CHECK_SET_ERR(nullptr != tabs, "No tab bar");
     CHECK_SET_ERR(tabs->tabText(1).startsWith("JQ040025"), "Wrong tab name");
 }
@@ -2867,7 +2867,7 @@ GUI_TEST_CLASS_DEFINITION(test_1289) {
 GUI_TEST_CLASS_DEFINITION(test_1295) {
     class CustomBuildTreeDialogFiller : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             auto algorithmBox = GTWidget::findComboBox("algorithmBox", dialog);
@@ -3120,7 +3120,7 @@ GUI_TEST_CLASS_DEFINITION(test_1310) {
     GTUtilsTaskTreeView::waitTaskFinished();
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto algorithmBox = GTWidget::findComboBox("algorithmBox", dialog);
             GTComboBox::selectItemByText(algorithmBox, "PHYLIP Neighbor Joining");
@@ -3272,7 +3272,7 @@ GUI_TEST_CLASS_DEFINITION(test_1321_2) {
     //    3. Go to the 'Advanced' tab of the dialog
     //    Expected state: 'Advanced' tab displayed, there is 'Advanced parameters' groupbox without 'Repeats identity' parameter
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTTabWidget::setCurrentIndex(GTWidget::findTabWidget("tabWidget"), 1);
 
@@ -3345,7 +3345,7 @@ GUI_TEST_CLASS_DEFINITION(test_1326) {
             : Filler("Call Variants Wizard") {
         }
 #define GT_CLASS_NAME "GTUtilsDialog::CallVariantsWizardFiller"
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             QSizePolicy actualPolicy = dialog->sizePolicy();
             QSizePolicy expectedPolicy = QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -3409,7 +3409,7 @@ GUI_TEST_CLASS_DEFINITION(test_1338) {
 
 GUI_TEST_CLASS_DEFINITION(test_1342) {
     class CustomPopupChecker : public CustomScenario {
-        void run() {
+        void run() override {
             auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
 
@@ -3544,7 +3544,7 @@ GUI_TEST_CLASS_DEFINITION(test_1362) {
     //     Exclude gaps: unchecked.
     // 4) Run the task.
     GTUtilsDialog::add(new PopupChooserByText({"Statistics", "Generate distance matrix..."}));
-    DistanceMatrixDialogFiller* filler = new DistanceMatrixDialogFiller(false, false, false);
+    auto filler = new DistanceMatrixDialogFiller(false, false, false);
     filler->saveToFile = true;
     filler->format = DistanceMatrixDialogFiller::CSV;
     filler->path = sandBoxDir + "test_1362.csv";
@@ -3581,7 +3581,7 @@ GUI_TEST_CLASS_DEFINITION(test_1364) {
     //    6. Click "Add file" button again.
     class customFileDialog : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* d = GTWidget::getActiveModalWidget();
             auto dialog = qobject_cast<QFileDialog*>(d);
             CHECK_SET_ERR(dialog, "activeModalWidget is not file dialog");
@@ -3728,7 +3728,7 @@ GUI_TEST_CLASS_DEFINITION(test_1390) {
 
 GUI_TEST_CLASS_DEFINITION(test_1393) {
     class ExportSeqsAsMsaScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto addToProjectBox = GTWidget::findCheckBox("addToProjectBox", dialog);
             CHECK_SET_ERR(addToProjectBox->isChecked(), "'Add document to project' checkbox is not set");
@@ -3794,7 +3794,7 @@ GUI_TEST_CLASS_DEFINITION(test_1408) {
     //    2) Right click on "human_T1.fa" in the project tab
 
     class innerScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTWidget::findWidget("groupRB", dialog);
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
@@ -3802,7 +3802,7 @@ GUI_TEST_CLASS_DEFINITION(test_1408) {
     };
 
     class outerScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto readFileLineEdit = GTWidget::findLineEdit("readFileName", dialog);
             GTLineEdit::setText(readFileLineEdit, testDir + "_common_data/scenarios/annotations_import/anns1.csv");
@@ -4026,7 +4026,7 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
         CheckBowtie2Filler()
             : Filler("BuildIndexFromRefDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto methodNamesBox = GTWidget::findComboBox("methodNamesBox", dialog);
             for (int i = 0; i < methodNamesBox->count(); i++) {
@@ -4035,7 +4035,7 @@ GUI_TEST_CLASS_DEFINITION(test_1429) {
                 }
             }
 
-            GTFileDialogUtils* ob = new GTFileDialogUtils(testDir + "_common_data/fasta/", "multy_fa.fa");
+            auto ob = new GTFileDialogUtils(testDir + "_common_data/fasta/", "multy_fa.fa");
             GTUtilsDialog::waitForDialog(ob);
             GTWidget::click(GTWidget::findWidget("addRefButton", dialog));
 
@@ -4370,7 +4370,7 @@ GUI_TEST_CLASS_DEFINITION(test_1443) {
     //    2. Use popup menu {Cloning->Construct molecule}
 
     class InnerScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto start_edit_line = GTWidget::findLineEdit("start_edit_line", dialog);
             CHECK_SET_ERR(start_edit_line->text() == "1", "unexpected start text " + start_edit_line->text());
@@ -4381,7 +4381,7 @@ GUI_TEST_CLASS_DEFINITION(test_1443) {
     };
 
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    4. Select human_t1 sequence object
             //    5. In the dialog "Create DNA Fragment" make sure the region is 1..199950 and click "Ok"
@@ -4437,7 +4437,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_1) {
     //    3. Check "Scoring matrix" field
     //    Expected state: "Scoring matrix" field not contain "rna" value.
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             auto comboMatrix = GTWidget::findComboBox("comboMatrix", GTWidget::getActiveModalWidget());
             for (int i = 0; i < comboMatrix->count(); i++) {
                 CHECK_SET_ERR(!comboMatrix->itemText(i).contains("rna", Qt::CaseInsensitive),
@@ -4462,7 +4462,7 @@ GUI_TEST_CLASS_DEFINITION(test_1461_2) {
     //    3. Check "Scoring matrix" field
     //    Expected state: "Scoring matrix" field contain only "rna" value.
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             auto comboMatrix = GTWidget::findComboBox("comboMatrix", GTWidget::getActiveModalWidget());
             GTComboBox::selectItemByText(comboMatrix, "rna");
             CHECK_SET_ERR(1 == comboMatrix->count(), "There are several unexpected matrices");
@@ -4527,7 +4527,7 @@ GUI_TEST_CLASS_DEFINITION(test_1491) {
     // 3. Select more than three sequences (for instance all the sequences from samples/Genbank)
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             // 4. Select "Join sequences..." mode
             GTRadioButton::click(dynamic_cast<QRadioButton*>(GTWidget::findWidget("join2alignmentMode", GTWidget::getActiveModalWidget())));
 
@@ -4589,7 +4589,7 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
 
     const QString clipboardContent = GTClipboard::text();
 
-    QPlainTextEdit* logTextEdit = logView->findChild<QPlainTextEdit*>();
+    auto logTextEdit = logView->findChild<QPlainTextEdit*>();
     CHECK_SET_ERR(nullptr != logTextEdit, "Log view text edit field is not found")
 
     const QString logTextEditContent = logTextEdit->toPlainText();
@@ -4990,7 +4990,7 @@ GUI_TEST_CLASS_DEFINITION(test_1551) {
     //    Expected state: there is no rename sequence dialog appeared.
     //    GTUtilsDialog::waitForDialogWhichMustNotBeRun(new MessageBoxDialogFiller());
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() - QPoint(5, 0));
             GTMouseDriver::click();
             QWidget* contextMenu = QApplication::activePopupWidget();
@@ -5102,13 +5102,14 @@ GUI_TEST_CLASS_DEFINITION(test_1568) {
     //    Expected state: UGENE doesn't crash.
     GTLogTracer lt;
 
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new BuildTreeDialogFiller(sandBoxDir + "test_1568.nwk", 0, 0, true));
     QAbstractButton* tree = GTAction::button("Build Tree");
     CHECK_SET_ERR(tree != nullptr, "Build Tree action not found");
     GTWidget::click(tree);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsMdi::closeWindow("COI [COI.aln]");
 
@@ -5685,7 +5686,7 @@ GUI_TEST_CLASS_DEFINITION(test_1609) {
 
     class CustomFileDialogUtils : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No));
             GTWidget::click(GTWidget::findButtonByText("Cancel", dialog));
@@ -5940,7 +5941,7 @@ GUI_TEST_CLASS_DEFINITION(test_1651) {
     //    1. Open the "Access remote database" dialog.
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto hintLabel = GTWidget::findLabel("hintLabel", dialog);
@@ -6295,7 +6296,7 @@ public:
     customFileDialog_1681(const QString& path)
         : GTFileDialogUtils(path) {
     }
-    void commonScenario() {
+    void commonScenario() override {
         GTFileDialogUtils::commonScenario();
         GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
     }
@@ -6308,7 +6309,7 @@ GUI_TEST_CLASS_DEFINITION(test_1677) {
     //    2. Add sample: "Main Tuxedo: Paired-end"
     class customWizard : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
@@ -6440,7 +6441,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
 
     class customWizard : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTGlobals::sleep();
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
@@ -6455,7 +6456,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
                 }
             }
 
-            QTabWidget* tabWidget = dialog->findChild<QTabWidget*>();
+            auto tabWidget = dialog->findChild<QTabWidget*>();
             CHECK_SET_ERR(tabWidget != nullptr, "tabWidget not found");
             GTTabWidget::setCurrentIndex(tabWidget, 1);
 
@@ -6913,7 +6914,7 @@ GUI_TEST_CLASS_DEFINITION(test_1734) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
@@ -6946,7 +6947,7 @@ GUI_TEST_CLASS_DEFINITION(test_1735) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
@@ -7064,7 +7065,7 @@ GUI_TEST_CLASS_DEFINITION(test_1759) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
             //    2. Go to the second page
@@ -7132,12 +7133,12 @@ GUI_TEST_CLASS_DEFINITION(test_1763_1) {
     //    4. On opened tab click right mouse button
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    5. Click on "Rename" action
             //    Expected state: Showed "Rename Dashboard" dialog
             QWidget* dialog = GTWidget::getActiveModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-            QLineEdit* line = dialog->findChild<QLineEdit*>();
+            auto line = dialog->findChild<QLineEdit*>();
             //    6. Change name and press "Ok" button
             GTLineEdit::setText(line, "new_name");
             GTWidget::click(GTWidget::findButtonByText("Ok", dialog));
@@ -7196,7 +7197,7 @@ GUI_TEST_CLASS_DEFINITION(test_1771) {
     //    2. Select tuxedo sample
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
             //    2. Go to the second page
@@ -7771,7 +7772,7 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 
     class CuffDiffIncorrectPath : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             AppSettingsDialogFiller::setExternalToolPath("Cuffdiff", "./");
 
             QWidget* dialog = GTWidget::getActiveModalWidget();
