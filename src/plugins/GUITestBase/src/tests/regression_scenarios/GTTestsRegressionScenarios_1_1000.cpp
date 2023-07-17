@@ -1559,7 +1559,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
 
     class ResetAndApplyScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             auto nextButton = GTWidget::findWidget("__qt__passive_wizardbutton1");
             GTWidget::click(nextButton);
             GTWidget::click(GTWidget::findWidget("pbDeleteInput"));
@@ -1593,7 +1593,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
 
     class ApplyScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             auto nextButton = GTWidget::findWidget("__qt__passive_wizardbutton1");
             GTWidget::click(nextButton);
             GTWidget::click(GTWidget::findWidget("pbDeleteInput"));
