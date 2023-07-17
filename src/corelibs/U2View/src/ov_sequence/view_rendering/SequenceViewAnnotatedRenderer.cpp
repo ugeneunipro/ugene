@@ -196,8 +196,8 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
      * Calculates restriction cuts positions depends on visible area and calls drawCutSite.
      *
      * \param reg Region of the annotation, which sites should be drawn.
-     * \param drawDirect Draw direct cut if true and do not draw if false.
-     * \param drawComplement Draw complement cut if true do not draw if false.
+     * \param drawDirect Draw direct cut if true and do not draw if false. Default value is true.
+     * \param drawComplement Draw complement cut if true do not draw if false. Default value is true.
      */
     auto drawCutSiteLambda = [this, &p, &visibleRange, &a, &as, &availableHeight, &canvasSize, selected, &aData](const U2Region& reg, bool drawDirect = true, bool drawComplement = true) {
         if (reg.intersects(visibleRange)) {
@@ -230,14 +230,12 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
             SAFE_POINT(merged.size() == 1, "Unexpected merged enzyme region", );
 
             auto regionPair = merged.front();
-            // draw cuts separatelly,
+            // draw cuts separately,
             // because they are located one on the 3' end of the direct sequence,
             // and the other one on the 3' end of reverse-complementary sequence
             drawCutSiteLambda(regionPair.first, true, false);
             drawCutSiteLambda(regionPair.second, false, true);
-        } else {
-            SAFE_POINT(location.size() == 1, "Unexpected enzyme region", );
-
+        } else if (location.size() == 1) {
             drawCutSiteLambda(location.first());
         }
     }
