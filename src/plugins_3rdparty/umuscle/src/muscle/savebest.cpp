@@ -54,7 +54,7 @@ void SaveCurrentAlignment()
 void CheckMaxTime()
 	{
     MuscleContext *ctx = getMuscleContext();
-	if (0 == ctx->params.g_ulMaxSecs)
+	if (ctx->params.g_ulMaxSecs == 0)
 		return;
 
 	time_t Now = time(0);

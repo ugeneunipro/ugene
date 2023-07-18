@@ -43,7 +43,7 @@
 
 namespace U2 {
 
-bool isNoWritePermission(GUrl& url) {
+static bool isNoWritePermission(GUrl& url) {
     if (!QFile::exists(url.getURLString())) {
         return !FileAndDirectoryUtils::isDirectoryWritable(url.dirPath());
     }

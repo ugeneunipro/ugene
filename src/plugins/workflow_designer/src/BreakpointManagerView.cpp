@@ -248,9 +248,9 @@ void BreakpointManagerView::sl_breakpointRemoved(const ActorId& actorId) {
 
 void BreakpointManagerView::sl_newBreakpoint() {
     // if there is any selected items - add breakpoints automatically
-    if (scene->selectedItems().size() != 0) {
+    if (!scene->selectedItems().empty()) {
         foreach (QGraphicsItem* item, scene->selectedItems()) {
-            if (WorkflowProcessItemType == item->type()) {
+            if (item->type() == WorkflowProcessItemType) {
                 auto processItem = qgraphicsitem_cast<WorkflowProcessItem*>(item);
                 SAFE_POINT(nullptr != processItem, "WorkflowProcessItem is NULL!", );
                 if (processItem->isBreakpointInserted() && !processItem->isBreakpointEnabled()) {

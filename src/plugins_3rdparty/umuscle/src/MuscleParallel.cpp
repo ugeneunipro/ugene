@@ -23,20 +23,15 @@
 #include <limits>
 
 #include <QMutex>
-#include <QMutexLocker>
 #include <QSemaphore>
 
 #include <U2Core/AppResources.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/Log.h>
 
 #include "MuscleAdapter.h"
-#include "MuscleConstants.h"
 #include "MuscleUtils.h"
 #include "MuscleWorkPool.h"
 #include "TaskLocalStorage.h"
-#include "muscle/scorehistory.h"
 
 namespace U2 {
 
@@ -150,7 +145,7 @@ void MusclePrepareTask::alignPrepareUnsafe() {
 
     convertMAlignment2SecVect(v, workpool->ma, true);
     const unsigned uSeqCount = v.Length();
-    if (0 == uSeqCount) {
+    if (uSeqCount == 0) {
         stateInfo.setError(tr("No sequences in input file"));
         return;
     }
@@ -179,17 +174,12 @@ void MusclePrepareTask::alignPrepareUnsafe() {
         v.SetSeqId(uSeqIndex, uSeqIndex);
     }
 
-    if (0 == uSeqCount) {
-        stateInfo.setError(tr("Alignment is empty"));
-        return;
-    }
-
-    if (1 == uSeqCount) {
+    if (uSeqCount == 1) {
         workpool->res = workpool->ma;
         return;
     }
 
-    if (uSeqCount > 1 && workpool->mhack) {
+    if (workpool->mhack) {
         MHackStart(v);
     }
     Tree& GuideTree = workpool->GuideTree;
@@ -358,7 +348,7 @@ void ProgressiveAlignTask::_run() {
 
     ValidateMuscleIds(workpool->a);
 
-    if (1 == ctx->params.g_uMaxIters || 2 == uSeqCount) {
+    if (ctx->params.g_uMaxIters == 1 || uSeqCount == 2) {
         assert(int(workpool->a.GetSeqCount()) == workpool->ma->getRowCount());
         prepareAlignResults(workpool->a, workpool->ma->getAlphabet(), workpool->res, workpool->mhack);
     }
@@ -436,7 +426,7 @@ void ProgressiveAlignWorker::_run() {
             }
         } else {
             {
-                QMutexLocker(&workpool->proAligMutex);
+                QMutexLocker lock(&workpool->proAligMutex);
                 Progress(workpool->uJoin, uSeqCount - 1);
                 ++workpool->uJoin;
             }

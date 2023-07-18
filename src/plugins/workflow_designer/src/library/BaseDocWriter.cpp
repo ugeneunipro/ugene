@@ -40,7 +40,6 @@
 #include <U2Lang/BaseAttributes.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/SharedDbUrlUtils.h>
-#include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 #include <U2Lang/WorkflowUtils.h>
 

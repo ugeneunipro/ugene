@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <algorithm>
 #include <functional>
 
 #include <QBoxLayout>
@@ -96,11 +95,11 @@ namespace U2 {
 // TODO: sync with SETTINGS in WorkflowSettings.cpp
 #define SETTINGS QString("workflowview/")
 
-#define LAST_DIR SETTINGS + "lastdir"
-#define SPLITTER_STATE SETTINGS + "splitter"
-#define EDITOR_STATE SETTINGS + "editor"
-#define PALETTE_STATE SETTINGS + "palette"
-#define TABS_STATE SETTINGS + "tabs"
+#define LAST_DIR (SETTINGS + "lasting")
+#define SPLITTER_STATE (SETTINGS + "splitter")
+#define EDITOR_STATE (SETTINGS + "editor")
+#define PALETTE_STATE (SETTINGS + "palette")
+#define TABS_STATE (SETTINGS + "tabs")
 
 enum { ElementsTab,
        SamplesTab };
@@ -296,7 +295,24 @@ WorkflowView::WorkflowView(WorkflowGObject* go)
 }
 
 WorkflowView::~WorkflowView() {
-    uiLog.trace("~WorkflowView");
+    // Remove all breakpoints and resume workflow execution.
+//    QList<ActorId> actorsWithBreakpoint = debugInfo->getActorsWithBreakpoints();
+//    for (const auto& actorId : qAsConst(actorsWithBreakpoint)) {
+//        debugInfo->removeBreakpointFromActor(actorId);
+//    }
+//    auto context = debugInfo->getContext();
+//    auto monitor = context == nullptr ? nullptr : context->getMonitor();
+//    if (debugInfo->isPaused()) {
+//        if (monitor != nullptr) {
+//            monitor->resume();
+//        }
+//    }
+//    if (monitor != nullptr) {
+//        // Give up the parentship.
+//        debugInfo->setParent(monitor);
+//    }
+
+    // Deallocate resources.
     if (!loadWorkflowSceneTask.isNull()) {
         loadWorkflowSceneTask->cancel();
     }
@@ -1387,7 +1403,7 @@ void WorkflowView::localHostLaunch() {
         }
     }
     debugInfo->setMessageParser(new WorkflowDebugMessageParserImpl());
-    WorkflowAbstractRunner* t = new WorkflowRunTask(*schema, ActorMap(), debugInfo);
+    auto t = new WorkflowRunTask(*schema, ActorMap(), debugInfo);
 
     t->setReportingEnabled(true);
     if (WorkflowSettings::monitorRun()) {

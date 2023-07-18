@@ -58,13 +58,13 @@ WorkflowRunTask::WorkflowRunTask(const Schema& sh, const QMap<ActorId, ActorId>&
       rmap(remap), flows(sh.getFlows()) {
     GCOUNTER(cvar, "WorkflowRunTask");
     if (debugInfo == nullptr) {
-        debugInfo = new WorkflowDebugStatus;
+        debugInfo = new WorkflowDebugStatus();
     }
     if (debugInfo->parent() == nullptr) {
         debugInfo->setParent(this);
     }
 
-    WorkflowIterationRunTask* t = new WorkflowIterationRunTask(sh, debugInfo);
+    auto t = new WorkflowIterationRunTask(sh, debugInfo);
     WorkflowMonitor* m = t->getMonitor();
     if (m != nullptr) {
         monitors << m;

@@ -3242,7 +3242,7 @@ GUI_TEST_CLASS_DEFINITION(test_5750) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: the exported file is opened in UGENE. The first sequence is named "1".
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 
     const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -3671,7 +3671,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
         i--;
     }
     GTMouseDriver::release();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5769_1) {
@@ -3928,7 +3928,7 @@ GUI_TEST_CLASS_DEFINITION(test_5783) {
     GTUtilsDialog::waitForDialog(new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
@@ -4266,7 +4266,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
 
     // Expected state: Scheme successfully performed
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5815) {
@@ -4314,7 +4314,7 @@ GUI_TEST_CLASS_DEFINITION(test_5832) {
     GTUtilsMSAEditorSequenceArea::click(QPoint(5, 5));
 
     // Expected: no errors in the log
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5833) {
@@ -4414,7 +4414,7 @@ GUI_TEST_CLASS_DEFINITION(test_5842) {
     GTUtilsProjectTreeView::click("alignment.ugenedb", Qt::RightButton);
 
     // Expected state: the view is opened without errors.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5847) {
@@ -4432,7 +4432,7 @@ GUI_TEST_CLASS_DEFINITION(test_5847) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Expected: no errors in the log
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5849) {
