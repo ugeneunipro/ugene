@@ -54,28 +54,14 @@ TCoffeeSupport::TCoffeeSupport()
         grayIcon = QIcon(":external_tool_support/images/tcoffee_gray.png");
         warnIcon = QIcon(":external_tool_support/images/tcoffee_warn.png");
     }
-#ifdef Q_OS_WIN
-    executableFileName = "t_coffee.bat";
-#else
-#    if defined(Q_OS_UNIX)
-    executableFileName = "t_coffee";
-#    endif
-#endif
+    executableFileName = isOsWindows() ? "t_coffee.bat" : "t_coffee";
     validationArguments << "-help";
     validationMessageRegExp = "PROGRAM: T-COFFEE";
     description = tr("<i>T-Coffee</i> is a multiple sequence alignment package.");
     versionRegExp = QRegExp("PROGRAM: T-COFFEE Version_(\\d+\\.\\d+)");
     toolKitName = "T-Coffee";
+    // T-Coffee fails to work on dir with spaces (has a lot of unsafe 'mv %s %s' commands with no quotes).
     pathChecks << ExternalTool::PathChecks::SpacesTemporaryDirPath;
-    if (isOsLinux()) {
-        pathChecks << ExternalTool::PathChecks::NonLatinTemporaryDirPath
-                   << ExternalTool::PathChecks::SpacesTemporaryDirPath
-                   << ExternalTool::PathChecks::SpacesToolPath
-                   << ExternalTool::PathChecks::SpacesArguments;
-    }
-    if (isOsMac()) {
-        //Fill me after UGENE-7831 fix
-    }
 }
 
 void TCoffeeSupport::sl_runWithExtFileSpecify() {
