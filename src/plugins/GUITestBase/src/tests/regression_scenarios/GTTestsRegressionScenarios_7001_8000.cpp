@@ -2689,6 +2689,23 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
     GTUtilsMsaEditor::getTreeView();  // Check that tree view is opened.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7558) {
+    /* 
+    1. Open sars.gb and COI.aln
+    2. Type NCBI in project filter
+    Expected state: no errors in the log
+    */ 
+    GTFileDialog::openFile(dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTLogTracer lt;
+    GTUtilsProjectTreeView::filterProject("NCBI");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors in the log.");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7572) {
     // 1. Open HIV-1.aln
     // 2. Click the "Build Tree" button on the toolbar.

@@ -21,6 +21,7 @@
 
 #include "FeatureKeyFilterTask.h"
 
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2FeatureDbi.h>
@@ -52,7 +53,14 @@ void FeatureKeyFilterTask::run() {
 void FeatureKeyFilterTask::filterDocument(Document* doc) {
     SAFE_POINT_EXT(doc != nullptr, stateInfo.setError(L10N::nullPointerError("document")), );
     CHECK(doc->isLoaded(), );
-
+    bool annotationTableFound = false;
+    for (const GObject* obj : qAsConst(doc->getObjects())) {
+        if (obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
+            annotationTableFound = true;
+            break;
+        }
+    }
+    CHECK(annotationTableFound, );
     const U2DbiRef dbiRef = doc->getDbiRef();
     SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("DbiRef is invalid")), );
     if (!dbiRef2AnnotationTables.contains(dbiRef)) {
