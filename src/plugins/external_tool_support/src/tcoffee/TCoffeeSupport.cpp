@@ -60,6 +60,8 @@ TCoffeeSupport::TCoffeeSupport()
     description = tr("<i>T-Coffee</i> is a multiple sequence alignment package.");
     versionRegExp = QRegExp("PROGRAM: T-COFFEE Version_(\\d+\\.\\d+)");
     toolKitName = "T-Coffee";
+    // T-Coffee fails to work on dir with spaces (has a lot of unsafe 'mv %s %s' commands with no quotes).
+    pathChecks << ExternalTool::PathChecks::SpacesTemporaryDirPath;
 }
 
 void TCoffeeSupport::sl_runWithExtFileSpecify() {
