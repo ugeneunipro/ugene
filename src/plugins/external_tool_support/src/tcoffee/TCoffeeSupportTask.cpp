@@ -284,13 +284,7 @@ Task::ReportResult TCoffeeSupportTask::report() {
     // Remove subdir for temporary files, that created in prepare
     if (!url.isEmpty()) {
         QDir tmpDir(QFileInfo(url).absoluteDir());
-        foreach (QString file, tmpDir.entryList()) {
-            tmpDir.remove(file);
-        }
-        if (!tmpDir.rmdir(tmpDir.absolutePath())) {
-            stateInfo.setError(tr("Can not remove folder for temporary files."));
-            emit si_stateChanged();
-        }
+        ExternalToolSupportUtils::removeTmpDir(tmpDir.absolutePath(), stateInfo);
     }
 
     return ReportResult_Finished;
