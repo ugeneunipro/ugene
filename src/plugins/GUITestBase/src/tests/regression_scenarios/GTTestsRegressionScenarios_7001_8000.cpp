@@ -3727,6 +3727,24 @@ GUI_TEST_CLASS_DEFINITION(test_7699) {
     CHECK_SET_ERR(parameterValue == "123.fa", "Parameter must be set to '123.fa'");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7701) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::click("Read alignment");
+    GTUtilsWorkflowDesigner::addInputFile("Read alignment", dataDir + "samples/CLUSTALW/ty3.aln.gz");
+
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsMdi::closeAllWindows();
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7708) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708", "7708.uwl");
