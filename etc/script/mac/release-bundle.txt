@@ -72,16 +72,6 @@ Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5/Resources
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5/Resources/Info.plist
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/5/Resources/QtSvg.prl
 Unipro UGENE.app/Contents/Frameworks/QtSvg.framework/Versions/Current
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/QtTest
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Resources
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/QtTest
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/Resources
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/Resources/Info.plist
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/5/Resources/QtTest.prl
-Unipro UGENE.app/Contents/Frameworks/QtTest.framework/Versions/Current
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/QtWidgets
 Unipro UGENE.app/Contents/Frameworks/QtWidgets.framework/Resources
