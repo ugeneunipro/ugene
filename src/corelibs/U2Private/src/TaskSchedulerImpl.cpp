@@ -240,6 +240,11 @@ bool TaskSchedulerImpl::processFinishedTasks() {
                     newSubTasks = pti->thread->unconsideredNewSubtasks;
                     pti->thread->newSubtasksObtained = false;
                     pti->thread->subtasksLocker.unlock();
+                } else {
+                    // Event was not delivered to the thread because pti->thread->isRunning() was false.
+                    // This may happen because the parent see 'cancel' or 'error' flag, see TaskThread::event().
+                    // In this case we anyway must deliver onSubTaskFinished() events to the parent task.
+                    newSubTasks = onSubTaskFinished(parentTask, task);
                 }
             } else {
                 newSubTasks = onSubTaskFinished(parentTask, task);
@@ -782,7 +787,7 @@ void TaskSchedulerImpl::promoteTask(TaskInfo* ti, Task::State newState) {
     stateChangesObserved = true;
 
     Task* task = ti->task;
-    SAFE_POINT(newState > task->getState(), QString("Task %1 new state is not folowing task's lifecycle order.").arg(ti->task->getTaskName()), );
+    SAFE_POINT(newState > task->getState(), QString("Task %1 new state is not following task's lifecycle order.").arg(ti->task->getTaskName()), );
 
     setTaskState(task, newState);  // emits signals
 
@@ -1057,13 +1062,7 @@ void TaskSchedulerImpl::removeThreadId(qint64 taskId) {
 }
 
 TaskThread::TaskThread(TaskInfo* _ti)
-    : ti(_ti),
-      subtasksLocker(),
-      unconsideredNewSubtasks(),
-      newSubtasksObtained(false),
-      pauser(),
-      isPaused(false),
-      pauseLocker() {
+    : ti(_ti) {
     if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly)) {
         moveToThread(this);
     }

@@ -85,7 +85,7 @@ const QString namesOfRow[16] = {"SZYD_Cas9_CR50",
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             CHECK_SET_ERR(minReadIdentity == 80, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
@@ -147,8 +147,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames();
     for (const QString& rowName : qAsConst(rowNames)) {
         bool isNameFound = false;
-        for (int i = 0; i < 16; i++) {
-            QString currentName = namesOfRow[i];
+        for (const auto& currentName : qAsConst(namesOfRow)) {
             if (rowName == currentName) {
                 isNameFound = true;
                 break;
@@ -163,7 +162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             QString expected = "80";
@@ -199,7 +198,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished();
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(readDir, reads);
+            auto ob = new GTFileDialogUtils_list(readDir, reads);
             GTUtilsDialog::waitForDialog(ob);
 
             GTWidget::click(GTWidget::findPushButton("addReadButton"));
@@ -258,8 +257,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames();
     foreach (QString rowName, rowNames) {
         bool checkCurrentName = false;
-        for (int i = 0; i < 16; i++) {
-            QString currentName = namesOfRow[i];
+        for (const auto& currentName : qAsConst(namesOfRow)) {
             if (rowName == currentName) {
                 checkCurrentName = true;
                 break;
@@ -282,7 +280,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget* wizard = GTWidget::getActiveModalWidget();
             const QString expectedTitle = "Map Sanger Reads to Reference";
@@ -326,10 +324,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     const QStringList outputFiles = GTUtilsDashboard::getOutputFiles();
-    CHECK_SET_ERR(1 == outputFiles.size(), QString("Too many output files, exptected 1, got %1").arg(outputFiles.size()));
+    CHECK_SET_ERR(outputFiles.size() == 1, QString("Too many output files, exptected 1, got %1").arg(outputFiles.size()));
 
-    const QString expectedResultFileName = "alignment.ugenedb";
-    const QString actualResultFileName = outputFiles.first();
+    QString expectedResultFileName = "alignment.ugenedb";
+    QString actualResultFileName = outputFiles.first();
     CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect output file name, exptected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
 
     //    8. Click to "alignment.ugenedb" on the dashboard.
@@ -343,10 +341,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QMap<QString, QStringList> documents = GTUtilsProjectTreeView::getDocuments();
     CHECK_SET_ERR(1 == documents.count(), QString("An incorrect documents count: expected 1, got %1").arg(documents.count()));
 
-    const QString actualDocumentName = documents.keys().first();
+    QString actualDocumentName = documents.keys().first();
     CHECK_SET_ERR(expectedResultFileName == actualDocumentName, QString("An unexpected document name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualDocumentName));
 
-    CHECK_SET_ERR(1 == documents.first().count(), QString("An incorrect objects count in '%1' document: expected 1, got %2").arg(documents.keys().first()).arg(documents.first().count()));
+    CHECK_SET_ERR(documents.first().count() == 1, QString("An incorrect objects count in '%1' document: expected 1, got %2").arg(documents.keys().first()).arg(documents.first().count()));
 
     const QString expectedObjectName = "[mc] Mapped reads";
     const QString actualObjectName = documents.first().first();
@@ -414,7 +412,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget* wizard = GTWidget::getActiveModalWidget();
             const QString expectedTitle = "Map Sanger Reads to Reference";
@@ -461,7 +459,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             QString expected = "80";
@@ -497,7 +495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished();
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(readDir, reads);
+            auto ob = new GTFileDialogUtils_list(readDir, reads);
             GTUtilsDialog::waitForDialog(ob);
 
             GTWidget::click(GTWidget::findPushButton("addReadButton"));
@@ -539,7 +537,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             QString expected = "80";
@@ -575,7 +573,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished();
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(readDir, reads);
+            auto ob = new GTFileDialogUtils_list(readDir, reads);
             GTUtilsDialog::waitForDialog(ob);
 
             GTWidget::click(GTWidget::findPushButton("addReadButton"));
@@ -623,11 +621,11 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget* wizard = GTWidget::getActiveModalWidget();
-            const QString expectedTitle = "Map Sanger Reads to Reference";
-            const QString actualTitle = wizard->windowTitle();
+            QString expectedTitle = "Map Sanger Reads to Reference";
+            QString actualTitle = wizard->windowTitle();
             CHECK_SET_ERR(expectedTitle == actualTitle, QString("Wizard title is incorrect: expected '%1', got '%2'").arg(expectedTitle).arg(actualTitle));
 
             GTWidget::click(wizard);
@@ -651,9 +649,9 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 
             //    7. Push Run on Results page where "alignment.ugenedb" is result database by default
-            const QString expectedResultFileName = "alignment.ugenedb";
+            QString expectedResultFileName = "alignment.ugenedb";
             QString actualResultFileName = GTUtilsWizard::getParameter("Mapped reads file").toString();
-            CHECK_SET_ERR(expectedResultFileName == actualResultFileName, QString("An incorrect result file name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
+            CHECK_SET_ERR(actualResultFileName == expectedResultFileName, QString("An incorrect result file name: expected '%1', got '%2'").arg(expectedResultFileName).arg(actualResultFileName));
 
             GTUtilsWizard::clickButton(GTUtilsWizard::Run);
         }
@@ -670,7 +668,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             QString expected = "80";
@@ -706,7 +704,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished();
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(readDir, reads);
+            auto ob = new GTFileDialogUtils_list(readDir, reads);
             GTUtilsDialog::waitForDialog(ob);
 
             GTWidget::click(GTWidget::findPushButton("addReadButton"));
@@ -754,7 +752,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    Expected state: "Trim and Align Sanger Reads" dialog has appered
             QWidget* wizard = GTWidget::getActiveModalWidget();
             const QString expectedTitle = "Map Sanger Reads to Reference";
@@ -801,7 +799,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             QString expected = "80";
@@ -837,7 +835,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             }
             QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished();
-            GTFileDialogUtils_list* ob = new GTFileDialogUtils_list(readDir, reads);
+            auto ob = new GTFileDialogUtils_list(readDir, reads);
             GTUtilsDialog::waitForDialog(ob);
 
             GTWidget::click(GTWidget::findPushButton("addReadButton"));
