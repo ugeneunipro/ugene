@@ -4832,5 +4832,21 @@ GUI_TEST_CLASS_DEFINITION(test_7896) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7907) {
+    GTFileDialog::openFile(testDir + "_common_data/regression/7907/example.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    FindEnzymesDialogFillerSettings settings;
+    settings.enzymes = QStringList{ "AbaSI" };
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
+    GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTGlobals::FindOptions options;
+    options.failIfNotFound = false;
+    auto a = GTUtilsAnnotationsTreeView::findItem("AbaSI", nullptr, options);
+    CHECK_SET_ERR(a == nullptr, "Unexpected restriction site found");
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

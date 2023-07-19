@@ -51,8 +51,32 @@ public:
     void run(const DNASequence& sequence, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* resultListener, TaskStateInfo& stateInfo, int resultPosShift = 0) {
         SAFE_POINT(enzyme->alphabet != nullptr, "No enzyme alphabet", );
 
+        QByteArray enzymeSequence = enzyme->seq;
+        int leadingNsNumber = 0;
+        int trailingNsNumber = 0;
+        if (enzyme->cutDirect != ENZYME_CUT_UNKNOWN) {
+            if (enzyme->cutDirect < 0) {
+                leadingNsNumber = qAbs(enzyme->cutDirect);
+            } else if (enzyme->cutDirect > enzymeSequence.size()) {
+                trailingNsNumber = enzyme->cutDirect - enzymeSequence.size();
+            }
+        }
+        if (enzyme->cutComplement != ENZYME_CUT_UNKNOWN) {
+            if (enzyme->cutComplement < 0) {
+                trailingNsNumber = qMax(trailingNsNumber, qAbs(enzyme->cutComplement));
+            } else if (enzyme->cutComplement > enzymeSequence.size()) {
+                leadingNsNumber = qMax(leadingNsNumber, enzyme->cutComplement - enzymeSequence.size());
+            }
+        }
+        if (leadingNsNumber != 0) {
+            enzymeSequence.insert(0, QString(leadingNsNumber, EnzymeData::UNDEFINED_BASE));
+        }
+        if (trailingNsNumber != 0) {
+            enzymeSequence.append(QString(trailingNsNumber, EnzymeData::UNDEFINED_BASE));
+        }
+
         // look for results in direct strand
-        run(sequence, region, enzyme, enzyme->seq.constData(), U2Strand::Direct, resultListener, stateInfo, resultPosShift);
+        run(sequence, region, enzyme, enzymeSequence, U2Strand::Direct, resultListener, stateInfo, resultPosShift);
         CHECK_OP(stateInfo, );
 
         // if enzyme is not symmetric - look in complementary strand too
@@ -60,20 +84,21 @@ public:
         if (tt == nullptr) {
             return;
         }
-        QByteArray revCompl = enzyme->seq;
+        QByteArray revCompl = enzymeSequence;
         tt->translate(revCompl.data(), revCompl.size());
         TextUtils::reverse(revCompl.data(), revCompl.size());
-        if (revCompl == enzyme->seq) {
+        if (revCompl == enzymeSequence) {
             return;
         }
-        run(sequence, region, enzyme, revCompl.constData(), U2Strand::Complementary, resultListener, stateInfo, resultPosShift);
+        run(sequence, region, enzyme, revCompl, U2Strand::Complementary, resultListener, stateInfo, resultPosShift);
     }
 
-    void run(const DNASequence& sequence, const U2Region& region, const SEnzymeData& enzyme, const char* pattern, U2Strand stand, FindEnzymesAlgListener* resultListener, TaskStateInfo& ti, int resultPosShift = 0) {
+    void run(const DNASequence& sequence, const U2Region& region, const SEnzymeData& enzyme, const QByteArray& byteArrayPattern, U2Strand stand, FindEnzymesAlgListener* resultListener, TaskStateInfo& ti, int resultPosShift = 0) {
+        const char* pattern = byteArrayPattern.constData();
         CompareFN fn(sequence.alphabet, enzyme->alphabet);
         const char* seq = sequence.constData();
         char unknownChar = sequence.alphabet->getDefaultSymbol();
-        int plen = enzyme->seq.length();
+        int plen = byteArrayPattern.length();
         for (int pos = region.startPos, endPos = region.endPos() - plen + 1; pos < endPos; pos++) {
             bool match = matchSite(seq + pos, pattern, plen, unknownChar, fn);
             if (match) {
@@ -85,7 +110,7 @@ public:
             if (region.startPos + region.length == sequence.length()) {
                 QByteArray buf;
                 const QByteArray& dnaseq = sequence.seq;
-                int size = enzyme->seq.size() - 1;
+                int size = plen - 1;
                 int startPos = dnaseq.length() - size;
                 buf.append(dnaseq.mid(startPos));
                 buf.append(dnaseq.mid(0, size));
