@@ -43,7 +43,6 @@ enum RefineTreeNodeStatus {
     RefineTreeNodeStatus_Available,
     RefineTreeNodeStatus_Processing,
     RefineTreeNodeStatus_Done,
-    RefineTreeNodeStatus_DoneFinaly
 };
 
 struct MuscleWorkPool {
@@ -54,7 +53,7 @@ struct MuscleWorkPool {
     unsigned getJob();
     unsigned getNextJob(unsigned uNodeIndex);
 
-    MuscleContext* ctx;
+    MuscleContext* ctx = nullptr;
     const MuscleTaskSettings& config;
     MultipleSequenceAlignment ma;
     MultipleSequenceAlignment& res;
@@ -62,14 +61,14 @@ struct MuscleWorkPool {
     SeqVect v;
     Tree GuideTree;
     MSA a;
-    WEIGHT* Weights;
-    ProgNode* ProgNodes;
-    MuscleParamsHelper* ph;
+    WEIGHT* Weights = nullptr;
+    ProgNode* ProgNodes = nullptr;
+    MuscleParamsHelper* ph = nullptr;
     TaskStateInfo& ti;
-    TreeNodeStatus* treeNodeStatus;
-    unsigned* treeNodeIndexes;
-    int nThreads;
-    unsigned uJoin;
+    TreeNodeStatus* treeNodeStatus = nullptr;
+    unsigned* treeNodeIndexes = nullptr;
+    int nThreads = 1;
+    unsigned uJoin = 0;
     QMutex jobMgrMutex;
     QMutex proAligMutex;
     ////////////////////////////
@@ -83,37 +82,37 @@ struct MuscleWorkPool {
 
     unsigned refineGetNextJob(MSA* _msaIn, bool accepted, SCORE scoreMax, unsigned index, int workerID);
 
-    unsigned isRefineDone() {
+    unsigned isRefineDone() const {
         return refineDone; /*|| ctx->isCanceled();*/
     }
 
-    bool* ptrbOscillating;
-    unsigned oscillatingIter;
-    bool bAnyAccepted;
-    unsigned* InternalNodeIndexes;
-    unsigned uInternalNodeCount;
-    bool bReversed;
-    bool bRight;
-    unsigned uIter;
-    ScoreHistory* History;
-    bool bLockLeft;
-    bool bLockRight;
+    bool* ptrbOscillating = nullptr;
+    unsigned oscillatingIter = NULL_NEIGHBOR;
+    bool bAnyAccepted = false;
+    unsigned* InternalNodeIndexes = nullptr;
+    unsigned uInternalNodeCount = 0;
+    bool bReversed = false;
+    bool bRight = false;
+    unsigned uIter = 0;
+    ScoreHistory* History = nullptr;
+    bool bLockLeft = false;
+    bool bLockRight = false;
 
-    bool refineDone;
+    bool refineDone = true; // TODO: check if we can set default to false. Historically it was true.
     QSemaphore mainSem;
     QSemaphore childSem;
     QMutex mut;
     RefineTreeNodeStatus* refineNodeStatuses;
     bool* needRestart;
-    unsigned lastAcceptedIndex;
+    unsigned lastAcceptedIndex = 0;
     unsigned* currentNodeIndex;
     unsigned* workerStartPos;
-    MSA* msaIn;
+    MSA* msaIn = nullptr;
 
-    unsigned uIters;
-    unsigned uRangeIndex;
-    unsigned uRangeCount;
-    TaskStateInfo* refineTI;
+    unsigned uIters = 1;
+    unsigned uRangeIndex = 0;
+    unsigned uRangeCount = 1;
+    TaskStateInfo* refineTI = nullptr;
 };
 
 #endif  //_MUSCLEWORKPOOL_H_

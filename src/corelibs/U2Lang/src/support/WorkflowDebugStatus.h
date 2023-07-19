@@ -45,8 +45,9 @@ class U2LANG_EXPORT WorkflowDebugStatus : public QObject {
     Q_DISABLE_COPY(WorkflowDebugStatus)
 public:
     explicit WorkflowDebugStatus(QObject* parent = nullptr);
-    ~WorkflowDebugStatus();
+    ~WorkflowDebugStatus() override;
 
+    WorkflowContext* getContext() const;
     void setContext(WorkflowContext* initContext);
     void setMessageParser(WorkflowDebugMessageParser* initParser);
     WorkflowDebugMessageParser* getMessageParser() const;

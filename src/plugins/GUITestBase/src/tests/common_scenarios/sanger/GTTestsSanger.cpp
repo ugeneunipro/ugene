@@ -62,7 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -73,7 +73,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
               settings(settings) {
         }
 
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
@@ -108,7 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -163,7 +163,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTUtilsProjectTreeView::checkItem("sanger_test_0004_1");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
@@ -172,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    Expected state: 'Sequence name from file' value is set by default.
             const QString expectedRowNamingPolicy = "Sequence name from file";
@@ -292,7 +292,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    Expected state: wizard has appeared.
             QWidget* wizard = GTWidget::getActiveModalWidget();
             GTWidget::clickWindowTitle(wizard);

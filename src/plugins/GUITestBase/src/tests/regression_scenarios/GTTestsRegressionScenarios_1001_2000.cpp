@@ -396,7 +396,7 @@ GUI_TEST_CLASS_DEFINITION(test_1020) {
     CHECK_SET_ERR(QFileInfo::exists(sandBoxDir + "test_1020.csv"), "Distance matrix file not found");
 
     // Expected result : Distance matrix is generated and / or saved correctly in all cases.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1021) {
@@ -1064,7 +1064,7 @@ GUI_TEST_CLASS_DEFINITION(test_1065_1) {
         CHECK_SET_ERR(fileName.endsWith("ebwt"), "Incorrect result file");
     }
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1065_2) {
@@ -1092,7 +1092,7 @@ GUI_TEST_CLASS_DEFINITION(test_1065_2) {
 
     GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(&p));
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -1122,7 +1122,7 @@ GUI_TEST_CLASS_DEFINITION(test_1065_3) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1068) {
@@ -1463,7 +1463,7 @@ GUI_TEST_CLASS_DEFINITION(test_1121) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Expected state : Ugene did not crash on assert
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1122) {
@@ -1491,7 +1491,7 @@ GUI_TEST_CLASS_DEFINITION(test_1122) {
 
     CHECK_SET_ERR(GTFile::equals(sandBoxDir + "test_1122_1.ace", sandBoxDir + "test_1122_2.ace"), "Files are not equal");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1123) {
@@ -2018,7 +2018,7 @@ GUI_TEST_CLASS_DEFINITION(test_1190) {  // add AlignShortReadsFiller
 
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 
     //}
     // Reference sequence: _common_data/fasta/N.fa  /home/vmalin/ugene/trunk/test/_common_data/fasta/N.ugenedb
@@ -2898,7 +2898,7 @@ GUI_TEST_CLASS_DEFINITION(test_1295) {
     GTUtilsTaskTreeView::waitTaskFinished();
     // Expected: the tree appears synchronized with the MSA Editor.
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1299) {
@@ -3860,7 +3860,7 @@ GUI_TEST_CLASS_DEFINITION(test_1419) {
     GTLogTracer lt;
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1420) {
@@ -4198,7 +4198,7 @@ GUI_TEST_CLASS_DEFINITION(test_1455) {
     //    Expected result: scheme is loaded completely without any error messages in log
     GTFileDialog::openFile(sandBoxDir + "dump_sequence.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1457) {
@@ -4656,7 +4656,7 @@ GUI_TEST_CLASS_DEFINITION(test_1499) {
     CHECK_SET_ERR(msaSequences0 == msaSequences2, "MSA is not synchronized with tree.");
 
     // Check that there are no errors in the log.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1506) {
@@ -5116,7 +5116,7 @@ GUI_TEST_CLASS_DEFINITION(test_1568) {
     GTUtilsDocument::unloadDocument("test_1568.nwk", false);
     GTUtilsProjectTreeView::doubleClickItem("COI.aln");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1573) {
@@ -5647,7 +5647,7 @@ GUI_TEST_CLASS_DEFINITION(test_1606) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"Molecular Surface", "SES"}));
     auto widget3d = GTWidget::findWidget("1-1EZG");
     GTWidget::click(widget3d, Qt::RightButton);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1607) {
@@ -5674,7 +5674,7 @@ GUI_TEST_CLASS_DEFINITION(test_1607) {
 
     // Expected state : output file not empty
     CHECK_SET_ERR(outputFile.exists() && outputFile.size() > 0, "Workflow output file is invalid");
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     outputFile.remove();
 }
 
@@ -6431,7 +6431,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681_1) {
@@ -6492,7 +6492,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_1) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681_2) {
@@ -6516,7 +6516,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_2) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1681_3) {
@@ -6561,7 +6561,7 @@ GUI_TEST_CLASS_DEFINITION(test_1681_3) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1686) {
@@ -6857,8 +6857,8 @@ GUI_TEST_CLASS_DEFINITION(test_1720) {
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("D11266.gb"));
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
+    lt.assertNoErrors();
     // Expected state: project view with document "D11266.gb", no error messages in log appear
 }
 
@@ -6982,7 +6982,7 @@ GUI_TEST_CLASS_DEFINITION(test_1735) {
 
     //    Expected state: there are no errors when this pipeline scheme is running.
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1738) {
@@ -7710,7 +7710,7 @@ GUI_TEST_CLASS_DEFINITION(test_1919) {
 
     GTWidget::click(GTAction::button("Run workflow"));
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1921) {

@@ -108,7 +108,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
         return;
     }
 
-    if (uSeqCount > 1 && mhack) {
+    if (mhack) {
         MHackStart(v);
     }
     Tree GuideTree;
@@ -145,7 +145,7 @@ void MuscleAdapter::alignUnsafe(const MultipleSequenceAlignment& ma, MultipleSeq
         return;
     }
 
-    if (0 == ctx->params.g_pstrUseTreeFileName) {
+    if (ctx->params.g_pstrUseTreeFileName == 0) {
         ctx->params.g_bDiags = ctx->params.g_bDiags2;
         SetIter(2);
 
@@ -228,7 +228,7 @@ void MuscleAdapter::refineUnsafe(const MultipleSequenceAlignment& ma, MultipleSe
     MSA::SetIdCount(uSeqCount);
 
     // Initialize sequence ids.
-    // From this point on, ids must somehow propogate from here.
+    // From this point on, ids must somehow propagate from here.
     for (unsigned uSeqIndex = 0; uSeqIndex < uSeqCount; ++uSeqIndex) {
         msa.SetSeqId(uSeqIndex, uSeqIndex);
     }
@@ -430,7 +430,7 @@ static void addSequenceToMSA(MultipleSequenceAlignment& ma, const QByteArray& pa
             QByteArray newSeq;
             newSeq.reserve(newLen);
             int insCoordsPos = insCoords[0];
-            int prevInsCoordsPos = -1;
+            int prevInsCoordsPos;
             int insCoordsIdx = 0;
             for (int seqPos = 0; seqPos < prevLen; seqPos++) {
                 if (seqPos == insCoordsPos) {

@@ -399,7 +399,7 @@ private:
 
     QSplitter* infoSplitter;
 
-    WorkflowDebugStatus* debugInfo;
+    WorkflowDebugStatus* debugInfo = nullptr;
     QList<QAction*> debugActions;
     BreakpointManagerView* breakpointView;
     QTabWidget* bottomTabs;

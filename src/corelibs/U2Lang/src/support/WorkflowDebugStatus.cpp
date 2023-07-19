@@ -28,9 +28,6 @@
 #include "WorkflowBreakpointSharedInfo.h"
 #include "WorkflowDebugMessageParser.h"
 
-const QString INVESTIGATION_TABLE_TYPE = "Type";
-const QString INVESTIGATION_TABLE_VALUE = "Value";
-
 namespace U2 {
 
 QList<BreakpointLabel> WorkflowDebugStatus::existingBreakpointLabels = QList<BreakpointLabel>();
@@ -42,6 +39,10 @@ WorkflowDebugStatus::WorkflowDebugStatus(QObject* parent)
 WorkflowDebugStatus::~WorkflowDebugStatus() {
     qDeleteAll(breakpoints);
     delete parser;
+}
+
+WorkflowContext* WorkflowDebugStatus::getContext() const {
+    return context;
 }
 
 void WorkflowDebugStatus::setContext(WorkflowContext* initContext) {
@@ -152,12 +153,11 @@ WorkflowBreakpoint* WorkflowDebugStatus::getBreakpointForActor(const ActorId& ac
 
 bool WorkflowDebugStatus::isBreakpointActivated(const Actor* actor) const {
     WorkflowBreakpoint* breakpoint = getBreakpointForActor(actor->getId());
-    if (breakpoint != nullptr && breakpoint->isEnabled()) {
-        breakpoint->setContext(context);
-        return breakpoint->hit(actor->getCondition());
-    } else {
+    if (breakpoint == nullptr || !breakpoint->isEnabled()) {
         return false;
     }
+    breakpoint->setContext(context);
+    return breakpoint->hit(actor->getCondition());
 }
 
 bool WorkflowDebugStatus::hasBreakpoint(const ActorId& actor) const {
@@ -220,8 +220,8 @@ void WorkflowDebugStatus::setHitCounterForActor(const ActorId& actor, Breakpoint
 
 void WorkflowDebugStatus::removeBreakpoint(WorkflowBreakpoint* breakpoint) {
     ActorId owner = breakpoint->getActorId();
-    const int removedCount = breakpoints.removeAll(breakpoint);
-    Q_ASSERT(1 == removedCount);
+    int removedCount = breakpoints.removeAll(breakpoint);
+    Q_ASSERT(removedCount == 1);
     Q_UNUSED(removedCount);
     delete breakpoint;
     emit si_breakpointRemoved(owner);

@@ -1998,7 +1998,7 @@ GUI_TEST_CLASS_DEFINITION(test_6475_2) {
 
     //    Expected state: the workflow finishes soon without errors.
     GTUtilsTaskTreeView::waitTaskFinished(30000);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 

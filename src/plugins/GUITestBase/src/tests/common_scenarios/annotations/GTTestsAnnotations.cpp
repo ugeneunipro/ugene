@@ -796,7 +796,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsDialog::add(new PopupChooser({ADV_MENU_EXPORT, "action_export_annotations"}));
     GTUtilsDialog::add(new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTMouseDriver::click(Qt::RightButton);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012_1) {

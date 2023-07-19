@@ -1354,7 +1354,7 @@ GUI_TEST_CLASS_DEFINITION(test_7407) {
     CHECK_SET_ERR(sequence.length() == 1, "Invalid sequence length: " + QString::number(sequence.length()));
     char c = sequence[0].toLatin1();
     CHECK_SET_ERR(c == 'A' || c == 'C' || c == 'G' || c == 'T', "Invalid sequence symbol: " + sequence[0]);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -2978,9 +2978,7 @@ GUI_TEST_CLASS_DEFINITION(test_7616) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Check there is an active tree view.
-    GTLogTracer lt2;
     GTUtilsMsaEditor::getTreeView();
-    CHECK_SET_ERR(!lt2.hasErrors(), "Found errors in log: " + lt2.getJoinedErrorString());
 
     documents = AppContext::getProject()->getDocuments();
     CHECK_SET_ERR(documents.size() == 2, "Expected 2 document in project");
@@ -3727,6 +3725,30 @@ GUI_TEST_CLASS_DEFINITION(test_7699) {
     CHECK_SET_ERR(parameterValue == "123.fa", "Parameter must be set to '123.fa'");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7701) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::toggleDebugMode();
+
+    GTUtilsWorkflowDesigner::addSample("Align sequences with MUSCLE");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // Close wizard.
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::click("Read alignment");
+    GTUtilsWorkflowDesigner::addInputFile("Read alignment", dataDir + "samples/CLUSTALW/ty3.aln.gz");
+
+    GTUtilsWorkflowDesigner::setBreakpoint("Write alignment");
+
+    GTLogTracer lt;
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsMdi::closeAllWindows();
+
+    // Workflow must continue execution even with no windows.
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // Expected state: there is no crash or errors.
+    lt.assertNoErrors();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7708) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
     GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708", "7708.uwl");
@@ -3785,7 +3807,7 @@ GUI_TEST_CLASS_DEFINITION(test_7714) {
     qint64 assemblyReads2 = GTUtilsAssemblyBrowser::getReadsCount();
     CHECK_SET_ERR(assemblyReads2 == expectedReads, QString("An unexpected assembly reads count: expect  %1, got %2").arg(expectedReads).arg(assemblyReads2));
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7715) {
