@@ -832,7 +832,7 @@ QList<FeatureAndKey> SQLiteFeatureDbi::getFeatureTable(const U2DataId& rootFeatu
     return result;
 }
 
-QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os) {
+QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch) {
     SQLiteTransaction t(db, os);
     QMap<U2DataId, QStringList> result;
     CHECK(!values.isEmpty(), result);
@@ -841,18 +841,32 @@ QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(co
 
     QString queryStringk("SELECT DISTINCT A.object, F.name FROM AnnotationTable AS A, Feature AS F, FeatureKey AS FK "
                          "WHERE A.rootId = F.root AND F.id = FK.feature ");
-
-    for (int i = 1, n = values.size(); i <= n; ++i) {
+    int i = 1;
+    for (int n = values.size(); i <= n; ++i) {
         queryStringk.append(QString("AND FK.value LIKE ?%1 ").arg(i));
+    }
+
+    if (!desiredObjectIdsToSearch.isEmpty()) {
+        queryStringk.append("AND (");
+        for (int n = 0; n < desiredObjectIdsToSearch.size(); n++, i++) {
+            QString queryPart = n == 0 ? QString("A.object = ?%1 ") : QString("OR A.object = ?%1 ");
+            queryStringk.append(queryPart.arg(i));
+        }
+        queryStringk.append(") ");
     }
 
     queryStringk.append("COLLATE NOCASE");
 
     QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryStringk, db, os);
 
-    for (int i = 1, n = values.size(); i <= n; ++i) {
+    i = 1;
+    for (int n = values.size(); i <= n; ++i) {
         q->bindString(i, QString("%%1%").arg(values[i - 1]));
         CHECK_OP(os, result);
+    }
+    for (const U2DataId& objectId : qAsConst(desiredObjectIdsToSearch)) {
+        q->bindDataId(i, objectId);
+        i++;
     }
 
     while (q->step()) {

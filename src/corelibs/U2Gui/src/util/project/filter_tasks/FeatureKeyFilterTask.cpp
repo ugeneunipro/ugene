@@ -53,31 +53,19 @@ void FeatureKeyFilterTask::run() {
 void FeatureKeyFilterTask::filterDocument(Document* doc) {
     SAFE_POINT_EXT(doc != nullptr, stateInfo.setError(L10N::nullPointerError("document")), );
     CHECK(doc->isLoaded(), );
-    bool annotationTableFound = false;
-    for (const GObject* obj : qAsConst(doc->getObjects())) {
-        if (obj->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
-            annotationTableFound = true;
-            break;
-        }
-    }
-    CHECK(annotationTableFound, );
     const U2DbiRef dbiRef = doc->getDbiRef();
-    SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("DbiRef is invalid")), );
-    if (!dbiRef2AnnotationTables.contains(dbiRef)) {
-        DbiConnection connection(dbiRef, stateInfo);
-        CHECK_OP(stateInfo, );
-        SAFE_POINT_EXT(connection.dbi != nullptr, stateInfo.setError(L10N::nullPointerError("Database connection")), );
-        U2FeatureDbi* featureDbi = connection.dbi->getFeatureDbi();
-        SAFE_POINT_EXT(featureDbi != nullptr, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );
-
-        dbiRef2AnnotationTables[dbiRef] = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo);
-        SAFE_POINT_OP(stateInfo, );
-    }
-
-    const QMap<U2DataId, QStringList>& annNames = dbiRef2AnnotationTables[dbiRef];
-    const int foundObjectsNumber = annNames.size();
+    SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("DbiRef is invalid")), );    
+    DbiConnection connection(dbiRef, stateInfo);
+    CHECK_OP(stateInfo, );
+    SAFE_POINT_EXT(connection.dbi != nullptr, stateInfo.setError(L10N::nullPointerError("Database connection")), );
+    U2FeatureDbi* featureDbi = connection.dbi->getFeatureDbi();
+    SAFE_POINT_EXT(featureDbi != nullptr, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );        
+    QMap<U2DataId, QStringList> annotationTablesByFk = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo, doc->getDocObjectsIds());
+    SAFE_POINT_OP(stateInfo, );
+    CHECK(!annotationTablesByFk.isEmpty());
+    const int foundObjectsNumber = annotationTablesByFk.size();
     const int totalDocObjectsNumber = doc->getObjects().size();
-    foreach (const U2DataId& annTableId, annNames.keys()) {
+    foreach (const U2DataId& annTableId, annotationTablesByFk.keys()) {
         GObject* annTable = doc->getObjectById(annTableId);
         if (annTable == nullptr) {
             coreLog.error("Annotation table object not found in the document");
@@ -85,7 +73,7 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
         }
         SafeObjList filteredResult;
         filteredResult.append(annTable);
-        QStringList filterNames = annNames[annTableId];
+        QStringList filterNames = annotationTablesByFk[annTableId];
         for (const QString& filterName : qAsConst(filterNames)) {
             emit si_objectsFiltered(filterName, filteredResult);
         }
