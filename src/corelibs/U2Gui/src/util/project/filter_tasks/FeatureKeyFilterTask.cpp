@@ -62,7 +62,7 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
     SAFE_POINT_EXT(featureDbi != nullptr, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );        
     QMap<U2DataId, QStringList> annotationTablesByFk = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo, doc->getDocObjectsIds());
     SAFE_POINT_OP(stateInfo, );
-    CHECK(!annotationTablesByFk.isEmpty());
+    CHECK(!annotationTablesByFk.isEmpty(), );
     const int foundObjectsNumber = annotationTablesByFk.size();
     const int totalDocObjectsNumber = doc->getObjects().size();
     foreach (const U2DataId& annTableId, annotationTablesByFk.keys()) {
