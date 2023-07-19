@@ -460,7 +460,7 @@ qint64 SequenceViewAnnotatedRenderer::correctCutPos(qint64 pos) const {
         } else if (result > sequenceLength) {
             result = result - sequenceLength;
         }
-    } else if (result <= 0 || result >= sequenceLength) {
+    } else if (result < 0 || result > sequenceLength) {
         // out of sequence, do not draw
         result = INCORRECT_CUT_POSITION;
     }
