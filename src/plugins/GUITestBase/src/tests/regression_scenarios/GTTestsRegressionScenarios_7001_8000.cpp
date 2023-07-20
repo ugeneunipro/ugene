@@ -2696,6 +2696,10 @@ GUI_TEST_CLASS_DEFINITION(test_7558) {
     Expected state: no errors in the log
     3. Search 'frame'
     Expected state: 2 results found (murine and sars)
+    4. Search 'zzzz'
+    Expected state: no results found
+    5. Search '29837500'
+    Expected state: 1 result found
     */
     GTFileDialog::openFile(dataDir + "/samples/Genbank/sars.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2708,9 +2712,18 @@ GUI_TEST_CLASS_DEFINITION(test_7558) {
     GTUtilsProjectTreeView::filterProject("NCBI");
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors in the log.");
+
     GTUtilsProjectTreeView::filterProject("frame");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsProjectTreeView::checkFilteredGroup("CDS", {}, {"NC_001363 features", "NC_004718 features"}, {});
+    GTUtilsProjectTreeView::checkFilteredGroup("CDS", {}, {"NC_001363 features", "NC_004718 features"}, {});    
+    
+    GTUtilsProjectTreeView::filterProject("zzzz");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkFilteredResultsIsEmpty();
+
+    GTUtilsProjectTreeView::filterProject("29837500");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkFilteredGroup("mat_peptide", {}, {"NC_004718 features"}, {});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7572) {
