@@ -44,7 +44,6 @@ CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(C
     : Filler("CreateExternalProcessWorkerDialog", scenario) {
 }
 
-#define GT_METHOD_NAME "run"
 void CreateElementWithCommandLineToolFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -62,7 +61,6 @@ void CreateElementWithCommandLineToolFiller::commonScenario() {
 
     processSeventhPage(dialog);
 }
-#undef GT_METHOD_NAME
 
 QString CreateElementWithCommandLineToolFiller::dataTypeToString(const InOutType& type) const {
     switch (type) {

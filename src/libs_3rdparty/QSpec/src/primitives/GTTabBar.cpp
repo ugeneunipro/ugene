@@ -32,7 +32,6 @@
 namespace HI {
 #define GT_CLASS_NAME "GTTabBar"
 
-#define GT_METHOD_NAME "setCurrentIndex"
 void GTTabBar::setCurrentIndex(QTabBar* tabBar, int index) {
     GT_CHECK(tabBar != nullptr, "QTabBar is null");
 
@@ -60,7 +59,6 @@ void GTTabBar::setCurrentIndex(QTabBar* tabBar, int index) {
     int currIndex = tabBar->currentIndex();
     GT_CHECK(currIndex == index, "Can't set index");
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

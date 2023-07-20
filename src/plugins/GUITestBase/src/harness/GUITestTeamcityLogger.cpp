@@ -43,6 +43,7 @@ void GUITestTeamcityLogger::teamCityLogResult(const QString& testName, const QSt
         teamcityLog.trace(QString("##teamcity[testFailed name='%1' message='%2' details='%2' duration='%3']").arg(escaped(testName), escaped(testResult), QString::number(testTimeMicros)));
     }
     teamcityLog.trace(QString("##teamcity[testFinished name='%1' duration='%2']").arg(escaped(testName), QString::number(testTimeMicros)));
+    std::fflush(stdout);
 }
 
 QString GUITestTeamcityLogger::escaped(const QString& s) {

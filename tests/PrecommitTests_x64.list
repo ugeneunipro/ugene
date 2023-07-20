@@ -18,7 +18,6 @@ gurl_suite.xml
 hmm2_sse_suite.xml
 hmm2_suite.xml
 hmm3_suite.xml
-kalign_suite.xml
 ma_consensus_suite.xml
 neighbor_join_suite.xml
 orf_marker_suite.xml

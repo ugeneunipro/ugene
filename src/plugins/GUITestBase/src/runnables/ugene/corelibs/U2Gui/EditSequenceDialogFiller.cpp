@@ -55,7 +55,6 @@ InsertSequenceFiller::InsertSequenceFiller(const QString& _pasteDataHere, Region
     mergeAnnotations = _mergeAnnotations;
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void InsertSequenceFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -126,7 +125,6 @@ void InsertSequenceFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

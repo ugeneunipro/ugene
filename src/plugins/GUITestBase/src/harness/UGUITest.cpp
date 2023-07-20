@@ -164,7 +164,7 @@ const QString UGUITest::dataDir = getDataDir();
 const QString UGUITest::sandBoxDir = testDir + "_common_data/scenarios/sandbox/";
 const QString UGUITest::screenshotDir = getScreenshotDir();
 
-const QString UGUITestLabels::Nightly = "Nightly";
+const QString UGUITestLabels::Precommit = "Precommit";
 const QString UGUITestLabels::Linux = "Linux";
 const QString UGUITestLabels::MacOS = "MacOS";
 const QString UGUITestLabels::Windows = "Windows";

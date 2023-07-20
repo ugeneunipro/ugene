@@ -48,7 +48,7 @@ BedtoolsSupport::BedtoolsSupport(const QString& path)
 #else
     executableFileName = "bedtools";
 #endif
-    validMessage = "bedtools v";
+    validationMessageRegExp = "bedtools v";
     description = tr("<i>Bedtools</i>: flexible tools for genome arithmetic and DNA sequence analysis.");
 
     versionRegExp = QRegExp("bedtools v(\\d+.\\d+.\\d+)");

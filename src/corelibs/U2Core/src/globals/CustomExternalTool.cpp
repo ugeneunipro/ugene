@@ -65,7 +65,7 @@ void CustomExternalTool::setValidationArguments(const QStringList& arguments) {
 }
 
 void CustomExternalTool::setValidationExpectedText(const QString& text) {
-    validMessage = text;
+    validationMessageRegExp = text;
 }
 
 void CustomExternalTool::setPredefinedVersion(const QString& version) {

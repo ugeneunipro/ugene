@@ -29,12 +29,12 @@ namespace HI {
 
 class GTMenuPrivate {
 public:
-    static void clickMainMenuItem(const QStringList& itemPath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
+    static void clickMainMenuItem(const QStringList& itemPath, GTGlobals::UseMethod popupChooserMethod = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
     static void checkMainMenuItemState(const QStringList& itemPath, PopupChecker::CheckOption expectedState);
     static void checkMainMenuItemsState(const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState);
 
 private:
-    static void showMainMenu(const QString& menuName, GTGlobals::UseMethod m = GTGlobals::UseMouse);
+    static void showMainMenu(const QString& menuName);
 };
 
 }  // namespace HI

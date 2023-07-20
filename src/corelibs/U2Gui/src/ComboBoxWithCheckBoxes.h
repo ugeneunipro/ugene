@@ -28,24 +28,42 @@
 
 namespace U2 {
 
-//https://habr.com/ru/post/215289/
+// https://habr.com/ru/post/215289/
 class U2GUI_EXPORT ComboBoxWithCheckBoxes : public QComboBox {
     Q_OBJECT
 
 public:
-    ComboBoxWithCheckBoxes(QWidget *parent = nullptr);
+    ComboBoxWithCheckBoxes(QWidget* parent = nullptr);
 
     const QStringList& getCheckedItems() const;
-    void setCheckedItems(const QStringList &items);
+    void setCheckedItems(const QStringList& items);
+
+    /**
+     * Text shown when all elements are selected.
+     * Default: 'All'.
+     */
+    QString allSelectedText;
+
+    /**
+     * Text shown when no elements are selected.
+     * Default: ''.
+     */
+    QString noneSelectedText;
+
+    /**
+     * Text shown when no elements are selected. Default: '% items'.
+     * Shown only for n > 1, otherwise a name of the item is shown.
+     */
+    QString nSelectedText;
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    void sl_modelRowsInserted(const QModelIndex &parent, int start, int end);
-    void sl_modelRowsRemoved(const QModelIndex &parent, int start, int end);
-    void sl_modelItemChanged(QStandardItem *item);
+    void sl_modelRowsInserted(const QModelIndex& parent, int start, int end);
+    void sl_modelRowsRemoved(const QModelIndex& parent, int start, int end);
+    void sl_modelItemChanged(QStandardItem* item);
 
 signals:
     void si_checkedChanged(QStringList checked);
@@ -59,4 +77,4 @@ private:
     const QRect displayRectDelta;
 };
 
-}
+}  // namespace U2

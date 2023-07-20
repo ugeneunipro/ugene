@@ -52,7 +52,7 @@ TopHatSupport::TopHatSupport()
 
     dependencies << PythonSupport::ET_PYTHON_ID;
 
-    validMessage = "TopHat ";
+    validationMessageRegExp = "TopHat ";
     description = "<i>TopHat</i> is a program that aligns RNA-Seq reads to a genome"
                   " in order to identify exon-exon splice junctions. It is built on"
                   " the ultrafast short read mapping program Bowtie."

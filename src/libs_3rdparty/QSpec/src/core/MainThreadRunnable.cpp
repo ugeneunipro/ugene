@@ -74,9 +74,6 @@ void MainThreadRunnable::runInMainThread(CustomScenario* scenario) {
     mainThreadRunnable.doRequest();
 }
 
-MainThreadRunnableObject::MainThreadRunnableObject() {
-}
-
 void MainThreadRunnableObject::sl_requestAsked(MainThreadRunnable* runnable) {
     runnable->run();
 }

@@ -28,7 +28,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTKeyboardDriver"
 
-#define GT_METHOD_NAME "keyClick"
 
 QList<Qt::Key> GTKeyboardDriver::modifiersToKeys(Qt::KeyboardModifiers mod) {
     QList<Qt::Key> result;
@@ -66,7 +65,6 @@ bool GTKeyboardDriver::keyClick(Qt::Key key, Qt::KeyboardModifiers modifiers, bo
     }
     return true;
 }
-#undef GT_METHOD_NAME
 
 bool GTKeyboardDriver::keySequence(const QString& str, Qt::KeyboardModifiers modifiers) {
     QList<Qt::Key> modifierKeys = modifiersToKeys(modifiers);

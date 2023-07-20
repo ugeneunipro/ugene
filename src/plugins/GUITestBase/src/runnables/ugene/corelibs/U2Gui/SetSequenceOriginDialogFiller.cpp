@@ -29,7 +29,6 @@
 namespace U2 {
 
 #define GT_CLASS_NAME "SetSequenceOriginDialogFiller"
-#define GT_METHOD_NAME "run"
 
 void SetSequenceOriginDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -40,7 +39,6 @@ void SetSequenceOriginDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

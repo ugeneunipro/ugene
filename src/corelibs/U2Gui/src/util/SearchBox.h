@@ -41,22 +41,22 @@ public slots:
     void sl_filteringFinished();
 
 protected:
-    void resizeEvent(QResizeEvent* event);
-    void paintEvent(QPaintEvent* event);
+    void resizeEvent(QResizeEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
 
 private slots:
-    void sl_filterCleared();
+    void sl_clearButtonClicked();
     void sl_textChanged(const QString& text);
 
 private:
     void initStyle();
     void updateInternalControlsPosition();
 
-    bool firstShow;
-    QLabel* progressLabel;
-    QMovie* progressMovie;
-    QLabel* searchIconLabel;
-    QToolButton* clearButton;
+    bool firstShow = true;
+    QLabel* progressLabel = nullptr;
+    QMovie* progressMovie = nullptr;
+    QLabel* searchIconLabel = nullptr;
+    QToolButton* clearButton = nullptr;
 };
 
 }  // namespace U2

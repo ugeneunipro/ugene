@@ -36,13 +36,11 @@ OrfDialogFiller::OrfDialogFiller(CustomScenario* scenario)
     : Filler("ORFDialogBase", scenario) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void OrfDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

@@ -32,24 +32,29 @@ static const QString CLEAR_BUTTON_STYLE_SHEET = "border: 0px; padding: 1px 0px 0
 namespace U2 {
 
 SearchBox::SearchBox(QWidget* p)
-    : QLineEdit(p), firstShow(true), progressLabel(new QLabel(this)), progressMovie(new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel)),
-      searchIconLabel(new QLabel(this)), clearButton(new QToolButton(this)) {
+    : QLineEdit(p) {
     setObjectName("nameFilterEdit");
 
+    progressLabel = new QLabel(this);
+    progressMovie = new QMovie(":/core/images/progress.gif", QByteArray(), progressLabel);
     progressLabel->setStyleSheet(LABEL_STYLE_SHEET);
     progressLabel->setMovie(progressMovie);
-    progressMovie->start();
 
+    searchIconLabel = new QLabel(this);
     searchIconLabel->setStyleSheet(LABEL_STYLE_SHEET);
     searchIconLabel->setPixmap(QPixmap(":/core/images/zoom_whole.png"));
 
+    clearButton = new QToolButton(this);
     clearButton->setStyleSheet(CLEAR_BUTTON_STYLE_SHEET);
     clearButton->setIcon(QIcon(":/core/images/close_small.png"));
     clearButton->setCursor(Qt::ArrowCursor);
     clearButton->setVisible(false);
-    connect(clearButton, SIGNAL(clicked()), SLOT(sl_filterCleared()));
-    connect(this, SIGNAL(textChanged(const QString&)), SLOT(sl_textChanged(const QString&)));
     clearButton->setObjectName("project filter clear button");
+
+    connect(clearButton, &QAbstractButton::clicked, this, &SearchBox::sl_clearButtonClicked);
+    connect(this, &QLineEdit::textChanged, this, &SearchBox::sl_textChanged);
+
+    QWidget::setTabOrder(this, this);
 
     initStyle();
     setPlaceholderText(tr("Search..."));
@@ -67,13 +72,23 @@ void SearchBox::sl_filteringFinished() {
     updateInternalControlsPosition();
 }
 
-void SearchBox::sl_filterCleared() {
-    clearButton->setVisible(false);
-    setText(QString());
+void SearchBox::sl_clearButtonClicked() {
+    setText("");
 }
 
 void SearchBox::sl_textChanged(const QString& text) {
-    clearButton->setVisible(!text.isEmpty());
+        if (text.isEmpty()) {
+            clearButton->hide();
+            if (isOsMac()) {
+                // Bug in Qt 5.15 & MacOS 13+.
+                // When clearButton is hidden QT has QLineEdit (this) widget marked as focused (this is correct).
+                // But the OS does not have focus on the QLineEdit and no keyboard events are passed to the QLineEdit.
+                activateWindow();
+            }
+        } else {
+            clearButton->show();
+        }
+
 }
 
 void SearchBox::paintEvent(QPaintEvent* event) {
@@ -85,27 +100,27 @@ void SearchBox::paintEvent(QPaintEvent* event) {
 }
 
 void SearchBox::initStyle() {
-    const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    const QSize progressLabelSize = progressLabel->sizeHint();
-    const QSize iconLabelSize = searchIconLabel->sizeHint();
-    const QSize clearButtonSize = clearButton->sizeHint();
-    const QSize minimumWidgetSize = minimumSizeHint();
+    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+    QSize progressLabelSize = progressLabel->sizeHint();
+    QSize iconLabelSize = searchIconLabel->sizeHint();
+    QSize clearButtonSize = clearButton->sizeHint();
+    QSize minimumWidgetSize = minimumSizeHint();
 
-    const int rightPadding = progressLabelSize.width() + clearButtonSize.width() + frameWidth + 1;
-    const int leftPadding = iconLabelSize.width() + frameWidth + 1;
+    int rightPadding = progressLabelSize.width() + clearButtonSize.width() + frameWidth + 1;
+    int leftPadding = iconLabelSize.width() + frameWidth + 1;
     setStyleSheet(QString("QLineEdit {padding-right: %1px; padding-left: %2px}").arg(rightPadding).arg(leftPadding));
 
-    const int minimumContentWidth = iconLabelSize.width() + progressLabelSize.width() + clearButtonSize.width() + frameWidth * 2 + 2;
-    const int minimumContentHeight = progressLabelSize.height() + frameWidth * 2 + 2;
+    int minimumContentWidth = iconLabelSize.width() + progressLabelSize.width() + clearButtonSize.width() + frameWidth * 2 + 2;
+    int minimumContentHeight = progressLabelSize.height() + frameWidth * 2 + 2;
     setMinimumSize(qMax(minimumWidgetSize.width(), minimumContentWidth), qMax(minimumWidgetSize.height(), minimumContentHeight));
 }
 
 void SearchBox::updateInternalControlsPosition() {
-    const QSize progressLabelSize = progressLabel->sizeHint();
-    const QSize iconLabelSize = searchIconLabel->sizeHint();
-    const QSize clearButtonSize = clearButton->sizeHint();
-    const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    const QRect widgetRect = rect();
+    QSize progressLabelSize = progressLabel->sizeHint();
+    QSize iconLabelSize = searchIconLabel->sizeHint();
+    QSize clearButtonSize = clearButton->sizeHint();
+    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
+    QRect widgetRect = rect();
 
     progressLabel->move(widgetRect.right() - 2 * frameWidth - progressLabelSize.width(),
                         (widgetRect.bottom() - progressLabelSize.height() + 1) / 2);

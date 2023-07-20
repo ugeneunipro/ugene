@@ -43,7 +43,7 @@ class U2VIEW_EXPORT AlignmentAlgorithmMainWidget : public QWidget {
 
 public:
     AlignmentAlgorithmMainWidget(QWidget* parent, QVariantMap* s);
-    virtual ~AlignmentAlgorithmMainWidget();
+    ~AlignmentAlgorithmMainWidget() override;
 
     virtual QVariantMap getAlignmentAlgorithmCustomSettings(bool append);
 
@@ -51,7 +51,7 @@ public:
     }
 
 public slots:
-    void sl_externSettingsInvalide();
+    void sl_externSettingsInvalidate();
 
 protected:
     virtual void fillInnerSettings();

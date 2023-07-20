@@ -21,35 +21,36 @@
 
 #include "ComboBoxWithCheckBoxes.h"
 
-#include <U2Core/L10n.h>
-#include <U2Core/U2SafePoints.h>
-
 #include <QStylePainter>
 #include <QWidget>
 
+#include <U2Core/L10n.h>
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
-ComboBoxWithCheckBoxes::ComboBoxWithCheckBoxes(QWidget *parent)
+ComboBoxWithCheckBoxes::ComboBoxWithCheckBoxes(QWidget* parent)
     : QComboBox(parent),
       displayRectDelta(4, 1, -25, 0) {
     connect(model(), &QAbstractItemModel::rowsInserted, this, &ComboBoxWithCheckBoxes::sl_modelRowsInserted);
     connect(model(), &QAbstractItemModel::rowsRemoved, this, &ComboBoxWithCheckBoxes::sl_modelRowsRemoved);
 
-    QStandardItemModel *standartModel = qobject_cast<QStandardItemModel *>(model());
-
-    connect(standartModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
-
+    auto standardModel = qobject_cast<QStandardItemModel*>(model());
+    connect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
+    allSelectedText = tr("All");
+    noneSelectedText = "";
+    nSelectedText = tr("%1 items");
 }
 
 const QStringList& ComboBoxWithCheckBoxes::getCheckedItems() const {
     return checkedItems;
 }
 
-void ComboBoxWithCheckBoxes::setCheckedItems(const QStringList &items) {
-    QStandardItemModel *standartModel = qobject_cast<QStandardItemModel *>(model());
-    SAFE_POINT(standartModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
+void ComboBoxWithCheckBoxes::setCheckedItems(const QStringList& items) {
+    auto standardModel = qobject_cast<QStandardItemModel*>(model());
+    SAFE_POINT(standardModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
 
-    disconnect(standartModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
+    disconnect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
 
     QList<int> checkedIndexes;
     for (int i = 0; i < items.count(); ++i) {
@@ -57,24 +58,24 @@ void ComboBoxWithCheckBoxes::setCheckedItems(const QStringList &items) {
     }
 
     for (int i = 0; i < count(); ++i) {
-        QStandardItem* currentItem = standartModel->item(i);
+        QStandardItem* currentItem = standardModel->item(i);
         SAFE_POINT(currentItem != nullptr, L10N::nullPointerError("QStandardItem"), );
 
         Qt::CheckState newState = checkedIndexes.contains(i) ? Qt::Checked : Qt::Unchecked;
 
-        auto item = standartModel->item(i);
+        auto item = standardModel->item(i);
         auto checkStateRole = static_cast<Qt::CheckState>(item->data(Qt::CheckStateRole).toInt());
         if (checkStateRole != newState) {
             item->setData(newState, Qt::CheckStateRole);
         }
     }
 
-    connect(standartModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
+    connect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
 
     updateOnCheckedItemsChange();
 }
 
-void ComboBoxWithCheckBoxes::paintEvent(QPaintEvent *) {
+void ComboBoxWithCheckBoxes::paintEvent(QPaintEvent*) {
     QStylePainter painter(this);
     painter.setPen(palette().color(QPalette::Text));
 
@@ -86,40 +87,40 @@ void ComboBoxWithCheckBoxes::paintEvent(QPaintEvent *) {
     painter.drawText(textRect, Qt::AlignVCenter, displayText);
 }
 
-void ComboBoxWithCheckBoxes::resizeEvent(QResizeEvent *e) {
+void ComboBoxWithCheckBoxes::resizeEvent(QResizeEvent* e) {
     updateDisplayText();
     QComboBox::resizeEvent(e);
 }
 
-void ComboBoxWithCheckBoxes::sl_modelRowsInserted(const QModelIndex &, int start, int end) {
-    QStandardItemModel *standartModel = qobject_cast<QStandardItemModel *>(model());
-    SAFE_POINT(standartModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
+void ComboBoxWithCheckBoxes::sl_modelRowsInserted(const QModelIndex&, int start, int end) {
+    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
+    SAFE_POINT(standardModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
 
-    disconnect(standartModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
+    disconnect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
 
     for (int i = start; i <= end; ++i) {
-        standartModel->item(i)->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-        standartModel->item(i)->setData(Qt::Unchecked, Qt::CheckStateRole);
+        standardModel->item(i)->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+        standardModel->item(i)->setData(Qt::Unchecked, Qt::CheckStateRole);
     }
 
-    connect(standartModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
+    connect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
 }
 
-void ComboBoxWithCheckBoxes::sl_modelRowsRemoved(const QModelIndex &, int , int ) {
+void ComboBoxWithCheckBoxes::sl_modelRowsRemoved(const QModelIndex&, int, int) {
     updateOnCheckedItemsChange();
 }
 
-void ComboBoxWithCheckBoxes::sl_modelItemChanged(QStandardItem *) {
+void ComboBoxWithCheckBoxes::sl_modelItemChanged(QStandardItem*) {
     updateOnCheckedItemsChange();
 }
 
 void ComboBoxWithCheckBoxes::updateOnCheckedItemsChange() {
-    QStandardItemModel *standartModel = qobject_cast<QStandardItemModel *>(model());
+    QStandardItemModel* standartModel = qobject_cast<QStandardItemModel*>(model());
     SAFE_POINT(standartModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
 
     checkedItems.clear();
     for (int i = 0; i < count(); ++i) {
-        QStandardItem *currentItem = standartModel->item(i);
+        QStandardItem* currentItem = standartModel->item(i);
         SAFE_POINT(currentItem != nullptr, L10N::nullPointerError("QStandardItem"), );
 
         Qt::CheckState checkState = static_cast<Qt::CheckState>(currentItem->data(Qt::CheckStateRole).toInt());
@@ -138,7 +139,10 @@ void ComboBoxWithCheckBoxes::updateDisplayText() {
     QRect textRect = rect().adjusted(displayRectDelta.left(), displayRectDelta.top(), displayRectDelta.right(), displayRectDelta.bottom());
     QFontMetrics fontMetrics(font());
 
-    displayText = checkedItems.join(", ");
+    displayText = checkedItems.length() == 1         ? checkedItems[0]
+                  : checkedItems.isEmpty()           ? noneSelectedText
+                  : checkedItems.length() == count() ? allSelectedText
+                                                     : nSelectedText.arg(checkedItems.length());
 
     if (fontMetrics.size(Qt::TextSingleLine, displayText).width() > textRect.width()) {
         while (displayText != "" && fontMetrics.size(Qt::TextSingleLine, displayText + "...").width() > textRect.width()) {
@@ -149,4 +153,4 @@ void ComboBoxWithCheckBoxes::updateDisplayText() {
     }
 }
 
-}
+}  // namespace U2

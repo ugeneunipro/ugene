@@ -52,7 +52,6 @@ ExportImage::ExportImage(CustomScenario* scenario)
       spinValue(0) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportImage::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTLineEdit::setText("fileNameEdit", filePath, dialog);
@@ -67,11 +66,9 @@ void ExportImage::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::CircularViewExportImage"
-#define GT_METHOD_NAME "commonScenario"
 void CircularViewExportImage::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTLineEdit::setText("fileNameEdit", filePath, dialog);
@@ -89,11 +86,9 @@ void CircularViewExportImage::commonScenario() {
     }
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportMsaImage"
-#define GT_METHOD_NAME "commonScenario"
 void ExportMsaImage::commonScenario() {
     GT_CHECK((exportWholeAlignment && exportCurrentSelection) != true, "Wrong filler parameters");
 
@@ -126,11 +121,9 @@ void ExportMsaImage::commonScenario() {
     }
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceImage"
-#define GT_METHOD_NAME "commonScenario"
 void ExportSequenceImage::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -167,11 +160,9 @@ void ExportSequenceImage::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsDialog::SelectSubalignmentFiller"
-#define GT_METHOD_NAME "commonScenario"
 void SelectSubalignmentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTSpinBox::setValue("startLineEdit", msaRegion.region.startPos, GTGlobals::UseKeyBoard, dialog);
@@ -201,7 +192,6 @@ void SelectSubalignmentFiller::commonScenario() {
     }
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 ImageExportFormFiller::ImageExportFormFiller(const Parameters& parameters)
@@ -209,7 +199,6 @@ ImageExportFormFiller::ImageExportFormFiller(const Parameters& parameters)
 }
 
 #define GT_CLASS_NAME "GTUtilsDialog::ImageExportFormFiller"
-#define GT_METHOD_NAME "commonScenario"
 
 void ImageExportFormFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -221,7 +210,6 @@ void ImageExportFormFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

@@ -33,7 +33,7 @@ class GTLogTracer : public QObject, public LogListener {
     Q_OBJECT
 public:
     GTLogTracer();
-    ~GTLogTracer();
+    ~GTLogTracer() override;
 
     void onMessage(const LogMessage& msg) override;
 
@@ -49,6 +49,9 @@ public:
 
     /** Clears all cached messages. */
     void clear();
+
+    /** Asserts that the log interval covered by the tracer has no error. */
+    void assertNoErrors() const;
 
     QStringList allMessages;
     QStringList errorMessages;

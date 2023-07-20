@@ -30,7 +30,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTAction"
 
-#define GT_METHOD_NAME "button"
 QAbstractButton* GTAction::button(const QString& objectName, QWidget* parent, const GTGlobals::FindOptions& options) {
     QAction* action = findAction(objectName, parent, options);
     if (action == nullptr) {
@@ -40,9 +39,7 @@ QAbstractButton* GTAction::button(const QString& objectName, QWidget* parent, co
     GT_CHECK_RESULT(resultButton != nullptr || !options.failIfNotFound, "Button with object name not found: " + objectName, nullptr);
     return resultButton;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "button"
 QAbstractButton* GTAction::button(const QAction* action) {
     GT_CHECK_RESULT(action != nullptr, "action is NULL", nullptr);
     QList<QWidget*> associatedWidgets = action->associatedWidgets();
@@ -53,9 +50,7 @@ QAbstractButton* GTAction::button(const QAction* action) {
     }
     return nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findAction"
 QAction* GTAction::findAction(const QString& objectName, QWidget* parent, const GTGlobals::FindOptions& options) {
     QList<QAction*> actions = GTWidget::findChildren<QAction>(parent, [&objectName](auto action) { return action->objectName() == objectName; });
     GT_CHECK_RESULT(actions.size() < 2, QString("There are %1 actions with object name %2").arg(actions.size()).arg(objectName), nullptr);
@@ -65,16 +60,13 @@ QAction* GTAction::findAction(const QString& objectName, QWidget* parent, const 
     GT_CHECK_RESULT(!options.failIfNotFound, "Action with object name not found: " + objectName, nullptr);
     return nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findActionByText"
 QAction* GTAction::findActionByText(const QString& text, QWidget* parent) {
     QList<QAction*> actions = GTWidget::findChildren<QAction>(parent, [text](auto action) { return action->text() == text; });
     GT_CHECK_RESULT(!actions.isEmpty(), "Action with text not found: " + text, nullptr);
     GT_CHECK_RESULT(actions.size() == 1, QString("There are %1 actions with text: %2").arg(actions.size()).arg(text), nullptr);
     return actions[0];
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

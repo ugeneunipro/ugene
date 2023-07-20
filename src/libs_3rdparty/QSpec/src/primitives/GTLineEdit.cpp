@@ -29,7 +29,6 @@
 namespace HI {
 #define GT_CLASS_NAME "GTLineEdit"
 
-#define GT_METHOD_NAME "setText"
 void GTLineEdit::setText(QLineEdit* lineEdit, const QString& text, bool noCheck /* = false*/, bool useCopyPaste) {
     GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
     GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
@@ -61,28 +60,20 @@ void GTLineEdit::setText(QLineEdit* lineEdit, const QString& text, bool noCheck 
                                       .arg(text)
                                       .arg(currentText));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setText"
 void GTLineEdit::setText(const QString& lineEditName, const QString& text, QWidget* parent, bool noCheck, bool useCopyPaste) {
     setText(GTWidget::findLineEdit(lineEditName, parent), text, noCheck, useCopyPaste);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getText"
 QString GTLineEdit::getText(QLineEdit* lineEdit) {
     GT_CHECK_RESULT(lineEdit != nullptr, "lineEdit is NULL", "");
     return lineEdit->text();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getText"
 QString GTLineEdit::getText(const QString& lineEditName, QWidget* parent) {
     return getText(GTWidget::findLineEdit(lineEditName, parent));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clear"
 void GTLineEdit::clear(QLineEdit* lineEdit) {
     GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
     GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
@@ -105,29 +96,21 @@ void GTLineEdit::clear(QLineEdit* lineEdit) {
     }
     GT_CHECK(currentText.isEmpty(), "Can't clear text, lineEdit is not empty: " + currentText);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkText"
 void GTLineEdit::checkText(QLineEdit* lineEdit, const QString& expectedText) {
     GT_CHECK(lineEdit != nullptr, "Line edit is NULL");
     GT_CHECK(expectedText == lineEdit->text(), QString("The text differs: expect '%1', got '%2'").arg(expectedText).arg(lineEdit->text()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkText"
 void GTLineEdit::checkText(const QString& lineEditName, QWidget* parent, const QString& expectedText) {
     checkText(GTWidget::findLineEdit(lineEditName, parent), expectedText);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "copyText"
 QString GTLineEdit::copyText(QLineEdit* lineEdit) {
     GT_CHECK_RESULT(lineEdit != nullptr, "lineEdit is NULL", QString());
     return lineEdit->text();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "tryToSetText"
 bool GTLineEdit::tryToSetText(QLineEdit* lineEdit, const QString& text) {
     clear(lineEdit);
 
@@ -137,7 +120,6 @@ bool GTLineEdit::tryToSetText(QLineEdit* lineEdit, const QString& text) {
     QString currentText = lineEdit->text();
     return currentText == text;
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

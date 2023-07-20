@@ -203,7 +203,7 @@ void PairAlign::initSaveController() {
 }
 
 QString PairAlign::getDefaultFilePath() {
-    return GUrlUtils::getDefaultDataPath() + "/" + PairwiseAlignmentTaskSettings::DEFAULT_NAME;
+    return GUrlUtils::getDefaultDataPath() + "/" + PairwiseAlignmentTaskSettings::DEFAULT_RESULT_FILE_NAME;
 }
 
 void PairAlign::connectSignals() {
@@ -333,7 +333,7 @@ void PairAlign::sl_algorithmSelected(const QString& algorithmName) {
     AlignmentAlgorithmGUIExtensionFactory* algGUIFactory = alg->getGUIExtFactory(firstAlgorithmRealization);
     SAFE_POINT(algGUIFactory != nullptr, QString("Algorithm %1 GUI factory not found.").arg(firstAlgorithmRealization), );
     settingsWidget = algGUIFactory->createMainWidget(this, &pairwiseAlignmentWidgetsSettings->customSettings);
-    connect(msa, SIGNAL(destroyed()), settingsWidget, SLOT(sl_externSettingsInvalide()));
+    connect(msa, &QObject::destroyed, settingsWidget, &AlignmentAlgorithmMainWidget::sl_externSettingsInvalidate);
     settingsContainerWidgetLayout->addWidget(settingsWidget);
 
     checkState();
@@ -383,7 +383,7 @@ void PairAlign::sl_alignButtonPressed() {
         settings.resultFileName = GUrl(saveController->getSaveFileName());
     } else {
         settings.resultFileName = GUrl(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() +
-                                       "/" + PairwiseAlignmentTaskSettings::DEFAULT_NAME);
+                                       "/" + PairwiseAlignmentTaskSettings::DEFAULT_RESULT_FILE_NAME);
     }
     GUrlUtils::validateLocalFileUrl(settings.resultFileName, os);
     if (os.hasError()) {

@@ -20,11 +20,12 @@ HEADERS += src/HMMIO.h \
            src/u_search/HMMSearchQDActor.h \
            src/u_search/uhmmsearch.h \
            src/u_search/uhmmsearch_opt.h \
-           src/u_search/uhmmsearch_sse.h \
            src/u_tests/uhmmerTests.h
+
 FORMS += src/u_build/HMMBuildDialog.ui \
          src/u_calibrate/HMMCalibrateDialog.ui \
          src/u_search/HMMSearchDialog.ui
+
 SOURCES += src/HMMIO.cpp \
            src/HMMIOWorker.cpp \
            src/TaskLocalStorage.cpp \
@@ -64,7 +65,12 @@ SOURCES += src/HMMIO.cpp \
            src/u_search/HMMSearchQDActor.cpp \
            src/u_search/uhmmsearch.cpp \
            src/u_search/uhmmsearch_opt.cpp \
-           src/u_search/uhmmsearch_sse.cpp \
            src/u_tests/uhmmerTests.cpp
+
+target_platform_has_sse() {
+    HEADERS +=  src/u_search/uhmmsearch_sse.h
+    SOURCES +=  src/u_search/uhmmsearch_sse.cpp
+}
+
 RESOURCES += hmm2.qrc
 TRANSLATIONS += transl/russian.ts

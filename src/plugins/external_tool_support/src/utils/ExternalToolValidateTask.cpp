@@ -159,7 +159,6 @@ void ExternalToolJustValidateTask::run() {
                 cancelProcess();
             }
         }
-
         CHECK(parseLog(validation), );
         CHECK(isValid, );
     }
@@ -200,12 +199,7 @@ void ExternalToolJustValidateTask::setEnvironment(ExternalTool* externalTool) {
         }
     }
 
-#ifdef Q_OS_WIN
-    const QString pathVariableSeparator = ";";
-#else
-    const QString pathVariableSeparator = ":";
-#endif
-
+    QString pathVariableSeparator = isOsWindows() ? ";" : ":";
     QProcessEnvironment processEnvironment = QProcessEnvironment::systemEnvironment();
     const QString path = additionalPaths.join(pathVariableSeparator) + pathVariableSeparator + processEnvironment.value("PATH");
     if (!additionalPaths.isEmpty()) {
@@ -221,7 +215,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 
     QString errLog = QString(externalToolProcess->readAllStandardError());
     if (!errLog.isEmpty()) {
-        if (errLog.contains(QRegExp(validation.expectedMsg))) {
+        if (errLog.contains(QRegExp(validation.validationMessageRegExp))) {
             isValid = true;
             checkVersion(errLog);
             tool->extractAdditionalParameters(errLog);
@@ -238,7 +232,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
 
     QString log = QString(externalToolProcess->readAllStandardOutput());
     if (!log.isEmpty()) {
-        if (log.contains(QRegExp(validation.expectedMsg))) {
+        if (log.contains(QRegExp(validation.validationMessageRegExp))) {
             isValid = true;
             checkVersion(log);
             tool->extractAdditionalParameters(log);
@@ -253,7 +247,7 @@ bool ExternalToolJustValidateTask::parseLog(const ExternalToolValidation& valida
         }
     }
 
-    if (errLog.isEmpty() && log.isEmpty() && validation.expectedMsg.isEmpty()) {
+    if (errLog.isEmpty() && log.isEmpty() && validation.validationMessageRegExp.isEmpty()) {
         isValid = true;
     }
 

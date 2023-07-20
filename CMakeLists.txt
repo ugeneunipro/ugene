@@ -10,7 +10,7 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 47.0-dev)
+set(UGENE_VERSION 48.0-dev)
 
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
@@ -29,6 +29,8 @@ endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
+#set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
+
 # Use to disable -isystem support and work in qmake mode.
 # set(CMAKE_NO_SYSTEM_FROM_IMPORTED True)
 
@@ -36,20 +38,30 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 if (CMAKE_COMPILER_IS_GNUCXX)
     string(CONCAT GCC_WARNING_FLAGS
             " -Wall"
-            " -Werror=deprecated-copy" # Requires GCC 9.1+
+            " -Werror=deprecated-copy"
             " -Werror=maybe-uninitialized"
             " -Werror=parentheses"
             " -Werror=return-type"
-            " -Werror=shadow=local" # Requires GCC 7.1+
+            " -Werror=sequence-point"
+            " -Werror=shadow=local"
+            " -Werror=switch"
             " -Werror=uninitialized"
             " -Werror=unused-parameter"
+            " -Werror=unused-but-set-variable"
             " -Werror=unused-value"
             " -Werror=unused-variable"
             " -Wno-deprecated-declarations"
             )
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 13.1)
+        LIST(APPEND GCC_WARNING_FLAGS -Werror=dangling-reference)
+    endif ()
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
-    LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined )
+    LIST(APPEND COMPILER_FLAGS -Wl,--no-undefined)
 endif ()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
 
 # 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)
@@ -111,7 +123,6 @@ add_subdirectory(src/plugins/workflow_designer)
 add_subdirectory(src/plugins_3rdparty/ball)
 add_subdirectory(src/plugins_3rdparty/gor4)
 add_subdirectory(src/plugins_3rdparty/hmm2)
-add_subdirectory(src/plugins_3rdparty/kalign)
 add_subdirectory(src/plugins_3rdparty/phylip)
 add_subdirectory(src/plugins_3rdparty/primer3)
 add_subdirectory(src/plugins_3rdparty/psipred)

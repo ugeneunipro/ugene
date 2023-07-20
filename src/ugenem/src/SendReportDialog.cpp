@@ -129,19 +129,11 @@ void ReportSender::parse(const QString& htmlReport, const QString& dumpUrl) {
         }
     }
 
-    QFile fp("/tmp/UGENEstacktrace.txt");
+    QFile fp(QDir::tempPath() + "/ugene_crashes/UGENEstacktrace.txt");
     if (fp.open(QIODevice::ReadOnly)) {
         QByteArray stacktrace = fp.readAll();
         report += "Stack trace:\n";
         report += stacktrace.data();
-        if (stacktrace.isEmpty()) {
-            QFile err("/tmp/UGENEerror");
-            if (err.open(QIODevice::ReadOnly)) {
-                stacktrace = err.readAll();
-                report += stacktrace.data();
-                err.close();
-            }
-        }
         fp.close();
     }
 }
@@ -402,11 +394,11 @@ void ReportSender::setFailedTest(const QString& failedTestStr) {
 QString ReportSender::getArchSuffix() const {
 #ifdef Q_PROCESSOR_X86_64
     return " x64";
-#elif Q_PROCESSOR_X86_32
+#elif defined(Q_PROCESSOR_X86_32)
     return " x86";
-#elif Q_PROCESSOR_ARM_64
+#elif defined(Q_PROCESSOR_ARM_64)
     return " arm-64";
-#elif Q_PROCESSOR_ARM_32
+#elif defined(Q_PROCESSOR_ARM_32)
     return " arm-32";
 #else
     return " unknown-arch";

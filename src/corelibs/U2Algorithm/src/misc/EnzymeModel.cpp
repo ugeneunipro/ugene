@@ -27,16 +27,16 @@ const QString EnzymeSettings::DATA_DIR_KEY("enzymes");
 const QString EnzymeSettings::DATA_FILE_KEY("plugin_enzymes/lastFile");
 const QString EnzymeSettings::LAST_SELECTION("plugin_enzymes/selection");
 const QString EnzymeSettings::CHECKED_SUPPLIERS("plugin_enzymes/checkedSuppliers");
+const QString EnzymeSettings::MIN_ENZYME_LENGTH("plugin_enzymes/min_enzyme_length");
+const QString EnzymeSettings::MAX_ENZYME_LENGTH("plugin_enzymes/max_enzyme_length");
+const QString EnzymeSettings::OVERHANG_TYPE("plugin_enzymes/overhang_type");
+const QString EnzymeSettings::SHOW_PALINDROMIC("plugin_enzymes/show_palindromic");
+const QString EnzymeSettings::SHOW_UNINTERRUPTED("plugin_enzymes/show_uninterrupted");
+const QString EnzymeSettings::SHOW_NONDEGENERATE("plugin_enzymes/show_nondegenerate");
 const QString EnzymeSettings::ENABLE_HIT_COUNT("plugin_enzymes/enable_hit_count");
 const QString EnzymeSettings::MAX_HIT_VALUE("plugin_enzymes/max_hit_value");
 const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");
 const QString EnzymeSettings::MAX_RESULTS("plugin_enzymes/max_results");
 const QString EnzymeSettings::COMMON_ENZYMES("ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,HindIII,PstI,SalI,SmaI,XmaI");
-
-EnzymeData::EnzymeData() {
-    cutDirect = ENZYME_CUT_UNKNOWN;
-    cutComplement = ENZYME_CUT_UNKNOWN;
-    alphabet = nullptr;
-}
 
 }  // namespace U2

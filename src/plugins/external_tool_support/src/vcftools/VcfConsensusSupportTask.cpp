@@ -93,8 +93,8 @@ QList<Task*> VcfConsensusSupportTask::onSubTaskFinished(Task* subTask) {
     envVariables["PERL5LIB"] = getPath(vcfToolsET);
 
     vcfTask = new ExternalToolRunTask(VcfConsensusSupport::ET_VCF_CONSENSUS_ID, QStringList() << tabixTask->getOutputBgzf().getURLString(), new ExternalToolLogParser(), "", QStringList() << getPath(tabixET));
-    vcfTask->setStandartInputFile(inputFA.getURLString());
-    vcfTask->setStandartOutputFile(output.getURLString());
+    vcfTask->setStandardInputFile(inputFA.getURLString());
+    vcfTask->setStandardOutputFile(output.getURLString());
     vcfTask->setAdditionalEnvVariables(envVariables);
 
     setListenerForTask(vcfTask, 1);

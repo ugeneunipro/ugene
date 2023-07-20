@@ -47,7 +47,7 @@ BigWigSupport::BigWigSupport(const QString& path)
 #else
     executableFileName = "bedGraphToBigWig";
 #endif
-    validMessage = "bedGraphToBigWig";
+    validationMessageRegExp = "bedGraphToBigWig";
     description = tr("<i>bedGraphToBigWig</i>: convert a bedGraph file to bigWig format.");
 
     versionRegExp = QRegExp("bedGraphToBigWig v (\\d+)");

@@ -25,11 +25,24 @@
 
 namespace U2 {
 
-MuscleWorkPool::MuscleWorkPool(MuscleContext* _ctx, const MuscleTaskSettings& _config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack)
-    : ctx(_ctx), config(_config), ma(_ma->getCopy()), res(_res), mhack(_mhack), Weights(nullptr), ProgNodes(nullptr), ph(nullptr), ti(_ti),
-      treeNodeStatus(nullptr), treeNodeIndexes(nullptr), nThreads(_nThreads), uJoin(0), ptrbOscillating(nullptr), bAnyAccepted(false), InternalNodeIndexes(nullptr), uInternalNodeCount(0),
-      bReversed(false), bRight(false), History(nullptr), bLockLeft(nullptr), bLockRight(false), msaIn(nullptr) {
-    refineConstructor();
+MuscleWorkPool::MuscleWorkPool(MuscleContext* _ctx,
+                               const MuscleTaskSettings& _config,
+                               TaskStateInfo& _ti,
+                               int _nThreads,
+                               const MultipleSequenceAlignment& _ma,
+                               MultipleSequenceAlignment& _res,
+                               bool _mhack)
+    : ctx(_ctx), config(_config), ma(_ma->getCopy()), res(_res), mhack(_mhack), ti(_ti),
+      nThreads(_nThreads) {
+    needRestart = new bool[nThreads];
+    workerStartPos = new unsigned[nThreads];
+    currentNodeIndex = new unsigned[nThreads];
+    refineNodeStatuses = nullptr;
+    for (int i = 0; i < nThreads; i++) {
+        workerStartPos[i] = 0;
+        currentNodeIndex[i] = 0;
+        needRestart[i] = false;
+    }
 }
 MuscleWorkPool::~MuscleWorkPool() {
     delete[] Weights;
@@ -59,11 +72,12 @@ unsigned MuscleWorkPool::getNextJob(unsigned uNodeIndex) {
     treeNodeStatus[uNodeIndex] = TreeNodeStatus_Done;
     if (!GuideTree.IsRoot(uNodeIndex)) {
         unsigned uParentNodeIndex = GuideTree.GetParent(uNodeIndex);
-        unsigned u_NeighborIndex = NULL_NEIGHBOR;
-        if (GuideTree.GetRight(uParentNodeIndex) == uNodeIndex)
+        unsigned u_NeighborIndex;
+        if (GuideTree.GetRight(uParentNodeIndex) == uNodeIndex) {
             u_NeighborIndex = GuideTree.GetLeft(uParentNodeIndex);
-        else
+        } else {
             u_NeighborIndex = GuideTree.GetRight(uParentNodeIndex);
+        }
         if (treeNodeStatus[u_NeighborIndex] == TreeNodeStatus_Done) {
             assert(treeNodeStatus[uParentNodeIndex] == TreeNodeStatus_WaitForChild);
             treeNodeStatus[uParentNodeIndex] = TreeNodeStatus_Processing;
@@ -85,28 +99,6 @@ unsigned MuscleWorkPool::getNextJob(unsigned uNodeIndex) {
     return NULL_NEIGHBOR;
 }
 
-////////////////////////////
-// Refine
-////////////////////////////
-void MuscleWorkPool::refineConstructor() {
-    refineTI = nullptr;
-    uRangeCount = 1;
-    uRangeIndex = 0;
-    uIter = 0;
-    uIters = 1;
-    needRestart = new bool[nThreads];
-    workerStartPos = new unsigned[nThreads];
-    currentNodeIndex = new unsigned[nThreads];
-    refineNodeStatuses = nullptr;
-    lastAcceptedIndex = 0;
-    refineDone = true;
-    oscillatingIter = NULL_NEIGHBOR;
-    for (int i = 0; i < nThreads; i++) {
-        workerStartPos[i] = 0;
-        currentNodeIndex[i] = 0;
-        needRestart[i] = false;
-    }
-}
 void MuscleWorkPool::refineClear() {
     delete[] workerStartPos;
     delete[] currentNodeIndex;
@@ -132,20 +124,20 @@ void MuscleWorkPool::reset() {
 
 unsigned MuscleWorkPool::refineGetJob(MSA* _msaIn, int workerID) {
     QMutexLocker lock(&mut);
-    bool availible = false;
+    bool available = false;
     if (ctx->isCanceled())
         return NULL_NEIGHBOR;
     for (unsigned i = 0; i < uInternalNodeCount; i++) {
         if (refineNodeStatuses[i] == RefineTreeNodeStatus_Available) {
             currentNodeIndex[workerID] = i;
             workerStartPos[workerID] = i;
-            availible = true;
+            available = true;
             _msaIn->Copy(*msaIn);
             refineNodeStatuses[i] = RefineTreeNodeStatus_Processing;
             break;
         }
     }
-    if (!availible) {
+    if (!available) {
         workerStartPos[workerID] = uInternalNodeCount - 1;
         currentNodeIndex[workerID] = NULL_NEIGHBOR;
     }
@@ -201,8 +193,11 @@ unsigned MuscleWorkPool::refineGetNextJob(MSA* _msaIn, bool accepted, SCORE scor
         refineNodeStatuses[index] = RefineTreeNodeStatus_Done;
         ctx->refinehoriz.g_uRefineHeightSubtree++;
         SetCurrentAlignment(*msaIn);
-        Progress(ctx->refinehoriz.g_uRefineHeightSubtree, ctx->refinehoriz.g_uRefineHeightSubtreeTotal);
-        refineTI->progress = (100.0 * (uRangeIndex + ((uIter + 1.0) / uIters * (ctx->refinehoriz.g_uRefineHeightSubtree + 1.0) / ctx->refinehoriz.g_uRefineHeightSubtreeTotal))) / uRangeCount;
+        //        TODO: use atomic operations to update progress field to avoid noo-synchronized ints.
+        //        Check 'Align With Muscle' workflow progress on ty3.aln to reproduce the error.
+        //        Progress(ctx->refinehoriz.g_uRefineHeightSubtree, ctx->refinehoriz.g_uRefineHeightSubtreeTotal);
+        //        double iterationProgress = ((uIter + 1.0) / uIters) * (ctx->refinehoriz.g_uRefineHeightSubtree + 1.0) / ctx->refinehoriz.g_uRefineHeightSubtreeTotal;
+        //        refineTI->progress = 100.0 * (uRangeIndex + iterationProgress) / uRangeCount;
         if (repeated) {
 #if TRACE
             log.trace(QString("uRangeIndex %1, uIter %2, workerID %3: Oscillating").arg(uRangeIndex).arg(uIter).arg(workerID));

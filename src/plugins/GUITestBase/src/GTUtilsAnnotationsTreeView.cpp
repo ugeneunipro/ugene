@@ -50,22 +50,17 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsAnnotationsTreeView"
 
-#define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget* GTUtilsAnnotationsTreeView::getTreeWidget() {
     QWidget* sequenceView = GTUtilsSequenceView::getActiveSequenceViewWindow();
     return GTWidget::findTreeWidget("annotations_tree_widget", sequenceView);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addAnnotationsTableFromProject"
 void GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(const QString& tableName) {
     GTUtilsDialog::waitForDialog(new CreateObjectRelationDialogFiller());
     GTUtilsProjectTreeView::dragAndDrop(GTUtilsProjectTreeView::findIndex(tableName), GTUtilsAnnotationsTreeView::getTreeWidget());
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAVItemName"
 QString GTUtilsAnnotationsTreeView::getAVItemName(AVItem* avItem) {
     GT_CHECK_RESULT(avItem != nullptr, "avItem is NULL", "");
 
@@ -94,24 +89,18 @@ QString GTUtilsAnnotationsTreeView::getAVItemName(AVItem* avItem) {
 
     return "";
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getQualifierValue"
 QString GTUtilsAnnotationsTreeView::getQualifierValue(const QString& qualifierName, QTreeWidgetItem* annotationItem) {
     GT_CHECK_RESULT(annotationItem != nullptr, "annotationItem item is null", "");
     GTTreeWidget::expand(annotationItem);
     QTreeWidgetItem* qualifierItem = findItem(qualifierName, annotationItem);
     return qualifierItem->text(AnnotationsTreeView::COLUMN_VALUE);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getQualifierValue"
 QString GTUtilsAnnotationsTreeView::getQualifierValue(const QString& qualifierName, const QString& annotationName) {
     return getQualifierValue(qualifierName, findItem(annotationName));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAnnotatedRegions"
 QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegions() {
     QTreeWidget* treeWidget = getTreeWidget();
     QList<U2Region> res;
@@ -123,9 +112,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegions() {
     }
     return res;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSelectedAnnotatedRegions"
 QList<U2Region> GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions() {
     QTreeWidget* treeWidget = getTreeWidget();
     QList<U2Region> res;
@@ -138,24 +125,18 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions() {
     }
     return res;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAnnotationRegionString"
 QString GTUtilsAnnotationsTreeView::getAnnotationRegionString(const QString& annotationName) {
     QTreeWidgetItem* annotationItem = findItem(annotationName);
     GT_CHECK_RESULT(nullptr != annotationItem, "Annotation item is NULL", "");
     return annotationItem->text(AnnotationsTreeView::COLUMN_VALUE);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAnnotationType"
 QString GTUtilsAnnotationsTreeView::getAnnotationType(const QString& annotationName) {
     QTreeWidgetItem* annotationItem = findItem(annotationName);
     return annotationItem->text(AnnotationsTreeView::COLUMN_TYPE);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findFirstAnnotation"
 QTreeWidgetItem* GTUtilsAnnotationsTreeView::findFirstAnnotation(const GTGlobals::FindOptions& options, bool expandParent) {
     QTreeWidget* treeWidget = getTreeWidget();
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
@@ -177,9 +158,7 @@ QTreeWidgetItem* GTUtilsAnnotationsTreeView::findFirstAnnotation(const GTGlobals
     }
     GT_FAIL("Tree widget is empty", nullptr);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
 QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItemWithIndex(const QString& itemName, int index, bool expandParent) {
     GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", nullptr);
 
@@ -201,9 +180,7 @@ QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItemWithIndex(const QString& it
 
     return nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
 QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItem(
     const QString& itemName,
     QTreeWidgetItem* parentItem,
@@ -233,9 +210,7 @@ QTreeWidgetItem* GTUtilsAnnotationsTreeView::findItem(
     GT_FAIL("Item " + itemName + " not found in tree widget", nullptr);
 }
 
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItems"
 QList<QTreeWidgetItem*> GTUtilsAnnotationsTreeView::findItems(const QString& itemName, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(!itemName.isEmpty(), "Item name is empty", {});
 
@@ -257,17 +232,13 @@ QList<QTreeWidgetItem*> GTUtilsAnnotationsTreeView::findItems(const QString& ite
     GT_CHECK_RESULT(!result.isEmpty(), "Item '" + itemName + "' was not found in tree widget", result);
     return result;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "expandItem"
 QTreeWidgetItem* GTUtilsAnnotationsTreeView::expandItem(const QString& itemName) {
     auto item = findItem(itemName);
     GTTreeWidget::expand(item);
     return item;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getGroupNames"
 QStringList GTUtilsAnnotationsTreeView::getGroupNames(const QString& annotationTableName) {
     QList<QTreeWidgetItem*> annotationTableItems;
     if (!annotationTableName.isEmpty()) {
@@ -288,9 +259,7 @@ QStringList GTUtilsAnnotationsTreeView::getGroupNames(const QString& annotationT
     }
     return groupNames;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAnnotationNamesOfGroup"
 QStringList GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(const QString& groupName) {
     QStringList names;
     QTreeWidgetItem* groupItem = findItem(groupName);
@@ -301,9 +270,7 @@ QStringList GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(const QString&
     }
     return names;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAnnotatedRegionsOfGroup"
 QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(const QString& groupName) {
     QList<U2Region> regions;
     QTreeWidgetItem* groupItem = findItem(groupName);
@@ -316,9 +283,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(const QSt
     }
     return regions;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAnnotatedRegionsOfGroup"
 QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(const QString& groupName, const QString& parentName) {
     QList<U2Region> regions;
     QTreeWidgetItem* parentItem = findItem(parentName);
@@ -337,9 +302,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(const QSt
     }
     return regions;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findRegion"
 bool GTUtilsAnnotationsTreeView::findRegion(const QString& itemName, const U2Region& r) {
     auto item = dynamic_cast<AVAnnotationItem*>(GTUtilsAnnotationsTreeView::findItem(itemName));
     CHECK_SET_ERR_RESULT(item != nullptr, "Item " + itemName + " not found", false);
@@ -357,9 +320,7 @@ bool GTUtilsAnnotationsTreeView::findRegion(const QString& itemName, const U2Reg
     }
     return found;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSelectedItem"
 QString GTUtilsAnnotationsTreeView::getSelectedItem() {
     QTreeWidget* treeWidget = getTreeWidget();
     QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
@@ -370,9 +331,7 @@ QString GTUtilsAnnotationsTreeView::getSelectedItem() {
     }
     return "";
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getAllSelectedItem"
 QList<QTreeWidgetItem*> GTUtilsAnnotationsTreeView::getAllSelectedItems() {
     QList<QTreeWidgetItem*> res;
 
@@ -385,16 +344,12 @@ QList<QTreeWidgetItem*> GTUtilsAnnotationsTreeView::getAllSelectedItems() {
     }
     return res;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsAnnotationsTreeView::getItemCenter(const QString& itemName) {
     QTreeWidgetItem* item = findItem(itemName);
     return GTTreeWidget::getItemCenter(item);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "createQualifier"
 void GTUtilsAnnotationsTreeView::createQualifier(const QString& qualifierName, const QString& qualifierValue, const QString& annotationName) {
     QList<QTreeWidgetItem*> annotations = findItems({annotationName});
     CHECK_SET_ERR(annotations.size() == 1,
@@ -402,9 +357,7 @@ void GTUtilsAnnotationsTreeView::createQualifier(const QString& qualifierName, c
                       QString::number(annotations.size()) + " with name: " + annotationName);
     createQualifier(qualifierName, qualifierValue, annotations[0]);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "createQualifier"
 void GTUtilsAnnotationsTreeView::createQualifier(const QString& qualifierName, const QString& qualifierValue, QTreeWidgetItem* annotation) {
     selectItems({annotation});
     GTUtilsDialog::waitForDialog(new EditQualifierFiller(qualifierName, qualifierValue));
@@ -412,9 +365,7 @@ void GTUtilsAnnotationsTreeView::createQualifier(const QString& qualifierName, c
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(annotation));
     GTMouseDriver::click(Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItemsByText"
 void GTUtilsAnnotationsTreeView::selectItemsByName(const QStringList& itemNames) {
     GT_CHECK_RESULT(!itemNames.empty(), "List of items to select is empty", );
     QList<QTreeWidgetItem*> items;
@@ -423,9 +374,7 @@ void GTUtilsAnnotationsTreeView::selectItemsByName(const QStringList& itemNames)
     }
     selectItems(items);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectItems"
 void GTUtilsAnnotationsTreeView::selectItems(const QList<QTreeWidgetItem*>& items) {
     GT_CHECK_RESULT(!items.empty(), "List of items to select is empty", );
 
@@ -453,9 +402,7 @@ void GTUtilsAnnotationsTreeView::selectItems(const QList<QTreeWidgetItem*>& item
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickItem"
 void GTUtilsAnnotationsTreeView::clickItem(const QString& itemName, int itemIndex, bool isDoubleClick) {
     GT_CHECK_RESULT(!itemName.isEmpty(), "Empty item name", );
 
@@ -469,24 +416,18 @@ void GTUtilsAnnotationsTreeView::clickItem(const QString& itemName, int itemInde
     }
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "createAnnotation"
 void GTUtilsAnnotationsTreeView::createAnnotation(const QString& groupName, const QString& annotationName, const QString& location, bool createNewTable, const QString& saveTo) {
     QTreeWidget* annotationsTreeView = getTreeWidget();
     GTWidget::click(annotationsTreeView);
     GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(createNewTable, groupName, annotationName, location, saveTo));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "deleteItem"
 void GTUtilsAnnotationsTreeView::deleteItem(const QString& itemName) {
     deleteItem(findItem(itemName));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "deleteItem"
 void GTUtilsAnnotationsTreeView::deleteItem(QTreeWidgetItem* item) {
     GT_CHECK(item != nullptr, "Item is NULL");
     selectItems(QList<QTreeWidgetItem*>() << item);
@@ -494,39 +435,29 @@ void GTUtilsAnnotationsTreeView::deleteItem(QTreeWidgetItem* item) {
     GTThread::waitForMainThread();
     GTUtilsTaskTreeView::waitTaskFinished();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "callContextMenuOnItem"
 void GTUtilsAnnotationsTreeView::callContextMenuOnItem(QTreeWidgetItem* item) {
     GTTreeWidget::scrollToItem(item);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(item));
     GTMouseDriver::click(Qt::RightButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "callContextMenuOnItem"
 void GTUtilsAnnotationsTreeView::callContextMenuOnItem(const QString& itemName) {
     callContextMenuOnItem(findItem(itemName));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "callContextMenuOnQualifier"
 void GTUtilsAnnotationsTreeView::callContextMenuOnQualifier(const QString& annotationName, const QString& qualifierName) {
     QTreeWidgetItem* annotationItem = findItem(annotationName);
     GTTreeWidget::expand(annotationItem);
     QTreeWidgetItem* qualifierItem = findItem(qualifierName, annotationItem);
     callContextMenuOnItem(qualifierItem);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkNoAnnotations"
 void GTUtilsAnnotationsTreeView::checkNoAnnotations() {
     QTreeWidgetItem* annotationItem = findFirstAnnotation({false});
     CHECK_SET_ERR(annotationItem == nullptr, "There should be no annotations");
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkAnnotationRegions"
 void GTUtilsAnnotationsTreeView::checkAnnotationRegions(const QString& groupName, const QList<QPair<int, int>>& annotationRegionsStartAndEnd) {
     QList<U2Region> group = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(groupName);
     CHECK_SET_ERR(!group.isEmpty(), QString("Group %1 is empty, but shouldn't be").arg(groupName));
@@ -536,7 +467,6 @@ void GTUtilsAnnotationsTreeView::checkAnnotationRegions(const QString& groupName
         CHECK_SET_ERR(group.contains(region), QString("No \"%1..%2\" region in \"%3\" group").arg(pair.first).arg(pair.second).arg(groupName));
     }
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

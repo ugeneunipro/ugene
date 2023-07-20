@@ -63,7 +63,7 @@ CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const
 #    endif
 #endif
 
-        validMessage = "cuffcompare";
+        validationMessageRegExp = "cuffcompare";
         description = CufflinksSupport::tr("<i>Cuffcompare</i> helps"
                                            " comparing assembled transcripts to a reference annotation,"
                                            " and also tracking transcripts across multiple experiments.");
@@ -79,7 +79,7 @@ CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const
 #    endif
 #endif
 
-        validMessage = "cuffdiff";
+        validationMessageRegExp = "cuffdiff";
         description = CufflinksSupport::tr("<i>Cuffdiff</i> &nbsp;tests for"
                                            " differential expression and regulation in RNA-Seq samples.");
     }
@@ -94,7 +94,7 @@ CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const
 #    endif
 #endif
 
-        validMessage = "cufflinks";
+        validationMessageRegExp = "cufflinks";
         description = CufflinksSupport::tr("<i>Cufflinks</i> assembles transcripts"
                                            " and estimates their abundances.");
     }
@@ -109,7 +109,7 @@ CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const
 #    endif
 #endif
 
-        validMessage = "cuffmerge";
+        validationMessageRegExp = "cuffmerge";
         description = CufflinksSupport::tr("<i>Cuffmerge</i> merges together several assemblies.");
     }
 
@@ -120,7 +120,7 @@ CufflinksSupport::CufflinksSupport(const QString& id, const QString& name, const
 #elif defined(Q_OS_UNIX)
         executableFileName = "gffread";
 #endif
-        validMessage = "gffread <input_gff>";
+        validationMessageRegExp = "gffread <input_gff>";
         validationArguments << "--help";
         description = CufflinksSupport::tr("<i>Gffread</i> is used to verify or perform various operations on GFF files.");
     }

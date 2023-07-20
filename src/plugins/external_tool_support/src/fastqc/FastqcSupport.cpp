@@ -50,7 +50,7 @@ FastQCSupport::FastQCSupport()
 
     executableFileName = "fastqc";
 
-    validMessage = "FastQC v";
+    validationMessageRegExp = "FastQC v";
     description = tr("<i>FastQC</i>: A quality control tool for high throughput sequence data.");
 
     versionRegExp = QRegExp("FastQC v(\\d+.\\d+.\\d+)");

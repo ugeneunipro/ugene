@@ -996,17 +996,6 @@ void SmithWatermanAlgorithmSSE2::calculateMatrixForAnnotationsResultWithInt() {
     _mm_free(matrix);
 }
 
-inline void SmithWatermanAlgorithmSSE2::printVector(__m128i& toprint, int add) {
-    ScoreType* tmpArray = (ScoreType*)_mm_malloc(nElementsInVec * sizeof(ScoreType), 16);
-
-    _mm_store_si128((__m128i*)&tmpArray[0], toprint);
-    cout << "printVector" << endl;
-    for (int i = 0; i < nElementsInVec; i++)
-        cout << tmpArray[i] + add << " ";
-
-    cout << endl;
-}
-
 int SmithWatermanAlgorithmSSE2::calculateMatrixSSE2(unsigned queryLength, unsigned char* dbSeq, unsigned dbLength, unsigned short gapOpenOrig, unsigned short gapExtend) {
     unsigned iter = (queryLength + nElementsInVec - 1) / nElementsInVec;
 

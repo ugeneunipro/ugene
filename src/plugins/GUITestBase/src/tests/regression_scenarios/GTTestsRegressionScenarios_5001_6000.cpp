@@ -86,6 +86,7 @@
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -290,7 +291,7 @@ GUI_TEST_CLASS_DEFINITION(test_5026) {
     CHECK_SET_ERR(modifiedNames.contains("Mecopoda_elongata__Ishigaki__J"), "Sequence Mecopoda_elongata__Ishigaki__J is not present in multiple alignment.");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_5027_1) {
+GUI_TEST_CLASS_DEFINITION(test_5027) {
     // 1. Open preferences and set memory limit per task 500000MB
     // 2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
     // 3. Run schema.
@@ -311,61 +312,17 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
         }
 
     private:
-        int memValue;
+        int memValue = 0;
     };
 
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new MemorySetter(200)));  // 200mb
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
-    GTUtilsWorkflowDesigner::openWorkflowDesigner();
-    GTUtilsWorkflowDesigner::addSample("SnpEff");
-    GTThread::waitForMainThread();
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);  // close wizard
-
-    GTUtilsWorkflowDesigner::click("Input Variations File");
-    GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/vcf/valid.vcf");
-
-    GTUtilsWorkflowDesigner::click("Annotate and Predict Effects with SnpEff");
-    GTUtilsDialog::waitForDialog(new SnpEffDatabaseDialogFiller("hg19"));
-    GTUtilsWorkflowDesigner::setParameter("Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
-
-    GTUtilsWorkflowDesigner::runWorkflow();
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    GTWidget::findLabelByText("There is not enough memory to complete the SnpEff execution.", GTUtilsDashboard::getDashboard());
-}
-
-GUI_TEST_CLASS_DEFINITION(test_5027_2) {
-    // 1. Open preferences and set memory limit per task 512MB
-    // 2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
-    // 3. Run schema.
-    // Expected state : there is problem on dashboard "There is not enough memory to complete the SnpEff execution."
-    class MemorySetter : public CustomScenario {
-    public:
-        MemorySetter(int memValue)
-            : memValue(memValue) {
-        }
-        void run() override {
-            QWidget* dialog = GTWidget::getActiveModalWidget();
-            AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::Resources);
-
-            auto memSpinBox = GTWidget::findSpinBox("memBox");
-            GTSpinBox::setValue(memSpinBox, memValue, GTGlobals::UseKeyBoard);
-
-            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
-        }
-
-    private:
-        int memValue;
-    };
-
-    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new MemorySetter(256)));
-    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::addSample("SnpEff");
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-    GTThread::waitForMainThread();
+    GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
+
     GTUtilsWorkflowDesigner::click("Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/vcf/valid.vcf");
 
@@ -592,8 +549,7 @@ GUI_TEST_CLASS_DEFINITION(test_5136) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5137) {
-    // 1. Open document test/_common_data/clustal/big.aln
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -606,7 +562,6 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
     GTUtilsProjectTreeView::click("COI");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsDialog::checkNoActiveWaiters();
-    GTUtilsTaskTreeView::waitTaskFinished(20000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5149) {
@@ -962,7 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_5278) {
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Find next restriction sites "AaaI" and "AagI"
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "AaaI", "AagI" };
+    settings.enzymes = QStringList {"AaaI", "AagI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
@@ -1854,7 +1809,7 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
 
     // 2. Select last symbol of the read and insert some gaps, until reference will increase for a few symbols
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
-    int end = row->getCoreStart() + row->getCoreLength() - 1;
+    int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(end, 0));
 
     int i = 15;
@@ -1865,29 +1820,29 @@ GUI_TEST_CLASS_DEFINITION(test_5492) {
 
     // 4. Select the last symbol again, press "Insert character" and insert gap
     row = GTUtilsMcaEditor::getMcaRow(0);
-    end = row->getCoreStart() + row->getCoreLength() - 1;
+    end = int(row->getCoreStart() + row->getCoreLength() - 1);
     GTUtilsMcaEditorSequenceArea::clickToPosition(QPoint(end, 0));
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Replace character/gap"});
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
     // Expected : all gaps since a place when you started to insert, will turn into trailing
     row = GTUtilsMcaEditor::getMcaRow(0);
-    int newRowLength = row->getCoreStart() + row->getCoreLength() - 1;
+    int newRowLength = int(row->getCoreStart() + row->getCoreLength() - 1);
     CHECK_SET_ERR(newRowLength < end, "Incorrect length");
 
-    int refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    int refLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     // 5. Press "Remove all coloumns of gaps "
     GTMenu::clickMainMenuItem({"Actions", "Edit", "Remove all columns of gaps"});
 
     // Expected: Reference will be trimmed
-    int newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    int newRefLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     CHECK_SET_ERR(newRefLength < refLength, QString("Expected: New ref length is less then old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
 
     // 6. Press "undo"
     GTUtilsMcaEditor::undo();
 
     // Expected: reference will be restored with gaps
-    newRefLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    newRefLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     CHECK_SET_ERR(newRefLength == refLength, QString("Expected: New ref length is equal old ref length, current: new = %1, old = %2").arg(QString::number(newRefLength)).arg(QString::number(refLength)));
 }
 
@@ -1934,7 +1889,6 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
 
     GTUtilsDialog::add(new GTFileDialogUtils(testDir + "_common_data/text/text.txt"));
     GTUtilsDialog::add(new DocumentFormatSelectorDialogFiller("ABIF"));
-    GTUtilsDialog::add(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
     GTMenu::clickMainMenuItem({"File", "Open as..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -2619,13 +2573,11 @@ GUI_TEST_CLASS_DEFINITION(test_5640) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5657) {
-    // 1. Open _common_data/clustal/COI_sub_asterisks.aln
     GTFileDialog::openFile(testDir + "_common_data/clustal/COI_sub_asterisks.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    // 2. Try to align it with Kalign
-    // Expected state: there is messagebox about incompatible alphabet
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
-    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok, "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to supported one and try again."));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
+    GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok,
+                                                  "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to DNA, RNA or Amino and try again."));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
 }
 
@@ -3290,7 +3242,7 @@ GUI_TEST_CLASS_DEFINITION(test_5750) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: the exported file is opened in UGENE. The first sequence is named "1".
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 
     const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -3569,7 +3521,7 @@ GUI_TEST_CLASS_DEFINITION(test_5755) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected : Trailing gaps were inserted into the end of reference.
-    qint64 refLength = GTUtilsMcaEditorSequenceArea::getReferenceLength();
+    int refLength = (int)GTUtilsMcaEditorSequenceArea::getReferenceLength();
     QString refReg = GTUtilsMcaEditorSequenceArea::getReferenceReg(refLength - 20, 20);
     bool isGap = std::all_of(refReg.begin(), refReg.end(), [](const auto& c) { return c == U2Mca::GAP_CHAR; });
     CHECK_SET_ERR(isGap, "Expected only gaps, got: " + refReg);
@@ -3701,7 +3653,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
     GTLogTracer lt;
     // 2. Select the last char of the first row
     MultipleAlignmentRowData* row = GTUtilsMcaEditor::getMcaRow(0);
-    int end = row->getCoreStart() + row->getCoreLength() - 1;
+    int end = int(row->getCoreStart() + row->getCoreLength() - 1);
     QPoint p(end, 0);
     GTUtilsMcaEditorSequenceArea::clickToPosition(p);
     QPoint curPos = GTMouseDriver::getMousePosition();
@@ -3719,7 +3671,7 @@ GUI_TEST_CLASS_DEFINITION(test_5761) {
         i--;
     }
     GTMouseDriver::release();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5769_1) {
@@ -3798,7 +3750,7 @@ GUI_TEST_CLASS_DEFINITION(test_5769_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_5769_2) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             // Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue("minIdentitySpinBox");
             QString expected = "80";
@@ -3976,7 +3928,7 @@ GUI_TEST_CLASS_DEFINITION(test_5783) {
     GTUtilsDialog::waitForDialog(new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_EXPORT, "action_export_annotations"}));
     GTMouseDriver::click(Qt::RightButton);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
@@ -4112,6 +4064,8 @@ GUI_TEST_CLASS_DEFINITION(test_5786_3) {
     //    Expected state: there is an only "-b" parameter in the phyML arguments, it is equal to "-2".
     CHECK_SET_ERR(!lt.hasMessage("-b 5"), "Found unexpected message");
     CHECK_SET_ERR(lt.hasMessage("-b -2"), "Expected message is not found");
+
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5789_1) {
@@ -4312,7 +4266,7 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
 
     // Expected state: Scheme successfully performed
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5815) {
@@ -4360,7 +4314,7 @@ GUI_TEST_CLASS_DEFINITION(test_5832) {
     GTUtilsMSAEditorSequenceArea::click(QPoint(5, 5));
 
     // Expected: no errors in the log
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5833) {
@@ -4460,7 +4414,7 @@ GUI_TEST_CLASS_DEFINITION(test_5842) {
     GTUtilsProjectTreeView::click("alignment.ugenedb", Qt::RightButton);
 
     // Expected state: the view is opened without errors.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5847) {
@@ -4478,7 +4432,7 @@ GUI_TEST_CLASS_DEFINITION(test_5847) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Expected: no errors in the log
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5849) {

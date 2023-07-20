@@ -26,7 +26,6 @@
 #include <QVector>
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/U2OpStatusUtils.h>
 
 #include "MuscleAdapter.h"
 
@@ -37,7 +36,6 @@ MuscleParamsHelper::MuscleParamsHelper(TaskStateInfo& ti, MuscleContext* _ctx)
     SetParams();
 
     // override some params. TODO: recheck possible conflict with SetPPScore() !
-    ctx->progressPercent = &ti.progress;
     ctx->cancelFlag = &ti.cancelFlag;
     ctx->progress.g_fProgress = &ugeneFileStub;  // log context
     ctx->progress.pr_printf = ugene_printf;  // overriding logging
@@ -49,7 +47,6 @@ MuscleParamsHelper::MuscleParamsHelper(TaskStateInfo& ti, MuscleContext* _ctx)
 
 MuscleParamsHelper::~MuscleParamsHelper() {
     ctx->cancelFlag = &ctx->cancelStub;
-    ctx->progressPercent = &ctx->progressStub;
     ctx->progress.pr_printf = fprintf;
     ctx->progress.g_fProgress = nullptr;
 }

@@ -129,7 +129,6 @@ public:
     static void scrollToIndex(QAbstractItemView* itemView, const QModelIndex& index);
 
 #define GT_CLASS_NAME "GTWidget"
-#define GT_METHOD_NAME "findExactWidget"
     template<class T>
     static T findExactWidget(const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {}) {
         QWidget* w = findWidget(widgetName, parentWidget, options);
@@ -140,7 +139,6 @@ public:
         }
         return result;
     }
-#undef GT_METHOD_NAME
 
     /** Calls findExactWidget with QRadioButton type. Shortcut method. */
     static QRadioButton* findRadioButton(const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
@@ -229,7 +227,6 @@ public:
     /** Calls findExactWidget with QProgressBar type. Shortcut method. */
     static QProgressBar* findProgressBar(const QString& widgetName, QWidget* parentWidget = nullptr, const GTGlobals::FindOptions& options = {});
 
-#define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */
     template<class T>
     static T findWidgetByType(QWidget* parentWidget, const QString& errorMessage) {
@@ -241,9 +238,7 @@ public:
         GT_CHECK_RESULT(widget != nullptr, errorMessage, nullptr);
         return widget;
     }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findChildren"
     /**
      * Finds all children of the 'parent' using 'findChildren' method and checkFn to check if the child is matched.
      * If parent is null, find all child in all main window.
@@ -296,7 +291,6 @@ public:
         GTThread::runInMainThread(new FindChildrenScenario(parent, matchFn, result));
         return result;
     }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 };

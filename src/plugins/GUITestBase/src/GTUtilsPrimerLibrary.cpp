@@ -80,7 +80,6 @@ QString GTUtilsPrimerLibrary::getPrimerSequence(int number) {
     return GTTableView::data(table(), number, 4);
 }
 
-#define GT_METHOD_NAME "getPrimerSequence"
 QString GTUtilsPrimerLibrary::getPrimerSequence(const QString& name) {
     for (int i = 0; i < GTTableView::rowCount(table()); i++) {
         if (name == GTTableView::data(table(), i, 0)) {
@@ -89,7 +88,6 @@ QString GTUtilsPrimerLibrary::getPrimerSequence(const QString& name) {
     }
     GT_CHECK_RESULT(false, QString("Primer with name '%1' not found").arg(name), "");
 }
-#undef GT_METHOD_NAME
 
 QPoint GTUtilsPrimerLibrary::getPrimerPoint(int number) {
     return GTTableView::getCellPoint(table(), number, 0);
@@ -117,7 +115,6 @@ void GTUtilsPrimerLibrary::addPrimer(const QString& name, const QString& data) {
     GTGlobals::sleep(50);
 }
 
-#define GT_METHOD_NAME "selectPrimers"
 void GTUtilsPrimerLibrary::selectPrimers(const QList<int>& numbers) {
     const int size = librarySize();
 
@@ -128,7 +125,6 @@ void GTUtilsPrimerLibrary::selectPrimers(const QList<int>& numbers) {
     }
     GTKeyboardDriver::keyClick(Qt::Key_Control);
 }
-#undef GT_METHOD_NAME
 
 void GTUtilsPrimerLibrary::selectAll() {
     GTWidget::click(table());

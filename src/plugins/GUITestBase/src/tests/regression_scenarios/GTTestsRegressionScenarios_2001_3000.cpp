@@ -227,7 +227,7 @@ GUI_TEST_CLASS_DEFINITION(test_2009) {
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new BWAInactivation()));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
     //    4) Look at UGENE log
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     //    Expected state: UGENE doesn't write any error to log
 }
 
@@ -1036,7 +1036,7 @@ GUI_TEST_CLASS_DEFINITION(test_2152) {
     GTWidget::click(GTAction::button("Run workflow"));
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2156) {
@@ -1170,7 +1170,7 @@ GUI_TEST_CLASS_DEFINITION(test_2187) {
 
     GTUtilsDialog::waitForDialog(new FindTandemsDialogFiller(testDir + "_common_data/scenarios/sandbox/result_2187.gb"));
 
-    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find tandem repeats..."}, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find tandem repeats..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QTreeWidgetItem* annotationsRoot = GTUtilsAnnotationsTreeView::findItem("repeat_unit  (0, 5)");
@@ -1366,7 +1366,7 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
 
     //    Expected: the t-coffee task started and finished well.
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2314) {
@@ -1464,7 +1464,7 @@ GUI_TEST_CLASS_DEFINITION(test_2270) {
     GTLogTracer lt;
     GTFileDialog::openFile(dataDir + "cmdline/", "snp.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2281) {
@@ -1973,7 +1973,7 @@ GUI_TEST_CLASS_DEFINITION(test_2373) {
     GTMouseDriver::moveTo(GTUtilsMsaEditor::getSequenceNameRect("Mecopoda_elongata__Ishigaki__J").center() + QPoint(0, 20));
     GTMouseDriver::click();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2374) {
@@ -2587,7 +2587,7 @@ GUI_TEST_CLASS_DEFINITION(test_2451) {
 
     //    Expected state: Scheme successfully performed
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2459) {
@@ -2626,7 +2626,7 @@ GUI_TEST_CLASS_DEFINITION(test_2460) {
     GTUtilsMsaEditor::removeRows(1, list.size() - 1);
 
     // 3. Align the result one-line-msa by kalign with default values.
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTMouseDriver::click(Qt::RightButton);
 
@@ -3232,7 +3232,7 @@ GUI_TEST_CLASS_DEFINITION(test_2579) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new MafftInactivation()));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 GUI_TEST_CLASS_DEFINITION(test_2581) {
     // 1. Open file "_common_data/scenarios/msa/ma2_gapped_same_names.aln"
@@ -3252,7 +3252,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_1) {
@@ -3274,7 +3274,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_2) {
@@ -3331,7 +3331,7 @@ GUI_TEST_CLASS_DEFINITION(test_2581_4) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_5) {
@@ -3347,13 +3347,13 @@ GUI_TEST_CLASS_DEFINITION(test_2581_5) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
 
     GTUtilsMSAEditorSequenceArea::moveTo(QPoint(0, 0));
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2583) {
@@ -3400,7 +3400,7 @@ GUI_TEST_CLASS_DEFINITION(test_2605) {
     GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea(0));
 
     // Expected state: export is successful, no any messages in log like "There is no sequence objects in given file, unable to convert it in multiple alignment"
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2612) {
@@ -3458,7 +3458,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622) {
 
     // UGENE does not hang.
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2622_1) {
@@ -3491,7 +3491,7 @@ GUI_TEST_CLASS_DEFINITION(test_2622_1) {
 
     // UGENE does not hang and all results are 1 bp length (100 results).
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 
     auto resultLabel = GTWidget::findLabel("resultLabel");
     CHECK_SET_ERR(resultLabel->text() == "Results: 1/100", "Unexpected find algorithm results");
@@ -3643,7 +3643,7 @@ GUI_TEST_CLASS_DEFINITION(test_2651) {
     QModelIndex thirdIndex = GTUtilsProjectTreeView::findIndex("AB797201 features", {false});
     CHECK_SET_ERR(!thirdIndex.isValid(), "The \"AB797201 features\" item has not been deleted");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2656) {
@@ -4206,7 +4206,7 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Ok));
     GTWidget::click(GTAction::button("Run workflow"));
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 GUI_TEST_CLASS_DEFINITION(test_2778) {
     // 1. Use main menu : tools->align to reference->align short reads
@@ -4233,7 +4233,7 @@ GUI_TEST_CLASS_DEFINITION(test_2778) {
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2784) {
@@ -4265,7 +4265,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     // Expected state : Alignment task has started.After some time it finishes without errors
     // and alignment gets changed somehow.The "Undo" button becomes active
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
 
@@ -4494,9 +4494,7 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 
 GUI_TEST_CLASS_DEFINITION(test_2853) {
     GTUtilsDialog::waitForDialog(new NCBISearchDialogSimpleFiller("rat"));
-
     GTMenu::clickMainMenuItem({"File", "Search NCBI GenBank..."}, GTGlobals::UseKey);
-    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2863) {
@@ -4508,7 +4506,7 @@ GUI_TEST_CLASS_DEFINITION(test_2863) {
     WorkflowProcessItem* conversion = GTUtilsWorkflowDesigner::addElement("File Format Conversion");
     //    4. Connect the elements.
     GTUtilsWorkflowDesigner::connect(fileList, conversion);
-    //    Expected: the converter's input slot "Source URL" is binded with the "Source URL" slot of the Read File URL(s).
+    //    Expected: the converter's input slot "Source URL" is bound with the "Source URL" slot of the Read File URL(s).
     GTUtilsWorkflowDesigner::click(conversion);
     QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(0);
     QString s1 = table->item(0, 0)->text();
@@ -4542,7 +4540,7 @@ GUI_TEST_CLASS_DEFINITION(test_2866) {
     GTMenu::clickMainMenuItem({"Tools", "NGS data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2884) {
@@ -4746,7 +4744,7 @@ GUI_TEST_CLASS_DEFINITION(test_2903) {
     // Cancel the task. If not cancelled the run may last too long to trigger timeout in nightly tests.
     GTUtilsTaskTreeView::cancelTask(blastTaskName, false);
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -5134,7 +5132,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_1) {
     CHECK_SET_ERR(GTUtilsCv::cvBtn::isChecked(seqWidget), "Unexpected state of CV button!");
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(seqWidget), "Unexpected state of CV widget!");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2962_2) {
@@ -5157,7 +5155,7 @@ GUI_TEST_CLASS_DEFINITION(test_2962_2) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsCv::commonCvBtn::click();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2971) {
@@ -5306,7 +5304,7 @@ GUI_TEST_CLASS_DEFINITION(test_2998) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: the task is finished without errors.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 }  // namespace GUITest_regression_scenarios

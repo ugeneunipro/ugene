@@ -25,12 +25,10 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTUtilsToolTip"
 
-#define GT_METHOD_NAME "checkExistingToolTip"
 void GTUtilsToolTip::checkExistingToolTip(const QString& tooltip) {
     QString t = getToolTip();
     GT_CHECK(t.contains(tooltip), "Tooltip is <" + t + ">, doesn't contain <" + tooltip + ">");
 }
-#undef GT_METHOD_NAME
 
 QString GTUtilsToolTip::getToolTip() {
     GTGlobals::sleep(3000);

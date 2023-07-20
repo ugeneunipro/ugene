@@ -771,7 +771,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PFMatrixReadTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="70"/>
+        <location filename="../src/WeightMatrixIO.h" line="69"/>
         <source>Read Frequency Matrix</source>
         <translation>Чтение частотной матрицы</translation>
     </message>
@@ -784,7 +784,7 @@ Maybe model data are not enough for selected algorithm</translation>
         <translation>Открыть несколько окон</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.h" line="52"/>
+        <location filename="../src/PMatrixFormat.h" line="51"/>
         <source>PFM Viewer</source>
         <translation>Просмотр матрицы</translation>
     </message>
@@ -792,7 +792,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PFMatrixWriteTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="108"/>
+        <location filename="../src/WeightMatrixIO.h" line="107"/>
         <source>Save position frequency matrix</source>
         <translation>Сохранение частотной матрицы</translation>
     </message>
@@ -1102,7 +1102,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixReadTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="89"/>
+        <location filename="../src/WeightMatrixIO.h" line="88"/>
         <source>Read Weight Matrix</source>
         <translation>Чтение весовой матрицы</translation>
     </message>
@@ -1115,7 +1115,7 @@ Maybe model data are not enough for selected algorithm</translation>
         <translation>Открыть несколько окон</translation>
     </message>
     <message>
-        <location filename="../src/PMatrixFormat.h" line="85"/>
+        <location filename="../src/PMatrixFormat.h" line="84"/>
         <source>PWM Viewer</source>
         <translation>Просмотр матрицы</translation>
     </message>
@@ -1123,7 +1123,7 @@ Maybe model data are not enough for selected algorithm</translation>
 <context>
     <name>U2::PWMatrixWriteTask</name>
     <message>
-        <location filename="../src/WeightMatrixIO.h" line="122"/>
+        <location filename="../src/WeightMatrixIO.h" line="121"/>
         <source>Save weight matrix</source>
         <translation>Сохранение весовой матрицы</translation>
     </message>

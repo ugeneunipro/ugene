@@ -163,8 +163,6 @@ void CreateAnnotationFullWidget::setLocation(const U2Location& location) {
         return location->regions[0].endPos() == seqLen && location->regions[1].startPos == 0;
     };
 
-    const bool firstLocationSetting = leRegionStart->text().isEmpty() && leRegionEnd->text().isEmpty();
-
     isValidLocation = false;
 
     QString startPos;
@@ -192,13 +190,6 @@ void CreateAnnotationFullWidget::setLocation(const U2Location& location) {
     leRegionEnd->setText(endPos);
     chbComplement->setChecked(location->strand.isComplementary());
     leLocation->setText(getGenbankLocationString(location));
-
-    // Examples: (200..len,1..100,5..10), (200..300,400..500) are not representable in simple format
-    const bool needToShowInGenbank = location->regions.size() > 2 ||
-                                     (location->regions.size() == 2 && !isSimpleSplitLocation(seqLen));
-    if (firstLocationSetting && needToShowInGenbank) {
-        rbGenbankFormat->setChecked(true);
-    }
 }
 
 void CreateAnnotationFullWidget::setDescription(const QString& description) {

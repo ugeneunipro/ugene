@@ -68,7 +68,6 @@ Primer3DialogFiller::Primer3DialogFiller(const Primer3Settings& settings)
       settings(settings) {
 }
 
-#define GT_METHOD_NAME "run"
 void Primer3DialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -153,9 +152,7 @@ void Primer3DialogFiller::commonScenario() {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "loadFromFileManually"
 void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
     // Open the settings file
     QFile file(settings.filePath);
@@ -271,7 +268,6 @@ void Primer3DialogFiller::loadFromFileManually(QWidget* parent) {
         }
     }
 }
-#undef GT_METHOD_NAME
 
 QWidget* Primer3DialogFiller::getWidgetTab(QWidget* wt) const {
     auto parent = wt->parent();

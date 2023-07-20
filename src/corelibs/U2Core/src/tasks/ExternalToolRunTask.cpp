@@ -30,8 +30,8 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
-#include <U2Core/Settings.h>
 #include <U2Core/ScriptingToolRegistry.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -61,14 +61,14 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
     CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(toolId)), );
     CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
-    
-    tool->checkPaths(arguments, stateInfo);
+
+    tool->checkArgsAndPaths(arguments, stateInfo);
     if (!stateInfo.hasError()) {
         toolName = tool->getName();
         coreLog.trace("Creating run task for: " + toolName);
         if (logParser != nullptr) {
             logParser->setParent(this);
-        }        
+        }
     }
 }
 
@@ -122,7 +122,7 @@ void ExternalToolRunTask::run() {
     while (!externalToolProcess->waitForFinished(1000)) {
         if (isCanceled()) {
             killProcess(externalToolProcess);
-            if (!externalToolProcess->waitForFinished(2000)) { //wait 2 seconds to let OS kill process in previous method
+            if (!externalToolProcess->waitForFinished(2000)) {  // wait 2 seconds to let OS kill process in previous method
                 externalToolProcess->kill();
             }
             if (externalToolProcess->state() != QProcess::NotRunning && !externalToolProcess->waitForFinished(10000)) {
@@ -138,7 +138,7 @@ void ExternalToolRunTask::run() {
         QProcess::ExitStatus status = externalToolProcess->exitStatus();
         int exitCode = externalToolProcess->exitCode();
         if (status == QProcess::CrashExit && !hasError()) {
-            QString error = parseStandartOutputFile();
+            QString error = parseStandardOutputFile();
             if (error.isEmpty()) {
                 QString intendedError = tr("%1 tool exited with the following error: %2 (Code: %3)")
                                             .arg(toolName)
@@ -150,7 +150,7 @@ void ExternalToolRunTask::run() {
 
             setError(error);
         } else if (status == QProcess::NormalExit && exitCode != EXIT_SUCCESS && !hasError()) {
-            QString error = parseStandartOutputFile();
+            QString error = parseStandardOutputFile();
             setError(error.isEmpty() ? tr("%1 tool exited with code %2").arg(toolName).arg(exitCode) : error);
         } else if (status == QProcess::NormalExit && exitCode == EXIT_SUCCESS && !hasError()) {
             algoLog.details(tr("Tool %1 finished successfully").arg(toolName));
@@ -162,10 +162,6 @@ void ExternalToolRunTask::killProcess(QProcess* process) {
     CmdlineTaskRunner::killProcessTree(process);
 }
 
-QList<long> ExternalToolRunTask::getChildPidsRecursive(long parentPid) {
-    return CmdlineTaskRunner::getChildrenProcesses(parentPid);
-}
-
 void ExternalToolRunTask::addOutputListener(ExternalToolListener* outputListener) {
     if (helper) {
         helper->addOutputListener(outputListener);
@@ -173,7 +169,7 @@ void ExternalToolRunTask::addOutputListener(ExternalToolListener* outputListener
     listener = outputListener;
 }
 
-QString ExternalToolRunTask::parseStandartOutputFile() const {
+QString ExternalToolRunTask::parseStandardOutputFile() const {
     CHECK(parseOutputFile, QString());
 
     QFile f(outputFile);
@@ -337,12 +333,12 @@ void ExternalToolLogParser::setLastError(const QString& value) {
 
 ////////////////////////////////////////
 // ExternalToolSupportUtils
-void ExternalToolSupportUtils::removeTmpDir(const QString& tmpDirUrl, U2OpStatus& os) {
-    if (tmpDirUrl.isEmpty()) {
+void ExternalToolSupportUtils::removeTmpDir(const QString& absolutePath, U2OpStatus& os) {
+    if (absolutePath.isEmpty()) {
         os.setError(tr("Can not remove temporary folder: path is empty."));
         return;
     }
-    QDir tmpDir(tmpDirUrl);
+    QDir tmpDir(absolutePath);
     if (!tmpDir.removeRecursively()) {
         os.setError(tr("Can not remove folder for temporary files, folder \"%1\".").arg(tmpDir.absolutePath()));
     }
@@ -404,7 +400,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
     result.arguments = arguments;
 
     ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    tool->checkPaths(arguments, os);
+    tool->checkArgsAndPaths(arguments, os);
     if (os.hasError()) {
         return result;
     }
@@ -437,12 +433,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
         result.program = stool->getPath();
     }
 
-#ifdef Q_OS_WIN
-    const QString pathVariableSeparator = ";";
-#else
-    const QString pathVariableSeparator = ":";
-#endif
-
+    QString pathVariableSeparator = isOsWindows() ? ";" : ":";
     QProcessEnvironment processEnvironment = QProcessEnvironment::systemEnvironment();
     QString path = additionalPaths.join(pathVariableSeparator) + pathVariableSeparator +
                    tool->getAdditionalPaths().join(pathVariableSeparator) + pathVariableSeparator +
@@ -461,7 +452,7 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString& toolId, const
 
     // QProcess wraps arguments that contain spaces in quotes automatically.
     // But launched line should look correctly in the log.
-    const QString commandWithArguments = GUrlUtils::getQuotedString(result.program) + ExternalToolSupportUtils::prepareArgumentsForCmdLine(result.arguments);
+    QString commandWithArguments = GUrlUtils::getQuotedString(result.program) + ExternalToolSupportUtils::prepareArgumentsForCmdLine(result.arguments);
     algoLog.details(tr("Launching %1 tool: %2").arg(toolName).arg(commandWithArguments));
 
     if (listener != nullptr) {
@@ -613,7 +604,8 @@ QString ExternalToolSupportUtils::checkTemporaryDirLatinSymbols() {
     QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (checkHasNonLatin1Symbols(path)) {
         return tr("Your \"Temporary files\" directory contains non-latin symbols, \"%1\" external tool can't correct process it."
-                  " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") + path;
+                  " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") +
+               path;
     }
     return "";
 }
@@ -624,7 +616,8 @@ QString ExternalToolSupportUtils::checkToolPathLatinSymbols(const ExternalTool* 
     if (QString::fromLatin1(tolatin1.constData(), tolatin1.size()) != path) {
         tr("\"%1\" external tool located in path which contains non-latin symbols."
            " Please change it location to path which contains only latin symbols, set the new path in"
-           " Preferences on the External tools and try again. Current problem path is: ") + path;
+           " Preferences on the External tools and try again. Current problem path is: ") +
+            path;
     }
     return "";
 }
@@ -645,7 +638,7 @@ QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& arg
             return tr("One of the arguments passed to \"%1\" external tool contains spaces."
                       " Make sure that the input and output files and folders"
                       " are located in the paths which contain no spaces. Current problem path is: ") +
-                path;
+                   path;
         }
     }
     return "";
@@ -655,7 +648,7 @@ QString ExternalToolSupportUtils::checkTemporaryDirSpaces() {
     QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();
     if (path.contains(" ")) {
         return tr("Your \"Temporary files\" directory contains spaces, \"%1\" external tool can't correct process it."
-                  " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") + 
+                  " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: ") +
                path;
     }
     return "";

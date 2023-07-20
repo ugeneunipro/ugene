@@ -37,9 +37,6 @@
 
 namespace U2 {
 
-FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings() {
-}
-
 FindEnzymesDialogFillerSettings::FindEnzymesDialogFillerSettings(const QStringList& _enzymes)
     : enzymes(_enzymes) {
 }
@@ -58,7 +55,6 @@ FindEnzymesDialogFiller::FindEnzymesDialogFiller(
     : Filler("FindEnzymesDialog", scenario), settings(enzymes) {
 }
 
-#define GT_METHOD_NAME "run"
 void FindEnzymesDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget();
 
@@ -109,20 +105,15 @@ void FindEnzymesDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openDialogWithToolbarAction"
 void FindEnzymesDialogFiller::openDialogWithToolbarAction() {
     GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Find restriction sites"));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectEnzymes"
 void FindEnzymesDialogFiller::selectEnzymes(const QStringList& enzymeNames) {
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(enzymeNames));
     openDialogWithToolbarAction();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

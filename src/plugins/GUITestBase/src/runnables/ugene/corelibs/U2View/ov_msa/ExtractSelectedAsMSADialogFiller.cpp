@@ -35,7 +35,6 @@ namespace U2 {
 using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExtractSelectedAsMSADialogFiller"
-#define GT_METHOD_NAME "run"
 ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(
     const QString& _filepath,
     const QStringList& selectedSequenceNameList,
@@ -135,9 +134,7 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSelectedSequences"
 QStringList ExtractSelectedAsMSADialogFiller::getSequences(bool selected) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     QStringList result;
@@ -153,7 +150,6 @@ QStringList ExtractSelectedAsMSADialogFiller::getSequences(bool selected) {
 
     return result;
 }
-#undef GT_METHOD_NAME
 
 void ExtractSelectedAsMSADialogFiller::setUseDefaultSequenceSelection(bool flag) {
     useDefaultSequenceSelection = flag;

@@ -48,7 +48,6 @@ using namespace HI;
 
 const QString GTUtilsBookmarksTreeView::widgetName = ACTION_BOOKMARK_TREE_VIEW;
 
-#define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget* GTUtilsBookmarksTreeView::getTreeWidget() {
     auto treeWidget = GTWidget::findTreeWidget(widgetName, nullptr, false);
 
@@ -59,9 +58,7 @@ QTreeWidget* GTUtilsBookmarksTreeView::getTreeWidget() {
 
     return GTWidget::findTreeWidget(widgetName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findItem"
 QTreeWidgetItem* GTUtilsBookmarksTreeView::findItem(const QString& itemName, const GTGlobals::FindOptions& options) {
     GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", nullptr);
 
@@ -86,9 +83,7 @@ QTreeWidgetItem* GTUtilsBookmarksTreeView::findItem(const QString& itemName, con
 
     return nullptr;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSelectedItem"
 QString GTUtilsBookmarksTreeView::getSelectedItem() {
     QTreeWidget* treeWidget = getTreeWidget();
     GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
@@ -102,9 +97,7 @@ QString GTUtilsBookmarksTreeView::getSelectedItem() {
 
     return QString();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addBookmark"
 void GTUtilsBookmarksTreeView::addBookmark(const QString& viewName, const QString& bookmarkName) {
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_ADD_BOOKMARK}));
     GTMouseDriver::moveTo(getItemCenter(viewName));
@@ -117,9 +110,7 @@ void GTUtilsBookmarksTreeView::addBookmark(const QString& viewName, const QStrin
     }
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "updateBookmark"
 void GTUtilsBookmarksTreeView::updateBookmark(const QString& bookmarkName) {
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_UPDATE_BOOKMARK}));
     GTMouseDriver::moveTo(getItemCenter(bookmarkName));
@@ -128,39 +119,30 @@ void GTUtilsBookmarksTreeView::updateBookmark(const QString& bookmarkName) {
 
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "deleteBookmark"
 void GTUtilsBookmarksTreeView::deleteBookmark(const QString& bookmarkName) {
     clickBookmark(bookmarkName);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickBookmark"
 void GTUtilsBookmarksTreeView::clickBookmark(const QString& bookmarkName) {
     GTMouseDriver::moveTo(getItemCenter(bookmarkName));
     GTMouseDriver::click();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "doubleClickBookmark"
 void GTUtilsBookmarksTreeView::doubleClickBookmark(const QString& bookmarkName) {
     GTMouseDriver::moveTo(getItemCenter(bookmarkName));
     GTMouseDriver::doubleClick();
     // Bookmark activation creates async task, wait until it is finished.
     GTUtilsTaskTreeView::waitTaskFinished();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsBookmarksTreeView::getItemCenter(const QString& itemName) {
     QTreeWidgetItem* item = findItem(itemName);
     GT_CHECK_RESULT(item != nullptr, "Item " + itemName + " is NULL", QPoint());
 
     return GTTreeWidget::getItemCenter(item);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

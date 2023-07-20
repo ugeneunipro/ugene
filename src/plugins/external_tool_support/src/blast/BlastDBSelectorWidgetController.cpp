@@ -20,11 +20,15 @@
  */
 
 #include "BlastDBSelectorWidgetController.h"
+#include "BlastSupport.h"
 
 #include <QDirIterator>
 #include <QMessageBox>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
 
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -39,21 +43,29 @@ BlastDBSelectorWidgetController::BlastDBSelectorWidgetController(QWidget* parent
     connect(baseNameLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_lineEditChanged()));
 }
 
-void BlastDBSelectorWidgetController::sl_lineEditChanged() {
-    bool pathWarning = databasePathLineEdit->text().contains(' ');
-    QString pathTooltip = pathWarning ? tr("Database path contains space characters.") : "";
-    GUIUtils::setWidgetWarningStyle(databasePathLineEdit, pathWarning);
-    databasePathLineEdit->setToolTip(pathTooltip);
+bool checkValidPathAndSetTooltipToLE(QLineEdit* le, const QString& errorTooltip) {
+    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
+    ExternalTool* blast = etRegistry->getById(BlastSupport::ET_BLASTN_ID);
+    U2OpStatusImpl osImpl;
+    blast->checkArgs({le->text()}, osImpl);
 
-    bool nameWarning = baseNameLineEdit->text().contains(' ');
-    QString nameTooltip = nameWarning ? tr("Database name contains space characters.") : "";
-    GUIUtils::setWidgetWarningStyle(baseNameLineEdit, nameWarning);
-    baseNameLineEdit->setToolTip(nameTooltip);
+    GUIUtils::setWidgetWarningStyle(le, osImpl.hasError());
+    le->setToolTip(osImpl.hasError() ? errorTooltip : "");
+    return !osImpl.hasError();
+}
+
+void BlastDBSelectorWidgetController::sl_lineEditChanged() {
+    static QString pathTooltip = tr("Database path contains spaces or/and non-Latin characters.");
+    static QString nameTooltip = tr("Database name contains spaces or/and non-Latin characters.");
+
+    bool pathWarning = !checkValidPathAndSetTooltipToLE(databasePathLineEdit, pathTooltip);
+    bool nameWarning = !checkValidPathAndSetTooltipToLE(baseNameLineEdit, nameTooltip);
 
     bool isFilledDatabasePathLineEdit = !databasePathLineEdit->text().isEmpty();
     bool isFilledBaseNameLineEdit = !baseNameLineEdit->text().isEmpty();
-    bool hasSpacesInDBPath = pathWarning || nameWarning;
-    inputDataValid = isFilledBaseNameLineEdit && isFilledDatabasePathLineEdit && !hasSpacesInDBPath;
+    bool hasProblemsInDBPath = pathWarning || nameWarning;
+
+    inputDataValid = isFilledBaseNameLineEdit && isFilledDatabasePathLineEdit && !hasProblemsInDBPath;
     emit si_dbChanged();
 }
 

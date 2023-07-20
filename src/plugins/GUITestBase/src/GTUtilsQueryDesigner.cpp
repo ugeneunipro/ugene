@@ -38,14 +38,11 @@ namespace U2 {
 using namespace HI;
 #define GT_CLASS_NAME "GTUtilsQueryDesigner"
 
-#define GT_METHOD_NAME "openQueryDesigner"
 void GTUtilsQueryDesigner::openQueryDesigner() {
     GTMenu::clickMainMenuItem({"Tools", "Query Designer..."});
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "findAlgorithm"
 QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(const QString& itemName) {
     QTreeWidgetItem* foundItem = nullptr;
     auto w = GTWidget::findTreeWidget("palette");
@@ -68,52 +65,38 @@ QTreeWidgetItem* GTUtilsQueryDesigner::findAlgorithm(const QString& itemName) {
     CHECK_SET_ERR_RESULT(foundItem != nullptr, "Item is null", nullptr);
     return foundItem;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "addAlgorithm"
 void GTUtilsQueryDesigner::addAlgorithm(const QString& algName) {
     QTreeWidgetItem* w = findAlgorithm(algName);
     GTMouseDriver::click(GTTreeWidget::getItemCenter(w));
     GTWidget::click(GTWidget::findWidget("sceneView"));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemCenter"
 QPoint GTUtilsQueryDesigner::getItemCenter(const QString& itemName) {
     QRect r = getItemRect(itemName);
     return r.center();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemLeft"
 int GTUtilsQueryDesigner::getItemLeft(const QString& itemName) {
     QRect r = getItemRect(itemName);
     return r.left();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemRight"
 int GTUtilsQueryDesigner::getItemRight(const QString& itemName) {
     QRect r = getItemRect(itemName);
     return r.right() - 1;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemTop"
 int GTUtilsQueryDesigner::getItemTop(const QString& itemName) {
     QRect r = getItemRect(itemName);
     return r.top();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemBottom"
 int GTUtilsQueryDesigner::getItemBottom(const QString& itemName) {
     QRect r = getItemRect(itemName);
     return r.bottom();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getItemRect"
 QRect GTUtilsQueryDesigner::getItemRect(const QString& itemName) {
     auto sceneView = GTWidget::findGraphicsView("sceneView");
     QList<QGraphicsItem*> items = sceneView->items();
@@ -129,7 +112,6 @@ QRect GTUtilsQueryDesigner::getItemRect(const QString& itemName) {
     }
     FAIL("Item not found: " + itemName, {});
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace U2

@@ -36,7 +36,6 @@ ExportBlastResultDialogFiller::ExportBlastResultDialogFiller(const QString& file
       addRefBoxChecked(_addRefBoxChecked) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ExportBlastResultDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -46,7 +45,6 @@ void ExportBlastResultDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

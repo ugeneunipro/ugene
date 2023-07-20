@@ -50,7 +50,6 @@ GTSequenceReadingModeDialogUtils::GTSequenceReadingModeDialogUtils(CustomScenari
     : Filler("MultipleDocumentsReadingModeSelectorController", scenario), dialog(nullptr) {
 }
 
-#define GT_METHOD_NAME "run"
 void GTSequenceReadingModeDialogUtils::commonScenario() {
     QWidget* openDialog = GTWidget::getActiveModalWidget();
 
@@ -67,9 +66,7 @@ void GTSequenceReadingModeDialogUtils::commonScenario() {
 
     clickButton();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectMode"
 void GTSequenceReadingModeDialogUtils::selectMode() {
     QString buttonName = GTSequenceReadingModeDialog::mode == GTSequenceReadingModeDialog::Merge ? MERGE_MODE : SEPARATE_MODE;
     auto radioButton = GTWidget::findRadioButton(buttonName, dialog);
@@ -90,26 +87,20 @@ void GTSequenceReadingModeDialogUtils::selectMode() {
     }
     GTRadioButton::checkIsChecked(radioButton);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setNumSymbolsParts"
 void GTSequenceReadingModeDialogUtils::setNumSymbolsParts() {
     /*QSpinBox *spinBox = dialog->findChild<QSpinBox*>(INTERAL_GAP);
     GT_CHECK(spinBox != NULL, "spinBox not found");
 
     changeSpinBoxValue(spinBox, GTSequenceReadingModeDialog::numSymbolParts);*/
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setNumSymbolsFiles"
 void GTSequenceReadingModeDialogUtils::setNumSymbolsFiles() {
     auto spinBox = GTWidget::findSpinBox(FILE_GAP, dialog);
 
     changeSpinBoxValue(spinBox, GTSequenceReadingModeDialog::numSymbolFiles);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setNewDocumentName"
 void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
     if (GTSequenceReadingModeDialog::newDocName == QString()) {
         return;
@@ -117,9 +108,7 @@ void GTSequenceReadingModeDialogUtils::setNewDocumentName() {
 
     GTLineEdit::setText(NEW_DOC_NAME, GTSequenceReadingModeDialog::newDocName, dialog);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "selectSaveDocument"
 void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
     auto saveBox = GTWidget::findCheckBox(SAVE_BOX, dialog);
 
@@ -140,9 +129,7 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
         }
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickButton"
 void GTSequenceReadingModeDialogUtils::clickButton() {
     auto buttonBox = GTWidget::findDialogButtonBox("buttonBox", dialog);
 
@@ -160,7 +147,6 @@ void GTSequenceReadingModeDialogUtils::clickButton() {
 
     GTWidget::click(btn /*, UseMethod*/);
 }
-#undef GT_METHOD_NAME
 
 void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox* sb, int val) {
     QPoint arrowPos;

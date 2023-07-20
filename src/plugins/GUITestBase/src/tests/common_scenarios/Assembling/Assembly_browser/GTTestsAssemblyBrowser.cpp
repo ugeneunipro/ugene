@@ -682,7 +682,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTWidget::click(GTAction::button("setReferenceAction"));
 
     // Expected: the sequence becomes reference.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0024) {
@@ -709,7 +709,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     // Expected: the document is loaded, the sequence becomes reference.
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
@@ -1051,7 +1051,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTFileDialog::openFile(testDir + "_common_data/bam/", "more_then_100000_reads.bam");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDialog::checkNoActiveWaiters();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     auto readsCount = GTUtilsAssemblyBrowser::getReadsCount();
     CHECK_SET_ERR(readsCount > 1000000, QString("Unexpected reads count, expected: >1000000, current: %1").arg(readsCount));
 }

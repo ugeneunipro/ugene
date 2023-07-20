@@ -42,7 +42,7 @@ class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
     EnzymesSelectorWidget();
-    ~EnzymesSelectorWidget();
+    ~EnzymesSelectorWidget() override;
 
     static void setupSettings();
     static void saveSettings();
@@ -51,7 +51,7 @@ public:
     static QStringList getLoadedSuppliers();
     QList<SEnzymeData> getSelectedEnzymes();
     int getNumSelected();
-    int getTotalNumber() {
+    int getTotalNumber() const {
         return totalEnzymes;
     }
 
@@ -59,7 +59,7 @@ public:
 
 signals:
     void si_selectionModified(int, int);
-    void si_newEnzimeFileLoaded();
+    void si_newEnzymeFileLoaded();
 
 private slots:
     void sl_openEnzymesFile();
@@ -98,15 +98,17 @@ class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
     Q_OBJECT
 public:
     FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext);
-    virtual void accept();
+    void accept() override;
 
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
-    void sl_handleSupplierSelectionChange(QStringList checkedSuppliers);
-    void sl_updateSuppliers();
+    void sl_updateVisibleEnzymes();
+    void sl_updateEnzymesVisibilityWidgets();
     void sl_selectAll();
     void sl_selectNone();
     void sl_invertSelection();
+    void sl_minLengthChanged(int index);
+    void sl_maxLengthChanged(int index);
 
 private:
     void initSettings();
@@ -126,15 +128,15 @@ public:
     void updateVisual();
     QString s;
     QSet<EnzymeTreeItem*> checkedEnzymes;
-    bool operator<(const QTreeWidgetItem& other) const;
+    bool operator<(const QTreeWidgetItem& other) const override;
 };
 
 class EnzymeTreeItem : public QTreeWidgetItem {
     Q_DECLARE_TR_FUNCTIONS(EnzymeTreeItem)
 public:
     EnzymeTreeItem(const SEnzymeData& ed);
-    SEnzymeData enzyme;
-    bool operator<(const QTreeWidgetItem& other) const;
+    const SEnzymeData enzyme;
+    bool operator<(const QTreeWidgetItem& other) const override;
     // Get text information about this enzyme
     QString getEnzymeInfo() const;
 
@@ -145,13 +147,10 @@ private:
         Type,
         Sequence,
         Organism,
-        Suppliers
     };
 
     QString generateEnzymeTooltip() const;
     QString getTypeInfo() const;
 };
-
-#define ANY_VALUE -1
 
 }  // namespace U2

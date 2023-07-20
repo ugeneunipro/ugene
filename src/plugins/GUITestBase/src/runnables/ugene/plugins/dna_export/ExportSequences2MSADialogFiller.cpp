@@ -53,7 +53,6 @@ ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(CustomScenario*
       addToProject(false) {
 }
 
-#define GT_METHOD_NAME "run"
 void ExportSequenceAsAlignmentFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -74,7 +73,6 @@ void ExportSequenceAsAlignmentFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

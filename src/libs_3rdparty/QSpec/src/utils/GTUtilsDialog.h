@@ -23,6 +23,7 @@
 #include <core/CustomScenario.h>
 
 #include <QDialogButtonBox>
+#include <QStack>
 #include <QTimer>
 
 #include "GTGlobals.h"
@@ -32,8 +33,7 @@ namespace HI {
 class HI_EXPORT Runnable {
 public:
     virtual void run() = 0;
-    virtual ~Runnable() {
-    }
+    virtual ~Runnable() = default;
 };
 
 class HI_EXPORT GUIDialogWaiter : public QObject {
@@ -46,28 +46,32 @@ public:
     static constexpr int ACTIVATION_TIME = 100;
 
     enum class DialogType {
-        Modal,
-        Popup
+        Modal = 1,
+        Popup = 2,
     };
     struct WaitSettings {
         WaitSettings(const QString& _objectName = "",
                      const DialogType& _dialogType = DialogType::Modal,
                      int _timeout = 20000,
-                     bool _isRandomOrderWaiter = false)
+                     bool _isRandomOrderWaiter = false,
+                     const QString& _logName = "")
             : objectName(_objectName),
               dialogType(_dialogType),
               timeout(_timeout),
-              isRandomOrderWaiter(_isRandomOrderWaiter) {
+              isRandomOrderWaiter(_isRandomOrderWaiter),
+              logName(_logName.isEmpty() ? _objectName : _logName) {
         }
 
         QString objectName;
         DialogType dialogType;
         int timeout;
         bool isRandomOrderWaiter = false;
+        /** Logging name is used when objectName is empty (popup menus, messages). */
+        QString logName;
     };
 
     GUIDialogWaiter(Runnable* _r, const WaitSettings& settings = WaitSettings());
-    virtual ~GUIDialogWaiter();
+    ~GUIDialogWaiter() override;
 
     const WaitSettings& getSettings() const {
         return settings;
@@ -93,32 +97,30 @@ private:
 
 class HI_EXPORT Filler : public Runnable {
 public:
-    Filler(const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario = NULL);
-    Filler(const QString& objectName, CustomScenario* scenario = NULL);
-    ~Filler();
+    Filler(const GUIDialogWaiter::WaitSettings& settings, CustomScenario* scenario = nullptr);
+    Filler(const QString& objectName, CustomScenario* scenario = nullptr);
+    ~Filler() override;
 
     GUIDialogWaiter::WaitSettings getSettings() const;
     void run() override;
-    virtual void commonScenario() {
-    }
+
+    /** Scenario to run. Empty by default. */
+    virtual void commonScenario();
+
+    /** Stack of the active fillers inside 'run()'. Can be used to improve logging. */
+    static QStack<QString> activeFillerLogNamesStack;
+
+    static QString generateFillerStackInfo();
 
 protected:
     GUIDialogWaiter::WaitSettings settings;
-    CustomScenario* scenario;
-
-private:
-    void releaseMouseButtons();
+    CustomScenario* scenario = nullptr;
 };
 
 class HI_EXPORT GTUtilsDialog {
     friend class GUIDialogWaiter;
 
 public:
-    enum class CleanupMode {
-        FailOnUnfinished,
-        NoFailOnUnfinished
-    };
-
     static QDialogButtonBox* buttonBox(QWidget* dialog);
 
     static void clickButtonBox(QDialogButtonBox::StandardButton button);
@@ -141,8 +143,8 @@ public:
 
     static void removeRunnable(Runnable* runnable);
 
-    /** Deletes all GUIDialogWaiters, sets err if there are unfinished waiters. */
-    static void cleanup(const CleanupMode& cleanupMode);
+    /** Unconditionally deletes all GUIDialogWaiters. */
+    static void cleanup();
 
 private:
     static QList<GUIDialogWaiter*> waiterList;

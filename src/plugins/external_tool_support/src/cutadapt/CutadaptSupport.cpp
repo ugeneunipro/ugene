@@ -44,7 +44,7 @@ CutadaptSupport::CutadaptSupport()
         warnIcon = QIcon(":external_tool_support/images/cmdline_warn.png");
     }
     executableFileName = "cutadapt.py";
-    validMessage = "cutadapt version";
+    validationMessageRegExp = "cutadapt version";
     description = tr("<i>cutadapt</i> removes adapter sequences from high-throughput sequencing data. This is necessary when the reads are longer than the molecule that is sequenced, such as in microRNA data.");
 
     versionRegExp = QRegExp("cutadapt version (\\d+.\\d+.\\d+)");

@@ -29,7 +29,6 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTTextEdit"
 
-#define GT_METHOD_NAME "setText"
 void GTTextEdit::setText(QTextEdit* textEdit, const QString& text) {
     GT_CHECK(textEdit != nullptr, "textEdit is NULL");
 
@@ -43,23 +42,17 @@ void GTTextEdit::setText(QTextEdit* textEdit, const QString& text) {
     GTKeyboardDriver::keySequence(text);
     GTGlobals::sleep(500);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getText"
 QString GTTextEdit::getText(QTextEdit* textEdit) {
     GT_CHECK_RESULT(textEdit != nullptr, "textEdit is NULL", "");
     return textEdit->toPlainText();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "containsString"
 bool GTTextEdit::containsString(QTextEdit* textEdit, const QString& string) {
     const QString text = getText(textEdit);
     return text.contains(string);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clear"
 void GTTextEdit::clear(QTextEdit* textEdit) {
     GT_CHECK(textEdit != NULL, "textEdit is NULL");
 
@@ -73,7 +66,6 @@ void GTTextEdit::clear(QTextEdit* textEdit) {
     QString s = textEdit->toPlainText();
     GT_CHECK(s.isEmpty(), "Can't clear text, textEdit is not empty");
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

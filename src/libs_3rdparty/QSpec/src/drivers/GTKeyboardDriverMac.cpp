@@ -37,6 +37,8 @@ static bool altDown = false;
 static bool cmdDown = false;
 static bool fnDown = false;
 
+#    define GT_CLASS_NAME "GTKeyboardDriverMac"
+
 static int asciiToVirtual(char key) {
     if (isalpha(key)) {
         key = (char)tolower(key);
@@ -190,48 +192,6 @@ static char toKeyWithNoShift(char key) {
     return key;
 }
 
-static void keyPressMac(CGKeyCode key) {
-    if (key == kVK_Shift) {
-        shiftDown = true;
-    } else if (key == kVK_Control) {
-        ctrlDown = true;
-    } else if (key == kVK_Option) {
-        altDown = true;
-    } else if (key == kVK_Command) {
-        cmdDown = true;
-    } else if (key == kVK_Function) {
-        fnDown = true;
-    }
-
-    CGEventFlags flags = 0;
-    if (shiftDown) {
-        flags = flags | kCGEventFlagMaskShift;
-    }
-    if (ctrlDown) {
-        flags = CGEventFlags(flags | kCGEventFlagMaskControl);
-    }
-    if (altDown) {
-        flags = CGEventFlags(flags | kCGEventFlagMaskAlternate);
-    }
-    if (cmdDown) {
-        flags = CGEventFlags(flags | kCGEventFlagMaskCommand);
-    }
-    if (fnDown) {
-        flags = CGEventFlags(flags | kCGEventFlagMaskSecondaryFn);
-    }
-    CGEventSourceRef source = flags == 0 ? nullptr : CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
-    CGEventRef command = CGEventCreateKeyboardEvent(source, key, true);
-    if (flags != 0) {
-        CGEventSetFlags(command, flags);
-    }
-    CGEventPost(kCGSessionEventTap, command);
-    GTGlobals::sleep(10);
-    CFRelease(command);
-    if (source != nullptr) {
-        CFRelease(source);
-    }
-}
-
 static void dumpState(const char* action) {
     auto state = CGEventSourceFlagsState(kCGEventSourceStateCombinedSessionState);
 
@@ -248,25 +208,65 @@ static void dumpState(const char* action) {
     qDebug("=============");
 }
 
-static bool keyReleaseMac(CGKeyCode key, int attempt = 1) { // NOLINT(misc-no-recursion)
-    CGEventFlags modifierFlagToClean = 0;
-    if (key == kVK_Shift) {
-        shiftDown = false;
-        modifierFlagToClean = kCGEventFlagMaskShift;
-    } else if (key == kVK_Control) {
-        ctrlDown = false;
-        modifierFlagToClean = kCGEventFlagMaskControl;
-    } else if (key == kVK_Option) {
-        altDown = false;
-        modifierFlagToClean = kCGEventFlagMaskAlternate;
-    } else if (key == kVK_Command) {
-        cmdDown = false;
-        modifierFlagToClean = kCGEventFlagMaskCommand;
-    } else if (key == kVK_Function) {
-        fnDown = false;
-        modifierFlagToClean = kCGEventFlagMaskSecondaryFn;
+static CGEventFlags getCurrentEventFlags() {
+    CGEventFlags flags = 0;
+    if (shiftDown) {
+        flags = flags | kCGEventFlagMaskShift;
     }
+    if (ctrlDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskControl);
+    }
+    if (altDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskAlternate);
+    }
+    if (cmdDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskCommand);
+    }
+    if (fnDown) {
+        flags = CGEventFlags(flags | kCGEventFlagMaskSecondaryFn);
+    }
+    return flags;
+}
+
+static int updateCachedModifierKeyState(CGKeyCode key, bool isOn) {
+    if (key == kVK_Shift) {
+        shiftDown = isOn;
+        return kCGEventFlagMaskShift;
+    } else if (key == kVK_Control) {
+        ctrlDown = isOn;
+        return kCGEventFlagMaskControl;
+    } else if (key == kVK_Option) {
+        altDown = isOn;
+        return kCGEventFlagMaskAlternate;
+    } else if (key == kVK_Command) {
+        cmdDown = isOn;
+        return kCGEventFlagMaskCommand;
+    } else if (key == kVK_Function) {
+        fnDown = isOn;
+        return kCGEventFlagMaskSecondaryFn;
+    }
+    return 0;
+}
+
+static void keyPressMac(CGKeyCode key) {
+    updateCachedModifierKeyState(key, true);
+    CGEventFlags flags = getCurrentEventFlags();
+    CGEventSourceRef source = flags == 0 ? nullptr : CGEventSourceCreate(kCGEventSourceStateCombinedSessionState);
+    CGEventRef command = CGEventCreateKeyboardEvent(source, key, true);
+    CGEventSetFlags(command, flags);
+    CGEventPost(kCGSessionEventTap, command);
+    GTGlobals::sleep(10);
+    CFRelease(command);
+    if (source != nullptr) {
+        CFRelease(source);
+    }
+}
+
+static bool keyReleaseMac(CGKeyCode key, int attempt = 1) {  // NOLINT(misc-no-recursion).
+    int modifierFlagToClean = updateCachedModifierKeyState(key, false);
+    CGEventFlags flags = getCurrentEventFlags();
     CGEventRef command = CGEventCreateKeyboardEvent(nullptr, key, false);
+    CGEventSetFlags(command, flags);
     CGEventPost(kCGSessionEventTap, command);
     GTGlobals::sleep(10);
     CFRelease(command);
@@ -285,38 +285,32 @@ static bool keyReleaseMac(CGKeyCode key, int attempt = 1) { // NOLINT(misc-no-re
     }
 }
 
-#    define GT_CLASS_NAME "GTKeyboardDriverMac"
-#    define GT_METHOD_NAME "keyPress_char"
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
-    // printf("GTKeyboardDriver::keyPress %c\n", origKey);
-    // dumpState("before press");
+//    printf("GTKeyboardDriver::keyPress %c\n", origKey);
+//    dumpState("before press");
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
     if (origKey != keyWithNoShift && modKeys.isEmpty()) {
-        // printf("Adding SHIFT modifier\n");
         modKeys.append(Qt::Key_Shift);
     }
     foreach (Qt::Key mod, modKeys) {
         keyPressMac(GTKeyboardDriver::key[mod]);
-        // dumpState("after modifier");
+//        dumpState("after modifier");
     }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
     keyPressMac(keyCode);
-    // dumpState("after press");
+//    dumpState("after press");
     return true;
 }
-#    undef GT_METHOD_NAME
 
-#    define GT_METHOD_NAME "keyRelease_char"
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
-    // printf("GTKeyboardDriver::key release %c\n", origKey);
-    // dumpState("before release");
+//    printf("GTKeyboardDriver::key release %c\n", origKey);
+//    dumpState("before release");
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
     if (origKey != keyWithNoShift && modKeys.isEmpty()) {
-        // printf("Adding SHIFT modifier\n");
         modKeys.append(Qt::Key_Shift);
     }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
@@ -324,21 +318,25 @@ bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers)
     foreach (Qt::Key mod, modKeys) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
-    // dumpState("after release");
+//    dumpState("after release");
     return true;
 }
-#    undef GT_METHOD_NAME
 
 bool GTKeyboardDriver::keyPress(Qt::Key qtKey, Qt::KeyboardModifiers modifiers) {
+//    printf("GTKeyboardDriver::QtKey press %d, modifiers: %d\n", qtKey, (int)modifiers);
+//    dumpState("before press");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     for (const Qt::Key& mod : qAsConst(modKeys)) {
         keyPressMac(GTKeyboardDriver::key[mod]);
     }
     keyPressMac(GTKeyboardDriver::key[qtKey]);
+//    dumpState("after press");
     return true;
 }
 
 bool GTKeyboardDriver::keyRelease(Qt::Key qtKey, Qt::KeyboardModifiers modifiers) {
+//    printf("GTKeyboardDriver::QtKey release %d, modifiers: %d\n", qtKey, (int)modifiers);
+//    dumpState("before release");
     keyReleaseMac(GTKeyboardDriver::key[qtKey]);
     if (qtKey == Qt::Key_Delete || qtKey >= Qt::Key_F1 && qtKey <= Qt::Key_F12) {
         // For some reason MacOS does not release FN qtKey used for the internal ForwardDelete emulation (Fn + Delete).
@@ -353,6 +351,7 @@ bool GTKeyboardDriver::keyRelease(Qt::Key qtKey, Qt::KeyboardModifiers modifiers
     for (const Qt::Key& mod : qAsConst(modKeys)) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
+//    dumpState("after release");
     return true;
 }
 

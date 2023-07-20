@@ -141,7 +141,7 @@ void BaseCompleter::doneCompletion() {
     editor->setFocus();
     QTreeWidgetItem* item = popup->currentItem();
     if (item) {
-        QString result = filler->finalyze(editor->text(), item->text(0));
+        QString result = filler->handleNewUrlInput(editor->text(), item->text(0));
         editor->setText(result);
         editor->setCursorPosition(0);
         lastChosenItemIndex = popup->currentIndex().row();
@@ -171,7 +171,7 @@ int BaseCompleter::getLastChosenItemIndex() const {
 QStringList MSACompletionFiller::getSuggestions(const QString& userText) {
     QStringList result;
     QString userTextLc = userText.toLower();  // TODO: does toLower work correctly for non-Latin1 characters range?
-    for (QString sequenceName : qAsConst(seqNameList)) {
+    for (const QString& sequenceName : qAsConst(seqNameList)) {
         QString sequenceNameLc = sequenceName.toLower();
         if (sequenceNameLc.startsWith(userTextLc)) {
             result.append(sequenceName);
@@ -183,7 +183,7 @@ QStringList MSACompletionFiller::getSuggestions(const QString& userText) {
     return result;
 }
 
-QString MSACompletionFiller::finalyze(const QString& /*editorText*/, const QString& suggestion) {
+QString MSACompletionFiller::handleNewUrlInput(const QString& /*editorText*/, const QString& suggestion) {
     return suggestion;
 }
 

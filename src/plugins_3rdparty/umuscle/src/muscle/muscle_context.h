@@ -30,10 +30,6 @@ public:
     int cancelStub;
     bool isCanceled() const {return *cancelFlag;}
 
-    int *progressPercent;
-    int progressStub;
-    
-
     static const int MAX_HEADINGS = 32;
     static const unsigned NULL_NEIGHBOR = UINT_MAX;
     unsigned m_uIdCount;

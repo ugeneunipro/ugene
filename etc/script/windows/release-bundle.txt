@@ -13,7 +13,6 @@ Qt5Script.dll
 Qt5ScriptTools.dll
 Qt5Sensors.dll
 Qt5Svg.dll
-Qt5Test.dll
 Qt5Widgets.dll
 Qt5Xml.dll
 U2Algorithm.dll
@@ -1342,10 +1341,6 @@ plugins/hmm2.dll
 plugins/hmm2.license
 plugins/hmm2.map
 plugins/hmm2.plugin
-plugins/kalign.dll
-plugins/kalign.license
-plugins/kalign.map
-plugins/kalign.plugin
 plugins/linkdata_support.dll
 plugins/linkdata_support.license
 plugins/linkdata_support.map
@@ -1432,6 +1427,7 @@ tools/fasttree
 tools/hmmer3
 tools/iqtree
 tools/java
+tools/kalign
 tools/mafft
 tools/mrbayes
 tools/perl5

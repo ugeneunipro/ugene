@@ -25,43 +25,43 @@
 <context>
     <name>U2::ChromatogramView</name>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="73"/>
+        <location filename="../src/ChromatogramView.cpp" line="71"/>
         <source>Show all</source>
         <translation>Показать все</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="76"/>
+        <location filename="../src/ChromatogramView.cpp" line="74"/>
         <source>Show/hide trace</source>
         <translation>Показывать/скрывать отдельные сигналы</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="106"/>
+        <location filename="../src/ChromatogramView.cpp" line="104"/>
         <source>Edit new sequence</source>
         <translation>Редактировать новую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="109"/>
+        <location filename="../src/ChromatogramView.cpp" line="107"/>
         <source>Edit existing sequence</source>
         <translation>Редактировать существующую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="112"/>
+        <location filename="../src/ChromatogramView.cpp" line="110"/>
         <source>Remove edited sequence</source>
         <translation>Удалить редактируемую последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="115"/>
+        <location filename="../src/ChromatogramView.cpp" line="113"/>
         <source>Undo changes</source>
         <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="211"/>
-        <location filename="../src/ChromatogramView.cpp" line="350"/>
+        <location filename="../src/ChromatogramView.cpp" line="209"/>
+        <location filename="../src/ChromatogramView.cpp" line="348"/>
         <source>The sequence is locked</source>
         <translation>Последовательность заблокирована</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="66"/>
+        <location filename="../src/ChromatogramView.cpp" line="64"/>
         <source>Show quality bars</source>
         <translation>Показывать уровни достоверности</translation>
     </message>
@@ -69,12 +69,12 @@
 <context>
     <name>U2::ChromatogramViewRenderArea</name>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="499"/>
+        <location filename="../src/ChromatogramView.cpp" line="497"/>
         <source>Chromatogram view (zoom in to see base calls)</source>
         <translation>Хроматограмма (приближайте масштаб)</translation>
     </message>
     <message>
-        <location filename="../src/ChromatogramView.cpp" line="707"/>
+        <location filename="../src/ChromatogramView.cpp" line="705"/>
         <source>original sequence</source>
         <translation>Исходная последовательность</translation>
     </message>

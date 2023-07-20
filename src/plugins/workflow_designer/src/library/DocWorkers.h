@@ -50,14 +50,14 @@ protected:
     int numSplitSequences;
     int currentSplitSequence;
 
-    virtual void data2doc(Document*, const QVariantMap&);
-    virtual bool hasDataToWrite(const QVariantMap& data) const;
-    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const;
-    virtual void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum);
+    void data2doc(Document*, const QVariantMap&) override;
+    bool hasDataToWrite(const QVariantMap& data) const override;
+    QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const override;
+    void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum) override;
 
-    virtual void takeParameters(U2OpStatus& os);
-    virtual QStringList takeUrlList(const QVariantMap& data, int metadataId, U2OpStatus& os);
-    virtual bool isStreamingSupport() const;
+    void takeParameters(U2OpStatus& os) override;
+    QStringList takeUrlList(const QVariantMap& data, int metadataId, U2OpStatus& os) override;
+    bool isStreamingSupport() const override;
 };
 
 class MSAWriter : public BaseDocWriter {
@@ -71,10 +71,10 @@ public:
     }
 
 protected:
-    virtual void data2doc(Document*, const QVariantMap&);
-    virtual bool isStreamingSupport() const;
-    virtual bool hasDataToWrite(const QVariantMap& data) const;
-    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const;
+    void data2doc(Document*, const QVariantMap&) override;
+    bool isStreamingSupport() const override;
+    bool hasDataToWrite(const QVariantMap& data) const override;
+    QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const override;
 
 public:
     static void data2document(Document*, const QVariantMap&, WorkflowContext*);
@@ -85,9 +85,9 @@ class TextReader : public BaseWorker {
 public:
     TextReader(Actor* a);
 
-    void init();
-    Task* tick();
-    void cleanup();
+    void init() override;
+    Task* tick() override;
+    void cleanup() override;
 
 private:
     DataTypePtr mtype;
@@ -116,11 +116,11 @@ public:
     }
 
 protected:
-    virtual void data2doc(Document*, const QVariantMap&);
-    virtual bool isStreamingSupport() const;
-    virtual bool isSupportedSeveralMessages() const;
-    virtual bool hasDataToWrite(const QVariantMap& data) const;
-    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const;
+    void data2doc(Document*, const QVariantMap&) override;
+    bool isStreamingSupport() const override;
+    bool isSupportedSeveralMessages() const override;
+    bool hasDataToWrite(const QVariantMap& data) const override;
+    QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const override;
 };
 
 class FastaWriter : public SeqWriter {
@@ -131,9 +131,9 @@ public:
     }
 
 protected:
-    virtual void data2doc(Document*, const QVariantMap&);
-    virtual void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum);
-    virtual bool hasDataToWrite(const QVariantMap& data) const;
+    void data2doc(Document*, const QVariantMap&) override;
+    void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum) override;
+    bool hasDataToWrite(const QVariantMap& data) const override;
 
 public:
     static void data2document(Document*, const QVariantMap&, WorkflowContext*, int numSplitSequences, int currentSplit);
@@ -167,10 +167,10 @@ public:
     }
 
 protected:
-    virtual void data2doc(Document*, const QVariantMap&);
-    virtual void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum);
-    virtual bool hasDataToWrite(const QVariantMap& data) const;
-    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const;
+    void data2doc(Document*, const QVariantMap&) override;
+    void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum) override;
+    bool hasDataToWrite(const QVariantMap& data) const override;
+    QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const override;
 
 public:
     static void data2document(Document*, const QVariantMap&, WorkflowContext*);
@@ -185,9 +185,9 @@ public:
     }
 
 protected:
-    virtual void data2doc(Document*, const QVariantMap&);
-    virtual void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum);
-    virtual bool hasDataToWrite(const QVariantMap& data) const;
+    void data2doc(Document*, const QVariantMap&) override;
+    void storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum) override;
+    bool hasDataToWrite(const QVariantMap& data) const override;
     virtual GObject* getObjectToWrite(const QVariantMap& data) const;
 
 public:
@@ -203,9 +203,9 @@ public:
     }
 
 protected:
-    virtual void data2doc(Document*, const QVariantMap&);
-    virtual bool hasDataToWrite(const QVariantMap& data) const;
-    virtual QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const;
+    void data2doc(Document*, const QVariantMap&) override;
+    bool hasDataToWrite(const QVariantMap& data) const override;
+    QSet<GObject*> getObjectsToWrite(const QVariantMap& data) const override;
 
 public:
     static void data2document(Document*, const QVariantMap&, WorkflowContext*);
@@ -235,9 +235,9 @@ public:
     DataWorkerFactory(const Descriptor& d)
         : DomainFactory(d) {
     }
-    virtual ~DataWorkerFactory() {
+    ~DataWorkerFactory() override {
     }
-    virtual Worker* createWorker(Actor*);
+    Worker* createWorker(Actor*) override;
     static void init();
 };
 

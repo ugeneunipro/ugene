@@ -28,6 +28,7 @@ echo "##teamcity[blockOpened name='Copy files']"
 
 # Remove excluded files from UGENE.
 rm -rf "${APP_BUNDLE_DIR}/"*QSpec*
+rm -rf "${APP_BUNDLE_DIR}/"*Qt5Test*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*CoreTests*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*GUITestBase*
 rm -rf "${APP_BUNDLE_DIR}/plugins/"*api_tests*

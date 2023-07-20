@@ -57,7 +57,7 @@ CAP3Support::CAP3Support(const QString& id, const QString& name, const QString& 
     executableFileName = "cap3";
 #    endif
 #endif
-    validMessage = "cap3 File_of_reads \\[options\\]";
+    validationMessageRegExp = "cap3 File_of_reads \\[options\\]";
     description = tr("<i>CAP3</i> is a contig assembly program. \
                    <br>It allows one to assembly long DNA reads (up to 1000 bp). \
                    <br>Binaries can be downloaded from http://seq.cs.iastate.edu/cap3.html");

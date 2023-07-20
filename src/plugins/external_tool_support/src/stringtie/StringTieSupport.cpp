@@ -30,7 +30,7 @@ StringTieSupport::StringTieSupport()
     : ExternalTool(StringTieSupport::ET_STRINGTIE_ID, "stringtie", StringTieSupport::ET_STRINGTIE) {
     executableFileName = "stringtie";
 
-    validMessage = "StringTie";
+    validationMessageRegExp = "StringTie";
     description = tr("<i>StringTie</i> is a fast and highly efficient assembler"
                      " of RNA-Seq alignments into potential transcripts. "
                      "It uses a novel network flow algorithm as well as "

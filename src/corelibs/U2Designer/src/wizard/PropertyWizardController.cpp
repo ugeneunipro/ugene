@@ -91,7 +91,7 @@ QWidget* InUrlDatasetsController::createGUI(U2OpStatus& /*os*/) {
     const QSet<GObjectType> compatibleObjTypes = attr != nullptr ? attr->getCompatibleObjectTypes() : QSet<GObjectType>();
     dsc = new AttributeDatasetsController(sets, compatibleObjTypes);
     connect(dsc, SIGNAL(si_attributeChanged()), SLOT(sl_datasetsChanged()));
-    return dsc->getWigdet();
+    return dsc->getWidget();
 }
 
 void InUrlDatasetsController::sl_datasetsChanged() {

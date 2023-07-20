@@ -44,7 +44,7 @@ VcfutilsSupport::VcfutilsSupport()
     toolRunnerProgram = PerlSupport::ET_PERL_ID;
     dependencies << PerlSupport::ET_PERL_ID;
 
-    validMessage = "varFilter";
+    validationMessageRegExp = "varFilter";
     toolKitName = "SAMtools";
 
     muted = true;

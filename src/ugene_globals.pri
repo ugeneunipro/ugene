@@ -93,7 +93,10 @@ linux-g++ {
         QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
         QMAKE_CXXFLAGS += -Werror=parentheses
         QMAKE_CXXFLAGS += -Werror=return-type
+        QMAKE_CXXFLAGS += -Werror=sequence-point
+        QMAKE_CXXFLAGS += -Werror=switch
         QMAKE_CXXFLAGS += -Werror=uninitialized
+        QMAKE_CXXFLAGS += -Werror=unused-but-set-variable
         QMAKE_CXXFLAGS += -Werror=unused-parameter
         QMAKE_CXXFLAGS += -Werror=unused-value
         QMAKE_CXXFLAGS += -Werror=unused-variable
@@ -104,14 +107,11 @@ linux-g++ {
         versionAtLeast(GCC_VERSION, 9.1) {
             QMAKE_CXXFLAGS += -Werror=deprecated-copy
         }
+        versionAtLeast(GCC_VERSION, 13.1) {
+            QMAKE_CXXFLAGS += -Werror=dangling-reference
+        }
     }
 
-    # Build with coverage (gcov) support, now for Linux only.
-    equals(UGENE_GCOV_ENABLE, 1) {
-        message("Build with gcov support. See gcov/lcov doc for generating coverage info")
-        QMAKE_CXXFLAGS += --coverage -fprofile-arcs -ftest-coverage
-        QMAKE_LFLAGS += -lgcov --coverage
-    }
     # Check for undefined symbols during the build.
     QMAKE_LFLAGS += "-Wl,--no-undefined"
 }
@@ -160,6 +160,14 @@ defineReplace(add_z_lib) {
 
 defineTest( use_system_sqlite ) {
     contains( UGENE_USE_SYSTEM_SQLITE, 1 ) : return (true)
+    return (false)
+}
+
+defineTest( target_platform_has_sse ) {
+    # This check works on Windows.
+    contains(QMAKE_TARGET.arch, x86_64) : return (true)
+    # This check works on Linux & Mac.
+    contains(QMAKE_HOST.arch, x86_64) : return (true)
     return (false)
 }
 

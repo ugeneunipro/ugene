@@ -246,7 +246,7 @@ GUI_TEST_CLASS_DEFINITION(test_4010) {
     //    5. Click the Primers Details dialog.
     //    Expected: the primers are whole dimers, 14 red lines.
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTTextEdit::containsString(GTWidget::findTextEdit("textEdit"), "||||||||||||||");
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
@@ -303,7 +303,7 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTWidget::click(GTWidget::findPlainTextEdit("sequenceEdit", dialog));
 
@@ -361,7 +361,7 @@ GUI_TEST_CLASS_DEFINITION(test_4030) {
 GUI_TEST_CLASS_DEFINITION(test_4033) {
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto cbExistingTable = GTWidget::findWidget("cbExistingTable", dialog);
             auto tbBrowseExistingTable = GTWidget::findWidget("tbBrowseExistingTable", dialog);
@@ -475,7 +475,7 @@ GUI_TEST_CLASS_DEFINITION(test_4045) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDocument::loadDocument("murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -547,7 +547,7 @@ GUI_TEST_CLASS_DEFINITION(test_4064) {
             : Filler("Import BAM File"),
               warningExistence(warningExistence) {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto label = GTWidget::findLabel("indexNotAvailableLabel", dialog);
             CHECK_SET_ERR(label->isVisible() == warningExistence, "Warning message is shown");
@@ -832,7 +832,7 @@ GUI_TEST_CLASS_DEFINITION(test_4096) {
     // Current state: only part of human_T1(128000 nb) exported to alignment
 
     class ExportSeqsAsMsaScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto addToProjectBox = GTWidget::findCheckBox("addToProjectBox", dialog);
             CHECK_SET_ERR(addToProjectBox->isChecked(), "'Add document to project' checkbox is not set");
@@ -923,7 +923,7 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
 
     // Expected state : a result file has been produced.It's a copy of murine.gb
     // Current state : the "Write Sequence" worker gives the "Nothing to write" error in the log.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 
     QAbstractButton* button = GTWidget::findButtonByText("Dataset 1.gb", GTUtilsDashboard::getDashboard());
     GTWidget::click(button);
@@ -1018,7 +1018,7 @@ GUI_TEST_CLASS_DEFINITION(test_4117) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/scenarios/sandbox/space containing dir/short_sample.fastq");
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4118) {
@@ -1034,8 +1034,9 @@ GUI_TEST_CLASS_DEFINITION(test_4118) {
     GTUtilsWorkflowDesigner::addSample("Raw RNA-Seq data processing");
 
     GTUtilsWorkflowDesigner::runWorkflow();
-    // GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    GTGlobals::sleep(10000);
+    lt.assertNoErrors();
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4121) {
@@ -1049,7 +1050,7 @@ GUI_TEST_CLASS_DEFINITION(test_4121) {
         test_4121(bool isRawPresent)
             : isRawPresent(isRawPresent) {
         }
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto cbFormat = GTWidget::findComboBox("cbFormat", dialog);
 
@@ -1110,7 +1111,7 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
 
     class Scenario_test_4124 : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto methodNamesBox = GTWidget::findComboBox("methodNamesBox", dialog);
             GTComboBox::selectItemByText(methodNamesBox, "UGENE Genome Aligner");
@@ -1158,7 +1159,7 @@ GUI_TEST_CLASS_DEFINITION(test_4127) {
     GTUtilsTaskTreeView::waitTaskFinished();
     class OrfScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             CHECK_SET_ERR(dialog != nullptr, "dialog not found");
 
@@ -1206,7 +1207,7 @@ GUI_TEST_CLASS_DEFINITION(test_4134) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 
             QString trimBothValue = GTUtilsWizard::getParameter("Trim both ends").toString();
@@ -1258,7 +1259,7 @@ GUI_TEST_CLASS_DEFINITION(test_4148) {
 
     class Scenario_test_4148 : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/FASTA/human_T1.fa"));
             auto addRefButton = GTWidget::findWidget("addRefButton", dialog);
@@ -1341,7 +1342,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
 
     class scenario_4156 : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::Resources);
 
@@ -1357,7 +1358,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
         filler_4156()
             : Filler("RunQueryDlg") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "/samples/FASTA/human_T1.fa"));
             GTWidget::click(GTWidget::findToolButton("tbInFile", dialog));
@@ -1421,7 +1422,7 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
 
     // 4. Run workflow
     GTUtilsWorkflowDesigner::runWorkflow();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     GTUtilsTaskTreeView::cancelTask("Execute workflow");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
@@ -1892,7 +1893,7 @@ GUI_TEST_CLASS_DEFINITION(test_4221) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDocument::checkDocument("test_4221.ugenedb");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -2195,7 +2196,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -2295,7 +2296,7 @@ GUI_TEST_CLASS_DEFINITION(test_4309) {
         VectorNTIFormatChecker()
             : Filler("U2__ExportAnnotationsDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             QComboBox* comboBox = dialog->findChild<QComboBox*>();
             CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
@@ -2504,7 +2505,7 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
 
     // 3. Find some restriction sites.
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "AaaI" };
+    settings.enzymes = QStringList {"AaaI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
@@ -2575,7 +2576,7 @@ GUI_TEST_CLASS_DEFINITION(test_4359) {
         EscClicker()
             : Filler("Primer3Dialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* w = GTWidget::getActiveModalWidget();
             auto button = GTWidget::findPushButton("pickPrimersButton", w);
             CHECK_SET_ERR(button->isDefault(), "Pick primers button doesn't default");
@@ -2758,7 +2759,7 @@ GUI_TEST_CLASS_DEFINITION(test_4391) {
     //    Expected state: there are no errors neither in log nor in dashboard.
     bool hasErrorNotifications = GTUtilsDashboard::hasNotifications();
     CHECK_SET_ERR(!hasErrorNotifications, "There are error notifications on the dashboard");
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -2812,7 +2813,7 @@ GUI_TEST_CLASS_DEFINITION(test_4439) {
     //    2. Call context menu on "NC_004718 features [sars.gb]" item in the Annotations tree view, select "Find qualifier..." menu item.
 
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    Expected state: a "Find Qualifier" dialog appears, search buttons are disabled.
             auto buttonBox = GTWidget::findDialogButtonBox("buttonBox", dialog);
@@ -3032,7 +3033,7 @@ GUI_TEST_CLASS_DEFINITION(test_4505) {
     GTThread::waitForMainThread();
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Bug state: Error appeared in log: "[ERROR][19:02] Failed to create a multiple alignment row!"
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     //    4. Click right button on MSA
     GTUtilsDialog::waitForDialog(new PopupChecker({"Consensus mode"}));
     GTWidget::click(GTUtilsMSAEditorSequenceArea::getSequenceArea(), Qt::RightButton);
@@ -3052,7 +3053,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     //    Expected state: a warning appears, the dialog can't be accepted.
 
     class Scenario1 : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTComboBox::selectItemByText(GTWidget::findComboBox("formatsBox", dialog), "SVG", GTGlobals::UseMouse);
             auto hintLabel = GTWidget::findLabel("hintLabel", dialog);
@@ -3081,7 +3082,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
     GTWidget::click(GTToolbar::getWidgetForActionObjectName(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Zoom Out"));
 
     class Scenario2 : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTComboBox::selectItemByText(GTWidget::findComboBox("formatsBox", dialog), "SVG", GTGlobals::UseMouse);
             auto hintLabel = GTWidget::findLabel("hintLabel", dialog);
@@ -3104,7 +3105,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
 
     CHECK_SET_ERR(GTFile::check(sandBoxDir + "test_4508/test_4508.svg"), QString("File '%1' doesn't exist").arg(sandBoxDir + "test_4508/test_4508.svg"));
     CHECK_SET_ERR(GTFile::getSize(sandBoxDir + "test_4508/test_4508.svg") > 0, QString("File '%1' has zero size").arg(sandBoxDir + "test_4508/test_4508.svg"));
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -3248,7 +3249,7 @@ GUI_TEST_CLASS_DEFINITION(test_4537) {
     // 1. Open it in UGENE with Ctrl + Shift + O.
     class Scenario : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto userSelectedFormat = GTWidget::findComboBox("userSelectedFormat", dialog);
             QStringList values = GTComboBox::getValues(userSelectedFormat);
@@ -3474,7 +3475,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591_1) {
     // 2) Select 100..10 region of the sequence
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto startEdit = GTWidget::findLineEdit("startEdit", dialog);
             auto endEdit = GTWidget::findLineEdit("endEdit", dialog);
@@ -3561,7 +3562,7 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
 
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4620) {
@@ -3608,7 +3609,7 @@ GUI_TEST_CLASS_DEFINITION(test_4621) {
 
     // 2. Find some restriction sites.
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto enzymesSelectorWidget = GTWidget::findWidget("enzymesSelectorWidget");
             CHECK_SET_ERR(nullptr != enzymesSelectorWidget, "enzymesSelectorWidget is NULL");
@@ -3762,7 +3763,7 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
 
     // Change sequences order by re-sorting.
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_SORT, "action_sort_by_length"}));
-    GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
+    GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
 
@@ -3961,7 +3962,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
 
     FindEnzymesDialogFillerSettings settings;
     settings.clickSelectAllSuppliers = true;
-    settings.enzymes = QStringList{ "AaaI" };
+    settings.enzymes = QStringList {"AaaI"};
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -3970,7 +3971,7 @@ GUI_TEST_CLASS_DEFINITION(test_4699) {
     QTreeWidgetItem* item = GTTreeWidget::findItem(tree, "76105..76110");
     GTTreeWidget::click(item);
 
-    settings.enzymes = QStringList{ "AacLI" };
+    settings.enzymes = QStringList {"AacLI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
@@ -4102,7 +4103,7 @@ GUI_TEST_CLASS_DEFINITION(test_4710) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    4) Select some dashboards in the dialog
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto listWidget = GTWidget::findTreeWidget("listWidget", dialog);
@@ -4237,7 +4238,7 @@ GUI_TEST_CLASS_DEFINITION(test_4718) {
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
     //    Expected state: log does not contain errors.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -4451,7 +4452,7 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
     //    2. Open {Context menu -> Analyze menu} and check menu item "Show circular view" is not present there
 
     class AllPopupChecker : public CustomScenario {
-        void run() {
+        void run() override {
             auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
             GTMenu::clickMenuItemByText(activePopupMenu, {"Analyze"});
@@ -4657,7 +4658,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     //    Expected state: UGENE doesn't crash, all views are closed, all documents are removed from the project.
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProject::checkProject(GTUtilsProject::Empty);
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
 
     findOptions.matchPolicy = Qt::MatchContains;
     QWidget* sarsMdi = GTUtilsMdi::findWindow(sarsMdiTitle, findOptions);
@@ -5399,9 +5400,7 @@ GUI_TEST_CLASS_DEFINITION(test_4913) {
 
     class CheckWordSizeScenario : public CustomScenario {
     public:
-        CheckWordSizeScenario() {
-        }
-        void run() {
+        void run() override {
             auto comboAlg = GTWidget::findComboBox("dataBase");
             CHECK_SET_ERR(comboAlg->currentText() == "blastp", QString("Value of dataBase not equal blastp, it has other default value: %1!").arg(comboAlg->currentText()));
 
@@ -5453,30 +5452,34 @@ GUI_TEST_CLASS_DEFINITION(test_4918_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_4934) {
     // 1. Open samples/CLUSTALW/ty3.aln.gz
-    GTLogTracer lt;
-    // GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "ty3.aln.gz");
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/1798", "1.4k.aln");
+    GTLogTracer lt1;
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/4934/4934.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
+
     // 2. Align with Kalign
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTUtilsMSAEditorSequenceArea::callContextMenu();
-    // 3. while aligning lock document for editing
-    GTUtilsDocument::lockDocument("1.4k.aln");
+
+    // 3. While aligning lock document for editing.
+    GTUtilsDocument::lockDocument("4934.aln");
 
     GTUtilsTaskTreeView::waitTaskFinished();
+
+    CHECK_SET_ERR(lt1.hasError("Document '4934.aln' is locked"), "Expected error is not found");
+    int errorNum = lt1.errorMessages.size();
+    CHECK_SET_ERR(errorNum == 1, QString("1 error is expected in the log. Got: %1, %2").arg(errorNum).arg(lt1.errorMessages.join("\n")));
+
     // 4. Unlock document after alignment finished
-    GTUtilsDocument::unlockDocument("1.4k.aln");
+    GTUtilsDocument::unlockDocument("4934.aln");
 
     // 5. Align with Kalign again
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}, GTGlobals::UseMouse));
+    GTLogTracer lt2;
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}, GTGlobals::UseMouse));
     GTUtilsDialog::add(new KalignDialogFiller());
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();
-
-    CHECK_SET_ERR(lt.hasError("Object '1.4k.aln' is locked"), "Expected error not found");
-    int errorNum = lt.errorMessages.size();
-    CHECK_SET_ERR(errorNum == 1, QString("Too many errors in log: %1").arg(errorNum));
+    CHECK_SET_ERR(!lt2.hasErrors(), "No errors is expected in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4936) {
@@ -5505,7 +5508,7 @@ GUI_TEST_CLASS_DEFINITION(test_4936) {
     //    3. Accept the offer.
     //    Expected state: the document is successfully reloaded, there are no errors in the log.
     GTUtilsProjectTreeView::findIndex("00VTW9_9INFA");
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -5567,7 +5570,7 @@ GUI_TEST_CLASS_DEFINITION(test_4965) {
         CheckCompressFiller()
             : Filler("ExportDocumentDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto comboBox = GTWidget::findComboBox("formatCombo", dialog);
 
@@ -5648,7 +5651,7 @@ GUI_TEST_CLASS_DEFINITION(test_4983) {
     GTWidget::click(widget3d, Qt::RightButton);
 
     // Expected: the color scheme is changed without errors.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4985) {

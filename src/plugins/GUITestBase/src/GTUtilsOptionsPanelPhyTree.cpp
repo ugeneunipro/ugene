@@ -34,52 +34,38 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTUtilsOptionPanelPhyTree"
 
-#define GT_METHOD_NAME "openTab"
 QWidget* GTUtilsOptionPanelPhyTree::openTab() {
     QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(TreeViewerFactory::ID);
     QWidget* tabButton = GTWidget::findWidget("OP_TREES_WIDGET", activeObjectViewWindow);
     GTWidget::click(tabButton);
     return getOptionsPanelWidget();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getOptionsPanelWidget"
 QWidget* GTUtilsOptionPanelPhyTree::getOptionsPanelWidget() {
     QWidget* activeObjectViewWindow = GTUtilsMdi::getActiveObjectViewWindow(TreeViewerFactory::ID);
     return GTWidget::findWidget("TreeOptionsWidget", activeObjectViewWindow);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getFontSize"
 int GTUtilsOptionPanelPhyTree::getFontSize() {
     return GTSpinBox::getValue("fontSizeSpinBox", getOptionsPanelWidget());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "setFontSize"
 void GTUtilsOptionPanelPhyTree::setFontSize(int fontSize) {
     GTSpinBox::setValue("fontSizeSpinBox", fontSize, getOptionsPanelWidget());
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "changeTreeLayout"
 void GTUtilsOptionPanelPhyTree::changeTreeLayout(const QString& layoutName) {
     GTComboBox::selectItemByText("layoutCombo", getOptionsPanelWidget(), layoutName);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkBranchDepthScaleMode"
 void GTUtilsOptionPanelPhyTree::checkBranchDepthScaleMode(const QString& mode) {
     auto treeViewCombo = GTWidget::findComboBox("treeViewCombo", getOptionsPanelWidget());
     CHECK_SET_ERR(mode == treeViewCombo->currentText(), QString("Unexpected mode. Expected: %1, got: %2").arg(mode).arg(treeViewCombo->currentText()));
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "changeBranchDepthScaleMode"
 void GTUtilsOptionPanelPhyTree::changeBranchDepthScaleMode(const QString& mode) {
     GTComboBox::selectItemByText("treeViewCombo", getOptionsPanelWidget(), mode);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace U2

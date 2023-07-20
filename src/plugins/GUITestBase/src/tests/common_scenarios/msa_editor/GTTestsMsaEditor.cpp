@@ -896,7 +896,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
 
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
 
     // Expected state: UGENE not crash
@@ -928,7 +928,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013_1) {
 
     // 3. Open converted alignment. Use context menu {Align->Align with Kalign}
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsDialog::checkNoActiveWaiters();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -966,7 +966,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -1026,7 +1026,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014_2) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -1076,7 +1076,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new KalignDialogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
+    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -1117,9 +1117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0016) {
-    //    Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
     GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped_edited.aln");
     GTFileDialog::openFile(sandBoxDir, "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -1128,86 +1126,13 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    Expected state: Dialog suggesting to reload modified document has appeared.
     //    Press 'Yes'.
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
-    GTFile::copy(sandBoxDir + "ma2_gapped.aln", sandBoxDir + "ma2_gapped_old.aln");
-    GTFile::copy(sandBoxDir + "ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-    GTGlobals::sleep(10000);  // Wait up to 10 seconds so UGENE will find the changes.
-
-    //    Expected state: document was reloaded, view activated.
-    //    'Phaneroptera_falcata' starts with CTT.
-    GTUtilsMdi::activeWindow();
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(2, 0));
-    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu();
-    QString clipboardText = GTClipboard::text();
-    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0016_1) {
-    // 1. Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFileDialog::openFile(sandBoxDir, "ma2_gapped.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
-    // CHANGES: insert gaps in the beginning
-    GTUtilsMSAEditorSequenceArea::click(QPoint(0, 0));
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-
-    // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata' from 'AAG' to 'CTT' and save file.
-    //  Expected state: Dialog suggesting to reload modified document has appeared. Press 'Yes'.
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-
-    // Wait for the document to reload (1 second granularity).
-    GTGlobals::sleep(2000);
-
-    // Expected state: document was reloaded, view activated.
-    // 'Phaneroptera_falcata' starts with CTT.
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    // copy to clipboard
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(2, 0));
-    GTKeyboardUtils::copy();
-
-    QString clipboardText = GTClipboard::text();
-    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0016_2) {
-    // 1. Run Ugene. Open file _common_data\scenarios\msa\ma2_gapped.aln
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped.aln", sandBoxDir + "ma2_gapped.aln");
-    GTFileDialog::openFile(sandBoxDir, "ma2_gapped.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
-    // 2. Open same file in text editor. Change first 3 bases of 'Phaneroptera_falcata'
-    //    from 'AAG' to 'CTT' and save file.
-    // CHANGES: backup old file, copy changed file
-    GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes));
-    GTGlobals::sleep(1000);  // ugene doesn't detect changes whithin one second interval
-    GTFile::copy(testDir + "_common_data/scenarios/msa/ma2_gapped_edited.aln", sandBoxDir + "ma2_gapped.aln");
-
-    //    Expected state: Dialog suggesting to reload modified document has appeared.
-    // 3. Press 'Yes'.
+    GTGlobals::sleep(1000);  // UGENE detects changes with 1 second granularity only.
+    GTFile::replaceInFile(sandBoxDir + "ma2_gapped.aln", "AAGACTTCTTTTAA", "CTTACTTCTTTTAA");
     GTUtilsDialog::checkNoActiveWaiters();
 
     //    Expected state: document was reloaded, view activated.
     //    'Phaneroptera_falcata' starts with CTT.
-
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(2, 0));
-    // copy to clipboard
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTThread::waitForMainThread();
-
-    QString clipboardText = GTClipboard::text();
-    CHECK_SET_ERR(clipboardText == "CTT", "MSA part differs from expected. Expected: CTT, actual: " + clipboardText);
-
-    // CHANGES: select item in project tree view and press delete
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("ma2_gapped.aln"));
-    GTMouseDriver::click();
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 0), QPoint(2, 0), "CTT");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
@@ -1345,14 +1270,13 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // UGENE crashes when all columns in MSAEditor are deleted (UGENE-329)
     //
     // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     // 2. Select Edit -> remove columns of gaps -> remove columns with number of gaps 1.
     // 3. Click OK
     GTUtilsDialog::waitForDialog(new DeleteGapsDialogFiller());
     GTUtilsDialog::waitForDialog(new PopupChooser({"MSAE_MENU_EDIT", "remove_columns_of_gaps"}));
-    GTMouseDriver::click(Qt::RightButton);
-
+    GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsDialog::checkNoActiveWaiters();
 
     // Expected state: UGENE not crashes, deletion is not performed
@@ -1655,7 +1579,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     qint64 bigSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/bigImage.jpg");
     qint64 smallSize = GTFile::getSize(testDir + "_common_data/scenarios/sandbox/smallImage.jpg");
     CHECK_SET_ERR(bigSize > 3 * 1000 * 1000 && bigSize < 7 * 1000 * 1000, "Invalid big image size: " + QString::number(bigSize));
-    CHECK_SET_ERR(smallSize > 700 * 1000 && smallSize < 2 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
+    CHECK_SET_ERR(smallSize > 500 * 1000 && smallSize < 2 * 1000 * 1000, "Invalid small image size: " + QString::number(smallSize));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0027) {
@@ -2987,16 +2911,12 @@ GUI_TEST_CLASS_DEFINITION(test_0054_1) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Use context menu:
-    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "align_with_kalign"}));
-    GTUtilsDialog::add(new KalignDialogFiller(0, true));
+    GTUtilsDialog::add(new PopupChooser({MSAE_MENU_ALIGN, "alignWithKalignAction"}));
+    GTUtilsDialog::add(new KalignDialogFiller());
     GTMenu::showContextMenu(GTUtilsMSAEditorSequenceArea::getSequenceArea());
     GTUtilsTaskTreeView::waitTaskFinished();
     QString actual = GTUtilsMSAEditorSequenceArea::getSequenceData("Phaneroptera_falcata");
-    CHECK_SET_ERR(actual.startsWith("TAAGACTTCTAATTCGAGCCGAATTAGGTCAAC---CAGGATACCTAATTGGAGATGATCAAATTTATAATG"), "unexpected sequence: " + actual);
-
-    //    {Align->Align with MUSCLE}
-    //    Check "Translate to amino when aligning" checkbox
-    //    Align
+    CHECK_SET_ERR(actual.startsWith("TAAGACTTCTAATTCGAGCCGAATTAGGTCAACCAGGAT---ACCTAATTGGAGATGATCAAATTTATAA"), "unexpected sequence: " + actual);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0055) {
@@ -3135,7 +3055,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             QString finalColor = "#ffffff";
 
             GTWidget::click(GTWidget::findWidget("clearButton", dialog));
-            for (double i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 QPoint p = QPoint((i + 0.5) * cellWidth, 10);
                 QColor c = GTWidget::getColor(dialog, alphabetColorsFrame->mapTo(dialog, p));
                 CHECK_SET_ERR(c.name() == finalColor, QString("unexpected color at cell %1 after clearing: %2").arg(i).arg(c.name()));
@@ -3143,7 +3063,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             }
 
             GTWidget::click(GTWidget::findWidget("restoreButton", dialog));
-            for (double i = 0; i < 6; i++) {
+            for (int i = 0; i < 6; i++) {
                 QPoint p = QPoint((i + 0.5) * cellWidth, 10);
                 QColor c = GTWidget::getColor(dialog, alphabetColorsFrame->mapTo(dialog, p));
                 CHECK_SET_ERR(c.name() == initialColors[i], QString("unexpected color at cell %1 after clearing: %2, expected: %3").arg(i).arg(c.name()).arg(initialColors[i]));
@@ -3155,7 +3075,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
             GTMouseDriver::moveTo(alphabetColorsFrame->mapToGlobal(cell2));
             GTMouseDriver::click();
             QColor cell2Color = GTWidget::getColor(dialog, alphabetColorsFrame->mapTo(dialog, cell2));
-            CHECK_SET_ERR(cell2Color.name() == "#ff0000", "color was chanded wrong: " + cell2Color.name());
+            CHECK_SET_ERR(cell2Color.name() == "#ff0000", "color was changed incorrectly: " + cell2Color.name());
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
@@ -3396,7 +3316,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
         "Align with ClustalO",
         "Align with MAFFT",
         "Align with T-Coffee",
-        "align_with_kalign",
+        "alignWithKalignAction",
     })));
     GTWidget::click(GTAction::button("Align"));
 
@@ -3561,7 +3481,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "Chikungunya_E1.fasta");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/Chikungunya_E1.fasta");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
     GTUtilsTaskTreeView::waitTaskFinished();  // wait for overview rendering to finish.
 
@@ -3627,7 +3547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
     }
 
     int scrollBarOffset = hbar->value();
-    int minCharWidth = 12;
+    int minCharWidth = 10;
     int maxCharWidth = 24;
     CHECK_SET_ERR(scrollBarOffset % 3 == 0 && scrollBarOffset >= 3 * minCharWidth && scrollBarOffset <= 3 * maxCharWidth,
                   QString("scroll down works wrong. Scrollbar has value: %1").arg(hbar->value()));

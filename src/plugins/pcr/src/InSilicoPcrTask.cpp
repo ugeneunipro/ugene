@@ -39,6 +39,17 @@ InSilicoPcrProduct::InSilicoPcrProduct()
       reversePrimerMatchLength(0) {
 }
 
+bool InSilicoPcrProduct::operator==(const InSilicoPcrProduct& anotherProduct) const {
+    return region == anotherProduct.region &&
+           qFuzzyCompare(ta, anotherProduct.ta) &&
+           forwardPrimer == anotherProduct.forwardPrimer &&
+           reversePrimer == anotherProduct.reversePrimer &&
+           forwardPrimerMatchLength == anotherProduct.forwardPrimerMatchLength &&
+           reversePrimerMatchLength == anotherProduct.reversePrimerMatchLength &&
+           forwardPrimerLedge == anotherProduct.forwardPrimerLedge &&
+           reversePrimerLedge == anotherProduct.reversePrimerLedge;
+}
+
 bool InSilicoPcrProduct::isValid() const {
     return ta != Primer::INVALID_TM;
 }
@@ -90,8 +101,9 @@ FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Dire
     }
 
     result.maxErr = getMaxError(settings, direction);
-    if (!result.searchIsCircular) {
-        QByteArray ledge(result.pattern.size() - settings->perfectMatch - 1, 'N');
+    int ledgeSize = result.pattern.size() - settings->perfectMatch - 1;
+    if (!result.searchIsCircular && ledgeSize > 0) {
+        QByteArray ledge(ledgeSize, 'N');
         result.sequence.insert(pos, ledge);
     }
     result.searchRegion.length = result.sequence.length();
@@ -138,13 +150,9 @@ void InSilicoPcrTask::run() {
             const PrimerBind rightBind = getPrimerBind(forward, reverse, U2Strand::Complementary);
 
             const qint64 productSize = getProductSize(leftBind, rightBind);
-            bool accepted = filter(leftBind, rightBind, productSize);
-            if (accepted) {
-                U2Region productRegion(leftBind.region.startPos, productSize);
-                InSilicoPcrProduct product = createResult(leftBind, productRegion, rightBind, forward.strand.getDirection());
-                CHECK_CONTINUE(product.isValid());
-
-                results << product;
+            U2Region productRegion(leftBind.region.startPos, productSize);
+            if (isProductAcceptable(leftBind, rightBind, productRegion)) {
+                createAndAddResult(leftBind, productRegion, rightBind, forward.strand.getDirection());
             }
         }
     }
@@ -176,7 +184,7 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
             result.ledge = forward.region.startPos;
         } else {
             result.region = U2Region(forward.region.startPos, forward.region.length);
-            if (!settings->isCircular) {
+            if (!settings->isCircular && ledge > 0) {
                 result.region.startPos -= (ledge);
             }
             result.ledge = 0;
@@ -186,8 +194,8 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
     return result;
 }
 
-bool InSilicoPcrTask::filter(const PrimerBind& leftBind, const PrimerBind& rightBind, qint64 productSize) const {
-    CHECK(isCorrectProductSize(productSize, minProductSize), false);
+bool InSilicoPcrTask::isProductAcceptable(const PrimerBind& leftBind, const PrimerBind& rightBind, const U2Region& productRegion) const {
+    CHECK(isCorrectProductSize(productRegion.length, minProductSize), false);
 
     if (settings->perfectMatch > 0) {
         if (leftBind.mismatches > 0) {
@@ -259,13 +267,13 @@ QString InSilicoPcrTask::generateReport() const {
         .arg(results.size());
 }
 
-InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) const {
+void InSilicoPcrTask::createAndAddResult(const PrimerBind& leftPrimer, const U2Region& product, const PrimerBind& rightPrimer, U2Strand::Direction direction) {
     QByteArray productSequence = settings->sequence.mid(product.startPos, product.length);
     if (productSequence.length() < product.length) {
         if (settings->isCircular) {
             productSequence += settings->sequence.left(product.endPos() - settings->sequence.length());
         } else {
-            CHECK(updateSequenceByPrimers(leftPrimer, rightPrimer, productSequence), InSilicoPcrProduct());
+            CHECK(updateSequenceByPrimers(leftPrimer, rightPrimer, productSequence), );
         }
     }
 
@@ -284,7 +292,14 @@ InSilicoPcrProduct InSilicoPcrTask::createResult(const PrimerBind& leftPrimer, c
         qSwap(result.forwardPrimer, result.reversePrimer);
     }
 
-    return result;
+    CHECK(result.isValid(), );
+
+    for (const InSilicoPcrProduct& existingProduct : qAsConst(results)) {
+        if (existingProduct == result) {
+            return;
+        }
+    }
+    results.append(result);
 }
 
 bool InSilicoPcrTask::updateSequenceByPrimers(const PrimerBind& leftPrimer, const PrimerBind& rightPrimer, QByteArray& productSequence) const {

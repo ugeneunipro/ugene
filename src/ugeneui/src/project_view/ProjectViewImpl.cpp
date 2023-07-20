@@ -57,6 +57,7 @@
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/ReloadDocumentsTask.h>
+#include <U2Gui/SearchBox.h>
 
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/AnnotatedDNAView.h>
@@ -564,8 +565,8 @@ void ProjectViewImpl::initView() {
     projectTreeController->setObjectName("document_Filter_Tree_Controller");
     connect(projectTreeController, SIGNAL(si_returnPressed(GObject*)), SLOT(sl_onActivated(GObject*)));
     connect(projectTreeController, SIGNAL(si_returnPressed(Document*)), SLOT(sl_onActivated(Document*)));
-    connect(projectTreeController, SIGNAL(si_filteringStarted()), w->nameFilterEdit, SLOT(sl_filteringStarted()));
-    connect(projectTreeController, SIGNAL(si_filteringFinished()), w->nameFilterEdit, SLOT(sl_filteringFinished()));
+    connect(projectTreeController, &ProjectTreeController::si_filteringStarted, w->nameFilterEdit, &SearchBox::sl_filteringStarted);
+    connect(projectTreeController, &ProjectTreeController::si_filteringFinished, w->nameFilterEdit, &SearchBox::sl_filteringFinished);
 
     connect(w->nameFilterEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_filterTextChanged(const QString&)));
     w->nameFilterEdit->installEventFilter(this);

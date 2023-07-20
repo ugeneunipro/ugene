@@ -27,7 +27,6 @@
 namespace HI {
 #define GT_CLASS_NAME "GTSlider"
 
-#define GT_METHOD_NAME "setValue"
 void GTSlider::setValue(QSlider* slider, int value) {
     GT_CHECK(slider != nullptr, "Slider is null!");
 
@@ -53,7 +52,6 @@ void GTSlider::setValue(QSlider* slider, int value) {
     GTThread::runInMainThread(new MainThreadScenario(slider, value));
 }
 
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 }  // namespace HI

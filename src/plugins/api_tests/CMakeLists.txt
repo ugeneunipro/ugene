@@ -5,4 +5,7 @@ include_directories(../../libs_3rdparty/samtools/src/samtools)
 
 include(../../Plugin.cmake)
 
+target_link_libraries(api_tests samtools)
+
+
 

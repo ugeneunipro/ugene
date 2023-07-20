@@ -129,9 +129,9 @@ void ClustalOWithExtFileSpecifySupportRunDialog::accept() {
     settings.numberOfProcessors = numberOfCPUSpinBox->value();
 
     if (inputFileLineEdit->text().isEmpty()) {
-        QMessageBox::information(this, tr("Kalign with Align"), tr("Input file is not set!"));
+        QMessageBox::information(this, tr("Align with ClustalO"), tr("Input file is not set!"));
     } else if (saveController->getSaveFileName().isEmpty()) {
-        QMessageBox::information(this, tr("Kalign with Align"), tr("Output file is not set!"));
+        QMessageBox::information(this, tr("Align with ClistalO"), tr("Output file is not set!"));
     } else {
         settings.outputFilePath = saveController->getSaveFileName();
         settings.inputFilePath = inputFileLineEdit->text();

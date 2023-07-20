@@ -454,7 +454,8 @@ void LoadDocumentTask::loadDocument() {
     if (!renameList.isEmpty()) {
         renameObjects(loadedDocument.get(), renameList);
     }
-    Document* convertedDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDocument.get(), stateInfo, true);
+    bool useShallowCopy = loadedDocument->getDocumentFormat()->isObjectOpSupported(loadedDocument.get(), DocumentFormat::DocObjectOp_Remove, GObjectTypes::SEQUENCE);
+    Document* convertedDoc = DocumentUtils::createCopyRestructuredWithHints(loadedDocument.get(), stateInfo, useShallowCopy);
     CHECK_OP(stateInfo, );
     if (convertedDoc != nullptr) {
         loadedDocument.reset(convertedDoc);

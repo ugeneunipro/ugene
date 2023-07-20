@@ -22,9 +22,11 @@
 #include "EnzymesIO.h"
 
 #include <QDir>
+#include <QRegularExpression>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/IOAdapter.h>
@@ -35,8 +37,6 @@
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
-
-#include <QRegularExpression>
 
 #include <U2Gui/ComboBoxWithCheckBoxes.h>
 
@@ -49,6 +49,7 @@ QString EnzymesIO::getFileDialogFilter() {
 }
 
 QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
+    coreLog.trace(QString("Reading enzymes from: %1").arg(url));
     QList<SEnzymeData> res;
 
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
@@ -72,27 +73,59 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString& url, U2OpStatus& os) {
     }
 
     QList<SEnzymeData> resToDelete;
-    // assign alphabet if needed.
+    // do additional calculations to recognize some enzymes features
     for (int i = 0, n = res.count(); i < n; i++) {
         SEnzymeData& d = res[i];
         if (d->seq == QByteArray("?")) {
-            algoLog.trace(tr("The enzyme '%1' has unknown sequence").arg(d->id));
+            // TODO: Re-enabled after bad enzymes are removed from the database supplied with UGENE (we have ~100 messages on every load).
+            //  algoLog.trace(tr("The enzyme '%1' has unknown sequence").arg(d->id));
             resToDelete.append(d);
         } else {
+            // calculate enzyme alphabet
+            d->alphabet = U2AlphabetUtils::findBestAlphabet(d->seq);
             if (d->alphabet == nullptr) {
-                d->alphabet = U2AlphabetUtils::findBestAlphabet(d->seq);
-                if (!d->alphabet) {
-                    algoLog.error(tr("No enzyme alphabet: '%1', sequence '%2'")
-                                      .arg(d->id)
-                                      .arg(QString(d->seq)));
+                algoLog.error(tr("No enzyme alphabet: '%1', sequence '%2'")
+                                    .arg(d->id)
+                                    .arg(QString(d->seq)));
+            } else if (!d->alphabet->isNucleic()) {
+                algoLog.error(tr("Non-nucleic enzyme alphabet: '%1', alphabet: %2, sequence '%3'")
+                                    .arg(d->id)
+                                    .arg(d->alphabet->getId())
+                                    .arg(QString(d->seq)));
+            }
+            // calculate enzyme overhang types
+            auto seqSize = d->seq.size();
+            if (d->cutDirect == ENZYME_CUT_UNKNOWN) {
+                d->overhangTypes |= EnzymeData::OverhangType::NoOverhang;
+            } else {
+                bool directCutInTheMiddleOfSequence = (seqSize % 2 == 0) && (seqSize / 2 == d->cutDirect);
+                if (directCutInTheMiddleOfSequence && d->cutDirect == d->cutComplement) {
+                    d->overhangTypes |= EnzymeData::OverhangType::Blunt;
+                } else {
+                    d->overhangTypes |= EnzymeData::OverhangType::Sticky;
+                    if ((0 <= d->cutDirect && d->cutDirect < seqSize) &&
+                        (0 <= d->cutComplement && d->cutComplement < seqSize)) {
+                        auto first = d->cutDirect;
+                        auto second = seqSize - d->cutComplement;
+                        auto overhang = d->seq.mid(qMin(first, second), qAbs(first - second));
+                        auto overhangAlphabet = d->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() ? d->alphabet : U2AlphabetUtils::findBestAlphabet(overhang);
+                        if (overhangAlphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() &&
+                            !overhang.contains(EnzymeData::UNDEFINED_BASE)) {
+                            d->overhangTypes |= EnzymeData::OverhangType::NondegenerateSticky;
+                        }
+                    }
                 }
-                if (!d->alphabet->isNucleic()) {
-                    algoLog.error(tr("Non-nucleic enzyme alphabet: '%1', alphabet: %2, sequence '%3'")
-                                      .arg(d->id)
-                                      .arg(d->alphabet->getId())
-                                      .arg(QString(d->seq)));
+                auto complementPosOnDirectStrand = seqSize - d->cutComplement;
+                if (d->cutDirect < complementPosOnDirectStrand) {
+                    d->overhangTypes |= EnzymeData::OverhangType::Cut5;
+                } else if (d->cutDirect > complementPosOnDirectStrand) {
+                    d->overhangTypes |= EnzymeData::OverhangType::Cut3;
                 }
             }
+            //calculate additional parameters
+            d->palindromic = d->seq == DNASequenceUtils::reverseComplement(d->seq, d->alphabet);
+            d->uninterrupted = !d->seq.contains(EnzymeData::UNDEFINED_BASE);
+            d->nondegenerate = d->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
         }
     }
     // Remove not needed elements
@@ -143,7 +176,7 @@ EnzymeFileFormat EnzymesIO::detectFileFormat(const QString& url) {
 QList<SEnzymeData> EnzymesIO::readBairochFile(const QString& url, IOAdapterFactory* iof, U2OpStatus& os) {
     QList<SEnzymeData> res;
 
-    QScopedPointer <IOAdapter> io(iof->createIOAdapter());
+    QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(url, IOAdapterMode_Read)) {
         os.setError(L10N::errorOpeningFileRead(url));
         return res;

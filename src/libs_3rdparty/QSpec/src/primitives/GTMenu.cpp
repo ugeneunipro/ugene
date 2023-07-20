@@ -36,8 +36,7 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTMenu"
 
-#define GT_METHOD_NAME "showMainMenu"
-QMenu* GTMenu::showMainMenu(const QString& menuName, GTGlobals::UseMethod m) {
+QMenu* GTMenu::showMainMenu(const QString& menuName) {
     QMainWindow* mainWindow = NULL;
     QList<QAction*> list;
     foreach (QWidget* window, GTMainWindow::getMainWindowsAsWidget()) {
@@ -51,32 +50,13 @@ QMenu* GTMenu::showMainMenu(const QString& menuName, GTGlobals::UseMethod m) {
 
     QAction* menu = list.takeFirst();
     GT_CHECK_RESULT(menu != nullptr, QString("menu \"%1\" not found").arg(menuName), NULL);
-#ifdef Q_OS_DARWIN
-    m = GTGlobals::UseMouse;  // On MacOS menu shortcuts do not work by prefix (like Alt-F for the &File).
-#endif
-    switch (m) {
-        case GTGlobals::UseMouse: {
-            QPoint pos = mainWindow->menuBar()->actionGeometry(menu).center();
-            QPoint gPos = mainWindow->menuBar()->mapToGlobal(pos);
-            GTMouseDriver::moveTo(gPos);
-            GTMouseDriver::click();
-            break;
-        }
-        case GTGlobals::UseKeyBoard:
-        case GTGlobals::UseKey: {
-            QString menuText = menu->text();
-            int key_pos = menuText.indexOf('&');
-            int key = (menuText.at(key_pos + 1)).toLatin1();
-            GTKeyboardDriver::keyClick(key, Qt::AltModifier);
-            break;
-        }
-        default:
-            break;
-    }
+    QPoint pos = mainWindow->menuBar()->actionGeometry(menu).center();
+    QPoint gPos = mainWindow->menuBar()->mapToGlobal(pos);
+    GTMouseDriver::moveTo(gPos);
+    GTMouseDriver::click();
     GTGlobals::sleep(1000);
     return menu->menu();
 }
-#undef GT_METHOD_NAME
 
 static QStringList fixMenuItemPath(const QStringList& itemPath) {
     QStringList fixedItemPath = itemPath;
@@ -120,36 +100,29 @@ static bool compare(QString s1, QString s2, Qt::MatchFlag matchFlag) {
     }
 }
 
-#define GT_METHOD_NAME "clickMainMenuItem"
-void GTMenu::clickMainMenuItem(const QStringList& itemPath, GTGlobals::UseMethod method, Qt::MatchFlag matchFlag) {
-    GTMenuPrivate::clickMainMenuItem(fixMenuItemPath(itemPath), method, matchFlag);
+void GTMenu::clickMainMenuItem(const QStringList& itemPath, GTGlobals::UseMethod popupChooserMethod, Qt::MatchFlag matchFlag) {
+    QStringList path = fixMenuItemPath(itemPath);
+    GT_LOG("Click main menu path: " + path.join(","));
+    GTMenuPrivate::clickMainMenuItem(path, popupChooserMethod, matchFlag);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkMainMenuItemState"
 void GTMenu::checkMainMenuItemState(const QStringList& itemPath, PopupChecker::CheckOption expectedState) {
     GTMenuPrivate::checkMainMenuItemState(fixMenuItemPath(itemPath), expectedState);
     GTGlobals::sleep(100);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "checkMainMenuItemState"
 void GTMenu::checkMainMenuItemsState(const QStringList& menuPath, const QStringList& itemsNames, PopupChecker::CheckOption expectedState) {
     const QStringList fixedPath = fixMenuItemPath(menuPath);
     GTMenuPrivate::checkMainMenuItemsState(fixedPath, itemsNames, expectedState);
     GTGlobals::sleep(100);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "showContextMenu"
 void GTMenu::showContextMenu(QWidget* target) {
     GT_CHECK(target != nullptr, "ground widget is NULL");
     GTWidget::click(target, Qt::RightButton);
     GTGlobals::sleep(1000);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getMenuItem"
 QAction* GTMenu::getMenuItem(const QMenu* menu, const QString& itemName, bool byText, Qt::MatchFlag matchFlag) {
     GT_CHECK_RESULT(menu != nullptr, "menu is null", nullptr);
 
@@ -177,9 +150,7 @@ QAction* GTMenu::getMenuItem(const QMenu* menu, const QString& itemName, bool by
     }
     return action;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "actionPos"
 QPoint GTMenu::actionPos(const QMenu* menu, QAction* action) {
     GT_CHECK_RESULT(menu != nullptr, "menu == NULL", QPoint());
     GT_CHECK_RESULT(action != nullptr, "action == NULL", QPoint());
@@ -187,10 +158,9 @@ QPoint GTMenu::actionPos(const QMenu* menu, QAction* action) {
     QPoint p = menu->actionGeometry(action).center();
     return menu->mapToGlobal(p);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMenuItem"
 QAction* GTMenu::clickMenuItem(const QMenu* menu, const QString& itemName, GTGlobals::UseMethod useMethod, bool byText, Qt::MatchFlag matchFlag) {
+    GT_LOG("clickMenuItem " + itemName);
     GT_CHECK_RESULT(menu != nullptr, "menu not found", nullptr);
     GT_CHECK_RESULT(!itemName.isEmpty(), "itemName is empty", nullptr);
 
@@ -235,13 +205,12 @@ QAction* GTMenu::clickMenuItem(const QMenu* menu, const QString& itemName, GTGlo
         default:
             GT_FAIL("clickMenuItem: unsupported method" + QString::number(useMethod), nullptr);
     }
+    GT_LOG("clickMenuItem " + itemName + " DONE");
     GTThread::waitForMainThread();
     auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
     return activePopupMenu == nullptr ? nullptr : action;
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMenuItemPrivate"
 void GTMenu::clickMenuItemPrivate(const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod useMethod, bool byText, Qt::MatchFlag matchFlag) {
     GT_CHECK(menu != nullptr, "menu is NULL");
     GT_CHECK(!itemPath.isEmpty(), "itemPath is empty");
@@ -253,19 +222,14 @@ void GTMenu::clickMenuItemPrivate(const QMenu* menu, const QStringList& itemPath
         menu = action ? action->menu() : nullptr;
     }
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMenuItemByName"
 void GTMenu::clickMenuItemByName(const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m, Qt::MatchFlag matchFlag) {
     clickMenuItemPrivate(menu, itemPath, m, false, matchFlag);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMenuItemByText"
 void GTMenu::clickMenuItemByText(const QMenu* menu, const QStringList& itemPath, GTGlobals::UseMethod m, Qt::MatchFlag matchFlag) {
     clickMenuItemPrivate(menu, itemPath, m, true, matchFlag);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

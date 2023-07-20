@@ -70,7 +70,7 @@ SpideySupport::SpideySupport()
     executableFileName = "spidey";
 #    endif
 #endif
-    validMessage = "SPIDEY   arguments:";
+    validationMessageRegExp = "SPIDEY   arguments:";
     description = tr("<i>Spidey</i> is mRNA-to-DNA alignment program. \
                    <br>Binaries can be downloaded from http://www.ncbi.nlm.nih.gov/spidey/spideyexec.html");
     description += tr("<br><br> Wheelan SJ, Church DM, Ostell JM.");

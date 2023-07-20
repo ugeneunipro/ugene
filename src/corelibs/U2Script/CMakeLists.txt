@@ -21,4 +21,4 @@ add_library(U2Script SHARED ${HDRS} ${SRCS})
 
 target_link_libraries(U2Script
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Script
-        U2Core U2Algorithm U2Formats U2Lang U2Private U2Gui)
+        U2Core U2Algorithm U2Formats U2Lang U2Private U2Gui U2Test)

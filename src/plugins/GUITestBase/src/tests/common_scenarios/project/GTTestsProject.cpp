@@ -175,7 +175,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsDocument::checkDocument("1CF7.pdb");
 
     GTUtilsDocument::removeDocument("1CF7.pdb", GTGlobals::UseMouse);
-    GTUtilsProject::checkProject(GTUtilsProject::Empty);
+    GTUtilsProject::checkProject(GTUtilsProject::ExistsAndEmpty);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -434,7 +434,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
     QWidget* coi = GTUtilsMdi::findWindow("COI [COI.aln]");
     CHECK_SET_ERR(fasta->windowIcon().cacheKey() != coi->windowIcon().cacheKey(), "Icons must not be equals");
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
@@ -446,7 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTMenu::clickMainMenuItem({"File", "Close project"});
     GTUtilsDialog::checkNoActiveWaiters();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0031) {

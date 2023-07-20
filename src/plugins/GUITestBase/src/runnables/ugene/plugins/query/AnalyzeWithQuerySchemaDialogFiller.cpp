@@ -33,7 +33,6 @@ AnalyzeWithQuerySchemaDialogFiller::AnalyzeWithQuerySchemaDialogFiller(const QSt
     : Filler("QDDialog"), fileWithQuery(_fileWithQuery), expectBadSchema(_expectBadSchema) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void AnalyzeWithQuerySchemaDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTLineEdit::setText("queryFileEdit", fileWithQuery, dialog);
@@ -47,7 +46,6 @@ void AnalyzeWithQuerySchemaDialogFiller::commonScenario() {
         GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
     }
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

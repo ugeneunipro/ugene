@@ -46,7 +46,8 @@
 namespace U2 {
 
 ABIFormat::ABIFormat(QObject* p)
-    : DocumentFormat(p, BaseDocumentFormats::ABIF, DocumentFormatFlag_SupportStreaming, {"ab1", "abi", "abif"}) {
+    : DocumentFormat(p, BaseDocumentFormats::ABIF, DocumentFormatFlag_SupportStreaming | DocumentFormatFlag_OnlyOneObject
+    , {"ab1", "abi", "abif"}) {
     formatName = tr("ABIF");
     formatDescription = tr("A chromatogram file format");
     supportedObjectTypes += GObjectTypes::SEQUENCE;

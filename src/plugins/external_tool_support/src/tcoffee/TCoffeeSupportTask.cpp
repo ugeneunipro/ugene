@@ -68,16 +68,14 @@ TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment& _inputMs
 }
 
 TCoffeeSupportTask::~TCoffeeSupportTask() {
-    if (nullptr != tmpDoc) {
-        delete tmpDoc;
-    }
+    delete tmpDoc;
     // Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (nullptr != obj) {
+            if (obj != nullptr) {
                 auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-                CHECK(nullptr != alObj, );
+                CHECK(alObj != nullptr, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
                 }
@@ -99,10 +97,10 @@ void TCoffeeSupportTask::prepare() {
 
     if (objRef.isValid()) {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-        if (nullptr != obj) {
+        if (obj != nullptr) {
             auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
-            lock = new StateLock("ClustalWAlignment");
+            SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", );
+            lock = new StateLock("TCoffeeAlignment");
             alObj->lockState(lock);
         }
     }
@@ -151,11 +149,13 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
     QString outputDNDUrl = url + ".dnd";
     if (subTask == saveTemporaryDocumentTask) {
         QStringList arguments;
-        if (url.contains(" ")) {
-            stateInfo.setError("Temporary folder path have space(s). Try select any other folder without spaces.");
-            return res;
+        bool isNewModeWithSpacesInUrlAllowed = !isOsWindows();
+        QString workDir = QFileInfo(url).absolutePath();  // This is a TMP dir only for the current t-coffee run.
+        if (isNewModeWithSpacesInUrlAllowed) {
+            arguments << "-seq" << url;
+        } else {
+            arguments << url;
         }
-        arguments << url;
         arguments << "-output"
                   << "msf";
         if (settings.gapOpenPenalty != -1) {
@@ -170,11 +170,15 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         arguments << "-outfile" << outputUrl;
         arguments << "-newtree" << outputDNDUrl;
         tCoffeeTask = new ExternalToolRunTask(TCoffeeSupport::ET_TCOFFEE_ID, arguments, new TCoffeeLogParser());
-        if (isOsWindows()) {
-            QMap<QString, QString> env;
-            env["LOCKDIR_4_TCOFFEE"] = QFileInfo(url).absolutePath();
-            tCoffeeTask->setAdditionalEnvVariables(env);
+        QMap<QString, QString> env;
+        if (isNewModeWithSpacesInUrlAllowed) {
+            env["T_COFFEE_ALLOW_SPACES_IN_NAMES"] = "1";
         }
+        env["TMP_4_TCOFFEE"] = workDir;
+        if (isOsWindows()) {
+            env["LOCKDIR_4_TCOFFEE"] = workDir;
+        }
+        tCoffeeTask->setAdditionalEnvVariables(env);
         setListenerForTask(tCoffeeTask);
         tCoffeeTask->setSubtaskProgressWeight(95);
         res.append(tCoffeeTask);
@@ -209,7 +213,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(!newDocumentObjects.empty(), "No objects in the temporary document!", res);
 
         auto newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject*>(newDocumentObjects.first());
-        SAFE_POINT(nullptr != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
+        SAFE_POINT(newMAligmentObject != nullptr, "Failed to cast object from temporary document to an alignment!", res);
 
         resultMA = newMAligmentObject->getMsaCopy();
         bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
@@ -218,9 +222,9 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
             GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (nullptr != obj) {
+            if (obj != nullptr) {
                 auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-                SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", res);
+                SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
@@ -263,7 +267,7 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
                 }
 
                 Document* currentDocument = alObj->getDocument();
-                SAFE_POINT(nullptr != currentDocument, "Document is NULL!", res);
+                SAFE_POINT(currentDocument != nullptr, "Document is NULL!", res);
                 currentDocument->setModified(true);
             } else {
                 algoLog.error(tr("Failed to apply the result of TCoffee: alignment object is not available!"));
@@ -280,13 +284,7 @@ Task::ReportResult TCoffeeSupportTask::report() {
     // Remove subdir for temporary files, that created in prepare
     if (!url.isEmpty()) {
         QDir tmpDir(QFileInfo(url).absoluteDir());
-        foreach (QString file, tmpDir.entryList()) {
-            tmpDir.remove(file);
-        }
-        if (!tmpDir.rmdir(tmpDir.absolutePath())) {
-            stateInfo.setError(tr("Can not remove folder for temporary files."));
-            emit si_stateChanged();
-        }
+        ExternalToolSupportUtils::removeTmpDir(tmpDir.absolutePath(), stateInfo);
     }
 
     return ReportResult_Finished;

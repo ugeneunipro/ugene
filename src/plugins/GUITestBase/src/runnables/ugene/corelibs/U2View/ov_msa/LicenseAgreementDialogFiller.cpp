@@ -35,7 +35,6 @@ LicenseAgreementDialogFiller::LicenseAgreementDialogFiller()
     : Filler("LicenseDialog") {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void LicenseAgreementDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     GTGlobals::sleep();
@@ -44,7 +43,6 @@ void LicenseAgreementDialogFiller::commonScenario() {
     GTWidget::click(accept);
     GTThread::waitForMainThread();
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

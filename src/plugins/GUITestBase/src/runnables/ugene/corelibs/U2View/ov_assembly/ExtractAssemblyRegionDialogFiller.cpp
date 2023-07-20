@@ -35,7 +35,6 @@ ExtractAssemblyRegionDialogFiller::ExtractAssemblyRegionDialogFiller(const QStri
 
 #define GT_CLASS_NAME "ExtractAssemblyRegionDialogFiller"
 
-#define GT_METHOD_NAME "commonScenario"
 void ExtractAssemblyRegionDialogFiller::commonScenario() {
     QWidget* widget = GTWidget::getActiveModalWidget();
 
@@ -50,7 +49,6 @@ void ExtractAssemblyRegionDialogFiller::commonScenario() {
 
     GTUtilsDialog::clickButtonBox(widget, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

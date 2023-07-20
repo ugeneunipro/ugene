@@ -52,12 +52,12 @@ class BaseDefaultPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
     BaseDefaultPropertyWidget(QWidget* parent);
-    virtual QVariant value();
-    virtual void setValue(const QVariant& value);
-    virtual void setRequired();
+    QVariant value() override;
+    void setValue(const QVariant& value) override;
+    void setRequired() override;
 
 protected:
-    void configureLineEdit(const int maxLength);
+    void configureLineEdit(int maxLength);
 
     QLineEdit* lineEdit;
 
@@ -104,9 +104,9 @@ class SpinBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
     SpinBoxWidget(const QVariantMap& spinProperties, QWidget* parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant& value);
-    virtual void processDelegateTags();
+    QVariant value() override;
+    void setValue(const QVariant& value) override;
+    void processDelegateTags() override;
 
     /** Override */
     bool setProperty(const char* name, const QVariant& value);
@@ -128,8 +128,8 @@ class DoubleSpinBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
     DoubleSpinBoxWidget(const QVariantMap& spinProperties, QWidget* parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant& value);
+    QVariant value() override;
+    void setValue(const QVariant& value) override;
 
 private:
     QDoubleSpinBox* spinBox;
@@ -191,8 +191,8 @@ class ComboBoxEditableWidget : public PropertyWidget {
     Q_OBJECT
 public:
     ComboBoxEditableWidget(const QVariantMap& items, QWidget* parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant& value);
+    QVariant value() override;
+    void setValue(const QVariant& value) override;
 
 signals:
     void valueChanged(const QString& value);
@@ -215,8 +215,8 @@ class ComboBoxWithUrlWidget : public PropertyWidget {
     Q_OBJECT
 public:
     ComboBoxWithUrlWidget(const QVariantMap& items, bool isPath = false, QWidget* parent = nullptr);
-    virtual QVariant value();
-    virtual void setValue(const QVariant& value);
+    QVariant value() override;
+    void setValue(const QVariant& value) override;
 
 signals:
     void valueChanged(const QString& value);
@@ -278,10 +278,10 @@ public:
     URLWidget(const QString& type, bool multi, bool isPath, bool saveFile, DelegateTags* tags, QWidget* parent = nullptr);
 
     // PropertyWidget
-    virtual QVariant value();
-    virtual void setValue(const QVariant& value);
-    virtual void setRequired();
-    virtual void activate();
+    QVariant value() override;
+    void setValue(const QVariant& value) override;
+    void setRequired() override;
+    void activate() override;
 
 signals:
     void finished();
@@ -291,7 +291,7 @@ private slots:
     void sl_finished();
 
 protected:
-    virtual QString finalyze(const QString& url);
+    virtual QString handleNewUrlInput(const QString& url);
 
 private:
     RunFileSystem* getRFS();
@@ -313,10 +313,10 @@ class NoFileURLWidget : public URLWidget {
 public:
     NoFileURLWidget(const QString& type, bool multi, bool isPath, bool saveFile, DelegateTags* tags, QWidget* parent = nullptr);
 
-    static QString finalyze(const QString& url, DelegateTags* tags);
+    static QString handleNewUrlInput(const QString& url, DelegateTags* tags);
 
 protected:
-    virtual QString finalyze(const QString& url);
+    QString handleNewUrlInput(const QString& url) override;
 };
 
 }  // namespace U2

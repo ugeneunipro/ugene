@@ -33,13 +33,11 @@ MeltingTemperatureSettingsDialogFiller::MeltingTemperatureSettingsDialogFiller(
       parameters(_parameters) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void MeltingTemperatureSettingsDialogFiller::commonScenario() {
     auto dialog = GTWidget::getActiveModalWidget();
     GTUtilsMeltingTemperature::setParameters(parameters, dialog);
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

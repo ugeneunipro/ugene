@@ -36,6 +36,7 @@ MessageBoxDialogFiller::MessageBoxDialogFiller(QMessageBox::StandardButton b, co
     : Filler(objectName),
       b(b),
       message(_message) {
+    settings.logName = "MessageBoxDialogFiller, message: '" + message + "', button code: " + QString::number(b);
 }
 
 MessageBoxDialogFiller::MessageBoxDialogFiller(const QString& _buttonText, const QString& _message)
@@ -43,9 +44,9 @@ MessageBoxDialogFiller::MessageBoxDialogFiller(const QString& _buttonText, const
       b(QMessageBox::NoButton),
       buttonText(_buttonText),
       message(_message) {
+    settings.logName = "MessageBoxDialogFiller, message: '" + message + "', buttonText: '" + buttonText + "'";
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void MessageBoxDialogFiller::commonScenario() {
     auto modalWidget = GTWidget::getActiveModalWidget();
     auto messageBox = qobject_cast<QMessageBox*>(modalWidget);
@@ -70,7 +71,6 @@ void MessageBoxDialogFiller::commonScenario() {
     GT_CHECK(button != nullptr, QString("There is no such button in messagebox: 0x%1").arg(QString::number(b, 16)));
     GTWidget::click(button);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -80,7 +80,6 @@ AppCloseMessageBoxDialogFiller::AppCloseMessageBoxDialogFiller()
     : Filler("") {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void AppCloseMessageBoxDialogFiller::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget();
     auto messageBox = qobject_cast<QMessageBox*>(activeModal);
@@ -97,7 +96,6 @@ void AppCloseMessageBoxDialogFiller::commonScenario() {
         GT_FAIL("There are neither \"No\" or \"No to all\" buttons in the message box", );
     }
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -107,7 +105,6 @@ MessageBoxNoToAllOrNo::MessageBoxNoToAllOrNo()
     : Filler("") {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void MessageBoxNoToAllOrNo::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget();
     auto messageBox = qobject_cast<QMessageBox*>(activeModal);
@@ -121,7 +118,6 @@ void MessageBoxNoToAllOrNo::commonScenario() {
 
     GTWidget::click(button);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -131,7 +127,6 @@ MessageBoxOpenAnotherProject::MessageBoxOpenAnotherProject()
     : Filler("") {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void MessageBoxOpenAnotherProject::commonScenario() {
     QWidget* activeModal = GTWidget::getActiveModalWidget();
     auto messageBox = qobject_cast<QMessageBox*>(activeModal);
@@ -148,7 +143,6 @@ void MessageBoxOpenAnotherProject::commonScenario() {
 
     GTWidget::click(button);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 
@@ -159,7 +153,6 @@ InputIntFiller::InputIntFiller(int value)
       value(value) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void InputIntFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     auto spinBox = GTWidget::findSpinBox("", dialog);
@@ -168,7 +161,6 @@ void InputIntFiller::commonScenario() {
 
     GTWidget::click(GTWidget::findButtonByText("OK", dialog));
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

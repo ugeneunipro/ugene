@@ -60,7 +60,7 @@ ClustalOSupport::ClustalOSupport()
     }
     executableFileName = isOsWindows() ? "ClustalO.exe" : "clustalo";
     validationArguments << "--help";
-    validMessage = "Clustal Omega";
+    validationMessageRegExp = "Clustal Omega";
     description = tr("<i>Clustal Omega</i> is a free sequence alignment software for proteins.");
     versionRegExp = QRegExp("Clustal Omega - (\\d+\\.\\d+\\.\\d+).*");
     toolKitName = "ClustalO";

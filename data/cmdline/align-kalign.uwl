@@ -38,10 +38,6 @@ workflow align-kalign{
                 alias:in;
                 description:"Input alignment";
             }
-            kalign.bonus-score {
-                alias:bonus-score;
-                description:"A bonus score that is added to each pair of aligned residues (using '0.02' by default)";
-            }
             kalign.gap-ext-penalty {
                 alias:gap-ext-penalty;
                 description:"The penalty for extending a gap (using '8.52' by default)";

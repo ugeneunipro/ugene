@@ -49,7 +49,6 @@
 #include <QApplication>
 #include <QDir>
 #include <QPushButton>
-#include <QRadioButton>
 #include <QSpinBox>
 #include <QStandardPaths>
 #include <QTableWidget>
@@ -89,6 +88,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsStartPage.h"
+#include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -517,7 +517,7 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
 
     //    2) Run Smith-waterman search using:
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTTextEdit::setText(GTWidget::findTextEdit("teditPattern", dialog), "RPHP*VAS*LK*RHFARHGKIHN*E*KSSDQGQ");
 
@@ -699,7 +699,7 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
 GUI_TEST_CLASS_DEFINITION(test_6167) {
     // 1. Change workflow designer output folder to sandbox
     class Custom : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::WorkflowDesigner);
@@ -724,7 +724,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     GTUtilsWorkflowDesigner::addInputFile("Read File URL(s)", dataDir + "samples/FASTQ/eas.fastq");
 
     class TrimmomaticCustomScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto addButton = GTWidget::findToolButton("buttonAdd", dialog);
 
@@ -801,7 +801,7 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
 
     // 3. Click on the Trimmomatic element, then click on the "Configure steps" parameter in the Property Editor, click on the appeared browse button in the value field.
     class TrimmomaticCustomScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto buttonBox = GTWidget::findDialogButtonBox("buttonBox", dialog);
 
@@ -881,7 +881,7 @@ GUI_TEST_CLASS_DEFINITION(test_6230) {
     //    4. After the task finish open the report.
     //    Expected state: there is an error message in the report: "The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the "Temporary files" parameter on the "Directories" tab of the UGENE Application Settings.".
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             AlignToReferenceBlastDialogFiller::setReference(testDir + "_common_data/sanger/reference.gb", dialog);
 
@@ -964,7 +964,7 @@ GUI_TEST_CLASS_DEFINITION(test_6232_3) {
 
     // 3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes", disable "Circular Molecule" checkBox and click "OK".
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTCheckBox::setChecked("circularBox", false, dialog);
             GTWidget::click(GTWidget::findWidget("addAllButton", dialog));
@@ -1020,7 +1020,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
     // 1. Find the link to the ET download page in the application settings.
     class FindUrlScenario : public CustomScenario {
     public:
-        FindUrlScenario(QString& _url)
+        explicit FindUrlScenario(QString& _url)
             : url(_url) {
         }
         void run() override {
@@ -1082,7 +1082,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_1) {
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTWidget::click(GTWidget::findWidget("addAllButton", dialog));
 
@@ -1116,7 +1116,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_2) {
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTWidget::click(GTWidget::findWidget("addAllButton", dialog));
 
@@ -1150,7 +1150,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_3) {
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, check "Circular molecule", click "OK".
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTWidget::click(GTWidget::findWidget("addAllButton", dialog));
 
@@ -1184,7 +1184,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     // 3. Select "Actions > Cloning > Digest into fragments". Add "Esp3I" to the "Selected enzymes" in the appeared dialog, uncheck "Circular molecule", click "OK".
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is NULL");
 
@@ -1225,6 +1225,7 @@ GUI_TEST_CLASS_DEFINITION(test_6236) {
     GTLogTracer lt;
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsLog::checkMessageWithWait(lt, "GET https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_TYPE=XML&RID", 90000);
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6238) {
@@ -1301,7 +1302,7 @@ GUI_TEST_CLASS_DEFINITION(test_6243) {
 
 GUI_TEST_CLASS_DEFINITION(test_6247) {
     class Scenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
@@ -1422,7 +1423,7 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     QString tempDir = QDir(sandBoxDir + "test_6256").absolutePath();
 
     class Custom : public CustomScenario {
-        void run() {
+        void run() override {
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::WorkflowDesigner);
             QWidget* dialog = GTWidget::getActiveModalWidget();
             QDir().mkpath(tempDir);
@@ -1435,7 +1436,7 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
         QString tempDir;
     };
     // 2. Open application settings and change workflow output directory to nonexistent path
-    Custom* c = new Custom();
+    auto c = new Custom();
     c->tempDir = tempDir;
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(c));
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."}, GTGlobals::UseMouse);
@@ -1567,7 +1568,7 @@ GUI_TEST_CLASS_DEFINITION(test_6277) {
 GUI_TEST_CLASS_DEFINITION(test_6279) {
     class Custom : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             GTWidget::findLineEdit("leAnnotationName", dialog);
 
@@ -1590,7 +1591,7 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
 
 GUI_TEST_CLASS_DEFINITION(test_6283) {
     class Custom : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
 
@@ -1669,7 +1670,7 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
 
 GUI_TEST_CLASS_DEFINITION(test_6301) {
     class Custom : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
 
@@ -1823,7 +1824,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     class Custom : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto maxDistanceBox = GTWidget::findSpinBox("maxDistBox", dialog);
             GTSpinBox::checkLimits(maxDistanceBox, 0, 1000000);
@@ -1997,7 +1998,7 @@ GUI_TEST_CLASS_DEFINITION(test_6475_2) {
 
     //    Expected state: the workflow finishes soon without errors.
     GTUtilsTaskTreeView::waitTaskFinished(30000);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -2255,7 +2256,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     //    9. Set "a modified command" text as command.
     //    10. Go to the last page, accept the dialog.
     class ModifyScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
@@ -2282,7 +2283,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     //    12. Go to the "Command" page in the wizard.
     //    Expected state: the command is "a modified command".
     class CheckScenario : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
@@ -3169,7 +3170,7 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     QStringList frames = {"Frame +1", "Frame +2", "Frame +3", "Frame -1", "Frame -2", "Frame -3"};
-    foreach (const QString& frame, frames) {
+    for (const QString& frame : qAsConst(frames)) {
         GTUtilsDialog::waitForDialog(new PopupChooserByText({frame}));
     }
     GTWidget::click(translationsMenuToolbarButton);
@@ -3177,20 +3178,20 @@ GUI_TEST_CLASS_DEFINITION(test_6616_3) {
 
     // 3. Close the project and open it again
     GTUtilsProject::closeProject(true);
+    GTUtilsTaskTreeView::waitTaskFinished();
+
     GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    // Expected state: "Set up frames manually" mode is choosen and the all frames are disable
+    // Expected state: "Set up frames manually" mode is chosen and the all frames are disable.
     GTUtilsSequenceView::getActiveSequenceViewWindow();
     translationsMenuToolbarButton = GTWidget::findWidget("translationsMenuToolbarButton");
 
     GTUtilsDialog::waitForDialog(new PopupChecker({"set_up_frames_manually_radiobutton"}, PopupChecker::IsChecked));
     GTWidget::click(translationsMenuToolbarButton);
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsDialog::waitForDialog(new PopupCheckerByText(QStringList(), frames));
     GTWidget::click(translationsMenuToolbarButton);
-    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6616_4) {
@@ -3309,7 +3310,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("UGENE");
-    GTUtilsNotifications::waitForNotification(true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
+    GTUtilsNotifications::waitForNotification(true, R"(The following sequence(s) were not aligned as they do not contain meaningful characters: "seq2", "seq4".)");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3392,7 +3393,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/empty_sequences/empty_file.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("MAFFT");
-    GTUtilsNotifications::waitForNotification(true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
+    GTUtilsNotifications::waitForNotification(true, R"('Load sequences and add to alignment task' task failed: Data from the "empty_file.fa" file can't be alignment to the "COI" alignment - the file is empty.)");
     GTUtilsDialog::checkNoActiveWaiters();
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -3419,7 +3420,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/empty_sequences/incorrect_fasta_header_only.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("MAFFT");
-    GTUtilsNotifications::waitForNotification(true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
+    GTUtilsNotifications::waitForNotification(true, R"('Load sequences and add to alignment task' task failed: Data from the "incorrect_fasta_header_only.fa" file can't be alignment to the "COI" alignment - the file format is invalid.)");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDialog::checkNoActiveWaiters();
 
@@ -3447,7 +3448,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("MAFFT");
-    GTUtilsNotifications::waitForNotification(true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
+    GTUtilsNotifications::waitForNotification(true, R"('Load sequences and add to alignment task' task failed: Data from the "incorrect_multifasta_with_empty_seq.fa" file can't be alignment to the "COI" alignment - the file format is invalid.)");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected result: the COI alignment is not modified,
@@ -3574,7 +3575,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_5) {
 
     // 4. Expected state: No any selected read
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames();
-    CHECK_SET_ERR(name.size() == 0, QString("1. Unexpected selection! Expected selection size == 0, actual selection size == %1").arg(QString::number(name.size())));
+    CHECK_SET_ERR(name.empty(), QString("1. Unexpected selection! Expected selection size == 0, actual selection size == %1").arg(QString::number(name.size())));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_6) {
@@ -3592,7 +3593,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_6) {
 
     // 4. Expected state: No any selected read, selected column only
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames();
-    CHECK_SET_ERR(name.size() == 0, QString("1. Unexpected selection! Expected selection size == 4, actual selection size == %1").arg(QString::number(name.size())));
+    CHECK_SET_ERR(name.empty(), QString("1. Unexpected selection! Expected selection size == 4, actual selection size == %1").arg(QString::number(name.size())));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6649) {
@@ -4560,7 +4561,7 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
     // 2. Open the "Alignment Color Scheme" tab of the "Application settings" dialog.
     // 3. Set "Directory to save color scheme" to the folder you created on the step 1.
     class Custom : public CustomScenario {
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::AlignmentColorScheme);
@@ -4722,7 +4723,6 @@ GUI_TEST_CLASS_DEFINITION(test_6715) {
 
     class Scenario : public CustomScenario {
     public:
-        Scenario() {};
         void run() {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -5565,7 +5565,7 @@ GUI_TEST_CLASS_DEFINITION(test_6826) {
 
     class InSilicoWizardScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTWidget::getActiveModalWidget();
 
             GTUtilsWizard::setInputFiles(QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/fasta/400000_symbols_msa.fasta").absoluteFilePath()));
@@ -5714,7 +5714,7 @@ GUI_TEST_CLASS_DEFINITION(test_6875) {
     // 2. Select "Actions > Analyze > Find restriction sites", check "DraRI" enzyme in the appeared dialog, click "OK".
     // Expected state: ugene not crashed
     FindEnzymesDialogFillerSettings settings;
-    settings.enzymes = QStringList{ "DraRI" };
+    settings.enzymes = QStringList {"DraRI"};
     settings.clickSelectAllSuppliers = true;
     GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(settings));
     GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find restriction sites..."}, GTGlobals::UseMouse);
@@ -6024,7 +6024,7 @@ GUI_TEST_CLASS_DEFINITION(test_6916_1) {
 GUI_TEST_CLASS_DEFINITION(test_6924) {
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTUtilsWizard::setParameter("Input file(s)", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath());
             GTUtilsWizard::clickButton(GTUtilsWizard::Run);
         }
@@ -6042,7 +6042,7 @@ GUI_TEST_CLASS_DEFINITION(test_6924) {
 GUI_TEST_CLASS_DEFINITION(test_6926) {
     class AddCustomToolScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
 
             GTWidget::click(GTWidget::findWidget("ArrowHeader_Custom tools"));
@@ -6056,7 +6056,7 @@ GUI_TEST_CLASS_DEFINITION(test_6926) {
 
     class CheckCustomToolScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::ExternalTools);
 
             auto treeWidget = GTWidget::findTreeWidget("twCustomTools");
@@ -6110,7 +6110,7 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTUtilsWizard::setParameter("FASTQ files", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath());
 
             GTUtilsWizard::clickButton(GTUtilsWizard::Next);
@@ -6423,7 +6423,7 @@ GUI_TEST_CLASS_DEFINITION(test_6968) {
     // Open "Find restriction sites" dialog
     class SelectAllScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             // Select all sites.
             GTWidget::click(GTWidget::findWidget("selectAllButton", dialog));
@@ -6443,7 +6443,7 @@ GUI_TEST_CLASS_DEFINITION(test_6971) {
 
     class CheckWizardIsActiveAndCancelItScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTWidget::getActiveModalWidget();
             GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
         }

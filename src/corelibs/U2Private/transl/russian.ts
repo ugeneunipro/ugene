@@ -152,27 +152,27 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::DisableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="277"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="280"/>
         <source>Disable &apos;%1&apos; service</source>
         <translation>Остановка сервиса: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="290"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="293"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="291"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="294"/>
         <source>Service is not enabled</source>
         <translation>Сервис недоступен</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="297"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="300"/>
         <source>Active top-level task name: %1</source>
         <translation>Активная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="299"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="302"/>
         <source>Active task was found</source>
         <translation>Имеются неоконченные задачи</translation>
     </message>
@@ -188,27 +188,27 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::EnableServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="216"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="219"/>
         <source>Service is enabled</source>
         <translation>Сервис доступен</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="217"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="220"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="222"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="225"/>
         <source>Circular service dependency: %1</source>
         <translation>Циркулярная зависимость модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="228"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="231"/>
         <source>Required services are not enabled: %1</source>
         <translation>Необходимые сервисы недоступны: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="176"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="179"/>
         <source>Enable &apos;%1&apos; service</source>
         <translation>Запуск сервиса: %1</translation>
     </message>
@@ -305,22 +305,22 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::RegisterServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="149"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="152"/>
         <source>Register &apos;%1&apos; service</source>
         <translation>Регистрация сервиса: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="154"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="157"/>
         <source>Service has already registered</source>
         <translation>Сервис уже зарегистрирован</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="155"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="158"/>
         <source>Illegal service state: %1</source>
         <translation>Ошибка сервиса: %1</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="159"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="162"/>
         <source>Only one service of specified type is allowed: %1</source>
         <translation>Разрешён только один экземпляр сервиса: %1</translation>
     </message>
@@ -329,120 +329,134 @@ By default, loglevel=&quot;ERROR&quot;.</source>
     <name>U2::TaskSchedulerImpl</name>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="659"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="716"/>
         <source>New</source>
         <translation>Новая</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="661"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="718"/>
         <source>Prepared</source>
         <translation>Инициализирована</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="663"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="720"/>
         <source>Running</source>
         <translation>Выполняется</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="665"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="722"/>
         <source>Finished</source>
         <translation>Завершена</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="95"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="96"/>
         <source>Canceling task: %1</source>
         <translation>Отменяется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="111"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="112"/>
         <source>There is not enough memory to finish the task.</source>
         <translation>There is not enough memory to finish the task.</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="132"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="133"/>
         <source>Subtask {%1} is failed: %2</source>
         <translation>Подзадача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="375"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="429"/>
+        <source>Waiting for resource &apos;%1&apos;, count: 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="447"/>
+        <source>Task resource not found: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="455"/>
+        <source>Not enough resources for the task, resource: &apos;%1&apos; max: %2%3 requested: %4%5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="465"/>
+        <source>Waiting for the resource: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Waiting for resource &apos;%1&apos;, count: %2</source>
-        <translation>Ожидание ресурса &quot;%1&quot;, требуется: %2</translation>
+        <translation type="vanished">Ожидание ресурса &quot;%1&quot;, требуется: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="400"/>
         <source>Not enough resources for the task, resource name: &apos;%1&apos; max: %2%3 requested: %4%5</source>
-        <translation>Не достаточно ресурсов для выполнения задачи: &apos;%1&apos; макс: %2%3	запрошено: %4%5</translation>
+        <translation type="vanished">Не достаточно ресурсов для выполнения задачи: &apos;%1&apos; макс: %2%3	запрошено: %4%5</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="412"/>
         <source>Waiting for resource &apos;%1&apos;, count: %2%3</source>
-        <translation>Ожидание ресурса &quot;%1&quot;, требуется: %2%3</translation>
+        <translation type="vanished">Ожидание ресурса &quot;%1&quot;, требуется: %2%3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="538"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="596"/>
         <source>Registering new task: %1</source>
         <translation>Добавлена задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="669"/>
         <source>Invalid name</source>
-        <translation>Неизвестное состояние</translation>
+        <translation type="vanished">Неизвестное состояние</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="894"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="950"/>
         <source>Deleting task: %1</source>
         <translation>Удаляется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="738"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="794"/>
         <source>Promoting task {%1} to &apos;%2&apos;</source>
         <translation>Задача {%1} %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="124"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="125"/>
         <source>Subtask {%1} is canceled %2</source>
         <translation>Подзадача {%1} отменена %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="392"/>
         <source>No required resources for the task, resource id: &apos;%1&apos;</source>
-        <translation>No required resources for the task, resource id: &apos;%1&apos;</translation>
+        <translation type="vanished">No required resources for the task, resource id: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="393"/>
         <source>Unable to run test because required resource not found</source>
-        <translation>Unable to run test because required resource not found</translation>
+        <translation type="vanished">Unable to run test because required resource not found</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="599"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="656"/>
         <source>Unregistering task: %1</source>
         <translation>Незарегистрированная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="740"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="796"/>
         <source>Promoting task {%1} to &apos;%2&apos;, error &apos;%3&apos;</source>
         <translation>Задача {%1} %2; ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="750"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="806"/>
         <source>Starting {%1} task</source>
         <translation>Старт задачи {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="778"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="834"/>
         <source>Task {%1} finished with error: %2</source>
         <translation>Задача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="781"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="837"/>
         <source>Task {%1} canceled</source>
         <translation>Отменяется задача {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="784"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="840"/>
         <source>Task {%1} finished</source>
         <translation>Задача {%1} завершена</translation>
     </message>
@@ -450,12 +464,12 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::UnregisterServiceTask</name>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="252"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="255"/>
         <source>Unregister &apos;%1&apos; service</source>
         <translation>Дерегистрация сервиса &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/ServiceRegistryImpl.cpp" line="257"/>
+        <location filename="../src/ServiceRegistryImpl.cpp" line="260"/>
         <source>Service is not registered</source>
         <translation>Сервис не зарегистрирован</translation>
     </message>

@@ -32,8 +32,6 @@ namespace HI {
 
 #ifdef __linux__
 
-QPoint GTMouseDriver::mousePos = QPoint(-1, -1);
-
 #    define DELAY_ON_EVERY_N_PX 16
 /**
  * Returns delay = 1 millisecond for every DELAY_ON_EVERY_N_PX pixel or 0 otherwise.

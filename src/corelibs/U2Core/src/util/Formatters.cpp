@@ -31,4 +31,12 @@ QString DocumentNameByIdFormatter::format(const QString& documentFormatId) const
     return documentFormat == nullptr ? documentFormatId : documentFormat->getFormatName();
 }
 
+DefaultDoubleFormatter::DefaultDoubleFormatter(int _defaultValue, const QString& _defaultText, const QString& _nonDefaultText)
+    : defaultValue(_defaultValue), defaultText(_defaultText), nonDefaultText(_nonDefaultText) {
+}
+
+QString DefaultDoubleFormatter::format(const double& value) const {
+    return value == defaultValue ? defaultText : nonDefaultText;
+}
+
 }  // namespace U2

@@ -53,7 +53,6 @@ ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(CustomScenario* s
       expectAlphabetChanged(_expectAlphabetChanged) {
 }
 
-#define GT_METHOD_NAME "commonScenario"
 void ReplaceSubsequenceDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
@@ -71,7 +70,6 @@ void ReplaceSubsequenceDialogFiller::commonScenario() {
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
 }
 
-#undef GT_METHOD_NAME
 #undef GT_CLASS_NAME
 
 }  // namespace U2

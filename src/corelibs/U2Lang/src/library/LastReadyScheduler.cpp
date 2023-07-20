@@ -112,7 +112,6 @@ Task* LastReadyScheduler::tick() {
             }
         }
     }
-    assert(0);
     return nullptr;
 }
 

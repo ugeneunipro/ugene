@@ -38,7 +38,6 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsMcaEditorReference"
 
-#define GT_METHOD_NAME "clickToPosition"
 void GTUtilsMcaEditorReference::clickToPosition(int position) {
     McaEditorReferenceArea* referenceArea = GTUtilsMcaEditor::getReferenceArea();
     McaEditorWgt* mcaEditorWgt = GTUtilsMcaEditor::getEditorUi();
@@ -53,9 +52,7 @@ void GTUtilsMcaEditorReference::clickToPosition(int position) {
     GTMouseDriver::moveTo(referenceArea->mapToGlobal(positionCenter));
     GTMouseDriver::click();
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "scrollToPosition"
 void GTUtilsMcaEditorReference::scrollToPosition(int position) {
     const int scrollBarValue = GTUtilsMcaEditor::getEditorUi()->getBaseWidthController()->getBaseGlobalRange(position).center() -
                                GTUtilsMcaEditor::getEditorUi()->getSequenceArea()->width() / 2;
@@ -63,7 +60,6 @@ void GTUtilsMcaEditorReference::scrollToPosition(int position) {
     GTScrollBar::moveSliderWithMouseToValue(GTUtilsMcaEditor::getHorizontalScrollBar(),
                                             scrollBarValue);
 }
-#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

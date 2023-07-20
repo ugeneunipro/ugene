@@ -10,13 +10,16 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>600</height>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Find Restriction Sites</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <property name="spacing">
+    <number>12</number>
+   </property>
    <item>
     <widget class="QWidget" name="enzymesSelectorWidget" native="true">
      <property name="sizePolicy">
@@ -33,7 +36,7 @@
       <string>Include only enzymes that cut from 'Minimum Hits' to 'Maximum Hits' times</string>
      </property>
      <property name="title">
-      <string>Filter by number of results:</string>
+      <string>Result count filter</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -113,38 +116,195 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Show only selected suppliers:</string>
+      <string>Enzyme table filter</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="U2::ComboBoxWithCheckBoxes" name="cbSuppliers"/>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Suppliers</string>
+        </property>
+       </widget>
       </item>
-      <item>
+      <item row="0" column="1" colspan="3">
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="U2::ComboBoxWithCheckBoxes" name="cbSuppliers">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QPushButton" name="pbSelectAll">
           <property name="text">
-           <string>Select all</string>
+           <string>All</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pbSelectNone">
           <property name="text">
-           <string>Select none</string>
+           <string>None</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pbInvertSelection">
           <property name="text">
-           <string>Invert selection</string>
+           <string>Invert</string>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Recognition sequence length</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QComboBox" name="cbMinLength">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>to</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cbMaxLength">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="currentText">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="2" colspan="2">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>530</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Overhang type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cbOverhangType"/>
+      </item>
+      <item row="2" column="2" colspan="2">
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>530</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Keep only</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QCheckBox" name="cbShowPalindromic">
+          <property name="toolTip">
+           <string>Forward and reverse-complementary enzyme strands are equal</string>
+          </property>
+          <property name="text">
+           <string>Palindromic</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbShowUninterrupted">
+          <property name="toolTip">
+           <string>No internal N's</string>
+          </property>
+          <property name="text">
+           <string>Uninterrupted</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbShowNondegenerate">
+          <property name="toolTip">
+           <string>No extended DNA alphabet symbols (A, C, G, T and N only)</string>
+          </property>
+          <property name="text">
+           <string>Nondegenerate</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>336</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -152,7 +312,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Search  in:</string>
+      <string>Search region</string>
      </property>
      <layout class="QVBoxLayout" name="searchRegionLayout"/>
     </widget>
