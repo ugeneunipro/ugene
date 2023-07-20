@@ -34,16 +34,15 @@
 namespace U2 {
 
 const QString PhyMLSupportTask::TMP_FILE_NAME("tmp.phy");
-const QString PhyMLSupportTask::RESULT_BOOTSTRAP_EXT("_phyml_boot_trees.txt");
 const QString PhyMLSupportTask::RESULT_TREE_EXT("_phyml_tree.txt");
 
 PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s, const QString& url)
     : Task(tr("Generating input file for PhyML"), TaskFlags_NR_FOSE_COSC),
       ma(ma),
       settings(s),
-      tmpDirUrl(url),
-      saveDocumentTask(nullptr) {
+      tmpDirUrl(url) {
 }
+
 void PhyMLPrepareDataForCalculation::prepare() {
     inputFileForPhyML = tmpDirUrl + '/' + PhyMLSupportTask::TMP_FILE_NAME;
     QVariantMap hints;
@@ -52,6 +51,7 @@ void PhyMLPrepareDataForCalculation::prepare() {
     saveDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveDocumentTask);
 }
+
 QList<Task*> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
 
@@ -129,6 +129,7 @@ QList<Task*> PhyMLSupportTask::onSubTaskFinished(Task* subTask) {
         QStringList arguments;
         arguments << "-i";
         arguments << tmpPhylipFile;
+        arguments << "--r_seed" << "20230719"; // Keep the results stable.
         arguments << "--no_memory_check";
         arguments << settings.extToolArguments;
         phyMlTask = new ExternalToolRunTask(PhyMLSupport::PHYML_ID, arguments, new PhyMLLogParser(this, sequencesNumber));
@@ -155,8 +156,6 @@ void PhyMLSupportTask::onExternalToolFailed(const QString& err) {
 
 PhyMLLogParser::PhyMLLogParser(PhyMLSupportTask* parentTask, int sequencesNumber)
     : parentTask(parentTask),
-      isMCMCRunning(false),
-      curProgress(0),
       processedBranches(0),
       sequencesNumber(sequencesNumber) {
 }
@@ -180,9 +179,11 @@ void PhyMLLogParser::parseOutput(const QString& partOfLog) {
         ioLog.trace(buf);
     }
 }
+
 void PhyMLLogParser::parseErrOutput(const QString& partOfLog) {
     parseOutput(partOfLog);
 }
+
 int PhyMLLogParser::getProgress() {
     SAFE_POINT(sequencesNumber > 0, "UGENE internal error", 0);
     return qMin((processedBranches * 100) / sequencesNumber, 99);
@@ -209,6 +210,7 @@ void PhyMLGetCalculatedTreeTask::prepare() {
     loadTmpDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(loadTmpDocumentTask);
 }
+
 QList<Task*> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
 
@@ -223,7 +225,7 @@ QList<Task*> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task* subTask) {
         Document* doc = loadTmpDocumentTask->getDocument();
         SAFE_POINT(doc != nullptr, "Failed loading result document", res);
 
-        if (doc->getObjects().size() == 0) {
+        if (doc->getObjects().empty()) {
             setError(tr("No trees are found"));
             return res;
         }
