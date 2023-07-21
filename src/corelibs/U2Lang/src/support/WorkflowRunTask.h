@@ -52,7 +52,7 @@ class U2LANG_EXPORT WorkflowAbstractIterationRunner : public Task {
     Q_OBJECT
 public:
     WorkflowAbstractIterationRunner(const QString& name, TaskFlags flags);
-    virtual ~WorkflowAbstractIterationRunner() {
+    ~WorkflowAbstractIterationRunner() override {
     }
     virtual WorkerState getState(const ActorId& actor) = 0;
     virtual int getMsgNum(const Link* l) = 0;
@@ -70,14 +70,14 @@ class U2LANG_EXPORT WorkflowRunTask : public WorkflowAbstractRunner {
     Q_OBJECT
 public:
     WorkflowRunTask(const Schema&, const ActorMap& rmap = ActorMap(), WorkflowDebugStatus* debugInfo = nullptr);
-    virtual QList<WorkerState> getState(Actor*);
-    virtual int getMsgNum(const Link*);
-    virtual int getMsgPassed(const Link*);
+    QList<WorkerState> getState(Actor*) override;
+    int getMsgNum(const Link*) override;
+    int getMsgPassed(const Link*) override;
 
 private:
-    QString generateReport() const;
+    QString generateReport() const override;
     // CmdlineTask
-    QString getTaskError() const;
+    QString getTaskError() const override;
 
 signals:
     void si_ticked();
@@ -92,14 +92,14 @@ class WorkflowIterationRunTask : public WorkflowAbstractIterationRunner {
     Q_OBJECT
 public:
     WorkflowIterationRunTask(const Schema&, WorkflowDebugStatus* initDebugInfo);
-    ~WorkflowIterationRunTask();
-    virtual void prepare();
-    virtual ReportResult report();
+    ~WorkflowIterationRunTask() override;
+    void prepare() override;
+    ReportResult report() override;
 
-    virtual WorkerState getState(const ActorId& actor);
-    virtual int getMsgNum(const Link* l);
-    virtual int getMsgPassed(const Link* l);
-    virtual int getDataProduced(const ActorId& actor);
+    WorkerState getState(const ActorId& actor) override;
+    int getMsgNum(const Link* l) override;
+    int getMsgPassed(const Link* l) override;
+    int getDataProduced(const ActorId& actor) override;
 
     WorkflowMonitor* getMonitor() const;
 
@@ -107,7 +107,7 @@ signals:
     void si_ticked();
 
 protected:
-    virtual QList<Task*> onSubTaskFinished(Task* subTask);
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
 
 private slots:
     void sl_pauseStateChanged(bool isPaused);
@@ -121,15 +121,15 @@ private:
 
     QList<CommunicationChannel*> getActorLinks(const QString& actor);
 
-    WorkflowContext* context;
-    Schema* schema;
-    Scheduler* scheduler;
+    WorkflowContext* context = nullptr;
+    Schema* schema = nullptr;
+    Scheduler* scheduler = nullptr;
     QMap<ActorId, ActorId> rmap;
     QMap<QString, CommunicationChannel*> lmap;
 
-    WorkflowDebugStatus* debugInfo;
-    bool nextTickRestoring;
-    bool contextInitialized;
+    WorkflowDebugStatus* debugInfo = nullptr;
+    bool nextTickRestoring = false;
+    bool contextInitialized = false;
 };
 
 }  // namespace U2
