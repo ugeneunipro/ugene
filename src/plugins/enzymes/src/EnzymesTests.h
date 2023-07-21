@@ -48,6 +48,8 @@ class GTest_FindEnzymes : public XmlTest {
     void cleanup();
 
 private:
+    bool hasUnexpectedError() const;
+
     int minHits;
     int maxHits;
     QString enzymesUrl;
@@ -56,6 +58,8 @@ private:
     U2SequenceObject* seqObj;
     QVector<U2Region> excludedRegions;
     QStringList enzymeNames;
+    // Text the task should fail with
+    QString expectedError;
     AnnotationTableObject* aObj;
     LoadEnzymeFileTask* loadTask;
     bool contextIsAdded;

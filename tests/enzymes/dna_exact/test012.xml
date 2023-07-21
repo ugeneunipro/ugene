@@ -1,0 +1,10 @@
+<multi-test>
+
+    <load-document index="doc" url="enzymes/7907_2.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="123" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/2023_02_25.bairoch.gz" sequence="seq" enzymes="AbaSI"
+                  result="AbaSI:10..10" />
+
+</multi-test>
