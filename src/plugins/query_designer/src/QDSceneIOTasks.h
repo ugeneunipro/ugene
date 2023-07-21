@@ -120,7 +120,7 @@ public:
                                         const QMap<QDElementStatement*, QDActor*>& stmt2unit,
                                         const QList<QDDocument*>& docs);
 
-    static QDSchemeUnit* findSchemeUnit(const QString& id, QDDocument* doc, const QMap<QDElementStatement*, QDActor*> stmt2actor, const QList<QDDocument*>& docs);
+    static QDSchemeUnit* findSchemeUnit(const QString& id, QDDocument* doc, const QMap<QDElementStatement*, QDActor*>& stmt2actor, const QList<QDDocument*>& docs);
 
     static void saveGroups(QDScheme* scheme, QDDocument* doc);
 

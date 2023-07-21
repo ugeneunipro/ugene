@@ -22,7 +22,6 @@
 #include "LastReadyScheduler.h"
 
 #include <U2Core/TaskSignalMapper.h>
-#include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ElapsedTimeUpdater.h>
@@ -43,7 +42,7 @@ LastReadyScheduler::~LastReadyScheduler() {
 
 void LastReadyScheduler::init() {
     foreach (Actor* a, schema->getProcesses()) {
-        BaseWorker* w = a->castPeer<BaseWorker>();
+        auto w = a->castPeer<BaseWorker>();
         QList<IntegralBus*> portBuses = w->getPorts().values();
         for (IntegralBus* bus : qAsConst(portBuses)) {
             bus->setWorkflowContext(context);
@@ -98,12 +97,12 @@ inline void LastReadyScheduler::measuredTick() {
 
 Task* LastReadyScheduler::tick() {
     for (int vertexLabel = 0; vertexLabel < topologicSortedGraph.size(); vertexLabel++) {
-        foreach (Actor* a, topologicSortedGraph.value(vertexLabel)) {
-            if (a->castPeer<BaseWorker>()->isReady()) {
-                if (requestedActorForNextTick.isEmpty() || a->getId() == requestedActorForNextTick) {
-                    lastWorker = a->castPeer<BaseWorker>();
+        foreach (Actor* actor, topologicSortedGraph.value(vertexLabel)) {
+            if (actor->castPeer<BaseWorker>()->isReady()) {
+                if (requestedActorForNextTick.isEmpty() || actor->getId() == requestedActorForNextTick) {
+                    lastWorker = actor->castPeer<BaseWorker>();
                     measuredTick();
-                    debugInfo->checkActorForBreakpoint(a);
+                    debugInfo->checkActorForBreakpoint(actor);
                     if (!requestedActorForNextTick.isEmpty()) {
                         requestedActorForNextTick = ActorId();
                     }
@@ -138,7 +137,7 @@ void LastReadyScheduler::cleanup() {
 }
 
 WorkerState LastReadyScheduler::getWorkerState(const Actor* a) {
-    BaseWorker* w = a->castPeer<BaseWorker>();
+    auto w = a->castPeer<BaseWorker>();
     if (lastWorker == w) {
         Task* t = lastTask;
         if (w->isDone() && t && t->isFinished()) {
@@ -160,7 +159,7 @@ WorkerState LastReadyScheduler::getWorkerState(const ActorId& id) {
         return getWorkerState(actor1);
     }
     QList<Actor*> actors = schema->actorsByOwnerId(id);
-    assert(actors.size() > 0);
+    assert(!actors.empty());
 
     bool someWaiting = false;
     bool someDone = false;

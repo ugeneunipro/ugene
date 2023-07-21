@@ -3318,7 +3318,7 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     GTUtilsWorkflowDesigner::click("Read Assembly (BAM/SAM)");
     GTUtilsDialog::waitForDialog(new DatasetNameEditDialogFiller("NewSet"));
     GTUtilsDialog::waitForDialog(new PopupChooser({"rename_dataset_action"}));
-    QTabBar* barWidget = GTWidget::findWidgetByType<QTabBar*>(GTUtilsWorkflowDesigner::getDatasetsListWidget(), "Can't find QTabBar widget");
+    auto barWidget = GTWidget::findWidgetByType<QTabBar*>(GTUtilsWorkflowDesigner::getDatasetsListWidget(), "Can't find QTabBar widget");
     GTWidget::click(barWidget->tabButton(0, QTabBar::RightSide), Qt::RightButton);
 
     GTUtilsWorkflowDesigner::click("Read Sequence");
@@ -3751,7 +3751,7 @@ GUI_TEST_CLASS_DEFINITION(test_7701) {
 
 GUI_TEST_CLASS_DEFINITION(test_7708) {
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708", "7708.uwl");
+    GTFileDialog::openFile(testDir + "_common_data/scenarios/_regression/7708/7708.uwl");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsWorkflowDesigner::addInputFile("Read Sequence", dataDir + "samples/FASTA/human_T1.fa");

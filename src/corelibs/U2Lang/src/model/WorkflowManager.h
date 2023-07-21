@@ -50,11 +50,7 @@ namespace Workflow {
  */
 class U2LANG_EXPORT Worker {
 public:
-    Worker()
-        : context(nullptr) {
-    }
-    virtual ~Worker() {
-    }
+    virtual ~Worker() = default;
 
     // initialize input and output ports
     virtual void init() = 0;
@@ -74,7 +70,7 @@ public:
     }
 
 protected:
-    WorkflowContext* context;
+    WorkflowContext* context = nullptr;
 
 };  // Worker
 

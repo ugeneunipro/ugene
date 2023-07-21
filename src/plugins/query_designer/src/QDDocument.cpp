@@ -39,9 +39,6 @@ static const QString BLOCK_END = "}";
 static const QString META_KEYWORD = ".meta";
 static const QString VISUAL_KEYWORD = "visual";
 
-QDDocStatement::~QDDocStatement() {
-}
-
 QString QDDocStatement::getAttribute(const QString& name) const {
     foreach (const StringAttribute& attr, attributes) {
         if (attr.first == name) {
