@@ -127,11 +127,11 @@ QString WorkflowRunTask::generateReport() const {
             for (const QString& taskName : qAsConst(taskNames)) {
                 foreach (const QString& taskReport, tasksReports.values(taskName)) {
                     if (!taskReport.isEmpty()) {
-                        workerReport += QString("<div class=\"task\" id=\"%1\">%2</div>").arg(taskName).arg(QString(taskReport.toUtf8().toBase64()));
+                        workerReport += QString(R"(<div class="task" id="%1">%2</div>)").arg(taskName).arg(QString(taskReport.toUtf8().toBase64()));
                     }
                 }
             }
-            report += QString("<div class=\"worker\" id=\"%1\">%2</div>").arg(worker).arg(workerReport);
+            report += QString(R"(<div class="worker" id="%1">%2</div>)").arg(worker).arg(workerReport);
         }
     }
     return report;
@@ -163,8 +163,7 @@ WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema& sh,
                                                    WorkflowDebugStatus* initDebugInfo)
     : WorkflowAbstractIterationRunner(tr("Workflow run"),
                                       (getAdditionalFlags() | TaskFlag_CancelOnSubtaskCancel | TaskFlag_FailOnSubtaskError)),
-      context(nullptr), schema(new Schema()), scheduler(nullptr), debugInfo(initDebugInfo),
-      nextTickRestoring(false), contextInitialized(false) {
+      schema(new Schema()), debugInfo(initDebugInfo) {
     rmap = HRSchemaSerializer::deepCopy(sh, schema, stateInfo);
     SAFE_POINT_OP(stateInfo, );
 
@@ -185,10 +184,10 @@ WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema& sh,
     connect(debugInfo, SIGNAL(si_busCountOfMessagesIsRequested(const Workflow::Link*)), SLOT(sl_busCountOfMessagesRequested(const Workflow::Link*)));
     connect(debugInfo, SIGNAL(si_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)), SLOT(sl_convertMessages2Documents(const Workflow::Link*, const QString&, int, const QString&)));
 
-    WorkflowMonitor* m = new WorkflowMonitor(this, schema);
+    auto m = new WorkflowMonitor(this, schema);
     context = new WorkflowContext(schema->getProcesses(), m);
 
-    QTimer* timer = new QTimer(this);
+    auto timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), SIGNAL(si_updateProducers()));
     timer->start(UPDATE_PROGRESS_INTERVAL);
 }
@@ -324,7 +323,7 @@ Task::ReportResult WorkflowIterationRunTask::report() {
     // add unregistered output files
     qint64 startTimeSec = getTimeInfo().startTime / 1000000;
     foreach (Actor* a, schema->getProcesses()) {
-        LocalWorkflow::BaseWorker* bw = a->castPeer<LocalWorkflow::BaseWorker>();
+        auto bw = a->castPeer<LocalWorkflow::BaseWorker>();
         QStringList urls = bw->getOutputFiles();
         for (const QString& url : qAsConst(urls)) {
             QString absUrl = context->absolutePath(url);

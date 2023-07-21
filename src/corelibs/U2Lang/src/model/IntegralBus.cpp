@@ -272,7 +272,7 @@ Message IntegralBus::get() {
         QVariantMap data = message.getData().toMap();
         result.unite(data);
 
-        if (1 == outerChannels.size()) {
+        if (outerChannels.size() == 1) {
             metadataId = message.getMetadataId();
         } else {
             // Actually there is always 1 item in the list because only one connection for one input port is allowed.

@@ -154,9 +154,15 @@ void QDWorker::init() {
 }
 
 Task* QDWorker::tick() {
+    if (!input->hasMessage()) {
+        if (input->isEnded()) {
+            setDone();
+            output->setEnded();
+        }
+        return nullptr;
+    }
+    Message inputMessage = getMessageAndSetupScriptValues(input);
     QString schemaUri = actor->getParameter(SCHEMA_ATTR)->getAttributePureValue().toString();
-    QDDocument doc;
-
     QFileInfo schemeFi(schemaUri);
     if (!schemeFi.exists()) {
         QString defaultDir = QDir::searchPaths(PATH_PREFIX_DATA).first() + QUERY_SAMPLES_PATH;
@@ -170,71 +176,54 @@ Task* QDWorker::tick() {
         }
     }
 
-    QFile f(schemaUri);
-    if (!f.open(QIODevice::ReadOnly)) {
+    QFile qdSchemaFile(schemaUri);
+    if (!qdSchemaFile.open(QIODevice::ReadOnly)) {
         return new FailTask(L10N::errorOpeningFileRead(schemaUri));
     }
-    QByteArray data = f.readAll();
-    QString content = QString::fromUtf8(data);
-    f.close();
+    QByteArray qdSchemaData = qdSchemaFile.readAll();
+    QString qdSchemaText = QString::fromUtf8(qdSchemaData);
+    qdSchemaFile.close();
 
-    bool res = doc.setContent(content);
-    if (!res) {
-        return nullptr;
-    }
+    QDDocument doc;
+    bool res = doc.setContent(qdSchemaText);
+    CHECK(res, new FailTask(tr("Failed to parse QueryDesigner schema from %1").arg(schemaUri)));
 
     scheme = new QDScheme();
 
-    QList<QDDocument*> docs;
-    docs << &doc;
-    bool ok = QDSceneSerializer::doc2scheme(docs, scheme);
-    if (!ok) {
+    QList<QDDocument*> docs = {&doc};
+    res = QDSceneSerializer::doc2scheme(docs, scheme);
+    CHECK(res, new FailTask(tr("Failed to convert QueryDesigner documents from %1").arg(schemaUri)));
+    CHECK(!scheme->isEmpty(), new FailTask(tr("QueryDesigner is empty: %1").arg(schemaUri)));
+
+    QVariantMap map = inputMessage.getData().toMap();
+    SharedDbiDataHandler seqId = map.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
+    QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
+    if (seqObj.isNull()) {
         return nullptr;
     }
-    if (scheme->getActors().isEmpty()) {
-        return new FailTask(tr("Failed to read QueryDesigner schema from %1").arg(schemaUri));
+    U2OpStatusImpl os;
+    DNASequence seq = seqObj->getWholeSequence(os);
+    CHECK_OP(os, new FailTask(os.getError()));
+
+    QDRunSettings settings;
+    settings.annotationsObj = new AnnotationTableObject(GObjectTypes::getTypeInfo(GObjectTypes::ANNOTATION_TABLE).name,
+                                                        context->getDataStorage()->getDbiRef());
+    settings.scheme = scheme;
+    settings.dnaSequence = seq;
+    settings.region = U2Region(0, seq.length());
+    scheme->setSequence(settings.dnaSequence);
+    scheme->setEntityRef(seqObj->getSequenceRef());
+    bool outputType = actor->getParameter(OUTPUT_ATTR)->getAttributeValueWithoutScript<bool>();
+    if (outputType) {
+        settings.outputType = QDRunSettings::Single;
+        settings.offset = actor->getParameter(OFFSET_ATTR)->getAttributeValueWithoutScript<int>();
+    } else {
+        settings.outputType = QDRunSettings::Group;
     }
 
-    if (input->hasMessage()) {
-        Message inputMessage = getMessageAndSetupScriptValues(input);
-        if (inputMessage.isEmpty()) {
-            output->transit();
-            return nullptr;
-        }
-        QVariantMap map = inputMessage.getData().toMap();
-        SharedDbiDataHandler seqId = map.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
-        QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (seqObj.isNull()) {
-            return nullptr;
-        }
-        U2OpStatusImpl os;
-        DNASequence seq = seqObj->getWholeSequence(os);
-        CHECK_OP(os, new FailTask(os.getError()));
-
-        QDRunSettings settings;
-        settings.annotationsObj = new AnnotationTableObject(GObjectTypes::getTypeInfo(GObjectTypes::ANNOTATION_TABLE).name,
-                                                            context->getDataStorage()->getDbiRef());
-        settings.scheme = scheme;
-        settings.dnaSequence = seq;
-        settings.region = U2Region(0, seq.length());
-        scheme->setSequence(settings.dnaSequence);
-        scheme->setEntityRef(seqObj->getSequenceRef());
-        bool outputType = actor->getParameter(OUTPUT_ATTR)->getAttributeValueWithoutScript<bool>();
-        if (outputType) {
-            settings.outputType = QDRunSettings::Single;
-            settings.offset = actor->getParameter(OFFSET_ATTR)->getAttributeValueWithoutScript<int>();
-        } else {
-            settings.outputType = QDRunSettings::Group;
-        }
-
-        QDScheduler* scheduler = new QDScheduler(settings);
-        connect(new TaskSignalMapper(scheduler), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
-        return scheduler;
-    } else if (input->isEnded()) {
-        setDone();
-        output->setEnded();
-    }
-    return nullptr;
+    auto scheduler = new QDScheduler(settings);
+    connect(new TaskSignalMapper(scheduler), SIGNAL(si_taskFinished(Task*)), SLOT(sl_taskFinished(Task*)));
+    return scheduler;
 }
 
 void QDWorker::cleanup() {
