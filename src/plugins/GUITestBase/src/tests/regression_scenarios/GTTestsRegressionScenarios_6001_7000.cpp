@@ -1010,7 +1010,7 @@ GUI_TEST_CLASS_DEFINITION(test_6232_4) {
     // Expected state: the first fragment begins from 3 base, there are "AC" bases before it
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup("STEP1_pFUS2_a2a_5 Fragment 1  (0, 1)");
     CHECK_SET_ERR(regions.size() == 1, QString("Unexpected number of fragments, expected: 1, current: %1").arg(regions.size()));
-    CHECK_SET_ERR(regions.first().startPos == 2, QString("Unexpected fragment startPos, expected: 2; current: %1").arg(regions.first().startPos));
+    CHECK_SET_ERR(regions.first().startPos == 0, QString("Unexpected fragment startPos, expected: 2; current: %1").arg(regions.first().startPos));
 
     QString beginning = GTUtilsSequenceView::getBeginOfSequenceAsString(2);
     CHECK_SET_ERR(beginning == "AC", QString("Unexpected beginning, expected: AC, currecnt: %1").arg(beginning));

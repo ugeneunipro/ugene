@@ -69,14 +69,14 @@ public:
             }
         }
         if (leadingNsNumber != 0) {
-            enzymeSequence.insert(0, QString(leadingNsNumber, EnzymeData::UNDEFINED_BASE));
+            enzymeSequence.insert(0, QByteArray(leadingNsNumber, EnzymeData::UNDEFINED_BASE));
         }
         if (trailingNsNumber != 0) {
-            enzymeSequence.append(QString(trailingNsNumber, EnzymeData::UNDEFINED_BASE));
+            enzymeSequence.append(QByteArray(trailingNsNumber, EnzymeData::UNDEFINED_BASE));
         }
 
         // look for results in direct strand
-        run(sequence, region, enzyme, enzymeSequence, U2Strand::Direct, resultListener, stateInfo, resultPosShift);
+        run(sequence, region, enzyme, enzymeSequence, leadingNsNumber, U2Strand::Direct, resultListener, stateInfo, resultPosShift);
         CHECK_OP(stateInfo, );
 
         // if enzyme is not symmetric - look in complementary strand too
@@ -90,10 +90,10 @@ public:
         if (revCompl == enzymeSequence) {
             return;
         }
-        run(sequence, region, enzyme, revCompl, U2Strand::Complementary, resultListener, stateInfo, resultPosShift);
+        run(sequence, region, enzyme, revCompl, trailingNsNumber, U2Strand::Complementary, resultListener, stateInfo, resultPosShift);
     }
 
-    void run(const DNASequence& sequence, const U2Region& region, const SEnzymeData& enzyme, const QByteArray& byteArrayPattern, U2Strand stand, FindEnzymesAlgListener* resultListener, TaskStateInfo& ti, int resultPosShift = 0) {
+    void run(const DNASequence& sequence, const U2Region& region, const SEnzymeData& enzyme, const QByteArray& byteArrayPattern, int leftShift, U2Strand stand, FindEnzymesAlgListener* resultListener, TaskStateInfo& ti, int resultPosShift = 0) {
         const char* pattern = byteArrayPattern.constData();
         CompareFN fn(sequence.alphabet, enzyme->alphabet);
         const char* seq = sequence.constData();
@@ -102,7 +102,7 @@ public:
         for (int pos = region.startPos, endPos = region.endPos() - plen + 1; pos < endPos; pos++) {
             bool match = matchSite(seq + pos, pattern, plen, unknownChar, fn);
             if (match) {
-                resultListener->onResult(resultPosShift + pos, enzyme, stand);
+                resultListener->onResult(resultPosShift + pos + leftShift, enzyme, stand);
             }
             CHECK_OP(ti, );
         }
@@ -117,7 +117,7 @@ public:
                 for (int s = 0; s < size; s++) {
                     bool match = matchSite(buf.constData() + s, pattern, plen, unknownChar, fn);
                     if (match) {
-                        resultListener->onResult(resultPosShift + s + startPos, enzyme, stand);
+                        resultListener->onResult(resultPosShift + s + startPos + leftShift, enzyme, stand);
                     }
                     CHECK_OP(ti, );
                 }
