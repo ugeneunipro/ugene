@@ -4735,37 +4735,37 @@ GUI_TEST_CLASS_DEFINITION(test_7866) {
     public:
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            QPoint pointToResetTooltip = dialog->rect().topLeft();
-            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget("buttonBox", dialog));
+            QPoint pointToResetTooltip = dialog->mapToGlobal(dialog->rect().topLeft());
+            QDialogButtonBox* box = GTUtilsDialog::buttonBox(dialog);
             QPushButton* okButton = box->button(QDialogButtonBox::Ok);
 
-            auto databasePathLineEdit = GTWidget::findLineEdit("databasePathLineEdit");
+            auto databasePathLineEdit = GTWidget::findLineEdit("databasePathLineEdit", dialog);
             GTLineEdit::setText(databasePathLineEdit, "ee");
-            auto baseNameLineEdit = GTWidget::findLineEdit("baseNameLineEdit");
+            auto baseNameLineEdit = GTWidget::findLineEdit("baseNameLineEdit", dialog);
             GTLineEdit::setText(baseNameLineEdit, "ee");
-            CHECK_SET_ERR(okButton->isEnabled(), "Search button should be enabled");
+            CHECK_SET_ERR(okButton->isEnabled(), "1. Search button should be enabled");
 
             GTLineEdit::setText(databasePathLineEdit, "飛艇", false, true);
             GTMouseDriver::moveTo(pointToResetTooltip);
             GTMouseDriver::moveTo(GTWidget::getWidgetCenter(databasePathLineEdit));
-            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database path contains spaces or/and non-Latin characters.", "Expected tooltip not found.");
-            CHECK_SET_ERR(!okButton->isEnabled(), "Search button should be disabled");
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database path contains spaces or/and non-Latin characters.", "1. Expected tooltip not found.");
+            CHECK_SET_ERR(!okButton->isEnabled(), "2. Search button should be disabled");
 
             GTLineEdit::setText(databasePathLineEdit, "TT");
             GTMouseDriver::moveTo(pointToResetTooltip);
-            CHECK_SET_ERR(GTUtilsToolTip::getToolTip().isEmpty(), "Tooltip should be empty");
-            CHECK_SET_ERR(okButton->isEnabled(), "Search button should be enabled");
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip().isEmpty(), "1. Tooltip should be empty");
+            CHECK_SET_ERR(okButton->isEnabled(), "3. Search button should be enabled");
 
             GTLineEdit::setText(baseNameLineEdit, "AAюЯOПA", false, true);
             GTMouseDriver::moveTo(pointToResetTooltip);
             GTMouseDriver::moveTo(GTWidget::getWidgetCenter(baseNameLineEdit));
-            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database name contains spaces or/and non-Latin characters.", "Expected tooltip not found.");
-            CHECK_SET_ERR(!okButton->isEnabled(), "Search button should be disabled");
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip() == "Database name contains spaces or/and non-Latin characters.", "2. Expected tooltip not found.");
+            CHECK_SET_ERR(!okButton->isEnabled(), "4. Search button should be disabled");
 
             GTLineEdit::setText(baseNameLineEdit, "zz");
             GTMouseDriver::moveTo(pointToResetTooltip);
-            CHECK_SET_ERR(GTUtilsToolTip::getToolTip().isEmpty(), "Tooltip should be empty");
-            CHECK_SET_ERR(okButton->isEnabled(), "Search button should be enabled");
+            CHECK_SET_ERR(GTUtilsToolTip::getToolTip().isEmpty(), "2. Tooltip should be empty");
+            CHECK_SET_ERR(okButton->isEnabled(), "5. Search button should be enabled");
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
         }
