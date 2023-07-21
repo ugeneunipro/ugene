@@ -110,9 +110,47 @@ protected:
 
     void drawBoundedText(QPainter& p, const QRect& r, const QString& text);
 
+    /**
+     * Calculates cut's position in sequence.
+     *
+     * \param r Annotation region.
+     * \param cutQual Annotation qualifier, which contains information about this cut.
+     * \param isAnnotationDirect Annotation is located on direct strand if true, false otherwise.
+     * \param isCutDirect Cut is located on direct strand if true, false otherwise.
+     * \return Returns base number this cut is located after.
+     */
+    int getCutPosition(const U2Region& r, const QString& cutQual, bool isAnnotationDirect, bool isCutDirect) const;
+
+    /**
+     * Calculates position of annotation rect on visible part of details view.
+     *
+     * \param reg Annotation region.
+     * \param canvasSize Size of the whole details view part, where all annotations are drawn.
+     * \param visibleRange Sequence visible range.
+     * \param selected True if annotation is selected, false otherwise.
+     * \param a, Annotation object.
+     * \param as AnnotationSettings object.
+     * \return Returns rect, which contains posistions of annotation on details view.
+     */
+    QRect getAnnotationRect(const U2Region& reg, const QSize& canvasSize, const U2Region& visibleRange, bool selected, Annotation* a, const AnnotationSettings* as) const;
+
     void drawAnnotationConnections(QPainter& p, Annotation* a, const AnnotationSettings* as, const AnnotationDisplaySettings& drawSettings, const QSize& canvasSize, const U2Region& visibleRange);
 
-    void drawCutSite(QPainter& p, const SharedAnnotationData& aData, const U2Region& r, const QRect& annotationRect, const QColor& color, const QSize& canvasSize, const U2Region& visibleRange);
+    /**
+     * Calculates restriction cuts positions depends on annotation strand.
+     * Draws cuts.
+     *
+     * \param p An object, which draws restriction cuts.
+     * \param aData Information about annotation, which contains restriction cuts.
+     * \param cutPos Position of cut site.
+     * \param annotationRect Rect, which performs annotation positions.
+     * \param color Color of restriction cuts.
+     * \param canvasSize Size of the whole details view part, where all annotations are drawn.
+     * \param visibleRange Sequence visible range.
+     * \param isDirectCut Cut site is located on direct strand if true, false otherwise.
+     */
+    void drawCutSite(QPainter& p, const SharedAnnotationData& aData, int cutPos, const QRect& annotationRect, const QColor& color, const QSize& canvasSize, const U2Region& visibleRange, bool isDirectCut);
+
     void drawCutSite(QPainter& p, const CutSiteDrawData& cData, const QSize& canvasSize, const U2Region& visibleRange);
 
     QString prepareAnnotationText(const SharedAnnotationData& a, const AnnotationSettings* as) const;
@@ -135,6 +173,8 @@ protected:
     static const int CUT_SITE_HALF_HEIGHT;
 
     static const int MAX_VIRTUAL_RANGE;
+
+    static constexpr int INCORRECT_CUT_POSITION = -1;
 };
 
 }  // namespace U2
