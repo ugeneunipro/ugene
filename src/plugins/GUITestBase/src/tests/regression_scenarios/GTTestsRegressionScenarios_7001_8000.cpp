@@ -2714,7 +2714,7 @@ GUI_TEST_CLASS_DEFINITION(test_7558) {
     GTLogTracer lt;
     GTUtilsProjectTreeView::filterProject("NCBI");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Expected no errors in the log.");
+    lt.assertNoErrors();
 
     GTUtilsProjectTreeView::filterProject("frame");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2722,7 +2722,7 @@ GUI_TEST_CLASS_DEFINITION(test_7558) {
     
     GTUtilsProjectTreeView::filterProject("zzzz");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsProjectTreeView::checkFilteredResultsIsEmpty();
+    GTUtilsProjectTreeView::checkFilteredResultIsEmpty();
 
     GTUtilsProjectTreeView::filterProject("29837500");
     GTUtilsTaskTreeView::waitTaskFinished();
