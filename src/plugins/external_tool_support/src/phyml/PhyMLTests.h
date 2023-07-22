@@ -41,8 +41,8 @@ class GTest_PhyML : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PhyML, "test-PHYML");
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
 
 private:
     QString inputDocCtxName;

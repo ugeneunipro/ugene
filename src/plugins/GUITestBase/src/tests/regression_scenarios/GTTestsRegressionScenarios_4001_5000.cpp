@@ -396,7 +396,7 @@ GUI_TEST_CLASS_DEFINITION(test_4034) {
     // There are two check boxes for switching the location type. Usually, when you choose between several actions (switch them), GUI shows you radio buttons, not check boxes.
     // Check boxes are used to switch on/off an option but not to choose between options. In this dialog, you even can't switch off the check box when you click it.
     // It is a wrong behavior for this graphic primitive
-    // Solution: replace the check boxes with radio buttons.
+    // Solution: replace the checkboxes with radio buttons.
 
     GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -423,9 +423,13 @@ GUI_TEST_CLASS_DEFINITION(test_4035) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QList<double> distances = GTUtilsPhyTree::getDistancesValues();
-    QList<double> expectedDistances = {0.456, 0.008, 0.227, 0.769, 1.186, 0.277, 0, 0.539, 100};  // Some values from the file.
+    QStringList distancesStrings;
+    for (double d : qAsConst(distances)) {
+        distancesStrings << QString::number(d);
+    }
+    QList<double> expectedDistances = {0.435, 0.063, 0.569, 55.119, 0.049, 0.403, 0.085, 0.127, 0.084, 0.64};  // Some rounded values from the file.
     for (double expectedDistance : qAsConst(expectedDistances)) {
-        CHECK_SET_ERR(distances.contains(expectedDistance), QString("Distances not found: %1").arg(expectedDistance));
+        CHECK_SET_ERR(distances.contains(expectedDistance), QString("Distances not found: %1, got: %2").arg(expectedDistance).arg(distancesStrings.join(",")));
     }
 }
 
@@ -434,7 +438,7 @@ GUI_TEST_CLASS_DEFINITION(test_4036) {
     //     2. MSA sequence area context menu -> Edit -> Remove columns of gaps.
     //     3. Choose "Remove all gap-only columns".
     //     4. Click "Remove".
-    //     UGENE 1.16-dev: it take ~15 minutes to remove gaps.
+    //     UGENE 1.16-dev: it takes ~15 minutes to remove gaps.
     //     UGENE 1.15.1: it takes ~5 seconds to remove gaps.
 
     GTFileDialog::openFile(testDir + "_common_data/clustal/", "gap_column.aln");

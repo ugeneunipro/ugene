@@ -46,7 +46,7 @@ PhyMLSupport::PhyMLSupport()
     validationArguments << "--help";
     validationMessageRegExp = "PhyML";
     description = tr("<i>PhyML</i> is a simple, fast, and accurate algorithm to estimate large phylogenies by maximum likelihood");
-    versionRegExp = QRegExp("- PhyML (\\d+)");
+    versionRegExp = QRegExp("- PhyML (\\d+(\\.\\d+)*)");
     toolKitName = "PhyML";
 
     // register the method
@@ -69,39 +69,42 @@ CreatePhyTreeWidget* PhyMLAdapter::createPhyTreeSettingsWidget(const MultipleSeq
 // PhyMLModelTypes
 
 // Amino-acid substitution models
-const QStringList PhyMLModelTypes::aminoSubstitutionModels(QStringList()
-                                                           << "LG"
-                                                           << "WAG"
-                                                           << "JTT"
-                                                           << "MtREV"
-                                                           << "Dayhoff"
-                                                           << "DCMut"
-                                                           << "RtREV"
-                                                           << "CpREV"
-                                                           << "VT"
-                                                           << "Blosum62"
-                                                           << "MtMam"
-                                                           << "MtArt"
-                                                           << "HIVw"
-                                                           << "HIVb");
+const QStringList PhyMLModelTypes::aminoSubstitutionModels = {
+    "LG",
+    "WAG",
+    "JTT",
+    "MtREV",
+    "Dayhoff",
+    "DCMut",
+    "RtREV",
+    "CpREV",
+    "VT",
+    "AB",
+    "Blosum62",
+    "MtMam",
+    "MtArt",
+    "HIVw",
+    "HIVb",
+};
 
 // Dna substitution models
-const QStringList PhyMLModelTypes::dnaSubstitutionModels(QStringList()
-                                                         << "HKY85"
-                                                         << "JC69"
-                                                         << "K80"
-                                                         << "F81"
-                                                         << "F84"
-                                                         << "TN93"
-                                                         << "GTR");
+const QStringList PhyMLModelTypes::dnaSubstitutionModels = {
+    "HKY85",
+    "JC69",
+    "K80",
+    "F81",
+    "F84",
+    "TN93",
+    "GTR",
+};
 
-const QStringList PhyMLModelTypes::dnaModelsWithFixedTtRatio(QStringList()
-                                                             << "GTR"
-                                                             << "F81"
-                                                             << "JC69");
+const QStringList PhyMLModelTypes::dnaModelsWithFixedTtRatio = {
+    "GTR",
+    "F81",
+    "JC69",
+};
 
-const QStringList PhyMLModelTypes::dnaModelsWithEstimatedTtRatio(QStringList()
-                                                                 << "TN93");
+const QStringList PhyMLModelTypes::dnaModelsWithEstimatedTtRatio({"TN93"});
 
 SubstModelTrRatioType PhyMLModelTypes::getTtRatioType(const QString& modelName) {
     if (dnaSubstitutionModels.contains(modelName)) {
@@ -119,18 +122,26 @@ SubstModelTrRatioType PhyMLModelTypes::getTtRatioType(const QString& modelName) 
 ////////////////////////////////////////
 // PhyMLRatioTestsTypes
 
-const QStringList PhyMLRatioTestsTypes::ratioTestsTypes = {"aLRT", "Chi2-based", "SH-like", "Bayes branch"};
+const QStringList PhyMLRatioTestsTypes::ratioTestsTypes = {
+    "aLRT",
+    "Chi2-based",
+    "SH-like",
+    "Bayes branch",
+};
+
 const int PhyMLRatioTestsTypes::defaultRatioTestsTypeIndex = 2;  // SH-like;
 
 ////////////////////////////////////////
 // TreeSearchingParams
-const QStringList TreeSearchingParams::inputTreeTypes(QStringList()
-                                                      << "Make initial tree automatically (BioNJ)"
-                                                      << "Use tree from file");
+const QStringList TreeSearchingParams::inputTreeTypes = {
+    "Make initial tree automatically (BioNJ)",
+    "Use tree from file",
+};
 
-const QStringList TreeSearchingParams::treeImprovementTypes(QStringList()
-                                                            << "NNI(fast)"
-                                                            << "SRT(a bit slower than NNI)"
-                                                            << "SRT & NNI(best of NNI and SPR search)");
+const QStringList TreeSearchingParams::treeImprovementTypes = {
+    "NNI(fast)",
+    "SRT(a bit slower than NNI)",
+    "SRT & NNI(best of NNI and SPR search)",
+};
 
 }  // namespace U2

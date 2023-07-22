@@ -65,10 +65,10 @@ class PhyMlWidget : public CreatePhyTreeWidget, public Ui_PhyMLDialog {
 public:
     PhyMlWidget(const MultipleSequenceAlignment& ma, QWidget* parent);
 
-    void fillSettings(CreatePhyTreeSettings& settings);
-    void storeSettings();
-    void restoreDefault();
-    bool checkSettings(QString& msg, const CreatePhyTreeSettings& settings);
+    void fillSettings(CreatePhyTreeSettings& settings) override;
+    void storeSettings() override;
+    void restoreDefault() override;
+    bool checkSettings(QString& msg, const CreatePhyTreeSettings& settings) override;
 
 private:
     void createWidgetsControllers();
