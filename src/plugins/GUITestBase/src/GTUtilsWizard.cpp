@@ -68,7 +68,7 @@ void GTUtilsWizard::setInputFiles(const QList<QStringList>& inputFiles) {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     int i = 0;
     for (const QStringList& datasetFiles : qAsConst(inputFiles)) {
-        QTabWidget* tabWidget = GTWidget::findWidgetByType<QTabWidget*>(dialog, "tabWidget not found");
+        auto tabWidget = GTWidget::findWidgetByType<QTabWidget*>(dialog, "tabWidget not found");
         GTTabWidget::setCurrentIndex(tabWidget, i);
 
         QMap<QString, QStringList> dir2files;

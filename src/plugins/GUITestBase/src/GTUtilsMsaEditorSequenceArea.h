@@ -40,6 +40,9 @@ public:
     static QScrollBar* getHorizontalNamesScroll(int index = 0);
     static void callContextMenu(const QPoint& innerCoords = QPoint());  // zero-based position
 
+    /** Returns width of a single base. */
+    static int getBaseWidth();
+
     static void checkSelectedRect(int multilineIndex, const QRect& expectedRect);
     static void checkSelectedRect(const QRect& expectedRect);
 
