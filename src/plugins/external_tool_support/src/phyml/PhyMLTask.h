@@ -40,9 +40,9 @@ class PhyMLPrepareDataForCalculation : public Task {
     Q_OBJECT
 public:
     PhyMLPrepareDataForCalculation(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& s, const QString& url);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    const QString& getInputFileUrl() {
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    const QString& getInputFileUrl() const {
         return inputFileForPhyML;
     }
 
@@ -50,7 +50,7 @@ private:
     const MultipleSequenceAlignment& ma;
     CreatePhyTreeSettings settings;
     QString tmpDirUrl;
-    SaveAlignmentTask* saveDocumentTask;
+    SaveAlignmentTask* saveDocumentTask = nullptr;
     QString inputFileForPhyML;
 };
 
@@ -59,16 +59,14 @@ class PhyMLLogParser : public ExternalToolLogParser {
     Q_OBJECT
 public:
     PhyMLLogParser(PhyMLSupportTask* parentTask, int sequencesNumber);
-    int getProgress();
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
+    int getProgress() override;
+    void parseOutput(const QString& partOfLog) override;
+    void parseErrOutput(const QString& partOfLog) override;
 
 private:
     PhyMLSupportTask* parentTask;
     QString lastLine;
     QString lastErrLine;
-    bool isMCMCRunning;
-    int curProgress;
     int processedBranches;
     int sequencesNumber;
 };
@@ -77,8 +75,8 @@ class PhyMLGetCalculatedTreeTask : public Task {
     Q_OBJECT
 public:
     PhyMLGetCalculatedTreeTask(const QString& url);
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     PhyTreeObject* getPhyObject() {
         return phyObject;
     }
@@ -99,7 +97,6 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask) override;
 
     static const QString TMP_FILE_NAME;
-    static const QString RESULT_BOOTSTRAP_EXT;
     static const QString RESULT_TREE_EXT;
 
 private:
