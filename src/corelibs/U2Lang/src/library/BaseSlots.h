@@ -31,15 +31,15 @@ namespace Workflow {
 class U2LANG_EXPORT BaseSlots : public QObject {
     Q_OBJECT
 public:
-    static const Descriptor DNA_SEQUENCE_SLOT();
-    static const Descriptor MULTIPLE_ALIGNMENT_SLOT();
-    static const Descriptor ANNOTATION_TABLE_SLOT();
-    static const Descriptor TEXT_SLOT();
-    static const Descriptor URL_SLOT();
-    static const Descriptor FASTA_HEADER_SLOT();
-    static const Descriptor VARIATION_TRACK_SLOT();
-    static const Descriptor ASSEMBLY_SLOT();
-    static const Descriptor DATASET_SLOT();
+    static Descriptor DNA_SEQUENCE_SLOT();
+    static Descriptor MULTIPLE_ALIGNMENT_SLOT();
+    static Descriptor ANNOTATION_TABLE_SLOT();
+    static Descriptor TEXT_SLOT();
+    static Descriptor URL_SLOT();
+    static Descriptor FASTA_HEADER_SLOT();
+    static Descriptor VARIATION_TRACK_SLOT();
+    static Descriptor ASSEMBLY_SLOT();
+    static Descriptor DATASET_SLOT();
 };  // BaseSlots
 
 }  // namespace Workflow

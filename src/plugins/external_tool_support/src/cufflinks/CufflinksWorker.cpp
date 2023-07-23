@@ -49,19 +49,19 @@ namespace LocalWorkflow {
 /************************************************************************/
 class InputSlotValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
+    bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const override {
         bool data = isBinded(port, BaseSlots::ASSEMBLY_SLOT().getId());
         bool url = isBinded(port, BaseSlots::URL_SLOT().getId());
 
         QString dataName = slotName(port, BaseSlots::ASSEMBLY_SLOT().getId());
         QString urlName = slotName(port, BaseSlots::URL_SLOT().getId());
         if (!data && !url) {
-            notificationList.append(WorkflowNotification(IntegralBusPort::tr("One of these slots must be not empty: '%1', '%2'").arg(dataName).arg(urlName)));
+            notificationList.append(WorkflowNotification(IntegralBusPort::tr("One of these slots must be set: '%1', '%2'").arg(dataName).arg(urlName)));
             return false;
         }
 
         if (data && url) {
-            notificationList.append(WorkflowNotification(IntegralBusPort::tr("Only one of these slots must be binded: '%1', '%2'").arg(dataName).arg(urlName)));
+            notificationList.append(WorkflowNotification(IntegralBusPort::tr("Only one of these slots must be set: '%1', '%2'").arg(dataName).arg(urlName)));
             return false;
         }
         return true;
