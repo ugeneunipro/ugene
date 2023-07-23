@@ -489,6 +489,10 @@ public:
         documentOwnsDbiResources = value;
     }
 
+    inline QList<U2DataId> getDocObjectsIds() const {
+        return id2Object.keys();
+    }
+
     static void setupToEngine(QScriptEngine* engine);
 
     Document* getSimpleCopy(DocumentFormat* df, IOAdapterFactory* io, const GUrl& url) const;

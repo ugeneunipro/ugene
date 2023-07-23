@@ -155,7 +155,7 @@ public:
 
     U2DbiIterator<U2Feature>* getFeaturesByName(const U2DataId& rootId, const QString& name, const FeatureFlags& types, U2OpStatus& os);
 
-    QMap<U2DataId, QStringList> getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os);
+    QMap<U2DataId, QStringList> getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch = QList<U2DataId>());
 
 private:
     QSharedPointer<SQLiteQuery> createFeatureQuery(const QString& selectPart, const FeatureQuery& fq, bool useOrder, U2OpStatus& os, SQLiteTransaction* trans = nullptr);

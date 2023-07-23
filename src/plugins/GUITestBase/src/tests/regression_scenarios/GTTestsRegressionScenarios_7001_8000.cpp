@@ -2692,6 +2692,43 @@ GUI_TEST_CLASS_DEFINITION(test_7556) {
     GTUtilsMsaEditor::getTreeView();  // Check that tree view is opened.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7558) {
+    /*
+    1. Open sars.gb, murine.gb COI.aln
+    2. Type 'NCBI' in project filter
+    Expected state: no errors in the log
+    3. Search 'frame'
+    Expected state: 2 results found (murine and sars)
+    4. Search 'zzzz'
+    Expected state: no results found
+    5. Search '29837500'
+    Expected state: 1 result found
+    */
+    GTFileDialog::openFile(dataDir + "/samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(dataDir + "/samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTLogTracer lt;
+    GTUtilsProjectTreeView::filterProject("NCBI");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    lt.assertNoErrors();
+
+    GTUtilsProjectTreeView::filterProject("frame");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkFilteredGroup("CDS", {}, {"NC_001363 features", "NC_004718 features"}, {});    
+    
+    GTUtilsProjectTreeView::filterProject("zzzz");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkFilteredResultIsEmpty();
+
+    GTUtilsProjectTreeView::filterProject("29837500");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkFilteredGroup("mat_peptide", {}, {"NC_004718 features"}, {});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7572) {
     // 1. Open HIV-1.aln
     // 2. Click the "Build Tree" button on the toolbar.
