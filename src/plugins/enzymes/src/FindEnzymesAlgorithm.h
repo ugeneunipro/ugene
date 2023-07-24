@@ -117,7 +117,7 @@ public:
                 for (int s = 0; s < size; s++) {
                     bool match = matchSite(buf.constData() + s, pattern, plen, unknownChar, fn);
                     if (match) {
-                        resultListener->onResult(resultPosShift + s + startPos + leftShift, enzyme, stand);
+                        resultListener->onResult(resultPosShift + s + startPos, enzyme, stand);
                     }
                     CHECK_OP(ti, );
                 }
