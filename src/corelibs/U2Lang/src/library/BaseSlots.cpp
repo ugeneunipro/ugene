@@ -36,39 +36,39 @@ static const QString DATASET_SLOT_ID("dataset");
 namespace U2 {
 namespace Workflow {
 
-const Descriptor BaseSlots::DNA_SEQUENCE_SLOT() {
+Descriptor BaseSlots::DNA_SEQUENCE_SLOT() {
     return Descriptor(SEQ_SLOT_ID, tr("Sequence"), tr("A biological sequence"));
 }
 
-const Descriptor BaseSlots::MULTIPLE_ALIGNMENT_SLOT() {
+Descriptor BaseSlots::MULTIPLE_ALIGNMENT_SLOT() {
     return Descriptor(MA_SLOT_ID, tr("MSA"), tr("A multiple sequence alignment"));
 }
 
-const Descriptor BaseSlots::ANNOTATION_TABLE_SLOT() {
+Descriptor BaseSlots::ANNOTATION_TABLE_SLOT() {
     return Descriptor(FEATURE_TABLE_SLOT_ID, tr("Set of annotations"), tr("A set of annotated regions"));
 }
 
-const Descriptor BaseSlots::TEXT_SLOT() {
+Descriptor BaseSlots::TEXT_SLOT() {
     return Descriptor(TEXT_SLOT_ID, tr("Plain text"), tr("Plain text reading or splitting to strings."));
 }
 
-const Descriptor BaseSlots::URL_SLOT() {
+Descriptor BaseSlots::URL_SLOT() {
     return Descriptor(URL_SLOT_ID, tr("Source URL"), tr("Location of a corresponding input file."));
 }
 
-const Descriptor BaseSlots::FASTA_HEADER_SLOT() {
+Descriptor BaseSlots::FASTA_HEADER_SLOT() {
     return Descriptor(FASTA_HEADER_SLOT_ID, tr("FASTA header"), tr("A header line for the FASTA record."));
 }
 
-const Descriptor BaseSlots::VARIATION_TRACK_SLOT() {
+Descriptor BaseSlots::VARIATION_TRACK_SLOT() {
     return Descriptor(VARIATION_TRACK_SLOT_ID, tr("Variation track"), tr("Set of variations"));
 }
 
-const Descriptor BaseSlots::ASSEMBLY_SLOT() {
+Descriptor BaseSlots::ASSEMBLY_SLOT() {
     return Descriptor(ASSEMBLY_SLOT_ID, tr("Assembly data"), tr("Assembly data"));
 }
 
-const Descriptor BaseSlots::DATASET_SLOT() {
+Descriptor BaseSlots::DATASET_SLOT() {
     return Descriptor(DATASET_SLOT_ID, tr("Dataset name"), tr("Dataset name"));
 }
 

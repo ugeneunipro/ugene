@@ -23,11 +23,9 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/FileFilters.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QVariantUtils.h>
-#include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -49,14 +47,13 @@ namespace LocalWorkflow {
 /************************************************************************/
 class InputSlotValidator : public PortValidator {
 public:
-    virtual bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const {
-        bool binded = isBinded(port, BaseSlots::URL_SLOT().getId());
-        if (!binded) {
+    bool validate(const IntegralBusPort* port, NotificationsList& notificationList) const override {
+        bool isBound = isBinded(port, BaseSlots::URL_SLOT().getId());
+        if (!isBound) {
             QString name = slotName(port, BaseSlots::URL_SLOT().getId());
-            notificationList.append(WorkflowNotification(IntegralBusPort::tr("'%1' slot must be not binded").arg(name)));
+            notificationList.append(WorkflowNotification(IntegralBusPort::tr("'%1' slot must be set").arg(name)));
             return false;
         }
-
         return true;
     }
 };

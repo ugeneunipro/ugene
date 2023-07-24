@@ -257,23 +257,23 @@ enum GTestLogHelperStatus { GTest_LogHelper_Invalid,
 class U2TEST_EXPORT GTestLogHelper : public QObject, public LogListener {
     Q_OBJECT
 public:
-    GTestLogHelper();
-    ~GTestLogHelper();
+    ~GTestLogHelper() override;
 
     void initMessages(const QStringList& expectedMessages, const QStringList& unexpectedMessages);
 
     GTestLogHelperStatus verifyStatus();
 
 private:
-    void onMessage(const LogMessage& logMessage);
+    void onMessage(const LogMessage& logMessage) override;
 
     QMap<QString, bool> expectedMessages;
     QMap<QString, bool> unexpectedMessages;  // Messages that mustn't be present in the log
 
-    qint64 logHelperStartTime;
-    qint64 logHelperEndTime;
+    qint64 logHelperStartTime = 0;
+    qint64 logHelperEndTime = 0;
 
-    bool statusWasVerified;
+    bool statusWasVerified = false;
+    bool registered = false;
 };
 
 }  // namespace U2

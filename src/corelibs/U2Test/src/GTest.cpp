@@ -232,13 +232,6 @@ GTestSuite* GTestSuite::readTestSuite(const QString& url, QString& err) {
             }
         }
 
-        if (sizeof(void*) == 4) {  // means that it is 32 bit system
-            err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_32"), excludeRexExList);
-            if (!err.isEmpty()) {
-                break;
-            }
-        }
-
         testFormatName = testDirEl.attribute("test-format");
         bool recursive = testDirEl.attribute("recursive") != "false";
         QString testExt = testDirEl.attribute("test-ext");
@@ -397,12 +390,9 @@ void GTestState::setPassed() {
 
 //////////////////////////////////////////////////////////////////////////
 // GTestLogHelper
-GTestLogHelper::GTestLogHelper()
-    : statusWasVerified(false) {
-}
 
 GTestLogHelper::~GTestLogHelper() {
-    if (!statusWasVerified && !expectedMessages.isEmpty()) {
+    if (registered) {
         LogServer::getInstance()->removeListener(this);
     }
 }
@@ -419,21 +409,25 @@ void GTestLogHelper::initMessages(const QStringList& expectedList, const QString
 
     logHelperStartTime = GTimer::currentTimeMicros();
     LogServer::getInstance()->addListener(this);
+    registered = true;
 }
 
 GTestLogHelperStatus GTestLogHelper::verifyStatus() {
     LogServer::getInstance()->removeListener(this);
+    registered = false;
     GTestLogHelperStatus status = GTest_LogHelper_Valid;
 
-    foreach (const QString& str, expectedMessages.keys()) {
-        if (false == expectedMessages[str]) {
+    QList<QString> expectedKeys = expectedMessages.keys();
+    for (const QString& str : qAsConst(expectedKeys)) {
+        if (!expectedMessages[str]) {
             status = GTest_LogHelper_Invalid;
             coreLog.error(QString("GTestLogHelper: no expected message \"%1\" in the log!").arg(str));
         }
     }
 
-    foreach (const QString& str, unexpectedMessages.keys()) {
-        if (true == unexpectedMessages[str]) {
+    QList<QString> unexpectedKeys = unexpectedMessages.keys();
+    for (const QString& str : qAsConst(unexpectedKeys)) {
+        if (unexpectedMessages[str]) {
             status = GTest_LogHelper_Invalid;
             coreLog.error(QString("GTestLogHelper: message \"%1\" is present in the log unexpectedly!").arg(str));
         }
@@ -466,13 +460,15 @@ void GTestLogHelper::onMessage(const LogMessage& logMessage) {
                  .arg(logHelperEndTime), );
     }
 
-    foreach (const QString& str, expectedMessages.keys()) {
+    QList<QString> expectedKeys = expectedMessages.keys();
+    for (const QString& str : qAsConst(expectedKeys)) {
         if (logMessage.text.contains(str)) {
             expectedMessages[str] = true;
         }
     }
 
-    foreach (const QString& str, unexpectedMessages.keys()) {
+    QList<QString> unexpectedKeys = unexpectedMessages.keys();
+    for (const QString& str : qAsConst(unexpectedKeys)) {
         if (logMessage.text.contains(str)) {
             unexpectedMessages[str] = true;
         }
