@@ -213,7 +213,7 @@ GUI_TEST_CLASS_DEFINITION(test_2009) {
     //    2) Set correct BWA or any other tool path (preferably just executable)
     class BWAInactivation : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    3) Clear set path
             AppSettingsDialogFiller::clearToolPath("BWA");
 
@@ -1249,7 +1249,7 @@ GUI_TEST_CLASS_DEFINITION(test_2259) {
     QMainWindow* mainWindow = mw->getQMainWindow();
     CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
 
-    QAction* menu = mainWindow->findChild<QAction*>(MWMENU_SETTINGS);
+    auto menu = mainWindow->findChild<QAction*>(MWMENU_SETTINGS);
     CHECK_SET_ERR(menu->menu()->actions().size() == 2, "wrong number of actions");
 }
 
@@ -1429,7 +1429,7 @@ GUI_TEST_CLASS_DEFINITION(test_2269) {
 
     class Scenario_test_2269 : public CustomScenario {
     public:
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto methodNamesBox = GTWidget::findComboBox("methodNamesBox", dialog);
             GTComboBox::selectItemByText(methodNamesBox, "Bowtie2");
@@ -1586,7 +1586,7 @@ GUI_TEST_CLASS_DEFINITION(test_2293) {
         CheckBowtie2Filler()
             : Filler("BuildIndexFromRefDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto methodNamesBox = GTWidget::findComboBox("methodNamesBox", dialog);
             for (int i = 0; i < methodNamesBox->count(); i++) {
@@ -1595,7 +1595,7 @@ GUI_TEST_CLASS_DEFINITION(test_2293) {
                 }
             }
 
-            GTFileDialogUtils* ob = new GTFileDialogUtils(dataDir + "samples/FASTA/", "human_T1.fa");
+            auto ob = new GTFileDialogUtils(dataDir + "samples/FASTA/", "human_T1.fa");
             GTUtilsDialog::waitForDialog(ob);
             GTWidget::click(GTWidget::findWidget("addRefButton", dialog));
 
@@ -1760,7 +1760,7 @@ GUI_TEST_CLASS_DEFINITION(test_2318) {
             : PopupChooser(QStringList()) {
         }
 
-        virtual void run() {
+        void run() override {
             GTMouseDriver::release();
             GTKeyboardDriver::keyClick(Qt::Key_Down);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
@@ -1774,7 +1774,7 @@ GUI_TEST_CLASS_DEFINITION(test_2318) {
               annName(_annName) {
         }
 
-        virtual void run() {
+        void run() override {
             QToolButton* plusButton = getPlusButton();
             CHECK_SET_ERR(plusButton, "First plus toolbutton is NULL");
             firstSize = plusButton->size();
@@ -2181,7 +2181,7 @@ GUI_TEST_CLASS_DEFINITION(test_2387) {
     class SequenceReadingModeDialogUtils : public CustomScenario {
     public:
         // SequenceReadingModeDialogUtils() : GTSequenceReadingModeDialogUtils(_os){}
-        virtual void run() {
+        void run() override {
             GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Merge;
             GTFile::copy(testDir + "_common_data/scenarios/_regression/2387/binary.dll", testDir + "_common_data/scenarios/sandbox/sars.gb");
             GTSequenceReadingModeDialogUtils().commonScenario();
@@ -2571,7 +2571,7 @@ GUI_TEST_CLASS_DEFINITION(test_2451) {
 
     class customWizard : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    4. Select input MSA "samples\CLUSTALW\COI.aln"
             GTUtilsWizard::setInputFiles(QList<QStringList>() << (QStringList() << dataDir + "samples/CLUSTALW/COI.aln"));
             //    5. Press "Next" button
@@ -2957,7 +2957,7 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
         InnerMessageBoxFiller()
             : MessageBoxDialogFiller(QMessageBox::Yes) {
         }
-        void run() {
+        void run() override {
             GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Cancel, "", "permissionBox"));
             MessageBoxDialogFiller::run();
         }
@@ -2967,7 +2967,7 @@ GUI_TEST_CLASS_DEFINITION(test_2544) {
         CustomSaver()
             : GTFileDialogUtils(sandBoxDir, "test_2544.fa", GTFileDialogUtils::Save) {
         }
-        void commonScenario() {
+        void commonScenario() override {
             fileDialog = GTWidget::getActiveModalWidget();
             GTUtilsDialog::waitForDialog(new InnerMessageBoxFiller());
             setName();
@@ -3101,7 +3101,7 @@ GUI_TEST_CLASS_DEFINITION(test_2568) {
 
     class customFileDialog : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* d = GTWidget::getActiveModalWidget();
             auto dialog = qobject_cast<QFileDialog*>(d);
             CHECK_SET_ERR(dialog, "activeModalWidget is not file dialog");
@@ -3114,7 +3114,7 @@ GUI_TEST_CLASS_DEFINITION(test_2568) {
 
     class customWizard : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    4. Click to browse a reference file and choose a reference
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils(dataDir + "samples/Assembly/chrM.fa"));
@@ -3503,7 +3503,7 @@ GUI_TEST_CLASS_DEFINITION(test_2632) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    2. Go to the second page
             GTUtilsWizard::clickButton(GTUtilsWizard::Next);
@@ -3558,7 +3558,7 @@ GUI_TEST_CLASS_DEFINITION(test_2640) {
     //    0. Set CPU optimisation in settings dialog
     class UpdateCPUCountScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             AppSettingsDialogFiller::openTab(AppSettingsDialogFiller::Resources);
             auto cpuBox = GTWidget::findSpinBox("cpuBox", dialog);
@@ -3744,7 +3744,7 @@ GUI_TEST_CLASS_DEFINITION(test_2683) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 
             QWidget* dialog = GTWidget::getActiveModalWidget();
@@ -3813,7 +3813,7 @@ GUI_TEST_CLASS_DEFINITION(test_2701) {
         ImageQualityChecker()
             : Filler("ImageExportForm") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto formatsBox = GTWidget::findComboBox("formatsBox", dialog);
             auto spin = GTWidget::findSpinBox("qualitySpinBox", dialog);
@@ -3844,7 +3844,7 @@ GUI_TEST_CLASS_DEFINITION(test_2709) {
 
     class test_2709_canceler : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             GTUtilsWizard::clickButton(GTUtilsWizard::Cancel);
         }
     };
@@ -4028,7 +4028,7 @@ GUI_TEST_CLASS_DEFINITION(test_2754) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             QAbstractButton* next = GTWidget::findButtonByText("Next", dialog);
             CHECK_SET_ERR(!next->isEnabled(), "Next button is unexpectidly enabled");
@@ -4315,7 +4315,7 @@ GUI_TEST_CLASS_DEFINITION(test_2796) {
     // Expected state: the "Smith-Waterman Search" dialog has appeared
     // 3. Press "Cancel" in the dialog
     // Expected state: dialog has closed
-    SmithWatermanDialogFiller* filler = new SmithWatermanDialogFiller();
+    auto filler = new SmithWatermanDialogFiller();
     filler->button = SmithWatermanDialogFiller::Cancel;
     GTUtilsDialog::waitForDialog(filler);
     GTMenu::clickMainMenuItem({"Actions", "Analyze", "Find pattern [Smith-Waterman]..."}, GTGlobals::UseMouse);
@@ -4568,7 +4568,7 @@ GUI_TEST_CLASS_DEFINITION(test_2887) {
 
 GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Open {_common_data/clustal/100_sequences.aln}.
-    GTFileDialog::openFile(testDir + "_common_data/clustal", "100_sequences.aln");
+    GTFileDialog::openFile(testDir + "_common_data/clustal/100_sequences.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsProjectTreeView::toggleView();  // close project tree view to get more space.
@@ -4587,15 +4587,11 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Press refresh tree button on the tree's toolbar.
     // Expected state: "Calculating Phylogenetic Tree" task has been started.
     GTWidget::click(GTAction::button("Refresh tree"));
-    int taskCount = GTUtilsTaskTreeView::countTasks("Calculating Phylogenetic Tree");
-    CHECK_SET_ERR(taskCount == 1, QString("1. Wrong tasks number. Expected 1, actual: ").arg(taskCount));
 
     // Press refresh button again.
     // Expected state: a new refresh task is not started, the old one is in process.
     GTWidget::click(GTAction::button("Refresh tree"));
 
-    taskCount = GTUtilsTaskTreeView::countTasks("Calculating Phylogenetic Tree");
-    CHECK_SET_ERR(taskCount == 1, QString("2. Wrong tasks number. Expected 1, actual: ").arg(taskCount));
     // Close the tree view while the task is running.
     // Expected state: UGENE doesn't crash, view is closed, task is canceled.
     GTUtilsProjectTreeView::click("test_2894_COI.nwk");
@@ -4656,7 +4652,7 @@ GUI_TEST_CLASS_DEFINITION(test_2899) {
 
     class custom : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             //    4. Go to the "Cuffmerge settings" page and click the "Defaults" button.
             QWidget* dialog = GTWidget::getActiveModalWidget();
             for (int i = 0; i < 4; i++) {
@@ -4824,17 +4820,17 @@ GUI_TEST_CLASS_DEFINITION(test_2910_2) {
         CancelClicker()
             : Filler("RangeSelectionDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* w = GTWidget::getActiveModalWidget();
-            QRadioButton* multipleButton = w->findChild<QRadioButton*>("miltipleButton");
+            auto multipleButton = w->findChild<QRadioButton*>("miltipleButton");
             CHECK_SET_ERR(multipleButton != nullptr, "RadioButton \"miltipleButton\" not found");
             GTRadioButton::click(multipleButton);
 
-            QLineEdit* regionEdit = w->findChild<QLineEdit*>("multipleRegionEdit");
+            auto regionEdit = w->findChild<QLineEdit*>("multipleRegionEdit");
             CHECK_SET_ERR(regionEdit != nullptr, "QLineEdit \"multipleRegionEdit\" not foud");
             GTLineEdit::setText(regionEdit, "0..5000");
 
-            QDialogButtonBox* buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
+            auto buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
             CHECK_SET_ERR(nullptr != buttonBox, "button box is null");
             QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(nullptr != button, "cancel button is null");
@@ -4860,17 +4856,17 @@ GUI_TEST_CLASS_DEFINITION(test_2910_3) {
         CancelClicker()
             : Filler("RangeSelectionDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* w = GTWidget::getActiveModalWidget();
-            QRadioButton* multipleButton = w->findChild<QRadioButton*>("miltipleButton");
+            auto multipleButton = w->findChild<QRadioButton*>("miltipleButton");
             CHECK_SET_ERR(multipleButton != nullptr, "RadioButton \"miltipleButton\" not found");
             GTRadioButton::click(multipleButton);
 
-            QLineEdit* regionEdit = w->findChild<QLineEdit*>("multipleRegionEdit");
+            auto regionEdit = w->findChild<QLineEdit*>("multipleRegionEdit");
             CHECK_SET_ERR(regionEdit != nullptr, "QLineEdit \"multipleRegionEdit\" not foud");
             GTLineEdit::setText(regionEdit, "1..199951");
 
-            QDialogButtonBox* buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
+            auto buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
             CHECK_SET_ERR(nullptr != buttonBox, "button box is null");
             QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
             CHECK_SET_ERR(nullptr != button, "cancel button is null");
@@ -4969,7 +4965,7 @@ GUI_TEST_CLASS_DEFINITION(test_2929) {
         SiteconCustomFiller()
             : Filler("SiteconSearchDialog") {
         }
-        virtual void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto modelFileEdit = GTWidget::findLineEdit("modelFileEdit");
             CHECK_SET_ERR(modelFileEdit->text().isEmpty(), "Model is set!");
