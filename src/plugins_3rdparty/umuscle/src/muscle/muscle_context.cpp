@@ -6,9 +6,7 @@ U2_DISABLE_WARNINGS
 
 extern SCOREMATRIX VTML_LA;
 extern SCOREMATRIX PAM200;
-extern SCOREMATRIX PAM200NoCenter;
 extern SCOREMATRIX VTML_SP;
-extern SCOREMATRIX VTML_SPNoCenter;
 extern SCOREMATRIX NUC_SP;
 
 bool MuscleContext::glbalndimer_stuct::InitializePPTerm()
@@ -61,8 +59,6 @@ MuscleContext::MuscleContext(int _nThreads)
     memset(&globalswin32, 0, sizeof(globalswin32));
 
     nThreads = _nThreads;
-    progressStub = 0;
-    progressPercent = &progressStub;
     cancelStub = 0;
     cancelFlag = &cancelStub;
 

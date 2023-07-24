@@ -55,6 +55,10 @@ const QString GTUtilsMSAEditorSequenceArea::highlightingColor = "#9999cc";
 
 #define GT_CLASS_NAME "GTUtilsMSAEditorSequenceArea"
 
+int GTUtilsMSAEditorSequenceArea::getBaseWidth() {
+    return GTUtilsMsaEditor::getEditor()->getUI()->getUI(0)->getBaseWidthController()->getBaseWidth();
+}
+
 MSAEditorSequenceArea* GTUtilsMSAEditorSequenceArea::getSequenceArea(int index, bool checkError) {
     // There are more than one msa_editor_sequence_area in multiline mode, so
     // at first we get line #index widget

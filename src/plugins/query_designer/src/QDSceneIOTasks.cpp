@@ -26,7 +26,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/QVariantUtils.h>
 
 #include <U2Lang/QueryDesignerRegistry.h>
 
@@ -71,7 +70,7 @@ QDLoadSceneTask::QDLoadSceneTask(QueryScene* scene, const QString& url)
 }
 
 void QDLoadSceneTask::prepare() {
-    QDLoadDocumentTask* t = new QDLoadDocumentTask(url);
+    auto t = new QDLoadDocumentTask(url);
     addSubTask(t);
 }
 
@@ -83,7 +82,7 @@ QList<Task*> QDLoadSceneTask::onSubTaskFinished(Task* subTask) {
     assert(loadedDoc);
     docs << loadedDoc;
     foreach (const QString& importUrl, loadedDoc->getImportedUrls()) {
-        QDLoadDocumentTask* sub = new QDLoadDocumentTask(importUrl);
+        auto sub = new QDLoadDocumentTask(importUrl);
         subTasks << sub;
     }
     return subTasks;
@@ -101,7 +100,7 @@ Task::ReportResult QDLoadSceneTask::report() {
 QDLoadSchemeTask::QDLoadSchemeTask(const QString& uri)
     : Task(tr("Load query task"), TaskFlag_NoRun) {
     scheme = new QDScheme;
-    QDLoadDocumentTask* t = new QDLoadDocumentTask(uri);
+    auto t = new QDLoadDocumentTask(uri);
     addSubTask(t);
 }
 
@@ -113,7 +112,7 @@ QList<Task*> QDLoadSchemeTask::onSubTaskFinished(Task* subTask) {
     assert(loadedDoc);
     docs << loadedDoc;
     foreach (const QString& importUrl, loadedDoc->getImportedUrls()) {
-        QDLoadDocumentTask* sub = new QDLoadDocumentTask(importUrl);
+        auto sub = new QDLoadDocumentTask(importUrl);
         subTasks << sub;
     }
     return subTasks;
@@ -220,7 +219,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument*>& docs, QMap<QDElemen
         groups.append(doc->getElements(Group));
     }
 
-    QDActor* actor = nullptr;
+    QDActor* actor;
     // map QDElementStatement to QDActor created from it
 
     foreach (QDElementStatement* grpStmt, groups) {
@@ -277,7 +276,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument*>& docs, QMap<QDElemen
     QStringList ids = docs.first()->getOrder();
     if (!ids.isEmpty()) {
         for (int idx = 0, n = ids.size(); idx < n; idx++) {
-            QString id = ids.at(idx);
+            const QString& id = ids.at(idx);
             foreach (QDActor* a, scheme->getActors()) {
                 if (a->getParameters()->getLabel() == id) {
                     scheme->setOrder(a, idx);
@@ -299,7 +298,7 @@ bool QDSceneSerializer::doc2scheme(const QList<QDDocument*>& docs, QMap<QDElemen
 }
 
 QDDocument* QDSceneSerializer::scene2doc(QueryScene* scene) {
-    QDDocument* doc = new QDDocument;
+    auto doc = new QDDocument;
     QMap<QDSchemeUnit*, QDElementStatement*> unit2stmt;
     QDScheme* scheme = scene->getScheme();
     QList<QDActor*> sceneActors = scheme->getActors();
@@ -312,7 +311,7 @@ QDDocument* QDSceneSerializer::scene2doc(QueryScene* scene) {
             } else {
                 name += su->getId();
             }
-            QDElementStatement* unitElement = new QDElementStatement(name, Element);
+            auto unitElement = new QDElementStatement(name, Element);
             unit2stmt[su] = unitElement;
             bool res = doc->addElement(unitElement);
             Q_UNUSED(res);
@@ -354,7 +353,7 @@ QDElementStatement* QDSchemeSerializer::saveActor(QDActor* actor, QDDocument* do
     /*const QString& suffix = QString::number(doc->getElements(Group).size() + 1);
     QDElementStatement* actorElement = new QDElementStatement("A"+suffix, Group);*/
     QString elementName = actor->getParameters()->getLabel();
-    QDElementStatement* actorElement = new QDElementStatement(elementName, Group);
+    auto actorElement = new QDElementStatement(elementName, Group);
     bool res = doc->addElement(actorElement);
     Q_UNUSED(res);
     assert(res);
@@ -388,7 +387,7 @@ QDActor* QDSchemeSerializer::loadActor(QDElementStatement* actorElement, QString
     if (actor == nullptr) {
         return nullptr;
     }
-    QString actorName = actorElement->getId();
+    const QString& actorName = actorElement->getId();
     actor->getParameters()->setLabel(actorName);
     actor->loadConfiguration(actorElement->getAttributes());
 
@@ -418,7 +417,7 @@ QDLinkStatement* QDSchemeSerializer::saveConstraint(QDConstraint* constraint, QD
         QString srcElId = unit2stmt.value(src)->getId();
         QString dstElId = unit2stmt.value(dst)->getId();
         elIds << srcElId << dstElId;
-        QDLinkStatement* link = new QDLinkStatement(elIds);
+        auto link = new QDLinkStatement(elIds);
         doc->addLink(link);
         link->setAttribute(QDLinkStatement::TYPE_ATTR_NAME, QDIdMapper::constraintType2string(QDConstraintTypes::DISTANCE));
         link->setAttribute(DISTANCE_ATTR_NAME, QDIdMapper::distance2string(dc->distanceType()));
@@ -460,14 +459,14 @@ QDConstraint* QDSchemeSerializer::loadConstraint(QDLinkStatement* lnk, const QMa
         if (distTypeInt < 0) {
             return nullptr;
         }
-        QDDistanceType distType = QDDistanceType(distTypeInt);
-        QDDistanceConstraint* dc = new QDDistanceConstraint(units, distType, min, max);
+        auto distType = QDDistanceType(distTypeInt);
+        auto dc = new QDDistanceConstraint(units, distType, min, max);
         return dc;
     }
     return nullptr;
 }
 
-QDSchemeUnit* QDSchemeSerializer::findSchemeUnit(const QString& id, QDDocument* doc, const QMap<QDElementStatement*, QDActor*> stmt2actor, const QList<QDDocument*>& docs) {
+QDSchemeUnit* QDSchemeSerializer::findSchemeUnit(const QString& id, QDDocument* doc, const QMap<QDElementStatement*, QDActor*>& stmt2actor, const QList<QDDocument*>& docs) {
     const QString& docName = QDDocument::definedIn(id);
     if (docName.isEmpty()) {
         int lastPointIdx = id.lastIndexOf('.');
@@ -496,7 +495,7 @@ QDSchemeUnit* QDSchemeSerializer::findSchemeUnit(const QString& id, QDDocument* 
 }
 
 void QDSchemeSerializer::saveGroups(QDScheme* scheme, QDDocument* doc) {
-    QDElementStatement* elStmt = new QDElementStatement(QDDocument::GROUPS_SECTION, Group);
+    auto elStmt = new QDElementStatement(QDDocument::GROUPS_SECTION, Group);
     foreach (QString group, scheme->getActorGroups()) {
         elStmt->setAttribute(group, QString::number(scheme->getRequiredNumber(group)));
         doc->addElement(elStmt);

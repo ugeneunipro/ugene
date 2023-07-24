@@ -134,12 +134,12 @@ void GUITestLauncher::firstTestRunCheck(const QString& testName) {
 }
 
 /** Returns ideal tests list for the given suite or an empty list if there is no ideal configuration is found. */
-QList<GUITest*> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest*>& allTests) {
+QList<GUITest*> getIdealTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest*>& allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {  // Windows & Mac.
         testsPerSuite << 950 << 910 << -1;
     } else if (suiteCount == 4) {
-        testsPerSuite << 640 << 680 << 640 << -1;
+        testsPerSuite << 670 << 670 << 730 << -1;
     } else if (suiteCount == 5) {
         testsPerSuite << 550 << 580 << 500 << 570 << -1;  // Linux.
     }
@@ -171,7 +171,7 @@ bool GUITestLauncher::initTestList() {
         int testSuiteCount = 1;
         if (labelList.contains(UGUITestLabels::Precommit)) {
             // TODO: make configurable via ENV.
-            testSuiteCount = isOsWindows() ? 3
+            testSuiteCount = isOsWindows() ? 4
                              : isOsMac()   ? 3
                              : isOsLinux() ? 5
                                            : 1;
@@ -184,7 +184,7 @@ bool GUITestLauncher::initTestList() {
 
         QList<GUITest*> labeledTestList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
         if (labelList.contains(UGUITestLabels::Precommit)) {
-            testList = getIdealNightlyTestsSplit(suiteNumber - 1, testSuiteCount, labeledTestList);
+            testList = getIdealTestsSplit(suiteNumber - 1, testSuiteCount, labeledTestList);
         }
         if (testList.isEmpty()) {
             // If there is no ideal test split for the given number -> distribute tests between suites evenly.

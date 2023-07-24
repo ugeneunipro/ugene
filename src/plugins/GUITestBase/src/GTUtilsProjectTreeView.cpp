@@ -430,6 +430,13 @@ void GTUtilsProjectTreeView::checkFilteredGroup(
     }
 }
 
+void GTUtilsProjectTreeView::checkFilteredResultIsEmpty() {
+    QTreeView* treeView = getTreeView();
+    QAbstractItemModel* model = treeView->model();
+    CHECK_SET_ERR(model->rowCount() == 0, "Filtered item not empty");
+}
+
+#define GT_METHOD_NAME "ensureFilteringIsDisabled"
 void GTUtilsProjectTreeView::ensureFilteringIsDisabled() {
     openView();
     GTLineEdit::checkText("nameFilterEdit", nullptr, "");

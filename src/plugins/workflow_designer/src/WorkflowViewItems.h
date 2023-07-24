@@ -134,8 +134,8 @@ public:
 
     void toggleBreakpointState();
     void toggleBreakpoint();
-    bool isBreakpointInserted();
-    bool isBreakpointEnabled();
+    bool isBreakpointInserted() const;
+    bool isBreakpointEnabled() const;
     void highlightItem();
 
 protected:

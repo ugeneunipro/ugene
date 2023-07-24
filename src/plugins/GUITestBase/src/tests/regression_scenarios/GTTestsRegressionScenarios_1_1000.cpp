@@ -672,7 +672,7 @@ GUI_TEST_CLASS_DEFINITION(test_0610) {
 
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0627) {
@@ -878,7 +878,7 @@ GUI_TEST_CLASS_DEFINITION(test_0677) {
     GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(sandBoxDir + "test_0677/test_0677.ugenedb", "", "", true));
     GTFileDialog::openFile(testDir + "_common_data/bam/", "1.bam");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 GUI_TEST_CLASS_DEFINITION(test_0678) {
     // 1. Open samples/PDB/1CF7.pdb

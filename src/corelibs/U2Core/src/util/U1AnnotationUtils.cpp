@@ -357,7 +357,8 @@ QList<RegionsPair> U1AnnotationUtils::mergeAnnotatedRegionsAroundJunctionPoint(c
             result.append(RegionsPair(reg, U2Region()));
             continue;
         }
-        if ((i + 1) >= regions.size()) {
+        bool isLastRegion = i == regions.size() - 1;
+        if (isLastRegion) {
             result.append(RegionsPair(reg, U2Region()));
             break;
         }

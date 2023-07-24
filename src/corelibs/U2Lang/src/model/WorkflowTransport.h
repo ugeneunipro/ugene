@@ -58,8 +58,7 @@ private:
  */
 class U2LANG_EXPORT CommunicationChannel {
 public:
-    virtual ~CommunicationChannel() {
-    }
+    virtual ~CommunicationChannel() = default;
 
     // take message from channel
     virtual Message get() = 0;

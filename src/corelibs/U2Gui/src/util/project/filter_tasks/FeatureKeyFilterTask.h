@@ -39,8 +39,6 @@ public:
 
 private:
     void filterDocument(Document* doc);
-
-    QMap<U2DbiRef, QMap<U2DataId, QStringList>> dbiRef2AnnotationTables;
 };
 
 //////////////////////////////////////////////////////////////////////////

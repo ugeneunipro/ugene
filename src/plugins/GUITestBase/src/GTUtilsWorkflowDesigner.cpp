@@ -466,7 +466,7 @@ void GTUtilsWorkflowDesigner::click(const QString& itemName, QPoint p, Qt::Mouse
 
     GTMouseDriver::moveTo(getItemCenter(itemName) + p);
     GTMouseDriver::click();
-    if (Qt::RightButton == button) {
+    if (button == Qt::RightButton) {
         GTMouseDriver::click(Qt::RightButton);
     }
 }

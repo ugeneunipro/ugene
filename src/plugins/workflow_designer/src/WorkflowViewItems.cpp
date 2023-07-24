@@ -23,9 +23,7 @@
 
 #include <QBitmap>
 #include <QDomElement>
-#include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSimpleTextItem>
 #include <QGraphicsTextItem>
 #include <QGraphicsView>
 #include <QPainter>
@@ -38,8 +36,6 @@
 #include <U2Core/QVariantUtils.h>
 
 #include <U2Lang/ActorModel.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
-#include <U2Lang/IntegralBus.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowRunTask.h>
 #include <U2Lang/WorkflowSettings.h>
@@ -104,7 +100,7 @@ void WorkflowProcessItem::createPorts() {
     assert(ports.isEmpty());
 
     int num = process->getInputPorts().size() + 1;
-    qreal pie = 180 / num;
+    qreal pie = 180.0 / num;
     int i = 1;
     QGraphicsScene* sc = scene();
     foreach (Port* port, process->getInputPorts()) {
@@ -118,7 +114,7 @@ void WorkflowProcessItem::createPorts() {
         pit->sl_onVisibleChanged(port->isEnabled());
     }
     num = process->getOutputPorts().size() + 1;
-    pie = 180 / num;
+    pie = 180.0 / num;
     i = 1;
     foreach (Port* port, process->getOutputPorts()) {
         WorkflowPortItem* pit = new WorkflowPortItem(this, port);
@@ -487,11 +483,11 @@ void WorkflowProcessItem::toggleBreakpointState() {
     hasEnabledBreakpoint = !hasEnabledBreakpoint;
 }
 
-bool WorkflowProcessItem::isBreakpointInserted() {
+bool WorkflowProcessItem::isBreakpointInserted() const {
     return hasBreakpoint;
 }
 
-bool WorkflowProcessItem::isBreakpointEnabled() {
+bool WorkflowProcessItem::isBreakpointEnabled() const {
     return hasEnabledBreakpoint;
 }
 

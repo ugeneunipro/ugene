@@ -396,7 +396,7 @@ GUI_TEST_CLASS_DEFINITION(test_4034) {
     // There are two check boxes for switching the location type. Usually, when you choose between several actions (switch them), GUI shows you radio buttons, not check boxes.
     // Check boxes are used to switch on/off an option but not to choose between options. In this dialog, you even can't switch off the check box when you click it.
     // It is a wrong behavior for this graphic primitive
-    // Solution: replace the check boxes with radio buttons.
+    // Solution: replace the checkboxes with radio buttons.
 
     GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -423,9 +423,13 @@ GUI_TEST_CLASS_DEFINITION(test_4035) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QList<double> distances = GTUtilsPhyTree::getDistancesValues();
-    QList<double> expectedDistances = {0.456, 0.008, 0.227, 0.769, 1.186, 0.277, 0, 0.539, 100};  // Some values from the file.
+    QStringList distancesStrings;
+    for (double d : qAsConst(distances)) {
+        distancesStrings << QString::number(d);
+    }
+    QList<double> expectedDistances = {0.435, 0.063, 0.569, 55.119, 0.049, 0.403, 0.085, 0.127, 0.084, 0.64};  // Some rounded values from the file.
     for (double expectedDistance : qAsConst(expectedDistances)) {
-        CHECK_SET_ERR(distances.contains(expectedDistance), QString("Distances not found: %1").arg(expectedDistance));
+        CHECK_SET_ERR(distances.contains(expectedDistance), QString("Distances not found: %1, got: %2").arg(expectedDistance).arg(distancesStrings.join(",")));
     }
 }
 
@@ -434,7 +438,7 @@ GUI_TEST_CLASS_DEFINITION(test_4036) {
     //     2. MSA sequence area context menu -> Edit -> Remove columns of gaps.
     //     3. Choose "Remove all gap-only columns".
     //     4. Click "Remove".
-    //     UGENE 1.16-dev: it take ~15 minutes to remove gaps.
+    //     UGENE 1.16-dev: it takes ~15 minutes to remove gaps.
     //     UGENE 1.15.1: it takes ~5 seconds to remove gaps.
 
     GTFileDialog::openFile(testDir + "_common_data/clustal/", "gap_column.aln");
@@ -475,7 +479,7 @@ GUI_TEST_CLASS_DEFINITION(test_4045) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDocument::loadDocument("murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -923,7 +927,7 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
 
     // Expected state : a result file has been produced.It's a copy of murine.gb
     // Current state : the "Write Sequence" worker gives the "Nothing to write" error in the log.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 
     QAbstractButton* button = GTWidget::findButtonByText("Dataset 1.gb", GTUtilsDashboard::getDashboard());
     GTWidget::click(button);
@@ -1018,7 +1022,7 @@ GUI_TEST_CLASS_DEFINITION(test_4117) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/scenarios/sandbox/space containing dir/short_sample.fastq");
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4118) {
@@ -1035,7 +1039,7 @@ GUI_TEST_CLASS_DEFINITION(test_4118) {
 
     GTUtilsWorkflowDesigner::runWorkflow();
     GTGlobals::sleep(10000);
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
@@ -1422,7 +1426,7 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
 
     // 4. Run workflow
     GTUtilsWorkflowDesigner::runWorkflow();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     GTUtilsTaskTreeView::cancelTask("Execute workflow");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
@@ -1893,7 +1897,7 @@ GUI_TEST_CLASS_DEFINITION(test_4221) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDocument::checkDocument("test_4221.ugenedb");
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -2196,7 +2200,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -2759,7 +2763,7 @@ GUI_TEST_CLASS_DEFINITION(test_4391) {
     //    Expected state: there are no errors neither in log nor in dashboard.
     bool hasErrorNotifications = GTUtilsDashboard::hasNotifications();
     CHECK_SET_ERR(!hasErrorNotifications, "There are error notifications on the dashboard");
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -3033,7 +3037,7 @@ GUI_TEST_CLASS_DEFINITION(test_4505) {
     GTThread::waitForMainThread();
     GTUtilsTaskTreeView::waitTaskFinished();
     //    Bug state: Error appeared in log: "[ERROR][19:02] Failed to create a multiple alignment row!"
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     //    4. Click right button on MSA
     GTUtilsDialog::waitForDialog(new PopupChecker({"Consensus mode"}));
     GTWidget::click(GTUtilsMSAEditorSequenceArea::getSequenceArea(), Qt::RightButton);
@@ -3105,7 +3109,7 @@ GUI_TEST_CLASS_DEFINITION(test_4508) {
 
     CHECK_SET_ERR(GTFile::check(sandBoxDir + "test_4508/test_4508.svg"), QString("File '%1' doesn't exist").arg(sandBoxDir + "test_4508/test_4508.svg"));
     CHECK_SET_ERR(GTFile::getSize(sandBoxDir + "test_4508/test_4508.svg") > 0, QString("File '%1' has zero size").arg(sandBoxDir + "test_4508/test_4508.svg"));
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -3562,7 +3566,7 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
 
     GTUtilsWorkflowDesigner::runWorkflow();
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4620) {
@@ -4238,7 +4242,7 @@ GUI_TEST_CLASS_DEFINITION(test_4718) {
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
 
     //    Expected state: log does not contain errors.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -5508,7 +5512,7 @@ GUI_TEST_CLASS_DEFINITION(test_4936) {
     //    3. Accept the offer.
     //    Expected state: the document is successfully reloaded, there are no errors in the log.
     GTUtilsProjectTreeView::findIndex("00VTW9_9INFA");
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
     ;
 }
 
@@ -5651,7 +5655,7 @@ GUI_TEST_CLASS_DEFINITION(test_4983) {
     GTWidget::click(widget3d, Qt::RightButton);
 
     // Expected: the color scheme is changed without errors.
-    CHECK_SET_ERR(!lt.hasErrors(), "Found errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4985) {

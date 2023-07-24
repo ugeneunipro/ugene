@@ -92,6 +92,7 @@ public:
     static void filterProjectSequental(const QStringList& searchField, bool waitUntilSearchEnd);
     static QModelIndexList findFilteredIndexes(const QString& substring, const QModelIndex& parentIndex = QModelIndex());
     static void checkFilteredGroup(const QString& groupName, const QStringList& namesToCheck, const QStringList& alternativeNamesToCheck, const QStringList& excludedNames, const QStringList& skipGroupIfContains = QStringList());
+    static void checkFilteredResultIsEmpty();
     static void ensureFilteringIsDisabled();
 
     // returns true if the item exists, does not set error unlike findIndex method

@@ -49,19 +49,19 @@ public:
     using Workflow::Worker::tick;
 
     BaseWorker(Actor* a, bool autoTransitBus = true);
-    virtual ~BaseWorker();
+    ~BaseWorker() override;
 
     virtual ActorId getActorId() const;
 
     virtual void setDone();
 
     // reimplemented from Worker
-    virtual bool isDone() const;
-    virtual bool isReady() const;
+    bool isDone() const override;
+    bool isReady() const override;
 
     // reimplemented from CommunicationSubject
-    virtual bool addCommunication(const QString& name, CommunicationChannel* _ch);
-    virtual CommunicationChannel* getCommunication(const QString& name);
+    bool addCommunication(const QString& name, CommunicationChannel* _ch) override;
+    CommunicationChannel* getCommunication(const QString& name) override;
     virtual QStringList getOutputFiles();
 
     // if you want your worker support scripts -> you should call this function to get Messages from channels
@@ -132,23 +132,21 @@ protected:
 class U2LANG_EXPORT SimpleQueue : public CommunicationChannel {
 public:
     SimpleQueue();
-    virtual ~SimpleQueue() {
-    }
 
     // reimplemented from CommunicationChannel
-    virtual Message get();
-    virtual Message look() const;
-    virtual void put(const Message& m, bool isMessageRestored = false);
-    virtual int hasMessage() const;
-    virtual int takenMessages() const;
-    virtual int hasRoom(const DataType*) const;
-    virtual bool isEnded() const;
-    virtual void setEnded();
+    Message get() override;
+    Message look() const override;
+    void put(const Message& m, bool isMessageRestored = false) override;
+    int hasMessage() const override;
+    int takenMessages() const override;
+    int hasRoom(const DataType*) const override;
+    bool isEnded() const override;
+    void setEnded() override;
     // capacity is INT_MAX
-    virtual int capacity() const;
+    int capacity() const override;
     // does nothing
-    virtual void setCapacity(int);
-    virtual QQueue<Message> getMessages(int startIndex = 0, int endIndex = -1) const;
+    void setCapacity(int) override;
+    QQueue<Message> getMessages(int startIndex = 0, int endIndex = -1) const override;
 
 protected:
     // first in, first out
@@ -171,13 +169,11 @@ public:
 
 public:
     LocalDomainFactory();
-    virtual ~LocalDomainFactory() {
-    }
 
-    virtual Worker* createWorker(Actor*);
-    virtual CommunicationChannel* createConnection(Link*);
-    virtual Scheduler* createScheduler(Schema*);
-    virtual void destroy(Scheduler*, Schema*);
+    Worker* createWorker(Actor*) override;
+    CommunicationChannel* createConnection(Link*) override;
+    Scheduler* createScheduler(Schema*) override;
+    void destroy(Scheduler*, Schema*) override;
 
 };  // LocalDomainFactory
 

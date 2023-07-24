@@ -87,6 +87,7 @@ void MsaEditorMultilineWgt::deleteChild(int index) {
 
     MaEditorWgt* toDelete = getUI(index);
     auto layout = (QVBoxLayout*)uiChildrenArea->layout();
+    layout->addStrut(100);
 
     uiLog.details(tr("Deleting widget from grid, count %1, index %2").arg(layout->count()).arg(index));
     // TODO:ichebyki

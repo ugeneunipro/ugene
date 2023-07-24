@@ -76,6 +76,11 @@ static bool findMessage(const QString& substring, const QStringList& messages) {
     }
     return false;
 }
+
+void GTLogTracer::assertNoErrors() const {
+    CHECK_SET_ERR(!hasErrors(), "Found errors in log: " + getJoinedErrorString());
+}
+
 bool GTLogTracer::hasMessage(const QString& substring) const {
     return findMessage(substring, allMessages);
 }
