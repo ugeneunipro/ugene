@@ -4587,13 +4587,11 @@ GUI_TEST_CLASS_DEFINITION(test_2894) {
     // Press refresh tree button on the tree's toolbar.
     // Expected state: "Calculating Phylogenetic Tree" task has been started.
     GTWidget::click(GTAction::button("Refresh tree"));
-    int taskCount = GTUtilsTaskTreeView::countTasks("Calculating Phylogenetic Tree");
 
     // Press refresh button again.
     // Expected state: a new refresh task is not started, the old one is in process.
     GTWidget::click(GTAction::button("Refresh tree"));
 
-    taskCount = GTUtilsTaskTreeView::countTasks("Calculating Phylogenetic Tree");
     // Close the tree view while the task is running.
     // Expected state: UGENE doesn't crash, view is closed, task is canceled.
     GTUtilsProjectTreeView::click("test_2894_COI.nwk");
