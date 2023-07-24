@@ -140,6 +140,8 @@ static int asciiToVirtual(char key) {
             return kVK_ANSI_Period;
         case '\n':
             return kVK_Return;
+        case '`':
+            return 0x32;
         default:
             break;
     }
@@ -186,6 +188,8 @@ static char toKeyWithNoShift(char key) {
             return '[';
         case '}':
             return ']';
+        case '~':
+            return '`';
         default:
             break;
     }
