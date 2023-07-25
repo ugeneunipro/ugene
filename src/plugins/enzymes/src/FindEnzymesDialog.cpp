@@ -267,6 +267,8 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
     connect(tree, SIGNAL(itemChanged(QTreeWidgetItem*, int)), SLOT(sl_itemChanged(QTreeWidgetItem*, int)));
     connect(tree, &QTreeWidget::itemSelectionChanged, this, [this]() {
         auto item = tree->currentItem();
+        CHECK(item != nullptr, );
+
         EnzymeTreeItem* ei = dynamic_cast<EnzymeTreeItem*>(item);
         EnzymeGroupTreeItem* gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
         if (ei != nullptr) {
