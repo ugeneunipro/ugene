@@ -103,10 +103,12 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
         return;
     }
 
+    expectedError = el.attribute("expected-error");
+
     // read expected results
     QString resultsStr = el.attribute("result");
-    if (resultsStr.isEmpty()) {
-        stateInfo.setError("'result' value not set");
+    if (resultsStr.isEmpty() && expectedError.isEmpty()) {
+        stateInfo.setError("'result' and expectedError values not set");
         return;
     }
     QStringList perEnzymeResults = resultsStr.split(";", QString::SkipEmptyParts);
@@ -158,13 +160,18 @@ void GTest_FindEnzymes::init(XMLTestFormat*, const QDomElement& el) {
 
 void GTest_FindEnzymes::prepare() {
     if (hasError() || isCanceled()) {
+        if (hasUnexpectedError()) {
+            setError(QString("Unexpected error, expected: \"%1\", current: \"%2\"").arg(expectedError).arg(getError()));
+        } else {
+            setError("");
+        }
         return;
     }
 
     // get sequence object
     seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
     if (seqObj == nullptr) {
-        stateInfo.setError(QString("Sequence context not found %1").arg(seqObjCtx));
+        setError(QString("Sequence context not found %1").arg(seqObjCtx));
         return;
     }
 
@@ -175,10 +182,16 @@ void GTest_FindEnzymes::prepare() {
 }
 
 QList<Task*> GTest_FindEnzymes::onSubTaskFinished(Task* subTask) {
-    QList<Task*> res;
     if (hasError() || isCanceled()) {
-        return res;
+        if (hasUnexpectedError()) {
+            setError("");
+        } else {
+            setError(QString("Unexpected error, expected: \"%1\", current: \"%2\"").arg(expectedError).arg(getError()));
+        }
+        return{};
     }
+
+    QList<Task*> res;
     if (subTask != loadTask || loadTask->enzymes.isEmpty()) {
         return res;
     }
@@ -271,6 +284,10 @@ void GTest_FindEnzymes::cleanup() {
     }
 
     XmlTest::cleanup();
+}
+
+bool GTest_FindEnzymes::hasUnexpectedError() const {
+    return !expectedError.isEmpty() && getError().contains(expectedError);
 }
 
 //////////////////////////////////////////////////////////////////////////
