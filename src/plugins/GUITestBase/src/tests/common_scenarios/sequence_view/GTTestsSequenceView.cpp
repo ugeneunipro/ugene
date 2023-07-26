@@ -2572,6 +2572,39 @@ GUI_TEST_CLASS_DEFINITION(test_0084) {
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0085) {
+    GTFileDialog::openFile(dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class custom : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            auto enzymesTree = GTWidget::findTreeWidget("tree", dialog);
+
+            QTreeWidgetItem* item = GTTreeWidget::findItem(enzymesTree, "AbaSI");
+            GTTreeWidget::click(item);
+            GTUtilsTaskTreeView::waitTaskFinished();
+            auto text = GTWidget::findTextBrowser("teSelectedEnzymeInfo", dialog)->toHtml();
+            CHECK_SET_ERR(text.contains("77655"), QString("Enzyme info shoul contain 77655, current text: %1").arg(text));
+
+            GTKeyboardDriver::keyClick(Qt::Key_Down);
+            // Check that FindSingleEnzymeTask not created again
+            SchedulerListener l;
+            GTKeyboardDriver::keyClick(Qt::Key_Up);
+            int tc = l.getRegisteredTaskCount();
+            CHECK_SET_ERR(tc == 0, "No tasks should be registred");
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new FindEnzymesDialogFiller(QStringList{}, new custom()));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({ "Analyze", "Find restriction sites..." }));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+
+
+}
 
 }  // namespace GUITest_common_scenarios_sequence_view
 
