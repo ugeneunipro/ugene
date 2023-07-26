@@ -275,7 +275,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4013) {
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     int columnsNumber = GTUtilsMSAEditorSequenceArea::getNumVisibleBases();
@@ -286,7 +286,8 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
     QRect oldRect = GTUtilsMSAEditorSequenceArea::getSelectedRect();
 
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTKeyboardDriver::keySequence("ACCCTATTTTATACCAACAAACTare");
+    GTClipboard::setText("ACCCTATTTTATACCAACAAACTare");
+    GTKeyboardUtils::paste();
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -529,7 +530,7 @@ GUI_TEST_CLASS_DEFINITION(test_4059) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // 3. Unload the document.
-    MessageBoxDialogFiller* filler = new MessageBoxDialogFiller("No");
+    auto filler = new MessageBoxDialogFiller("No");
     GTUtilsDialog::waitForDialog(filler);
     GTUtilsDocument::unloadDocument("text.txt", false);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -635,7 +636,7 @@ GUI_TEST_CLASS_DEFINITION(test_4071) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // 4. Unload and load document.
-    MessageBoxDialogFiller* filler = new MessageBoxDialogFiller("No");
+    auto filler = new MessageBoxDialogFiller("No");
     GTUtilsDialog::waitForDialog(filler);
     GTUtilsDocument::unloadDocument("human_T1.fa", false);
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -802,7 +803,7 @@ GUI_TEST_CLASS_DEFINITION(test_4093) {
       << ImportAnnotationsToCsvFiller::RoleColumnParameter(3, new ImportAnnotationsToCsvFiller::EndParameter(true))
       << ImportAnnotationsToCsvFiller::RoleColumnParameter(4, new ImportAnnotationsToCsvFiller::StrandMarkParameter(false, ""));
 
-    ImportAnnotationsToCsvFiller* filler = new ImportAnnotationsToCsvFiller(testDir + "_common_data/scenarios/_regression/4093/test.xls", sandBoxDir + "test_4093.gb", ImportAnnotationsToCsvFiller::Genbank, true, true, "	", 0, "", true, false, "misc_feature", r);
+    auto filler = new ImportAnnotationsToCsvFiller(testDir + "_common_data/scenarios/_regression/4093/test.xls", sandBoxDir + "test_4093.gb", ImportAnnotationsToCsvFiller::Genbank, true, true, "	", 0, "", true, false, "misc_feature", r);
 
     GTUtilsDialog::add(new PopupChooserByText({"Export/Import", "Import annotations from CSV file..."}));
     GTUtilsDialog::add(filler);
@@ -1137,7 +1138,7 @@ GUI_TEST_CLASS_DEFINITION(test_4124) {
             GTWidget::click(GTWidget::findWidget("setResultFileNameButton", dialog));
 
             auto check = GTWidget::findCheckBox("firstMatchBox");
-            GTCheckBox::setChecked(check, 0);
+            GTCheckBox::setChecked(check, false);
 
             GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
         }
@@ -2187,7 +2188,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
 
     GTUtilsWorkflowDesigner::addElement("Write Plain Text");
 
-    GTFileDialogUtils* ob = new GTFileDialogUtils(sandBoxDir, "test_4295.etc");
+    auto ob = new GTFileDialogUtils(sandBoxDir, "test_4295.etc");
     GTUtilsDialog::waitForDialog(ob);
 
     QAbstractButton* button = GTAction::button("AddElementWithCommandLineTool");
@@ -2307,7 +2308,7 @@ GUI_TEST_CLASS_DEFINITION(test_4309) {
         }
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            QComboBox* comboBox = dialog->findChild<QComboBox*>();
+            auto comboBox = dialog->findChild<QComboBox*>();
             CHECK_SET_ERR(comboBox != nullptr, "ComboBox not found");
 
             QStringList formats = GTComboBox::getValues(comboBox);
@@ -3460,7 +3461,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTWidget::click(GTWidget::findWidget("ADV_single_sequence_widget_0"));
-    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(140425, 2);
+    auto filler = new SelectSequenceRegionDialogFiller(140425, 2);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
@@ -3519,7 +3520,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591_2) {
     GTFileDialog::openFile(dataDir + "samples/Genbank/NC_014267.1.gb");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTWidget::click(GTWidget::findWidget("ADV_single_sequence_widget_0"));
-    SelectSequenceRegionDialogFiller* filler = new SelectSequenceRegionDialogFiller(3, 3);
+    auto filler = new SelectSequenceRegionDialogFiller(3, 3);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
@@ -4444,7 +4445,7 @@ GUI_TEST_CLASS_DEFINITION(test_4732) {
     // 5. Click "No".
     // Expected: UGENE does not crash.
     GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
-    Scenario* scenario = new Scenario();
+    auto scenario = new Scenario();
     auto filler = new ExportSelectedRegionFiller(scenario);
     scenario->setFiller(filler);
     GTUtilsDialog::add(filler);
@@ -4554,7 +4555,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MSAEditor*>();
     QWidget* nameListWidget = editor->getUI()->getUI(0)->getEditorNameList();
 
     // 5. Open conext menu by right clicking "Name list area". Paste this subaliment throu context menu {Copy/Paste->Paste}
@@ -4587,7 +4588,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MSAEditor*>();
     QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
@@ -4607,7 +4608,7 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
-    MSAEditor* editor = mw->findChild<MSAEditor*>();
+    auto editor = mw->findChild<MSAEditor*>();
     QWidget* sequenceAreaWidget = editor->getUI()->getUI(0)->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(3, 0), QPoint(5, 4));
@@ -4920,14 +4921,14 @@ GUI_TEST_CLASS_DEFINITION(test_4804_1) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     //    2. Add dna extended sequence via context menu {Add->Sequence from file}
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard DNA\" to \"Extended DNA\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard DNA" to "Extended DNA")");
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804/ext_dna.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_LOAD, "Sequence from file"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     //    3. Add dna extended sequence via context menu {Add->Sequence from file}
-    GTUtilsNotifications::waitForNotification(true, "from \"Extended DNA\" to \"Raw\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Extended DNA" to "Raw")");
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804/ext_rna.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_LOAD, "Sequence from file"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
@@ -4943,14 +4944,14 @@ GUI_TEST_CLASS_DEFINITION(test_4804_2) {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804/ext_rna.fa"));
     GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from file..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard RNA\" to \"Extended RNA\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard RNA" to "Extended RNA")");
     GTUtilsDialog::checkNoActiveWaiters();
 
     //    3. Add dna extended sequence via context menu {Add->Sequence from file}
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804/standard_amino.fa"));
     GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from file..."});
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsNotifications::waitForNotification(true, "from \"Extended RNA\" to \"Raw\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Extended RNA" to "Raw")");
     GTUtilsDialog::checkNoActiveWaiters();
 }
 
@@ -4966,13 +4967,13 @@ GUI_TEST_CLASS_DEFINITION(test_4804_3) {
     //    2. Add  extended amino sequence by drag and drop
     QModelIndex toDragNDrop = GTUtilsProjectTreeView::findIndex("ext_amino_seq");
     GTUtilsProjectTreeView::dragAndDrop(toDragNDrop, GTUtilsMSAEditorSequenceArea::getSequenceArea(0));
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsDialog::checkNoActiveWaiters();
 
     //    3. Add  extended DNA sequence by drag and drop
     toDragNDrop = GTUtilsProjectTreeView::findIndex("ext_dna_seq");
     GTUtilsProjectTreeView::dragAndDrop(toDragNDrop, GTUtilsMSAEditorSequenceArea::getSequenceArea(0));
-    GTUtilsNotifications::waitForNotification(true, "from \"Extended amino acid\" to \"Raw\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Extended amino acid" to "Raw")");
     GTUtilsDialog::checkNoActiveWaiters();
 }
 
@@ -4982,7 +4983,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_4) {
 
     // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard DNA\" to \"Raw\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard DNA" to "Raw")");
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("MAFFT");
     GTUtilsDialog::checkNoActiveWaiters();
@@ -4994,7 +4995,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
 
     // Use 'align_new_sequences_to_alignment_action' toolbar button to align Extended rna sequence to alignment
     // Expected state: corresponding notification message has appeared
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard RNA\" to \"Raw\". Use \"Undo\", if you'd like to restore the original alignment.");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard RNA" to "Raw". Use "Undo", if you'd like to restore the original alignment.)");
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("UGENE");
     GTUtilsDialog::checkNoActiveWaiters();
@@ -5010,7 +5011,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_6) {
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_LOAD, "Sequence from file"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
 
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard DNA\" to \"Raw\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard DNA" to "Raw")");
     GTUtilsDialog::checkNoActiveWaiters();
 
     //   Undo the changes: no notification is expected.
@@ -5020,7 +5021,7 @@ GUI_TEST_CLASS_DEFINITION(test_4804_6) {
 
     //   Redo the changes and check the notification again.
     GTUtilsMsaEditor::redo();
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard DNA\" to \"Raw\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard DNA" to "Raw")");
     GTUtilsDialog::checkNoActiveWaiters();
 }
 
@@ -5033,7 +5034,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_1) {
 
     GTUtilsDialog::waitForDialog(new ProjectTreeItemSelectorDialogFiller("ext_dna.fa", "ext_dna_seq"));
     GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from current project..."});
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Raw\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Raw")");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -5047,7 +5048,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_2) {
     GTUtilsDialog::waitForDialog(new ProjectTreeItemSelectorDialogFiller("ext_amino.fa", "ext_amino_seq"));
     GTUtilsDialog::waitForDialog(new PopupChooser({"MSAE_MENU_LOAD_SEQ", "Sequence from current project"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -5059,7 +5060,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_3) {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "Align sequences to profile with MUSCLE"}, GTGlobals::UseMouse));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -5071,7 +5072,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_4) {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "Align sequences to profile with MUSCLE"}, GTGlobals::UseMouse));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -5081,7 +5082,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_5) {
 
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("Align sequences to alignment with MUSCLE");
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsDialog::checkNoActiveWaiters();
 }
 
@@ -5093,7 +5094,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_6) {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "Align profile to profile with MUSCLE"}, GTGlobals::UseMouse));
     GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -5105,7 +5106,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_7) {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "Align profile to profile with MUSCLE"}, GTGlobals::UseMouse));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -5115,7 +5116,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_8) {
 
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu("Align alignment to alignment with MUSCLE");
-    GTUtilsNotifications::waitForNotification(true, "from \"Standard amino acid\" to \"Extended amino acid\"");
+    GTUtilsNotifications::waitForNotification(true, R"(from "Standard amino acid" to "Extended amino acid")");
     GTUtilsDialog::checkNoActiveWaiters();
 }
 
@@ -5421,8 +5422,8 @@ GUI_TEST_CLASS_DEFINITION(test_4913) {
         }
     };
 
-    CheckWordSizeScenario* scenario = new CheckWordSizeScenario();
-    RemoteBLASTDialogFiller* filler = new RemoteBLASTDialogFiller(scenario);
+    auto scenario = new CheckWordSizeScenario();
+    auto filler = new RemoteBLASTDialogFiller(scenario);
 
     GTUtilsDialog::waitForDialog(filler);
     GTUtilsDialog::waitForDialog(new PopupChooser({"ADV_MENU_ANALYSE", "Query NCBI BLAST database"}));
