@@ -2895,7 +2895,7 @@ GUI_TEST_CLASS_DEFINITION(test_0967_3) {
     // 1. Open Tasks view: expected state: Tasks View shown.
     // 2. Minimize and then restore the main window:  Tasks View should be not hidden.
 
-    GTUtilsTaskTreeView::openView();
+    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
     auto tasksView = GTWidget::findWidget("taskViewTree");
     CHECK_SET_ERR(tasksView->isVisible(), "taskViewTree is not visible (check #1)");
 
