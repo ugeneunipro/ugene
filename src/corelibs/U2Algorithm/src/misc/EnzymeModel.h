@@ -76,6 +76,10 @@ public:
 
 class U2ALGORITHM_EXPORT EnzymeData : public QSharedData {
 public:
+    bool operator==(const EnzymeData& other) const {
+        return id == other.id && seq == other.seq;
+    }
+
     QString id;
     QString accession;
     QString type;

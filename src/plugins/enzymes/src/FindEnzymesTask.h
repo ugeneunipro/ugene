@@ -138,6 +138,7 @@ public:
     void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) override;
     void onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& ti) override;
     void cleanup() override;
+    SEnzymeData getEnzyme() const;
 
     /**
      * Returns estimation for a number of results found both strands of the sequence of the given length

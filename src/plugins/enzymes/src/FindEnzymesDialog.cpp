@@ -62,7 +62,8 @@ QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
 QStringList EnzymesSelectorWidget::loadedSuppliers;
 
-EnzymesSelectorWidget::EnzymesSelectorWidget() {
+EnzymesSelectorWidget::EnzymesSelectorWidget(ADVSequenceObjectContext* _advSequenceContext)
+    : advSequenceContext(_advSequenceContext) {
     setupUi(this);
     ignoreItemChecks = false;
 
@@ -129,6 +130,20 @@ QList<SEnzymeData> EnzymesSelectorWidget::getSelectedEnzymes() {
         }
     }
     return selectedEnzymes;
+}
+
+EnzymeTreeItem* EnzymesSelectorWidget::getEnzymeTreeItemByEnzymeData(const SEnzymeData& enzyme) const {
+    for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
+        auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
+        for (int j = 0, m = gi->childCount(); j < m; j++) {
+            auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
+            CHECK_CONTINUE(*item->enzyme.constData() == *enzyme.constData());
+
+            return item;
+        }
+    }
+
+    return nullptr;
 }
 
 QList<SEnzymeData> EnzymesSelectorWidget::getLoadedEnzymes() {
@@ -273,6 +288,15 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
         EnzymeGroupTreeItem* gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
         if (ei != nullptr) {
             teSelectedEnzymeInfo->setHtml(ei->getEnzymeInfo());
+            if (!ei->hasNumberCalculationTask && advSequenceContext != nullptr) {
+                auto seqObj = advSequenceContext->getSequenceObject();
+                const auto& er = seqObj->getEntityRef();
+                U2Region reg(0, seqObj->getSequenceLength());
+                auto t = new FindSingleEnzymeTask(er, reg, ei->enzyme, nullptr, seqObj->isCircular());
+                AppContext::getTaskScheduler()->registerTopLevelTask(t);
+                connect(t, &FindSingleEnzymeTask::si_stateChanged, this, &EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged);
+                ei->hasNumberCalculationTask = true;
+            }
         } else if (gi != nullptr) {
             teSelectedEnzymeInfo->clear();
         } else {
@@ -334,6 +358,23 @@ void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
         }
         gi->setHidden(numHiddenItems == itemCount);
     }
+}
+
+void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
+    auto t = qobject_cast<FindSingleEnzymeTask*>(sender());
+    SAFE_POINT(t != nullptr, L10N::nullPointerError("FindSingleEnzymeTask"), );
+    CHECK(t->getState() == Task::State_Finished, );
+
+    auto taskEnzyme = t->getEnzyme();
+    auto taskItem = getEnzymeTreeItemByEnzymeData(taskEnzyme);
+    CHECK(taskItem != nullptr, );
+
+    taskItem->enzymesNumber = t->getResults().size();
+    auto currentItem = dynamic_cast<EnzymeTreeItem*>(tree->currentItem());
+    CHECK(currentItem != nullptr, );
+    CHECK(*currentItem->enzyme.constData() == *taskItem->enzyme.constData(), );
+
+    teSelectedEnzymeInfo->setHtml(currentItem->getEnzymeInfo());
 }
 
 void EnzymesSelectorWidget::updateStatus() {
@@ -611,7 +652,7 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
     initSettings();
 
     auto vl = new QVBoxLayout();
-    enzSel = new EnzymesSelectorWidget();
+    enzSel = new EnzymesSelectorWidget(advSequenceContext);
     vl->setMargin(0);
     vl->addWidget(enzSel);
     enzymesSelectorWidget->setLayout(vl);
@@ -898,6 +939,9 @@ QString EnzymeTreeItem::getEnzymeInfo() const {
     QString result;
     result += QString("<a href=\"http://rebase.neb.com/rebase/enz/%1.html\">%1</a>")
                   .arg(text(Column::Id));
+    if (enzymesNumber != INCORRECT_ENZYMES_NUMBER) {
+        result += " (" + tr("%n sites", "", enzymesNumber) + ")";
+    }
     auto typeString = data(Column::Type, Qt::ToolTipRole).toString();
     if (!typeString.isEmpty()) {
         auto lower = typeString.front().toLower();

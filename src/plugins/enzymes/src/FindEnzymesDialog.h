@@ -36,12 +36,13 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
+class EnzymeTreeItem;
 class RegionSelectorWithExcludedRegion;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
-    EnzymesSelectorWidget();
+    EnzymesSelectorWidget(ADVSequenceObjectContext* advSequenceContext = nullptr);
     ~EnzymesSelectorWidget() override;
 
     static void setupSettings();
@@ -50,6 +51,12 @@ public:
     static QList<SEnzymeData> getLoadedEnzymes();
     static QStringList getLoadedSuppliers();
     QList<SEnzymeData> getSelectedEnzymes();
+    /*
+     * Get enzyme tree item by this enzyme.
+     * \param enzyme An enzyme we should find tree item for.
+     * \return Returns pointer to item (if exists).
+    **/
+    EnzymeTreeItem* getEnzymeTreeItemByEnzymeData(const SEnzymeData& enzyme) const;
     int getNumSelected();
     int getTotalNumber() const {
         return totalEnzymes;
@@ -73,6 +80,7 @@ private slots:
     void sl_openDBPage();
     void sl_itemChanged(QTreeWidgetItem* item, int col);
     void sl_filterTextChanged(const QString& filterText);
+    void sl_findSingleEnzymeTaskStateChanged();
 
 private:
     static void calculateSuppliers();
@@ -88,6 +96,8 @@ private:
     // saves selection between calls to getSelectedEnzymes()
     static QSet<QString> lastSelection;
     static QStringList loadedSuppliers;
+
+    ADVSequenceObjectContext* advSequenceContext = nullptr;
 
     int totalEnzymes;
     bool ignoreItemChecks;
@@ -121,7 +131,6 @@ private:
     RegionSelectorWithExcludedRegion* regionSelector;
 };
 
-class EnzymeTreeItem;
 class EnzymeGroupTreeItem : public QTreeWidgetItem {
 public:
     EnzymeGroupTreeItem(const QString& s);
@@ -136,6 +145,12 @@ class EnzymeTreeItem : public QTreeWidgetItem {
 public:
     EnzymeTreeItem(const SEnzymeData& ed);
     const SEnzymeData enzyme;
+    static constexpr int INCORRECT_ENZYMES_NUMBER = -1;
+    // Number of enzymes in the current sequence
+    int enzymesNumber = INCORRECT_ENZYMES_NUMBER;
+    // True if FindEnzymesTask, which calculates number of enzymes,
+    // has already been run
+    bool hasNumberCalculationTask = false;
     bool operator<(const QTreeWidgetItem& other) const override;
     // Get text information about this enzyme
     QString getEnzymeInfo() const;
