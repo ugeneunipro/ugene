@@ -24,10 +24,21 @@ set(CMAKE_CXX_STANDARD 14)
 # CMake generators if no build type is set.
 if (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
-endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+endif ()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
+
+if (WIN32)
+    add_definitions(
+            -D_UNICODE
+            -DUNICODE
+            -DUGENE_USE_BUNDLED_ZLIB
+            -DNOMINMAX
+            -D_XKEYCHECK_H
+            -D_USE_MATH_DEFINES
+    )
+endif ()
 
 #set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE INTERNAL "" FORCE)
 
