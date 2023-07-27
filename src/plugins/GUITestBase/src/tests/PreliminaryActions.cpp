@@ -105,11 +105,11 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0004) {
 }
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
-    // Click somewhere to the main window in mac to be sure that the focus is on the application
+    // Click somewhere to the main window on Mac or Windows to be sure that the focus is on the application
 
     QMainWindow* mw = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mw != nullptr, "main window is NULL");
-    if (isOsMac()) {
+    if (isOsMac() || isOsWindows()) {
         GTWidget::click(mw, Qt::LeftButton, QPoint(200, 200));
     }
 }
