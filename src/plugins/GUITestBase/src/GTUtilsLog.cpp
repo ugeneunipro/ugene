@@ -89,6 +89,10 @@ bool GTLogTracer::hasError(const QString& substring) const {
     return findMessage(substring, errorMessages);
 }
 
+void GTLogTracer::checkMessage(const QString& substring) const {
+    CHECK_SET_ERR(hasMessage(substring), "Expected message not found: " + substring);
+}
+
 #define GT_CLASS_NAME "GTUtilsLog"
 
 void GTUtilsLog::checkMessageWithWait(const GTLogTracer& lt, const QString& message, int timeoutMillis) {
