@@ -2586,7 +2586,7 @@ GUI_TEST_CLASS_DEFINITION(test_0085) {
             GTTreeWidget::click(item);
             GTUtilsTaskTreeView::waitTaskFinished();
             auto text = GTWidget::findTextBrowser("teSelectedEnzymeInfo", dialog)->toHtml();
-            CHECK_SET_ERR(text.contains("77655"), QString("Enzyme info shoul contain 77655, current text: %1").arg(text));
+            CHECK_SET_ERR(text.contains("77655"), QString("Enzyme info should contain 77655, current text: %1").arg(text));
 
             GTKeyboardDriver::keyClick(Qt::Key_Down);
             // Check that FindSingleEnzymeTask not created again

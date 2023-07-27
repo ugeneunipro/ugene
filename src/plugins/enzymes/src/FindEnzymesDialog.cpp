@@ -363,6 +363,7 @@ void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
 void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     auto t = qobject_cast<FindSingleEnzymeTask*>(sender());
     SAFE_POINT(t != nullptr, L10N::nullPointerError("FindSingleEnzymeTask"), );
+    CHECK_OP(t->getStateInfo(), );
     CHECK(t->getState() == Task::State_Finished, );
 
     auto taskEnzyme = t->getEnzyme();
