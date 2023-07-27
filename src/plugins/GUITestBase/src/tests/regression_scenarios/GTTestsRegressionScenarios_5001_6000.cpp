@@ -4509,9 +4509,8 @@ GUI_TEST_CLASS_DEFINITION(test_5851) {
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    CHECK_SET_ERR(lt.hasMessage("Your \"Temporary files\" directory contains spaces, \"makeblastdb\" external tool can't correct process it."
-                                " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is:"),
-                  "Expected message not found");
+    lt.checkMessage("Your \"Temporary files\" directory contains spaces, \"makeblastdb\" external tool can't correct process it."
+                    " Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is:");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5853) {

@@ -47,6 +47,9 @@ public:
     /** Checks if there was error log message with the given substring (case insensitive). */
     bool hasError(const QString& substring) const;
 
+    /** Checks that message exists. Fails if does not. */
+    void checkMessage(const QString& substring) const;
+
     /** Clears all cached messages. */
     void clear();
 
