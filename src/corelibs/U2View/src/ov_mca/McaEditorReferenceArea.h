@@ -62,7 +62,7 @@ private:
     McaEditor* editor;
     McaEditorWgt* ui;
     McaReferenceAreaRenderer* renderer;
-    qint64 firstPressedSelectionPosition;
+    qint64 firstPressedSelectionPosition = -1;
 };
 
 class McaEditorReferenceRenderArea : public PanViewRenderArea {

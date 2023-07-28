@@ -43,8 +43,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt* ui, SequenceObjectC
     : PanView(ui, ctx, McaEditorReferenceRenderAreaFactory(ui, ui != nullptr ? ui->getEditor() : nullptr)),
       editor(ui != nullptr ? ui->getEditor() : nullptr),
       ui(ui),
-      renderer(dynamic_cast<McaReferenceAreaRenderer*>(getRenderArea()->getRenderer())),
-      firstPressedSelectionPosition(-1) {
+      renderer(dynamic_cast<McaReferenceAreaRenderer*>(getRenderArea()->getRenderer())) {
     SAFE_POINT(renderer != nullptr, "Renderer is NULL", );
 
     setObjectName("mca_editor_reference_area");
@@ -119,7 +118,8 @@ void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
         Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
         const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
         if (!isShiftPressed) {
-            firstPressedSelectionPosition = -1;
+            QPoint areaPoint = toRenderAreaPoint(e->pos());
+            firstPressedSelectionPosition = renderArea->coordToPos(areaPoint);
             editor->getSelectionController()->clearSelection();
         }
     } else {
@@ -139,6 +139,7 @@ void McaEditorReferenceArea::mouseMoveEvent(QMouseEvent* e) {
 void McaEditorReferenceArea::mouseReleaseEvent(QMouseEvent* e) {
     if (e->button() == Qt::LeftButton) {
         setReferenceSelection(e);
+        firstPressedSelectionPosition = -1;
         e->accept();
     } else {
         PanView::mouseReleaseEvent(e);
@@ -153,7 +154,7 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent* event) {
     const qint64 selectionEndPos = selectedRegion.endPos() - 1;
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
-    qint64 baseToScroll = firstPressedSelectionPosition;
+    qint64 baseToScroll;
 
     switch (key) {
         case Qt::Key_Left:
@@ -237,8 +238,8 @@ void McaEditorReferenceArea::setReferenceSelection(QMouseEvent* e) {
     QPoint p = e->pos();
     QPoint areaPoint = toRenderAreaPoint(p);
     qint64 pos = renderArea->coordToPos(areaPoint);
-    qint64 start = 0;
-    qint64 count = 0;
+    qint64 start;
+    qint64 count;
     if (firstPressedSelectionPosition != -1) {
         start = qMin(pos, firstPressedSelectionPosition);
         count = qAbs(pos - firstPressedSelectionPosition) + 1;

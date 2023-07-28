@@ -63,6 +63,7 @@
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
+#include <U2View/McaEditorReferenceArea.h>
 
 #include "GTTestsRegressionScenarios_5001_6000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -3189,7 +3190,8 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
 
     // Select all chars in the reference from here to the end.
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    int newXPos = GTUtilsMdi::activeWindow()->mapToGlobal(GTUtilsMdi::activeWindow()->rect().topRight()).x() - 1;
+    QWidget* referenceArea = GTUtilsMcaEditor::getReferenceArea();
+    int newXPos = referenceArea->mapToGlobal(referenceArea->rect().topRight()).x() - 1;
     GTMouseDriver::dragAndDrop(currentPos, QPoint(newXPos, currentPos.y()));
 
     // Expected: selected length = 4.
