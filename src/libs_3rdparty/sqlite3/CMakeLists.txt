@@ -12,6 +12,6 @@ add_definitions(
         -DTHREADSAFE
 )
 
-add_library(ugenedb SHARED ${HDRS} ${SRCS})
+add_library(ugenedb STATIC ${HDRS} ${SRCS})
 
 target_link_libraries(ugenedb)

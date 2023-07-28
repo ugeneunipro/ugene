@@ -21,23 +21,16 @@
 
 #include <qglobal.h>
 #ifdef Q_OS_WIN
+#    ifndef _DEBUG
+#        include <QDir>
+#    endif
 
 #    include <client/windows/handler/exception_handler.h>
 
-#    include <QDir>
-
-#    include <U2Core/AppContext.h>
 #    include <U2Core/U2SafePoints.h>
 
-#    include "CrashHandler.h"
 #    include "CrashHandlerArgsHelper.h"
 #    include "CrashHandlerPrivateWin.h"
-
-#    if defined(Q_OS_WIN32)
-extern "C" {
-void rollbackStack();
-}
-#    endif
 
 namespace U2 {
 
@@ -107,11 +100,6 @@ bool CrashHandlerPrivateWin::breakpadCallback(const wchar_t* dump_path,
 }
 
 void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS* exinfo) {
-    if (exinfo->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW) {
-#    if defined(Q_OS_WIN32)
-        rollbackStack();  // TODO:need hack for x86_64
-#    endif
-    }
     st.ShowCallstack(OpenThread(READ_CONTROL, false, breakpadHandler->get_requesting_thread_id()), exinfo->ContextRecord);
 }
 

@@ -57,8 +57,12 @@ ugene.pro.user
 # CLion build dir
 cmake-build-*
 
+# CMake artifacts
+/out
+
 # Qt generated
 **/GeneratedFiles/*
+moc_predefs.h*
 
 # Local/tmp files for personal developer needs in the same root folder
 # to be available from IDE context.

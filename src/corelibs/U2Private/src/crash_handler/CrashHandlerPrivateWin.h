@@ -35,13 +35,13 @@ namespace U2 {
 class CrashHandlerPrivateWin : public CrashHandlerPrivate {
 public:
     CrashHandlerPrivateWin();
-    ~CrashHandlerPrivateWin();
+    ~CrashHandlerPrivateWin() override;
 
-    void setupHandler();
-    void shutdown();
+    void setupHandler() override;
+    void shutdown() override;
 
-    QString getStackTrace() const;
-    QString getAdditionalInfo() const;
+    QString getStackTrace() const override;
+    QString getAdditionalInfo() const override;
 
 private:
     static bool breakpadCallback(const wchar_t* dump_path,

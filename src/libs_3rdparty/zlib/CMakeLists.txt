@@ -1,9 +1,16 @@
 project(zlib)
 
-
 if (CMAKE_COMPILER_IS_GNUCXX)
     # Disable all warning from 3rd party code.
     string(CONCAT GCC_WARNING_FLAGS " -w")
+endif ()
+
+if (WIN32)
+    add_definitions(
+            -W3
+            -D_CRT_SECURE_NO_WARNINGS
+            -D_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+    )
 endif ()
 
 include_directories(src)

@@ -130,8 +130,7 @@ defineTest( unix_not_mac ) {
 }
 
 
-# By default, UGENE uses bundled zlib.
-# To use system version on any platform set UGENE_USE_BUNDLED_ZLIB = 1
+# By default, UGENE uses bundled zlib (UGENE_USE_BUNDLED_ZLIB = 1).
 # Note: on Linux libpng depends on the current zlib version, so use of the system zlib is recommended.
 
 defineTest( use_bundled_zlib ) {

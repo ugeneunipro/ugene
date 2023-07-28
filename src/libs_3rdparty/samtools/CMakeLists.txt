@@ -8,6 +8,10 @@ include_directories(src)
 include_directories(src/samtools)
 include_directories(../../include)
 
+if (WIN32)
+    include_directories(src/samtools/win32)
+endif ()
+
 add_definitions(
         -D_FILE_OFFSET_BITS=64
         -D_LARGEFILE64_SOURCE
@@ -22,7 +26,7 @@ qt5_add_translation(QM_FILES ${TS_FILES})
 # Suppress original samtools warnings
 if (CMAKE_COMPILER_IS_GNUCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w")
-endif (CMAKE_COMPILER_IS_GNUCC)
+endif ()
 
 add_library(samtools STATIC ${HDRS} ${SRCS} ${QM_FILES})
 
