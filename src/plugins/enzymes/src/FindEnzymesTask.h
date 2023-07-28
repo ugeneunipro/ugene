@@ -128,7 +128,16 @@ private:
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
     Q_OBJECT
 public:
-    FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF);
+    /*
+     * \param sequenceObjectRef Reference to DB representation of sequence object.
+     * \param region Region to search enzymes in.
+     * \param enzyme Enzyme to find.
+     * \param l Every time result is found this object onResult will be called.
+     * \param isCircular Is sequence circular.
+     * \param maxResults Maximum number of results. Cancel and, optionally (see @failOnMaxResultExceed), fail if more results.
+     * \param failOnMaxResultExceed Fail if more than @maxResults if true or just cancel if false.
+    **/
+    FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF, bool failOnMaxResultExceed = true);
 
     void prepare() override;
 
@@ -155,6 +164,7 @@ private:
     QList<FindEnzymesAlgResult> resultList;
     QMutex resultsLock;
     bool isCircular;
+    bool failOnMaxResultExceed = true;
 };
 
 class FindEnzymesAutoAnnotationUpdater : public AutoAnnotationsUpdater {

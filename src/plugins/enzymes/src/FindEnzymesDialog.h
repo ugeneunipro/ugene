@@ -42,7 +42,7 @@ class RegionSelectorWithExcludedRegion;
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
-    EnzymesSelectorWidget(ADVSequenceObjectContext* advSequenceContext = nullptr);
+    EnzymesSelectorWidget(const QSharedPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
     ~EnzymesSelectorWidget() override;
 
     static void setupSettings();
@@ -97,7 +97,7 @@ private:
     static QSet<QString> lastSelection;
     static QStringList loadedSuppliers;
 
-    ADVSequenceObjectContext* advSequenceContext = nullptr;
+    QSharedPointer<ADVSequenceObjectContext> advSequenceContext = nullptr;
 
     int totalEnzymes;
     bool ignoreItemChecks;
@@ -107,7 +107,7 @@ private:
 class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
     Q_OBJECT
 public:
-    FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext);
+    FindEnzymesDialog(const QSharedPointer<ADVSequenceObjectContext>& advSequenceContext);
     void accept() override;
 
 private slots:
@@ -124,8 +124,7 @@ private:
     void initSettings();
     void saveSettings();
 
-    /** FindEnzymes dialog is always opened for some sequence in ADVSequenceView. */
-    ADVSequenceObjectContext* advSequenceContext;
+    QSharedPointer<ADVSequenceObjectContext> advSequenceContext;
 
     EnzymesSelectorWidget* enzSel;
     RegionSelectorWithExcludedRegion* regionSelector;
@@ -146,6 +145,8 @@ public:
     EnzymeTreeItem(const SEnzymeData& ed);
     const SEnzymeData enzyme;
     static constexpr int INCORRECT_ENZYMES_NUMBER = -1;
+    static constexpr int MAXIMUM_ENZYMES_NUMBER = 10'000;
+
     // Number of enzymes in the current sequence
     int enzymesNumber = INCORRECT_ENZYMES_NUMBER;
     // True if FindEnzymesTask, which calculates number of enzymes,

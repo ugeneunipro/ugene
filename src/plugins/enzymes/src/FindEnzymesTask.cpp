@@ -232,14 +232,15 @@ void FindEnzymesTask::cleanup() {
 
 //////////////////////////////////////////////////////////////////////////
 // find single enzyme task
-FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l, bool isCircular, int maxResults)
+FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l, bool isCircular, int maxResults, bool _failOnMaxResultExceed)
     : Task(tr("Find enzyme '%1'").arg(enzyme->id), TaskFlag_NoRun),
       sequenceObjectRef(sequenceObjectRef),
       region(region),
       enzyme(enzyme),
       maxResults(maxResults),
       resultListener(l),
-      isCircular(isCircular) {
+      isCircular(isCircular),
+      failOnMaxResultExceed(_failOnMaxResultExceed) {
 }
 
 void FindSingleEnzymeTask::prepare() {
@@ -273,7 +274,9 @@ void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2
     QMutexLocker locker(&resultsLock);
     if (resultList.size() > maxResults) {
         if (!isCanceled()) {
-            stateInfo.setError(FindEnzymesTask::tr("Number of results exceed %1, stopping").arg(maxResults));
+            if (failOnMaxResultExceed) {
+                stateInfo.setError(FindEnzymesTask::tr("Number of results exceed %1, stopping").arg(maxResults));
+            }
             cancel();
         }
         return;

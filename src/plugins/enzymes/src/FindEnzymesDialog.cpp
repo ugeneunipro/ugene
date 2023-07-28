@@ -62,7 +62,7 @@ QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
 QStringList EnzymesSelectorWidget::loadedSuppliers;
 
-EnzymesSelectorWidget::EnzymesSelectorWidget(ADVSequenceObjectContext* _advSequenceContext)
+EnzymesSelectorWidget::EnzymesSelectorWidget(const QSharedPointer<ADVSequenceObjectContext>& _advSequenceContext)
     : advSequenceContext(_advSequenceContext) {
     setupUi(this);
     ignoreItemChecks = false;
@@ -288,11 +288,11 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
         EnzymeGroupTreeItem* gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
         if (ei != nullptr) {
             teSelectedEnzymeInfo->setHtml(ei->getEnzymeInfo());
-            if (!ei->hasNumberCalculationTask && advSequenceContext != nullptr) {
+            if (!ei->hasNumberCalculationTask && !advSequenceContext.isNull()) {
                 auto seqObj = advSequenceContext->getSequenceObject();
                 const auto& er = seqObj->getEntityRef();
                 U2Region reg(0, seqObj->getSequenceLength());
-                auto t = new FindSingleEnzymeTask(er, reg, ei->enzyme, nullptr, seqObj->isCircular());
+                auto t = new FindSingleEnzymeTask(er, reg, ei->enzyme, nullptr, seqObj->isCircular(), EnzymeTreeItem::MAXIMUM_ENZYMES_NUMBER, false);
                 AppContext::getTaskScheduler()->registerTopLevelTask(t);
                 connect(t, &FindSingleEnzymeTask::si_stateChanged, this, &EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged);
                 ei->hasNumberCalculationTask = true;
@@ -363,14 +363,17 @@ void EnzymesSelectorWidget::sl_filterTextChanged(const QString& filterText) {
 void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     auto t = qobject_cast<FindSingleEnzymeTask*>(sender());
     SAFE_POINT(t != nullptr, L10N::nullPointerError("FindSingleEnzymeTask"), );
-    CHECK_OP(t->getStateInfo(), );
+
+    CHECK(!t->hasError(), );
     CHECK(t->getState() == Task::State_Finished, );
 
     auto taskEnzyme = t->getEnzyme();
     auto taskItem = getEnzymeTreeItemByEnzymeData(taskEnzyme);
     CHECK(taskItem != nullptr, );
 
-    taskItem->enzymesNumber = t->getResults().size();
+    int size = t->getResults().size();
+    bool maxResultsFound = t->isCanceled() && size == EnzymeTreeItem::MAXIMUM_ENZYMES_NUMBER;
+    taskItem->enzymesNumber = maxResultsFound ? size + 1 : size;
     auto currentItem = dynamic_cast<EnzymeTreeItem*>(tree->currentItem());
     CHECK(currentItem != nullptr, );
     CHECK(*currentItem->enzyme.constData() == *taskItem->enzyme.constData(), );
@@ -604,8 +607,8 @@ static const QStringList RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4
 
 static const int ANY_VALUE = -1;
 
-FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext)
-    : QDialog(advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(advSequenceContext) {
+FindEnzymesDialog::FindEnzymesDialog(const QSharedPointer<ADVSequenceObjectContext>& _advSequenceContext)
+    : QDialog(_advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(_advSequenceContext) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930747");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -616,6 +619,7 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContex
 
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
+
 
     for (const auto& k : qAsConst(RESTRICTION_SEQUENCE_LENGTH_VALUES)) {
         if (k != RESTRICTION_SEQUENCE_LENGTH_VALUES.back()) {
@@ -717,6 +721,11 @@ void FindEnzymesDialog::sl_updateVisibleEnzymes() {
 }
 
 void FindEnzymesDialog::accept() {
+    if (advSequenceContext.isNull()) {
+        QMessageBox::critical(this, tr("Error!"), tr("Sequence has been alredy closed."));
+        return;
+    }
+
     QList<SEnzymeData> selectedEnzymes = enzSel->getSelectedEnzymes();
 
     if (regionSelector->hasError()) {
@@ -734,7 +743,7 @@ void FindEnzymesDialog::accept() {
                                         QMessageBox::Yes,
                                         QMessageBox::No);
         if (ret == QMessageBox::Yes) {
-            QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext, ANNOTATION_GROUP_ENZYME);
+            QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext.get(), ANNOTATION_GROUP_ENZYME);
             if (toggleAction) {
                 toggleAction->setChecked(false);
             }
@@ -765,7 +774,7 @@ void FindEnzymesDialog::accept() {
 
     saveSettings();
 
-    AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext, ANNOTATION_GROUP_ENZYME);
+    AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext.get(), ANNOTATION_GROUP_ENZYME);
 
     QDialog::accept();
 }
@@ -890,6 +899,7 @@ void FindEnzymesDialog::saveSettings() {
     settings->setValue(EnzymeSettings::SHOW_PALINDROMIC, cbShowPalindromic->isChecked());
     settings->setValue(EnzymeSettings::SHOW_UNINTERRUPTED, cbShowUninterrupted->isChecked());
     settings->setValue(EnzymeSettings::SHOW_NONDEGENERATE, cbShowNondegenerate->isChecked());
+    CHECK(!advSequenceContext.isNull(), );
 
     U2SequenceObject* sequenceObject = advSequenceContext->getSequenceObject();
     // Empty search region is processed as 'Whole sequence' by auto-annotation task.
@@ -941,7 +951,11 @@ QString EnzymeTreeItem::getEnzymeInfo() const {
     result += QString("<a href=\"http://rebase.neb.com/rebase/enz/%1.html\">%1</a>")
                   .arg(text(Column::Id));
     if (enzymesNumber != INCORRECT_ENZYMES_NUMBER) {
-        result += " (" + tr("%n sites", "", enzymesNumber) + ")";
+        if (enzymesNumber > MAXIMUM_ENZYMES_NUMBER) {
+            result += tr(" (>10000 sites)");
+        } else {
+            result += " (" + tr("%n sites", "", enzymesNumber) + ")";
+        }
     }
     auto typeString = data(Column::Type, Qt::ToolTipRole).toString();
     if (!typeString.isEmpty()) {
