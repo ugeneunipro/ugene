@@ -2585,7 +2585,7 @@ GUI_TEST_CLASS_DEFINITION(test_0085) {
             QTreeWidgetItem* item = GTTreeWidget::findItem(enzymesTree, "AbaSI");
             GTTreeWidget::click(item);
             GTUtilsTaskTreeView::waitTaskFinished();
-            auto text = GTWidget::findTextBrowser("teSelectedEnzymeInfo", dialog)->toHtml();
+            auto text = GTWidget::findTextBrowser("teSelectedEnzymeInfo", dialog)->toPlainText();
             CHECK_SET_ERR(text.contains(">10000 sites"), QString("Enzyme info should contain \">10000 sites\", current text: %1").arg(text));
 
             GTKeyboardDriver::keyClick(Qt::Key_Down);
