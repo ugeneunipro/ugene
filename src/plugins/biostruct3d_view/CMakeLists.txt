@@ -6,4 +6,6 @@ include(../../Plugin.cmake)
 
 if (APPLE)
     target_link_libraries(biostruct3d_view "-framework OpenGL")
+elseif (MSVC)
+    target_link_libraries(biostruct3d_view opengl32 GLU32)
 endif ()

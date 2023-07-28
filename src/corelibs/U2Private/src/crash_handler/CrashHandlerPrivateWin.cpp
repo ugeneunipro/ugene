@@ -21,6 +21,9 @@
 
 #include <qglobal.h>
 #ifdef Q_OS_WIN
+#    ifndef _DEBUG
+#        include <QDir>
+#    endif
 
 #    include <client/windows/handler/exception_handler.h>
 
