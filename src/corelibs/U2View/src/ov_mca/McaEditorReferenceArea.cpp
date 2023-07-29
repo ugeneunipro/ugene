@@ -154,11 +154,10 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent* event) {
     const qint64 selectionEndPos = selectedRegion.endPos() - 1;
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
-    qint64 baseToScroll;
-
     switch (key) {
         case Qt::Key_Left:
             if (!selectedRegion.isEmpty() && selectedRegion.startPos > 0) {
+                qint64 baseToScroll = -1;
                 if (isShiftPressed) {
                     if (selectionEndPos == firstPressedSelectionPosition) {
                         selectedRegion.startPos--;
@@ -167,16 +166,16 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent* event) {
                     } else if (selectedRegion.startPos == firstPressedSelectionPosition) {
                         selectedRegion.length--;
                         baseToScroll = selectionEndPos;
-                    } else {
-                        assert(false);
                     }
                 } else {
                     selectedRegion.startPos--;
                     firstPressedSelectionPosition--;
                     baseToScroll = selectedRegion.startPos;
                 }
-                ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
-                ui->getScrollController()->scrollToBase(baseToScroll, width());
+                ctx->getSequenceSelection()->setSelectedRegions({selectedRegion});
+                if (baseToScroll >= 0) {
+                    ui->getScrollController()->scrollToBase(baseToScroll, width());
+                }
             }
             accepted = true;
             break;
@@ -185,6 +184,7 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent* event) {
             break;
         case Qt::Key_Right:
             if (!selectedRegion.isEmpty() && selectionEndPos + 1 < ctx->getSequenceLength()) {
+                qint64 baseToScroll = -1;
                 if (isShiftPressed) {
                     if (selectedRegion.startPos == firstPressedSelectionPosition) {
                         selectedRegion.length++;
@@ -193,16 +193,16 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent* event) {
                         selectedRegion.startPos++;
                         selectedRegion.length--;
                         baseToScroll = selectedRegion.startPos;
-                    } else {
-                        assert(false);
                     }
                 } else {
                     selectedRegion.startPos++;
                     firstPressedSelectionPosition++;
                     baseToScroll = selectionEndPos + 1;
                 }
-                ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
-                ui->getScrollController()->scrollToBase(baseToScroll, width());
+                ctx->getSequenceSelection()->setSelectedRegions({selectedRegion});
+                if (baseToScroll >= 0) {
+                    ui->getScrollController()->scrollToBase(baseToScroll, width());
+                }
             }
             accepted = true;
             break;
