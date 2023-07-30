@@ -139,7 +139,6 @@ void McaEditorReferenceArea::mouseMoveEvent(QMouseEvent* e) {
 void McaEditorReferenceArea::mouseReleaseEvent(QMouseEvent* e) {
     if (e->button() == Qt::LeftButton) {
         setReferenceSelection(e);
-        firstPressedSelectionPosition = -1;
         e->accept();
     } else {
         PanView::mouseReleaseEvent(e);
