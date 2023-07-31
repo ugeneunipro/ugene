@@ -1346,12 +1346,12 @@ GUI_TEST_CLASS_DEFINITION(test_5371) {
     GTLogTracer lt;
 
     GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(sandBoxDir + "5371.bam.ugenedb"));
-    auto ob = new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, GTGlobals::UseKey, GTFileDialogUtils::CopyPaste);
+    auto ob = new GTFileDialogUtils(testDir + "_common_data/scenarios/_regression/5371/папка/", "асс ссембли.bam", GTFileDialogUtils::Open, GTGlobals::UseMouse, GTFileDialogUtils::CopyPaste);
     GTUtilsDialog::waitForDialog(ob);
     ob->openFileDialog();
 
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
-    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5382) {
