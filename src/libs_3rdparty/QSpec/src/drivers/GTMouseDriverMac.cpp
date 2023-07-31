@@ -44,7 +44,8 @@ static bool isPointInsideScreen(int x, int y) {
 }
 
 static bool selectAreaMac(int x, int y) {
-    qDebug("selectAreaMac %d %d", x, y);
+    QPoint currentPos = QCursor::pos();
+    qDebug("selectAreaMac %d %d -> %d %d", currentPos.x(), currentPos.y(), x, y);
     DRIVER_CHECK(isPointInsideScreen(x, y), QString("selectAreaMac: Invalid coordinates %1 %2").arg(x).arg(y));
 
     CGEventRef event = CGEventCreateMouseEvent(nullptr, kCGEventLeftMouseDragged, CGPointMake(x, y), kCGMouseButtonLeft /*ignored*/);

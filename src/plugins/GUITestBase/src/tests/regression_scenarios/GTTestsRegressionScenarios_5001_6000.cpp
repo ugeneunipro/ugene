@@ -63,6 +63,7 @@
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
+#include <U2View/McaEditorReferenceArea.h>
 
 #include "GTTestsRegressionScenarios_5001_6000.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -2119,7 +2120,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
             bool addToProject = GTCheckBox::getState("addToProjectCheckbox");
             CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-            // Expected state : "Result aligment" field is filled by default
+            // Expected state : "Result alignment" field is filled by default
             QString output = GTLineEdit::getText("outputLineEdit");
             CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
@@ -2165,7 +2166,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_1) {
 
     // Expected: selected length = 20
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection();
-    CHECK_SET_ERR(reg.length == 21, QString("Unexpexter selected length, expected: 20, current: %1").arg(reg.length));
+    CHECK_SET_ERR(reg.length == 21, QString("Unexpected selected length, expected: 20, current: %1").arg(reg.length));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5594_2) {
@@ -2305,7 +2306,7 @@ GUI_TEST_CLASS_DEFINITION(test_5594_3) {
 
     // Expected: selected length = 20
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection();
-    CHECK_SET_ERR(reg.length == 6, QString("Unexpexter selected length, expected: 6, current: %1").arg(reg.length));
+    CHECK_SET_ERR(reg.length == 6, QString("Unexpected selected length, expected: 6, current: %1").arg(reg.length));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5594_4) {
@@ -3189,7 +3190,8 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
 
     // Select all chars in the reference from here to the end.
     QPoint currentPos = GTMouseDriver::getMousePosition();
-    int newXPos = GTUtilsMdi::activeWindow()->mapToGlobal(GTUtilsMdi::activeWindow()->rect().topRight()).x() - 1;
+    QWidget* referenceArea = GTUtilsMcaEditor::getReferenceArea();
+    int newXPos = referenceArea->mapToGlobal(referenceArea->rect().topRight()).x() - 1;
     GTMouseDriver::dragAndDrop(currentPos, QPoint(newXPos, currentPos.y()));
 
     // Expected: selected length = 4.
