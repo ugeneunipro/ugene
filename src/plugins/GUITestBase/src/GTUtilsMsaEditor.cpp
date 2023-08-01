@@ -420,7 +420,7 @@ void GTUtilsMsaEditor::zoomOut() {
 void GTUtilsMsaEditor::zoomToSelection() {
     QToolBar* toolbar = GTToolbar::getToolbar("mwtoolbar_activemdi");
     QWidget* zoomToSelectionButton = GTToolbar::getWidgetForActionObjectName(toolbar, "Zoom To Selection");
-    GT_CHECK_RESULT(zoomToSelectionButton->isEnabled(), "zoomToSelectionButton is not enabled", );
+    GTWidget::checkEnabled(zoomToSelectionButton);
     GTWidget::click(zoomToSelectionButton);
 
     // 'zoomToSelection' is a 2 steps action: the second step (the centering) is run with a 200ms delay.
@@ -431,7 +431,7 @@ void GTUtilsMsaEditor::zoomToSelection() {
 void GTUtilsMsaEditor::resetZoom() {
     QToolBar* toolbar = GTToolbar::getToolbar("mwtoolbar_activemdi");
     QWidget* resetZoomButton = GTToolbar::getWidgetForActionObjectName(toolbar, "Reset Zoom");
-    GT_CHECK_RESULT(resetZoomButton->isEnabled(), "resetZoomButton is not enabled", );
+    GTWidget::checkEnabled(resetZoomButton);
     GTWidget::click(resetZoomButton);
 }
 
@@ -522,7 +522,7 @@ void GTUtilsMsaEditor::moveRowsToExcludeList(const QStringList& rowNames) {
     GTUtilsMsaEditor::selectRowsByName(rowNames);
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow();
     auto button = GTWidget::findToolButton("exclude_list_move_from_msa_button", msaEditorWindow);
-    CHECK_SET_ERR(button->isEnabled(), "Button is not enabled: " + button->objectName());
+    GTWidget::checkEnabled(button);
     GTWidget::click(button);
 }
 
@@ -532,7 +532,7 @@ void GTUtilsMsaEditor::moveRowFromExcludeList(const QString& rowName) {
 
     auto msaEditorWindow = GTUtilsMsaEditor::getActiveMsaEditorWindow();
     auto button = GTWidget::findToolButton("exclude_list_move_to_msa_button", msaEditorWindow);
-    CHECK_SET_ERR(button->isEnabled(), "Button is not enabled: " + button->objectName());
+    GTWidget::checkEnabled(button);
     GTWidget::click(button);
 }
 
@@ -572,7 +572,7 @@ void GTUtilsMsaEditor::setMultilineMode(bool isMultilineMode) {
     // Press "Multiline View" button on toolbar
     auto multilineModeButton = GTToolbar::getToolButtonByAction(toolbar, "multilineView");
     CHECK_SET_ERR_RESULT(multilineModeButton->isVisible(), "\"Multiline View\" button is not visible", );
-    CHECK_SET_ERR_RESULT(multilineModeButton->isEnabled(), "\"Multiline View\" button is disabled", );
+    GTWidget::checkEnabled(multilineModeButton);
     CHECK(getMultilineMode() != isMultilineMode, );
 
     GTWidget::click(multilineModeButton);

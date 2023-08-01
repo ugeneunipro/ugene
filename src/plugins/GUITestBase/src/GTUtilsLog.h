@@ -37,6 +37,7 @@ public:
 
     void onMessage(const LogMessage& msg) override;
 
+
     bool hasErrors() const;
 
     QString getJoinedErrorString() const;
