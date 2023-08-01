@@ -137,7 +137,7 @@ EnzymeTreeItem* EnzymesSelectorWidget::getEnzymeTreeItemByEnzymeData(const SEnzy
         auto gi = static_cast<EnzymeGroupTreeItem*>(tree->topLevelItem(i));
         for (int j = 0, m = gi->childCount(); j < m; j++) {
             auto item = static_cast<EnzymeTreeItem*>(gi->child(j));
-            CHECK_CONTINUE(*item->enzyme.constData() == *enzyme.constData());
+            CHECK_CONTINUE((item->enzyme->id == enzyme->id) && (item->enzyme->seq == enzyme->seq));
 
             return item;
         }
@@ -288,7 +288,10 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
         EnzymeGroupTreeItem* gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
         if (ei != nullptr) {
             teSelectedEnzymeInfo->setHtml(ei->getEnzymeInfo());
-            if (!ei->hasNumberCalculationTask && !advSequenceContext.isNull()) {
+            static constexpr int MAXIMU_CALCULATE_NUMBER_LENGTH = 200'000;
+            if (!ei->hasNumberCalculationTask &&
+                !advSequenceContext.isNull() &&
+                advSequenceContext->getSequenceLength() < MAXIMU_CALCULATE_NUMBER_LENGTH) {
                 auto seqObj = advSequenceContext->getSequenceObject();
                 const auto& er = seqObj->getEntityRef();
                 U2Region reg(0, seqObj->getSequenceLength());
@@ -376,7 +379,7 @@ void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     taskItem->enzymesNumber = maxResultsFound ? size + 1 : size;
     auto currentItem = dynamic_cast<EnzymeTreeItem*>(tree->currentItem());
     CHECK(currentItem != nullptr, );
-    CHECK(*currentItem->enzyme.constData() == *taskItem->enzyme.constData(), );
+    CHECK((currentItem->enzyme->id == taskItem->enzyme->id) && (currentItem->enzyme->seq == taskItem->enzyme->seq), );
 
     teSelectedEnzymeInfo->setHtml(currentItem->getEnzymeInfo());
 }
