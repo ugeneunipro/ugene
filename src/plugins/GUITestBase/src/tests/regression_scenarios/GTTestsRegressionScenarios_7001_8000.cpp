@@ -1761,8 +1761,8 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    printf("Handle pos: %d %d\n", splitterCenter.x(), splitterCenter.y());
-    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(1000, 0));
+    int deltaX = isOsMac() ? 1000 : 1100;
+    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
     QToolBar* toolbar = GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence");
