@@ -46,7 +46,6 @@
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/RegionSelectorWithExcludedRegion.h>
 
-#include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/AnnotatedDNAView.h>
 #include <U2View/AutoAnnotationUtils.h>
 
@@ -62,7 +61,7 @@ QList<SEnzymeData> EnzymesSelectorWidget::loadedEnzymes;
 QSet<QString> EnzymesSelectorWidget::lastSelection;
 QStringList EnzymesSelectorWidget::loadedSuppliers;
 
-EnzymesSelectorWidget::EnzymesSelectorWidget(const QSharedPointer<ADVSequenceObjectContext>& _advSequenceContext)
+EnzymesSelectorWidget::EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
     : advSequenceContext(_advSequenceContext) {
     setupUi(this);
     ignoreItemChecks = false;
@@ -288,10 +287,10 @@ void EnzymesSelectorWidget::setEnzymesList(const QList<SEnzymeData>& enzymes) {
         EnzymeGroupTreeItem* gi = dynamic_cast<EnzymeGroupTreeItem*>(item);
         if (ei != nullptr) {
             teSelectedEnzymeInfo->setHtml(ei->getEnzymeInfo());
-            static constexpr int MAXIMU_CALCULATE_NUMBER_LENGTH = 200'000;
+            static constexpr int MAX_CHECKED_SEQUENCE_LENGTH = 200'000;
             if (!ei->hasNumberCalculationTask &&
                 !advSequenceContext.isNull() &&
-                advSequenceContext->getSequenceLength() < MAXIMU_CALCULATE_NUMBER_LENGTH) {
+                advSequenceContext->getSequenceLength() < MAX_CHECKED_SEQUENCE_LENGTH) {
                 auto seqObj = advSequenceContext->getSequenceObject();
                 const auto& er = seqObj->getEntityRef();
                 U2Region reg(0, seqObj->getSequenceLength());
@@ -610,7 +609,7 @@ static const QStringList RESTRICTION_SEQUENCE_LENGTH_VALUES = {"1", "2", "3", "4
 
 static const int ANY_VALUE = -1;
 
-FindEnzymesDialog::FindEnzymesDialog(const QSharedPointer<ADVSequenceObjectContext>& _advSequenceContext)
+FindEnzymesDialog::FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& _advSequenceContext)
     : QDialog(_advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(_advSequenceContext) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930747");
@@ -746,7 +745,7 @@ void FindEnzymesDialog::accept() {
                                         QMessageBox::Yes,
                                         QMessageBox::No);
         if (ret == QMessageBox::Yes) {
-            QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext.get(), ANNOTATION_GROUP_ENZYME);
+            QAction* toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext.data(), ANNOTATION_GROUP_ENZYME);
             if (toggleAction) {
                 toggleAction->setChecked(false);
             }
@@ -777,7 +776,7 @@ void FindEnzymesDialog::accept() {
 
     saveSettings();
 
-    AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext.get(), ANNOTATION_GROUP_ENZYME);
+    AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext.data(), ANNOTATION_GROUP_ENZYME);
 
     QDialog::accept();
 }
@@ -955,7 +954,7 @@ QString EnzymeTreeItem::getEnzymeInfo() const {
                   .arg(text(Column::Id));
     if (enzymesNumber != INCORRECT_ENZYMES_NUMBER) {
         if (enzymesNumber > MAXIMUM_ENZYMES_NUMBER) {
-            result += tr(" (>10000 sites)");
+            result += tr(" (>%1 sites)").arg(MAXIMUM_ENZYMES_NUMBER);
         } else {
             result += " (" + tr("%n sites", "", enzymesNumber) + ")";
         }

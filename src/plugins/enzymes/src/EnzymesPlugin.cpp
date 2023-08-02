@@ -195,7 +195,7 @@ void EnzymesADVContext::sl_search() {
     auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
     SAFE_POINT(av != nullptr, L10N::nullPointerError("AnnotatedDNAView"), );
 
-    auto seqCtx = QSharedPointer<ADVSequenceObjectContext>(av->getActiveSequenceContext(), [](ADVSequenceObjectContext*) {});
+    auto seqCtx = QPointer <ADVSequenceObjectContext>(av->getActiveSequenceContext());
     SAFE_POINT(seqCtx->getAlphabet()->isNucleic(), "Expected nucleic alphabet", );
 
     QObjectScopedPointer<FindEnzymesDialog> d = new FindEnzymesDialog(seqCtx);

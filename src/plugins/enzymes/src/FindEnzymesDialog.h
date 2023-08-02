@@ -23,8 +23,11 @@
 
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QPointer>
 
 #include <U2Algorithm/EnzymeModel.h>
+
+#include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -42,7 +45,7 @@ class RegionSelectorWithExcludedRegion;
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
-    EnzymesSelectorWidget(const QSharedPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
+    EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
     ~EnzymesSelectorWidget() override;
 
     static void setupSettings();
@@ -97,7 +100,7 @@ private:
     static QSet<QString> lastSelection;
     static QStringList loadedSuppliers;
 
-    QSharedPointer<ADVSequenceObjectContext> advSequenceContext = nullptr;
+    QPointer<ADVSequenceObjectContext> advSequenceContext;
 
     int totalEnzymes;
     bool ignoreItemChecks;
@@ -107,7 +110,7 @@ private:
 class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
     Q_OBJECT
 public:
-    FindEnzymesDialog(const QSharedPointer<ADVSequenceObjectContext>& advSequenceContext);
+    FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& advSequenceContext);
     void accept() override;
 
 private slots:
@@ -124,7 +127,7 @@ private:
     void initSettings();
     void saveSettings();
 
-    QSharedPointer<ADVSequenceObjectContext> advSequenceContext;
+    QPointer<ADVSequenceObjectContext> advSequenceContext;
 
     EnzymesSelectorWidget* enzSel;
     RegionSelectorWithExcludedRegion* regionSelector;
