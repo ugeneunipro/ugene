@@ -82,7 +82,7 @@ public:
     static QString getTaskStatus(const QString& itemName);
     /*
      * Returns progress of the @itemName task. if @failIfNotFound is true, fails if the task with @@itemName wasn't found
-     * Returns the persantage value if the task is running;
+     * Returns the percentage value if the task is running;
      * -1 if the task wasn't found; -2 if the task exists, but still not int the running state
      */
     static int getTaskProgress(const QString& itemName, bool failIfNotFound = true);

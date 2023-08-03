@@ -3300,46 +3300,40 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7652) {
-    // 1. Open files samples/CLUSTALW/COI.aln, _common_data/ugenedb/Klebsislla.sort.bam.ugenedb
-    // 2. Export consensus from Klebsislla
-    // 3. Switch to COI.aln
-    // 4. Do menu Actions->Add->Sequence from file...
-    // 5. Do not choose file, wait until export task finishes
-    // Expected state: Info message 'Unable to open view because of active modal widget.' appears in the log
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
     GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsTaskTreeView::openView();
 
     class SimpleExport : public CustomScenario {
         void run() override {
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
         }
     };
-    //    Export consensus
     GTUtilsDialog::waitForDialog(new ExportConsensusDialogFiller(new SimpleExport()));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export consensus..."}));
     GTWidget::click(GTWidget::findWidget("Consensus area"), Qt::RightButton);
 
-    class WaitLogMessage : public CustomScenario {
+    class WaitTaskFinishedAndClickCancel : public Filler {
+    public:
+        WaitTaskFinishedAndClickCancel()
+            : Filler("ExtractAssemblyRegionDialog") {
+        }
+
         void run() override {
+            GTUtilsTaskTreeView::checkTaskIsPresent("Export");
             GTUtilsTaskTreeView::waitTaskFinished();
-            auto targetButton = GTWidget::findButtonByText("Cancel", GTWidget::getActiveModalWidget());
-            GTWidget::click(targetButton);
+            GTUtilsDialog::clickButtonBox(QDialogButtonBox::Cancel);
         }
     };
-
     GTLogTracer lt;
-    GTGlobals::sleep(750);  // need pause to redraw/update ui, sometimes test can't preform next action
-    GTUtilsMdi::activateWindow("COI [COI.aln]");
-    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(new WaitLogMessage()));
-    GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from file..."});
+    GTUtilsDialog::waitForDialog(new WaitTaskFinishedAndClickCancel());
+    GTWidget::click(GTAction::button("ExtractAssemblyRegion"));
+    GTUtilsDialog::checkNoActiveWaiters();
     CHECK_SET_ERR(lt.hasMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
-    // 1. Open WD sampe "Call variants
+    // 1. Open WD sample "Call variants
     // 2. Select "Read Assembly (BAM/SAM)" worker
     // 3. Rename dataset "Dataset" -> "NewSet"
     // 4.Select "Read Sequence"
