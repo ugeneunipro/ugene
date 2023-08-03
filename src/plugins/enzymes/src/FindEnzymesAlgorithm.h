@@ -42,7 +42,15 @@ class FindEnzymesAlgListener {
 public:
     ~FindEnzymesAlgListener() {
     }
-    virtual void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) = 0;
+    /*
+     * Callback, which handle FindEnzymesAlgorithm::run(...) result finding.
+     *
+     * \param pos Start position of enzyme, which was found.
+     * \param enzyme The enzyme, wich was found.
+     * \param strand Strand (direct of reverse-complement) the enzyme was found on.
+     * \param stop This argument signals to FindEnzymesAlgorithm::run(...) to stop enzymes searching (without errors or cancels).
+    **/
+    virtual void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) = 0;
 };
 
 template<typename CompareFN>
@@ -102,7 +110,9 @@ public:
         for (int pos = region.startPos, endPos = region.endPos() - plen + 1; pos < endPos; pos++) {
             bool match = matchSite(seq + pos, pattern, plen, unknownChar, fn);
             if (match) {
-                resultListener->onResult(resultPosShift + pos + leftShift, enzyme, stand);
+                bool stop = false;
+                resultListener->onResult(resultPosShift + pos + leftShift, enzyme, stand, stop);
+                CHECK(!stop, );
             }
             CHECK_OP(ti, );
         }
@@ -117,7 +127,9 @@ public:
                 for (int s = 0; s < size; s++) {
                     bool match = matchSite(buf.constData() + s, pattern, plen, unknownChar, fn);
                     if (match) {
-                        resultListener->onResult(resultPosShift + s + startPos, enzyme, stand);
+                        bool stop = false;
+                        resultListener->onResult(resultPosShift + s + startPos, enzyme, stand, stop);
+                        CHECK(!stop, );
                     }
                     CHECK_OP(ti, );
                 }

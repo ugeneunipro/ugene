@@ -125,7 +125,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
     }
 }
 
-void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool&) {
     CHECK_OP(stateInfo, );
     if (pos > seqlen) {
         pos %= seqlen;
@@ -232,7 +232,7 @@ void FindEnzymesTask::cleanup() {
 
 //////////////////////////////////////////////////////////////////////////
 // find single enzyme task
-FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l, bool isCircular, int maxResults, bool _failOnMaxResultExceed)
+FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l, bool isCircular, int maxResults, bool _cancelOnMaxResults)
     : Task(tr("Find enzyme '%1'").arg(enzyme->id), TaskFlag_NoRun),
       sequenceObjectRef(sequenceObjectRef),
       region(region),
@@ -240,7 +240,7 @@ FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef,
       maxResults(maxResults),
       resultListener(l),
       isCircular(isCircular),
-      failOnMaxResultExceed(_failOnMaxResultExceed) {
+      cancelOnMaxResults(_cancelOnMaxResults) {
 }
 
 void FindSingleEnzymeTask::prepare() {
@@ -266,19 +266,23 @@ void FindSingleEnzymeTask::prepare() {
     addSubTask(new SequenceDbiWalkerTask(sequenceWalkerConfig, this, tr("Find enzyme '%1' parallel").arg(enzyme->id)));
 }
 
-void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) {
+void FindSingleEnzymeTask::onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) {
     CHECK_OP(stateInfo, );
     if (isCircular && pos >= region.length) {
         return;
     }
     QMutexLocker locker(&resultsLock);
     if (resultList.size() > maxResults) {
-        if (!isCanceled()) {
-            if (failOnMaxResultExceed) {
+        if (cancelOnMaxResults) {
+            if (!isCanceled()) {
                 stateInfo.setError(FindEnzymesTask::tr("Number of results exceed %1, stopping").arg(maxResults));
+                cancel();
             }
-            cancel();
+        } else {
+            stop = true;
         }
+        stoppedOnMaxResults = true;
+
         return;
     }
     resultList.append(FindEnzymesAlgResult(enzyme, pos, strand));
@@ -334,6 +338,10 @@ void FindSingleEnzymeTask::cleanup() {
 
 SEnzymeData FindSingleEnzymeTask::getEnzyme() const {
     return enzyme;
+}
+
+bool FindSingleEnzymeTask::wasStoppedOnMaxResults() const {
+    return stoppedOnMaxResults;
 }
 
 qint64 FindSingleEnzymeTask::estimateNumberOfEnzymesInSequence(qint64 sequenceLength, int variants) {

@@ -366,7 +366,7 @@ void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     auto t = qobject_cast<FindSingleEnzymeTask*>(sender());
     SAFE_POINT(t != nullptr, L10N::nullPointerError("FindSingleEnzymeTask"), );
 
-    CHECK(!t->hasError(), );
+    CHECK_OP(t->getStateInfo(), );
     CHECK(t->getState() == Task::State_Finished, );
 
     auto taskEnzyme = t->getEnzyme();
@@ -374,7 +374,7 @@ void EnzymesSelectorWidget::sl_findSingleEnzymeTaskStateChanged() {
     CHECK(taskItem != nullptr, );
 
     int size = t->getResults().size();
-    bool maxResultsFound = t->isCanceled() && size == EnzymeTreeItem::MAXIMUM_ENZYMES_NUMBER;
+    bool maxResultsFound = t->wasStoppedOnMaxResults();
     taskItem->enzymesNumber = maxResultsFound ? size + 1 : size;
     auto currentItem = dynamic_cast<EnzymeTreeItem*>(tree->currentItem());
     CHECK(currentItem != nullptr, );
