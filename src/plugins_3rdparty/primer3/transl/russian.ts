@@ -2471,7 +2471,7 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="819"/>
         <source>%1 parameter(s) have an incorrect value(s), pay attention on red widgets. </source>
-        <translation>%1 параметр(ов) имеют некорректное(ые) значение(я), обратите внимание на подсвеченние красным виджеты. </translation>
+        <translation>%1 параметр(ов) имеют некорректное(ые) значение(я), обратите внимание на подсвеченные красным виджеты. </translation>
     </message>
     <message>
         <source>The following errors are possible:
@@ -2538,10 +2538,12 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="821"/>
-        <source>The following errors are possible: 
+        <source>The following errors are possible:
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Возможны следующие ошибки:
+
+</translation>
     </message>
     <message>
         <location filename="../src/Primer3Dialog.cpp" line="872"/>
