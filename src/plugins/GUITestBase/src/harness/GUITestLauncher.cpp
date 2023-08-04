@@ -170,11 +170,14 @@ bool GUITestLauncher::initTestList() {
         }
         int testSuiteCount = 1;
         if (labelList.contains(UGUITestLabels::Precommit)) {
-            // TODO: make configurable via ENV.
-            testSuiteCount = isOsWindows() ? 4
+            testSuiteCount = isOsWindows() ? 3
                              : isOsMac()   ? 3
                              : isOsLinux() ? 5
                                            : 1;
+            int testSuiteCountFromEnv = qgetenv("UGENE_GUI_TEST_SUITE_COUNT").toInt();
+            if (testSuiteCountFromEnv > 0) {
+                testSuiteCount = testSuiteCountFromEnv;
+            }
         }
 
         if (suiteNumber < 1 || suiteNumber > testSuiteCount) {
