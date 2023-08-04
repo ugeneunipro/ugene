@@ -1757,20 +1757,16 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     // Find the action toolbar extension for the first sequence in the Sequence View (">>" button). Press ">>"->
     //         "X Remove sequence".
     //     Expected: no crash.
-    GTUtilsProject::openFile(dataDir + "samples/PDB/1CF7.PDB");
+    GTFileDialog::openFile(dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    QRect rect = GTWidget::findWidget("project_view")->geometry();
-    QPoint splitterCenter =
-        GTWidget::findWidget("project_view")->mapToGlobal({rect.right() + 4, rect.center().y()});
-    QPoint delta(GTMainWindow::getMainWindowWidgetByName("main_window")->width() * 0.6, 0);
-    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + delta);
+    auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
+    int deltaX = isOsMac() ? 1000 : 1100;
+    GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
-    GTWidget::click(
-        GTWidget::findWidget(
-            "qt_toolbar_ext_button",
-            GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence")));
+    QToolBar* toolbar = GTWidget::findToolBar("views_tool_bar_1CF7 chain A sequence");
+    GTWidget::click(GTWidget::findWidget("qt_toolbar_ext_button", toolbar));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7455) {
@@ -2718,8 +2714,8 @@ GUI_TEST_CLASS_DEFINITION(test_7558) {
 
     GTUtilsProjectTreeView::filterProject("frame");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsProjectTreeView::checkFilteredGroup("CDS", {}, {"NC_001363 features", "NC_004718 features"}, {});    
-    
+    GTUtilsProjectTreeView::checkFilteredGroup("CDS", {}, {"NC_001363 features", "NC_004718 features"}, {});
+
     GTUtilsProjectTreeView::filterProject("zzzz");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::checkFilteredResultIsEmpty();

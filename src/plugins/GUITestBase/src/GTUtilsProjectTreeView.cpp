@@ -355,17 +355,6 @@ void GTUtilsProjectTreeView::filterProject(const QString& searchField) {
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
-void GTUtilsProjectTreeView::filterProjectSequental(const QStringList& searchField, bool waitUntilSearchEnd) {
-    openView();
-    foreach (const QString& str, searchField) {
-        GTLineEdit::setText("nameFilterEdit", str);
-        GTGlobals::sleep(3000);
-    }
-    if (waitUntilSearchEnd) {
-        GTUtilsTaskTreeView::waitTaskFinished();
-    }
-}
-
 QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(const QString& substring, const QModelIndex& parentIndex) {
     QModelIndexList result;
 
@@ -594,19 +583,12 @@ void GTUtilsProjectTreeView::sendDragAndDrop(const QPoint& enterPos, QWidget* dr
     sendDragAndDrop(enterPos, GTWidget::getWidgetVisibleCenterGlobal(dropWidget));
 }
 
-void GTUtilsProjectTreeView::expandProjectView() {
-    class SetSizesScenario : public CustomScenario {
-    public:
-        SetSizesScenario(QSplitter* _splitter)
-            : splitter(_splitter) {
-        }
-        void run() override {
-            splitter->setSizes(QList<int>() << splitter->height() << 0);
-        }
-        QSplitter* splitter = nullptr;
-    };
-    auto splitter = GTWidget::findSplitter("splitter", GTWidget::findWidget("project_view"));
-    GTThread::runInMainThread(new SetSizesScenario(splitter));
+QPoint GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint() {
+    QWidget* projectView = GTWidget::findWidget("project_view");
+    QRect rect = projectView->rect();
+    int x = rect.topRight().x() + (isOsMac() ? 1 : 4);
+    int y = rect.center().y();
+    return projectView->mapToGlobal(QPoint(x, y));
 }
 
 void GTUtilsProjectTreeView::markSequenceAsCircular(const QString& sequenceObjectName) {

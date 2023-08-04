@@ -89,7 +89,6 @@ public:
         const GTGlobals::FindOptions& options = {});
 
     static void filterProject(const QString& searchField);
-    static void filterProjectSequental(const QStringList& searchField, bool waitUntilSearchEnd);
     static QModelIndexList findFilteredIndexes(const QString& substring, const QModelIndex& parentIndex = QModelIndex());
     static void checkFilteredGroup(const QString& groupName, const QStringList& namesToCheck, const QStringList& alternativeNamesToCheck, const QStringList& excludedNames, const QStringList& skipGroupIfContains = QStringList());
     static void checkFilteredResultIsEmpty();
@@ -124,17 +123,18 @@ public:
     static void dragAndDrop(const QStringList& from, QWidget* to);
     static void dragAndDropSeveralElements(QModelIndexList from, QModelIndex to);
 
-    static void expandProjectView();
-
     static void markSequenceAsCircular(const QString& sequenceObjectName);
 
-    // Get all documents names with their object names (database connections are processed incorrectly)
+    // Get all documents names with their object names (database connections are processed incorrectly)¡¡
     static QMap<QString, QStringList> getDocuments();
 
     // Counts visible top level items in project tree (after applying filtering, if present).
     static int countTopLevelItems();
 
-    static const QString widgetName;
+    /** Returns project view & object view splitter handle center position in global coordinates. */
+    static QPoint getProjectViewAndObjectViewSplitterHandlePoint();
+
+   static const QString widgetName;
 
 private:
     static void sendDragAndDrop(const QPoint& enterPos, const QPoint& dropPos);
