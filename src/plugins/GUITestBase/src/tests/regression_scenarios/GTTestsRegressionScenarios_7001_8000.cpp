@@ -1761,7 +1761,7 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : 1100;
+    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1050 : 1100;
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));

@@ -2664,8 +2664,8 @@ GUI_TEST_CLASS_DEFINITION(test_5665) {
     class Scenario : public CustomScenario {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            auto filepathLineEdit = GTWidget::findLineEdit("fileNameEdit", dialog);
-            GTLineEdit::setText(filepathLineEdit, dataDir + "long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_long_file_name_more_then_250_.fa");
+            QString longPath = dataDir + QString("long_file_name_more_then_250").repeated(10) + ".fa";
+            GTLineEdit::setText("fileNameEdit", longPath, dialog, false, true);
 
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
