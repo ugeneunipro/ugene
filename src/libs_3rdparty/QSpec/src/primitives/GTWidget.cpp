@@ -516,16 +516,17 @@ QMenu* GTWidget::getActivePopupMenu() {
 
 void GTWidget::checkEnabled(QWidget* widget, bool expectedEnabledState) {
     GT_CHECK(widget != nullptr, "Widget is NULL");
-    GT_CHECK(widget->isVisible(), "Widget is not visible");
+    GT_CHECK(widget->isVisible(), "Widget is not visible: " + widget->objectName());
     bool actualEnabledState = widget->isEnabled();
     for (int time = 0; time < GT_OP_WAIT_MILLIS && actualEnabledState != expectedEnabledState; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(GT_OP_CHECK_MILLIS);
         actualEnabledState = widget->isEnabled();
     }
     GT_CHECK(actualEnabledState == expectedEnabledState,
-             QString("Widget state is incorrect: expected '%1', got '%2'")
+             QString("Widget state is incorrect: expected '%1', got '%2', widget name: ")
                  .arg(expectedEnabledState ? "enabled" : "disabled")
-                 .arg(actualEnabledState ? "enabled" : "disabled"));
+                 .arg(actualEnabledState ? "enabled" : "disabled")
+                 .arg(widget->objectName()));
 }
 
 void GTWidget::checkEnabled(const QString& widgetName, bool expectedEnabledState, QWidget* parent) {
