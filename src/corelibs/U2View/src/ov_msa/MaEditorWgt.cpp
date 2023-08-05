@@ -27,7 +27,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
-#include <U2GUI/GUIUtils.h>
+#include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
