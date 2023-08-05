@@ -27,6 +27,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Gui/GUIUtils.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
@@ -237,12 +238,14 @@ void MaEditorWgt::initActions() {
     // SANGER_TODO: check why delAction is not added
     delSelectionAction = new QAction(tr("Remove selection"), this);
     delSelectionAction->setObjectName("Remove selection");
-#ifndef Q_OS_DARWIN
-    // Shortcut was wrapped with ifndef to workaround UGENE-6676.
-    // On Qt5.12.6 the issue cannot be reproduced, so shortcut should be restored.
-    delSelectionAction->setShortcut(QKeySequence::Delete);
-    delSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-#endif
+
+    if (!isOsMac()) {
+        // Shortcut was wrapped with ifndef to workaround UGENE-6676.
+        // On Qt5.12.6 the issue cannot be reproduced, so shortcut should be restored.
+        delSelectionAction->setShortcut(QKeySequence::Delete);
+        delSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    }
+
     addAction(delSelectionAction);
 
     copySelectionAction = new QAction(tr("Copy"), this);
@@ -256,28 +259,28 @@ void MaEditorWgt::initActions() {
     copyFormattedSelectionAction->setObjectName("copy_formatted");
     copyFormattedSelectionAction->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C));
     copyFormattedSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    copyFormattedSelectionAction->setToolTip(QString("%1 (%2)").arg(copyFormattedSelectionAction->text()).arg(copyFormattedSelectionAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(copyFormattedSelectionAction);
     addAction(copyFormattedSelectionAction);
 
     pasteAction = new QAction(tr("Paste"), this);
     pasteAction->setObjectName("paste");
     pasteAction->setShortcuts(QKeySequence::Paste);
     pasteAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    pasteAction->setToolTip(QString("%1 (%2)").arg(pasteAction->text()).arg(pasteAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(pasteAction);
     addAction(pasteAction);
 
     pasteBeforeAction = new QAction(tr("Paste (before selection)"), this);
     pasteBeforeAction->setObjectName("paste_before");
     pasteBeforeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_V));
     pasteBeforeAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    pasteBeforeAction->setToolTip(QString("%1 (%2)").arg(pasteBeforeAction->text()).arg(pasteAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(pasteBeforeAction);
     addAction(pasteBeforeAction);
 
     cutSelectionAction = new QAction(tr("Cut"), this);
     cutSelectionAction->setObjectName("cut_selection");
     cutSelectionAction->setShortcut(QKeySequence::Cut);
     cutSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    cutSelectionAction->setToolTip(QString("%1 (%2)").arg(cutSelectionAction->text()).arg(cutSelectionAction->shortcut().toString()));
+    GUIUtils::updateActionToolTip(cutSelectionAction);
     addAction(cutSelectionAction);
 }
 
