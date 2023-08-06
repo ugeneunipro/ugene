@@ -80,7 +80,7 @@ SettingsImpl::SettingsImpl(QSettings::Scope scope) {
         fileName = findKey(envList, U2_SYSTEM_INI);
     }
     bool isInTestMode = qgetenv("UGENE_GUI_TEST") == "1";
-    QSettings::Format format = isInTestMode ? QSettings::IniFormat : QSettings::NativeFormat;
+    QSettings::Format format = isInTestMode || !isOsMac() ? QSettings::IniFormat : QSettings::NativeFormat;
     if (fileName.isEmpty()) {
         settings = new QSettings(format, scope, U2_ORGANIZATION_NAME, U2_PRODUCT_NAME, this);
     } else {
