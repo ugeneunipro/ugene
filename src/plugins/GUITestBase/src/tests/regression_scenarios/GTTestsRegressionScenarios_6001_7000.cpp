@@ -6099,6 +6099,21 @@ GUI_TEST_CLASS_DEFINITION(test_6927) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(QRect(9, 0, 11, 18));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6935) {
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(0);
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(4);
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+
+    for (int i = 0; i < 9; i++) {
+        GTKeyboardDriver::keyClick(Qt::Key_Right);
+    }
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(QRect(9, 0, 5, 18));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6941) {
     // Open de novo assembly dialog
     // Fill it and run
