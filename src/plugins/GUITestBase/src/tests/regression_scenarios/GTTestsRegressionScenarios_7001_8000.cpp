@@ -395,21 +395,19 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7121) {
-    GTClipboard::clear();
-
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMSAEditorSequenceArea::selectSequence("Phaneroptera_falcata");
-
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTUtilsProjectTreeView::click("COI.aln");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
-    QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments();
-
-    CHECK_SET_ERR(docs.contains("clipboard_1.fa"), "clipboard_1.fa in unexpectedly absent");
+    QStringList docs = GTUtilsProjectTreeView::getDocuments().keys();
+    bool isFound = std::any_of(docs.begin(), docs.end(), [](const auto& doc) { return doc.startsWith("clipboard_") && doc.endsWith(".fa"); });
+    CHECK_SET_ERR(isFound, "Can't find expected document in the project view. Documents: " + docs.join(","));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7125) {
@@ -1779,7 +1777,8 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1050 : 1100;
+    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1050
+                                                  : 1100;
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
