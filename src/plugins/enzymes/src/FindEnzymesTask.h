@@ -103,7 +103,7 @@ class FindEnzymesTask : public Task, public FindEnzymesAlgListener {
 public:
     FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& region, const QList<SEnzymeData>& enzymes, int maxResults = 0x7FFFFFFF, bool _circular = false, QVector<U2Region> excludedRegions = QVector<U2Region>());
 
-    void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& stand) override;
+    void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) override;
 
     ReportResult report() override;
 
@@ -128,16 +128,27 @@ private:
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
     Q_OBJECT
 public:
-    FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF);
+    /*
+     * \param sequenceObjectRef Reference to DB representation of sequence object.
+     * \param region Region to search enzymes in.
+     * \param enzyme Enzyme to find.
+     * \param l Every time result is found this object onResult will be called.
+     * \param isCircular Is sequence circular.
+     * \param maxResults Maximum number of results. Cancel and, optionally (see @failOnMaxResultExceed), fail if more results.
+     * \param cancelOnMaxResults Cancel if more than @maxResults if true or just set onResult::stop to false if false.
+    **/
+    FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef, const U2Region& region, const SEnzymeData& enzyme, FindEnzymesAlgListener* l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF, bool cancelOnMaxResults = true);
 
     void prepare() override;
 
     QList<FindEnzymesAlgResult> getResults() const {
         return resultList;
     }
-    void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand) override;
+    void onResult(int pos, const SEnzymeData& enzyme, const U2Strand& strand, bool& stop) override;
     void onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& ti) override;
     void cleanup() override;
+    SEnzymeData getEnzyme() const;
+    bool wasStoppedOnMaxResults() const;
 
     /**
      * Returns estimation for a number of results found both strands of the sequence of the given length
@@ -154,6 +165,8 @@ private:
     QList<FindEnzymesAlgResult> resultList;
     QMutex resultsLock;
     bool isCircular;
+    bool cancelOnMaxResults = true;
+    bool stoppedOnMaxResults = false;
 };
 
 class FindEnzymesAutoAnnotationUpdater : public AutoAnnotationsUpdater {

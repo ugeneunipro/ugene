@@ -23,8 +23,11 @@
 
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QPointer>
 
 #include <U2Algorithm/EnzymeModel.h>
+
+#include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -36,12 +39,13 @@ namespace U2 {
 class ADVSequenceObjectContext;
 class CreateAnnotationWidgetController;
 class EnzymeGroupTreeItem;
+class EnzymeTreeItem;
 class RegionSelectorWithExcludedRegion;
 
 class EnzymesSelectorWidget : public QWidget, public Ui_EnzymesSelectorWidget {
     Q_OBJECT
 public:
-    EnzymesSelectorWidget();
+    EnzymesSelectorWidget(const QPointer<ADVSequenceObjectContext>& advSequenceContext = nullptr);
     ~EnzymesSelectorWidget() override;
 
     static void setupSettings();
@@ -50,6 +54,12 @@ public:
     static QList<SEnzymeData> getLoadedEnzymes();
     static QStringList getLoadedSuppliers();
     QList<SEnzymeData> getSelectedEnzymes();
+    /*
+     * Get enzyme tree item by this enzyme.
+     * \param enzyme An enzyme we should find tree item for.
+     * \return Returns pointer to item (if exists).
+    **/
+    EnzymeTreeItem* getEnzymeTreeItemByEnzymeData(const SEnzymeData& enzyme) const;
     int getNumSelected();
     int getTotalNumber() const {
         return totalEnzymes;
@@ -73,6 +83,7 @@ private slots:
     void sl_openDBPage();
     void sl_itemChanged(QTreeWidgetItem* item, int col);
     void sl_filterTextChanged(const QString& filterText);
+    void sl_findSingleEnzymeTaskStateChanged();
 
 private:
     static void calculateSuppliers();
@@ -89,6 +100,8 @@ private:
     static QSet<QString> lastSelection;
     static QStringList loadedSuppliers;
 
+    QPointer<ADVSequenceObjectContext> advSequenceContext;
+
     int totalEnzymes;
     bool ignoreItemChecks;
     int minLength;
@@ -97,7 +110,7 @@ private:
 class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
     Q_OBJECT
 public:
-    FindEnzymesDialog(ADVSequenceObjectContext* advSequenceContext);
+    FindEnzymesDialog(const QPointer<ADVSequenceObjectContext>& advSequenceContext);
     void accept() override;
 
 private slots:
@@ -114,14 +127,12 @@ private:
     void initSettings();
     void saveSettings();
 
-    /** FindEnzymes dialog is always opened for some sequence in ADVSequenceView. */
-    ADVSequenceObjectContext* advSequenceContext;
+    QPointer<ADVSequenceObjectContext> advSequenceContext;
 
     EnzymesSelectorWidget* enzSel;
     RegionSelectorWithExcludedRegion* regionSelector;
 };
 
-class EnzymeTreeItem;
 class EnzymeGroupTreeItem : public QTreeWidgetItem {
 public:
     EnzymeGroupTreeItem(const QString& s);
@@ -136,6 +147,14 @@ class EnzymeTreeItem : public QTreeWidgetItem {
 public:
     EnzymeTreeItem(const SEnzymeData& ed);
     const SEnzymeData enzyme;
+    static constexpr int INCORRECT_ENZYMES_NUMBER = -1;
+    static constexpr int MAXIMUM_ENZYMES_NUMBER = 10'000;
+
+    // Number of enzymes in the current sequence
+    int enzymesNumber = INCORRECT_ENZYMES_NUMBER;
+    // True if FindEnzymesTask, which calculates number of enzymes,
+    // has already been run
+    bool hasNumberCalculationTask = false;
     bool operator<(const QTreeWidgetItem& other) const override;
     // Get text information about this enzyme
     QString getEnzymeInfo() const;
