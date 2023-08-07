@@ -394,6 +394,24 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7121) {
+    GTClipboard::clear();
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+    GTUtilsMSAEditorSequenceArea::selectSequence("Phaneroptera_falcata");
+
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    GTUtilsProjectTreeView::click("COI.aln");
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    QMap<QString, QStringList> docs = GTUtilsProjectTreeView::getDocuments();
+
+    CHECK_SET_ERR(docs.contains("clipboard_1.fa"), "clipboard_1.fa in unexpectedly absent");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7125) {
     // Open data/samples/CLUSTALW/ty3.aln.gz
     // Press the Build Tree button on the toolbar.
