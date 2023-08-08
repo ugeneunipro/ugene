@@ -432,7 +432,9 @@ GUI_TEST_CLASS_DEFINITION(test_4035) {
     // Random generator works differently on Windows & Mac/Linux.
     QList<double> expectedDistances = isOsWindows()
                                           ? QList<double> {0.268, 0.062, 0.399, 0.045, 0.258, 0.084, 0.097, 0.119, 0.205, 55.221, 0.121, 0.123, 0.123, 0.416, 0.21}
-                                          : QList<double> {0.435, 0.063, 0.569, 55.119, 0.049, 0.403, 0.085, 0.127, 0.084, 0.64};
+                                          : (isOsMac()
+                                                 ? QList<double> {0.407, 0.085, 0.128, 0.128, 0.003, 0.647, 0.421, 0.124, 0.249, 0.437, 55.349, 0.061, 0.052, 0.571}
+                                                 : QList<double> {0.435, 0.063, 0.569, 55.119, 0.049, 0.403, 0.085, 0.127, 0.084, 0.64});
 
     for (double expectedDistance : qAsConst(expectedDistances)) {
         CHECK_SET_ERR(distances.contains(expectedDistance), QString("Distances not found: %1, got: %2").arg(expectedDistance).arg(distancesStrings.join(",")));
