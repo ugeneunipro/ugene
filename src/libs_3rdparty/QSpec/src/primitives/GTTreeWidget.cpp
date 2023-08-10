@@ -64,6 +64,7 @@ void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMe
     QTreeWidget* tree = item->treeWidget();
     GT_CHECK(tree != nullptr, "The tree widget is NULL");
 
+    QString text = item->text(column);
     GTTreeWidget::scrollToItem(item);
     QRect itemRect = getItemRect(item);
     QPoint indentationOffset(tree->indentation(), 0);
@@ -88,7 +89,7 @@ void GTTreeWidget::checkItem(QTreeWidgetItem* item, int column, GTGlobals::UseMe
             GT_FAIL("Method is not implemented", );
     }
     GT_CHECK(!validateCheckResult || item->data(column, Qt::CheckStateRole).toInt() == targetState,
-             isCheck ? "Failed to check tree item." : "Failed to uncheck tree item.");
+             (isCheck ? "Failed to check tree item " : "Failed to uncheck tree item ") + text);
 }
 
 QRect GTTreeWidget::getItemRect(QTreeWidgetItem* item) {
@@ -272,6 +273,9 @@ void GTTreeWidget::scrollToItem(QTreeWidgetItem* item) {
         }
         void run() override {
             QTreeWidget* tree = item->treeWidget();
+#ifdef Q_OS_DARWIN
+            tree->setFocus();
+#endif
             GT_CHECK_RESULT(tree != nullptr, "Tree is nullptr!", );
             tree->scrollToItem(item);
         }

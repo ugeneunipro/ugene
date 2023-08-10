@@ -37,6 +37,7 @@ namespace HI {
 
 void GTGlobals::sleep(int msec) {
     if (msec > 0) {
+        GT_LOG(QString("GTGlobals::sleep %1ms").arg(msec));
         QTest::qWait(msec);
     }
 }
