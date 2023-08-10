@@ -206,54 +206,54 @@ void PopupCheckerByText::commonScenario() {
         GTMenu::clickMenuItemByText(activePopupMenu, menuPath, useMethod, matchFlag);
     }
     auto activePopupMenuToCheck = qobject_cast<QMenu*>(QApplication::activePopupWidget());
-    foreach (const QString& itemName, itemsNames) {
-        QAction* act = GTMenu::getMenuItem(activePopupMenuToCheck, itemName, true, matchFlag);
-        if (options.testFlag(PopupChecker::Exists)) {
-            GT_CHECK(act != nullptr, "action '" + itemName + "' not found");
-            qDebug("GT_DEBUG_MESSAGE options.testFlag(Exists)");
-        } else {
-            GT_CHECK(act == nullptr, "action '" + itemName + "' unexpectedly found");
+    for (const QString& itemName : qAsConst(itemsNames)) {
+        QAction* action = GTMenu::getMenuItem(activePopupMenuToCheck, itemName, true, matchFlag);
+        if (options.testFlag(PopupChecker::NotExists)) {
+            GT_CHECK(action == nullptr, "action '" + itemName + "' unexpectedly found");
+            continue;
         }
+        GT_CHECK(action != nullptr, "action '" + itemName + "' not found");
+        QString actionDetails = action->objectName() + "[" + itemName + "]";
 
         if (options.testFlag(PopupChecker::IsEnabled)) {
-            GT_CHECK(act->isEnabled(), "action '" + act->objectName() + "' is not enabled");
+            GT_CHECK(action->isEnabled(), "action '" + actionDetails + "' is not enabled");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsEnabled)");
         }
 
         if (options.testFlag(PopupChecker::IsDisabled)) {
-            GT_CHECK(!act->isEnabled(), "action '" + act->objectName() + "' is enabled");
+            GT_CHECK(!action->isEnabled(), "action '" + actionDetails + "' is enabled");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsDisabled");
         }
 
         if (options.testFlag(PopupChecker::IsCheckable)) {
-            GT_CHECK(act->isCheckable(), "action '" + act->objectName() + "' is not checkable");
+            GT_CHECK(action->isCheckable(), "action '" + actionDetails + "' is not checkable");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsCheckable)");
         }
 
         if (options.testFlag(PopupChecker::IsChecked)) {
-            GT_CHECK(act->isCheckable(), "action '" + act->objectName() + "' is not checked");
+            GT_CHECK(action->isCheckable(), "action '" + actionDetails + "' is not checked");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsChecked)");
         }
 
         if (options.testFlag(PopupChecker::IsChecked)) {
-            GT_CHECK(act->isChecked(), "action '" + act->objectName() + "' is not checked");
+            GT_CHECK(action->isChecked(), "action '" + actionDetails + "' is not checked");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsChecked)");
         }
 
         if (options.testFlag(PopupChecker::IsUnchecked)) {
-            GT_CHECK(!act->isChecked(), "action '" + act->objectName() + "' is checked");
+            GT_CHECK(!action->isChecked(), "action '" + actionDetails + "' is checked");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(IsUnchecked)");
         }
 
         if (options.testFlag(PopupChecker::isNotVisible)) {
-            GT_CHECK(!act->isVisible(), "action '" + act->objectName() + "' is visible, but shouldn't be");
+            GT_CHECK(!action->isVisible(), "action '" + actionDetails + "' is visible, but shouldn't be");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(isNotVisible)");
         }
 
         if (!itemsShortcuts.isEmpty()) {
             int index = itemsNames.indexOf(itemName);
             GT_CHECK(0 <= index && index < itemsShortcuts.size(), "Unexpected shortcut list size");
-            GT_CHECK(itemsShortcuts.at(index) == act->shortcut(), "action '" + act->text() + "' unexpected shortcut");
+            GT_CHECK(itemsShortcuts.at(index) == action->shortcut(), "action '" + actionDetails + "' unexpected shortcut");
         }
     }
 
