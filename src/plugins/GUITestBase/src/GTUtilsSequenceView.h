@@ -107,7 +107,7 @@ public:
         bool isDoubleClick = false,
         Qt::MouseButton button = Qt::LeftButton);
 
-    static void clickAnnotationPan(const QString& name, int startPos, int number = 0, bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+    static void clickAnnotationPan(const QString& name, int startPos, int number = 0, const bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
 
     static GSequenceGraphView* getGraphView();
     static QList<QVariant> getLabelPositions(GSequenceGraphView* graph);

@@ -4217,9 +4217,9 @@ GUI_TEST_CLASS_DEFINITION(test_6685_4) {
 GUI_TEST_CLASS_DEFINITION(test_6685_5) {
     // 1. Open "_common_data/genbank/short.gb".
     GTFileDialog::openFile(testDir + "_common_data/genbank/short.gb");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
-    // 2. Double-click on the CDS annotation.
+    // 2. Double click on the CDS annotation.
     GTUtilsSequenceView::clickAnnotationPan("CDS", 2, 0, true);
 
     // 3. Click right button on the zoom view -> Copy/Paste. The all following buttons with hotkwys are enabled except the last one
