@@ -2400,20 +2400,27 @@ GUI_TEST_CLASS_DEFINITION(test_7515) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7517) {
-    // Check that MCA editor does not crash when closed in "replace-character" mode.
+    // Check that MSA Overview is rendered only once.
+
+    // First open any file to make project view active and avoid related opening animation during the main test.
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // Start the test.
+    GTLogTracer lt;
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/ty3.aln.gz");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsLog::checkMessageWithTextCount("Registering new task: Render overview", 1, "check1");
+    lt.checkMessageWithTextCount("Registering new task: Render overview", 1, "check1");
 
     auto showOverviewButton = GTUtilsMsaEditor::getShowOverviewButton();
     GTWidget::click(showOverviewButton);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsLog::checkMessageWithTextCount("Registering new task: Render overview", 1, "check2");
+    lt.checkMessageWithTextCount("Registering new task: Render overview", 1, "check2");
 
     GTWidget::click(showOverviewButton);
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsLog::checkMessageWithTextCount("Registering new task: Render overview", 1, "check3");
+    lt.checkMessageWithTextCount("Registering new task: Render overview", 1, "check3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7520) {

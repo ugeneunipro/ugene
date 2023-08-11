@@ -28,6 +28,7 @@
 namespace U2 {
 using namespace HI;
 
+#define GT_CLASS_NAME "GTLogTracer"
 GTLogTracer::GTLogTracer() {
     LogServer::getInstance()->addListener(this);
 }
@@ -92,6 +93,23 @@ bool GTLogTracer::hasError(const QString& substring) const {
 void GTLogTracer::checkMessage(const QString& substring) const {
     CHECK_SET_ERR(hasMessage(substring), "Expected message not found: " + substring);
 }
+
+void GTLogTracer::checkMessageWithTextCount(const QString& messagePart, int expectedMessageCount, const QString& context) {
+    int messageCount = 0;
+    for (auto text : qAsConst(allMessages)) {
+        if (text.contains("checkMessageWithTextCount: Unexpected message count for text: '")) {
+            continue;  // A harness message from one of the previous GT_CHECK calls. Contains the check message part.
+        }
+        messageCount += text.contains(messagePart, Qt::CaseInsensitive) ? 1 : 0;
+    }
+    GT_CHECK(messageCount == expectedMessageCount,
+             QString("checkMessageWithTextCount: Unexpected message count for text: '%1', expected: %2, got: %3%4")
+                 .arg(messagePart)
+                 .arg(expectedMessageCount)
+                 .arg(messageCount)
+                 .arg(context.isEmpty() ? "" : ", context: " + context));
+}
+#undef GT_CLASS_NAME
 
 #define GT_CLASS_NAME "GTUtilsLog"
 
