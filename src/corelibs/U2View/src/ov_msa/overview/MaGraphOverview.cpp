@@ -127,7 +127,6 @@ void MaGraphOverview::resizeEvent(QResizeEvent* e) {
     QWidget::resizeEvent(e);
     if (isVisible()) {
         redrawGraph = true;
-        state.width = width();
         QTimer::singleShot(0, this, [this]() { recomputeGraphIfNeeded(); });
     }
 }
@@ -139,7 +138,9 @@ void MaGraphOverview::hideEvent(QHideEvent* event) {
 
 void MaGraphOverview::showEvent(QShowEvent* event) {
     MaOverview::showEvent(event);
-    QTimer::singleShot(0, this, [this]() { recomputeGraphIfNeeded(); });
+    if (isVisible()) {
+        QTimer::singleShot(0, this, [this]() { recomputeGraphIfNeeded(); });
+    }
 }
 
 void MaGraphOverview::drawVisibleRange(QPainter& p) {
@@ -180,22 +181,28 @@ void MaGraphOverview::drawVisibleRange(QPainter& p) {
 }
 
 void MaGraphOverview::recomputeGraphIfNeeded() {
-    CHECK(!isMaChangeInProgress && isVisible() && state != (graphCalculationTaskRunner.isIdle() ? renderedState : inProgressState), );
+    state.width = width();
+
+    const MaGraphOverviewState& stateToDedup = graphCalculationTaskRunner.isIdle() ? renderedState : inProgressState;
+    bool isViewVisible = isOsMac() ? !visibleRegion().isEmpty() : isVisible(); // On MacOS even a background window has isVisible() true! May be a "too old QT" issue.
+    CHECK(!isMaChangeInProgress && isViewVisible && state != stateToDedup && state.width > 0, );
+//    uiLog.info(QString("recomputeGraphIfNeeded: %1,%2 -> %3,%4").arg(int(stateToDedup.method)).arg(stateToDedup.width).arg(int(state.method)).arg(state.width));
+
     graphCalculationTaskRunner.cancel();
     auto maObject = editor->getMaObject();
     MaGraphCalculationTask* task = nullptr;
     switch (state.method) {
         case MaGraphCalculationMethod::Strict:
-            task = new MaConsensusOverviewCalculationTask(maObject, width(), height());
+            task = new MaConsensusOverviewCalculationTask(maObject, state.width, height());
             break;
         case MaGraphCalculationMethod::Gaps:
-            task = new MaGapOverviewCalculationTask(maObject, width(), height());
+            task = new MaGapOverviewCalculationTask(maObject, state.width, height());
             break;
         case MaGraphCalculationMethod::Clustal:
-            task = new MaClustalOverviewCalculationTask(maObject, width(), height());
+            task = new MaClustalOverviewCalculationTask(maObject, state.width, height());
             break;
         case MaGraphCalculationMethod::Highlighting:
-            task = new MaHighlightingOverviewCalculationTask(editor, state.colorSchemeId, state.highlightingSchemeId, width(), height());
+            task = new MaHighlightingOverviewCalculationTask(editor, state.colorSchemeId, state.highlightingSchemeId, state.width, height());
             break;
     }
     SAFE_POINT(task != nullptr, "Unsupported overview method:" + QString::number((int)state.method), );

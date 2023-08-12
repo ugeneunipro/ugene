@@ -57,6 +57,9 @@ public:
     /** Asserts that the log interval covered by the tracer has no error. */
     void assertNoErrors() const;
 
+    /** Checks that there is an expected count of messages in the log. */
+    void checkMessageWithTextCount(const QString& messagePart, int expectedMessageCount, const QString& context);
+
     QStringList allMessages;
     QStringList errorMessages;
 };
