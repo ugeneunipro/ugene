@@ -76,7 +76,6 @@ public:
     static const QString MALIGN_CLUSTALW;
     static const QString MALIGN_CLUSTALO;
     static const QString MALIGN_MAFFT;
-    static const QString MALIGN_TCOFFEE;
     static const QString MALIGN_KALIGN;
 
     static const QString CLONING_MENU;

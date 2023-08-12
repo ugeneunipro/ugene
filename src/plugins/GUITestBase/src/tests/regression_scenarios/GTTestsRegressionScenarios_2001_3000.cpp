@@ -38,7 +38,6 @@
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
-#include <runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
 #include <utils/GTKeyboardUtils.h>
@@ -1322,51 +1321,6 @@ GUI_TEST_CLASS_DEFINITION(test_2267_2) {
     GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ADD, "add_qualifier_action"}));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter("D"));
     GTMouseDriver::click(Qt::RightButton);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_2268) {
-    //    0. Copy t-coffee tool to the place where UGENE has enough permissions to change file permissions;
-    //    Set the copied t-coffee tool in preferences.
-
-    ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
-    CHECK_SET_ERR(etRegistry, "External tool registry is NULL");
-
-    ExternalTool* tCoffee = etRegistry->getById("USUPP_T_COFFEE");
-    CHECK_SET_ERR(tCoffee, "T-coffee tool is NULL");
-
-    const QFileInfo origToolPath(tCoffee->getPath());
-    CHECK_SET_ERR(origToolPath.exists(), "T-coffee tool is not set");
-
-    QDir origToolDir = origToolPath.dir();
-    if (isOsLinux()) {
-        origToolDir.cdUp();  // exit from 'bin' folder
-    }
-
-    QString newToolDir = sandBoxDir + GTUtils::genUniqueString("test_2268") + "/";
-    GTFile::copyDir(origToolDir.absolutePath(), newToolDir);
-    QFileInfo newToolPath(newToolDir + (isOsLinux() ? "bin/t_coffee" : (isOsWindows() ? "t_coffee.bat" : "t_coffee")));
-
-    // Hack, it is better to set the tool path via the preferences dialog
-    CHECK_SET_ERR(newToolPath.exists(), "The copied T-coffee tool does not exist");
-    tCoffee->setPath(newToolPath.absoluteFilePath());
-
-    // 1. Forbid write access to the t-coffee folder recursively (chmod 555 -R %t-coffee-dir%).
-    GTFile::setReadOnly(newToolDir, true);
-
-    // 2. Open "_common_data/clustal/align.aln".
-    GTFileDialog::openFile(testDir + "_common_data/clustal/align.aln");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    // 3. Right click on the MSA -> Align -> Align with T-Coffee.
-    // 4. Click the "Align" button.
-    GTLogTracer lt;
-    GTUtilsDialog::waitForDialog(new TCoffeeDailogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "Align with T-Coffee"}));
-    GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
-
-    //    Expected: the t-coffee task started and finished well.
-    GTUtilsTaskTreeView::waitTaskFinished();
-    lt.assertNoErrors();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2314) {
@@ -3313,28 +3267,6 @@ GUI_TEST_CLASS_DEFINITION(test_2581_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2581_4) {
-    // 1. Open file "_common_data/scenarios/msa/ma2_gapped_same_names.aln"
-    // 2. Use context menu { Align -> Align with T-Coffee }
-    // Expected state: the "Align with T-Coffee" dialog has appeared
-    // 3. Press the "Align" button
-    // Expected state: after a few seconds alignment has finished, UGENE does not crash
-
-    GTLogTracer lt;
-
-    GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/", "ma2_gapped_same_names.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
-    GTUtilsDialog::waitForDialog(new TCoffeeDailogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "Align with T-Coffee"}, GTGlobals::UseMouse));
-
-    GTUtilsMSAEditorSequenceArea::moveTo(QPoint(0, 0));
-    GTMouseDriver::click(Qt::RightButton);
-
-    GTUtilsTaskTreeView::waitTaskFinished();
-    lt.assertNoErrors();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_2581_5) {
     // 1. Open file "_common_data/scenarios/msa/ma2_gapped_same_names.aln"
     // 2. Use context menu { Align -> Align with Kalign }
     // Expected state: the "Align with Kalign" dialog has appeared

@@ -104,7 +104,6 @@ data/cmdline/align-clustalo.uwl
 data/cmdline/align-clustalw.uwl
 data/cmdline/align-kalign.uwl
 data/cmdline/align-mafft.uwl
-data/cmdline/align-tcoffee.uwl
 data/cmdline/align-to-reference.uwl
 data/cmdline/align.uwl
 data/cmdline/convert-msa.uwl
@@ -1436,7 +1435,6 @@ tools/python2
 tools/samtools
 tools/snpeff
 tools/spidey
-tools/tcoffee
 tools/trimmomatic
 tools/vcftools
 transl_ru.qm

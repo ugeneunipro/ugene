@@ -166,10 +166,6 @@ HEADERS += src/ETSProjectViewItemsController.h \
            src/stringtie/StringtieGeneAbundanceReportTask.h \
            src/stringtie/StringtieGeneAbundanceReportWorker.h \
            src/stringtie/StringtieGeneAbundanceReportWorkerFactory.h \
-           src/tcoffee/TCoffeeSupport.h \
-           src/tcoffee/TCoffeeSupportRunDialog.h \
-           src/tcoffee/TCoffeeSupportTask.h \
-           src/tcoffee/TCoffeeWorker.h \
            src/tophat/TopHatSettings.h \
            src/tophat/TopHatSupport.h \
            src/tophat/TopHatSupportTask.h \
@@ -238,7 +234,6 @@ FORMS += src/ETSSettingsWidget.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
          src/spades/SpadesInputData.ui \
          src/spades/SpadesSettings.ui \
-         src/tcoffee/TCoffeeSupportRunDialog.ui \
          src/trimmomatic/TrimmomaticPropertyDialog.ui \
          src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui \
          src/trimmomatic/steps/IlluminaClipSettingsWidget.ui \
@@ -410,10 +405,6 @@ SOURCES += src/ETSProjectViewItemsController.cpp \
            src/stringtie/StringtieGeneAbundanceReportTask.cpp \
            src/stringtie/StringtieGeneAbundanceReportWorker.cpp \
            src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp \
-           src/tcoffee/TCoffeeSupport.cpp \
-           src/tcoffee/TCoffeeSupportRunDialog.cpp \
-           src/tcoffee/TCoffeeSupportTask.cpp \
-           src/tcoffee/TCoffeeWorker.cpp \
            src/tophat/TopHatSettings.cpp \
            src/tophat/TopHatSupport.cpp \
            src/tophat/TopHatSupportTask.cpp \
