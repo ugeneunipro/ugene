@@ -144,9 +144,6 @@ static QStringList nightly(const QStringList& labelList = QStringList()) {
 /** Registers a GUI test with the labels provided.*/
 #define REGISTER_TEST_L(TestClass, LABELS) REGISTER_TEST_TL(TestClass, DEFAULT_GUI_TEST_TIMEOUT, LABELS);
 
-/**  Registers test on all platforms but with an IgnoredOnMacOS label. */
-#define REGISTER_TEST_IGNORED_MAC(TestClass, MESSAGE) REGISTER_TEST_EXT(TestClass, nightly({IgnoredOnMacOS}), MESSAGE)
-
 /** Registers test only for the specified platforms only. */
 #define REGISTER_TEST_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Precommit, Linux}))
 #define REGISTER_TEST_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Precommit, MacOS}))
@@ -194,23 +191,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     //////////////////////////////////////////////////////////////////////////
 
     // REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); // not completed yet
-
-    REGISTER_TEST(GUITest_regression_scenarios::test_3165);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3452);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
-    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);
-    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005);
-    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001);
-    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_1);
-    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_2);
-    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2128_1);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2293);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2651);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2829);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3690);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4148);
 
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_project::test_0041);  // There is no "Shift + Insert" hotkey on Mac
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
@@ -704,6 +684,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2100_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_2124);
     REGISTER_TEST(GUITest_regression_scenarios::test_2128);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2128_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2138);
     REGISTER_TEST(GUITest_regression_scenarios::test_2144);
     REGISTER_TEST(GUITest_regression_scenarios::test_2150);
@@ -728,6 +709,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2285);
     REGISTER_TEST(GUITest_regression_scenarios::test_2270);
     REGISTER_TEST(GUITest_regression_scenarios::test_2292);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2293);
     REGISTER_TEST(GUITest_regression_scenarios::test_2295);
     REGISTER_TEST(GUITest_regression_scenarios::test_2298);
 
@@ -807,6 +789,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2622);
     REGISTER_TEST(GUITest_regression_scenarios::test_2622_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_2632);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2651);
     REGISTER_TEST(GUITest_regression_scenarios::test_2656);
     REGISTER_TEST(GUITest_regression_scenarios::test_2662);
     REGISTER_TEST(GUITest_regression_scenarios::test_2667);
@@ -836,6 +819,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2808);
     REGISTER_TEST(GUITest_regression_scenarios::test_2809);
     REGISTER_TEST(GUITest_regression_scenarios::test_2811);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2829);
     REGISTER_TEST(GUITest_regression_scenarios::test_2853);
     REGISTER_TEST(GUITest_regression_scenarios::test_2863);
     REGISTER_TEST(GUITest_regression_scenarios::test_2884);
@@ -893,6 +877,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3142);
     REGISTER_TEST(GUITest_regression_scenarios::test_3143);
     REGISTER_TEST(GUITest_regression_scenarios::test_3155);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3165);
     REGISTER_TEST(GUITest_regression_scenarios::test_3170);
     REGISTER_TEST(GUITest_regression_scenarios::test_3175);
     REGISTER_TEST(GUITest_regression_scenarios::test_3180);
@@ -956,6 +941,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3443);
     REGISTER_TEST(GUITest_regression_scenarios::test_3450);
     REGISTER_TEST(GUITest_regression_scenarios::test_3451);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3452);
     REGISTER_TEST(GUITest_regression_scenarios::test_3455);
     REGISTER_TEST(GUITest_regression_scenarios::test_3471);
     REGISTER_TEST(GUITest_regression_scenarios::test_3472);
@@ -1001,6 +987,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3676);
     REGISTER_TEST(GUITest_regression_scenarios::test_3687_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3687_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3690);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_3702);
     REGISTER_TEST(GUITest_regression_scenarios::test_3710);
@@ -1113,6 +1100,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4131);
     REGISTER_TEST(GUITest_regression_scenarios::test_4134);
     REGISTER_TEST(GUITest_regression_scenarios::test_4141);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4148);
     REGISTER_TEST(GUITest_regression_scenarios::test_4151);
     REGISTER_TEST(GUITest_regression_scenarios::test_4153);
     REGISTER_TEST(GUITest_regression_scenarios::test_4156);
@@ -2476,6 +2464,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     // Common scenarios/msa_editor/colors
     /////////////////////////////////////////////////////////////////////////
 
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0004);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0007);
@@ -3018,7 +3009,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0004_7);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0004_8);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0004_9);
-
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005_1);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0006);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0007);
@@ -3250,6 +3241,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0001);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0002);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0005);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0006);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0007);
@@ -3498,6 +3490,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0005);
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0006);
     REGISTER_TEST(GUITest_common_scenarios_start_page::test_0008);
+
+    // Query designer.
+    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_1);
+    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_2);
 }
 
 void GUITestBasePlugin::registerAdditionalActions(UGUITestBase* guiTestBase) {
