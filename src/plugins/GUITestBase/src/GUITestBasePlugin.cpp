@@ -195,22 +195,22 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     // REGISTER_TEST(GUITest_common_scenarios_msa_editor::test_0058); // not completed yet
 
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3165, "drag and drop");
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3452, "temporary ignored because of mac failing");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0001, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0002, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_msa_editor_colors::test_0003, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_query_designer::test_0001, "breaks testing on mac");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_query_designer::test_0001_1, "breaks testing on mac");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_query_designer::test_0001_2, "breaks testing on mac");
-    REGISTER_TEST_IGNORED_MAC(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2128_1, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2293, "It always fails on MacOS. Improve the test");
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2651, "this test seems to break mac testing");
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_2829, "hotkeys on mac");
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_3690, "hotkeys on mac");
-    REGISTER_TEST_IGNORED_MAC(GUITest_regression_scenarios::test_4148, "It always fails on MacOS. Improve the test");
+    REGISTER_TEST(GUITest_regression_scenarios::test_3165);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3452);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_colors::test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::highlighting_test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_1);
+    REGISTER_TEST(GUITest_common_scenarios_query_designer::test_0001_2);
+    REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0004);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2128_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2293);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2651);
+    REGISTER_TEST(GUITest_regression_scenarios::test_2829);
+    REGISTER_TEST(GUITest_regression_scenarios::test_3690);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4148);
 
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_project::test_0041);  // There is no "Shift + Insert" hotkey on Mac
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
