@@ -114,7 +114,6 @@ QMap<QString, QString> SchemaSerializer::initElemTypesMap() {
     map["kalign.align"] = "kalign";
     map["mafft.align"] = "mafft";
     map["muscle.align"] = "muscle";
-    map["tcoffee.align"] = "tcoffee";
     map["pfmatrix.build"] = "fmatrix-build";
     map["sitecon.build"] = "sitecon-build";
     map["pwmatrix.build"] = "wmatrix-build";

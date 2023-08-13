@@ -1777,7 +1777,8 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1000 : 1100;
+    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1000
+                                                  : 1100;
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
@@ -3374,8 +3375,10 @@ GUI_TEST_CLASS_DEFINITION(test_7659) {
     GTUtilsWorkflowDesigner::click("Read Assembly (BAM/SAM)");
     GTUtilsDialog::waitForDialog(new DatasetNameEditDialogFiller("NewSet"));
     GTUtilsDialog::waitForDialog(new PopupChooser({"rename_dataset_action"}));
+
     auto barWidget = GTWidget::findWidgetByType<QTabBar*>(GTUtilsWorkflowDesigner::getDatasetsListWidget(), "Can't find QTabBar widget");
-    GTWidget::click(barWidget->tabButton(0, QTabBar::RightSide), Qt::RightButton);
+    auto tabButton = barWidget->tabButton(0, isOsMac() ? QTabBar::LeftSide : QTabBar::RightSide);
+    GTWidget::click(tabButton, Qt::RightButton);
 
     GTUtilsWorkflowDesigner::click("Read Sequence");
     barWidget = GTWidget::findWidgetByType<QTabBar*>(GTUtilsWorkflowDesigner::getDatasetsListWidget(), "Can't find QTabBar widget");

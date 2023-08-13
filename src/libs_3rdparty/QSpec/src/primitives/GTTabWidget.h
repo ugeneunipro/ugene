@@ -33,13 +33,13 @@ public:
     static void setCurrentIndex(QTabWidget* const tabWidget, int index);
     static QTabBar* getTabBar(QTabWidget* tabWidget);
 
-    static void clickTab(QTabWidget* const tabWidget, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(QTabWidget* tabWidget, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
     static void clickTab(const QString& tabWidgetName, QWidget* parent, int tabIndex, Qt::MouseButton button = Qt::LeftButton);
-    static void clickTab(QTabWidget* const tabWidget, const QString& tabName, Qt::MouseButton button = Qt::LeftButton);
+    static void clickTab(QTabWidget* tabWidget, const QString& tabName, Qt::MouseButton button = Qt::LeftButton);
     static void clickTab(const QString& tabWidgetName, QWidget* parent, const QString& tabName, Qt::MouseButton button = Qt::LeftButton);
 
     static QString getTabName(QTabWidget* tabWidget, int idx);
-    // QTabWidget contais several tabs, each tab is some QWidget
+    // QTabWidget contains several tabs, each tab is some QWidget
     // Also, each tab has a name, which is written on this tab
     // The method returns a name of the corresponding tab
     // @tabWidget the pointer to QTabWidget

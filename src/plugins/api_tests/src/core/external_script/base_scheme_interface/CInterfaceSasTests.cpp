@@ -166,25 +166,7 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_muscle_sas) {
 
     releaseScheme(scheme);
 }
-IMPLEMENT_TEST(CInterfaceSasTests, align_with_tcoffee_sas) {
-    SchemeHandle scheme = nullptr;
-    U2ErrorType error = createSas(L"tcoffee", nullptr, nullptr, &scheme);
-    CHECK_U2_ERROR(error);
-    QString readerName;
-    error = getActorDisplayName("read-msa", readerName);
-    CHECK_U2_ERROR(error);
-    gauto_array<wchar_t> wReaderName(toDisposableWString(readerName));
-    error = setSchemeElementAttribute(scheme, wReaderName.get(), L"url-in.dataset", L"Dataset 1");
-    CHECK_U2_ERROR(error);
 
-    U2OpStatusImpl stateInfo;
-    SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  WD_SCHEMES_PATH + "align_with_tcoffee.uwl",
-                                                  stateInfo);
-    CHECK_NO_ERROR(stateInfo);
-
-    releaseScheme(scheme);
-}
 IMPLEMENT_TEST(CInterfaceSasTests, annotate_with_uql_sas) {
     SchemeHandle scheme = nullptr;
     U2ErrorType error = createSas(L"query", nullptr, nullptr, &scheme);

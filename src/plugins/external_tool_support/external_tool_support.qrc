@@ -26,9 +26,6 @@
         <file>images/python.png</file>
         <file>images/python_gray.png</file>
         <file>images/python_warn.png</file>
-        <file>images/tcoffee.png</file>
-        <file>images/tcoffee_gray.png</file>
-        <file>images/tcoffee_warn.png</file>
         <file>images/up.png</file>
         <file>schemas/CustomExternalToolConfig.xsd</file>
     </qresource>

@@ -166,7 +166,7 @@ GUI_TEST_CLASS_DEFINITION(test_3014) {
 GUI_TEST_CLASS_DEFINITION(test_3017) {
     // 1. Open 'HIV-1.aln';
     // 2. Select few columns;
-    // 3. Run ClustalW, ClustalO, Mafft or T-Coffee alignment task;
+    // 3. Run ClustalW, ClustalO or Mafft alignment task;
     // 4. Try to change an alignment while the task is running: move region, delete region etc.;
     // Current state: there is no results of your actions because msa is blocked, overview is not recalculated.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/ty3.aln.gz");
@@ -184,7 +184,7 @@ GUI_TEST_CLASS_DEFINITION(test_3017) {
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "S", "Alignment is not locked: " + clipboardText);
 
-    GTUtilsTask::cancelAllTasks();  // Cancel the long running task.
+    GTUtilsTask::cancelAllTasks();  // Cancel the long-running task.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3031) {

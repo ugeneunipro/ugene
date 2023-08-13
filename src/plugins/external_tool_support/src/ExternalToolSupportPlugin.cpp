@@ -112,8 +112,6 @@
 #include "stringtie/StringTieSupport.h"
 #include "stringtie/StringTieWorker.h"
 #include "stringtie/StringtieGeneAbundanceReportWorkerFactory.h"
-#include "tcoffee/TCoffeeSupport.h"
-#include "tcoffee/TCoffeeWorker.h"
 #include "tophat/TopHatSupport.h"
 #include "tophat/TopHatWorker.h"
 #include "trimmomatic/TrimmomaticSupport.h"
@@ -161,10 +159,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
     MAFFTSupport* mAFFTTool = new MAFFTSupport();
     etRegistry->registerEntry(mAFFTTool);
 
-    // T-Coffee
-    TCoffeeSupport* tCoffeeTool = new TCoffeeSupport();
-    etRegistry->registerEntry(tCoffeeTool);
-
     // Kalign
     auto kalignTool = new Kalign3Support();
     etRegistry->registerEntry(kalignTool);
@@ -205,14 +199,6 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin()
         mAFFTAction->setObjectName(ToolsMenu::MALIGN_MAFFT);
         connect(mAFFTAction, SIGNAL(triggered()), mAFFTTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, mAFFTAction);
-
-        tCoffeeTool->getViewContext()->setParent(this);
-        tCoffeeTool->getViewContext()->init();
-
-        ExternalToolSupportAction* tCoffeeAction = new ExternalToolSupportAction(tr("Align with T-Coffee..."), this, QStringList(TCoffeeSupport::ET_TCOFFEE_ID));
-        tCoffeeAction->setObjectName(ToolsMenu::MALIGN_TCOFFEE);
-        connect(tCoffeeAction, SIGNAL(triggered()), tCoffeeTool, SLOT(sl_runWithExtFileSpecify()));
-        ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
 
         kalignTool->getViewContext()->setParent(this);
         kalignTool->getViewContext()->init();
@@ -443,7 +429,6 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
     LocalWorkflow::BlastWorkerFactory::init();
 
-    LocalWorkflow::TCoffeeWorkerFactory::init();
     LocalWorkflow::Kalign3WorkerFactory::init();
     LocalWorkflow::CuffdiffWorkerFactory::init();
     LocalWorkflow::CufflinksWorkerFactory::init();

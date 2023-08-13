@@ -214,9 +214,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_project::test_0041);  // There is no "Shift + Insert" hotkey on Mac
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_workflow_parameters_validation::test_0002);  //, "qt dialog can't be shown");
-    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_0889);  //"Spidey tool is not available on Mac"
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_0889);  // Spidey tool is not available on Mac.
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_2140);
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_create_shortcut::test_0001);
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_7584);  // Spidey tool is not available on Mac.
 
     REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0001);
     REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0002);  //"Restore when this tool becomes available");
@@ -240,7 +241,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1693);  // no tuxedo for windows
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_1735);
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2266_1);
-    REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2268);  // T-Coffee has no official support for Windows & can't work from read-only Windows dirs: crashes with access error to Unix /tmp/.. path in the log.
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2282);
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2475);
     REGISTER_TEST_LINUX_AND_MAC(GUITest_regression_scenarios::test_2638);
@@ -454,7 +454,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1157);
     REGISTER_TEST(GUITest_regression_scenarios::test_1163);
     REGISTER_TEST(GUITest_regression_scenarios::test_1165);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1166);
     REGISTER_TEST(GUITest_regression_scenarios::test_1172);
     REGISTER_TEST(GUITest_regression_scenarios::test_1175);
     REGISTER_TEST(GUITest_regression_scenarios::test_1180);
@@ -800,7 +799,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_2581_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_2581_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_2581_4);
-    REGISTER_TEST(GUITest_regression_scenarios::test_2581_5);
     REGISTER_TEST(GUITest_regression_scenarios::test_2583);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_2605);
@@ -1786,7 +1784,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7575);
     REGISTER_TEST(GUITest_regression_scenarios::test_7576);
     REGISTER_TEST(GUITest_regression_scenarios::test_7582);
-    REGISTER_TEST(GUITest_regression_scenarios::test_7584);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7607);
     REGISTER_TEST(GUITest_regression_scenarios::test_7609);

@@ -52,8 +52,8 @@ QTabBar* GTTabWidget::getTabBar(QTabWidget* tabWidget) {
     return tabBars.first();
 }
 
-void GTTabWidget::clickTab(QTabWidget* const tabWidget, int tabIndex, Qt::MouseButton button) {
-    GT_CHECK(tabWidget != NULL, "tabWidget is NULL");
+void GTTabWidget::clickTab(QTabWidget* tabWidget, int tabIndex, Qt::MouseButton button) {
+    GT_CHECK(tabWidget != nullptr, "tabWidget is NULL");
     setCurrentIndex(tabWidget, tabIndex);
     QTabBar* tabBar = getTabBar(tabWidget);
     QRect r = tabBar->tabRect(tabIndex);

@@ -128,7 +128,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h \
-            src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h \
             src/runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h \
 #   Runnables / UGENE / plugins / orf_marker
             src/runnables/ugene/plugins/orf_marker/OrfDialogFiller.h \
@@ -416,7 +415,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.cpp \
-            src/runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.cpp \
             src/runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.cpp \
 #   Runnables / UGENE / plugins / orf_marker
             src/runnables/ugene/plugins/orf_marker/OrfDialogFiller.cpp \

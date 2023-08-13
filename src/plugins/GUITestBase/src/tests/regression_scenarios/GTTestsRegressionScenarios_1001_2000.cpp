@@ -139,7 +139,6 @@
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
@@ -1756,37 +1755,6 @@ GUI_TEST_CLASS_DEFINITION(test_1165) {
     // Expected state: UGENE not crashes
     GTWidget::click(nameList);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-}
-
-GUI_TEST_CLASS_DEFINITION(test_1166) {
-    // 1. Open alignment
-    GTFileDialog::openFile(testDir + "_common_data/clustal", "alignx.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
-    GTUtilsMSAEditorSequenceArea::selectArea(QPoint(24, 2), QPoint(29, 3));
-
-    // 2. Select any region in msa with left button, move it left
-    GTUtilsMSAEditorSequenceArea::moveTo(QPoint(26, 2));
-    GTMouseDriver::press();
-
-    GTUtilsMSAEditorSequenceArea::moveTo(QPoint(24, 2));
-    GTMouseDriver::release();
-    GTThread::waitForMainThread();
-
-    // 3. Drag the region you selected to its original place
-    GTUtilsMSAEditorSequenceArea::moveTo(QPoint(24, 2));
-    GTMouseDriver::press();
-
-    GTUtilsMSAEditorSequenceArea::moveTo(QPoint(26, 2));
-    GTMouseDriver::release();
-    GTThread::waitForMainThread();
-
-    // 4. Press right mouse button, choose "Align"->"Align with T-Coffee"
-    // Expected state: UGENE not crashes
-    GTUtilsDialog::waitForDialog(new TCoffeeDailogFiller());
-    GTUtilsDialog::waitForDialog(new PopupChooser({MSAE_MENU_ALIGN, "Align with T-Coffee"}, GTGlobals::UseMouse));
-    GTWidget::click(GTUtilsMdi::activeWindow(), Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1172) {
