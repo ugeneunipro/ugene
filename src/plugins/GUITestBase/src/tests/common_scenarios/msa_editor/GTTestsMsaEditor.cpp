@@ -3315,7 +3315,6 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
         "Align with ClustalW",
         "Align with ClustalO",
         "Align with MAFFT",
-        "Align with T-Coffee",
         "alignWithKalignAction",
     })));
     GTWidget::click(GTAction::button("Align"));

@@ -32,7 +32,6 @@ DECLARE_TEST(CInterfaceSasTests, align_with_clustalW_sas);
 DECLARE_TEST(CInterfaceSasTests, align_with_kalign_sas);
 DECLARE_TEST(CInterfaceSasTests, align_with_mafft_sas);
 DECLARE_TEST(CInterfaceSasTests, align_with_muscle_sas);
-DECLARE_TEST(CInterfaceSasTests, align_with_tcoffee_sas);
 DECLARE_TEST(CInterfaceSasTests, annotate_with_uql_sas);
 DECLARE_TEST(CInterfaceSasTests, basic_align_sas);
 DECLARE_TEST(CInterfaceSasTests, build_weight_matrix_sas);
@@ -62,7 +61,6 @@ DECLARE_METATYPE(CInterfaceSasTests, align_with_clustalW_sas)
 DECLARE_METATYPE(CInterfaceSasTests, align_with_kalign_sas)
 DECLARE_METATYPE(CInterfaceSasTests, align_with_mafft_sas)
 DECLARE_METATYPE(CInterfaceSasTests, align_with_muscle_sas)
-DECLARE_METATYPE(CInterfaceSasTests, align_with_tcoffee_sas)
 DECLARE_METATYPE(CInterfaceSasTests, annotate_with_uql_sas)
 DECLARE_METATYPE(CInterfaceSasTests, basic_align_sas)
 DECLARE_METATYPE(CInterfaceSasTests, build_weight_matrix_sas)

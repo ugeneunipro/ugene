@@ -115,7 +115,7 @@ void Kalign3SupportContext::initViewContext(GObjectViewController* view) {
 }
 
 void Kalign3SupportContext::sl_align() {
-    // Check that T-Coffee and temporary folder path defined
+    // Check that KAlign and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(Kalign3Support::ET_KALIGN_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox();
         msgBox->setWindowTitle("Kalign");

@@ -69,7 +69,6 @@ const QString ToolsMenu::MALIGN_MUSCLE = "MALIGN_MUSCLE";
 const QString ToolsMenu::MALIGN_CLUSTALW = "MALIGN_CLUSTALW";
 const QString ToolsMenu::MALIGN_CLUSTALO = "MALIGN_CLUSTALO";
 const QString ToolsMenu::MALIGN_MAFFT = "MALIGN_MAFFT";
-const QString ToolsMenu::MALIGN_TCOFFEE = "MALIGN_TCOFFEE";
 const QString ToolsMenu::MALIGN_KALIGN = "MALIGN_KALIGN";
 
 const QString ToolsMenu::CLONING_MENU = "CLONING_MENU";
@@ -164,7 +163,6 @@ void ToolsMenu::init() {
         subMenuAction[MALIGN_MENU] << MALIGN_CLUSTALW;
         subMenuAction[MALIGN_MENU] << MALIGN_CLUSTALO;
         subMenuAction[MALIGN_MENU] << MALIGN_MAFFT;
-        subMenuAction[MALIGN_MENU] << MALIGN_TCOFFEE;
         subMenuAction[MALIGN_MENU] << MALIGN_KALIGN;
     }
 

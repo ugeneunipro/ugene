@@ -64,7 +64,6 @@ data/cmdline/align-clustalo.uwl
 data/cmdline/align-clustalw.uwl
 data/cmdline/align-kalign.uwl
 data/cmdline/align-mafft.uwl
-data/cmdline/align-tcoffee.uwl
 data/cmdline/align-to-reference.uwl
 data/cmdline/align.uwl
 data/cmdline/convert-msa.uwl
@@ -1386,7 +1385,6 @@ tools/snpeff
 tools/spades
 tools/spidey
 tools/stringtie
-tools/tcoffee
 tools/tophat2
 tools/trimmomatic
 tools/vcftools
