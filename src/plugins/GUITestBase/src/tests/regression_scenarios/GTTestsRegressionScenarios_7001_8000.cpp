@@ -1777,7 +1777,7 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 1000
+    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 950
                                                   : 1100;
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
