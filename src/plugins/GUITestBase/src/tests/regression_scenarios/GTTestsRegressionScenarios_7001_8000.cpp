@@ -3324,17 +3324,13 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7652) {
-    // 1. Open files samples/CLUSTALW/COI.aln, _common_data/ugenedb/Klebsislla.sort.bam.ugenedb
-    // 2. Export consensus from Klebsislla
-    // 3. Switch to COI.aln
-    // 4. Do menu Actions->Add->Sequence from file...
-    // 5. Do not choose file, wait until export task finishes
+    // 1. Open  _common_data/ugenedb/Klebsislla.sort.bam.ugenedb
+    // 2. Start export consensus from Klebsislla
+    // 3. Open a modal dialog
+    // 4. Wait until consensus task is finished.
     // 6. No crash.
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
     GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 
     class SimpleExport : public CustomScenario {
         void run() override {
@@ -3346,16 +3342,16 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export consensus..."}));
     GTWidget::click(GTWidget::findWidget("Consensus area"), Qt::RightButton);
 
-    class WaitLogMessage : public CustomScenario {
+    class WaitViewIsOpenAndCloseScenario : public CustomScenario {
+    public:
         void run() override {
-            GTUtilsTaskTreeView::waitTaskFinished();
-            auto targetButton = GTWidget::findButtonByText("Cancel", GTWidget::getActiveModalWidget());
-            GTWidget::click(targetButton);
+            GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
     };
-
-    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(new WaitLogMessage()));
-    GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from file..."});
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new WaitViewIsOpenAndCloseScenario()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
