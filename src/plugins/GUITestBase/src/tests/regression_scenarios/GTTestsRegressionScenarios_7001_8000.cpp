@@ -3324,30 +3324,23 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7652) {
-    // 1. Open  _common_data/ugenedb/Klebsislla.sort.bam.ugenedb
-    // 2. Start export consensus from Klebsislla
-    // 3. Open a modal dialog
-    // 4. Wait until consensus task is finished.
-    // 6. No crash.
-    GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
-    GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
-
-    class SimpleExport : public CustomScenario {
-        void run() override {
-            GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
-        }
-    };
-    //    Export consensus
-    GTUtilsDialog::waitForDialog(new ExportConsensusDialogFiller(new SimpleExport()));
-    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export consensus..."}));
-    GTWidget::click(GTWidget::findWidget("Consensus area"), Qt::RightButton);
-
+    // Check that views can be opened when there is an active modal dialog.
     class WaitViewIsOpenAndCloseScenario : public CustomScenario {
     public:
         void run() override {
+            GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
+            GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+
+            GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+            GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+            GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
             GTUtilsSequenceView::checkSequenceViewWindowIsActive();
-            QWidget* dialog = GTWidget::getActiveModalWidget();
-            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+
+            GTFileDialog::openFile(dataDir + "samples/Newick/COI.nwk");
+            GTUtilsPhyTree::checkTreeViewerWindowIsActive();
+
+            GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
         }
     };
     GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new WaitViewIsOpenAndCloseScenario()));
