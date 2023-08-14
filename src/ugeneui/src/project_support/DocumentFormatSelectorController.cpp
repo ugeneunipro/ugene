@@ -59,15 +59,10 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
     : QDialog(p), formatDetectionResults(results) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929285");
-    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, true);
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     setObjectName("DocumentFormatSelectorDialog");
-}
-
-DocumentFormatSelectorController::~DocumentFormatSelectorController() {
-    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, false);
 }
 
 int DocumentFormatSelectorController::selectResult(const GUrl& url, const QString& rawDataPreview, QList<FormatDetectionResult>& results) {

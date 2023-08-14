@@ -124,7 +124,6 @@ void BlastRunDialog::sl_runQuery() {
 // BlastWithExtFileRunDialog
 BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget* parent)
     : BlastRunCommonDialog(parent, nullptr) {
-    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, true);
     // Create input file widget.
     auto widget = new QWidget(parent);
     inputFileLineEdit = new FileLineEdit("", "", false, widget);
@@ -155,11 +154,7 @@ BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget* parent)
     connect(this, SIGNAL(rejected()), SLOT(sl_cancel()));
 }
 
- BlastWithExtFileRunDialog::~BlastWithExtFileRunDialog() {
-    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, false);
-}
-
-const QList<BlastTaskSettings>& BlastWithExtFileRunDialog::getSettingsList() const {
+ const QList<BlastTaskSettings>& BlastWithExtFileRunDialog::getSettingsList() const {
     return settingsList;
 }
 

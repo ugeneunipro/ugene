@@ -52,7 +52,6 @@ namespace U2 {
 /* TRANSLATOR U2::LoadUnloadedDocumentTask */
 
 const int OpenViewTask::MAX_DOC_NUMBER_TO_OPEN_VIEWS = 5;
-const QString OpenViewTask::IGNORE_MODAL_WIDGET = "OpenViewOptions/ignore_modal_widget_and_open_view";
 
 //////////////////////////////////////////////////////////////////////////
 // LoadUnloadedDocumentAndOpenViewTask
@@ -85,10 +84,6 @@ static Task* createOpenViewTask(const MultiGSelection& ms) {
             // ignore auxiliary text data
             ls.removeAll(f);
         }
-    }
-    if (QApplication::activeModalWidget() != nullptr && AppContext::getSettings()->getValue(OpenViewTask::IGNORE_MODAL_WIDGET, false) == false) {
-        coreLog.info(QObject::tr("Unable to open view because of active modal widget."));
-        return nullptr;
     }
     return ls.size() == 1 ? ls[0]->createViewTask(ms, true) : nullptr;
 }

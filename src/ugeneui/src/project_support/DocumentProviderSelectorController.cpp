@@ -71,7 +71,6 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
       formatDetectionResults(results),
       selectedRadioButton(0) {
     setupUi(this);
-    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, true);
     setObjectName("Select Document Format");
     new HelpButton(this, buttonBox, "65929699");
     gbFormats->setTitle(QString("Options for %1").arg(url.fileName()));
@@ -102,11 +101,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
     formatsRadioButtons[0]->setFocus();
 }
 
- DocumentProviderSelectorController::~DocumentProviderSelectorController() {
-    AppContext::getSettings()->setValue(OpenViewTask::IGNORE_MODAL_WIDGET, false);
-}
-
-int DocumentProviderSelectorController::getSelectedFormatIdx() const {
+ int DocumentProviderSelectorController::getSelectedFormatIdx() const {
     for (int i = 0; i < formatsRadioButtons.size(); i++) {
         if (formatsRadioButtons[i]->isChecked()) {
             return i;
