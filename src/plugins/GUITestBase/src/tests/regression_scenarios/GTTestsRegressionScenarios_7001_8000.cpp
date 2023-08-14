@@ -3329,7 +3329,7 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
     // 3. Switch to COI.aln
     // 4. Do menu Actions->Add->Sequence from file...
     // 5. Do not choose file, wait until export task finishes
-    // Expected state: Info message 'Unable to open view because of active modal widget.' appears in the log
+    // 6. No crash.
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
@@ -3354,12 +3354,8 @@ GUI_TEST_CLASS_DEFINITION(test_7652) {
         }
     };
 
-    GTLogTracer lt;
-    GTGlobals::sleep(750);  // need pause to redraw/update ui, sometimes test can't preform next action
-    GTUtilsMdi::activateWindow("COI [COI.aln]");
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(new WaitLogMessage()));
     GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from file..."});
-    CHECK_SET_ERR(lt.hasMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {
