@@ -38,8 +38,6 @@ class ImportWidget;
 class DocumentProviderSelectorController : public QDialog, private Ui_DocumentProviderSelectorDialog {
     Q_OBJECT
 public:
-    ~DocumentProviderSelectorController();
-
     static int selectResult(const GUrl& url, QList<FormatDetectionResult>& results);
 
 private slots:

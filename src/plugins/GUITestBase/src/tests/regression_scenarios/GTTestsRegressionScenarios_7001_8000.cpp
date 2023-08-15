@@ -3324,42 +3324,27 @@ GUI_TEST_CLASS_DEFINITION(test_7650) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7652) {
-    // 1. Open files samples/CLUSTALW/COI.aln, _common_data/ugenedb/Klebsislla.sort.bam.ugenedb
-    // 2. Export consensus from Klebsislla
-    // 3. Switch to COI.aln
-    // 4. Do menu Actions->Add->Sequence from file...
-    // 5. Do not choose file, wait until export task finishes
-    // Expected state: Info message 'Unable to open view because of active modal widget.' appears in the log
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
-
-    GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
-    GTUtilsTaskTreeView::waitTaskFinished();
-
-    class SimpleExport : public CustomScenario {
+    // Check that views can be opened when there is an active modal dialog.
+    class WaitViewIsOpenAndCloseScenario : public CustomScenario {
+    public:
         void run() override {
+            GTFileDialog::openFile(testDir + "_common_data/ugenedb/Mycobacterium.sorted.ugenedb");
+            GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
+
+            GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+            GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
+
+            GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+            GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+            GTFileDialog::openFile(dataDir + "samples/Newick/COI.nwk");
+            GTUtilsPhyTree::checkTreeViewerWindowIsActive();
+
             GTUtilsDialog::clickButtonBox(GTWidget::getActiveModalWidget(), QDialogButtonBox::Ok);
         }
     };
-    //    Export consensus
-    GTUtilsDialog::waitForDialog(new ExportConsensusDialogFiller(new SimpleExport()));
-    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Export consensus..."}));
-    GTWidget::click(GTWidget::findWidget("Consensus area"), Qt::RightButton);
-
-    class WaitLogMessage : public CustomScenario {
-        void run() override {
-            GTUtilsTaskTreeView::waitTaskFinished();
-            auto targetButton = GTWidget::findButtonByText("Cancel", GTWidget::getActiveModalWidget());
-            GTWidget::click(targetButton);
-        }
-    };
-
-    GTLogTracer lt;
-    GTGlobals::sleep(750);  // need pause to redraw/update ui, sometimes test can't preform next action
-    GTUtilsMdi::activateWindow("COI [COI.aln]");
-    GTUtilsDialog::waitForDialog(new GTFileDialogUtils(new WaitLogMessage()));
-    GTMenu::clickMainMenuItem({"Actions", "Add", "Sequence from file..."});
-    CHECK_SET_ERR(lt.hasMessage("Unable to open view because of active modal widget."), "Expected message about not opening view not found!");
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new WaitViewIsOpenAndCloseScenario()));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7659) {

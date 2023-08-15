@@ -57,7 +57,6 @@ class BlastWithExtFileRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
     BlastWithExtFileRunDialog(QWidget* parent);
-    ~BlastWithExtFileRunDialog();
     const QList<BlastTaskSettings>& getSettingsList() const;
 
 protected slots:
