@@ -139,7 +139,7 @@ void GTUtilsDialog::clickButtonBox(QWidget* dialog, QDialogButtonBox::StandardBu
             GTWidget::click(pushButton);
             return;
         }
-        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS, "waiting for a button in GTUtilsDialog::clickButtonBox");
     }
     GT_FAIL("Button was not enabled. " + Filler::generateFillerStackInfo(), );
 }
@@ -176,7 +176,7 @@ void GTUtilsDialog::waitForDialog(Runnable* r, int timeout, bool isRandomOrderWa
 void GTUtilsDialog::checkNoActiveWaiters(int timeoutMillis) {
     GUIDialogWaiter* notFinishedWaiter = getFirstOrNull(waiterList);
     for (int time = 0; time < timeoutMillis && notFinishedWaiter != nullptr; time += GT_OP_CHECK_MILLIS) {
-        GTGlobals::sleep(GT_OP_CHECK_MILLIS);
+        GTGlobals::sleep(GT_OP_CHECK_MILLIS, "checkNoActiveWaiters");
         notFinishedWaiter = getFirstOrNull(waiterList);
     }
     if (notFinishedWaiter != nullptr && !GTGlobals::getOpStatus().hasError()) {

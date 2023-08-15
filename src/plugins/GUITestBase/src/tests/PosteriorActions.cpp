@@ -40,7 +40,7 @@
 #include "GTUtilsTaskTreeView.h"
 #include "PosteriorActions.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
-
+#include <U2Core/ProjectModel.h>
 namespace U2 {
 namespace GUITest_posterior_actions {
 
@@ -82,7 +82,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close all MDI windows
     // Cancel all tasks
 
-    if (AppContext::getProject() != nullptr) {
+    Project* project = AppContext::getProject();
+    if (project != nullptr && project->isTreeItemModified()) {
         GTWidget::click(GTUtilsProjectTreeView::getTreeView());
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
 
@@ -93,7 +94,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTKeyboardDriver::keyClick(isOsMac() ? 'e' : 'q', Qt::ControlModifier);
         GTUtilsTaskTreeView::waitTaskFinished(3000);
     }
-
+    GTUtilsDialog::checkNoActiveWaiters(10000);
     GTUtilsMdi::closeAllWindows();
     GTUtilsTask::cancelAllTasks();
     GTUtilsTaskTreeView::waitTaskFinished(10000);

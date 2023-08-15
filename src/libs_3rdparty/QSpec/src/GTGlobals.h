@@ -72,7 +72,7 @@ public:
         static const int INFINITE_DEPTH = 0;
     };
 
-    static void sleep(int msec = 2000);
+    static void sleep(int msec = 2000, const QString& reason = "");
     static void sendEvent(QObject* obj, QEvent* e);
 
     /** Takes a screenshot and saves to file. */
