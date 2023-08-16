@@ -67,7 +67,7 @@ static bool checkDialogNameMatches(const QString& widgetObjectName, const QStrin
 }
 
 void GUIDialogWaiter::checkDialog() {
-    if (!settings.isRandomOrderWaiter && this != getFirstOrNull(GTUtilsDialog::waiterList)) {
+    if (this != getFirstOrNull(GTUtilsDialog::waiterList)) {
         return;
     }
     QWidget* widget;
@@ -158,10 +158,10 @@ void GTUtilsDialog::add(Runnable* r, const GUIDialogWaiter::WaitSettings& settin
 }
 
 void GTUtilsDialog::add(Runnable* r, int timeout) {
-    waitForDialog(r, timeout, false, false);
+    waitForDialog(r, timeout, false);
 }
 
-void GTUtilsDialog::waitForDialog(Runnable* r, int timeout, bool isRandomOrderWaiter, bool isPrependToList) {
+void GTUtilsDialog::waitForDialog(Runnable* r, int timeout, bool isPrependToList) {
     GUIDialogWaiter::WaitSettings settings;
     if (auto filler = dynamic_cast<Filler*>(r)) {
         settings = filler->getSettings();
@@ -169,7 +169,6 @@ void GTUtilsDialog::waitForDialog(Runnable* r, int timeout, bool isRandomOrderWa
             settings.timeout = timeout;
         }
     }
-    settings.isRandomOrderWaiter = isRandomOrderWaiter;
     waitForDialog(r, settings, isPrependToList);
 }
 
