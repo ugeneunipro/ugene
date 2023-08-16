@@ -81,21 +81,11 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close the project
     // Close all MDI windows
     // Cancel all tasks
-
-    Project* project = AppContext::getProject();
-    if (project != nullptr && project->isTreeItemModified()) {
-        GTWidget::click(GTUtilsProjectTreeView::getTreeView());
-        GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-
-        GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No), 10000, true);
-        GTUtilsDialog::waitForDialog(new AppCloseMessageBoxDialogFiller(), 10000, true);
-        GTKeyboardDriver::keyClick(Qt::Key_Delete);
-
-        GTKeyboardDriver::keyClick(isOsMac() ? 'e' : 'q', Qt::ControlModifier);
-        GTUtilsTaskTreeView::waitTaskFinished(3000);
-    }
     GTUtilsDialog::checkNoActiveWaiters(10000);
+
+    qputenv("UGENE_GUI_TEST_SHUTDOWN", "1");
     GTUtilsMdi::closeAllWindows();
+
     GTUtilsTask::cancelAllTasks();
     GTUtilsTaskTreeView::waitTaskFinished(10000);
 }

@@ -47,6 +47,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0000) {
     // Release mouse and keyboard buttons
     // Start dialogs hang checking
 
+    qputenv("UGENE_GUI_TEST_SHUTDOWN", "0");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     if (isOsWindows()) {

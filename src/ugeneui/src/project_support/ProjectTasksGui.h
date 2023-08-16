@@ -87,9 +87,8 @@ class SaveProjectTask : public Task {
 
 public:
     SaveProjectTask(SaveProjectTaskKind k, Project* p = nullptr, const QString& url = QString(), bool silentSave_ = false);
-    ~SaveProjectTask();
 
-    virtual void prepare();
+    void prepare() override;
 
 private:
     SaveProjectTaskKind k;
