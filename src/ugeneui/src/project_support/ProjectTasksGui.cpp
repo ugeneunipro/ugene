@@ -129,14 +129,19 @@ SaveProjectTask::SaveProjectTask(SaveProjectTaskKind _k, Project* p, const QStri
     : Task(tr("Save project"), TaskFlags(TaskFlag_NoRun) | TaskFlag_CancelOnSubtaskCancel), k(_k), proj(p), url(_url), silentSave(silentSave_) {
 }
 
-SaveProjectTask::~SaveProjectTask() {
-}
-
 void SaveProjectTask::prepare() {
     if (proj == nullptr) {
         proj = AppContext::getProject();
     }
-    assert(proj != nullptr);
+    SAFE_POINT(proj != nullptr, "Project is null", );
+    bool isGuiTestShutdown = qgetenv("UGENE_GUI_TEST_SHUTDOWN") == "1";
+    if (isGuiTestShutdown) {
+        // There is no need to save project during GUI tests shutdown.
+        // The testing is already finished at that moment.
+        uiLog.trace("Skipping SaveProjectTask job because UGENE_GUI_TEST_SHUTDOWN = 1");
+        return;
+    }
+
     if (url.isEmpty()) {
         url = proj->getProjectURL();
     }

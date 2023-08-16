@@ -35,9 +35,13 @@ namespace HI {
 
 #define GT_CLASS_NAME "GTGlobals"
 
-void GTGlobals::sleep(int msec) {
+void GTGlobals::sleep(int msec, const QString& reason) {
     if (msec > 0) {
-        GT_LOG(QString("GTGlobals::sleep %1ms").arg(msec));
+        if (reason.isEmpty()) {
+            GT_LOG(QString("GTGlobals::sleep %1ms").arg(msec));
+        } else {
+            GT_LOG(QString("GTGlobals::sleep %1ms, reason: %2").arg(msec).arg(reason));
+        }
         QTest::qWait(msec);
     }
 }

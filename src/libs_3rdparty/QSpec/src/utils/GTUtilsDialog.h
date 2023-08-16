@@ -50,22 +50,16 @@ public:
         Popup = 2,
     };
     struct WaitSettings {
-        WaitSettings(const QString& _objectName = "",
-                     const DialogType& _dialogType = DialogType::Modal,
-                     int _timeout = 20000,
-                     bool _isRandomOrderWaiter = false,
-                     const QString& _logName = "")
+        WaitSettings(const QString& _objectName = "", const DialogType& _dialogType = DialogType::Modal, int _timeout = 20000, const QString& _logName = "")
             : objectName(_objectName),
               dialogType(_dialogType),
               timeout(_timeout),
-              isRandomOrderWaiter(_isRandomOrderWaiter),
               logName(_logName.isEmpty() ? _objectName : _logName) {
         }
 
         QString objectName;
         DialogType dialogType;
         int timeout;
-        bool isRandomOrderWaiter = false;
         /** Logging name is used when objectName is empty (popup menus, messages). */
         QString logName;
     };
@@ -130,7 +124,7 @@ public:
     // if objectName is not empty, waits for QWidget with a given name
     static void waitForDialog(Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList = true);
 
-    static void waitForDialog(Runnable* r, int timeout = 0, bool isRandomOrderWaiter = false, bool isPrependToList = true);
+    static void waitForDialog(Runnable* r, int timeout = 0, bool isPrependToList = true);
 
     /** Same as waitForDialog but adds waiter to the end of the current waiters list. */
     static void add(Runnable* r, const GUIDialogWaiter::WaitSettings& settings);

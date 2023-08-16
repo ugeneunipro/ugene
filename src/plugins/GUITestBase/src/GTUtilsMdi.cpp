@@ -124,14 +124,17 @@ void GTUtilsMdi::closeAllWindows() {
     class Scenario : public CustomScenario {
     public:
         void run() override {
+            GT_LOG("Closing all windows");
             QList<QMdiSubWindow*> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow*>();
             for (QMdiSubWindow* mdiWindow : qAsConst(mdiWindows)) {
+                GT_LOG("Closing window: " + mdiWindow->windowTitle() + "/" + mdiWindow->objectName());
                 auto filler = new MessageBoxDialogFiller(QMessageBox::Discard);
                 GTUtilsDialog::waitForDialog(filler);
                 mdiWindow->close();
-                GTGlobals::sleep(100);
+                GTGlobals::sleep(100, "Waiting after mdiWindow->close()");
                 GTUtilsDialog::removeRunnable(filler);
             }
+            GT_LOG("Closing all windows: Done");
         }
     };
 

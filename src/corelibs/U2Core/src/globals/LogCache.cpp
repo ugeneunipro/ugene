@@ -21,6 +21,8 @@
 
 #include "LogCache.h"
 
+#include <QDateTime>
+
 #ifdef Q_OS_WIN32
 #    include "windows.h"
 #endif
@@ -144,8 +146,12 @@ void LogCacheExt::onMessage(const LogMessage& msg) {
         return;
     }
     if (consoleEnabled) {
-        QByteArray ba = msg.text.toLocal8Bit();
-        char* buf = ba.data();
+        QByteArray message = msg.text.toLocal8Bit();
+        if (!message.startsWith("[")) {
+            QByteArray time = QDateTime::fromMSecsSinceEpoch(msg.time / 1000).toString("hh:mm:ss.zzz").toLocal8Bit();
+            printf("[%s] ", time.constData());
+        }
+        char* buf = message.data();
 #ifdef Q_OS_WIN32
         // a bit of magic to workaround Windows console encoding issues
         CharToOemA(buf, buf);
