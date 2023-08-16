@@ -2201,7 +2201,7 @@ bool WorkflowView::onCloseEvent() {
 
 bool WorkflowView::confirmModified() {
     propertyEditor->commit();
-    if (scene->isModified() && !scene->items().isEmpty()) {
+    if (scene->isModified() && !scene->items().isEmpty() && qgetenv("UGENE_GUI_TEST_SHUTDOWN") != "1") {
         AppContext::getMainWindow()->getMDIManager()->activateWindow(this);
         int ret = QMessageBox::question(this, tr("Workflow Designer"), tr("The workflow has been modified.\n"
                                                                           "Do you want to save changes?"),
