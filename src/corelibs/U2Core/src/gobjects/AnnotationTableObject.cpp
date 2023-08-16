@@ -62,6 +62,7 @@ AnnotationTableObject::~AnnotationTableObject() {
 
 QList<Annotation*> AnnotationTableObject::getAnnotations() const {
     ensureDataLoaded();
+    SAFE_POINT(rootGroup != nullptr, "Failed to load annotations", {});
     return rootGroup->getAnnotations(true);
 }
 

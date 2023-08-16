@@ -105,9 +105,10 @@ void SequenceViewAnnotatedRenderer::drawAnnotations(QPainter& p, const QSize& ca
             extraAnnotationRegions << U2Region(0, headLength);
         }
     }
-    const QSet<AnnotationTableObject*> annotationObjectSet = ctx->getAnnotationObjects(true);
+    QSet<AnnotationTableObject*> annotationObjectSet = ctx->getAnnotationObjects(true);
     for (const AnnotationTableObject* annotationObject : qAsConst(annotationObjectSet)) {
-        for (Annotation* annotation : annotationObject->getAnnotations()) {
+        const QList<Annotation*>& annotations = annotationObject->getAnnotations();
+        for (Annotation* annotation : qAsConst(annotations)) {
             bool isVisible = annotationsRange.intersects(annotation->getRegions());
             for (int i = 0; i < extraAnnotationRegions.size() && !isVisible; i++) {
                 isVisible = extraAnnotationRegions[i].intersects(annotation->getRegions());
