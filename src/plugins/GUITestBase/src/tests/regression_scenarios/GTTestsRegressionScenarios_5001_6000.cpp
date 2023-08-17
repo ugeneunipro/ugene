@@ -3323,8 +3323,7 @@ GUI_TEST_CLASS_DEFINITION(test_5751) {
     // Expected state : "Remove all columns of gaps" is disabled.
     GTUtilsDialog::waitForDialog(new PopupCheckerByText({"Edit", "Remove all columns of gaps"}, PopupChecker::CheckOptions(PopupChecker::IsDisabled)));
     GTUtilsMcaEditorSequenceArea::callContextMenu();
-    GTUtilsTaskTreeView::waitTaskFinished();
-    GTKeyboardDriver::keyPress(Qt::Key_Escape);
+    GTUtilsDialog::checkNoActiveWaiters();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5752) {
