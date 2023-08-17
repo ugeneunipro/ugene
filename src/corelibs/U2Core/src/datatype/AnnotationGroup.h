@@ -50,7 +50,7 @@ public:
      */
     void findAllAnnotationsInGroupSubTree(QList<Annotation*>& set) const;
 
-    QList<Annotation*> getAnnotations(bool recurcively = false) const;
+    QList<Annotation*> getAnnotations(bool recursively = false) const;
 
     bool hasAnnotations() const;
 

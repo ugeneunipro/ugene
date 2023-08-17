@@ -83,9 +83,9 @@ void AnnotationGroup::findAllAnnotationsInGroupSubTree(QList<Annotation*>& set) 
     }
 }
 
-QList<Annotation*> AnnotationGroup::getAnnotations(bool recurcively) const {
+QList<Annotation*> AnnotationGroup::getAnnotations(bool recursively) const {
     QList<Annotation*> result = annotations;
-    if (recurcively) {
+    if (recursively) {
         foreach (AnnotationGroup* subgroup, subgroups) {
             result.append(subgroup->getAnnotations(true));
         }
