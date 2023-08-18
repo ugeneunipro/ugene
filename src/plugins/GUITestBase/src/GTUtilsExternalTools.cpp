@@ -36,7 +36,7 @@ namespace U2 {
 class RemoveToolScenario : public CustomScenario {
 public:
     RemoveToolScenario(const QString& toolName)
-        : CustomScenario(), toolName(toolName) {
+        : toolName(toolName) {
     }
 
     void run() {
@@ -53,7 +53,7 @@ private:
 class CheckValidationScenario : public CustomScenario {
 public:
     CheckValidationScenario(const QString& toolName)
-        : CustomScenario(), toolName(toolName) {
+        : toolName(toolName) {
     }
 
     void run() {
@@ -71,7 +71,7 @@ private:
 class SetToolUrlScenario : public CustomScenario {
 public:
     SetToolUrlScenario(const QString& toolName, const QString& url)
-        : CustomScenario(), toolName(toolName), url(url) {
+        : toolName(toolName), url(url) {
     }
 
     void run() {

@@ -3108,8 +3108,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
     class Scenario : public CustomScenario {
     public:
         Scenario(const QString& algorithm)
-            : CustomScenario(),
-              algorithm(algorithm) {
+            : algorithm(algorithm) {
         }
 
         void run() {
@@ -3133,8 +3132,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
     class DodgeLicenceDialogScenario : public CustomScenario {
     public:
         DodgeLicenceDialogScenario(const QString& algorithm)
-            : CustomScenario(),
-              algorithm(algorithm) {
+            : algorithm(algorithm) {
         }
 
         void run() override {

@@ -38,31 +38,29 @@
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
+#include <system/GTFile.h>
 #include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QFileInfo>
 #include <QGraphicsView>
-#include <QGroupBox>
 #include <QListWidget>
-#include <QMainWindow>
 #include <QMessageBox>
 #include <QSpinBox>
 #include <QStandardItemModel>
 #include <QTableView>
 #include <QTableWidget>
-#include <QTextEdit>
 #include <QToolButton>
 #include <QTreeWidget>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2View/MSAEditor.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "api/GTGraphicsItem.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -195,32 +193,6 @@ QTreeWidgetItem* GTUtilsWorkflowDesigner::findTreeItem(const QString& itemName, 
     return foundItem;
 }
 
-QList<QTreeWidgetItem*> GTUtilsWorkflowDesigner::getVisibleSamples() {
-    QWidget* wdWindow = getActiveWorkflowDesignerWindow();
-    auto treeWidget = GTWidget::findTreeWidget("samples", wdWindow);
-
-    // TODO: rework to use utils.
-    QList<QTreeWidgetItem*> outerList = treeWidget->findItems("", Qt::MatchContains);
-    QList<QTreeWidgetItem*> resultList;
-    for (int i = 0; i < outerList.count(); i++) {
-        QList<QTreeWidgetItem*> innerList;
-
-        for (int j = 0; j < outerList.value(i)->childCount(); j++) {
-            innerList.append(outerList.value(i)->child(j));
-        }
-
-        for (QTreeWidgetItem* item : qAsConst(innerList)) {
-            if (!item->isHidden()) {
-                if (item->parent() != nullptr) {
-                    GTTreeWidget::expand(item->parent());
-                }
-                resultList.append(item);
-            }
-        }
-    }
-    return resultList;
-}
-
 void GTUtilsWorkflowDesigner::addAlgorithm(const QString& algName, bool exactMatch, bool useDragAndDrop) {
     auto wdWindow = getActiveWorkflowDesignerWindow();
     expandTabs();
@@ -280,7 +252,7 @@ void GTUtilsWorkflowDesigner::selectSample(QTreeWidgetItem* sample, QWidget* par
     class MainThreadAction : public CustomScenario {
     public:
         MainThreadAction(QTreeWidget* paletteTree, QTreeWidgetItem* sample)
-            : CustomScenario(), paletteTree(paletteTree), sample(sample) {
+            : paletteTree(paletteTree), sample(sample) {
         }
         void run() {
             paletteTree->scrollToItem(sample);
@@ -1280,7 +1252,7 @@ void GTUtilsWorkflowDesigner::setParameterScripting(QString parameter, QString s
     class MainThreadAction : public CustomScenario {
     public:
         MainThreadAction(QTableView* table, int row)
-            : CustomScenario(), table(table), row(row) {
+            : table(table), row(row) {
         }
         void run() {
             QAbstractItemModel* model = table->model();
@@ -1331,6 +1303,36 @@ QAbstractButton* GTUtilsWorkflowDesigner::getGotoWorkflowButton() {
     auto button = qobject_cast<QAbstractButton*>(buttonWidget);
     CHECK_SET_ERR_RESULT(button != nullptr, "'Show workflow' is not found", nullptr);
     return button;
+}
+
+class SetWorkflowOutputDirScenario : public CustomScenario {
+public:
+    SetWorkflowOutputDirScenario(const QString& _path)
+        : path(_path) {
+    }
+
+    void run() override {
+        QWidget* dialog = GTWidget::getActiveModalWidget();
+        AppSettingsDialogFiller::setWorkflowOutputDirPath(path);
+        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+    }
+
+private:
+    const QString path;
+};
+
+void GTUtilsWorkflowDesigner::setWorkflowOutputDir(const QString& path) {
+    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new SetWorkflowOutputDirScenario(path)));
+    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
+}
+
+void GTUtilsWorkflowDesigner::prepareTwoDashboardsState() {
+    QFileInfo originalWorkflowOutputDir = UGUITest::testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
+    QFileInfo testWorkflowOutputDir = UGUITest::sandBoxDir + "two_visible_dashboards";
+    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
+    // Wait scan task to finish.
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 #undef GT_CLASS_NAME

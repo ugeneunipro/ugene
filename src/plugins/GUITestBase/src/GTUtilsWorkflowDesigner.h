@@ -77,9 +77,6 @@ public:
     // returns item from samples or algorithms tab
     static QTreeWidgetItem* findTreeItem(const QString& itemName, tab t, bool exactMatch = false, bool failIfNULL = true);
 
-    // returns item from samples or algorithms tab
-    static QList<QTreeWidgetItem*> getVisibleSamples();
-
     // expands samples/Elements tabwidget if collapsed
     static void expandTabs(QWidget* parentWidget = nullptr);
 
@@ -222,6 +219,11 @@ public:
     /** Returns a button to switch from the dashboards view to WD. */
     static QAbstractButton* getGotoWorkflowButton();
 
+    /** Opens AppSettingsDialog and sets workflow output dir. */
+    static void setWorkflowOutputDir(const QString& path);
+
+    /** Prepares WD state where there are two finished dashboards. */
+    static void prepareTwoDashboardsState();
 private:
     static void selectSample(QTreeWidgetItem* sample, QWidget* parentWidget = nullptr);
     static QRect getItemRect(const QString& itemName);

@@ -4094,10 +4094,13 @@ GUI_TEST_CLASS_DEFINITION(test_4702) {
 GUI_TEST_CLASS_DEFINITION(test_4710) {
     //    1) Make sure to have several dashboards for different workflows runs.
     //    2) Run a workflow, e.g. I ran "Variation annotation with SnpEff" with the tutorial data.
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::addSample("SnpEff");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTThread::waitForMainThread();
+
     GTUtilsWorkflowDesigner::click("Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(testDir + "_common_data/vcf/valid.vcf");
 
@@ -4107,16 +4110,12 @@ GUI_TEST_CLASS_DEFINITION(test_4710) {
 
     GTUtilsWorkflowDesigner::runWorkflow();
 
-    QTabWidget* tabs = GTUtilsDashboard::getTabWidget();
-    // int initialIndex = tabs->count();
-    QString initTabName = GTTabWidget::getTabName(tabs, tabs->currentIndex());
-    //    3) During the workflow run open the "Dashboard Manager", select one of the several dashboard, and click "Remove selected."
-    QWidget* dmButton = GTAction::button(GTAction::findAction("Dashboards manager"));
+    QTabWidget* tabWidget = GTUtilsDashboard::getTabWidget();
+    QString initTabName = GTTabWidget::getTabName(tabWidget, tabWidget->currentIndex());
 
-    class custom : public CustomScenario {
+    class RemoveFirstDashboardScenario : public CustomScenario {
     public:
         void run() override {
-            //    4) Select some dashboards in the dialog
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto listWidget = GTWidget::findTreeWidget("listWidget", dialog);
             GTTreeWidget::click(listWidget->invisibleRootItem()->child(0));
@@ -4127,17 +4126,16 @@ GUI_TEST_CLASS_DEFINITION(test_4710) {
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
     };
-    GTUtilsDialog::waitForDialog(new DashboardsManagerDialogFiller(new custom()));
-    GTWidget::click(dmButton);
+    GTUtilsDialog::add(new DashboardsManagerDialogFiller(new RemoveFirstDashboardScenario()));
+    GTWidget::click(GTAction::button(GTAction::findAction("Dashboards manager")));
+    GTUtilsDialog::checkNoActiveWaiters();
     //    Expected result: the selected dashboard was removed, the current workflow execution is proceeding and its dashboard is shown.
     //    Actual result: the workflow execution is proceeding, but the current dashboard is removed.
 
-    // int finalIndex = tabs->count();
-    QString finalTabName = GTTabWidget::getTabName(tabs, tabs->currentIndex());
+    QString finalTabName = GTTabWidget::getTabName(tabWidget, tabWidget->currentIndex());
 
     CHECK_SET_ERR(initTabName == finalTabName, "tab name changed. Initial: " + initTabName + ", actual: " + finalTabName);
     AppContext::getTaskScheduler()->cancelAllTasks();
-    GTUtilsTaskTreeView::waitTaskFinished(60000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4710_1) {
