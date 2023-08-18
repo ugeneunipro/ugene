@@ -43,7 +43,7 @@ void GTComboBox::selectItemByIndex(QComboBox* comboBox, int index, GTGlobals::Us
     class MainThreadAction : public CustomScenario {
     public:
         MainThreadAction(QComboBox* comboBox, int index, GTGlobals::UseMethod method)
-            : CustomScenario(), comboBox(comboBox), index(index), method(method) {
+            : comboBox(comboBox), index(index), method(method) {
         }
         void run() override {
             int itemsCount = comboBox->count();

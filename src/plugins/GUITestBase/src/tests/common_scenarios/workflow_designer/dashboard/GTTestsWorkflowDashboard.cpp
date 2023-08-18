@@ -23,7 +23,6 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
-#include <primitives/GTMenu.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
@@ -47,7 +46,6 @@
 #include "GTUtilsTask.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
-#include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/DashboardsManagerDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 
@@ -208,27 +206,6 @@ static void checkTreeStructure(const QMap<QString, QList<QPair<QString, QStringL
             }
         }
     }
-}
-
-class SetWorkflowOutputDirScenario : public CustomScenario {
-public:
-    SetWorkflowOutputDirScenario(const QString& _path)
-        : CustomScenario(), path(_path) {
-    }
-
-    void run() override {
-        QWidget* dialog = GTWidget::getActiveModalWidget();
-        AppSettingsDialogFiller::setWorkflowOutputDirPath(path);
-        GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
-    }
-
-private:
-    const QString path;
-};
-
-static void setWorkflowOutputDir(const QString& path) {
-    GTUtilsDialog::waitForDialog(new AppSettingsDialogFiller(new SetWorkflowOutputDirScenario(path)));
-    GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
 
 static QString getQuotedString(const QString& string) {
@@ -1955,11 +1932,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1985,11 +1958,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2117,14 +2086,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2249,14 +2211,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2314,15 +2269,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
-
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     int tabIndex1 = GTUtilsMdi::getCurrentTab();
@@ -2337,13 +2284,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
-    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
-    //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    Expected result:
     //        - The Workflow Designer switches to the scene view mode.
@@ -2387,14 +2328,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2410,13 +2344,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
-    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
-    //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    Expected result:
     //    - The Workflow Designer is in the dashboards view mode.
@@ -2573,13 +2501,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2597,13 +2519,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
-    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
-    //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    Expected result:
     //    - The Workflow Designer is in the dashboards view mode.
@@ -2755,13 +2671,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2778,14 +2688,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(viewSwitchButton);
 
-    //    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
-    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
-    //    7. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    Expected result:
     //    - The Workflow Designer is in the scene view mode.
@@ -2872,14 +2775,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2976,13 +2872,7 @@ static int setUpMuscleSchemeInNewWdWindow(const QString& file) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
-    //   Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-    //   Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     QString msaFilePath = testDir + "_common_data/clustal/100_sequences.aln";
     int tabIndex1 = setUpMuscleSchemeInNewWdWindow(msaFilePath);
@@ -3017,19 +2907,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
-    //    Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
-    QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
-    QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
-    //    Wait for all tasks finish. The scan task is supposed to finish before align tasks.
-    //        Expected result:
-    //          - The Workflow Designer is in the dashboards view mode.
-    //          - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 2" and "Align sequence with MUSCLE 1".
-    //          - The "Align sequence with MUSCLE 2" dashboard is active.
-    //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(90000);
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -3236,14 +3114,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -3314,12 +3185,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
-    //    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
-    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
     //          - The Workflow Designer is in the dashboards view mode.
@@ -3330,7 +3196,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     //                            "Align sequence with MUSCLE 1".
     //          - The "Align sequence with MUSCLE 2" dashboard is active.
     //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(600000);
 
     viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -3559,15 +3424,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
-    //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
-
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -3638,11 +3495,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     coreLog.info("It seems that workflow was started");
 
     //    19. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
-    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
     //          - The Workflow Designer is in the dashboards view mode.
@@ -3652,7 +3505,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //                            "Align sequence with MUSCLE 1".
     //          - The "Align sequence with MUSCLE 2" dashboard is active.
     //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(600000);
 
     viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -3882,13 +3734,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
-    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
-    GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
-
-    //    2. Wait for scan task finish.
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -3960,11 +3806,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     coreLog.info("It seems that workflow was started");
 
     //    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
-    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
-    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
-    setWorkflowOutputDir(testWorkflowOutputDir2.absoluteFilePath());
-
+    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
     //          - The Workflow Designer is in the dashboards view mode.
@@ -3973,7 +3815,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //                            "Align sequence with MUSCLE 1".
     //          - The "Align sequence with MUSCLE 2" dashboard is active.
     //          - The "Dashboards manager" button on the toolbar is active.
-    GTUtilsTaskTreeView::waitTaskFinished(600000);
 
     viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");

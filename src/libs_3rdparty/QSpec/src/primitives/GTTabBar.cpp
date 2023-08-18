@@ -39,7 +39,7 @@ void GTTabBar::setCurrentIndex(QTabBar* tabBar, int index) {
     class MainThreadAction : public CustomScenario {
     public:
         MainThreadAction(QTabBar* tabBar, int index)
-            : CustomScenario(), tabBar(tabBar), index(index) {
+            : tabBar(tabBar), index(index) {
         }
         void run() {
             if (tabBar->currentIndex() == index) {
