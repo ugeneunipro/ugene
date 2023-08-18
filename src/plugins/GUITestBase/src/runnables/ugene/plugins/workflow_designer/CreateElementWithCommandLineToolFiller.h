@@ -140,13 +140,13 @@ private:
     void processDataType(QTableView* table, int row, const InOutDataType& type);
     void processDataType(QTableView* table, int row, const ParameterDataType& type);
 
-    void processFirstPage(QWidget* dialog);
-    void processSecondPage(QWidget* dialog);
-    void processThirdPage(QWidget* dialog);
-    void processFourthPage(QWidget* dialog);
-    void processFifthPage(QWidget* dialog);
-    void processSixthPage(QWidget* dialog);
-    void processSeventhPage(QWidget* dialog);
+    void processFirstPage();
+    void processSecondPage();
+    void processThirdPage();
+    void processFourthPage();
+    void processFifthPage();
+    void processSixthPage();
+    void processSeventhPage();
 
     template<typename DataType>
     void setType(QTableView* table, int row, const DataType& type) {

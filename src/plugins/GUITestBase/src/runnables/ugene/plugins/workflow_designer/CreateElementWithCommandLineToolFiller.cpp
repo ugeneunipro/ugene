@@ -45,21 +45,19 @@ CreateElementWithCommandLineToolFiller::CreateElementWithCommandLineToolFiller(C
 }
 
 void CreateElementWithCommandLineToolFiller::commonScenario() {
-    QWidget* dialog = GTWidget::getActiveModalWidget();
+    processFirstPage();
 
-    processFirstPage(dialog);
+    processSecondPage();
 
-    processSecondPage(dialog);
+    processThirdPage();
 
-    processThirdPage(dialog);
+    processFourthPage();
 
-    processFourthPage(dialog);
+    processFifthPage();
 
-    processFifthPage(dialog);
+    processSixthPage();
 
-    processSixthPage(dialog);
-
-    processSeventhPage(dialog);
+    processSeventhPage();
 }
 
 QString CreateElementWithCommandLineToolFiller::dataTypeToString(const InOutType& type) const {
@@ -142,9 +140,10 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
     processStringType(table, row, ColumnName::Value, type.second);
 }
 
-void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
+void CreateElementWithCommandLineToolFiller::processFirstPage() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     if (!settings.elementName.isEmpty()) {
-        GTLineEdit::setText("leName", settings.elementName, dialog);
+        GTLineEdit::setText("leName", settings.elementName, dialog, false, true);
     }
 
     switch (settings.tooltype) {
@@ -178,7 +177,8 @@ void CreateElementWithCommandLineToolFiller::processFirstPage(QWidget* dialog) {
     GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
-void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) {
+void CreateElementWithCommandLineToolFiller::processSecondPage() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     auto pbAddInput = GTWidget::findWidget("pbAddInput", dialog);
 
     auto tvInput = GTWidget::findTableView("tvInput");
@@ -189,7 +189,8 @@ void CreateElementWithCommandLineToolFiller::processSecondPage(QWidget* dialog) 
     GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
-void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
+void CreateElementWithCommandLineToolFiller::processThirdPage() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     auto pbAdd = GTWidget::findWidget("pbAdd", dialog);
 
     auto tvAttributes = GTWidget::findTableView("tvAttributes");
@@ -199,7 +200,9 @@ void CreateElementWithCommandLineToolFiller::processThirdPage(QWidget* dialog) {
     GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
-void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) {
+void CreateElementWithCommandLineToolFiller::processFourthPage() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+
     auto pbAddOutput = GTWidget::findWidget("pbAddOutput", dialog);
 
     auto tvOutput = GTWidget::findTableView("tvOutput");
@@ -210,20 +213,21 @@ void CreateElementWithCommandLineToolFiller::processFourthPage(QWidget* dialog) 
     GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
-void CreateElementWithCommandLineToolFiller::processFifthPage(QWidget* dialog) {
+void CreateElementWithCommandLineToolFiller::processFifthPage() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
+
     auto teCommand = GTWidget::findTextEdit("teCommand", dialog);
+    GTTextEdit::setText(teCommand, settings.command, true);
 
-    GTTextEdit::setText(teCommand, settings.command);
-
-    MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(settings.commandDialogButtonTitle, "You don't use listed parameters in template string");
+    auto msbxFiller = new MessageBoxDialogFiller(settings.commandDialogButtonTitle, "You don't use listed parameters in template string");
     GTUtilsDialog::waitForDialog(msbxFiller);
-    // GTGlobals::sleep();
     GTUtilsWizard::clickButton(GTUtilsWizard::Next);
     GTGlobals::sleep(1000);
     GTUtilsDialog::removeRunnable(msbxFiller);
 }
 
-void CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog) {
+void CreateElementWithCommandLineToolFiller::processSixthPage() {
+    QWidget* dialog = GTWidget::getActiveModalWidget();
     auto teDescription = GTWidget::findTextEdit("teDescription", dialog);
 
     if (teDescription->toPlainText().isEmpty()) {
@@ -239,7 +243,7 @@ void CreateElementWithCommandLineToolFiller::processSixthPage(QWidget* dialog) {
     GTUtilsWizard::clickButton(GTUtilsWizard::Next);
 }
 
-void CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget* /*dialog*/) {
+void CreateElementWithCommandLineToolFiller::processSeventhPage() {
     MessageBoxDialogFiller* msbxFiller = new MessageBoxDialogFiller(settings.summaryDialogButton, "You have changed the structure of the element");
     GTUtilsDialog::waitForDialog(msbxFiller);
     GTUtilsWizard::clickButton(GTUtilsWizard::Finish);

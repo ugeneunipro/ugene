@@ -31,7 +31,7 @@ class HI_EXPORT GTTextEdit {
 public:
     // fails if textEdit is NULL
     // or a set text differs from a given text
-    static void setText(QTextEdit* textEdit, const QString& text);
+    static void setText(QTextEdit* textEdit, const QString& text, bool useCopyPaste = false);
 
     static QString getText(QTextEdit* textEdit);
 

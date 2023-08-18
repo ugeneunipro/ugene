@@ -20,27 +20,31 @@
  */
 
 #include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTWidget.h>
-
-#include "primitives/GTTextEdit.h"
-#include "utils/GTKeyboardUtils.h"
+#include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
 
 namespace HI {
 
 #define GT_CLASS_NAME "GTTextEdit"
 
-void GTTextEdit::setText(QTextEdit* textEdit, const QString& text) {
+void GTTextEdit::setText(QTextEdit* textEdit, const QString& text, bool useCopyPaste) {
     GT_CHECK(textEdit != nullptr, "textEdit is NULL");
 
     if (textEdit->toPlainText() == text) {
         return;
     }
-
     clear(textEdit);
     GTWidget::setFocus(textEdit);
 
-    GTKeyboardDriver::keySequence(text);
-    GTGlobals::sleep(500);
+    if (useCopyPaste) {
+        GTClipboard::setText(text);
+        GTKeyboardUtils::paste();
+    } else {
+        GTKeyboardDriver::keySequence(text);
+        GTGlobals::sleep(500);
+    }
 }
 
 QString GTTextEdit::getText(QTextEdit* textEdit) {

@@ -1934,9 +1934,9 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     settings.elementName = "test";
     settings.input << CreateElementWithCommandLineToolFiller::InOutData("in", CreateElementWithCommandLineToolFiller::InOutDataType(CreateElementWithCommandLineToolFiller::Sequence, "FASTA"));
     settings.command = "<My tool> $in";
-    // GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller("Continue"));
     GTUtilsDialog::waitForDialog(new CreateElementWithCommandLineToolFiller(settings));
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
+    GTUtilsDialog::checkNoActiveWaiters();
 
     //    2) Right click at this worker on the palette -> Edit.
     //    3) Set a new name for the worker ("test1", for example).
@@ -1944,12 +1944,10 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     //    5) "Remove this element?" -> Cancel.
     settings.elementName = "test1";
     settings.input.clear();
-    // GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Yes, "You have changed the structure of the element"));
-    // GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller("Continue", "You don't use listed parameters in template string"));
-    GTUtilsDialog::waitForDialog(new CreateElementWithCommandLineToolFiller(settings));
 
     GTUtilsWorkflowDesigner::setCurrentTab(GTUtilsWorkflowDesigner::algorithms);
 
+    GTUtilsDialog::waitForDialog(new CreateElementWithCommandLineToolFiller(settings));
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Edit"}));
     GTUtilsWorkflowDesigner::clickOnPalette("test", Qt::RightButton);
     GTGlobals::sleep(5000);  // added to ensure that crash is not here or to fix this crash

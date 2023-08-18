@@ -31,6 +31,11 @@
 
 namespace HI {
 
+static bool isEnableDetailedKeyboardLog() {
+    static bool flag = qEnvironmentVariableIsSet("UGENE_KEYBOARD_DRIVER_LOG");
+    return flag;
+}
+
 static bool shiftDown = false;
 static bool ctrlDown = false;
 static bool altDown = false;
@@ -290,8 +295,10 @@ static bool keyReleaseMac(CGKeyCode key, int attempt = 1) {  // NOLINT(misc-no-r
 }
 
 bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
-//    printf("GTKeyboardDriver::keyPress %c\n", origKey);
-//    dumpState("before press");
+    if (isEnableDetailedKeyboardLog()) {
+        printf("GTKeyboardDriver::keyPress before %c\n", origKey);
+        dumpState("before press");
+    }
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
@@ -300,17 +307,24 @@ bool GTKeyboardDriver::keyPress(char origKey, Qt::KeyboardModifiers modifiers) {
     }
     foreach (Qt::Key mod, modKeys) {
         keyPressMac(GTKeyboardDriver::key[mod]);
-//        dumpState("after modifier");
+        if (isEnableDetailedKeyboardLog()) {
+            dumpState("after modifier");
+        }
     }
     CGKeyCode keyCode = asciiToVirtual(keyWithNoShift);
     keyPressMac(keyCode);
-//    dumpState("after press");
+    if (isEnableDetailedKeyboardLog()) {
+        printf("GTKeyboardDriver::keyPress after %c\n", origKey);
+        dumpState("after press");
+    }
     return true;
 }
 
 bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers) {
-//    printf("GTKeyboardDriver::key release %c\n", origKey);
-//    dumpState("before release");
+    if (isEnableDetailedKeyboardLog()) {
+        printf("GTKeyboardDriver::keyRelease before %c\n", origKey);
+        dumpState("before release");
+    }
     DRIVER_CHECK(origKey != 0, "key = 0");
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     char keyWithNoShift = toKeyWithNoShift(origKey);
@@ -322,25 +336,34 @@ bool GTKeyboardDriver::keyRelease(char origKey, Qt::KeyboardModifiers modifiers)
     foreach (Qt::Key mod, modKeys) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
-//    dumpState("after release");
+    if (isEnableDetailedKeyboardLog()) {
+        printf("GTKeyboardDriver::keyRelease after %c\n", origKey);
+        dumpState("after release");
+    }
     return true;
 }
 
 bool GTKeyboardDriver::keyPress(Qt::Key qtKey, Qt::KeyboardModifiers modifiers) {
-//    printf("GTKeyboardDriver::QtKey press %d, modifiers: %d\n", qtKey, (int)modifiers);
-//    dumpState("before press");
+    if (isEnableDetailedKeyboardLog()) {
+        printf("GTKeyboardDriver::QtKey press %d, modifiers: %d\n", qtKey, (int)modifiers);
+        dumpState("before press");
+    }
     QList<Qt::Key> modKeys = modifiersToKeys(modifiers);
     for (const Qt::Key& mod : qAsConst(modKeys)) {
         keyPressMac(GTKeyboardDriver::key[mod]);
     }
     keyPressMac(GTKeyboardDriver::key[qtKey]);
-//    dumpState("after press");
+    if (isEnableDetailedKeyboardLog()) {
+        dumpState("after press");
+    }
     return true;
 }
 
 bool GTKeyboardDriver::keyRelease(Qt::Key qtKey, Qt::KeyboardModifiers modifiers) {
-//    printf("GTKeyboardDriver::QtKey release %d, modifiers: %d\n", qtKey, (int)modifiers);
-//    dumpState("before release");
+    if (isEnableDetailedKeyboardLog()) {
+        printf("GTKeyboardDriver::QtKey release %d, modifiers: %d\n", qtKey, (int)modifiers);
+        dumpState("before release");
+    }
     keyReleaseMac(GTKeyboardDriver::key[qtKey]);
     if (qtKey == Qt::Key_Delete || qtKey >= Qt::Key_F1 && qtKey <= Qt::Key_F12) {
         // For some reason MacOS does not release FN qtKey used for the internal ForwardDelete emulation (Fn + Delete).
@@ -355,7 +378,9 @@ bool GTKeyboardDriver::keyRelease(Qt::Key qtKey, Qt::KeyboardModifiers modifiers
     for (const Qt::Key& mod : qAsConst(modKeys)) {
         keyReleaseMac(GTKeyboardDriver::key[mod]);
     }
-//    dumpState("after release");
+    if (isEnableDetailedKeyboardLog()) {
+        dumpState("after release");
+    }
     return true;
 }
 
