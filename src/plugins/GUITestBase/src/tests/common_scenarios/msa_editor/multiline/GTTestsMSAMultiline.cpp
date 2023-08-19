@@ -1034,6 +1034,7 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
     // Switch to multiline mode
     // Press "Multiline View" button on toolbar
     GTUtilsMsaEditor::setMultilineMode(true);
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Select a gap after the last sequence character.
     GTUtilsMSAEditorSequenceArea::clickToPosition(QPoint(603, 9));
@@ -1049,7 +1050,7 @@ GUI_TEST_CLASS_DEFINITION(replace_character_test_0002) {
     GTKeyboardDriver::keyClick('c');
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString selectionContent = GTClipboard::text();
+    QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 

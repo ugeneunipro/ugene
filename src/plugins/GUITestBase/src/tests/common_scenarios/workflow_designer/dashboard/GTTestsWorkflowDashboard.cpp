@@ -1932,7 +1932,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("empty_workflow_output");
 
     //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -1958,7 +1958,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_dashboards");
 
     //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -2086,7 +2086,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("one_visible_one_invisible");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2211,7 +2211,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_invisible_dashboards");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2269,7 +2269,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     int tabIndex1 = GTUtilsMdi::getCurrentTab();
@@ -2284,7 +2284,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("empty_workflow_output");
 
     //    Expected result:
     //        - The Workflow Designer switches to the scene view mode.
@@ -2328,7 +2328,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2344,7 +2344,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_dashboards");
 
     //    Expected result:
     //    - The Workflow Designer is in the dashboards view mode.
@@ -2501,7 +2501,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2519,7 +2519,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     GTWidget::click(viewSwitchButton);
 
     //    6. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("one_visible_one_invisible");
 
     //    Expected result:
     //    - The Workflow Designer is in the dashboards view mode.
@@ -2671,7 +2671,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2688,7 +2688,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
     GTWidget::click(viewSwitchButton);
 
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_invisible_dashboards");
 
     //    Expected result:
     //    - The Workflow Designer is in the scene view mode.
@@ -2775,7 +2775,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -2872,7 +2872,7 @@ static int setUpMuscleSchemeInNewWdWindow(const QString& file) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
 
     QString msaFilePath = testDir + "_common_data/clustal/100_sequences.aln";
     int tabIndex1 = setUpMuscleSchemeInNewWdWindow(msaFilePath);
@@ -2907,7 +2907,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("empty_workflow_output");
 
     viewSwitchButton = GTUtilsWorkflowDesigner::getGotoWorkflowButton();
     CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
@@ -3114,7 +3114,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -3185,7 +3185,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     GTUtilsWorkflowDesigner::runWorkflow();
     coreLog.info("It seems that workflow was started");
 
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_dashboards");
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
     //          - The Workflow Designer is in the dashboards view mode.
@@ -3424,7 +3424,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsTaskTreeView::waitTaskFinished();
@@ -3495,7 +3495,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     coreLog.info("It seems that workflow was started");
 
     //    19. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("one_visible_one_invisible");
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
     //          - The Workflow Designer is in the dashboards view mode.
@@ -3734,7 +3734,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_two_invisible");
 
     //    3. Open Workflow Designer.
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
@@ -3806,7 +3806,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     coreLog.info("It seems that workflow was started");
 
     //    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_invisible_dashboards");
     //    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
     //        Expected result:
     //          - The Workflow Designer is in the dashboards view mode.

@@ -70,7 +70,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 1. Open an alignment in the Alignment Editor.
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // 2. Select one character.
@@ -89,7 +89,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTKeyboardDriver::keyClick('a');
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString selectionContent = GTClipboard::text();
+    QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 }
 

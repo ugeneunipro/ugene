@@ -4094,7 +4094,7 @@ GUI_TEST_CLASS_DEFINITION(test_4702) {
 GUI_TEST_CLASS_DEFINITION(test_4710) {
     //    1) Make sure to have several dashboards for different workflows runs.
     //    2) Run a workflow, e.g. I ran "Variation annotation with SnpEff" with the tutorial data.
-    GTUtilsWorkflowDesigner::prepareTwoDashboardsState();
+    GTUtilsWorkflowDesigner::prepareDashboardsDirState("two_visible_dashboards");
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner();
     GTUtilsWorkflowDesigner::addSample("SnpEff");

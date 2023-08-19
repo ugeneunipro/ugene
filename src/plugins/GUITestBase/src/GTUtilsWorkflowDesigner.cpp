@@ -1326,9 +1326,9 @@ void GTUtilsWorkflowDesigner::setWorkflowOutputDir(const QString& path) {
     GTMenu::clickMainMenuItem({"Settings", "Preferences..."});
 }
 
-void GTUtilsWorkflowDesigner::prepareTwoDashboardsState() {
-    QFileInfo originalWorkflowOutputDir = UGUITest::testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
-    QFileInfo testWorkflowOutputDir = UGUITest::sandBoxDir + "two_visible_dashboards";
+void GTUtilsWorkflowDesigner::prepareDashboardsDirState(const QString& templateDirName) {
+    QFileInfo originalWorkflowOutputDir = UGUITest::testDir + "_common_data/workflow/dashboard/workflow_outputs/" + templateDirName;
+    QFileInfo testWorkflowOutputDir = UGUITest::sandBoxDir + templateDirName;
     GTFile::copyDir(originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
     setWorkflowOutputDir(testWorkflowOutputDir.absoluteFilePath());
     // Wait scan task to finish.

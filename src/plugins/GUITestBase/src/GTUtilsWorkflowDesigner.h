@@ -222,8 +222,13 @@ public:
     /** Opens AppSettingsDialog and sets workflow output dir. */
     static void setWorkflowOutputDir(const QString& path);
 
-    /** Prepares WD state where there are two finished dashboards. */
-    static void prepareTwoDashboardsState();
+    /**
+     * Prepares WD state where there are two finished dashboards.
+     * The `templateDirName` is the name of the dir with prepared dashboards inside '_common_data/workflow/dashboard/workflow_outputs/' folder.
+     * This template is copied into 'sandBoxDir' and the 'sandBoxDir' is set as a default workflow dir.
+     */
+    static void prepareDashboardsDirState(const QString& templateDirName);
+
 private:
     static void selectSample(QTreeWidgetItem* sample, QWidget* parentWidget = nullptr);
     static QRect getItemRect(const QString& itemName);
