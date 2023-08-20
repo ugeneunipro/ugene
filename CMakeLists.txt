@@ -76,12 +76,6 @@ endif ()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
 
-if (CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
-    set(BUILD_UGENE_MONITOR FALSE)
-else()
-    set(BUILD_UGENE_MONITOR TRUE)
-endif ()
-
 # 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)
 add_subdirectory(src/libs_3rdparty/breakpad)
