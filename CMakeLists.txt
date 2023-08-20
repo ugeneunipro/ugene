@@ -12,6 +12,8 @@ project(ugene)
 
 set(UGENE_VERSION 48.0-dev)
 
+message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
@@ -62,7 +64,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=unused-value"
             " -Werror=unused-variable"
             " -Wno-deprecated-declarations"
-            )
+    )
     if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 13.1)
         LIST(APPEND GCC_WARNING_FLAGS -Werror=dangling-reference)
     endif ()
