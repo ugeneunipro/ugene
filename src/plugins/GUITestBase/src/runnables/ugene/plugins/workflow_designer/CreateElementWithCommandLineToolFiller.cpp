@@ -143,7 +143,16 @@ void CreateElementWithCommandLineToolFiller::processDataType(QTableView* table, 
 void CreateElementWithCommandLineToolFiller::processFirstPage() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
     if (!settings.elementName.isEmpty()) {
-        GTLineEdit::setText("leName", settings.elementName, dialog, false, true);
+        auto leName = GTWidget::findLineEdit("leName", dialog);
+        if (isOsMac()) {
+            // Need to separate clear() and setText() on MacOS.
+            // Reason: QWizardPage buttons are affected by the line-edit state and steal focus on MacOS when the field is cleaned.
+            // so the input following the clear() is lost.
+
+            GTLineEdit::clear(leName);
+            GTWidget::click(leName);
+        }
+        GTLineEdit::setText(leName, settings.elementName, false, true);
     }
 
     switch (settings.tooltype) {

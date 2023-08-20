@@ -95,11 +95,6 @@ void GTLineEdit::clear(QLineEdit* lineEdit) {
         currentText = lineEdit->text();
     }
     GT_CHECK(currentText.isEmpty(), "Can't clear text, lineEdit is not empty: " + currentText);
-
-#ifdef Q_OS_DARWIN
-    // Need to set focus again. Reason: QWizardPage buttons are affected by the line-edit state and steal focus on MacOS when the field is cleaned.
-    GTWidget::setFocus(lineEdit);
-#endif
 }
 
 void GTLineEdit::checkText(QLineEdit* lineEdit, const QString& expectedText) {
