@@ -4,22 +4,16 @@ find_package(Qt5 REQUIRED Core)
 
 include_directories(src)
 
-file(GLOB COMMON_SRCS src/common/*.cc src/common/*.c)
-file(GLOB COMMON_HDRS src/common/*.h)
+file(GLOB COMMON_SRCS src/common/*.cc src/common/*.c src/client/*.cc)
+file(GLOB COMMON_HDRS src/common/*.h src/client/*.h)
 
 if (WIN32)
     file(GLOB_RECURSE SRCS src/client/windows/*.cc src/common/windows/*.cc)
     file(GLOB_RECURSE HDRS src/client/windows/*.h src/common/windows/*.h)
 elseif (APPLE)
-    file(GLOB COMMON_SRCS src/client/*.cc)
-    file(GLOB COMMON_HDRS src/client/*.h)
-
     file(GLOB_RECURSE SRCS src/client/mac/*.cc src/common/mac/*.cc src/common/mac/*.mm)
     file(GLOB_RECURSE HDRS src/client/mac/*.h src/common/mac/*.h)
 elseif (UNIX)
-    file(GLOB COMMON_SRCS src/client/*.cc)
-    file(GLOB COMMON_HDRS src/client/*.h)
-
     file(GLOB_RECURSE SRCS src/client/linux/*.cc src/common/linux/*.cc)
     file(GLOB_RECURSE HDRS src/client/linux/*.h src/common/linux/*.h)
 endif ()

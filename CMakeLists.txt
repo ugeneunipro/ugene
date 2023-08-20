@@ -12,6 +12,8 @@ project(ugene)
 
 set(UGENE_VERSION 48.0-dev)
 
+message(STATUS "CMake build architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+
 add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
         -DQT_FATAL_ASSERT
@@ -62,7 +64,7 @@ if (CMAKE_COMPILER_IS_GNUCXX)
             " -Werror=unused-value"
             " -Werror=unused-variable"
             " -Wno-deprecated-declarations"
-            )
+    )
     if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 13.1)
         LIST(APPEND GCC_WARNING_FLAGS -Werror=dangling-reference)
     endif ()
@@ -73,6 +75,12 @@ endif ()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist)
+
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+    set(BUILD_UGENE_MONITOR FALSE)
+else()
+    set(BUILD_UGENE_MONITOR TRUE)
+endif ()
 
 # 3rd party libraries.
 add_subdirectory(src/libs_3rdparty/QSpec)
