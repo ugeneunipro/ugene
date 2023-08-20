@@ -471,21 +471,21 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {
     // test for an annotation table whose sequence association was changed
-    GTFileDialog::openFile(dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 
-    GTFileDialog::openFile(dataDir + "samples/FASTA/", "human_T1.fa");
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+    GTUtilsMdi::checkWindowIsActive("human_T1");
+
+    // Check that export service was already loaded & is enabled.
+    GTUtils::checkExportServiceIsEnabled();
 
     QModelIndex annIdx = GTUtilsProjectTreeView::findIndex("NC_001363 features");
     auto seqArea = GTWidget::findWidget("render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 
     GTUtilsDialog::waitForDialog(new CreateObjectRelationDialogFiller());
     GTUtilsProjectTreeView::dragAndDrop(annIdx, seqArea);
-
-    // Check that export service was already loaded & is enabled.
-    GTUtils::checkExportServiceIsEnabled();
 
     GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
     GTUtilsDialog::add(new ExportSelectedRegionFiller(sandBoxDir, "Project_export_test_0012.fa"));
