@@ -833,9 +833,23 @@ QList<FeatureAndKey> SQLiteFeatureDbi::getFeatureTable(const U2DataId& rootFeatu
 }
 
 QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch) {
-    SQLiteTransaction t(db, os);
+    static int MAXIMUM_DESIRED_OBJECT_IDS = MAXIMUM_EXPRESSION_TREE_DEPTH - 2;
+    if (desiredObjectIdsToSearch.size() <= MAXIMUM_EXPRESSION_TREE_DEPTH) {
+        return getAnnotationTablesByFeatureKeyPartial(values, os, desiredObjectIdsToSearch);
+    } else {
+        QMap<U2DataId, QStringList> result;
+        for (int i = 0; i < desiredObjectIdsToSearch.size(); i = i + MAXIMUM_DESIRED_OBJECT_IDS) {
+            QList<U2DataId> ttt = desiredObjectIdsToSearch.mid(i, MAXIMUM_DESIRED_OBJECT_IDS);
+            result.insert(getAnnotationTablesByFeatureKeyPartial(values, os, desiredObjectIdsToSearch.mid(i, MAXIMUM_DESIRED_OBJECT_IDS)));
+        }
+        return result;
+    }
+}
+
+QMap<U2::U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKeyPartial(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch) {
     QMap<U2DataId, QStringList> result;
     CHECK(!values.isEmpty(), result);
+    SQLiteTransaction t(db, os);
     // Pay attention here if there is the need of processing more search terms
     CHECK_EXT(values.size() < SQLiteDbi::BIND_PARAMETERS_LIMIT, os.setError("Too many search terms provided"), result);
 

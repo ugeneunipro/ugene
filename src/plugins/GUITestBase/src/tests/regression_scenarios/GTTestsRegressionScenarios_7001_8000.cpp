@@ -4714,5 +4714,19 @@ GUI_TEST_CLASS_DEFINITION(test_7896) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7923) {
+    /*
+    * 1. Open _common_data/fasta/10000_sequences.fa as separate sequences
+    * 2. Type "tt" in project search
+    * Expected: no crash
+    */
+    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
+    GTFileDialog::openFileWithDialog(testDir, "_common_data/fasta/10000_sequences.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsProjectTreeView::filterProject("tt");
+    GTUtilsTaskTreeView::waitTaskFinished();
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
