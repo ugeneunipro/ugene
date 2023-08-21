@@ -81,7 +81,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     // 6. Remove typed word using a backspace
     for (int i = 0; i < 3; ++i) {
-        GTKeyboardDriver::keyPress(Qt::Key_Backspace);
+        GTKeyboardDriver::keyClick(Qt::Key_Backspace);
         GTUtilsTaskTreeView::waitTaskFinished();
         if (i < 2) {
             CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");

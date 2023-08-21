@@ -457,7 +457,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsProjectTreeView::click("NC_001363");
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     GTUtilsTaskTreeView::waitTaskFinished();
 

@@ -389,7 +389,7 @@ GUI_TEST_CLASS_DEFINITION(overview_test_0004) {
     GTMouseDriver::click();
 
     //    3. Press Delete button and release it after a while.
-    GTKeyboardDriver::keyPress(Qt::Key_Space);
+    GTKeyboardDriver::keyPress(Qt::Key_Space); //TODO: unsafe keyPress. keyRelease won't happen if the code in the middle fails (throws an exception).
 
     //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
     //    Simple overview updates simultaneously.
