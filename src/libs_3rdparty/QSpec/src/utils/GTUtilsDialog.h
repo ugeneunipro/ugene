@@ -36,7 +36,7 @@ public:
     virtual ~Runnable() = default;
 };
 
-#define UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT 20000
+#define UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT 30000
 
 class HI_EXPORT GUIDialogWaiter : public QObject {
     Q_OBJECT
