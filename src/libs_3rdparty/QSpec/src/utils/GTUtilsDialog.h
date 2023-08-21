@@ -36,6 +36,8 @@ public:
     virtual ~Runnable() = default;
 };
 
+#define UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT 30000
+
 class HI_EXPORT GUIDialogWaiter : public QObject {
     Q_OBJECT
 public:
@@ -50,7 +52,10 @@ public:
         Popup = 2,
     };
     struct WaitSettings {
-        WaitSettings(const QString& _objectName = "", const DialogType& _dialogType = DialogType::Modal, int _timeout = 20000, const QString& _logName = "")
+        WaitSettings(const QString& _objectName = "",
+                     const DialogType& _dialogType = DialogType::Modal,
+                     int _timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT,
+                     const QString& _logName = "")
             : objectName(_objectName),
               dialogType(_dialogType),
               timeout(_timeout),
@@ -124,7 +129,7 @@ public:
     // if objectName is not empty, waits for QWidget with a given name
     static void waitForDialog(Runnable* r, const GUIDialogWaiter::WaitSettings& settings, bool isPrependToList = true);
 
-    static void waitForDialog(Runnable* r, int timeout = 0, bool isPrependToList = true);
+    static void waitForDialog(Runnable* r, int timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT, bool isPrependToList = true);
 
     /** Same as waitForDialog but adds waiter to the end of the current waiters list. */
     static void add(Runnable* r, const GUIDialogWaiter::WaitSettings& settings);
@@ -133,7 +138,7 @@ public:
     static void add(Runnable* r, int timeout = 0);
 
     /** Waits up to 'timeout' millis that all dialogs (runnables) are finished: the pool of GUIDialogWaiters is empty. */
-    static void checkNoActiveWaiters(int timeoutMillis = 30000);
+    static void checkNoActiveWaiters(int timeout = UGENE_DEFAULT_DIALOG_WAIT_TIME_TIMEOUT);
 
     static void removeRunnable(Runnable* runnable);
 
