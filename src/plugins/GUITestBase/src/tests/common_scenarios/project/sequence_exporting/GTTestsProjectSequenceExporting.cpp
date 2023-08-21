@@ -481,11 +481,12 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     // Check that export service was already loaded & is enabled.
     GTUtils::checkExportServiceIsEnabled();
 
-    QModelIndex annIdx = GTUtilsProjectTreeView::findIndex("NC_001363 features");
-    auto seqArea = GTWidget::findWidget("render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QPoint featuresItemCenter = GTUtilsProjectTreeView::getItemCenter("NC_001363 features");
+    QWidget* seqArea = GTUtilsSequenceView::getPanOrDetView();
 
     GTUtilsDialog::waitForDialog(new CreateObjectRelationDialogFiller());
-    GTUtilsProjectTreeView::dragAndDrop(annIdx, seqArea);
+    GTMouseDriver::dragAndDrop(featuresItemCenter, GTWidget::getWidgetCenter(seqArea));
+    GTUtilsDialog::checkNoActiveWaiters();
 
     GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CORRESPONDING_SEQ}));
     GTUtilsDialog::add(new ExportSelectedRegionFiller(sandBoxDir, "Project_export_test_0012.fa"));
