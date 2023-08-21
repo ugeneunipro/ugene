@@ -39,7 +39,7 @@ void GTLineEdit::setText(QLineEdit* lineEdit, const QString& text, bool noCheck 
 
     if (useCopyPaste) {
         GTClipboard::setText(text);
-        GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+        GTKeyboardUtils::paste();
     } else {
         GTKeyboardDriver::keySequence(text);
     }
