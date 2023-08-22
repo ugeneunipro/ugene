@@ -158,11 +158,6 @@ public:
     QMap<U2DataId, QStringList> getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch = QList<U2DataId>());
 
 private:
-
-    static const int MAXIMUM_EXPRESSION_TREE_DEPTH = 1000;
-
-    QMap<U2DataId, QStringList> getAnnotationTablesByFeatureKeyPartial(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch = QList<U2DataId>());
-
     QSharedPointer<SQLiteQuery> createFeatureQuery(const QString& selectPart, const FeatureQuery& fq, bool useOrder, U2OpStatus& os, SQLiteTransaction* trans = nullptr);
 };
 

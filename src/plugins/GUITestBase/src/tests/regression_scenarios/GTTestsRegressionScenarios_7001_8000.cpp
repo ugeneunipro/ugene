@@ -4716,15 +4716,14 @@ GUI_TEST_CLASS_DEFINITION(test_7896) {
 
 GUI_TEST_CLASS_DEFINITION(test_7923) {
     /*
-    * 1. Open _common_data/fasta/10000_sequences.fa as separate sequences
-    * 2. Type "tt" in project search
+    * 1. Open _common_data/gff/5k_annotation_tables.gff
+    * 2. Type "SARS" in project search
     * Expected: no crash
     */
-    GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
-    GTFileDialog::openFileWithDialog(testDir, "_common_data/fasta/10000_sequences.fa");
+    GTFileDialog::openFileWithDialog(testDir, "_common_data/gff/5k_annotation_tables.gff");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProjectTreeView::filterProject("tt");
+    GTUtilsProjectTreeView::filterProject("SARS");
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
