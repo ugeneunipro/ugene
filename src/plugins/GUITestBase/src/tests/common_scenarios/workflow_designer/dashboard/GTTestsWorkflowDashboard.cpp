@@ -1031,7 +1031,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
     GTUtilsDashboard::expandNode(cutadaptRunNodeId);
 
     //    Expected result: the third-level node "cutadapt run" has a child node "Command", which has a child node with the command. The first argument in the command is the path to the "python", the second argument in the command is the path to "cutadapt". Neither the first nor the second argument is wrapped with double quotes.
-    const QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
+    QString cutadaptRunCommandNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunNodeId, 0);
     CHECK_SET_ERR(GTUtilsDashboard::isNodeVisible(cutadaptRunCommandNodeId),
                   QString("Node with ID '%1' is invisible after parent node expanding")
                       .arg(cutadaptRunCommandNodeId));
@@ -1040,9 +1040,9 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0004) {
     QString expectedNodeText = "Command";
     CHECK_SET_ERR(expectedNodeText == nodeText, QString("There is unexpected text of node with ID '%1': expected '%2', got '%3'").arg(cutadaptRunCommandNodeId).arg(expectedNodeText).arg(nodeText));
 
-    const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
-    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("%1 %2 ").arg(pythonToolPath).arg(cutadaptToolPath);
+    QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(cutadaptRunCommandNodeId, 0);
+    nodeText = GTUtilsDashboard::getNodeText(cutadaptRunCommandContentNodeId).replace("\"",""); // If the test environment contains spaces the params will be wrapped with quotes.
+    QString expectedNodeTextPart = QString("%1 %2 ").arg(pythonToolPath).arg(cutadaptToolPath);
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                       .arg(expectedNodeTextPart)
