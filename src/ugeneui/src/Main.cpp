@@ -582,11 +582,6 @@ int main(int argc, char** argv) {
 
     qInstallMessageHandler(guiTestMessageOutput);
 
-#if defined(Q_OS_UNIX)
-    if (envList.indexOf("UGENE_GUI_TEST=1") >= 0) {
-        QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
-    }
-#endif
     QString styleName = userAppSettings->getVisualStyle();
     QStyle* qtStyle = nullptr;
     if (!styleName.isEmpty()) {
@@ -626,19 +621,9 @@ int main(int argc, char** argv) {
     auto mw = new MainWindowImpl();
     appContext->setMainWindow(mw);
     mw->prepare();
-#ifdef Q_OS_DARWIN
-    // TODO: need to check for other OS and remove #ifdef
-    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST) || cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
-        mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
+    if (isOsMac() && cmdLineRegistry->hasParameter(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR)) {
+        mw->getQMainWindow()->menuBar()->setNativeMenuBar(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR) == "0");
     }
-    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR)) {
-        if (cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR) == "0") {
-            mw->getQMainWindow()->menuBar()->setNativeMenuBar(true);
-        } else {
-            mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
-        }
-    }
-#endif
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));
 
     AppSettingsGUI* appSettingsGUI = new AppSettingsGUIImpl();

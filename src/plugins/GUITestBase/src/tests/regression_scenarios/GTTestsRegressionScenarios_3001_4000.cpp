@@ -3439,29 +3439,27 @@ GUI_TEST_CLASS_DEFINITION(test_3687_2) {
 GUI_TEST_CLASS_DEFINITION(test_3690) {
     //    1. Open human_T1.fa
     //    Expected state: there are two opened windows - start page and human_T1
-    //    2. Use short cut - Ctrl+Tab
+    //    2. Use a shortcut - Ctrl+Tab
     //    Expected state: current active MDI window is changed to start page
-    //    3. Use short cut - Ctrl+Shift+Tab
+    //    3. Use a shortcut - Ctrl+Shift+Tab
     //    Expected state: current active MDI window is changed back to human_T1
 
     GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
     QWidget* wgt = GTUtilsMdi::activeWindow();
-    CHECK_SET_ERR(wgt != nullptr, "ActiveWindow is NULL");
     CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 
-    GTKeyboardDriver::keyClick(Qt::Key_Tab, Qt::ControlModifier);
+    int windowSwitchKey = isOsMac() ? Qt::Key_QuoteLeft : Qt::Key_Tab;
+    GTKeyboardDriver::keyClick(windowSwitchKey, Qt::ControlModifier);
 
     wgt = GTUtilsMdi::activeWindow();
-    CHECK_SET_ERR(wgt != nullptr, "ActiveWindow is NULL");
     CHECK_SET_ERR(wgt->windowTitle() == "Start Page", "Start Page should be opened!");
 
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTKeyboardDriver::keyClick(Qt::Key_Tab, Qt::ControlModifier);
+    GTKeyboardDriver::keyClick(windowSwitchKey, Qt::ControlModifier);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     wgt = GTUtilsMdi::activeWindow();
-    CHECK_SET_ERR(wgt != nullptr, "ActiveWindow is NULL");
     CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 }
 
