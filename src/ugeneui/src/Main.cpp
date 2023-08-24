@@ -621,8 +621,12 @@ int main(int argc, char** argv) {
     auto mw = new MainWindowImpl();
     appContext->setMainWindow(mw);
     mw->prepare();
-    if (isOsMac() && cmdLineRegistry->hasParameter(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR)) {
-        mw->getQMainWindow()->menuBar()->setNativeMenuBar(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR) == "0");
+
+    // Do not use native menu bar in GUI tests mode on Mac or when asked via command line.
+    bool dontUseNativeMenuBar = (isOsMac() && qEnvironmentVariableIntValue(ENV_GUI_TEST) == 1) ||
+                                cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DONT_USE_NATIVE_MENUBAR) == "1";
+    if (dontUseNativeMenuBar) {
+        mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
     }
     QObject::connect(UgeneUpdater::getInstance(), SIGNAL(si_update()), mw, SLOT(sl_exitAction()));
 

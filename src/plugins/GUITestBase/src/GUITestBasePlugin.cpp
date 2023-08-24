@@ -197,6 +197,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_0889);  // Spidey tool is not available on Mac.
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_2140);
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_common_scenarios_create_shortcut::test_0001);
+    REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_3690); // Passes only with native menu bar. With non-native menu bar (like Mac uses for GUI tests) the checked shortcut does not work.
     REGISTER_TEST_LINUX_AND_WINDOWS(GUITest_regression_scenarios::test_7584);  // Spidey tool is not available on Mac.
 
     REGISTER_TEST_LINUX_AND_MAC(GUITest_Bowtie2::test_0001);
@@ -987,7 +988,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3676);
     REGISTER_TEST(GUITest_regression_scenarios::test_3687_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3687_2);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3690);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_3702);
     REGISTER_TEST(GUITest_regression_scenarios::test_3710);
