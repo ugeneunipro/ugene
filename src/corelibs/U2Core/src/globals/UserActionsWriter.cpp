@@ -336,6 +336,7 @@ UserActionsWriter::UserActionsWriter() {
         {Qt::Key_Alt, "alt"},
         {Qt::Key_CapsLock, "caps_lock"},
         {Qt::Key_NumLock, "num_lock"},
+        {Qt::Key_QuoteLeft, "quote_left"},
         {Qt::Key_F1, "F1"},
         {Qt::Key_F2, "F2"},
         {Qt::Key_F3, "F3"},
