@@ -234,7 +234,7 @@ void DetViewSingleLineRenderer::drawDirect(QPainter& p, int availableHeight, con
 
     U2OpStatusImpl os;
     QByteArray sequence = ctx->getSequenceData(visibleRange, os);
-    SAFE_POINT_OP(os, );
+    CHECK_OP(os, );
     const char* seq = sequence.constData();
 
     // draw base line;
@@ -252,7 +252,7 @@ void DetViewSingleLineRenderer::drawComplement(QPainter& p, int availableHeight,
     if (complementLine > 0) {
         U2OpStatusImpl os;
         QByteArray visibleSequence = ctx->getSequenceData(visibleRange, os);
-        SAFE_POINT_OP(os, );
+        CHECK_OP(os, );
         const char* seq = visibleSequence.constData();
 
         DNATranslation* complTrans = ctx->getComplementTT();
@@ -380,7 +380,7 @@ void DetViewSingleLineRenderer::drawTranslations(QPainter& p, int availableHeigh
 
     U2OpStatusImpl os;
     QByteArray seqBlockData = ctx->getSequenceData(translationMetrics.seqBlockRegion, os);
-    SAFE_POINT_OP(os, );
+    CHECK_OP(os, );
     const char* seqBlock = seqBlockData.constData();
 
     QList<SharedAnnotationData> annotationsInRange;
