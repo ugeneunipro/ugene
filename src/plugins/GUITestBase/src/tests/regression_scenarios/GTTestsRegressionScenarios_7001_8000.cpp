@@ -4725,7 +4725,8 @@ GUI_TEST_CLASS_DEFINITION(test_7923) {
 
     GTUtilsProjectTreeView::filterProject("notSARS");
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTUtilsProjectTreeView::checkFilteredGroup("zzz", {}, {"scaffold_4528 features"}, {});
+    GTUtilsProjectTreeView::checkFilteredGroup("zzz11111", {}, {"scaffold_4528 features"}, {});
+    CHECK_SET_ERR(GTUtilsProjectTreeView::countTopLevelItems() == 1, "Expected only one result.");
 }
 
 }  // namespace GUITest_regression_scenarios
