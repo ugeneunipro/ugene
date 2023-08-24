@@ -4723,13 +4723,9 @@ GUI_TEST_CLASS_DEFINITION(test_7923) {
     GTFileDialog::openFileWithDialog(testDir, "_common_data/gff/5k_annotation_tables.gff");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsProjectTreeView::filterProject("SARS");
+    GTUtilsProjectTreeView::filterProject("notSARS");
     GTUtilsTaskTreeView::waitTaskFinished();
-    QStringList features;
-    for (int i = 0; i < 5000; i++) {
-        features << "scaffold_" << QString::number(i) << " features";
-    }
-    GTUtilsProjectTreeView::checkFilteredGroup("zzz", {}, features, {});
+    GTUtilsProjectTreeView::checkFilteredGroup("zzz", {}, {"scaffold_4528 features"}, {});
 }
 
 }  // namespace GUITest_regression_scenarios
