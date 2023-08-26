@@ -108,7 +108,6 @@ public:
      */
     QList<QString> dynamicAppResourceIds;
 
-    bool wasPrepared = false;  // 'true' if prepare() was called for the task
     bool subtasksWereCanceled = false;  // 'true' if canceled task has called cancel() on its subtasks
     bool selfRunFinished = false;  // indicates that the 'run' method of this task was finished
 
@@ -118,8 +117,9 @@ public:
     int prevProgress = 0;  // used for TaskProgress_Manual
     QString prevDesc;
 
-    int numPreparedSubtasks = 0;
-    int numRunningSubtasks = 0;
+    int totalPreparedSubtasks = 0;
+    int numActivePreparedSubtasks = 0;
+    int numActiveRunningSubtasks = 0;
     int numFinishedSubtasks = 0;
 
     TaskThread* thread = nullptr;
@@ -168,13 +168,12 @@ private slots:
 private:
     bool processFinishedTasks();
     void unregisterFinishedTopLevelTasks();
-    void processNewSubtasks();
-    void prepareNewTasks();
-    void runReady();
+    void processNewTasks();
+    void processPreparedTasks();
 
-    bool readyToFinish(TaskInfo* ti);
-    bool addToPriorityQueue(Task* t, TaskInfo* parentInfo);  // return true if added. Failure can be caused if a task requires resources
-    void runThread(TaskInfo* pi);
+    static bool isReadyToFinish(TaskInfo* ti);
+    bool tryPrepare(Task* task, TaskInfo* pti);  // return true if added. Failure can be caused if a task requires resources
+    void runThread(TaskInfo* pi) const;
     void stopTask(Task* t);
     void updateTaskProgressAndDesc(TaskInfo* ti);
     void promoteTask(TaskInfo* ti, Task::State newState);
@@ -191,15 +190,18 @@ private:
 
     void propagateStateToParent(Task* t);
     void updateOldTasksPriority();
-    void checkSerialPromotion(TaskInfo* pti, Task* subtask);
+    static void checkSerialPromotion(TaskInfo* pti, Task* subtask);
     void createSleepPreventer();
 
 private:
     QTimer timer;
     QList<Task*> topLevelTasks;
+    /**
+     * List of scheduled tasks.
+     * The queue contains only Prepared or Running tasks.
+     */
     QList<TaskInfo*> priorityQueue;
-    QList<TaskInfo*> tasksWithNewSubtasks;
-    QList<Task*> newTasks;
+    QList<Task*> newTopLevelTasks;
     QStringList stateNames;
     QMap<quint64, Qt::HANDLE> threadIds;
 
