@@ -3449,7 +3449,7 @@ GUI_TEST_CLASS_DEFINITION(test_3690) {
     QWidget* wgt = GTUtilsMdi::activeWindow();
     CHECK_SET_ERR(wgt->windowTitle() == "human_T1 (UCSC April 2002 chr7:115977709-117855134) [human_T1.fa]", "human_T1.fa should be opened!");
 
-    int windowSwitchKey = isOsMac() ? Qt::Key_QuoteLeft : Qt::Key_Tab;
+    Qt::Key windowSwitchKey = isOsMac() ? Qt::Key_QuoteLeft : Qt::Key_Tab;
     GTKeyboardDriver::keyClick(windowSwitchKey, Qt::ControlModifier);
 
     wgt = GTUtilsMdi::activeWindow();

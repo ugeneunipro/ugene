@@ -1796,7 +1796,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0007) {
 
 GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     //    1. Open data/samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     //    2. Open tree settings option panel tab. build tree
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::AddTree);
