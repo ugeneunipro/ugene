@@ -4714,5 +4714,19 @@ GUI_TEST_CLASS_DEFINITION(test_7896) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7923) {
+    /*
+    * 1. Open _common_data/gff/5k_annotation_tables.gff
+    * 2. Type "SARS" in project search
+    * Expected: 5k results found
+    */
+    GTFileDialog::openFile(testDir, "_common_data/gff/5k_annotation_tables.gff");
+
+    GTUtilsProjectTreeView::filterProject("notSARS");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkFilteredGroup("zzz11111", {}, {"scaffold_4528 features"}, {});
+    CHECK_SET_ERR(GTUtilsProjectTreeView::countTopLevelItems() == 1, "Expected only one result.");
+}
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
