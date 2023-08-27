@@ -4720,8 +4720,7 @@ GUI_TEST_CLASS_DEFINITION(test_7923) {
     * 2. Type "SARS" in project search
     * Expected: 5k results found
     */
-    GTFileDialog::openFileWithDialog(testDir, "_common_data/gff/5k_annotation_tables.gff");
-    GTUtilsTaskTreeView::waitTaskFinished();
+    GTFileDialog::openFile(testDir, "_common_data/gff/5k_annotation_tables.gff");
 
     GTUtilsProjectTreeView::filterProject("notSARS");
     GTUtilsTaskTreeView::waitTaskFinished();
