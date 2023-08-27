@@ -847,9 +847,9 @@ QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(co
     }
 
     if (!desiredObjectIdsToSearch.isEmpty()) {
-        queryStringk.append("AND (");
+        queryStringk.append("AND A.object IN (");
         for (int n = 0; n < desiredObjectIdsToSearch.size(); n++, i++) {
-            QString queryPart = n == 0 ? QString("A.object = ?%1 ") : QString("OR A.object = ?%1 ");
+            QString queryPart = n == 0 ? QString("?%1") : QString(", ?%1");
             queryStringk.append(queryPart.arg(i));
         }
         queryStringk.append(") ");
