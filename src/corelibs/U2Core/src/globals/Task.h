@@ -619,7 +619,7 @@ protected:
 
     void addSubTask(Task* t, Task* sub);
 
-    void setTaskState(Task* t, Task::State newState);
+    void setTaskState(Task* task, Task::State newState);
 
     void setTaskStateDesc(Task* t, const QString& desc);
 

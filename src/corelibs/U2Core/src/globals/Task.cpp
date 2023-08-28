@@ -207,13 +207,17 @@ void TaskScheduler::addSubTask(Task* t, Task* sub) {
     emit t->si_subtaskAdded(sub);
 }
 
-void TaskScheduler::setTaskState(Task* t, Task::State newState) {
-    SAFE_POINT(t->getState() < newState, QString("Illegal task state change! Current state: %1, new state: %2").arg(t->getState()).arg(newState), );
+void TaskScheduler::setTaskState(Task* task, Task::State newState) {
+    SAFE_POINT(task->getState() < newState,
+               QString("Illegal task state change! Current state: %1, new state: %2, Task: %3")
+                   .arg(task->getState())
+                   .arg(newState)
+                   .arg(task->getTaskName()), );
 
-    t->state = newState;
+    task->state = newState;
 
-    emit t->si_stateChanged();
-    emit si_stateChanged(t);
+    emit task->si_stateChanged();
+    emit si_stateChanged(task);
 }
 
 void TaskScheduler::setTaskStateDesc(Task* t, const QString& desc) {

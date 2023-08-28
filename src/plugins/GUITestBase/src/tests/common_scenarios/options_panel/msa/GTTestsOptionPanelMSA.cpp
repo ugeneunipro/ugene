@@ -1852,34 +1852,31 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
     GTLogTracer lt;
-    const QString fileName = "export_consensus_test_0002.aln";
-    //    1. Open data/samples/CLUSTALW/COI.aln
+
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
-    //    2. Open export consensus option panel tab
-    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::ExportConsensus);
-    //    3. Select existing read-only file "export_consensus_test_0002.aln" as output
 
-    const QString dirPath = sandBoxDir + "export_consensus_test_0002";
+    GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::ExportConsensus);
+
+    QString dirPath = sandBoxDir + "export_consensus_test_0002";
     QDir().mkpath(dirPath);
 
-    const QString filePath = dirPath + "/" + fileName;
+    QString filePath = dirPath + "/export_consensus_test_0002.aln";
     QFile f(filePath);
     bool created = f.open(QFile::ReadWrite);
     CHECK_SET_ERR(created, "file not created");
     f.close();
 
     GTFile::setReadOnly(filePath);
-
     setConsensusOutputPath(filePath);
-    //    4. Press export button
-    GTWidget::click(GTWidget::findWidget("exportBtn"));
-    //    Expected state: error in log: Task {Save document} finished with error: No permission to write to 'COI_transl.aln' file.
-    QString error = lt.getJoinedErrorString();
-    const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
-    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
-    CHECK_SET_ERR(error.contains(expected), QString("Unexpected error: %1").arg(error));
 
+    GTWidget::click(GTWidget::findWidget("exportBtn"));
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    // Expected state: error in log: Task {Save document} finished with error: No permission to write to 'COI_transl.aln' file.
+    QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
+    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
+    lt.checkMessage(expected);
     GTFile::setReadWrite(filePath);
 }
 
@@ -1905,7 +1902,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
 
     //    4. Press export button
     GTWidget::click(GTWidget::findWidget("exportBtn"));
-    GTThread::waitForMainThread();
+    GTUtilsTaskTreeView::waitTaskFinished();
 
     //    Expected state: notification is shown that folder is read-only.
     QString error = lt.getJoinedErrorString();

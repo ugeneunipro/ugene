@@ -66,14 +66,6 @@ SWAlgorithmTask::SWAlgorithmTask(const SmithWatermanSettings& s,
             algType = SW_classic;
         }
     }
-
-    int maxScore = calculateMaxScore(s.ptrn, s.pSm);
-
-    minScore = int((float(maxScore) * s.percentOfScore) / 100);
-    if ((maxScore * (int)s.percentOfScore) % 100 != 0)
-        minScore += 1;
-
-    setupTask(maxScore);
 }
 
 SWAlgorithmTask::~SWAlgorithmTask() {
@@ -82,7 +74,14 @@ SWAlgorithmTask::~SWAlgorithmTask() {
     // we do not delete resultFilter here, because filters are stored in special registry
 }
 
-void SWAlgorithmTask::setupTask(int maxScore) {
+void SWAlgorithmTask::prepare() {
+    int maxScore = calculateMaxScore(sWatermanConfig.ptrn, sWatermanConfig.pSm);
+
+    minScore = int((float(maxScore) * sWatermanConfig.percentOfScore) / 100);
+    if ((maxScore * (int)sWatermanConfig.percentOfScore) % 100 != 0) {
+        minScore += 1;
+    }
+
     SequenceWalkerConfig c;
     c.seq = sWatermanConfig.sqnc.constData();
     c.seqSize = sWatermanConfig.sqnc.size();
@@ -139,7 +138,7 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     c.lastChunkExtraLen = partsNumber - 1;
 
     // acquiring memory resources for computations
-    quint64 neededRam = 0;
+    quint64 neededRam;
     switch (algType) {
         case SW_classic:
             neededRam = SmithWatermanAlgorithm::estimateNeededRamAmount(sWatermanConfig.gapModel.scoreGapOpen,
@@ -162,10 +161,13 @@ void SWAlgorithmTask::setupTask(int maxScore) {
 #endif
             break;
         default:
-            SAFE_POINT(false, QString("Unsupported algorithm type: %1").arg(algType), );
+            FAIL(QString("Unsupported algorithm type: %1").arg(algType), );
     }
     if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
-        stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
+        QString error = tr("Not enough memory to run the task. Required: %1 MB, limit %2 MB.")
+                            .arg(QString::number(neededRam))
+                            .arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB));
+        stateInfo.setError(error);
     } else {
         addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
         t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
@@ -262,19 +264,17 @@ void SWAlgorithmTask::addResult(QList<PairAlignSequences>& res) {
 }
 
 int SWAlgorithmTask::calculateMatrixLength(int searchSeqLen, int patternSeqLen, int gapOpen, int gapExtension, int maxScore, int minScore) {
-    int matrixLength;
-
     int gap = gapOpen;
-    if (gapOpen < gapExtension)
+    if (gapOpen < gapExtension) {
         gap = gapExtension;
+    }
 
-    matrixLength = patternSeqLen + (maxScore - minScore) / gap * (-1) + 1;
+    int matrixLength = patternSeqLen + (maxScore - minScore) / gap * (-1) + 1;
 
-    if (searchSeqLen + 1 < matrixLength)
+    if (searchSeqLen + 1 < matrixLength) {
         matrixLength = searchSeqLen + 1;
-
+    }
     matrixLength += 1;
-
     return matrixLength;
 }
 
@@ -443,8 +443,6 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
     if ((maxScore * settings->percentOfScore) % 100 != 0) {
         minScore += 1;
     }
-
-    setupTask();
 }
 
 PairwiseAlignmentSmithWatermanTask::~PairwiseAlignmentSmithWatermanTask() {
@@ -508,17 +506,14 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask* t, Task
 
 int PairwiseAlignmentSmithWatermanTask::calculateMaxScore(const QByteArray& seq, const SMatrix& substitutionMatrix) {
     int maxScore = 0;
-    int max;
-    int substValue = 0;
-
     QByteArray alphaChars = substitutionMatrix.getAlphabet()->getAlphabetChars();
     for (int i = 0; i < seq.length(); i++) {
-        max = 0;
+        int max = 0;
         for (int j = 0; j < alphaChars.size(); j++) {
             // TODO: use raw pointers!
             char c1 = seq.at(i);
             char c2 = alphaChars.at(j);
-            substValue = substitutionMatrix.getScore(c1, c2);
+            int substValue = substitutionMatrix.getScore(c1, c2);
             if (max < substValue)
                 max = substValue;
         }
@@ -527,7 +522,7 @@ int PairwiseAlignmentSmithWatermanTask::calculateMaxScore(const QByteArray& seq,
     return maxScore;
 }
 
-void PairwiseAlignmentSmithWatermanTask::setupTask() {
+void PairwiseAlignmentSmithWatermanTask::prepare() {
     SequenceWalkerConfig c;
     c.seq = *sqnc;
     c.seqSize = sqnc->size();
@@ -541,8 +536,7 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     // divide sequence by PARTS_NUMBER parts
     int idealThreadCount = AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount();
 
-    qint64 partsNumber = 0;
-    double computationMatrixSquare = 0.0;
+    double computationMatrixSquare;
 
     switch (algType) {
         case SW_sse2:
@@ -554,10 +548,10 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
             c.nThreads = idealThreadCount;
             break;
         default:
-            SAFE_POINT(false, QString("Unsupported algorithm type: %1").arg(algType), );
+            FAIL(QString("Unsupported algorithm type: %1").arg(algType), );
     }
 
-    partsNumber = static_cast<qint64>(sqnc->size() / (computationMatrixSquare / ptrn->size()) + 1.0);
+    qint64 partsNumber = static_cast<qint64>(sqnc->size() / (computationMatrixSquare / ptrn->size()) + 1.0);
     if (partsNumber < c.nThreads) {
         c.nThreads = partsNumber;
     }
@@ -598,7 +592,10 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
             SAFE_POINT(false, QString("Unsupported algorithm type: %1").arg(algType), );
     }
     if (neededRam > SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB) {
-        stateInfo.setError(tr("Needed amount of memory for this task is %1 MB, but it limited to %2 MB.").arg(QString::number(neededRam)).arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB)));
+        QString error = tr("Not enough memory to run the task. Required: %1 MB, limit %2 MB.")
+                            .arg(QString::number(neededRam))
+                            .arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB));
+        stateInfo.setError(error);
     } else {
         addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
         t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
@@ -607,23 +604,18 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
 }
 
 int PairwiseAlignmentSmithWatermanTask::calculateMatrixLength(const QByteArray& searchSeq, const QByteArray& patternSeq, int gapOpen, int gapExtension, int maxScore, int minScore) {
-    int matrixLength = 0;
-
     int gap = gapOpen;
-    if (gapOpen < gapExtension)
+    if (gapOpen < gapExtension) {
         gap = gapExtension;
+    }
 
-    matrixLength = patternSeq.length() + (maxScore - minScore) / gap * (-1) + 1;
+    int matrixLength = patternSeq.length() + (maxScore - minScore) / gap * (-1) + 1;
 
-    if (searchSeq.length() + 1 < matrixLength)
+    if (searchSeq.length() + 1 < matrixLength) {
         matrixLength = searchSeq.length() + 1;
-
+    }
     matrixLength += 1;
-
     return matrixLength;
-}
-
-void PairwiseAlignmentSmithWatermanTask::prepare() {
 }
 
 QList<PairAlignSequences>& PairwiseAlignmentSmithWatermanTask::getResult() {
@@ -634,13 +626,15 @@ QList<PairAlignSequences>& PairwiseAlignmentSmithWatermanTask::getResult() {
 }
 
 Task::ReportResult PairwiseAlignmentSmithWatermanTask::report() {
-    assert(settings->resultListener != nullptr);
+    CHECK(!isCanceled() && !hasError(), ReportResult_Finished);
+    SAFE_POINT(settings->resultListener != nullptr, "Task has no result listener!", ReportResult_Finished);
+
     QList<SmithWatermanResult> resultList = settings->resultListener->getResults();
 
     int resultsNum = resultList.size();
-    algoLog.details(tr("%1 results found").arg(resultsNum));
+    algoLog.trace(QString("PairwiseAlignmentSmithWatermanTask: %1 results found").arg(resultsNum));
 
-    if (0 != settings->reportCallback) {
+    if (settings->reportCallback != nullptr) {
         QString res = settings->reportCallback->report(resultList);
         if (!res.isEmpty() && !stateInfo.hasError()) {
             stateInfo.setError(res);
@@ -698,8 +692,7 @@ QList<PairAlignSequences> PairwiseAlignmentSmithWatermanTask::expandResults(QLis
         resIsEmpty = true;
     }
     for (int i = 0; i < res.size(); i++) {
-        if (res[i].ptrnSubseqInterval.length < ptrn->length() && res[i].refSubseqInterval.length < sqnc->length() &&
-            resIsEmpty == false) {
+        if (res[i].ptrnSubseqInterval.length < ptrn->length() && res[i].refSubseqInterval.length < sqnc->length() && !resIsEmpty) {
             for (int j = 0; j < res[i].ptrnSubseqInterval.startPos && j < res[i].refSubseqInterval.startPos;) {
                 res[i].pairAlignment.append(PairAlignSequences::DIAG);
                 res[i].ptrnSubseqInterval.startPos--;

@@ -124,7 +124,7 @@ public:
 
     TaskThread* thread = nullptr;
 
-    int numActiveSubtasks() const;
+    int countActiveSubtasks() const;
 };
 
 class U2PRIVATE_EXPORT TaskSchedulerImpl : public TaskScheduler {
