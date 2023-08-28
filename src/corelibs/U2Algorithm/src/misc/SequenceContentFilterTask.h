@@ -60,6 +60,8 @@ private:
 //////////////////////////////////////////////////////////////////////////
 
 class U2ALGORITHM_EXPORT SequenceContentFilterTaskFactory : public ProjectFilterTaskFactory {
+public:
+    SequenceContentFilterTaskFactory();
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
                                              const QList<QPointer<Document>>& docs) const;

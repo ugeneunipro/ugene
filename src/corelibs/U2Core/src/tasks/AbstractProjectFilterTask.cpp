@@ -91,15 +91,32 @@ void AbstractProjectFilterTask::doStaticInitialization() {
 /// ProjectFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
+ProjectFilterTaskFactory::ProjectFilterTaskFactory(QList<GObjectType> _acceptedObjects)
+    : acceptableObjectTypes(_acceptedObjects) {};
+
 ProjectFilterTaskFactory::~ProjectFilterTaskFactory() {
 }
 
 AbstractProjectFilterTask* ProjectFilterTaskFactory::registerNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                      const QList<QPointer<Document>>& docs) const {
     AbstractProjectFilterTask* task = createNewTask(settings, docs);
-    SAFE_POINT(task != nullptr, L10N::nullPointerError("project filter task"), nullptr);
-    AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    if (task != nullptr) {
+        AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    }
     return task;
+}
+
+QList<QPointer<Document>> ProjectFilterTaskFactory::getAcceptedDocs(const QList<QPointer<Document>>& docs) const {
+    QList<QPointer<Document>> result;
+    for (const QPointer<Document>& docRef : qAsConst(docs)) {
+        for (const GObjectType& objType : qAsConst(acceptableObjectTypes)) {
+            if (!docRef->findGObjectByType(objType).isEmpty()) {
+                result.append(docRef);
+                break;
+            }
+        }
+    }
+    return result;
 }
 
 }  // namespace U2

@@ -77,20 +77,34 @@ bool McaReferenceNameFilterTask::filterAcceptsObject(GObject* obj) {
 //////////////////////////////////////////////////////////////////////////
 /// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
+MsaSeqNameFilterTaskFactory::MsaSeqNameFilterTaskFactory()
+    : ProjectFilterTaskFactory({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}) {
+}
 
 AbstractProjectFilterTask* MsaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                       const QList<QPointer<Document>>& docs) const {
-    return new MsaSeqNameFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    return acceptedDocs.isEmpty() ? nullptr : new MsaSeqNameFilterTask(settings, acceptedDocs);
+}
+
+McaReadNameFilterTaskFactory::McaReadNameFilterTaskFactory()
+    : ProjectFilterTaskFactory({GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT}) {
 }
 
 AbstractProjectFilterTask* McaReadNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                        const QList<QPointer<Document>>& docs) const {
-    return new McaReadNameFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    return acceptedDocs.isEmpty() ? nullptr : new McaReadNameFilterTask(settings, acceptedDocs);
+}
+
+McaReferenceNameFilterTaskFactory::McaReferenceNameFilterTaskFactory()
+    : ProjectFilterTaskFactory({GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT}) {
 }
 
 AbstractProjectFilterTask* McaReferenceNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                             const QList<QPointer<Document>>& docs) const {
-    return new McaReferenceNameFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    return acceptedDocs.isEmpty() ? nullptr : new McaReferenceNameFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2

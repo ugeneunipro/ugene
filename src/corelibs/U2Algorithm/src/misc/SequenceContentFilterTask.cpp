@@ -152,9 +152,14 @@ void SequenceContentFilterTask::onResult(const FindAlgorithmResult& /*r*/) {
 /// SequenceConentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
+ SequenceContentFilterTaskFactory::SequenceContentFilterTaskFactory()
+    : ProjectFilterTaskFactory({GObjectTypes::SEQUENCE}) {
+}
+
 AbstractProjectFilterTask* SequenceContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                            const QList<QPointer<Document>>& docs) const {
-    return new SequenceContentFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    return acceptedDocs.isEmpty() ? nullptr : new SequenceContentFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2

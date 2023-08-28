@@ -56,7 +56,6 @@ public:
     static const GObjectType MULTIPLE_SEQUENCE_ALIGNMENT;
     static const GObjectType PHYLOGENETIC_TREE;
     static const GObjectType BIOSTRUCTURE_3D;
-    static const GObjectType UINDEX;
     static const GObjectType ASSEMBLY;
 
     static GObjectType registerTypeInfo(const GObjectTypeInfo& ti);

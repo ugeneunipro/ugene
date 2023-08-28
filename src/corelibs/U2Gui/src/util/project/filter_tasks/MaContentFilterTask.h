@@ -61,16 +61,25 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 
 class U2GUI_EXPORT MsaContentFilterTaskFactory : public ProjectFilterTaskFactory {
+public:
+    MsaContentFilterTaskFactory();
+
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
 };
 
 class U2GUI_EXPORT McaReadContentFilterTaskFactory : public ProjectFilterTaskFactory {
+public:
+    McaReadContentFilterTaskFactory();
+
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
 };
 
 class U2GUI_EXPORT McaReferenceContentFilterTaskFactory : public ProjectFilterTaskFactory {
+public:
+    McaReferenceContentFilterTaskFactory();
+
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
 };

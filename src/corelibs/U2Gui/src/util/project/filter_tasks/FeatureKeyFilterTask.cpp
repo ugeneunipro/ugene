@@ -87,10 +87,14 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
 //////////////////////////////////////////////////////////////////////////
 /// FeatureKeyFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
+FeatureKeyFilterTaskFactory::FeatureKeyFilterTaskFactory()
+    : ProjectFilterTaskFactory({GObjectTypes::ANNOTATION_TABLE}) {
+}
 
 AbstractProjectFilterTask* FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                       const QList<QPointer<Document>>& docs) const {
-    return new FeatureKeyFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    return acceptedDocs.isEmpty() ? nullptr : new FeatureKeyFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2

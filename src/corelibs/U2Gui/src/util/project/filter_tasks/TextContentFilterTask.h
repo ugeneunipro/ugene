@@ -42,6 +42,9 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 
 class U2GUI_EXPORT TextContentFilterTaskFactory : public ProjectFilterTaskFactory {
+public:
+    TextContentFilterTaskFactory();
+
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
 };
