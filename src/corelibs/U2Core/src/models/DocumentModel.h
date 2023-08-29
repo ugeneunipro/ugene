@@ -398,8 +398,8 @@ public:
 
     GObject* getObjectById(const U2DataId& id) const;
 
-    //Returns U2DataId for given object in this document
-    U2DataId getIdByObject(const GObject* obj) const;
+    //Returns list of Ids for objects with given type
+    QList<U2DataId> findGObjectsByType(const GObjectType& type) const;
 
     void addObject(GObject* ref);
 
