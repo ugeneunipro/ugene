@@ -114,10 +114,10 @@ void Task::addSubTask(Task* sub) {
 }
 
 void Task::cleanup() {
-    assert(isFinished());
+    SAFE_POINT(isFinished() || (isNew() && (isCanceled() || hasError())),
+               QString("Cleanup can only be called for finished tasks. Task: %1, ,state: %2").arg(getTaskName()).arg(getState()), );
     foreach (const QPointer<Task>& sub, getSubtasks()) {
         CHECK_CONTINUE(!sub.isNull());
-
         sub->cleanup();
     }
 }

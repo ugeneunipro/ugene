@@ -300,6 +300,10 @@ void TaskSchedulerImpl::processNewTasks() {
     QList<TaskInfo*> priorityQueueCopy = priorityQueue;
     for (TaskInfo* ti : qAsConst(priorityQueueCopy)) {
         if (ti->task->isCanceled() || ti->task->hasError()) {
+            for (auto subtask : qAsConst(ti->newSubtasks)) {
+                subtask->cancel();
+            }
+            ti->newSubtasks.clear();
             continue;  // Do not run new subtasks if the task is canceled.
         }
         int maxToNewSubtasksToCheck = ti->newSubtasks.length();

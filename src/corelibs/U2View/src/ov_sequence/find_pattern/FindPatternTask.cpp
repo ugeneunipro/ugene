@@ -32,7 +32,7 @@ namespace U2 {
 const float FindPatternTask::MAX_OVERLAP_K = 0.5F;
 
 FindPatternTask::FindPatternTask(const FindAlgorithmTaskSettings& settings, bool removeOverlaps)
-    : Task(tr("Searching a pattern in sequence task"), TaskFlags_NR_FOSE_COSC),
+    : Task(tr("Find pattern in sequence"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       removeOverlaps(removeOverlaps),
       findAlgorithmTask(nullptr),
@@ -40,16 +40,14 @@ FindPatternTask::FindPatternTask(const FindAlgorithmTaskSettings& settings, bool
 }
 
 QList<Task*> FindPatternTask::onSubTaskFinished(Task* subTask) {
-    QList<Task*> res;
-
     if (subTask->hasError() && subTask == findAlgorithmTask) {
         stateInfo.setError(subTask->getError());
-        return res;
+        return {};
     }
 
     if (subTask == findAlgorithmTask) {
         auto task = qobject_cast<FindAlgorithmTask*>(findAlgorithmTask);
-        SAFE_POINT(task, "Failed to cast FindAlgorithTask!", QList<Task*>());
+        SAFE_POINT(task, "Failed to cast FindAlgorithmTask!", QList<Task*>());
 
         QList<FindAlgorithmResult> resultz = task->popResults();
         if (settings.patternSettings == FindAlgorithmPatternSettings_RegExp) {  // Other algos always return sorted results
@@ -61,8 +59,7 @@ QList<Task*> FindPatternTask::onSubTaskFinished(Task* subTask) {
 
         results.append(FindAlgorithmResult::toTable(resultz, settings.name, settings.searchIsCircular, settings.sequence.size()));
     }
-
-    return res;
+    return {};
 }
 
 void FindPatternTask::removeOverlappedResults(QList<FindAlgorithmResult>& results) {
@@ -120,7 +117,7 @@ void FindPatternTask::prepare() {
 }
 
 FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings& settings, const QList<NamePattern>& patterns, bool removeOverlaps, int match)
-    : Task(tr("Searching patterns in sequence task"), TaskFlags_NR_FOSE_COSC), settings(settings), removeOverlaps(removeOverlaps),
+    : Task(tr("Find patterns in sequence"), TaskFlags_NR_FOSE_COSC), settings(settings), removeOverlaps(removeOverlaps),
       match(match), patterns(patterns) {
 }
 
@@ -155,7 +152,7 @@ void FindPatternListTask::prepare() {
         subTaskSettings.name = pattern.first;
         subTaskSettings.countTask = false;
 
-        bool isCaseSensitiveAlphabet= subTaskSettings.sequenceAlphabet == nullptr || subTaskSettings.sequenceAlphabet->isCaseSensitive();
+        bool isCaseSensitiveAlphabet = subTaskSettings.sequenceAlphabet == nullptr || subTaskSettings.sequenceAlphabet->isCaseSensitive();
         if (!isCaseSensitiveAlphabet) {
             subTaskSettings.pattern = subTaskSettings.pattern.toUpper();
         }
