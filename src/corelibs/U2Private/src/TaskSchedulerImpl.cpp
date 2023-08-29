@@ -692,6 +692,7 @@ bool TaskSchedulerImpl::isReadyToFinish(TaskInfo* ti) {
     CHECK(ti->selfRunFinished, false);
     CHECK(ti->newSubtasks.isEmpty(), false);
     CHECK(ti->numActiveRunningSubtasks == 0, false);
+    CHECK(ti->numActivePreparedSubtasks == 0, false);
     return true;
 }
 
