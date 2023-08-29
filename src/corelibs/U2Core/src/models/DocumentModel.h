@@ -398,6 +398,9 @@ public:
 
     GObject* getObjectById(const U2DataId& id) const;
 
+    //Returns U2DataId for given object in this document
+    U2DataId getIdByObject(const GObject* obj) const;
+
     void addObject(GObject* ref);
 
     bool removeObject(GObject* o, DocumentObjectRemovalMode removalMode = DocumentObjectRemovalMode_Deallocate);
