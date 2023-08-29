@@ -60,7 +60,7 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
     SAFE_POINT_EXT(connection.dbi != nullptr, stateInfo.setError(L10N::nullPointerError("Database connection")), );
     U2FeatureDbi* featureDbi = connection.dbi->getFeatureDbi();
     SAFE_POINT_EXT(featureDbi != nullptr, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );    
-    QMap<U2DataId, QStringList> annotationTablesByFk = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo, doc->findGObjectsByType(GObjectTypes::ANNOTATION_TABLE));
+    QMap<U2DataId, QStringList> annotationTablesByFk = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo, doc->findGObjectIdsByType(GObjectTypes::ANNOTATION_TABLE));
     SAFE_POINT_OP(stateInfo, );
     CHECK(!annotationTablesByFk.isEmpty(), );
     const int foundObjectsNumber = annotationTablesByFk.size();

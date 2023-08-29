@@ -399,7 +399,7 @@ public:
     GObject* getObjectById(const U2DataId& id) const;
 
     //Returns list of Ids for objects with given type
-    QList<U2DataId> findGObjectsByType(const GObjectType& type) const;
+    QList<U2DataId> findGObjectIdsByType(const GObjectType& type) const;
 
     void addObject(GObject* ref);
 
