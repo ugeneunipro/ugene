@@ -162,23 +162,16 @@ void Task::setMinimizeSubtaskErrorText(bool v) {
     setFlag(TaskFlag_MinimizeSubtaskErrorText, v);
 }
 
-void Task::addTaskResource(const TaskResourceUsage& r) {
-    SAFE_POINT(state == Task::State_New, QString("Can't add task resource in current state: %1)").arg(getState()), );
-    SAFE_POINT(!insidePrepare || r.stage != TaskResourceStage::Prepare, "Can't add prepare-time resource from within prepare function call!", );
-    SAFE_POINT(!r.locked, QString("Resource is already locked, resource id: %1").arg(r.resourceId), );
-    taskResources.append(r);
+void Task::addTaskResource(const TaskResourceUsage& resource) {
+    SAFE_POINT((resource.stage == TaskResourceStage::Prepare && state == Task::State_New && !insidePrepare) ||
+                   (resource.stage == TaskResourceStage::Run && state < Task::State_Running),
+               QString("Can't add task resource in current state: %1)").arg(getState()), );
+    SAFE_POINT(!resource.locked, QString("Resource is already locked, resource id: %1").arg(resource.resourceId), );
+    taskResources.append(resource);
 }
 
 bool Task::isMinimizeSubtaskErrorText() const {
-    bool result = false;
-    Task* parentTask = getParentTask();
-    if (getFlags().testFlag(TaskFlag_MinimizeSubtaskErrorText)) {
-        result = true;
-    } else if (parentTask != nullptr) {
-        result = parentTask->isMinimizeSubtaskErrorText();
-    }
-
-    return result;
+    return getFlags().testFlag(TaskFlag_MinimizeSubtaskErrorText) || (parentTask != nullptr && parentTask->isMinimizeSubtaskErrorText());
 }
 
 void Task::setCollectChildrensWarningsFlag(bool v) {

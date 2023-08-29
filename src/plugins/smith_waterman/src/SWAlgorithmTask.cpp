@@ -168,11 +168,11 @@ void SWAlgorithmTask::prepare() {
                             .arg(QString::number(neededRam))
                             .arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB));
         stateInfo.setError(error);
-    } else {
-        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
-        t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
-        addSubTask(t);
+        return;
     }
+    t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
+    t->addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
+    addSubTask(t);
 }
 
 QList<PairAlignSequences>& SWAlgorithmTask::getResult() {
@@ -596,11 +596,11 @@ void PairwiseAlignmentSmithWatermanTask::prepare() {
                             .arg(QString::number(neededRam))
                             .arg(QString::number(SmithWatermanAlgorithm::MEMORY_SIZE_LIMIT_MB));
         stateInfo.setError(error);
-    } else {
-        addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
-        t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
-        addSubTask(t);
+        return;
     }
+    t = new SequenceWalkerTask(c, this, tr("Smith Waterman2 SequenceWalker"));
+    t->addTaskResource(TaskResourceUsage(UGENE_RESOURCE_ID_MEMORY, neededRam, TaskResourceStage::Prepare));
+    addSubTask(t);
 }
 
 int PairwiseAlignmentSmithWatermanTask::calculateMatrixLength(const QByteArray& searchSeq, const QByteArray& patternSeq, int gapOpen, int gapExtension, int maxScore, int minScore) {
