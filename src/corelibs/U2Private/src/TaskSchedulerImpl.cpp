@@ -833,7 +833,6 @@ void TaskSchedulerImpl::promoteTask(TaskInfo* ti, Task::State newState) {
             int nRunning = 0;
             int nFinished = 0;
             int nNew = 0;
-            int nTotal = 0;
             const QList<QPointer<Task>>& subtasks = parentTask->getSubtasks();
             for (const QPointer<Task>& sub : qAsConst(subtasks)) {
                 switch (sub->getState()) {
