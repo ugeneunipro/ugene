@@ -50,6 +50,7 @@ public:
                     SW_AlgType algType);
     ~SWAlgorithmTask() override;
 
+    void prepare() override;
     void onRegion(SequenceWalkerSubtask* t, TaskStateInfo& ti) override;
 
     QList<PairAlignSequences>& getResult();
@@ -62,8 +63,6 @@ private:
     int calculateMatrixLength(int searchSeqLen, int patternLen, int gapOpen, int gapExtension, int maxScore, int minScore);
     void removeResultFromOverlap(QList<PairAlignSequences>& res);
     int calculateMaxScore(const QByteArray& sequence, const SMatrix& substitutionMatrix);
-
-    void setupTask(int maxScore);
 
     QList<PairAlignSequences> pairAlignSequences;
     int minScore;
@@ -135,7 +134,6 @@ public:
 protected:
     void addResult(QList<PairAlignSequences>& res);
     int calculateMaxScore(const QByteArray& sequence, const SMatrix& substitutionMatrix);
-    void setupTask();
     int calculateMatrixLength(const QByteArray& searchSeq, const QByteArray& patternSeq, int gapOpen, int gapExtension, int maxScore, int minScore);
     void removeResultFromOverlap(QList<PairAlignSequences>& res);
     QList<PairAlignSequences> expandResults(QList<PairAlignSequences>& results);

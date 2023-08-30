@@ -56,8 +56,7 @@ enum StateOrderType {
 class StateOrderTestTaskCallback {
 public:
     virtual void func(StateOrderTestTask* t, StateOrderType st) = 0;
-    virtual ~StateOrderTestTaskCallback() {
-    }
+    virtual ~StateOrderTestTaskCallback() = default;
 };
 
 class StateOrderTestTask : public Task {
@@ -65,9 +64,9 @@ class StateOrderTestTask : public Task {
 public:
     StateOrderTestTask(StateOrderTestTaskCallback* ptr, TaskFlags _f);
     ~StateOrderTestTask();
-    void prepare();
-    void run();
-    Task::ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
     int step;
 
 private:
@@ -79,8 +78,8 @@ class GTest_TaskCreateTest : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_TaskCreateTest, "task-create");
 
-    ReportResult report();
-    void cleanup();
+    ReportResult report() override;
+    void cleanup() override;
 
 private:
     Task* task;
@@ -93,7 +92,7 @@ class GTest_TaskAddSubtaskTest : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_TaskAddSubtaskTest, "task-add-subtask");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString taskContextName;
@@ -105,7 +104,7 @@ class GTest_TaskCancelTest : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_TaskCancelTest, "task-cancel");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     QString objContextName;
@@ -116,7 +115,7 @@ class GTest_TaskCheckFlag : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_TaskCheckFlag, "task-check-flag");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     TaskFlags flag;
@@ -128,15 +127,13 @@ class GTest_TaskCheckState : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_TaskCheckState, "task-check-state");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     bool checkState;
     State taskState;
     bool checkProgress;
     bool checkCancelFlag;
-    bool checkError;
-    bool checkStateDesc;
     TaskStateInfo taskStateInfo;
     QString taskContextName;
 };
@@ -146,8 +143,8 @@ class GTest_TaskExec : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_TaskExec, "task-exec");
 
-    void prepare();
-    ReportResult report();
+    void prepare() override;
+    ReportResult report() override;
 
 private:
     QString taskContextName;
@@ -157,9 +154,9 @@ class GTest_TaskStateOrder : public XmlTest, public StateOrderTestTaskCallback {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_TaskStateOrder, "task-state-order-test", TaskFlags_FOSCOE);
-    void func(StateOrderTestTask* t, StateOrderType st);
-    Task::ReportResult report();
-    void run();
+    void func(StateOrderTestTask* t, StateOrderType st) override;
+    Task::ReportResult report() override;
+    void run() override;
 
 private:
     bool done_flag;
@@ -175,9 +172,9 @@ class GTest_Wait : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Wait, "wait", TaskFlags(TaskFlags_FOSCOE));
-    Task::ReportResult report();
-    void prepare();
-    void run();
+    Task::ReportResult report() override;
+    void prepare() override;
+    void run() override;
 public slots:
     void sl_WaitCond_StateChanged();
 

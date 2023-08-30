@@ -52,28 +52,19 @@ static bool isNoWritePermission(GUrl& url) {
 
 SaveDocumentTask::SaveDocumentTask(Document* _doc, IOAdapterFactory* _io, const GUrl& _url, SaveDocFlags _flags)
     : Task(tr("Save document"), TaskFlag_None), doc(_doc), iof(_io), url(_url), flags(_flags) {
-    assert(doc != nullptr);
     if (iof == nullptr) {
         iof = doc->getIOAdapterFactory();
     }
     if (url.isEmpty()) {
         url = doc->getURLString();
     }
-    if (isNoWritePermission(url)) {
-        stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
-    }
-
-    lock = nullptr;
+    SAFE_POINT(doc != nullptr, "Document is null in SaveDocumentTask", );
 }
 
 SaveDocumentTask::SaveDocumentTask(Document* _doc, SaveDocFlags f, const QSet<QString>& _excludeFileNames)
     : Task(tr("Save document"), TaskFlag_None),
       doc(_doc), iof(doc->getIOAdapterFactory()), url(doc->getURL()), flags(f), excludeFileNames(_excludeFileNames) {
-    assert(doc != nullptr);
-
-    if (isNoWritePermission(url)) {
-        stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
-    }
+    SAFE_POINT(doc != nullptr, "Document is null in SaveDocumentTask", );
 }
 
 void SaveDocumentTask::addFlag(SaveDocFlag f) {
@@ -81,6 +72,10 @@ void SaveDocumentTask::addFlag(SaveDocFlag f) {
 }
 
 void SaveDocumentTask::prepare() {
+    if (isNoWritePermission(url)) {
+        stateInfo.setError(tr("No permission to write to '%1' file.").arg(url.getURLString()));
+        return;
+    }
     if (doc.isNull()) {
         setError(tr("Document was removed"));
         return;
@@ -212,7 +207,7 @@ void SaveDocumentTask::setOpenDocumentWithProjectHints(const QVariantMap& hints)
 /// save multiple
 
 SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document*>& docs, bool askBeforeSave, SavedNewDocFlag saveAndOpenFlag)
-    : Task(tr("Save multiple documents"), TaskFlag_NoRun) {
+    : Task(tr("Save multiple documents"), TaskFlags_NR_FOSE_COSC) {
     bool saveAll = false;
     foreach (Document* doc, docs) {
         bool save = true;

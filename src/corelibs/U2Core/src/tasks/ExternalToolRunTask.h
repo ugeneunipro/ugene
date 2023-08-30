@@ -58,6 +58,8 @@ public:
 
     void addOutputListener(ExternalToolListener* outputListener);
 
+    void prepare() override;
+
     void run() override;
 
     void setStandardInputFile(const QString& file) {
@@ -85,9 +87,9 @@ private:
     QString outputFile;
     QStringList additionalPaths;
     QMap<QString, QString> additionalEnvVariables;
-    QProcess* externalToolProcess;
+    QProcess* externalToolProcess = nullptr;
     QScopedPointer<ExternalToolRunTaskHelper> helper;
-    ExternalToolListener* listener;
+    ExternalToolListener* listener = nullptr;
     QString additionalProcessToKill;
     bool parseOutputFile;
 };

@@ -35,10 +35,6 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#ifdef Q_OS_WIN
-#    include <windows.h>
-#endif
-
 namespace U2 {
 
 #define SETTINGS_ROOT QString("/genome_aligner_settings/")
@@ -54,26 +50,24 @@ ExternalToolRunTask::ExternalToolRunTask(const QString& _toolId, const QStringLi
       toolId(_toolId),
       workingDirectory(_workingDirectory),
       additionalPaths(_additionalPaths),
-      externalToolProcess(nullptr),
-      helper(nullptr),
-      listener(nullptr),
       parseOutputFile(parseOutputFile) {
-    ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
-    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(toolId)), );
-    CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
-
-    tool->checkArgsAndPaths(arguments, stateInfo);
-    if (!stateInfo.hasError()) {
-        toolName = tool->getName();
-        coreLog.trace("Creating run task for: " + toolName);
-        if (logParser != nullptr) {
-            logParser->setParent(this);
-        }
-    }
 }
 
 ExternalToolRunTask::~ExternalToolRunTask() {
     delete externalToolProcess;
+}
+
+void ExternalToolRunTask::prepare() {
+    ExternalTool* tool = AppContext::getExternalToolRegistry()->getById(toolId);
+    CHECK_EXT(tool != nullptr, stateInfo.setError(tr("External tool \"%1\" is absent").arg(toolId)), );
+    toolName = tool->getName();
+
+    CHECK_EXT(QFile::exists(tool->getPath()), stateInfo.setError(tr("External tool '%1' doesn't exist").arg(tool->getPath())), )
+    tool->checkArgsAndPaths(arguments, stateInfo);
+
+    if (!stateInfo.hasError() && logParser != nullptr) {
+        logParser->setParent(this);
+    }
 }
 
 void ExternalToolRunTask::run() {
@@ -377,19 +371,19 @@ bool ExternalToolSupportUtils::startExternalProcess(QProcess* process, const QSt
     process->start(program, arguments);
     bool started = process->waitForStarted(START_WAIT_MSEC);
 
-#ifdef Q_OS_WIN32
-    if (!started) {
-        QString execStr = WIN_LAUNCH_CMD_COMMAND + program;
-        foreach (const QString arg, arguments) {
-            execStr += " " + arg;
+    if (isOsWindows()) {
+        if (!started) {
+            QString execStr = WIN_LAUNCH_CMD_COMMAND + program;
+            foreach (const QString arg, arguments) {
+                execStr += " " + arg;
+            }
+            process->start(execStr);
+            coreLog.trace(tr("Can't run an executable file \"%1\" as it is. Try to run it as a cmd line command: \"%2\"")
+                              .arg(program)
+                              .arg(execStr));
+            started = process->waitForStarted(START_WAIT_MSEC);
         }
-        process->start(execStr);
-        coreLog.trace(tr("Can't run an executable file \"%1\" as it is. Try to run it as a cmd line command: \"%2\"")
-                          .arg(program)
-                          .arg(execStr));
-        started = process->waitForStarted(START_WAIT_MSEC);
     }
-#endif
 
     return started;
 }
