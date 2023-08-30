@@ -82,6 +82,7 @@ copy_with_pdb "${QT_DIR}/bin/Qt5Script.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5ScriptTools.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Sensors.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Svg.dll" "${BUNDLE_DIR}"
+copy_with_pdb "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Widgets.dll" "${BUNDLE_DIR}"
 copy_with_pdb "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 
