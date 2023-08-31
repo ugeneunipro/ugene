@@ -1838,8 +1838,7 @@ GUI_TEST_CLASS_DEFINITION(test_4209_1) {
     // The error was introduced during the time the test was suppressed and made impossible to run "Align to Reference" for reads with no chromatograms.
     // See: UGENE-5423: Use ChromObject in Sanger algorithm.
     // This problem will be addressed in the separate bug and logTracer will be checked for no errors.
-    CHECK_SET_ERR(lt.errorMessages.size() == 1 && lt.errorMessages[0].contains("The related chromatogram not found"),
-                  "Got unexpected error: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(lt.hasError("The related chromatogram not found"), "Got unexpected error: " + lt.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4218) {

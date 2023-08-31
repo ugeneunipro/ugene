@@ -84,7 +84,7 @@ public:
     void setOpenDocumentWithProjectHints(const QVariantMap& hints);
 
 private:
-    StateLock* lock;
+    StateLock* lock = nullptr;
     QPointer<Document> doc;
     IOAdapterFactory* iof;
     GUrl url;

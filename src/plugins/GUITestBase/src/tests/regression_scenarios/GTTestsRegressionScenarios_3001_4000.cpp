@@ -1584,6 +1584,7 @@ GUI_TEST_CLASS_DEFINITION(test_3328) {
     qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");  // disable overflow to create a long-running "Find Enzymes task".
 
     FindEnzymesDialogFillerSettings settings;
+    settings.clickSelectAllSuppliers = true;
     settings.clickFindAll = true;
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTWidget::click(GTWidget::findWidget("Find restriction sites_widget"));
