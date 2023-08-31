@@ -4721,7 +4721,6 @@ GUI_TEST_CLASS_DEFINITION(test_7923) {
     * Expected: 5k results found
     */
     GTFileDialog::openFile(testDir, "_common_data/gff/5k_annotation_tables.gff");
-    GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsProjectTreeView::filterProject("notSARS");
     GTUtilsTaskTreeView::waitTaskFinished();
