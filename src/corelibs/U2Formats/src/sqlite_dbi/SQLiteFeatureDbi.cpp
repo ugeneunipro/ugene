@@ -836,6 +836,7 @@ QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(co
     SQLiteTransaction t(db, os);
     QMap<U2DataId, QStringList> result;
     CHECK(!values.isEmpty(), result);
+    CHECK(!desiredObjectIdsToSearch.isEmpty(), result);
     // Pay attention here if there is the need of processing more search terms
     CHECK_EXT(values.size() < SQLiteDbi::BIND_PARAMETERS_LIMIT, os.setError("Too many search terms provided"), result);
 
@@ -846,14 +847,12 @@ QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(co
         queryStringk.append(QString("AND FK.value LIKE ?%1 ").arg(i));
     }
 
-    if (!desiredObjectIdsToSearch.isEmpty()) {
-        queryStringk.append("AND A.object IN (");
-        for (int n = 0; n < desiredObjectIdsToSearch.size(); n++, i++) {
-            QString queryPart = n == 0 ? QString("?%1") : QString(", ?%1");
-            queryStringk.append(queryPart.arg(i));
-        }
-        queryStringk.append(") ");
+    queryStringk.append("AND A.object IN (");
+    for (int n = 0; n < desiredObjectIdsToSearch.size(); n++, i++) {
+        QString queryPart = n == 0 ? QString("?%1") : QString(", ?%1");
+        queryStringk.append(queryPart.arg(i));
     }
+    queryStringk.append(") ");
 
     queryStringk.append("COLLATE NOCASE");
 
