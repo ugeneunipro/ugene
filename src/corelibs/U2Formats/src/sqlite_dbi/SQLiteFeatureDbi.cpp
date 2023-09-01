@@ -833,10 +833,10 @@ QList<FeatureAndKey> SQLiteFeatureDbi::getFeatureTable(const U2DataId& rootFeatu
 }
 
 QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& objectIdsToSearch) {
-    SQLiteTransaction t(db, os);
     QMap<U2DataId, QStringList> result;
     CHECK(!values.isEmpty(), result);
     CHECK(!objectIdsToSearch.isEmpty(), result);
+    SQLiteTransaction t(db, os);
     // Pay attention here if there is the need of processing more search terms
     CHECK_EXT(values.size() < SQLiteDbi::BIND_PARAMETERS_LIMIT, os.setError("Too many search terms provided"), result);
 
