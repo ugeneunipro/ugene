@@ -183,7 +183,10 @@ class DNASequenceGeneratorTask : public Task {
     Q_OBJECT
 public:
     DNASequenceGeneratorTask(const DNASequenceGeneratorConfig& cfg_);
-    QList<Task*> onSubTaskFinished(Task* subTask);
+
+    void prepare() override;
+
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
     QList<DNASequence> getSequences() const {
         return results;
     }
@@ -200,10 +203,10 @@ private:
     static EvaluateBaseContentTask* createEvaluationTask(Document* doc, QString& err);
 
     DNASequenceGeneratorConfig cfg;
-    LoadDocumentTask* loadRefTask;
-    EvaluateBaseContentTask* evalTask;
-    GenerateDNASequenceTask* generateTask;
-    SaveDocumentTask* saveTask;
+    LoadDocumentTask* loadRefTask = nullptr;
+    EvaluateBaseContentTask* evalTask = nullptr;
+    GenerateDNASequenceTask* generateTask = nullptr;
+    SaveDocumentTask* saveTask = nullptr;
     QList<DNASequence> results;
 };
 

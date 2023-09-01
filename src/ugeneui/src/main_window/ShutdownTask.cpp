@@ -190,7 +190,7 @@ Task::ReportResult ShutdownTask::report() {
 }
 
 CloseWindowsTask::CloseWindowsTask()
-    : Task(QObject::tr("Close windows"), TaskFlags(TaskFlag_NoRun)) {
+    : Task(QObject::tr("Close windows"), TaskFlags(TaskFlags_NR_FOSE_COSC)) {
 }
 
 void CloseWindowsTask::prepare() {

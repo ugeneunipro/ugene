@@ -172,12 +172,11 @@ EvaluateBaseContentTask* DNASequenceGeneratorTask::createEvaluationTask(Document
 
 DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorConfig& cfg)
     : Task(tr("Generate sequence task"), TaskFlag_NoRun),
-      cfg(cfg),
-      loadRefTask(nullptr),
-      evalTask(nullptr),
-      generateTask(nullptr),
-      saveTask(nullptr) {
+      cfg(cfg) {
     GCOUNTER(cvar, "DNASequenceGeneratorTask");
+}
+
+void DNASequenceGeneratorTask::prepare() {
     if (cfg.useReference()) {
         // do not load reference file if it is already in project and has loaded state
         const QString& docUrl = cfg.getReferenceUrl();

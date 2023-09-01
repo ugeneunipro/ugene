@@ -100,7 +100,7 @@ QString GUITestThread::launchTest(GUITest* test) {
         GT_LOG("Got exception while running the test.");
     }
     QString error = GTGlobals::getOpStatus().getError();
-    GT_LOG(QString("launchTest finished '%1").arg(error.isEmpty() ? "with no error" : "with error: " + error));
+    GT_LOG(QString("launchTest finished %1").arg(error.isEmpty() ? "with no error" : "with error: " + error));
     return error;
 }
 
