@@ -232,7 +232,7 @@ public:
     static T findWidgetByType(QWidget* parentWidget, const QString& errorMessage) {
         T widget = nullptr;
         for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
-            GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
+            GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0, "findWidgetByType: " + errorMessage);
             widget = parentWidget->findChild<T>();
         }
         GT_CHECK_RESULT(widget != nullptr, errorMessage, nullptr);
