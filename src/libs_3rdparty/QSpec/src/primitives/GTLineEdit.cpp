@@ -35,12 +35,16 @@ void GTLineEdit::setText(QLineEdit* lineEdit, const QString& text, bool noCheck 
     if (lineEdit->text() == text) {
         return;
     }
-    selectAll(lineEdit);
-    if (useCopyPaste) {
-        GTClipboard::setText(text);
-        GTKeyboardUtils::paste();
+    if (text.isEmpty()) {
+        clear(lineEdit);
     } else {
-        GTKeyboardDriver::keySequence(text);
+        selectAll(lineEdit);
+        if (useCopyPaste) {
+            GTClipboard::setText(text);
+            GTKeyboardUtils::paste();
+        } else {
+            GTKeyboardDriver::keySequence(text);
+        }
     }
     if (noCheck) {
         GTGlobals::sleep(500);
