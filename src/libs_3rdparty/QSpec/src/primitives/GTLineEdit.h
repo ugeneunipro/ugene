@@ -42,6 +42,7 @@ public:
 
     // fails if lineEdit is NULL, or lineEdit's text wasn't cleared
     static void clear(QLineEdit* lineEdit);
+    static void selectAll(QLineEdit* lineEdit);
 
     // fails if lineEdit is NULL or lineEdit text is not in lineEdit's rect
     // considering lineEdit's fontMetrics and textMargins

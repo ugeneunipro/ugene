@@ -35,13 +35,16 @@ void GTLineEdit::setText(QLineEdit* lineEdit, const QString& text, bool noCheck 
     if (lineEdit->text() == text) {
         return;
     }
-    clear(lineEdit);
-
-    if (useCopyPaste) {
-        GTClipboard::setText(text);
-        GTKeyboardUtils::paste();
+    if (text.isEmpty()) {
+        clear(lineEdit);
     } else {
-        GTKeyboardDriver::keySequence(text);
+        selectAll(lineEdit);
+        if (useCopyPaste) {
+            GTClipboard::setText(text);
+            GTKeyboardUtils::paste();
+        } else {
+            GTKeyboardDriver::keySequence(text);
+        }
     }
     if (noCheck) {
         GTGlobals::sleep(500);
@@ -74,7 +77,7 @@ QString GTLineEdit::getText(const QString& lineEditName, QWidget* parent) {
     return getText(GTWidget::findLineEdit(lineEditName, parent));
 }
 
-void GTLineEdit::clear(QLineEdit* lineEdit) {
+void GTLineEdit::selectAll(QLineEdit* lineEdit) {
     GT_CHECK(lineEdit != nullptr, "lineEdit is NULL");
     GT_CHECK(!lineEdit->isReadOnly(), "lineEdit is read-only: " + lineEdit->objectName());
 
@@ -85,7 +88,10 @@ void GTLineEdit::clear(QLineEdit* lineEdit) {
         return;
     }
     GTKeyboardUtils::selectAll();
-    GTGlobals::sleep(100);
+}
+
+void GTLineEdit::clear(QLineEdit* lineEdit) {
+    selectAll(lineEdit);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
 
     // Wait up to 5 seconds for the text to be cleaned.

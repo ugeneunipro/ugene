@@ -845,7 +845,11 @@ void GTUtilsWorkflowDesigner::setParameter(QString parameter, QVariant value, va
 
     GTMouseDriver::moveTo(GTTableView::getCellPosition(table, 1, rowIndex));
     GTThread::waitForMainThread();
-    GTMouseDriver::click();
+    if (isOsMac() && type == GTUtilsWorkflowDesigner::textValue) {
+        GTMouseDriver::doubleClick();
+    } else {
+        GTMouseDriver::click();
+    }
 
     GTGlobals::sleep();
 
@@ -943,7 +947,8 @@ void GTUtilsWorkflowDesigner::setCellValue(QWidget* parent, QVariant value, valu
         case (textValue): {
             QString lineVal = value.toString();
             QLineEdit* lineEdit = GTWidget::findWidgetByType<QLineEdit*>(parent, "Cell has no QLineEdit widget");
-            GTLineEdit::setText(lineEdit, lineVal);
+            bool useCopyPaste = isOsMac();
+            GTLineEdit::setText(lineEdit, lineVal, true, useCopyPaste);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
             break;
         }

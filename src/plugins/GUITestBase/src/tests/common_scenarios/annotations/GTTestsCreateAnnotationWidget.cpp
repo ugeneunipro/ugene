@@ -194,7 +194,7 @@ public:
           groupToSelect(groupToSelect) {
     }
 
-    void run() {
+    void run() override {
         GTMouseDriver::release();
         auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
         CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
@@ -228,7 +228,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Ensure that the default type is "misc_feature".
@@ -275,7 +275,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Enter any pattern that can be found. Open "Input and output" tab.
@@ -361,7 +361,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Ensure that the default type is "misc_feature".
@@ -408,7 +408,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Enter any pattern that can be found. Open "Input and output" tab.
@@ -494,7 +494,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     class CreateAnnotationDialogScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Enter "tel".
@@ -518,7 +518,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     class SmithWatermanDialogScenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             GTTabWidget::setCurrentIndex(GTWidget::findTabWidget("tabWidget", dialog), 1);
@@ -608,7 +608,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -677,7 +677,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Set the group name. Accept the dialog.
@@ -709,7 +709,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -765,7 +765,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Click "Predefined group names" button.
@@ -803,7 +803,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog, "GATTTTATTTAGTCTCCAG");
@@ -871,7 +871,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Set the group name. Accept the dialog.
@@ -903,7 +903,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog, "GATTTTATTTAGTCTCCAG");
@@ -958,7 +958,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Click the "Predefined group names" button.
@@ -993,7 +993,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog, "GATTTTATTTAGTCTCCAG");
@@ -1055,7 +1055,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Use default type, group and name. Accept the dialog.
@@ -1088,7 +1088,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    5. Set any name, use default group and type. Accept the dialog.
@@ -1122,7 +1122,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     class Scenario3 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    7. Set "Loci" type, use default group and name. Accept the dialog.
@@ -1156,7 +1156,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
 
     class Scenario4 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    9. Set "Attenuator" type and any name, use default group. Accept the dialog.
@@ -1194,7 +1194,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -1227,7 +1227,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -1262,7 +1262,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     class Scenario3 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -1297,7 +1297,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     class Scenario4 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -1432,7 +1432,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Set GenBank location style. Set region "100..200". Accept the dialog.
@@ -1457,7 +1457,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    5. Set GenBank location style. Set region "100..200,300..400". Accept the dialog.
@@ -1482,7 +1482,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     class Scenario3 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    7. Set GenBank location style. Set region "complement(100..200)". Accept the dialog.
@@ -1507,7 +1507,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
 
     class Scenario4 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    9. Set GenBank location style. Set region "complement(join(100..200,300..400))". Accept the dialog.
@@ -1535,7 +1535,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    3. Set simple location style. Set region "100..200". Accept the dialog.
             setSimpleLocation(100, 200, false, dialog);
@@ -1558,7 +1558,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    5. Set simple location style. Set region "100..200". Check the "Complement" checkbox. Accept the dialog.
@@ -1583,7 +1583,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     class Scenario3 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    7. Set simple location style. Set region "200..100". Accept the dialog.
             setSimpleLocation(200, 100, false, dialog);
@@ -1607,7 +1607,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     class Scenario4 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             //    9. Set simple location style. Set region "200..100". Check the "Complement" checkbox. Accept the dialog.
             setSimpleLocation(200, 100, true, dialog);
@@ -1788,7 +1788,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    4. Select "Existing table" option. Click "Browse existing tables" button.
@@ -1796,7 +1796,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
 
             class ProjectTreeItemsChecker : public CustomScenario {
             public:
-                void run() {
+                void run() override {
                     QWidget* dialog = GTWidget::getActiveModalWidget();
 
                     QTreeView* treeView = dialog->findChild<QTreeView*>();
@@ -1887,7 +1887,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog, "GATTTTATTTAGTCTCCAG");
@@ -1897,7 +1897,7 @@ GUI_TEST_CLASS_DEFINITION(test_0032) {
 
             class ProjectTreeItemsChecker : public CustomScenario {
             public:
-                void run() {
+                void run() override {
                     QWidget* dialog = GTWidget::getActiveModalWidget();
 
                     QTreeView* treeView = dialog->findChild<QTreeView*>();
@@ -1994,7 +1994,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
     class ProjectTreeItemsChecker : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             QTreeView* treeView = dialog->findChild<QTreeView*>();
@@ -2079,7 +2079,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
@@ -2117,7 +2117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    5. Select "Create new table" option. Set any valid file path in the lineedit. Accept the dialog.
@@ -2150,7 +2150,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -2188,7 +2188,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -2273,7 +2273,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             GTTabWidget::setCurrentIndex(GTWidget::findTabWidget("tabWidget", dialog), 1);
@@ -2305,7 +2305,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    3. Check "Use pattern names" checkbox state.
@@ -2365,13 +2365,13 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR(leRegionStart->text() == "1", QString("12. An unexpected text in leRegionStart: '%1'").arg(leRegionStart->text()));
 
             GTLineEdit::setText(leRegionStart, "qwerty", true);
-            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("13. An unexpected text in leRegionStart: '%1'").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionStart->text() == "1", QString("13. An unexpected text in leRegionStart: '%1'").arg(leRegionStart->text()));
 
             GTLineEdit::setText(leRegionEnd, "-1", true);
             CHECK_SET_ERR(leRegionEnd->text() == "1", QString("14. An unexpected text in leRegionEnd: '%1'").arg(leRegionEnd->text()));
 
             GTLineEdit::setText(leRegionEnd, "qwerty", true);
-            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("15. An unexpected text in leRegionEnd: '%1'").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "1", QString("15. An unexpected text in leRegionEnd: '%1'").arg(leRegionEnd->text()));
 
             //    6. Enter region "(100..200)" to simple location widgets.
             setSimpleLocation(100, 200, false, dialog);
@@ -2616,7 +2616,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             //    27. Check if destination table widgets are enabled or disabled.
@@ -2707,7 +2707,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -2754,7 +2754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -2989,7 +2989,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setAnnotationName("test_0041_1", dialog);
@@ -3013,7 +3013,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     //    5. Create an annotation with some description.
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             setAnnotationName("test_0041_2", dialog);
             setGenbankLocation("100..200", dialog);
@@ -3045,7 +3045,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     class Scenario1 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -3071,7 +3071,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
 
     class Scenario2 : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setSmithWatermanPatternAndOpenLastTab(dialog);
@@ -3141,7 +3141,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
      */
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setAnnotationName("test_0044", dialog);
@@ -3181,7 +3181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
         Scenario(const QString& _annotationName)
             : annotationName(_annotationName) {
         }
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
 
             setAnnotationName(annotationName, dialog);
