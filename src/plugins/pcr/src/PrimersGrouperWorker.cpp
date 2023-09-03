@@ -192,6 +192,9 @@ void PrimerGrouperTask::run() {
 }
 
 bool PrimerGrouperTask::isCompatiblePairs(int firstPairIndex, int secondPairIndex) {
+    SAFE_POINT(firstPairIndex >= 0 && firstPairIndex < primerPairs.length(), "Bad first pair index: " + QString::number(firstPairIndex) + ", length: " + QString::number(primerPairs.length()), false);
+    SAFE_POINT(secondPairIndex >= 0 && secondPairIndex < primerPairs.length(), "Bad second pair index: " + QString::number(secondPairIndex) + ", length: " + QString::number(primerPairs.length()), false);
+
     PrimersPair firstPair = primerPairs.at(firstPairIndex);
     PrimersPair secondPair = primerPairs.at(secondPairIndex);
 
