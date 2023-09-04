@@ -1944,7 +1944,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is no "Go to Dashboard" button on the toolbar.
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
@@ -2095,7 +2095,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is "Go to Dashboard" button on the toolbar. The button text is exactly as written.
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
@@ -2220,7 +2220,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     //        - "Dashboards manager" button on the toolbar is active.
     //        - There is no "Go to Dashboard" button on the toolbar.
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     auto viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
@@ -2291,7 +2291,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     //        - There is no scene/dashboards switch button on the toolbar.
     //        - The "Dashboards manager" button on the toolbar is active.
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton();
@@ -2314,7 +2314,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     //      - There is no scene/dashboards switch button on the toolbar.
     //      - The "Dashboards manager" button on the toolbar is active.
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton();
@@ -2364,7 +2364,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     const int expectedTabsCount = 2;
@@ -2392,7 +2392,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    8. Click to the "Dashboards manager" button on the toolbar.
@@ -2446,7 +2446,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     //      - The Workflow Designer is in the scene view mode.
     //      - The "Dashboards manager" button on the toolbar is active.
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     auto viewSwitchButton2 = GTUtilsWorkflowDesigner::getGotoDashboardButton();
@@ -2472,7 +2472,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     GTWidget::click(viewSwitchButton);
 
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     const int expectedTabsCount2 = 2;
     const int actualTabsCount2 = dashboardsView->count();
@@ -2538,7 +2538,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
                       .arg(actualButtonText));
 
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     const int expectedTabsCount = 1;
     const int actualTabsCount = dashboardsView->count();
@@ -2565,7 +2565,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    8. Click to the "Dashboards manager" button on the toolbar.
@@ -2619,7 +2619,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     //      - The Workflow Designer is in the scene view mode.
     //      - The "Dashboards manager" button on the toolbar is active.
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    11. Click to the "Dashboards manager" button on the toolbar.
@@ -2642,7 +2642,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     GTWidget::click(viewSwitchButton);
 
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     const int expectedTabsCount2 = 1;
     const int actualTabsCount2 = dashboardsView->count();
@@ -2699,10 +2699,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     CHECK_SET_ERR(!viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
 
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    8. Click to the "Dashboards manager" button on the toolbar.
@@ -2760,10 +2760,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     CHECK_SET_ERR(viewSwitchButton == nullptr || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
 
     QTabWidget* dashboardsView2 = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView2, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView2 != nullptr, "Dashboards view is nullptr");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    11. Click to the "Dashboards manager" button on the toolbar.
@@ -3210,7 +3210,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     int expectedTabsCount = 4;
@@ -3238,7 +3238,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    21. Click to the "Dashboards manager" button on the toolbar.
@@ -3318,7 +3318,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 4;
@@ -3346,7 +3346,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    24. Click to the "Dashboards manager" button on the toolbar.
@@ -3383,7 +3383,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 4;
@@ -3410,7 +3410,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    27. Click to the "Dashboards manager" button on the toolbar.
@@ -3519,7 +3519,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     int expectedTabsCount = 3;
@@ -3547,7 +3547,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    21. Click to the "Dashboards manager" button on the toolbar.
@@ -3627,7 +3627,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 3;
@@ -3655,7 +3655,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    24. Click to the "Dashboards manager" button on the toolbar.
@@ -3692,7 +3692,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 3;
@@ -3719,7 +3719,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    27. Click to the "Dashboards manager" button on the toolbar.
@@ -3829,7 +3829,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     QTabWidget* dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     int expectedTabsCount = 2;
@@ -3857,7 +3857,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     QWidget* dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    21. Click to the "Dashboards manager" button on the toolbar.
@@ -3937,7 +3937,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 2;
@@ -3965,7 +3965,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     //    24. Click to the "Dashboards manager" button on the toolbar.
@@ -3987,7 +3987,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
     GTUtilsMdi::clickTab(tabIndex3);
 
     dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
-    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton != nullptr, "'Dashboards manager' is nullptr");
     CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
 
     viewSwitchButton = GTUtilsWorkflowDesigner::getGotoDashboardButton();
@@ -4012,7 +4012,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
 
     coreLog.info("Trying get GTUtilsDashboard::getTabWidget()");
     dashboardsView = GTUtilsDashboard::getTabWidget();
-    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    CHECK_SET_ERR(dashboardsView != nullptr, "Dashboards view is nullptr");
     coreLog.info("Successfully got GTUtilsDashboard::getTabWidget()");
 
     expectedTabsCount = 2;

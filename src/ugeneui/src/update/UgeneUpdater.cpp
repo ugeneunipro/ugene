@@ -40,7 +40,7 @@ QMutex UgeneUpdater::mutex;
 
 UgeneUpdater* UgeneUpdater::getInstance() {
     QMutexLocker lock(&mutex);
-    if (nullptr != instance.data()) {
+    if (instance.data() != nullptr) {
         return instance.data();
     }
     instance.reset(new UgeneUpdater());

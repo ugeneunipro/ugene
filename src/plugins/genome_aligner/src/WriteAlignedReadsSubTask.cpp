@@ -31,7 +31,7 @@ void WriteAlignedReadsSubTask::setReadWritten(SearchQuery* read, SearchQuery* re
     if (!read->isWroteResult()) {
         readsAligned++;
         read->writeResult();
-        if (nullptr != revCompl) {
+        if (revCompl != nullptr) {
             revCompl->writeResult();
         }
     }
@@ -45,7 +45,7 @@ void WriteAlignedReadsSubTask::run() {
     stateInfo.setProgress(0);
 
     foreach (DataBunch* d, data) {
-        SAFE_POINT(nullptr != d, "NULL data bunch", );
+        SAFE_POINT(d != nullptr, "NULL data bunch", );
 
         QVector<SearchQuery*>& queries = d->queries;
 
@@ -66,7 +66,7 @@ void WriteAlignedReadsSubTask::run() {
                 if (revCompl == nullptr && read->haveResult()) {
                     seqWriter->write(read, read->firstResult());
                     readsAligned++;
-                } else if (nullptr != revCompl) {
+                } else if (revCompl != nullptr) {
                     int c = read->firstMCount();
                     int cRev = revCompl->firstMCount();
 

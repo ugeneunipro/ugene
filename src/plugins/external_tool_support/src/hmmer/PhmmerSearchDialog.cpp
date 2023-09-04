@@ -59,7 +59,7 @@ PhmmerSearchDialog::PhmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget
 }
 
 void PhmmerSearchDialog::init(U2SequenceObject* seqObj) {
-    assert(nullptr != seqObj);
+    assert(seqObj != nullptr);
     setupUi(this);
 
     new HelpButton(this, buttonBox, "65930828");
@@ -82,9 +82,9 @@ void PhmmerSearchDialog::init(U2SequenceObject* seqObj) {
     annotationsWidgetController = new CreateAnnotationWidgetController(annModel, this);
 
     QWidget* firstTab = mainTabWidget->widget(0);
-    assert(nullptr != firstTab);
+    assert(firstTab != nullptr);
     auto curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
-    assert(nullptr != curLayout);
+    assert(curLayout != nullptr);
     curLayout->insertWidget(ANNOTATIONS_WIDGET_LOCATION, annotationsWidgetController->getWidget());
 
     connect(queryToolButton, SIGNAL(clicked()), SLOT(sl_queryToolButtonClicked()));

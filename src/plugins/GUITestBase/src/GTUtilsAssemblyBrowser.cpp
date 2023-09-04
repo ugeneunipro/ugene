@@ -80,7 +80,7 @@ void GTUtilsAssemblyBrowser::addRefFromProject(QString docName, QModelIndex pare
 
 bool GTUtilsAssemblyBrowser::hasReference(const QString& viewTitle) {
     AssemblyBrowserUi* view = getView(viewTitle);
-    GT_CHECK_RESULT(nullptr != view, "Assembly browser wasn't found", false);
+    GT_CHECK_RESULT(view != nullptr, "Assembly browser wasn't found", false);
     return hasReference(view);
 }
 

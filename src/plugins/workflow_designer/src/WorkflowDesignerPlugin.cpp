@@ -110,7 +110,7 @@ WorkflowDesignerPlugin::WorkflowDesignerPlugin()
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_initWorkers()));
 
     DashboardInfoRegistry* dashboardsInfoRegistry = AppContext::getDashboardInfoRegistry();
-    SAFE_POINT(nullptr != dashboardsInfoRegistry, "dashboardsInfoRegistry is nullptr", );
+    SAFE_POINT(dashboardsInfoRegistry != nullptr, "dashboardsInfoRegistry is nullptr", );
     AppContext::getDashboardInfoRegistry()->scanDashboardsDir();
 }
 
@@ -168,7 +168,7 @@ void WorkflowDesignerPlugin::registerWorkflowTasks() {
 
 void WorkflowDesignerPlugin::registerCMDLineHelp() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(nullptr != cmdLineRegistry);
+    assert(cmdLineRegistry != nullptr);
 
     CMDLineHelpProvider* taskSection = new CMDLineHelpProvider(
         RUN_WORKFLOW,
@@ -242,7 +242,7 @@ WorkflowDesignerService::WorkflowDesignerService()
 
 void WorkflowDesignerService::serviceStateChangedCallback(ServiceState, bool enabledStateChanged) {
     IdRegistry<WelcomePageAction>* welcomePageActions = AppContext::getWelcomePageActionRegistry();
-    SAFE_POINT(nullptr != welcomePageActions, L10N::nullPointerError("Welcome Page Actions"), );
+    SAFE_POINT(welcomePageActions != nullptr, L10N::nullPointerError("Welcome Page Actions"), );
 
     if (!enabledStateChanged) {
         return;
@@ -330,7 +330,7 @@ void WorkflowDesignerService::sl_sampleActionClicked(const SampleAction& action)
     CHECK(checkServiceState(), );
 
     WorkflowView* view = WorkflowView::openWD(nullptr);
-    CHECK(nullptr != view, );
+    CHECK(view != nullptr, );
 
     view->sl_loadScene(QDir("data:workflow_samples").path() + "/" + action.samplePath, false);
 }

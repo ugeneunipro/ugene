@@ -337,7 +337,7 @@ void GTest_ImportDocument::init(XMLTestFormat*, const QDomElement& el) {
             break;
         }
     }
-    CHECK_EXT(bestRes != nullptr && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
+    CHECK_EXT(bestRes != nullptr && bestRes->importer != nullptr, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
 
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);
@@ -436,7 +436,7 @@ void GTest_ImportBrokenDocument::init(XMLTestFormat*, const QDomElement& el) {
             break;
         }
     }
-    CHECK_EXT(bestRes != nullptr && nullptr != bestRes->importer, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
+    CHECK_EXT(bestRes != nullptr && bestRes->importer != nullptr, setError(QString("Can't find an importer for format: %1").arg(formatId)), );
 
     QVariantMap hints;
     U2DbiRef destDb(SQLITE_DBI_ID, destUrl);

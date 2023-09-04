@@ -42,7 +42,7 @@ void GTCrazyUserMonitor::checkActiveWidget() {
             widget = QApplication::activeWindow();
         }
     }
-    SAFE_POINT(nullptr != widget, "", );
+    SAFE_POINT(widget != nullptr, "", );
 
     U2OpStatus2Log os;
 
@@ -68,7 +68,7 @@ void GTCrazyUserMonitor::checkActiveWidget() {
         action = actionList.at(randListId);
     }
 
-    SAFE_POINT(nullptr != action, "", );
+    SAFE_POINT(action != nullptr, "", );
     action->run();
 
     qDeleteAll(actionList);
@@ -77,14 +77,14 @@ void GTCrazyUserMonitor::checkActiveWidget() {
 
 QList<GTAbstractGUIAction*> GTCrazyUserMonitor::formGUIActions(QWidget* widget) const {
     QList<GTAbstractGUIAction*> actionList;
-    SAFE_POINT(nullptr != widget, "", actionList);
+    SAFE_POINT(widget != nullptr, "", actionList);
 
     QObjectList objectList = widget->findChildren<QObject*>();
     objectList.append(widget);
 
     foreach (QObject* o, objectList) {
         GTAbstractGUIAction* guiAction = GTRandomGUIActionFactory::create(o);
-        if (nullptr != guiAction) {
+        if (guiAction != nullptr) {
             actionList.append(guiAction);
         }
     }

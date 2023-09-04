@@ -238,7 +238,7 @@ Task* PWMatrixSearchWorker::tick() {
 
 void PWMatrixSearchWorker::sl_taskFinished(Task* t) {
     QList<SharedAnnotationData> res;
-    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
+    SAFE_POINT(t != nullptr, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }

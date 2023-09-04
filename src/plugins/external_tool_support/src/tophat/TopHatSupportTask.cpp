@@ -250,7 +250,7 @@ ExternalToolRunTask* TopHatSupportTask::runTophat() {
     // Add Bowtie, samtools an python to the PATH environment variable
     QStringList additionalPaths;
     ExternalTool* pythonTool = AppContext::getExternalToolRegistry()->getById(PythonSupport::ET_PYTHON_ID);
-    if (nullptr != pythonTool) {
+    if (pythonTool != nullptr) {
         additionalPaths << QFileInfo(pythonTool->getPath()).dir().absolutePath();
     }
 
@@ -313,19 +313,19 @@ QList<Task*> TopHatSupportTask::onSubTaskFinished(Task* subTask) {
 
         // Get assembly output
         Workflow::WorkflowTasksRegistry* registry = Workflow::WorkflowEnv::getWorkflowTasksRegistry();
-        SAFE_POINT(nullptr != registry, "Internal error during parsing TopHat output: NULL WorkflowTasksRegistry", result);
+        SAFE_POINT(registry != nullptr, "Internal error during parsing TopHat output: NULL WorkflowTasksRegistry", result);
         Workflow::ReadDocumentTaskFactory* factory = registry->getReadDocumentTaskFactory(Workflow::ReadFactories::READ_ASSEMBLY);
-        SAFE_POINT(nullptr != factory, QString("Internal error during parsing TopHat output:"
+        SAFE_POINT(factory != nullptr, QString("Internal error during parsing TopHat output:"
                                                " NULL WorkflowTasksRegistry: %1")
                                            .arg(Workflow::ReadFactories::READ_ASSEMBLY),
                    result);
-        SAFE_POINT(nullptr != settings.workflowContext(), "Internal error during parsing TopHat output: NULL workflow context!", result);
+        SAFE_POINT(settings.workflowContext() != nullptr, "Internal error during parsing TopHat output: NULL workflow context!", result);
 
         readAssemblyOutputTask = factory->createTask(outputFiles.value(ACCEPTED_HITS), QVariantMap(), settings.workflowContext());
         result.append(readAssemblyOutputTask);
     } else if (subTask == readAssemblyOutputTask) {
         auto readDocTask = qobject_cast<Workflow::ReadDocumentTask*>(subTask);
-        SAFE_POINT(nullptr != readDocTask, "Internal error during parsing TopHat output: NULL read document task!", result);
+        SAFE_POINT(readDocTask != nullptr, "Internal error during parsing TopHat output: NULL read document task!", result);
 
         QList<Workflow::SharedDbiDataHandler> acceptedHitsResults;
         acceptedHitsResults = readDocTask->takeResult();

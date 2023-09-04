@@ -44,7 +44,7 @@ PrimerLibrarySelector::PrimerLibrarySelector(QWidget* parent)
     primerTable->setMode(PrimerLibraryTable::Selector);
 
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
-    CHECK(nullptr != okButton, );
+    CHECK(okButton != nullptr, );
     okButton->setText(tr("Choose"));
 }
 
@@ -56,7 +56,7 @@ Primer PrimerLibrarySelector::getResult() const {
 
 void PrimerLibrarySelector::sl_selectionChanged() {
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
-    SAFE_POINT(nullptr != okButton, L10N::nullPointerError("OK button"), );
+    SAFE_POINT(okButton != nullptr, L10N::nullPointerError("OK button"), );
 
     QList<Primer> selection = primerTable->getSelection();
     okButton->setDisabled(selection.isEmpty());

@@ -64,7 +64,7 @@ void OrderedToolbar::setButtonsTabOrder() const {
                 } else {
                     prevButton = qobject_cast<QWidget*>(element);
                 }
-                if (curButton == nullptr || nullptr == prevButton) {
+                if (curButton == nullptr || prevButton == nullptr) {
                     break;
                 }
 

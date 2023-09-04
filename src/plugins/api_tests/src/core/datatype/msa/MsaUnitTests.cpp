@@ -117,7 +117,7 @@ IMPLEMENT_TEST(MsaUnitTests, alphabet_setAlphabet) {
     const DNAAlphabet* newAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
     almnt->setAlphabet(newAlphabet);
 
-    if (almnt->getAlphabet() == nullptr || nullptr == newAlphabet) {
+    if (almnt->getAlphabet() == nullptr || newAlphabet == nullptr) {
         SetError("NULL alphabet");
     }
     CHECK_EQUAL(newAlphabet->getId(), almnt->getAlphabet()->getId(), "new alignment ID");

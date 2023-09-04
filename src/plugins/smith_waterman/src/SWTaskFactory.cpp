@@ -76,7 +76,7 @@ AbstractAlignmentTask* PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstanc
 
     settings->resultListener = new SmithWatermanResultListener;
     SWResultFilterRegistry* resFilterReg = AppContext::getSWResultFilterRegistry();
-    SAFE_POINT(nullptr != resFilterReg, "SWResultFilterRegistry is NULL.", nullptr);
+    SAFE_POINT(resFilterReg != nullptr, "SWResultFilterRegistry is NULL.", nullptr);
     settings->resultFilter = resFilterReg->getFilter(PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_RESULT_FILTER);
     settings->percentOfScore = PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_PERCENT_OF_SCORE;
     if (settings->convertCustomSettings()) {

@@ -64,7 +64,7 @@ bool GTUtilsCv::cvBtn::isChecked(ADVSingleSequenceWidget* seqWidget) {
 
 void GTUtilsCv::cvBtn::click(ADVSingleSequenceWidget* seqWidget) {
     QAbstractButton* cvButton = getCvButton(seqWidget, true /* CV button must exist */);
-    SAFE_POINT(nullptr != cvButton, "cvButton is NULL!", );
+    SAFE_POINT(cvButton != nullptr, "cvButton is NULL!", );
     GTWidget::click(cvButton);
 }
 
@@ -93,7 +93,7 @@ void GTUtilsCv::commonCvBtn::click() {
 ////////////////////////////////////////////////////////////////////////
 
 QAbstractButton* GTUtilsCv::getCvButton(ADVSingleSequenceWidget* seqWidget, bool setFailedIfNotFound) {
-    GT_CHECK_RESULT(nullptr != seqWidget, "NULL sequence widget!", nullptr)
+    GT_CHECK_RESULT(seqWidget != nullptr, "NULL sequence widget!", nullptr)
 
     QAbstractButton* cvButton = GTAction::button(actionName, seqWidget, GTGlobals::FindOptions(setFailedIfNotFound));
     return cvButton;

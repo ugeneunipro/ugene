@@ -154,7 +154,7 @@ void MWStub::dragMoveEvent(QDragMoveEvent* event) {
 
 void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent* event) {
     MainWindow* mainWindow = AppContext::getMainWindow();
-    SAFE_POINT(nullptr != mainWindow, L10N::nullPointerError("Main Window"), );
+    SAFE_POINT(mainWindow != nullptr, L10N::nullPointerError("Main Window"), );
 
     if (event->mimeData()->hasUrls())
         return;
@@ -211,11 +211,11 @@ void MainWindowImpl::close() {
 
 bool MainWindowImpl::eventFilter(QObject* object, QEvent* event) {
     CHECK(mw == object, false);
-    CHECK(nullptr != event, false);
+    CHECK(event != nullptr, false);
     CHECK(event->type() == QEvent::KeyPress, false);
 
     auto keyEvent = dynamic_cast<QKeyEvent*>(event);
-    CHECK(nullptr != keyEvent, false);
+    CHECK(keyEvent != nullptr, false);
 
     if (keyEvent->matches(QKeySequence::Paste)) {
         uiLog.details(tr("Application paste shortcut is triggered"));

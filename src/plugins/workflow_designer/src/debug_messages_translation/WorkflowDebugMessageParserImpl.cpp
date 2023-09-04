@@ -106,9 +106,9 @@ WorkflowInvestigationData WorkflowDebugMessageParserImpl::getAllMessageValues() 
 void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString& convertedType, const QString& schemeName, quint32 messageNumber) {
     SAFE_POINT(!convertedType.isEmpty(), "Invalid message type detected!", );
     const AppSettings* appSettings = AppContext::getAppSettings();
-    SAFE_POINT(nullptr != appSettings, "Invalid application settings' storage!", );
+    SAFE_POINT(appSettings != nullptr, "Invalid application settings' storage!", );
     const UserAppsSettings* userSettings = appSettings->getUserAppsSettings();
-    SAFE_POINT(nullptr != userSettings, "Invalid user application settings' storage!", );
+    SAFE_POINT(userSettings != nullptr, "Invalid user application settings' storage!", );
     QString tmpFolderUrl = (userSettings->getCurrentProcessTemporaryDirPath());
     tmpFolderUrl.replace("//", "/");
 
@@ -127,7 +127,7 @@ void WorkflowDebugMessageParserImpl::convertMessagesToDocuments(const QString& c
             ExportObjectUtils::exportAnnotations(annsObj, baseFileUrl);
         } else {
             GObject* objectToWrite = fetchObjectFromMessage(messageType, mapData[convertedType]);
-            if (Q_LIKELY(nullptr != objectToWrite)) {
+            if (Q_LIKELY(objectToWrite != nullptr)) {
                 ExportObjectUtils::exportObject2Document(objectToWrite, baseFileUrl, false);
                 ++messageCounter;
             }
@@ -180,7 +180,7 @@ GObject* WorkflowDebugMessageParserImpl::fetchObjectFromMessage(const QString& m
     } else if (BaseSlots::VARIATION_TRACK_SLOT().getId() == messageType) {
         result = StorageUtils::getVariantTrackObject(context->getDataStorage(), objectId);
     }
-    SAFE_POINT(nullptr != result, "Could not obtain object from dbi", nullptr);
+    SAFE_POINT(result != nullptr, "Could not obtain object from dbi", nullptr);
     return result;
 }
 

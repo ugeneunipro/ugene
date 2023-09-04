@@ -40,7 +40,7 @@ InSilicoPcrProductsTable::InSilicoPcrProductsTable(QWidget* parent)
 }
 
 void InSilicoPcrProductsTable::replaceContext(ADVSequenceObjectContext* newSequenceContext) {
-    if (nullptr != sequenceContext) {
+    if (sequenceContext != nullptr) {
         sequenceContext->disconnect(this);
     }
     sequenceContext = newSequenceContext;
@@ -104,7 +104,7 @@ const QList<InSilicoPcrProduct>& InSilicoPcrProductsTable::getAllProducts() cons
 
 QVector<U2Region> InSilicoPcrProductsTable::getSelection() const {
     QVector<U2Region> result;
-    CHECK(nullptr != sequenceContext, result);
+    CHECK(sequenceContext != nullptr, result);
 
     QList<InSilicoPcrProduct> products = getSelectedProducts();
     CHECK(1 == products.size(), result);
@@ -124,7 +124,7 @@ QVector<U2Region> InSilicoPcrProductsTable::getSelection() const {
 }
 
 void InSilicoPcrProductsTable::sl_selectionChanged() {
-    CHECK(nullptr != sequenceContext, );
+    CHECK(sequenceContext != nullptr, );
     QVector<U2Region> selection = getSelection();
     CHECK(!selection.isEmpty(), );
 

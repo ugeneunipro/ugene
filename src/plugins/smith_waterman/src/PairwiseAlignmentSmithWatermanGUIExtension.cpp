@@ -85,7 +85,7 @@ void PairwiseAlignmentSmithWatermanMainWidget::initParameters() {
 
 void PairwiseAlignmentSmithWatermanMainWidget::addScoredMatrixes() {
     const DNAAlphabet* al = U2AlphabetUtils::getById(externSettings->value(PairwiseAlignmentTaskSettings::ALPHABET, "").toString());
-    SAFE_POINT(nullptr != al, "Alphabet not found.", );
+    SAFE_POINT(al != nullptr, "Alphabet not found.", );
     SubstMatrixRegistry* matrixReg = AppContext::getSubstMatrixRegistry();
     SAFE_POINT(matrixReg, "SubstMatrixRegistry is NULL.", );
     QStringList matrixList = matrixReg->selectMatrixNamesByAlphabet(al);

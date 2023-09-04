@@ -74,7 +74,7 @@ void TaskStatusBarCon::setTSBCmdlineHelp() {
     helpRegistered = true;
 
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(nullptr != cmdLineRegistry);
+    assert(cmdLineRegistry != nullptr);
 
     CMDLineHelpProvider* noTSBSection = new CMDLineHelpProvider(
         NO_TASK_STATUS_BAR_CMD_OPTION,

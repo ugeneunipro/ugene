@@ -222,7 +222,7 @@ void TaskStatusBar::sl_taskStateChanged(Task* t) {
 
 void TaskStatusBar::setTaskToTrack(Task* t) {
     assert(taskToTrack == nullptr);
-    if (Q_UNLIKELY(nullptr != taskToTrack)) {
+    if (Q_UNLIKELY(taskToTrack != nullptr)) {
         disconnect(taskToTrack, nullptr, this, nullptr);
     }
     taskToTrack = t;

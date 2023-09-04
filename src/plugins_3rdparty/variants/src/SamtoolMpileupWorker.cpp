@@ -711,10 +711,10 @@ CallVariantsWorker::CallVariantsWorker(Actor* a)
 
 void CallVariantsWorker::initDatasetMode() {
     Port* port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
-    SAFE_POINT(nullptr != port, "Internal error during CallVariantsWorker initializing: assembly port is NULL!", );
+    SAFE_POINT(port != nullptr, "Internal error during CallVariantsWorker initializing: assembly port is NULL!", );
 
     auto bus = dynamic_cast<IntegralBusPort*>(port);
-    SAFE_POINT(nullptr != bus, "Internal error during CallVariantsWorker initializing: assembly bus is NULL!", );
+    SAFE_POINT(bus != nullptr, "Internal error during CallVariantsWorker initializing: assembly bus is NULL!", );
 
     QList<Actor*> producers = bus->getProducers(BaseSlots::DATASET_SLOT().getId());
     useDatasets = !producers.isEmpty();

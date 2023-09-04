@@ -41,7 +41,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ImportOptionsWidgetFiller"
 
 void ImportOptionsWidgetFiller::fill(ImportOptionsWidget* optionsWidget, const QVariantMap& data) {
-    GT_CHECK(nullptr != optionsWidget, "optionsWidget is NULL");
+    GT_CHECK(optionsWidget != nullptr, "optionsWidget is NULL");
 
     setDestinationFolder(optionsWidget, data);
     setKeepFoldersStructure(optionsWidget, data);

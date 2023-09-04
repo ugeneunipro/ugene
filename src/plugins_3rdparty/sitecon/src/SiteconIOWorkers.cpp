@@ -191,7 +191,7 @@ QString SiteconReadPrompter::composeRichDoc() {
 
 QString SiteconWritePrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(SITECON_IN_PORT_ID));
-    SAFE_POINT(nullptr != input, "NULL input port", "");
+    SAFE_POINT(input != nullptr, "NULL input port", "");
     QString from = getProducersOrUnset(SITECON_IN_PORT_ID, SiteconWorkerFactory::SITECON_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);

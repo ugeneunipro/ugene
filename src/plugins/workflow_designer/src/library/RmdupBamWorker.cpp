@@ -202,7 +202,7 @@ namespace {
 QString getTargetUrl(Task* task) {
     auto rmdupTask = dynamic_cast<SamtoolsRmdupTask*>(task);
 
-    if (nullptr != rmdupTask) {
+    if (rmdupTask != nullptr) {
         return rmdupTask->getResult();
     }
     return "";

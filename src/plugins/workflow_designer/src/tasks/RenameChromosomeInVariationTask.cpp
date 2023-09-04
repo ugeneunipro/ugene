@@ -52,9 +52,9 @@ void RenameChromosomeInVariationTask::run() {
 
     DbiConnection connection(objects.first()->getEntityRef().dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(nullptr != connection.dbi, setError(L10N::nullPointerError("dbi")), );
+    SAFE_POINT_EXT(connection.dbi != nullptr, setError(L10N::nullPointerError("dbi")), );
     U2VariantDbi* variantDbi = connection.dbi->getVariantDbi();
-    SAFE_POINT_EXT(nullptr != variantDbi, setError(L10N::nullPointerError("variant dbi")), );
+    SAFE_POINT_EXT(variantDbi != nullptr, setError(L10N::nullPointerError("variant dbi")), );
 
     foreach (GObject* object, objects) {
         U2OpStatusImpl os;
@@ -99,10 +99,10 @@ QString RenameChromosomeInVariationFileTask::getDstFileUrl() const {
 void RenameChromosomeInVariationFileTask::prepare() {
     DocumentFormat* format = getFormat();
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("document format")), );
+    SAFE_POINT_EXT(format != nullptr, setError(L10N::nullPointerError("document format")), );
 
     IOAdapterFactory* ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(srcFileUrl));
-    CHECK_EXT(nullptr != ioAdapterFactory, setError(L10N::nullPointerError("IO adapter factory")), );
+    CHECK_EXT(ioAdapterFactory != nullptr, setError(L10N::nullPointerError("IO adapter factory")), );
 
     loadTask = new LoadDocumentTask(format, srcFileUrl, ioAdapterFactory);
     addSubTask(loadTask);
@@ -138,7 +138,7 @@ QList<GObject*> RenameChromosomeInVariationFileTask::getVariantTrackObjects() {
     QList<GObject*> objects;
 
     Document* document = loadTask->getDocument();
-    SAFE_POINT_EXT(nullptr != document, setError(L10N::nullPointerError("loaded document")), objects);
+    SAFE_POINT_EXT(document != nullptr, setError(L10N::nullPointerError("loaded document")), objects);
 
     const QList<GObject*> variantTrackObjects = document->findGObjectByType(GObjectTypes::VARIANT_TRACK, UOF_LoadedAndUnloaded);
     CHECK_EXT(!variantTrackObjects.isEmpty(), setError(tr("File doesn't contains variant tracks")), objects);

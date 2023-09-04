@@ -103,7 +103,7 @@ void GenomeAlignerWriteTask::setReadWritten(SearchQuery* read, SearchQuery* revC
     if (!read->isWroteResult()) {
         readsWritten++;
         read->writeResult();
-        if (nullptr != revCompl) {
+        if (revCompl != nullptr) {
             revCompl->writeResult();
         }
     }

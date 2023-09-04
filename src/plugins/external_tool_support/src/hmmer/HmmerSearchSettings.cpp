@@ -55,7 +55,7 @@ bool HmmerSearchSettings::validate() const {
     CHECK(0 < domZ || OPTION_NOT_SET == domZ, false);
     CHECK(0 <= seed, false);
     CHECK(!hmmProfileUrl.isEmpty(), false);
-    CHECK(!sequenceUrl.isEmpty() || nullptr != sequence, false);
+    CHECK(!sequenceUrl.isEmpty() || sequence != nullptr, false);
 
     return true;
 }

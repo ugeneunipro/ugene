@@ -197,7 +197,7 @@ public:
     void run() override {
         GTMouseDriver::release();
         auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
-        CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
+        CHECK_SET_ERR(activePopupMenu != nullptr, "Active popup menu is NULL");
 
         QStringList actualGroupNames;
         foreach (QAction* action, activePopupMenu->actions()) {
@@ -2905,31 +2905,31 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     //        New table browse button - disabled
     //        Auto table radio button - invisible
     rbExistingTable = GTWidget::findRadioButton("rbExistingTable");
-    CHECK_SET_ERR(nullptr != rbExistingTable, "rbExistingTable is NULL");
+    CHECK_SET_ERR(rbExistingTable != nullptr, "rbExistingTable is NULL");
     CHECK_SET_ERR(rbExistingTable->isEnabled(), "rbExistingTable is unexpectedly disabled for murine_1");
 
     cbExistingTable = GTWidget::findComboBox("cbExistingTable");
-    CHECK_SET_ERR(nullptr != cbExistingTable, "cbExistingTable is NULL");
+    CHECK_SET_ERR(cbExistingTable != nullptr, "cbExistingTable is NULL");
     CHECK_SET_ERR(cbExistingTable->isEnabled(), "cbExistingTable is unexpectedly disabled for murine_1");
 
     tbBrowseExistingTable = GTWidget::findToolButton("tbBrowseExistingTable");
-    CHECK_SET_ERR(nullptr != tbBrowseExistingTable, "tbBrowseExistingTable is NULL");
+    CHECK_SET_ERR(tbBrowseExistingTable != nullptr, "tbBrowseExistingTable is NULL");
     CHECK_SET_ERR(tbBrowseExistingTable->isEnabled(), "tbBrowseExistingTable is unexpectedly disabled for murine_1");
 
     rbCreateNewTable = GTWidget::findRadioButton("rbCreateNewTable");
-    CHECK_SET_ERR(nullptr != rbCreateNewTable, "rbCreateNewTable is NULL");
+    CHECK_SET_ERR(rbCreateNewTable != nullptr, "rbCreateNewTable is NULL");
     CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "rbCreateNewTable is unexpectedly disabled for murine_1");
 
     leNewTablePath = GTWidget::findLineEdit("leNewTablePath");
-    CHECK_SET_ERR(nullptr != leNewTablePath, "leNewTablePath is NULL");
+    CHECK_SET_ERR(leNewTablePath != nullptr, "leNewTablePath is NULL");
     CHECK_SET_ERR(!leNewTablePath->isEnabled(), "leNewTablePath is unexpectedly enabled for murine_1");
 
     tbBrowseNewTable = GTWidget::findToolButton("tbBrowseNewTable");
-    CHECK_SET_ERR(nullptr != tbBrowseNewTable, "tbBrowseNewTable is NULL");
+    CHECK_SET_ERR(tbBrowseNewTable != nullptr, "tbBrowseNewTable is NULL");
     CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled for murine_1");
 
     rbUseAutoTable = GTWidget::findRadioButton("rbUseAutoTable");
-    CHECK_SET_ERR(nullptr != rbUseAutoTable, "rbUseAutoTable is NULL");
+    CHECK_SET_ERR(rbUseAutoTable != nullptr, "rbUseAutoTable is NULL");
     CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible  for murine_1");
 
     //    8. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
@@ -2975,7 +2975,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 
     //    Expected state: it is visible and enabled.
     chbUsePatternNames = GTWidget::findCheckBox("chbUsePatternNames");
-    CHECK_SET_ERR(nullptr != chbUsePatternNames, "chbUsePatternNames is NULL");
+    CHECK_SET_ERR(chbUsePatternNames != nullptr, "chbUsePatternNames is NULL");
     CHECK_SET_ERR(chbUsePatternNames->isVisible(), "chbUsePatternNames is unexpectedly invisible for murine");
     CHECK_SET_ERR(chbUsePatternNames->isEnabled(), "chbUsePatternNames is unexpectedly disabled for murine");
 }

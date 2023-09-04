@@ -294,11 +294,11 @@ Task* HmmerSearchWorker::tick() {
 }
 
 void HmmerSearchWorker::sl_taskFinished(Task* task) {
-    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
+    SAFE_POINT(task != nullptr, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;
     }
-    if (nullptr != output) {
+    if (output != nullptr) {
         QList<SharedAnnotationData> list;
 
         foreach (const QPointer<Task>& sub, task->getSubtasks()) {

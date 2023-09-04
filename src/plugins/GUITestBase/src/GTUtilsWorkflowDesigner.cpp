@@ -350,7 +350,7 @@ QList<QTreeWidgetItem*> GTUtilsWorkflowDesigner::getPaletteGroups() {
     QList<QTreeWidgetItem*> groupItems;
 
     QTreeWidget* tree = getCurrentTabTreeWidget();
-    GT_CHECK_RESULT(nullptr != tree, "WorkflowPaletteElements is NULL", groupItems);
+    GT_CHECK_RESULT(tree != nullptr, "WorkflowPaletteElements is NULL", groupItems);
 
     GTGlobals::FindOptions options;
     options.depth = 1;
@@ -498,7 +498,7 @@ QString GTUtilsWorkflowDesigner::getWorkerText(const QString& itemName, const GT
         foreach (QGraphicsItem* subchild, child->childItems()) {
             QGraphicsObject* graphObject = subchild->toGraphicsObject();
             auto textItem = qobject_cast<QGraphicsTextItem*>(graphObject);
-            if (nullptr != textItem) {
+            if (textItem != nullptr) {
                 return textItem->toPlainText();
             }
         }
@@ -801,7 +801,7 @@ void GTUtilsWorkflowDesigner::createDataset(QString datasetName) {
 
 void GTUtilsWorkflowDesigner::setDatasetInputFolder(const QString& filePath, QWidget* datasetWidget) {
     QWidget* currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget() : datasetWidget;
-    GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
+    GT_CHECK(currentDatasetWidget != nullptr, "Current dataset widget not found");
 
     auto addDirButton = GTWidget::findWidget("addDirButton", currentDatasetWidget);
 
@@ -813,7 +813,7 @@ void GTUtilsWorkflowDesigner::setDatasetInputFolder(const QString& filePath, QWi
 
 void GTUtilsWorkflowDesigner::setDatasetInputFolders(const QStringList& dirPaths, QWidget* datasetWidget) {
     QWidget* currentDatasetWidget = datasetWidget == nullptr ? getCurrentDatasetWidget() : datasetWidget;
-    GT_CHECK(nullptr != currentDatasetWidget, "Current dataset widget not found");
+    GT_CHECK(currentDatasetWidget != nullptr, "Current dataset widget not found");
 
     auto addDirButton = GTWidget::findWidget("addDirButton", currentDatasetWidget);
 
@@ -1091,7 +1091,7 @@ QList<QPair<QString, bool>> GTUtilsWorkflowDesigner::getCheckableComboboxValuesF
     QList<QPair<QString, bool>> result;
 
     QTableWidget* table = getInputPortsTable(tableIndex);
-    GT_CHECK_RESULT(nullptr != table, "table is nullptr", result);
+    GT_CHECK_RESULT(table != nullptr, "table is nullptr", result);
 
     scrollInputPortsWidgetToTableRow(tableIndex, slotName);
 
@@ -1107,7 +1107,7 @@ QList<QPair<QString, bool>> GTUtilsWorkflowDesigner::getCheckableComboboxValuesF
     GT_CHECK_RESULT(box, "QComboBox not found. Widget in this cell might be not QComboBox", result);
 
     auto checkBoxModel = qobject_cast<QStandardItemModel*>(box->model());
-    GT_CHECK_RESULT(nullptr != checkBoxModel, "Unexpected checkbox model", result);
+    GT_CHECK_RESULT(checkBoxModel != nullptr, "Unexpected checkbox model", result);
 
     for (int i = 0; i < checkBoxModel->rowCount(); ++i) {
         QStandardItem* item = checkBoxModel->item(i);

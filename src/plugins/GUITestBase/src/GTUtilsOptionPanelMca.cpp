@@ -68,7 +68,7 @@ bool GTUtilsOptionPanelMca::isTabOpened(Tabs tab, QWidget* parent) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
     auto innerTabWidget = GTWidget::findWidget(innerWidgetNames[tab], parent, options);
-    return nullptr != innerTabWidget && innerTabWidget->isVisible();
+    return innerTabWidget != nullptr && innerTabWidget->isVisible();
 }
 
 void GTUtilsOptionPanelMca::setConsensusType(const QString& consensusTypeName) {

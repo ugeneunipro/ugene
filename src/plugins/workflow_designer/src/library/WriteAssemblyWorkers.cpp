@@ -98,7 +98,7 @@ void WriteBAMWorker::takeParameters(U2OpStatus& os) {
     BaseWriteAssemblyWorker::takeParameters(os);
 
     Attribute* indexAttr = actor->getParameter(INDEX_ATTRIBUTE_ID);
-    CHECK(nullptr != indexAttr, );
+    CHECK(indexAttr != nullptr, );
     buildIndex = indexAttr->getAttributePureValue().toBool();
 }
 
@@ -118,7 +118,7 @@ WriteBAMTask::WriteBAMTask(Document* _doc, bool _buildIndex, const SaveDocFlags&
 }
 
 void WriteBAMTask::run() {
-    CHECK_EXT(nullptr != doc, stateInfo.setError("NULL document"), );
+    CHECK_EXT(doc != nullptr, stateInfo.setError("NULL document"), );
 
     if (flags.testFlag(SaveDoc_Roll)) {
         QSet<QString> excludeFileNames = DocumentUtils::getNewDocFileNameExcludesHint();

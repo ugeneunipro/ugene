@@ -150,7 +150,7 @@ SWPairwiseAlignmentAlgorithm::SWPairwiseAlignmentAlgorithm()
 }
 
 bool SWPairwiseAlignmentAlgorithm::checkAlphabet(const DNAAlphabet* alphabet) const {
-    SAFE_POINT(nullptr != alphabet, "Alphabet is NULL.", false);
+    SAFE_POINT(alphabet != nullptr, "Alphabet is NULL.", false);
     SubstMatrixRegistry* matrixReg = AppContext::getSubstMatrixRegistry();
     SAFE_POINT(matrixReg, "SubstMatrixRegistry is NULL.", false);
     QStringList matrixList = matrixReg->selectMatrixNamesByAlphabet(alphabet);

@@ -53,13 +53,13 @@ IndexPart::~IndexPart() {
     delete[] seqLengths;
     delete[] saLengths;
 
-    if (nullptr != refFile) {
+    if (refFile != nullptr) {
         refFile->close();
     }
     delete refFile;
 
     for (int i = 0; i < partCount; i++) {
-        if (nullptr != partFiles[i]) {
+        if (partFiles[i] != nullptr) {
             partFiles[i]->close();
         }
         delete partFiles[i];

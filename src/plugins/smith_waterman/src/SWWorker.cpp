@@ -517,12 +517,12 @@ Task* SWWorker::tick() {
 void SWWorker::sl_taskFinished(Task* t) {
     QList<SharedAnnotationData> annData;
     auto multiSw = qobject_cast<MultiTask*>(t);
-    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
+    SAFE_POINT(t != nullptr, "Invalid task is encountered", );
     QList<Task*> subs = multiSw->getTasks();
     SAFE_POINT(!subs.isEmpty(), "Invalid task is encountered", );
     QStringList ptrns;
     for (Task* sub : qAsConst(subs)) {
-        SAFE_POINT(nullptr != sub, "Invalid task is encountered", );
+        SAFE_POINT(sub != nullptr, "Invalid task is encountered", );
         if (sub->isCanceled()) {
             return;
         }
@@ -543,7 +543,7 @@ void SWWorker::sl_taskFinished(Task* t) {
     }
 
     assert(output != nullptr);
-    if (nullptr != output) {
+    if (output != nullptr) {
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annData);
         const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), v));

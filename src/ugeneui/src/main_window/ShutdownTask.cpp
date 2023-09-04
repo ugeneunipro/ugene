@@ -149,7 +149,7 @@ QList<Task*> ShutdownTask::onSubTaskFinished(Task* subTask) {
     // fetch documents from project while it's not released
     if (!docsToRemoveAreFetched) {
         Project* proj = AppContext::getProject();
-        if (nullptr != proj) {
+        if (proj != nullptr) {
             docsToRemove = proj->getDocuments();
         }
         docsToRemoveAreFetched = true;

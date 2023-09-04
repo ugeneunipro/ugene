@@ -360,7 +360,7 @@ QModelIndexList GTUtilsProjectTreeView::findFilteredIndexes(const QString& subst
 
     QTreeView* treeView = getTreeView();
     QAbstractItemModel* model = treeView->model();
-    CHECK_SET_ERR_RESULT(nullptr != model, "Model is invalid", result);
+    CHECK_SET_ERR_RESULT(model != nullptr, "Model is invalid", result);
 
     const int rowcount = model->rowCount(parentIndex);
     for (int i = 0; i < rowcount; i++) {

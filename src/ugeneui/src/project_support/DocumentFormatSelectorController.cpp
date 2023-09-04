@@ -42,13 +42,13 @@ LabelClickProvider::LabelClickProvider(QLabel* label, QRadioButton* rb)
 }
 
 bool LabelClickProvider::eventFilter(QObject* object, QEvent* event) {
-    CHECK(nullptr != label, false);
-    CHECK(nullptr != rb, false);
+    CHECK(label != nullptr, false);
+    CHECK(rb != nullptr, false);
     CHECK(label == object, false);
 
     CHECK(QEvent::MouseButtonPress == event->type(), false);
     auto mouseEvent = dynamic_cast<QMouseEvent*>(event);
-    CHECK(nullptr != event, false);
+    CHECK(event != nullptr, false);
     CHECK(Qt::LeftButton == mouseEvent->button(), false);
 
     rb->toggle();
@@ -79,7 +79,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl& url, const QStrin
     QList<DocumentFormatId> detectedIds;
     for (int i = 0; i < results.size(); i++) {
         const FormatDetectionResult& r = results[i];
-        if (nullptr != r.format) {
+        if (r.format != nullptr) {
             detectedIds.append(r.format->getFormatId());
         }
         QString text;

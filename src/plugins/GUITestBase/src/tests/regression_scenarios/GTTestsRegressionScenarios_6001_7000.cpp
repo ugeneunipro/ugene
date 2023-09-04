@@ -1186,7 +1186,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     public:
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is NULL");
+            CHECK_SET_ERR(dialog != nullptr, "activeModalWidget is NULL");
 
             GTWidget::click(GTWidget::findWidget("addAllButton", dialog));
 
@@ -2259,7 +2259,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
-            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+            CHECK_SET_ERR(wizard != nullptr, "Can't cast current dialog to QWizard");
 
             GTWidget::click(wizard->button(QWizard::NextButton));
             GTWidget::click(wizard->button(QWizard::NextButton));
@@ -2286,7 +2286,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto wizard = qobject_cast<QWizard*>(dialog);
-            CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
+            CHECK_SET_ERR(wizard != nullptr, "Can't cast current dialog to QWizard");
 
             GTWidget::click(wizard->button(QWizard::NextButton));
             GTWidget::click(wizard->button(QWizard::NextButton));
@@ -3057,7 +3057,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_2) {
 
                 GTKeyboardDriver::keySequence("name");
                 QAbstractItemModel* baseModel = table->model();
-                CHECK_SET_ERR(nullptr != baseModel, "QItemSelectionModel not found");
+                CHECK_SET_ERR(baseModel != nullptr, "QItemSelectionModel not found");
 
                 QString expectedString = baseModel->data(baseModel->index(0, 0)).toString();
                 CHECK_SET_ERR(expectedString == "name", QString("Expected string not found, expected: name, current: %1").arg(expectedString));

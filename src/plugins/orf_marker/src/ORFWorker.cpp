@@ -303,7 +303,7 @@ void ORFWorker::sl_taskFinished() {
         return;
     }
     QList<ORFFindResult> res = t->popResults();
-    if (nullptr != output) {
+    if (output != nullptr) {
         const QList<SharedAnnotationData> annsList = ORFFindResult::toTable(res, resultName);
 
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(annsList);

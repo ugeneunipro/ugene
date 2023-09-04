@@ -112,9 +112,9 @@ void PrimerGroupBox::sl_findPrimerTaskStateChanged() {
         if (results.size() == 1) {
             // in case of the sequence context was changed the task is canceled
             ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
-            SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+            SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
             U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-            SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+            SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
 
             QByteArray primerOnSeq = sequenceObject->getSequenceData(results.first().region);
             if (results.first().strand == U2Strand::Complementary) {
@@ -154,9 +154,9 @@ void PrimerGroupBox::findPrimerAlternatives(const QString& primer) {
 
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("Annotated DNA view"), );
     ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
 
     U2OpStatusImpl os;
     settings.sequence = sequenceObject->getWholeSequenceData(os);
@@ -169,9 +169,9 @@ void PrimerGroupBox::findPrimerAlternatives(const QString& primer) {
     settings.pattern = primer.toLatin1();
 
     const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
-    SAFE_POINT(nullptr != alphabet, L10N::nullPointerError("DNA Alphabet"), );
+    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("DNA Alphabet"), );
     DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-    SAFE_POINT(nullptr != translator, L10N::nullPointerError("DNA Translator"), );
+    SAFE_POINT(translator != nullptr, L10N::nullPointerError("DNA Translator"), );
     settings.complementTT = translator;
 
     findPrimerTask = new FindAlgorithmTask(settings);

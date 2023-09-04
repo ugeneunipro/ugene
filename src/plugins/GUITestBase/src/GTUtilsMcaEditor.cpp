@@ -137,7 +137,7 @@ QAction* GTUtilsMcaEditor::getOffsetAction() {
 
 QString GTUtilsMcaEditor::getReferenceLabelText() {
     QLabel* referenceLabel = getReferenceLabel();
-    GT_CHECK_RESULT(nullptr != referenceLabel, "Reference label is NULL", "");
+    GT_CHECK_RESULT(referenceLabel != nullptr, "Reference label is NULL", "");
     if (referenceLabel->textFormat() != Qt::PlainText) {
         QTextDocument textDocument;
         textDocument.setHtml(referenceLabel->text());
@@ -192,7 +192,7 @@ const QStringList GTUtilsMcaEditor::getReverseComplementReadsNames() {
 
 QRect GTUtilsMcaEditor::getReadNameRect(const QString& readName) {
     McaEditorNameList* nameList = getNameListArea();
-    GT_CHECK_RESULT(nullptr != nameList, "McaEditorNameList not found", QRect());
+    GT_CHECK_RESULT(nameList != nullptr, "McaEditorNameList not found", QRect());
 
     const QStringList names = GTUtilsMcaEditorSequenceArea::getVisibleNames();
     const int rowNumber = names.indexOf(readName);
@@ -204,7 +204,7 @@ QRect GTUtilsMcaEditor::getReadNameRect(int rowNumber) {
     GT_CHECK_RESULT(0 <= rowNumber, QString("Read '%1' not found").arg(rowNumber), QRect());
 
     McaEditorNameList* nameList = getNameListArea();
-    GT_CHECK_RESULT(nullptr != nameList, "McaEditorNameList not found", QRect());
+    GT_CHECK_RESULT(nameList != nullptr, "McaEditorNameList not found", QRect());
 
     const U2Region rowScreenRange = getEditorUi()->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
     return QRect(nameList->mapToGlobal(QPoint(0, rowScreenRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowScreenRange.endPos())));

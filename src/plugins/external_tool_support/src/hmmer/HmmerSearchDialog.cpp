@@ -63,7 +63,7 @@ HmmerSearchDialog::HmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget* 
 
 void HmmerSearchDialog::init(U2SequenceObject* seqObj) {
     setupUi(this);
-    SAFE_POINT(nullptr != seqObj, L10N::nullPointerError("sequence object"), );
+    SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("sequence object"), );
 
     new HelpButton(this, buttonBox, "65930823");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
@@ -89,9 +89,9 @@ void HmmerSearchDialog::init(U2SequenceObject* seqObj) {
     annotationsWidgetController = new CreateAnnotationWidgetController(annModel, this);
 
     QWidget* firstTab = tabWidget->widget(0);
-    assert(nullptr != firstTab);
+    assert(firstTab != nullptr);
     auto curLayout = qobject_cast<QVBoxLayout*>(firstTab->layout());
-    assert(nullptr != curLayout);
+    assert(curLayout != nullptr);
     QWidget* aw = annotationsWidgetController->getWidget();
     curLayout->insertWidget(1, aw);
 

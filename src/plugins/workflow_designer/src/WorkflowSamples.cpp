@@ -124,7 +124,7 @@ QTreeWidgetItem* SamplesWidget::getSampleItem(const QString& category, const QSt
 
 void SamplesWidget::activateSample(const QString& category, const QString& id) {
     QTreeWidgetItem* sampleItem = getSampleItem(category, id);
-    CHECK(nullptr != sampleItem, );
+    CHECK(sampleItem != nullptr, );
 
     scrollToItem(sampleItem);
     setCurrentItem(sampleItem);
@@ -133,7 +133,7 @@ void SamplesWidget::activateSample(const QString& category, const QString& id) {
 
 void SamplesWidget::loadSample(const QString& category, const QString& id) {
     QTreeWidgetItem* sampleItem = getSampleItem(category, id);
-    CHECK(nullptr != sampleItem, );
+    CHECK(sampleItem != nullptr, );
 
     activateItem(sampleItem);
     return;
@@ -268,7 +268,7 @@ SamplePane::SamplePane(WorkflowScene* _scene)
 
 void SamplePane::paint(QPainter* painter) {
     const WorkflowView* ctrl = scene->getController();
-    SAFE_POINT(nullptr != ctrl, "NULL workflow controller", );
+    SAFE_POINT(ctrl != nullptr, "NULL workflow controller", );
     if (!item && ctrl->isShowSamplesHint()) {
         DesignerGUIUtils::paintSamplesArrow(painter);
         return;

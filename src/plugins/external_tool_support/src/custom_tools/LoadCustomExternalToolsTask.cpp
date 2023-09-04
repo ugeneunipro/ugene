@@ -61,9 +61,9 @@ void LoadCustomExternalToolsTask::prepare() {
 QList<Task*> LoadCustomExternalToolsTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> result;
     auto registerTask = qobject_cast<RegisterCustomToolTask*>(subTask);
-    SAFE_POINT_EXT(nullptr != registerTask, setError("Unexpected task, can't cast it to RegisterCustomToolTask *"), result);
+    SAFE_POINT_EXT(registerTask != nullptr, setError("Unexpected task, can't cast it to RegisterCustomToolTask *"), result);
     CustomExternalTool* tool = registerTask->getTool();
-    CHECK(nullptr != tool, result);
+    CHECK(tool != nullptr, result);
     tools << tool;
     return result;
 }

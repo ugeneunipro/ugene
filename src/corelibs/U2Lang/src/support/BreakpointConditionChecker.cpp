@@ -64,7 +64,7 @@ bool BreakpointConditionChecker::evaluateCondition(const AttributeScript* condit
 
     QMutexLocker lock(&engineGuard);
 
-    if (engine == nullptr || nullptr == engine->getWorkflowContext()) {
+    if (engine == nullptr || engine->getWorkflowContext() == nullptr) {
         return false;
     }
     if (conditionText.isEmpty() || !enabled) {

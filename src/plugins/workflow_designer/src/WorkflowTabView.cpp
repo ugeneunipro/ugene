@@ -81,17 +81,17 @@ WorkflowTabView::WorkflowTabView(WorkflowView* _parent)
 
 void WorkflowTabView::sl_showDashboard(int idx) {
     Dashboard* db = dynamic_cast<Dashboard*>(widget(idx));
-    CHECK(nullptr != db, );
+    CHECK(db != nullptr, );
     db->onShow();
 }
 
 void WorkflowTabView::sl_workflowStateChanged(bool isRunning) {
     QWidget* db = dynamic_cast<QWidget*>(sender());
-    SAFE_POINT(nullptr != db, "NULL dashboard", );
+    SAFE_POINT(db != nullptr, "NULL dashboard", );
     int idx = indexOf(db);
     CHECK(-1 != idx, );
     CloseButton* closeButton = dynamic_cast<CloseButton*>(tabBar()->tabButton(idx, QTabBar::RightSide));
-    SAFE_POINT(nullptr != db, "NULL close button", );
+    SAFE_POINT(db != nullptr, "NULL close button", );
     closeButton->setEnabled(!isRunning);
 }
 
@@ -145,7 +145,7 @@ void WorkflowTabView::sl_closeTab() {
     Q_UNUSED(registryConnectionBlocker);
 
     CloseButton* button = dynamic_cast<CloseButton*>(sender());
-    SAFE_POINT(nullptr != button, "NULL close button", );
+    SAFE_POINT(button != nullptr, "NULL close button", );
     int idx = indexOf(button->content());
     Dashboard* db = dynamic_cast<Dashboard*>(widget(idx));
     db->setClosed();
@@ -271,7 +271,7 @@ QMap<QString, Dashboard*> WorkflowTabView::getDashboards(const QStringList& dash
     QMap<QString, Dashboard*> result;
     for (int i = 0; i < count(); ++i) {
         Dashboard* dashboard = qobject_cast<Dashboard*>(widget(i));
-        SAFE_POINT(nullptr != dashboard, "Can't cast QWidget to Dashboard", result);
+        SAFE_POINT(dashboard != nullptr, "Can't cast QWidget to Dashboard", result);
         if (dashboardIds.contains(dashboard->getDashboardId())) {
             result.insert(dashboard->getDashboardId(), dashboard);
         }

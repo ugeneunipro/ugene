@@ -88,9 +88,9 @@ void ExternalToolJustValidateTask::run() {
 
     if (!originalValidation.toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry* stRegistry = AppContext::getScriptingToolRegistry();
-        SAFE_POINT_EXT(nullptr != stRegistry, setError(tr("Scripting tool registry is NULL")), );
+        SAFE_POINT_EXT(stRegistry != nullptr, setError(tr("Scripting tool registry is NULL")), );
         ScriptingTool* stool = stRegistry->getById(originalValidation.toolRunnerProgram);
-        CHECK_EXT(nullptr != stool, setError(tr("Scripting tool '%1' isn't found in the registry").arg(originalValidation.toolRunnerProgram)), );
+        CHECK_EXT(stool != nullptr, setError(tr("Scripting tool '%1' isn't found in the registry").arg(originalValidation.toolRunnerProgram)), );
 
         if (stool->getPath().isEmpty()) {
             stateInfo.setError(QString("The tool %1 that runs %2 is not installed. "
@@ -194,7 +194,7 @@ void ExternalToolJustValidateTask::setEnvironment(ExternalTool* externalTool) {
     QStringList additionalPaths;
     for (const QString& toolId : qAsConst(externalTool->getDependencies())) {
         ExternalTool* masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
-        if (nullptr != masterTool) {
+        if (masterTool != nullptr) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
         }
     }

@@ -401,9 +401,9 @@ void GUITestService::removeDir(QString dirName) {
 
 void GUITestService::sl_testThreadFinish() {
     auto testThread = qobject_cast<GUITestThread*>(sender());
-    SAFE_POINT(nullptr != testThread, "testThread is NULL", );
+    SAFE_POINT(testThread != nullptr, "testThread is NULL", );
     HI::GUITest* test = testThread->getTest();
-    SAFE_POINT(nullptr != test, "GUITest is NULL", );
+    SAFE_POINT(test != nullptr, "GUITest is NULL", );
     if (isTeamcityLogOn) {
         QString testNameForTeamCity = test->suite + "_" + test->name;
         GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testThread->getTestResult(), -1);

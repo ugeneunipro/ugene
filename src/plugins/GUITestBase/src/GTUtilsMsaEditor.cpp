@@ -172,11 +172,11 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(int viewRowIndex) {
 
 QRect GTUtilsMsaEditor::getColumnHeaderRect(int column) {
     MSAEditorConsensusArea* consensusArea = getConsensusArea();
-    GT_CHECK_RESULT(nullptr != consensusArea, "Consensus area is NULL", QRect());
+    GT_CHECK_RESULT(consensusArea != nullptr, "Consensus area is NULL", QRect());
     MSAEditorSequenceArea* sequenceArea = getSequenceArea();
-    GT_CHECK_RESULT(nullptr != sequenceArea, "Sequence area is NULL", QRect());
+    GT_CHECK_RESULT(sequenceArea != nullptr, "Sequence area is NULL", QRect());
     MSAEditor* editor = getEditor();
-    GT_CHECK_RESULT(nullptr != editor, "MSA Editor is NULL", QRect());
+    GT_CHECK_RESULT(editor != nullptr, "MSA Editor is NULL", QRect());
 
     BaseWidthController* baseWidthController = editor->getUI()->getUI(0)->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),

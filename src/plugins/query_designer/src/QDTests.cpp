@@ -139,8 +139,8 @@ QList<Task*> GTest_QDSchedulerTest::onSubTaskFinished(Task* subTask) {
     if (subTask == sched) {
         AnnotationGroup* resG = result->getRootGroup()->getSubgroup(GROUP_NAME, false);
         AnnotationGroup* expResG = expectedResult->getRootGroup()->getSubgroup(GROUP_NAME, false);
-        CHECK_EXT(nullptr != resG, setError("Group not found!" + GROUP_NAME), subs);
-        CHECK_EXT(nullptr != expResG, setError("Exp group not found!" + GROUP_NAME), subs);
+        CHECK_EXT(resG != nullptr, setError("Group not found!" + GROUP_NAME), subs);
+        CHECK_EXT(expResG != nullptr, setError("Exp group not found!" + GROUP_NAME), subs);
 
         const QList<AnnotationGroup*> res = resG->getSubgroups();
         const QList<AnnotationGroup*> expRes = expResG->getSubgroups();

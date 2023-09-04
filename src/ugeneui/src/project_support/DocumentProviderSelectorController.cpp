@@ -112,7 +112,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
 
 QString DocumentProviderSelectorController::getButtonName(const GObjectType& objectType) {
     GObjectViewFactoryRegistry* objectViewFactoriesRegistry = AppContext::getObjectViewFactoryRegistry();
-    SAFE_POINT(nullptr != objectViewFactoriesRegistry, L10N::nullPointerError("Object View Factories Registry"), "");
+    SAFE_POINT(objectViewFactoriesRegistry != nullptr, L10N::nullPointerError("Object View Factories Registry"), "");
 
     QString typeName;
     QString id;
@@ -127,7 +127,7 @@ QString DocumentProviderSelectorController::getButtonName(const GObjectType& obj
     }
 
     GObjectViewFactory* factory = objectViewFactoriesRegistry->getFactoryById(id);
-    SAFE_POINT(nullptr != factory, L10N::nullPointerError("GObject View Factory"), "");
+    SAFE_POINT(factory != nullptr, L10N::nullPointerError("GObject View Factory"), "");
 
     QString res = tr("%1 in the %2").arg(typeName).arg(factory->getName());
     return res;

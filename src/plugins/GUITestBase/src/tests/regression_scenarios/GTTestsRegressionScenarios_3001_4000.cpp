@@ -1125,7 +1125,7 @@ GUI_TEST_CLASS_DEFINITION(test_3253_1) {
     GTWidget::click(GTWidget::findWidget("CHROMA_ACTION", toolbar));
 
     auto splitterHandle = qobject_cast<QSplitterHandle*>(GTWidget::findWidget("qt_splithandle_det_view_A1#berezikov"));
-    CHECK_SET_ERR(nullptr != splitterHandle, "splitterHandle is not present");
+    CHECK_SET_ERR(splitterHandle != nullptr, "splitterHandle is not present");
 
     auto detView = GTWidget::findWidget("render_area_A1#berezikov");
     QSize startSize = detView->size();
@@ -1630,7 +1630,7 @@ GUI_TEST_CLASS_DEFINITION(test_3335) {
     GTUtilsMdi::click(GTGlobals::Close);
     GTUtilsProjectTreeView::doubleClickItem("Annotations");
     QWidget* relatedSequenceView = GTUtilsMdi::findWindow("renamed sequence [human_T1.fa]");
-    CHECK_SET_ERR(nullptr != relatedSequenceView, "A view for the related sequence was not opened");
+    CHECK_SET_ERR(relatedSequenceView != nullptr, "A view for the related sequence was not opened");
 
     lt.assertNoErrors();
     ;

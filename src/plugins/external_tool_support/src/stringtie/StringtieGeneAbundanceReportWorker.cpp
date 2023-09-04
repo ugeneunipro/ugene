@@ -40,7 +40,7 @@ StringtieGeneAbundanceReportWorker::StringtieGeneAbundanceReportWorker(Actor* ac
 
 void StringtieGeneAbundanceReportWorker::init() {
     input = ports.value(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID);
-    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID), );
+    SAFE_POINT(input != nullptr, QString("Port with id '%1' is NULL").arg(StringtieGeneAbundanceReportWorkerFactory::INPUT_PORT_ID), );
 }
 
 Task* StringtieGeneAbundanceReportWorker::tick() {
@@ -97,7 +97,7 @@ void StringtieGeneAbundanceReportWorker::cleanup() {
 
 void StringtieGeneAbundanceReportWorker::sl_taskSucceeded(Task* task) {
     auto geneAbudanceReportTask = qobject_cast<StringtieGeneAbundanceReportTask*>(task);
-    SAFE_POINT(nullptr != geneAbudanceReportTask, "StringTieGeneAbundanceReportTask is NULL", );
+    SAFE_POINT(geneAbudanceReportTask != nullptr, "StringTieGeneAbundanceReportTask is NULL", );
 
     const QString geneAbudanceReportUrl = geneAbudanceReportTask->getReportUrl();
     monitor()->addOutputFile(geneAbudanceReportUrl, getActor()->getId(), true);

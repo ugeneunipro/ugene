@@ -79,7 +79,7 @@ Task* ExtractMSAConsensusWorker::tick() {
 
 void ExtractMSAConsensusWorker::sl_taskFinished() {
     auto t = dynamic_cast<ExtractMSAConsensusTaskHelper*>(sender());
-    CHECK(nullptr != t, );
+    CHECK(t != nullptr, );
     CHECK(t->isFinished() && !t->hasError(), );
     CHECK(!t->isCanceled(), );
 
@@ -91,7 +91,7 @@ void ExtractMSAConsensusWorker::cleanup() {
 
 bool ExtractMSAConsensusWorker::hasMsa() const {
     const IntegralBus* port = ports[BasePorts::IN_MSA_PORT_ID()];
-    SAFE_POINT(nullptr != port, "NULL msa port", false);
+    SAFE_POINT(port != nullptr, "NULL msa port", false);
     return port->hasMessage();
 }
 
@@ -119,10 +119,10 @@ ExtractMSAConsensusStringWorker::ExtractMSAConsensusStringWorker(Actor* actor)
 
 void ExtractMSAConsensusStringWorker::finish() {
     IntegralBus* inPort = ports[BasePorts::IN_MSA_PORT_ID()];
-    SAFE_POINT(nullptr != inPort, "NULL msa port", );
+    SAFE_POINT(inPort != nullptr, "NULL msa port", );
     SAFE_POINT(inPort->isEnded(), "The msa is not ended", );
     IntegralBus* outPort = ports[BasePorts::OUT_TEXT_PORT_ID()];
-    SAFE_POINT(nullptr != outPort, "NULL text port", );
+    SAFE_POINT(outPort != nullptr, "NULL text port", );
 
     outPort->setEnded();
     setDone();
@@ -133,7 +133,7 @@ void ExtractMSAConsensusStringWorker::sendResult(const SharedDbiDataHandler& /*s
     data[BaseSlots::TEXT_SLOT().getId()] = extractMsaConsensus->getResultAsText();
     IntegralBus* outPort = ports[BasePorts::OUT_TEXT_PORT_ID()];
 
-    SAFE_POINT(nullptr != outPort, "NULL text port", );
+    SAFE_POINT(outPort != nullptr, "NULL text port", );
 
     outPort->put(Message(outPort->getBusType(), data));
 }
@@ -154,10 +154,10 @@ ExtractMSAConsensusSequenceWorker::ExtractMSAConsensusSequenceWorker(Actor* acto
 
 void ExtractMSAConsensusSequenceWorker::finish() {
     IntegralBus* inPort = ports[BasePorts::IN_MSA_PORT_ID()];
-    SAFE_POINT(nullptr != inPort, "NULL msa port", );
+    SAFE_POINT(inPort != nullptr, "NULL msa port", );
     SAFE_POINT(inPort->isEnded(), "The msa is not ended", );
     IntegralBus* outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
-    SAFE_POINT(nullptr != outPort, "NULL sequence port", );
+    SAFE_POINT(outPort != nullptr, "NULL sequence port", );
 
     outPort->setEnded();
     setDone();
@@ -167,7 +167,7 @@ void ExtractMSAConsensusSequenceWorker::sendResult(const SharedDbiDataHandler& s
     QVariantMap data;
     data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
     IntegralBus* outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
-    SAFE_POINT(nullptr != outPort, "NULL sequence port", );
+    SAFE_POINT(outPort != nullptr, "NULL sequence port", );
 
     outPort->put(Message(outPort->getBusType(), data));
 }
@@ -203,7 +203,7 @@ QString ExtractMSAConsensusTaskHelper::getResultName() const {
 
 void ExtractMSAConsensusTaskHelper::prepare() {
     QSharedPointer<MSAConsensusAlgorithm> algo(createAlgorithm());
-    SAFE_POINT_EXT(nullptr != algo, setError("Wrong consensus algorithm"), );
+    SAFE_POINT_EXT(algo != nullptr, setError("Wrong consensus algorithm"), );
 
     MSAConsensusUtils::updateConsensus(msa, resultText, algo.data());
     if (!keepGaps && algo->getFactory()->isSequenceLikeResult()) {
@@ -225,7 +225,7 @@ U2EntityRef ExtractMSAConsensusTaskHelper::getResult() const {
 
 MSAConsensusAlgorithm* ExtractMSAConsensusTaskHelper::createAlgorithm() {
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT_EXT(nullptr != reg, setError("NULL registry"), nullptr);
+    SAFE_POINT_EXT(reg != nullptr, setError("NULL registry"), nullptr);
 
     MSAConsensusAlgorithmFactory* f = reg->getAlgorithmFactory(algoId);
     if (f == nullptr) {
@@ -233,7 +233,7 @@ MSAConsensusAlgorithm* ExtractMSAConsensusTaskHelper::createAlgorithm() {
         return nullptr;
     }
     MSAConsensusAlgorithm* alg = f->createAlgorithm(msa);
-    SAFE_POINT_EXT(nullptr != alg, setError("NULL algorithm"), nullptr);
+    SAFE_POINT_EXT(alg != nullptr, setError("NULL algorithm"), nullptr);
     alg->setThreshold(threshold);
 
     return alg;
@@ -255,7 +255,7 @@ Worker* ExtractMSAConsensusSequenceWorkerFactory::createWorker(Actor* actor) {
 
 void ExtractMSAConsensusSequenceWorkerFactory::init() {
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT(nullptr != reg, "NULL registry", );
+    SAFE_POINT(reg != nullptr, "NULL registry", );
 
     const Descriptor desc(ACTOR_ID,
                           ExtractMSAConsensusSequenceWorker::tr("Extract Consensus from Alignment as Sequence"),
@@ -338,7 +338,7 @@ Worker* ExtractMSAConsensusStringWorkerFactory::createWorker(Actor* actor) {
 
 void ExtractMSAConsensusStringWorkerFactory::init() {
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT(nullptr != reg, "NULL registry", );
+    SAFE_POINT(reg != nullptr, "NULL registry", );
 
     const Descriptor desc(ACTOR_ID,
                           ExtractMSAConsensusSequenceWorker::tr("Extract Consensus from Alignment as Text"),
@@ -431,7 +431,7 @@ QVariant SpinBoxDelegatePropertyRelation::getAffectResult(const QVariant& influe
 
 void SpinBoxDelegatePropertyRelation::updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const {
     MSAConsensusAlgorithmRegistry* reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT(nullptr != reg, "NULL registry", );
+    SAFE_POINT(reg != nullptr, "NULL registry", );
     MSAConsensusAlgorithmFactory* consFactory = reg->getAlgorithmFactory(influencingValue.toString());
     if (!consFactory) {
         return;

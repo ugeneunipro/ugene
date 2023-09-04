@@ -197,7 +197,7 @@ QString PWMatrixReadPrompter::composeRichDoc() {
 
 QString PWMatrixWritePrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(WMATRIX_IN_PORT_ID));
-    SAFE_POINT(nullptr != input, "NULL input port", "");
+    SAFE_POINT(input != nullptr, "NULL input port", "");
     QString from = getProducersOrUnset(WMATRIX_IN_PORT_ID, PWMatrixWorkerFactory::WMATRIX_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
@@ -419,7 +419,7 @@ QString PFMatrixReadPrompter::composeRichDoc() {
 
 QString PFMatrixWritePrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(FMATRIX_IN_PORT_ID));
-    SAFE_POINT(nullptr != input, "NULL input port", "");
+    SAFE_POINT(input != nullptr, "NULL input port", "");
     QString from = getProducersOrUnset(FMATRIX_IN_PORT_ID, PFMatrixWorkerFactory::FMATRIX_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);

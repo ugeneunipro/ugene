@@ -80,9 +80,9 @@ int getMaxError(const InSilicoPcrTaskSettings* settings, U2Strand::Direction dir
 FindAlgorithmTaskSettings InSilicoPcrTask::getFindPatternSettings(U2Strand::Direction direction) {
     FindAlgorithmTaskSettings result;
     const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    SAFE_POINT_EXT(nullptr != alphabet, setError(L10N::nullPointerError("DNA Alphabet")), result);
+    SAFE_POINT_EXT(alphabet != nullptr, setError(L10N::nullPointerError("DNA Alphabet")), result);
     DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-    SAFE_POINT_EXT(nullptr != translator, setError(L10N::nullPointerError("DNA Translator")), result);
+    SAFE_POINT_EXT(translator != nullptr, setError(L10N::nullPointerError("DNA Translator")), result);
 
     result.sequence = settings->sequence;
     result.searchIsCircular = settings->isCircular;

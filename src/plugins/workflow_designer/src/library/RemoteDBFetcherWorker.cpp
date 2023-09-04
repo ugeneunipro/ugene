@@ -458,7 +458,7 @@ void FetchSequenceByIdFromAnnotationWorker::sl_taskFinished() {
     }
 
     Document* doc = loadTask->getDocument();
-    SAFE_POINT(nullptr != doc, "NULL document", );
+    SAFE_POINT(doc != nullptr, "NULL document", );
     doc->setDocumentOwnsDbiResources(false);
     monitor()->addOutputFile(doc->getURLString(), getActorId());
 

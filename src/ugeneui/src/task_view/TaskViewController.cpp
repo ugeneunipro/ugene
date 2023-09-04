@@ -203,13 +203,13 @@ void TaskViewDockWidget::sl_cancelTaskByButton() {
 }
 
 TVTreeItem* TaskViewDockWidget::findItem(Task* t, bool topLevelOnly) const {
-    SAFE_POINT(nullptr != t, "An attempt to fild item for a NULL task", nullptr);
+    SAFE_POINT(t != nullptr, "An attempt to fild item for a NULL task", nullptr);
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         QTreeWidgetItem* item = tree->topLevelItem(i);
-        SAFE_POINT(nullptr != item, QString("%1 top level item is NULL").arg(i), nullptr);
+        SAFE_POINT(item != nullptr, QString("%1 top level item is NULL").arg(i), nullptr);
 
         auto ti = dynamic_cast<TVTreeItem*>(item);
-        SAFE_POINT(nullptr != ti, QString("%1 QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
+        SAFE_POINT(ti != nullptr, QString("%1 QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
 
         if (ti->task == t) {
             return ti;
@@ -228,13 +228,13 @@ TVTreeItem* TaskViewDockWidget::findItem(Task* t, bool topLevelOnly) const {
 }
 
 TVTreeItem* TaskViewDockWidget::findChildItem(TVTreeItem* ti, Task* t) const {
-    SAFE_POINT(nullptr != ti, "TVTreeItem is NULL", nullptr);
+    SAFE_POINT(ti != nullptr, "TVTreeItem is NULL", nullptr);
     for (int i = 0, n = ti->childCount(); i < n; i++) {
         QTreeWidgetItem* item = ti->child(i);
-        SAFE_POINT(nullptr != item, QString("%1 child item is NULL").arg(i), nullptr);
+        SAFE_POINT(item != nullptr, QString("%1 child item is NULL").arg(i), nullptr);
 
         auto cti = dynamic_cast<TVTreeItem*>(item);
-        SAFE_POINT(nullptr != ti, QString("%1 child QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
+        SAFE_POINT(ti != nullptr, QString("%1 child QTreeWidgetItem can't be converted to TVTreeItem, real class: %2").arg(i).arg(typeid(item).name()), nullptr);
 
         if (cti->task == t) {
             return cti;
@@ -321,7 +321,7 @@ void TaskViewDockWidget::sl_onSubtaskAdded(Task* sub) {
 
 void TaskViewDockWidget::sl_onTaskProgress() {
     auto t = qobject_cast<Task*>(sender());
-    CHECK(nullptr != t, );
+    CHECK(t != nullptr, );
     TVTreeItem* ti = findItem(t, false);
     if (ti == nullptr) {
         if (t != nullptr) {
@@ -343,7 +343,7 @@ void TaskViewDockWidget::sl_onTaskDescription() {
 }
 
 void TaskViewDockWidget::sl_onStateChanged(Task* t) {
-    SAFE_POINT(nullptr != t, "Task is NULL", );
+    SAFE_POINT(t != nullptr, "Task is NULL", );
     TVTreeItem* ti = findItem(t, false);
     if (ti == nullptr) {
         assert(!t->isTopLevelTask());
@@ -531,7 +531,7 @@ QAction* TVReportWindow::createFileAction(const QString& url, QObject* parent) {
 
 void TVReportWindow::sl_open() {
     auto dirAction = qobject_cast<QAction*>(sender());
-    CHECK(nullptr != dirAction, );
+    CHECK(dirAction != nullptr, );
 
     QString url = dirAction->data().toString();
     bool internetUrl = url.startsWith("http");

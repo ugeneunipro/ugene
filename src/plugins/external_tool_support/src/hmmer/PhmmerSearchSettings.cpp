@@ -71,7 +71,7 @@ bool PhmmerSearchSettings::validate() const {
     CHECK(0 <= pextend && pextend < 1, false);
     CHECK(0 <= seed, false);
     CHECK(!querySequenceUrl.isEmpty(), false);
-    CHECK(!targetSequenceUrl.isEmpty() || nullptr != targetSequence, false);
+    CHECK(!targetSequenceUrl.isEmpty() || targetSequence != nullptr, false);
 
     return true;
 }

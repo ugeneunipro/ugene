@@ -203,7 +203,7 @@ void MAFFTWorker::sl_taskFinished() {
         return;
     }
 
-    SAFE_POINT(nullptr != output, "NULL output!", );
+    SAFE_POINT(output != nullptr, "NULL output!", );
     send(t->resultMA);
     algoLog.info(tr("Aligned %1 with MAFFT").arg(t->resultMA->getName()));
 }
@@ -212,7 +212,7 @@ void MAFFTWorker::cleanup() {
 }
 
 void MAFFTWorker::send(const MultipleSequenceAlignment& msa) {
-    SAFE_POINT(nullptr != output, "NULL output!", );
+    SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;
     m[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);

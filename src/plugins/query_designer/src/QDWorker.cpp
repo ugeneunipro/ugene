@@ -238,7 +238,7 @@ void annObjToAnnDataList(AnnotationTableObject* annObj, QList<SharedAnnotationDa
 
 void QDWorker::sl_taskFinished(Task* t) {
     delete scheme;
-    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
+    SAFE_POINT(t != nullptr, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }

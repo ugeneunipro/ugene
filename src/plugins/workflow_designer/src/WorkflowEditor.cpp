@@ -345,7 +345,7 @@ void WorkflowEditor::reset() {
     paramHeight = 0;
     inputHeight = 0;
     outputHeight = 0;
-    if (nullptr != specialParameters) {
+    if (specialParameters != nullptr) {
         specialParameters->setEnabled(false);
         specialParameters->reset();
     }
@@ -559,12 +559,12 @@ void WorkflowEditor::sl_linkActivated(const QString& url) {
     table->setCurrentIndex(modelIndex);
     QWidget* w = table->indexWidget(modelIndex);
     auto pw = dynamic_cast<PropertyWidget*>(w);
-    CHECK(nullptr != pw, );
+    CHECK(pw != nullptr, );
     pw->activate();
 }
 
 void WorkflowEditor::setSpecialPanelEnabled(bool isEnabled) {
-    if (nullptr != specialParameters) {
+    if (specialParameters != nullptr) {
         specialParameters->setDatasetsEnabled(isEnabled);
     }
 }
@@ -590,7 +590,7 @@ void SpecialParametersPanel::editActor(Actor* a, const QList<Actor*>& allActors)
     bool visible = false;
     foreach (const QString& attrId, a->getParameters().keys()) {
         Attribute* attr = a->getParameter(attrId);
-        CHECK(nullptr != attr, );
+        CHECK(attr != nullptr, );
         auto urlAttr = dynamic_cast<URLAttribute*>(attr);
         if (urlAttr == nullptr) {
             continue;
@@ -610,7 +610,7 @@ void SpecialParametersPanel::editActor(Actor* a, const QList<Actor*>& allActors)
 
 void SpecialParametersPanel::sl_datasetsChanged() {
     auto ctrl = dynamic_cast<AttributeDatasetsController*>(sender());
-    CHECK(nullptr != ctrl, );
+    CHECK(ctrl != nullptr, );
     CHECK(controllers.values().contains(ctrl), );
     QString attrId = controllers.key(ctrl);
     sets[attrId] = ctrl->getDatasets();
@@ -655,7 +655,7 @@ void SpecialParametersPanel::reset() {
 }
 
 void SpecialParametersPanel::addWidget(AttributeDatasetsController* controller) {
-    CHECK(nullptr != controller, );
+    CHECK(controller != nullptr, );
     QWidget* newWidget = controller->getWidget();
     if (!editor->isEnabled()) {
         newWidget->setEnabled(false);
@@ -664,7 +664,7 @@ void SpecialParametersPanel::addWidget(AttributeDatasetsController* controller) 
 }
 
 void SpecialParametersPanel::removeWidget(AttributeDatasetsController* controller) {
-    CHECK(nullptr != controller, );
+    CHECK(controller != nullptr, );
     disconnect(controller, SIGNAL(si_attributeChanged()), this, SLOT(sl_datasetsChanged()));
     disconnect(controller, SIGNAL(si_datasetRenamed(QPair<QString, QString>&)), this, SLOT(sl_datasetRenamed(QPair<QString, QString>&)));
     this->layout()->removeWidget(controller->getWidget());

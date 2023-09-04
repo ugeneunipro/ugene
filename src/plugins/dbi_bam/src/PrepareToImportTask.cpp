@@ -125,7 +125,7 @@ static bool isUnknownFormat(const QList<FormatDetectionResult>& formats) {
         return true;
     }
     FormatDetectionResult f = formats.first();
-    if (f.format == nullptr && nullptr == f.importer) {
+    if (f.format == nullptr && f.importer == nullptr) {
         return true;
     }
     return false;

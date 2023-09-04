@@ -64,7 +64,7 @@ QList<Task*> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == saveDocumentTask) {
-        SAFE_POINT_EXT(nullptr != saveDocumentTask->getDocument(), setError(tr("Internal UGENE error")), res);
+        SAFE_POINT_EXT(saveDocumentTask->getDocument() != nullptr, setError(tr("Internal UGENE error")), res);
 
         QString fileUrl = saveDocumentTask->getDocument()->getURLString();
 
@@ -141,7 +141,7 @@ QList<Task*> PhyMLSupportTask::onSubTaskFinished(Task* subTask) {
         res.append(getTreeTask);
     } else if (subTask == getTreeTask) {
         PhyTreeObject* phyObj = getTreeTask->getPhyObject();
-        SAFE_POINT_EXT(nullptr != phyObj, setError("UGENE internal error"), QList<Task*>());
+        SAFE_POINT_EXT(phyObj != nullptr, setError("UGENE internal error"), QList<Task*>());
         result = phyObj->getTree();
     }
 
@@ -149,7 +149,7 @@ QList<Task*> PhyMLSupportTask::onSubTaskFinished(Task* subTask) {
 }
 
 void PhyMLSupportTask::onExternalToolFailed(const QString& err) {
-    if (nullptr != phyMlTask) {
+    if (phyMlTask != nullptr) {
         phyMlTask->setError(err);
     }
 }
@@ -237,7 +237,7 @@ QList<Task*> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task* subTask) {
             index = 0;
         }
         phyObject = qobject_cast<PhyTreeObject*>(treeList.at(index));
-        SAFE_POINT_EXT(nullptr != phyObject, setError(tr("No result tree in PhyML output")), res);
+        SAFE_POINT_EXT(phyObject != nullptr, setError(tr("No result tree in PhyML output")), res);
     }
 
     return res;

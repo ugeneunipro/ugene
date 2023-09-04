@@ -194,7 +194,7 @@ namespace {
 QString getTargetUrl(Task* task) {
     auto sortTask = dynamic_cast<SamtoolsSortTask*>(task);
 
-    if (nullptr != sortTask) {
+    if (sortTask != nullptr) {
         return sortTask->getResult();
     }
     return "";

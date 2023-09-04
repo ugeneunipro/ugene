@@ -560,7 +560,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         }
 
         auto localMuscle = qobject_cast<MuscleTask*>(subTask);
-        assert(nullptr != localMuscle);
+        assert(localMuscle != nullptr);
         ma1->setMultipleAlignment(localMuscle->resultMA);
 
     } else if (subTask == loadTask2) {
@@ -700,7 +700,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
         auto localMuscle = qobject_cast<MuscleTask*>(subTask);
-        assert(nullptr != localMuscle);
+        assert(localMuscle != nullptr);
         ma1->setMultipleAlignment(localMuscle->resultMA);
 
     } else if (subTask == loadTask2) {

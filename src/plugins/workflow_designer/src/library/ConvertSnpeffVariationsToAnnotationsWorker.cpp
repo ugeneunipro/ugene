@@ -55,10 +55,10 @@ ConvertSnpeffVariationsToAnnotationsPrompter::ConvertSnpeffVariationsToAnnotatio
 
 QString ConvertSnpeffVariationsToAnnotationsPrompter::composeRichDoc() {
     auto input = qobject_cast<IntegralBusPort*>(target->getPort(IN_VARIATIONS_URL_PORT_ID));
-    SAFE_POINT(nullptr != input, "No input port", "");
+    SAFE_POINT(input != nullptr, "No input port", "");
     const Actor* producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    const QString producerName = (nullptr != producer) ? producer->getLabel() : unsetStr;
+    const QString producerName = (producer != nullptr) ? producer->getLabel() : unsetStr;
     return tr("Parses information in variations from <u>%1</u> into annotations.").arg(producerName);
 }
 
@@ -152,7 +152,7 @@ void ConvertSnpeffVariationsToAnnotationsWorker::cleanup() {
 
 void ConvertSnpeffVariationsToAnnotationsWorker::sl_taskFinished(Task* task) {
     auto convertTask = qobject_cast<LoadConvertAndSaveSnpeffVariationsToAnnotationsTask*>(task);
-    SAFE_POINT(nullptr != convertTask, L10N::nullPointerError("LoadConvertAndSaveSnpeffVariationsToAnnotationsTask"), );
+    SAFE_POINT(convertTask != nullptr, L10N::nullPointerError("LoadConvertAndSaveSnpeffVariationsToAnnotationsTask"), );
     CHECK(!convertTask->hasError() && !convertTask->isCanceled(), );
     monitor()->addOutputFile(convertTask->getResultUrl(), getActorId());
 }

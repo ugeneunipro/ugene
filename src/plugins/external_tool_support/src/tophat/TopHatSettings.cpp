@@ -74,15 +74,15 @@ Workflow::WorkflowContext* TopHatSettings::workflowContext() const {
 }
 
 Workflow::DbiDataStorage* TopHatSettings::storage() const {
-    CHECK(nullptr != workflowContext(), nullptr);
+    CHECK(workflowContext() != nullptr, nullptr);
     return workflowContext()->getDataStorage();
 }
 
 uint TopHatSettings::getThreadsCount() {
     AppSettings* settings = AppContext::getAppSettings();
-    SAFE_POINT(nullptr != settings, "NULL settings", 1);
+    SAFE_POINT(settings != nullptr, "NULL settings", 1);
     AppResourcePool* pool = settings->getAppResourcePool();
-    SAFE_POINT(nullptr != pool, "NULL resource pool", 1);
+    SAFE_POINT(pool != nullptr, "NULL resource pool", 1);
 
     uint threads = pool->getIdealThreadCount();
     CHECK(0 != threads, 1);

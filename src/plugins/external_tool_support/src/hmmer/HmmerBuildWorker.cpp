@@ -188,7 +188,7 @@ Task* HmmerBuildWorker::tick() {
 
 void HmmerBuildWorker::sl_taskFinished(Task* task) {
     auto buildTask = qobject_cast<HmmerBuildFromMsaTask*>(task);
-    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
+    SAFE_POINT(task != nullptr, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;
     }

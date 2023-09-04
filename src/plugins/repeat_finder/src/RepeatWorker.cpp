@@ -285,7 +285,7 @@ void RepeatWorker::sl_taskFinished() {
     if (t->getState() != Task::State_Finished || t->hasError() || t->isCanceled()) {
         return;
     }
-    if (nullptr != output) {
+    if (output != nullptr) {
         const QList<SharedAnnotationData> res = t->importAnnotations();
         const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(res);
         const QVariant v = qVariantFromValue<SharedDbiDataHandler>(tableId);

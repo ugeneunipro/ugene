@@ -135,7 +135,7 @@ SaveSequenceTask::SaveSequenceTask(const QPointer<U2SequenceObject>& sequence, c
       formatId(formatId),
       locker(nullptr),
       cloneTask(nullptr) {
-    SAFE_POINT_EXT(nullptr != sequence, setError("Sequence is NULL"), );
+    SAFE_POINT_EXT(sequence != nullptr, setError("Sequence is NULL"), );
     SAFE_POINT_EXT(!url.isEmpty(), setError("URL is empty"), );
 }
 
@@ -159,7 +159,7 @@ QList<Task*> SaveSequenceTask::onSubTaskFinished(Task* subTask) {
 
     if (subTask == cloneTask) {
         DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-        SAFE_POINT_EXT(nullptr != format, setError(tr("'%' format is not registered").arg(formatId)), result);
+        SAFE_POINT_EXT(format != nullptr, setError(tr("'%' format is not registered").arg(formatId)), result);
 
         Document* document = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), url, stateInfo);
         CHECK_OP(stateInfo, result);

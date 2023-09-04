@@ -95,7 +95,7 @@ void AssemblyToSequencesTask::run() {
     // 2. get assembly from the data
     SharedDbiDataHandler handler = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<AssemblyObject> assemblyObj(StorageUtils::getAssemblyObject(storage, handler));
-    SAFE_POINT(nullptr != assemblyObj.data(), "Error: assembly object error", );
+    SAFE_POINT(assemblyObj.data() != nullptr, "Error: assembly object error", );
 
     // 3. get assembly reads
     U2OpStatusImpl os;
@@ -109,7 +109,7 @@ void AssemblyToSequencesTask::run() {
     U2Region wholeAssembly(0, length);
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter(dbi->getReads(assemblyId, wholeAssembly, os));
     SAFE_POINT_OP(os, );
-    CHECK(nullptr != iter.data(), );
+    CHECK(iter.data() != nullptr, );
 
     // 4. export reads to sequences and send messages
     const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());

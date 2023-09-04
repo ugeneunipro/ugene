@@ -58,7 +58,7 @@ void ImportCustomToolsTask::prepare() {
 
 void ImportCustomToolsTask::run() {
     CustomExternalTool* tool = registerTask->getTool();
-    CHECK(nullptr != tool, );
+    CHECK(tool != nullptr, );
     saveToolConfig(tool);
 }
 
