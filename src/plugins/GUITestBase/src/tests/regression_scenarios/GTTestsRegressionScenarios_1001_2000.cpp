@@ -5959,17 +5959,21 @@ GUI_TEST_CLASS_DEFINITION(test_1654) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"Select", "Sequence region"}));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
-    GTWidget::click(GTWidget::findWidget("OP_FIND_PATTERN"));
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTWidget::checkEnabled("getAnnotationsPushButton", false);
 
-    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
+    GTWidget::checkEnabled("getAnnotationsPushButton");
 
-    auto createAnnotationsButton = GTWidget::findWidget("getAnnotationsPushButton");
-    CHECK_SET_ERR(!createAnnotationsButton->isEnabled(), "Create annotations button is enabled!");
+    GTUtilsOptionPanelSequenceView::closeTab(GTUtilsOptionPanelSequenceView::Search);
+
+    GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
+    GTWidget::checkEnabled("getAnnotationsPushButton", false);
+
+    GTKeyboardUtils::paste();
+    GTWidget::checkEnabled("getAnnotationsPushButton");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1658) {
