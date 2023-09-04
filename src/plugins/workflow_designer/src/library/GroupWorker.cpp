@@ -234,7 +234,7 @@ QString GroupPrompter::composeRichDoc() {
     if (input->getLinks().size() > 0) {
         Port* src = input->getLinks().keys().first();
         auto bus = dynamic_cast<IntegralBusPort*>(src);
-        assert(nullptr != bus);
+        assert(bus != nullptr);
         DataTypePtr type = bus->getType();
         QMap<Descriptor, DataTypePtr> busMap = type->getDatatypesMap();
 

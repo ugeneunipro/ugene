@@ -211,7 +211,7 @@ void GTest_UHMM3Search::prepare() {
 }
 
 QList<Task*> GTest_UHMM3Search::onSubTaskFinished(Task* sub) {
-    assert(nullptr != sub);
+    assert(sub != nullptr);
     QList<Task*> res;
     if (searchTask != sub) {
         return res;
@@ -298,7 +298,7 @@ static UHMM3SearchSeqDomainResult getDomainRes(QStringList& tokens) {
 }
 
 static void readLine(IOAdapter* io, QByteArray& to, QStringList* tokens = nullptr) {
-    assert(nullptr != io);
+    assert(io != nullptr);
     to.clear();
     QByteArray buf(BUF_SZ, TERM_SYM);
     bool there = false;
@@ -319,7 +319,7 @@ static void readLine(IOAdapter* io, QByteArray& to, QStringList* tokens = nullpt
         throw QString("unexpected_end_of_file_found");
     }
 
-    if (nullptr != tokens) {
+    if (tokens != nullptr) {
         *tokens = QString(to).split(QRegExp("\\s+"), QString::SkipEmptyParts);
     }
 }

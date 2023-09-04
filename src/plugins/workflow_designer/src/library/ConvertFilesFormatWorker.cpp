@@ -230,7 +230,7 @@ namespace {
 QString getTargetUrl(Task* task) {
     auto convertFileTask = dynamic_cast<ConvertFileTask*>(task);
 
-    if (nullptr != convertFileTask) {
+    if (convertFileTask != nullptr) {
         return convertFileTask->getResult();
     }
     return "";
@@ -289,10 +289,10 @@ QString ConvertFilesFormatWorker::createWorkingDir(const QString& fileUrl) {
 
 namespace {
 QString getFormatId(const FormatDetectionResult& r) {
-    if (nullptr != r.format) {
+    if (r.format != nullptr) {
         return r.format->getFormatId();
     }
-    if (nullptr != r.importer) {
+    if (r.importer != nullptr) {
         return r.importer->getId();
     }
     return "";

@@ -129,9 +129,9 @@ QString SceneSerializer::xml2scene(const QDomElement& projectElement, WorkflowSc
         Actor* proc = proto->createInstance(id, nullptr);
         actorMap[id] = proc;
         proc->setLabel(procElement.attribute(NAME_ATTR));
-        if (nullptr != proto->getEditor()) {
+        if (proto->getEditor() != nullptr) {
             auto actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
-            if (nullptr != actorEd) {
+            if (actorEd != nullptr) {
                 auto editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);
@@ -153,9 +153,9 @@ QString SceneSerializer::xml2scene(const QDomElement& projectElement, WorkflowSc
     }
     foreach (Actor* proc, actorMap) {
         ActorPrototype* proto = proc->getProto();
-        if (nullptr != proto->getEditor()) {
+        if (proto->getEditor() != nullptr) {
             auto actorEd = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor());
-            if (nullptr != actorEd) {
+            if (actorEd != nullptr) {
                 auto editor = dynamic_cast<ActorConfigurationEditor*>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);

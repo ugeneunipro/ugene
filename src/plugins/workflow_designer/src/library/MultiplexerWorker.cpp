@@ -230,7 +230,7 @@ void MultiplexerWorker::multiplexManyMode() {
 
 QString MultiplexerWorker::getInputActorName(IntegralBus* bus) const {
     Port* port = actor->getPort(bus->getPortId());
-    SAFE_POINT(nullptr != port, L10N::nullPointerError("Port"), "");
+    SAFE_POINT(port != nullptr, L10N::nullPointerError("Port"), "");
     SAFE_POINT(!port->getLinks().isEmpty(), "No input links", "");
     Port* inputPort = port->getLinks().keys().first();
     return inputPort->owner()->getLabel();

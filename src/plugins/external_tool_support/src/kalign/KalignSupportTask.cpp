@@ -131,7 +131,7 @@ void Kalign3SupportTask::prepare() {
         GObject* obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
         if (obj != nullptr) {
             auto alObj = dynamic_cast<MultipleSequenceAlignmentObject*>(obj);
-            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying Kalign results!", );
+            SAFE_POINT(alObj != nullptr, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying Kalign results!", );
             lock = new StateLock("KalignAlignment");
             alObj->lockState(lock);
         }

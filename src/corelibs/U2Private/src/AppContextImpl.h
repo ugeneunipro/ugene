@@ -284,17 +284,17 @@ public:
     }
 
     void setProtocolInfoRegistry(ProtocolInfoRegistry* pr) {
-        assert(protocolInfoRegistry == nullptr || nullptr == pr);
+        assert(protocolInfoRegistry == nullptr || pr == nullptr);
         protocolInfoRegistry = pr;
     }
 
     void setRemoteMachineMonitor(RemoteMachineMonitor* rm) {
-        assert(remoteMachineMonitor == nullptr || nullptr == rm);
+        assert(remoteMachineMonitor == nullptr || rm == nullptr);
         remoteMachineMonitor = rm;
     }
 
     void setPhyTreeGeneratorRegistry(PhyTreeGeneratorRegistry* genRegistry) {
-        assert(treeGeneratorRegistry == nullptr || nullptr == genRegistry);
+        assert(treeGeneratorRegistry == nullptr || genRegistry == nullptr);
         treeGeneratorRegistry = genRegistry;
     }
 
@@ -364,32 +364,32 @@ public:
     }
 
     void setDbiRegistry(U2DbiRegistry* _dbiRegistry) {
-        assert((dbiRegistry == nullptr) || (nullptr == _dbiRegistry));
+        assert((dbiRegistry == nullptr) || (_dbiRegistry == nullptr));
         dbiRegistry = _dbiRegistry;
     }
 
     void setUdrSchemaRegistry(UdrSchemaRegistry* _udrSchemaRegistry) {
-        assert((udrSchemaRegistry == nullptr) || (nullptr == _udrSchemaRegistry));
+        assert((udrSchemaRegistry == nullptr) || (_udrSchemaRegistry == nullptr));
         udrSchemaRegistry = _udrSchemaRegistry;
     }
 
     void setCDSearchFactoryRegistry(CDSearchFactoryRegistry* _cdsfr) {
-        assert((cdsfr == nullptr) || (nullptr == _cdsfr));
+        assert((cdsfr == nullptr) || (_cdsfr == nullptr));
         cdsfr = _cdsfr;
     }
 
     void setSplicedAlignmentTaskRegistry(SplicedAlignmentTaskRegistry* tr) {
-        assert((splicedAlignmentTaskRegistry == nullptr) || (nullptr == tr));
+        assert((splicedAlignmentTaskRegistry == nullptr) || (tr == nullptr));
         splicedAlignmentTaskRegistry = tr;
     }
 
     void setOPCommonWidgetFactoryRegistry(OPCommonWidgetFactoryRegistry* _opCommonWidgetFactoryRegistry) {
-        assert((opCommonWidgetFactoryRegistry == nullptr) || (nullptr == _opCommonWidgetFactoryRegistry));
+        assert((opCommonWidgetFactoryRegistry == nullptr) || (_opCommonWidgetFactoryRegistry == nullptr));
         opCommonWidgetFactoryRegistry = _opCommonWidgetFactoryRegistry;
     }
 
     void setOPWidgetFactoryRegistry(OPWidgetFactoryRegistry* _opWidgetFactoryRegistry) {
-        assert((opWidgetFactoryRegistry == nullptr) || (nullptr == _opWidgetFactoryRegistry));
+        assert((opWidgetFactoryRegistry == nullptr) || (_opWidgetFactoryRegistry == nullptr));
         opWidgetFactoryRegistry = _opWidgetFactoryRegistry;
     }
 

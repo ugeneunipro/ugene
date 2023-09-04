@@ -413,7 +413,7 @@ bool ExternalProcessWorker::finishWorkIfInputEnded(QString& error) {
 
 void ExternalProcessWorker::finish() {
     setDone();
-    if (nullptr != output) {
+    if (output != nullptr) {
         output->setEnded();
     }
 }
@@ -618,7 +618,7 @@ ExternalProcessWorker::InputsCheckResult ExternalProcessWorker::checkInputBusSta
     int inputsWithMessagesCount = 0;
     int finishedInputs = 0;
     foreach (const CommunicationChannel* ch, inputs) {
-        SAFE_POINT(nullptr != ch, "Input is nullptr", INTERNAL_ERROR);
+        SAFE_POINT(ch != nullptr, "Input is nullptr", INTERNAL_ERROR);
         if (0 != ch->hasMessage()) {
             ++inputsWithMessagesCount;
         }

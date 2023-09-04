@@ -166,7 +166,7 @@ const MultipleSequenceAlignment& ProfileToProfileTask::getResult() {
 void ProfileToProfileTask::appendResult(Task* task) {
     subtaskCount--;
     auto t = dynamic_cast<MuscleTask*>(task);
-    SAFE_POINT(nullptr != t, "NULL Muscle task!", );
+    SAFE_POINT(t != nullptr, "NULL Muscle task!", );
 
     const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getMsaRows();
     if (newRows.size() == masterMsa->getMsaRows().size() + 1) {

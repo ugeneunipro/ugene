@@ -60,7 +60,7 @@ McaEditorSequenceArea* GTUtilsMcaEditorSequenceArea::getSequenceArea() {
 QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames() {
     McaEditor* editor = GTUtilsMcaEditor::getEditor();
     McaEditorNameList* nameListArea = GTUtilsMcaEditor::getNameListArea();
-    CHECK_SET_ERR_RESULT(nullptr != nameListArea, "Mca Editor name list area is NULL", QStringList());
+    CHECK_SET_ERR_RESULT(nameListArea != nullptr, "Mca Editor name list area is NULL", QStringList());
 
     const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(
         nameListArea->height());

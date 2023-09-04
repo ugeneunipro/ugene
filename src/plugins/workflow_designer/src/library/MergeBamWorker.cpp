@@ -199,7 +199,7 @@ namespace {
 QString getTargetUrl(Task* task) {
     auto mergeTask = dynamic_cast<MergeBamTask*>(task);
 
-    if (nullptr != mergeTask) {
+    if (mergeTask != nullptr) {
         return mergeTask->getResult();
     }
     return "";

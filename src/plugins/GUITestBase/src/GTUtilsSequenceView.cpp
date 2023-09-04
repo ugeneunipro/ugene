@@ -240,7 +240,7 @@ void GTUtilsSequenceView::addSequenceView(const QString& sequenceName) {
 
 void GTUtilsSequenceView::goToPosition(qint64 position) {
     QToolBar* toolbar = GTToolbar::getToolbar(MWTOOLBAR_ACTIVEMDI);
-    GT_CHECK(nullptr != toolbar, "Can't find the toolbar");
+    GT_CHECK(toolbar != nullptr, "Can't find the toolbar");
 
     GTLineEdit::setText("go_to_pos_line_edit", QString::number(position), toolbar);
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
@@ -352,7 +352,7 @@ QString GTUtilsSequenceView::getSeqName(int number) {
 }
 
 QString GTUtilsSequenceView::getSeqName(ADVSingleSequenceWidget* seqWidget) {
-    GT_CHECK_RESULT(nullptr != seqWidget, "Sequence widget is NULL!", "");
+    GT_CHECK_RESULT(seqWidget != nullptr, "Sequence widget is NULL!", "");
     auto nameLabel = GTWidget::findLabel("nameLabel", seqWidget);
 
     QString labelText = nameLabel->text();
@@ -571,10 +571,10 @@ void GTUtilsSequenceView::setCursor(qint64 position, bool clickOnDirectLine, boo
     DetView* detView = getDetViewByNumber(0);
 
     DetViewRenderArea* renderArea = detView->getDetViewRenderArea();
-    CHECK_SET_ERR(nullptr != renderArea, "DetViewRenderArea is NULL");
+    CHECK_SET_ERR(renderArea != nullptr, "DetViewRenderArea is NULL");
 
     DetViewRenderer* renderer = renderArea->getRenderer();
-    CHECK_SET_ERR(nullptr != renderer, "DetViewRenderer is NULL");
+    CHECK_SET_ERR(renderer != nullptr, "DetViewRenderer is NULL");
 
     U2Region visibleRange = detView->getVisibleRange();
     if (!visibleRange.contains(position)) {

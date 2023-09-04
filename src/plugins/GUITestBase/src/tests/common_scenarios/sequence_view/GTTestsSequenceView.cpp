@@ -2165,19 +2165,19 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
 
     // Expected: the menu appears.
     auto menu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
-    CHECK_SET_ERR(nullptr != menu, "No menu");
+    CHECK_SET_ERR(menu != nullptr, "No menu");
 
     // 3. Click "Show/hide translations".
     GTMenu::clickMenuItem(menu, "do_not_translate_radiobutton");
 
     // Expected: the menu doesn't disappear.
-    CHECK_SET_ERR(nullptr != QApplication::activePopupWidget(), "Menu disappeared 1");
+    CHECK_SET_ERR(QApplication::activePopupWidget() != nullptr, "Menu disappeared 1");
 
     // 4. Click "Show all".
     GTMenu::clickMenuItemByText(menu, {"Show all frames"});
 
     // Expected: the menu doesn't disappear.
-    CHECK_SET_ERR(nullptr != QApplication::activePopupWidget(), "Menu disappeared 2");
+    CHECK_SET_ERR(QApplication::activePopupWidget() != nullptr, "Menu disappeared 2");
 
     // 5. Click somewhere else.
     GTWidget::click(GTUtilsMdi::activeWindow());

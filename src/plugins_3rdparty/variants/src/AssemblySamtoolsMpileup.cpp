@@ -132,7 +132,7 @@ QList<Task*> CallVariantsTask::onSubTaskFinished(Task* subTask) {
         doc->setDocumentOwnsDbiResources(false);
         foreach (GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
             auto varObj = dynamic_cast<VariantTrackObject*>(go);
-            CHECK_EXT(nullptr != varObj, taskLog.error(tr("Incorrect variant track object in %1").arg(doc->getURLString())), res);
+            CHECK_EXT(varObj != nullptr, taskLog.error(tr("Incorrect variant track object in %1").arg(doc->getURLString())), res);
 
             QVariantMap m;
             SharedDbiDataHandler handler = storage->getDataHandler(varObj->getEntityRef());

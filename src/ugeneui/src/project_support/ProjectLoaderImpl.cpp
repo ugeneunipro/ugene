@@ -186,7 +186,7 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     updateState();
 
     IdRegistry<WelcomePageAction>* welcomePageActions = AppContext::getWelcomePageActionRegistry();
-    CHECK(nullptr != welcomePageActions, );
+    CHECK(welcomePageActions != nullptr, );
     welcomePageActions->registerEntry(new LoadDataWelcomePageAction(this));
     welcomePageActions->registerEntry(new CreateSequenceWelcomePageAction(this));
 }
@@ -341,9 +341,9 @@ void prepareDocTab(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_Pr
     }
 
     const MainWindow* mw = AppContext::getMainWindow();
-    CHECK(nullptr != mw, );
+    CHECK(mw != nullptr, );
     MWDockManager* dm = mw->getDockManager();
-    CHECK(nullptr != dm, );
+    CHECK(dm != nullptr, );
 
     {  // do not activate the tab
         dm->dontActivateNextTime(MWDockArea_Left);
@@ -352,16 +352,16 @@ void prepareDocTab(const QList<AD2P_DocumentInfo>& docsInfo, const QList<AD2P_Pr
 }
 
 bool haveFormatsRelations(const FormatDetectionResult& firstFormat, const FormatDetectionResult& secondFormat) {
-    if (nullptr != firstFormat.format && nullptr != secondFormat.format) {
+    if (firstFormat.format != nullptr && secondFormat.format != nullptr) {
         return false;
     }
-    if (nullptr != firstFormat.format && nullptr != secondFormat.importer) {
+    if (firstFormat.format != nullptr && secondFormat.importer != nullptr) {
         return secondFormat.importer->getFormatIds().contains(firstFormat.format->getFormatId());
     }
-    if (nullptr != firstFormat.importer && nullptr != secondFormat.format) {
+    if (firstFormat.importer != nullptr && secondFormat.format != nullptr) {
         return firstFormat.importer->getFormatIds().contains(secondFormat.format->getFormatId());
     }
-    if (nullptr != firstFormat.importer && nullptr != secondFormat.importer) {
+    if (firstFormat.importer != nullptr && secondFormat.importer != nullptr) {
         return !firstFormat.importer->getFormatIds().toSet().intersect(secondFormat.importer->getFormatIds().toSet()).isEmpty();
     }
     return false;

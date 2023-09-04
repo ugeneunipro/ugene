@@ -835,7 +835,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     optionsPanelContainer = GTWidget::findWidget("AddTreeWidget");
 
     QWidget* buildButton = GTWidget::findButtonByText(QObject::tr("Build tree"), optionsPanelContainer);
-    CHECK_SET_ERR(nullptr != buildButton, "The \"Build Tree\" button is not found");
+    CHECK_SET_ERR(buildButton != nullptr, "The \"Build Tree\" button is not found");
 
     // 6. On the "Tree settings" tab press the "Build tree" button
     // Expected state: the "Build Phylogenetic Tree" dialog has appeared

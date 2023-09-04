@@ -39,7 +39,7 @@ int randInt(int low, int high) {
 }
 
 GTAbstractGUIAction* GTRandomGUIActionFactory::create(QObject* obj) {
-    SAFE_POINT(nullptr != obj, "", nullptr);
+    SAFE_POINT(obj != nullptr, "", nullptr);
 
     GTAbstractGUIAction* action = nullptr;
     for (const QMetaObject* metaObj = obj->metaObject(); metaObj != nullptr; metaObj = metaObj->superClass()) {
@@ -48,7 +48,7 @@ GTAbstractGUIAction* GTRandomGUIActionFactory::create(QObject* obj) {
 
         GTAbstractGUIActionMap::const_iterator mappedIterator = actionMap.constFind(className);
         const GTAbstractGUIAction* mappedAction = actionMap.constEnd() == mappedIterator ? nullptr : actionMap[className];
-        if (nullptr != mappedAction) {
+        if (mappedAction != nullptr) {
             uiLog.trace(QString("Found GUIAction for %1").arg(className));
             action = mappedAction->clone();
             action->init(obj);
@@ -71,7 +71,7 @@ public:
     }
     virtual void run() {
         auto objCasted = qobject_cast<QWidget*>(obj);
-        SAFE_POINT(nullptr != objCasted, "", );
+        SAFE_POINT(objCasted != nullptr, "", );
 
         GTWidget::click(objCasted);
     }
@@ -89,7 +89,7 @@ public:
     }
     virtual void run() {
         auto objCasted = qobject_cast<QFileDialog*>(obj);
-        SAFE_POINT(nullptr != objCasted, "", );
+        SAFE_POINT(objCasted != nullptr, "", );
 
         QString findPath = UGUITest::dataDir;
         QDir dir(findPath);

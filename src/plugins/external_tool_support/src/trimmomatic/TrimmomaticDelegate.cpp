@@ -221,7 +221,7 @@ void TrimmomaticPropertyDialog::sl_valuesChanged() {
     for (int i = 0; i < steps.size(); i++) {
         const bool isStepValid = steps[i]->validate();
         QListWidgetItem* item = listSteps->item(i);
-        SAFE_POINT(nullptr != item, QString("Item with number %1 is NULL").arg(i), );
+        SAFE_POINT(item != nullptr, QString("Item with number %1 is NULL").arg(i), );
         item->setBackgroundColor(isStepValid ? GUIUtils::OK_COLOR : GUIUtils::WARNING_COLOR);
         isValid = isValid && isStepValid;
     }
@@ -346,7 +346,7 @@ void TrimmomaticPropertyDialog::parseCommand(const QString& command) {
         const QString stepCommand = stepCommands.next().captured();
         const QString stepId = stepCommand.left(stepCommand.indexOf(":"));
         TrimmomaticStepFactory* stepFactory = TrimmomaticStepsRegistry::getInstance()->getById(stepId);
-        CHECK_CONTINUE(nullptr != stepFactory);
+        CHECK_CONTINUE(stepFactory != nullptr);
 
         TrimmomaticStep* step = stepFactory->createStep();
         step->setCommand(stepCommand);

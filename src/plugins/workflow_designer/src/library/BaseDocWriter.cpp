@@ -79,7 +79,7 @@ void BaseDocWriter::takeParameters(U2OpStatus& os) {
         dataStorage = LocalFs;
 
         Attribute* formatAttr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-        if (nullptr != formatAttr) {  // user sets format
+        if (formatAttr != nullptr) {  // user sets format
             QString formatId = formatAttr->getAttributeValue<QString>(context);
             format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
         }
@@ -140,7 +140,7 @@ QString BaseDocWriter::getSuffix() const {
 }
 
 QString BaseDocWriter::getExtension() const {
-    CHECK(nullptr != format, "");
+    CHECK(format != nullptr, "");
     QStringList exts = format->getSupportedDocumentFileExtensions();
     CHECK(!exts.isEmpty(), "");
     return exts.first();
@@ -397,7 +397,7 @@ Task* BaseDocWriter::createWriteToSharedDbTask(const QVariantMap& data) {
 
 void BaseDocWriter::sl_objectImported(Task* importTask) {
     auto realTask = qobject_cast<ImportObjectToDatabaseTask*>(importTask);
-    SAFE_POINT(nullptr != realTask, "Invalid task detected", );
+    SAFE_POINT(realTask != nullptr, "Invalid task detected", );
     delete realTask->getSourceObject();
 }
 
@@ -439,7 +439,7 @@ QString BaseDocWriter::getUniqueObjectName(const Document* doc, const QString& n
     QString result = name;
     int num = 0;
     bool found = false;
-    while (nullptr != doc->findGObjectByName(result)) {
+    while (doc->findGObjectByName(result) != nullptr) {
         found = true;
         num++;
         result = name + QString("_%1").arg(num);

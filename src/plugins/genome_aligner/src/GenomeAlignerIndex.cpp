@@ -350,7 +350,7 @@ void GenomeAlignerIndex::alignShortRead(SearchQuery* qu, BMType bitValue, int st
         if (qu->haveResult()) {
             bestC = qu->firstMCount();
         }
-        if (nullptr != qu->getRevCompl() && qu->getRevCompl()->haveResult()) {
+        if (qu->getRevCompl() != nullptr && qu->getRevCompl()->haveResult()) {
             int cRev = qu->getRevCompl()->firstMCount();
             if (cRev < bestC) {
                 bestC = cRev;

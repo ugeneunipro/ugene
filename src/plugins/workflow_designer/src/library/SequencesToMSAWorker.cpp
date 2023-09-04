@@ -93,7 +93,7 @@ void SequencesToMSAWorker::sl_onTaskFinished(Task* t) {
             ma->setName("Multiple alignment");
         }
 
-        SAFE_POINT(nullptr != outPort, "NULL outPort!", );
+        SAFE_POINT(outPort != nullptr, "NULL outPort!", );
         SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(ma);
 
         outPort->put(Message(BaseTypes::MULTIPLE_ALIGNMENT_TYPE(), qVariantFromValue<SharedDbiDataHandler>(msaId)));

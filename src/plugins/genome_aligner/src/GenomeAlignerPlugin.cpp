@@ -117,7 +117,7 @@ void GenomeAlignerPlugin::processCMDLineOptions() {
 
 void GenomeAlignerPlugin::registerCMDLineHelp() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(nullptr != cmdLineRegistry);
+    assert(cmdLineRegistry != nullptr);
 
     CMDLineHelpProvider* taskSection = new CMDLineHelpProvider(
         RUN_GENOME_ALIGNER,

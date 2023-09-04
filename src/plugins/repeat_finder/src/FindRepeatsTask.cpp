@@ -134,7 +134,7 @@ QList<Task*> FindRepeatsTask::onSubTaskFinished(Task* subTask) {
         return res;
     }
     auto t = qobject_cast<FindTandemsToAnnotationsTask*>(subTask);
-    if (nullptr != t) {
+    if (t != nullptr) {
         if (t == tandemTask1) {
             filterTandems(t->getResult(), seq1);
         } else {

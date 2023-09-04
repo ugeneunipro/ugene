@@ -208,7 +208,7 @@ void HmmerBuildDialog::sl_buildButtonClicked() {
     } else {
         buildTask = new HmmerBuildFromFileTask(model.buildSettings, model.inputFile);
     }
-    assert(nullptr != buildTask);
+    assert(buildTask != nullptr);
 
     AppContext::getTaskScheduler()->registerTopLevelTask(buildTask);
     QDialog::accept();

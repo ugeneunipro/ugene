@@ -358,7 +358,7 @@ void MWMDIManagerImpl::clearMDIContent(bool addCloseAction) {
 
 void MWMDIManagerImpl::onWindowsSwitched(QMdiSubWindow* deactivated, MWMDIWindow* activated) {
     MDIItem* deItem = getMDIItem(deactivated);
-    if ((nullptr != deItem) && (nullptr != deItem->w)) {
+    if ((deItem != nullptr) && (deItem->w != nullptr)) {
         emit si_windowDeactivated(deItem->w);
     }
     emit si_windowActivated(activated);

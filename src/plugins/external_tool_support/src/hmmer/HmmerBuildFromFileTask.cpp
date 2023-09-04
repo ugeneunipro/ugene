@@ -70,7 +70,7 @@ QList<Task*> HmmerBuildFromFileTask::onSubTaskFinished(Task* subTask) {
 }
 
 Task::ReportResult HmmerBuildFromFileTask::report() {
-    if (nullptr != convertTask) {
+    if (convertTask != nullptr) {
         QFile(convertTask->getResultUrl()).remove();
     }
     return ReportResult_Finished;

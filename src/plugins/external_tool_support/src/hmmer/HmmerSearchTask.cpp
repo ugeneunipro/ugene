@@ -59,7 +59,7 @@ HmmerSearchTask::HmmerSearchTask(const HmmerSearchSettings& settings)
 }
 
 QList<SharedAnnotationData> HmmerSearchTask::getAnnotations() const {
-    CHECK(nullptr != parseTask, QList<SharedAnnotationData>());
+    CHECK(parseTask != nullptr, QList<SharedAnnotationData>());
     return parseTask->getAnnotations();
 }
 
@@ -67,7 +67,7 @@ void HmmerSearchTask::prepare() {
     prepareWorkingDir();
 
     if (settings.sequenceUrl.isEmpty()) {
-        SAFE_POINT_EXT(nullptr != settings.sequence, setError(L10N::nullPointerError("sequence object")), );
+        SAFE_POINT_EXT(settings.sequence != nullptr, setError(L10N::nullPointerError("sequence object")), );
         prepareSequenceSaveTask();
         addSubTask(saveSequenceTask);
     } else {
@@ -110,7 +110,7 @@ QString HmmerSearchTask::generateReport() const {
         return res;
     }
 
-    if (nullptr != settings.annotationTable && nullptr != settings.annotationTable->getDocument()) {
+    if (settings.annotationTable != nullptr && settings.annotationTable->getDocument() != nullptr) {
         res += "<tr><td><b>" + tr("Result annotation table: ") + "</b></td><td>" + settings.annotationTable->getDocument()->getName() + "</td></tr>";
     }
     res += "<tr><td><b>" + tr("Result annotation group: ") + "</b></td><td>" + settings.pattern.groupName + "</td></tr>";

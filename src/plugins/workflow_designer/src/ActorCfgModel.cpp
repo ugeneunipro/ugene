@@ -58,15 +58,15 @@ void ActorCfgModel::setActor(Actor* cfg) {
     listValues.clear();
     attrs.clear();
     subject = cfg;
-    if (nullptr != cfg) {
+    if (cfg != nullptr) {
         attrs = cfg->getAttributes();
         setupAttributesScripts();
 
         ConfigurationEditor* editor = subject->getEditor();
-        if (nullptr != editor) {
+        if (editor != nullptr) {
             foreach (Attribute* attr, attrs) {
                 PropertyDelegate* delegate = editor->getDelegate(attr->getId());
-                if (nullptr != delegate) {
+                if (delegate != nullptr) {
                     delegate->setSchemaConfig(schemaConfig);
                 }
             }
@@ -159,8 +159,8 @@ int ActorCfgModel::rowCount(const QModelIndex& parent) const {
 }
 
 bool ActorCfgModel::isVisible(Attribute* a) const {
-    CHECK(nullptr != subject, true);
-    if (nullptr != dynamic_cast<URLAttribute*>(a)) {
+    CHECK(subject != nullptr, true);
+    if (dynamic_cast<URLAttribute*>(a) != nullptr) {
         return false;
     }
     return subject->isAttributeVisible(a);
@@ -171,7 +171,7 @@ Qt::ItemFlags ActorCfgModel::flags(const QModelIndex& index) const {
     int row = index.row();
 
     Attribute* currentAttribute = getAttributeByRow(row);
-    SAFE_POINT(nullptr != currentAttribute, "Unexpected attribute", Qt::NoItemFlags);
+    SAFE_POINT(currentAttribute != nullptr, "Unexpected attribute", Qt::NoItemFlags);
     if (!isVisible(currentAttribute)) {
         return Qt::NoItemFlags;
     }
@@ -233,7 +233,7 @@ Attribute* ActorCfgModel::getAttributeByRow(int row) const {
 QModelIndex ActorCfgModel::modelIndexById(const QString& id) const {
     for (int i = 0; i < attrs.size(); i++) {
         Attribute* a = getAttributeByRow(i);
-        if (nullptr != a && a->getId() == id) {
+        if (a != nullptr && a->getId() == id) {
             QModelIndex modelIndex = index(i, 1);
             return modelIndex;
         }
@@ -243,7 +243,7 @@ QModelIndex ActorCfgModel::modelIndexById(const QString& id) const {
 
 QVariant ActorCfgModel::data(const QModelIndex& index, int role) const {
     const Attribute* currentAttribute = getAttributeByRow(index.row());
-    SAFE_POINT(nullptr != currentAttribute, "Invalid attribute", QVariant());
+    SAFE_POINT(currentAttribute != nullptr, "Invalid attribute", QVariant());
     if (role == DescriptorRole) {  // descriptor that will be shown in under editor. 'propDoc' in WorkflowEditor
         return qVariantFromValue<Descriptor>(*currentAttribute);
     }
@@ -344,9 +344,9 @@ namespace {
 
 DelegateTags* getTags(Actor* subject, const QString& attrId) {
     ConfigurationEditor* editor = subject->getEditor();
-    CHECK(nullptr != editor, nullptr);
+    CHECK(editor != nullptr, nullptr);
     PropertyDelegate* delegate = editor->getDelegate(attrId);
-    CHECK(nullptr != delegate, nullptr);
+    CHECK(delegate != nullptr, nullptr);
     return delegate->tags();
 }
 

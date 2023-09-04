@@ -40,10 +40,10 @@ ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject* object)
     : Task(tr("Import primer from the shared database object: %1").arg(object == nullptr ? "N/A" : object->getGObjectName()),
            TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
       validator(this) {
-    SAFE_POINT_EXT(nullptr != object, setError(L10N::nullPointerError("an input object")), );
+    SAFE_POINT_EXT(object != nullptr, setError(L10N::nullPointerError("an input object")), );
     SAFE_POINT_EXT(GObjectTypes::SEQUENCE == object->getGObjectType(), setError(tr("A non-sequence object was provided")), );
     sequenceObject = qobject_cast<U2SequenceObject*>(object);
-    SAFE_POINT_EXT(nullptr != sequenceObject, setError(L10N::nullPointerError("sequence object")), );
+    SAFE_POINT_EXT(sequenceObject != nullptr, setError(L10N::nullPointerError("sequence object")), );
     SAFE_POINT_EXT(sequenceObject->getAlphabet(), setError(L10N::nullPointerError("sequence alphabet")), );
     CHECK_EXT(sequenceObject->getAlphabet()->isDNA(), setError(tr("The sequence has an unsupported alphabet: only nucleotide alphabet is supported")), );
     CHECK_EXT(sequenceObject->getSequenceLength() < Primer::MAX_LEN, setError(tr("Can't convert a sequence to primer: the sequence is too long")), );

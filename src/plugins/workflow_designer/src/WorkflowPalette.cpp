@@ -263,10 +263,10 @@ void WorkflowPaletteElements::createMenu(QMenu* menu) {
         }
     }
 
-    if (nullptr != dataSource) {
+    if (dataSource != nullptr) {
         menu->insertMenu(firstAction, dataSource);
     }
-    if (nullptr != dataSink) {
+    if (dataSink != nullptr) {
         menu->insertMenu(firstAction, dataSink);
     }
     if (userScript) {
@@ -735,7 +735,7 @@ bool WorkflowPaletteElements::editPrototypeWithoutElementRemoving(Workflow::Acto
     replaceConfigFiles(proto, newConfig);
 
     ExternalProcessConfig* currentConfig = IncludedProtoFactory::getExternalToolWorker(proto->getId());
-    SAFE_POINT(nullptr != currentConfig, "ExternalProcessConfig is absent", false);
+    SAFE_POINT(currentConfig != nullptr, "ExternalProcessConfig is absent", false);
 
     replaceOldConfigWithNewConfig(currentConfig, newConfig);
 

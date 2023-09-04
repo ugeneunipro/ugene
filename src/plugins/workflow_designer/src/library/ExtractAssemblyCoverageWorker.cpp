@@ -79,7 +79,7 @@ void ExtractAssemblyCoverageWorker::cleanup() {
 
 void ExtractAssemblyCoverageWorker::sl_taskFinished() {
     auto task = dynamic_cast<ExportCoverageTask*>(sender());
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(task->isFinished() && !task->hasError() && !task->isCanceled(), );
 
     monitor()->addOutputFile(task->getUrl(), getActorId());
@@ -87,7 +87,7 @@ void ExtractAssemblyCoverageWorker::sl_taskFinished() {
 
 bool ExtractAssemblyCoverageWorker::hasAssembly() const {
     const IntegralBus* port = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
-    SAFE_POINT(nullptr != port, "NULL assembly port", false);
+    SAFE_POINT(port != nullptr, "NULL assembly port", false);
     return port->hasMessage();
 }
 
@@ -140,7 +140,7 @@ Task* ExtractAssemblyCoverageWorker::createTask(const U2EntityRef& assembly) {
 
 void ExtractAssemblyCoverageWorker::finish() {
     IntegralBus* inPort = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
-    SAFE_POINT(nullptr != inPort, "NULL assembly port", );
+    SAFE_POINT(inPort != nullptr, "NULL assembly port", );
     SAFE_POINT(inPort->isEnded(), "The assembly is not ended", );
 
     setDone();
@@ -296,7 +296,7 @@ QVariant ExtractAssemblyCoverageFileExtensionRelation::getAffectResult(const QVa
 
 void ExtractAssemblyCoverageFileExtensionRelation::updateDelegateTags(const QVariant& influencingValue, DelegateTags* dependentTags) const {
     const ExportCoverageSettings::Format newFormat = static_cast<ExportCoverageSettings::Format>(influencingValue.toInt());
-    if (nullptr != dependentTags) {
+    if (dependentTags != nullptr) {
         dependentTags->set("extensions", QStringList() << ExportCoverageSettings::getFormatExtension(newFormat) << ExportCoverageSettings::getFormatExtension(newFormat) + ExportCoverageSettings::COMPRESSED_EXTENSION);
         QString filter = FileFilters::createFileFilter(ExportCoverageSettings::getFormat(newFormat) + " coverage files", {ExportCoverageSettings::getFormatExtension(newFormat)});
         dependentTags->set("filter", filter);

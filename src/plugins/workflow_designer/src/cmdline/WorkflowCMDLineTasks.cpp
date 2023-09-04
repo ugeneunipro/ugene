@@ -183,8 +183,8 @@ QList<Task*> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task* subTask) {
 
 void WorkflowRunFromCMDLineBase::run() {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    SAFE_POINT(nullptr != cmdLineRegistry, "CMDLineRegistry is NULL", );
-    CHECK(nullptr != workflowRunTask, );
+    SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is NULL", );
+    CHECK(workflowRunTask != nullptr, );
 
     const QString reportFilePath = cmdLineRegistry->getParameterValue(CmdlineTaskRunner::REPORT_FILE_ARG);
     CHECK(!reportFilePath.isEmpty(), );

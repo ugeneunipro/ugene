@@ -224,7 +224,7 @@ ActorPrototype* IncludedProtoFactoryImpl::_getSchemaActorProto(Schema* schema, c
 
                 attrs << new Attribute(attrDesc, origAttr->getAttributeType(), origAttr->getFlags(), origAttr->getAttributePureValue());
                 PropertyDelegate* d = ed->getDelegate(attrId);
-                if (nullptr != d) {
+                if (d != nullptr) {
                     delegateMap[attrDesc.getId()] = d->clone();
                 }
             }

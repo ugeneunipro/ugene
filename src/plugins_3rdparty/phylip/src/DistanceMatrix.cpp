@@ -276,7 +276,7 @@ DistanceMatrix::DistanceMatrix()
 }
 
 DistanceMatrix::~DistanceMatrix() {
-    if (nullptr != y) {
+    if (y != nullptr) {
         for (int i = 0; i < spp; i++) {
             free(y[i]);
         }
@@ -284,7 +284,7 @@ DistanceMatrix::~DistanceMatrix() {
         y = nullptr;
     }
 
-    if (nullptr != nodep) {
+    if (nodep != nullptr) {
         for (int i = 0; i < spp; i++) {
             for (int j = 0; j < endsite; j++) {
                 free(nodep[i]->x[j]);
@@ -316,7 +316,7 @@ DistanceMatrix::~DistanceMatrix() {
     free(weightrat);
     weightrat = nullptr;
 
-    if (nullptr != d) {
+    if (d != nullptr) {
         for (int i = 0; i < spp; i++) {
             free(d[i]);
         }

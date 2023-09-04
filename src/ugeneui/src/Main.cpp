@@ -183,7 +183,7 @@ BOOL IsWow64() {
     fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
         GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
 
-    if (nullptr != fnIsWow64Process) {
+    if (fnIsWow64Process != nullptr) {
         if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
             // handle error
         }

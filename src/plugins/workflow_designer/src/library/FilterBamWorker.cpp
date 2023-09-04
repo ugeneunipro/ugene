@@ -265,7 +265,7 @@ namespace {
 QString getTargetUrl(Task* task) {
     auto filterTask = dynamic_cast<SamtoolsViewFilterTask*>(task);
 
-    if (nullptr != filterTask) {
+    if (filterTask != nullptr) {
         return filterTask->getResult();
     }
     return "";

@@ -2292,8 +2292,8 @@ GUI_TEST_CLASS_DEFINITION(test_2406) {
     WorkflowProcessItem* sequenceReader = GTUtilsWorkflowDesigner::getWorker(sequenceReaderName);
     WorkflowProcessItem* sequenceWriter = GTUtilsWorkflowDesigner::getWorker(sequenceWriterName);
 
-    CHECK_SET_ERR(nullptr != sequenceReader, "Sequence reader element is NULL");
-    CHECK_SET_ERR(nullptr != sequenceWriter, "Sequence writer element is NULL");
+    CHECK_SET_ERR(sequenceReader != nullptr, "Sequence reader element is NULL");
+    CHECK_SET_ERR(sequenceWriter != nullptr, "Sequence writer element is NULL");
 
     GTUtilsWorkflowDesigner::connect(sequenceReader, sequenceWriter);
 
@@ -3027,7 +3027,7 @@ GUI_TEST_CLASS_DEFINITION(test_2567) {
 
     // 3. Enter the pattern: GCTAGCTTAAGTAACGCCAC
     QWidget* patternInputLine = QApplication::focusWidget();
-    CHECK_SET_ERR(nullptr != patternInputLine && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
+    CHECK_SET_ERR(patternInputLine != nullptr && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
 
     GTKeyboardDriver::keySequence("GCTAGCTTAAGTAACGCCAC");
 
@@ -3157,7 +3157,7 @@ GUI_TEST_CLASS_DEFINITION(test_2578) {
     GTWidget::click(GTWidget::findWidget("OP_MSA_HIGHLIGHTING"));
 
     exportButton = GTWidget::findWidget("exportHighlightning");
-    CHECK_SET_ERR(nullptr != exportButton, "exportButton not found");
+    CHECK_SET_ERR(exportButton != nullptr, "exportButton not found");
     CHECK_SET_ERR(exportButton->isEnabled(), "exportButton is disabled unexpectedly");
 }
 
@@ -3879,7 +3879,7 @@ GUI_TEST_CLASS_DEFINITION(test_2729) {
     GTFileDialog::openFile(testDir + "_common_data/fasta/", "AMINO.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
     QAbstractButton* graphsButton = GTAction::button("GraphMenuAction", GTUtilsSequenceView::getSeqWidgetByNumber());
-    CHECK_SET_ERR(nullptr != graphsButton, "Graphs button is NULL");
+    CHECK_SET_ERR(graphsButton != nullptr, "Graphs button is NULL");
     CHECK_SET_ERR(!graphsButton->isEnabled(), "Graphs button is unexpectedly enabled");
 
     //    2. Click the "Graphs" button.
@@ -3942,7 +3942,7 @@ GUI_TEST_CLASS_DEFINITION(test_2737_1) {
 
     // 2. Delete all annotations in random order;
     QTreeWidgetItem* annotation = nullptr;
-    while (nullptr != (annotation = GTUtilsAnnotationsTreeView::findFirstAnnotation({false}))) {
+    while ((annotation = GTUtilsAnnotationsTreeView::findFirstAnnotation({false})) != nullptr) {
         uiLog.trace("annotation text is: " + annotation->text(0));
         GTUtilsAnnotationsTreeView::deleteItem(annotation);
     }
@@ -4764,9 +4764,9 @@ GUI_TEST_CLASS_DEFINITION(test_2910_2) {
             GTLineEdit::setText(regionEdit, "0..5000");
 
             auto buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(nullptr != buttonBox, "button box is null");
+            CHECK_SET_ERR(buttonBox != nullptr, "button box is null");
             QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(nullptr != button, "cancel button is null");
+            CHECK_SET_ERR(button != nullptr, "cancel button is null");
             QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(!okButton->isEnabled(), "OK button is unexpectedly enabled");
             GTWidget::click(button);
@@ -4800,9 +4800,9 @@ GUI_TEST_CLASS_DEFINITION(test_2910_3) {
             GTLineEdit::setText(regionEdit, "1..199951");
 
             auto buttonBox = w->findChild<QDialogButtonBox*>("buttonBox");
-            CHECK_SET_ERR(nullptr != buttonBox, "button box is null");
+            CHECK_SET_ERR(buttonBox != nullptr, "button box is null");
             QPushButton* button = buttonBox->button(QDialogButtonBox::Cancel);
-            CHECK_SET_ERR(nullptr != button, "cancel button is null");
+            CHECK_SET_ERR(button != nullptr, "cancel button is null");
             QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
             CHECK_SET_ERR(!okButton->isEnabled(), "OK button is unexpectedly enabled");
             GTWidget::click(button);
@@ -5146,7 +5146,7 @@ GUI_TEST_CLASS_DEFINITION(test_2975) {
     GTUtilsOptionPanelMsa::setPairwiseAlignmentAlgorithm("Smith-Waterman");
 
     QPushButton* alignButton = GTUtilsOptionPanelMsa::getAlignButton();
-    CHECK_SET_ERR(nullptr != alignButton, "Align button is NULL");
+    CHECK_SET_ERR(alignButton != nullptr, "Align button is NULL");
     CHECK_SET_ERR(!alignButton->isEnabled(), "Align button is unexpectedly enabled");
 }
 

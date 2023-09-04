@@ -158,7 +158,7 @@ void ReadVariationTask::run() {
 
     foreach (GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
         auto trackObj = dynamic_cast<VariantTrackObject*>(go);
-        CHECK_EXT(nullptr != trackObj, taskLog.error(tr("Incorrect track object in %1").arg(url)), )
+        CHECK_EXT(trackObj != nullptr, taskLog.error(tr("Incorrect track object in %1").arg(url)), )
 
         QVariantMap m;
         m[BaseSlots::URL_SLOT().getId()] = url;

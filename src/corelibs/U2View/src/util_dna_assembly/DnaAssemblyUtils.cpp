@@ -215,7 +215,7 @@ ConvertFileTask* getConvertTask(const GUrl& url, const QStringList& targetFormat
 #define PREPARE_FILE(url, targetFormats) \
     if (!toConvert.contains(url.getURLString())) { \
         ConvertFileTask* task = getConvertTask(url, targetFormats); \
-        if (nullptr != task) { \
+        if (task != nullptr) { \
             addSubTask(task); \
             conversionTasksCount++; \
             toConvert << url.getURLString(); \

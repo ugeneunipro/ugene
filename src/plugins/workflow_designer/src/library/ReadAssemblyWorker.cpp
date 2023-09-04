@@ -68,9 +68,9 @@ void ReadAssemblyWorker::init() {
 
 Task* ReadAssemblyWorker::createReadTask(const QString& url, const QString& datasetName) {
     WorkflowTasksRegistry* registry = WorkflowEnv::getWorkflowTasksRegistry();
-    SAFE_POINT(nullptr != registry, "NULL WorkflowTasksRegistry", nullptr);
+    SAFE_POINT(registry != nullptr, "NULL WorkflowTasksRegistry", nullptr);
     ReadDocumentTaskFactory* factory = registry->getReadDocumentTaskFactory(ReadFactories::READ_ASSEMBLY);
-    SAFE_POINT(nullptr != factory, QString("NULL WorkflowTasksRegistry: %1").arg(ReadFactories::READ_ASSEMBLY), nullptr);
+    SAFE_POINT(factory != nullptr, QString("NULL WorkflowTasksRegistry: %1").arg(ReadFactories::READ_ASSEMBLY), nullptr);
 
     QVariantMap hints;
     hints[BaseSlots::DATASET_SLOT().getId()] = datasetName;

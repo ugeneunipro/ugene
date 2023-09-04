@@ -97,25 +97,25 @@ void AlignShortReadsFiller::setCommonParameters(QWidget* dialog) {
 
 void AlignShortReadsFiller::setAdditionalParameters(QWidget* dialog) {
     auto bowtie2Parameters = dynamic_cast<Bowtie2Parameters*>(parameters);
-    if (nullptr != bowtie2Parameters) {
+    if (bowtie2Parameters != nullptr) {
         setBowtie2AdditionalParameters(bowtie2Parameters, dialog);
         return;
     }
 
     auto ugaParameters = dynamic_cast<UgeneGenomeAlignerParams*>(parameters);
-    if (nullptr != ugaParameters) {
+    if (ugaParameters != nullptr) {
         setUgaAdditionalParameters(ugaParameters, dialog);
         return;
     }
 
     auto bwaSwParameters = dynamic_cast<BwaSwParameters*>(parameters);
-    if (nullptr != bwaSwParameters) {
+    if (bwaSwParameters != nullptr) {
         setBwaSwAdditionalParameters(bwaSwParameters, dialog);
         return;
     }
 
     auto bwaParameters = dynamic_cast<BwaParameters*>(parameters);
-    if (nullptr != bwaParameters) {
+    if (bwaParameters != nullptr) {
         setBwaAdditionalParameters(bwaParameters, dialog);
         return;
     }

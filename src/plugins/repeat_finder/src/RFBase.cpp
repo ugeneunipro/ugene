@@ -100,11 +100,11 @@ void RFAlgorithmBase::addToResults(const RFResult& r) {
 #ifdef _DEBUG
     checkResult(r);
 #endif
-    CHECK_EXT(nullptr != resultsListener, cancel(), );
+    CHECK_EXT(resultsListener != nullptr, cancel(), );
     resultsListener->onResult(r);
     if (reflective && reportReflected) {
         assert(r.x != r.y);
-        CHECK_EXT(nullptr != resultsListener, cancel(), );
+        CHECK_EXT(resultsListener != nullptr, cancel(), );
         resultsListener->onResult(RFResult(r.y, r.x, r.l, r.c));
     }
 }
@@ -114,7 +114,7 @@ void RFAlgorithmBase::addToResults(const QVector<RFResult>& results) {
 #ifdef _DEBUG
     checkResults(results);
 #endif
-    CHECK_EXT(nullptr != resultsListener, cancel(), );
+    CHECK_EXT(resultsListener != nullptr, cancel(), );
     resultsListener->onResults(results);
     if (reflective && reportReflected) {
         QVector<RFResult> complResults;
@@ -131,7 +131,7 @@ void RFAlgorithmBase::addToResults(const QVector<RFResult>& results) {
             }
             complResults.append(RFResult(r.y, r.x, r.l, r.c));
         }
-        CHECK_EXT(nullptr != resultsListener, cancel(), );
+        CHECK_EXT(resultsListener != nullptr, cancel(), );
         resultsListener->onResults(complResults);
     }
 }
@@ -143,7 +143,7 @@ void RFAlgorithmBase::prepare() {
     }
     if (reflective && reportReflected) {
         assert(SIZE_X == SIZE_Y);
-        CHECK_EXT(nullptr != resultsListener, cancel(), );
+        CHECK_EXT(resultsListener != nullptr, cancel(), );
         resultsListener->onResult(RFResult(0, 0, SIZE_X));
     }
 }

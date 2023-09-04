@@ -232,7 +232,7 @@ void MuscleWorker::sl_taskFinished() {
         return;
     }
 
-    SAFE_POINT(nullptr != output, "NULL output!", );
+    SAFE_POINT(output != nullptr, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(t->resultMA);
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);

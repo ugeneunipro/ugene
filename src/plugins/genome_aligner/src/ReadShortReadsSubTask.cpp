@@ -186,7 +186,7 @@ void ReadShortReadsSubTask::run() {
             break;
         }
 
-        SAFE_POINT(nullptr != dataBunch, "No dataBunch", );
+        SAFE_POINT(dataBunch != nullptr, "No dataBunch", );
         if (dataBunch->bitValuesV.size() > DROP_BUNCH_DATA_SIZE) {
             dropToAlignContext();
             readNum = 0;
@@ -199,8 +199,8 @@ void ReadShortReadsSubTask::run() {
 }
 
 inline bool ReadShortReadsSubTask::add(int& CMAX, int& W, int& q, int& readNum, SearchQuery* query, GenomeAlignerTask* parent) {
-    SAFE_POINT(nullptr != dataBunch, "No dataBunch", false);
-    SAFE_POINT(nullptr != query, "No query", false);
+    SAFE_POINT(dataBunch != nullptr, "No dataBunch", false);
+    SAFE_POINT(query != nullptr, "No query", false);
 
     W = query->length();
     if (!alignContext.absMismatches) {
@@ -210,7 +210,7 @@ inline bool ReadShortReadsSubTask::add(int& CMAX, int& W, int& q, int& readNum, 
     CHECK_EXT(0 != q, , false);
 
     const char* querySeq = query->constData();
-    SAFE_POINT(nullptr != querySeq, "No querySeq", false);
+    SAFE_POINT(querySeq != nullptr, "No querySeq", false);
 
     int win = query->length() < GenomeAlignerTask::MIN_SHORT_READ_LENGTH ? GenomeAlignerTask::calculateWindowSize(alignContext.absMismatches,
                                                                                                                   alignContext.nMismatches,

@@ -124,7 +124,7 @@ void DownloadRemoteFileDialogFiller::selectSaveToDirectoryPath(const QVariant& a
 void DownloadRemoteFileDialogFiller::setOutputFormat(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<QString>(), "Can't get format name from the action data");
     auto formatBox = GTWidget::findComboBox("formatBox", dialog);
-    GT_CHECK(nullptr != formatBox, "Format combobox was not found");
+    GT_CHECK(formatBox != nullptr, "Format combobox was not found");
     GT_CHECK(formatBox->isVisible(), "Format combobox is invisible");
     GTComboBox::selectItemByText(formatBox, actionData.toString());
 }
@@ -132,7 +132,7 @@ void DownloadRemoteFileDialogFiller::setOutputFormat(const QVariant& actionData)
 void DownloadRemoteFileDialogFiller::setForceSequenceDownload(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<bool>(), "Can't get checkbox state from the action data");
     auto chbForceDownloadSequence = GTWidget::findCheckBox("chbForceDownloadSequence", dialog);
-    GT_CHECK(nullptr != chbForceDownloadSequence, "Force download sequence checkbox was not found");
+    GT_CHECK(chbForceDownloadSequence != nullptr, "Force download sequence checkbox was not found");
     GT_CHECK(chbForceDownloadSequence->isVisible(), "Force download sequence checkbox is invisible");
     GTCheckBox::setChecked(chbForceDownloadSequence, actionData.toBool());
 }

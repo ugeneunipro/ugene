@@ -188,8 +188,8 @@ bool DocumentUpdater::isAnyDialogOpened() const {
 namespace {
 
 void removeDocFromProject(Project* proj, Document* doc) {
-    SAFE_POINT(nullptr != proj, L10N::nullPointerError("Project"), );
-    SAFE_POINT(nullptr != doc, L10N::nullPointerError("Document"), );
+    SAFE_POINT(proj != nullptr, L10N::nullPointerError("Project"), );
+    SAFE_POINT(doc != nullptr, L10N::nullPointerError("Document"), );
 
     proj->removeRelations(doc->getURLString());
     proj->removeDocument(doc);
@@ -206,7 +206,7 @@ bool DocumentUpdater::makeDecision(Document* doc, QListIterator<Document*>& iter
                                                             QMessageBox::Yes | QMessageBox::No | QMessageBox::NoToAll);
 
     Project* activeProject = AppContext::getProject();
-    SAFE_POINT(nullptr != activeProject, L10N::nullPointerError("Project"), false);
+    SAFE_POINT(activeProject != nullptr, L10N::nullPointerError("Project"), false);
 
     switch (btn) {
         case QMessageBox::Yes: {
@@ -285,7 +285,7 @@ void DocumentUpdater::notifyUserAndProcessRemovedDocuments(const QList<Document*
         CHECK(!warningBox.isNull(), );
 
         Project* activeProject = AppContext::getProject();
-        SAFE_POINT(nullptr != activeProject, L10N::nullPointerError("Project"), );
+        SAFE_POINT(activeProject != nullptr, L10N::nullPointerError("Project"), );
         foreach (Document* doc, dbiDocs) {
             removeDocFromProject(activeProject, doc);
         }
@@ -1042,7 +1042,7 @@ void ProjectViewImpl::sl_openNewView() {
     auto c = static_cast<OpenViewContext*>(action->data().value<void*>());
     SAFE_POINT(c->factory->canCreateView(c->selection), "Invalid object view factory!", );
     Task* openViewTask = c->factory->createViewTask(c->selection);
-    if (nullptr != openViewTask) {
+    if (openViewTask != nullptr) {
         AppContext::getTaskScheduler()->registerTopLevelTask(openViewTask);
     }
 }
@@ -1084,7 +1084,7 @@ void ProjectViewImpl::sl_openStateView() {
 }
 
 void ProjectViewImpl::sl_filterTextChanged(const QString& str) {
-    SAFE_POINT(nullptr != projectTreeController, "NULL controller", );
+    SAFE_POINT(projectTreeController != nullptr, "NULL controller", );
     QString changedText = str;
     ProjectTreeControllerModeSettings settings = projectTreeController->getModeSettings();
     if (str.length() > MAX_SEARCH_PATTERN_LENGTH) {

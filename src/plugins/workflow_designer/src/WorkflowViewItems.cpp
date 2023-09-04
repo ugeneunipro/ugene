@@ -988,7 +988,7 @@ void WorkflowPortItem::sl_onVisibleChanged(bool isVisible) {
     if (false == isVisible) {
         foreach (WorkflowBusItem* flow, flows) {
             WorkflowScene* ws = getWorkflowScene();
-            if (nullptr != ws) {
+            if (ws != nullptr) {
                 WorkflowView* view = ws->getController();
                 view->removeBusItem(flow);
             }
@@ -1036,7 +1036,7 @@ QVariant WorkflowBusItem::itemChange(GraphicsItemChange change, const QVariant& 
         disconnect(dst->getPort(), SIGNAL(bindingChanged()), this, SLOT(sl_update()));
 
         WorkflowView* ctl = getWorkflowScene()->getController();
-        if (nullptr != ctl) {
+        if (ctl != nullptr) {
             ctl->onBusRemoved(bus);
         } else {
             delete bus;

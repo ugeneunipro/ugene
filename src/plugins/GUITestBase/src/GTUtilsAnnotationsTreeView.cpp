@@ -128,7 +128,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions() {
 
 QString GTUtilsAnnotationsTreeView::getAnnotationRegionString(const QString& annotationName) {
     QTreeWidgetItem* annotationItem = findItem(annotationName);
-    GT_CHECK_RESULT(nullptr != annotationItem, "Annotation item is NULL", "");
+    GT_CHECK_RESULT(annotationItem != nullptr, "Annotation item is NULL", "");
     return annotationItem->text(AnnotationsTreeView::COLUMN_VALUE);
 }
 
@@ -293,7 +293,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(const QSt
         if (treeItemName == groupName) {
             for (int i = 0; i < childItem->childCount(); i++) {
                 auto avItem = dynamic_cast<AVItem*>(childItem->child(i));
-                GT_CHECK_RESULT(nullptr != avItem, "Cannot convert QTreeWidgetItem to AVItem", {});
+                GT_CHECK_RESULT(avItem != nullptr, "Cannot convert QTreeWidgetItem to AVItem", {});
                 auto item = dynamic_cast<AVAnnotationItem*>(avItem);
                 GT_CHECK_RESULT(item != nullptr, "sdf", regions);
                 regions << item->annotation->getRegions().toList();

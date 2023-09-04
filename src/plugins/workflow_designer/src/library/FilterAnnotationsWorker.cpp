@@ -85,7 +85,7 @@ Task* FilterAnnotationsWorker::tick() {
 
 void FilterAnnotationsWorker::sl_taskFinished(Task* t) {
     auto task = dynamic_cast<FilterAnnotationsTask*>(t);
-    CHECK(nullptr != task, );
+    CHECK(task != nullptr, );
     CHECK(!task->getStateInfo().isCoR(), );
 
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(task->takeResult());

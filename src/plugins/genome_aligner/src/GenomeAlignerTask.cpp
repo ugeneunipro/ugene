@@ -197,7 +197,7 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished(Task* subTask) {
                 } else {
                     setError(error);
                 }
-                if (nullptr != pWriteTask) {
+                if (pWriteTask != nullptr) {
                     pWriteTask->setFinished();
                 }
             }
@@ -219,7 +219,7 @@ QList<Task*> GenomeAlignerTask::onSubTaskFinished(Task* subTask) {
                                                        referenceSequenceUrl);
             } catch (const QString& exeptionMessage) {
                 setError(exeptionMessage);
-                if (nullptr != pWriteTask) {
+                if (pWriteTask != nullptr) {
                     pWriteTask->setFinished();
                 }
                 return subTasks;
@@ -329,7 +329,7 @@ Task::ReportResult GenomeAlignerTask::report() {
 
     qint64 nReadsProcessed = readsAligned;
     if (!alignContext.bestMode) {
-        SAFE_POINT_EXT(nullptr != pWriteTask,
+        SAFE_POINT_EXT(pWriteTask != nullptr,
                        stateInfo.setError("No parallel write task in non best mode"),
                        ReportResult_Finished);
         nReadsProcessed = pWriteTask->getWrittenReadsCount();

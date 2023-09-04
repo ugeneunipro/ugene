@@ -611,7 +611,7 @@ GUI_TEST_CLASS_DEFINITION(test_4070) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QWidget* graphOverview = GTUtilsMsaEditor::getGraphOverview();
-    CHECK_SET_ERR(nullptr != graphOverview, "Graph overview widget is NULL");
+    CHECK_SET_ERR(graphOverview != nullptr, "Graph overview widget is NULL");
 
     bool colorFound = false;
     for (int i = 0; i < graphOverview->width() && !colorFound; i++) {
@@ -2899,7 +2899,7 @@ GUI_TEST_CLASS_DEFINITION(test_4463) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsDocument::loadDocument("test_4463.gb.gz");
     GTUtilsTaskTreeView::waitTaskFinished();
-    CHECK_SET_ERR(nullptr != GTUtilsSequenceView::getSeqWidgetByNumber(), "Can't find sequence view widget");
+    CHECK_SET_ERR(GTUtilsSequenceView::getSeqWidgetByNumber() != nullptr, "Can't find sequence view widget");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4483) {
@@ -3623,7 +3623,7 @@ GUI_TEST_CLASS_DEFINITION(test_4621) {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
             auto enzymesSelectorWidget = GTWidget::findWidget("enzymesSelectorWidget");
-            CHECK_SET_ERR(nullptr != enzymesSelectorWidget, "enzymesSelectorWidget is NULL");
+            CHECK_SET_ERR(enzymesSelectorWidget != nullptr, "enzymesSelectorWidget is NULL");
 
             GTWidget::click(GTWidget::findWidget("selectAllButton", enzymesSelectorWidget));
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
@@ -4463,7 +4463,7 @@ GUI_TEST_CLASS_DEFINITION(test_4734) {
     class AllPopupChecker : public CustomScenario {
         void run() override {
             auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
-            CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
+            CHECK_SET_ERR(activePopupMenu != nullptr, "Active popup menu is NULL");
             GTMenu::clickMenuItemByText(activePopupMenu, {"Analyze"});
             activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
             QAction* showCircular = GTMenu::getMenuItem(activePopupMenu, "globalToggleViewAction", false);
@@ -5293,7 +5293,7 @@ GUI_TEST_CLASS_DEFINITION(test_4885_1) {
     GTMouseDriver::doubleClick();
 
     QWidget* graphOverview = GTUtilsMsaEditor::getGraphOverview();
-    CHECK_SET_ERR(nullptr != graphOverview, "Graph overview is NULL");
+    CHECK_SET_ERR(graphOverview != nullptr, "Graph overview is NULL");
     const QColor actualColor = GTUtilsMsaEditor::getGraphOverviewPixelColor(QPoint(graphOverview->width() / 2, 2));
     CHECK_SET_ERR("#ffffff" == actualColor.name(), QString("Incorrect color of the graph overview ('%1'). Does it render now?").arg(actualColor.name()));
 }
@@ -5346,7 +5346,7 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTLogTracer lt;
     QTreeView* treeView = GTUtilsProjectTreeView::getTreeView();
-    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(treeView != nullptr, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter("90-JRI-07.scf"));
     GTUtilsDialog::add(new PopupChooser({ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_CHROMATOGRAM}));

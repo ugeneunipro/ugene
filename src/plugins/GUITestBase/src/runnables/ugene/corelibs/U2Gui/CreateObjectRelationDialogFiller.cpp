@@ -38,7 +38,7 @@ void CreateObjectRelationDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
-    if (nullptr != QApplication::activeModalWidget()) {
+    if (QApplication::activeModalWidget() != nullptr) {
         GTUtilsDialog::clickButtonBox(QDialogButtonBox::Ok);
     }
 }

@@ -181,7 +181,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057_2) {
 
     foreach (QTreeWidgetItem* item, selectedItems) {
         auto qualifierItem = dynamic_cast<AVQualifierItem*>(item);
-        if (nullptr != qualifierItem) {
+        if (qualifierItem != nullptr) {
             qualifiersCount++;
             const QString qualifierName = item->data(0, Qt::DisplayRole).toString();
             CHECK_SET_ERR(expectedQualifierName == qualifierName, QString("Unexpected qualifier name: expect '%1', got '%2'").arg(expectedQualifierName).arg(qualifierName));
@@ -320,7 +320,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057_6) {
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::getAllSelectedItems();
     bool qualifierIsSelected = false;
     foreach (QTreeWidgetItem* item, items) {
-        qualifierIsSelected |= (nullptr != dynamic_cast<AVQualifierItem*>(item));
+        qualifierIsSelected |= (dynamic_cast<AVQualifierItem*>(item) != nullptr);
     }
     CHECK_SET_ERR(qualifierIsSelected, "No qualifiers are selected");
 }
@@ -1808,7 +1808,7 @@ GUI_TEST_CLASS_DEFINITION(test_0835) {
     GTWidget::click(GTWidget::findWidget("CircularViewAction", GTWidget::findWidget("views_tool_bar_NC_004718")));
 
     auto restrictionMapTreeWidget = GTWidget::findWidget("restrictionMapTreeWidget");
-    CHECK_SET_ERR(nullptr != restrictionMapTreeWidget && restrictionMapTreeWidget->isVisible(),
+    CHECK_SET_ERR(restrictionMapTreeWidget != nullptr && restrictionMapTreeWidget->isVisible(),
                   "Restriction map widget isn't visible unexpectedly");
 
     // 4. Delete the sequence with the Circular View from the Project View.
@@ -2730,7 +2730,7 @@ GUI_TEST_CLASS_DEFINITION(test_0947) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QAbstractButton* zoomAction = GTAction::button("action_zoom_in_A1#berezikov");
-    CHECK_SET_ERR(nullptr != zoomAction, "zoomAction is not present");
+    CHECK_SET_ERR(zoomAction != nullptr, "zoomAction is not present");
 
     for (int i = 0; i < 10; i++) {
         GTWidget::click(zoomAction);

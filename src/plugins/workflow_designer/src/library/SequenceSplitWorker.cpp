@@ -133,7 +133,7 @@ Task* SequenceSplitWorker::tick() {
 
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        CHECK(nullptr != seqObj.data(), nullptr);
+        CHECK(seqObj.data() != nullptr, nullptr);
         U2OpStatusImpl os;
         DNASequence inputSeq = seqObj->getWholeSequence(os);
         CHECK_OP(os, new FailTask(os.getError()));

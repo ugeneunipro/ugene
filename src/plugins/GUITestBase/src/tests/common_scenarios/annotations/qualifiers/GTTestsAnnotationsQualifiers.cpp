@@ -386,7 +386,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     // Expected state: nothing happens, the original view is still active.
     activeWindow = GTUtilsMdi::activeWindow();
-    CHECK_SET_ERR(nullptr != activeWindow, "Active window is NULL");
+    CHECK_SET_ERR(activeWindow != nullptr, "Active window is NULL");
     CHECK_SET_ERR(expectedTitle1 == activeWindow->windowTitle(), QString("An unexpected window is active: expect '%1', got '%2'").arg(expectedTitle1).arg(activeWindow->windowTitle()));
 }
 

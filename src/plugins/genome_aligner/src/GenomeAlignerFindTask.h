@@ -67,7 +67,7 @@ struct ShortReadData {
     }
 
     bool haveExactResult() const {
-        return ((0 == shortRead->firstMCount()) || (nullptr != revCompl && 0 == revCompl->firstMCount()));
+        return ((0 == shortRead->firstMCount()) || (revCompl != nullptr && 0 == revCompl->firstMCount()));
     }
 
     bool valid;

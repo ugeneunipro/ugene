@@ -277,9 +277,9 @@ bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort* port, Noti
 // BaseShortReadsAlignerWorkerFactory
 int BaseShortReadsAlignerWorkerFactory::getThreadsCount() {
     AppSettings* settings = AppContext::getAppSettings();
-    CHECK(nullptr != settings, 1);
+    CHECK(settings != nullptr, 1);
     AppResourcePool* pool = settings->getAppResourcePool();
-    CHECK(nullptr != pool, 1);
+    CHECK(pool != nullptr, 1);
 
     int threads = pool->getIdealThreadCount();
     CHECK(0 != threads, 1);

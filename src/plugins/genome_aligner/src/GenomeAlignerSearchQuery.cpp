@@ -128,7 +128,7 @@ const QByteArray SearchQuery::constSequence() const {
 
 bool SearchQuery::hasQuality() const {
     if (dna) {
-        return nullptr != quality;
+        return quality != nullptr;
     } else {
         return false;
     }

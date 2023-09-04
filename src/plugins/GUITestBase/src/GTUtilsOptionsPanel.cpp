@@ -55,7 +55,7 @@ void GTUtilsOptionsPanel::runFindPatternWithHotKey(const QString& pattern) {
 void GTUtilsOptionsPanel::resizeToMaximum() {
     auto optionsPanelSplitter = GTWidget::findSplitter("OPTIONS_PANEL_SPLITTER");
     QSplitterHandle* handle = optionsPanelSplitter->handle(1);
-    GT_CHECK(nullptr != handle, "Options panel splitter handle is nullptr");
+    GT_CHECK(handle != nullptr, "Options panel splitter handle is nullptr");
 
     const QPoint handleCenter = optionsPanelSplitter->mapToGlobal(handle->geometry().center());
     const int delta = 500;

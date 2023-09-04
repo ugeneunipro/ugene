@@ -152,7 +152,7 @@ static void addToggleDashboardAction(QToolBar* toolBar, QAction* action) {
 
     toolBar->addAction(action);
     auto b = dynamic_cast<QToolButton*>(toolBar->widgetForAction(action));
-    CHECK(nullptr != b, );
+    CHECK(b != nullptr, );
     b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     b->setAutoRaise(false);
 
@@ -237,7 +237,7 @@ void DashboardManagerHelper::sl_dashboardsScanningFinished() {
  ********************************/
 WorkflowView* WorkflowView::createInstance(WorkflowGObject* go) {
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
-    SAFE_POINT(nullptr != mdiManager, "NULL MDI manager", nullptr);
+    SAFE_POINT(mdiManager != nullptr, "NULL MDI manager", nullptr);
 
     auto view = new WorkflowView(go);
     view->setWindowIcon(QIcon(":/workflow_designer/images/wd.png"));
@@ -968,7 +968,7 @@ void WorkflowView::addProcess(Actor* proc, const QPointF& pos) {
 }
 
 void WorkflowView::removeProcessItem(WorkflowProcessItem* item) {
-    CHECK(nullptr != item, );
+    CHECK(item != nullptr, );
     Actor* actor = item->getProcess();
     scene->removeItem(item);
     delete item;
@@ -1365,7 +1365,7 @@ void WorkflowView::sl_estimate() {
 
 void WorkflowView::sl_estimationTaskFinished() {
     auto t = dynamic_cast<SchemaEstimationTask*>(sender());
-    CHECK(nullptr != t, );
+    CHECK(t != nullptr, );
     CHECK(t->isFinished(), );
     estimateAction->setEnabled(true);
     CHECK(!t->hasError(), );
@@ -1426,7 +1426,7 @@ void WorkflowView::localHostLaunch() {
 void WorkflowView::sl_launch() {
     if (!debugInfo->isPaused()) {
         localHostLaunch();
-        if (nullptr != scene->getRunner()) {
+        if (scene->getRunner() != nullptr) {
             stopAction->setEnabled(true);
             pauseAction->setEnabled(true);
             propertyEditor->setEnabled(false);
@@ -1444,7 +1444,7 @@ void WorkflowView::sl_pause(bool isPause) {
     breakpointView->setEnabled(isPause);
     investigationWidgets->setInvestigationWidgetsVisible(isPause);
     WorkflowAbstractRunner* runningWorkflow = scene->getRunner();
-    if (nullptr != runningWorkflow && runningWorkflow->isRunning()) {
+    if (runningWorkflow != nullptr && runningWorkflow->isRunning()) {
         foreach (WorkflowMonitor* m, runningWorkflow->getMonitors()) {
             if (isPause) {
                 m->pause();
@@ -1460,7 +1460,7 @@ void WorkflowView::sl_pause(bool isPause) {
 
 void WorkflowView::sl_stop() {
     Task* runningWorkflow = scene->getRunner();
-    if (nullptr != runningWorkflow) {
+    if (runningWorkflow != nullptr) {
         runningWorkflow->cancel();
     }
     investigationWidgets->resetInvestigations();
@@ -1498,7 +1498,7 @@ void WorkflowView::sl_breakpointDisabled(const ActorId& actor) {
 
 void WorkflowView::changeBreakpointState(const ActorId& actor, bool isBreakpointBeingAdded, bool isBreakpointStateBeingChanged) {
     WorkflowProcessItem* processItem = findItemById(actor);
-    Q_ASSERT(nullptr != processItem);
+    Q_ASSERT(processItem != nullptr);
 
     if (processItem->isBreakpointInserted()) {
         if (!isBreakpointBeingAdded) {
@@ -1551,7 +1551,7 @@ WorkflowProcessItem* WorkflowView::findItemById(ActorId actor) const {
     foreach (QGraphicsItem* item, scene->items()) {
         if (WorkflowProcessItemType == item->type()) {
             auto processItem = qgraphicsitem_cast<WorkflowProcessItem*>(item);
-            Q_ASSERT(nullptr != processItem);
+            Q_ASSERT(processItem != nullptr);
             if (actor == processItem->getProcess()->getId()) {
                 return processItem;
             }
@@ -1561,7 +1561,7 @@ WorkflowProcessItem* WorkflowView::findItemById(ActorId actor) const {
 }
 
 void WorkflowView::paintEvent(QPaintEvent* event) {
-    const bool isWorkflowRunning = (nullptr != scene->getRunner());
+    const bool isWorkflowRunning = (scene->getRunner() != nullptr);
     const bool isDebuggerEnabled = WorkflowSettings::isDebuggerEnabled();
     if (isDebuggerEnabled && ABSENT_WIDGET_TAB_NUMBER == bottomTabs->indexOf(breakpointView)) {
         bottomTabs->addTab(breakpointView, QObject::tr("Breakpoints"));
@@ -1788,8 +1788,8 @@ void WorkflowView::sl_pasteItems(const QString& s, bool updateSchemaInfo) {
 
     foreach (QGraphicsItem* it, scene->items()) {
         auto proc = qgraphicsitem_cast<WorkflowProcessItem*>(it);
-        if (nullptr != proc) {
-            if (nullptr != pastedS.actorById(proc->getProcess()->getId())) {
+        if (proc != nullptr) {
+            if (pastedS.actorById(proc->getProcess()->getId()) != nullptr) {
                 it->setSelected(true);
             }
         }
@@ -1857,7 +1857,7 @@ void WorkflowView::sl_onSelectionChanged() {
     toggleBreakpointAction->setEnabled(!scene->items().empty());
 
     WorkflowAbstractRunner* runner = scene->getRunner();
-    if (nullptr != runner && !actorsSelected.isEmpty()) {
+    if (runner != nullptr && !actorsSelected.isEmpty()) {
         QList<Workflow::WorkerState> workerStates = runner->getState(actorsSelected.first());
         tickReadyAction->setEnabled(debugInfo->isPaused() && 1 == actorsCount && workerStates.contains(WorkerReady));
     } else {
@@ -2225,11 +2225,11 @@ static QString newActorLabel(ActorPrototype* proto, const QList<Actor*>& procs) 
 }
 
 Actor* WorkflowView::createActor(ActorPrototype* proto, const QVariantMap& params) const {
-    assert(nullptr != proto);
+    assert(proto != nullptr);
     QString pId = proto->getId().replace(QRegExp("\\s"), "-");
     ActorId id = Schema::uniqueActorId(pId, schema->getProcesses());
     Actor* actor = proto->createInstance(id, nullptr, params);
-    assert(nullptr != actor);
+    assert(actor != nullptr);
 
     actor->setLabel(newActorLabel(proto, schema->getProcesses()));
     return actor;
@@ -2284,7 +2284,7 @@ const Workflow::Metadata& WorkflowView::updateMeta() {
                 ActorVisualData visual(proc->getProcess()->getId());
                 visual.setPos(proc->pos());
                 ItemViewStyle* style = proc->getStyleById(proc->getStyle());
-                if (nullptr != style) {
+                if (style != nullptr) {
                     visual.setStyle(style->getId());
                     if (style->getBgColor() != style->defaultColor()) {
                         visual.setColor(style->getBgColor());
@@ -2356,23 +2356,23 @@ RunFileSystem* WorkflowView::getRFS() {
 
 QVariant WorkflowView::getAttributeValue(const AttributeInfo& info) const {
     Actor* actor = schema->actorById(info.actorId);
-    CHECK(nullptr != actor, QVariant());
+    CHECK(actor != nullptr, QVariant());
     Attribute* attr = actor->getParameter(info.attrId);
-    CHECK(nullptr != attr, QVariant());
+    CHECK(attr != nullptr, QVariant());
     return attr->getAttributePureValue();
 }
 
 void WorkflowView::setAttributeValue(const AttributeInfo& info, const QVariant& value) {
     Actor* actor = schema->actorById(info.actorId);
-    CHECK(nullptr != actor, );
+    CHECK(actor != nullptr, );
     Attribute* attr = actor->getParameter(info.attrId);
-    CHECK(nullptr != attr, );
+    CHECK(attr != nullptr, );
     attr->setAttributeValue(value);
 }
 
 bool WorkflowView::isShowSamplesHint() const {
-    SAFE_POINT(nullptr != samples, "NULL samples widget", false);
-    SAFE_POINT(nullptr != schema, "NULL schema", false);
+    SAFE_POINT(samples != nullptr, "NULL samples widget", false);
+    SAFE_POINT(schema != nullptr, "NULL schema", false);
     bool emptySchema = schema->getProcesses().empty();
     return samples->isVisible() && emptySchema;
 }
@@ -2700,12 +2700,12 @@ void WorkflowScene::connectConfigurationEditors() {
         if (i->type() == WorkflowProcessItemType) {
             auto proc = static_cast<WorkflowProcessItem*>(i)->getProcess();
             ConfigurationEditor* editor = proc->getEditor();
-            if (nullptr != editor) {
+            if (editor != nullptr) {
                 connect(editor, SIGNAL(si_configurationChanged()), this, SIGNAL(configurationChanged()));
             }
             auto g = dynamic_cast<GrouperEditor*>(editor);
             auto m = dynamic_cast<MarkerEditor*>(editor);
-            if (nullptr != g || nullptr != m) {
+            if (g != nullptr || m != nullptr) {
                 connect(editor, SIGNAL(si_configurationChanged()), controller, SLOT(sl_updateSchema()));
             }
         }

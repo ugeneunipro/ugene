@@ -291,7 +291,7 @@ void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectViewController* view
     auto msaEditor = qobject_cast<MSAEditor*>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     SAFE_POINT(menu != nullptr, "Menu is NULL", );
-    CHECK(nullptr != msaEditor->getMaObject(), );
+    CHECK(msaEditor->getMaObject() != nullptr, );
 
     QList<GObjectViewAction*> list = getViewActions(view);
     SAFE_POINT(list.size() == 1, "List size is incorrect", );

@@ -42,7 +42,7 @@ SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSe
       trimmedSequenceObject(nullptr),
       trimmedChromatogramObject(nullptr),
       isFilteredOut(false) {
-    SAFE_POINT_EXT(nullptr != settings.sequenceObject, setError("Sequence object is NULL"), );
+    SAFE_POINT_EXT(settings.sequenceObject != nullptr, setError("Sequence object is NULL"), );
 }
 
 SequenceQualityTrimTask::~SequenceQualityTrimTask() {
@@ -100,8 +100,8 @@ void SequenceQualityTrimTask::cloneChromatogram() {
 }
 
 void SequenceQualityTrimTask::restoreRelation() {
-    CHECK(nullptr != trimmedChromatogramObject, );
-    SAFE_POINT_EXT(nullptr != trimmedSequenceObject, setError("Cloned sequence object is NULL"), );
+    CHECK(trimmedChromatogramObject != nullptr, );
+    SAFE_POINT_EXT(trimmedSequenceObject != nullptr, setError("Cloned sequence object is NULL"), );
 
     U2ObjectRelation dbRelation;
     dbRelation.id = trimmedChromatogramObject->getEntityRef().entityId;
@@ -128,7 +128,7 @@ U2Region SequenceQualityTrimTask::trimSequence() {
 }
 
 void SequenceQualityTrimTask::trimChromatogram(const U2Region& regionToCrop) {
-    CHECK(nullptr != trimmedChromatogramObject, );
+    CHECK(trimmedChromatogramObject != nullptr, );
     DNAChromatogram chromatogram = trimmedChromatogramObject->getChromatogram();
     ChromatogramUtils::crop(chromatogram, regionToCrop.startPos, regionToCrop.length);
     trimmedChromatogramObject->setChromatogram(stateInfo, chromatogram);

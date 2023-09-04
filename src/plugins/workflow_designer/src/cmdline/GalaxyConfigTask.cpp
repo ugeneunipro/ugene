@@ -383,7 +383,7 @@ void GalaxyConfigTask::writeToolUnit() {
 ActorPrototype* GalaxyConfigTask::getElementFromActorPrototypeRegistry(const QString& elementName) {
     U2::Workflow::ActorPrototypeRegistry* prototypeRegistry =
         U2::Workflow::WorkflowEnv::getProtoRegistry();
-    assert(nullptr != prototypeRegistry);
+    assert(prototypeRegistry != nullptr);
     return prototypeRegistry->getProto(elementName);
 }
 
@@ -406,7 +406,7 @@ bool GalaxyConfigTask::divideElementsByType() {
         const QString attributeName = elementProperties.value().at(0);
 
         ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(nullptr != currElement);
+        assert(currElement != nullptr);
 
         const QList<Attribute*> elementAttributes = currElement->getAttributes();
         if (elementAttributes.isEmpty()) {
@@ -480,7 +480,7 @@ void GalaxyConfigTask::getConstraint(const QString& typeName, QString& resultTyp
 
 bool GalaxyConfigTask::getResultType(const ActorPrototype& currElement, QString& resultType) {
     PortDescriptor* port = currElement.getPortDesciptors().first();
-    assert(nullptr != port);
+    assert(port != nullptr);
 
     const QString formatType = port->getId();
     getConstraint(formatType, resultType);
@@ -493,7 +493,7 @@ bool GalaxyConfigTask::getResultType(const ActorPrototype& currElement, QString&
 
 void GalaxyConfigTask::writeFormatAttribute(const QString& resultType) {
     DocumentFormatRegistry* docFormatRegistry = AppContext::getDocumentFormatRegistry();
-    assert(nullptr != docFormatRegistry);
+    assert(docFormatRegistry != nullptr);
 
     DocumentFormatConstraints constraint;
     constraint.supportedObjectTypes.insert(resultType);
@@ -546,7 +546,7 @@ bool GalaxyConfigTask::writeInputElements() {
         galaxyConfigOutput.writeAttribute(Constants::TYPE_ATTR, DATA);
 
         ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(nullptr != currElement);
+        assert(currElement != nullptr);
 
         QString resultType = QString();
         CHECK(getResultType(*currElement, resultType), false);
@@ -727,7 +727,7 @@ bool GalaxyConfigTask::writeOptionElements() {
         galaxyConfigOutput.writeAttribute(Constants::NAME_ATTR, aliasName);
 
         ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(nullptr != currElement);
+        assert(currElement != nullptr);
 
         writeLabelAttribute((currAliasIterator).value(), *currElement);
         CHECK(writeTypeForOptionElement((currAliasIterator).value(), *currElement), false);
@@ -748,7 +748,7 @@ bool GalaxyConfigTask::writeInputsUnit() {
 
 void GalaxyConfigTask::writeFormatAttributeForOutputElement(const QString& resultType) {
     DocumentFormatRegistry* docFormatRegistry = AppContext::getDocumentFormatRegistry();
-    assert(nullptr != docFormatRegistry);
+    assert(docFormatRegistry != nullptr);
 
     DocumentFormatConstraints constraint;
     constraint.supportedObjectTypes.insert(resultType);
@@ -770,9 +770,9 @@ bool GalaxyConfigTask::checkDocumentFormatAttribute(const ActorPrototype& elemen
 void GalaxyConfigTask::writeChangeFormatAttribute(const QString& aliasName, const ActorPrototype& element) {
     galaxyConfigOutput.writeStartElement(CHANGE_FORMAT);
 
-    CHECK(nullptr != element.getEditor(), );
+    CHECK(element.getEditor() != nullptr, );
     PropertyDelegate* pd = element.getEditor()->getDelegate(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-    assert(nullptr != pd);
+    assert(pd != nullptr);
 
     QVariantMap items;
     pd->getItems(items);
@@ -827,7 +827,7 @@ bool GalaxyConfigTask::writeOutputsUnit() {
                       aliasName = (currAliasIterator).value().at(1);
 
         ActorPrototype* currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(nullptr != currElement);
+        assert(currElement != nullptr);
 
         QString resultType = QString();
         CHECK(getResultType(*currElement, resultType), false);

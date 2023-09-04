@@ -555,10 +555,10 @@ TopHatWorker::TopHatWorker(Actor* actor)
 
 QList<Actor*> TopHatWorker::getProducers(const QString& slotId) const {
     Port* port = actor->getPort(BasePorts::IN_SEQ_PORT_ID());
-    SAFE_POINT(nullptr != port, "Internal error during initializing TopHatWorker: port is NULL!", QList<Actor*>());
+    SAFE_POINT(port != nullptr, "Internal error during initializing TopHatWorker: port is NULL!", QList<Actor*>());
 
     auto bus = dynamic_cast<IntegralBusPort*>(port);
-    SAFE_POINT(nullptr != bus, "Internal error during initializing TopHatWorker: bus is NULL!", QList<Actor*>());
+    SAFE_POINT(bus != nullptr, "Internal error during initializing TopHatWorker: bus is NULL!", QList<Actor*>());
 
     return bus->getProducers(slotId);
 }
@@ -827,7 +827,7 @@ BowtieFilesRelation::BowtieFilesRelation(const QString& indexNameAttrId)
 }
 
 QVariant BowtieFilesRelation::getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags*) const {
-    CHECK(nullptr != infTags, dependentValue);
+    CHECK(infTags != nullptr, dependentValue);
     QString bwtDir = influencingValue.toString();
     QString bwtFile = infTags->get(FILE_TAG).toString();
 
@@ -881,7 +881,7 @@ BowtieVersionRelation::BowtieVersionRelation(const QString& bwtVersionAttrId)
 }
 
 QVariant BowtieVersionRelation::getAffectResult(const QVariant& influencingValue, const QVariant& dependentValue, DelegateTags* infTags, DelegateTags*) const {
-    CHECK(nullptr != infTags, dependentValue);
+    CHECK(infTags != nullptr, dependentValue);
     QString bwtDir = influencingValue.toString();
     QString bwtFile = infTags->get(FILE_TAG).toString();
 

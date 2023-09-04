@@ -2328,9 +2328,9 @@ GUI_TEST_CLASS_DEFINITION(test_1234) {
     auto seq1 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget("ADV_single_sequence_widget_1", parent));
     auto seq2 = dynamic_cast<ADVSingleSequenceWidget*>(GTWidget::findWidget("ADV_single_sequence_widget_2", parent));
 
-    CHECK_SET_ERR(nullptr != seq0, "Failed to find a sequence widget for seq0!");
-    CHECK_SET_ERR(nullptr != seq1, "Failed to find a sequence widget for seq1!");
-    CHECK_SET_ERR(nullptr != seq2, "Failed to find a sequence widget for seq2!");
+    CHECK_SET_ERR(seq0 != nullptr, "Failed to find a sequence widget for seq0!");
+    CHECK_SET_ERR(seq1 != nullptr, "Failed to find a sequence widget for seq1!");
+    CHECK_SET_ERR(seq2 != nullptr, "Failed to find a sequence widget for seq2!");
 
     U2OpStatus2Log u2os;
 
@@ -2777,7 +2777,7 @@ GUI_TEST_CLASS_DEFINITION(test_1273) {
 
     // Expected: the name of the sequence view tab starts with "JQ040024.1", but not with "JQ040024".
     auto tabs = AppContext::getMainWindow()->getQMainWindow()->findChild<QTabBar*>("");
-    CHECK_SET_ERR(nullptr != tabs, "No tab bar");
+    CHECK_SET_ERR(tabs != nullptr, "No tab bar");
     CHECK_SET_ERR(tabs->tabText(1).startsWith("JQ040025"), "Wrong tab name");
 }
 
@@ -3379,7 +3379,7 @@ GUI_TEST_CLASS_DEFINITION(test_1342) {
     class CustomPopupChecker : public CustomScenario {
         void run() override {
             auto activePopupMenu = qobject_cast<QMenu*>(QApplication::activePopupWidget());
-            CHECK_SET_ERR(nullptr != activePopupMenu, "Active popup menu is NULL");
+            CHECK_SET_ERR(activePopupMenu != nullptr, "Active popup menu is NULL");
 
             GTMenu::clickMenuItemByText(activePopupMenu, {"Add element"});
 
@@ -4558,7 +4558,7 @@ GUI_TEST_CLASS_DEFINITION(test_1497) {
     const QString clipboardContent = GTClipboard::text();
 
     auto logTextEdit = logView->findChild<QPlainTextEdit*>();
-    CHECK_SET_ERR(nullptr != logTextEdit, "Log view text edit field is not found")
+    CHECK_SET_ERR(logTextEdit != nullptr, "Log view text edit field is not found")
 
     const QString logTextEditContent = logTextEdit->toPlainText();
     CHECK_SET_ERR(logTextEditContent == clipboardContent,
@@ -4988,7 +4988,7 @@ GUI_TEST_CLASS_DEFINITION(test_1554) {
     //    Expected state: Tree view contect menu appears.
     GTWidget::click(GTUtilsMsaEditor::getTreeView(), Qt::RightButton);
     QWidget* contextMenu = QApplication::activePopupWidget();
-    CHECK_SET_ERR(nullptr != contextMenu, "There is no expected context menu");
+    CHECK_SET_ERR(contextMenu != nullptr, "There is no expected context menu");
 
     //    5. Click somewhere on the tree view to close menu.
     //    Expected state: The context menu closes, there are not any another menus.
@@ -7303,7 +7303,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
 
     // 3. Change the value of the scale spinbox. E.g. set it to 75%
     auto scaleCombo = dynamic_cast<QComboBox*>(GTWidget::findWidget("wdScaleCombo"));
-    CHECK_SET_ERR(nullptr != scaleCombo, "Unable to find scale combobox!");
+    CHECK_SET_ERR(scaleCombo != nullptr, "Unable to find scale combobox!");
     GTComboBox::selectItemByText(scaleCombo, "75%");
 
     // 4. Store the scheme to some file using "Save scheme as" button
@@ -7319,7 +7319,7 @@ GUI_TEST_CLASS_DEFINITION(test_1821) {
 
     // Expected state: scheme is opened in WD, its scale is 75%
     scaleCombo = dynamic_cast<QComboBox*>(GTWidget::findWidget("wdScaleCombo"));
-    CHECK_SET_ERR(nullptr != scaleCombo, "Unable to find scale combobox!");
+    CHECK_SET_ERR(scaleCombo != nullptr, "Unable to find scale combobox!");
     CHECK_SET_ERR(scaleCombo->currentText() == "75%", "Unexpected scale value!");
 }
 

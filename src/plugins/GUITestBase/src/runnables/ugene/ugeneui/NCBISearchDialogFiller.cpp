@@ -137,7 +137,7 @@ void NcbiSearchDialogFiller::addTerm() {
 void NcbiSearchDialogFiller::removeTerm(const QVariant& actionData) {
     GT_CHECK(actionData.canConvert<int>(), "Can't get the block number from the action data");
     QWidget* blockWidget = GTWidget::findWidget("query_block_widget_" + QString::number(actionData.toInt()), dialog);
-    GT_CHECK(nullptr != blockWidget, "Block widget is NULL");
+    GT_CHECK(blockWidget != nullptr, "Block widget is NULL");
     GTWidget::click(GTWidget::findWidget("remove_block_button", blockWidget));
 }
 

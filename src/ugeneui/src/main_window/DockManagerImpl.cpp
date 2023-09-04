@@ -375,7 +375,7 @@ bool MWDockManagerImpl::eventFilter(QObject* obj, QEvent* event) {
         QMouseEvent* me = (QMouseEvent*)event;
         if (me->button() == Qt::LeftButton) {
             auto label = qobject_cast<QLabel*>(obj);
-            SAFE_POINT(nullptr != label, "Can't cast obj to QLabel *", false);
+            SAFE_POINT(label != nullptr, "Can't cast obj to QLabel *", false);
             DockData* data = findDockByLabel(label);
             assert(data);
             if (!data) {

@@ -126,7 +126,7 @@ Task* TrimmomaticWorker::createPrepareTask(U2OpStatus& os) const {
 
 void TrimmomaticWorker::onPrepared(Task* task, U2OpStatus& os) {
     auto prepareTask = qobject_cast<MultiTask*>(task);
-    CHECK_EXT(nullptr != prepareTask, os.setError(L10N::internalError("Unexpected prepare task")), );
+    CHECK_EXT(prepareTask != nullptr, os.setError(L10N::internalError("Unexpected prepare task")), );
 
     changeAdapters();
 }

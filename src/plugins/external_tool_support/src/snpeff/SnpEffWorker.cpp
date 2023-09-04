@@ -258,7 +258,7 @@ void SnpEffWorker::cleanup() {
 namespace {
 QString getTargetTaskUrl(Task* task) {
     auto curtask = dynamic_cast<SnpEffTask*>(task);
-    if (nullptr != curtask) {
+    if (curtask != nullptr) {
         return curtask->getResult();
     }
     return "";
@@ -266,7 +266,7 @@ QString getTargetTaskUrl(Task* task) {
 
 QString getSummaryUrl(Task* task) {
     auto curtask = dynamic_cast<SnpEffTask*>(task);
-    if (nullptr != curtask) {
+    if (curtask != nullptr) {
         return curtask->getSummaryUrl();
     }
     return "";

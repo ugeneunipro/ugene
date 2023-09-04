@@ -101,9 +101,9 @@ private:
     }
     bool isPatternSlotBinded(const Configuration* cfg) const {
         auto a = dynamic_cast<const Workflow::Actor*>(cfg);
-        SAFE_POINT(nullptr != a, "NULL actor", false);
+        SAFE_POINT(a != nullptr, "NULL actor", false);
         Workflow::Port* p = a->getPort(BasePorts::IN_SEQ_PORT_ID());
-        SAFE_POINT(nullptr != p, "NULL port", false);
+        SAFE_POINT(p != nullptr, "NULL port", false);
         QVariant busMap = p->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
         QString slotValue = busMap.value<StrStrMap>().value(BaseSlots::TEXT_SLOT().getId());
         return !slotValue.isEmpty();
@@ -466,7 +466,7 @@ void FindWorker::sl_taskFinished(Task* t) {
     int seqLen = -1;
     for (Task* sub : qAsConst(subs)) {
         auto findTask = qobject_cast<FindAlgorithmTask*>(sub);
-        if (nullptr != findTask) {
+        if (findTask != nullptr) {
             if (findTask->isCanceled() || findTask->hasError()) {
                 return;
             }
@@ -506,13 +506,13 @@ void FindWorker::sl_taskFinished(Task* t) {
 
         } else {
             auto loadTask = qobject_cast<LoadPatternsFileTask*>(sub);
-            if (nullptr != loadTask) {
+            if (loadTask != nullptr) {
                 namesPatterns = loadTask->getNamesPatterns();
             }
             return;
         }
     }
-    if (nullptr != output) {
+    if (output != nullptr) {
         if (result.isEmpty()) {
             result << FindAlgorithmResult::toTable(annData, resultName, isCircular, seqLen);
         }

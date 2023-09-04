@@ -294,7 +294,7 @@ Task* HMMBuildWorker::tick() {
 
 void HMMBuildWorker::sl_taskFinished() {
     auto t = qobject_cast<Task*>(sender());
-    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
+    SAFE_POINT(t != nullptr, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
@@ -306,7 +306,7 @@ void HMMBuildWorker::sl_taskFinished() {
 
 void HMMBuildWorker::sl_taskFinished(Task* t) {
     auto build = qobject_cast<HMMBuildTask*>(t);
-    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
+    SAFE_POINT(t != nullptr, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }

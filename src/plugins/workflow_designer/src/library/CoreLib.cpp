@@ -391,7 +391,7 @@ void CoreLib::initExternalToolsWorkers() {
 
         ExternalProcessConfig* cfg = HRSchemaSerializer::string2Actor(data);
         ;
-        if (nullptr != cfg) {
+        if (cfg != nullptr) {
             cfg->filePath = url;
             const bool inited = ExternalProcessWorkerFactory::init(cfg);
             if (!inited) {
@@ -435,7 +435,7 @@ void CoreLib::initIncludedWorkers() {
             proto = IncludedProtoFactory::getSchemaActorProto(schema, actorName, url);
         }
 
-        if (nullptr != proto) {
+        if (proto != nullptr) {
             // register the new proto
             if (IncludedProtoFactory::isRegistered(actorName)) {
                 bool isEqualProtos = IncludedProtoFactory::isRegisteredTheSameProto(actorName, proto);

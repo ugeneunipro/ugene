@@ -150,7 +150,7 @@ void GenericDocReader::cleanup() {
 
 void GenericDocReader::sl_taskFinished() {
     auto wrapper = qobject_cast<NoFailTaskWrapper*>(sender());
-    SAFE_POINT(nullptr != wrapper, "NULL wrapper task", );
+    SAFE_POINT(wrapper != nullptr, "NULL wrapper task", );
     Task* t = wrapper->originalTask();
     CHECK(t->isFinished(), );
     if (t->hasError()) {
@@ -342,7 +342,7 @@ void LoadSeqTask::prepare() {
 }
 
 void LoadSeqTask::run() {
-    CHECK(nullptr != format, );
+    CHECK(format != nullptr, );
     ioLog.info(tr("Reading sequences from %1 [%2]").arg(url).arg(format->getFormatName()));
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     cfg[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(storage->getDbiRef());

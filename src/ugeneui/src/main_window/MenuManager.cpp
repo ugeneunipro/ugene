@@ -56,7 +56,7 @@ void MWMenuManagerImpl::setMenuBarEnabled(bool enable) {
     }
 
     foreach (const QPointer<QAction>& action, additionalActions) {
-        if (nullptr != action) {
+        if (action != nullptr) {
             action->setEnabled(enable);
         }
     }

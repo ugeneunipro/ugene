@@ -53,7 +53,7 @@ void RenameSequenceFiller::commonScenario() {
 
     GTWidget::click(GTWidget::findButtonByText("OK", dialog));
     GTGlobals::sleep(500);
-    if (nullptr != QApplication::activeModalWidget()) {
+    if (QApplication::activeModalWidget() != nullptr) {
         GTWidget::click(GTWidget::findButtonByText("OK", QApplication::activeModalWidget()));
     }
 }
