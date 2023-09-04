@@ -832,7 +832,7 @@ QList<FeatureAndKey> SQLiteFeatureDbi::getFeatureTable(const U2DataId& rootFeatu
     return result;
 }
 
-QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& objectIdsToSearch) {
+QMap<U2::U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& objectIdsToSearch) {
     QMap<U2DataId, QStringList> result;
     CHECK(!values.isEmpty(), result);
     CHECK(!objectIdsToSearch.isEmpty(), result);
