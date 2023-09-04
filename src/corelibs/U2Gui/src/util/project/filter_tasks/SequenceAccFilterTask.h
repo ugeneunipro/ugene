@@ -42,9 +42,6 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 
 class U2GUI_EXPORT SequenceAccFilterTaskFactory : public ProjectFilterTaskFactory {
-public:
-    SequenceAccFilterTaskFactory();
-
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
 };

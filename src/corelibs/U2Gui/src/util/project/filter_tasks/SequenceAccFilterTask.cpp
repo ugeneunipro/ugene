@@ -45,13 +45,10 @@ bool SequenceAccFilterTask::filterAcceptsObject(GObject* obj) {
 //////////////////////////////////////////////////////////////////////////
 /// SequenceAccFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
-SequenceAccFilterTaskFactory::SequenceAccFilterTaskFactory()
-    : ProjectFilterTaskFactory({GObjectTypes::SEQUENCE}) {
-}
 
 AbstractProjectFilterTask* SequenceAccFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                        const QList<QPointer<Document>>& docs) const {
-    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::SEQUENCE});
     return acceptedDocs.isEmpty() ? nullptr : new SequenceAccFilterTask(settings, acceptedDocs);
 }
 

@@ -46,9 +46,6 @@ private:
 //////////////////////////////////////////////////////////////////////////
 
 class U2GUI_EXPORT FeatureKeyFilterTaskFactory : public ProjectFilterTaskFactory {
-public:
-    FeatureKeyFilterTaskFactory();
-
 protected:
     AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
                                              const QList<QPointer<Document>>& docs) const;

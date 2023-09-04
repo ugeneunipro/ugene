@@ -87,13 +87,10 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
 //////////////////////////////////////////////////////////////////////////
 /// FeatureKeyFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
-FeatureKeyFilterTaskFactory::FeatureKeyFilterTaskFactory()
-    : ProjectFilterTaskFactory({GObjectTypes::ANNOTATION_TABLE}) {
-}
 
 AbstractProjectFilterTask* FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                       const QList<QPointer<Document>>& docs) const {
-    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::ANNOTATION_TABLE});
     return acceptedDocs.isEmpty() ? nullptr : new FeatureKeyFilterTask(settings, acceptedDocs);
 }
 

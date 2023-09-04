@@ -91,9 +91,6 @@ void AbstractProjectFilterTask::doStaticInitialization() {
 /// ProjectFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
 
-ProjectFilterTaskFactory::ProjectFilterTaskFactory(QList<GObjectType> _acceptedObjects)
-    : acceptableObjectTypes(_acceptedObjects) {};
-
 ProjectFilterTaskFactory::~ProjectFilterTaskFactory() {
 }
 
@@ -106,7 +103,7 @@ AbstractProjectFilterTask* ProjectFilterTaskFactory::registerNewTask(const Proje
     return task;
 }
 
-QList<QPointer<Document>> ProjectFilterTaskFactory::getAcceptedDocs(const QList<QPointer<Document>>& docs) const {
+QList<QPointer<Document>> ProjectFilterTaskFactory::getAcceptedDocs(const QList<QPointer<Document>>& docs, const QList<GObjectType>& acceptableObjectTypes) {
     QList<QPointer<Document>> result;
     for (const QPointer<Document>& docRef : qAsConst(docs)) {
         for (const GObjectType& objType : qAsConst(acceptableObjectTypes)) {

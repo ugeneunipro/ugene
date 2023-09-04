@@ -68,18 +68,6 @@ private:
 
 class U2CORE_EXPORT ProjectFilterTaskFactory {
 public:
-    ProjectFilterTaskFactory(QList<GObjectType> _acceptedObjects = {GObjectTypes::UNKNOWN,
-                                                                    GObjectTypes::UNLOADED,
-                                                                    GObjectTypes::TEXT,
-                                                                    GObjectTypes::SEQUENCE,
-                                                                    GObjectTypes::ANNOTATION_TABLE,
-                                                                    GObjectTypes::VARIANT_TRACK,
-                                                                    GObjectTypes::CHROMATOGRAM,
-                                                                    GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT,
-                                                                    GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT,
-                                                                    GObjectTypes::PHYLOGENETIC_TREE,
-                                                                    GObjectTypes::BIOSTRUCTURE_3D,
-                                                                    GObjectTypes::ASSEMBLY});
     virtual ~ProjectFilterTaskFactory();
 
     AbstractProjectFilterTask* registerNewTask(const ProjectTreeControllerModeSettings& settings, const QList<QPointer<Document>>& docs) const;
@@ -87,10 +75,7 @@ public:
 protected:
     virtual AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                      const QList<QPointer<Document>>& docs) const = 0;
-    QList<QPointer<Document>> getAcceptedDocs(const QList<QPointer<Document>>& docs) const;
-
-private:
-    QList<GObjectType> acceptableObjectTypes;
+    static QList<QPointer<Document>> getAcceptedDocs(const QList<QPointer<Document>>& docs, const QList<GObjectType>& acceptableObjectTypes);
 };
 
 }  // namespace U2

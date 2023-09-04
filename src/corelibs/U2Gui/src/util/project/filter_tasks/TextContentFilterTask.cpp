@@ -45,13 +45,10 @@ bool TextContentFilterTask::filterAcceptsObject(GObject* obj) {
 //////////////////////////////////////////////////////////////////////////
 /// TextContentFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
-TextContentFilterTaskFactory::TextContentFilterTaskFactory()
-    : ProjectFilterTaskFactory({GObjectTypes::TEXT}) {
-}
 
 AbstractProjectFilterTask* TextContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                        const QList<QPointer<Document>>& docs) const {
-    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::TEXT});
     return acceptedDocs.isEmpty() ? nullptr : new TextContentFilterTask(settings, acceptedDocs);
 }
 

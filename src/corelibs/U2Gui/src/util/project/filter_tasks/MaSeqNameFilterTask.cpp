@@ -77,33 +77,22 @@ bool McaReferenceNameFilterTask::filterAcceptsObject(GObject* obj) {
 //////////////////////////////////////////////////////////////////////////
 /// MaSeqNameFilterTaskFactory
 //////////////////////////////////////////////////////////////////////////
-MsaSeqNameFilterTaskFactory::MsaSeqNameFilterTaskFactory()
-    : ProjectFilterTaskFactory({GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT}) {
-}
 
 AbstractProjectFilterTask* MsaSeqNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                       const QList<QPointer<Document>>& docs) const {
-    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT});
     return acceptedDocs.isEmpty() ? nullptr : new MsaSeqNameFilterTask(settings, acceptedDocs);
-}
-
-McaReadNameFilterTaskFactory::McaReadNameFilterTaskFactory()
-    : ProjectFilterTaskFactory({GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT}) {
 }
 
 AbstractProjectFilterTask* McaReadNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                        const QList<QPointer<Document>>& docs) const {
-    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT});
     return acceptedDocs.isEmpty() ? nullptr : new McaReadNameFilterTask(settings, acceptedDocs);
-}
-
-McaReferenceNameFilterTaskFactory::McaReferenceNameFilterTaskFactory()
-    : ProjectFilterTaskFactory({GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT}) {
 }
 
 AbstractProjectFilterTask* McaReferenceNameFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                             const QList<QPointer<Document>>& docs) const {
-    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT});
     return acceptedDocs.isEmpty() ? nullptr : new McaReferenceNameFilterTask(settings, acceptedDocs);
 }
 
