@@ -64,18 +64,18 @@ protected:
 
 class U2CORE_EXPORT SelfDimersFinder : public BaseDimersFinder {
 public:
-    SelfDimersFinder(const QByteArray& _forwardPattern, const qreal energyThreshold = -6);
+    SelfDimersFinder(const QByteArray& _forwardPattern, qreal energyThreshold = -6);
 
 private:
-    QString getDimersOverlapping(int dimerFormationPos);
+    QString getDimersOverlapping(int dimerFormationPos) override;
 };
 
 class U2CORE_EXPORT HeteroDimersFinder : public BaseDimersFinder {
 public:
-    HeteroDimersFinder(const QByteArray& _forwardPattern, const QByteArray& reversePattern, const qreal energyThreshold = -6);
+    HeteroDimersFinder(const QByteArray& _forwardPattern, const QByteArray& reversePattern, qreal energyThreshold = -6);
 
 private:
-    QString getDimersOverlapping(int dimerFormationPos);
+    QString getDimersOverlapping(int dimerFormationPos) override;
 };
 
 }  // namespace U2

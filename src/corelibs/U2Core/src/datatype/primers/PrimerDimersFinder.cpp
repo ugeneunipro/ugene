@@ -199,17 +199,20 @@ QString SelfDimersFinder::getDimersOverlapping(int dimerFormationPos) {
 HeteroDimersFinder::HeteroDimersFinder(const QByteArray& _forwardPattern, const QByteArray& reversePattern, const qreal energyThreshold)
     : BaseDimersFinder(_forwardPattern, reversePattern, energyThreshold) {
     for (int sequenceShift = -forwardPrimer.size(); sequenceShift < forwardPrimer.size(); sequenceShift++) {
-        QByteArray homologousRegion(forwardPrimer.size(), ' ');
-        for (int i = 0; i < reverseComplementSequence.size(); i++) {
-            int index = sequenceShift + i;
-            if (index < 0) {
+        QByteArray homologousRegion(qMin(forwardPrimer.size(), reversePattern.size()), ' ');
+        for (int reverseIndex = 0; reverseIndex < reverseComplementSequence.size(); reverseIndex++) {
+            int forwardIndex = sequenceShift + reverseIndex;
+            if (forwardIndex < 0) {
                 continue;
             }
-            if (index >= forwardPrimer.size()) {
+            if (forwardIndex >= forwardPrimer.size() - 1) {
                 break;
             }
-            if (forwardPrimer.at(index) == reverseComplementSequence.at(i)) {
-                homologousRegion[i] = reverseComplementSequence.at(i);
+            if (reverseIndex >= homologousRegion.size()) {
+                break;
+            }
+            if (forwardPrimer.at(forwardIndex) == reverseComplementSequence.at(reverseIndex)) {
+                homologousRegion[reverseIndex] = reverseComplementSequence.at(reverseIndex);
             }
         }
 
