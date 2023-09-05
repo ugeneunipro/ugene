@@ -398,6 +398,9 @@ public:
 
     GObject* getObjectById(const U2DataId& id) const;
 
+    //Returns list of Ids for objects with given type
+    QList<U2DataId> findGObjectIdsByType(const GObjectType& type) const;
+
     void addObject(GObject* ref);
 
     bool removeObject(GObject* o, DocumentObjectRemovalMode removalMode = DocumentObjectRemovalMode_Deallocate);

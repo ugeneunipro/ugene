@@ -280,6 +280,17 @@ GObject* Document::getObjectById(const U2DataId& id) const {
     return id2Object.value(id, nullptr);
 }
 
+QList<U2DataId> Document::findGObjectIdsByType(const GObjectType& type) const {
+    QList<U2DataId> result;
+    const QList<U2DataId> ids = id2Object.keys();
+    for (const U2DataId& key : qAsConst(ids)) {
+        if (id2Object.value(key)->getGObjectType() == type) {
+            result.append(key);
+        }
+    }
+    return result;
+}
+
 void Document::setObjectsInUse(const QSet<U2DataId>& objs) {
     objectsInUse = objs;
 }
