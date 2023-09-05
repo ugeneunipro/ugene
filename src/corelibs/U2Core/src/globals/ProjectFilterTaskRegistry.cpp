@@ -40,7 +40,10 @@ QList<AbstractProjectFilterTask*> ProjectFilterTaskRegistry::createFilterTasks(c
 
     QList<AbstractProjectFilterTask*> result;
     foreach (ProjectFilterTaskFactory* factory, factories) {
-        result.append(factory->registerNewTask(settings, docs));
+        AbstractProjectFilterTask* filterTask = factory->registerNewTask(settings, docs);
+        if (filterTask != nullptr) {
+            result.append(filterTask);
+        }
     }
     return result;
 }

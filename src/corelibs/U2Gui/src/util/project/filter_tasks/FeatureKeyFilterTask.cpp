@@ -90,7 +90,8 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
 
 AbstractProjectFilterTask* FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                       const QList<QPointer<Document>>& docs) const {
-    return new FeatureKeyFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::ANNOTATION_TABLE});
+    return acceptedDocs.isEmpty() ? nullptr : new FeatureKeyFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2

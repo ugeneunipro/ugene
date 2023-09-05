@@ -140,17 +140,20 @@ bool McaReferenceContentFilterTask::filterAcceptsObject(GObject* obj) {
 
 AbstractProjectFilterTask* MsaContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                       const QList<QPointer<Document>>& docs) const {
-    return new MsaContentFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT});
+    return acceptedDocs.isEmpty() ? nullptr : new MsaContentFilterTask(settings, acceptedDocs);
 }
 
 AbstractProjectFilterTask* McaReadContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                           const QList<QPointer<Document>>& docs) const {
-    return new McaReadContentFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT});
+    return acceptedDocs.isEmpty() ? nullptr : new McaReadContentFilterTask(settings, acceptedDocs);
 }
 
 AbstractProjectFilterTask* McaReferenceContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                                const QList<QPointer<Document>>& docs) const {
-    return new McaReferenceContentFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT});
+    return acceptedDocs.isEmpty() ? nullptr : new McaReferenceContentFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2

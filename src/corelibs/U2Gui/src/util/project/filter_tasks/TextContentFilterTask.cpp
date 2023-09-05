@@ -48,7 +48,8 @@ bool TextContentFilterTask::filterAcceptsObject(GObject* obj) {
 
 AbstractProjectFilterTask* TextContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                        const QList<QPointer<Document>>& docs) const {
-    return new TextContentFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::TEXT});
+    return acceptedDocs.isEmpty() ? nullptr : new TextContentFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2
