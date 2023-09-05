@@ -235,9 +235,9 @@ public:
     /**
      * Returns the map where a key corresponds to a annotation table and a value is the subset of the @values
      * that occurs within a single qualifier value belonging to the annotation table.
-     * If @desiredObjectIdsToSearch is not empty search only in that objects.
+     * Search performs in tables with given Ids @objectIdsToSearch.
      */
-    virtual QMap<U2DataId, QStringList> getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch = QList<U2DataId>()) = 0;
+    virtual QMap<U2DataId, QStringList> getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& objectIdsToSearch) = 0;
 
 protected:
     U2FeatureDbi(U2Dbi* rootDbi)

@@ -22,6 +22,7 @@
 #pragma once
 
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
 #include <U2Core/ProjectTreeControllerModeSettings.h>
 #include <U2Core/Task.h>
 
@@ -74,6 +75,7 @@ public:
 protected:
     virtual AbstractProjectFilterTask* createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                      const QList<QPointer<Document>>& docs) const = 0;
+    static QList<QPointer<Document>> getAcceptedDocs(const QList<QPointer<Document>>& docs, const QList<GObjectType>& acceptableObjectTypes);
 };
 
 }  // namespace U2

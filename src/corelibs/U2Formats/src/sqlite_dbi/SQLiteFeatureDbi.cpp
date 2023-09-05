@@ -832,10 +832,11 @@ QList<FeatureAndKey> SQLiteFeatureDbi::getFeatureTable(const U2DataId& rootFeatu
     return result;
 }
 
-QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& desiredObjectIdsToSearch) {
-    SQLiteTransaction t(db, os);
+QMap<U2::U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(const QStringList& values, U2OpStatus& os, const QList<U2DataId>& objectIdsToSearch) {
     QMap<U2DataId, QStringList> result;
     CHECK(!values.isEmpty(), result);
+    CHECK(!objectIdsToSearch.isEmpty(), result);
+    SQLiteTransaction t(db, os);
     // Pay attention here if there is the need of processing more search terms
     CHECK_EXT(values.size() < SQLiteDbi::BIND_PARAMETERS_LIMIT, os.setError("Too many search terms provided"), result);
 
@@ -846,14 +847,12 @@ QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(co
         queryStringk.append(QString("AND FK.value LIKE ?%1 ").arg(i));
     }
 
-    if (!desiredObjectIdsToSearch.isEmpty()) {
-        queryStringk.append("AND A.object IN (");
-        for (int n = 0; n < desiredObjectIdsToSearch.size(); n++, i++) {
-            QString queryPart = n == 0 ? QString("?%1") : QString(", ?%1");
-            queryStringk.append(queryPart.arg(i));
-        }
-        queryStringk.append(") ");
+    queryStringk.append("AND A.object IN (");
+    for (int n = 0; n < objectIdsToSearch.size(); n++, i++) {
+        QString queryPart = n == 0 ? QString("?%1") : QString(", ?%1");
+        queryStringk.append(queryPart.arg(i));
     }
+    queryStringk.append(") ");
 
     queryStringk.append("COLLATE NOCASE");
 
@@ -864,7 +863,7 @@ QMap<U2DataId, QStringList> SQLiteFeatureDbi::getAnnotationTablesByFeatureKey(co
         q->bindString(i, QString("%%1%").arg(values[i - 1]));
         CHECK_OP(os, result);
     }
-    for (const U2DataId& objectId : qAsConst(desiredObjectIdsToSearch)) {
+    for (const U2DataId& objectId : qAsConst(objectIdsToSearch)) {
         q->bindDataId(i, objectId);
         i++;
     }

@@ -154,7 +154,8 @@ void SequenceContentFilterTask::onResult(const FindAlgorithmResult& /*r*/) {
 
 AbstractProjectFilterTask* SequenceContentFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                            const QList<QPointer<Document>>& docs) const {
-    return new SequenceContentFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::SEQUENCE});
+    return acceptedDocs.isEmpty() ? nullptr : new SequenceContentFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2

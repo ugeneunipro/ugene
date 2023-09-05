@@ -59,8 +59,8 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(connection.dbi != nullptr, stateInfo.setError(L10N::nullPointerError("Database connection")), );
     U2FeatureDbi* featureDbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT_EXT(featureDbi != nullptr, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );        
-    QMap<U2DataId, QStringList> annotationTablesByFk = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo, doc->getDocObjectsIds());
+    SAFE_POINT_EXT(featureDbi != nullptr, stateInfo.setError(L10N::nullPointerError("Feature DBI")), );    
+    QMap<U2DataId, QStringList> annotationTablesByFk = featureDbi->getAnnotationTablesByFeatureKey(settings.tokensToShow, stateInfo, doc->findGObjectIdsByType(GObjectTypes::ANNOTATION_TABLE));
     SAFE_POINT_OP(stateInfo, );
     CHECK(!annotationTablesByFk.isEmpty(), );
     const int foundObjectsNumber = annotationTablesByFk.size();
@@ -90,7 +90,8 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
 
 AbstractProjectFilterTask* FeatureKeyFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                       const QList<QPointer<Document>>& docs) const {
-    return new FeatureKeyFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::ANNOTATION_TABLE});
+    return acceptedDocs.isEmpty() ? nullptr : new FeatureKeyFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2

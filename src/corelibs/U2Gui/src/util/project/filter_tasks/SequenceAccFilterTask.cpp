@@ -48,7 +48,8 @@ bool SequenceAccFilterTask::filterAcceptsObject(GObject* obj) {
 
 AbstractProjectFilterTask* SequenceAccFilterTaskFactory::createNewTask(const ProjectTreeControllerModeSettings& settings,
                                                                        const QList<QPointer<Document>>& docs) const {
-    return new SequenceAccFilterTask(settings, docs);
+    QList<QPointer<Document>> acceptedDocs = getAcceptedDocs(docs, {GObjectTypes::SEQUENCE});
+    return acceptedDocs.isEmpty() ? nullptr : new SequenceAccFilterTask(settings, acceptedDocs);
 }
 
 }  // namespace U2
