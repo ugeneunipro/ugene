@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
 
@@ -55,7 +56,7 @@ void MakeBlastDbDialogFiller::commonScenario() {
 
     if (!parameters.inputFilePath.isEmpty()) {
         GTRadioButton::click(inputFilesRadioButton);
-        GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters.inputFilePath));
+        GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(parameters.inputFilePath, parameters.filenamesList));
         GTWidget::click(GTWidget::findWidget("inputFilesToolButton"));
     }
 
@@ -64,6 +65,14 @@ void MakeBlastDbDialogFiller::commonScenario() {
     GTUtilsDialog::waitForDialog(new GTFileDialogUtils(parameters.outputDirPath, "", GTFileDialogUtils::Choose));
     GTWidget::click(GTWidget::findWidget("databasePathToolButton"));
     GTUtilsTaskTreeView::waitTaskFinished();
+
+    if (!parameters.baseNameForDbFiles.isEmpty()) {
+        GTLineEdit::setText(GTWidget::findLineEdit("baseNamelineEdit", dialog), parameters.baseNameForDbFiles);
+    }
+
+    if (!parameters.dbTitle.isEmpty()) {
+        GTLineEdit::setText(GTWidget::findLineEdit("databaseTitleLineEdit", dialog), parameters.dbTitle);
+    }
 
     GTWidget::click(GTWidget::findButtonByText("Build", GTUtilsDialog::buttonBox(dialog)));
 }

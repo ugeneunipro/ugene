@@ -627,7 +627,11 @@ QString ExternalToolSupportUtils::checkIndexDirLatinSymbols() {
 }
 
 QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& args) {
-    for (const QString& path : qAsConst(args)) {
+    QStringList agrsNoJoinedLines;
+    for (const QString& arg : qAsConst(args)) {
+        arg.contains("\" \"") ? agrsNoJoinedLines << arg.split("\" \"") : agrsNoJoinedLines << arg;
+    }
+    for (const QString& path : qAsConst(agrsNoJoinedLines)) {
         if (path.contains(" ")) {
             return tr("One of the arguments passed to \"%1\" external tool contains spaces."
                       " Make sure that the input and output files and folders"

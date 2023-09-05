@@ -126,6 +126,7 @@
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
@@ -4726,6 +4727,25 @@ GUI_TEST_CLASS_DEFINITION(test_7923) {
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::checkFilteredGroup("zzz11111", {}, {"scaffold_4528 features"}, {});
     CHECK_SET_ERR(GTUtilsProjectTreeView::countTopLevelItems() == 1, "Expected only one result.");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7925) {
+    /*
+    * 1. Build database for /samples/Genbank/murine.gb + /samples/Genbank/sars.gb files
+    * Expected state: no errors in the log
+    */
+    GTLogTracer lt;
+    MakeBlastDbDialogFiller::Parameters parametersDB;
+    parametersDB.inputFilePath = dataDir + "/samples/Genbank/";
+    parametersDB.filenamesList << "murine.gb"
+                               << "sars.gb";
+    parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
+    parametersDB.baseNameForDbFiles = "7925";
+    parametersDB.dbTitle = "7925";
+    GTUtilsDialog::waitForDialog(new MakeBlastDbDialogFiller(parametersDB));
+    GTMenu::clickMainMenuItem({"Tools", "BLAST", "BLAST make database..."});
+    GTUtilsTaskTreeView::waitTaskFinished();
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
 }  // namespace GUITest_regression_scenarios

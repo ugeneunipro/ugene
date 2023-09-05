@@ -1218,7 +1218,8 @@ GUI_TEST_CLASS_DEFINITION(test_5363_2) {
     //    Expected state: blast annotations were found and there is an annotation with the region equal to 'hit-from' and 'hit-to' qualifier values
 
     MakeBlastDbDialogFiller::Parameters parametersDB;
-    parametersDB.inputFilePath = dataDir + "/samples/Genbank/murine.gb";
+    parametersDB.inputFilePath = dataDir + "/samples/Genbank/";
+    parametersDB.filenamesList << "murine.gb";
     parametersDB.outputDirPath = QDir(sandBoxDir).absolutePath();
     GTUtilsDialog::waitForDialog(new MakeBlastDbDialogFiller(parametersDB));
     GTMenu::clickMainMenuItem({"Tools", "BLAST", "BLAST make database..."});
