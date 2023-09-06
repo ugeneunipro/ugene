@@ -46,7 +46,7 @@ public:
      * Callback, which handle FindEnzymesAlgorithm::run(...) result finding.
      *
      * \param pos Start position of enzyme, which was found.
-     * \param enzyme The enzyme, wich was found.
+     * \param enzyme The enzyme, which was found.
      * \param strand Strand (direct of reverse-complement) the enzyme was found on.
      * \param stop This argument signals to FindEnzymesAlgorithm::run(...) to stop enzymes searching (without errors or cancels).
     **/
@@ -115,25 +115,6 @@ public:
                 CHECK(!stop, );
             }
             CHECK_OP(ti, );
-        }
-        if (sequence.circular) {
-            if (region.startPos + region.length == sequence.length()) {
-                QByteArray buf;
-                const QByteArray& dnaseq = sequence.seq;
-                int size = plen - 1;
-                int startPos = dnaseq.length() - size;
-                buf.append(dnaseq.mid(startPos));
-                buf.append(dnaseq.mid(0, size));
-                for (int s = 0; s < size; s++) {
-                    bool match = matchSite(buf.constData() + s, pattern, plen, unknownChar, fn);
-                    if (match) {
-                        bool stop = false;
-                        resultListener->onResult(resultPosShift + s + startPos, enzyme, stand, stop);
-                        CHECK(!stop, );
-                    }
-                    CHECK_OP(ti, );
-                }
-            }
         }
     }
 

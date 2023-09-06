@@ -257,9 +257,10 @@ void FindSingleEnzymeTask::prepare() {
     SequenceDbiWalkerConfig sequenceWalkerConfig;
     sequenceWalkerConfig.seqRef = sequenceObjectRef;
     sequenceWalkerConfig.range = region;
-    sequenceWalkerConfig.chunkSize = qMax(enzyme->seq.size(), chunkSize);
+    int enzymeFullLength = enzyme->getFullLength();
+    sequenceWalkerConfig.chunkSize = qMax(enzymeFullLength, chunkSize);
     sequenceWalkerConfig.lastChunkExtraLen = sequenceWalkerConfig.chunkSize / 2;
-    sequenceWalkerConfig.overlapSize = enzyme->seq.size() - 1;
+    sequenceWalkerConfig.overlapSize = enzymeFullLength - 1;
     sequenceWalkerConfig.walkCircular = isCircular;
     sequenceWalkerConfig.walkCircularDistance = sequenceWalkerConfig.overlapSize;
 

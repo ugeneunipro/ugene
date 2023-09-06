@@ -39,4 +39,27 @@ const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");
 const QString EnzymeSettings::MAX_RESULTS("plugin_enzymes/max_results");
 const QString EnzymeSettings::COMMON_ENZYMES("ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,HindIII,PstI,SalI,SmaI,XmaI");
 
+int EnzymeData::getFullLength() const {
+    int leadingNsNumber = 0;
+    int trailingNsNumber = 0;
+    int seqSize = seq.size();
+    if (cutDirect != ENZYME_CUT_UNKNOWN) {
+        if (cutDirect < 0) {
+            leadingNsNumber = qAbs(cutDirect);
+        } else if (cutDirect > seqSize) {
+            trailingNsNumber = cutDirect - seqSize;
+        }
+    }
+    if (cutComplement != ENZYME_CUT_UNKNOWN) {
+        if (cutComplement < 0) {
+            trailingNsNumber = qMax(trailingNsNumber, qAbs(cutComplement));
+        } else if (cutComplement > seqSize) {
+            leadingNsNumber = qMax(leadingNsNumber, cutComplement - seqSize);
+        }
+    }
+
+    return leadingNsNumber + seqSize + trailingNsNumber;
+}
+
+
 }  // namespace U2

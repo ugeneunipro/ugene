@@ -211,6 +211,7 @@ QList<Task*> GTest_FindEnzymes::onSubTaskFinished(Task* subTask) {
     cfg.minHitCount = minHits;
     cfg.maxHitCount = maxHits;
     cfg.excludedRegions = excludedRegions;
+    cfg.circular = seqObj->isCircular();
 
     FindEnzymesToAnnotationsTask* t = new FindEnzymesToAnnotationsTask(aObj, seqObj->getSequenceRef(), enzymesToSearch, cfg);
     res.append(t);

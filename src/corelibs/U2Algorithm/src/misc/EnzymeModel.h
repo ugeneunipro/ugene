@@ -113,6 +113,17 @@ public:
     bool nondegenerate = false;
 
     static constexpr const char UNDEFINED_BASE = 'N';
+
+    /*
+     * Calculates full enzyme length (with leading and trailing N).
+     * For example, "AbaSI" has only one defined nucleotide, but 11 trailing N's:
+     * 5'  C NNNNNNNNN NN 3'
+     * 3'  G NNNNNNNNN    5'
+     * Which means, that sequence length is 1, but full enzyme length is 1 + 11 = 12.
+     * \return Returns full enzyme length - leading N's number + enzyme length + trailing N's number
+     */
+    int getFullLength() const;
+
 };
 
 typedef QSharedDataPointer<EnzymeData> SEnzymeData;
