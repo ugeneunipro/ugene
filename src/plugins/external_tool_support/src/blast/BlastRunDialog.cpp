@@ -32,7 +32,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -135,8 +134,8 @@ BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget* parent)
     selectToolPathButton->setObjectName("browseInput");
     selectToolPathButton->setVisible(true);
     selectToolPathButton->setText("...");
-    connect(selectToolPathButton, SIGNAL(clicked()), inputFileLineEdit, SLOT(sl_onBrowse()));
-    connect(inputFileLineEdit, SIGNAL(textChanged(QString)), this, SLOT(sl_inputFileLineEditChanged(QString)));
+    connect(selectToolPathButton, &QAbstractButton::clicked, inputFileLineEdit, &FileLineEdit::sl_onBrowse);
+    connect(inputFileLineEdit, &QLineEdit::textChanged, this, &BlastWithExtFileRunDialog::sl_inputFileLineEditChanged);
 
     auto layout = new QHBoxLayout(widget);
     layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
@@ -154,7 +153,7 @@ BlastWithExtFileRunDialog::BlastWithExtFileRunDialog(QWidget* parent)
     connect(this, SIGNAL(rejected()), SLOT(sl_cancel()));
 }
 
- const QList<BlastTaskSettings>& BlastWithExtFileRunDialog::getSettingsList() const {
+const QList<BlastTaskSettings>& BlastWithExtFileRunDialog::getSettingsList() const {
     return settingsList;
 }
 
@@ -178,7 +177,7 @@ void BlastWithExtFileRunDialog::sl_inputFileLineEditChanged(const QString& url) 
             if (doc->isLoaded()) {
                 tryApplyDoc(doc);
             } else {
-                LoadUnloadedDocumentAndOpenViewTask* loadTask = new LoadUnloadedDocumentAndOpenViewTask(doc);
+                auto loadTask = new LoadUnloadedDocumentAndOpenViewTask(doc);
                 loadTask->setProperty(INPUT_URL_PROP, url);
                 connect(loadTask, SIGNAL(si_stateChanged()), SLOT(sl_inputFileOpened()));
                 AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
@@ -186,7 +185,6 @@ void BlastWithExtFileRunDialog::sl_inputFileLineEditChanged(const QString& url) 
             return;
         }
     }
-
     loadDoc(url);
 }
 

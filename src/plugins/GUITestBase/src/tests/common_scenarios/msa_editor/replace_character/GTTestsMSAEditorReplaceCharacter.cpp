@@ -63,7 +63,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -88,7 +88,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
     GTKeyboardDriver::keyClick('a');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 }
@@ -112,7 +112,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // Expected result : the original character of the alignment was replaced with the new one(e.g 'A' was replaced with 'C').Selection is in normal mode.
     GTKeyboardDriver::keyClick('g');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "G", QString("Incorrect selection content: expected - %1, received - %2").arg("G").arg(selectionContent));
 }
@@ -154,7 +154,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsNotifications::waitForNotification(true, "from \"Standard DNA\" to \"Extended DNA\"");
     GTKeyboardDriver::keyClick('r');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "R", QString("Incorrect selection content: expected - %1, received - %2").arg("R").arg(selectionContent));
 }
@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTUtilsNotifications::waitForNotification(true, "from \"Standard DNA\" to \"Extended DNA\"");
     GTUtilsDialog::checkNoActiveWaiters();
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "R", QString("Incorrect selection content: expected - %1, received - %2").arg("R").arg(selectionContent));
 }
@@ -217,7 +217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // There is NO notifications.
     GTKeyboardDriver::keyClick('a');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 }
@@ -241,7 +241,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     // There is NO notifications.
     GTKeyboardDriver::keyClick('a');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 
@@ -270,7 +270,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
 }
@@ -289,7 +289,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -307,7 +307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -325,7 +325,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -347,7 +347,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -368,7 +368,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -386,7 +386,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -405,7 +405,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -431,13 +431,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     // Select the character again (collapse mode change may drop the selection)
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(9, 14), QPoint(9, 14));
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 
     // Check that another sequence from the original group has no changes.
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(9, 13), QPoint(9, 13));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
@@ -456,7 +456,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
 
@@ -469,7 +469,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     GTKeyboardDriver::keyClick('-');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
 }
@@ -489,7 +489,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsNotifications::waitForNotification(true, "It is not possible to insert the character into the alignment.");
     GTKeyboardDriver::keyClick(']');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
 }
@@ -510,7 +510,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     GTKeyboardDriver::keyClick('c');
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - 'T', got - '%1'").arg(selectionContent));
 }

@@ -7,7 +7,6 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/harness/GUITestService.h \
             src/harness/GUITestTeamcityLogger.h \
             src/harness/GUITestThread.h \
-            src/harness/GUITestWindow.h \
             src/harness/UGUITest.h \
             src/tests/crazy_user/GTAbstractGUIAction.h \
             src/tests/crazy_user/GTRandomGUIActionFactory.h \
@@ -294,7 +293,6 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/harness/GUITestService.cpp \
             src/harness/GUITestTeamcityLogger.cpp \
             src/harness/GUITestThread.cpp \
-            src/harness/GUITestWindow.cpp \
             src/harness/UGUITest.cpp \
             src/tests/crazy_user/GTAbstractGUIAction.cpp \
             src/tests/crazy_user/GTRandomGUIActionFactory.cpp \
@@ -576,8 +574,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/test_runner/GUITestRunner.cpp
 
 FORMS += \
-    src/test_runner/GUITestRunner.ui \
-    src/harness/GUITestingWindow.ui
+    src/test_runner/GUITestRunner.ui
 
 RESOURCES += \
     GUITestBase.qrc

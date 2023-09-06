@@ -47,7 +47,8 @@ public:
     FileLineEdit(const QString& filter, const QString& type, bool multi, QWidget* parent)
         : QLineEdit(parent), FileFilter(filter), type(type), multi(multi) {
     }
-private slots:
+
+public slots:
     void sl_onBrowse();
 
 private:

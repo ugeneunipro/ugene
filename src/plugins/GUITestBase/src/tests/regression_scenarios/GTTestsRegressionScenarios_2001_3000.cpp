@@ -151,7 +151,7 @@ GUI_TEST_CLASS_DEFINITION(test_2006) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(MSA_WIDTH, MSA_HEIGHT));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString initialMsaContent = GTClipboard::text();
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -169,7 +169,7 @@ GUI_TEST_CLASS_DEFINITION(test_2006) {
 
     // 4. Check that the content has not been changed
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(MSA_WIDTH, MSA_HEIGHT));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString finalMsaContent = GTClipboard::text();
     CHECK_SET_ERR(initialMsaContent == finalMsaContent, "MSA has unexpectedly changed");
 
@@ -185,7 +185,7 @@ GUI_TEST_CLASS_DEFINITION(test_2007) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma_empty_line.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 4));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString initialMsaContent = GTClipboard::text();
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -202,7 +202,7 @@ GUI_TEST_CLASS_DEFINITION(test_2007) {
 
     // Expected state: nothing happens
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 4));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString finalMsaContent = GTClipboard::text();
     CHECK_SET_ERR(initialMsaContent == finalMsaContent, "MSA has changed unexpectedly!");
 }
@@ -259,7 +259,7 @@ GUI_TEST_CLASS_DEFINITION(test_2021_1) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString initialMsaContent = GTClipboard::text();
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -286,7 +286,7 @@ GUI_TEST_CLASS_DEFINITION(test_2021_1) {
 
     // 5. Check that alignment content has returned to initial state
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(11, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString finalMsaContent = GTClipboard::text();
     CHECK_SET_ERR(initialMsaContent == finalMsaContent, "MSA has unexpectedly changed");
 }
@@ -351,7 +351,7 @@ GUI_TEST_CLASS_DEFINITION(test_2021_3) {
 
     // 4. Check that all the empty columns were removed
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(14, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString finalMsaContent = GTClipboard::text();
     CHECK_SET_ERR("AAGCTTCTTTTAA--\nAAGTTACTAA-----\nTAG---TTATTAA--\nAAGC---TATTAA--\n"
                   "TAGTTATTAA-----\nTAGTTATTAA-----\nTAGTTATTAA-----\nAAGCTTT---TAA--\n"
@@ -367,7 +367,7 @@ GUI_TEST_CLASS_DEFINITION(test_2021_4) {
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa", "ma2_gap_8_col.aln");
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(20, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString initialMsaContent = GTClipboard::text();
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
@@ -379,7 +379,7 @@ GUI_TEST_CLASS_DEFINITION(test_2021_4) {
 
     // 4. Check that MSA does not changed
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(20, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString finalMsaContent = GTClipboard::text();
     CHECK_SET_ERR(initialMsaContent == finalMsaContent, "MSA has unexpectedly changed");
 
@@ -1103,12 +1103,12 @@ GUI_TEST_CLASS_DEFINITION(test_2165) {
     GTWidget::click(GTUtilsSequenceView::getPanOrDetView());
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
     GTWidget::click(GTWidget::findWidget("select_range_action"));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     // 3. Past the whole sequence to the find pattern field
     GTWidget::click(GTWidget::findWidget("OP_FIND_PATTERN"));
     GTWidget::click(GTWidget::findWidget("textPattern"));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     GTUtilsNotifications::checkNotificationDialogText("too long");
 }
@@ -1648,7 +1648,7 @@ GUI_TEST_CLASS_DEFINITION(test_2285) {
     //    Expected state: each sequence in the group loose one gap.
     GTUtilsMSAEditorSequenceArea::click();
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(43, 13), QPoint(43, 14));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipboardText = GTClipboard::text();
 
     CHECK_SET_ERR(clipboardText == "T\n-", "Unexpected selection. Expected: T\nT, actual: " + clipboardText);
@@ -1680,7 +1680,7 @@ GUI_TEST_CLASS_DEFINITION(test_2306) {
 
     // 4. Call context menu
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(5, 10), QPoint(7, 15));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString finalMsaContent = GTClipboard::text();
     CHECK_SET_ERR("---\n---\n---\n---\n---\n---" == finalMsaContent, "Unexpected MSA content has occurred" + finalMsaContent);
 }
@@ -2964,8 +2964,8 @@ GUI_TEST_CLASS_DEFINITION(test_2549) {
     GTWidget::click(GTWidget::findWidget("dock_log_view"));
     GTKeyboardDriver::keySequence("this sequence needed to ensure that log view has text");
 
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
+    GTKeyboardUtils::copy();
 
     const QString clipboardContent = GTClipboard::text();
     CHECK_SET_ERR(!clipboardContent.isEmpty(), "Clipboard is empty");
@@ -4184,7 +4184,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     // Expected state : The "Align with MUSCLE" dialog has appeared
     // 3. Check the "Translation to amino when aligning" checkbox and press "Align"
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(41, 0), QPoint(43, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString initialRegionContent = GTClipboard::text();
 
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -4203,7 +4203,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectedly disabled");
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(41, 0), QPoint(43, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString alignedRegionContent = GTClipboard::text();
     CHECK_SET_ERR(alignedRegionContent != initialRegionContent, "Alignment content has not been changed");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -4214,7 +4214,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     // Expected state : Alignment has been restored to its initial state.The "Undo" button gets disabled,
     // the "Redo" has been enabled
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(41, 0), QPoint(43, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString undoneRegionContent = GTClipboard::text();
     CHECK_SET_ERR(undoneRegionContent == initialRegionContent, "Undo hasn't reverted changes");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -4230,7 +4230,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     // Expected state : Alignment has been changed.The "Redo" button gets disabled,
     // the "Undo" has been enabled
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(41, 0), QPoint(43, 17));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString redoneRegionContent = GTClipboard::text();
     CHECK_SET_ERR(redoneRegionContent == alignedRegionContent, "Redo hasn't changed the alignment");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -4709,7 +4709,7 @@ GUI_TEST_CLASS_DEFINITION(test_2910) {
     // 4. Click the "Go" button.
 
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller("10000..15000"));
-    GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 
     // Expected state: the region is selected, there is a label "[5001 bp]" on the pan view.
     QVector<U2Region> reg = GTUtilsSequenceView::getSelection();
@@ -4727,7 +4727,7 @@ GUI_TEST_CLASS_DEFINITION(test_2910_1) {
     // 4. Click the "Go" button.
 
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller("2000..5000,100000..110000"));
-    GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 
     // Expected state: the region is selected, there is a label "[3001 bp]" and "[10001 bp]" on the pan view.
     QVector<U2Region> reg = GTUtilsSequenceView::getSelection();
@@ -4773,7 +4773,7 @@ GUI_TEST_CLASS_DEFINITION(test_2910_2) {
         }
     };
     GTUtilsDialog::waitForDialog(new CancelClicker());
-    GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 }
 GUI_TEST_CLASS_DEFINITION(test_2910_3) {
     // 1. Open {data/samples/FASTA/human_T1.fa}.
@@ -4809,7 +4809,7 @@ GUI_TEST_CLASS_DEFINITION(test_2910_3) {
         }
     };
     GTUtilsDialog::waitForDialog(new CancelClicker());
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2923) {

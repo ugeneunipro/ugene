@@ -270,7 +270,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTWidget::click(GTWidget::findWidget("ADV_single_sequence_widget_0"));
     GTKeyboardUtils::selectAll();
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     QString sequence = GTClipboard::text();
     CHECK_SET_ERR(sequence == "ACCC", "Incorrect sequence is copied");

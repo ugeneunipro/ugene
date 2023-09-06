@@ -123,8 +123,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003) {
     GTUtilsOptionPanelMsa::openTab(GTUtilsOptionPanelMsa::General);
 
     // 3. Copy seq
-    GTUtilsDialog::waitForDialog(
-        new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu();
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -136,7 +135,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003) {
     p.setY(p.y() + 44);
     GTMouseDriver::moveTo(p);
     GTMouseDriver::click();
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // 5. Select new item
     QTreeView* treeView = GTUtilsProjectTreeView::getTreeView();

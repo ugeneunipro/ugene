@@ -234,7 +234,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
     GTThread::waitForMainThread();
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipboardText = GTClipboard::text();
     QString text = QString("A:  \n"
                            "62 842   \n"

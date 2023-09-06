@@ -285,7 +285,7 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
 
     // Copy seqA.
     GTUtilsMSAEditorSequenceArea::selectSequence("seqA");
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     // Select first collapsed mode and 'Paste before'.
     GTUtilsMSAEditorSequenceArea::selectSequence("LR882520 exotic DQB1");
@@ -295,7 +295,7 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
 
     // Cut seqB.
     GTUtilsMSAEditorSequenceArea::selectSequence("seqB");
-    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+    GTKeyboardUtils::cut();
 
     // Select the first sequence and 'Paste before'
     GTUtilsMSAEditorSequenceArea::selectSequence("seqA_1");
@@ -331,8 +331,8 @@ GUI_TEST_CLASS_DEFINITION(test_7045) {
     GTUtilsMSAEditorSequenceArea::selectSequence("s1");
 
     // Copy (CTRL C) and Paste (CTRL V) -> new 's1_1' sequence appears.
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
+    GTKeyboardUtils::paste();
 
     // Switch collapsing mode on -> 2 collapsed groups: 's1' and' Mecopoda_elongata_Ishigaki_J' are on the screen.
     GTUtilsMsaEditor::toggleCollapsingMode();
@@ -399,10 +399,10 @@ GUI_TEST_CLASS_DEFINITION(test_7121) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMSAEditorSequenceArea::selectSequence("Phaneroptera_falcata");
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     GTUtilsProjectTreeView::click("COI.aln");
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     QStringList docs = GTUtilsProjectTreeView::getDocuments().keys();
@@ -1945,28 +1945,28 @@ GUI_TEST_CLASS_DEFINITION(test_7469) {
 
     // Check 'order' annotation on the direct strand.
     GTUtilsAnnotationsTreeView::clickItem("CDS", 1, false);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     CHECK_SET_ERR(GTClipboard::text() == "AAGACCCCCCCGTAGG", "1. Unexpected DNA sequence: " + GTClipboard::text());
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     CHECK_SET_ERR(GTClipboard::text() == "KTPP*", "1. Unexpected Amino sequence: " + GTClipboard::text());
 
     // Check 'order' annotation on the complementary strand.
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     CHECK_SET_ERR(GTClipboard::text() == "AAGACCCC-CCCGTAGG", "2. Unexpected DNA sequence: " + GTClipboard::text());
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     CHECK_SET_ERR(GTClipboard::text() == "KT-PV", "2. Unexpected Amino sequence: " + GTClipboard::text());
 
     // Check 'join' annotation on the direct strand.
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     CHECK_SET_ERR(GTClipboard::text() == "TGCCTTGCAAAGTTACTTAAGCTAGCTTG", "3. Unexpected DNA sequence: " + GTClipboard::text());
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     CHECK_SET_ERR(GTClipboard::text() == "CLAKLLKLA", "3. Unexpected Amino sequence: " + GTClipboard::text());
 
     // Check 'join' annotation on the complementary strand.
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     CHECK_SET_ERR(GTClipboard::text() == "TGCCTTGCAAA-GTTACTTAAGCTAGCTTG", "4. Unexpected DNA sequence: " + GTClipboard::text());
     GTKeyboardDriver::keyClick('t', Qt::ControlModifier);
     CHECK_SET_ERR(GTClipboard::text() == "CLA-VT*ASL", "4. Unexpected Amino sequence: " + GTClipboard::text());
@@ -3146,10 +3146,10 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     auto filler = new SelectSequenceRegionDialogFiller(1001, 1000);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 
     // Copy it (Cmd-C).
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     // Switch to murine and toggle circular views.
     GTFileDialog::openFile(dataDir + "/samples/Genbank/", "murine.gb");
@@ -3160,7 +3160,7 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     filler = new SelectSequenceRegionDialogFiller(1000, 5830);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 
     // Right-click on the sequence->Replace subsequence... "Replace sequence" dialog appears.
     // Paste clipboard into text field (Cmd-V).
@@ -3174,8 +3174,8 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
             GTWidget::click(plainText);
 
             // Select the whole sequence and replace it with '='. Try applying the change.
-            GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-            GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+            GTKeyboardUtils::selectAll();
+            GTKeyboardUtils::paste();
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
     };
@@ -3196,7 +3196,7 @@ GUI_TEST_CLASS_DEFINITION(test_7630) {
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     // Paste clipboard into pattern text field (Cmd-V).
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // Was state: crash when "Find in sequence task" progress is 94% (same as in crash report).
     //            no crash handler appeared, but there is error in zsh (Terminal):
@@ -4684,7 +4684,7 @@ GUI_TEST_CLASS_DEFINITION(test_7885) {
     GTUtilsMsaEditor::clickSequenceName("seq2_1_5_2_1_1");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
     GTLogTracer lt;
-    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+    GTKeyboardUtils::cut();
     CHECK_SET_ERR(lt.hasError("Block size is too big and can't be copied into the clipboard"), "No expected error");
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getSelectedSequencesNum() != 0, "No selected sequences");
 }

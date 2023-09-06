@@ -565,7 +565,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     }
 
     GTUtilsDialog::add(new SelectSequenceRegionDialogFiller("560..743,1..180"));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     GTThread::waitForMainThread();
 
     GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "primer3_action"}));

@@ -217,7 +217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     }
 
     GTWidget::setFocus(GTWidget::findWidget("sceneView"));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     //    3. Open this schema from examples
     GTUtilsWorkflowDesigner::addSample("call variants");

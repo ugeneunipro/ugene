@@ -25,6 +25,7 @@
 #include "drivers/GTKeyboardDriver.h"
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTWidget.h"
+#include "utils//GTKeyboardUtils.h"
 
 namespace HI {
 
@@ -89,7 +90,7 @@ void GTSpinBox::setValue(QSpinBox* spinBox, int v, GTGlobals::UseMethod useMetho
                 QString s = QString::number(v);
                 GTWidget::setFocus(spinBox);
                 GTGlobals::sleep(100);
-                GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+                GTKeyboardUtils::selectAll();
                 GTGlobals::sleep(100);
                 GTKeyboardDriver::keyClick(Qt::Key_Backspace);
                 GTGlobals::sleep(100);

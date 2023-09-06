@@ -40,7 +40,6 @@
 #include "GUITestService.h"
 #include "GUITestTeamcityLogger.h"
 #include "GUITestThread.h"
-#include "GUITestWindow.h"
 #include "UGUITest.h"
 #include "UGUITestBase.h"
 
@@ -95,10 +94,6 @@ void GUITestService::sl_serviceRegistered() {
             QTimer::singleShot(1000, this, SLOT(runGUICrazyUserTest()));
             break;
 
-        case CREATE_GUI_TEST:
-            new GUITestingWindow();
-            break;
-
         case RUN_ALL_TESTS_NO_IGNORED:
             registerAllTestsTaskNoIgnored();
             break;
@@ -119,16 +114,9 @@ GUITestService::LaunchOptions GUITestService::getLaunchOptions(CMDLineRegistry* 
     CHECK(cmdLine, NONE);
 
     LaunchOptions result = NONE;
-
-    if (cmdLine->hasParameter(CMDLineCoreOptions::CREATE_GUI_TEST)) {
-        result = CREATE_GUI_TEST;
-    } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST)) {
+    if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST)) {
         QString paramValue = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
-        if (!paramValue.isEmpty()) {
-            result = RUN_ONE_TEST;
-        } else {
-            result = RUN_ALL_TESTS;
-        }
+        result = !paramValue.isEmpty() ? RUN_ONE_TEST : RUN_ALL_TESTS;
     } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
         result = RUN_ALL_TESTS_BATCH;
     } else if (cmdLine->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE)) {

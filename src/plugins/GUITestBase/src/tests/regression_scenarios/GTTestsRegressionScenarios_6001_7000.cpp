@@ -192,7 +192,7 @@ GUI_TEST_CLASS_DEFINITION(test_6033) {
     }
 
     GTUtilsProjectTreeView::click("human_T1.fa");
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     bool correct = false;
@@ -3659,7 +3659,7 @@ GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(7, 3), QPoint(12, 7));
 
     // 3. Move the mouse cursor inside the region, push the mouse left button down, drag the mouse cursor to the right.
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     const QString selection1 = GTClipboard::text();
     GTUtilsMSAEditorSequenceArea::dragAndDropSelection(QPoint(9, 5), QPoint(10, 5));
@@ -3750,10 +3750,10 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
 
     // 4. Select any region and press ctrl+c
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(1, 6), QPoint(1, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     // 5. Press ctrl+v
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // 6. Expected state: the region will appear under the main alignment
     GTUtilsMsaEditor::selectRows(0, 12);
@@ -4145,7 +4145,7 @@ GUI_TEST_CLASS_DEFINITION(test_6685_3) {
 
     // 4. Click Ctrl + C
     // Expected state: CGTAGG in the clipboard
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipText = GTClipboard::text();
     CHECK_SET_ERR(clipText == "CGTAGG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
 
@@ -4191,7 +4191,7 @@ GUI_TEST_CLASS_DEFINITION(test_6685_4) {
 
     // 4. Click Ctrl + C
     // Expected state: GTAGGT in the clipboard
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipText = GTClipboard::text();
     CHECK_SET_ERR(clipText == "GTAGGT", QString("Unexpected sequence, expected: GTAGGT, current: %1").arg(clipText));
 
@@ -4249,7 +4249,7 @@ GUI_TEST_CLASS_DEFINITION(test_6685_5) {
 
     // 4. Click Ctrl + C
     // Expected state: CGTAGG in the clipboard
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipText = GTClipboard::text();
     CHECK_SET_ERR(clipText == "CGTAGG", QString("Unexpected sequence, expected: CGTACG, current: %1").arg(clipText));
 
@@ -4429,7 +4429,7 @@ GUI_TEST_CLASS_DEFINITION(test_6693) {
 
     // 3. Select any region in "Mecopoda_elongata_Sumatra".
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 13), QPoint(5, 13));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     GTUtilsMsaEditor::toggleCollapsingMode();
 
@@ -4596,7 +4596,7 @@ GUI_TEST_CLASS_DEFINITION(test_6709) {
 
     // Select the following region "1..10, 740..744".
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller("1..10, 740..744"));
-    GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 
     // Expected result: the selected strand translation is "LS*LP".
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Copy/Paste", "Copy amino acids"}));
@@ -4783,7 +4783,7 @@ GUI_TEST_CLASS_DEFINITION(test_6730) {
 
     // 4. Expected result: the whole column is selected.
     QString expectedSelection = "T\nA\n-\n-\nA\nT\nA";
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == expectedSelection, QString("unexpected selection:\n%1").arg(clipboardText));
 }
@@ -5732,7 +5732,7 @@ GUI_TEST_CLASS_DEFINITION(test_6897) {
     GTClipboard::setText(">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
     // Paste the selection
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // Expected state: the copied sequence is inserted right below the selected sequence
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -5754,7 +5754,7 @@ GUI_TEST_CLASS_DEFINITION(test_6897_1) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     // Paste the selection
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // Expected state: the copied sequence is inserted right below the selected sequence
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -5775,7 +5775,7 @@ GUI_TEST_CLASS_DEFINITION(test_6897_2) {
     GTUtilsMSAEditorSequenceArea::selectSequence("Deracantha_deracantoides_EF540");
 
     // Paste the selection
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // Expected state: the copied sequence is inserted right below the selected sequence
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -5795,7 +5795,7 @@ GUI_TEST_CLASS_DEFINITION(test_6898) {
 
     // Paste the selection with Ctrl+Alt+V
     GTKeyboardDriver::keyPress(Qt::Key_Alt);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
 
     // Expected state: the copied sequence is inserted right above the selected sequence
@@ -5819,7 +5819,7 @@ GUI_TEST_CLASS_DEFINITION(test_6898_1) {
 
     // Paste the selection with Ctrl+Alt+V
     GTKeyboardDriver::keyPress(Qt::Key_Alt);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
 
     // Expected state: the copied sequence is inserted right above the first sequence
@@ -5842,7 +5842,7 @@ GUI_TEST_CLASS_DEFINITION(test_6898_2) {
 
     // Paste the selection with Ctrl+Alt+V
     GTKeyboardDriver::keyPress(Qt::Key_Alt);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTKeyboardDriver::keyRelease(Qt::Key_Alt);
 
     // Expected state: the copied sequences are inserted right above the 8th sequence.
@@ -5856,8 +5856,8 @@ GUI_TEST_CLASS_DEFINITION(test_6899) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMsaEditor::selectRows(0, 5);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
+    GTKeyboardUtils::paste();
 
     // Expected state: the copied sequences are inserted right above the 8th sequence.
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -5985,8 +5985,8 @@ GUI_TEST_CLASS_DEFINITION(test_6916) {
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
 
     GTUtilsMsaEditor::selectRows(0, 5);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
+    GTKeyboardUtils::paste();
 
     // Expected state: the copied sequences have original names + _1.
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -6191,10 +6191,10 @@ GUI_TEST_CLASS_DEFINITION(test_6953) {
     GTUtilsMsaEditor::clickSequence(0);
 
     // Press Ctrl+X
-    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+    GTKeyboardUtils::cut();
 
     // Press Ctrl+V
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
     CHECK_SET_ERR(names.size() == 18, QString("Unexpected name list size, expected: 18, current: %1").arg(names.size()));
@@ -6209,10 +6209,10 @@ GUI_TEST_CLASS_DEFINITION(test_6953) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(3, 1));
 
     // Press Ctrl+X
-    GTKeyboardDriver::keyClick('x', Qt::ControlModifier);
+    GTKeyboardUtils::cut();
 
     // Press Ctrl+V
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     GTUtilsMSAEditorSequenceArea::checkSelection(QPoint(0, 2), QPoint(3, 3), "TAAG\nTAAG");
 
@@ -6236,8 +6236,8 @@ GUI_TEST_CLASS_DEFINITION(test_6954) {
     GTWidget::click(GTWidget::findWidget("consensusLabel"));
 
     // Press Ctrl-C & Ctrl-V
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
+    GTKeyboardUtils::paste();
 
     // Expected state: the sequence is added to the MSA right  below the selection because the focus is on the MSA
     QStringList names = GTUtilsMSAEditorSequenceArea::getNameList();
@@ -6248,7 +6248,7 @@ GUI_TEST_CLASS_DEFINITION(test_6954) {
     GTWidget::click(GTUtilsProjectTreeView::getTreeView());
 
     // Press Ctrl+V
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // Expected state: the sequence is inserted into the project because the focus now is on the project list.
     GTUtilsProjectTreeView::checkItem("Phaneroptera_falcata");

@@ -830,7 +830,7 @@ GUI_TEST_CLASS_DEFINITION(test_4095) {
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller(1, 4));
     GTUtilsDialog::waitForDialog(new PopupChooser({"Select", "Sequence region"}));
     GTMenu::showContextMenu(GTWidget::findWidget("ADV_single_sequence_widget_0"));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString selectionContent = GTClipboard::text();
     CHECK_SET_ERR("GTCA" == selectionContent, "Sequence reversing is failed");
 }
@@ -1984,7 +1984,7 @@ GUI_TEST_CLASS_DEFINITION(test_4244) {
             auto leDescription = GTWidget::findLineEdit("leDescription", dialog);
             GTWidget::click(leDescription);
             GTClipboard::setText(QString('a').repeated(32000));
-            GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+            GTKeyboardUtils::paste();
 
             auto leAnnotationName = GTWidget::findLineEdit("leAnnotationName", dialog);
             GTLineEdit::setText(leAnnotationName, "name");
@@ -3465,7 +3465,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591) {
     auto filler = new SelectSequenceRegionDialogFiller(140425, 2);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     // 2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
     //         {Single range selection} checked
     //         {Region:} 140425..2
@@ -3524,7 +3524,7 @@ GUI_TEST_CLASS_DEFINITION(test_4591_2) {
     auto filler = new SelectSequenceRegionDialogFiller(3, 3);
     filler->setCircular(true);
     GTUtilsDialog::waitForDialog(filler);
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     // 2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
     //         {Single range selection} checked
     //         {Region:} 140425..2
@@ -4661,7 +4661,7 @@ GUI_TEST_CLASS_DEFINITION(test_4782) {
     //    6. Select all documents in project. Press delete.
     GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::No, "Save dot-plot data before closing?"));
     GTWidget::click(GTUtilsProjectTreeView::getTreeView());
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     //    Expected state: UGENE doesn't crash, all views are closed, all documents are removed from the project.

@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {  // DIFFERENCE: lock document is checked
     GTWidget::click(GTUtilsMdi::activeWindow());
     GTWidget::click(undo);
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(9, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "--TAAGACTT", "Undo works wrong. Found text is: " + clipboardText);
 
@@ -99,7 +99,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {  // DIFFERENCE: lock document is checked
     GTWidget::click(redo);
     GTWidget::click(redo);
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(9, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "----TAAGAC", "Redo works wrong. Found text is: " + clipboardText);
 }
@@ -192,7 +192,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {  // undo remove selection
 
     // Expected state: selection removed
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(3, 1));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipdoardText = GTClipboard::text();
     CHECK_SET_ERR(clipdoardText == "ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
 
@@ -203,7 +203,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {  // undo remove selection
     // Expected state: delition undone
     GTWidget::click(GTUtilsMdi::activeWindow());
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(3, 1));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     clipdoardText = GTClipboard::text();
     CHECK_SET_ERR(clipdoardText == "TAAG\nTAAG", QString("Expected TAAG\nTAAG, found: %1").arg(clipdoardText));
 
@@ -214,7 +214,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {  // undo remove selection
     // Expected state: delition redone
     GTWidget::click(GTUtilsMdi::activeWindow());
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(3, 1));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     clipdoardText = GTClipboard::text();
     CHECK_SET_ERR(clipdoardText == "ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
 }
@@ -232,7 +232,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {  // undo replace_selected_rows_with_rever
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence changed from TTG -> CAA
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "CAA\nTGA\nATC",
@@ -248,7 +248,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {  // undo replace_selected_rows_with_rever
     GTWidget::click(undo);
 
     // Expected state: sequence changed from CAA -> TTG
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {  // undo replace_selected_rows_with_rever
     GTWidget::click(redo);
 
     // Expected state: sequence changed from TTG -> CAA
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "CAA\nTGA\nATC",
@@ -290,7 +290,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {  // undo replace_selected_rows_with_rev
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence changed from TTG -> GTT
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "GTT\nACT\nTAG",
@@ -306,7 +306,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {  // undo replace_selected_rows_with_rev
     GTWidget::click(undo);
 
     // Expected state: sequence changed from GTT -> TTG
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {  // undo replace_selected_rows_with_rev
     GTWidget::click(redo);
 
     // Expected state: sequence changed from TTG -> GTT
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "GTT\nACT\nTAG",
@@ -349,7 +349,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence changed from TTG -> AAC
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "AAC\nAGT\nCTA",
@@ -365,7 +365,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTWidget::click(undo);
 
     // Expected state: sequence changed from AAC -> TTG
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
@@ -382,7 +382,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTWidget::click(redo);
 
     // Expected state: sequence changed from TTG -> AAC
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "AAC\nAGT\nCTA",
