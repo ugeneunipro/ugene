@@ -44,6 +44,7 @@
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
 #include <utils/GTUtilsText.h>
 #include <utils/GTUtilsToolTip.h>
@@ -4716,10 +4717,10 @@ GUI_TEST_CLASS_DEFINITION(test_7896) {
 
 GUI_TEST_CLASS_DEFINITION(test_7923) {
     /*
-    * 1. Open _common_data/gff/5k_annotation_tables.gff
-    * 2. Type "SARS" in project search
-    * Expected: 5k results found
-    */
+     * 1. Open _common_data/gff/5k_annotation_tables.gff
+     * 2. Type "SARS" in project search
+     * Expected: 5k results found
+     */
     GTFileDialog::openFile(testDir, "_common_data/gff/5k_annotation_tables.gff");
     GTUtilsTaskTreeView::waitTaskFinished();
 

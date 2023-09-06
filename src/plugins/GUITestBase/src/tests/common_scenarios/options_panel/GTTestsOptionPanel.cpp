@@ -29,6 +29,7 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 
 #include <QFile>

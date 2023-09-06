@@ -29,6 +29,7 @@
 #include <primitives/GTTableView.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <QApplication>
 #include <QDesktopWidget>

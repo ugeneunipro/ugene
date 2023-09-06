@@ -32,6 +32,7 @@
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <QColor>
 #include <QGraphicsItem>

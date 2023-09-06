@@ -22,6 +22,7 @@
 
 #include "GTTestsMSAEditorReplaceCharacter.h"
 #include <drivers/GTKeyboardDriver.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <QApplication>
 #include <QComboBox>

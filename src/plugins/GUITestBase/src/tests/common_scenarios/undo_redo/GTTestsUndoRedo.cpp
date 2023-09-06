@@ -29,6 +29,7 @@
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <U2View/MSAEditor.h>

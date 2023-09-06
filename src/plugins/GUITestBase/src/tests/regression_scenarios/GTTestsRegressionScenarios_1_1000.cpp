@@ -39,6 +39,7 @@
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <QDialogButtonBox>
 #include <QFileDialog>
