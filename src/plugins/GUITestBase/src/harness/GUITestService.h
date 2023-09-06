@@ -41,14 +41,15 @@ class MainThreadRunnable;
 class GUITestService : public Service {
     Q_OBJECT
 public:
-    enum LaunchOptions { NONE,
-                         RUN_ONE_TEST,
-                         RUN_ALL_TESTS,
-                         RUN_ALL_TESTS_BATCH,
-                         RUN_TEST_SUITE,
-                         RUN_CRAZY_USER_MODE,
-                         CREATE_GUI_TEST,
-                         RUN_ALL_TESTS_NO_IGNORED };
+    enum LaunchOptions {
+        NONE,
+        RUN_ONE_TEST,
+        RUN_ALL_TESTS,
+        RUN_ALL_TESTS_BATCH,
+        RUN_TEST_SUITE,
+        RUN_CRAZY_USER_MODE,
+        RUN_ALL_TESTS_NO_IGNORED
+    };
 
     GUITestService(QObject* parent = nullptr);
     ~GUITestService();

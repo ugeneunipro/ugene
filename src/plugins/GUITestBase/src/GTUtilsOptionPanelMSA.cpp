@@ -29,9 +29,9 @@
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 
-#include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
@@ -342,7 +342,7 @@ void GTUtilsOptionPanelMsa::enterPattern(const QString& pattern, bool useCopyPas
     }
     if (useCopyPaste) {
         GTClipboard::setText(pattern);
-        GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+        GTKeyboardUtils::paste();
     } else {
         GTPlainTextEdit::setText(patternEdit, pattern);
     }
@@ -386,12 +386,10 @@ void GTUtilsOptionPanelMsa::checkResultsText(const QString& expectedText) {
     CHECK_SET_ERR(actualText == expectedText, QString("Wrong result. Expected: %1, got: %2").arg(expectedText).arg(actualText));
 }
 
-
 void GTUtilsOptionPanelMsa::clickNext() {
     auto next = GTWidget::findPushButton("nextPushButton");
     GTWidget::click(next);
 }
-
 
 void GTUtilsOptionPanelMsa::clickPrev() {
     auto prev = GTWidget::findPushButton("prevPushButton");

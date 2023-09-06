@@ -39,6 +39,7 @@
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <QDialogButtonBox>
 #include <QFileDialog>
@@ -1313,7 +1314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0775) {
     GTWidget::click(GTWidget::findWidget("ADV_single_sequence_widget_0"));
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller("1..2,5..10,15..20"));
     // GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller(10, 20));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     //    2. Open "Region selection" dialog {Ctrl+a} fill it with next data:
     //        {Multiple range selection} checked
     //        {Multi region:} 1..2,5..10,15..20

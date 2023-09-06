@@ -180,7 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_3017) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "S", "Alignment is not locked: " + clipboardText);
 
@@ -1552,7 +1552,7 @@ GUI_TEST_CLASS_DEFINITION(test_3319) {
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller(51, 102));
     GTUtilsDialog::waitForDialog(new PopupChooser({"Select", "Sequence region"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString clipboardText = GTClipboard::text();
 
     CHECK_SET_ERR(clipboardText == "TTTAAACCACAGGTCATGACCCAGTAGATGAGGAAATTGGTTTAGTGGTTTA", "unexpected text in clipboard: " + clipboardText);
@@ -1571,7 +1571,7 @@ GUI_TEST_CLASS_DEFINITION(test_3321) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"Select", "Sequence region"}));
     GTWidget::click(GTWidget::findWidget("CV_ADV_single_sequence_widget_0"), Qt::RightButton);
     //    Press "Ctrl+C"
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     //    Make sure that buffer contains right region
     QString clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "AAATGAAAGAGGTCTTTCATT", "unecpected text in clipboard: " + clipboardText);
@@ -2924,7 +2924,7 @@ GUI_TEST_CLASS_DEFINITION(test_3603) {
     GTWidget::click(GTUtilsSequenceView::getPanOrDetView());
 
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller());
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
 
     auto startEdit = GTWidget::findLineEdit("editStart");
     auto endEdit = GTWidget::findLineEdit("editEnd");
@@ -3050,7 +3050,7 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
             GTWidget::click(plainText);
 
             // Select the whole sequence and replace it with '='. Try applying the change.
-            GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+            GTKeyboardUtils::selectAll();
             GTThread::waitForMainThread();
             GTKeyboardDriver::keyClick('=');
             GTThread::waitForMainThread();
@@ -4044,7 +4044,7 @@ GUI_TEST_CLASS_DEFINITION(test_3805) {
     GTUtilsDialog::waitForDialog(new PopupChooser({"Select", "Sequence region"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString initialContent = GTClipboard::text();
 
     // 3. Reverse sequence
@@ -4059,7 +4059,7 @@ GUI_TEST_CLASS_DEFINITION(test_3805) {
     GTUtilsDialog::waitForDialog(new SelectSequenceRegionDialogFiller(51, 102));
     GTUtilsDialog::waitForDialog(new PopupChooser({"Select", "Sequence region"}));
     GTMenu::showContextMenu(GTUtilsMdi::activeWindow());
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     const QString newContent = GTClipboard::text();
 
     CHECK_SET_ERR(initialContent == newContent, "Result of actions is incorrect. Expected: " + initialContent + ", found: " + newContent);

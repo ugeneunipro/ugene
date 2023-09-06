@@ -29,6 +29,7 @@
 #include <primitives/GTTextEdit.h>
 #include <primitives/GTWidget.h>
 #include <system/GTClipboard.h>
+#include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 
 #include <QDir>
@@ -75,7 +76,6 @@ const QMap<GTUtilsOptionPanelSequenceView::Tabs, QString> GTUtilsOptionPanelSequ
 
 #define GT_CLASS_NAME "GTUtilsOptionPanelSequenceView"
 
-
 void GTUtilsOptionPanelSequenceView::enterPattern(const QString& pattern, bool useCopyPaste) {
     auto patternEdit = GTWidget::findPlainTextEdit("textPattern");
     GTWidget::click(patternEdit);
@@ -85,12 +85,11 @@ void GTUtilsOptionPanelSequenceView::enterPattern(const QString& pattern, bool u
     }
     if (useCopyPaste) {
         GTClipboard::setText(pattern);
-        GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+        GTKeyboardUtils::paste();
     } else {
         GTPlainTextEdit::setText(patternEdit, pattern);
     }
 }
-
 
 void GTUtilsOptionPanelSequenceView::toggleTab(GTUtilsOptionPanelSequenceView::Tabs tab) {
     GTWidget::click(GTWidget::findWidget(tabsNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow()));
@@ -120,7 +119,6 @@ void GTUtilsOptionPanelSequenceView::checkTabIsOpened(GTUtilsOptionPanelSequence
     GTWidget::findWidget(name, GTUtilsSequenceView::getActiveSequenceViewWindow());
 }
 
-
 bool GTUtilsOptionPanelSequenceView::checkResultsText(const QString& expectedText) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -128,25 +126,19 @@ bool GTUtilsOptionPanelSequenceView::checkResultsText(const QString& expectedTex
     return label->text() == expectedText;
 }
 
-
 void GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases(bool searchWithAmbiguousBases) {
     GTCheckBox::setChecked(GTWidget::findCheckBox("useAmbiguousBasesBox"), searchWithAmbiguousBases);
 }
-
 
 void GTUtilsOptionPanelSequenceView::clickNext() {
     auto next = GTWidget::findPushButton("nextPushButton");
     GTWidget::click(next);
 }
 
-
-
 void GTUtilsOptionPanelSequenceView::clickPrev() {
     auto prev = GTWidget::findPushButton("prevPushButton");
     GTWidget::click(prev);
 }
-
-
 
 void GTUtilsOptionPanelSequenceView::clickGetAnnotation() {
     auto getAnnotations = GTWidget::findPushButton("getAnnotationsPushButton");
@@ -154,14 +146,11 @@ void GTUtilsOptionPanelSequenceView::clickGetAnnotation() {
     GTThread::waitForMainThread();
 }
 
-
-
 bool GTUtilsOptionPanelSequenceView::isPrevNextEnabled() {
     auto next = GTWidget::findPushButton("nextPushButton");
     auto prev = GTWidget::findPushButton("prevPushButton");
     return prev->isEnabled() && next->isEnabled();
 }
-
 
 bool GTUtilsOptionPanelSequenceView::isGetAnnotationsEnabled() {
     auto getAnnotations = GTWidget::findPushButton("getAnnotationsPushButton");
@@ -295,7 +284,6 @@ void GTUtilsOptionPanelSequenceView::showMeltingTemperatureDialog() {
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
 }
 
-
 void GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern() {
     auto loadFromFile = GTWidget::findRadioButton("usePatternFromFileRadioButton");
     GTWidget::click(loadFromFile);
@@ -303,14 +291,10 @@ void GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern() {
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 }
 
-
-
 void GTUtilsOptionPanelSequenceView::toggleSaveAnnotationsTo() {
     auto obj = GTWidget::findLabel("ArrowHeader_Save annotation(s) to");
     GTWidget::click(obj);
 }
-
-
 
 void GTUtilsOptionPanelSequenceView::enterPatternFromFile(const QString& filePathStr, const QString& fileName) {
     GTFileDialogUtils* ob = new GTFileDialogUtils(filePathStr, fileName, GTFileDialogUtils::Open);
@@ -321,8 +305,6 @@ void GTUtilsOptionPanelSequenceView::enterPatternFromFile(const QString& filePat
     GTGlobals::sleep(2500);
     GTUtilsTaskTreeView::waitTaskFinished();
 }
-
-
 
 void GTUtilsOptionPanelSequenceView::setStrand(const QString& strandStr) {
     auto strand = GTWidget::findComboBox("boxStrand", nullptr, {false});
@@ -349,7 +331,6 @@ void GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(const QSt
     QDir().mkpath(QFileInfo(filepath).dir().absolutePath());
     GTLineEdit::setText("leNewTablePath", filepath);
 }
-
 
 void GTUtilsOptionPanelSequenceView::setAlgorithm(const QString& algorithm) {
     auto algoBox = GTWidget::findComboBox("boxAlgorithm");
@@ -438,7 +419,6 @@ void GTUtilsOptionPanelSequenceView::setSetMaxResults(int maxResults) {
     GTSpinBox::setValue(limit, maxResults);
     GTGlobals::sleep(2500);
 }
-
 
 #undef GT_CLASS_NAME
 

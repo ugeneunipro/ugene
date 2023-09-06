@@ -588,7 +588,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     // Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(11, 0), QPoint(13, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     QString clipboardText = GTClipboard::text();
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
@@ -617,7 +617,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_1) {
 
     // Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(11, 0), QPoint(13, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     QString sequencesInClipboard = GTClipboard::text();
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
@@ -646,7 +646,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009_2) {
 
     // Expected state: Column range = 12-14
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(11, 0), QPoint(13, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     QString clipboardText = GTClipboard::text();
     QString expectedMSA = "TAA\n---\nTAA\nTAA\n---\n---\n---\nTAA\nTTA\n---";
@@ -745,7 +745,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     // Expected state: sequence changed from TTG -> CAA
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     GTUtilsTaskTreeView::waitTaskFinished();
     QString clipboardText = GTClipboard::text();
@@ -762,7 +762,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     // Expected state: sequence changed from CAA -> TTG
     GTUtilsTaskTreeView::waitTaskFinished();
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
@@ -844,7 +844,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
 
     // Expected state: sequence changed from CAA -> TTG
     // GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(-1, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     clipboardText = GTClipboard::text();
     CHECK_SET_ERR(clipboardText == "TTG", "Clipboard string and expected MSA string differs");
@@ -1282,7 +1282,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     // Expected state: UGENE not crashes, deletion is not performed
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(0, 9));
 
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString text = GTClipboard::text();
     QString expected = "A\nA\nT\nA\nT\nT\nT\nA\nA\nA";
     CHECK_SET_ERR(text == expected, "expected: " + expected + "found: " + text);
@@ -1304,7 +1304,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     // 3. Select Edit -> remove columns of gaps -> remove columns with number of gaps 1.
     GTWidget::click(GTUtilsMSAEditorSequenceArea::getSequenceArea());
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(19, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString initial = GTClipboard::text();
     // 4. Click OK
     GTUtilsDialog::waitForDialog(new DeleteGapsDialogFiller());
@@ -1315,7 +1315,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020_1) {
     GTWidget::click(GTUtilsMSAEditorSequenceArea::getSequenceArea());
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(19, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString final = GTClipboard::text();
 
     CHECK_SET_ERR(initial == final, "msa area was changed");

@@ -633,18 +633,17 @@ GUI_TEST_CLASS_DEFINITION(test_0039) {
 
     GTUtilsProjectTreeView::click("COI.aln");
     GTClipboard::setText(">human_T1 (UCS\r\nACGT\r\nACG");
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsProjectTreeView::findIndex("human_T1 (UCS");
 }
 
-QString readFileToStr(const QString& path) {
+static QString readFileToStr(const QString& path) {
     GUrl url(path);
     QFile f(url.getURLString());
     if (!f.open(QFile::ReadOnly | QFile::Text)) {
-        return QString();
+        return "";
     }
     QTextStream in(&f);
     return in.readAll();
@@ -660,7 +659,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     GTClipboard::setText(">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA");
 
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsDialog::checkNoActiveWaiters();
 
     GTUtilsProjectTreeView::findIndex("human_T1");
@@ -691,8 +690,7 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
     GTClipboard::setText(fileContent);
 
     GTUtilsDialog::waitForDialog(new StartupDialogFiller());
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle().contains("Workflow Designer"), "Mdi window is not a WD window");
 }
@@ -707,7 +705,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     QString fileContent = readFileToStr(dataDir + "samples/Newick/COI.nwk");
     GTClipboard::setText(fileContent);
 
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("Tree");
 }
@@ -722,7 +720,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     QString fileContent = readFileToStr(dataDir + "samples/Stockholm/CBS.sto");
     GTClipboard::setText(fileContent);
 
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("CBS");
 }
@@ -737,7 +735,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     QString fileContent = readFileToStr(dataDir + "samples/PDB/1CF7.PDB");
     GTClipboard::setText(fileContent);
 
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("1CF7");
 
@@ -756,7 +754,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
     QString fileContent = readFileToStr(dataDir + "samples/FASTA/human_T1.fa");
     GTClipboard::setText(fileContent);
 
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -770,7 +768,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
     for (int i = 0; i < 10; i++) {
         GTUtilsProjectTreeView::click("COI.aln");
         GTClipboard::setText(QString(">human_T%1\r\nACGT\r\nACG").arg(QString::number(i)));
-        GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+        GTKeyboardUtils::paste();
         uiLog.trace(QString("item number %1 inserted").arg(i));
     }
 
@@ -796,8 +794,7 @@ GUI_TEST_CLASS_DEFINITION(test_0049) {
     GTUtilsProjectTreeView::click("COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/FASTA/human_T1.fa");
     GTClipboard::setText(fileContent);
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
@@ -815,8 +812,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
     GTUtilsProjectTreeView::click("COI.aln");
     QString fileContent = readFileToStr(dataDir + "samples/FASTA/human_T1.fa");
     GTClipboard::setText(fileContent);
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsDialog::waitForDialog(new SaveProjectDialogFiller(QDialogButtonBox::No));
@@ -837,7 +833,7 @@ GUI_TEST_CLASS_DEFINITION(test_0051) {
     GTClipboard::setText(">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA");
 
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Join));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsProjectTreeView::findIndex("Multiple alignment");
@@ -853,7 +849,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
     GTClipboard::setText(">human_T1\r\nACGTACG\r\n>human_T2\r\nACCTGA");
 
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Merge));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTUtilsProjectTreeView::findIndex("Sequence");
@@ -871,7 +867,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053) {
     GTClipboard::setText(fileContent);
 
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsSequenceView::checkSequenceViewWindowIsActive();
 }
@@ -886,7 +882,7 @@ GUI_TEST_CLASS_DEFINITION(test_0054) {
     GTClipboard::setText(fileContent);
 
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Separate, 10, true));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0055) {
@@ -906,7 +902,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     GTClipboard::setText(fileContent);
 
     GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller(new CustomScenarioCancel()));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0056) {
@@ -920,7 +916,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
     GTClipboard::setText(fileContent);
 
     GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("Plain text"));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0057) {
@@ -945,7 +941,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
 
     GTUtilsDialog::waitForDialog(new AlignShortReadsFiller(new CheckPathScenario()));
     GTUtilsDialog::waitForDialog(new SequenceReadingModeSelectorDialogFiller(SequenceReadingModeSelectorDialogFiller::Align));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {
@@ -960,7 +956,7 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
 
     GTUtilsDialog::waitForDialog(new ImportBAMFileFiller(sandBoxDir + "project_test_0058/project_test_0058.ugenedb", "", "", true));
     GTUtilsDialog::waitForDialog(new DocumentFormatSelectorDialogFiller("BAM/SAM file import"));
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsDialog::checkNoActiveWaiters();
     GTUtilsAssemblyBrowser::checkAssemblyBrowserWindowIsActive();
 }
@@ -973,7 +969,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     GTWidget::click(GTUtilsProjectTreeView::getTreeView());
 
     GTClipboard::setUrls({dataDir + "samples/FASTA/human_T1.fa"});
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -986,7 +982,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     GTWidget::click(GTUtilsProjectTreeView::getTreeView());
 
     GTClipboard::setText("ACGT");
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("clipboard", GTGlobals::FindOptions(true, Qt::MatchContains));
 }
@@ -999,7 +995,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTWidget::click(GTUtilsProjectTreeView::getTreeView());
 
     GTClipboard::setUrls({dataDir + "samples/FASTA/human_T1.fa"});
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
 }
 
@@ -1011,7 +1007,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     GTWidget::click(GTUtilsProjectTreeView::getTreeView());
 
     GTClipboard::setUrls({dataDir + "samples/FASTA/human_T1.fa", dataDir + "samples/HMM/aligment15900.hmm"});
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTUtilsProjectTreeView::findIndex("aligment15900");
@@ -1025,8 +1021,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTMenu::clickMainMenuItem({"File", "Close project"});
 
     GTClipboard::setUrls(QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -1038,8 +1033,7 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(7, 3), QPoint(12, 7));
 
     GTClipboard::setUrls(QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList();
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
@@ -1053,8 +1047,7 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(7, 3), QPoint(12, 7));
 
     GTClipboard::setText(">human_T1\r\nACGTACG\r\n");
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList();
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
@@ -1083,9 +1076,8 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
 
     // Move focus to the project view from object view.
     GTWidget::click(GTUtilsProjectTreeView::getTreeView());
-
     GTClipboard::setUrls({dataDir + "samples/FASTA/human_T1.fa"});
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -1101,8 +1093,7 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     QAction* editMode = GTAction::findActionByText("Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(GTAction::button(editMode));
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     int len = GTUtilsSequenceView::getLengthOfSequence();
     CHECK_SET_ERR(len > 199950, "No sequences pasted");
@@ -1118,8 +1109,7 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     QAction* editMode = GTAction::findActionByText("Switch on the editing mode");
     CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(GTAction::button(editMode));
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     int len = GTUtilsSequenceView::getLengthOfSequence();
     CHECK_SET_ERR(len > 199950, "No sequences pasted");
@@ -1144,8 +1134,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTClipboard::setUrls(QList<QString>() << dataDir + "samples/Genbank/sars.gb");
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("NC_004718");
 }
@@ -1187,8 +1176,7 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     GTClipboard::setUrls(QList<QString>() << dataDir + "samples/Genbank/sars.gb");
-
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
     GTUtilsTaskTreeView::waitTaskFinished();
     GTUtilsProjectTreeView::findIndex("NC_004718");
 }

@@ -728,7 +728,7 @@ void GTUtilsMSAEditorSequenceArea::deleteColorScheme(const QString& colorSchemeN
 void GTUtilsMSAEditorSequenceArea::checkSelection(const QPoint& start, const QPoint& end, const QString& expected) {
     GTWidget::click(GTUtilsMsaEditor::getActiveMsaEditorWindow());
     selectArea(start, end);
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text();
     GT_CHECK(clipboardText == expected, QString("unexpected selection:\n%1").arg(clipboardText));

@@ -572,10 +572,10 @@ GUI_TEST_CLASS_DEFINITION(test_5149) {
 
     // Copy a sequence which contains only gaps to the clipboard.
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(41, 0), QPoint(43, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     // Paste the clipboard data to the alignment.
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // Expected state: nothing happens, the undo/redo stack hasn't been modified.
     QAbstractButton* undo = GTAction::button("msa_action_undo");
@@ -692,7 +692,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
     //    5. Press the next key sequence:
     //        Windows and Linux: Ctrl+V
     //        macOS: Cmd+V
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);  // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+    GTKeyboardUtils::paste();
 
     GTUtilsTaskTreeView::waitTaskFinished();
 
@@ -1005,10 +1005,10 @@ GUI_TEST_CLASS_DEFINITION(test_5334) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(19, 0), QPoint(19, 0));
 
     // Click Ctrl + C.
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     // Click Ctrl + V.
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // Expected state: msa alphabet is still AMINO.
     bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet();
@@ -2725,16 +2725,16 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(41, 1), QPoint(43, 3));
 
     // 4. Copy this subalignment
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);  // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+    GTKeyboardUtils::copy();  // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);  // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+    GTKeyboardUtils::paste();
     GTUtilsNotifications::waitForNotification(true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::checkNoActiveWaiters();
 
     GTClipboard::setText("фыва...");
     // GTClipboard::setText("#$%^&*(");
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);  // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
+    GTKeyboardUtils::paste();
 
     GTUtilsNotifications::waitForNotification(true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::checkNoActiveWaiters();
@@ -3077,12 +3077,12 @@ GUI_TEST_CLASS_DEFINITION(test_5728) {
 
     // Expected state: the first character in the first row and the last character in the last row are gaps, the rest characters in the alignment are the same.
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(0, 0), QPoint(0, 0));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString selectionContent1 = GTClipboard::text();
     CHECK_SET_ERR(selectionContent1 == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent1));
 
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(13, 9), QPoint(13, 9));
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
     QString selectionContent2 = GTClipboard::text();
     CHECK_SET_ERR(selectionContent2 == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent2));
 
@@ -4849,10 +4849,10 @@ GUI_TEST_CLASS_DEFINITION(test_5970) {
     GTUtilsMSAEditorSequenceArea::selectArea(QPoint(7, 0), QPoint(7, 2));
 
     // 4. Press Ctrl + C.
-    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    GTKeyboardUtils::copy();
 
     // 5. Press Ctrl + V.
-    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTKeyboardUtils::paste();
 
     // 6. Expected state: the alphabet is "Standard amino acid"
     const bool isAlphabetAminoAfter = GTUtilsMsaEditor::getEditor()->getMaObject()->getAlphabet()->isAmino();

@@ -29,6 +29,7 @@
 #include <primitives/GTTableView.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <QApplication>
 #include <QDesktopWidget>
@@ -217,7 +218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     }
 
     GTWidget::setFocus(GTWidget::findWidget("sceneView"));
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     //    3. Open this schema from examples
     GTUtilsWorkflowDesigner::addSample("call variants");

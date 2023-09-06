@@ -32,6 +32,7 @@
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
+#include <utils/GTKeyboardUtils.h>
 
 #include <QColor>
 #include <QGraphicsItem>
@@ -577,7 +578,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsDialog::waitForDialog(new PopupChooser({ACTION_ADD_BOOKMARK}, GTGlobals::UseMouse));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
+    GTKeyboardUtils::selectAll();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTKeyboardDriver::keySequence("start bookmark");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
