@@ -54,9 +54,6 @@ class SQLiteVariantDbi;
 /** Store all reads in N tables sorted by effective read length */
 #define SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_MULTITABLE_V1 "multi-table-v1"
 
-/** Uses RTree index to store reads. This method is simple but not very efficient in terms of space/insert time */
-#define SQLITE_DBI_ASSEMBLY_READ_ELEN_METHOD_RTREE "rtree2d"
-
 /** No compression is applied. Best for manual DB browsing  (default)*/
 #define SQLITE_DBI_ASSEMBLY_READ_COMPRESSION_METHOD_NO_COMPRESSION "no-compression"
 
