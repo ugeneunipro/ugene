@@ -56,4 +56,15 @@ private:
     TmCalculatorSelectorWidget* selectorWidget = nullptr;
 };
 
+class U2VIEW_EXPORT Hairpin : public QDialog {
+    Q_OBJECT
+public:
+    Hairpin(QWidget* parent, const QVariantMap& currentSettings);
+
+    //QSharedPointer<TmCalculator> createTemperatureCalculator() const;
+
+private:
+    TmCalculatorSelectorWidget* selectorWidget = nullptr;
+};
+
 }  // namespace U2

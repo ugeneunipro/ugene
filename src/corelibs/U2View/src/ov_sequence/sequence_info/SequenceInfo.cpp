@@ -549,11 +549,14 @@ bool SequenceInfo::eventFilter(QObject* object, QEvent* event) {
 void SequenceInfo::statisticLabelLinkActivated(const QString& link) {
     if (link == captionSeqMeltingTemperature) {
         QObjectScopedPointer<TmCalculatorSelectorDialog> dialog(new TmCalculatorSelectorDialog(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings()));
-        int res = dialog->exec();
-        CHECK(!dialog.isNull() && res == QDialog::Accepted, );
+        //int res = dialog->exec();
+        //CHECK(!dialog.isNull() && res == QDialog::Accepted, );
 
         temperatureCalculator = dialog->createTemperatureCalculator();
         updateCommonStatisticsData(true);
+        
+        auto hairpin = new Hairpin(annotatedDnaView->getActiveSequenceWidget(), temperatureCalculator->getSettings());
+        hairpin->exec();
     }
 }
 

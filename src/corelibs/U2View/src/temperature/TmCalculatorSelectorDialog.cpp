@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UGENE - Integrated Bioinformatics Tools.
  * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
  * http://ugene.net
@@ -33,6 +33,9 @@
 
 #include "TmCalculatorSelectorWidget.h"
 
+#include <QLabel>
+
+
 namespace U2 {
 
 TmCalculatorSelectorDialog::TmCalculatorSelectorDialog(QWidget* parent, const QVariantMap& currentSettings)
@@ -60,5 +63,27 @@ QSharedPointer<TmCalculator> TmCalculatorSelectorDialog::createTemperatureCalcul
 QVariantMap TmCalculatorSelectorDialog::getTemperatureCalculatorSettings() const {
     return selectorWidget->getSettings();
 }
+
+ Hairpin::Hairpin(QWidget* parent, const QVariantMap& currentSettings):QDialog(parent) {
+    setObjectName("RNAfold Hairpin");
+    QHBoxLayout* mainLayout = new QHBoxLayout();
+    selectorWidget = new TmCalculatorSelectorWidget(this, true);
+    selectorWidget->init(currentSettings);
+    QLabel* rNAfoldResult = new QLabel(this);
+    rNAfoldResult->setTextInteractionFlags(Qt::TextBrowserInteraction | Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+    rNAfoldResult->setText("<!DOCTYPE html><head></head><body><table cellspacing=5><tr><td>Hairpin: </td><td><pre>"
+                           "        GGGAAA┐\r\n"
+                           "         │││  │\r\n"
+                           "ATTCCAGGATCTAT┘\r\n"
+                           "</pre></td></tr><tr><td>RNAfold format: </td><td>.(((....))).........</td></tr><tr>"
+                           "<td>Melting temperature: </td><td>44 °C</td></tr></table></body></html>");
+    QVBoxLayout* vertLayout = new QVBoxLayout;
+    vertLayout->addWidget(rNAfoldResult);
+    vertLayout->addItem(new QSpacerItem(20, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+    mainLayout->addLayout(vertLayout);
+    mainLayout->addWidget(selectorWidget);
+    setLayout(mainLayout);
+ }
 
 }  // namespace U2
