@@ -629,7 +629,21 @@ QString ExternalToolSupportUtils::checkIndexDirLatinSymbols() {
 QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& args) {
     QStringList agrsNoJoinedLines;
     for (const QString& arg : qAsConst(args)) {
-        arg.contains("\" \"") ? agrsNoJoinedLines << arg.split("\" \"") : agrsNoJoinedLines << arg;
+        if (arg.startsWith("\"") && arg.endsWith("\"")) {
+            QStringList argsSplited = arg.mid(1, arg.size() - 2).split("\" \"");
+            for (const QString& splittedArg : qAsConst(argsSplited)) {
+                if (splittedArg.isEmpty()) {
+                    return tr("One of the arguments passed to \"%1\" external tool contains empty arguments.");
+                } else if (splittedArg.contains("\"") && splittedArg.contains("'") && splittedArg.contains("`")) {
+                    return tr("One of the arguments passed to \"%1\" external tool contains unexpected quotes. Current problem argument is: ") 
+                        + splittedArg;
+                } else {
+                    agrsNoJoinedLines << splittedArg;
+                }
+            }
+        } else {
+            agrsNoJoinedLines << arg;
+        }
     }
     for (const QString& path : qAsConst(agrsNoJoinedLines)) {
         if (path.contains(" ")) {
