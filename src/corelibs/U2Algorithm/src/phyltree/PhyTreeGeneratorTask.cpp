@@ -43,7 +43,7 @@ const CreatePhyTreeSettings& PhyTreeGeneratorTask::getSettings() const {
 }
 
 PhyTreeGeneratorLauncherTask::PhyTreeGeneratorLauncherTask(const MultipleSequenceAlignment& ma, const CreatePhyTreeSettings& _settings)
-    : Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlag_NoRun | TaskFlag_FailOnSubtaskError),
+    : Task(PhyTreeGeneratorLauncherTask::tr("Calculating Phylogenetic Tree"), TaskFlags_NR_FOSE_COSC),
       inputMA(ma->getCopy()), settings(_settings), task(nullptr) {
     tpm = Task::Progress_SubTasksBased;
 }
