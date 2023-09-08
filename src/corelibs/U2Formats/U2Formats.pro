@@ -65,7 +65,6 @@ HEADERS += src/ABIFormat.h \
            src/sqlite_dbi/SQLiteUdrDbi.h \
            src/sqlite_dbi/SQLiteVariantDbi.h \
            src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.h \
-           src/sqlite_dbi/assembly/RTreeAssemblyAdapter.h \
            src/sqlite_dbi/assembly/SingleTableAssemblyAdapter.h \
            src/sqlite_dbi/util/SqliteUpgrader.h \
            src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.h \
@@ -145,7 +144,6 @@ SOURCES += src/ABIFormat.cpp \
            src/sqlite_dbi/SQLiteUdrDbi.cpp \
            src/sqlite_dbi/SQLiteVariantDbi.cpp \
            src/sqlite_dbi/assembly/MultiTableAssemblyAdapter.cpp \
-           src/sqlite_dbi/assembly/RTreeAssemblyAdapter.cpp \
            src/sqlite_dbi/assembly/SingleTableAssemblyAdapter.cpp \
            src/sqlite_dbi/util/SqliteUpgrader.cpp \
            src/sqlite_dbi/util/SqliteUpgraderFrom_0_To_1_13.cpp \
