@@ -161,6 +161,7 @@ protected:
         NonLatinToolPath, /* Tool location: C:/tools/tool/目錄/ */
         NonLatinIndexPath, /* Setting->Preferences->Directories->Build inexes: C:/indexes/目錄/ */
         SpacesArguments, /* Tool start command line: externalTool -human_T1.da -p C:/User/student/S P A C E S/output.fa  */
+        SpacesArgumentsLikeMakeblastdb, /* Multiple files definition in one argument (correct sample): -input "C:\fasta\human_T1.fa" "C:\genbank\sars.gb"  */
         SpacesTemporaryDirPath, /* Environment variable: TMP=C:/User/temp/S P A C E S/ */
         SpacesToolPath /* Tool location: C:/tools/tool/S P A C E S/ */
     };

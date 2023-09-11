@@ -626,7 +626,7 @@ QString ExternalToolSupportUtils::checkIndexDirLatinSymbols() {
     return "";
 }
 
-QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& args) {
+QString ExternalToolSupportUtils::checkSpacesArgumentsLikeMakeblastdb(const QStringList& args) {
     QStringList agrsNoJoinedLines;
     for (const QString& arg : qAsConst(args)) {
         if (arg.startsWith("\"") && arg.endsWith("\"")) {
@@ -635,8 +635,7 @@ QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& arg
                 if (splittedArg.isEmpty()) {
                     return tr("One of the arguments passed to \"%1\" external tool contains empty arguments.");
                 } else if (splittedArg.contains("\"") && splittedArg.contains("'") && splittedArg.contains("`")) {
-                    return tr("One of the arguments passed to \"%1\" external tool contains unexpected quotes. Current problem argument is: ") 
-                        + splittedArg;
+                    return tr("One of the arguments passed to \"%1\" external tool contains unexpected quotes. Current problem argument is: ") + splittedArg;
                 } else {
                     agrsNoJoinedLines << splittedArg;
                 }
@@ -645,7 +644,11 @@ QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& arg
             agrsNoJoinedLines << arg;
         }
     }
-    for (const QString& path : qAsConst(agrsNoJoinedLines)) {
+    return checkArgumentPathSpaces(agrsNoJoinedLines);
+}
+
+QString ExternalToolSupportUtils::checkArgumentPathSpaces(const QStringList& args) {
+    for (const QString& path : qAsConst(args)) {
         if (path.contains(" ")) {
             return tr("One of the arguments passed to \"%1\" external tool contains spaces."
                       " Make sure that the input and output files and folders"

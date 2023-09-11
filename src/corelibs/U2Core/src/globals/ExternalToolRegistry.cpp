@@ -152,6 +152,9 @@ void ExternalTool::checkArgs(const QStringList& arguments, U2OpStatus& os) const
             case ExternalTool::PathChecks::SpacesArguments:
                 error = ExternalToolSupportUtils::checkArgumentPathSpaces(arguments);
                 break;
+            case ExternalTool::PathChecks::SpacesArgumentsLikeMakeblastdb:
+                error = ExternalToolSupportUtils::checkSpacesArgumentsLikeMakeblastdb(arguments);
+                break;
             case ExternalTool::PathChecks::NonLatinTemporaryDirPath:
             case ExternalTool::PathChecks::NonLatinToolPath:
             case ExternalTool::PathChecks::NonLatinIndexPath:

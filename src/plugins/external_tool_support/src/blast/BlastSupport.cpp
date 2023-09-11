@@ -127,7 +127,7 @@ BlastSupport::BlastSupport(const QString& id)
     }
     toolKitName = "BLAST";
     pathChecks << ExternalTool::PathChecks::NonLatinArguments
-               << ExternalTool::PathChecks::SpacesArguments
+               << ExternalTool::PathChecks::SpacesArgumentsLikeMakeblastdb
                << ExternalTool::PathChecks::NonLatinTemporaryDirPath
                << ExternalTool::PathChecks::SpacesTemporaryDirPath;
     if (isOsWindows()) {
