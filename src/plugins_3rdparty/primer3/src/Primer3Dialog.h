@@ -77,8 +77,13 @@ private slots:
     void sl_saveSettings();
     void sl_loadSettings();
     void sl_taskChanged(const QString& text);
+    void sl_presetChanged(const QString& text);
+    void sl_checkComplementStateChanged();
 
 private:
+    void saveSettings(const QString& filePath);
+    void loadSettings(const QString& filePath);
+
     U2Region selection;
     QList<QPair<QString, QByteArray>> repeatLibraries;
 
@@ -90,6 +95,7 @@ private:
     U2SavableWidget savableWidget;
 
     const Primer3TaskSettings defaultSettings;
+    const QByteArray primer3DataDirectory;
 
     static const QMap<task, QString> TASK_ENUM_STRING_MAP;
     static const QStringList LINE_EDIT_PARAMETERS;

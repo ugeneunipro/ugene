@@ -74,6 +74,8 @@ public:
     void setSelfAnyStruct(const QString& selfAnyStruct);
     void setSelfEndStruct(const QString& selfEndStruct);
 
+    QVector<U2Region> getSequenceRegions(int sequenceLength) const;
+
 private:
     int start = 0;
     int length = 0;
@@ -189,8 +191,6 @@ public:
     }
 
 private:
-    void relocatePrimerOverMedian(PrimerSingle* primer);
-
     static const int CHUNK_SIZE = 1024 * 256;
 
     Primer3Task* primer3Task = nullptr;

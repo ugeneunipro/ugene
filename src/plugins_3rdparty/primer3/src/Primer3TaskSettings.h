@@ -48,6 +48,12 @@ struct SpanIntronExonBoundarySettings {
     U2Range<int> exonRange;
 };
 
+struct CheckComplementSettings {
+    bool enabled = false;
+    int maxComplementPairs = 4;
+    int maxGcPair = 50;
+};
+
 class Primer3TaskSettings {
 public:
     Primer3TaskSettings();
@@ -146,6 +152,10 @@ public:
     void setExonRegions(const QList<U2Region>& regions);
     bool spanIntronExonBoundaryIsEnabled() const;
 
+    // check complement settings
+    const CheckComplementSettings& getCheckComplementSettings() const;
+    void setCheckComplementSettings(const CheckComplementSettings& settings);
+
     bool isSequenceCircular() const;
     bool isIncludedRegionValid(const U2Region& r) const;
     void setSequenceRange(const U2Region& region);
@@ -162,6 +172,7 @@ private:
     QByteArray mishybLibraryPath;
     QByteArray thermodynamicParametersPath;
     SpanIntronExonBoundarySettings spanIntronExonBoundarySettings;
+    CheckComplementSettings checkComplementSettings;
     U2Region sequenceRange;
 
     bool showDebugging = false;

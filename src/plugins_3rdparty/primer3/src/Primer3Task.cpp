@@ -27,6 +27,7 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
+#include <U2Core/PrimerDimersFinder.h>
 #include <U2Core/SequenceWalkerTask.h>
 #include <U2Core/U1AnnotationUtils.h>
 
@@ -188,6 +189,20 @@ void PrimerSingle::setSelfAnyStruct(const QString& selfAnyStruct) {
 
 void PrimerSingle::setSelfEndStruct(const QString& selfEndStruct) {
     this->selfEndStruct = selfEndStruct;
+}
+
+QVector<U2Region> PrimerSingle::getSequenceRegions(int sequenceLength) const {
+    int correctedStart = start + (start > sequenceLength ? (-sequenceLength) : 0);
+    QVector<U2Region> result;
+    if (correctedStart + length <= sequenceLength) {
+        result << U2Region(correctedStart, length);
+    } else {
+        // primer covers the junction point
+        result << U2Region(correctedStart, sequenceLength - correctedStart);
+        result << U2Region(0, correctedStart + length - sequenceLength);
+    }
+
+    return result;
 }
 
 // PrimerPair
@@ -460,6 +475,13 @@ void Primer3Task::run() {
         }
     }
 
+    if (settings->getCheckComplementSettings().enabled) {
+        for (const auto& pair : qAsConst(bestPairs)) {
+            /*pair.getLeftPrimer()->getStart();
+            HeteroDimersFinder hdf()*/
+        }
+    }
+
     if (resultPrimers->output_type == primer_list) {
         singlePrimers.clear();
         int maxCount = 0;
@@ -627,10 +649,6 @@ Task::ReportResult Primer3SWTask::report() {
     singlePrimers.append(primer3Task->getSinglePrimers());
 
     return Task::ReportResult_Finished;
-}
-
-void Primer3SWTask::relocatePrimerOverMedian(PrimerSingle* primer) {
-    primer->setStart(primer->getStart() + (primer->getStart() >= median ? -median : settings->getSequenceSize() - median));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -836,14 +854,22 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     annotationData->type = U2FeatureTypes::Primer;
     qint64 seqLen = seqObj->getSequenceLength();
     // primer can be found on circular extension of the sequence
-    int start = primer.getStart() + (primer.getStart() > seqLen ? (-seqLen) : 0);
+    annotationData->location->regions = primer.getSequenceRegions(seqLen);
+    if (annotationData->location->regions.size() > 1) {
+        annotationData->location.data()->op = U2LocationOperator_Join;
+    }
+    /*int start = primer.getStart() + (primer.getStart() > seqLen ? (-seqLen) : 0);
     int length = primer.getLength();
     if (start + length <= seqLen) {
         annotationData->location->regions << U2Region(start, length);
     } else {
-        // primer covers circular junction
         annotationData->location->regions << U2Region(start, seqLen - start) << U2Region(0, start + length - seqLen);
         annotationData->location.data()->op = U2LocationOperator_Join;
+    }*/
+
+    QByteArray primerSequence;
+    for (const auto& r : qAsConst(annotationData->location->regions)) {
+        primerSequence += seqObj->getSequenceData(r);
     }
 
     annotationData->setStrand(strand);
