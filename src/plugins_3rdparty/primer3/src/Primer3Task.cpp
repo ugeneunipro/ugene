@@ -395,21 +395,43 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
 
 // Primer3Task
 
-Primer3Task::Primer3Task(Primer3TaskSettings* _settings)
+Primer3Task::Primer3Task(Primer3TaskSettings* _settings, bool _removeSettings)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
-      settings(_settings) {
+      settings(_settings), removeSettings(_removeSettings) {
     GCOUNTER(cvar, "Primer3Task");
 
+    // Primer3Task is single threaded: the original "primer3" tool doesn't support parallel calculations.
+    addTaskResource(TaskResourceUsage(AppResource::buildDynamicResourceId("Primer 3 single thread"), 1, TaskResourceStage::Run));
+}
+
+Primer3Task::~Primer3Task() {
+    if (removeSettings) {
+        delete settings;
+    }
+}
+
+void Primer3Task::prepare() {
     const auto& sequenceRange = settings->getSequenceRange();
+    const int sequenceSize = settings->getSequenceSize();
     const auto& includedRegion = settings->getIncludedRegion();
-    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - settings->getFirstBaseIndex() : 0;
+    const int fbs = settings->getFirstBaseIndex();
+    const int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+    CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
+
+    // Add a sequence shift if selected region covers the junction point
+    if (sequenceRange.endPos() > sequenceSize + includedRegionOffset) {
+        SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
+
+        QByteArray seq = settings->getSequence();
+        seq.append(seq.left(sequenceRange.endPos() - sequenceSize - fbs));
+        settings->setSequence(seq);
+    }
+
+    // Calculate an offset for result primers
     offset = sequenceRange.startPos + includedRegionOffset;
 
     settings->setSequence(settings->getSequence().mid(sequenceRange.startPos, sequenceRange.length));
     settings->setSequenceQuality(settings->getSequenceQuality().mid(sequenceRange.startPos, sequenceRange.length));
-
-    // Primer3Task is single threaded: the original "primer3" tool doesn't support parallel calculations.
-    addTaskResource(TaskResourceUsage(AppResource::buildDynamicResourceId("Primer 3 single thread"), 1, TaskResourceStage::Run));
 }
 
 void Primer3Task::run() {
@@ -477,6 +499,7 @@ void Primer3Task::run() {
 
     if (settings->getCheckComplementSettings().enabled) {
         for (const auto& pair : qAsConst(bestPairs)) {
+            //pair.getLeftPrimer()->getSequenceRegions(seqLen);
             /*pair.getLeftPrimer()->getStart();
             HeteroDimersFinder hdf()*/
         }
@@ -605,12 +628,11 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
 }
 
 // Primer3SWTask
-
+/*
 Primer3SWTask::Primer3SWTask(Primer3TaskSettings* _settings, bool _ownsSettings)
     : Task("Pick primers SW task", TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings),
       settings(_settings),
       ownsSettings(_ownsSettings) {
-    median = settings->getSequenceSize() / 2;
 }
 
 Primer3SWTask::~Primer3SWTask() {
@@ -620,7 +642,6 @@ Primer3SWTask::~Primer3SWTask() {
 }
 
 void Primer3SWTask::prepare() {
-    // selected region covers circular junction
     const auto& sequenceRange = settings->getSequenceRange();
     int sequenceSize = settings->getSequenceSize();
 
@@ -649,7 +670,7 @@ Task::ReportResult Primer3SWTask::report() {
     singlePrimers.append(primer3Task->getSinglePrimers());
 
     return Task::ReportResult_Finished;
-}
+}*/
 
 //////////////////////////////////////////////////////////////////////////
 ////Primer3ToAnnotationsTask
@@ -657,7 +678,7 @@ Task::ReportResult Primer3SWTask::report() {
 Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(Primer3TaskSettings* _settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
     : Task(tr("Search primers to annotations"), TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
       settings(_settings), annotationTableObject(aobj_), seqObj(so_),
-      groupName(groupName_), annName(annName_), annDescription(annDescription), searchTask(nullptr), findExonsTask(nullptr) {
+      groupName(groupName_), annName(annName_), annDescription(annDescription) {
 }
 
 Primer3ToAnnotationsTask::~Primer3ToAnnotationsTask() {
@@ -669,8 +690,8 @@ void Primer3ToAnnotationsTask::prepare() {
         findExonsTask = new FindExonRegionsTask(seqObj, settings->getSpanIntronExonBoundarySettings().exonAnnotationName);
         addSubTask(findExonsTask);
     } else {
-        searchTask = new Primer3SWTask(settings);
-        addSubTask(searchTask);
+        primer3Task = new Primer3Task(settings);
+        addSubTask(primer3Task);
     }
 }
 
@@ -730,8 +751,8 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
             settings->setTarget(emptyList);
         }
 
-        searchTask = new Primer3SWTask(settings);
-        res.append(searchTask);
+        primer3Task = new Primer3Task(settings);
+        res.append(primer3Task);
     }
 
     return res;
@@ -807,9 +828,9 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
         return ReportResult_Finished;
     }
     CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), ReportResult_Finished);
-    SAFE_POINT(searchTask != nullptr, L10N::nullPointerError("Primer3Task"), ReportResult_Finished);
+    SAFE_POINT(primer3Task != nullptr, L10N::nullPointerError("Primer3Task"), ReportResult_Finished);
 
-    const QList<PrimerPair>& bestPairs = searchTask->getBestPairs();
+    const QList<PrimerPair>& bestPairs = primer3Task->getBestPairs();
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
     int index = 0;
     for (const PrimerPair& pair : bestPairs) {
@@ -827,7 +848,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
         index++;
     }
 
-    const auto& singlePrimers = searchTask->getSinglePrimers();
+    const auto& singlePrimers = primer3Task->getSinglePrimers();
     if (!singlePrimers.isEmpty()) {
         QList<SharedAnnotationData> annotations;
         for (const auto& primer : singlePrimers) {

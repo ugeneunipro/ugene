@@ -131,14 +131,14 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
                errMsg.arg(propertyKey),
                nullptr);
 
-    t = new Primer3SWTask(settings, true);
+    t = new Primer3Task(settings, true);
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
 
     return t;
 }
 
 void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
-    auto primerTask = qobject_cast<Primer3SWTask*>(t);
+    auto primerTask = qobject_cast<Primer3Task*>(t);
     assert(primerTask);
     QList<PrimerPair> bestPairs = primerTask->getBestPairs();
     foreach (PrimerPair pair, bestPairs) {

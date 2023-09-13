@@ -152,10 +152,13 @@ private:
 class Primer3Task : public Task {
     Q_OBJECT
 public:
-    Primer3Task(Primer3TaskSettings* settings);
+    Primer3Task(Primer3TaskSettings* settings, bool removeSettings = false);
+    ~Primer3Task();
 
-    void run();
-    Task::ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
     void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
     void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
@@ -172,8 +175,9 @@ private:
     QList<PrimerSingle> singlePrimers;
 
     int offset = 0;
+    bool removeSettings = false;
 };
-
+/*
 class Primer3SWTask : public Task {
     Q_OBJECT
 public:
@@ -191,15 +195,12 @@ public:
     }
 
 private:
-    static const int CHUNK_SIZE = 1024 * 256;
-
     Primer3Task* primer3Task = nullptr;
-    int median;
     Primer3TaskSettings* settings;
     bool ownsSettings {};
     QList<PrimerPair> bestPairs;
     QList<PrimerSingle> singlePrimers;
-};
+};*/
 
 class Primer3ToAnnotationsTask : public Task {
     Q_OBJECT
@@ -228,8 +229,8 @@ private:
     QString annName;
     const QString annDescription;
 
-    Primer3SWTask* searchTask;
-    FindExonRegionsTask* findExonsTask;
+    Primer3Task* primer3Task = nullptr;
+    FindExonRegionsTask* findExonsTask = nullptr;
 };
 
 }  // namespace U2

@@ -511,7 +511,7 @@ void GTest_Primer3::prepare() {
         localErrorMessage = GTest::tr("Sequence quality data missing");
         return;
     }
-    task = new Primer3SWTask(settings);
+    task = new Primer3Task(settings);
     addSubTask(task);
 }
 
