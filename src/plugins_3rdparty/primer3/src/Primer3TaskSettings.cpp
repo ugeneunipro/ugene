@@ -467,6 +467,14 @@ bool Primer3TaskSettings::spanIntronExonBoundaryIsEnabled() const {
     return spanIntronExonBoundarySettings.enabled;
 }
 
+const CheckComplementSettings& Primer3TaskSettings::getCheckComplementSettings() const {
+    return checkComplementSettings;
+}
+
+void Primer3TaskSettings::setCheckComplementSettings(const CheckComplementSettings& settings) {
+    checkComplementSettings = settings;
+}
+
 bool Primer3TaskSettings::isSequenceCircular() const {
     return isCircular;
 }

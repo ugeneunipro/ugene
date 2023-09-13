@@ -31,10 +31,12 @@
 #include "Primer3TaskSettings.h"
 #include "primer3_core/libprimer3.h"
 
+#include <QSharedPointer>
 
 namespace U2 {
 
 class AnnotationTableObject;
+class CheckComplementTask;
 
 class PrimerSingle {
 public:
@@ -74,6 +76,14 @@ public:
     void setSelfAnyStruct(const QString& selfAnyStruct);
     void setSelfEndStruct(const QString& selfEndStruct);
 
+    /**
+     * Calculates positions where, on the sequence of set length, this primer is located.
+     * \param sequenceLength Length of the sequence.
+     * \return Returns regions where this primer is located. If there are 2 regions,
+     * primer intersects junction point.
+     */
+    QVector<U2Region> getSequenceRegions(int sequenceLength) const;
+
 private:
     int start = 0;
     int length = 0;
@@ -103,9 +113,9 @@ public:
     PrimerPair& operator=(PrimerPair&& other) noexcept = delete;
     bool operator==(const PrimerPair& primerPair) const = delete;
 
-    PrimerSingle* getLeftPrimer() const;
-    PrimerSingle* getRightPrimer() const;
-    PrimerSingle* getInternalOligo() const;
+    QSharedPointer<PrimerSingle> getLeftPrimer() const;
+    QSharedPointer<PrimerSingle> getRightPrimer() const;
+    QSharedPointer<PrimerSingle> getInternalOligo() const;
     double getComplAny() const;
     double getComplEnd() const;
     int getProductSize() const;
@@ -116,9 +126,9 @@ public:
     const QString& getComplAnyStruct() const;
     const QString& getComplEndStruct() const;
 
-    void setLeftPrimer(PrimerSingle* leftPrimer);
-    void setRightPrimer(PrimerSingle* rightPrimer);
-    void setInternalOligo(PrimerSingle* internalOligo);
+    void setLeftPrimer(const QSharedPointer<PrimerSingle>& leftPrimer);
+    void setRightPrimer(const QSharedPointer<PrimerSingle>& rightPrimer);
+    void setInternalOligo(const QSharedPointer<PrimerSingle>& internalOligo);
     void setComplAny(double complAny);
     void setComplEnd(double complEnd);
     void setProductSize(int productSize);
@@ -133,9 +143,9 @@ public:
 
 private:
     // don't forget to change copy constructor and assignment operator when changing this!
-    QScopedPointer<PrimerSingle> leftPrimer;
-    QScopedPointer<PrimerSingle> rightPrimer;
-    QScopedPointer<PrimerSingle> internalOligo;
+    QSharedPointer<PrimerSingle> leftPrimer;
+    QSharedPointer<PrimerSingle> rightPrimer;
+    QSharedPointer<PrimerSingle> internalOligo;
     double complAny = 0.0;
     double complEnd = 0.0;
     int productSize = 0;
@@ -150,86 +160,60 @@ private:
 class Primer3Task : public Task {
     Q_OBJECT
 public:
-    Primer3Task(Primer3TaskSettings* settings);
+    Primer3Task(const QSharedPointer<Primer3TaskSettings>& settings);
 
-    void run();
-    Task::ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
+    const QList<QSharedPointer<PrimerPair>>& getBestPairs() const {
+        return bestPairs;
+    }
+    const QList<QSharedPointer<PrimerSingle>>& getSinglePrimers() const {
+        return singlePrimers;
+    }
+
+private:
     void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
     void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
-    const QList<PrimerPair>& getBestPairs() const {
-        return bestPairs;
-    }
-    const QList<PrimerSingle>& getSinglePrimers() const {
-        return singlePrimers;
-    }
-
-private:
-    Primer3TaskSettings* settings;
-    QList<PrimerPair> bestPairs;
-    QList<PrimerSingle> singlePrimers;
+    QSharedPointer<Primer3TaskSettings> settings;
+    QList<QSharedPointer<PrimerPair>> bestPairs;
+    QList<QSharedPointer<PrimerSingle>> singlePrimers;
 
     int offset = 0;
-};
-
-class Primer3SWTask : public Task {
-    Q_OBJECT
-public:
-    Primer3SWTask(Primer3TaskSettings* settings, bool ownsSettings = false);
-    ~Primer3SWTask();
-
-    void prepare();
-    Task::ReportResult report();
-
-    const QList<PrimerPair>& getBestPairs() const {
-        return bestPairs;
-    }
-    QList<PrimerSingle> getSinglePrimers() const {
-        return singlePrimers;
-    }
-
-private:
-    void relocatePrimerOverMedian(PrimerSingle* primer);
-
-    static const int CHUNK_SIZE = 1024 * 256;
-
-    Primer3Task* primer3Task = nullptr;
-    int median;
-    Primer3TaskSettings* settings;
-    bool ownsSettings {};
-    QList<PrimerPair> bestPairs;
-    QList<PrimerSingle> singlePrimers;
 };
 
 class Primer3ToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    Primer3ToAnnotationsTask(Primer3TaskSettings* settings,
+    Primer3ToAnnotationsTask(const QSharedPointer<Primer3TaskSettings>& settings,
                              U2SequenceObject* seqObj_,
                              AnnotationTableObject* aobj_,
                              const QString& groupName_,
                              const QString& annName_,
                              const QString& annDescription);
-    ~Primer3ToAnnotationsTask();
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask)  override;
 
-    virtual QString generateReport() const;
-    Task::ReportResult report();
+    QString generateReport() const override;
 
 private:
-    SharedAnnotationData oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand);
+    void findExonTaskIsfinished();
+    QMap<QString, QList<SharedAnnotationData>> getResultAnnotations() const;
+    SharedAnnotationData oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand) const;
 
-    Primer3TaskSettings* settings;
+    QSharedPointer<Primer3TaskSettings> settings;
     QPointer<AnnotationTableObject> annotationTableObject;
     U2SequenceObject* seqObj;
     QString groupName;
     QString annName;
     const QString annDescription;
 
-    Primer3SWTask* searchTask;
-    FindExonRegionsTask* findExonsTask;
+    Primer3Task* primer3Task = nullptr;
+    FindExonRegionsTask* findExonsTask = nullptr;
+    CheckComplementTask* checkComplementTask = nullptr;
 };
 
 }  // namespace U2

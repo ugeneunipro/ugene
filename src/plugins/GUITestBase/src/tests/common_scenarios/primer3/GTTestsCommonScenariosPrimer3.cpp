@@ -21,6 +21,9 @@
 
 #include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTAction.h>
+#include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
+#include <primitives/GTLabel.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
@@ -542,6 +545,38 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
 
     CHECK_SET_ERR(GTFile::equals(sandBoxDir + "test_0024.txt", testDir + "_common_data/primer3/input/test_0024.txt", true), "Settings are not equal");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0025) {
+    GTFileDialog::openFile(testDir + "_common_data/primer3", "human.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class Scenario : public Filler {
+    public:
+        Scenario()
+            : Filler("Primer3Dialog") {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            CHECK_SET_ERR(!GTGroupBox::getChecked("gbCheckComplementary", dialog), "\"Check complementary\" is checked, but shouldn't be");
+            auto presetInfo = GTLabel::getText("lbPresetInfo", dialog);
+            CHECK_SET_ERR(presetInfo.isEmpty(), "Preset info is not empty, but should be");
+
+            GTComboBox::selectItemByText("cbPreset", dialog, "Recombinase Polymerase Amplification");
+            CHECK_SET_ERR(GTGroupBox::getChecked("gbCheckComplementary", dialog), "\"Check complementary\" isn't checked, but should be");
+            presetInfo = GTLabel::getText("lbPresetInfo", dialog);
+            CHECK_SET_ERR(presetInfo == "Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)",
+                QString("Unexpected preset info: %1").arg(presetInfo));
+
+            GTUtilsDialog::add(new GTFileDialogUtils(sandBoxDir, "test_0025_RPA.txt", GTFileDialogUtils::Save));
+            GTWidget::click(GTWidget::findWidget("saveSettingsButton", dialog));
+            GTWidget::click(GTWidget::findWidget("closeButton", dialog));
+        }
+    };
+
+    GTUtilsDialog::add(new Scenario());
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
+    CHECK_SET_ERR(GTFile::equals(testDir + "_common_data/primer3/rpa_sequence.txt", sandBoxDir + "test_0025_RPA.txt", true), "RPA settings are not equal");
 }
 
 }  // namespace GUITest_common_scenarios_primer3

@@ -46,7 +46,7 @@ public:
     Primer3Dialog& operator=(Primer3Dialog&& settings) = delete;
     ~Primer3Dialog();
 
-    Primer3TaskSettings* takeSettings();
+    const QSharedPointer<Primer3TaskSettings>& getSettings();
     const CreateAnnotationModel& getCreateAnnotationModel() const;
     U2Region getRegion(bool* ok = nullptr) const;
     QString checkModel();
@@ -77,19 +77,26 @@ private slots:
     void sl_saveSettings();
     void sl_loadSettings();
     void sl_taskChanged(const QString& text);
+    void sl_presetChanged(const QString& text);
+    void sl_checkComplementStateChanged();
+    void sl_ChooseCsvReportPathButtonClicked();
 
 private:
+    void saveSettings(const QString& filePath);
+    void loadSettings(const QString& filePath);
+
     U2Region selection;
     QList<QPair<QString, QByteArray>> repeatLibraries;
 
     CreateAnnotationWidgetController* createAnnotationWidgetController = nullptr;
-    Primer3TaskSettings* settings = nullptr;
+    QSharedPointer<Primer3TaskSettings> settings;
     RegionSelector* rs = nullptr;
     ADVSequenceObjectContext* context = nullptr;
 
     U2SavableWidget savableWidget;
 
     const Primer3TaskSettings defaultSettings;
+    const QByteArray primer3DataDirectory;
 
     static const QMap<task, QString> TASK_ENUM_STRING_MAP;
     static const QStringList LINE_EDIT_PARAMETERS;

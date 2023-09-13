@@ -106,7 +106,7 @@ void Primer3ADVContext::sl_showDialog() {
     dialog.exec();
 
     if (dialog.result() == QDialog::Accepted) {
-        Primer3TaskSettings* settings = dialog.takeSettings();
+        const auto& settings = dialog.getSettings();
         U2OpStatusImpl os;
         QByteArray seqData = seqCtx->getSequenceObject()->getWholeSequenceData(os);
         CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
@@ -127,6 +127,7 @@ void Primer3ADVContext::sl_showDialog() {
 QList<XMLTestFactory*> Primer3Tests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_Primer3::createFactory());
+    res.append(GTest_Primer3ToAnnotations::createFactory());
     return res;
 }
 
