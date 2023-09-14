@@ -35,6 +35,7 @@
 namespace U2 {
 
 class AnnotationTableObject;
+class CheckComplementTask;
 
 class PrimerSingle {
 public:
@@ -231,6 +232,7 @@ private:
 
     Primer3Task* primer3Task = nullptr;
     FindExonRegionsTask* findExonsTask = nullptr;
+    CheckComplementTask* checkComplementTask = nullptr;
 };
 
 }  // namespace U2

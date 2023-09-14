@@ -31,6 +31,7 @@
 #include <U2Core/SequenceWalkerTask.h>
 #include <U2Core/U1AnnotationUtils.h>
 
+#include "CheckComplementTask.h"
 #include "Primer3Plugin.h"
 #include "primer3_core/libprimer3.h"
 #include "primer3_core/primer3_boulder_main.h"
@@ -753,6 +754,9 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
 
         primer3Task = new Primer3Task(settings);
         res.append(primer3Task);
+    } else if (subTask == primer3Task && settings->getCheckComplementSettings().enabled) {
+        checkComplementTask = new CheckComplementTask(settings->getCheckComplementSettings(), primer3Task->getBestPairs(), seqObj);
+        res.append(checkComplementTask);
     }
 
     return res;
@@ -888,10 +892,10 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
         annotationData->location.data()->op = U2LocationOperator_Join;
     }*/
 
-    QByteArray primerSequence;
+    /*QByteArray primerSequence;
     for (const auto& r : qAsConst(annotationData->location->regions)) {
         primerSequence += seqObj->getSequenceData(r);
-    }
+    }*/
 
     annotationData->setStrand(strand);
 

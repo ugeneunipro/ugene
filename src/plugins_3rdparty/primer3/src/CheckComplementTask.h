@@ -21,31 +21,40 @@
 
 #pragma once
 
-#include <QDialog>
-#include <QWidget>
 
-#include "ui_Primer3PresetsWidget.h"
+#include <U2Core/Task.h>
+
+#include "Primer3TaskSettings.h"
+
+#include <U2Core/DNASequenceObject.h>
+
+#include <QList>
 
 namespace U2 {
 
-class Primer3PresetsWidget : public QWidget, private Ui_Primer3PresetsWidget {
-    Q_OBJECT
+class PrimerSingle;
+class PrimerPair;
+
+class CheckComplementTask : public Task {
 public:
-    Primer3PresetsWidget(QWidget* parent);
+    CheckComplementTask(const CheckComplementSettings& settings, const QList<PrimerPair>& results, U2SequenceObject* seqObj);
 
-    void setDialog(QDialog* d) {
-        dialog = d;
-    }
+    void run() override;
 
-public slots:
-    void sl_setCurrentStackedWidgetIndex(int index);
+    const QList<PrimerPair>& getFilteredPrimers() const;
 
 private:
-    QDialog* dialog;
+    QByteArray getPrimerSequence(PrimerSingle* primer) const;
+
+    const CheckComplementSettings& settings;
+    const QList<PrimerPair>& results;
+    U2SequenceObject* seqObj = nullptr;
+
+    //struct FilteredPairs
+
+    QList<PrimerPair> filteredPrimers;
 
 };
-
-
 
 
 }

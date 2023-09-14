@@ -44,8 +44,6 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "Primer3Dialog.h"
-#include "Primer3PresetsDialog.h"
-#include "Primer3PresetsWidget.h"
 
 #include <U2View/TmCalculatorSelectorWidget.h>
 

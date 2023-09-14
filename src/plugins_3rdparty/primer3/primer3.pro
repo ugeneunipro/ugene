@@ -1,10 +1,9 @@
 include(primer3.pri)
 
 # Input
-HEADERS += src/Primer3Dialog.h \
+HEADERS += src/CheckComplementTask.h \
+           src/Primer3Dialog.h \
            src/Primer3Plugin.h \
-           src/Primer3PresetsDialog.h \
-           src/Primer3PresetsWidget.h \
            src/Primer3TaskSettings.h \
            src/Primer3Task.h \
            src/Primer3Tests.h \
@@ -29,14 +28,11 @@ HEADERS += src/Primer3Dialog.h \
 		   src/FindExonRegionsTask.h
 	
 FORMS += src/Primer3Dialog.ui \
-         src/Primer3PresetsDialog.ui \
-         src/Primer3PresetsWidget.ui \
          src/temperature/Primer3TmCalculatorSettingsWidget.ui
           
-SOURCES += src/Primer3Dialog.cpp \
+SOURCES += src/CheckComplementTask.cpp \
+           src/Primer3Dialog.cpp \
            src/Primer3Plugin.cpp \
-           src/Primer3PresetsDialog.cpp \
-           src/Primer3PresetsWidget.cpp \
            src/Primer3TaskSettings.cpp \
            src/Primer3Task.cpp \
            src/Primer3Tests.cpp \
