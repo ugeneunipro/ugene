@@ -165,6 +165,7 @@ public:
     static QString checkToolPathLatinSymbols(const ExternalTool* tool);
     static QString checkIndexDirLatinSymbols();
 
+    static QString checkSpacesArgumentsLikeMakeblastdb(const QStringList& args);
     static QString checkArgumentPathSpaces(const QStringList& args);
     static QString checkTemporaryDirSpaces();
     static QString checkToolPathSpaces(const ExternalTool* tool);

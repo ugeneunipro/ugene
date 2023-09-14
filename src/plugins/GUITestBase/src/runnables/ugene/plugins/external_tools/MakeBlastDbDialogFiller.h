@@ -40,8 +40,11 @@ public:
         bool justCancel = false;
         bool checkAlphabetType = false;
         QString inputFilePath;
+        QStringList filenamesList;
         Type alphabetType = Nucleotide;
         QString outputDirPath;
+        QString baseNameForDbFiles;
+        QString dbTitle;
     };
 
     MakeBlastDbDialogFiller(const Parameters& parameters);
