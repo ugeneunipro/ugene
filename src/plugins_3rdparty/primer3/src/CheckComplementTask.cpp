@@ -24,12 +24,11 @@
 #include "Primer3Task.h"
 
 #include <U2Core/DNASequenceUtils.h>
-#include <U2Core/PrimerDimersFinder.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
 
-CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _settings, const QList<PrimerPair>& _results, U2SequenceObject* _seqObj) :
+CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _settings, const QList<QSharedPointer<PrimerPair>>& _results, U2SequenceObject* _seqObj) :
     Task(tr("CHeck complement task"), TaskFlags_FOSCOE),
     settings(_settings),
     results(_results),
@@ -39,23 +38,49 @@ void CheckComplementTask::run() {
     SAFE_POINT(settings.enabled, "Check complement is run, but not enabled", );
 
     for (const auto& pair : qAsConst(results)) {
-        auto leftPrimerSequence = getPrimerSequence(pair.getLeftPrimer());
-        auto rightPrimerSequence = DNASequenceUtils::reverseComplement(getPrimerSequence(pair.getRightPrimer()));
+        auto leftPrimerSequence = getPrimerSequence(pair->getLeftPrimer());
+        auto rightPrimerSequence = DNASequenceUtils::reverseComplement(getPrimerSequence(pair->getRightPrimer()));
 
-        auto leftSelfDimerResult = SelfDimersFinder(leftPrimerSequence).getResult();
+        QMap<PrimersInDimer, DimerFinderResult> dimers;
+        dimers.insert(PrimersInDimer::Left, SelfDimersFinder(leftPrimerSequence).getResult());
+        dimers.insert(PrimersInDimer::Right, SelfDimersFinder(rightPrimerSequence).getResult());
+        dimers.insert(PrimersInDimer::Both, HeteroDimersFinder(leftPrimerSequence, rightPrimerSequence).getResult());
+        const auto& dimersKeys = dimers.keys();
+        for (const auto& primersInDimer : qAsConst(dimersKeys)) {
+            const auto& dimer = dimers.value(primersInDimer);
+            if (dimer.baseCounts >= settings.maxComplementPairs) {
+                addFilterdPrimer(pair, primersInDimer, dimer);
+            } else if (getGAndCNumber(dimer.dimer) >= settings.maxGcPair) {
+                addFilterdPrimer(pair, primersInDimer, dimer);
+            }
+        }
+        //auto leftSelfDimerResult = ;
+        /*if (leftSelfDimerResult.baseCounts >= settings.maxComplementPairs) {
+            addFilterdPrimer(pair, leftSelfDimerResult);
+        } else if (getGAndCNumber(leftSelfDimerResult.dimer) >= settings.maxGcPair) {
+            addFilterdPrimer(pair, leftSelfDimerResult);
+        }
         auto rightSelfDimerResult = SelfDimersFinder(rightPrimerSequence).getResult();
-        auto heteroDimerResult = HeteroDimersFinder(leftPrimerSequence, rightPrimerSequence).getResult();
+        auto heteroDimerResult = HeteroDimersFinder(leftPrimerSequence, rightPrimerSequence).getResult();*/
 
         int i = 0;
     }
 
 }
 
-const QList<PrimerPair>& CheckComplementTask::getFilteredPrimers() const {
-    return filteredPrimers;
+QString CheckComplementTask::generateReport() const {
+    return "TEST";
 }
 
-QByteArray CheckComplementTask::getPrimerSequence(PrimerSingle* primer) const {
+QList<QSharedPointer<PrimerPair>> CheckComplementTask::getFilteredPrimers() const {
+    /*QList<PrimerPair> result;
+    for (const auto& filteredPrimerData : qAsConst(filteredPrimers)) {
+        result << filteredPrimerData.pair;
+    }*/
+    return filteredPrimers.keys();
+}
+
+QByteArray CheckComplementTask::getPrimerSequence(QSharedPointer<PrimerSingle> primer) const {
     QByteArray primerSequence;
     auto regions = primer->getSequenceRegions(seqObj->getSequenceLength());
     for (const auto& r : qAsConst(regions)) {
@@ -63,6 +88,16 @@ QByteArray CheckComplementTask::getPrimerSequence(PrimerSingle* primer) const {
     }
 
     return primerSequence;
+}
+
+void CheckComplementTask::addFilterdPrimer(const QSharedPointer<PrimerPair>& pair, PrimersInDimer primersInDimer, const DimerFinderResult& dimer) {
+    auto dimerFinderResultList = filteredPrimers.value(pair);
+    dimerFinderResultList.insert(primersInDimer, dimer);
+    filteredPrimers.insert(pair, dimerFinderResultList);
+}
+
+int CheckComplementTask::getGAndCNumber(const QString& dimer) {
+    return dimer.count('G') + dimer.count('C');
 }
 
 

@@ -44,17 +44,17 @@ public:
     Task::ReportResult report();
 
 private:
-    bool readPrimer(QDomElement element, QString prefix, PrimerSingle* outPrimer, bool internalOligo);
+    bool readPrimer(QDomElement element, QString prefix, QSharedPointer<PrimerSingle> outPrimer, bool internalOligo);
 
-    bool checkPrimerPair(const PrimerPair& primerPair, const PrimerPair& expectedPrimerPair, QString suffix);
-    bool checkPrimer(const PrimerSingle* primer, const PrimerSingle* expectedPrimer, QString prefix, bool internalOligo);
+    bool checkPrimerPair(const QSharedPointer<PrimerPair>& primerPair, const QSharedPointer<PrimerPair>& expectedPrimerPair, QString suffix);
+    bool checkPrimer(const QSharedPointer<PrimerSingle>& primer, const QSharedPointer<PrimerSingle>& expectedPrimer, QString prefix, bool internalOligo);
     bool checkIntProperty(int value, int expectedValue, QString name);
     bool checkDoubleProperty(double value, double expectedValue, QString name);
 
     Primer3Task* task = nullptr;
     Primer3TaskSettings* settings = nullptr;
-    QList<PrimerPair> expectedBestPairs;
-    QList<PrimerSingle> expectedSinglePrimers;
+    QList<QSharedPointer<PrimerPair>> expectedBestPairs;
+    QList<QSharedPointer<PrimerSingle>> expectedSinglePrimers;
     QString expectedErrorMessage;
     QString expectedWarningMessage;
     QString localErrorMessage;

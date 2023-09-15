@@ -254,16 +254,16 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
     return *this;
 }
 
-PrimerSingle* PrimerPair::getLeftPrimer() const {
-    return leftPrimer.data();
+QSharedPointer<PrimerSingle> PrimerPair::getLeftPrimer() const {
+    return leftPrimer;
 }
 
-PrimerSingle* PrimerPair::getRightPrimer() const {
-    return rightPrimer.data();
+QSharedPointer<PrimerSingle> PrimerPair::getRightPrimer() const {
+    return rightPrimer;
 }
 
-PrimerSingle* PrimerPair::getInternalOligo() const {
-    return internalOligo.data();
+QSharedPointer<PrimerSingle> PrimerPair::getInternalOligo() const {
+    return internalOligo;
 }
 
 double PrimerPair::getComplAny() const {
@@ -286,16 +286,16 @@ double PrimerPair::getProductTm() const {
     return tm;
 }
 
-void PrimerPair::setLeftPrimer(PrimerSingle* leftPrimer) {
-    this->leftPrimer.reset((leftPrimer == nullptr) ? nullptr : new PrimerSingle(*leftPrimer));
+void PrimerPair::setLeftPrimer(const QSharedPointer<PrimerSingle>& _leftPrimer) {
+    leftPrimer.reset(_leftPrimer.isNull() ? nullptr : new PrimerSingle(*_leftPrimer));
 }
 
-void PrimerPair::setRightPrimer(PrimerSingle* rightPrimer) {
-    this->rightPrimer.reset((rightPrimer == nullptr) ? nullptr : new PrimerSingle(*rightPrimer));
+void PrimerPair::setRightPrimer(const QSharedPointer<PrimerSingle>& _rightPrimer) {
+    rightPrimer.reset(_rightPrimer.isNull() ? nullptr : new PrimerSingle(*_rightPrimer));
 }
 
-void PrimerPair::setInternalOligo(PrimerSingle* internalOligo) {
-    this->internalOligo.reset((internalOligo == nullptr) ? nullptr : new PrimerSingle(*internalOligo));
+void PrimerPair::setInternalOligo(const QSharedPointer<PrimerSingle>& _internalOligo) {
+    internalOligo.reset(_internalOligo.isNull() ? nullptr : new PrimerSingle(*_internalOligo));
 }
 
 void PrimerPair::setComplAny(double newComplAny) {
@@ -494,7 +494,7 @@ void Primer3Task::run() {
         }
     } else {
         for (int index = 0; index < resultPrimers->best_pairs.num_pairs; index++) {
-            bestPairs.append(PrimerPair(resultPrimers->best_pairs.pairs[index], offset));
+            bestPairs.append(QSharedPointer<PrimerPair>(new PrimerPair(resultPrimers->best_pairs.pairs[index], offset)));
         }
     }
 
@@ -512,17 +512,17 @@ void Primer3Task::run() {
         settings->getIntProperty("PRIMER_NUM_RETURN", &maxCount);
         if (resultPrimers->fwd.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->fwd.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(PrimerSingle(*(resultPrimers->fwd.oligo + i), oligo_type::OT_LEFT, offset));
+                singlePrimers.append(QSharedPointer<PrimerSingle>(new PrimerSingle(*(resultPrimers->fwd.oligo + i), oligo_type::OT_LEFT, offset)));
             }
         }
         if (resultPrimers->rev.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->rev.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(PrimerSingle(*(resultPrimers->rev.oligo + i), oligo_type::OT_RIGHT, offset));
+                singlePrimers.append(QSharedPointer<PrimerSingle>(new PrimerSingle(*(resultPrimers->rev.oligo + i), oligo_type::OT_RIGHT, offset)));
             }
         }
         if (resultPrimers->intl.oligo != nullptr) {
             for (int i = 0; i < resultPrimers->intl.expl.ok && i < maxCount; ++i) {
-                singlePrimers.append(PrimerSingle(*(resultPrimers->intl.oligo + i), oligo_type::OT_INTL, offset));
+                singlePrimers.append(QSharedPointer<PrimerSingle>(new PrimerSingle(*(resultPrimers->intl.oligo + i), oligo_type::OT_INTL, offset)));
             }
         }
     }
@@ -590,7 +590,7 @@ void Primer3Task::selectPairsSpanningExonJunction(p3retval* primers, int toRetur
         const primer_rec* right = pair.right;
 
         if (pairIntersectsJunction(left, junctionPositions, minLeftOverlap, minRightOverlap) || pairIntersectsJunction(right, junctionPositions, minLeftOverlap, minRightOverlap)) {
-            bestPairs.append(PrimerPair(pair, offset));
+            bestPairs.append(QSharedPointer<PrimerPair>(new PrimerPair(pair, offset)));
         }
 
         if (bestPairs.size() == toReturn) {
@@ -619,7 +619,7 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
         }
 
         if (numIntersecting != regionIndexes.length()) {
-            bestPairs.append(PrimerPair(pair, offset));
+            bestPairs.append(QSharedPointer<PrimerPair>(new PrimerPair(pair, offset)));
         }
 
         if (bestPairs.size() == toReturn) {
@@ -824,6 +824,10 @@ QString Primer3ToAnnotationsTask::generateReport() const {
                .arg(pairStats.compl_end)
                .arg(pairStats.ok);
 
+    if (checkComplementTask != nullptr) {
+        res += checkComplementTask->generateReport();
+    }
+
     return res;
 }
 
@@ -834,19 +838,25 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), ReportResult_Finished);
     SAFE_POINT(primer3Task != nullptr, L10N::nullPointerError("Primer3Task"), ReportResult_Finished);
 
-    const QList<PrimerPair>& bestPairs = primer3Task->getBestPairs();
+    QList<QSharedPointer<PrimerPair>> filteredPrimers;
+    if (checkComplementTask != nullptr) {
+        filteredPrimers = checkComplementTask->getFilteredPrimers();
+    }
+    const auto& bestPairs = primer3Task->getBestPairs();
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
     int index = 0;
-    for (const PrimerPair& pair : bestPairs) {
+    for (const auto& pair : qAsConst(bestPairs)) {
+        CHECK_CONTINUE(!filteredPrimers.contains(pair));
+
         QList<SharedAnnotationData> annotations;
-        if (pair.getLeftPrimer() != nullptr) {
-            annotations.append(oligoToAnnotation(annName, *pair.getLeftPrimer(), pair.getProductSize(), U2Strand::Direct));
+        if (pair->getLeftPrimer() != nullptr) {
+            annotations.append(oligoToAnnotation(annName, pair->getLeftPrimer(), pair->getProductSize(), U2Strand::Direct));
         }
-        if (pair.getInternalOligo() != nullptr) {
-            annotations.append(oligoToAnnotation("internalOligo", *pair.getInternalOligo(), pair.getProductSize(), U2Strand::Direct));
+        if (pair->getInternalOligo() != nullptr) {
+            annotations.append(oligoToAnnotation("internalOligo", pair->getInternalOligo(), pair->getProductSize(), U2Strand::Direct));
         }
-        if (pair.getRightPrimer() != nullptr) {
-            annotations.append(oligoToAnnotation(annName, *pair.getRightPrimer(), pair.getProductSize(), U2Strand::Complementary));
+        if (pair->getRightPrimer() != nullptr) {
+            annotations.append(oligoToAnnotation(annName, pair->getRightPrimer(), pair->getProductSize(), U2Strand::Complementary));
         }
         resultAnnotations[groupName + "/pair " + QString::number(index + 1)].append(annotations);
         index++;
@@ -856,7 +866,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     if (!singlePrimers.isEmpty()) {
         QList<SharedAnnotationData> annotations;
         for (const auto& primer : singlePrimers) {
-            auto type = primer.getType();
+            auto type = primer->getType();
             U2Strand s = type == OT_RIGHT ? U2Strand::Complementary : U2Strand::Direct;
             QString annotationName = type == OT_INTL ? "internalOligo" : annName;
             annotations.append(oligoToAnnotation(annotationName, primer, 0, s));
@@ -873,13 +883,13 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     return ReportResult_Finished;
 }
 
-SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand) {
+SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand) {
     SharedAnnotationData annotationData(new AnnotationData);
     annotationData->name = title;
     annotationData->type = U2FeatureTypes::Primer;
     qint64 seqLen = seqObj->getSequenceLength();
     // primer can be found on circular extension of the sequence
-    annotationData->location->regions = primer.getSequenceRegions(seqLen);
+    annotationData->location->regions = primer->getSequenceRegions(seqLen);
     if (annotationData->location->regions.size() > 1) {
         annotationData->location.data()->op = U2LocationOperator_Join;
     }
@@ -900,26 +910,26 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     annotationData->setStrand(strand);
 
     annotationData->qualifiers.append(U2Qualifier("product_size", QString::number(productSize)));
-    annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer.getMeltingTemperature())));
-    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(primer.getGcContent())));
-    annotationData->qualifiers.append(U2Qualifier("any", QString::number(primer.getSelfAny())));
-    annotationData->qualifiers.append(U2Qualifier("end", QString::number(primer.getSelfEnd())));
-    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer.getEndStability())));
-    annotationData->qualifiers.append(U2Qualifier("penalty'", QString::number(primer.getQuality())));
+    annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer->getMeltingTemperature())));
+    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(primer->getGcContent())));
+    annotationData->qualifiers.append(U2Qualifier("any", QString::number(primer->getSelfAny())));
+    annotationData->qualifiers.append(U2Qualifier("end", QString::number(primer->getSelfEnd())));
+    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer->getEndStability())));
+    annotationData->qualifiers.append(U2Qualifier("penalty'", QString::number(primer->getQuality())));
 
     auto areDoubleValuesEqual = [](double val, double reference) -> bool {
         return qAbs(reference - val) > 0.1;
     };
-    if (areDoubleValuesEqual(primer.getBound(), OLIGOTM_ERROR)) {
-        annotationData->qualifiers.append(U2Qualifier("bound%", QString::number(primer.getBound())));
+    if (areDoubleValuesEqual(primer->getBound(), OLIGOTM_ERROR)) {
+        annotationData->qualifiers.append(U2Qualifier("bound%", QString::number(primer->getBound())));
     }
-    if (areDoubleValuesEqual(primer.getTemplateMispriming(), ALIGN_SCORE_UNDEF)) {
-        annotationData->qualifiers.append(U2Qualifier("template_mispriming", QString::number(primer.getTemplateMispriming())));
+    if (areDoubleValuesEqual(primer->getTemplateMispriming(), ALIGN_SCORE_UNDEF)) {
+        annotationData->qualifiers.append(U2Qualifier("template_mispriming", QString::number(primer->getTemplateMispriming())));
     }
-    if (areDoubleValuesEqual(primer.getHairpin(), ALIGN_SCORE_UNDEF)) {
-        annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer.getHairpin())));
+    if (areDoubleValuesEqual(primer->getHairpin(), ALIGN_SCORE_UNDEF)) {
+        annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer->getHairpin())));
     }
-    auto primerType = primer.getType();
+    auto primerType = primer->getType();
     if (primerType == oligo_type::OT_LEFT) {
         auto overhangLeft = settings->getOverhangLeft();
         if (!overhangLeft.isEmpty()) {

@@ -27,6 +27,7 @@
 #include "Primer3TaskSettings.h"
 
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/PrimerDimersFinder.h>
 
 #include <QList>
 
@@ -37,22 +38,33 @@ class PrimerPair;
 
 class CheckComplementTask : public Task {
 public:
-    CheckComplementTask(const CheckComplementSettings& settings, const QList<PrimerPair>& results, U2SequenceObject* seqObj);
+    CheckComplementTask(const CheckComplementSettings& settings, const QList<QSharedPointer<PrimerPair>>& results, U2SequenceObject* seqObj);
 
     void run() override;
+    QString generateReport() const override;
 
-    const QList<PrimerPair>& getFilteredPrimers() const;
+    QList<QSharedPointer<PrimerPair>> getFilteredPrimers() const;
 
 private:
-    QByteArray getPrimerSequence(PrimerSingle* primer) const;
+    QByteArray getPrimerSequence(QSharedPointer<PrimerSingle> primer) const;
+
+    enum class PrimersInDimer {
+        Left,
+        Right,
+        Both
+    };
+    void addFilterdPrimer(const QSharedPointer<PrimerPair>& pair, PrimersInDimer primersInDimer, const DimerFinderResult& dimer);
+
+    static int getGAndCNumber(const QString& dimer);
 
     const CheckComplementSettings& settings;
-    const QList<PrimerPair>& results;
+    QList<QSharedPointer<PrimerPair>> results;
     U2SequenceObject* seqObj = nullptr;
 
-    //struct FilteredPairs
 
-    QList<PrimerPair> filteredPrimers;
+    QMap<QSharedPointer<PrimerPair>, QMap<PrimersInDimer, DimerFinderResult>> filteredPrimers;
+
+    //QList<FilteredPair> filteredPrimers;
 
 };
 

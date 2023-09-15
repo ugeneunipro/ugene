@@ -31,6 +31,7 @@
 #include "Primer3TaskSettings.h"
 #include "primer3_core/libprimer3.h"
 
+#include <QSharedPointer>
 
 namespace U2 {
 
@@ -106,9 +107,9 @@ public:
     PrimerPair& operator=(PrimerPair&& other) noexcept = delete;
     bool operator==(const PrimerPair& primerPair) const = delete;
 
-    PrimerSingle* getLeftPrimer() const;
-    PrimerSingle* getRightPrimer() const;
-    PrimerSingle* getInternalOligo() const;
+    QSharedPointer<PrimerSingle> getLeftPrimer() const;
+    QSharedPointer<PrimerSingle> getRightPrimer() const;
+    QSharedPointer<PrimerSingle> getInternalOligo() const;
     double getComplAny() const;
     double getComplEnd() const;
     int getProductSize() const;
@@ -119,9 +120,9 @@ public:
     const QString& getComplAnyStruct() const;
     const QString& getComplEndStruct() const;
 
-    void setLeftPrimer(PrimerSingle* leftPrimer);
-    void setRightPrimer(PrimerSingle* rightPrimer);
-    void setInternalOligo(PrimerSingle* internalOligo);
+    void setLeftPrimer(const QSharedPointer<PrimerSingle>& leftPrimer);
+    void setRightPrimer(const QSharedPointer<PrimerSingle>& rightPrimer);
+    void setInternalOligo(const QSharedPointer<PrimerSingle>& internalOligo);
     void setComplAny(double complAny);
     void setComplEnd(double complEnd);
     void setProductSize(int productSize);
@@ -136,9 +137,9 @@ public:
 
 private:
     // don't forget to change copy constructor and assignment operator when changing this!
-    QScopedPointer<PrimerSingle> leftPrimer;
-    QScopedPointer<PrimerSingle> rightPrimer;
-    QScopedPointer<PrimerSingle> internalOligo;
+    QSharedPointer<PrimerSingle> leftPrimer;
+    QSharedPointer<PrimerSingle> rightPrimer;
+    QSharedPointer<PrimerSingle> internalOligo;
     double complAny = 0.0;
     double complEnd = 0.0;
     int productSize = 0;
@@ -163,17 +164,17 @@ public:
     void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
     void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
-    const QList<PrimerPair>& getBestPairs() const {
+    const QList<QSharedPointer<PrimerPair>>& getBestPairs() const {
         return bestPairs;
     }
-    const QList<PrimerSingle>& getSinglePrimers() const {
+    const QList<QSharedPointer<PrimerSingle>>& getSinglePrimers() const {
         return singlePrimers;
     }
 
 private:
     Primer3TaskSettings* settings;
-    QList<PrimerPair> bestPairs;
-    QList<PrimerSingle> singlePrimers;
+    QList<QSharedPointer<PrimerPair>> bestPairs;
+    QList<QSharedPointer<PrimerSingle>> singlePrimers;
 
     int offset = 0;
     bool removeSettings = false;
@@ -214,14 +215,14 @@ public:
                              const QString& annDescription);
     ~Primer3ToAnnotationsTask();
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask)  override;
 
-    virtual QString generateReport() const;
-    Task::ReportResult report();
+    QString generateReport() const override;
+    Task::ReportResult report() override;
 
 private:
-    SharedAnnotationData oligoToAnnotation(const QString& title, const PrimerSingle& primer, int productSize, U2Strand strand);
+    SharedAnnotationData oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand);
 
     Primer3TaskSettings* settings;
     QPointer<AnnotationTableObject> annotationTableObject;

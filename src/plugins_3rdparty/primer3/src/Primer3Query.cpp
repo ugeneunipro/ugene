@@ -140,11 +140,11 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
 void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
     auto primerTask = qobject_cast<Primer3Task*>(t);
     assert(primerTask);
-    QList<PrimerPair> bestPairs = primerTask->getBestPairs();
-    foreach (PrimerPair pair, bestPairs) {
+    const auto& bestPairs = primerTask->getBestPairs();
+    for(const auto& pair : qAsConst(bestPairs)) {
         QList<SharedAnnotationData> annotations;
-        PrimerSingle* leftPrimer = pair.getLeftPrimer();
-        PrimerSingle* rightPrimer = pair.getRightPrimer();
+        const auto& leftPrimer = pair->getLeftPrimer();
+        const auto& rightPrimer = pair->getRightPrimer();
         if (leftPrimer != nullptr && rightPrimer != nullptr) {
             QDResultUnit ru1(new QDResultUnitData);
             ru1->strand = U2Strand::Direct;
