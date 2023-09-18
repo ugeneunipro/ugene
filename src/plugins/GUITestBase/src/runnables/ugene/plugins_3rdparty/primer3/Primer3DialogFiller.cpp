@@ -49,7 +49,7 @@ namespace U2 {
 using namespace HI;
 
 static constexpr const int RT_PCR_DESIGN_TAB_NUMBER = 6;
-static constexpr const int RESULT_ANNOTATION_SETTINGS_TAB_NUMBER = 7;
+static constexpr const int RESULT_ANNOTATION_SETTINGS_TAB_NUMBER = 8;
 
 const QStringList PREFIXES = {"edit_", "checkbox_", "combobox_"};
 const QStringList DOUBLE_WITH_CHECK_NAMES = {"PRIMER_PRODUCT_OPT_TM",

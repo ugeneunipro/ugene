@@ -35,7 +35,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -6447,9 +6447,15 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
       <attribute name="title">
        <string>Posterior Actions</string>
       </attribute>
+      <attribute name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;In this section user can define actions for primers when Primer3 calculation is already finished - for example, check if result primer pairs self- and hetero-dimers are good enough.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_21">
        <item>
         <widget class="QGroupBox" name="gbCheckComplementary">
+         <property name="toolTip">
+          <string>Check self- and hetero-dimers of primer pairs and filter pairs with inappropriate parameters</string>
+         </property>
          <property name="title">
           <string>Check complementary</string>
          </property>
@@ -6462,6 +6468,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
          <layout class="QGridLayout" name="gridLayout_17">
           <item row="0" column="0">
            <widget class="QLabel" name="label_35">
+            <property name="toolTip">
+             <string>Maximum number of complement base pairs for self- and hetero-dimers</string>
+            </property>
             <property name="text">
              <string>Max complement pairs</string>
             </property>
@@ -6469,6 +6478,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="sbMaxComplementPairs">
+            <property name="toolTip">
+             <string>Maximum persantage of G/C base pairs</string>
+            </property>
             <property name="suffix">
              <string> bp</string>
             </property>
@@ -6479,6 +6491,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_34">
+            <property name="toolTip">
+             <string>Maximum persantage of G/C base pairs</string>
+            </property>
             <property name="text">
              <string>Max G/C pairs</string>
             </property>
@@ -6486,6 +6501,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="sbMaxGcPairs">
+            <property name="toolTip">
+             <string>Maximum persantage of G/C base pairs</string>
+            </property>
             <property name="suffix">
              <string> %</string>
             </property>
@@ -6640,6 +6658,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
       <widget class="QPushButton" name="pickPrimersButton">
        <property name="text">
         <string>Pick primers</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
