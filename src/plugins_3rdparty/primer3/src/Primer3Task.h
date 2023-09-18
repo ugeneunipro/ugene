@@ -76,6 +76,12 @@ public:
     void setSelfAnyStruct(const QString& selfAnyStruct);
     void setSelfEndStruct(const QString& selfEndStruct);
 
+    /**
+     * Calculates positions where, on the sequence of set length, this primer is located.
+     * \param sequenceLength Length of the sequence.
+     * \return Returns regions where this primer is located. If there are 2 regions,
+     * primer intersects junction point.
+     */
     QVector<U2Region> getSequenceRegions(int sequenceLength) const;
 
 private:

@@ -36,6 +36,11 @@ namespace U2 {
 class PrimerSingle;
 class PrimerPair;
 
+/**
+ * This class represents a task, which does additional Primer3 calculations -
+ * filtering Primer3 primer pairs depending on self- and hetero-dimers
+ * they produce.
+ */
 class CheckComplementTask : public Task {
     Q_OBJECT
 public:
@@ -44,6 +49,9 @@ public:
     void run() override;
     QString generateReport() const override;
 
+    /**
+     * \return Returns a list of PrimerPair pointers
+     */
     QList<QSharedPointer<PrimerPair>> getFilteredPrimers() const;
 
 private:
@@ -62,11 +70,7 @@ private:
     QList<QSharedPointer<PrimerPair>> results;
     U2SequenceObject* seqObj = nullptr;
 
-
     QMap<QSharedPointer<PrimerPair>, QMap<PrimersInDimer, DimerFinderResult>> filteredPrimers;
-
-    //QList<FilteredPair> filteredPrimers;
-
 };
 
 

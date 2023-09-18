@@ -39,7 +39,7 @@ QString DimerFinderResult::getFullReport() const {
     return QObject::tr("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2").arg(deltaG).arg(baseCounts) + "<pre>" + dimersOverlap + "</pre>";
 }
 
-QString DimerFinderResult::getShortHtmlReport() const {
+QString DimerFinderResult::getShortBoldReport() const {
     return QObject::tr("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2 bp").arg(deltaG).arg(baseCounts);
 }
 

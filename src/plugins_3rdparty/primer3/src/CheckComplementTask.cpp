@@ -55,7 +55,6 @@ void CheckComplementTask::run() {
             }
         }
     }
-
 }
 
 QString CheckComplementTask::generateReport() const {
@@ -97,7 +96,7 @@ QString CheckComplementTask::generateReport() const {
             }
 
             res += "<br />";
-            res += dimerFinderResult.getShortHtmlReport();
+            res += dimerFinderResult.getShortBoldReport();
             if (dimerFinderResult.baseCounts > settings.maxComplementPairs) {
                 res += tr(" (max %1 bp)").arg(settings.maxComplementPairs);
             } else if (getGAndCNumber(dimerFinderResult.dimer) > settings.maxGcPair) {
@@ -105,7 +104,6 @@ QString CheckComplementTask::generateReport() const {
             }
             res += "<pre>" + dimerFinderResult.dimersOverlap + "</pre>";
             res += "</p>";
-
         }
     }
 
