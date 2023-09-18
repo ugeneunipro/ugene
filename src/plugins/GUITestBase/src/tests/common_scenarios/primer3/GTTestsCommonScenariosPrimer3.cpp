@@ -579,6 +579,13 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     CHECK_SET_ERR(GTFile::equals(testDir + "_common_data/primer3/rpa_sequence.txt", sandBoxDir + "test_0025_RPA.txt", true), "RPA settings are not equal");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0026_1) {
+
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0026_2) {
+
+}
 
 }  // namespace GUITest_common_scenarios_primer3
 }  // namespace U2

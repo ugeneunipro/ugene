@@ -50,7 +50,7 @@ void CheckComplementTask::run() {
             const auto& dimer = dimers.value(primersInDimer);
             if (dimer.baseCounts > settings.maxComplementPairs) {
                 addFilterdPrimer(pair, primersInDimer, dimer);
-            } else if (getGAndCNumber(dimer.dimer) > settings.maxGcPair) {
+            } else if (getGAndCProportion(dimer.dimer) > ((double)settings.maxGcPair / 100)) {
                 addFilterdPrimer(pair, primersInDimer, dimer);
             }
         }
@@ -58,10 +58,10 @@ void CheckComplementTask::run() {
 }
 
 QString CheckComplementTask::generateReport() const {
-    CHECK(!filteredPrimers.isEmpty(), "");
-
     QString res;
     res += QString("<p><strong>%1</strong></p>").arg(tr("Check complement"));
+    CHECK_EXT(!filteredPrimers.isEmpty(), res += tr("No primers have been filtered"), res);
+
     res += QString("<p>%1:</p>").arg(tr("The following primers have been filtered"));
 
     const auto& primerPointers = filteredPrimers.keys();
@@ -99,8 +99,11 @@ QString CheckComplementTask::generateReport() const {
             res += dimerFinderResult.getShortBoldReport();
             if (dimerFinderResult.baseCounts > settings.maxComplementPairs) {
                 res += tr(" (max %1 bp)").arg(settings.maxComplementPairs);
-            } else if (getGAndCNumber(dimerFinderResult.dimer) > settings.maxGcPair) {
-                res += tr(" <b>G/C pairs:</b> %1 % (max %2 %)").arg(getGAndCNumber(dimerFinderResult.dimer)).arg(settings.maxGcPair);
+            } else if (getGAndCProportion(dimerFinderResult.dimer) > ((double)settings.maxGcPair / 100)) {
+                res += tr(" <b>G/C pairs:</b> %1 bp or %2 % (max %3 %)")
+                    .arg(getGAndCNumber(dimerFinderResult.dimer))
+                    .arg(getGAndCProportion(dimerFinderResult.dimer) * 100)
+                    .arg(settings.maxGcPair);
             }
             res += "<pre>" + dimerFinderResult.dimersOverlap + "</pre>";
             res += "</p>";
@@ -132,6 +135,10 @@ void CheckComplementTask::addFilterdPrimer(const QSharedPointer<PrimerPair>& pai
 
 int CheckComplementTask::getGAndCNumber(const QString& dimer) {
     return dimer.count('G') + dimer.count('C');
+}
+
+double CheckComplementTask::getGAndCProportion(const QString& dimer) {
+    return (double)getGAndCNumber(dimer) / dimer.size();
 }
 
 

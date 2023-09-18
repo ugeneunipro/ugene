@@ -2278,9 +2278,14 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation>Задача проверки комплементарности</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="64"/>
+        <location filename="../src/CheckComplementTask.cpp" line="62"/>
         <source>Check complement</source>
         <translation>Проверить комплементарность</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="63"/>
+        <source>No primers have been filtered</source>
+        <translation>Ни один праймер не был отфильтрован</translation>
     </message>
     <message>
         <location filename="../src/CheckComplementTask.cpp" line="65"/>
@@ -2319,8 +2324,8 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     </message>
     <message>
         <location filename="../src/CheckComplementTask.cpp" line="103"/>
-        <source> &lt;b&gt;G/C pairs:&lt;/b&gt; %1 % (max %2 %)</source>
-        <translation> &lt;b&gt;Пары G/C:&lt;/b&gt; %1 % (максимум %2 %)</translation>
+        <source> &lt;b&gt;G/C pairs:&lt;/b&gt; %1 bp or %2 % (max %3 %)</source>
+        <translation> &lt;b&gt;Пары G/C:&lt;/b&gt; %1 по или %2 % (максимум %3 %)</translation>
     </message>
 </context>
 <context>

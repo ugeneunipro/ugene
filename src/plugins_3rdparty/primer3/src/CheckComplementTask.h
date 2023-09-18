@@ -65,6 +65,7 @@ private:
     void addFilterdPrimer(const QSharedPointer<PrimerPair>& pair, PrimersInDimer primersInDimer, const DimerFinderResult& dimer);
 
     static int getGAndCNumber(const QString& dimer);
+    static double getGAndCProportion(const QString& dimer);
 
     const CheckComplementSettings& settings;
     QList<QSharedPointer<PrimerPair>> results;
