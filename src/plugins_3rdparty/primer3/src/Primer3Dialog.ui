@@ -35,7 +35,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -6612,13 +6612,6 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
       <widget class="QPushButton" name="closeButton">
        <property name="text">
         <string>Close</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pbPresets">
-       <property name="text">
-        <string>Presets</string>
        </property>
       </widget>
      </item>

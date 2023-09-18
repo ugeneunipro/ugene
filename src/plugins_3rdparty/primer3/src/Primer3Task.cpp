@@ -27,7 +27,6 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
 #include <U2Core/MultiTask.h>
-#include <U2Core/PrimerDimersFinder.h>
 #include <U2Core/SequenceWalkerTask.h>
 #include <U2Core/U1AnnotationUtils.h>
 
@@ -498,14 +497,6 @@ void Primer3Task::run() {
         }
     }
 
-    if (settings->getCheckComplementSettings().enabled) {
-        for (const auto& pair : qAsConst(bestPairs)) {
-            //pair.getLeftPrimer()->getSequenceRegions(seqLen);
-            /*pair.getLeftPrimer()->getStart();
-            HeteroDimersFinder hdf()*/
-        }
-    }
-
     if (resultPrimers->output_type == primer_list) {
         singlePrimers.clear();
         int maxCount = 0;
@@ -627,51 +618,6 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
         }
     }
 }
-
-// Primer3SWTask
-/*
-Primer3SWTask::Primer3SWTask(Primer3TaskSettings* _settings, bool _ownsSettings)
-    : Task("Pick primers SW task", TaskFlags_NR_FOSCOE | TaskFlag_CollectChildrenWarnings),
-      settings(_settings),
-      ownsSettings(_ownsSettings) {
-}
-
-Primer3SWTask::~Primer3SWTask() {
-    if (ownsSettings) {
-        delete settings;
-    }
-}
-
-void Primer3SWTask::prepare() {
-    const auto& sequenceRange = settings->getSequenceRange();
-    int sequenceSize = settings->getSequenceSize();
-
-    const auto& includedRegion = settings->getIncludedRegion();
-    int fbs = settings->getFirstBaseIndex();
-    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
-    CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
-
-    if (sequenceRange.endPos() > sequenceSize + includedRegionOffset) {
-        SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
-
-        QByteArray seq = settings->getSequence();
-        seq.append(seq.left(sequenceRange.endPos() - sequenceSize - fbs));
-        settings->setSequence(seq);
-    }
-
-    primer3Task = new Primer3Task(settings);
-    addSubTask(primer3Task);
-}
-
-Task::ReportResult Primer3SWTask::report() {
-    CHECK_OP(stateInfo, Task::ReportResult_Finished);
-    CHECK(primer3Task != nullptr, Task::ReportResult_Finished);
-
-    bestPairs.append(primer3Task->getBestPairs());
-    singlePrimers.append(primer3Task->getSinglePrimers());
-
-    return Task::ReportResult_Finished;
-}*/
 
 //////////////////////////////////////////////////////////////////////////
 ////Primer3ToAnnotationsTask
@@ -900,19 +846,6 @@ SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& 
     if (annotationData->location->regions.size() > 1) {
         annotationData->location.data()->op = U2LocationOperator_Join;
     }
-    /*int start = primer.getStart() + (primer.getStart() > seqLen ? (-seqLen) : 0);
-    int length = primer.getLength();
-    if (start + length <= seqLen) {
-        annotationData->location->regions << U2Region(start, length);
-    } else {
-        annotationData->location->regions << U2Region(start, seqLen - start) << U2Region(0, start + length - seqLen);
-        annotationData->location.data()->op = U2LocationOperator_Join;
-    }*/
-
-    /*QByteArray primerSequence;
-    for (const auto& r : qAsConst(annotationData->location->regions)) {
-        primerSequence += seqObj->getSequenceData(r);
-    }*/
 
     annotationData->setStrand(strand);
 

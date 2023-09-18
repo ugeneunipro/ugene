@@ -179,30 +179,6 @@ private:
     int offset = 0;
     bool removeSettings = false;
 };
-/*
-class Primer3SWTask : public Task {
-    Q_OBJECT
-public:
-    Primer3SWTask(Primer3TaskSettings* settings, bool ownsSettings = false);
-    ~Primer3SWTask();
-
-    void prepare();
-    Task::ReportResult report();
-
-    const QList<PrimerPair>& getBestPairs() const {
-        return bestPairs;
-    }
-    QList<PrimerSingle> getSinglePrimers() const {
-        return singlePrimers;
-    }
-
-private:
-    Primer3Task* primer3Task = nullptr;
-    Primer3TaskSettings* settings;
-    bool ownsSettings {};
-    QList<PrimerPair> bestPairs;
-    QList<PrimerSingle> singlePrimers;
-};*/
 
 class Primer3ToAnnotationsTask : public Task {
     Q_OBJECT

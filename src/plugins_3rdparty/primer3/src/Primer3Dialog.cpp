@@ -81,10 +81,6 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
 
 const QRegularExpression Primer3Dialog::MUST_MATCH_END_REGEX("^([nagctrywsmkbhdvNAGCTRYWSMKBHDV]){5}$");
 const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^([a-zA-Z]){3}$");
-//const QMap<QString, QString> Primer3Dialog::PRESET_PATH = {
-//            {"Default", PRESETS_DIRECTORY + "Default.txt"},
-//            {"Recombinase Polymerase Amplification", PRESETS_DIRECTORY + "RPA.txt"}};
-
 
 Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
@@ -93,32 +89,6 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
       primer3DataDirectory(QFileInfo(QString(PATH_PREFIX_DATA) + ":primer3/").absoluteFilePath().toLatin1()) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
-
-    /*auto selectorWidget = new TmCalculatorSelectorWidget(this, true);
-    auto lt = qobject_cast<QVBoxLayout*>(tabWidget->widget(0)->layout());
-    lt->insertWidget(0, selectorWidget);*/
-    /*auto p3pw = new Primer3PresetsWidget(this);
-    auto hLayout = new QHBoxLayout;
-    hLayout->addWidget(p3pw);
-    auto horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    hLayout->addItem(horizontalSpacer);
-
-    auto mainPage = tabWidget->widget(0);
-    auto lt = qobject_cast<QVBoxLayout*>(mainPage->layout());
-    lt->insertLayout(0, hLayout);*/
-    //lt->insertWidget(0, p3pw);
-
-    //connect(cbAlgorithm, QOverload<int>::of(&QComboBox::currentIndexChanged), swSettings, &QStackedWidget::setCurrentIndex);
-
-    /*connect(cbPreset, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
-        if (index == 1) {
-            pbAdditionalSettings->show();
-        } else {
-            pbAdditionalSettings->hide();
-        }
-    });*/
-
-    //pickPrimersButton->setDefault(true);
 
     connect(closeButton, &QPushButton::clicked, this, &Primer3Dialog::close);
     connect(pickPrimersButton, &QPushButton::clicked, this, &Primer3Dialog::sl_pickClicked);
@@ -338,105 +308,7 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
 }
 
 void Primer3Dialog::reset() {
-    //loadSettings()
-
-    for (const auto& key : defaultSettings.getIntPropertyList()) {
-        int value = 0;
-        if (defaultSettings.getIntProperty(key, &value)) {
-            QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
-            if (spinBox != nullptr) {
-                spinBox->setValue(value);
-                continue;
-            }
-            if (QCheckBox* checkBox = findChild<QCheckBox*>("checkbox_" + key)) {
-                checkBox->setChecked(value);
-            }
-        }
-    }
-    const auto& doublePropertyList = defaultSettings.getDoublePropertyList();
-    for (const auto& key : qAsConst(doublePropertyList)) {
-        double value = 0;
-        if (defaultSettings.getDoubleProperty(key, &value)) {
-            if (QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key)) {
-                checkBox->setChecked(false);
-            }
-            if (QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key)) {
-                spinBox->setValue(value);
-            }
-        }
-    }
-
-    edit_SEQUENCE_TARGET->setText(intervalListToString(defaultSettings.getTarget(), ","));
-    edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setText(intListToString(defaultSettings.getOverlapJunctionList(), ""));
-    edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST->setText(intListToString(defaultSettings.getInternalOverlapJunctionList(), ""));
-    edit_SEQUENCE_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getExcludedRegion(), ","));
-    edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setText(okRegions2String(defaultSettings.getOkRegion()));
-    edit_PRIMER_PRODUCT_SIZE_RANGE->setText(intervalListToString(defaultSettings.getProductSizeRange(), "-", IntervalDefinition::Start_End));
-    edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getInternalOligoExcludedRegion(), ","));
-    edit_PRIMER_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getStartCodonSequence());
-    edit_PRIMER_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getPrimerMustMatchFivePrime());
-    edit_PRIMER_MUST_MATCH_THREE_PRIME->setText(defaultSettings.getPrimerMustMatchThreePrime());
-    edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getInternalPrimerMustMatchFivePrime());
-    edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->setText(defaultSettings.getInternalPrimerMustMatchThreePrime());
-    edit_SEQUENCE_PRIMER->setText(defaultSettings.getLeftInput());
-    edit_SEQUENCE_PRIMER_REVCOMP->setText(defaultSettings.getRightInput());
-    edit_SEQUENCE_INTERNAL_OLIGO->setText(defaultSettings.getInternalInput());
-    edit_SEQUENCE_OVERHANG_LEFT->setText(defaultSettings.getOverhangLeft());
-    edit_SEQUENCE_OVERHANG_RIGHT->setText(defaultSettings.getOverhangRight());
-
-    {
-        QString qualityString;
-        bool first = true;
-        const auto& seqQuality = defaultSettings.getSequenceQuality();
-        for (int qualityValue : qAsConst(seqQuality)) {
-            if (!first) {
-                qualityString += " ";
-            }
-            qualityString += QString::number(qualityValue);
-            first = false;
-        }
-        edit_SEQUENCE_QUALITY->setPlainText(qualityString);
-    }
-
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_TM_FORMULA", &value);
-        combobox_PRIMER_TM_FORMULA->setCurrentIndex(value);
-    }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_SALT_CORRECTIONS", &value);
-        combobox_PRIMER_SALT_CORRECTIONS->setCurrentIndex(value);
-    }
-
-    {
-        QString task = TASK_ENUM_STRING_MAP.value(defaultSettings.getTask(), "generic");
-        edit_PRIMER_TASK->setCurrentText(task);
-    }
-
-    edit_SEQUENCE_PRIMER->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    label_PRIMER_LEFT_INPUT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    edit_SEQUENCE_OVERHANG_LEFT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    label_SEQUENCE_OVERHANG_LEFT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    edit_SEQUENCE_PRIMER_REVCOMP->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    label_PRIMER_RIGHT_INPUT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    edit_SEQUENCE_OVERHANG_RIGHT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    label_SEQUENCE_OVERHANG_RIGHT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    edit_SEQUENCE_INTERNAL_OLIGO->setEnabled(checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
-    label_PRIMER_INTERNAL_OLIGO_INPUT->setEnabled(checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
-
-    combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentIndex(0);
-    combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(0);
-    {
-        for (int i = 0; i < repeatLibraries.size(); i++) {
-            if (repeatLibraries[i].second == defaultSettings.getRepeatLibraryPath()) {
-                combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentIndex(i);
-            }
-            if (repeatLibraries[i].second == defaultSettings.getMishybLibraryPath()) {
-                combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(i);
-            }
-        }
-    }
+    sl_presetChanged(cbPreset->currentText());
 }
 
 static U2Range<int> parseExonRange(const QString& text, bool& ok) {
@@ -968,11 +840,11 @@ void Primer3Dialog::sl_taskChanged(const QString& text) {
 }
 
 void Primer3Dialog::sl_presetChanged(const QString& text) {
-    if (text == "Default") {
+    if (text == tr("Default")) {
         loadSettings(primer3DataDirectory + "/presets/Default.txt");
         gbCheckComplementary->setChecked(false);
         lbPresetInfo->clear();
-    } else if ("Recombinase Polymerase Amplification") {
+    } else if (text == tr("Recombinase Polymerase Amplification")) {
         loadSettings(primer3DataDirectory + "/presets/RPA.txt");
         gbCheckComplementary->setChecked(true);
         lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
