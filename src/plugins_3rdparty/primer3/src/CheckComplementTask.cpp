@@ -29,7 +29,7 @@
 namespace U2 {
 
 CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _settings, const QList<QSharedPointer<PrimerPair>>& _results, U2SequenceObject* _seqObj) :
-    Task(tr("CHeck complement task"), TaskFlags_FOSCOE),
+    Task(tr("Check complement task"), TaskFlags_FOSCOE),
     settings(_settings),
     results(_results),
     seqObj(_seqObj) {}
@@ -48,35 +48,71 @@ void CheckComplementTask::run() {
         const auto& dimersKeys = dimers.keys();
         for (const auto& primersInDimer : qAsConst(dimersKeys)) {
             const auto& dimer = dimers.value(primersInDimer);
-            if (dimer.baseCounts >= settings.maxComplementPairs) {
+            if (dimer.baseCounts > settings.maxComplementPairs) {
                 addFilterdPrimer(pair, primersInDimer, dimer);
-            } else if (getGAndCNumber(dimer.dimer) >= settings.maxGcPair) {
+            } else if (getGAndCNumber(dimer.dimer) > settings.maxGcPair) {
                 addFilterdPrimer(pair, primersInDimer, dimer);
             }
         }
-        //auto leftSelfDimerResult = ;
-        /*if (leftSelfDimerResult.baseCounts >= settings.maxComplementPairs) {
-            addFilterdPrimer(pair, leftSelfDimerResult);
-        } else if (getGAndCNumber(leftSelfDimerResult.dimer) >= settings.maxGcPair) {
-            addFilterdPrimer(pair, leftSelfDimerResult);
-        }
-        auto rightSelfDimerResult = SelfDimersFinder(rightPrimerSequence).getResult();
-        auto heteroDimerResult = HeteroDimersFinder(leftPrimerSequence, rightPrimerSequence).getResult();*/
-
-        int i = 0;
     }
 
 }
 
 QString CheckComplementTask::generateReport() const {
-    return "TEST";
+    CHECK(!filteredPrimers.isEmpty(), "");
+
+    QString res;
+    res += QString("<p><strong>%1</strong></p>").arg(tr("Check complement"));
+    res += QString("<p>%1:</p>").arg(tr("The following primers have been filtered"));
+
+    const auto& primerPointers = filteredPrimers.keys();
+    for (int i = 0; i < primerPointers.size(); i++) {
+        const auto& spPrimerPair = primerPointers.at(i);
+        auto left = getPrimerSequence(spPrimerPair->getLeftPrimer());
+        auto right = DNASequenceUtils::reverseComplement(getPrimerSequence(spPrimerPair->getRightPrimer()));
+        res += "<strong>";
+        res += QString::number(i + 1);
+        res += "</strong>";
+        res += "<pre>";
+        res += QString("%1:&nbsp;&nbsp;<strong>5'</strong> %2 <strong>3'</strong>").arg(tr("Left")).arg(QString(left));
+        res += "<br />";
+        res += QString("%1:&nbsp;<strong>3'</strong> %2 <strong>5'</strong>").arg(tr("Right")).arg(QString(right));
+        res += "</pre>";
+
+        const auto& filteredPrimersData = filteredPrimers.value(spPrimerPair);
+        auto primersInDimer = filteredPrimersData.keys();
+        for (const auto& pid : qAsConst(primersInDimer)) {
+            res += "<p>";
+            const auto& dimerFinderResult = filteredPrimersData.value(pid);
+            switch (pid) {
+            case PrimersInDimer::Left:
+                res += tr("Left primer self-dimer:");
+                break;
+            case PrimersInDimer::Right:
+                res += tr("Right primer self-dimer:");
+                break;
+            case PrimersInDimer::Both:
+                res += tr("Hetero-dimer:");
+                break;
+            }
+
+            res += "<br />";
+            res += dimerFinderResult.getShortHtmlReport();
+            if (dimerFinderResult.baseCounts > settings.maxComplementPairs) {
+                res += tr(" (max %1 bp)").arg(settings.maxComplementPairs);
+            } else if (getGAndCNumber(dimerFinderResult.dimer) > settings.maxGcPair) {
+                res += tr(" <b>G/C pairs:</b> %1 % (max %2 %)").arg(getGAndCNumber(dimerFinderResult.dimer)).arg(settings.maxGcPair);
+            }
+            res += "<pre>" + dimerFinderResult.dimersOverlap + "</pre>";
+            res += "</p>";
+
+        }
+    }
+
+    return res;
 }
 
 QList<QSharedPointer<PrimerPair>> CheckComplementTask::getFilteredPrimers() const {
-    /*QList<PrimerPair> result;
-    for (const auto& filteredPrimerData : qAsConst(filteredPrimers)) {
-        result << filteredPrimerData.pair;
-    }*/
     return filteredPrimers.keys();
 }
 

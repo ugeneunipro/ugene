@@ -37,6 +37,7 @@ class PrimerSingle;
 class PrimerPair;
 
 class CheckComplementTask : public Task {
+    Q_OBJECT
 public:
     CheckComplementTask(const CheckComplementSettings& settings, const QList<QSharedPointer<PrimerPair>>& results, U2SequenceObject* seqObj);
 

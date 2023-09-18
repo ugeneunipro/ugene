@@ -36,10 +36,15 @@ namespace U2 {
 /* DimerFinderResult */
 /************************************************************************/
 QString DimerFinderResult::getFullReport() const {
-    return QString("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2").arg(deltaG).arg(baseCounts) + "<pre>" + dimersOverlap + "</pre>";
+    return QObject::tr("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2").arg(deltaG).arg(baseCounts) + "<pre>" + dimersOverlap + "</pre>";
 }
+
+QString DimerFinderResult::getShortHtmlReport() const {
+    return QObject::tr("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2 bp").arg(deltaG).arg(baseCounts);
+}
+
 QString DimerFinderResult::getShortReport() const {
-    return QString("Delta G: %1 kcal/mole<br>Base Pairs: %2").arg(deltaG).arg(baseCounts);
+    return QObject::tr("Delta G: %1 kcal/mole<br>Base Pairs: %2").arg(deltaG).arg(baseCounts);
 }
 
 /************************************************************************/

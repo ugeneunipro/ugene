@@ -30,6 +30,7 @@ namespace U2 {
 
 struct U2CORE_EXPORT DimerFinderResult {
     QString getFullReport() const;
+    QString getShortHtmlReport() const;
     QString getShortReport() const;
 
     QString dimersOverlap;

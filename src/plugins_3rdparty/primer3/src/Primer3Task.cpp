@@ -844,8 +844,8 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
     }
     const auto& bestPairs = primer3Task->getBestPairs();
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
-    int index = 0;
-    for (const auto& pair : qAsConst(bestPairs)) {
+    for (int i = 0; i < bestPairs.size(); i++) {
+        const auto& pair = bestPairs.at(i);
         CHECK_CONTINUE(!filteredPrimers.contains(pair));
 
         QList<SharedAnnotationData> annotations;
@@ -858,8 +858,7 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
         if (pair->getRightPrimer() != nullptr) {
             annotations.append(oligoToAnnotation(annName, pair->getRightPrimer(), pair->getProductSize(), U2Strand::Complementary));
         }
-        resultAnnotations[groupName + "/pair " + QString::number(index + 1)].append(annotations);
-        index++;
+        resultAnnotations[groupName + "/pair " + QString::number(i + 1)].append(annotations);
     }
 
     const auto& singlePrimers = primer3Task->getSinglePrimers();
@@ -875,6 +874,14 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
 
         if (!annotations.isEmpty()) {
             resultAnnotations[groupName].append(annotations);
+        }
+    }
+
+    if (resultAnnotations.isEmpty()) {
+        if (bestPairs.isEmpty()) {
+            stateInfo.addWarning(tr("No primers has been found due to the parameters you've set up"));
+        } else {
+            stateInfo.addWarning(tr("All found primers has been filtered due to the \"Check complement\" parameters"));
         }
     }
 

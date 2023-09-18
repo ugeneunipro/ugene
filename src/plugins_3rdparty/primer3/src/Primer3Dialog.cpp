@@ -1067,7 +1067,7 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
 void Primer3Dialog::loadSettings(const QString& filePath) {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this, windowTitle(), tr("Can't read to \"%1\"").arg(filePath));
+        QMessageBox::critical(this, windowTitle(), L10N::errorReadingFile(filePath));
         return;
     }
 
