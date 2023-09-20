@@ -42,15 +42,13 @@ void CheckComplementTask::run() {
         auto rightPrimerSequence = DNASequenceUtils::reverseComplement(getPrimerSequence(pair->getRightPrimer()));
 
         QMap<PrimersInDimer, DimerFinderResult> dimers;
-        dimers.insert(PrimersInDimer::Left, SelfDimersFinder(leftPrimerSequence).getResult());
-        dimers.insert(PrimersInDimer::Right, SelfDimersFinder(rightPrimerSequence).getResult());
+        dimers.insert(PrimersInDimer::Left, HeteroDimersFinder(leftPrimerSequence, leftPrimerSequence).getResult());
+        dimers.insert(PrimersInDimer::Right, HeteroDimersFinder(rightPrimerSequence, rightPrimerSequence).getResult());
         dimers.insert(PrimersInDimer::Both, HeteroDimersFinder(leftPrimerSequence, rightPrimerSequence).getResult());
         const auto& dimersKeys = dimers.keys();
         for (const auto& primersInDimer : qAsConst(dimersKeys)) {
             const auto& dimer = dimers.value(primersInDimer);
-            if (dimer.baseCounts > settings.maxComplementPairs) {
-                addFilterdPrimer(pair, primersInDimer, dimer);
-            } else if (getGAndCProportion(dimer.dimer) > ((double)settings.maxGcPair / 100)) {
+            if (isBasePairNumberBad(dimer) || isGcContentBad(dimer)) {
                 addFilterdPrimer(pair, primersInDimer, dimer);
             }
         }
@@ -97,13 +95,13 @@ QString CheckComplementTask::generateReport() const {
 
             res += "<br />";
             res += dimerFinderResult.getShortBoldReport();
-            if (dimerFinderResult.baseCounts > settings.maxComplementPairs) {
+            if (isBasePairNumberBad(dimerFinderResult)) {
                 res += tr(" (max %1 bp)").arg(settings.maxComplementPairs);
-            } else if (getGAndCProportion(dimerFinderResult.dimer) > ((double)settings.maxGcPair / 100)) {
+            } else if (isGcContentBad(dimerFinderResult)) {
                 res += tr(" <b>G/C pairs:</b> %1 bp or %2 % (max %3 %)")
                     .arg(getGAndCNumber(dimerFinderResult.dimer))
                     .arg(getGAndCProportion(dimerFinderResult.dimer) * 100)
-                    .arg(settings.maxGcPair);
+                    .arg(settings.maxGcContent);
             }
             res += "<pre>" + dimerFinderResult.dimersOverlap + "</pre>";
             res += "</p>";
@@ -131,6 +129,14 @@ void CheckComplementTask::addFilterdPrimer(const QSharedPointer<PrimerPair>& pai
     auto dimerFinderResultList = filteredPrimers.value(pair);
     dimerFinderResultList.insert(primersInDimer, dimer);
     filteredPrimers.insert(pair, dimerFinderResultList);
+}
+
+bool CheckComplementTask::isBasePairNumberBad(const DimerFinderResult& dimer) const {
+    return dimer.baseCounts > settings.maxComplementPairs;
+}
+
+bool CheckComplementTask::isGcContentBad(const DimerFinderResult& dimer) const {
+    return getGAndCNumber(dimer.dimer) > MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER && getGAndCProportion(dimer.dimer) > ((double)settings.maxGcContent / 100);
 }
 
 int CheckComplementTask::getGAndCNumber(const QString& dimer) {

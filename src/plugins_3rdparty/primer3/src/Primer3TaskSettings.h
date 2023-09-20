@@ -51,7 +51,7 @@ struct SpanIntronExonBoundarySettings {
 struct CheckComplementSettings {
     bool enabled = false;
     int maxComplementPairs = 4;
-    int maxGcPair = 50;
+    int maxGcContent = 50;
 };
 
 class Primer3TaskSettings {

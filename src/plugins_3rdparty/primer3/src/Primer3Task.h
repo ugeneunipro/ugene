@@ -167,9 +167,6 @@ public:
     void run() override;
     Task::ReportResult report() override;
 
-    void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
-    void selectPairsSpanningIntron(p3retval* primers, int toReturn);
-
     const QList<QSharedPointer<PrimerPair>>& getBestPairs() const {
         return bestPairs;
     }
@@ -178,6 +175,9 @@ public:
     }
 
 private:
+    void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
+    void selectPairsSpanningIntron(p3retval* primers, int toReturn);
+
     Primer3TaskSettings* settings;
     QList<QSharedPointer<PrimerPair>> bestPairs;
     QList<QSharedPointer<PrimerSingle>> singlePrimers;
@@ -201,10 +201,11 @@ public:
     QList<Task*> onSubTaskFinished(Task* subTask)  override;
 
     QString generateReport() const override;
-    Task::ReportResult report() override;
 
 private:
-    SharedAnnotationData oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand);
+    void findExonTaskIsfinished();
+    QMap<QString, QList<SharedAnnotationData>> getResultAnnotations() const;
+    SharedAnnotationData oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand) const;
 
     Primer3TaskSettings* settings;
     QPointer<AnnotationTableObject> annotationTableObject;

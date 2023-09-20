@@ -373,7 +373,7 @@ bool Primer3Dialog::doDataExchange() {
         CheckComplementSettings s;
         s.enabled = true;
         s.maxComplementPairs = sbMaxComplementPairs->value();
-        s.maxGcPair = sbMaxGcPairs->value();
+        s.maxGcContent = sbMaxGcPairs->value();
 
         settings->setCheckComplementSettings(s);
     }

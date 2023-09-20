@@ -64,6 +64,8 @@ private:
     };
     void addFilterdPrimer(const QSharedPointer<PrimerPair>& pair, PrimersInDimer primersInDimer, const DimerFinderResult& dimer);
 
+    bool isBasePairNumberBad(const DimerFinderResult& dimer) const;
+    bool isGcContentBad(const DimerFinderResult& dimer) const;
     static int getGAndCNumber(const QString& dimer);
     static double getGAndCProportion(const QString& dimer);
 
@@ -72,6 +74,8 @@ private:
     U2SequenceObject* seqObj = nullptr;
 
     QMap<QSharedPointer<PrimerPair>, QMap<PrimersInDimer, DimerFinderResult>> filteredPrimers;
+
+    static constexpr int MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER = 2;
 };
 
 

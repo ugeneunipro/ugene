@@ -21,6 +21,9 @@
 
 #include "Primer3Tests.h"
 
+#include <U2Core/AnnotationTableObject.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
 namespace U2 {
@@ -826,6 +829,98 @@ bool GTest_Primer3::checkDoubleProperty(double value, double expectedValue, QStr
         return false;
     }
     return true;
+}
+
+const QString GTest_Primer3ToAnnotations::TOP_PRIMERS = "top_primers";
+
+void GTest_Primer3ToAnnotations::init(XMLTestFormat*, const QDomElement& el) {
+    seqObjCtxName = el.attribute("sequence");
+    CHECK_EXT(!seqObjCtxName.isEmpty(), stateInfo.setError("Sequence object context not specified"), );
+    
+    aObjName = el.attribute("annotations");
+    CHECK_EXT(!aObjName.isEmpty(), stateInfo.setError("Annotations table object not specified"), );
+
+    settings = new Primer3TaskSettings();
+    settings->setIntProperty("PRIMER_NUM_RETURN", 1);
+
+    CheckComplementSettings ccs;
+    ccs.enabled = el.attribute("enable-check-complement-settings").toInt() == 1;
+    if (ccs.enabled) {
+        auto getIntValue = [&el](const QString& attributeName, int defaultAttributeValue) -> int {
+            bool ok = false;
+            int value = el.attribute(attributeName).toInt(&ok);
+            int result = defaultAttributeValue;
+            if (ok) {
+                result = value;
+            }
+            return result;
+        };
+        ccs.maxComplementPairs = getIntValue("max-complement-pairs", ccs.maxComplementPairs);
+        ccs.maxGcContent = getIntValue("max-gc-content", ccs.maxGcContent);
+        settings->setCheckComplementSettings(ccs);
+    }
+
+    QString rar = el.attribute("result-annotations-region");
+    if (!rar.isEmpty()) {
+        auto rarSplit = rar.split(";");
+        auto left = rarSplit.first().split(",");
+        resultPrimerAnnotationsRegions.first = U2Region(left.first().toInt(), left.last().toInt());
+        auto right = rarSplit.last().split(",");
+        resultPrimerAnnotationsRegions.second = U2Region(right.first().toInt(), right.last().toInt());
+    }
+
+    reportPart = el.attribute("report-part");
+}
+
+void GTest_Primer3ToAnnotations::prepare() {
+    seqObj = getContext<U2SequenceObject>(this, seqObjCtxName);
+    CHECK_EXT(seqObj != nullptr, setError(QString("Sequence context not found %1").arg(seqObjCtxName)), );
+
+    annObj = getContext<AnnotationTableObject>(this, aObjName);
+    CHECK_EXT(annObj != nullptr, setError(QString("Annotations table object not found %1").arg(aObjName)), );
+
+    settings->setSequence(seqObj->getWholeSequenceData(stateInfo));
+    CHECK_OP(stateInfo, );
+
+    settings->setSequenceName(seqObj->getSequenceName().toLocal8Bit());
+
+    task = new Primer3ToAnnotationsTask(settings, seqObj, annObj, TOP_PRIMERS, TOP_PRIMERS, "");
+    addSubTask(task);
+}
+
+Task::ReportResult GTest_Primer3ToAnnotations::report() {
+    CHECK_OP(task->getStateInfo(), Task::ReportResult::ReportResult_Finished);
+
+    if (!reportPart.isEmpty()) {
+        auto report = task->generateReport();
+        CHECK_EXT(report.contains(reportPart), setError(QString("No \"%1\" in report").arg(reportPart)), Task::ReportResult::ReportResult_Finished);
+    }
+
+    CHECK(!resultPrimerAnnotationsRegions.first.isEmpty(), Task::ReportResult::ReportResult_Finished);
+
+    auto rootGroup = annObj->getRootGroup();
+    CHECK_EXT(rootGroup != nullptr, setError(L10N::nullPointerError("AnnotationGroup")), Task::ReportResult::ReportResult_Finished);
+
+    auto groups = rootGroup->getSubgroups();
+    auto primer3Group = *std::find_if(groups.begin(), groups.end(), [this](AnnotationGroup* group) {
+        return group->getName() == TOP_PRIMERS;
+    });
+    CHECK_EXT(primer3Group != nullptr, setError("No primers group found, but should be"), Task::ReportResult::ReportResult_Finished);
+
+    const auto& p3AnnotationGroups = primer3Group->getSubgroups();
+    CHECK_EXT(p3AnnotationGroups.size() == 1, setError("Expected one primer pair"), Task::ReportResult::ReportResult_Finished);
+
+    const auto& annGroup = p3AnnotationGroups.first();
+    const auto& anns = annGroup->getAnnotations();
+    CHECK_EXT(anns.size() == 2, setError("Expected left and right primers"), Task::ReportResult::ReportResult_Finished);
+
+    U2Region left = anns.first()->getLocation()->regions.first();
+    CHECK_EXT(resultPrimerAnnotationsRegions.first == left, setError("Incorrect left region"), Task::ReportResult::ReportResult_Finished);
+
+    U2Region right = anns.last()->getLocation()->regions.first();
+    CHECK_EXT(resultPrimerAnnotationsRegions.second == right, setError("Incorrect right region"), Task::ReportResult::ReportResult_Finished);
+
+    return Task::ReportResult::ReportResult_Finished;
 }
 
 }  // namespace U2

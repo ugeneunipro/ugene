@@ -127,6 +127,7 @@ void Primer3ADVContext::sl_showDialog() {
 QList<XMLTestFactory*> Primer3Tests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_Primer3::createFactory());
+    res.append(GTest_Primer3ToAnnotations::createFactory());
     return res;
 }
 

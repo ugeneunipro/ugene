@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER3_TESTS_H_
-#define _U2_PRIMER3_TESTS_H_
+#pragma once
 
 #include <QDomElement>
 
@@ -62,5 +61,30 @@ private:
     int qualityNumber = 0;
 };
 
+
+class GTest_Primer3ToAnnotations : public XmlTest {
+    Q_OBJECT
+public:
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Primer3ToAnnotations, "primer-3-to-annotations", TaskFlags(TaskFlag_FailOnSubtaskCancel) | TaskFlag_NoRun);
+
+    void prepare();
+    Task::ReportResult report();
+
+private:
+
+
+    Primer3ToAnnotationsTask* task = nullptr;
+    Primer3TaskSettings* settings = nullptr;
+    U2SequenceObject* seqObj = nullptr;
+    AnnotationTableObject* annObj = nullptr;
+    QString seqObjCtxName;
+    QString aObjName;
+    QPair<U2Region, U2Region> resultPrimerAnnotationsRegions;
+    QString reportPart;
+
+    static const QString TOP_PRIMERS;
+
+};
+
+
 }  // namespace U2
-#endif

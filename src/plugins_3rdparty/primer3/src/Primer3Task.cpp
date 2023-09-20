@@ -654,55 +654,28 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == findExonsTask) {
-        QList<U2Region> regions = findExonsTask->getRegions();
-        if (regions.isEmpty()) {
-            setError(tr("Failed to find any exon annotations associated with the sequence %1."
-                        "Make sure the provided sequence is cDNA and has exonic structure annotated")
-                         .arg(seqObj->getSequenceName()));
-            return res;
-        } else {
-            const U2Range<int>& exonRange = settings->getSpanIntronExonBoundarySettings().exonRange;
-
-            if (exonRange.minValue != 0 && exonRange.maxValue != 0) {
-                int firstExonIdx = exonRange.minValue;
-                int lastExonIdx = exonRange.maxValue;
-                if (firstExonIdx > regions.size()) {
-                    setError(tr("The first exon from the selected range [%1,%2] is larger the number of exons (%3)."
-                                " Please set correct exon range.")
-                                 .arg(firstExonIdx)
-                                 .arg(lastExonIdx)
-                                 .arg(regions.size()));
-                    return res;
-                }
-
-                if (lastExonIdx > regions.size()) {
-                    setError(tr("The the selected exon range [%1,%2] is larger the number of exons (%3)."
-                                " Please set correct exon range.")
-                                 .arg(firstExonIdx)
-                                 .arg(lastExonIdx)
-                                 .arg(regions.size()));
-                    return res;
-                }
-
-                regions = regions.mid(firstExonIdx - 1, lastExonIdx - firstExonIdx + 1);
-                int totalLen = 0;
-                for (const U2Region& r : regions) {
-                    totalLen += r.length;
-                }
-                settings->setIncludedRegion(regions.first().startPos + settings->getFirstBaseIndex(), totalLen);
-            }
-            settings->setExonRegions(regions);
-            // reset target and excluded regions regions
-            QList<U2Region> emptyList;
-            settings->setExcludedRegion(emptyList);
-            settings->setTarget(emptyList);
-        }
+        findExonTaskIsfinished();
+        CHECK_OP(stateInfo, res);
 
         primer3Task = new Primer3Task(settings);
         res.append(primer3Task);
-    } else if (subTask == primer3Task && settings->getCheckComplementSettings().enabled) {
+    } else if (subTask == primer3Task && checkComplementTask == nullptr && settings->getCheckComplementSettings().enabled) {
         checkComplementTask = new CheckComplementTask(settings->getCheckComplementSettings(), primer3Task->getBestPairs(), seqObj);
         res.append(checkComplementTask);
+    } else if (subTask == primer3Task || subTask == checkComplementTask) {
+        CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), res);
+        SAFE_POINT(primer3Task != nullptr, L10N::nullPointerError("Primer3Task"), res);
+
+        auto resultAnnotations = getResultAnnotations();
+        if (resultAnnotations.isEmpty()) {
+            if (primer3Task->getBestPairs().isEmpty()) {
+                stateInfo.addWarning(tr("No primers has been found due to the parameters you've set up"));
+            } else {
+                stateInfo.addWarning(tr("All found primers has been filtered due to the \"Check complement\" parameters"));
+            }
+        }
+
+        res.append(new CreateAnnotationsTask(annotationTableObject, resultAnnotations));
     }
 
     return res;
@@ -777,13 +750,54 @@ QString Primer3ToAnnotationsTask::generateReport() const {
     return res;
 }
 
-Task::ReportResult Primer3ToAnnotationsTask::report() {
-    if (hasError() || isCanceled()) {
-        return ReportResult_Finished;
-    }
-    CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), ReportResult_Finished);
-    SAFE_POINT(primer3Task != nullptr, L10N::nullPointerError("Primer3Task"), ReportResult_Finished);
 
+void Primer3ToAnnotationsTask::findExonTaskIsfinished() {
+    QList<U2Region> regions = findExonsTask->getRegions();
+    if (regions.isEmpty()) {
+        setError(tr("Failed to find any exon annotations associated with the sequence %1."
+            "Make sure the provided sequence is cDNA and has exonic structure annotated")
+            .arg(seqObj->getSequenceName()));
+        return;
+    } else {
+        const U2Range<int>& exonRange = settings->getSpanIntronExonBoundarySettings().exonRange;
+
+        if (exonRange.minValue != 0 && exonRange.maxValue != 0) {
+            int firstExonIdx = exonRange.minValue;
+            int lastExonIdx = exonRange.maxValue;
+            if (firstExonIdx > regions.size()) {
+                setError(tr("The first exon from the selected range [%1,%2] is larger the number of exons (%3)."
+                    " Please set correct exon range.")
+                    .arg(firstExonIdx)
+                    .arg(lastExonIdx)
+                    .arg(regions.size()));
+                return;
+            }
+
+            if (lastExonIdx > regions.size()) {
+                setError(tr("The the selected exon range [%1,%2] is larger the number of exons (%3)."
+                    " Please set correct exon range.")
+                    .arg(firstExonIdx)
+                    .arg(lastExonIdx)
+                    .arg(regions.size()));
+                return;
+            }
+
+            regions = regions.mid(firstExonIdx - 1, lastExonIdx - firstExonIdx + 1);
+            int totalLen = 0;
+            for (const U2Region& r : regions) {
+                totalLen += r.length;
+            }
+            settings->setIncludedRegion(regions.first().startPos + settings->getFirstBaseIndex(), totalLen);
+        }
+        settings->setExonRegions(regions);
+        // reset target and excluded regions regions
+        QList<U2Region> emptyList;
+        settings->setExcludedRegion(emptyList);
+        settings->setTarget(emptyList);
+    }
+}
+
+QMap<QString, QList<SharedAnnotationData>> Primer3ToAnnotationsTask::getResultAnnotations() const {
     QList<QSharedPointer<PrimerPair>> filteredPrimers;
     if (checkComplementTask != nullptr) {
         filteredPrimers = checkComplementTask->getFilteredPrimers();
@@ -823,20 +837,10 @@ Task::ReportResult Primer3ToAnnotationsTask::report() {
         }
     }
 
-    if (resultAnnotations.isEmpty()) {
-        if (bestPairs.isEmpty()) {
-            stateInfo.addWarning(tr("No primers has been found due to the parameters you've set up"));
-        } else {
-            stateInfo.addWarning(tr("All found primers has been filtered due to the \"Check complement\" parameters"));
-        }
-    }
-
-    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(annotationTableObject, resultAnnotations));
-
-    return ReportResult_Finished;
+    return resultAnnotations;
 }
 
-SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand) {
+SharedAnnotationData Primer3ToAnnotationsTask::oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand) const {
     SharedAnnotationData annotationData(new AnnotationData);
     annotationData->name = title;
     annotationData->type = U2FeatureTypes::Primer;

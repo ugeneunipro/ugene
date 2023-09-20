@@ -6472,7 +6472,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
              <string>Maximum number of complement base pairs for self- and hetero-dimers</string>
             </property>
             <property name="text">
-             <string>Max complement pairs</string>
+             <string>Max complement pairs in dimer</string>
             </property>
            </widget>
           </item>
@@ -6495,7 +6495,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
              <string>Maximum persantage of G/C base pairs</string>
             </property>
             <property name="text">
-             <string>Max G/C pairs</string>
+             <string>Max dimer G/C content</string>
             </property>
            </widget>
           </item>
