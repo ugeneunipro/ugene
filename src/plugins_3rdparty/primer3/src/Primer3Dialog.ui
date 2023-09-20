@@ -6495,7 +6495,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
              <string>Maximum persantage of G/C base pairs</string>
             </property>
             <property name="text">
-             <string>Max dimer G/C content</string>
+             <string>Max dimer GC-content</string>
             </property>
            </widget>
           </item>
