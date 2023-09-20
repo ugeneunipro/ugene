@@ -906,6 +906,9 @@ data/position_weight_matrix/UniPROBE/all_uniprobe.csv
 data/primer3
 data/primer3/drosophila.w.transposons.txt
 data/primer3/humrep_and_simple.txt
+data/primer3/presets
+data/primer3/presets/Default.txt
+data/primer3/presets/RPA.txt
 data/primer3/rodent_ref.txt
 data/primer3/rodrep_and_simple.txt
 data/query_samples
