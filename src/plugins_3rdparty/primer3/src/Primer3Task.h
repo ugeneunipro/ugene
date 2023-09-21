@@ -160,8 +160,7 @@ private:
 class Primer3Task : public Task {
     Q_OBJECT
 public:
-    Primer3Task(Primer3TaskSettings* settings, bool removeSettings = false);
-    ~Primer3Task();
+    Primer3Task(const QSharedPointer<Primer3TaskSettings>& settings);
 
     void prepare() override;
     void run() override;
@@ -178,24 +177,22 @@ private:
     void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
     void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
-    Primer3TaskSettings* settings;
+    QSharedPointer<Primer3TaskSettings> settings;
     QList<QSharedPointer<PrimerPair>> bestPairs;
     QList<QSharedPointer<PrimerSingle>> singlePrimers;
 
     int offset = 0;
-    bool removeSettings = false;
 };
 
 class Primer3ToAnnotationsTask : public Task {
     Q_OBJECT
 public:
-    Primer3ToAnnotationsTask(Primer3TaskSettings* settings,
+    Primer3ToAnnotationsTask(const QSharedPointer<Primer3TaskSettings>& settings,
                              U2SequenceObject* seqObj_,
                              AnnotationTableObject* aobj_,
                              const QString& groupName_,
                              const QString& annName_,
                              const QString& annDescription);
-    ~Primer3ToAnnotationsTask();
 
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask)  override;
@@ -207,7 +204,7 @@ private:
     QMap<QString, QList<SharedAnnotationData>> getResultAnnotations() const;
     SharedAnnotationData oligoToAnnotation(const QString& title, const QSharedPointer<PrimerSingle>& primer, int productSize, U2Strand strand) const;
 
-    Primer3TaskSettings* settings;
+    QSharedPointer<Primer3TaskSettings> settings;
     QPointer<AnnotationTableObject> annotationTableObject;
     U2SequenceObject* seqObj;
     QString groupName;

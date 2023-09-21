@@ -160,15 +160,12 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 }
 
 Primer3Dialog::~Primer3Dialog() {
-    delete settings;
     rs->deleteLater();
     createAnnotationWidgetController->deleteLater();
 }
 
-Primer3TaskSettings* Primer3Dialog::takeSettings() {
-    auto returnValue = settings;
-    settings = nullptr;
-    return returnValue;
+const QSharedPointer<Primer3TaskSettings>& Primer3Dialog::getSettings() {
+    return settings;
 }
 
 const CreateAnnotationModel& Primer3Dialog::getCreateAnnotationModel() const {
@@ -341,8 +338,7 @@ static U2Range<int> parseExonRange(const QString& text, bool& ok) {
 }
 
 bool Primer3Dialog::doDataExchange() {
-    delete settings;
-    settings = new Primer3TaskSettings;
+    settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
 
     QMap<QWidget*, bool> widgetStates;
     QStringList errors;

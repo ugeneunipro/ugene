@@ -29,7 +29,7 @@
 namespace U2 {
 
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
-    settings = new Primer3TaskSettings();
+    settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
     settings->getPrimerSettings()->first_base_index = 0;  // Default mode for XML tests.
     settings->setIncludedRegion(U2Region(0, -1));
 
@@ -606,10 +606,6 @@ Task::ReportResult GTest_Primer3::report() {
     return ReportResult_Finished;
 }
 
-GTest_Primer3::~GTest_Primer3() {
-    delete settings;
-}
-
 bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, QSharedPointer<PrimerSingle> outPrimer, bool internalOligo) {
     {
         QString buf = element.attribute(prefix);
@@ -840,7 +836,7 @@ void GTest_Primer3ToAnnotations::init(XMLTestFormat*, const QDomElement& el) {
     aObjName = el.attribute("annotations");
     CHECK_EXT(!aObjName.isEmpty(), stateInfo.setError("Annotations table object not specified"), );
 
-    settings = new Primer3TaskSettings();
+    settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
     settings->setIntProperty("PRIMER_NUM_RETURN", 1);
 
     CheckComplementSettings ccs;

@@ -61,7 +61,7 @@ QString QDPrimerActor::getText() const {
 Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     Task* t = nullptr;
 
-    auto settings = new Primer3TaskSettings();
+    auto settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
     settings->setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
     settings->setIntProperty("PRIMER_LIBERAL_BASE", 1);
     settings->setDoubleProperty("PRIMER_WT_POS_PENALTY", 0);
@@ -131,7 +131,7 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
                errMsg.arg(propertyKey),
                nullptr);
 
-    t = new Primer3Task(settings, true);
+    t = new Primer3Task(settings);
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
 
     return t;

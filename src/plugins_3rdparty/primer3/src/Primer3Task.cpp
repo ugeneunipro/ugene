@@ -395,27 +395,21 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
 
 // Primer3Task
 
-Primer3Task::Primer3Task(Primer3TaskSettings* _settings, bool _removeSettings)
+Primer3Task::Primer3Task(const QSharedPointer<Primer3TaskSettings>& _settings)
     : Task(tr("Pick primers task"), TaskFlag_ReportingIsEnabled),
-      settings(_settings), removeSettings(_removeSettings) {
+      settings(_settings) {
     GCOUNTER(cvar, "Primer3Task");
 
     // Primer3Task is single threaded: the original "primer3" tool doesn't support parallel calculations.
     addTaskResource(TaskResourceUsage(AppResource::buildDynamicResourceId("Primer 3 single thread"), 1, TaskResourceStage::Run));
 }
 
-Primer3Task::~Primer3Task() {
-    if (removeSettings) {
-        delete settings;
-    }
-}
-
 void Primer3Task::prepare() {
     const auto& sequenceRange = settings->getSequenceRange();
     const int sequenceSize = settings->getSequenceSize();
     const auto& includedRegion = settings->getIncludedRegion();
-    const int fbs = settings->getFirstBaseIndex();
-    const int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+    const int firstBaseIndex = settings->getFirstBaseIndex();
+    const int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - firstBaseIndex : 0;
     CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
 
     // Add a sequence shift if selected region covers the junction point
@@ -423,7 +417,7 @@ void Primer3Task::prepare() {
         SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
 
         QByteArray seq = settings->getSequence();
-        seq.append(seq.left(sequenceRange.endPos() - sequenceSize - fbs));
+        seq.append(seq.left(sequenceRange.endPos() - sequenceSize - firstBaseIndex));
         settings->setSequence(seq);
     }
 
@@ -622,14 +616,10 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
 //////////////////////////////////////////////////////////////////////////
 ////Primer3ToAnnotationsTask
 
-Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(Primer3TaskSettings* _settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
+Primer3ToAnnotationsTask::Primer3ToAnnotationsTask(const QSharedPointer<Primer3TaskSettings>& _settings, U2SequenceObject* so_, AnnotationTableObject* aobj_, const QString& groupName_, const QString& annName_, const QString& annDescription)
     : Task(tr("Search primers to annotations"), TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled | TaskFlag_FailOnSubtaskError),
       settings(_settings), annotationTableObject(aobj_), seqObj(so_),
       groupName(groupName_), annName(annName_), annDescription(annDescription) {
-}
-
-Primer3ToAnnotationsTask::~Primer3ToAnnotationsTask() {
-    delete settings;
 }
 
 void Primer3ToAnnotationsTask::prepare() {
@@ -673,9 +663,9 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
             } else {
                 stateInfo.addWarning(tr("All found primers has been filtered due to the \"Check complement\" parameters"));
             }
+        } else {
+            res.append(new CreateAnnotationsTask(annotationTableObject, resultAnnotations));
         }
-
-        res.append(new CreateAnnotationsTask(annotationTableObject, resultAnnotations));
     }
 
     return res;
@@ -758,52 +748,54 @@ void Primer3ToAnnotationsTask::findExonTaskIsfinished() {
             "Make sure the provided sequence is cDNA and has exonic structure annotated")
             .arg(seqObj->getSequenceName()));
         return;
-    } else {
-        const U2Range<int>& exonRange = settings->getSpanIntronExonBoundarySettings().exonRange;
-
-        if (exonRange.minValue != 0 && exonRange.maxValue != 0) {
-            int firstExonIdx = exonRange.minValue;
-            int lastExonIdx = exonRange.maxValue;
-            if (firstExonIdx > regions.size()) {
-                setError(tr("The first exon from the selected range [%1,%2] is larger the number of exons (%3)."
-                    " Please set correct exon range.")
-                    .arg(firstExonIdx)
-                    .arg(lastExonIdx)
-                    .arg(regions.size()));
-                return;
-            }
-
-            if (lastExonIdx > regions.size()) {
-                setError(tr("The the selected exon range [%1,%2] is larger the number of exons (%3)."
-                    " Please set correct exon range.")
-                    .arg(firstExonIdx)
-                    .arg(lastExonIdx)
-                    .arg(regions.size()));
-                return;
-            }
-
-            regions = regions.mid(firstExonIdx - 1, lastExonIdx - firstExonIdx + 1);
-            int totalLen = 0;
-            for (const U2Region& r : regions) {
-                totalLen += r.length;
-            }
-            settings->setIncludedRegion(regions.first().startPos + settings->getFirstBaseIndex(), totalLen);
-        }
-        settings->setExonRegions(regions);
-        // reset target and excluded regions regions
-        QList<U2Region> emptyList;
-        settings->setExcludedRegion(emptyList);
-        settings->setTarget(emptyList);
     }
+
+    const U2Range<int>& exonRange = settings->getSpanIntronExonBoundarySettings().exonRange;
+
+    if (exonRange.minValue != 0 && exonRange.maxValue != 0) {
+        int firstExonIdx = exonRange.minValue;
+        int lastExonIdx = exonRange.maxValue;
+        if (firstExonIdx > regions.size()) {
+            setError(tr("The first exon from the selected range [%1,%2] is larger the number of exons (%3)."
+                " Please set correct exon range.")
+                .arg(firstExonIdx)
+                .arg(lastExonIdx)
+                .arg(regions.size()));
+            return;
+        }
+
+        if (lastExonIdx > regions.size()) {
+            setError(tr("The the selected exon range [%1,%2] is larger the number of exons (%3)."
+                " Please set correct exon range.")
+                .arg(firstExonIdx)
+                .arg(lastExonIdx)
+                .arg(regions.size()));
+            return;
+        }
+
+        regions = regions.mid(firstExonIdx - 1, lastExonIdx - firstExonIdx + 1);
+        int totalLen = 0;
+        for (const U2Region& r : regions) {
+            totalLen += r.length;
+        }
+        settings->setIncludedRegion(regions.first().startPos + settings->getFirstBaseIndex(), totalLen);
+    }
+    settings->setExonRegions(regions);
+    // reset target and excluded regions regions
+    QList<U2Region> emptyList;
+    settings->setExcludedRegion(emptyList);
+    settings->setTarget(emptyList);
 }
 
 QMap<QString, QList<SharedAnnotationData>> Primer3ToAnnotationsTask::getResultAnnotations() const {
+    QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
+    SAFE_POINT(primer3Task != nullptr, L10N::nullPointerError("Primer3Task"), resultAnnotations)
+
     QList<QSharedPointer<PrimerPair>> filteredPrimers;
     if (checkComplementTask != nullptr) {
         filteredPrimers = checkComplementTask->getFilteredPrimers();
     }
     const auto& bestPairs = primer3Task->getBestPairs();
-    QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
     for (int i = 0; i < bestPairs.size(); i++) {
         const auto& pair = bestPairs.at(i);
         CHECK_CONTINUE(!filteredPrimers.contains(pair));

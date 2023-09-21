@@ -46,7 +46,7 @@ public:
     Primer3Dialog& operator=(Primer3Dialog&& settings) = delete;
     ~Primer3Dialog();
 
-    Primer3TaskSettings* takeSettings();
+    const QSharedPointer<Primer3TaskSettings>& getSettings();
     const CreateAnnotationModel& getCreateAnnotationModel() const;
     U2Region getRegion(bool* ok = nullptr) const;
     QString checkModel();
@@ -88,7 +88,7 @@ private:
     QList<QPair<QString, QByteArray>> repeatLibraries;
 
     CreateAnnotationWidgetController* createAnnotationWidgetController = nullptr;
-    Primer3TaskSettings* settings = nullptr;
+    QSharedPointer<Primer3TaskSettings> settings;
     RegionSelector* rs = nullptr;
     ADVSequenceObjectContext* context = nullptr;
 

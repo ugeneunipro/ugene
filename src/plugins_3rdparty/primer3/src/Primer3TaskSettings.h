@@ -48,9 +48,38 @@ struct SpanIntronExonBoundarySettings {
     U2Range<int> exonRange;
 };
 
+/**
+ * This struct represents settings for the "Check complement" feature.
+ * This feature checks if result primer pairs form bad self- or
+ * hetero-dimers.
+ */
 struct CheckComplementSettings {
+    /**
+     * True - this feature is enabled, CheckComplementTask will be created after
+     * Primer3Task finised. False - no additional steps will be performed.
+     */
     bool enabled = false;
+    /**
+     * Max dimer length, e.g. look at the dimer:
+     *
+     *           GTAGAGATAAGCTTTTGTTTCTGTTTATTTTT
+     *             : : : |||||| : : :
+     * TTTTTATTTGTCTTTGTTTTCGAATAGAGATG
+     *
+     * 6 horizontal lines | means that there the dimer length of these self-dimer is 6.
+     * Primer pair would be filtered if it dimer length is more than @maxComplementPairs
+     */
     int maxComplementPairs = 4;
+    /**
+     * Max dimer GC content, e.g. look at the dimer:
+     *
+     *           GTAGAGATGCGTTTGTTTCTGTTTATTTTT
+     *             : : : |||| : : :
+     * TTTTTATTTGTCTTTGTTCGCATAGAGATG
+     *
+     * This dimer has length 4, GC-content of this dimer is 75%.
+     * Primer pair would be filtered if it GC-conten is more than @maxGcContent.
+     */
     int maxGcContent = 50;
 };
 
@@ -180,7 +209,7 @@ private:
     bool explain = false;
     p3_global_settings* primerSettings = nullptr;
     seq_args* seqArgs = nullptr;
-    p3retval* p3Retval = nullptr; 
+    p3retval* p3Retval = nullptr;
 };
 
 }  // namespace U2

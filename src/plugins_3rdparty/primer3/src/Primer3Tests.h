@@ -37,8 +37,6 @@ class GTest_Primer3 : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Primer3, "plugin_primer_3", TaskFlags(TaskFlag_FailOnSubtaskCancel) | TaskFlag_NoRun);
 
-    ~GTest_Primer3();
-
     void prepare();
     Task::ReportResult report();
 
@@ -51,7 +49,7 @@ private:
     bool checkDoubleProperty(double value, double expectedValue, QString name);
 
     Primer3Task* task = nullptr;
-    Primer3TaskSettings* settings = nullptr;
+    QSharedPointer<Primer3TaskSettings> settings;
     QList<QSharedPointer<PrimerPair>> expectedBestPairs;
     QList<QSharedPointer<PrimerSingle>> expectedSinglePrimers;
     QString expectedErrorMessage;
@@ -71,10 +69,8 @@ public:
     Task::ReportResult report();
 
 private:
-
-
     Primer3ToAnnotationsTask* task = nullptr;
-    Primer3TaskSettings* settings = nullptr;
+    QSharedPointer<Primer3TaskSettings> settings;
     U2SequenceObject* seqObj = nullptr;
     AnnotationTableObject* annObj = nullptr;
     QString seqObjCtxName;

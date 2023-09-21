@@ -30,6 +30,7 @@
 #include <U2Core/PrimerDimersFinder.h>
 
 #include <QList>
+#include <QPointer>
 
 namespace U2 {
 
@@ -62,7 +63,6 @@ private:
         Right,
         Both
     };
-    void addFilterdPrimer(const QSharedPointer<PrimerPair>& pair, PrimersInDimer primersInDimer, const DimerFinderResult& dimer);
 
     bool isBasePairNumberBad(const DimerFinderResult& dimer) const;
     bool isGcContentBad(const DimerFinderResult& dimer) const;
@@ -71,9 +71,16 @@ private:
 
     const CheckComplementSettings& settings;
     QList<QSharedPointer<PrimerPair>> results;
-    U2SequenceObject* seqObj = nullptr;
+    QPointer<U2SequenceObject> seqObj;
 
-    QMap<QSharedPointer<PrimerPair>, QMap<PrimersInDimer, DimerFinderResult>> filteredPrimers;
+    struct PrimerPairData {
+        QSharedPointer<PrimerPair> primerPair;
+        QString leftPrimerSequence;
+        QString rightPrimerSequence;
+        QMap<PrimersInDimer, DimerFinderResult> badDimerPrimers;
+    };
+
+    QList<PrimerPairData> filteredPrimers;
 
     static constexpr int MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER = 2;
 };
