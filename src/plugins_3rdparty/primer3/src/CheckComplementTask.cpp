@@ -36,7 +36,7 @@ CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _setting
 
 void CheckComplementTask::run() {
     SAFE_POINT(settings.enabled, "Check complement is run, but not enabled", );
-    CHECK(!seqObj.isNull(), setError(tr("Sequence object has been closed, abort")), );
+    CHECK_EXT(!seqObj.isNull(), setError(tr("Sequence object has been closed, abort")), );
 
     for (const auto& pair : qAsConst(results)) {
         auto leftPrimerSequence = getPrimerSequence(pair->getLeftPrimer());
