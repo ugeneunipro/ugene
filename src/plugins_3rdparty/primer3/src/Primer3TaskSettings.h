@@ -60,6 +60,11 @@ struct CheckComplementSettings {
      */
     bool enabled = false;
     /**
+     * True if filtering by @maxComplementPairs parameter (see below) is enabled,
+     * False - if disabled.
+     */
+    bool enableMaxComplementPairs = true;
+    /**
      * Max dimer length, e.g. look at the dimer:
      *
      *           GTAGAGATAAGCTTTTGTTTCTGTTTATTTTT
@@ -70,6 +75,11 @@ struct CheckComplementSettings {
      * Primer pair would be filtered if it dimer length is more than @maxComplementPairs
      */
     int maxComplementPairs = 4;
+    /**
+     * True if filtering by @maxGcContent parameter (see below) is enabled,
+     * False - if disabled.
+     */
+    bool enableMaxGcContent = true;
     /**
      * Max dimer GC content, e.g. look at the dimer:
      *

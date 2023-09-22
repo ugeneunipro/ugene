@@ -136,10 +136,14 @@ QByteArray CheckComplementTask::getPrimerSequence(QSharedPointer<PrimerSingle> p
 }
 
 bool CheckComplementTask::isBasePairNumberBad(const DimerFinderResult& dimer) const {
+    CHECK(settings.enableMaxComplementPairs, false);
+
     return dimer.baseCounts > settings.maxComplementPairs;
 }
 
 bool CheckComplementTask::isGcContentBad(const DimerFinderResult& dimer) const {
+    CHECK(settings.enableMaxGcContent, false);
+
     return getGAndCNumber(dimer.dimer) > MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER && getGAndCProportion(dimer.dimer) > ((double)settings.maxGcContent / 100);
 }
 

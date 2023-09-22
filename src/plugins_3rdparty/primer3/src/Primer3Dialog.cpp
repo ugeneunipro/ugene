@@ -365,13 +365,27 @@ bool Primer3Dialog::doDataExchange() {
         widgetStates.insert(edit_exonRange, true);
     }
 
-    if (gbCheckComplementary->isEnabled() && gbCheckComplementary->isChecked()) {
+    if (gbCheckComplementary->isChecked()) {
         CheckComplementSettings s;
         s.enabled = true;
-        s.maxComplementPairs = sbMaxComplementPairs->value();
-        s.maxGcContent = sbMaxGcPairs->value();
+        s.enableMaxComplementPairs = cbMaxBasePairInDimer->isChecked();
+        if (s.enableMaxComplementPairs) {
+            s.maxComplementPairs = sbMaxComplementPairs->value();
+        }
+        s.enableMaxGcContent = cbMaxDimerGcContent->isChecked();
+        if (s.enableMaxGcContent) {
+            s.maxGcContent = sbMaxGcPairs->value();
+        }
 
-        settings->setCheckComplementSettings(s);
+        if (!s.enableMaxComplementPairs && !s.enableMaxGcContent) {
+            widgetStates.insert(gbCheckComplementary, false);
+            errors.append("\"Check complement\" will be ignored, because it is enabled, bul all corresponding parameters are disabled.");
+        } else {
+            widgetStates.insert(gbCheckComplementary, true);
+            settings->setCheckComplementSettings(s);
+        }
+    } else {
+        widgetStates.insert(gbCheckComplementary, true);
     }
 
     const auto& intProps = settings->getIntPropertyList();

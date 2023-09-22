@@ -35,6 +35,10 @@
 #include "primer3_core/libprimer3.h"
 #include "primer3_core/primer3_boulder_main.h"
 
+#include <cmath>
+
+#include <QFile>
+
 namespace U2 {
 
 // PrimerSingle
@@ -737,6 +741,11 @@ QString Primer3ToAnnotationsTask::generateReport() const {
         res += checkComplementTask->generateReport();
     }
 
+    QFile f("D:\\fole.html");
+    f.open(QIODevice::WriteOnly);
+    f.write(res.toLocal8Bit());
+    f.close();
+
     return res;
 }
 
@@ -796,7 +805,8 @@ QMap<QString, QList<SharedAnnotationData>> Primer3ToAnnotationsTask::getResultAn
         filteredPrimers = checkComplementTask->getFilteredPrimers();
     }
     const auto& bestPairs = primer3Task->getBestPairs();
-    for (int i = 0; i < bestPairs.size(); i++) {
+    int bestPairsSize = bestPairs.size();
+    for (int i = 0; i < bestPairsSize; i++) {
         const auto& pair = bestPairs.at(i);
         CHECK_CONTINUE(!filteredPrimers.contains(pair));
 
@@ -810,7 +820,9 @@ QMap<QString, QList<SharedAnnotationData>> Primer3ToAnnotationsTask::getResultAn
         if (pair->getRightPrimer() != nullptr) {
             annotations.append(oligoToAnnotation(annName, pair->getRightPrimer(), pair->getProductSize(), U2Strand::Complementary));
         }
-        resultAnnotations[groupName + "/pair " + QString::number(i + 1)].append(annotations);
+        int digitsNumberInBestPairsSize = (int)std::log10(bestPairsSize) + 1;
+        QString number = QStringLiteral("%1").arg(i + 1, digitsNumberInBestPairsSize, 10, QLatin1Char('0'));
+        resultAnnotations[groupName + "/pair " + number].append(annotations);
     }
 
     const auto& singlePrimers = primer3Task->getSinglePrimers();

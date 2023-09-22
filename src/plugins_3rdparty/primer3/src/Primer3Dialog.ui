@@ -35,7 +35,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -6466,16 +6466,6 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           <bool>false</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_35">
-            <property name="toolTip">
-             <string>Maximum number of complement base pairs for self- and hetero-dimers</string>
-            </property>
-            <property name="text">
-             <string>Max complement pairs in dimer</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="sbMaxComplementPairs">
             <property name="toolTip">
@@ -6489,13 +6479,23 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_34">
-            <property name="toolTip">
-             <string>Maximum persantage of G/C base pairs</string>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="cbMaxBasePairInDimer">
+            <property name="text">
+             <string>Max base pairs in dimer</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="cbMaxDimerGcContent">
             <property name="text">
              <string>Max dimer GC-content</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -7535,6 +7535,38 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <hint type="destinationlabel">
      <x>389</x>
      <y>110</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbMaxBasePairInDimer</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sbMaxComplementPairs</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbMaxDimerGcContent</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sbMaxGcPairs</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>107</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>107</y>
     </hint>
    </hints>
   </connection>
