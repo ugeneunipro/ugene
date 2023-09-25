@@ -24,6 +24,7 @@
 #include <QDomDocument>
 #include <QMessageBox>
 #include <QShortcut>
+#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -207,7 +208,17 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
         result.append(cmdlineTask);
     } else if (subTask == cmdlineTask && settings.addResultToProject) {
         // add load document task
-        CHECK_EXT(QFile::exists(settings.resultAlignmentFile), setError(tr("There is no result file after align, please, investigate the log file for errors: %1").arg(alignToRefCmdlineConfig.outputFile)), result);
+        QFile file(alignToRefCmdlineConfig.reportFile);
+        CHECK_EXT(file.open(QIODevice::ReadOnly | QIODevice::Text), setError(tr("No report file after align, please, investigate the output file for errors: %1")
+                  .arg(alignToRefCmdlineConfig.outputFile)), result);
+        QTextStream in(&file);
+        QString reportStr = in.readAll();
+        
+        CHECK_EXT(!reportStr.contains("[ERROR]"), setError(tr("Report file after align contain error(s): '%1', you can investigate output file %2 ")
+                  .arg(reportStr).arg(alignToRefCmdlineConfig.outputFile)), result);
+
+        CHECK_EXT(QFile::exists(settings.resultAlignmentFile), setError(tr("There is no result file after align, please, investigate the output file for errors: %1")
+                 .arg(alignToRefCmdlineConfig.outputFile)), result);
         FormatDetectionConfig config;
         QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
         CHECK_EXT(!formats.isEmpty() && (formats.first().format != nullptr), setError(tr("wrong output format")), result);

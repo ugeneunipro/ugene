@@ -168,20 +168,26 @@ QList<Task*> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task* subTask) {
         }
 
         QStringList l;
+        workflowRunTask = getWorkflowRunTask();
         bool good = WorkflowUtils::validate(*schema, l);
         if (!good) {
             QString schemaHelpStr = QString("\n\nsee 'ugene --help=%1' for details").arg(schemaName);
-            setError("\n\n" + l.join("\n\n") + schemaHelpStr);
+            QString errorStr = "\n\n" + l.join("\n\n") + schemaHelpStr;
+            setError(errorStr);
+            writeReport(errorStr);
             return res;
         }
 
-        workflowRunTask = getWorkflowRunTask();
         res << workflowRunTask;
     }
     return res;
 }
 
 void WorkflowRunFromCMDLineBase::run() {
+    writeReport();
+}
+
+void WorkflowRunFromCMDLineBase::writeReport(const QString& errorString) {
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
     SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is NULL", );
     CHECK(workflowRunTask != nullptr, );
@@ -193,7 +199,7 @@ void WorkflowRunFromCMDLineBase::run() {
     const bool opened = reportFile.open(QIODevice::WriteOnly);
     CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), );
 
-    reportFile.write(workflowRunTask->generateReport().toLocal8Bit());
+    reportFile.write(errorString.isEmpty() ? workflowRunTask->generateReport().toLocal8Bit() : "[ERROR] " + errorString.toLocal8Bit());
 }
 
 /*******************************************

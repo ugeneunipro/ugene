@@ -41,6 +41,7 @@ protected:
 private:
     LoadWorkflowTask* prepareLoadSchemaTask(const QString& schemaName);
     void processLoadSchemaTask(const QString& schemaName, int optionIdx);
+    void writeReport(const QString& errorString = QString());
 
 protected:
     QSharedPointer<Schema> schema;
