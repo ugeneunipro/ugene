@@ -29,14 +29,13 @@ namespace U2 {
 
 class U2CORE_EXPORT CmdlineTaskConfig {
 public:
-    CmdlineTaskConfig();
-
     QString command;
     QStringList arguments;
-    LogLevel logLevel;
-    bool withPluginList;
+    LogLevel logLevel = LogLevel_DETAILS;
+    bool withPluginList = false;
     QStringList pluginList;
     QString reportFile;
+    QString outputFile;
 };
 
 class U2CORE_EXPORT CmdlineTaskRunner : public Task {

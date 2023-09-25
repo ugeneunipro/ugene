@@ -42,10 +42,6 @@
 
 namespace U2 {
 
-CmdlineTaskConfig::CmdlineTaskConfig()
-    : logLevel(LogLevel_DETAILS), withPluginList(false) {
-}
-
 /************************************************************************/
 /* CmdlineTaskRunner */
 /************************************************************************/
@@ -260,6 +256,9 @@ void CmdlineTaskRunner::prepare() {
 
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
     coreLog.details("Starting UGENE command line: " + cmdlineUgenePath + " " + args.join(" "));
+    if (!config.outputFile.isEmpty()) {
+        process->setStandardOutputFile(config.outputFile);
+    }
     process->start(cmdlineUgenePath, args);
 #if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
     QString processId = process->pid() != nullptr ? QString::number(process->pid()->dwProcessId) : "unknown";
