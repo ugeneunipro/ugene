@@ -48,7 +48,7 @@ namespace U2 {
  * WorkflowRunFromCMDLineBase
  *******************************************/
 WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
-    : Task(tr("Workflow run from cmdline"), TaskFlag_None),
+    : Task(tr("Workflow run from cmdline"), TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       schema(nullptr),
       optionsStartAt(-1),
       loadTask(nullptr),
@@ -168,38 +168,38 @@ QList<Task*> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task* subTask) {
         }
 
         QStringList l;
-        workflowRunTask = getWorkflowRunTask();
         bool good = WorkflowUtils::validate(*schema, l);
         if (!good) {
             QString schemaHelpStr = QString("\n\nsee 'ugene --help=%1' for details").arg(schemaName);
-            QString errorStr = "\n\n" + l.join("\n\n") + schemaHelpStr;
-            setError(errorStr);
-            writeReport(errorStr);
+            setError("\n\n" + l.join("\n\n") + schemaHelpStr);
             return res;
         }
 
+        workflowRunTask = getWorkflowRunTask();
         res << workflowRunTask;
     }
     return res;
 }
 
-void WorkflowRunFromCMDLineBase::run() {
-    writeReport();
-}
-
-void WorkflowRunFromCMDLineBase::writeReport(const QString& errorString) {
+Task::ReportResult WorkflowRunFromCMDLineBase::report() {
+    ReportResult res = ReportResult_Finished;
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is NULL", );
-    CHECK(workflowRunTask != nullptr, );
+    SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is NULL", res);
+    CHECK(workflowRunTask != nullptr || stateInfo.hasError(), res);
 
     const QString reportFilePath = cmdLineRegistry->getParameterValue(CmdlineTaskRunner::REPORT_FILE_ARG);
-    CHECK(!reportFilePath.isEmpty(), );
+    CHECK(!reportFilePath.isEmpty(), res);
 
     QFile reportFile(reportFilePath);
     const bool opened = reportFile.open(QIODevice::WriteOnly);
-    CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), );
+    CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), res);
 
-    reportFile.write(errorString.isEmpty() ? workflowRunTask->generateReport().toLocal8Bit() : "[ERROR] " + errorString.toLocal8Bit());
+    reportFile.write(!stateInfo.hasError() ? workflowRunTask->generateReport().toLocal8Bit() : "[ERROR] " + stateInfo.getError().toLocal8Bit());
+    return res;
+}
+
+void WorkflowRunFromCMDLineBase::writeReport(const QString& errorString) {
+    
 }
 
 /*******************************************

@@ -33,7 +33,7 @@ public:
     WorkflowRunFromCMDLineBase();
     virtual ~WorkflowRunFromCMDLineBase() = default;
     QList<Task*> onSubTaskFinished(Task* subTask);
-    void run();
+    Task::ReportResult report();
 
 protected:
     virtual Task* getWorkflowRunTask() const = 0;
