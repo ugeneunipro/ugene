@@ -58,16 +58,18 @@ public:
 private:
     QByteArray getPrimerSequence(QSharedPointer<PrimerSingle> primer) const;
 
-    enum class PrimersInDimer {
+    /*enum class PrimersInDimer {
         Left,
         Right,
         Both
-    };
+    };*/
 
     bool isBasePairNumberBad(const DimerFinderResult& dimer) const;
     bool isGcContentBad(const DimerFinderResult& dimer) const;
-    static int getGAndCNumber(const QString& dimer);
-    static double getGAndCProportion(const QString& dimer);
+    QString getGcCountString(const DimerFinderResult& dimer) const;
+    QString getGcContentString(const DimerFinderResult& dimer) const;
+    static int getGcCount(const QString& dimer);
+    static double getGcContent(const QString& dimer);
 
     const CheckComplementSettings& settings;
     QList<QSharedPointer<PrimerPair>> results;
@@ -77,12 +79,24 @@ private:
         QSharedPointer<PrimerPair> primerPair;
         QString leftPrimerSequence;
         QString rightPrimerSequence;
-        QMap<PrimersInDimer, DimerFinderResult> badDimerPrimers;
+        DimerFinderResult leftPrimerSelfDimer;
+        DimerFinderResult rightPrimerSelfDimer;
+        DimerFinderResult heteroDimer;
+        bool filtered = false;
+
+        // DimerFinderResult - dimer, bool - filtered if true
+        /*QPair<DimerFinderResult, bool> leftPrimerSelfDimer;
+        QPair<DimerFinderResult, bool> rightPrimerSelfDimer;
+        QPair<DimerFinderResult, bool> heteroDimer;*/
+        /*QMap<PrimersInDimer, DimerFinderResult> badDimerPrimers;
+        QMap<PrimersInDimer, DimerFinderResult> goodDimerPrimers;*/
     };
 
-    QList<PrimerPairData> filteredPrimers;
+    QList<PrimerPairData> primers;
 
     static constexpr int MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER = 2;
+    static constexpr const char* CORRECT_PRIMER_PAIR_COLOR = "lightgreen";
+    static constexpr const char* FILTERED_PRIMER_PAIR_COLOR = "lightsalmon";
 };
 
 

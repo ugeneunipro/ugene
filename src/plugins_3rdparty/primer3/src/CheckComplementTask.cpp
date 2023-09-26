@@ -42,34 +42,26 @@ void CheckComplementTask::run() {
         auto leftPrimerSequence = getPrimerSequence(pair->getLeftPrimer());
         auto rightPrimerSequence = DNASequenceUtils::reverseComplement(getPrimerSequence(pair->getRightPrimer()));
 
-        QMap<PrimersInDimer, DimerFinderResult> dimers;
-        dimers.insert(PrimersInDimer::Left, HeteroDimersFinder(leftPrimerSequence, leftPrimerSequence).getResult());
-        dimers.insert(PrimersInDimer::Right, HeteroDimersFinder(rightPrimerSequence, rightPrimerSequence).getResult());
-        dimers.insert(PrimersInDimer::Both, HeteroDimersFinder(leftPrimerSequence, rightPrimerSequence).getResult());
-        const auto& dimersKeys = dimers.keys();
-        QMap<PrimersInDimer, DimerFinderResult> badDimerPrimers;
-        for (const auto& primersInDimer : qAsConst(dimersKeys)) {
-            const auto& dimer = dimers.value(primersInDimer);
-            if (isBasePairNumberBad(dimer) || isGcContentBad(dimer)) {
-                badDimerPrimers.insert(primersInDimer, dimer);
-            }
-        }
-        CHECK_CONTINUE(!badDimerPrimers.isEmpty());
-
         PrimerPairData primerPairData;
         primerPairData.primerPair = pair;
         primerPairData.leftPrimerSequence = leftPrimerSequence;
         primerPairData.rightPrimerSequence = rightPrimerSequence;
-        primerPairData.badDimerPrimers = badDimerPrimers;
-        filteredPrimers << primerPairData;
+
+        primerPairData.leftPrimerSelfDimer = HeteroDimersFinder(leftPrimerSequence, leftPrimerSequence).getResult();
+        bool leftDimerFiltered = isBasePairNumberBad(primerPairData.leftPrimerSelfDimer) || isGcContentBad(primerPairData.leftPrimerSelfDimer);
+        primerPairData.rightPrimerSelfDimer = HeteroDimersFinder(rightPrimerSequence, rightPrimerSequence).getResult();
+        bool rightDimerFiltered = isBasePairNumberBad(primerPairData.rightPrimerSelfDimer) || isGcContentBad(primerPairData.rightPrimerSelfDimer);
+        primerPairData.heteroDimer = HeteroDimersFinder(leftPrimerSequence, rightPrimerSequence).getResult();
+        bool heteroDimerFiltered = isBasePairNumberBad(primerPairData.heteroDimer) || isGcContentBad(primerPairData.heteroDimer);
+        primerPairData.filtered = leftDimerFiltered || rightDimerFiltered || heteroDimerFiltered;
+
+        primers << primerPairData;
     }
 }
 
 QString CheckComplementTask::generateReport() const {
     QString res;
 
-    /*res += QString("Structural alignment") + "<br><br>";
-    res += QString("<b>RMSD</b> = %1").arg("result.rmsd");*/
     res += "<br><br>" + QString("<strong>%1</strong>").arg(tr("Check complement")) + "<br><br>";
     res += QString("%1:").arg(tr("The following filtering settings have been used"));
     if (settings.enableMaxComplementPairs) {
@@ -83,168 +75,61 @@ QString CheckComplementTask::generateReport() const {
     res += "<table style=\"border-collapse: collapse; vertical-align: middle;\" border=\"1\">";
 
     res += "<tr>";
-    res += "<td><pre>No.</pre></td>";
-    res += "<td><pre>Strand</pre></td>";
-    res += "<td><pre>Primer</pre></td>";
-    res += "<td><pre>Self-dimer</pre></td>";
-    res += "<td><pre>Delta G (kcal/mol)</pre></td>";
-    res += "<td><pre>Base Pairs (bp)</pre></td>";
-    res += "<td><pre>G/C pairs (bp)</pre></td>";
-    res += "<td><pre>G/C pairs (%)</pre></td>";
-    res += "<td><pre>Hetero-dimer</pre></td>";
-    res += "<td><pre>Delta G (kcal/mol)</pre></td>";
-    res += "<td><pre>Base Pairs (bp)</pre></td>";
-    res += "<td><pre>G/C pairs (bp)</pre></td>";
-    res += "<td><pre>G/C pairs (%)</pre></td>";
+    res += QString("<td><pre>%1</pre></td>").arg(tr("No."));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Strand"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Primer"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Self-dimer"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Delta G (kcal/mol)"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Base Pairs (bp)"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("G/C pairs (bp)"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("G/C-content (%)"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Hetero-dimer"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Delta G (kcal/mol)"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("Base Pairs (bp)"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("G/C pairs (bp)"));
+    res += QString("<td><pre>%1</pre></td>").arg(tr("G/C-content (%)"));
     res += "</tr>";
 
-    // row 1
-    res += "<tr bgcolor=\"Salmon\">";
-    res += "<td rowspan=\"2\"><pre>1</pre></td>";
-    res += "<td><pre>Forward</pre></td>";
-    res += "<td><pre> TGCAACTGGCTCTAGGGACTTGCAACTGGCTCTAGGGACT </pre></td>";
-    res += "<td><pre>    TGCAACTGGCTCTAGGGACTTGCAACTGGCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
-    res += "<td>-6.7</td>";
-    res += "<td>4</td>";
-    res += "<td>3</td>";
-    res += "<td>75</td>";
-    res += "<td rowspan=\"2\"><pre>    TGCAACTGGTGCAACTGGCTCTAGGGACTCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
-    res += "<td rowspan=\"2\">-6.7</td>";
-    res += "<td rowspan=\"2\">4</td>";
-    res += "<td rowspan=\"2\">3</td>";
-    res += "<td rowspan=\"2\">75</td>";
-    res += "</tr>";
+    for (int i = 0; i < primers.size(); i++) {
+        const auto& primerData = primers[i];
+        res += QString("<tr bgcolor=\"%1\">").arg(primerData.filtered ? FILTERED_PRIMER_PAIR_COLOR : CORRECT_PRIMER_PAIR_COLOR);
+        res += QString("<td rowspan=\"2\"><pre>%1</pre></td>").arg(i + 1);
+        res += QString("<td><pre>%1</pre></td>").arg(tr("Forward"));
+        res += QString("<td><pre> %1 </pre></td>").arg(primerData.leftPrimerSequence);
+        res += QString("<td><pre>%1</pre></td>").arg(primerData.leftPrimerSelfDimer.dimersOverlap);
+        res += QString("<td>%1</td>").arg(primerData.leftPrimerSelfDimer.deltaG);
+        res += QString("<td>%1</td>").arg(getGcCountString(primerData.leftPrimerSelfDimer));
+        res += QString("<td>%1</td>").arg(getGcCount(primerData.leftPrimerSelfDimer.dimer));
+        res += QString("<td>%1</td>").arg(getGcContentString(primerData.leftPrimerSelfDimer));
 
-    res += "<tr bgcolor=\"Salmon\">";
-    res += "<td><pre>Reverse</pre></td>";
-    res += "<td><pre> TGCAACTGGCTCTAGGGACTTGCAACTGGCTCTAGGGACT </pre></td>";
-    res += "<td><pre>    AAAATGCAACTGGCTCTGCAACTGGCTCTAGGGACTTAGGGACT\n<span style=\"color: red; \">             ||||       </span>\nAAAACGTGCTTCAGACCTCTGGAG</pre></td>";
-    res += "<td>-6.7</td>";
-    res += "<td><strong>3</strong></td>";
-    res += "<td>3</td>";
-    res += "<td>75</td>";
-    res += "</tr>";
+        res += QString("<td rowspan=\"2\"><pre>%1</pre></td>").arg(primerData.heteroDimer.dimersOverlap);
+        res += QString("<td rowspan=\"2\">%1</td>").arg(primerData.heteroDimer.deltaG);
+        res += QString("<td rowspan=\"2\">%1</td>").arg(getGcCountString(primerData.heteroDimer));
+        res += QString("<td rowspan=\"2\">%1</td>").arg(getGcCount(primerData.heteroDimer.dimer));
+        res += QString("<td rowspan=\"2\">%1</td>").arg(getGcContentString(primerData.heteroDimer));
+        res += "</tr>";
 
-    // row 2
-    res += "<tr bgcolor=\"LightGreen\">";
-    res += "<td rowspan=\"2\"><pre>2</pre></td>";
-    res += "<td><pre>Forward</pre></td>";
-    res += "<td><pre> TGCAACTGGCTCGCTCTAGGGACT </pre></td>";
-    res += "<td><pre>    TGCAACTGGGGACTTGCAACTGT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
-    res += "<td>-6.7</td>";
-    res += "<td>4</td>";
-    res += "<td>3</td>";
-    res += "<td>75</td>";
-    res += "<td rowspan=\"2\"><pre>    TGCAACTGGTGCAACTGGCTCTAGGGACTCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCACTGGAG</pre></td>";
-    res += "<td rowspan=\"2\">-6.7</td>";
-    res += "<td rowspan=\"2\">4</td>";
-    res += "<td rowspan=\"2\">3</td>";
-    res += "<td rowspan=\"2\">75</td>";
-    res += "</tr>";
-
-    res += "<tr bgcolor=\"LightGreen\">";
-    res += "<td><pre>Reverse</pre></td>";
-    res += "<td><pre> TGCAACTGGCTCTGGCTCTAGGGACT </pre></td>";
-    res += "<td><pre>    AAAATGCAACTGGCTCTAGGGACTTAGGGACT\n<span style=\"color: red; \">             ||||       </span>\nAAAACGGACCTCTGGAG</pre></td>";
-    res += "<td>-6.7</td>";
-    res += "<td>4</td>";
-    res += "<td>3</td>";
-    res += "<td>75</td>";
-    res += "</tr>";
-
-    res += "</table>";
-
-    return res;
-
-
-    res += QString("<p><strong>%1</strong></p>").arg(tr("Check complement"));
-    
-    //  style=\"border-collapse: collapse; width: 100%; text-align: center; vertical-align: middle;\" border=\"1\"
-
-    res += "<table style=\"border-collapse: collapse; vertical-align: middle;\" border=\"1\">";
-    //res += "<tbody>";
-
-    res += "<tr>";
-    res += "<td text-align: center;>No.</td>";
-    res += "<td text-align: center;>F/R</td>";
-    res += "<td>Self-dimer</td>";
-    res += "</tr>";
-
-    res += "<tr>";
-    res += "<td text-align: center;>1</td>";
-    //res += "<td rowspan=\"2\">1</td>";
-    res += "<td text-align: center;>F</td>";
-    res += "<td text-align: center;><pre>    TGCAACTGGCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
-
-    res += "</tr>";
-
-    //res += "</tbody>";
-    res += "</table>";
-
-    return res;
-
-    res += "<table style='border-collapse: collapse; width: 100%; text-align: center; vertical-align: middle;' border='1'><tbody><tr><td>No.</td><td>F/R</td><td>Self-dimer</td><td>Hetero-dimer</td><td>Delta G (kcal/mol)</td><td>Base Pairs (bp)</td><td><p>G/C pairs (bp)</p></td><td><p><span style='font-weight: 400;'>G/C pairs (%)</span></p></td></tr><tr style='height: 18px;'><td style='width:14.2857%; height: 36px;' rowspan='2'>1</td><td style='width: 16.5584%; height: 18px;'>F</td>";
-    res += "<td style='width: 12.013%; height: 18px;'><pre>    TGCAACTGGCTCTAGGGACT<br>";
-    res += "<span style='color: red;'>         ||||       </span><br>";
-    res += "CGTGCTTCAGACCTCTGGAG</pre></td><td style='width: 4.6875%; height: 18px;' rowspan='2'><pre>    TGCAACTGGCTCTAGGGACT";
-    res += "<span style='color: red;'>         ||||       </span>";
-    res += "CGTGCTTCAGACCTCTGGAG</pre></td><td style='width: 23.8839%; height: 18px;'>&nbsp;</td><td style='width: 7.10225%; height: 18px;'>&nbsp;</td><td style='width: 3.55112%; height:18px;'>&nbsp;</td><td style='width: 5.25568%; height: 18px;'>&nbsp;</td></tr><tr style='height: 18px;'><td style='width: 16.5584%; height: 18px;'>R</td><td style='width: 12.013%; height: 18px;'><pre>    TGCAACTGGCTCTAGGGACT";
-    res += "<span style='color: red;'>         ||||       </span>";
-    res += "CGTGCTTCAGACCTCTGGAG</pre></td><td style='width: 23.8839%; height: 18px;'>&nbsp;</td><td style='width: 7.10225%; height: 18px;'>&nbsp;</td><td style='width: 3.55112%; height:18px;'>&nbsp;</td><td style='width: 5.25568%; height: 18px;'>&nbsp;</td></tr></tbody></table>";
-
-    res += QString("<p><strong>%1</strong></p>").arg(tr("Check complement"));
-    CHECK_EXT(!filteredPrimers.isEmpty(), res += tr("No primers have been filtered"), res);
-
-    res += QString("<p>%1:</p>").arg(tr("The following primers have been filtered"));
-
-    for (int i = 0; i < filteredPrimers.size(); i++) {
-        const auto& primerPairData = filteredPrimers[i];
-        res += "<strong>";
-        res += QString::number(i + 1);
-        res += "</strong>";
-        res += "<pre>";
-        res += QString("%1:&nbsp;&nbsp;<strong>5'</strong> %2 <strong>3'</strong>").arg(tr("Left")).arg(primerPairData.leftPrimerSequence);
-        res += "<br />";
-        res += QString("%1:&nbsp;<strong>3'</strong> %2 <strong>5'</strong>").arg(tr("Right")).arg(primerPairData.rightPrimerSequence);
-        res += "</pre>";
-
-        auto primersInDimer = primerPairData.badDimerPrimers.keys();
-        for (const auto& pid : qAsConst(primersInDimer)) {
-            res += "<p>";
-            const auto& dimerFinderResult = primerPairData.badDimerPrimers.value(pid);
-            switch (pid) {
-            case PrimersInDimer::Left:
-                res += tr("Left primer self-dimer:");
-                break;
-            case PrimersInDimer::Right:
-                res += tr("Right primer self-dimer:");
-                break;
-            case PrimersInDimer::Both:
-                res += tr("Hetero-dimer:");
-                break;
-            }
-
-            res += "<br />";
-            res += dimerFinderResult.getShortBoldReport();
-            if (isBasePairNumberBad(dimerFinderResult)) {
-                res += tr(" (max %1 bp)").arg(settings.maxComplementPairs);
-            } else if (isGcContentBad(dimerFinderResult)) {
-                res += tr(" <b>G/C pairs:</b> %1 bp or %2 % (max %3 %)")
-                    .arg(getGAndCNumber(dimerFinderResult.dimer))
-                    .arg(getGAndCProportion(dimerFinderResult.dimer) * 100)
-                    .arg(settings.maxGcContent);
-            }
-            res += "<pre>" + dimerFinderResult.dimersOverlap + "</pre>";
-            res += "</p>";
-        }
+        res += QString("<tr bgcolor=\"%1\">").arg(primerData.filtered ? FILTERED_PRIMER_PAIR_COLOR : CORRECT_PRIMER_PAIR_COLOR);
+        res += QString("<td><pre>%1</pre></td>").arg(tr("Reverse"));
+        res += QString("<td><pre> %1 </pre></td>").arg(primerData.rightPrimerSequence);
+        res += QString("<td><pre>%1</pre></td>").arg(primerData.rightPrimerSelfDimer.dimersOverlap);
+        res += QString("<td>%1</td>").arg(primerData.rightPrimerSelfDimer.deltaG);
+        res += QString("<td>%1</td>").arg(getGcCountString(primerData.rightPrimerSelfDimer));
+        res += QString("<td>%1</td>").arg(getGcCount(primerData.rightPrimerSelfDimer.dimer));
+        res += QString("<td>%1</td>").arg(getGcContentString(primerData.rightPrimerSelfDimer));
+        res += "</tr>";
     }
+
+    res += "</table>";
 
     return res;
 }
 
 QList<QSharedPointer<PrimerPair>> CheckComplementTask::getFilteredPrimers() const {
     QList<QSharedPointer<PrimerPair>> result;
-    for (const auto& primerPairData : qAsConst(filteredPrimers)) {
+    for (const auto& primerPairData : qAsConst(primers)) {
+        CHECK_CONTINUE(primerPairData.filtered);
+
         result << primerPairData.primerPair;
     }
     return result;
@@ -269,15 +154,34 @@ bool CheckComplementTask::isBasePairNumberBad(const DimerFinderResult& dimer) co
 bool CheckComplementTask::isGcContentBad(const DimerFinderResult& dimer) const {
     CHECK(settings.enableMaxGcContent, false);
 
-    return getGAndCNumber(dimer.dimer) > MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER && getGAndCProportion(dimer.dimer) > ((double)settings.maxGcContent / 100);
+    return getGcCount(dimer.dimer) > MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER && getGcContent(dimer.dimer) > ((double)settings.maxGcContent / 100);
 }
 
-int CheckComplementTask::getGAndCNumber(const QString& dimer) {
+QString CheckComplementTask::getGcCountString(const DimerFinderResult& dimer) const {
+    QString res = QString::number(dimer.baseCounts);
+    if (isBasePairNumberBad(dimer)) {
+        res = "<strong>" + res + "</strong>";
+    }
+
+    return res;
+}
+
+QString CheckComplementTask::getGcContentString(const DimerFinderResult& dimer) const {
+    int gcContent = getGcContent(dimer.dimer) * 100;
+    QString res = QString::number(gcContent);
+    if (isGcContentBad(dimer)) {
+        res = "<strong>" + res + "</strong>";
+    }
+
+    return res;
+}
+
+int CheckComplementTask::getGcCount(const QString& dimer) {
     return dimer.count('G') + dimer.count('C');
 }
 
-double CheckComplementTask::getGAndCProportion(const QString& dimer) {
-    return (double)getGAndCNumber(dimer) / dimer.size();
+double CheckComplementTask::getGcContent(const QString& dimer) {
+    return (double)getGcCount(dimer) / dimer.size();
 }
 
 
