@@ -4,7 +4,7 @@
 
     <find-object-by-name index="seq" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
 	
-	<find-object-by-name index="ann" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="ann" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
 
     <primer-3-to-annotations sequence="seq" annotations="ann" enable-check-complement-settings="1" max-complement-pairs="5" max-gc-content="75" result-annotations-region="3605,20;3809,20" report-part="No primers have been filtered" />
 

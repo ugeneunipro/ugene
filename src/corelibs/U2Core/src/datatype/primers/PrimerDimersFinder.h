@@ -32,7 +32,7 @@ struct U2CORE_EXPORT DimerFinderResult {
     QString getFullReport() const;
     /**
      *
-     * \return Returns short report (only GC content and base pairs number) in one line with bolded types
+     * \return Returns short report (only GC content and base pairs number) in one line with Delta G and Base Pairs in <bold>
      */
     QString getShortBoldReport() const;
     QString getShortReport() const;

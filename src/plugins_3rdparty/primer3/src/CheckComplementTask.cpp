@@ -67,6 +67,131 @@ void CheckComplementTask::run() {
 
 QString CheckComplementTask::generateReport() const {
     QString res;
+
+    /*res += QString("Structural alignment") + "<br><br>";
+    res += QString("<b>RMSD</b> = %1").arg("result.rmsd");*/
+    res += "<br><br>" + QString("<strong>%1</strong>").arg(tr("Check complement")) + "<br><br>";
+    res += QString("%1:").arg(tr("The following filtering settings have been used"));
+    if (settings.enableMaxComplementPairs) {
+        res += "<br>" + QString("<strong>%1</strong> = %2 %3").arg(tr("Max base pairs in dimers")).arg(settings.maxComplementPairs).arg(tr("bp"));
+    }
+    if (settings.enableMaxGcContent) {
+        res += "<br>" + QString("<strong>%1</strong> = %2 %").arg(tr("Max dimer GC-content")).arg(settings.maxGcContent);
+    }
+    res += "<br><br>" + QString("%1:").arg(tr("The following primers have been found and processed (red - filtered, green - passed)")) + "<br><br>";
+
+    res += "<table style=\"border-collapse: collapse; vertical-align: middle;\" border=\"1\">";
+
+    res += "<tr>";
+    res += "<td><pre>No.</pre></td>";
+    res += "<td><pre>Strand</pre></td>";
+    res += "<td><pre>Primer</pre></td>";
+    res += "<td><pre>Self-dimer</pre></td>";
+    res += "<td><pre>Delta G (kcal/mol)</pre></td>";
+    res += "<td><pre>Base Pairs (bp)</pre></td>";
+    res += "<td><pre>G/C pairs (bp)</pre></td>";
+    res += "<td><pre>G/C pairs (%)</pre></td>";
+    res += "<td><pre>Hetero-dimer</pre></td>";
+    res += "<td><pre>Delta G (kcal/mol)</pre></td>";
+    res += "<td><pre>Base Pairs (bp)</pre></td>";
+    res += "<td><pre>G/C pairs (bp)</pre></td>";
+    res += "<td><pre>G/C pairs (%)</pre></td>";
+    res += "</tr>";
+
+    // row 1
+    res += "<tr bgcolor=\"Salmon\">";
+    res += "<td rowspan=\"2\"><pre>1</pre></td>";
+    res += "<td><pre>Forward</pre></td>";
+    res += "<td><pre> TGCAACTGGCTCTAGGGACTTGCAACTGGCTCTAGGGACT </pre></td>";
+    res += "<td><pre>    TGCAACTGGCTCTAGGGACTTGCAACTGGCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
+    res += "<td>-6.7</td>";
+    res += "<td>4</td>";
+    res += "<td>3</td>";
+    res += "<td>75</td>";
+    res += "<td rowspan=\"2\"><pre>    TGCAACTGGTGCAACTGGCTCTAGGGACTCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
+    res += "<td rowspan=\"2\">-6.7</td>";
+    res += "<td rowspan=\"2\">4</td>";
+    res += "<td rowspan=\"2\">3</td>";
+    res += "<td rowspan=\"2\">75</td>";
+    res += "</tr>";
+
+    res += "<tr bgcolor=\"Salmon\">";
+    res += "<td><pre>Reverse</pre></td>";
+    res += "<td><pre> TGCAACTGGCTCTAGGGACTTGCAACTGGCTCTAGGGACT </pre></td>";
+    res += "<td><pre>    AAAATGCAACTGGCTCTGCAACTGGCTCTAGGGACTTAGGGACT\n<span style=\"color: red; \">             ||||       </span>\nAAAACGTGCTTCAGACCTCTGGAG</pre></td>";
+    res += "<td>-6.7</td>";
+    res += "<td><strong>3</strong></td>";
+    res += "<td>3</td>";
+    res += "<td>75</td>";
+    res += "</tr>";
+
+    // row 2
+    res += "<tr bgcolor=\"LightGreen\">";
+    res += "<td rowspan=\"2\"><pre>2</pre></td>";
+    res += "<td><pre>Forward</pre></td>";
+    res += "<td><pre> TGCAACTGGCTCGCTCTAGGGACT </pre></td>";
+    res += "<td><pre>    TGCAACTGGGGACTTGCAACTGT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
+    res += "<td>-6.7</td>";
+    res += "<td>4</td>";
+    res += "<td>3</td>";
+    res += "<td>75</td>";
+    res += "<td rowspan=\"2\"><pre>    TGCAACTGGTGCAACTGGCTCTAGGGACTCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCACTGGAG</pre></td>";
+    res += "<td rowspan=\"2\">-6.7</td>";
+    res += "<td rowspan=\"2\">4</td>";
+    res += "<td rowspan=\"2\">3</td>";
+    res += "<td rowspan=\"2\">75</td>";
+    res += "</tr>";
+
+    res += "<tr bgcolor=\"LightGreen\">";
+    res += "<td><pre>Reverse</pre></td>";
+    res += "<td><pre> TGCAACTGGCTCTGGCTCTAGGGACT </pre></td>";
+    res += "<td><pre>    AAAATGCAACTGGCTCTAGGGACTTAGGGACT\n<span style=\"color: red; \">             ||||       </span>\nAAAACGGACCTCTGGAG</pre></td>";
+    res += "<td>-6.7</td>";
+    res += "<td>4</td>";
+    res += "<td>3</td>";
+    res += "<td>75</td>";
+    res += "</tr>";
+
+    res += "</table>";
+
+    return res;
+
+
+    res += QString("<p><strong>%1</strong></p>").arg(tr("Check complement"));
+    
+    //  style=\"border-collapse: collapse; width: 100%; text-align: center; vertical-align: middle;\" border=\"1\"
+
+    res += "<table style=\"border-collapse: collapse; vertical-align: middle;\" border=\"1\">";
+    //res += "<tbody>";
+
+    res += "<tr>";
+    res += "<td text-align: center;>No.</td>";
+    res += "<td text-align: center;>F/R</td>";
+    res += "<td>Self-dimer</td>";
+    res += "</tr>";
+
+    res += "<tr>";
+    res += "<td text-align: center;>1</td>";
+    //res += "<td rowspan=\"2\">1</td>";
+    res += "<td text-align: center;>F</td>";
+    res += "<td text-align: center;><pre>    TGCAACTGGCTCTAGGGACT\n<span style=\"color: red; \">         ||||       </span>\nCGTGCTTCAGACCTCTGGAG</pre></td>";
+
+    res += "</tr>";
+
+    //res += "</tbody>";
+    res += "</table>";
+
+    return res;
+
+    res += "<table style='border-collapse: collapse; width: 100%; text-align: center; vertical-align: middle;' border='1'><tbody><tr><td>No.</td><td>F/R</td><td>Self-dimer</td><td>Hetero-dimer</td><td>Delta G (kcal/mol)</td><td>Base Pairs (bp)</td><td><p>G/C pairs (bp)</p></td><td><p><span style='font-weight: 400;'>G/C pairs (%)</span></p></td></tr><tr style='height: 18px;'><td style='width:14.2857%; height: 36px;' rowspan='2'>1</td><td style='width: 16.5584%; height: 18px;'>F</td>";
+    res += "<td style='width: 12.013%; height: 18px;'><pre>    TGCAACTGGCTCTAGGGACT<br>";
+    res += "<span style='color: red;'>         ||||       </span><br>";
+    res += "CGTGCTTCAGACCTCTGGAG</pre></td><td style='width: 4.6875%; height: 18px;' rowspan='2'><pre>    TGCAACTGGCTCTAGGGACT";
+    res += "<span style='color: red;'>         ||||       </span>";
+    res += "CGTGCTTCAGACCTCTGGAG</pre></td><td style='width: 23.8839%; height: 18px;'>&nbsp;</td><td style='width: 7.10225%; height: 18px;'>&nbsp;</td><td style='width: 3.55112%; height:18px;'>&nbsp;</td><td style='width: 5.25568%; height: 18px;'>&nbsp;</td></tr><tr style='height: 18px;'><td style='width: 16.5584%; height: 18px;'>R</td><td style='width: 12.013%; height: 18px;'><pre>    TGCAACTGGCTCTAGGGACT";
+    res += "<span style='color: red;'>         ||||       </span>";
+    res += "CGTGCTTCAGACCTCTGGAG</pre></td><td style='width: 23.8839%; height: 18px;'>&nbsp;</td><td style='width: 7.10225%; height: 18px;'>&nbsp;</td><td style='width: 3.55112%; height:18px;'>&nbsp;</td><td style='width: 5.25568%; height: 18px;'>&nbsp;</td></tr></tbody></table>";
+
     res += QString("<p><strong>%1</strong></p>").arg(tr("Check complement"));
     CHECK_EXT(!filteredPrimers.isEmpty(), res += tr("No primers have been filtered"), res);
 

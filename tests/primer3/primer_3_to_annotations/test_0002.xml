@@ -4,7 +4,7 @@
 
     <find-object-by-name index="seq" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
 	
-	<find-object-by-name index="ann" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+    <find-object-by-name index="ann" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
 
     <primer-3-to-annotations sequence="seq" annotations="ann" enable-check-complement-settings="1" max-complement-pairs="3" report-part=" 4 bp (max 3 bp)" />
 
