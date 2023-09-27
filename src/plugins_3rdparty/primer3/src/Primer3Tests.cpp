@@ -26,6 +26,8 @@
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <QFile>
+
 namespace U2 {
 
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
@@ -851,8 +853,17 @@ void GTest_Primer3ToAnnotations::init(XMLTestFormat*, const QDomElement& el) {
             }
             return result;
         };
+        ccs.enableMaxComplementPairs = el.attribute("enable-max-complement-pairs").toInt() == 1;
         ccs.maxComplementPairs = getIntValue("max-complement-pairs", ccs.maxComplementPairs);
+        ccs.enableMaxGcContent = el.attribute("enable-max-gc-content").toInt() == 1;
         ccs.maxGcContent = getIntValue("max-gc-content", ccs.maxGcContent);
+        if (el.attribute("save-csv-report").toInt() == 1) {
+            auto tmpDataDir = env->getVar("TEMP_DATA_DIR") + "/";
+            csvReportTmpFile = QSharedPointer<QTemporaryFile>(new QTemporaryFile(env->getVar("TEMP_DATA_DIR") + "/XXXXXX.csv"));
+            CHECK_EXT(csvReportTmpFile->open(), L10N::errorWritingFile(csvReportTmpFile->fileName()), );
+            
+            ccs.csvReportPath = csvReportTmpFile->fileName();
+        }
         settings->setCheckComplementSettings(ccs);
     }
 
@@ -865,7 +876,8 @@ void GTest_Primer3ToAnnotations::init(XMLTestFormat*, const QDomElement& el) {
         resultPrimerAnnotationsRegions.second = U2Region(right.first().toInt(), right.last().toInt());
     }
 
-    reportPart = el.attribute("report-part");
+    QString commonDataDir = env->getVar("COMMON_DATA_DIR");
+    reportPath = commonDataDir + "/" + el.attribute("report-path");
 }
 
 void GTest_Primer3ToAnnotations::prepare() {
@@ -887,9 +899,22 @@ void GTest_Primer3ToAnnotations::prepare() {
 Task::ReportResult GTest_Primer3ToAnnotations::report() {
     CHECK_OP(task->getStateInfo(), Task::ReportResult::ReportResult_Finished);
 
-    if (!reportPart.isEmpty()) {
-        auto report = task->generateReport();
-        CHECK_EXT(report.contains(reportPart), setError(QString("No \"%1\" in report").arg(reportPart)), Task::ReportResult::ReportResult_Finished);
+    if (!reportPath.isEmpty()) {
+        QString currentReport;
+        if (!csvReportTmpFile.isNull()) {
+            QFile csvReportFile(csvReportTmpFile->fileName());
+            CHECK_EXT(csvReportFile.open(QIODevice::ReadOnly), setError(L10N::errorReadingFile(csvReportTmpFile->fileName())), Task::ReportResult::ReportResult_Finished);
+
+            currentReport = csvReportFile.readAll();
+            csvReportFile.close();
+        } else {
+            currentReport = task->generateReport();
+        }
+        QFile reportFile(reportPath);
+        CHECK_EXT(reportFile.open(QIODevice::ReadOnly), setError(L10N::errorReadingFile(reportPath)), Task::ReportResult::ReportResult_Finished);
+        
+        QString expectedReport = reportFile.readAll();
+        CHECK_EXT(currentReport == expectedReport, setError("Expected and result reports are not equal"), Task::ReportResult::ReportResult_Finished);
     }
 
     CHECK(!resultPrimerAnnotationsRegions.first.isEmpty(), Task::ReportResult::ReportResult_Finished);

@@ -24,7 +24,10 @@
 #include "Primer3Task.h"
 
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
+
+#include <QFile>
 
 namespace U2 {
 
@@ -98,14 +101,14 @@ QString CheckComplementTask::generateReport() const {
         res += QString("<td><pre> %1 </pre></td>").arg(primerData.leftPrimerSequence);
         res += QString("<td><pre>%1</pre></td>").arg(primerData.leftPrimerSelfDimer.dimersOverlap);
         res += QString("<td>%1</td>").arg(primerData.leftPrimerSelfDimer.deltaG);
-        res += QString("<td>%1</td>").arg(getGcCountString(primerData.leftPrimerSelfDimer));
-        res += QString("<td>%1</td>").arg(getGcCount(primerData.leftPrimerSelfDimer.dimer));
+        res += QString("<td>%1</td>").arg(getBasePairsCountString(primerData.leftPrimerSelfDimer));
+        res += QString("<td>%1</td>").arg(getGcPairsCount(primerData.leftPrimerSelfDimer.dimer));
         res += QString("<td>%1</td>").arg(getGcContentString(primerData.leftPrimerSelfDimer));
 
         res += QString("<td rowspan=\"2\"><pre>%1</pre></td>").arg(primerData.heteroDimer.dimersOverlap);
         res += QString("<td rowspan=\"2\">%1</td>").arg(primerData.heteroDimer.deltaG);
-        res += QString("<td rowspan=\"2\">%1</td>").arg(getGcCountString(primerData.heteroDimer));
-        res += QString("<td rowspan=\"2\">%1</td>").arg(getGcCount(primerData.heteroDimer.dimer));
+        res += QString("<td rowspan=\"2\">%1</td>").arg(getBasePairsCountString(primerData.heteroDimer));
+        res += QString("<td rowspan=\"2\">%1</td>").arg(getGcPairsCount(primerData.heteroDimer.dimer));
         res += QString("<td rowspan=\"2\">%1</td>").arg(getGcContentString(primerData.heteroDimer));
         res += "</tr>";
 
@@ -114,8 +117,8 @@ QString CheckComplementTask::generateReport() const {
         res += QString("<td><pre> %1 </pre></td>").arg(primerData.rightPrimerSequence);
         res += QString("<td><pre>%1</pre></td>").arg(primerData.rightPrimerSelfDimer.dimersOverlap);
         res += QString("<td>%1</td>").arg(primerData.rightPrimerSelfDimer.deltaG);
-        res += QString("<td>%1</td>").arg(getGcCountString(primerData.rightPrimerSelfDimer));
-        res += QString("<td>%1</td>").arg(getGcCount(primerData.rightPrimerSelfDimer.dimer));
+        res += QString("<td>%1</td>").arg(getBasePairsCountString(primerData.rightPrimerSelfDimer));
+        res += QString("<td>%1</td>").arg(getGcPairsCount(primerData.rightPrimerSelfDimer.dimer));
         res += QString("<td>%1</td>").arg(getGcContentString(primerData.rightPrimerSelfDimer));
         res += "</tr>";
     }
@@ -123,6 +126,71 @@ QString CheckComplementTask::generateReport() const {
     res += "</table>";
 
     return res;
+}
+
+Task::ReportResult CheckComplementTask::report() {
+    CHECK_OP(stateInfo, Task::ReportResult::ReportResult_Finished);
+    CHECK(!settings.csvReportPath.isEmpty(), Task::ReportResult::ReportResult_Finished)
+
+    QString csvReport;
+    csvReport += tr("No.") + "," +
+                 tr("Strand") + "," +
+                 tr("Primer") + "," +
+                 tr("Self-dimer") + "," +
+                 tr("Delta G (kcal/mol)") + "," +
+                 tr("Base Pairs (bp)") + "," +
+                 tr("G/C pairs (bp)") + "," +
+                 tr("G/C-content (%)") + "," +
+                 tr("Hetero-dimer") + "," +
+                 tr("Delta G (kcal/mol)") + "," +
+                 tr("Base Pairs (bp)") + "," +
+                 tr("G/C pairs (bp)") + "," +
+                 tr("G/C-content (%)") + "\n";
+
+    for (int i = 0; i < primers.size(); i++) {
+        const auto& primerData = primers[i];
+
+        QString leftSelfDimerOverlap = primerData.leftPrimerSelfDimer.dimersOverlap;
+        leftSelfDimerOverlap.remove("<font color='red'>").remove("</font>");
+
+        QString heteroDimerOverlap = primerData.heteroDimer.dimersOverlap;
+        heteroDimerOverlap.remove("<font color='red'>").remove("</font>");
+
+        QString rightSelfDimerOverlap = primerData.rightPrimerSelfDimer.dimersOverlap;
+        rightSelfDimerOverlap.remove("<font color='red'>").remove("</font>");
+
+        csvReport += QString::number(i + 1) + "," +
+                     tr("Forward") + "," +
+                     primerData.leftPrimerSequence + "," +
+                     QString("\"%1\"").arg(leftSelfDimerOverlap) + "," +
+                     QString::number(primerData.leftPrimerSelfDimer.deltaG) + "," +
+                     QString::number(primerData.leftPrimerSelfDimer.baseCounts) + "," +
+                     QString::number(getGcPairsCount(primerData.leftPrimerSelfDimer.dimer)) + "," +
+                     QString::number((int)(getGcContent(primerData.leftPrimerSelfDimer.dimer) * 100)) + "," +
+                     QString("\"%1\"").arg(heteroDimerOverlap) + "," +
+                     QString::number(primerData.heteroDimer.deltaG) + "," +
+                     QString::number(primerData.heteroDimer.baseCounts) + "," +
+                     QString::number(getGcPairsCount(primerData.heteroDimer.dimer)) + "," +
+                     QString::number((int)(getGcContent(primerData.heteroDimer.dimer) * 100)) + "\n";
+
+        csvReport += "," +
+                     tr("Reverse") + "," +
+                     primerData.rightPrimerSequence + "," +
+                     QString("\"%1\"").arg(rightSelfDimerOverlap) + "," +
+                     QString::number(primerData.rightPrimerSelfDimer.deltaG) + "," +
+                     QString::number(primerData.rightPrimerSelfDimer.baseCounts) + "," +
+                     QString::number(getGcPairsCount(primerData.rightPrimerSelfDimer.dimer)) + "," +
+                     QString::number((int)(getGcContent(primerData.rightPrimerSelfDimer.dimer) * 100)) +
+                     ",,,,,\n";
+    }
+
+    QFile f(settings.csvReportPath);
+    SAFE_POINT(f.open(QIODevice::WriteOnly), L10N::errorWritingFile(settings.csvReportPath), Task::ReportResult::ReportResult_Finished);
+
+    f.write(csvReport.toLocal8Bit());
+    f.close();
+
+    return Task::ReportResult::ReportResult_Finished;
 }
 
 QList<QSharedPointer<PrimerPair>> CheckComplementTask::getFilteredPrimers() const {
@@ -154,10 +222,10 @@ bool CheckComplementTask::isBasePairNumberBad(const DimerFinderResult& dimer) co
 bool CheckComplementTask::isGcContentBad(const DimerFinderResult& dimer) const {
     CHECK(settings.enableMaxGcContent, false);
 
-    return getGcCount(dimer.dimer) > MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER && getGcContent(dimer.dimer) > ((double)settings.maxGcContent / 100);
+    return getGcPairsCount(dimer.dimer) > MINIMUN_G_AND_C_NUMBER_FOR_BAD_DIMER && getGcContent(dimer.dimer) > ((double)settings.maxGcContent / 100);
 }
 
-QString CheckComplementTask::getGcCountString(const DimerFinderResult& dimer) const {
+QString CheckComplementTask::getBasePairsCountString(const DimerFinderResult& dimer) const {
     QString res = QString::number(dimer.baseCounts);
     if (isBasePairNumberBad(dimer)) {
         res = "<strong>" + res + "</strong>";
@@ -176,12 +244,12 @@ QString CheckComplementTask::getGcContentString(const DimerFinderResult& dimer) 
     return res;
 }
 
-int CheckComplementTask::getGcCount(const QString& dimer) {
+int CheckComplementTask::getGcPairsCount(const QString& dimer) {
     return dimer.count('G') + dimer.count('C');
 }
 
 double CheckComplementTask::getGcContent(const QString& dimer) {
-    return (double)getGcCount(dimer) / dimer.size();
+    return (double)getGcPairsCount(dimer) / dimer.size();
 }
 
 

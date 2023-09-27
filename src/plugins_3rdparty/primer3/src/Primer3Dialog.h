@@ -79,6 +79,7 @@ private slots:
     void sl_taskChanged(const QString& text);
     void sl_presetChanged(const QString& text);
     void sl_checkComplementStateChanged();
+    void sl_ChooseCsvReportPathButtonClicked();
 
 private:
     void saveSettings(const QString& filePath);

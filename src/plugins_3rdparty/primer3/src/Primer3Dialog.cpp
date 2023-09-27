@@ -26,11 +26,14 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/FileFilters.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -100,9 +103,14 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     connect(edit_PRIMER_TASK, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_checkComplementStateChanged);
     connect(checkbox_PRIMER_PICK_LEFT_PRIMER, &QCheckBox::toggled, this, &Primer3Dialog::sl_checkComplementStateChanged);
     connect(checkbox_PRIMER_PICK_RIGHT_PRIMER, &QCheckBox::toggled, this, &Primer3Dialog::sl_checkComplementStateChanged);
+    connect(pbCsvReportChoosePath, &QPushButton::clicked, this, &Primer3Dialog::sl_ChooseCsvReportPathButtonClicked);
 
+    auto reportPath = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/report.csv";
+    reportPath = GUrlUtils::rollFileName(reportPath, "_");
+    leCsvReportPath->setText(reportPath);
 
     tabWidget->setCurrentIndex(0);
+    
 
     {
         CreateAnnotationModel createAnnotationModel;
@@ -376,8 +384,22 @@ bool Primer3Dialog::doDataExchange() {
         if (s.enableMaxGcContent) {
             s.maxGcContent = sbMaxGcPairs->value();
         }
+        if (cbGenerateCsvReport->isChecked()) {
+            auto csvReportPath = leCsvReportPath->text();
+            QFile f(csvReportPath);
+            bool ok = f.open(QIODevice::WriteOnly);
+            f.close();
+            if (!ok) {
+                widgetStates.insert(leCsvReportPath, false);
+                errors.append(L10N::errorWritingFile(csvReportPath));
+                s.csvReportPath.clear();
+            } else {
+                widgetStates.insert(leCsvReportPath, true);
+                s.csvReportPath = leCsvReportPath->text();
+            }
+        }
 
-        if (!s.enableMaxComplementPairs && !s.enableMaxGcContent) {
+        if (!s.enableMaxComplementPairs && !s.enableMaxGcContent && cbGenerateCsvReport->isChecked()) {
             widgetStates.insert(gbCheckComplementary, false);
             errors.append("\"Check complement\" will be ignored, because it is enabled, bul all corresponding parameters are disabled.");
         } else {
@@ -877,6 +899,18 @@ void Primer3Dialog::sl_checkComplementStateChanged() {
     } else {
         lbPosteriorActionsWarning->setText(warning);
         gbCheckComplementary->setEnabled(false);
+    }
+}
+
+static constexpr const char* CSV_REPORT_DIR_ID = "csv-report-dir";
+
+void Primer3Dialog::sl_ChooseCsvReportPathButtonClicked() {
+    LastUsedDirHelper helper(CSV_REPORT_DIR_ID);
+    QString fileFilter = FileFilters::createFileFilter(tr("CSV report"), { "csv" }, false);
+
+    helper.url = U2FileDialog::getSaveFileName(this, tr("Save CSV report to..."), leCsvReportPath->text(), fileFilter);
+    if (!helper.url.isEmpty()) {
+        leCsvReportPath->setText(helper.url);
     }
 }
 

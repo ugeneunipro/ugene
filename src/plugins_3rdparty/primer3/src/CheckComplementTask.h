@@ -49,6 +49,7 @@ public:
 
     void run() override;
     QString generateReport() const override;
+    ReportResult report() override;
 
     /**
      * \return Returns a list of PrimerPair pointers
@@ -58,17 +59,11 @@ public:
 private:
     QByteArray getPrimerSequence(QSharedPointer<PrimerSingle> primer) const;
 
-    /*enum class PrimersInDimer {
-        Left,
-        Right,
-        Both
-    };*/
-
     bool isBasePairNumberBad(const DimerFinderResult& dimer) const;
     bool isGcContentBad(const DimerFinderResult& dimer) const;
-    QString getGcCountString(const DimerFinderResult& dimer) const;
+    QString getBasePairsCountString(const DimerFinderResult& dimer) const;
     QString getGcContentString(const DimerFinderResult& dimer) const;
-    static int getGcCount(const QString& dimer);
+    static int getGcPairsCount(const QString& dimer);
     static double getGcContent(const QString& dimer);
 
     const CheckComplementSettings& settings;
@@ -83,13 +78,6 @@ private:
         DimerFinderResult rightPrimerSelfDimer;
         DimerFinderResult heteroDimer;
         bool filtered = false;
-
-        // DimerFinderResult - dimer, bool - filtered if true
-        /*QPair<DimerFinderResult, bool> leftPrimerSelfDimer;
-        QPair<DimerFinderResult, bool> rightPrimerSelfDimer;
-        QPair<DimerFinderResult, bool> heteroDimer;*/
-        /*QMap<PrimersInDimer, DimerFinderResult> badDimerPrimers;
-        QMap<PrimersInDimer, DimerFinderResult> goodDimerPrimers;*/
     };
 
     QList<PrimerPairData> primers;

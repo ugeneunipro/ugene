@@ -6466,6 +6466,16 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           <bool>true</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="cbMaxBasePairInDimer">
+            <property name="text">
+             <string>Max base pairs in dimer</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="sbMaxComplementPairs">
             <property name="toolTip">
@@ -6476,16 +6486,6 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </property>
             <property name="value">
              <number>4</number>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="cbMaxBasePairInDimer">
-            <property name="text">
-             <string>Max base pairs in dimer</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -6524,6 +6524,46 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="cbGenerateCsvReport">
+            <property name="text">
+             <string>Generate CSV report</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <item>
+             <widget class="QLineEdit" name="leCsvReportPath">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pbCsvReportChoosePath">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>22</width>
+                <height>22</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -7567,6 +7607,38 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <hint type="destinationlabel">
      <x>208</x>
      <y>107</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbGenerateCsvReport</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>leCsvReportPath</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>573</x>
+     <y>136</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cbGenerateCsvReport</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pbCsvReportChoosePath</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>979</x>
+     <y>136</y>
     </hint>
    </hints>
   </connection>

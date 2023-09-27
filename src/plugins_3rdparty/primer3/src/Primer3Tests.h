@@ -22,6 +22,8 @@
 #pragma once
 
 #include <QDomElement>
+#include <QSharedPointer>
+#include <QTemporaryFile>
 
 #include <U2Core/GObject.h>
 #include <U2Core/global.h>
@@ -76,7 +78,8 @@ private:
     QString seqObjCtxName;
     QString aObjName;
     QPair<U2Region, U2Region> resultPrimerAnnotationsRegions;
-    QString reportPart;
+    QString reportPath;
+    QSharedPointer<QTemporaryFile> csvReportTmpFile;
 
     static const QString TOP_PRIMERS;
 

@@ -91,6 +91,10 @@ struct CheckComplementSettings {
      * Primer pair would be filtered if it GC-conten is more than @maxGcContent.
      */
     int maxGcContent = 50;
+    /**
+     * Report in CSV format will be saved to this path.
+     */
+    QString csvReportPath;
 };
 
 class Primer3TaskSettings {
