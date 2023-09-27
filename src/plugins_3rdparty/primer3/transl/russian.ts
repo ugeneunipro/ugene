@@ -178,7 +178,7 @@
         <translation>Максимальное количество пар нуклеотидов в димере</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6604"/>
+        <location filename="../src/Primer3Dialog.ui" line="6613"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section allows to set output annotations&apos; settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В этой секции можно задать настройки для аннотаций.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -435,41 +435,48 @@
     </message>
     <message>
         <location filename="../src/Primer3Dialog.ui" line="6531"/>
+        <location filename="../src/Primer3Dialog.ui" line="6546"/>
+        <location filename="../src/Primer3Dialog.ui" line="6568"/>
+        <source>Save primer report in CSV file format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6534"/>
         <source>Generate CSV report</source>
         <translation>Сгенерировать отчет в формате CSV</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6562"/>
+        <location filename="../src/Primer3Dialog.ui" line="6571"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6652"/>
+        <location filename="../src/Primer3Dialog.ui" line="6661"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6672"/>
+        <location filename="../src/Primer3Dialog.ui" line="6681"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6679"/>
+        <location filename="../src/Primer3Dialog.ui" line="6688"/>
         <source>Save settings</source>
         <translation>Сохранить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6686"/>
+        <location filename="../src/Primer3Dialog.ui" line="6695"/>
         <source>Load settings</source>
         <translation>Загрузить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6693"/>
+        <location filename="../src/Primer3Dialog.ui" line="6702"/>
         <source>Reset form</source>
         <translation>Сброс параметров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6700"/>
+        <location filename="../src/Primer3Dialog.ui" line="6709"/>
         <source>Pick primers</source>
         <translation>Подобрать</translation>
     </message>
@@ -2037,7 +2044,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. интервала качества последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6601"/>
+        <location filename="../src/Primer3Dialog.ui" line="6610"/>
         <source>Result Settings</source>
         <translation>Параметры результатов</translation>
     </message>
@@ -2824,17 +2831,17 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
         <translation>Search primers to annotations</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="757"/>
+        <location filename="../src/Primer3Task.cpp" line="756"/>
         <source>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</source>
         <translation>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="769"/>
+        <location filename="../src/Primer3Task.cpp" line="768"/>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Первый экзон из выбранного диапазона [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="778"/>
+        <location filename="../src/Primer3Task.cpp" line="777"/>
         <source>The the selected exon range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Выбраный диапазон экзонов [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>

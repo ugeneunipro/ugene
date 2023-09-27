@@ -6527,6 +6527,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="cbGenerateCsvReport">
+            <property name="toolTip">
+             <string>Save primer report in CSV file format</string>
+            </property>
             <property name="text">
              <string>Generate CSV report</string>
             </property>
@@ -6538,6 +6541,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
              <widget class="QLineEdit" name="leCsvReportPath">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Save primer report in CSV file format</string>
               </property>
              </widget>
             </item>
@@ -6557,6 +6563,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
                 <width>22</width>
                 <height>22</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Save primer report in CSV file format</string>
               </property>
               <property name="text">
                <string>...</string>

@@ -543,7 +543,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 1  (0, 2)", {{22172, 22191}, {22369, 22388}});
+    GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 01  (0, 2)", {{22172, 22191}, {22369, 22388}});
     GTUtilsAnnotationsTreeView::checkAnnotationRegions("pair 10  (0, 2)", {{185965, 185984}, {186089, 186108}});
 }
 
