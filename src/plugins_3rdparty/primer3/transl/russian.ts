@@ -173,7 +173,12 @@
         <translation>Пары праймеров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6564"/>
+        <location filename="../src/Primer3Dialog.ui" line="6472"/>
+        <source>Max base pairs in dimer</source>
+        <translation>Максимальное количество пар нуклеотидов в димере</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6604"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This section allows to set output annotations&apos; settings.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;В этой секции можно задать настройки для аннотаций.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -408,13 +413,7 @@
         <translation>Проверить комплементарность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6472"/>
-        <source>Maximum number of complement base pairs for self- and hetero-dimers</source>
-        <translation>Максимальное количество комплементарных пар оснований для гомо- и гетеро-димеров</translation>
-    </message>
-    <message>
         <location filename="../src/Primer3Dialog.ui" line="6482"/>
-        <location filename="../src/Primer3Dialog.ui" line="6495"/>
         <location filename="../src/Primer3Dialog.ui" line="6505"/>
         <source>Maximum persantage of G/C base pairs</source>
         <translation>Максимальный процент пар оснований G/C</translation>
@@ -425,7 +424,7 @@
         <translation> пн</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6498"/>
+        <location filename="../src/Primer3Dialog.ui" line="6495"/>
         <source>Max dimer GC-content</source>
         <translation>Максимальный GC-состав димера</translation>
     </message>
@@ -435,32 +434,42 @@
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6612"/>
+        <location filename="../src/Primer3Dialog.ui" line="6531"/>
+        <source>Generate CSV report</source>
+        <translation>Сгенерировать отчет в формате CSV</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6562"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.ui" line="6652"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6632"/>
+        <location filename="../src/Primer3Dialog.ui" line="6672"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6639"/>
+        <location filename="../src/Primer3Dialog.ui" line="6679"/>
         <source>Save settings</source>
         <translation>Сохранить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6646"/>
+        <location filename="../src/Primer3Dialog.ui" line="6686"/>
         <source>Load settings</source>
         <translation>Загрузить настройки</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6653"/>
+        <location filename="../src/Primer3Dialog.ui" line="6693"/>
         <source>Reset form</source>
         <translation>Сброс параметров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6660"/>
+        <location filename="../src/Primer3Dialog.ui" line="6700"/>
         <source>Pick primers</source>
         <translation>Подобрать</translation>
     </message>
@@ -2028,12 +2037,7 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Макс. интервала качества последовательности.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.ui" line="6475"/>
-        <source>Max complement pairs in dimer</source>
-        <translation>Максимум комплементарных пар в димере</translation>
-    </message>
-    <message>
-        <location filename="../src/Primer3Dialog.ui" line="6561"/>
+        <location filename="../src/Primer3Dialog.ui" line="6601"/>
         <source>Result Settings</source>
         <translation>Параметры результатов</translation>
     </message>
@@ -2273,64 +2277,118 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 <context>
     <name>U2::CheckComplementTask</name>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="32"/>
+        <location filename="../src/CheckComplementTask.cpp" line="35"/>
         <source>Check complement task</source>
         <translation>Задача проверки комплементарности</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="39"/>
+        <location filename="../src/CheckComplementTask.cpp" line="42"/>
         <source>Sequence object has been closed, abort</source>
         <translation>Объект последовательности был закрыт, отмена</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="70"/>
+        <location filename="../src/CheckComplementTask.cpp" line="68"/>
         <source>Check complement</source>
         <translation>Проверить комплементарность</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="71"/>
-        <source>No primers have been filtered</source>
-        <translation>Ни один праймер не был отфильтрован</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="69"/>
+        <source>The following filtering settings have been used</source>
+        <translation>Следующие настройки фильрации были использованы</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="73"/>
-        <source>The following primers have been filtered</source>
-        <translation>Следующие праймеры были отфильтрованы</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="71"/>
+        <source>Max base pairs in dimers</source>
+        <translation>Максимальное количество пар нуклеотидов в димере</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="71"/>
+        <source>bp</source>
+        <translation>пн</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="74"/>
+        <source>Max dimer GC-content</source>
+        <translation>Максимальный GC-состав димера</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="76"/>
+        <source>The following primers have been found and processed (red - filtered, green - passed)</source>
+        <translation>Следующие праймеры были найдены и обработаны (красные - отильрованы, зеленые - прошли)</translation>
     </message>
     <message>
         <location filename="../src/CheckComplementTask.cpp" line="81"/>
-        <source>Left</source>
-        <translation>Левый</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="136"/>
+        <source>No.</source>
+        <translation>Ном.</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="82"/>
+        <location filename="../src/CheckComplementTask.cpp" line="137"/>
+        <source>Strand</source>
+        <translation>Направление</translation>
     </message>
     <message>
         <location filename="../src/CheckComplementTask.cpp" line="83"/>
-        <source>Right</source>
-        <translation>Правый</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="138"/>
+        <source>Primer</source>
+        <translation>Праймер</translation>
     </message>
     <message>
+        <location filename="../src/CheckComplementTask.cpp" line="84"/>
+        <location filename="../src/CheckComplementTask.cpp" line="139"/>
+        <source>Self-dimer</source>
+        <translation>Гомодимер</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="85"/>
+        <location filename="../src/CheckComplementTask.cpp" line="90"/>
+        <location filename="../src/CheckComplementTask.cpp" line="140"/>
+        <location filename="../src/CheckComplementTask.cpp" line="145"/>
+        <source>Delta G (kcal/mol)</source>
+        <translation>Энергия Гиббса (ккал/моль)</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="86"/>
+        <location filename="../src/CheckComplementTask.cpp" line="91"/>
+        <location filename="../src/CheckComplementTask.cpp" line="141"/>
+        <location filename="../src/CheckComplementTask.cpp" line="146"/>
+        <source>Base Pairs (bp)</source>
+        <translation>Пары нуклеотидов (пн)</translation>
+    </message>
+    <message>
+        <location filename="../src/CheckComplementTask.cpp" line="87"/>
         <location filename="../src/CheckComplementTask.cpp" line="92"/>
-        <source>Left primer self-dimer:</source>
-        <translation>Гомодимер левого праймера:</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="142"/>
+        <location filename="../src/CheckComplementTask.cpp" line="147"/>
+        <source>G/C pairs (bp)</source>
+        <translation>Пары G/C (пн)</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="95"/>
-        <source>Right primer self-dimer:</source>
-        <translation>Гомодимер правого праймера:</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="88"/>
+        <location filename="../src/CheckComplementTask.cpp" line="93"/>
+        <location filename="../src/CheckComplementTask.cpp" line="143"/>
+        <location filename="../src/CheckComplementTask.cpp" line="148"/>
+        <source>G/C-content (%)</source>
+        <translation>GC-состав (%)</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="98"/>
-        <source>Hetero-dimer:</source>
-        <translation>Гетеродимер:</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="89"/>
+        <location filename="../src/CheckComplementTask.cpp" line="144"/>
+        <source>Hetero-dimer</source>
+        <translation>Гетеродимер</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="105"/>
-        <source> (max %1 bp)</source>
-        <translation> (максимум %1 пн)</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="100"/>
+        <location filename="../src/CheckComplementTask.cpp" line="163"/>
+        <source>Forward</source>
+        <translation>Прямой</translation>
     </message>
     <message>
-        <location filename="../src/CheckComplementTask.cpp" line="107"/>
-        <source> &lt;b&gt;G/C pairs:&lt;/b&gt; %1 bp or %2 % (max %3 %)</source>
-        <translation> &lt;b&gt;Пары G/C:&lt;/b&gt; %1 по или %2 % (максимум %3 %)</translation>
+        <location filename="../src/CheckComplementTask.cpp" line="116"/>
+        <location filename="../src/CheckComplementTask.cpp" line="177"/>
+        <source>Reverse</source>
+        <translation>Обратный</translation>
     </message>
 </context>
 <context>
@@ -2344,158 +2402,158 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 <context>
     <name>U2::GTest</name>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="510"/>
+        <location filename="../src/Primer3Tests.cpp" line="512"/>
         <source>Error in sequence quality data</source>
         <translation>Error in sequence quality data</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="514"/>
+        <location filename="../src/Primer3Tests.cpp" line="516"/>
         <source>Sequence quality data missing</source>
         <translation>Sequence quality data missing</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="40"/>
-        <location filename="../src/Primer3Tests.cpp" line="323"/>
+        <location filename="../src/Primer3Tests.cpp" line="42"/>
+        <location filename="../src/Primer3Tests.cpp" line="325"/>
         <source>QDomNode isn&apos;t element</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="87"/>
-        <location filename="../src/Primer3Tests.cpp" line="93"/>
+        <location filename="../src/Primer3Tests.cpp" line="89"/>
+        <location filename="../src/Primer3Tests.cpp" line="95"/>
         <source>Illegal SEQUENCE_TARGET value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="107"/>
+        <location filename="../src/Primer3Tests.cpp" line="109"/>
         <source>Illegal SEQUENCE_OVERLAP_JUNCTION_LIST value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="122"/>
+        <location filename="../src/Primer3Tests.cpp" line="124"/>
         <source>Illegal SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="137"/>
+        <location filename="../src/Primer3Tests.cpp" line="139"/>
         <source>Illegal SEQUENCE_EXCLUDED_REGION value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="163"/>
+        <location filename="../src/Primer3Tests.cpp" line="165"/>
         <source>Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="177"/>
+        <location filename="../src/Primer3Tests.cpp" line="179"/>
         <source>Illegal SEQUENCE_INCLUDED_REGION value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="195"/>
-        <location filename="../src/Primer3Tests.cpp" line="202"/>
+        <location filename="../src/Primer3Tests.cpp" line="197"/>
+        <location filename="../src/Primer3Tests.cpp" line="204"/>
         <source>Illegal SEQUENCE_INTERNAL_EXCLUDED_REGION value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="217"/>
+        <location filename="../src/Primer3Tests.cpp" line="219"/>
         <source>Illegal PRIMER_PRODUCT_SIZE_RANGE value: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="368"/>
+        <location filename="../src/Primer3Tests.cpp" line="370"/>
         <source>Incorrect results num. Pairs: %1, left: %2, right: %3, inernal: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="383"/>
-        <location filename="../src/Primer3Tests.cpp" line="394"/>
-        <location filename="../src/Primer3Tests.cpp" line="405"/>
+        <location filename="../src/Primer3Tests.cpp" line="385"/>
+        <location filename="../src/Primer3Tests.cpp" line="396"/>
+        <location filename="../src/Primer3Tests.cpp" line="407"/>
         <source>Incorrect parameter: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="525"/>
+        <location filename="../src/Primer3Tests.cpp" line="527"/>
         <source>No error, but expected: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="528"/>
+        <location filename="../src/Primer3Tests.cpp" line="530"/>
         <source>An unexpected error. Expected: %1, but Actual: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="537"/>
+        <location filename="../src/Primer3Tests.cpp" line="539"/>
         <source>No warning, but expected: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="541"/>
+        <location filename="../src/Primer3Tests.cpp" line="543"/>
         <source>An unexpected warning. Expected: %1, but Actual: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="553"/>
+        <location filename="../src/Primer3Tests.cpp" line="555"/>
         <source>PRIMER_PAIR_NUM_RETURNED is incorrect. Expected:%1, but Actual:%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="569"/>
+        <location filename="../src/Primer3Tests.cpp" line="571"/>
         <source>Incorrect single primers num. Expected:%1, but Actual:%2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="580"/>
+        <location filename="../src/Primer3Tests.cpp" line="582"/>
         <source>Incorrect single primer type, num: %1. Expected:%2, but Actual:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="732"/>
+        <location filename="../src/Primer3Tests.cpp" line="734"/>
         <source>PRIMER_PAIR%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="736"/>
+        <location filename="../src/Primer3Tests.cpp" line="738"/>
         <source>PRIMER_PAIR%1_COMPL_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="740"/>
+        <location filename="../src/Primer3Tests.cpp" line="742"/>
         <source>PRIMER_PAIR%1_COMPL_END_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="752"/>
+        <location filename="../src/Primer3Tests.cpp" line="754"/>
         <source>%1 is incorrect. Expected:%2,%3, but Actual:NULL</source>
         <translation>%1 is incorrect. Expected:%2,%3, but Actual:NULL</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="760"/>
+        <location filename="../src/Primer3Tests.cpp" line="762"/>
         <source>%1 is incorrect. Expected:NULL, but Actual:%2,%3</source>
         <translation>%1 is incorrect. Expected:NULL, but Actual:%2,%3</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="769"/>
+        <location filename="../src/Primer3Tests.cpp" line="771"/>
         <source>%1 is incorrect. Expected:%2,%3, but Actual:%4,%5</source>
         <translation>%1 is incorrect. Expected:%2,%3, but Actual:%4,%5</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="794"/>
+        <location filename="../src/Primer3Tests.cpp" line="796"/>
         <source>%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="798"/>
+        <location filename="../src/Primer3Tests.cpp" line="800"/>
         <source>%1_SELF_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="802"/>
+        <location filename="../src/Primer3Tests.cpp" line="804"/>
         <source>%1_SELF_END_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="816"/>
-        <location filename="../src/Primer3Tests.cpp" line="824"/>
+        <location filename="../src/Primer3Tests.cpp" line="818"/>
+        <location filename="../src/Primer3Tests.cpp" line="826"/>
         <source>%1 is incorrect. Expected:%2, but Actual:%3</source>
         <translation>%1 is incorrect. Expected:%2, but Actual:%3</translation>
     </message>
@@ -2521,114 +2579,114 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
 <context>
     <name>U2::Primer3Dialog</name>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="127"/>
+        <location filename="../src/Primer3Dialog.cpp" line="135"/>
         <source>NONE</source>
         <translation>нет</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="128"/>
+        <location filename="../src/Primer3Dialog.cpp" line="136"/>
         <source>HUMAN</source>
         <translation>HUMAN</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="129"/>
+        <location filename="../src/Primer3Dialog.cpp" line="137"/>
         <source>RODENT_AND_SIMPLE</source>
         <translation>RODENT_AND_SIMPLE</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="130"/>
+        <location filename="../src/Primer3Dialog.cpp" line="138"/>
         <source>RODENT</source>
         <translation>RODENT</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="131"/>
+        <location filename="../src/Primer3Dialog.cpp" line="139"/>
         <source>DROSOPHILA</source>
         <translation>DROSOPHILA</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="448"/>
+        <location filename="../src/Primer3Dialog.cpp" line="484"/>
         <source>The &quot;Include region&quot; should be the only one</source>
         <translation>&quot;Включенный регион&quot; должен быть только один</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="626"/>
+        <location filename="../src/Primer3Dialog.cpp" line="662"/>
         <source>Sequence quality list length must be equal to the sequence length</source>
         <translation>Длина списка качества последовательности должна быть равна длине последовательности</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="644"/>
+        <location filename="../src/Primer3Dialog.cpp" line="680"/>
         <source>Task &quot;pick_discriminative_primers&quot; requires exactly one &quot;Targets&quot; region.</source>
         <translation>Опция &quot;pick_discriminative_primers&quot; Требует ровно один &quot;Целевой регион&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="654"/>
+        <location filename="../src/Primer3Dialog.cpp" line="690"/>
         <source>At least one primer on the &quot;Main&quot; settings page should be enabled.</source>
         <translation>Должен быть отмечен как минимум один из праймеров на странице &quot;Основные параметры&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="564"/>
+        <location filename="../src/Primer3Dialog.cpp" line="600"/>
         <source>Left primer</source>
         <translation>Левый праймер</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="555"/>
+        <location filename="../src/Primer3Dialog.cpp" line="591"/>
         <source>%1 sequence has incorrect alphabet, should be be simple DNA</source>
         <translation>%1 имеет некорректный алфавит, ожидается ДНК</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="570"/>
+        <location filename="../src/Primer3Dialog.cpp" line="606"/>
         <source>Left 5&apos; overhang</source>
         <translation>Левое 5&apos; перекрытие</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="584"/>
+        <location filename="../src/Primer3Dialog.cpp" line="620"/>
         <source>Internal oligo</source>
         <translation>Внутренний олигонуклеотид</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="596"/>
+        <location filename="../src/Primer3Dialog.cpp" line="632"/>
         <source>Right primer</source>
         <translation>Правый праймер</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="602"/>
+        <location filename="../src/Primer3Dialog.cpp" line="638"/>
         <source>Right 5&apos; overhang</source>
         <translation>Правое 5&apos; перекрытие</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="676"/>
+        <location filename="../src/Primer3Dialog.cpp" line="712"/>
         <source>Primer Size Ranges should have at least one range</source>
         <translation>Диапазон размеров продукта должен иметь как миниум один диапазон</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="688"/>
+        <location filename="../src/Primer3Dialog.cpp" line="724"/>
         <source>Sequence range region is too small for current product size ranges</source>
         <translation>Регион последовательности слишком мал для текущего диапазона размера продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="705"/>
+        <location filename="../src/Primer3Dialog.cpp" line="741"/>
         <source>The priming sequence is too long, please, decrease the region</source>
         <translation>Последовательность слишком длинная, пожалуйста, уменьшите регион</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="715"/>
+        <location filename="../src/Primer3Dialog.cpp" line="751"/>
         <source>Incorrect sum &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
         <translation>Некорректная сумма по параметрам &quot;Начало включенного региона + Индекс первого символа&quot; - значение должно быть больше либо равно 0</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="719"/>
+        <location filename="../src/Primer3Dialog.cpp" line="755"/>
         <source>The priming sequence is out of range.
 Either make the priming region end &quot;%1&quot; less or equal than the sequence size &quot;%2&quot; plus the first base index value &quot;%3&quot;or mark the sequence as circular</source>
         <translation>Последовательность праймирования все заданного региона.
 Либо сделайте конец праймируемого региона %1 меньше либо равным размеру последовательности %2 плюс индекс первого сиимвола %3, либо отметьте последовательность круговой</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="735"/>
+        <location filename="../src/Primer3Dialog.cpp" line="771"/>
         <source>%1 parameter(s) have an incorrect value(s), pay attention on red widgets. </source>
         <translation>%1 параметр(ов) имеют некорректное(ые) значение(я), обратите внимание на подсвеченные красным виджеты. </translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="737"/>
+        <location filename="../src/Primer3Dialog.cpp" line="773"/>
         <source>The following errors are possible: 
 
 </source>
@@ -2637,7 +2695,7 @@ Either make the priming region end &quot;%1&quot; less or equal than the sequenc
 </translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="740"/>
+        <location filename="../src/Primer3Dialog.cpp" line="776"/>
         <source>
 
 Click OK to continue calculation, but the incorrect values will be ignored.</source>
@@ -2646,78 +2704,88 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
 Нажмите ОК чтобы продолжить расчет, некорректные значения будут проигнорированы.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="748"/>
+        <location filename="../src/Primer3Dialog.cpp" line="784"/>
         <source>The &quot;%1&quot; parameter has incorrect value, please, read the tooltip of this parameter to find out how the correct one looks like.</source>
         <translation>Параметру &quot;%1&quot; установлено некорректное значение. Пожалуйста, прочитайте подсказку, всплывающую при наведении на данный параметр, чтобы понять, как откорректировать значение.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="839"/>
+        <location filename="../src/Primer3Dialog.cpp" line="875"/>
         <source>Default</source>
         <translation>По-умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="843"/>
+        <location filename="../src/Primer3Dialog.cpp" line="879"/>
         <source>Recombinase Polymerase Amplification</source>
         <translation>Рекомбиназная полимеразная амплификация</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="846"/>
+        <location filename="../src/Primer3Dialog.cpp" line="882"/>
         <source>Info: &quot;Check complementary&quot; has been enabled (see the &quot;Posterior Actions&quot; tab)</source>
         <translation>Информация: &quot;Проверить комплементарность&quot; задана (см. вкладку &quot;Действия после расчета&quot;)</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="855"/>
+        <location filename="../src/Primer3Dialog.cpp" line="891"/>
         <source>Warning: &quot;Check complementary&quot; requires left and right primers enabled (&quot;Main&quot; page).</source>
         <translation>Внимание: параметр &quot;Проверить комплементарность&quot; требует параметры левого и правого праймера активными (Основные параметры).</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="857"/>
+        <location filename="../src/Primer3Dialog.cpp" line="893"/>
         <source>Warning: &quot;Check complementary&quot; requires any task but &quot;pick_primer_list&quot; (&quot;Main&quot; page).</source>
         <translation>Внимание: параметр &quot;Проверить комплементарность&quot; требует любую задачу кроме &quot;pick_primer_list&quot; (Основные параметры).</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="958"/>
-        <location filename="../src/Primer3Dialog.cpp" line="967"/>
-        <location filename="../src/Primer3Dialog.cpp" line="976"/>
-        <location filename="../src/Primer3Dialog.cpp" line="988"/>
-        <location filename="../src/Primer3Dialog.cpp" line="1041"/>
-        <location filename="../src/Primer3Dialog.cpp" line="1047"/>
-        <location filename="../src/Primer3Dialog.cpp" line="1082"/>
+        <location filename="../src/Primer3Dialog.cpp" line="909"/>
+        <source>CSV report</source>
+        <translation>Отчет CSV</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.cpp" line="911"/>
+        <source>Save CSV report to...</source>
+        <translation>Сохранить CSV отчет в...</translation>
+    </message>
+    <message>
+        <location filename="../src/Primer3Dialog.cpp" line="1006"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1015"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1024"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1036"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1089"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1095"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1130"/>
         <source>Can&apos;t parse &quot;%1&quot; value: &quot;%2&quot;</source>
         <translation>Невозможно распознать &quot;%1&quot; значение: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="977"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1025"/>
         <source>Incorrect value for &quot;%1&quot; value: &quot;%2&quot;</source>
         <translation>Неверное значение для &quot;%1&quot; значение: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="1060"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1108"/>
         <source>PRIMER_MISPRIMING_LIBRARY value should points to the file from the &quot;%1&quot; directory</source>
         <translation>Значение PRIMER_MISPRIMING_LIBRARY должно указывать на файл из директории &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="1073"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1121"/>
         <source>PRIMER_INTERNAL_MISHYB_LIBRARY value should points to the file from the &quot;%1&quot; directory</source>
         <translation>Значение PRIMER_INTERNAL_MISHYB_LIBRARY должно указывать на файл из директории &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="1077"/>
+        <location filename="../src/Primer3Dialog.cpp" line="1125"/>
         <source>PRIMER_MIN_THREE_PRIME_DISTANCE is unused in the UGENE GUI interface. We may either skip it or set PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE and PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE to %1. Do you want to set?</source>
         <translation>PRIMER_MIN_THREE_PRIME_DISTANCE не используется в UGENE. Можно либо пропустить его, либо задать одновременно PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE и PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE в %1. Хотите задать?</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="781"/>
+        <location filename="../src/Primer3Dialog.cpp" line="817"/>
         <source>Save primer settings</source>
         <translation>Сохранить настройки праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="792"/>
+        <location filename="../src/Primer3Dialog.cpp" line="828"/>
         <source>Text files</source>
         <translation>Текстовый файл</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Dialog.cpp" line="793"/>
+        <location filename="../src/Primer3Dialog.cpp" line="829"/>
         <source>Load settings</source>
         <translation>Загрузить настройки</translation>
     </message>
@@ -2738,12 +2806,12 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
 <context>
     <name>U2::Primer3Task</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="399"/>
+        <location filename="../src/Primer3Task.cpp" line="403"/>
         <source>Pick primers task</source>
         <translation>Выбор праймеров</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="413"/>
+        <location filename="../src/Primer3Task.cpp" line="417"/>
         <source>Incorrect sum &quot;Included Region Start + First Base Index&quot; - should be more or equal than 0</source>
         <translation>Некорректная сумма по параметрам &quot;Начало включенного региона + Индекс первого символа&quot; - значение должно быть больше либо равно 0</translation>
     </message>
@@ -2751,37 +2819,37 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
 <context>
     <name>U2::Primer3ToAnnotationsTask</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="620"/>
+        <location filename="../src/Primer3Task.cpp" line="624"/>
         <source>Search primers to annotations</source>
         <translation>Search primers to annotations</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="747"/>
+        <location filename="../src/Primer3Task.cpp" line="757"/>
         <source>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</source>
         <translation>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="759"/>
+        <location filename="../src/Primer3Task.cpp" line="769"/>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Первый экзон из выбранного диапазона [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="768"/>
+        <location filename="../src/Primer3Task.cpp" line="778"/>
         <source>The the selected exon range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Выбраный диапазон экзонов [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="656"/>
+        <location filename="../src/Primer3Task.cpp" line="660"/>
         <source>Object with annotations was removed</source>
         <translation>Объект с аннотациями удален</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="662"/>
+        <location filename="../src/Primer3Task.cpp" line="666"/>
         <source>No primers has been found due to the parameters you&apos;ve set up</source>
         <translation>Не было найдено праймеров, соответствующих заданным параметрам</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="664"/>
+        <location filename="../src/Primer3Task.cpp" line="668"/>
         <source>All found primers has been filtered due to the &quot;Check complement&quot; parameters</source>
         <translation>Все найденные праймеры были отфильтрованы согласно параметру &quot;Проверить комплементарность&quot;</translation>
     </message>
