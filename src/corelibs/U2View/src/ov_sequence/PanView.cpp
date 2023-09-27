@@ -319,9 +319,7 @@ void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings)
             continue;
         }
         foreach (Annotation* a, changed) {
-            if (rowsManager->getAnnotationRowIdx(a) != -1) {
-                continue;
-            }else if (as->visible) {
+            if (as->visible) {
                 rowsManager->addAnnotation(a);
             } else {
                 rowsManager->removeAnnotation(a);
