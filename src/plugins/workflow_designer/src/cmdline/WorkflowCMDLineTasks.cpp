@@ -194,12 +194,13 @@ Task::ReportResult WorkflowRunFromCMDLineBase::report() {
     const bool opened = reportFile.open(QIODevice::WriteOnly);
     CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), res);
 
-    reportFile.write(!stateInfo.hasError() ? workflowRunTask->generateReport().toLocal8Bit() : "[ERROR] " + stateInfo.getError().toLocal8Bit());
+    reportFile.write(!stateInfo.hasError() ? workflowRunTask->generateReport().toLocal8Bit() : getReportFromError());
     return res;
 }
 
-void WorkflowRunFromCMDLineBase::writeReport(const QString& errorString) {
-    
+QByteArray WorkflowRunFromCMDLineBase::getReportFromError() const {
+    QString res = "<br>[ERROR]: " + stateInfo.getError();
+    return res.toLocal8Bit();
 }
 
 /*******************************************

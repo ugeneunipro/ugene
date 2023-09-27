@@ -216,11 +216,13 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
         CHECK_EXT(!reportStr.contains("[ERROR]"), setError(tr("Report file after align contain error(s): '%1', you can investigate output file %2")
                   .arg(reportStr).arg(alignToRefCmdlineConfig.outputFile)), result);
         CHECK_EXT(QFile::exists(settings.resultAlignmentFile), setError(tr("There is no result file after align, please, investigate the output file for errors: %1")
-                 .arg(alignToRefCmdlineConfig.outputFile)), result);
+                  .arg(alignToRefCmdlineConfig.outputFile)), result);
         QFile::remove(alignToRefCmdlineConfig.outputFile);
         FormatDetectionConfig config;
         QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
         DocumentFormat* format = formats.first().format;
+        CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
+
         Task* loadTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultAlignmentFile);
         AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
     }

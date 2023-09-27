@@ -2259,17 +2259,9 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Порог для простого режима выравнивания. Рекомендуются значения от 7 до 15. Идеальное совпадение последовательности из 12 оснований даст чуть более 7 очков, а чтобы набрать 15 очков, необходимо 25 оснований.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.</source>
-        <translation type="vanished">Порог для простого режима выравнивания. Рекомендуются значения от 7 до 15. Идеальное совпадение из 12 базовых последовательностей принесет чуть больше 7 баллов, в то время как для получения 15 нужно 25 оснований.</translation>
-    </message>
-    <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="113"/>
         <source>Palindrome clip threshold</source>
         <translation>Порог для клипа палиндрома</translation>
-    </message>
-    <message>
-        <source>A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.</source>
-        <translation type="vanished">Порог для режима палинромиального выравнивания. Для палиндромиальных совпадений возможны более длинные выравнивания. Тем не менее порог может быть в пределах 30.</translation>
     </message>
     <message>
         <location filename="../src/trimmomatic/steps/IlluminaClipSettingsWidget.ui" line="142"/>
@@ -3689,91 +3681,88 @@ p, li { white-space: pre-wrap; }
         <translation>Файл отчета после выравнивания содержит ошибку(и): %1, вы можете так же проанализировать файл вывода на наличие ошибок %2</translation>
     </message>
     <message>
-        <source>Report file after align contain error(s): &apos;%1&apos;, you can investigate output file %2 </source>
-        <translation type="vanished">Файл отчета после выравнивания содержит ошибку(и): %1, вы можете так же проанализировать файл вывода на наличие ошибок %2</translation>
-    </message>
-    <message>
         <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="218"/>
         <source>There is no result file after align, please, investigate the output file for errors: %1</source>
         <translation>Нет файла результата после выравнивания, пожалуйста, проверьте файл с выводом процесса выравнивания на наличие ошибок: %1</translation>
     </message>
     <message>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="224"/>
         <source>wrong output format</source>
-        <translation type="vanished">wrong output format</translation>
+        <translation>wrong output format</translation>
     </message>
 </context>
 <context>
     <name>U2::AlignToReferenceBlastDialog</name>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="251"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="253"/>
         <source>Map</source>
         <translation>Выровнять</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="252"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="254"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="258"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="260"/>
         <source>File name</source>
         <translation>Имя файла</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="259"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="261"/>
         <source>Sequence name from file</source>
         <translation>Имя последовательности в файле</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="277"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="279"/>
         <source>Select Output File...</source>
         <translation>Укажите выходной файл...</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="290"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="314"/>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="333"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="292"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="298"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="316"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="335"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="290"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="292"/>
         <source>Reference sequence is not set.</source>
         <translation>Референсная последовательность не задана.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="296"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="298"/>
         <source>No reads provided.</source>
         <translation>Риды не заданы.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="314"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="316"/>
         <source>Output file is not set.</source>
         <translation>Выходной файл не указан.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="325"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="327"/>
         <source>Overwrite the file?</source>
         <translation>Переписать этот файл?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="326"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="328"/>
         <source>The result file already exists. Would you like to overwrite it?</source>
         <translation>Такой файл уже существует. Переписать его?</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="333"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="335"/>
         <source>Unable to delete the file.</source>
         <translation>Невозможно удалить этот файл.</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="345"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="347"/>
         <source>Open Reference Sequence</source>
         <translation>Выбрать референсную последовательность</translation>
     </message>
     <message>
-        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="356"/>
+        <location filename="../src/blast/AlignToReferenceBlastDialog.cpp" line="358"/>
         <source>Select File(s) with Read(s)</source>
         <translation>Выбрать прочтения</translation>
     </message>
@@ -4010,14 +3999,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>U2::BlastDBSelectorWidgetController</name>
-    <message>
-        <source>Database path contains space characters.</source>
-        <translation type="vanished">Путь до базы данных содержит пробелы.</translation>
-    </message>
-    <message>
-        <source>Database name contains space characters.</source>
-        <translation type="vanished">Имя базы данных содержит пробелы.</translation>
-    </message>
     <message>
         <location filename="../src/blast/BlastDBSelectorWidgetController.cpp" line="58"/>
         <source>Database path contains spaces or/and non-Latin characters.</source>
@@ -4664,10 +4645,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Align with Kalign</source>
-        <translation type="vanished">Выравнивание с помощью Kalign</translation>
-    </message>
-    <message>
         <location filename="../src/clustalo/ClustalOSupportRunDialog.cpp" line="132"/>
         <source>Input file is not set!</source>
         <translation>Не указан входной файл!</translation>
@@ -4809,10 +4786,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="151"/>
         <source>Save an multiple alignment file</source>
         <translation>Сохранить выравнивание</translation>
-    </message>
-    <message>
-        <source>Align with Kalign</source>
-        <translation type="vanished">Выравнивание с помощью Kalign</translation>
     </message>
     <message>
         <location filename="../src/clustalw/ClustalWSupportRunDialog.cpp" line="196"/>
@@ -5901,10 +5874,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::IQTreeWidget</name>
     <message>
-        <source>Extra command line options for IQ-TREE (1 per line):</source>
-        <translation type="vanished">Дополнительные опции для IQ-TREE (1 на строку):</translation>
-    </message>
-    <message>
         <location filename="../src/iqtree/IQTreeWidget.cpp" line="62"/>
         <source>Command line options for IQ-TREE:</source>
         <translation>Опции командной строки для IQ-TREE:</translation>
@@ -6901,10 +6870,6 @@ Please, convert alignment from %1 alphabet to DNA, RNA or Amino and try again.</
         <location filename="../src/blast/BlastWorker.cpp" line="333"/>
         <source>No selected BLAST output file</source>
         <translation>Не указан выходной путь для BLAST</translation>
-    </message>
-    <message>
-        <source>Not selected BLAST output file</source>
-        <translation type="vanished">Not selected BLAST output file</translation>
     </message>
 </context>
 <context>
@@ -9862,12 +9827,6 @@ Make sure %1 and %2 tools are set in the UGENE Application Settings and can be v
 Убедитесь, что инструменты %1 и %2 установлены в настройках приложения UGENE и могут быть проверены.</translation>
     </message>
     <message>
-        <source>The list of genomes is not available.
-Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</source>
-        <translation type="vanished">The list of genomes is not available.
-        Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</translation>
-    </message>
-    <message>
         <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="125"/>
         <source>Do you want to do it now?</source>
         <translation></translation>
@@ -11324,10 +11283,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Сохранить выравнивание</translation>
     </message>
     <message>
-        <source>Align with Kalign</source>
-        <translation type="vanished">Выравнивание с помощью Kalign</translation>
-    </message>
-    <message>
         <location filename="../src/mafft/MAFFTSupportRunDialog.cpp" line="113"/>
         <source>Input file is not set!</source>
         <translation>Не указан входной файл!</translation>
@@ -11697,10 +11652,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <source>PhyML finished with error</source>
         <translation>PhyML finished with error</translation>
     </message>
-    <message>
-        <source>UGENE internal error</source>
-        <translation type="vanished">UGENE internal error</translation>
-    </message>
 </context>
 <context>
     <name>U2::PhyMLPrepareDataForCalculation</name>
@@ -11735,10 +11686,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/phyml/PhyMLTask.cpp" line="93"/>
         <source>PhyML tree calculation</source>
         <translation>PhyML tree calculation</translation>
-    </message>
-    <message>
-        <source>UGENE internal error</source>
-        <translation type="vanished">UGENE internal error</translation>
     </message>
 </context>
 <context>
@@ -12116,14 +12063,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::SpideySupportTask</name>
     <message>
-        <source>Create another annotation table?</source>
-        <translation type="vanished">Создать новую таблицу аннотаций?</translation>
-    </message>
-    <message>
-        <source>The result of the &quot;SpideySupportTask&quot; should be saved to the annotation table, which has been removed. Create another annotation table? The result will be lost otherwise.</source>
-        <translation type="vanished">Результат задачи &quot;SpideySupportTask&quot; должен был быть сохранен в таблицу аннотаций, которая была удалена. Создать новую таблицу аннотаций? В противном случае, результаты будут утеряны.</translation>
-    </message>
-    <message>
         <location filename="../src/spidey/SpideySupportTask.cpp" line="271"/>
         <source>Failed to align mRNA to genomic sequence: no alignment is found.</source>
         <translation>Failed to align mRNA to genomic sequence: no alignment is found.</translation>
@@ -12325,30 +12264,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::BlastAlignToReferenceTask</name>
     <message>
-        <source>Map one read with BLAST &amp; SW task</source>
-        <translation type="vanished">Map one read with BLAST &amp; SW task</translation>
-    </message>
-    <message>
-        <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;, %3</source>
-        <translation type="vanished">A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;, %3</translation>
-    </message>
-    <message>
-        <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</source>
-        <translation type="vanished">A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</translation>
-    </message>
-    <message>
-        <source>%1 was skipped. No BLAST results.</source>
-        <translation type="vanished">%1 was skipped. No BLAST results.</translation>
-    </message>
-    <message>
-        <source>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</source>
-        <translation type="vanished">%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</translation>
-    </message>
-    <message>
-        <source>Read doesn&apos;t contain meaningful data</source>
-        <translation type="vanished">Read doesn&apos;t contain meaningful data</translation>
-    </message>
-    <message>
         <location filename="../src/blast/align_worker_subtasks/BlastAlignToReferenceTask.cpp" line="116"/>
         <source>Align reads with BLAST &amp; Smith-Waterman task</source>
         <translation>Задача выравнивания ридов с BLAST &amp; Smith-Waterman</translation>
@@ -12405,32 +12320,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
-    <name>U2::Workflow::BlastReadsSubTask</name>
-    <message>
-        <source>Map reads with BLAST &amp; SW task</source>
-        <translation type="vanished">Map reads with BLAST &amp; SW task</translation>
-    </message>
-    <message>
-        <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
-        <translation type="vanished">The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::Workflow::ComposeResultSubTask</name>
-    <message>
-        <source>Compose alignment</source>
-        <translation type="vanished">Compose alignment</translation>
-    </message>
-    <message>
-        <source>No read satisfy minimum similarity criteria.</source>
-        <translation type="vanished">No read satisfy minimum similarity criteria.</translation>
-    </message>
-    <message>
-        <source>The related chromatogram not found</source>
-        <translation type="vanished">The related chromatogram not found</translation>
-    </message>
-</context>
-<context>
     <name>U2::Workflow::ComposeResultSubtask</name>
     <message>
         <location filename="../src/blast/align_worker_subtasks/ComposeResultSubtask.cpp" line="50"/>
@@ -12449,30 +12338,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
     </message>
 </context>
 <context>
-    <name>U2::Workflow::FormatDBSubTask</name>
-    <message>
-        <source>&apos;makeblastdb&apos; task wrapper</source>
-        <translation type="vanished">&apos;makeblastdb&apos; task wrapper</translation>
-    </message>
-    <message>
-        <source>The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
-        <translation type="vanished">The task uses a temporary folder to process the data. It is required that the folder path doesn&apos;t have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</translation>
-    </message>
-</context>
-<context>
     <name>U2::Workflow::IntegralBusPort</name>
-    <message>
-        <source>&apos;%1&apos; slot must be not binded</source>
-        <translation type="vanished">&apos;%1&apos; слот не должен быть связан</translation>
-    </message>
-    <message>
-        <source>One of these slots must be not empty: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation type="vanished">Один из этих слотов не должен быть пустым: &apos;%1&apos;, &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>Only one of these slots must be binded: &apos;%1&apos;, &apos;%2&apos;</source>
-        <translation type="vanished">Только один из этих слотов должен быть связан: &apos;%1&apos;, &apos;%2&apos;</translation>
-    </message>
     <message>
         <location filename="../src/utils/BaseShortReadsAlignerWorker.cpp" line="269"/>
         <source>The slot must be not empty: &apos;%1&apos;</source>
