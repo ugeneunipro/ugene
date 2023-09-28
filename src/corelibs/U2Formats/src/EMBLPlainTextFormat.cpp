@@ -100,7 +100,7 @@ bool EMBLPlainTextFormat::readIdLine(ParserState* s) {
             s->entry->tags[DNAInfo::VERSION] = tokens[0] + "." + sec.mid(3);
         }
         QString last = tokens.last();
-        if (last.endsWith("BP.")) {
+        if (last.endsWith("BP.") || last.endsWith("AA.")) {
             last.chop(3);
             s->entry->seqLen = last.toInt();
         }
