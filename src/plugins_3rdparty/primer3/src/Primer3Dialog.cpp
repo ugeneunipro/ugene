@@ -26,11 +26,14 @@
 #include <U2Algorithm/SplicedAlignmentTaskRegistry.h>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/FileFilters.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
+#include <U2Core/UserApplicationsSettings.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -44,6 +47,8 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "Primer3Dialog.h"
+
+#include <U2View/TmCalculatorSelectorWidget.h>
 
 namespace U2 {
 
@@ -83,20 +88,29 @@ const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^
 Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     : QDialog(context->getAnnotatedDNAView()->getWidget()),
       context(context),
-      savableWidget(this, GObjectViewUtils::findViewByName(context->getAnnotatedDNAView()->getName()), { "primer3RegionSelector", "primer3AnnWgt" }) {
+      savableWidget(this, GObjectViewUtils::findViewByName(context->getAnnotatedDNAView()->getName()), { "primer3RegionSelector", "primer3AnnWgt" }),
+      primer3DataDirectory(QFileInfo(QString(PATH_PREFIX_DATA) + ":primer3/").absoluteFilePath().toLatin1()) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
-
-    pickPrimersButton->setDefault(true);
 
     connect(closeButton, &QPushButton::clicked, this, &Primer3Dialog::close);
     connect(pickPrimersButton, &QPushButton::clicked, this, &Primer3Dialog::sl_pickClicked);
     connect(resetButton, &QPushButton::clicked, this, &Primer3Dialog::sl_resetClicked);
     connect(saveSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_saveSettings);
     connect(loadSettingsButton, &QPushButton::clicked, this, &Primer3Dialog::sl_loadSettings);
+    connect(cbPreset, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_presetChanged);
     connect(edit_PRIMER_TASK, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_taskChanged);
+    connect(edit_PRIMER_TASK, &QComboBox::currentTextChanged, this, &Primer3Dialog::sl_checkComplementStateChanged);
+    connect(checkbox_PRIMER_PICK_LEFT_PRIMER, &QCheckBox::toggled, this, &Primer3Dialog::sl_checkComplementStateChanged);
+    connect(checkbox_PRIMER_PICK_RIGHT_PRIMER, &QCheckBox::toggled, this, &Primer3Dialog::sl_checkComplementStateChanged);
+    connect(pbCsvReportChoosePath, &QPushButton::clicked, this, &Primer3Dialog::sl_ChooseCsvReportPathButtonClicked);
+
+    auto reportPath = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/report.csv";
+    reportPath = GUrlUtils::rollFileName(reportPath, "_");
+    leCsvReportPath->setText(reportPath);
 
     tabWidget->setCurrentIndex(0);
+    
 
     {
         CreateAnnotationModel createAnnotationModel;
@@ -119,14 +133,15 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     rangeSelectorLayout->addWidget(rs);
 
     repeatLibraries.append(QPair<QString, QByteArray>(tr("NONE"), ""));
-    repeatLibraries.append(QPair<QString, QByteArray>(tr("HUMAN"), "primer3/humrep_and_simple.txt"));
-    repeatLibraries.append(QPair<QString, QByteArray>(tr("RODENT_AND_SIMPLE"), "primer3/rodrep_and_simple.txt"));
-    repeatLibraries.append(QPair<QString, QByteArray>(tr("RODENT"), "primer3/rodent_ref.txt"));
-    repeatLibraries.append(QPair<QString, QByteArray>(tr("DROSOPHILA"), "primer3/drosophila.w.transposons.txt"));
+    repeatLibraries.append(QPair<QString, QByteArray>(tr("HUMAN"), "/humrep_and_simple.txt"));
+    repeatLibraries.append(QPair<QString, QByteArray>(tr("RODENT_AND_SIMPLE"), "/rodrep_and_simple.txt"));
+    repeatLibraries.append(QPair<QString, QByteArray>(tr("RODENT"), "/rodent_ref.txt"));
+    repeatLibraries.append(QPair<QString, QByteArray>(tr("DROSOPHILA"), "/drosophila.w.transposons.txt"));
 
     for (int i = 0; i < repeatLibraries.size(); i++) {
-        if (!repeatLibraries[i].second.isEmpty())
-            repeatLibraries[i].second = QFileInfo(QString(PATH_PREFIX_DATA) + ":" + repeatLibraries[i].second).absoluteFilePath().toLatin1();
+        if (!repeatLibraries[i].second.isEmpty()) {
+            repeatLibraries[i].second = primer3DataDirectory + repeatLibraries[i].second;
+        }
     }
 
     for (const auto& library : repeatLibraries) {
@@ -153,15 +168,12 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 }
 
 Primer3Dialog::~Primer3Dialog() {
-    delete settings;
     rs->deleteLater();
     createAnnotationWidgetController->deleteLater();
 }
 
-Primer3TaskSettings* Primer3Dialog::takeSettings() {
-    auto returnValue = settings;
-    settings = nullptr;
-    return returnValue;
+const QSharedPointer<Primer3TaskSettings>& Primer3Dialog::getSettings() {
+    return settings;
 }
 
 const CreateAnnotationModel& Primer3Dialog::getCreateAnnotationModel() const {
@@ -301,103 +313,7 @@ bool Primer3Dialog::parseOkRegions(const QString& inputString, QList<QList<int>>
 }
 
 void Primer3Dialog::reset() {
-    for (const auto& key : defaultSettings.getIntPropertyList()) {
-        int value = 0;
-        if (defaultSettings.getIntProperty(key, &value)) {
-            QSpinBox* spinBox = findChild<QSpinBox*>("edit_" + key);
-            if (spinBox != nullptr) {
-                spinBox->setValue(value);
-                continue;
-            }
-            if (QCheckBox* checkBox = findChild<QCheckBox*>("checkbox_" + key)) {
-                checkBox->setChecked(value);
-            }
-        }
-    }
-    const auto& doublePropertyList = defaultSettings.getDoublePropertyList();
-    for (const auto& key : qAsConst(doublePropertyList)) {
-        double value = 0;
-        if (defaultSettings.getDoubleProperty(key, &value)) {
-            if (QCheckBox* checkBox = findChild<QCheckBox*>("label_" + key)) {
-                checkBox->setChecked(false);
-            }
-            if (QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key)) {
-                spinBox->setValue(value);
-            }
-        }
-    }
-
-    edit_SEQUENCE_TARGET->setText(intervalListToString(defaultSettings.getTarget(), ","));
-    edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setText(intListToString(defaultSettings.getOverlapJunctionList(), ""));
-    edit_SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST->setText(intListToString(defaultSettings.getInternalOverlapJunctionList(), ""));
-    edit_SEQUENCE_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getExcludedRegion(), ","));
-    edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setText(okRegions2String(defaultSettings.getOkRegion()));
-    edit_PRIMER_PRODUCT_SIZE_RANGE->setText(intervalListToString(defaultSettings.getProductSizeRange(), "-", IntervalDefinition::Start_End));
-    edit_SEQUENCE_INTERNAL_EXCLUDED_REGION->setText(intervalListToString(defaultSettings.getInternalOligoExcludedRegion(), ","));
-    edit_PRIMER_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getStartCodonSequence());
-    edit_PRIMER_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getPrimerMustMatchFivePrime());
-    edit_PRIMER_MUST_MATCH_THREE_PRIME->setText(defaultSettings.getPrimerMustMatchThreePrime());
-    edit_PRIMER_INTERNAL_MUST_MATCH_FIVE_PRIME->setText(defaultSettings.getInternalPrimerMustMatchFivePrime());
-    edit_PRIMER_INTERNAL_MUST_MATCH_THREE_PRIME->setText(defaultSettings.getInternalPrimerMustMatchThreePrime());
-    edit_SEQUENCE_PRIMER->setText(defaultSettings.getLeftInput());
-    edit_SEQUENCE_PRIMER_REVCOMP->setText(defaultSettings.getRightInput());
-    edit_SEQUENCE_INTERNAL_OLIGO->setText(defaultSettings.getInternalInput());
-    edit_SEQUENCE_OVERHANG_LEFT->setText(defaultSettings.getOverhangLeft());
-    edit_SEQUENCE_OVERHANG_RIGHT->setText(defaultSettings.getOverhangRight());
-
-    {
-        QString qualityString;
-        bool first = true;
-        const auto& seqQuality = defaultSettings.getSequenceQuality();
-        for (int qualityValue : qAsConst(seqQuality)) {
-            if (!first) {
-                qualityString += " ";
-            }
-            qualityString += QString::number(qualityValue);
-            first = false;
-        }
-        edit_SEQUENCE_QUALITY->setPlainText(qualityString);
-    }
-
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_TM_FORMULA", &value);
-        combobox_PRIMER_TM_FORMULA->setCurrentIndex(value);
-    }
-    {
-        int value = 0;
-        defaultSettings.getIntProperty("PRIMER_SALT_CORRECTIONS", &value);
-        combobox_PRIMER_SALT_CORRECTIONS->setCurrentIndex(value);
-    }
-
-    {
-        QString task = TASK_ENUM_STRING_MAP.value(defaultSettings.getTask(), "generic");
-        edit_PRIMER_TASK->setCurrentText(task);
-    }
-
-    edit_SEQUENCE_PRIMER->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    label_PRIMER_LEFT_INPUT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    edit_SEQUENCE_OVERHANG_LEFT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    label_SEQUENCE_OVERHANG_LEFT->setEnabled(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked());
-    edit_SEQUENCE_PRIMER_REVCOMP->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    label_PRIMER_RIGHT_INPUT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    edit_SEQUENCE_OVERHANG_RIGHT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    label_SEQUENCE_OVERHANG_RIGHT->setEnabled(checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked());
-    edit_SEQUENCE_INTERNAL_OLIGO->setEnabled(checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
-    label_PRIMER_INTERNAL_OLIGO_INPUT->setEnabled(checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked());
-
-    combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentIndex(0);
-    combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(0);
-    {
-        for (int i = 0; i < repeatLibraries.size(); i++) {
-            if (repeatLibraries[i].second == defaultSettings.getRepeatLibraryPath()) {
-                combobox_PRIMER_MISPRIMING_LIBRARY->setCurrentIndex(i);
-            }
-            if (repeatLibraries[i].second == defaultSettings.getMishybLibraryPath()) {
-                combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->setCurrentIndex(i);
-            }
-        }
-    }
+    sl_presetChanged(cbPreset->currentText());
 }
 
 static U2Range<int> parseExonRange(const QString& text, bool& ok) {
@@ -430,8 +346,7 @@ static U2Range<int> parseExonRange(const QString& text, bool& ok) {
 }
 
 bool Primer3Dialog::doDataExchange() {
-    delete settings;
-    settings = new Primer3TaskSettings;
+    settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
 
     QMap<QWidget*, bool> widgetStates;
     QStringList errors;
@@ -456,6 +371,43 @@ bool Primer3Dialog::doDataExchange() {
         settings->setSpanIntronExonBoundarySettings(s);
     } else {
         widgetStates.insert(edit_exonRange, true);
+    }
+
+    if (gbCheckComplementary->isChecked()) {
+        CheckComplementSettings s;
+        s.enabled = true;
+        s.enableMaxComplementPairs = cbMaxBasePairInDimer->isChecked();
+        if (s.enableMaxComplementPairs) {
+            s.maxComplementPairs = sbMaxComplementPairs->value();
+        }
+        s.enableMaxGcContent = cbMaxDimerGcContent->isChecked();
+        if (s.enableMaxGcContent) {
+            s.maxGcContent = sbMaxGcPairs->value();
+        }
+        if (cbGenerateCsvReport->isChecked()) {
+            auto csvReportPath = leCsvReportPath->text();
+            QFile f(csvReportPath);
+            bool ok = f.open(QIODevice::WriteOnly);
+            f.close();
+            if (!ok) {
+                widgetStates.insert(leCsvReportPath, false);
+                errors.append(L10N::errorWritingFile(csvReportPath));
+                s.csvReportPath.clear();
+            } else {
+                widgetStates.insert(leCsvReportPath, true);
+                s.csvReportPath = leCsvReportPath->text();
+            }
+        }
+
+        if (!s.enableMaxComplementPairs && !s.enableMaxGcContent && cbGenerateCsvReport->isChecked()) {
+            widgetStates.insert(gbCheckComplementary, false);
+            errors.append("\"Check complement\" will be ignored, because it is enabled, bul all corresponding parameters are disabled.");
+        } else {
+            widgetStates.insert(gbCheckComplementary, true);
+            settings->setCheckComplementSettings(s);
+        }
+    } else {
+        widgetStates.insert(gbCheckComplementary, true);
     }
 
     const auto& intProps = settings->getIntPropertyList();
@@ -867,9 +819,105 @@ void Primer3Dialog::sl_saveSettings() {
         fileName += ".txt";
     }
 
-    QFile file(fileName);
+    saveSettings(fileName);
+}
+
+void Primer3Dialog::sl_loadSettings() {
+    LastUsedDirHelper lod;
+    QStringList filters;
+    filters.append(tr("Text files") + "(*.txt)");
+    lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, FileFilters::withAllFilesFilter(filters));
+    if (lod.url.isNull()) {  // user clicked 'Cancel' button
+        return;
+    }
+
+    loadSettings(lod.url);
+}
+
+
+void Primer3Dialog::sl_resetClicked() {
+    reset();
+    rs->reset();
+}
+
+void Primer3Dialog::sl_taskChanged(const QString& text) {
+    auto setSequenceParametersEnabled = [&](bool target, bool junctionList, bool pairOk, bool excludedRegion, bool includedRegion) {
+        label_SEQUENCE_TARGET->setEnabled(target);
+        edit_SEQUENCE_TARGET->setEnabled(target);
+        label_SEQUENCE_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
+        edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
+        label_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setEnabled(pairOk);
+        edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setEnabled(pairOk);
+        label_SEQUENCE_EXCLUDED_REGION->setEnabled(excludedRegion);
+        edit_SEQUENCE_EXCLUDED_REGION->setEnabled(excludedRegion);
+        label_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
+        edit_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
+    };
+
+    if (text == "generic") {
+        setSequenceParametersEnabled(true, true, true, true, true);
+    } else if (text == "pick_sequencing_primers") {
+        setSequenceParametersEnabled(true, false, false, false, false);
+    } else if (text == "pick_primer_list") {
+        setSequenceParametersEnabled(true, true, true, true, true);
+    } else if (text == "check_primers") {
+        setSequenceParametersEnabled(false, false, false, false, false);
+    } else if (text == "pick_cloning_primers") {
+        setSequenceParametersEnabled(false, false, false, false, true);
+    } else if (text == "pick_discriminative_primers") {
+        setSequenceParametersEnabled(true, false, false, false, false);
+    } else {
+        FAIL("Unexpected task value", );
+    }
+}
+
+void Primer3Dialog::sl_presetChanged(const QString& text) {
+    if (text == tr("Default")) {
+        loadSettings(primer3DataDirectory + "/presets/Default.txt");
+        gbCheckComplementary->setChecked(false);
+        lbPresetInfo->clear();
+    } else if (text == tr("Recombinase Polymerase Amplification")) {
+        loadSettings(primer3DataDirectory + "/presets/RPA.txt");
+        gbCheckComplementary->setChecked(true);
+        lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
+    } else {
+        FAIL("Unexpected preset", );
+    }
+}
+
+void Primer3Dialog::sl_checkComplementStateChanged() {
+    QString warning;
+    if (!checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() || !checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked()) {
+        warning = tr("Warning: \"Check complementary\" requires left and right primers enabled (\"Main\" page).");
+    } else if (edit_PRIMER_TASK->currentText() == "pick_primer_list") {
+        warning = tr("Warning: \"Check complementary\" requires any task but \"pick_primer_list\" (\"Main\" page).");
+    }
+
+    if (warning.isEmpty()) {
+        lbPosteriorActionsWarning->clear();
+        gbCheckComplementary->setEnabled(true);
+    } else {
+        lbPosteriorActionsWarning->setText(warning);
+        gbCheckComplementary->setEnabled(false);
+    }
+}
+
+static constexpr const char* CSV_REPORT_DIR_ID = "csv-report-dir";
+
+void Primer3Dialog::sl_ChooseCsvReportPathButtonClicked() {
+    LastUsedDirHelper helper(CSV_REPORT_DIR_ID);
+    QString fileFilter = FileFilters::createFileFilter(tr("CSV report"), { "csv" }, false);
+
+    helper.url = U2FileDialog::getSaveFileName(this, tr("Save CSV report to..."), leCsvReportPath->text(), fileFilter);
+    if (!helper.url.isEmpty()) {
+        leCsvReportPath->setText(helper.url);
+    }
+}
+
+void Primer3Dialog::saveSettings(const QString& filePath) {
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text)) {
-        QMessageBox::critical(this, windowTitle(), tr("Can't write to \"%1\"").arg(fileName));
+        QMessageBox::critical(this, windowTitle(), L10N::errorWritingFile(filePath));
         return;
     }
 
@@ -901,35 +949,27 @@ void Primer3Dialog::sl_saveSettings() {
     for (const auto& par : qAsConst(LINE_EDIT_PARAMETERS)) {
         QLineEdit* lineEdit = findChild<QLineEdit*>("edit_" + par);
         if (lineEdit != nullptr) {
-            auto text = lineEdit->text();
-            if (!text.isEmpty()) {
-                stream << par << "=" << text << endl;
-            }
+            stream << par << "=" << lineEdit->text() << endl;
         }
     }
 
     U2OpStatusImpl os;
     stream << "SEQUENCE_TEMPLATE=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
     stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << endl;
-
-    auto qualityText = edit_SEQUENCE_QUALITY->toPlainText();
-    if (!qualityText.isEmpty()) {
-        stream << "SEQUENCE_QUALITY=" << qualityText << endl;
-    }
+    stream << "SEQUENCE_QUALITY=" << edit_SEQUENCE_QUALITY->toPlainText() << endl;
 
     stream << "PRIMER_TASK=" << edit_PRIMER_TASK->currentText() << endl;
-
     stream << "PRIMER_TM_FORMULA=" << combobox_PRIMER_TM_FORMULA->currentIndex() << endl;
     stream << "PRIMER_SALT_CORRECTIONS=" << combobox_PRIMER_SALT_CORRECTIONS->currentIndex() << endl;
 
     QString pathPrimerMisprimingLibrary;
     QString pathPrimerInternalOligoLibrary;
     for (const auto& lib : qAsConst(repeatLibraries)) {
-        if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText() && !lib.second.isEmpty()) {
+        if (lib.first == combobox_PRIMER_MISPRIMING_LIBRARY->currentText()) {
             QFileInfo fi(lib.second);
             stream << "PRIMER_MISPRIMING_LIBRARY=" << fi.fileName() << endl;
         }
-        if (lib.first == combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->currentText() && !lib.second.isEmpty()) {
+        if (lib.first == combobox_PRIMER_INTERNAL_MISHYB_LIBRARY->currentText()) {
             QFileInfo fi(lib.second);
             stream << "PRIMER_INTERNAL_MISHYB_LIBRARY=" << fi.fileName() << endl;
         }
@@ -940,18 +980,10 @@ void Primer3Dialog::sl_saveSettings() {
     file.close();
 }
 
-void Primer3Dialog::sl_loadSettings() {
-    LastUsedDirHelper lod;
-    QStringList filters;
-    filters.append(tr("Text files") + "(*.txt)");
-    lod.url = U2FileDialog::getOpenFileName(this, tr("Load settings"), lod.dir, FileFilters::withAllFilesFilter(filters));
-    if (lod.url.isNull()) {  // user clicked 'Cancel' button
-        return;
-    }
-
-    QFile file(lod.url);
+void Primer3Dialog::loadSettings(const QString& filePath) {
+    QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this, windowTitle(), tr("Can't read to \"%1\"").arg(lod.url));
+        QMessageBox::critical(this, windowTitle(), L10N::errorReadingFile(filePath));
         return;
     }
 
@@ -961,7 +993,7 @@ void Primer3Dialog::sl_loadSettings() {
     bool primerMinThreePrimeIsUsed = false;
     QTextStream stream(&file);
     QStringList changedLineEdits;
-    while(!stream.atEnd()) {
+    while (!stream.atEnd()) {
         auto line = stream.readLine();
         auto par = line.split('=');
         CHECK_CONTINUE(!(primerMinThreePrimeIsUsed && (par.first() == "PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE" || par.first() == "PRIMER_MIN_RIGHT_THREE_PRIME_DISTANCE")));
@@ -1104,42 +1136,6 @@ void Primer3Dialog::sl_loadSettings() {
         }
     }
     file.close();
-}
-
-void Primer3Dialog::sl_resetClicked() {
-    reset();
-    rs->reset();
-}
-
-void Primer3Dialog::sl_taskChanged(const QString& text) {
-    auto setSequenceParametersEnabled = [&](bool target, bool junctionList, bool pairOk, bool excludedRegion, bool includedRegion) {
-        label_SEQUENCE_TARGET->setEnabled(target);
-        edit_SEQUENCE_TARGET->setEnabled(target);
-        label_SEQUENCE_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
-        edit_SEQUENCE_OVERLAP_JUNCTION_LIST->setEnabled(junctionList);
-        label_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setEnabled(pairOk);
-        edit_SEQUENCE_PRIMER_PAIR_OK_REGION_LIST->setEnabled(pairOk);
-        label_SEQUENCE_EXCLUDED_REGION->setEnabled(excludedRegion);
-        edit_SEQUENCE_EXCLUDED_REGION->setEnabled(excludedRegion);
-        label_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
-        edit_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
-    };
-
-    if (text == "generic") {
-        setSequenceParametersEnabled(true, true, true, true, true);
-    } else if (text == "pick_sequencing_primers") {
-        setSequenceParametersEnabled(true, false, false, false, false);
-    } else if (text == "pick_primer_list") {
-        setSequenceParametersEnabled(true, true, true, true, true);
-    } else if (text == "check_primers") {
-        setSequenceParametersEnabled(false, false, false, false, false);
-    } else if (text == "pick_cloning_primers") {
-        setSequenceParametersEnabled(false, false, false, false, true);
-    } else if (text == "pick_discriminative_primers") {
-        setSequenceParametersEnabled(true, false, false, false, false);
-    } else {
-        FAIL("Unexpected task value", );
-    }
 }
 
 QString Primer3Dialog::checkModel() {

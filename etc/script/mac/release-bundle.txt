@@ -963,6 +963,9 @@ Unipro UGENE.app/Contents/MacOS/data/position_weight_matrix/UniPROBE/all_uniprob
 Unipro UGENE.app/Contents/MacOS/data/primer3
 Unipro UGENE.app/Contents/MacOS/data/primer3/drosophila.w.transposons.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/humrep_and_simple.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/Default.txt
+Unipro UGENE.app/Contents/MacOS/data/primer3/presets/RPA.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/rodent_ref.txt
 Unipro UGENE.app/Contents/MacOS/data/primer3/rodrep_and_simple.txt
 Unipro UGENE.app/Contents/MacOS/data/query_samples
