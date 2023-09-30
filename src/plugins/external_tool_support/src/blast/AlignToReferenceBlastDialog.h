@@ -65,7 +65,6 @@ public:
 private:
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
-    void run() override;
     ReportResult report() override;
     QString generateReport() const override;
 

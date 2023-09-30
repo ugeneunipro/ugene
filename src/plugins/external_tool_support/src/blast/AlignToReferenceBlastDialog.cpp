@@ -80,7 +80,7 @@ const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings& settings)
-    : Task(tr("Map Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
+    : Task(tr("Map Sanger reads to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
     GCOUNTER(cvar, "AlignToReferenceBlastCmdlineTask");
@@ -224,10 +224,6 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
     }
 
     return result;
-}
-
-void AlignToReferenceBlastCmdlineTask::run() {
-
 }
 
 Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
