@@ -24,11 +24,11 @@
 #include <QDomDocument>
 #include <QMessageBox>
 #include <QShortcut>
-#include <QTextStream>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentUtils.h>
@@ -145,6 +145,10 @@ QMap<QString, QMultiMap<QString, QString>> splitReports(U2OpStatus& os, const QS
 }  // namespace
 
 QString AlignToReferenceBlastCmdlineTask::generateReport() const {
+    if (hasError()) {
+        return "<html><body>" + reportString + "</body></html>";
+    }
+
     U2OpStatusImpl os;
     QMap<QString, QMultiMap<QString, QString>> reports = splitReports(os, reportString);
 
@@ -186,40 +190,32 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
                 return result;
             }
         }
-        alignToRefCmdlineConfig.command = "--task=" + ALIGN_TO_REF_CMDLINE;
+        CmdlineInOutTaskConfig config;
+
+        config.command = "--task=" + ALIGN_TO_REF_CMDLINE;
         QString argString = "--%1=\"%2\"";
-        alignToRefCmdlineConfig.arguments << argString.arg(REF_ARG).arg(QFileInfo(settings.referenceUrl).absoluteFilePath());
-        alignToRefCmdlineConfig.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
-        alignToRefCmdlineConfig.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
-        alignToRefCmdlineConfig.arguments << argString.arg(ROW_NAMING_ARG).arg(settings.getRowNamingPolicyString());
-        alignToRefCmdlineConfig.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
-        alignToRefCmdlineConfig.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
-        alignToRefCmdlineConfig.arguments << argString.arg(TRIM_ARG).arg(true);
-        alignToRefCmdlineConfig.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.resultAlignmentFile).absoluteFilePath());
+        config.arguments << argString.arg(REF_ARG).arg(QFileInfo(settings.referenceUrl).absoluteFilePath());
+        config.arguments << argString.arg(READS_ARG).arg(settings.readUrls.join(";"));
+        config.arguments << argString.arg(MIN_IDENTITY_ARG).arg(settings.minIdentity);
+        config.arguments << argString.arg(ROW_NAMING_ARG).arg(settings.getRowNamingPolicyString());
+        config.arguments << argString.arg(MIN_LEN_ARG).arg(settings.minLength);
+        config.arguments << argString.arg(THRESHOLD_ARG).arg(settings.qualityThreshold);
+        config.arguments << argString.arg(TRIM_ARG).arg(true);
+        config.arguments << argString.arg(RESULT_ALIGNMENT_ARG).arg(QFileInfo(settings.resultAlignmentFile).absoluteFilePath());
 
-        alignToRefCmdlineConfig.reportFile = reportFile.fileName();
-        alignToRefCmdlineConfig.emptyOutputPossible = true;
+        config.reportFile = reportFile.fileName();
+        config.emptyOutputPossible = true;
 
-        alignToRefCmdlineConfig.logLevel = LogLevel_TRACE;
-        alignToRefCmdlineConfig.outputFile = GUrlUtils::rollFileName(AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() 
-                                                    + "/ALIGN_TO_REF_CMDLINE_log.txt", DocumentUtils::getNewDocFileNameExcludesHint());
+        config.logLevel = LogLevel_TRACE;
 
-        cmdlineTask = new CmdlineInOutTaskRunner(alignToRefCmdlineConfig);
+        cmdlineTask = new CmdlineInOutTaskRunner(config);
         result.append(cmdlineTask);
     } else if (subTask == cmdlineTask && settings.addResultToProject) {
         // add load document task
-        QFile file(alignToRefCmdlineConfig.reportFile);
-        CHECK_EXT(file.open(QIODevice::ReadOnly | QIODevice::Text), setError(tr("No report file after align, please, investigate the output file for errors: %1")
-                  .arg(alignToRefCmdlineConfig.outputFile)), result);
-        QTextStream in(&file);
-        QString reportStr = in.readAll();        
-        CHECK_EXT(!reportStr.contains("[ERROR]"), setError(tr("Report file after align contain error(s): '%1', you can investigate output file %2")
-                  .arg(reportStr).arg(alignToRefCmdlineConfig.outputFile)), result);
-        CHECK_EXT(QFile::exists(settings.resultAlignmentFile), setError(tr("There is no result file after align, please, investigate the output file for errors: %1")
-                  .arg(alignToRefCmdlineConfig.outputFile)), result);
-        QFile::remove(alignToRefCmdlineConfig.outputFile);
         FormatDetectionConfig config;
         QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(settings.resultAlignmentFile, config);
+        CHECK_EXT(!formats.isEmpty() && (formats.first().format != nullptr), setError(tr("wrong output format")), result);
+
         DocumentFormat* format = formats.first().format;
         CHECK_EXT(format->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT), setError(tr("wrong output format")), result);
 
@@ -231,11 +227,12 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
 }
 
 void AlignToReferenceBlastCmdlineTask::run() {
-    reportFile.open();
-    reportString = reportFile.readAll();
+
 }
 
 Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
+    reportFile.open();
+    reportString = reportFile.readAll();
     if (loadRef != nullptr) {
         loadRef->cleanup();
     }

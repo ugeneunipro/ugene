@@ -339,7 +339,7 @@ bool PluginSupportImpl::isDefaultPluginsDir(const QString& url) {
 //////////////////////////////////////////////////////////////////////////
 /// Tasks
 AddPluginTask::AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc, bool forceVerification)
-    : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun),
+    : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlags(TaskFlag_NoRun) | TaskFlag_IgnoreShutdownOnError),
       lib(nullptr),
       ps(_ps),
       desc(_desc),

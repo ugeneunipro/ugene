@@ -24,7 +24,6 @@
 #include <QDialog>
 #include <QTemporaryFile>
 
-#include <U2Core/CmdlineInOutTaskRunner.h>
 #include <U2Core/Task.h>
 
 #include <U2Gui/U2SavableWidget.h>
@@ -76,7 +75,6 @@ private:
 
     QTemporaryFile reportFile;
     QString reportString;
-    CmdlineInOutTaskConfig alignToRefCmdlineConfig;
 
     static const QString ALIGN_TO_REF_CMDLINE;
     static const QString TRIM_ARG;

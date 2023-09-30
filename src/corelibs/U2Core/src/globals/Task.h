@@ -229,7 +229,12 @@ enum TaskFlag {
      * When set the global shutdown task will not ask user if to cancel the task or not.
      * The flag should be used for background service tasks.
      */
-    TaskFlag_SilentCancelOnShutdown = 1 << 29
+    TaskFlag_SilentCancelOnShutdown = 1 << 29,
+
+    /**
+     * Do not inititate console application shutdown in case of error
+     */
+    TaskFlag_IgnoreShutdownOnError = 1 << 30
 };
 
 #define TaskFlags_FOSCOE (U2::TaskFlags(U2::TaskFlag_FailOnSubtaskError) | U2::TaskFlag_FailOnSubtaskCancel)

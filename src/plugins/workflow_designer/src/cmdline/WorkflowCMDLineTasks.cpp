@@ -199,7 +199,8 @@ Task::ReportResult WorkflowRunFromCMDLineBase::report() {
 }
 
 QByteArray WorkflowRunFromCMDLineBase::getReportFromError() const {
-    QString res = "<br>[ERROR]: " + stateInfo.getError();
+    QString res = "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
+    res += "<u>" + tr("Error: %1").arg(getError()) + "</u>";
     return res.toLocal8Bit();
 }
 

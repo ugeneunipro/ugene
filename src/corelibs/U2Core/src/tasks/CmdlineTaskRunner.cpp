@@ -256,9 +256,6 @@ void CmdlineTaskRunner::prepare() {
 
     QString cmdlineUgenePath(CMDLineRegistryUtils::getCmdlineUgenePath());
     coreLog.details("Starting UGENE command line: " + cmdlineUgenePath + " " + args.join(" "));
-    if (!config.outputFile.isEmpty()) {
-        process->setStandardOutputFile(config.outputFile);
-    }
     process->start(cmdlineUgenePath, args);
 #if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
     QString processId = process->pid() != nullptr ? QString::number(process->pid()->dwProcessId) : "unknown";
@@ -357,18 +354,17 @@ void CmdlineTaskRunner::sl_onError(QProcess::ProcessError error) {
 void CmdlineTaskRunner::sl_onReadStandardOutput() {
     QString data = readStdout();
     QStringList lines = data.split(QChar('\n'));
-    writeLog(lines);
 
-    int errInd = data.indexOf(ERROR_KEYWORD);
-    if (errInd >= 0) {
-        int errIndEnd = data.indexOf(ERROR_KEYWORD, errInd + 1);
-        if (errIndEnd > errInd) {
-            setError(data.mid(errInd + ERROR_KEYWORD.size(), errIndEnd - errInd - ERROR_KEYWORD.size()));
-        } else {
-            setError(data.mid(errInd + ERROR_KEYWORD.size() + 1));
-        }
+    const QString pattern = tr("} finished with error:");
+    int patternIndex = data.indexOf(pattern);
+    if (patternIndex > -1) {
+        int endOfErrorIndex = data.indexOf("[", patternIndex);
+        QString errorStr = data.mid(patternIndex + pattern.size(), endOfErrorIndex - (patternIndex + pattern.size()));
+        setError(errorStr);
         return;
     }
+
+    writeLog(lines);
 
     for (const QString& line : qAsConst(lines)) {
         QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);

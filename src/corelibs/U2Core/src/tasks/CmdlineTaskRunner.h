@@ -35,7 +35,6 @@ public:
     bool withPluginList = false;
     QStringList pluginList;
     QString reportFile;
-    QString outputFile;
 };
 
 class U2CORE_EXPORT CmdlineTaskRunner : public Task {
