@@ -214,10 +214,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent* me) {
                 } else {
                     qint64 mousePressPos = renderArea->coordToPos(renderAreaPoint);
                     for (int i = 0; i < annotationRegions.size(); i++) {
-                        const U2Region& region = annotationRegions[i];
-                        if (region.contains(mousePressPos)) {
-                            ctx->emitAnnotationActivated(annotation, i);
-                        }
+                        ctx->emitAnnotationActivated(annotation, i);
                     }
                 }
             }
@@ -242,14 +239,7 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
     if (!expandSelection) {
         ctx->emitClearSelectedAnnotationRegions();
     }
-    const QVector<U2Region> annotationRegions = annotation->getRegions();
-    qint64 renderAreaPos = renderArea->coordToPos(renderAreaPoint);
-    foreach (const U2Region& region, annotationRegions) {
-        CHECK_CONTINUE(region.contains(renderAreaPos));
-
-        ctx->emitAnnotationDoubleClicked(annotation, annotationRegions.indexOf(region));
-        break;
-    }
+    ctx->emitAnnotationDoubleClicked(annotation, 0);
 }
 
 //! VIEW_RENDERER_REFACTORING: used only in CV, doubled in SequenceViewAnnotetedRenderer.
@@ -437,8 +427,9 @@ QList<Annotation*> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsByC
         double scale = getCurrentScale();
         uncertaintyLength = static_cast<qint64>(1 / scale);
         SAFE_POINT(uncertaintyLength < sequenceLength, "Invalid uncertaintyLength for the given seqLen!", resultAnnotationList);
+        coreLog.error(QString("CoordToPos: %1, uncertaintyLength: %2").arg(pos).arg(uncertaintyLength));
     }
-    U2Region pointRegion(pos - uncertaintyLength, 1 + 2 * uncertaintyLength);  // A region of sequence covered by the 'QPoint& coord'.
+    U2Region pointRegion(pos - 2 * uncertaintyLength, 1 + 3 * uncertaintyLength);  // A region of sequence covered by the 'QPoint& coord'.
     const QSet<AnnotationTableObject*> annotationObjectSet = sequenceContext->getAnnotationObjects(true);
     for (const AnnotationTableObject* annotationObject : qAsConst(annotationObjectSet)) {
         for (Annotation* annotation : annotationObject->getAnnotationsByRegion(pointRegion)) {

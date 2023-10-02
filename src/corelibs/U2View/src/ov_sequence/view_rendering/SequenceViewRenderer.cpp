@@ -59,7 +59,7 @@ int SequenceViewRenderer::posToXCoord(qint64 pos, const QSize&, const U2Region& 
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), -1);
 
     double res = (double)(pos - visibleRange.startPos) * getCurrentScale();
-    return qRound(res);
+    return int(res);
 }
 
 int SequenceViewRenderer::getRowLineHeight() const {
