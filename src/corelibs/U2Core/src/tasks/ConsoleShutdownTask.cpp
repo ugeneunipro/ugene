@@ -33,8 +33,8 @@ namespace U2 {
 ConsoleShutdownTask::ConsoleShutdownTask(QCoreApplication* app, bool exitAppOnTaskError_)
     : Task(tr("Shutdown"), TaskFlags_NR_FOSCOE | TaskFlag_NoAutoDelete), app(app), exitAppOnTaskError(exitAppOnTaskError_) {
     TaskScheduler* ts = AppContext::getTaskScheduler();
-    connect(ts, SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(startShutdown()));
-    connect(app, SIGNAL(aboutToQuit()), SLOT(startShutdown()));
+    connect(ts, &TaskScheduler::si_topLevelTaskUnregistered, this, &ConsoleShutdownTask::startShutdown);
+    connect(app, &QCoreApplication::aboutToQuit, this, &ConsoleShutdownTask::startShutdown);
     if (exitAppOnTaskError) {
         connect(ts, &TaskScheduler::si_stateChanged, this, &ConsoleShutdownTask::sl_shutdownOnTaskError);
     }
@@ -53,7 +53,7 @@ void ConsoleShutdownTask::startShutdown() {
 }
 
 void ConsoleShutdownTask::sl_shutdownOnTaskError(Task* t) {
-    if (t->hasError() && !t->hasFlags(TaskFlag_IgnoreShutdownOnError)) {
+    if (t->hasError() && t->hasFlags(TaskFlag_FailCommandLineRunOnTaskError)) {
         coreLog.info("Shutdown because of task error");
         exitCode = 1;
         registerShutdownTask();
@@ -134,9 +134,11 @@ QList<Task*> ConsoleShutdownTask::onSubTaskFinished(Task* subTask) {
 }
 
 void ConsoleShutdownTask::registerShutdownTask() {
-    app->disconnect(this, SLOT(startShutdown()));
-    AppContext::getTaskScheduler()->disconnect(this, SLOT(startShutdown()));
-    AppContext::getTaskScheduler()->registerTopLevelTask(this);
+    TaskScheduler* ts = AppContext::getTaskScheduler();
+    disconnect(ts, &TaskScheduler::si_topLevelTaskUnregistered, this, &ConsoleShutdownTask::startShutdown);
+    disconnect(app, &QCoreApplication::aboutToQuit, this, &ConsoleShutdownTask::startShutdown);
+    disconnect(ts, &TaskScheduler::si_stateChanged, this, &ConsoleShutdownTask::sl_shutdownOnTaskError);
+    ts->registerTopLevelTask(this);
 }
 
 Task::ReportResult ConsoleShutdownTask::report() {

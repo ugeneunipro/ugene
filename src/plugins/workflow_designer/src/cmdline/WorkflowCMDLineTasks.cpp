@@ -48,7 +48,7 @@ namespace U2 {
  * WorkflowRunFromCMDLineBase
  *******************************************/
 WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
-    : Task(tr("Workflow run from cmdline"), TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
+    : Task(tr("Workflow run from cmdline"), TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported | TaskFlag_FailCommandLineRunOnTaskError),
       schema(nullptr),
       optionsStartAt(-1),
       loadTask(nullptr),

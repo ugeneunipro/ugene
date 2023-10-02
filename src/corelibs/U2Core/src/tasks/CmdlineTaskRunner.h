@@ -70,6 +70,7 @@ private:
     CmdlineTaskConfig config;
     QProcess* process;
     QString processLogPrefix;
+    QString possibleErrorStr;
 };
 
 class U2CORE_EXPORT CmdlineTask : public Task {

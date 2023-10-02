@@ -359,8 +359,8 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
     int patternIndex = data.indexOf(pattern);
     if (patternIndex > -1) {
         int endOfErrorIndex = data.indexOf("[", patternIndex);
-        QString errorStr = data.mid(patternIndex + pattern.size(), endOfErrorIndex - (patternIndex + pattern.size()));
-        setError(errorStr);
+        possibleErrorStr = data.mid(patternIndex + pattern.size(), endOfErrorIndex - (patternIndex + pattern.size()));
+        setError(possibleErrorStr);
         return;
     }
 
@@ -385,12 +385,18 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
 }
 
 void CmdlineTaskRunner::sl_onFinish(int exitCode, QProcess::ExitStatus exitStatus) {
-    CHECK(!hasError(), );  // !do not overwrite previous error!
-
     // On Windows, if the process was terminated with TerminateProcess() from another application,
     // this function will still return NormalExit unless the exit code is less than 0.
     if (exitStatus != QProcess::NormalExit || exitCode != 0) {
-        setError(tr("An error occurred. Process is not finished successfully."));
+        QString errorsStr;
+        if (hasError() || !possibleErrorStr.isEmpty()) {
+            errorsStr = tr("Process finished with error(s): ");
+            errorsStr += hasError() ? getError() + "\n" : "";
+            errorsStr += possibleErrorStr.isEmpty() ? " " + possibleErrorStr + "\n" : "";
+        } else {
+            errorsStr = tr("Process crashed without any errors.");
+        }
+        setError(errorsStr);
     }
 }
 

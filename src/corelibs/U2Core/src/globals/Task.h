@@ -232,9 +232,9 @@ enum TaskFlag {
     TaskFlag_SilentCancelOnShutdown = 1 << 29,
 
     /**
-     * Do not inititate console application shutdown in case of error
+     * Shutdown console application with error code in case of task error.
      */
-    TaskFlag_IgnoreShutdownOnError = 1 << 30
+    TaskFlag_FailCommandLineRunOnTaskError = 1 << 30
 };
 
 #define TaskFlags_FOSCOE (U2::TaskFlags(U2::TaskFlag_FailOnSubtaskError) | U2::TaskFlag_FailOnSubtaskCancel)
