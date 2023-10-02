@@ -4762,14 +4762,36 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
     GTFileDialog::openFile(testDir, "_common_data/regression/7927/example.seq");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
-    FindEnzymesDialogFillerSettings settings({"Esp3I"});
+    GTUtilsDialog::add(new PopupChooser({ "ADV_MENU_ANALYSE", "Find restriction sites" }));
+    FindEnzymesDialogFillerSettings settings({ "Esp3I" });
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
     GTLogTracer lt;
     GTWidget::click(GTWidget::findWidget("OP_ANNOT_HIGHLIGHT"));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7946) {
+    // Open _common_data/scenarios/_regression/7946/7946.gb
+    // Open details view
+    // Make sure, that "Wrap mode" is enabled
+    // Click on the annotation
+    // Expected: annotation is selected
+
+    GTFileDialog::openFile(testDir, "_common_data/scenarios/_regression/7946/7946.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsSequenceView::makeDetViewVisible();
+
+    QAbstractButton* wrapButton = GTAction::button("wrap_sequence_action");
+    if (!wrapButton->isChecked()) {
+        GTWidget::click(wrapButton);
+    }
+
+    GTUtilsSequenceView::clickAnnotationDet("misc_feature", 6);
+
+    CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedItem().isEmpty(), "No selected annotation, but should be");
 }
 
 }  // namespace GUITest_regression_scenarios
