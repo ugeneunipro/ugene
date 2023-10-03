@@ -22,6 +22,7 @@
 #include "SequenceViewRenderer.h"
 
 #include <QFontMetrics>
+#include <QtMath>
 
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
@@ -59,7 +60,7 @@ int SequenceViewRenderer::posToXCoord(qint64 pos, const QSize&, const U2Region& 
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), -1);
 
     double res = (double)(pos - visibleRange.startPos) * getCurrentScale();
-    return int(res);
+    return qFloor(res);
 }
 
 int SequenceViewRenderer::getRowLineHeight() const {
