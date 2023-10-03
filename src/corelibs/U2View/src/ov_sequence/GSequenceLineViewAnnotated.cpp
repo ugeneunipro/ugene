@@ -44,6 +44,8 @@
 
 #include "ADVSequenceObjectContext.h"
 
+#include <limits>
+
 namespace U2 {
 
 GSequenceLineViewAnnotated::GSequenceLineViewAnnotated(QWidget* p, SequenceObjectContext* ctx)
@@ -68,6 +70,28 @@ void GSequenceLineViewAnnotated::connectAnnotationObject(const AnnotationTableOb
     connect(ao, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation*>&)), SLOT(sl_onAnnotationsRemoved(const QList<Annotation*>&)));
     connect(ao, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*)), SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation*>&, AnnotationGroup*)));
     connect(ao, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification>&)), SLOT(sl_onAnnotationsModified(const QList<AnnotationModification>&)));
+}
+
+const int GSequenceLineViewAnnotated::getClosestAnnRegion2PointIndex(Annotation* ann, qint64 pos) {
+    QVector<U2Region> annotationRegions = ann->getRegions();
+    int closestAnnotationRegionIndex = 0;
+    auto minimumDistance = (std::numeric_limits<qint64>::max)();
+
+    for (int i = 0; i < annotationRegions.size(); i++) {
+        const U2Region& region = annotationRegions[i];
+        if (region.contains(pos)) {
+            closestAnnotationRegionIndex = i;
+            break;
+        }
+
+        qint64 distance = qMin(qAbs(region.startPos - pos), qAbs(region.endPos() - pos));
+        if (distance < minimumDistance) {
+            minimumDistance = distance;
+            closestAnnotationRegionIndex = i;
+        }
+    }
+
+    return closestAnnotationRegionIndex;
 }
 
 void GSequenceLineViewAnnotated::sl_onAnnotationSettingsChanged(const QStringList&) {
@@ -207,15 +231,13 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent* me) {
                 }
             }
             if (annotation != nullptr) {
-                QVector<U2Region> annotationRegions = annotation->getRegions();
                 bool processAllRegions = U1AnnotationUtils::isAnnotationContainsJunctionPoint(annotation, seqLen);
                 if (processAllRegions) {
                     ctx->emitAnnotationActivated(annotation, -1);
                 } else {
                     qint64 mousePressPos = renderArea->coordToPos(renderAreaPoint);
-                    for (int i = 0; i < annotationRegions.size(); i++) {
-                        ctx->emitAnnotationActivated(annotation, i);
-                    }
+                    int closestAnnotationRegionIndex = getClosestAnnRegion2PointIndex(annotation, mousePressPos);
+                    ctx->emitAnnotationActivated(annotation, closestAnnotationRegionIndex);
                 }
             }
         }
@@ -239,7 +261,9 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
     if (!expandSelection) {
         ctx->emitClearSelectedAnnotationRegions();
     }
-    ctx->emitAnnotationDoubleClicked(annotation, 0);
+    qint64 renderAreaPos = renderArea->coordToPos(renderAreaPoint);
+    int closestAnnotationRegionIndex = getClosestAnnRegion2PointIndex(annotation, renderAreaPos);
+    ctx->emitAnnotationDoubleClicked(annotation, closestAnnotationRegionIndex);
 }
 
 //! VIEW_RENDERER_REFACTORING: used only in CV, doubled in SequenceViewAnnotetedRenderer.
@@ -427,7 +451,6 @@ QList<Annotation*> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsByC
         double scale = getCurrentScale();
         uncertaintyLength = static_cast<qint64>(1 / scale);
         SAFE_POINT(uncertaintyLength < sequenceLength, "Invalid uncertaintyLength for the given seqLen!", resultAnnotationList);
-        coreLog.error(QString("CoordToPos: %1, uncertaintyLength: %2").arg(pos).arg(uncertaintyLength));
     }
     U2Region pointRegion(pos - 2 * uncertaintyLength, 1 + 3 * uncertaintyLength);  // A region of sequence covered by the 'QPoint& coord'.
     const QSet<AnnotationTableObject*> annotationObjectSet = sequenceContext->getAnnotationObjects(true);

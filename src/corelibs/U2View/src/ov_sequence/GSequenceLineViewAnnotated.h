@@ -93,6 +93,7 @@ protected slots:
 
 private:
     void connectAnnotationObject(const AnnotationTableObject* ao);
+    static const int getClosestAnnRegion2PointIndex(Annotation* ann, qint64 pos);
 
 protected:
     friend class ClearAnnotationsTask;
