@@ -4806,6 +4806,25 @@ GUI_TEST_CLASS_DEFINITION(test_7946) {
     CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedItem().isEmpty(), "No selected annotation, but should be");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7947) {
+    // Open human_T1.fa
+    // Create any one-character-long annotation
+    // Try to select it on zoom view
+    // Expected: annotation is selected
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(true, "<auto>", "", "100000..100000"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000);
+    CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getAllSelectedItems().isEmpty(), "No annotation selected, but should be");
+    
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000, 0, true);
+    CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
+}
 
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
