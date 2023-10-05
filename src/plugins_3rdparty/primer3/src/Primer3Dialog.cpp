@@ -946,7 +946,7 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
         }
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
-            stream << key << "=" << spinBox->value() << endl;
+            stream << key << "=" << QString::number(spinBox->value(), 'f', 2) << endl;
         }
     }
 
