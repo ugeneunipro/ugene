@@ -59,7 +59,7 @@ SequenceViewRenderer::SequenceViewRenderer(SequenceObjectContext* ctx)
 int SequenceViewRenderer::posToXCoord(qint64 pos, const QSize&, const U2Region& visibleRange) const {
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), -1);
 
-    double res = (double)(pos - visibleRange.startPos) * getCurrentScale();
+    double res = (pos - visibleRange.startPos) * getCurrentScale();
     return qFloor(res);
 }
 

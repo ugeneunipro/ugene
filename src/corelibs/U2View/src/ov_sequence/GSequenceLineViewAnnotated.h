@@ -93,7 +93,14 @@ protected slots:
 
 private:
     void connectAnnotationObject(const AnnotationTableObject* ao);
-    static const int getClosestAnnRegion2PointIndex(Annotation* ann, qint64 pos);
+    /*
+     * Calculate the index of the annotation region, which was as close as possible to the set base position.
+     * This function is very valuable, then scale is very low and one pixel contains more than one sequence base.
+     * \param ann The annotation.
+     * \param baseNumber number of base user clicked on.
+     * \return 0 The index of the closest annotation to the current position.
+     **/
+    static const int getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseNumber);
 
 protected:
     friend class ClearAnnotationsTask;

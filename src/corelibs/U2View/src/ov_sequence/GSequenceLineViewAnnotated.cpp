@@ -72,19 +72,23 @@ void GSequenceLineViewAnnotated::connectAnnotationObject(const AnnotationTableOb
     connect(ao, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification>&)), SLOT(sl_onAnnotationsModified(const QList<AnnotationModification>&)));
 }
 
-const int GSequenceLineViewAnnotated::getClosestAnnRegion2PointIndex(Annotation* ann, qint64 pos) {
+const int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseNumber) {
     QVector<U2Region> annotationRegions = ann->getRegions();
     int closestAnnotationRegionIndex = 0;
+    // We need to find annotation region with minimum distance to @baseNumber
+    // Let's check in the loop distance from each region to @baseNumber
+    // and decrease @minimumDistance in current distance is lower.
+    // When we start, @minimumDistance should be the mmaximum possible value
     auto minimumDistance = (std::numeric_limits<qint64>::max)();
-
     for (int i = 0; i < annotationRegions.size(); i++) {
         const U2Region& region = annotationRegions[i];
-        if (region.contains(pos)) {
+        if (region.contains(baseNumber)) {
+            // It means, that we clicked on this annotation, no need to look forward
             closestAnnotationRegionIndex = i;
             break;
         }
 
-        qint64 distance = qMin(qAbs(region.startPos - pos), qAbs(region.endPos() - pos));
+        qint64 distance = qMin(qAbs(region.startPos - baseNumber), qAbs(region.endPos() - baseNumber));
         if (distance < minimumDistance) {
             minimumDistance = distance;
             closestAnnotationRegionIndex = i;
@@ -236,7 +240,7 @@ void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent* me) {
                     ctx->emitAnnotationActivated(annotation, -1);
                 } else {
                     qint64 mousePressPos = renderArea->coordToPos(renderAreaPoint);
-                    int closestAnnotationRegionIndex = getClosestAnnRegion2PointIndex(annotation, mousePressPos);
+                    int closestAnnotationRegionIndex = getClosestAnnotationRegionToPointIndex(annotation, mousePressPos);
                     ctx->emitAnnotationActivated(annotation, closestAnnotationRegionIndex);
                 }
             }
@@ -262,7 +266,7 @@ void GSequenceLineViewAnnotated::mouseDoubleClickEvent(QMouseEvent* me) {
         ctx->emitClearSelectedAnnotationRegions();
     }
     qint64 renderAreaPos = renderArea->coordToPos(renderAreaPoint);
-    int closestAnnotationRegionIndex = getClosestAnnRegion2PointIndex(annotation, renderAreaPos);
+    int closestAnnotationRegionIndex = getClosestAnnotationRegionToPointIndex(annotation, renderAreaPos);
     ctx->emitAnnotationDoubleClicked(annotation, closestAnnotationRegionIndex);
 }
 
