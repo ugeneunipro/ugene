@@ -232,8 +232,7 @@ Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
         reportString.replace("\n", "<br>");
         reportString = "<br><table><tr><td><b>" + tr("Error log: ") + "</b></td><td>" + reportString + "</td></tr></table>";
     } else {
-        reportFile.open();
-        reportString = reportFile.readAll();
+        reportString = IOAdapterUtils::readTextFile(reportFile.fileName());
     }
     if (loadRef != nullptr) {
         loadRef->cleanup();

@@ -42,19 +42,19 @@ ConsoleShutdownTask::ConsoleShutdownTask(QCoreApplication* app, bool exitAppOnTa
 
 void ConsoleShutdownTask::startShutdown() {
     if (sender() == app) {
-        coreLog.info("Shutdown initiated by user");
+        coreLog.info(tr("Shutdown initiated by user"));
     } else {
         if (!AppContext::getTaskScheduler()->getTopLevelTasks().empty()) {
             return;
         }
-        coreLog.info("All tasks finished, shutting down");
+        coreLog.info(tr("All tasks finished, shutting down"));
     }
     registerShutdownTask();
 }
 
 void ConsoleShutdownTask::sl_shutdownOnTaskError(Task* t) {
     if (t->hasError() && t->hasFlags(TaskFlag_FailCommandLineRunOnTaskError)) {
-        coreLog.info("Shutdown because of task error");
+        coreLog.info(tr("Shutdown because of task error"));
         exitCode = 1;
         registerShutdownTask();
     }
@@ -83,7 +83,7 @@ static Service* findServiceToDisable(ServiceRegistry* sr) {
             return s;
         }
     }
-    SAFE_POINT(nEnabled == 0, "No services must be enabled", nullptr);
+    SAFE_POINT(nEnabled == 0, ConsoleShutdownTask::tr("No services must be enabled"), nullptr);
     return nullptr;
 }
 
@@ -97,7 +97,7 @@ public:
         QList<Task*> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
         activeTopTasks.removeOne(getTopLevelParentTask());
         foreach (Task* t, activeTopTasks) {
-            coreLog.trace(QString("Canceling: %1").arg(t->getTaskName()));
+            coreLog.trace(tr("Canceling: %1").arg(t->getTaskName()));
             t->cancel();
         }
     }

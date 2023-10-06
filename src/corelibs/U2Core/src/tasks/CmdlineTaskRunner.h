@@ -51,6 +51,9 @@ public:
     void prepare();
     ReportResult report();
 
+    /*
+    * Returns QString with [ERROR] level log messages separated by new line.
+    */
     QString getProcessErrorsLog() const;
 
     static const QString REPORT_FILE_ARG;
