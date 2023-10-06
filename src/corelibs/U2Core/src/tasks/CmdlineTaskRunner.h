@@ -51,6 +51,8 @@ public:
     void prepare();
     ReportResult report();
 
+    QString getProcessErrorsLog() const;
+
     static const QString REPORT_FILE_ARG;
 
 protected:
@@ -70,7 +72,7 @@ private:
     CmdlineTaskConfig config;
     QProcess* process;
     QString processLogPrefix;
-    QString possibleErrorStr;
+    QString processErrorLog;
 };
 
 class U2CORE_EXPORT CmdlineTask : public Task {

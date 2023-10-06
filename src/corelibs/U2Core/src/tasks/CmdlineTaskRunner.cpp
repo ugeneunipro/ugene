@@ -283,6 +283,10 @@ Task::ReportResult CmdlineTaskRunner::report() {
     return ReportResult_Finished;
 }
 
+QString CmdlineTaskRunner::getProcessErrorsLog() const {
+    return processErrorLog;
+}
+
 bool CmdlineTaskRunner::isCommandLogLine(const QString& /*logLine*/) const {
     return false;
 }
@@ -302,13 +306,18 @@ void CmdlineTaskRunner::writeLog(QStringList& lines) {
             continue;
         }
 
+        QString logLine = line.mid(closePos + 1);
+        static const QString logLevelErrorName = getLogLevelName(LogLevel_ERROR);
+        if (logLevelErrorName == nameCandidate) {
+            processErrorLog += "[" + logLevelErrorName + "]" + logLine + "\n";
+        }
+
         for (int i = config.logLevel; i < LogLevel_NumLevels; i++) {
             QString logLevelName = getLogLevelName((LogLevel)i);
             if (logLevelName != nameCandidate) {
                 continue;
             }
 
-            QString logLine = line.mid(closePos + 1);
             logLine = logLine.trimmed();
             bool commandToken = logLine.startsWith(OUTPUT_PROGRESS_TAG) || logLine.startsWith(ERROR_KEYWORD) || isCommandLogLine(logLine);
             if (commandToken) {
@@ -353,18 +362,27 @@ void CmdlineTaskRunner::sl_onError(QProcess::ProcessError error) {
 
 void CmdlineTaskRunner::sl_onReadStandardOutput() {
     QString data = readStdout();
-    QStringList lines = data.split(QChar('\n'));
+    const QStringList lines = data.split(QChar('\n'));
+    QStringList combineMultiLines({""});
+    for (const QString& line : qAsConst(lines)) {
+        if (line.startsWith("[")) {
+            combineMultiLines.append(line);
+        } else {
+            combineMultiLines.last() += "\n" + line;
+        }
+    }
+    writeLog(combineMultiLines);
 
-    const QString pattern = tr("} finished with error:");
-    int patternIndex = data.indexOf(pattern);
-    if (patternIndex > -1) {
-        int endOfErrorIndex = data.indexOf("[", patternIndex);
-        possibleErrorStr = data.mid(patternIndex + pattern.size(), endOfErrorIndex - (patternIndex + pattern.size()));
-        setError(possibleErrorStr);
+    int errInd = data.indexOf(ERROR_KEYWORD);
+    if (errInd >= 0) {
+        int errIndEnd = data.indexOf(ERROR_KEYWORD, errInd + 1);
+        if (errIndEnd > errInd) {
+            setError(data.mid(errInd + ERROR_KEYWORD.size(), errIndEnd - errInd - ERROR_KEYWORD.size()));
+        } else {
+            setError(data.mid(errInd + ERROR_KEYWORD.size() + 1));
+        }
         return;
     }
-
-    writeLog(lines);
 
     for (const QString& line : qAsConst(lines)) {
         QStringList words = line.split(QRegExp("\\s+"), QString::SkipEmptyParts);
@@ -388,15 +406,7 @@ void CmdlineTaskRunner::sl_onFinish(int exitCode, QProcess::ExitStatus exitStatu
     // On Windows, if the process was terminated with TerminateProcess() from another application,
     // this function will still return NormalExit unless the exit code is less than 0.
     if (exitStatus != QProcess::NormalExit || exitCode != 0) {
-        QString errorsStr;
-        if (hasError() || !possibleErrorStr.isEmpty()) {
-            errorsStr = tr("Process finished with error(s): ");
-            errorsStr += hasError() ? getError() + "\n" : "";
-            errorsStr += possibleErrorStr.isEmpty() ? " " + possibleErrorStr + "\n" : "";
-        } else {
-            errorsStr = tr("Process crashed without any errors.");
-        }
-        setError(errorsStr);
+        setError(tr("An error occurred. Process is not finished successfully."));
     }
 }
 
