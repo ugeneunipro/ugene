@@ -3056,6 +3056,13 @@ GUI_TEST_CLASS_DEFINITION(test_5718) {
     CHECK_SET_ERR(lengthAfterGapColumnsRemoving < lengthBeforeGapColumnsRemoving, QString("Expected: before gap column removig > after gap column removig, current: before %1, after %2").arg(QString::number(lengthBeforeGapColumnsRemoving)).arg(QString::number(lengthAfterGapColumnsRemoving)));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5727) {
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTMenu::checkMainMenuItemState({"Actions", "Export", "Export amino acid translated alignment..."}, PopupChecker::IsEnabled);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5728) {
     // Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
