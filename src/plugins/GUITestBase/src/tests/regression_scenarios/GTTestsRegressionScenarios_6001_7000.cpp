@@ -696,6 +696,19 @@ GUI_TEST_CLASS_DEFINITION(test_6136) {
     }
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6152) {
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    GTUtilsWorkflowDesigner::addAlgorithm("Write Annotations");
+    GTUtilsWorkflowDesigner::click("Write Annotations");
+    GTKeyboardUtils::copy();
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTKeyboardUtils::paste();
+
+    int tabIndex = GTUtilsMdi::getCurrentTab();
+    CHECK_SET_ERR(tabIndex == 2, QString("Current index is invalid: %1").arg(tabIndex));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6167) {
     // 1. Change workflow designer output folder to sandbox
     class Custom : public CustomScenario {
