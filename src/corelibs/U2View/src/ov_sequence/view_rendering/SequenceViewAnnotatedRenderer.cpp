@@ -147,27 +147,11 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region& r = location.at(ri);
         if (r.intersects(visibleRange)) {
-            //const U2Region y = getAnnotationYRange(a, ri, as, availableHeight);
-            //if (y.startPos < 0) {
-            //    continue;
-            //}
-
-            //
-            //const U2Region visibleLocation = r.intersect(visibleRange);
-            //const int x1 = posToXCoord(visibleLocation.startPos, canvasSize, visibleRange);
-            //const int x2 = posToXCoord(visibleLocation.endPos(), canvasSize, visibleRange);
-
-            //const int rw = qMax(selected ? MIN_SELECTED_ANNOTATION_WIDTH : MIN_ANNOTATION_WIDTH, x2 - x1);
-            //SAFE_POINT(rw > 0, "Negative length of annotationYRange", );
-
-            //// annotation rect setting
-            //const QRect annotationRect(x1, y.startPos, rw, y.length);
             const QRect annotationRect = getAnnotationRect(r, canvasSize, visibleRange, selected, a, as);
             CHECK_CONTINUE(!annotationRect.isEmpty());
 
             QPainterPath rectPath;
             rectPath.addRect(annotationRect.x(), annotationRect.y(), annotationRect.width(), annotationRect.height());
-            //rectPath.addRect(x1, y.startPos, rw, y.length);
             // find out if the arrow is needed
             const U2Region visibleLocation = r.intersect(visibleRange);
             const bool leftTrim = visibleLocation.startPos != r.startPos;
@@ -322,16 +306,6 @@ QRect SequenceViewAnnotatedRenderer::getAnnotationRect(const U2Region& reg, cons
         CHECK(!x.isEmpty(), res);
 
         res = QRect(x.startPos, y.startPos, x.length, y.length);
-
-        /*const U2Region visibleLocation = reg.intersect(visibleRange);
-
-        const int x1 = posToXCoord(visibleLocation.startPos, canvasSize, visibleRange);
-        const int x2 = posToXCoord(visibleLocation.endPos(), canvasSize, visibleRange);
-
-        const int rw = qMax(selected ? MIN_SELECTED_ANNOTATION_WIDTH : MIN_ANNOTATION_WIDTH, x2 - x1);
-        SAFE_POINT(rw > 0, "Negative length of annotationYRange", res);
-
-        res = QRect(x1, y.startPos, rw, y.length);*/
     } else {
         res = QRect(0, y.startPos, 0, y.length);
     }

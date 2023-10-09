@@ -70,22 +70,14 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationXRegions(Annotation* anno
 
     int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
+    bool selected = detView->getSequenceContext()->getAnnotationsSelection()->getAnnotations().contains(annotation);
 
-    //int indentCounter = 0;
     QList<U2Region> result;
     do {
         // cut the extra space at the end of the sequence
         oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
-
-        /*singleLineRenderer->drawAll(p,
-            QSize(canvasSize.width(), getOneLineHeight()),
-            oneLineRegion);*/
-
-        //indentCounter += getOneLineHeight();
-
         auto oneLineCanvasSize = QSize(canvasSize.width(), getOneLineHeight());
-
-        auto annRegion = singleLineRenderer->getAnnotationXRange(annotationRegion, oneLineRegion, canvasSize, false);
+        auto annRegion = singleLineRenderer->getAnnotationXRange(annotationRegion, oneLineRegion, canvasSize, selected);
         if (!annRegion.isEmpty()) {
             result << annRegion;
         }
@@ -95,7 +87,6 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationXRegions(Annotation* anno
     } while (oneLineRegion.startPos < visibleRange.endPos());
 
     return result;
-    //return QList<U2Region>();
 }
 
 QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const {
