@@ -2002,6 +2002,30 @@ GUI_TEST_CLASS_DEFINITION(test_6475_2) {
     ;
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6479) {
+    GTFileDialog::openFile(dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    GTWidget::click(GTWidget::findWidget("OP_FIND_PATTERN"));
+
+    GTWidget::click(GTWidget::findWidget("ArrowHeader_Search algorithm"));
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Substitute");
+
+    GTUtilsOptionPanelSequenceView::setSearchWithAmbiguousBases();
+
+    GTUtilsOptionPanelSequenceView::enterPattern("AYGT");
+
+    auto editPatterns = GTWidget::findPlainTextEdit("textPattern");
+    QString style = editPatterns->styleSheet();
+    CHECK_SET_ERR(style == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style);
+
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Exact");
+    GTUtilsOptionPanelSequenceView::setAlgorithm("Substitute");
+
+    auto useAmbiguousBasesBox = GTWidget::findCheckBox("useAmbiguousBasesBox");
+    CHECK_SET_ERR(useAmbiguousBasesBox->isChecked(), "useAmbiguousBasesBox should be checked");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6481_1) {
     //    Test to check that element with external tool will add to dashboard an URL to file that is set as parameter with type "Output file URL" and it will be opened by UGENE by default.
 
