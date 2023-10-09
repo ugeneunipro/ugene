@@ -63,7 +63,7 @@ protected:
     virtual bool parseCommandLogWord(const QString& logWord);
 
 private:
-    void writeLog(QStringList& lines);
+    void writeLog(QStringList& messages);
     QString readStdout();
 
 private slots:

@@ -83,7 +83,7 @@ static Service* findServiceToDisable(ServiceRegistry* sr) {
             return s;
         }
     }
-    SAFE_POINT(nEnabled == 0, ConsoleShutdownTask::tr("No services must be enabled"), nullptr);
+    SAFE_POINT(nEnabled == 0, "No services must be enabled", nullptr);
     return nullptr;
 }
 
@@ -97,7 +97,7 @@ public:
         QList<Task*> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
         activeTopTasks.removeOne(getTopLevelParentTask());
         foreach (Task* t, activeTopTasks) {
-            coreLog.trace(tr("Canceling: %1").arg(t->getTaskName()));
+            coreLog.trace(QString("Canceling: %1").arg(t->getTaskName()));
             t->cancel();
         }
     }

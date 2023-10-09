@@ -295,9 +295,9 @@ bool CmdlineTaskRunner::parseCommandLogWord(const QString& /*logWord*/) {
     return false;
 }
 
-void CmdlineTaskRunner::writeLog(QStringList& lines) {
-    QStringList::Iterator it = lines.begin();
-    for (; it != lines.end(); it++) {
+void CmdlineTaskRunner::writeLog(QStringList& messages) {
+    QStringList::Iterator it = messages.begin();
+    for (; it != messages.end(); it++) {
         QString& line = *it;
         line = line.trimmed();
         QString nameCandidate;
@@ -306,10 +306,10 @@ void CmdlineTaskRunner::writeLog(QStringList& lines) {
             continue;
         }
 
-        QString logLine = line.mid(closePos + 1);
+        QString logMessage = line.mid(closePos + 1);
         static const QString logLevelErrorName = getLogLevelName(LogLevel_ERROR);
         if (logLevelErrorName == nameCandidate) {
-            processErrorLog += "[" + logLevelErrorName + "]" + logLine + "\n";
+            processErrorLog += logMessage + "\n";
         }
 
         for (int i = config.logLevel; i < LogLevel_NumLevels; i++) {
@@ -318,12 +318,12 @@ void CmdlineTaskRunner::writeLog(QStringList& lines) {
                 continue;
             }
 
-            logLine = logLine.trimmed();
-            bool commandToken = logLine.startsWith(OUTPUT_PROGRESS_TAG) || logLine.startsWith(ERROR_KEYWORD) || isCommandLogLine(logLine);
+            logMessage = logMessage.trimmed();
+            bool commandToken = logMessage.startsWith(OUTPUT_PROGRESS_TAG) || logMessage.startsWith(ERROR_KEYWORD) || isCommandLogLine(logMessage);
             if (commandToken) {
                 continue;
             }
-            taskLog.message((LogLevel)i, processLogPrefix + logLine);
+            taskLog.message((LogLevel)i, processLogPrefix + logMessage);
         }
     }
 }
@@ -363,9 +363,9 @@ void CmdlineTaskRunner::sl_onError(QProcess::ProcessError error) {
 void CmdlineTaskRunner::sl_onReadStandardOutput() {
     QString data = readStdout();
     const QStringList lines = data.split(QChar('\n'));
-    QStringList combineMultiLines({""});
+    QStringList combineMultiLines;
     for (const QString& line : qAsConst(lines)) {
-        if (line.startsWith("[")) {
+        if (line.startsWith("[") || combineMultiLines.isEmpty()) {
             combineMultiLines.append(line);
         } else {
             combineMultiLines.last() += "\n" + line;

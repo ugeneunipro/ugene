@@ -46,7 +46,7 @@ private:
     void registerShutdownTask();
 
     QCoreApplication* app;
-    bool exitAppOnTaskError;
+    bool exitAppOnTaskError = false;
     int exitCode = 0;
 };
 
