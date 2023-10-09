@@ -146,14 +146,24 @@ public:
     /** Returns all annotations by a coordinate inside render area. */
     QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const override;
 
-    /** Returns true if the given annotation region contains 'y' point. */
-    bool checkAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+    /**
+     * Returns all x-regions covered by the annotation location region.
+     */
+    virtual QList<U2Region> getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const = 0;
 
     /**
      * Returns all y-regions covered by the annotation location region.
      * TODO: rework to return list of QRects (may require a bigger refactoring).
      */
     virtual QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const = 0;
+
+private:
+    /** Returns numbers of annotation region contains 'x' point. */
+    QList<int> getAnnotationRegionsContainsXPoint(int x, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+
+    /** Returns the number of annotation region contains 'y' point. */
+    int getAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+
 };
 
 class ClearAnnotationsTask : public Task {

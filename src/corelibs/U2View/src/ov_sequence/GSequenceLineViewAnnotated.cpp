@@ -44,8 +44,6 @@
 
 #include "ADVSequenceObjectContext.h"
 
-#include <limits>
-
 namespace U2 {
 
 GSequenceLineViewAnnotated::GSequenceLineViewAnnotated(QWidget* p, SequenceObjectContext* ctx)
@@ -74,12 +72,15 @@ void GSequenceLineViewAnnotated::connectAnnotationObject(const AnnotationTableOb
 
 const int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseNumber) {
     QVector<U2Region> annotationRegions = ann->getRegions();
+    SAFE_POINT(!annotationRegions.isEmpty(), "At leat one annotation region should be presented", 0);
+
+    auto getDistanceBetweenBaseNumberAndRegion = [baseNumber](const U2Region& region) {
+        return qMin(qAbs(region.startPos - baseNumber), qAbs(region.endPos() - baseNumber));;
+    };
+
     int closestAnnotationRegionIndex = 0;
-    // We need to find annotation region with minimum distance to @baseNumber
-    // Let's check in the loop distance from each region to @baseNumber
-    // and decrease @minimumDistance in current distance is lower.
-    // When we start, @minimumDistance should be the mmaximum possible value
-    auto minimumDistance = (std::numeric_limits<qint64>::max)();
+    const auto& firstRegion = annotationRegions[closestAnnotationRegionIndex];
+    auto minimumDistance = getDistanceBetweenBaseNumberAndRegion(firstRegion);
     for (int i = 0; i < annotationRegions.size(); i++) {
         const U2Region& region = annotationRegions[i];
         if (region.contains(baseNumber)) {
@@ -88,7 +89,7 @@ const int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Ann
             break;
         }
 
-        qint64 distance = qMin(qAbs(region.startPos - baseNumber), qAbs(region.endPos() - baseNumber));
+        qint64 distance = getDistanceBetweenBaseNumberAndRegion(region);
         if (distance < minimumDistance) {
             minimumDistance = distance;
             closestAnnotationRegionIndex = i;
@@ -445,59 +446,47 @@ QList<Annotation*> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsByC
     QList<Annotation*> resultAnnotationList;
     CHECK(rect().contains(coord), resultAnnotationList);
 
-    AnnotationSettingsRegistry* annotationsSettingsRegistry = AppContext::getAnnotationsSettingsRegistry();
-    const qint64 pos = coordToPos(coord);
-    qint64 uncertaintyLength = 0;
     SequenceObjectContext* sequenceContext = sequenceLineViewAnnotated->getSequenceContext();
-    qint64 sequenceLength = sequenceContext->getSequenceLength();
-    U2Region visibleRange = view->getVisibleRange();
-    if (visibleRange.length > width()) {
-        double scale = getCurrentScale();
-        uncertaintyLength = static_cast<qint64>(1 / scale);
-        SAFE_POINT(uncertaintyLength < sequenceLength, "Invalid uncertaintyLength for the given seqLen!", resultAnnotationList);
-    }
-    U2Region pointRegion(pos - 2 * uncertaintyLength, 1 + 3 * uncertaintyLength);  // A region of sequence covered by the 'QPoint& coord'.
-    const QSet<AnnotationTableObject*> annotationObjectSet = sequenceContext->getAnnotationObjects(true);
+    const auto& annotationObjectSet = sequenceContext->getAnnotationObjects(true);
     for (const AnnotationTableObject* annotationObject : qAsConst(annotationObjectSet)) {
-        for (Annotation* annotation : annotationObject->getAnnotationsByRegion(pointRegion)) {
+        const auto& annotations = annotationObject->getAnnotations();
+        for (Annotation* annotation : qAsConst(annotations)) {
             const SharedAnnotationData& aData = annotation->getData();
             const QVector<U2Region> locationRegionList = aData->getRegions();
             for (int i = 0, n = locationRegionList.size(); i < n; i++) {
-                const U2Region& locationRegion = locationRegionList[i];
-                if (locationRegion.intersects(pointRegion) || pointRegion.startPos == locationRegion.endPos()) {
-                    // now check pixel precise coords for boundaries.
-                    if (pos == locationRegion.startPos) {
-                        int posStartX = posToCoord(locationRegion.startPos, true);
-                        if (coord.x() < posStartX) {
-                            continue;
-                        }
-                    } else if (pos == locationRegion.endPos()) {
-                        // Use endPos() - 1 to avoid moving to the next line in multiline views.
-                        int posEndX = posToCoord(locationRegion.endPos() - 1, true) + getCharWidth();
-                        if (coord.x() >= posEndX) {
-                            continue;
-                        }
-                    }
-                    AnnotationSettings* annotationSettings = annotationsSettingsRegistry->getAnnotationSettings(aData);
-                    if (annotationSettings->visible && checkAnnotationRegionContainsYPoint(coord.y(), annotation, i, annotationSettings)) {
-                        resultAnnotationList.append(annotation);  // select whole annotation (all regions)
-                        break;
-                    }
-                }
+                AnnotationSettings* annotationSettings = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+                auto xRegs = getAnnotationRegionsContainsXPoint(coord.x(), annotation, i, annotationSettings);
+                CHECK_CONTINUE(!xRegs.isEmpty());
+
+                int yReg = getAnnotationRegionContainsYPoint(coord.y(), annotation, i, annotationSettings);
+                CHECK_CONTINUE(annotationSettings->visible && xRegs.contains(yReg));
+                
+                resultAnnotationList.append(annotation);
             }
         }
     }
     return resultAnnotationList;
 }
 
-bool GSequenceLineViewGridAnnotationRenderArea::checkAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
-    QList<U2Region> yRegionList = getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings);
-    for (const U2Region& region : qAsConst(yRegionList)) {
-        if (region.contains(y)) {
-            return true;
-        }
+QList<int> GSequenceLineViewGridAnnotationRenderArea::getAnnotationRegionsContainsXPoint(int x, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
+    auto xAnnotationList = getAnnotationXRegions(annotation, locationRegionIndex, annotationSettings);
+    QList<int> res;
+    for (int i = 0; i < xAnnotationList.size(); i++) {
+        CHECK_CONTINUE(xAnnotationList[i].contains(x));
+
+        res << i;
     }
-    return false;
+    return res;
+}
+
+int GSequenceLineViewGridAnnotationRenderArea::getAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
+    QList<U2Region> yRegionList = getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings);
+    for (int i = 0; i < yRegionList.size(); i++) {
+        CHECK_CONTINUE(yRegionList[i].contains(y));
+
+        return i;
+    }
+    return -1;
 }
 
 }  // namespace U2

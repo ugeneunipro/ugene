@@ -21,6 +21,7 @@
 
 #include "DetViewMultiLineRenderer.h"
 
+#include <U2Core/AnnotationSettings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -53,10 +54,48 @@ qint64 DetViewMultiLineRenderer::coordToPos(const QPoint& p, const QSize& canvas
 }
 
 int DetViewMultiLineRenderer::posToXCoord(qint64 pos, const QSize& canvasSize, const U2Region& visibleRange) const {
-    CHECK(visibleRange.contains(pos), -1);
+    CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), -1);
 
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     return commonMetrics.charWidth * (pos % symbolsPerLine);
+}
+
+QList<U2Region> DetViewMultiLineRenderer::getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const {
+    CHECK(annotationSettings->visible, {});
+
+    const auto& regs = annotation->getRegions();
+    SAFE_POINT(0 <= locationRegionIndex && locationRegionIndex < regs.size(), "Annotation should contain locationRegionIndex", {});
+
+    const auto& annotationRegion = regs.at(locationRegionIndex);
+
+    int symbolsPerLine = getSymbolsPerLine(canvasSize.width());
+    U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
+
+    //int indentCounter = 0;
+    QList<U2Region> result;
+    do {
+        // cut the extra space at the end of the sequence
+        oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
+
+        /*singleLineRenderer->drawAll(p,
+            QSize(canvasSize.width(), getOneLineHeight()),
+            oneLineRegion);*/
+
+        //indentCounter += getOneLineHeight();
+
+        auto oneLineCanvasSize = QSize(canvasSize.width(), getOneLineHeight());
+
+        auto annRegion = singleLineRenderer->getAnnotationXRange(annotationRegion, oneLineRegion, canvasSize, false);
+        if (!annRegion.isEmpty()) {
+            result << annRegion;
+        }
+
+        oneLineRegion.startPos += symbolsPerLine;
+
+    } while (oneLineRegion.startPos < visibleRange.endPos());
+
+    return result;
+    //return QList<U2Region>();
 }
 
 QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const {

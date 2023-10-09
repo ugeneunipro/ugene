@@ -38,6 +38,8 @@ public:
     qint64 coordToPos(const QPoint& p, const QSize& canvasSize, const U2Region& visibleRange) const override;
     int posToXCoord(qint64 pos, const QSize& canvasSize, const U2Region& visibleRange) const override;
 
+    QList<U2Region> getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const override;
+
     /** Returns all y regions used to draw the given location of the annotation. */
     QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const override;
 

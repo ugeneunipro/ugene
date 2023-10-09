@@ -231,8 +231,13 @@ public:
         return renderer;
     }
 
+
+    QList<U2Region> getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const override;
+
     /** Returns all y-regions covered by the annotation location region. */
     QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const override;
+
+    U2Region getAnnotationXRange(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
 
     /** Returns Y range for the annotation within render area. */
     U2Region getAnnotationYRange(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
