@@ -4772,6 +4772,18 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7945) {
+    GTFileDialog::openFile(testDir, "_common_data/genbank/one_base_annotation.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsSequenceView::selectSequenceRegion(10, 13);
+    GTUtilsSequenceView::zoomIn();
+
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 12, 0, false, Qt::LeftButton, GTUtilsSequenceView::getPanViewByNumber()->getRenderArea()->getCurrentScale() / 2);
+
+    CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions().isEmpty(), "No selected annotations, but should be");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7946) {
     // Open _common_data/scenarios/_regression/7946/7946.gb
     // Open details view
@@ -4793,6 +4805,7 @@ GUI_TEST_CLASS_DEFINITION(test_7946) {
 
     CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedItem().isEmpty(), "No selected annotation, but should be");
 }
+
 
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
