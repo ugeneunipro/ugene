@@ -513,10 +513,6 @@
         <source>Document was removed.</source>
         <translation>Документ был удален.</translation>
     </message>
-    <message>
-        <source>Document was removed</source>
-        <translation type="vanished">Документ был удалён</translation>
-    </message>
 </context>
 <context>
     <name>U2::AddObjectsToDocumentTask</name>
@@ -571,21 +567,9 @@
 <context>
     <name>U2::AppResourcePool</name>
     <message>
-        <source>Threads</source>
-        <translation type="vanished">Потоки</translation>
-    </message>
-    <message>
-        <source>Memory</source>
-        <translation type="vanished">Память</translation>
-    </message>
-    <message>
         <location filename="../src/globals/AppResources.cpp" line="96"/>
         <source>Mb</source>
         <translation>Mb</translation>
-    </message>
-    <message>
-        <source>Project</source>
-        <translation type="vanished">Проект</translation>
     </message>
 </context>
 <context>
@@ -722,37 +706,37 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::CmdlineTaskRunner</name>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="225"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="221"/>
         <source>Run UGENE command line: %1</source>
         <translation>Запуск командной строки UGENE: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="271"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="267"/>
         <source>Cannot start process &apos;%1&apos;</source>
         <translation>Не удается запустить процесс &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="341"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="346"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
         <translation>Не удалось запустить процесс &quot;%1&quot;. Либо вызываемая программа отсутствует, либо у вас недостаточно прав для вызова программы</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="346"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="351"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
         <translation>Процесс &quot;%1&quot; аварийно завершился через некоторое время после успешного запуска</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="350"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="355"/>
         <source>Error occurred while reading from or writing to channel</source>
         <translation>Произошла ошибка при чтении или записи в канал</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="353"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="358"/>
         <source>Unknown error occurred</source>
         <translation>Произошла неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="398"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="409"/>
         <source>An error occurred. Process is not finished successfully.</source>
         <translation>Произошла ошибка. Процесс не завершен успешно.</translation>
     </message>
@@ -773,22 +757,37 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Выключение</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="83"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="45"/>
+        <source>Shutdown initiated by user</source>
+        <translation>Выключение по запросу пользователя</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="50"/>
+        <source>All tasks finished, shutting down</source>
+        <translation>Все задачи завершены, выключение</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="57"/>
+        <source>Shutdown because of task error</source>
+        <translation>Задача завершилас с ошибкой, выключение</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="93"/>
         <source>Cancel active tasks</source>
         <translation>Отмена активных задач</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="106"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="116"/>
         <source>Starting shutdown process...</source>
         <translation>Выключение в процессе...</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="128"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="146"/>
         <source>Shutdown was canceled</source>
         <translation>Выключение отменено</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="132"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="150"/>
         <source>Shutdown failed, error: %1</source>
         <translation>Выключение не произошло, ошибка: %1</translation>
     </message>
@@ -1254,22 +1253,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="576"/>
+        <location filename="../src/models/DocumentModel.cpp" line="587"/>
         <source>Document is not loaded</source>
         <translation>Документ не загружен</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="589"/>
+        <location filename="../src/models/DocumentModel.cpp" line="600"/>
         <source>IO adapter does not support write operation</source>
         <translation>Адаптер ввода/вывода не поддерживает запись</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="595"/>
+        <location filename="../src/models/DocumentModel.cpp" line="606"/>
         <source>No write support for document format</source>
         <translation>Запись для данного формата не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="663"/>
+        <location filename="../src/models/DocumentModel.cpp" line="674"/>
         <source>Locked by user</source>
         <translation>Заблокирован пользователем</translation>
     </message>
@@ -1323,13 +1322,9 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolRunTask</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="51"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="47"/>
         <source> tool</source>
         <translation> инструмент</translation>
-    </message>
-    <message>
-        <source>External tool is absent</source>
-        <translation type="vanished">Внешний иструмент отсутствует</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="62"/>
@@ -1337,42 +1332,42 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Встроенный инструмент &quot;%1&quot; отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="63"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="65"/>
         <source>External tool &apos;%1&apos; doesn&apos;t exist</source>
         <translation>Внешний инструмент &quot;%1&quot; не существует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="113"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="107"/>
         <source>Can not run %1 tool.</source>
         <translation>Невозможно запустить %1 инструмент.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="115"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="109"/>
         <source>Can not run %1 tool. May be tool path &apos;%2&apos; not valid?</source>
         <translation>Невозможно запустить %1 инструмент. Возможно путь до инструмента &apos;%2&apos; указан неверно?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="129"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="123"/>
         <source>Unable to cancel tool %1 for 10 seconds. Stop &quot;%2&quot; process manually by your OS task manager.</source>
         <translation>Невозможно отменить инструмент %1 в течение 10 секунд. Остановите процесс &quot;%2&quot; вручную с помощью диспетчера задач ОС.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="131"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="125"/>
         <source>Tool %1 is cancelled</source>
         <translation>Инструмент %1 отменен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="143"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="137"/>
         <source>%1 tool exited with the following error: %2 (Code: %3)</source>
         <translation>Инструмент %1 завершил работу со следующей ошибкой: %2 (Код: %3)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="154"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="148"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 инструмент завершил работу с кодом %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="156"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="150"/>
         <source>Tool %1 finished successfully</source>
         <translation>Инструмент %1 завершил работу корректно</translation>
     </message>
@@ -1380,77 +1375,87 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="338"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="332"/>
         <source>Can not remove temporary folder: path is empty.</source>
         <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="343"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="337"/>
         <source>Can not remove folder for temporary files, folder &quot;%1&quot;.</source>
         <translation>Не удается удалить папку для временных файлов, папка &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="356"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="350"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="387"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="381"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="407"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="401"/>
         <source>A tool with the ID %1 is absent</source>
         <translation>Инструмент %1 отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="411"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="450"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="444"/>
         <source>Working folder is &quot;%1&quot;</source>
         <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="456"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="450"/>
         <source>Launching %1 tool: %2</source>
         <translation>Запуск инструмента %1: %2 {1 ?}</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="594"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="588"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool is not in Latin alphabet. Make sure that the input and output files and folders are located in the paths which contain only Latin characters. Current problem path is: &quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="606"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="600"/>
         <source>Your &quot;Temporary files&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="617"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="611"/>
         <source>&quot;%1&quot; external tool located in path which contains non-latin symbols. Please change it location to path which contains only latin symbols, set the new path in Preferences on the External tools and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="628"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="622"/>
         <source>Your &quot;Build indexes&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="636"/>
+        <source>One of the arguments passed to &quot;%1&quot; external tool contains empty arguments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="638"/>
+        <source>One of the arguments passed to &quot;%1&quot; external tool contains unexpected quotes. Current problem argument is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="653"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool contains spaces. Make sure that the input and output files and folders are located in the paths which contain no spaces. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="650"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="665"/>
         <source>Your &quot;Temporary files&quot; directory contains spaces, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="660"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="675"/>
         <source>&quot;%1&quot; external tool located in path which contains spaces symbols. Please change it location to path which contains no spaces,  set the new path in Preferences on the External tools and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1671,10 +1676,6 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/io/HttpFileAdapter.cpp" line="122"/>
         <source>GET %1</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Downloading from %1</source>
-        <translation type="vanished">Загрузка с %1</translation>
     </message>
     <message>
         <location filename="../src/io/HttpFileAdapter.cpp" line="307"/>
@@ -2433,22 +2434,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="361"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="356"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="367"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="362"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="371"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="366"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="380"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="375"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2506,22 +2507,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="322"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="317"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="339"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="334"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="340"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="335"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="344"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="339"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2538,50 +2539,49 @@ The session database file is removed after closing of UGENE.</source>
     <name>U2::SaveDocumentTask</name>
     <message>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="54"/>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="70"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="65"/>
         <source>Save document</source>
         <translation>Сохранение документа</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="63"/>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="75"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="76"/>
         <source>No permission to write to &apos;%1&apos; file.</source>
         <translation>Нет прав на запись в &apos;%1&apos; файл.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="85"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="80"/>
         <source>Document was removed</source>
         <translation>Документ был удалён</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="97"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="92"/>
         <source>Saving document %1
 </source>
         <translation>Сохранение документа: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="129"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="124"/>
         <source>Can&apos;t create tmp file</source>
         <translation>Невозможно создать временный файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="134"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="129"/>
         <source>Can&apos;t copy file to tmp file while trying to save document by append</source>
         <translation>Невозможно скопировать скопировать файл во временный файл при попытке сохранения файла при добавлении</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="150"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="145"/>
         <source>Can&apos;t rename saved tmp file to original file: %1</source>
         <translation>Невозможно переименовать временный файл в исходный файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="183"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded: </source>
         <translation>Документ &apos;%1&apos; не может быть выгружен: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="183"/>
         <source>unexpected error</source>
         <translation>неожиданная ошибка</translation>
     </message>
@@ -2589,34 +2589,34 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveMultipleDocuments</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="215"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="210"/>
         <source>Save multiple documents</source>
         <translation>Сохранение нескольких документов</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="226"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="221"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="227"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="222"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="282"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="277"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="283"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="278"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="297"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="292"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>
