@@ -128,6 +128,7 @@
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
@@ -394,6 +395,27 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
 
     QStringList sequenceList2 = GTUtilsMSAEditorSequenceArea::getVisibleNames();
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7110) {
+    GTLogTracer lt;
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            GTWidget::getActiveModalWidget();
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"ADV_MENU_ANALYSE", "Query NCBI BLAST database"}));
+    GTMenu::showContextMenu(GTUtilsSequenceView::getSeqWidgetByNumber());
+
+    GTGlobals::sleep(10000);  // Give a task some time to run.
+
+    CHECK_SET_ERR(!lt.hasMessage("content-type missing in HTTP POST"), "Unexpected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7121) {
@@ -1779,8 +1801,7 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 950
-                                                  : 1100;
+    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 950 : 1100;
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
@@ -4762,8 +4783,8 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
     GTFileDialog::openFile(testDir, "_common_data/regression/7927/example.seq");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::add(new PopupChooser({ "ADV_MENU_ANALYSE", "Find restriction sites" }));
-    FindEnzymesDialogFillerSettings settings({ "Esp3I" });
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    FindEnzymesDialogFillerSettings settings({"Esp3I"});
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
@@ -4805,7 +4826,6 @@ GUI_TEST_CLASS_DEFINITION(test_7946) {
 
     CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedItem().isEmpty(), "No selected annotation, but should be");
 }
-
 
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
