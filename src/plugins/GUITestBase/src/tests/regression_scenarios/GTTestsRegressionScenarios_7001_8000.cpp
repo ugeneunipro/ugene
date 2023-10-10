@@ -4757,6 +4757,7 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
     * 3. Check Esp3I.
     * 4. Click OK.
     * 5. Open the "Annotation highlighting" tab.
+    * 6. Click twice to on\off "Show annotations" and "Show on translation" checkboxes.
     * Expected state: No errors in the log
     */
     GTFileDialog::openFile(testDir, "_common_data/regression/7927/example.seq");
@@ -4769,6 +4770,10 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
 
     GTLogTracer lt;
     GTWidget::click(GTWidget::findWidget("OP_ANNOT_HIGHLIGHT"));
+    GTWidget::click(GTWidget::findWidget("checkShowHideAnnots"));
+    GTWidget::click(GTWidget::findWidget("checkShowHideAnnots"));
+    GTWidget::click(GTWidget::findWidget("checkShowOnTranslation"));
+    GTWidget::click(GTWidget::findWidget("checkShowOnTranslation"));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 

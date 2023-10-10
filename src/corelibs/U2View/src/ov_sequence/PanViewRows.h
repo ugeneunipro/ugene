@@ -49,6 +49,7 @@ public:
     void addAnnotation(Annotation* a);
     void removeAnnotation(Annotation* f);
 
+    bool hasRowWithAnnotationName(const QString& name) const;
     int getRowCount() const;
     PVRowData* getRow(int row) const;
 
@@ -61,8 +62,6 @@ public:
     int getNumAnnotationsInRow(int rowNum) const;
 
 private:
-    bool hasRowWithName(const QString& name) const;
-
     QList<PVRowData*> rows;
     QHash<Annotation*, PVRowData*> rowByAnnotation;
 };
