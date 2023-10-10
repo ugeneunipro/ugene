@@ -143,7 +143,6 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter& p, const QSize& can
 
     const bool isRestrictionSite = a->getType() == U2FeatureTypes::RestrictionSite;
     QVector<U2Region> location = aData->getRegions();
-    int availableHeight = canvasSize.height();
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region& r = location.at(ri);
         if (r.intersects(visibleRange)) {

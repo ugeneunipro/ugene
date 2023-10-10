@@ -455,11 +455,13 @@ QList<Annotation*> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsByC
             const QVector<U2Region> locationRegionList = aData->getRegions();
             for (int i = 0, n = locationRegionList.size(); i < n; i++) {
                 AnnotationSettings* annotationSettings = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
+                CHECK_CONTINUE(annotationSettings->visible);
+
                 auto xRegs = getAnnotationRegionIndexesByXCoord(coord.x(), annotation, i, annotationSettings);
                 CHECK_CONTINUE(!xRegs.isEmpty());
 
                 int yReg = getAnnotationRegionIndexByYCoord(coord.y(), annotation, i, annotationSettings);
-                CHECK_CONTINUE(annotationSettings->visible && xRegs.contains(yReg));
+                CHECK_CONTINUE(xRegs.contains(yReg));
                 
                 resultAnnotationList.append(annotation);
             }
