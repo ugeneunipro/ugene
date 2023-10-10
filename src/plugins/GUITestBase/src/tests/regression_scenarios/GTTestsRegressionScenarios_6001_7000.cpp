@@ -1668,6 +1668,32 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
     CHECK_SET_ERR(isAmino, "Aligment has wrong alphabet type");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6299) {
+    GTLogTracer lt;
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+
+    GTUtilsWorkflowDesigner::addElement("Read Alignment");
+    GTUtilsWorkflowDesigner::addAlgorithm("Align with ClustalW");
+    GTUtilsWorkflowDesigner::addAlgorithm("Write Alignment");
+
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::getWorker("Read Alignment");
+    WorkflowProcessItem* align = GTUtilsWorkflowDesigner::getWorker("Align with ClustalW");
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::getWorker("Write Alignment");
+
+    GTUtilsWorkflowDesigner::connect(read, align);
+    GTUtilsWorkflowDesigner::connect(align, write);
+
+    GTUtilsWorkflowDesigner::click("Read Alignment");
+    //TODO: Change the input file to sequenceAll_2lineformat.fasta
+    GTUtilsWorkflowDesigner::setDatasetInputFile(dataDir + "samples/CLUSTALW/COI.aln");
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    CHECK_SET_ERR(!lt.hasMessage("Unsupported alphabet: Extended amino acid"), "There is an error about alphabet");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6301) {
     class Custom : public CustomScenario {
         void run() override {
