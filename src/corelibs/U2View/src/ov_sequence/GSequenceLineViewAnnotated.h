@@ -97,10 +97,10 @@ private:
      * Calculate the index of the annotation region, which was as close as possible to the set base position.
      * This function is very valuable, then scale is very low and one pixel contains more than one sequence base.
      * \param ann The annotation.
-     * \param baseNumber number of base user clicked on.
+     * \param baseIndex index of base user clicked on.
      * \return 0 The index of the closest annotation to the current position.
      **/
-    static const int getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseNumber);
+    static const int getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex);
 
 protected:
     friend class ClearAnnotationsTask;
@@ -158,11 +158,11 @@ public:
     virtual QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const = 0;
 
 private:
-    /** Returns numbers of annotation region contains 'x' point. */
-    QList<int> getAnnotationRegionsContainsXPoint(int x, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+    /** Returns indexes of annotation region contains 'x' point. */
+    QList<int> getAnnotationRegionIndexesByXCoord(int x, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
 
-    /** Returns the number of annotation region contains 'y' point. */
-    int getAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+    /** Returns the index of annotation region contains 'y' point. */
+    int getAnnotationRegionIndexByYCoord(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
 
 };
 

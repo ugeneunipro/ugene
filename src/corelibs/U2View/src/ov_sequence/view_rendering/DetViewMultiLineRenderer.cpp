@@ -76,7 +76,6 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationXRegions(Annotation* anno
     do {
         // cut the extra space at the end of the sequence
         oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
-        auto oneLineCanvasSize = QSize(canvasSize.width(), getOneLineHeight());
         auto annRegion = singleLineRenderer->getAnnotationXRange(annotationRegion, oneLineRegion, canvasSize, selected);
         if (!annRegion.isEmpty()) {
             result << annRegion;

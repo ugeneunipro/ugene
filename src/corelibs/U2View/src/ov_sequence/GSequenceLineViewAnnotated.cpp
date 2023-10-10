@@ -70,20 +70,20 @@ void GSequenceLineViewAnnotated::connectAnnotationObject(const AnnotationTableOb
     connect(ao, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification>&)), SLOT(sl_onAnnotationsModified(const QList<AnnotationModification>&)));
 }
 
-const int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseNumber) {
+const int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex) {
     QVector<U2Region> annotationRegions = ann->getRegions();
     SAFE_POINT(!annotationRegions.isEmpty(), "At leat one annotation region should be presented", 0);
 
-    auto getDistanceBetweenBaseNumberAndRegion = [baseNumber](const U2Region& region) {
-        return qMin(qAbs(region.startPos - baseNumber), qAbs(region.endPos() - baseNumber));;
+    auto getDistanceBetweenBaseNumberAndRegion = [baseIndex](const U2Region& region) {
+        return qMin(qAbs(region.startPos - baseIndex), qAbs(region.endPos() - baseIndex));;
     };
 
     int closestAnnotationRegionIndex = 0;
-    const auto& firstRegion = annotationRegions[closestAnnotationRegionIndex];
+    const auto& firstRegion = annotationRegions.first();
     auto minimumDistance = getDistanceBetweenBaseNumberAndRegion(firstRegion);
     for (int i = 0; i < annotationRegions.size(); i++) {
         const U2Region& region = annotationRegions[i];
-        if (region.contains(baseNumber)) {
+        if (region.contains(baseIndex)) {
             // It means, that we clicked on this annotation, no need to look forward
             closestAnnotationRegionIndex = i;
             break;
@@ -455,10 +455,10 @@ QList<Annotation*> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsByC
             const QVector<U2Region> locationRegionList = aData->getRegions();
             for (int i = 0, n = locationRegionList.size(); i < n; i++) {
                 AnnotationSettings* annotationSettings = AppContext::getAnnotationsSettingsRegistry()->getAnnotationSettings(aData);
-                auto xRegs = getAnnotationRegionsContainsXPoint(coord.x(), annotation, i, annotationSettings);
+                auto xRegs = getAnnotationRegionIndexesByXCoord(coord.x(), annotation, i, annotationSettings);
                 CHECK_CONTINUE(!xRegs.isEmpty());
 
-                int yReg = getAnnotationRegionContainsYPoint(coord.y(), annotation, i, annotationSettings);
+                int yReg = getAnnotationRegionIndexByYCoord(coord.y(), annotation, i, annotationSettings);
                 CHECK_CONTINUE(annotationSettings->visible && xRegs.contains(yReg));
                 
                 resultAnnotationList.append(annotation);
@@ -468,7 +468,7 @@ QList<Annotation*> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsByC
     return resultAnnotationList;
 }
 
-QList<int> GSequenceLineViewGridAnnotationRenderArea::getAnnotationRegionsContainsXPoint(int x, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
+QList<int> GSequenceLineViewGridAnnotationRenderArea::getAnnotationRegionIndexesByXCoord(int x, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
     auto xAnnotationList = getAnnotationXRegions(annotation, locationRegionIndex, annotationSettings);
     QList<int> res;
     for (int i = 0; i < xAnnotationList.size(); i++) {
@@ -479,7 +479,7 @@ QList<int> GSequenceLineViewGridAnnotationRenderArea::getAnnotationRegionsContai
     return res;
 }
 
-int GSequenceLineViewGridAnnotationRenderArea::getAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
+int GSequenceLineViewGridAnnotationRenderArea::getAnnotationRegionIndexByYCoord(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
     QList<U2Region> yRegionList = getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings);
     for (int i = 0; i < yRegionList.size(); i++) {
         CHECK_CONTINUE(yRegionList[i].contains(y));
