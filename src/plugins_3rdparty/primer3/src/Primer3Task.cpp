@@ -421,8 +421,12 @@ void Primer3Task::prepare() {
         SAFE_POINT_EXT(settings->isSequenceCircular(), stateInfo.setError("Unexpected region, sequence should be circular"), );
 
         QByteArray seq = settings->getSequence();
+        int appendLength = sequenceRange.endPos() - sequenceSize - firstBaseIndex;
         seq.append(seq.left(sequenceRange.endPos() - sequenceSize - firstBaseIndex));
         settings->setSequence(seq);
+        auto seqQuality = settings->getSequenceQuality();
+        seqQuality.append(seqQuality.mid(0, appendLength));
+        settings->setSequenceQuality(seqQuality);
     }
 
     // Calculate an offset for result primers

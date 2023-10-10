@@ -74,6 +74,14 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
             settings->setCircularity(buf == "true");
         }
 
+        buf = elInput.attribute("RANGE");
+        if (!buf.isEmpty()) {
+            auto rangeSplit = buf.split(",");
+            int start = rangeSplit.first().toInt();
+            int length = rangeSplit.last().toInt();
+            settings->setSequenceRange(U2Region(start, length));
+        }
+
         // 3
         buf = elInput.attribute("SEQUENCE_TARGET");
         if (!buf.isEmpty()) {

@@ -647,7 +647,8 @@ bool Primer3Dialog::doDataExchange() {
 
     {
         QVector<int> qualityList;
-        QStringList stringList = edit_SEQUENCE_QUALITY->toPlainText().split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        auto sequenceQual = edit_SEQUENCE_QUALITY->toPlainText();
+        QStringList stringList = sequenceQual.split(QRegExp("\\s+"), QString::SkipEmptyParts);
         bool ok = true;
         for (const QString& string : qAsConst(stringList)) {
             bool isInt = false;
@@ -657,9 +658,12 @@ bool Primer3Dialog::doDataExchange() {
             }
             qualityList.append(value);
         }
-        if (!qualityList.isEmpty() && (qualityList.size() != (rs->getRegion().length))) { // todo add check on wrong region
+        int qualityLength = qualityList.size();
+        int sequenceLength = context->getSequenceLength();
+        if (!qualityList.isEmpty() && (qualityLength != sequenceLength)) { // todo add check on wrong region
             ok = false;
-            errors.append(tr("Sequence quality list length must be equal to the sequence length"));
+            errors.append(tr("Sequence quality list length must be equal to the sequence length. Sequence length = %1, quality list length = %2.")
+                .arg(sequenceLength).arg(qualityLength));
         }
         settings->setSequenceQuality(qualityList);
         widgetStates.insert(edit_SEQUENCE_QUALITY, ok);
@@ -942,7 +946,7 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
         }
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
-            stream << key << "=" << spinBox->value() << endl;
+            stream << key << "=" << QString::number(spinBox->value(), 'f', 2) << endl;
         }
     }
 

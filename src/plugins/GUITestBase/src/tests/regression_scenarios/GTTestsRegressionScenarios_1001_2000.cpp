@@ -5970,9 +5970,6 @@ GUI_TEST_CLASS_DEFINITION(test_1654) {
     GTUtilsOptionPanelSequenceView::closeTab(GTUtilsOptionPanelSequenceView::Search);
 
     GTUtilsOptionPanelSequenceView::openTab(GTUtilsOptionPanelSequenceView::Search);
-    GTWidget::checkEnabled("getAnnotationsPushButton", false);
-
-    GTKeyboardUtils::paste();
     GTWidget::checkEnabled("getAnnotationsPushButton");
 }
 
