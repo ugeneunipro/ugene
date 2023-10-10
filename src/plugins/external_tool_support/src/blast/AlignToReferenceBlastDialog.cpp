@@ -80,7 +80,7 @@ const QString AlignToReferenceBlastCmdlineTask::REF_ARG = "reference";
 const QString AlignToReferenceBlastCmdlineTask::RESULT_ALIGNMENT_ARG = "result-url";
 
 AlignToReferenceBlastCmdlineTask::AlignToReferenceBlastCmdlineTask(const Settings& settings)
-    : Task(tr("Map Sanger reads to reference"), TaskFlags_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
+    : Task(tr("Map Sanger reads to reference"), TaskFlags_NR_FOSE_COSC | TaskFlag_MinimizeSubtaskErrorText | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
       settings(settings),
       reportFile(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath() + "/align_to_ref_XXXXXX.txt") {
     GCOUNTER(cvar, "AlignToReferenceBlastCmdlineTask");
@@ -145,6 +145,10 @@ QMap<QString, QMultiMap<QString, QString>> splitReports(U2OpStatus& os, const QS
 }  // namespace
 
 QString AlignToReferenceBlastCmdlineTask::generateReport() const {
+    if (hasError()) {
+        return "<html><body>" + reportString + "</body></html>";
+    }
+
     U2OpStatusImpl os;
     QMap<QString, QMultiMap<QString, QString>> reports = splitReports(os, reportString);
 
@@ -222,12 +226,14 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
     return result;
 }
 
-void AlignToReferenceBlastCmdlineTask::run() {
-    reportFile.open();
-    reportString = reportFile.readAll();
-}
-
 Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
+    if (cmdlineTask->hasError()) {
+        reportString = cmdlineTask->getProcessErrorsLog();
+        reportString.replace("\n", "<br>");
+        reportString = "<br><table><tr><td><b>" + tr("Error log: ") + "</b></td><td>" + reportString + "</td></tr></table>";
+    } else {
+        reportString = IOAdapterUtils::readTextFile(reportFile.fileName());
+    }
     if (loadRef != nullptr) {
         loadRef->cleanup();
     }

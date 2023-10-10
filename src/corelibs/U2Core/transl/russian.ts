@@ -706,37 +706,37 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::CmdlineTaskRunner</name>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="225"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="221"/>
         <source>Run UGENE command line: %1</source>
         <translation>Запуск командной строки UGENE: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="271"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="267"/>
         <source>Cannot start process &apos;%1&apos;</source>
         <translation>Не удается запустить процесс &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="341"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="346"/>
         <source>The process &apos;%1&apos; failed to start. Either the invoked program is missing, or you may have insufficient permissions to invoke the program</source>
         <translation>Не удалось запустить процесс &quot;%1&quot;. Либо вызываемая программа отсутствует, либо у вас недостаточно прав для вызова программы</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="346"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="351"/>
         <source>The process &apos;%1&apos; crashed some time after starting successfully</source>
         <translation>Процесс &quot;%1&quot; аварийно завершился через некоторое время после успешного запуска</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="350"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="355"/>
         <source>Error occurred while reading from or writing to channel</source>
         <translation>Произошла ошибка при чтении или записи в канал</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="353"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="358"/>
         <source>Unknown error occurred</source>
         <translation>Произошла неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="398"/>
+        <location filename="../src/tasks/CmdlineTaskRunner.cpp" line="409"/>
         <source>An error occurred. Process is not finished successfully.</source>
         <translation>Произошла ошибка. Процесс не завершен успешно.</translation>
     </message>
@@ -757,22 +757,37 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Выключение</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="83"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="45"/>
+        <source>Shutdown initiated by user</source>
+        <translation>Выключение по запросу пользователя</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="50"/>
+        <source>All tasks finished, shutting down</source>
+        <translation>Все задачи завершены, выключение</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="57"/>
+        <source>Shutdown because of task error</source>
+        <translation>Задача завершилас с ошибкой, выключение</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="93"/>
         <source>Cancel active tasks</source>
         <translation>Отмена активных задач</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="106"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="116"/>
         <source>Starting shutdown process...</source>
         <translation>Выключение в процессе...</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="128"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="146"/>
         <source>Shutdown was canceled</source>
         <translation>Выключение отменено</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="132"/>
+        <location filename="../src/tasks/ConsoleShutdownTask.cpp" line="150"/>
         <source>Shutdown failed, error: %1</source>
         <translation>Выключение не произошло, ошибка: %1</translation>
     </message>
@@ -1420,17 +1435,27 @@ The session database file is removed after closing of UGENE.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="632"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="636"/>
+        <source>One of the arguments passed to &quot;%1&quot; external tool contains empty arguments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="638"/>
+        <source>One of the arguments passed to &quot;%1&quot; external tool contains unexpected quotes. Current problem argument is: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="653"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool contains spaces. Make sure that the input and output files and folders are located in the paths which contain no spaces. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="644"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="665"/>
         <source>Your &quot;Temporary files&quot; directory contains spaces, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="654"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="675"/>
         <source>&quot;%1&quot; external tool located in path which contains spaces symbols. Please change it location to path which contains no spaces,  set the new path in Preferences on the External tools and try again. Current problem path is: </source>
         <translation type="unfinished"></translation>
     </message>

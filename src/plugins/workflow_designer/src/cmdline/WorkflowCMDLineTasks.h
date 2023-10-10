@@ -33,7 +33,7 @@ public:
     WorkflowRunFromCMDLineBase();
     virtual ~WorkflowRunFromCMDLineBase() = default;
     QList<Task*> onSubTaskFinished(Task* subTask);
-    void run();
+    Task::ReportResult report() override;
 
 protected:
     virtual Task* getWorkflowRunTask() const = 0;
@@ -41,6 +41,7 @@ protected:
 private:
     LoadWorkflowTask* prepareLoadSchemaTask(const QString& schemaName);
     void processLoadSchemaTask(const QString& schemaName, int optionIdx);
+    QByteArray getReportFromError() const;
 
 protected:
     QSharedPointer<Schema> schema;
