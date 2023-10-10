@@ -127,7 +127,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState* st) {
     tokens[0] = tokens[0].replace(QRegExp("_(?![0-9])"), QChar(' '));
     st->entry->name = tokens[0];
 
-    if (tokens.size() >= 3 && tokens[2] == "bp") {
+    if (tokens.size() >= 3 && (tokens[2] == "bp" || tokens[2] == "aa")) {
         QString len = tokens[1];
         st->entry->seqLen = len.toInt();
     }

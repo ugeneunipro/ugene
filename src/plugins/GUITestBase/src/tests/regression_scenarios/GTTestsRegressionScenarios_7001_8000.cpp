@@ -4750,5 +4750,62 @@ GUI_TEST_CLASS_DEFINITION(test_7925) {
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7927) {
+    /*
+    * 1. Open _common_data\regression\7927\example.seq.
+    * 2. Open the "Restriction enzymes" dialog.
+    * 3. Check Esp3I.
+    * 4. Click OK.
+    * 5. Open the "Annotation highlighting" tab.
+    * Expected state: No errors in the log
+    */
+    GTFileDialog::openFile(testDir, "_common_data/regression/7927/example.seq");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::add(new PopupChooser({ "ADV_MENU_ANALYSE", "Find restriction sites" }));
+    FindEnzymesDialogFillerSettings settings({ "Esp3I" });
+    GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
+
+    GTLogTracer lt;
+    GTWidget::click(GTWidget::findWidget("OP_ANNOT_HIGHLIGHT"));
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7945) {
+    GTFileDialog::openFile(testDir, "_common_data/genbank/one_base_annotation.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsSequenceView::selectSequenceRegion(10, 13);
+    GTUtilsSequenceView::zoomIn();
+
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 12, 0, false, Qt::LeftButton, GTUtilsSequenceView::getPanViewByNumber()->getRenderArea()->getCurrentScale() / 2);
+
+    CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions().isEmpty(), "No selected annotations, but should be");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7946) {
+    // Open _common_data/scenarios/_regression/7946/7946.gb
+    // Open details view
+    // Make sure, that "Wrap mode" is enabled
+    // Click on the annotation
+    // Expected: annotation is selected
+
+    GTFileDialog::openFile(testDir, "_common_data/scenarios/_regression/7946/7946.gb");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsSequenceView::makeDetViewVisible();
+
+    QAbstractButton* wrapButton = GTAction::button("wrap_sequence_action");
+    if (!wrapButton->isChecked()) {
+        GTWidget::click(wrapButton);
+    }
+
+    GTUtilsSequenceView::clickAnnotationDet("misc_feature", 6);
+
+    CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedItem().isEmpty(), "No selected annotation, but should be");
+}
+
+
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2

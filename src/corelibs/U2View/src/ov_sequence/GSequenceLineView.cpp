@@ -35,6 +35,8 @@
 
 #include "ADVSequenceObjectContext.h"
 
+#include <QtMath>
+
 namespace U2 {
 
 GSequenceLineView::GSequenceLineView(QWidget* p, SequenceObjectContext* _ctx)
@@ -682,7 +684,7 @@ qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint& coord) const {
     int x = qBound(0, coord.x(), width());
     const U2Region& visibleRange = view->getVisibleRange();
     double scale = getCurrentScale();
-    qint64 pos = qRound64((double)visibleRange.startPos + x / scale);
+    qint64 pos = qFloor((double)visibleRange.startPos + x / scale);
     return qBound(visibleRange.startPos, pos, visibleRange.endPos());
 }
 

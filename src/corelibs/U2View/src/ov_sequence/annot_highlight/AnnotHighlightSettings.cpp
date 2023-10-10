@@ -62,8 +62,11 @@ void AnnotHighlightSettingsWidget::setSettings(AnnotationSettings* annotSettings
 
 void AnnotHighlightSettingsWidget::sl_onShowHideChanged(int checkedState) {
     SAFE_POINT(0 != currentSettings, "An annotation should always be selected!", );
+    bool prevValue = currentSettings->visible;
     currentSettings->visible = (checkedState == Qt::Checked) ? true : false;
-    emit si_annotSettingsChanged(currentSettings);
+    if (prevValue != currentSettings->visible) {
+        emit si_annotSettingsChanged(currentSettings);
+    }
 }
 
 void AnnotHighlightSettingsWidget::sl_onShowOnTranslationChanged(int checkedState) {

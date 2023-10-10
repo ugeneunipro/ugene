@@ -36,10 +36,15 @@ namespace U2 {
 /* DimerFinderResult */
 /************************************************************************/
 QString DimerFinderResult::getFullReport() const {
-    return QString("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2").arg(deltaG).arg(baseCounts) + "<pre>" + dimersOverlap + "</pre>";
+    return PrimerStatistics::tr("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2").arg(deltaG).arg(baseCounts) + "<pre>" + dimersOverlap + "</pre>";
 }
+
+QString DimerFinderResult::getShortBoldReport() const {
+    return PrimerStatistics::tr("<b>Delta</b> G: %1 kcal/mole <b>Base Pairs:</b> %2 bp").arg(deltaG).arg(baseCounts);
+}
+
 QString DimerFinderResult::getShortReport() const {
-    return QString("Delta G: %1 kcal/mole<br>Base Pairs: %2").arg(deltaG).arg(baseCounts);
+    return PrimerStatistics::tr("Delta G: %1 kcal/mole<br>Base Pairs: %2").arg(deltaG).arg(baseCounts);
 }
 
 /************************************************************************/
@@ -98,12 +103,16 @@ void BaseDimersFinder::fillResultsForCurrentIteration(const QByteArray& homologo
         if (!homologousRegionEnded) {
             freeEnergy += ENERGY_MAP[curArray];
         }
-        if (homologousRegionEnded || i == homologousBases.size() - 2) {
+        bool homologousBasesEnding = i == homologousBases.size() - 2;
+        if (homologousRegionEnded || homologousBasesEnding) {
             if (freeEnergy < maximumDeltaG) {
                 maximumDeltaG = freeEnergy;
                 resHomologousRegion = homologousBases;
                 overlappingRegion.startPos = startPos;
-                overlappingRegion.length = i - startPos + 2;
+                overlappingRegion.length = i - startPos + 1;
+                if (homologousBasesEnding) {
+                    overlappingRegion.length++;
+                }
                 dimersOverlap = getDimersOverlapping(overlapStartPos);
             }
             freeEnergy = 0.0;

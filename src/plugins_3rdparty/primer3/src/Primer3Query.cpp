@@ -61,7 +61,7 @@ QString QDPrimerActor::getText() const {
 Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
     Task* t = nullptr;
 
-    auto settings = new Primer3TaskSettings();
+    auto settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
     settings->setIntProperty("PRIMER_FIRST_BASE_INDEX", 0);
     settings->setIntProperty("PRIMER_LIBERAL_BASE", 1);
     settings->setDoubleProperty("PRIMER_WT_POS_PENALTY", 0);
@@ -131,20 +131,20 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/) {
                errMsg.arg(propertyKey),
                nullptr);
 
-    t = new Primer3SWTask(settings, true);
+    t = new Primer3Task(settings);
     connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task*)), SLOT(sl_onAlgorithmTaskFinished(Task*)));
 
     return t;
 }
 
 void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
-    auto primerTask = qobject_cast<Primer3SWTask*>(t);
+    auto primerTask = qobject_cast<Primer3Task*>(t);
     assert(primerTask);
-    QList<PrimerPair> bestPairs = primerTask->getBestPairs();
-    foreach (PrimerPair pair, bestPairs) {
+    const auto& bestPairs = primerTask->getBestPairs();
+    for(const auto& pair : qAsConst(bestPairs)) {
         QList<SharedAnnotationData> annotations;
-        PrimerSingle* leftPrimer = pair.getLeftPrimer();
-        PrimerSingle* rightPrimer = pair.getRightPrimer();
+        const auto& leftPrimer = pair->getLeftPrimer();
+        const auto& rightPrimer = pair->getRightPrimer();
         if (leftPrimer != nullptr && rightPrimer != nullptr) {
             QDResultUnit ru1(new QDResultUnitData);
             ru1->strand = U2Strand::Direct;

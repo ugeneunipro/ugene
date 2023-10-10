@@ -440,7 +440,7 @@ void GTUtilsSequenceView::clickAnnotationDet(
     }
 }
 
-void GTUtilsSequenceView::clickAnnotationPan(const QString& name, int startPos, int number, bool isDoubleClick, Qt::MouseButton button) {
+void GTUtilsSequenceView::clickAnnotationPan(const QString& name, int startPos, int number, bool isDoubleClick, Qt::MouseButton button, int clickOffsetX) {
     ADVSingleSequenceWidget* seq = getSeqWidgetByNumber(number);
     GSequenceLineViewRenderArea* area = seq->getPanView()->getRenderArea();
     auto pan = dynamic_cast<PanViewRenderArea*>(area);
@@ -491,7 +491,11 @@ void GTUtilsSequenceView::clickAnnotationPan(const QString& name, int startPos, 
     int x1 = qRound(x1f);
 
     QRect annotationRect(x1, y.startPos, rw, y.length);
-    GTMouseDriver::moveTo(pan->mapToGlobal(annotationRect.center()));
+    auto move2Point = pan->mapToGlobal(annotationRect.center());
+    if (clickOffsetX != 0) {
+        move2Point = QPoint(move2Point.x() + clickOffsetX, move2Point.y());
+    }
+    GTMouseDriver::moveTo(move2Point);
     if (isDoubleClick) {
         GTMouseDriver::doubleClick();
     } else {

@@ -2430,6 +2430,21 @@ The session database file is removed after closing of UGENE.</source>
         <source>Reverse</source>
         <translation>Обратный</translation>
     </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerDimersFinder.cpp" line="39"/>
+        <source>&lt;b&gt;Delta&lt;/b&gt; G: %1 kcal/mole &lt;b&gt;Base Pairs:&lt;/b&gt; %2</source>
+        <translation>&lt;b&gt;Энергия Гиббса&lt;/b&gt;: %1 ккал/моль &lt;b&gt;Спаренные основания:&lt;/b&gt; %2</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerDimersFinder.cpp" line="43"/>
+        <source>&lt;b&gt;Delta&lt;/b&gt; G: %1 kcal/mole &lt;b&gt;Base Pairs:&lt;/b&gt; %2 bp</source>
+        <translation>&lt;b&gt;Энергия Гиббса&lt;/b&gt;: %1 ккал/моль &lt;b&gt;Спаренные основания:&lt;/b&gt; %2 пн</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerDimersFinder.cpp" line="47"/>
+        <source>Delta G: %1 kcal/mole&lt;br&gt;Base Pairs: %2</source>
+        <translation>Энергия Гиббса: %1 ккал/моль&lt;br&gt;Спаренные основания: %2</translation>
+    </message>
 </context>
 <context>
     <name>U2::RelocateDocumentTask</name>

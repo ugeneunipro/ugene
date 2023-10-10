@@ -26,6 +26,7 @@
 #include <QFontMetrics>
 #include <QGridLayout>
 #include <QPainter>
+#include <QtMath>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
@@ -1126,7 +1127,7 @@ qint64 CircularViewRenderArea::asinToPos(const qreal asin) const {
         graduatedAngle += 360 * CircularView::GRADUATION;
     }
     qint64 seqLength = circularView->getSequenceLength();
-    qint64 resultPosition = (seqLength * graduatedAngle) / CircularView::MAX_GRADUATION_ANGLE + 0.5f;
+    qint64 resultPosition = qFloor((seqLength * graduatedAngle) / CircularView::MAX_GRADUATION_ANGLE);
 
     return resultPosition;
 }

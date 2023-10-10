@@ -111,7 +111,6 @@ void HttpRequestBLAST::sendRequest(const QString& params, const QString& query) 
     SAFE_POINT(rTask != nullptr, "Not a RemoteBlastHttpRequestTask", );
     int checkTimeSeconds = qMax(5, estimatedRunTimeSeconds / 10);
     rTask->resetProgress();
-    rTask->setTimeOut(10 * estimatedRunTimeSeconds);
     int iteration = 0;
     int startTime = QDateTime::currentSecsSinceEpoch();
     do {

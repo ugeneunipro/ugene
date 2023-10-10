@@ -67,6 +67,8 @@ QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation* anno
     U2Region singleLineYRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, availableHeightForSingleLine);
     // The first line is indented from the widget start by the half of indent.
     singleLineYRegion.startPos += INDENT_BETWEEN_LINES / 2;
+    // If canvas height is more than required for the current number of lines, there is an additional indent between lines
+    singleLineYRegion.startPos += extraIndent / 2;
     // Apply vertical scroll shift within multi-line det-view.
     singleLineYRegion.startPos -= detView->getShift();
 

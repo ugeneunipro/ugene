@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document index="doc" url="embl/AA.embl" io="local_file" format="embl" no-message="The number of valid sequence characters does not coincide with the declared size in the sequence header"/>
+
+</multi-test>
