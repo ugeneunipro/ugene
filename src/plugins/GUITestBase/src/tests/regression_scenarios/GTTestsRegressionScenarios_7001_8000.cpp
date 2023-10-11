@@ -396,6 +396,22 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7111) {
+    GTLogTracer lt;
+    GTUtilsDialog::waitForDialog(new StartupDialogFiller());
+
+    GTFileDialog::openFile(dataDir + "/workflow_samples/Custom elements/casava-fastq-filter.uwl");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::click("Read Sequence");
+    GTUtilsWorkflowDesigner::addInputFile("Read Sequence", dataDir + "/samples/FASTQ/eas.fastq");
+
+    GTUtilsWorkflowDesigner::runWorkflow();
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    CHECK_SET_ERR(!lt.hasMessage("Cannot connect "), "Unexpected message in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7121) {
     GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive();
