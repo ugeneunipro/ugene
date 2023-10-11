@@ -215,6 +215,7 @@ PanView::~PanView() {
 }
 
 void PanView::registerAnnotations(const QList<Annotation*>& l) {
+
     GTIMER(c1, t1, "PanView::registerAnnotations");
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     foreach (Annotation* a, l) {
@@ -307,7 +308,7 @@ void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings)
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     for (const QString& name : qAsConst(changedSettings)) {
         AnnotationSettings* as = asr->getAnnotationSettings(name);
-        bool hasRow = rowsManager->hasRowWithAnnotationName(name);
+        bool hasRow = rowsManager->hasRowWithName(getRowNameByAnnotation(name));
         if (as->visible == hasRow) {
             continue;
         }
@@ -587,6 +588,16 @@ U2Region PanView::getRegionToZoom() const {
     }
 
     return selRegion;
+}
+
+QString PanView::getRowNameByAnnotation(const QString& name) const {
+    QList<Annotation*> found;
+    foreach (AnnotationTableObject* ao, ctx->getAnnotationObjects(true)) {
+        found << ao->getAnnotationsByName(name);
+    }
+    SAFE_POINT(!found.isEmpty(), "found no annotations by name ", "");
+    const SharedAnnotationData& data = found.first()->getData();
+    return data->type == U2FeatureTypes::RestrictionSite ? PVRowData::RESTRICTION_SITE_NAME : data->name;
 }
 
 QAction* PanView::getZoomInAction() const {

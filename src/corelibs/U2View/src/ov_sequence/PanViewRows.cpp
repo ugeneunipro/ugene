@@ -89,7 +89,7 @@ void PVRowsManager::addAnnotation(Annotation* a) {
     const QVector<U2Region> location = data->getRegions();
 
     QString name = data->type == U2FeatureTypes::RestrictionSite ? PVRowData::RESTRICTION_SITE_NAME : data->name;
-    if (hasRowWithAnnotationName(name)) {
+    if (hasRowWithName(name)) {
         const QList<PVRowData*> constRows(rows);
         for (PVRowData* row : qAsConst(constRows)) {
             if (row->fitToRow(location)) {
@@ -155,12 +155,11 @@ int PVRowsManager::getRowCount() const {
     return rows.size();
 }
 
-bool PVRowsManager::hasRowWithAnnotationName(const QString& name) const {
-    for (PVRowData* row : qAsConst(rows)) {
-        for (Annotation* annotation : qAsConst(row->annotations)) {
-            if (annotation->getName() == name) {
-                return true;
-            }
+bool PVRowsManager::hasRowWithName(const QString& name) const {
+    const QList<PVRowData*> constRows(rows);
+    for (PVRowData* row : qAsConst(constRows)) {
+        if (row->key == name) {
+            return true;
         }
     }
     return false;

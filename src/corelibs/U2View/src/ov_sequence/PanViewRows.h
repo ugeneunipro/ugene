@@ -49,10 +49,7 @@ public:
     void addAnnotation(Annotation* a);
     void removeAnnotation(Annotation* f);
 
-    /*
-    * Returns true if annotation with given name present
-    */
-    bool hasRowWithAnnotationName(const QString& name) const;
+    bool hasRowWithName(const QString& name) const;
     int getRowCount() const;
     PVRowData* getRow(int row) const;
 
