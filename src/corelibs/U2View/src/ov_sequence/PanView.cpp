@@ -307,10 +307,6 @@ void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings)
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     for (const QString& name : qAsConst(changedSettings)) {
         AnnotationSettings* as = asr->getAnnotationSettings(name);
-        bool hasRow = rowsManager->hasRowWithName(name);
-        if (as->visible == hasRow) {
-            continue;
-        }
         QList<Annotation*> changed;
         foreach (AnnotationTableObject* ao, ctx->getAnnotationObjects(true)) {
             changed << ao->getAnnotationsByName(name);

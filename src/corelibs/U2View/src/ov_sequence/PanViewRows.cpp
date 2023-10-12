@@ -84,7 +84,7 @@ PVRowsManager::PVRowsManager() {
 }
 
 void PVRowsManager::addAnnotation(Annotation* a) {
-    SAFE_POINT(!rowByAnnotation.contains(a), "Annotation has been already added", );
+    CHECK(!rowByAnnotation.contains(a), );
     const SharedAnnotationData& data = a->getData();
     const QVector<U2Region> location = data->getRegions();
 
