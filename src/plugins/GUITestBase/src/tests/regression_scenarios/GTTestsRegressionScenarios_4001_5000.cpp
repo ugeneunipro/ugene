@@ -2902,6 +2902,19 @@ GUI_TEST_CLASS_DEFINITION(test_4463) {
     CHECK_SET_ERR(GTUtilsSequenceView::getSeqWidgetByNumber() != nullptr, "Can't find sequence view widget");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4481) {
+    GTLogTracer lt;
+
+    GTFileDialog::openFile(dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner();
+    GTUtilsWorkflowDesigner::addAlgorithm("Read Sequence", true);
+
+    GTKeyboardDriver::keyClick('s', Qt::ControlModifier);
+    CHECK_SET_ERR(!lt.hasMessage("Ambiguous shortcut"), "Unexpected message in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4483) {
     // Open "samples/CLUSTALW/ty3.aln.gz".
     // Click "Export as image".
