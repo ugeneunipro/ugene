@@ -200,7 +200,6 @@ public:
 
 private:
     U2Region getRegionToZoom() const;
-    QString getRowNameByAnnotation(const QString& name) const;
 
 public:
     U2Region frameRange;
