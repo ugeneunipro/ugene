@@ -4757,6 +4757,7 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
     * 3. Check Esp3I.
     * 4. Click OK.
     * 5. Open the "Annotation highlighting" tab.
+    * 6. Click twice to on\off "Show annotations" and "Show on translation" checkboxes.
     * Expected state: No errors in the log
     */
     GTFileDialog::openFile(testDir, "_common_data/regression/7927/example.seq");
@@ -4769,6 +4770,10 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
 
     GTLogTracer lt;
     GTWidget::click(GTWidget::findWidget("OP_ANNOT_HIGHLIGHT"));
+    GTWidget::click(GTWidget::findWidget("checkShowHideAnnots"));
+    GTWidget::click(GTWidget::findWidget("checkShowHideAnnots"));
+    GTWidget::click(GTWidget::findWidget("checkShowOnTranslation"));
+    GTWidget::click(GTWidget::findWidget("checkShowOnTranslation"));
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
@@ -4806,6 +4811,25 @@ GUI_TEST_CLASS_DEFINITION(test_7946) {
     CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getSelectedItem().isEmpty(), "No selected annotation, but should be");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7947) {
+    // Open human_T1.fa
+    // Create any one-character-long annotation
+    // Try to select it on zoom view
+    // Expected: annotation is selected
+
+    GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(true, "<auto>", "", "100000..100000"));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000);
+    CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getAllSelectedItems().isEmpty(), "No annotation selected, but should be");
+    
+    GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
+    GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000, 0, true);
+    CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
+}
 
 }  // namespace GUITest_regression_scenarios
 }  // namespace U2
