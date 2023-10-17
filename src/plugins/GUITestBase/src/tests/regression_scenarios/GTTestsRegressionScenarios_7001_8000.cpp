@@ -409,11 +409,11 @@ GUI_TEST_CLASS_DEFINITION(test_7110) {
         }
     };
 
-    GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario));
+    GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario()));
     GTUtilsDialog::waitForDialog(new PopupChooser({"ADV_MENU_ANALYSE", "Query NCBI BLAST database"}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getSeqWidgetByNumber());
 
-    GTGlobals::sleep(10000);  // Give a task some time to run.
+    GTUtilsTaskTreeView::cancelTask("RemoteBLASTTask");
 
     CHECK_SET_ERR(!lt.hasMessage("content-type missing in HTTP POST"), "Unexpected message in the log");
 }
