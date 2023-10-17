@@ -128,6 +128,7 @@
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastLocalSearchDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/MakeBlastDbDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/query/AnalyzeWithQuerySchemaDialogFiller.h"
@@ -394,6 +395,27 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
 
     QStringList sequenceList2 = GTUtilsMSAEditorSequenceArea::getVisibleNames();
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7110) {
+    GTLogTracer lt;
+    GTFileDialog::openFile(dataDir + "samples/Genbank/murine.gb");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    class Scenario : public CustomScenario {
+        void run() override {
+            GTWidget::getActiveModalWidget();
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario()));
+    GTUtilsDialog::waitForDialog(new PopupChooser({"ADV_MENU_ANALYSE", "Query NCBI BLAST database"}));
+    GTMenu::showContextMenu(GTUtilsSequenceView::getSeqWidgetByNumber());
+
+    GTUtilsTaskTreeView::cancelTask("RemoteBLASTTask");
+
+    CHECK_SET_ERR(!lt.hasMessage("content-type missing in HTTP POST"), "Unexpected message in the log");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7121) {
@@ -4825,7 +4847,7 @@ GUI_TEST_CLASS_DEFINITION(test_7947) {
     GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000);
     CHECK_SET_ERR(!GTUtilsAnnotationsTreeView::getAllSelectedItems().isEmpty(), "No annotation selected, but should be");
-    
+
     GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000, 0, true);
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
