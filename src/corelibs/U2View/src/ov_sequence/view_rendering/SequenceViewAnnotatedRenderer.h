@@ -93,8 +93,16 @@ public:
     virtual void drawAnnotations(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, const AnnotationDisplaySettings& displaySettings);
     virtual void drawAnnotationSelection(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, const AnnotationDisplaySettings& displaySettings);
 
-protected:
-    virtual void drawAnnotation(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, const AnnotationDisplaySettings& displaySettings, bool selected = false, const AnnotationSettings* as = nullptr);
+    /**
+     * Returns visible X range of the annotation region.
+     *
+     * \param annotationRegion Annotation region we are calculating range of.
+     * \param visibleRange Visible area region.
+     * \param canvasSize Size of the widget we are drawing on.
+     * \param selected True if the annotation is selected, false if it is not.
+     * \return Range of the annotation.
+     */
+    U2Region getAnnotationXRange(const U2Region& annotationRegion, const U2Region& visibleRange, const QSize& canvasSize, bool selected) const;
 
     /**
      * Returns visible Y range of the annotation region.
@@ -107,6 +115,10 @@ protected:
      *  and this method is removed.
      */
     virtual U2Region getAnnotationYRange(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, int availableHeight) const = 0;
+
+
+protected:
+    virtual void drawAnnotation(QPainter& p, const QSize& canvasSize, const U2Region& visibleRange, Annotation* a, const AnnotationDisplaySettings& displaySettings, bool selected = false, const AnnotationSettings* as = nullptr);
 
     void drawBoundedText(QPainter& p, const QRect& r, const QString& text);
 
