@@ -38,8 +38,6 @@
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Formats/GenbankLocationParser.h>
-
 #include <U2Gui/GUIUtils.h>
 
 #include "ADVSequenceObjectContext.h"
@@ -70,12 +68,13 @@ void GSequenceLineViewAnnotated::connectAnnotationObject(const AnnotationTableOb
     connect(ao, SIGNAL(si_onAnnotationsModified(const QList<AnnotationModification>&)), SLOT(sl_onAnnotationsModified(const QList<AnnotationModification>&)));
 }
 
-const int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex) {
+int GSequenceLineViewAnnotated::getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex) {
     QVector<U2Region> annotationRegions = ann->getRegions();
     SAFE_POINT(!annotationRegions.isEmpty(), "At leat one annotation region should be presented", 0);
 
     auto getDistanceBetweenBaseNumberAndRegion = [baseIndex](const U2Region& region) {
-        return qMin(qAbs(region.startPos - baseIndex), qAbs(region.endPos() - baseIndex));;
+        return qMin(qAbs(region.startPos - baseIndex), qAbs(region.endPos() - baseIndex));
+        ;
     };
 
     int closestAnnotationRegionIndex = 0;
@@ -128,7 +127,7 @@ void GSequenceLineViewAnnotated::sl_onAnnotationsRemoved(const QList<Annotation*
 }
 
 void GSequenceLineViewAnnotated::sl_onAnnotationsInGroupRemoved(const QList<Annotation*>& l, AnnotationGroup*) {
-    ClearAnnotationsTask* task = new ClearAnnotationsTask(l, this);
+    auto task = new ClearAnnotationsTask(l, this);
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
 
@@ -369,7 +368,7 @@ QString GSequenceLineViewAnnotated::createToolTip(const QPoint& renderAreaPoint)
     QList<Annotation*> la = findAnnotationsByCoord(renderAreaPoint);
     QList<SharedAnnotationData> annotationList;
     if (la.isEmpty()) {
-        return QString();
+        return "";
     } else {
         // fetch annotation data before further processing in order to improve performance
         foreach (const Annotation* annotation, la) {
@@ -462,7 +461,7 @@ QList<Annotation*> GSequenceLineViewGridAnnotationRenderArea::findAnnotationsByC
 
                 int yReg = getAnnotationRegionIndexByYCoord(coord.y(), annotation, i, annotationSettings);
                 CHECK_CONTINUE(xRegs.contains(yReg));
-                
+
                 resultAnnotationList.append(annotation);
             }
         }
