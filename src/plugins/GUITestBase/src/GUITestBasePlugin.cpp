@@ -129,14 +129,6 @@ static QStringList nightly(const QStringList& labelList = QStringList()) {
 #define REGISTER_TEST(TestClass) \
     guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, nightly()));
 
-/** Registers a GUI test with a given set of labels and description. Usually used to pass some non-default labels and the reason to the test. */
-#define REGISTER_TEST_EXT(TestClass, LABELS, DESCRIPTION) \
-    { \
-        auto test = new TestClass(DEFAULT_GUI_TEST_TIMEOUT, LABELS); \
-        test->setDescription(DESCRIPTION); \
-        guiTestBase->registerTest(test); \
-    }
-
 /** Registers a GUI test with the TIMEOUT and LABELS provided. */
 #define REGISTER_TEST_TL(TestClass, TIMEOUT, LABELS) \
     guiTestBase->registerTest(new TestClass(TIMEOUT, LABELS));
@@ -1676,6 +1668,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7091);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7106);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7110);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7111);
     REGISTER_TEST(GUITest_regression_scenarios::test_7121);
     REGISTER_TEST(GUITest_regression_scenarios::test_7125);
     REGISTER_TEST(GUITest_regression_scenarios::test_7126);
