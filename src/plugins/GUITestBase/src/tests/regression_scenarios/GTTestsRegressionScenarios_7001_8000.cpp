@@ -107,6 +107,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
@@ -1817,8 +1818,7 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 950
-                                                  : 1100;
+    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 950 : 1100;
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
@@ -4801,8 +4801,8 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
     GTFileDialog::openFile(testDir, "_common_data/regression/7927/example.seq");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::add(new PopupChooser({ "ADV_MENU_ANALYSE", "Find restriction sites" }));
-    FindEnzymesDialogFillerSettings settings({ "Esp3I" });
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    FindEnzymesDialogFillerSettings settings({"Esp3I"});
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
@@ -4867,6 +4867,16 @@ GUI_TEST_CLASS_DEFINITION(test_7947) {
     GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000, 0, true);
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7968) {
+    GTFileDialog::openFile(testDir + "_common_data/fasta/", "AMINO.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsDialog::waitForDialog(new PredictSecondaryStructureDialogFiller(70, 69, true));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ANALYSE, "Predict secondary structure"}));
+    GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 }  // namespace GUITest_regression_scenarios
