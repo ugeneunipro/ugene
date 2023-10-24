@@ -411,7 +411,7 @@ GUI_TEST_CLASS_DEFINITION(test_7110) {
 
     GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario()));
     GTUtilsDialog::waitForDialog(new PopupChooser({"ADV_MENU_ANALYSE", "Query NCBI BLAST database"}));
-    GTMenu::showContextMenu(GTUtilsSequenceView::getSeqWidgetByNumber());
+    GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
 
     GTUtilsTaskTreeView::cancelTask("RemoteBLASTTask");
 
