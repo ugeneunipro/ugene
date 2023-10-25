@@ -107,10 +107,10 @@
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/PredictSecondaryStructureDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ProjectTreeItemSelectorDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_assembly/ExportConsensusDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
@@ -1817,8 +1817,7 @@ GUI_TEST_CLASS_DEFINITION(test_7454) {
     GTUtilsTaskTreeView::waitTaskFinished();
 
     auto splitterCenter = GTUtilsProjectTreeView::getProjectViewAndObjectViewSplitterHandlePoint();
-    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 950
-                                                  : 1100;
+    int deltaX = isOsMac() ? 1000 : isOsWindows() ? 950 : 1100;
     GTMouseDriver::dragAndDrop(splitterCenter, splitterCenter + QPoint(deltaX, 0));
 
     GTUtilsDialog::waitForDialog(new PopupChooserByText({"Remove sequence"}));
@@ -4801,8 +4800,8 @@ GUI_TEST_CLASS_DEFINITION(test_7927) {
     GTFileDialog::openFile(testDir, "_common_data/regression/7927/example.seq");
     GTUtilsTaskTreeView::waitTaskFinished();
 
-    GTUtilsDialog::add(new PopupChooser({ "ADV_MENU_ANALYSE", "Find restriction sites" }));
-    FindEnzymesDialogFillerSettings settings({ "Esp3I" });
+    GTUtilsDialog::add(new PopupChooser({"ADV_MENU_ANALYSE", "Find restriction sites"}));
+    FindEnzymesDialogFillerSettings settings({"Esp3I"});
     GTUtilsDialog::add(new FindEnzymesDialogFiller(settings));
     GTUtilsSequenceView::openPopupMenuOnSequenceViewArea();
 
@@ -4867,6 +4866,29 @@ GUI_TEST_CLASS_DEFINITION(test_7947) {
     GTUtilsSequenceView::clickMouseOnTheSafeSequenceViewArea();
     GTUtilsSequenceView::clickAnnotationPan("misc_feature", 100'000, 0, true);
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7968) {
+    GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    class CheckButtonStateScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTLineEdit::setText("start_edit_line", QString::number(70), dialog);
+            GTLineEdit::setText("end_edit_line", QString::number(69), dialog);
+
+            GTUtilsDialog::add(new MessageBoxDialogFiller(QMessageBox::Ok, "Invalid sequence region"));
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(new PredictSecondaryStructureDialogFiller(new CheckButtonStateScenario()));
+    GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ANALYSE, "Predict secondary structure"}));
+    GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
+    GTUtilsTaskTreeView::waitTaskFinished();
 }
 
 }  // namespace GUITest_regression_scenarios

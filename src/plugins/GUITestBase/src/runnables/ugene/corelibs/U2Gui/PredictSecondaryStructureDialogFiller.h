@@ -31,12 +31,12 @@ public:
     PredictSecondaryStructureDialogFiller(int startPos, int endPos, bool onlyPressOk = false);
     PredictSecondaryStructureDialogFiller(CustomScenario* scenario);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 private:
-    int startPos;
-    int endPos;
-    bool onlyPressOk;
+    int startPos = 0;
+    int endPos = 0;
+    bool onlyPressOk = false;
 };
 
 }  // namespace U2

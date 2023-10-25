@@ -92,40 +92,39 @@ U2Region RegionSelectorController::getRegion(bool* _ok) const {
     SAFE_POINT_EXT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, *_ok = false, U2Region());
 
     bool ok = false;
-    qint64 v1 = gui.startLineEdit->text().toLongLong(&ok) - 1;
+    qint64 startPosInclusive = gui.startLineEdit->text().toLongLong(&ok) - 1;
 
-    if (!ok || v1 < 0 || v1 > settings.maxLen) {
+    if (!ok || startPosInclusive < 0 || startPosInclusive > settings.maxLen) {
         if (_ok != nullptr) {
             *_ok = false;
         }
-        return U2Region();
+        return {};
     }
 
-    int v2 = gui.endLineEdit->text().toLongLong(&ok);
+    qint64 endPosExlusive = gui.endLineEdit->text().toLongLong(&ok);
 
-    if (!ok || v2 <= 0 || v2 > settings.maxLen) {
+    if (!ok || endPosExlusive <= 0 || endPosExlusive > settings.maxLen) {
         if (_ok != nullptr) {
             *_ok = false;
         }
-        return U2Region();
+        return {};
     }
 
-    if (v1 > v2 && !settings.circular) {  // start > end
+    if (startPosInclusive >= endPosExlusive && !settings.circular) {  // start > end
         if (_ok != nullptr) {
             *_ok = false;
         }
-        return U2Region();
+        return {};
     }
 
     if (_ok != nullptr) {
         *_ok = true;
     }
 
-    if (v1 < v2) {
-        return U2Region(v1, v2 - v1);
-    } else {
-        return U2Region(v1, v2 + settings.maxLen - v1);
+    if (startPosInclusive < endPosExlusive) {
+        return {startPosInclusive, endPosExlusive - startPosInclusive};
     }
+    return {startPosInclusive, endPosExlusive + settings.maxLen - startPosInclusive};
 }
 
 void RegionSelectorController::setRegion(const U2Region& region) {
@@ -186,21 +185,18 @@ const QString REGION_IS_INVALID = QApplication::translate("RegionSelectorControl
 
 QString RegionSelectorController::getErrorMessage() const {
     bool ok = false;
-    qint64 v1 = gui.startLineEdit->text().toLongLong(&ok) - 1;
-    if (!ok || v1 < 0 || v1 > settings.maxLen) {
+    qint64 startInclusive = gui.startLineEdit->text().toLongLong(&ok) - 1;
+    if (!ok || startInclusive < 0 || startInclusive > settings.maxLen) {
         return START_IS_INVALID;
     }
-
-    int v2 = gui.endLineEdit->text().toLongLong(&ok);
-    if (!ok || v2 <= 0 || v2 > settings.maxLen) {
+    qint64 endExclusive = gui.endLineEdit->text().toLongLong(&ok);
+    if (!ok || endExclusive <= 0 || endExclusive > settings.maxLen) {
         return END_IS_INVALID;
     }
-
-    if (v1 > v2 && !settings.circular) {  // start > end
+    if (startInclusive >= endExclusive && !settings.circular) {  // start >= end
         return REGION_IS_INVALID;
     }
-
-    return QString();
+    return {};
 }
 
 void RegionSelectorController::sl_onPresetChanged(int index) {
