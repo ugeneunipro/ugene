@@ -72,7 +72,6 @@ AnnotationTableObject* CreateAnnotationModel::getAnnotationObject() const {
     return aobj;
 }
 
-const QString CreateAnnotationWidgetController::DESCRIPTION_QUALIFIER_KEY = "note";
 const QString CreateAnnotationWidgetController::SETTINGS_LASTDIR = "create_annotation/last_dir";
 
 CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateAnnotationModel& m,
@@ -173,7 +172,7 @@ void CreateAnnotationWidgetController::commonWidgetUpdate() {
     w->setUsePatternNamesVisible(!model.hideUsePatternNames);
 
     w->useAminoAnnotationTypes(model.useAminoAnnotationTypes);
-    if (U2FeatureTypes::Invalid != model.data->type) {
+    if (model.data->type != U2FeatureTypes::Invalid) {
         w->setAnnotationType(model.data->type);
     }
 }
