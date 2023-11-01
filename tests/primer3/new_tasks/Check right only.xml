@@ -4,7 +4,6 @@
 		<plugin_primer_3_in 
 			PRIMER_TASK="check_primers" 
 			PRIMER_PICK_ANYWAY="1" 
-			SEQUENCE_ID="Check right only" 
 			SEQUENCE_PRIMER_REVCOMP="gcgtttttattgccgttgtt"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="0" 

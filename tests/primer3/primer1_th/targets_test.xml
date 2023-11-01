@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/primer1_th/targets_test.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="targets_test" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT="1" 
 			PRIMER_THERMODYNAMIC_PARAMETERS_PATH="primer3_config/" 
@@ -17,8 +19,6 @@
 			PRIMER_MAX_SELF_END="8" 
 			PRIMER_PAIR_MAX_COMPL_END="8" 
 			P3_FILE_FLAG="1" 
-			SEQUENCE_ID="targets_test" 
-			SEQUENCE_TEMPLATE="TCCTACAGCTGTGGGAAAATGatgcgtacgatccatgctagctagctactatcgattagctatcatctactatcatctactatctactacacatctactatcatctacacacacacacacactaggccgctatatcatctagcGCCGCCATGTACACACTG" 
 			SEQUENCE_TARGET="22,122"/>
 		<plugin_primer_3_out 
 			PRIMER_WARNING="PRIMER_SALT_DIVALENT &gt; 0.0 but PRIMER_DNTP_CONC &lt;" 

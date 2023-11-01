@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/overhang_th/Overhang09.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="Overhang09" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TM_FORMULA="1" 
 			PRIMER_SALT_CORRECTIONS="1" 
@@ -22,8 +24,6 @@
 			PRIMER_PICK_INTERNAL_OLIGO="0" 
 			PRIMER_SECONDARY_STRUCTURE_ALIGNMENT="0" 
 			PRIMER_LIBERAL_BASE="0" 
-			SEQUENCE_ID="Overhang09" 
-			SEQUENCE_TEMPLATE="TGCTTTCAATCATGTGGGTGATTTTATAGATTGTCATCACCATAGTAACTGTTTTAACTCACGTCCCCTGTGTGAGAACGCCATGGGCTGTCGGGCTTCGCCAACTTGCTCTCATTTCTA" 
 			SEQUENCE_PRIMER="TGCTTTCAATCATGTGGGTGA" 
 			SEQUENCE_PRIMER_REVCOMP="ATGAGAGCAAGTTGGCGAAG" 
 			SEQUENCE_OVERHANG_LEFT="Z" 
