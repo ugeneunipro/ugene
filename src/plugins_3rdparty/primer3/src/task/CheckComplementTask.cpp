@@ -22,6 +22,8 @@
 #include "CheckComplementTask.h"
 
 #include "Primer3Task.h"
+#include "PrimerPair.h"
+#include "PrimerSingle.h"
 
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/L10n.h>

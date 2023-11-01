@@ -29,7 +29,9 @@
 #include <U2Lang/BaseTypes.h>
 
 #include "Primer3Dialog.h"
-#include "Primer3Task.h"
+#include "task/Primer3Task.h"
+#include "task/PrimerPair.h"
+#include "task/PrimerSingle.h"
 
 namespace U2 {
 

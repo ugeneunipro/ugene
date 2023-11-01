@@ -21,7 +21,6 @@
 
 #pragma once
 
-
 #include <U2Core/Task.h>
 
 #include "Primer3TaskSettings.h"

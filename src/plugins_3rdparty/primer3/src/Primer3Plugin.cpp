@@ -35,6 +35,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/ToolsMenu.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 
@@ -45,6 +46,7 @@
 
 #include "Primer3Dialog.h"
 #include "Primer3Query.h"
+#include "task/Primer3TopLevelTask.h"
 #include "temperature/Primer3TmCalculatorFactory.h"
 
 namespace U2 {
@@ -59,6 +61,11 @@ Primer3Plugin::Primer3Plugin()
     if (AppContext::getMainWindow()) {
         viewCtx = new Primer3ADVContext(this);
         viewCtx->init();
+
+        auto noTargetSequencePrimer3 = new QAction(QIcon(":/primer3/images/primer3.png"), tr("Primer3 (no target sequence)..."), this);
+        noTargetSequencePrimer3->setObjectName(ToolsMenu::PRIMER3);
+        connect(noTargetSequencePrimer3, &QAction::triggered, viewCtx, &Primer3ADVContext::sl_showDialog);
+        ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, noTargetSequencePrimer3);
     }
 
     QDActorPrototypeRegistry* qdpr = AppContext::getQDActorProtoRegistry();
@@ -95,18 +102,24 @@ void Primer3ADVContext::initViewContext(GObjectViewController* v) {
 
 void Primer3ADVContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
+    ADVSequenceObjectContext* seqCtx = nullptr;
     auto viewAction = qobject_cast<GObjectViewAction*>(a);
-    auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
-    SAFE_POINT_NN(av, );
+    if (viewAction != nullptr) {
+        auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
+        SAFE_POINT(av != nullptr, L10N::nullPointerError("AnnotatedDNAView"), );
 
-    ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
-    SAFE_POINT_NN(seqCtx, );
+        seqCtx = av->getActiveSequenceContext();
+        SAFE_POINT(seqCtx != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
+    }
 
     Primer3Dialog dialog(seqCtx);
     dialog.exec();
+    CHECK(dialog.result() == QDialog::Accepted, );
 
-    if (dialog.result() == QDialog::Accepted) {
-        const auto& settings = dialog.getSettings();
+    const auto& settings = dialog.getSettings();
+
+    Task* primer3Task = nullptr;
+    if (seqCtx != nullptr) {
         U2OpStatusImpl os;
         QByteArray seqData = seqCtx->getSequenceObject()->getWholeSequenceData(os);
         CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
@@ -114,20 +127,33 @@ void Primer3ADVContext::sl_showDialog() {
         settings->setSequence(seqData, seqCtx->getSequenceObject()->isCircular());
         QString err = dialog.checkModel();
         CHECK_EXT(err.isEmpty(), QMessageBox::warning(QApplication::activeWindow(), dialog.windowTitle(), err), );
-        CHECK_EXT(dialog.prepareAnnotationObject(), QMessageBox::warning(QApplication::activeWindow(),
-                                                                            tr("Error"),
-                                                                            tr("Cannot create an annotation object. Please check settings")), );
+        CHECK_EXT(dialog.prepareAnnotationObject(),
+                  QMessageBox::warning(QApplication::activeWindow(),
+                                       tr("Error"),
+                                       tr("Cannot create an annotation object. Please check settings")), );
 
-        const CreateAnnotationModel& model = dialog.getCreateAnnotationModel(); auto ato = model.getAnnotationObject();
+        const CreateAnnotationModel& model = dialog.getCreateAnnotationModel();
+        auto ato = model.getAnnotationObject();
         seqCtx->getAnnotatedDNAView()->tryAddObject(ato);
-        AppContext::getTaskScheduler()->registerTopLevelTask(new Primer3ToAnnotationsTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description));
+
+
+        primer3Task = new Primer3TopLevelTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description);
+    } else {
+        auto resultFilePath = dialog.getResultFileName();
+        CHECK_EXT(!resultFilePath.isEmpty(),
+                  QMessageBox::warning(QApplication::activeWindow(),
+                                       tr("Error"),
+                                       tr("Result file path is empty. Please, set this value on the \"Result Settings\" tab")), );
+
+        primer3Task = new Primer3TopLevelTask(settings, resultFilePath);
     }
+
+    AppContext::getTaskScheduler()->registerTopLevelTask(primer3Task);
 }
 
 QList<XMLTestFactory*> Primer3Tests::createTestFactories() {
     QList<XMLTestFactory*> res;
     res.append(GTest_Primer3::createFactory());
-    res.append(GTest_Primer3ToAnnotations::createFactory());
     return res;
 }
 

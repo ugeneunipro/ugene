@@ -21,44 +21,42 @@
 
 #pragma once
 
-#include <QMenu>
+#include <U2Core/Task.h>
 
-#include <U2Core/AppResources.h>
-#include <U2Core/PluginModel.h>
+#include "Primer3TaskSettings.h"
 
-#include <U2Gui/ObjectViewModel.h>
-
-#include "Primer3Tests.h"
+#include <QSharedPointer>
 
 namespace U2 {
 
-class Primer3ADVContext;
-class XMLTestFactory;
+class AnnotationTableObject;
+class PrimerPair;
+class PrimerSingle;
 
-class Primer3Plugin : public Plugin {
+/**
+ * This class represents a task, which runs Primer3 itself.
+ */
+class Primer3Task : public Task {
     Q_OBJECT
 public:
-    Primer3Plugin();
+    Primer3Task(const QSharedPointer<Primer3TaskSettings>& settings);
+
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
+    const QList<QSharedPointer<PrimerPair>>& getBestPairs() const;
+    const QList<QSharedPointer<PrimerSingle>>& getSinglePrimers() const;
 
 private:
-    Primer3ADVContext* viewCtx = nullptr;
-};
+    void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
+    void selectPairsSpanningIntron(p3retval* primers, int toReturn);
 
-class Primer3ADVContext : public GObjectViewWindowContext {
-    Q_OBJECT
-public:
-    Primer3ADVContext(QObject* p);
+    QSharedPointer<Primer3TaskSettings> settings;
+    QList<QSharedPointer<PrimerPair>> bestPairs;
+    QList<QSharedPointer<PrimerSingle>> singlePrimers;
 
-public slots:
-    void sl_showDialog();
-
-protected:
-    void initViewContext(GObjectViewController* v) override;
-};
-
-class Primer3Tests {
-public:
-    static QList<XMLTestFactory*> createTestFactories();
+    int offset = 0;
 };
 
 }  // namespace U2
