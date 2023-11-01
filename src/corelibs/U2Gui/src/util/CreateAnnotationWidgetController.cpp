@@ -183,7 +183,7 @@ public:
         : PTCObjectRelationFilter(_rel, p), allowUnloaded(_allowUnloaded) {
     }
 
-    bool filter(GObject* obj) const {
+    bool filter(GObject* obj) const override {
         if (PTCObjectRelationFilter::filter(obj)) {
             return true;
         }
@@ -247,6 +247,9 @@ QString CreateAnnotationWidgetController::validate() {
             if (reg.endPos() > model.sequenceLen || reg.startPos < 0 || reg.endPos() < reg.startPos) {
                 return tr("Invalid location! Location must be in GenBank format.\nSimple examples:\n1..10\njoin(1..10,15..45)\ncomplement(5..15)");
             }
+        }
+        if (model.useAminoAnnotationTypes && model.data->location->strand != U2Strand::Direct) {
+            return tr("The 'complement' keyword cannot be present in the location of an amino acid sequence annotation.");
         }
     }
 
