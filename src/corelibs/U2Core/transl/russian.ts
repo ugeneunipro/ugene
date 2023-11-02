@@ -2412,6 +2412,16 @@ The session database file is removed after closing of UGENE.</source>
         <translation>обратный праймер имеет %1.</translation>
     </message>
     <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="259"/>
+        <source>&amp;gt;=%1 G or C at 3&apos; end</source>
+        <translation>&amp;gt;=%1 G или C на 3&apos; конце</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="260"/>
+        <source>&amp;lt;=%1 mononucleotide repeat length</source>
+        <translation>&amp;lt;=%1 длина мононуклеотидного повтора</translation>
+    </message>
+    <message>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="312"/>
         <source>Criteria</source>
         <translation>Критерий</translation>
@@ -2430,6 +2440,26 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="315"/>
         <source>Reverse</source>
         <translation>Обратный</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="321"/>
+        <source>GC Clamp</source>
+        <translation>Зажим GC</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="322"/>
+        <source>Poly-X</source>
+        <translation>Poly-X</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="338"/>
+        <source>Self-dimers</source>
+        <translation>Гомодимер</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/primers/PrimerStatistics.cpp" line="347"/>
+        <source>Hetero-dimers</source>
+        <translation>Гетеродимер</translation>
     </message>
     <message>
         <location filename="../src/datatype/primers/PrimerDimersFinder.cpp" line="39"/>

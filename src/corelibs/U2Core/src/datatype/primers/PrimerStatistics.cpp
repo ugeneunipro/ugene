@@ -256,8 +256,8 @@ const QString PrimersPairStatistics::TmString = "Tm" + QString::fromLatin1(" (\x
 namespace {
 const QString GC_RANGE = QString("%1-%2").arg(PrimerStatisticsCalculator::GC_BOTTOM).arg(PrimerStatisticsCalculator::GC_TOP);
 const QString TM_RANGE = QString("%1-%2").arg(PrimerStatisticsCalculator::TM_BOTTOM).arg(PrimerStatisticsCalculator::TM_TOP);
-const QString CLAMP_RANGE = QString("&gt;=%1 G or C at 3' end").arg(PrimerStatisticsCalculator::CLAMP_BOTTOM);
-const QString RUNS_RANGE = QString("&lt;=%1 base runs").arg(PrimerStatisticsCalculator::RUNS_TOP);
+const QString CLAMP_RANGE = PrimerStatistics::tr("&gt;=%1 G or C at 3' end").arg(PrimerStatisticsCalculator::CLAMP_BOTTOM);
+const QString RUNS_RANGE = PrimerStatistics::tr("&lt;=%1 mononucleotide repeat length").arg(PrimerStatisticsCalculator::RUNS_TOP);
 const QString DIMERS_RANGE = QString("&Delta;G &gt;=%1 kcal/mol").arg(PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD);
 }  // namespace
 
@@ -316,10 +316,10 @@ QString PrimersPairStatistics::generateReport() const {
     result += "</tr>";
 
     QString e;
-    CREATE_ROW("% GC", GC_RANGE, toString(forward.getGC()), toString(reverse.getGC()), forward.isValidGC(e), reverse.isValidGC(e));
+    CREATE_ROW("GC (%)", GC_RANGE, toString(forward.getGC()), toString(reverse.getGC()), forward.isValidGC(e), reverse.isValidGC(e));
     CREATE_ROW(TmString, TM_RANGE, toString(forward.getTm()), toString(reverse.getTm()), forward.isValidTm(e), reverse.isValidTm(e));
-    CREATE_ROW("GC Clamp", CLAMP_RANGE, QString::number(forward.getGCClamp()), QString::number(reverse.getGCClamp()), forward.isValidGCClamp(e), reverse.isValidGCClamp(e));
-    CREATE_ROW("Runs", RUNS_RANGE, QString::number(forward.getRuns()), QString::number(reverse.getRuns()), forward.isValidRuns(e), reverse.isValidRuns(e));
+    CREATE_ROW(PrimerStatistics::tr("GC Clamp"), CLAMP_RANGE, QString::number(forward.getGCClamp()), QString::number(reverse.getGCClamp()), forward.isValidGCClamp(e), reverse.isValidGCClamp(e));
+    CREATE_ROW(PrimerStatistics::tr("Poly-X"), RUNS_RANGE, QString::number(forward.getRuns()), QString::number(reverse.getRuns()), forward.isValidRuns(e), reverse.isValidRuns(e));
     result += "</table>";
     addDimersToReport(result);
     return result;
@@ -335,7 +335,7 @@ const DimerFinderResult& U2::PrimersPairStatistics::getDimersInfo() const {
 
 void PrimersPairStatistics::addDimersToReport(QString& report) const {
     if (forward.getDimersInfo().canBeFormed || reverse.getDimersInfo().canBeFormed) {
-        report += "<h4>Self-dimers: </h4>";
+        report += QString("<h4>%1: </h4>").arg(PrimerStatistics::tr("Self-dimers"));
         if (forward.getDimersInfo().canBeFormed) {
             report += "<p>" + forward.getDimersInfo().getFullReport() + "</p>";
         }
@@ -344,7 +344,7 @@ void PrimersPairStatistics::addDimersToReport(QString& report) const {
         }
     }
     if (dimersInfo.canBeFormed) {
-        report += "<h4>Hetero-dimers: </h4>";
+        report += QString("<h4>%1: </h4>").arg(PrimerStatistics::tr("Hetero-dimers"));
         report += "<p>" + dimersInfo.getFullReport() + "</p>";
     }
 }

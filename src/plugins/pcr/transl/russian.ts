@@ -100,12 +100,12 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="124"/>
         <source>3&apos; perfect match</source>
-        <translation>3&apos; идеальное совпадение</translation>
+        <translation>Совпадение на 3&apos; конце</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="117"/>
         <source>Extract annotations</source>
-        <translation>Извлечь аннотации</translation>
+        <translation>Какие аннотации экспортировать</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="134"/>
@@ -434,18 +434,18 @@
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="77"/>
-        <source>Inner</source>
-        <translation>Внутренний</translation>
+        <source>Only inside product</source>
+        <translation>Только внутри продукта</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="78"/>
-        <source>All intersected</source>
-        <translation>Все пересечения</translation>
+        <source>All intersections with product</source>
+        <translation>Все пересечения с продуктом</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="79"/>
-        <source>None</source>
-        <translation>Ни один</translation>
+        <source>Do not extract</source>
+        <translation>Не извлекать</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="99"/>
@@ -763,18 +763,18 @@
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="143"/>
-        <source>Inner</source>
-        <translation>Внутренний</translation>
+        <source>Only inside product</source>
+        <translation>Только внутри продукта</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="144"/>
-        <source>All intersected</source>
-        <translation>Все пересечения</translation>
+        <source>All intersections with product</source>
+        <translation>Все пересечения с продуктом</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="145"/>
-        <source>None</source>
-        <translation>Ни один</translation>
+        <source>Do not extract</source>
+        <translation>Не извлекать</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="153"/>
@@ -834,7 +834,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="378"/>
         <source>Failed to find TM algorithm with id &apos;%1&apos;.</source>
-        <translation>Не удалось найти алгоритм TM с идентификатором &apos;%1&apos;.</translation>
+        <translation>Не удалось найти алгоритм расчета температуры плавления с ID %1.</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="385"/>
