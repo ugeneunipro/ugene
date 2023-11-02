@@ -31,7 +31,7 @@ const QString HttpRequestBLAST::host = "https://blast.ncbi.nlm.nih.gov/Blast.cgi
 
 QString HttpRequestBLAST::runHttpRequest(const QString& request) {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::HTTP_FILE);
-    QScopedPointer<IOAdapter> io(iof->createIOAdapter());
+    QScopedPointer<IOAdapter, QScopedPointerDeleteLater> io(iof->createIOAdapter());
     if (!io->open(request, IOAdapterMode_Read)) {
         error = tr("Cannot open the IO adapter");
         return "";
