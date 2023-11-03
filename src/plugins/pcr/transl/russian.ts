@@ -105,7 +105,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="117"/>
         <source>Extract annotations</source>
-        <translation>Какие аннотации экспортировать</translation>
+        <translation>Извлечь аннотации</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="134"/>
@@ -434,17 +434,17 @@
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="77"/>
-        <source>Only inside product</source>
-        <translation>Только внутри продукта</translation>
+        <source>Inner</source>
+        <translation>Внутренние</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="78"/>
-        <source>All intersections with product</source>
-        <translation>Все пересечения с продуктом</translation>
+        <source>All intersected</source>
+        <translation>Все пересечения</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="79"/>
-        <source>Do not extract</source>
+        <source>None</source>
         <translation>Не извлекать</translation>
     </message>
     <message>
@@ -763,17 +763,17 @@
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="143"/>
-        <source>Only inside product</source>
-        <translation>Только внутри продукта</translation>
+        <source>Inner</source>
+        <translation>Внутренние</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="144"/>
-        <source>All intersections with product</source>
-        <translation>Все пересечения с продуктом</translation>
+        <source>All intersected</source>
+        <translation>Все пересечения</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="145"/>
-        <source>Do not extract</source>
+        <source>None</source>
         <translation>Не извлекать</translation>
     </message>
     <message>

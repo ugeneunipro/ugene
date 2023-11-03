@@ -74,9 +74,9 @@ InSilicoPcrOptionPanelWidget::InSilicoPcrOptionPanelWidget(AnnotatedDNAView* _an
     settingsSubgroup->init(SETTINGS_SUBGROUP_ID, tr("Settings"), settingsWidget, true);
     temperatureWidget->init(temperatureCalculator->getSettings());
     temperatureSubgroup->init(TEMPERATURE_SUBGROUP_ID, tr("Melting temperature"), temperatureWidget, false);
-    annsComboBox->addItem(tr("Only inside product"), ExtractProductSettings::Inner);
-    annsComboBox->addItem(tr("All intersections with product"), ExtractProductSettings::All);
-    annsComboBox->addItem(tr("Do not extract"), ExtractProductSettings::None);
+    annsComboBox->addItem(tr("Inner"), ExtractProductSettings::Inner);
+    annsComboBox->addItem(tr("All intersected"), ExtractProductSettings::All);
+    annsComboBox->addItem(tr("None"), ExtractProductSettings::None);
     annsComboBox->model()->sort(0);
 
     forwardPrimerBox->setAnnotatedDnaView(annotatedDnaView);

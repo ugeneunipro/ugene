@@ -140,9 +140,9 @@ void InSilicoPcrWorkerFactory::init() {
         }
         {  // extract annotations
             QVariantMap values;
-            values[InSilicoPcrWorker::tr("Only inside product")] = ExtractProductSettings::Inner;
-            values[InSilicoPcrWorker::tr("All intersections with product")] = ExtractProductSettings::All;
-            values[InSilicoPcrWorker::tr("Do not extract")] = ExtractProductSettings::None;
+            values[InSilicoPcrWorker::tr("Inner")] = ExtractProductSettings::Inner;
+            values[InSilicoPcrWorker::tr("All intersected")] = ExtractProductSettings::All;
+            values[InSilicoPcrWorker::tr("None")] = ExtractProductSettings::None;
             delegates[EXTRACT_ANNOTATIONS_ATTR_ID] = new ComboBoxDelegate(values);
         }
         {
