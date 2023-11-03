@@ -78,6 +78,8 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
 
 Primer3TopLevelTask::~Primer3TopLevelTask() {
     if (!document.isNull()) {
+        // If we created @document, but did not pass it to the project (some error appeared, for example),
+        // we need to deete it on our own.
         document->deleteLater();
     }
 }
@@ -246,6 +248,8 @@ QPointer<AnnotationTableObject> Primer3TopLevelTask::getAnnotationTableObject() 
 Task* Primer3TopLevelTask::onFindExonTaskFinished() {
     QList<U2Region> regions = findExonsTask->getRegions();
     if (regions.isEmpty()) {
+        SAFE_POINT_EXT(!seqObj.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), nullptr);
+
         setError(tr("Failed to find any exon annotations associated with the sequence %1."
                     "Make sure the provided sequence is cDNA and has exonic structure annotated")
                     .arg(seqObj->getSequenceName()));
@@ -298,11 +302,10 @@ Task* Primer3TopLevelTask::onPrimer3TaskFinished() {
 
         checkComplementTask = new CheckComplementTask(settings->getCheckComplementSettings(), primer3Task->getBestPairs(), seqObj);
         return checkComplementTask;
-
-    } else {
-        processPrimer3ResultsToAnnotationsTask = createProcessPrimer3ResultsToAnnotationsTaskPrimer();
-        return processPrimer3ResultsToAnnotationsTask;
     }
+
+    processPrimer3ResultsToAnnotationsTask = createProcessPrimer3ResultsToAnnotationsTaskPrimer();
+    return processPrimer3ResultsToAnnotationsTask;
 }
 
 Task* Primer3TopLevelTask::onCheckComplementTaskFinished() {
@@ -369,6 +372,7 @@ Task* Primer3TopLevelTask::onCreateAnnotationsTaskFinished() {
 Task* Primer3TopLevelTask::onSaveDocumentTaskFinished() {
     CHECK(openView, nullptr);
 
+    // From now, @document will be handeled by the Project, we can just forget aboul it.
     auto task = new AddDocumentAndOpenViewTask(document);
     document = nullptr;
     return task;

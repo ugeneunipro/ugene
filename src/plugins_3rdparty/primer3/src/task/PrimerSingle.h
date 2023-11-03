@@ -30,45 +30,11 @@
 namespace U2 {
 
 /**
-* This class represents an inner UGENE representation of Primer3 single result - only one primer.
+* This struct represents an inner UGENE representation of Primer3 single result - only one primer.
 */
-class PrimerSingle {
-public:
+struct PrimerSingle {
     PrimerSingle(oligo_type type = oligo_type::OT_LEFT);
     PrimerSingle(const primer_rec& primerRec, oligo_type type, int offset);
-
-    int getStart() const;
-    int getLength() const;
-    double getMeltingTemperature() const;
-    double getBound() const;
-    double getGcContent() const;
-    double getSelfAny() const;
-    double getSelfEnd() const;
-    double getTemplateMispriming() const;
-    double getHairpin() const;
-    double getEndStability() const;
-    double getQuality() const;
-    double getRepeatSim() const;
-    const QString& getRepeatSimName() const;
-    const QString& getSelfAnyStruct() const;
-    const QString& getSelfEndStruct() const;
-    oligo_type getType() const;
-
-    void setStart(int start);
-    void setLength(int length);
-    void setMeltingTemperature(double meltingTemperature);
-    void setBound(double bound);
-    void setGcContent(double gcContent);
-    void setSelfAny(double selfAny);
-    void setSelfEnd(double selfEnd);
-    void setTemplateMispriming(double templateMispriming);
-    void setHairpin(double hairpin);
-    void setEndStability(double endStability);
-    void setQuality(double quality);
-    void setRepeatSim(double repeatSim);
-    void setRepeatSimName(const QString& repeatSimName);
-    void setSelfAnyStruct(const QString& selfAnyStruct);
-    void setSelfEndStruct(const QString& selfEndStruct);
 
     /**
      * Calculates positions where, on the sequence of set length, this primer is located.
@@ -78,7 +44,6 @@ public:
      */
     QVector<U2Region> getSequenceRegions(int sequenceLength) const;
 
-private:
     int start = 0;
     int length = 0;
     double meltingTemperature = 0.0;
@@ -96,7 +61,5 @@ private:
     QString selfEndStruct;
     oligo_type type = OT_LEFT;
 };
-
-
 
 }

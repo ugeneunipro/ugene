@@ -443,89 +443,70 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
 
         for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
             QSharedPointer<PrimerPair> result(new PrimerPair);
-            result->setLeftPrimer(leftPrimers[pairIndex]);
-            result->setRightPrimer(rightPrimers[pairIndex]);
+            result->leftPrimer = leftPrimers[pairIndex];
+            result->rightPrimer = rightPrimers[pairIndex];
             if (internalCount > 0) {
-                result->setInternalOligo(internalPrimers[pairIndex]);
+                result->internalOligo = internalPrimers[pairIndex];
             }
             auto suffix = "_" + QString::number(pairIndex);
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
                 if (!value.isEmpty()) {
-                    result->setComplAny(value.toDouble());
+                    result->complAny = value.toDouble();
                 } else {
                     value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
                     if (!value.isEmpty()) {
-                        result->setComplAny(value.toDouble());
-                    }
-                }
-            }
-            {
-                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
-                if (!value.isEmpty()) {
-                    result->setComplAny(value.toDouble());
-                } else {
-                    value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
-                    if (!value.isEmpty()) {
-                        result->setComplAny(value.toDouble());
+                        result->complAny = value.toDouble();
                     }
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
                 if (!value.isEmpty()) {
-                    result->setComplEnd(value.toDouble());
+                    result->complEnd = value.toDouble();
                 } else {
                     value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_TH");
                     if (!value.isEmpty()) {
-                        result->setComplEnd(value.toDouble());
+                        result->complEnd = value.toDouble();
                     }
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_SIZE");
                 if (!value.isEmpty()) {
-                    result->setProductSize(value.toInt());
+                    result->productSize = value.toInt();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_TM");
                 if (!value.isEmpty()) {
-                    result->setProductTm(value.toDouble());
+                    result->tm = value.toDouble();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PENALTY");
                 if (!value.isEmpty()) {
-                    result->setProductQuality(value.toDouble());
+                    result->quality = value.toDouble();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING");
                 if (!value.isEmpty()) {
                     auto mispriming = value.split(", ");
-                    result->setRepeatSim(mispriming.first().toDouble());
-                    result->setRepeatSimName(mispriming.last());
-                }
-            }
-            {
-                QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING");
-                if (!value.isEmpty()) {
-                    auto mispriming = value.split(", ");
-                    result->setRepeatSim(mispriming.first().toDouble());
-                    result->setRepeatSimName(mispriming.last());
+                    result->repeatSim = mispriming.first().toDouble();
+                    result->repeatSimName = mispriming.last();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_STUCT");
                 if (!value.isEmpty()) {
-                    result->setComplAnyStruct(value);
+                    result->complAnyStruct = value;
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_STUCT");
                 if (!value.isEmpty()) {
-                    result->setComplEndStruct(value);
+                    result->complEndStruct = value;
                 }
             }
             expectedBestPairs << result;
@@ -655,15 +636,15 @@ Task::ReportResult GTest_Primer3::report() {
             auto annPrimerGroup = primerGroups[i];
             const auto& annotations = annPrimerGroup->getAnnotations();
             auto expectedPair = expectedBestPairs[i];
-            if (!expectedPair->getLeftPrimer().isNull()) {
+            if (!expectedPair->leftPrimer.isNull()) {
                 CHECK(comparePrimerSingleFromPairAndAnnotation(expectedPair, annotations, oligo_type::OT_LEFT), ReportResult_Finished);
             }
 
-            if (!expectedPair->getRightPrimer().isNull()) {
+            if (!expectedPair->rightPrimer.isNull()) {
                 CHECK(comparePrimerSingleFromPairAndAnnotation(expectedPair, annotations, oligo_type::OT_RIGHT), ReportResult_Finished);
             }
 
-            if (!expectedPair->getInternalOligo().isNull()) {
+            if (!expectedPair->internalOligo.isNull()) {
                 CHECK(comparePrimerSingleFromPairAndAnnotation(expectedPair, annotations, oligo_type::OT_INTL), ReportResult_Finished);
             }
         }
@@ -690,12 +671,12 @@ bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, QSharedPoint
         if (!buf.isEmpty()) {
             int start = buf.split(',')[0].toInt();
             int length = buf.split(',')[1].toInt();
-            outPrimer->setStart(start);
-            outPrimer->setLength(length);
+            outPrimer->start = start;
+            outPrimer->length = length;
             if (prefix.contains("RIGHT")) {
-                outPrimer->setStart(start - length + 1);
+                outPrimer->start = start - length + 1;
             }
-            outPrimer->setStart(outPrimer->getStart() - settings->getPrimerSettings()->first_base_index);
+            outPrimer->start = outPrimer->start - settings->getPrimerSettings()->first_base_index;
         } else {
             return false;
         }
@@ -703,85 +684,85 @@ bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, QSharedPoint
     {
         QString buf = element.attribute(prefix + "_TM");
         if (!buf.isEmpty()) {
-            outPrimer->setMeltingTemperature(buf.toDouble());
+            outPrimer->meltingTemperature = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_GC_PERCENT");
         if (!buf.isEmpty()) {
-            outPrimer->setGcContent(buf.toDouble());
+            outPrimer->gcContent = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_ANY");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfAny(buf.toDouble());
+            outPrimer->selfAny = buf.toDouble();
         } else {
             buf = element.attribute(prefix + "_SELF_ANY_TH");
             if (!buf.isEmpty()) {
-                outPrimer->setSelfAny(buf.toDouble());
+                outPrimer->selfAny = buf.toDouble();
             }
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_END");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfEnd(buf.toDouble());
+            outPrimer->selfEnd = buf.toDouble();
         } else {
             buf = element.attribute(prefix + "_SELF_END_TH");
             if (!buf.isEmpty()) {
-                outPrimer->setSelfEnd(buf.toDouble());
+                outPrimer->selfEnd = buf.toDouble();
             }
         }
     }
     {
         QString buf = element.attribute(prefix + "_TEMPLATE_MISPRIMING");
         if (!buf.isEmpty()) {
-            outPrimer->setTemplateMispriming(buf.toDouble());
+            outPrimer->templateMispriming = buf.toDouble();
         } else {
             buf = element.attribute(prefix + "_TEMPLATE_MISPRIMING_TH");
             if (!buf.isEmpty()) {
-                outPrimer->setTemplateMispriming(buf.toDouble());
+                outPrimer->templateMispriming = buf.toDouble();
             }
         }
     }
     {
         QString buf = element.attribute(prefix + "_HAIRPIN_TH");
         if (!buf.isEmpty()) {
-            outPrimer->setHairpin(buf.toDouble());
+            outPrimer->hairpin = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_PENALTY");
         if (!buf.isEmpty()) {
-            outPrimer->setQuality(buf.toDouble());
+            outPrimer->quality = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_BOUND");
         if (!buf.isEmpty()) {
-            outPrimer->setBound(buf.toDouble());
+            outPrimer->bound = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_LIBRARY_" + (internalOligo ? "MISHYB" : "MISPRIMING"));
         if (!buf.isEmpty()) {
             auto mispriming = buf.split(", ");
-            outPrimer->setRepeatSim(mispriming.first().toDouble());
+            outPrimer->repeatSim = mispriming.first().toDouble();
             mispriming.removeFirst();
-            outPrimer->setRepeatSimName(mispriming.join(", "));
+            outPrimer->repeatSimName = mispriming.join(", ");
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_ANY_STUCT");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfAnyStruct(buf);
+            outPrimer->selfAnyStruct = buf;
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_END_STUCT");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfEndStruct(buf);
+            outPrimer->selfEndStruct = buf;
         }
     }
 
@@ -790,7 +771,7 @@ bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, QSharedPoint
         {
             QString buf = element.attribute(prefix + "_END_STABILITY");
             if (!buf.isEmpty()) {
-                outPrimer->setEndStability(buf.toDouble());
+                outPrimer->endStability = buf.toDouble();
             }
         }
     }
@@ -803,7 +784,7 @@ bool GTest_Primer3::comparePrimerSingleFromPairAndAnnotation(const QSharedPointe
     QString primerText;
     switch (type) {
     case oligo_type::OT_LEFT:
-        primer = pair->getLeftPrimer();
+        primer = pair->leftPrimer;
         for (auto ann : qAsConst(annotations)) {
             CHECK_CONTINUE(ann->getName() == "top_primers" && ann->getStrand() == U2Strand::Direct);
 
@@ -814,7 +795,7 @@ bool GTest_Primer3::comparePrimerSingleFromPairAndAnnotation(const QSharedPointe
         primerText = "Left";
         break;
     case oligo_type::OT_RIGHT:
-        primer = pair->getRightPrimer();
+        primer = pair->rightPrimer;
         for (auto ann : qAsConst(annotations)) {
             CHECK_CONTINUE(ann->getName() == "top_primers" && ann->getStrand() == U2Strand::Complementary);
 
@@ -824,7 +805,7 @@ bool GTest_Primer3::comparePrimerSingleFromPairAndAnnotation(const QSharedPointe
         primerText = "Right";
         break;
     case oligo_type::OT_INTL:
-        primer = pair->getInternalOligo();
+        primer = pair->internalOligo;
         for (auto ann : qAsConst(annotations)) {
             CHECK_CONTINUE(ann->getName() == "internalOligo");
 
@@ -835,15 +816,15 @@ bool GTest_Primer3::comparePrimerSingleFromPairAndAnnotation(const QSharedPointe
         break;
     }
 
-    return comparePrimerSingleAndAnnotation(primer, annotation, primerText, pair->getProductSize());
+    return comparePrimerSingleAndAnnotation(primer, annotation, primerText, pair->productSize);
 }
 
 bool GTest_Primer3::comparePrimerSingleAndAnnotation(const QSharedPointer<PrimerSingle>& primer, Annotation* annotation, const QString& primerText, int productSize) {
     CHECK_EXT(!primer.isNull(), setError(QString("%1 primer is missed").arg(primerText)), false);
     CHECK_EXT(annotation != nullptr, setError(QString("%1 annotation is missed").arg(primerText)), false);
 
-    int start = primer->getStart();
-    int length = primer->getLength();
+    int start = primer->start;
+    int length = primer->length;
     auto regs = annotation->getRegions();
     if (regs.size() == 2) {
         CHECK_EXT(settings->isSequenceCircular(), setError("Sequence is not circular, but should be"), false);
@@ -862,25 +843,25 @@ bool GTest_Primer3::comparePrimerSingleAndAnnotation(const QSharedPointer<Primer
     const auto qualifiers = annotation->getQualifiers();
     for (const auto qual : qAsConst(qualifiers)) {
         if (qual.name == "3'") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getEndStability(), "3'"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->endStability, "3'"), false);
         } else if (qual.name == "any") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getSelfAny(), "any"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->selfAny, "any"), false);
         } else if (qual.name == "end") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getSelfEnd(), "end"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->selfEnd, "end"), false);
         } else if (qual.name == "gc%") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getGcContent(), "gc%"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->gcContent, "gc%"), false);
         } else if (qual.name == "penalty") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getQuality(), "penalty"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->quality, "penalty"), false);
         } else if (qual.name == "product_size") {
             CHECK(checkIntProperty(qual.value.toInt(), productSize, "product_size"), false);
         } else if (qual.name == "tm") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getMeltingTemperature(), "tm"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->meltingTemperature, "tm"), false);
         } else if (qual.name == "bound%") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getBound(), "bound%"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->bound, "bound%"), false);
         } else if (qual.name == "template_mispriming") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getTemplateMispriming(), "template_mispriming"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->templateMispriming, "template_mispriming"), false);
         } else if (qual.name == "hairpin") {
-            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->getHairpin(), "hairpin"), false);
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->hairpin, "hairpin"), false);
         }
     }
 

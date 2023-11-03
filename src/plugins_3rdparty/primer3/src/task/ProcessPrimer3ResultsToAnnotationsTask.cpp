@@ -63,15 +63,15 @@ void ProcessPrimer3ResultsToAnnotationsTask::run() {
         CHECK_CONTINUE(!filteredPairs.contains(pair));
 
         QList<SharedAnnotationData> annotations;
-        int productSize = pair->getProductSize() + settings->getOverhangLeft().size() + settings->getOverhangRight().size();
-        if (pair->getLeftPrimer() != nullptr) {
-            annotations.append(oligoToAnnotation(annName, pair->getLeftPrimer(), productSize, U2Strand::Direct));
+        int productSize = pair->productSize + settings->getOverhangLeft().size() + settings->getOverhangRight().size();
+        if (pair->leftPrimer != nullptr) {
+            annotations.append(oligoToAnnotation(annName, pair->leftPrimer, productSize, U2Strand::Direct));
         }
-        if (pair->getInternalOligo() != nullptr) {
-            annotations.append(oligoToAnnotation("internalOligo", pair->getInternalOligo(), productSize, U2Strand::Direct));
+        if (pair->internalOligo != nullptr) {
+            annotations.append(oligoToAnnotation("internalOligo", pair->internalOligo, productSize, U2Strand::Direct));
         }
-        if (pair->getRightPrimer() != nullptr) {
-            annotations.append(oligoToAnnotation(annName, pair->getRightPrimer(), productSize, U2Strand::Complementary));
+        if (pair->rightPrimer != nullptr) {
+            annotations.append(oligoToAnnotation(annName, pair->rightPrimer, productSize, U2Strand::Complementary));
         }
         int digitsNumberInBestPairsSize = (int)std::log10(bestPairsSize) + 1;
         QString number = QStringLiteral("%1").arg(i + 1, digitsNumberInBestPairsSize, 10, QLatin1Char('0'));
@@ -81,9 +81,8 @@ void ProcessPrimer3ResultsToAnnotationsTask::run() {
     if (!singlePrimers.isEmpty()) {
         QList<SharedAnnotationData> annotations;
         for (const auto& primer : singlePrimers) {
-            auto type = primer->getType();
-            U2Strand s = type == OT_RIGHT ? U2Strand::Complementary : U2Strand::Direct;
-            QString annotationName = type == OT_INTL ? "internalOligo" : annName;
+            U2Strand s = primer->type == OT_RIGHT ? U2Strand::Complementary : U2Strand::Direct;
+            QString annotationName = primer->type == OT_INTL ? "internalOligo" : annName;
             annotations.append(oligoToAnnotation(annotationName, primer, 0, s));
         }
         U1AnnotationUtils::addDescriptionQualifier(annotations, annDescription);
@@ -112,34 +111,33 @@ SharedAnnotationData ProcessPrimer3ResultsToAnnotationsTask::oligoToAnnotation(c
     annotationData->setStrand(strand);
 
     annotationData->qualifiers.append(U2Qualifier("product_size", QString::number(productSize)));
-    annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer->getMeltingTemperature())));
-    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(primer->getGcContent())));
-    annotationData->qualifiers.append(U2Qualifier("any", QString::number(primer->getSelfAny())));
-    annotationData->qualifiers.append(U2Qualifier("end", QString::number(primer->getSelfEnd())));
-    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer->getEndStability())));
-    annotationData->qualifiers.append(U2Qualifier("penalty", QString::number(primer->getQuality())));
+    annotationData->qualifiers.append(U2Qualifier("tm", QString::number(primer->meltingTemperature)));
+    annotationData->qualifiers.append(U2Qualifier("gc%", QString::number(primer->gcContent)));
+    annotationData->qualifiers.append(U2Qualifier("any", QString::number(primer->selfAny)));
+    annotationData->qualifiers.append(U2Qualifier("end", QString::number(primer->selfEnd)));
+    annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer->endStability)));
+    annotationData->qualifiers.append(U2Qualifier("penalty", QString::number(primer->quality)));
 
     auto areDoubleValuesEqual = [](double val, double reference) -> bool {
         return qAbs(reference - val) > 0.1;
     };
-    if (areDoubleValuesEqual(primer->getBound(), OLIGOTM_ERROR)) {
-        annotationData->qualifiers.append(U2Qualifier("bound%", QString::number(primer->getBound())));
+    if (areDoubleValuesEqual(primer->bound, OLIGOTM_ERROR)) {
+        annotationData->qualifiers.append(U2Qualifier("bound%", QString::number(primer->bound)));
     }
-    if (areDoubleValuesEqual(primer->getTemplateMispriming(), ALIGN_SCORE_UNDEF)) {
-        annotationData->qualifiers.append(U2Qualifier("template_mispriming", QString::number(primer->getTemplateMispriming())));
+    if (areDoubleValuesEqual(primer->templateMispriming, ALIGN_SCORE_UNDEF)) {
+        annotationData->qualifiers.append(U2Qualifier("template_mispriming", QString::number(primer->templateMispriming)));
     }
-    if (areDoubleValuesEqual(primer->getHairpin(), ALIGN_SCORE_UNDEF)) {
-        annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer->getHairpin())));
+    if (areDoubleValuesEqual(primer->hairpin, ALIGN_SCORE_UNDEF)) {
+        annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer->hairpin)));
     }
-    auto primerType = primer->getType();
-    if (primerType == oligo_type::OT_LEFT) {
+    if (primer->type == oligo_type::OT_LEFT) {
         auto overhangLeft = settings->getOverhangLeft();
         if (!overhangLeft.isEmpty()) {
             annotationData->qualifiers.append(U2Qualifier("left_end_strand", "direct"));
             annotationData->qualifiers.append(U2Qualifier("left_end_type", "sticky"));
             annotationData->qualifiers.append(U2Qualifier("left_end_seq", overhangLeft));
         }
-    } else if (primerType == oligo_type::OT_RIGHT) {
+    } else if (primer->type == oligo_type::OT_RIGHT) {
         auto overhangRight = settings->getOverhangRight();
         if (!overhangRight.isEmpty()) {
             annotationData->qualifiers.append(U2Qualifier("right_end_strand", "rev-compl"));
@@ -150,7 +148,6 @@ SharedAnnotationData ProcessPrimer3ResultsToAnnotationsTask::oligoToAnnotation(c
 
     return annotationData;
 }
-
 
 
 }

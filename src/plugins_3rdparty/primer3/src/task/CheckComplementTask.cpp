@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _settings, const QList<QSharedPointer<PrimerPair>>& _results, U2SequenceObject* _seqObj) :
+CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _settings, const QList<QSharedPointer<PrimerPair>>& _results, QPointer<U2SequenceObject> _seqObj) :
     Task(tr("Check complement task"), TaskFlags_FOSCOE),
     settings(_settings),
     results(_results),
@@ -44,8 +44,11 @@ void CheckComplementTask::run() {
     CHECK_EXT(!seqObj.isNull(), setError(tr("Sequence object has been closed, abort")), );
 
     for (const auto& pair : qAsConst(results)) {
-        auto leftPrimerSequence = getPrimerSequence(pair->getLeftPrimer());
-        auto rightPrimerSequence = DNASequenceUtils::reverseComplement(getPrimerSequence(pair->getRightPrimer()));
+        auto leftPrimerSequence = getPrimerSequence(pair->leftPrimer);
+        CHECK_EXT(!leftPrimerSequence.isEmpty(), setError(tr("Sequence object has been closed, abort")), );
+
+        auto rightPrimerSequence = DNASequenceUtils::reverseComplement(getPrimerSequence(pair->rightPrimer));
+        CHECK_EXT(!leftPrimerSequence.isEmpty(), setError(tr("Sequence object has been closed, abort")), );
 
         PrimerPairData primerPairData;
         primerPairData.primerPair = pair;
@@ -207,8 +210,12 @@ QList<QSharedPointer<PrimerPair>> CheckComplementTask::getFilteredPrimers() cons
 
 QByteArray CheckComplementTask::getPrimerSequence(QSharedPointer<PrimerSingle> primer) const {
     QByteArray primerSequence;
+    CHECK(!seqObj.isNull(), QByteArray());
+
     auto regions = primer->getSequenceRegions(seqObj->getSequenceLength());
     for (const auto& r : qAsConst(regions)) {
+        CHECK(!seqObj.isNull(), QByteArray());
+
         primerSequence += seqObj->getSequenceData(r);
     }
 

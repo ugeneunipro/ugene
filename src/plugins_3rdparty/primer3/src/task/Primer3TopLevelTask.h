@@ -92,8 +92,14 @@ private:
 
     // Parameter if no target sequence
     QString resultFilePath;
-    bool openView;
+    bool openView = false;
 
+    // If we run Primer 3 without target sequence, we need to create sequence with result primers.
+    // This is the document, which stores sequence and annotation object of this file.
+    // We create this document and pass it to the Project (so we do not need to delete it,
+    // it will be deleted when user closes Project/closes UGENE/removes document from the Project).
+    // BUT!!! If we created document, but did not passed it to the Project
+    // (e.g. some error appeared or task was canceled) we need to delete it on our own.
     QPointer<Document> document;
 
     // Child tasks

@@ -33,8 +33,8 @@
 
 namespace U2 {
 
-class PrimerSingle;
-class PrimerPair;
+struct PrimerSingle;
+struct PrimerPair;
 
 /**
  * This class represents a task, which does additional Primer3 calculations -
@@ -44,7 +44,7 @@ class PrimerPair;
 class CheckComplementTask : public Task {
     Q_OBJECT
 public:
-    CheckComplementTask(const CheckComplementSettings& settings, const QList<QSharedPointer<PrimerPair>>& results, U2SequenceObject* seqObj);
+    CheckComplementTask(const CheckComplementSettings& settings, const QList<QSharedPointer<PrimerPair>>& results, QPointer<U2SequenceObject> seqObj);
 
     void run() override;
     QString generateReport() const override;

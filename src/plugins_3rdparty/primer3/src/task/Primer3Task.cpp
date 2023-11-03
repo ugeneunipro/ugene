@@ -51,11 +51,11 @@ Primer3Task::Primer3Task(const QSharedPointer<Primer3TaskSettings>& _settings)
 }
 
 void Primer3Task::prepare() {
-    const auto& sequenceRange = settings->getSequenceRange();
-    const int sequenceSize = settings->getSequenceSize();
-    const auto& includedRegion = settings->getIncludedRegion();
-    const int firstBaseIndex = settings->getFirstBaseIndex();
-    const int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - firstBaseIndex : 0;
+    U2Region sequenceRange = settings->getSequenceRange();
+    int sequenceSize = settings->getSequenceSize();
+    U2Region includedRegion = settings->getIncludedRegion();
+    int firstBaseIndex = settings->getFirstBaseIndex();
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - firstBaseIndex : 0;
     CHECK_EXT(includedRegionOffset >= 0, stateInfo.setError(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0")), );
 
     // Add a sequence shift if selected region covers the junction point
@@ -79,6 +79,9 @@ void Primer3Task::prepare() {
 }
 
 void Primer3Task::run() {
+    // Repeat Library loading
+    // Library could be large and loading - time consuming,
+    // so it is important to do in in a separate thread
     QByteArray repeatLibPath = settings->getRepeatLibraryPath();
     if (!repeatLibPath.isEmpty()) {
         auto primerSettings = settings->getPrimerSettings();
@@ -92,6 +95,8 @@ void Primer3Task::run() {
     }
     CHECK_OP(stateInfo, );
 
+    // Mishyb Library loading
+    // The same thing - could be large
     QByteArray mishybLibPath = settings->getMishybLibraryPath();
     if (!mishybLibPath.isEmpty()) {
         auto primerSettings = settings->getPrimerSettings();
@@ -105,15 +110,13 @@ void Primer3Task::run() {
     }
     CHECK_OP(stateInfo, );
 
+    // Thermodynamic Parameters loading
+    // The same thing - could be large
     QByteArray thermodynamicParametersPath = settings->getThermodynamicParametersPath();
     if (!thermodynamicParametersPath.isEmpty()) {
         auto primerSettings = settings->getPrimerSettings();
-        char* path = thermodynamicParametersPath.data();
-        if (path[strlen(path) - 1] == '\n') {
-            path[strlen(path) - 1] = '\0';
-        }
         thal_results o;
-        if (thal_load_parameters(path, &primerSettings->thermodynamic_parameters, &o) == -1) {
+        if (thal_load_parameters(thermodynamicParametersPath.data(), &primerSettings->thermodynamic_parameters, &o) == -1) {
             stateInfo.setError(o.msg);
         }
     }
@@ -125,6 +128,7 @@ void Primer3Task::run() {
         settings->getPrimerSettings()->num_return = settings->getSpanIntronExonBoundarySettings().maxPairsToQuery;  // not an optimal algorithm
     }
 
+    // Run primer3 itself
     p3retval* resultPrimers = runPrimer3(settings->getPrimerSettings(), settings->getSeqArgs(), settings->isShowDebugging(), settings->isFormatOutput(), settings->isExplain());
     settings->setP3RetVal(resultPrimers);
 
@@ -136,11 +140,13 @@ void Primer3Task::run() {
             selectPairsSpanningIntron(resultPrimers, toReturn);
         }
     } else {
+        // Process primer3 pair results to local @PrimerPair
         for (int index = 0; index < resultPrimers->best_pairs.num_pairs; index++) {
             bestPairs.append(QSharedPointer<PrimerPair>(new PrimerPair(resultPrimers->best_pairs.pairs[index], offset)));
         }
     }
 
+    // We have not pair as result, but separate primers - process them from primer3 structs to local @PrimerSingle
     if (resultPrimers->output_type == primer_list) {
         singlePrimers.clear();
         int maxCount = 0;
@@ -167,11 +173,16 @@ Task::ReportResult Primer3Task::report() {
     CHECK_OP(stateInfo, Task::ReportResult_Finished);
 
     auto resultPrimers = settings->getP3RetVal();
+    QString globalError;
     if (resultPrimers->glob_err.storage_size != 0) {
-        stateInfo.setError(resultPrimers->glob_err.data);
+        globalError = tr("Global Primer3 error: \"%1\". ").arg(resultPrimers->glob_err.data);
     }
+    QString sequenceError;
     if (resultPrimers->per_sequence_err.storage_size != 0) {
-        stateInfo.setError(resultPrimers->per_sequence_err.data);
+        sequenceError = tr("Sequence Primer3 error: \"%1\".").arg(resultPrimers->per_sequence_err.data);
+    }
+    if (!globalError.isEmpty() || !sequenceError.isEmpty()) {
+        stateInfo.setError(globalError + sequenceError);
     }
     if (resultPrimers->warnings.storage_size != 0) {
         stateInfo.addWarning(resultPrimers->warnings.data);
@@ -206,7 +217,7 @@ static QList<int> findIntersectingRegions(const QList<U2Region>& regions, int st
 static bool pairIntersectsJunction(const primer_rec* primerRec, const QVector<qint64>& junctions, int minLeftOverlap, int minRightOverlap) {
     U2Region primerRegion(primerRec->start, primerRec->length);
 
-    for (qint64 junctionPos : junctions) {
+    for (qint64 junctionPos : qAsConst(junctions)) {
         U2Region testRegion(junctionPos - minLeftOverlap, minLeftOverlap + minRightOverlap);
         if (primerRegion.contains(testRegion)) {
             return true;
@@ -254,7 +265,7 @@ void Primer3Task::selectPairsSpanningIntron(p3retval* primers, int toReturn) {
 
         int numIntersecting = 0;
         U2Region rightRegion(right->start, right->length);
-        for (int idx : regionIndexes) {
+        for (int idx : qAsConst(regionIndexes)) {
             const U2Region& exonRegion = regions.at(idx);
             if (exonRegion.intersects(rightRegion)) {
                 ++numIntersecting;

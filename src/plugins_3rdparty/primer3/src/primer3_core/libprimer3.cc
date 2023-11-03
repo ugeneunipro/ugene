@@ -6698,7 +6698,7 @@ _optimize_ok_regions_list(const p3_global_settings *pa,
 
   /* Update each region */
   for (int i=0; i<sa->ok_regions.count; i++) {
-    int ls = -1, le = -1, regionSelector = -1, re = -1;
+    int ls = -1, le = -1, rs = -1, re = -1;
     int new_ls = -1, new_le = -1, new_rs = -1, new_re = -1;
     if (sa->ok_regions.left_pairs[i][0] != -1) {
       ls = sa->ok_regions.left_pairs[i][0];
@@ -6706,7 +6706,7 @@ _optimize_ok_regions_list(const p3_global_settings *pa,
         + sa->ok_regions.left_pairs[i][1] - 1;
     }
     if (sa->ok_regions.right_pairs[i][0] != -1) {
-      regionSelector = sa->ok_regions.right_pairs[i][0];
+      rs = sa->ok_regions.right_pairs[i][0];
       re = sa->ok_regions.right_pairs[i][0]
         + sa->ok_regions.right_pairs[i][1] - 1;
     }
@@ -6716,15 +6716,15 @@ _optimize_ok_regions_list(const p3_global_settings *pa,
       new_rs = ls + pmin - omax - 1; /* -1 just to be safe */
       new_re = le - omin + pmax + 1; /* +1 just to be safe */
       /* Adjust the ranges */
-      if ((regionSelector == -1) || (new_rs > regionSelector)) { regionSelector = new_rs; }
+      if ((rs == -1) || (new_rs > rs)) { rs = new_rs; }
       if ((re == -1) || (new_re < re)) { re = new_re; }
-      if (regionSelector < 0) { regionSelector = 0; }
+      if (rs < 0) { rs = 0; }
       if (re > (signed) strlen(sa->sequence)) { re = strlen(sa->sequence); }
     }
     /* Compute new left region based on right range and min/max values
        of product size and oligo length */
-    if (regionSelector != -1) {
-      new_ls = regionSelector + omin - pmax - 1; /* -1 just to be safe */
+    if (rs != -1) {
+      new_ls = rs + omin - pmax - 1; /* -1 just to be safe */
       new_le = re - pmin + omax + 1; /* +1 just to be safe */
       /* Adjust the ranges */
       if ((ls == -1) || (new_ls > ls)) { ls = new_ls; }
@@ -6745,8 +6745,8 @@ _optimize_ok_regions_list(const p3_global_settings *pa,
     */
     sa->ok_regions.left_pairs[i][0] = ls;
     sa->ok_regions.left_pairs[i][1] = le - ls + 1;
-    sa->ok_regions.right_pairs[i][0] = regionSelector;
-    sa->ok_regions.right_pairs[i][1] = re - regionSelector + 1;
+    sa->ok_regions.right_pairs[i][0] = rs;
+    sa->ok_regions.right_pairs[i][1] = re - rs + 1;
   }
   /* any_left and any_right not true anymore */
   sa->ok_regions.any_left = 0;

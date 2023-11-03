@@ -30,8 +30,8 @@
 namespace U2 {
 
 class AnnotationTableObject;
-class PrimerPair;
-class PrimerSingle;
+struct PrimerPair;
+struct PrimerSingle;
 
 /**
  * This class represents a task, which runs Primer3 itself.

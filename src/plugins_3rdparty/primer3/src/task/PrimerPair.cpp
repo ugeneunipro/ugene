@@ -72,102 +72,6 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
     return *this;
 }
 
-QSharedPointer<PrimerSingle> PrimerPair::getLeftPrimer() const {
-    return leftPrimer;
-}
-
-QSharedPointer<PrimerSingle> PrimerPair::getRightPrimer() const {
-    return rightPrimer;
-}
-
-QSharedPointer<PrimerSingle> PrimerPair::getInternalOligo() const {
-    return internalOligo;
-}
-
-double PrimerPair::getComplAny() const {
-    return complAny;
-}
-
-double PrimerPair::getComplEnd() const {
-    return complEnd;
-}
-
-int PrimerPair::getProductSize() const {
-    return productSize;
-}
-
-double PrimerPair::getProductQuality() const {
-    return quality;
-}
-
-double PrimerPair::getProductTm() const {
-    return tm;
-}
-
-void PrimerPair::setLeftPrimer(const QSharedPointer<PrimerSingle>& _leftPrimer) {
-    leftPrimer.reset(_leftPrimer.isNull() ? nullptr : new PrimerSingle(*_leftPrimer));
-}
-
-void PrimerPair::setRightPrimer(const QSharedPointer<PrimerSingle>& _rightPrimer) {
-    rightPrimer.reset(_rightPrimer.isNull() ? nullptr : new PrimerSingle(*_rightPrimer));
-}
-
-void PrimerPair::setInternalOligo(const QSharedPointer<PrimerSingle>& _internalOligo) {
-    internalOligo.reset(_internalOligo.isNull() ? nullptr : new PrimerSingle(*_internalOligo));
-}
-
-void PrimerPair::setComplAny(double newComplAny) {
-    complAny = newComplAny;
-}
-
-void PrimerPair::setComplEnd(double newComplEnd) {
-    complEnd = newComplEnd;
-}
-
-void PrimerPair::setProductSize(int newProductSize) {
-    productSize = newProductSize;
-}
-
-double PrimerPair::getRepeatSim() const {
-    return repeatSim;
-}
-
-void PrimerPair::setProductQuality(double quality) {
-    this->quality = quality;
-}
-
-const QString& PrimerPair::getRepeatSimName() const {
-    return repeatSimName;
-}
-
-void PrimerPair::setProductTm(double tm) {
-    this->tm = tm;
-}
-
-const QString& PrimerPair::getComplAnyStruct() const {
-    return complAnyStruct;
-}
-
-const QString& PrimerPair::getComplEndStruct() const {
-    return complEndStruct;
-}
-
-void PrimerPair::setRepeatSim(double repeatSim) {
-    this->repeatSim = repeatSim;
-}
-
-void PrimerPair::setRepeatSimName(const QString& repeatSimName) {
-    this->repeatSimName = repeatSimName;
-}
-
-void PrimerPair::setComplAnyStruct(const QString& complAnyStruct) {
-    this->complAnyStruct = complAnyStruct;
-}
-
-void PrimerPair::setComplEndStruct(const QString& complEndStruct) {
-    this->complEndStruct = complEndStruct;
-}
-
 bool PrimerPair::operator<(const PrimerPair& pair) const {
     if (quality < pair.quality) {
         return true;
@@ -181,31 +85,31 @@ bool PrimerPair::operator<(const PrimerPair& pair) const {
     if (tm > pair.tm) {
         return false;
     }
-    if (leftPrimer->getStart() > pair.leftPrimer->getStart()) {
+    if (leftPrimer->start > pair.leftPrimer->start) {
         return true;
     }
-    if (leftPrimer->getStart() < pair.leftPrimer->getStart()) {
+    if (leftPrimer->start < pair.leftPrimer->start) {
         return false;
     }
 
-    if (rightPrimer->getStart() < pair.rightPrimer->getStart()) {
+    if (rightPrimer->start < pair.rightPrimer->start) {
         return true;
     }
-    if (rightPrimer->getStart() > pair.rightPrimer->getStart()) {
+    if (rightPrimer->start > pair.rightPrimer->start) {
         return false;
     }
 
-    if (leftPrimer->getLength() < pair.leftPrimer->getLength()) {
+    if (leftPrimer->length < pair.leftPrimer->length) {
         return true;
     }
-    if (leftPrimer->getLength() > pair.leftPrimer->getLength()) {
+    if (leftPrimer->length > pair.leftPrimer->length) {
         return false;
     }
 
-    if (rightPrimer->getLength() < pair.rightPrimer->getLength()) {
+    if (rightPrimer->length < pair.rightPrimer->length) {
         return true;
     }
-    if (rightPrimer->getLength() > pair.rightPrimer->getLength()) {
+    if (rightPrimer->length > pair.rightPrimer->length) {
         return false;
     }
 

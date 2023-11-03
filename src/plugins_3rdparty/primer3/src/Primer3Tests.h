@@ -40,8 +40,8 @@ class AnnotationTableObject;
 class U2SequenceObject;
 class Primer3TaskSettings;
 class Primer3TopLevelTask;
-class PrimerPair;
-class PrimerSingle;
+struct PrimerPair;
+struct PrimerSingle;
 
 class GTest_Primer3 : public XmlTest {
     Q_OBJECT

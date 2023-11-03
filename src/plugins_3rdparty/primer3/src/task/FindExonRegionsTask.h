@@ -24,6 +24,8 @@
 #include <U2Core/Task.h>
 #include <U2Core/U2Region.h>
 
+#include <QPointer>
+
 namespace U2 {
 
 class LoadRemoteDocumentTask;
@@ -33,7 +35,7 @@ class U2SequenceObject;
 class FindExonRegionsTask : public Task {
     Q_OBJECT
 public:
-    FindExonRegionsTask(U2SequenceObject* dnaObj,
+    FindExonRegionsTask(QPointer<U2SequenceObject> dnaObj,
                         const QString& exonAnnotaitonName);
     QList<U2Region> getRegions() {
         return exonRegions;
@@ -45,7 +47,7 @@ public:
 
 private:
     QList<U2Region> exonRegions;
-    U2SequenceObject* dnaObj;
+    QPointer<U2SequenceObject> dnaObj;
     QString exonAnnName;
 };
 

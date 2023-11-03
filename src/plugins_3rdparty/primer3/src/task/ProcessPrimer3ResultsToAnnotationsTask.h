@@ -31,11 +31,11 @@ namespace U2 {
 class AnnotationTableObject;
 class CheckComplementTask;
 class FindExonRegionsTask;
-class PrimerSingle;
 class Primer3Task;
 class Primer3TaskSettings;
-class PrimerPair;
 class U2SequenceObject;
+struct PrimerSingle;
+struct PrimerPair;
 
 /**
  * This class represents a task, which process results, received by Primer3, to UGENE annotations.

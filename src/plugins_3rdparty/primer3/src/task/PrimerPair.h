@@ -28,12 +28,12 @@
 
 namespace U2 {
 
-class PrimerSingle;
+struct PrimerSingle;
 
 /**
- * This class represents an inner UGENE representation of Primer3 pair results - left and right primers.
+ * This struct represents an inner UGENE representation of Primer3 pair results - left and right primers.
  */
-class PrimerPair {
+struct PrimerPair {
 public:
     PrimerPair() = default;
     PrimerPair(const primer_pair& primerPair, int offset = 0);
@@ -42,36 +42,8 @@ public:
     PrimerPair(PrimerPair&& other) noexcept = delete;
     PrimerPair& operator=(PrimerPair&& other) noexcept = delete;
     bool operator==(const PrimerPair& primerPair) const = delete;
-
-    QSharedPointer<PrimerSingle> getLeftPrimer() const;
-    QSharedPointer<PrimerSingle> getRightPrimer() const;
-    QSharedPointer<PrimerSingle> getInternalOligo() const;
-    double getComplAny() const;
-    double getComplEnd() const;
-    int getProductSize() const;
-    double getProductQuality() const;
-    double getProductTm() const;
-    double getRepeatSim() const;
-    const QString& getRepeatSimName() const;
-    const QString& getComplAnyStruct() const;
-    const QString& getComplEndStruct() const;
-
-    void setLeftPrimer(const QSharedPointer<PrimerSingle>& leftPrimer);
-    void setRightPrimer(const QSharedPointer<PrimerSingle>& rightPrimer);
-    void setInternalOligo(const QSharedPointer<PrimerSingle>& internalOligo);
-    void setComplAny(double complAny);
-    void setComplEnd(double complEnd);
-    void setProductSize(int productSize);
-    void setProductQuality(double quality);
-    void setProductTm(double tm);
-    void setRepeatSim(double repeatSim);
-    void setRepeatSimName(const QString& repeatSimName);
-    void setComplAnyStruct(const QString& complAnyStruct);
-    void setComplEndStruct(const QString& complEndStruct);
-
     bool operator<(const PrimerPair& pair) const;
 
-private:
     // don't forget to change copy constructor and assignment operator when changing this!
     QSharedPointer<PrimerSingle> leftPrimer;
     QSharedPointer<PrimerSingle> rightPrimer;
@@ -86,7 +58,5 @@ private:
     QString complAnyStruct;
     QString complEndStruct;
 };
-
-
 
 }
