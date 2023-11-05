@@ -276,7 +276,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="47"/>
         <source>Preferred Web browser</source>
-        <translation>Предпочитаемый Интернет-браузер </translation>
+        <translation>Предпочитаемый Интернет-браузер</translation>
     </message>
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="67"/>
@@ -366,7 +366,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/app_settings/network_settings/NetworkSettingsWidget.ui" line="143"/>
         <source> sec</source>
-        <translation>сек</translation>
+        <translation> сек</translation>
     </message>
 </context>
 <context>
@@ -443,12 +443,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="856"/>
+        <location filename="../src/Main.cpp" line="845"/>
         <source>UGENE started</source>
         <translation>UGENE готов к работе</translation>
     </message>
     <message>
-        <location filename="../src/Main.cpp" line="857"/>
+        <location filename="../src/Main.cpp" line="846"/>
         <source>UGENE version: %1 %2-bit</source>
         <translation>Версия UGENE: %1 %2-бит</translation>
     </message>
@@ -536,7 +536,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="39"/>
         <source> As separate sequences in sequence viewer</source>
-        <translation>Как отдельные последовательности</translation>
+        <translation> Как отдельные последовательности</translation>
     </message>
     <message>
         <location filename="../src/project_support/SequenceReadingModeSelectorDialog.ui" line="65"/>
@@ -587,7 +587,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/shtirlitz/StatisticalReport.ui" line="26"/>
         <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поделитесь, сколько раз были запущены различные инструменты или активированы действия в пользовательском интерфейсе. Никакие пользовательские данные не отправляются в UGENE.</translation>
     </message>
     <message>
         <location filename="../src/shtirlitz/StatisticalReport.ui" line="29"/>
@@ -682,7 +682,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/Main.cpp" line="595"/>
+        <location filename="../src/Main.cpp" line="590"/>
         <source>Style not available %1</source>
         <translation>Стиль не доступен: %1</translation>
     </message>
@@ -836,77 +836,77 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentFormatSelectorController</name>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="63"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="62"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="64"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="63"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="80"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="75"/>
         <source>Options for %1</source>
         <translation>Опции для %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="93"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="88"/>
         <source>&lt;b&gt;%1&lt;/b&gt; format. Score: %2 &lt;i&gt;(%3)&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; формат. Счет: %2 &lt;i&gt;(%3)&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="97"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="92"/>
         <source>&lt;b&gt;&lt;font color=#A6392E&gt;Import: &lt;/font&gt;%1&lt;/b&gt;. Score: %2 (&lt;i&gt;%3&lt;/i&gt;)</source>
         <translation>&lt;b&gt;&lt;font color=#A6392E&gt;Импорт: &lt;/font&gt;%1&lt;/b&gt;. Счет: %2 (&lt;i&gt;%3&lt;/i&gt;)</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="115"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="110"/>
         <source>more..</source>
         <translation>подробнее..</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="129"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="124"/>
         <source>Choose format manually</source>
         <translation>Выбрать формат</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="186"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="181"/>
         <source>Not matched</source>
         <translation>Не соответствует</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="189"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="184"/>
         <source>Very low similarity</source>
         <translation>Очень низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="192"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="187"/>
         <source>Low similarity</source>
         <translation>Низкая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="195"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="190"/>
         <source>Average similarity</source>
         <translation>Средняя схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="198"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="193"/>
         <source>High similarity</source>
         <translation>Высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="201"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="196"/>
         <source>Very high similarity</source>
         <translation>Очень высокая схожесть</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="203"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="198"/>
         <source>Perfect match</source>
         <translation>Идеальное совпадение</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="211"/>
+        <location filename="../src/project_support/DocumentFormatSelectorController.cpp" line="206"/>
         <source>Format details for &apos;%1&apos; format</source>
         <translation>Детали для формата &apos;%1&apos;</translation>
     </message>
@@ -914,17 +914,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::DocumentProviderSelectorController</name>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="125"/>
+        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="120"/>
         <source>Short reads assembly</source>
         <translation>Сборка коротких ридов</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="128"/>
+        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="123"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="137"/>
+        <location filename="../src/project_support/DocumentProviderSelectorController.cpp" line="132"/>
         <source>%1 in the %2</source>
         <translation>%1 в %2</translation>
     </message>
@@ -1016,22 +1016,22 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::ExportProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="327"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="332"/>
         <source>Export project task</source>
         <translation>Export project task</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="354"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="359"/>
         <source>One of the project documents has empty URL</source>
         <translation>One of the project documents has empty URL</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="373"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="378"/>
         <source>Error during coping documents: file already exist</source>
         <translation>Error during coping documents: file already exist</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="375"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="380"/>
         <source>Error during coping documents</source>
         <translation>Error during coping documents</translation>
     </message>
@@ -1065,17 +1065,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_ExportProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="474"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="479"/>
         <source>GTest_ExportProject::prepare unable to clean folder for exporting</source>
         <translation>GTest_ExportProject::prepare unable to clean folder for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="479"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="484"/>
         <source>GTest_ExportProject::prepare unable to create folder for exporting</source>
         <translation>GTest_ExportProject::prepare unable to create folder for exporting</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="499"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="504"/>
         <source>GTest_ExportProject::cleanup unable to delete exported files</source>
         <translation>GTest_ExportProject::cleanup unable to delete exported files</translation>
     </message>
@@ -1083,17 +1083,17 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_LoadDocumentFromProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="557"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="562"/>
         <source>No project loaded</source>
         <translation>No project loaded</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="561"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="566"/>
         <source>Document name to load is empty</source>
         <translation>Document name to load is empty</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="576"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="581"/>
         <source>File %1 not found in project</source>
         <translation>File %1 not found in project</translation>
     </message>
@@ -1101,7 +1101,7 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::GTest_LoadProject</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="423"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="428"/>
         <source>Unload previous project, then load new</source>
         <translation>Unload previous project, then load new</translation>
     </message>
@@ -1109,27 +1109,27 @@ Note that reloading may cause closing of some views associated with objects from
 <context>
     <name>U2::LoadProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="305"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="310"/>
         <source>Unable to detect parser for project</source>
         <translation>Unable to detect parser for project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="286"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="291"/>
         <source>Load project</source>
         <translation>Load project</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="296"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="301"/>
         <source>Loading project from: %1</source>
         <translation>Читается файл проекта: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="306"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="311"/>
         <source>failed to parse project file %1</source>
         <translation>failed to parse project file %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="311"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="316"/>
         <source>Project loaded: %1</source>
         <translation>Проект загружен: %1</translation>
     </message>
@@ -1559,7 +1559,8 @@ Now you can type ugene in command line to start UGENE.</translation>
         <location filename="../src/project_support/ProjectImpl.cpp" line="103"/>
         <source>Project URL is set to %1
 </source>
-        <translation>Адрес проекта изменён : %1</translation>
+        <translation>Адрес проекта изменён : %1
+</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="113"/>
@@ -1579,11 +1580,7 @@ Now you can type ugene in command line to start UGENE.</translation>
     <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="151"/>
         <source>Not enough resources for load document, resource: &apos;%1&apos; available: %2%3 requested: %4%3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</source>
-        <translation type="vanished">Not enough resources for load document, resource name: &apos;%1&apos; available: %2%3 requested: %4%3</translation>
+        <translation>Недостаточно ресурсов для загрузки документа, ресурс: &apos;%1&apos; доступно: %2%3, запрошено: %4%3</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="161"/>
@@ -1714,10 +1711,6 @@ Now you can type ugene in command line to start UGENE.</translation>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="119"/>
         <source>Open from clipboard...</source>
         <translation>Открыть из буфера обмена...</translation>
-    </message>
-    <message>
-        <source>Connect to UGENE shared database...</source>
-        <translation type="vanished">Подключиться к базе данных UGENE...</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="893"/>
@@ -1880,11 +1873,7 @@ Now you can type ugene in command line to start UGENE.</translation>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="945"/>
         <source>Open In</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open view</source>
-        <translation type="vanished">Открыть</translation>
+        <translation>Открыть в</translation>
     </message>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="946"/>
@@ -1918,7 +1907,7 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::RegisterProjectServiceTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="318"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="323"/>
         <source>Register project</source>
         <translation>Регистрация проекта</translation>
     </message>
@@ -1934,14 +1923,14 @@ Now you can type ugene in command line to start UGENE.</translation>
 <context>
     <name>U2::SaveOnlyProjectTask</name>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="212"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="217"/>
         <source>Save project</source>
         <translation>Сохранение проекта</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="269"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="274"/>
         <source>Saving project %1</source>
-        <translation>Сохранение проекта: %1 </translation>
+        <translation>Сохранение проекта: %1</translation>
     </message>
 </context>
 <context>
@@ -1970,7 +1959,7 @@ Now you can type ugene in command line to start UGENE.</translation>
         <translation>Сохранение проекта</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectTasksGui.cpp" line="204"/>
+        <location filename="../src/project_support/ProjectTasksGui.cpp" line="209"/>
         <source>Save documents, remove phantom docs, save project</source>
         <translation>Save documents, remove phantom docs, save project</translation>
     </message>
@@ -2008,12 +1997,12 @@ Now you can type ugene in command line to start UGENE.</translation>
     <message>
         <location filename="../src/shtirlitz/Shtirlitz.cpp" line="351"/>
         <source>Network error while resolving destination URL: </source>
-        <translation>Ошибка сети при определении адреса сервера статистики:</translation>
+        <translation>Ошибка сети при определении адреса сервера статистики: </translation>
     </message>
     <message>
         <location filename="../src/shtirlitz/Shtirlitz.cpp" line="364"/>
         <source>Network error while sending report: </source>
-        <translation>Ошибка сети при отправке отчета:</translation>
+        <translation>Ошибка сети при отправке отчета: </translation>
     </message>
 </context>
 <context>
@@ -2059,10 +2048,6 @@ Now you can type ugene in command line to start UGENE.</translation>
 </context>
 <context>
     <name>U2::StatisticalReportController</name>
-    <message>
-        <source>&lt;b&gt;Optional:&lt;/b&gt; Help make UGENE better by automatically sending anonymous usage statistics.</source>
-        <translation type="vanished">&lt;b&gt;Опционально:&lt;/b&gt; Помогите сделать UGENE лучше, автоматически отправляя анонимную статистику использования.</translation>
-    </message>
     <message>
         <location filename="../src/shtirlitz/StatisticalReportController.cpp" line="38"/>
         <source>Welcome to UGENE %1.%2</source>
@@ -2146,7 +2131,8 @@ Now you can type ugene in command line to start UGENE.</translation>
         <location filename="../src/task_view/TaskStatusBar.cpp" line="139"/>
         <source>There %1:
 </source>
-        <translation>Есть %1:</translation>
+        <translation>Есть %1:
+</translation>
     </message>
     <message>
         <location filename="../src/task_view/TaskStatusBar.cpp" line="171"/>
@@ -2431,7 +2417,7 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="186"/>
         <source>Cite UGENE:</source>
-        <translation>Чтобы процитировать UGENE, используйте публикацию: </translation>
+        <translation>Чтобы процитировать UGENE, используйте публикацию:</translation>
     </message>
     <message>
         <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="197"/>
@@ -2479,7 +2465,7 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="105"/>
         <source>Share now many times different tools were run or UI actions were activated. No user data is sent to UGENE.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поделитесь, сколько раз были запущены различные инструменты или активированы действия в пользовательском интерфейсе. Никакие пользовательские данные не отправляются в UGENE.</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="108"/>
@@ -2494,7 +2480,7 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="124"/>
         <source>Do not check and ask about UGENE updates during UGENE startup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не проверять и не спрашивать об обновлениях при запуске UGENE.</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="127"/>
@@ -2524,7 +2510,7 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="162"/>
         <source>Resets all UGENE settings to default. Requires restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбросить все настройки UGENE на значения по умолчанию. Требуется перезапуск.</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="165"/>
@@ -2535,10 +2521,6 @@ Would you like to download and install it?</source>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="99"/>
         <source>Statistical reports</source>
         <translation>Отчеты о статистике использования</translation>
-    </message>
-    <message>
-        <source>Enable statistical reports collecting</source>
-        <translation type="vanished">Разрешить сбор отчетов</translation>
     </message>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="51"/>
