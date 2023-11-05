@@ -689,11 +689,6 @@ Probably, the data are too big.</source>
         <translation>Паттерны</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="63"/>
-        <source>I&apos;m replaced with another widget in code!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="170"/>
         <source>Shift+Return</source>
         <translation>Shift+Return</translation>
@@ -2101,7 +2096,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="429"/>
         <source>Expansion </source>
-        <translation>Расширение</translation>
+        <translation>Расширение </translation>
     </message>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="442"/>
@@ -2523,7 +2518,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="373"/>
         <source>No active trees found.</source>
-        <translation>Нет активных деревьев</translation>
+        <translation>Нет активных деревьев.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="379"/>
@@ -4331,7 +4326,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_assembly/ExportConsensusTask.cpp" line="50"/>
         <source>Export consensus of assembly &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт консенсуса сборки &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/ExportConsensusTask.cpp" line="57"/>
@@ -4690,14 +4685,14 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FindPatternListTask</name>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="123"/>
-        <source>Searching patterns in sequence task</source>
-        <translation>Searching patterns in sequence task</translation>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="120"/>
+        <source>Find patterns in sequence</source>
+        <translation>Найти паттерны в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="149"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="146"/>
         <source>Empty pattern: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Пустой паттерн: %1</translation>
     </message>
 </context>
 <context>
@@ -4861,11 +4856,11 @@ Please, check external tools in the settings.</source>
     <name>U2::FindPatternTask</name>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="35"/>
-        <source>Searching a pattern in sequence task</source>
-        <translation>Searching a pattern in sequence task</translation>
+        <source>Find pattern in sequence</source>
+        <translation>Найти паттерн в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="109"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="106"/>
         <source>Removed %1 overlapped results.</source>
         <translation>Removed %1 overlapped results.</translation>
     </message>
@@ -5162,7 +5157,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::GSequenceLineViewAnnotated</name>
     <message>
-        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="392"/>
+        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="409"/>
         <source>etc ...</source>
         <translation>Прочие ...</translation>
     </message>
@@ -5654,7 +5649,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="234"/>
         <source>Block size is too big and can&apos;t be copied into the clipboard</source>
-        <translation type="unfinished">Block size is too big and can&apos;t be copied into the clipboard</translation>
+        <translation>Размер блока слишком большой и не может быть скопирован в буфер обмена</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="464"/>
@@ -6860,17 +6855,17 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="203"/>
         <source>Data is outdated</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные устарели</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="204"/>
         <source>Data is valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные действительны</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="205"/>
         <source>Data is being updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные обновляются</translation>
     </message>
 </context>
 <context>
@@ -6884,24 +6879,24 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::MsaEditorMultilineWgt</name>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="91"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="92"/>
         <source>Deleting widget from grid, count %1, index %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление виджета из сетки, количество %1, индекс %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="98"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="99"/>
         <source>Deleting widget from uiChild, count %1, index %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление виджета из uiChild, количество %1, индекс %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="102"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="103"/>
         <source>Deleted widget, uiChildCount %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Удален виджет, количество uiChildCount %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="392"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="393"/>
         <source>Go to Position</source>
-        <translation type="unfinished">Перейти к позиции</translation>
+        <translation>Перейти к позиции</translation>
     </message>
 </context>
 <context>
@@ -7412,7 +7407,7 @@ Simple overview is unavailable.</source>
         <translation>Показывать дополнительные шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="466"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="462"/>
         <source>range change request: [%1, %2]</source>
         <translation>Изменён видимый диапазон: [%1, %2]</translation>
     </message>
@@ -7566,27 +7561,27 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="64"/>
         <source>Predict</source>
         <translation>Предсказать</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="68"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="69"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="78"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="75"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="79"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="76"/>
         <source>Structure Type</source>
         <translation>Тип структуры</translation>
     </message>
@@ -8085,7 +8080,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/temperature/TmCalculatorSelectorWidget.cpp" line="50"/>
         <source>Hint: UGENE computes Tm for sequence regions from %1 up to %2 bp</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсказка: UGENE вычисляет температуру плавления (Tm) для участков последовательности от %1 до %2 пар нуклеотидов</translation>
     </message>
     <message>
         <location filename="../src/temperature/TmCalculatorSelectorWidget.cpp" line="57"/>
@@ -8244,7 +8239,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="184"/>
         <source>Fit Zoom to Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Подогнать масштаб по размеру окна</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="191"/>
@@ -8308,12 +8303,12 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1176"/>
         <source>Image is too large. Please zoom out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение слишком большое. Пожалуйста, уменьшьте масштаб.</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1181"/>
         <source>Failed to copy image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось скопировать изображение.</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1206"/>
@@ -8340,7 +8335,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1299"/>
         <source>Failed to build tree layout.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось построить макет дерева.</translation>
     </message>
 </context>
 <context>

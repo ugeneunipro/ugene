@@ -2428,105 +2428,105 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <location filename="../src/Primer3Tests.cpp" line="97"/>
         <location filename="../src/Primer3Tests.cpp" line="103"/>
         <source>Illegal SEQUENCE_TARGET value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение SEQUENCE_TARGET: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="117"/>
         <source>Illegal SEQUENCE_OVERLAP_JUNCTION_LIST value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение SEQUENCE_OVERLAP_JUNCTION_LIST: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="132"/>
         <source>Illegal SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение SEQUENCE_INTERNAL_OVERLAP_JUNCTION_LIST: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="147"/>
         <source>Illegal SEQUENCE_EXCLUDED_REGION value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение SEQUENCE_EXCLUDED_REGION: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="173"/>
         <source>Illegal SEQUENCE_PRIMER_PAIR_OK_REGION_LIST value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение SEQUENCE_PRIMER_PAIR_OK_REGION_LIST: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="187"/>
         <source>Illegal SEQUENCE_INCLUDED_REGION value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение SEQUENCE_INCLUDED_REGION: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="205"/>
         <location filename="../src/Primer3Tests.cpp" line="212"/>
         <source>Illegal SEQUENCE_INTERNAL_EXCLUDED_REGION value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение SEQUENCE_INTERNAL_EXCLUDED_REGION: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="227"/>
         <source>Illegal PRIMER_PRODUCT_SIZE_RANGE value: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Недопустимое значение PRIMER_PRODUCT_SIZE_RANGE: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="378"/>
         <source>Incorrect results num. Pairs: %1, left: %2, right: %3, inernal: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Некорректное количество результатов. Пары: %1, слева: %2, справа: %3, внутренние: %4</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="393"/>
         <location filename="../src/Primer3Tests.cpp" line="404"/>
         <location filename="../src/Primer3Tests.cpp" line="415"/>
         <source>Incorrect parameter: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Некорректный параметр: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="535"/>
         <source>No error, but expected: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет ошибки, но ожидалось: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="538"/>
         <source>An unexpected error. Expected: %1, but Actual: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Неожиданная ошибка. Ожидалось: %1, но фактическое значение: %2</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="547"/>
         <source>No warning, but expected: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет предупреждения, но ожидалось: %1</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="551"/>
         <source>An unexpected warning. Expected: %1, but Actual: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Неожиданное предупреждение. Ожидалось: %1, но фактическое значение: %2</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="563"/>
         <source>PRIMER_PAIR_NUM_RETURNED is incorrect. Expected:%1, but Actual:%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Неправильное значение PRIMER_PAIR_NUM_RETURNED. Ожидалось: %1, но фактическое значение: %2</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="579"/>
         <source>Incorrect single primers num. Expected:%1, but Actual:%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Неправильное количество одиночных праймеров. Ожидалось: %1, но фактическое количество: %2</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="590"/>
         <source>Incorrect single primer type, num: %1. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Неправильный тип одиночного праймера, номер: %1. Ожидалось: %2, но фактический результат: %3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="742"/>
         <source>PRIMER_PAIR%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Название PRIMER_PAIR%1_LIBRARY_MISPRIMING_NAME неверное. Ожидалось: %2, но фактическое значение: %3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="746"/>
         <source>PRIMER_PAIR%1_COMPL_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Название PRIMER_PAIR%1_COMPL_ANY_STUCT неверное. Ожидалось: %2, но фактическое значение: %3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="750"/>
         <source>PRIMER_PAIR%1_COMPL_END_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Название PRIMER_PAIR%1_COMPL_END_STUCT неверное. Ожидалось: %2, но фактическое значение: %3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="762"/>
@@ -2546,17 +2546,17 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <message>
         <location filename="../src/Primer3Tests.cpp" line="804"/>
         <source>%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Название %1_LIBRARY_MISPRIMING_NAME неверное. Ожидалось: %2, но фактическое значение: %3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="808"/>
         <source>%1_SELF_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Название %1_SELF_ANY_STUCT неверное. Ожидалось: %2, но фактическое значение: %3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="812"/>
         <source>%1_SELF_END_STUCT name is incorrect. Expected:%2, but Actual:%3</source>
-        <translation type="unfinished"></translation>
+        <translation>Название %1_SELF_END_STUCT неверное. Ожидалось: %2, но фактическое значение: %3</translation>
     </message>
     <message>
         <location filename="../src/Primer3Tests.cpp" line="826"/>
@@ -2826,37 +2826,37 @@ Click OK to continue calculation, but the incorrect values will be ignored.</sou
 <context>
     <name>U2::Primer3ToAnnotationsTask</name>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="630"/>
+        <location filename="../src/Primer3Task.cpp" line="628"/>
         <source>Search primers to annotations</source>
         <translation>Search primers to annotations</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="762"/>
+        <location filename="../src/Primer3Task.cpp" line="760"/>
         <source>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</source>
         <translation>Failed to find any exon annotations associated with the sequence %1.Make sure the provided sequence is cDNA and has exonic structure annotated</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="774"/>
+        <location filename="../src/Primer3Task.cpp" line="772"/>
         <source>The first exon from the selected range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Первый экзон из выбранного диапазона [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="783"/>
+        <location filename="../src/Primer3Task.cpp" line="781"/>
         <source>The the selected exon range [%1,%2] is larger the number of exons (%3). Please set correct exon range.</source>
         <translation>Выбраный диапазон экзонов [%1,%2] больше общего количества экзонов(%3). Пожалуйста, задайте правильный диапазон экзонов.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="666"/>
+        <location filename="../src/Primer3Task.cpp" line="664"/>
         <source>Object with annotations was removed</source>
         <translation>Объект с аннотациями удален</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="672"/>
+        <location filename="../src/Primer3Task.cpp" line="670"/>
         <source>No primers has been found due to the parameters you&apos;ve set up</source>
         <translation>Не было найдено праймеров, соответствующих заданным параметрам</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Task.cpp" line="674"/>
+        <location filename="../src/Primer3Task.cpp" line="672"/>
         <source>All found primers has been filtered due to the &quot;Check complement&quot; parameters</source>
         <translation>Все найденные праймеры были отфильтрованы согласно параметру &quot;Проверить комплементарность&quot;</translation>
     </message>

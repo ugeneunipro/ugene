@@ -1417,47 +1417,47 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="588"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool is not in Latin alphabet. Make sure that the input and output files and folders are located in the paths which contain only Latin characters. Current problem path is: &quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Один из аргументов, переданных внешнему инструменту &quot;%1&quot;, не содержит латинские буквы. Убедитесь, что входные и выходные файлы и папки находятся по путям, содержащим только латинские символы. Текущий путь с проблемой: &quot;</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="600"/>
         <source>Your &quot;Temporary files&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ваша директория &quot;Временных файлов&quot; содержит символы, не относящиеся к латинскому алфавиту. Внешний инструмент &quot;%1&quot; не может правильно обработать её. Пожалуйста, измените это в настройках на странице &quot;Директории&quot;, перезапустите UGENE и попробуйте снова. Текущий путь с проблемой: </translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="611"/>
         <source>&quot;%1&quot; external tool located in path which contains non-latin symbols. Please change it location to path which contains only latin symbols, set the new path in Preferences on the External tools and try again. Current problem path is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний инструмент &quot;%1&quot; находится по пути, содержащему символы, не относящиеся к латинскому алфавиту. Пожалуйста, измените его расположение на путь, содержащий только латинские символы, установите новый путь в настройках в разделе &quot;Внешние инструменты&quot; и попробуйте снова. Текущий путь с проблемой: </translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="622"/>
         <source>Your &quot;Build indexes&quot; directory contains non-latin symbols, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ваша директория &quot;Построение индексов&quot; содержит символы, не относящиеся к латинскому алфавиту. Внешний инструмент &quot;%1&quot; не может правильно обработать её. Пожалуйста, измените это в настройках на странице &quot;Директории&quot;, перезапустите UGENE и попробуйте снова. Текущий путь с проблемой: </translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="636"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool contains empty arguments.</source>
-        <translation type="unfinished"></translation>
+        <translation>Один из аргументов, переданных внешнему инструменту &quot;%1&quot;, содержит пустые аргументы.</translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="638"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool contains unexpected quotes. Current problem argument is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Один из аргументов, переданных внешнему инструменту &quot;%1&quot;, содержит неожиданные кавычки. Текущий проблемный аргумент: </translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="653"/>
         <source>One of the arguments passed to &quot;%1&quot; external tool contains spaces. Make sure that the input and output files and folders are located in the paths which contain no spaces. Current problem path is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Один из аргументов, переданных внешнему инструменту &quot;%1&quot;, содержит пробелы. Убедитесь, что входные и выходные файлы и папки находятся по путям, которые не содержат пробелов. Текущий путь с проблемой: </translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="665"/>
         <source>Your &quot;Temporary files&quot; directory contains spaces, &quot;%1&quot; external tool can&apos;t correct process it. Please change it in Preferences on the Directories page, restart UGENE and try again. Current problem path is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Ваша директория &quot;Временных файлов&quot; содержит пробелы, и внешний инструмент &quot;%1&quot; не может её правильно обработать. Пожалуйста, измените этот путь в настройках на странице &quot;Директории&quot;, перезапустите UGENE и попробуйте снова. Текущий путь с проблемой: </translation>
     </message>
     <message>
         <location filename="../src/tasks/ExternalToolRunTask.cpp" line="675"/>
         <source>&quot;%1&quot; external tool located in path which contains spaces symbols. Please change it location to path which contains no spaces,  set the new path in Preferences on the External tools and try again. Current problem path is: </source>
-        <translation type="unfinished"></translation>
+        <translation>Внешний инструмент &quot;%1&quot; находится в папке, содержащей символы пробела. Пожалуйста, измените его расположение на путь, который не содержит пробелов, установите новый путь в настройках в разделе &quot;Внешние инструменты&quot; и попробуйте снова. Текущий путь с проблемой: </translation>
     </message>
 </context>
 <context>
@@ -1673,12 +1673,13 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Неправильная строка адреса была передана в HttpFileAdapter::open()</translation>
     </message>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="122"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="123"/>
         <source>GET %1</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Запрос %1</translatorcomment>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="307"/>
+        <location filename="../src/io/HttpFileAdapter.cpp" line="308"/>
         <source>Redirecting to %1</source>
         <translation>Перенаправление на %1</translation>
     </message>
