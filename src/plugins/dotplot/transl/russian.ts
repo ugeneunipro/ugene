@@ -610,7 +610,7 @@
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="980"/>
         <source>Dotplot widget is too small</source>
-        <translation type="unfinished"></translation>
+        <translation>Виджет точечной диаграммы слишком маленький</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="991"/>

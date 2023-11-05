@@ -104,10 +104,6 @@
         <translation>Information</translation>
     </message>
     <message>
-        <source>env_mb_title</source>
-        <translation type="vanished">Environment variables</translation>
-    </message>
-    <message>
         <location filename="../src/TestViewController.cpp" line="1136"/>
         <source>passed</source>
         <translation>Passed</translation>
@@ -240,7 +236,7 @@
     <message>
         <location filename="../src/TestViewController.cpp" line="920"/>
         <source>Set Environment</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрать окружение</translation>
     </message>
 </context>
 </TS>
