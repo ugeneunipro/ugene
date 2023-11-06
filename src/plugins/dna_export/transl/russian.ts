@@ -511,17 +511,6 @@
         <translation>Экспорт выбранных участков последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="472"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="524"/>
-        <source>Illegal parameter: input alignment is not empty!</source>
-        <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="484"/>
-        <source>%1 is not a BLAST annotation</source>
-        <translation>%1 не является BLAST аннотацией</translation>
-    </message>
-    <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="488"/>
         <source>Can not export BLAST annotations from different sequences</source>
         <translation>Невозможно экспортировать BLAST аннотации из разных последовательностей</translation>
@@ -530,11 +519,6 @@
         <location filename="../src/ExportSequenceViewItems.cpp" line="491"/>
         <source>Can not find qualifier to set as a name for BLAST sequence</source>
         <translation>Невозможно найти квалификатор, чтобы установить в качестве имени для BLAST последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="566"/>
-        <source>Illegal parameter: Input alignment is not empty!</source>
-        <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="642"/>
@@ -745,11 +729,6 @@
         <location filename="../src/DNASequenceGenerator.cpp" line="174"/>
         <source>Generate sequence task</source>
         <translation>Generate sequence task</translation>
-    </message>
-    <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="200"/>
-        <source>Incorrect reference file: %1</source>
-        <translation>Incorrect reference file: %1</translation>
     </message>
     <message>
         <location filename="../src/DNASequenceGenerator.cpp" line="314"/>

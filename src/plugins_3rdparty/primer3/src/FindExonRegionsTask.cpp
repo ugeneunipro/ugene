@@ -60,7 +60,7 @@ QList<Task*> FindExonRegionsTask::onSubTaskFinished(Task* subTask) {
         }
 
         U2SequenceObject *rnaSeqObj = qobject_cast<U2SequenceObject *>(objects.first());
-        SAFE_POINT(NULL != rnaSeqObj, tr("Failed to load RNA sequence"), res);
+        SAFE_POINT(NULL != rnaSeqObj, "Failed to load RNA sequence", res);
 
         SplicedAlignmentTaskConfig cfg(rnaSeqObj, dnaObj);
 

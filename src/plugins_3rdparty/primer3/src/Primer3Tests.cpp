@@ -39,7 +39,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     QDomNodeList inputParameters = el.elementsByTagName("plugin_primer_3_in");
     for (int inputParametersIndex = 0; inputParametersIndex < inputParameters.size(); inputParametersIndex++) {
         QDomNode n = inputParameters.item(inputParametersIndex);
-        SAFE_POINT_EXT(n.isElement(), localErrorMessage = GTest::tr("QDomNode isn't element"), );
+        SAFE_POINT_EXT(n.isElement(), localErrorMessage = "QDomNode isn't element", );
 
         if (!n.isElement()) {
             continue;
@@ -330,7 +330,7 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     QDomNodeList outputParameters = el.elementsByTagName("plugin_primer_3_out");
     for (int outputParametersIndex = 0; outputParametersIndex < outputParameters.size(); outputParametersIndex++) {
         QDomNode n = outputParameters.item(outputParametersIndex);
-        SAFE_POINT_EXT(n.isElement(), localErrorMessage = GTest::tr("QDomNode isn't element"), );
+        SAFE_POINT_EXT(n.isElement(), localErrorMessage = "QDomNode isn't element", );
 
         if (!n.isElement()) {
             continue;

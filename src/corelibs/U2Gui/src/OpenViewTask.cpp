@@ -133,9 +133,9 @@ void OpenViewTask::prepare() {
     QList<GObjectViewState*> sl = GObjectViewUtils::selectStates(ms, AppContext::getProject()->getGObjectViewStates());
     if (sl.size() == 1) {
         GObjectViewState* state = sl.first();
-        SAFE_POINT_EXT(state, setError(tr("State is NULL")), );
+        SAFE_POINT_EXT(state, setError("State is NULL"), );
         GObjectViewFactory* f = AppContext::getObjectViewFactoryRegistry()->getFactoryById(state->getViewFactoryId());
-        SAFE_POINT_EXT(f, setError(tr("GObject factory is NULL")), );
+        SAFE_POINT_EXT(f, setError("GObject factory is NULL"), );
         res.append(f->createViewTask(state->getViewName(), state->getStateData()));
     } else {
         Task* openViewTask = createOpenViewTask(ms);

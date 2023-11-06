@@ -368,9 +368,9 @@ CircularViewRenderArea::CircularViewRenderArea(CircularView* d)
       rotationDegree(0),
       mouseAngle(0),
       oldYlevel(0) {
-    SAFE_POINT(d != nullptr, tr("CircularView is NULL"), );
+    SAFE_POINT(d != nullptr, "CircularView is NULL", );
     settings = d->getSettings();
-    SAFE_POINT(settings != nullptr, tr("Circular view settings are NULL"), );
+    SAFE_POINT(settings != nullptr, "Circular view settings are NULL", );
     settingsWereChanged = false;
 
     setMouseTracking(true);

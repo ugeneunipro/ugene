@@ -37,7 +37,7 @@ HmmerBuildFromFileTask::HmmerBuildFromFileTask(const HmmerBuildSettings& setting
       buildTask(nullptr),
       settings(settings),
       msaUrl(msaUrl) {
-    SAFE_POINT_EXT(!msaUrl.isEmpty(), tr("Msa URL is empty"), );
+    SAFE_POINT_EXT(!msaUrl.isEmpty(), "Msa URL is empty", );
     GCOUNTER(cvar, "ExternalTool_HMMER");
 }
 

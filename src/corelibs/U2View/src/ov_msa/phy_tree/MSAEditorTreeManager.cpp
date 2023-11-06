@@ -268,7 +268,7 @@ void MSAEditorTreeManager::sl_openTreeTaskFinished(Task* task) {
     }
 
     auto treeViewer = qobject_cast<MSAEditorTreeViewer*>(createTreeViewerTask->getTreeViewer());
-    SAFE_POINT(treeViewer != nullptr, tr("Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)"), );
+    SAFE_POINT(treeViewer != nullptr, "Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)", );
 
     auto viewWindow = new GObjectViewWindow(treeViewer, editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
     connect(viewWindow, SIGNAL(si_windowClosed(GObjectViewWindow*)), this, SLOT(sl_onWindowClosed(GObjectViewWindow*)));
@@ -363,9 +363,9 @@ void MSAEditorTreeManager::sl_onWindowClosed(GObjectViewWindow* viewWindow) {
 }
 
 MSAEditorMultiTreeViewer* MSAEditorTreeManager::getMultiTreeViewer() const {
-    SAFE_POINT(editor != nullptr, tr("Incorrect reference to the MSAEditor"), nullptr);
+    SAFE_POINT(editor != nullptr, "Incorrect reference to the MSAEditor", nullptr);
     auto mui = qobject_cast<MsaEditorMultilineWgt*>(editor->getUI());
-    SAFE_POINT(mui != nullptr, tr("Incorrect reference to the MSAEditor"), nullptr);
+    SAFE_POINT(mui != nullptr, "Incorrect reference to the MSAEditor", nullptr);
     return mui->getPhylTreeWidget();
 }
 

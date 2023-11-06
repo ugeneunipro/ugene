@@ -48,7 +48,7 @@ AnnotationSelection* ADVSequenceObjectContext::getAnnotationsSelection() const {
 
 void ADVSequenceObjectContext::sl_onAnnotationRelationChange() {
     auto obj = qobject_cast<AnnotationTableObject*>(sender());
-    SAFE_POINT(obj != nullptr, tr("Incorrect signal sender!"), );
+    SAFE_POINT(obj != nullptr, "Incorrect signal sender!", );
 
     if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
         disconnect(obj, SIGNAL(si_relationChanged(const QList<GObjectRelation>&)), this, SLOT(sl_onAnnotationRelationChange()));

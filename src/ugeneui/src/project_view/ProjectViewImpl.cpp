@@ -126,7 +126,7 @@ void DocumentUpdater::update() {
     QList<Document*> outdatedDocs;
     QList<Document*> removedDocs;
     foreach (Document* doc, docs2check) {
-        SAFE_POINT(doc != nullptr, tr("Project contains NULL document"), );
+        SAFE_POINT(doc != nullptr, "Project contains NULL document", );
 
         if (!doc->isLoaded()) {
             continue;

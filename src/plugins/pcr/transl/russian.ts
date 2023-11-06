@@ -228,11 +228,6 @@
         <source>Export primers</source>
         <translation>Экспорт праймеров</translation>
     </message>
-    <message>
-        <location filename="../src/export/ExportPrimersToDatabaseTask.cpp" line="85"/>
-        <source>Unexpected objects count</source>
-        <translation>Unexpected objects count</translation>
-    </message>
 </context>
 <context>
     <name>U2::ExportPrimersToLocalFileTask</name>
@@ -282,11 +277,6 @@
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="40"/>
         <source>Import primer from the shared database object: %1</source>
         <translation>Import primer from the shared database object: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="44"/>
-        <source>A non-sequence object was provided</source>
-        <translation>A non-sequence object was provided</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="48"/>
@@ -353,11 +343,6 @@
         <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="46"/>
         <source>Internal error: can&apos;t load the file &apos;%1&apos;</source>
         <translation>Internal error: can&apos;t load the file &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="56"/>
-        <source>Document wasn&apos;t loaded</source>
-        <translation>Document wasn&apos;t loaded</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="58"/>
@@ -1006,12 +991,6 @@
         <location filename="../src/PrimerLibraryTable.cpp" line="77"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
-    </message>
-    <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="119"/>
-        <location filename="../src/PrimerLibraryTable.cpp" line="127"/>
-        <source>Incorrect primer number</source>
-        <translation>Incorrect primer number</translation>
     </message>
     <message>
         <location filename="../src/PrimerLibraryTable.cpp" line="139"/>

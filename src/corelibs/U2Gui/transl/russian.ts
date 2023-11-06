@@ -2061,11 +2061,6 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::ExportImageDialog</name>
     <message>
-        <location filename="../src/util/ExportImageDialog.cpp" line="70"/>
-        <source>Image export task factory is NULL</source>
-        <translation>Image export task factory is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/util/ExportImageDialog.cpp" line="97"/>
         <source>The image file path is empty.</source>
         <translation>Путь до изображения пуст.</translation>
@@ -2094,14 +2089,6 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/ExportImageDialog.cpp" line="146"/>
         <source>Export</source>
         <translation>Экспорт</translation>
-    </message>
-</context>
-<context>
-    <name>U2::FeatureKeyFilterTask</name>
-    <message>
-        <location filename="../src/util/project/filter_tasks/FeatureKeyFilterTask.cpp" line="57"/>
-        <source>DbiRef is invalid</source>
-        <translation>DbiRef is invalid</translation>
     </message>
 </context>
 <context>
@@ -2197,24 +2184,6 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/HelpButton.cpp" line="33"/>
         <source>Help</source>
         <translation>Помощь</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ImageExportController</name>
-    <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="76"/>
-        <source>SVG format is not supported</source>
-        <translation>SVG format is not supported</translation>
-    </message>
-    <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="80"/>
-        <source>PS/PDF format is not supported</source>
-        <translation>PS/PDF format is not supported</translation>
-    </message>
-    <message>
-        <location filename="../src/util/imageExport/ImageExportTask.cpp" line="83"/>
-        <source>Raster formats are disabled</source>
-        <translation>Raster formats are disabled</translation>
     </message>
 </context>
 <context>
@@ -2538,19 +2507,6 @@ Are you sure you want to open all of them?</source>
     </message>
 </context>
 <context>
-    <name>U2::OpenViewTask</name>
-    <message>
-        <location filename="../src/OpenViewTask.cpp" line="136"/>
-        <source>State is NULL</source>
-        <translation>State is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/OpenViewTask.cpp" line="138"/>
-        <source>GObject factory is NULL</source>
-        <translation>GObject factory is NULL</translation>
-    </message>
-</context>
-<context>
     <name>U2::PasteFactory</name>
     <message>
         <location filename="../src/PasteController.cpp" line="119"/>
@@ -2673,21 +2629,6 @@ Are you sure you want to open all of them?</source>
         <location filename="../src/util/project/ProjectTreeController.cpp" line="270"/>
         <source>Import to the folder...</source>
         <translation>Импортировать в папку...</translation>
-    </message>
-    <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="593"/>
-        <source>Select a database to import anything</source>
-        <translation>Выберите базу данных для того, чтобы что-то импортировать</translation>
-    </message>
-    <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="634"/>
-        <source>No object to add to view</source>
-        <translation>Нет объектов для добавления</translation>
-    </message>
-    <message>
-        <location filename="../src/util/project/ProjectTreeController.cpp" line="640"/>
-        <source>No object to remove from view</source>
-        <translation>Нет объектов для удаления</translation>
     </message>
     <message>
         <location filename="../src/util/project/ProjectTreeController.cpp" line="696"/>
@@ -2860,33 +2801,6 @@ Are you sure you want to open all of them?</source>
     </message>
 </context>
 <context>
-    <name>U2::RegionSelectorController</name>
-    <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="132"/>
-        <source>Region is not in sequence range</source>
-        <translation>Region is not in sequence range</translation>
-    </message>
-    <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="150"/>
-        <source>Cannot get preset name, ComboBox is NULL</source>
-        <translation>Cannot get preset name, ComboBox is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="155"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="172"/>
-        <source>Cannot set preset, ComboBox is NULL</source>
-        <translation>Cannot set preset, ComboBox is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/util/RegionSelectorController.cpp" line="227"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="274"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="288"/>
-        <location filename="../src/util/RegionSelectorController.cpp" line="323"/>
-        <source>Region lineEdit is NULL</source>
-        <translation>Region lineEdit is NULL</translation>
-    </message>
-</context>
-<context>
     <name>U2::RegionSelectorWithExcludedRegion</name>
     <message>
         <location filename="../src/util/RegionSelectorWithExcludedRegion.cpp" line="98"/>
@@ -3053,11 +2967,6 @@ Are you sure you want to open all of them?</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="140"/>
-        <source>an unexpected subtask</source>
-        <translation>an unexpected subtask</translation>
-    </message>
-    <message>
         <location filename="../src/util/SearchGenbankSequenceDialogController.cpp" line="170"/>
         <source>No results found corresponding to the query</source>
         <translation>Не найдено результатов соответствующих запросу</translation>
@@ -3104,11 +3013,6 @@ Are you sure you want to open all of them?</source>
 </context>
 <context>
     <name>U2::SequenceTextEdit</name>
-    <message>
-        <location filename="../src/util/SequenceTextEdit.cpp" line="39"/>
-        <source>Invalid mimedata</source>
-        <translation>Invalid mimedata</translation>
-    </message>
     <message>
         <location filename="../src/util/SequenceTextEdit.cpp" line="42"/>
         <source>Pasting large data</source>

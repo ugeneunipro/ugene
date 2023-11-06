@@ -144,8 +144,8 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
 
     CHECK_EXT(!msa->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
 
-    SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, setError(tr("Illegal translation frame offset: %1").arg(translationFrame)), );
-    SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(tr("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
+    SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, setError(QString("Illegal translation frame offset: %1").arg(translationFrame)), );
+    SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(QString("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
     setVerboseLogMode(true);
 
     sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);

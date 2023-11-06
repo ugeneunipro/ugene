@@ -53,7 +53,7 @@ QList<Task*> ImportPrimersFromFileTask::onSubTaskFinished(Task* subTask) {
     CHECK_OP(stateInfo, result);
 
     Document* document = loadTask->getDocument();
-    SAFE_POINT_EXT(document != nullptr, setError(tr("Document wasn't loaded")), result);
+    SAFE_POINT_EXT(document != nullptr, setError("Document wasn't loaded"), result);
     QList<GObject*> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objects.isEmpty(), setError(tr("There are no sequence objects in the file '%1' to convert them to primers").arg(filePath)), result);
     foreach (GObject* object, objects) {

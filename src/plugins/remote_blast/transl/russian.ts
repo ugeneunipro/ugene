@@ -83,14 +83,6 @@
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/RemoteBLASTWorker.cpp" line="92"/>
-        <source>Incorrect list of Blastn databases</source>
-        <translation>Некорректный список баз данных Blastn</translation>
-    </message>
-</context>
-<context>
     <name>RemoteBLASTDialog</name>
     <message>
         <location filename="../src/RemoteBLASTDialog.ui" line="26"/>
@@ -485,11 +477,6 @@ p, li { white-space: pre-wrap; }
         <translation>Проверка циркулярности NCBI последовательности</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="540"/>
-        <source>ID is empty</source>
-        <translation>ID пуст</translation>
-    </message>
-    <message>
         <location filename="../src/RemoteBLASTTask.cpp" line="567"/>
         <source>Can not check if sequence is circular! Sequence is considered to be linear.</source>
         <translation>Невозможно проверить циркулярность последовательности! Последовательность считается линейной.</translation>
@@ -506,32 +493,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/RemoteBLASTTask.cpp" line="235"/>
         <source>Create annotations from BLAST results</source>
         <translation>Создать аннотации из результатов BLAST</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="239"/>
-        <source>HttpBlastResult list is empty</source>
-        <translation>HttpBlastResult list is empty</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="251"/>
-        <source>HttpRequest is NULL!</source>
-        <translation>HttpRequest is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="465"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="466"/>
-        <source>Wrong number of annotations</source>
-        <translation>Wrong number of annotations</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="522"/>
-        <source>Invalid subtask</source>
-        <translation>Invalid subtask</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="523"/>
-        <source>No corresponding annotations</source>
-        <translation>No corresponding annotations</translation>
     </message>
 </context>
 <context>
@@ -723,45 +684,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>U2::Merge</name>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="614"/>
-        <source>Qualifier %1 not found</source>
-        <translation>Квалификатор %1 не найден</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="615"/>
-        <source>Can not merge %1 qualifiers: values are not the same.</source>
-        <translation>Can not merge %1 qualifiers: values are not the same.</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="622"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="628"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="652"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="658"/>
-        <source>Can not find &apos;%1&apos; qualifier</source>
-        <translation>Can not find &apos;%1&apos; qualifier</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="655"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="660"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="670"/>
-        <location filename="../src/RemoteBLASTTask.cpp" line="674"/>
-        <source>Can not convert qualifier value &apos;%1&apos; to double</source>
-        <translation>Can not convert qualifier value &apos;%1&apos; to double</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="667"/>
-        <source>Can not find &apos;E-value&apos; qualifier</source>
-        <translation>Can not find &apos;E-value&apos; qualifier</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTTask.cpp" line="678"/>
-        <source>Can not convert qualifier value &apos;%1&apos; to int</source>
-        <translation>Can not convert qualifier value &apos;%1&apos; to int</translation>
-    </message>
-</context>
-<context>
     <name>U2::QDCDDActor</name>
     <message>
         <location filename="../src/BlastQuery.cpp" line="60"/>
@@ -881,11 +803,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/RemoteBLASTPlugin.cpp" line="143"/>
         <source>Selected region is too large!</source>
         <translation>Выбранный регион слишком большой!</translation>
-    </message>
-    <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="157"/>
-        <source>Sequence objects is NULL</source>
-        <translation>Sequence objects is NULL</translation>
     </message>
 </context>
 <context>

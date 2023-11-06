@@ -669,11 +669,6 @@ p, li { white-space: pre-wrap; }
         <translation>Loading documents</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1074"/>
-        <source>No active project found!</source>
-        <translation>No active project found!</translation>
-    </message>
-    <message>
         <location filename="../src/project_support/ProjectLoaderImpl.cpp" line="1110"/>
         <source>Load document and add to project: %1</source>
         <translation>Load document and add to project: %1</translation>
@@ -931,11 +926,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>U2::DocumentUpdater</name>
-    <message>
-        <location filename="../src/project_view/ProjectViewImpl.cpp" line="129"/>
-        <source>Project contains NULL document</source>
-        <translation>Project contains NULL document</translation>
-    </message>
     <message>
         <location filename="../src/project_view/ProjectViewImpl.cpp" line="203"/>
         <source>The document &apos;%1&apos; was removed from its original folder. Do you wish to save it? Otherwise, it will be removed from the current project.</source>
@@ -1563,29 +1553,14 @@ Now you can type ugene in command line to start UGENE.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="113"/>
-        <source>Project contains NULL document</source>
-        <translation>Project contains NULL document</translation>
-    </message>
-    <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="123"/>
         <source>Adding document to the project: %1</source>
         <translation>Adding document to the project: %1</translation>
     </message>
     <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="145"/>
-        <source>Find document failed during resource locking</source>
-        <translation>Find document failed during resource locking</translation>
-    </message>
-    <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="151"/>
         <source>Not enough resources for load document, resource: &apos;%1&apos; available: %2%3 requested: %4%3</source>
         <translation>Недостаточно ресурсов для загрузки документа, ресурс: &apos;%1&apos; доступно: %2%3, запрошено: %4%3</translation>
-    </message>
-    <message>
-        <location filename="../src/project_support/ProjectImpl.cpp" line="161"/>
-        <source>No document provided for removeDocument</source>
-        <translation>No document provided for removeDocument</translation>
     </message>
     <message>
         <location filename="../src/project_support/ProjectImpl.cpp" line="162"/>
@@ -2170,11 +2145,6 @@ Now you can type ugene in command line to start UGENE.</translation>
         <translation>%1 уведомлений</translation>
     </message>
     <message>
-        <location filename="../src/task_view/TaskStatusBar.cpp" line="324"/>
-        <source>Wrong signal sender!</source>
-        <translation>Wrong signal sender!</translation>
-    </message>
-    <message>
         <location filename="../src/task_view/TaskStatusBar.cpp" line="187"/>
         <source>canceling...</source>
         <translation>отменяется...</translation>
@@ -2425,17 +2395,22 @@ Would you like to download and install it?</source>
         <translation>UGENE в социальных сетях:</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="247"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="210"/>
+        <source>Support UGENE:</source>
+        <translation>Поддержать UGENE:</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="256"/>
         <source>No recent files</source>
         <translation>Нет открытых файлов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="265"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="274"/>
         <source>No recent projects</source>
         <translation>Нет открытых проектов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="333"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="342"/>
         <source>The Workflow Designer plugin is not loaded. You can add it using the menu Settings -&gt; Plugins. Then you need to restart UGENE.</source>
         <translation>Плагин дизайнера вычислительных схем не был загружен. Вы можете добавить его в меню Настройки -&gt; Модули. После этого перезапустите UGENE.</translation>
     </message>

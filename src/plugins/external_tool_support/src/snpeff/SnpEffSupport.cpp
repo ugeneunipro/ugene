@@ -91,7 +91,7 @@ void SnpEffSupport::sl_databaseListIsReady() {
         return;
     }
     QString dbListFilePath = task->getDbListFilePath();
-    SAFE_POINT(!dbListFilePath.isEmpty(), tr("Failed to get SnpEff database list"), );
+    SAFE_POINT(!dbListFilePath.isEmpty(), "Failed to get SnpEff database list", );
 
     SnpEffSupport::databaseModel->getData(dbListFilePath);
 }

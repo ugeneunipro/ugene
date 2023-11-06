@@ -1071,7 +1071,7 @@ QList<Task*> AddDocumentsToProjectTask::prepareLoadTasks() {
     QList<Task*> res;
 
     Project* p = AppContext::getProject();
-    SAFE_POINT(p != nullptr, tr("No active project found!"), res);
+    SAFE_POINT(p != nullptr, "No active project found!", res);
 
     foreach (const AD2P_DocumentInfo& info, docsInfo) {
         Document* doc = p->findDocumentByURL(info.url);

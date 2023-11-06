@@ -110,7 +110,7 @@ void ProjectImpl::setProjectURL(const QString& newURL) {
 
 Document* ProjectImpl::findDocumentByURL(const QString& url) const {
     foreach (Document* d, docs) {
-        SAFE_POINT(d != nullptr, tr("Project contains NULL document"), nullptr);
+        SAFE_POINT(d != nullptr, "Project contains NULL document", nullptr);
         if (d->getURLString() == url) {
             return d;
         }
@@ -142,7 +142,7 @@ void ProjectImpl::addDocument(Document* d) {
 
 bool ProjectImpl::lockResources(int sizeMB, const QString& url, QString& error) {
     Document* doc = findDocumentByURL(url);
-    SAFE_POINT_EXT(doc != nullptr, error = tr("Find document failed during resource locking"), false);
+    SAFE_POINT_EXT(doc != nullptr, error = "Find document failed during resource locking", false);
 
     if (resourceTracker->tryAcquire(sizeMB)) {
         resourceUsage[doc->getName()] = sizeMB;
@@ -158,7 +158,7 @@ bool ProjectImpl::lockResources(int sizeMB, const QString& url, QString& error) 
 }
 
 void ProjectImpl::removeDocument(Document* d, bool autodelete) {
-    SAFE_POINT(d != nullptr, tr("No document provided for removeDocument"), );
+    SAFE_POINT(d != nullptr, "No document provided for removeDocument", );
     coreLog.details(tr("Removing document from the project: %1").arg(d->getURLString()));
 
     setParentStateLockItem_static(d, nullptr);
