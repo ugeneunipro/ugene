@@ -1311,6 +1311,11 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Открыть документацию UGENE</translation>
     </message>
     <message>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="243"/>
+        <source>Support UGENE on Patreon</source>
+        <translation>Поддержать UGENE на Patreon</translation>
+    </message>
+    <message>
         <location filename="../src/main_window/MainWindowImpl.cpp" line="247"/>
         <source>Check for Updates</source>
         <translation>Проверить обновления</translation>
