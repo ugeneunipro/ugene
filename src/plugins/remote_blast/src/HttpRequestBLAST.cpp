@@ -42,7 +42,6 @@ QString HttpRequestBLAST::runHttpRequest(const QString& request) {
     QByteArray response(CHUNK_SIZE, 0);
     do {
         if (task->isCanceled()) {
-            io->close();
             return "";
         }
         read = io->readBlock(response.data() + offs, CHUNK_SIZE);
@@ -50,7 +49,6 @@ QString HttpRequestBLAST::runHttpRequest(const QString& request) {
         response.resize(offs + read);
     } while (read == CHUNK_SIZE);
     QString error = io->errorString();
-    io->close();
     if (read < 0) {
         taskLog.error(tr("Cannot load a page. %1").arg(error));
         return "";
