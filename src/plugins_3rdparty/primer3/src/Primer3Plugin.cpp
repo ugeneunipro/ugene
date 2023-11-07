@@ -140,10 +140,7 @@ void Primer3ADVContext::sl_showDialog() {
         primer3Task = new Primer3TopLevelTask(settings, seqCtx->getSequenceObject(), ato, model.groupName, model.data->name, model.description);
     } else {
         auto resultFilePath = dialog.getResultFileName();
-        CHECK_EXT(!resultFilePath.isEmpty(),
-                  QMessageBox::warning(QApplication::activeWindow(),
-                                       tr("Error"),
-                                       tr("Result file path is empty. Please, set this value on the \"Result Settings\" tab")), );
+        SAFE_POINT(!resultFilePath.isEmpty(), "Result path is empty", );
 
         primer3Task = new Primer3TopLevelTask(settings, resultFilePath);
     }

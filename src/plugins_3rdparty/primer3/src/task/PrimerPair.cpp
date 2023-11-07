@@ -23,6 +23,8 @@
 
 #include "PrimerSingle.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 PrimerPair::PrimerPair(const primer_pair& primerPair, int offset)
@@ -73,45 +75,12 @@ PrimerPair& PrimerPair::operator=(const PrimerPair& primerPair) {
 }
 
 bool PrimerPair::operator<(const PrimerPair& pair) const {
-    if (quality < pair.quality) {
-        return true;
-    }
-    if (quality > pair.quality) {
-        return false;
-    }
-    if (tm < pair.tm) {
-        return true;
-    }
-    if (tm > pair.tm) {
-        return false;
-    }
-    if (leftPrimer->start > pair.leftPrimer->start) {
-        return true;
-    }
-    if (leftPrimer->start < pair.leftPrimer->start) {
-        return false;
-    }
-
-    if (rightPrimer->start < pair.rightPrimer->start) {
-        return true;
-    }
-    if (rightPrimer->start > pair.rightPrimer->start) {
-        return false;
-    }
-
-    if (leftPrimer->length < pair.leftPrimer->length) {
-        return true;
-    }
-    if (leftPrimer->length > pair.leftPrimer->length) {
-        return false;
-    }
-
-    if (rightPrimer->length < pair.rightPrimer->length) {
-        return true;
-    }
-    if (rightPrimer->length > pair.rightPrimer->length) {
-        return false;
-    }
+    CHECK(quality == pair.quality, quality < pair.quality);
+    CHECK(tm == pair.tm, tm < pair.tm);
+    CHECK(leftPrimer->start == pair.leftPrimer->start, leftPrimer->start > pair.leftPrimer->start);
+    CHECK(rightPrimer->start == pair.rightPrimer->start, rightPrimer->start < pair.rightPrimer->start);
+    CHECK(leftPrimer->length == pair.leftPrimer->length, leftPrimer->length < pair.leftPrimer->length);
+    CHECK(rightPrimer->length == pair.rightPrimer->length, rightPrimer->length < pair.rightPrimer->length);
 
     return false;
 }

@@ -35,7 +35,7 @@ class U2SequenceObject;
 class FindExonRegionsTask : public Task {
     Q_OBJECT
 public:
-    FindExonRegionsTask(QPointer<U2SequenceObject> dnaObj,
+    FindExonRegionsTask(const QPointer<U2SequenceObject>& dnaObj,
                         const QString& exonAnnotaitonName);
     QList<U2Region> getRegions() {
         return exonRegions;

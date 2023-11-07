@@ -79,7 +79,7 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
 Primer3TopLevelTask::~Primer3TopLevelTask() {
     if (!document.isNull()) {
         // If we created @document, but did not pass it to the project (some error appeared, for example),
-        // we need to deete it on our own.
+        // we need to delete it on our own.
         document->deleteLater();
     }
 }
@@ -372,7 +372,7 @@ Task* Primer3TopLevelTask::onCreateAnnotationsTaskFinished() {
 Task* Primer3TopLevelTask::onSaveDocumentTaskFinished() {
     CHECK(openView, nullptr);
 
-    // From now, @document will be handeled by the Project, we can just forget aboul it.
+    // From now, @document will be handled by the Project, we can just forget about it.
     auto task = new AddDocumentAndOpenViewTask(document);
     document = nullptr;
     return task;

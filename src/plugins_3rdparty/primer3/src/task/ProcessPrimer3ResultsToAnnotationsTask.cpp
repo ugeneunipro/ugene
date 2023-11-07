@@ -80,7 +80,7 @@ void ProcessPrimer3ResultsToAnnotationsTask::run() {
 
     if (!singlePrimers.isEmpty()) {
         QList<SharedAnnotationData> annotations;
-        for (const auto& primer : singlePrimers) {
+        for (const auto& primer : qAsConst(singlePrimers)) {
             U2Strand s = primer->type == OT_RIGHT ? U2Strand::Complementary : U2Strand::Direct;
             QString annotationName = primer->type == OT_INTL ? "internalOligo" : annName;
             annotations.append(oligoToAnnotation(annotationName, primer, 0, s));
@@ -119,7 +119,8 @@ SharedAnnotationData ProcessPrimer3ResultsToAnnotationsTask::oligoToAnnotation(c
     annotationData->qualifiers.append(U2Qualifier("penalty", QString::number(primer->quality)));
 
     auto areDoubleValuesEqual = [](double val, double reference) -> bool {
-        return qAbs(reference - val) > 0.1;
+        static constexpr double EPSILON = 0.1;
+        return qAbs(reference - val) > EPSILON;
     };
     if (areDoubleValuesEqual(primer->bound, OLIGOTM_ERROR)) {
         annotationData->qualifiers.append(U2Qualifier("bound%", QString::number(primer->bound)));

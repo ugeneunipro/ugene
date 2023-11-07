@@ -44,7 +44,7 @@ struct PrimerPair;
 class CheckComplementTask : public Task {
     Q_OBJECT
 public:
-    CheckComplementTask(const CheckComplementSettings& settings, const QList<QSharedPointer<PrimerPair>>& results, QPointer<U2SequenceObject> seqObj);
+    CheckComplementTask(const CheckComplementSettings& settings, const QList<QSharedPointer<PrimerPair>>& results, const QPointer<U2SequenceObject>& seqObj);
 
     void run() override;
     QString generateReport() const override;

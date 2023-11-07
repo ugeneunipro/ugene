@@ -81,7 +81,7 @@ void Primer3Task::prepare() {
 void Primer3Task::run() {
     // Repeat Library loading
     // Library could be large and loading - time consuming,
-    // so it is important to do in in a separate thread
+    // so it is important to do it in a separate thread
     QByteArray repeatLibPath = settings->getRepeatLibraryPath();
     if (!repeatLibPath.isEmpty()) {
         auto primerSettings = settings->getPrimerSettings();
@@ -132,7 +132,6 @@ void Primer3Task::run() {
     p3retval* resultPrimers = runPrimer3(settings->getPrimerSettings(), settings->getSeqArgs(), settings->isShowDebugging(), settings->isFormatOutput(), settings->isExplain());
     settings->setP3RetVal(resultPrimers);
 
-    bestPairs.clear();
     if (settings->getSpanIntronExonBoundarySettings().enabled) {
         if (settings->getSpanIntronExonBoundarySettings().overlapExonExonBoundary) {
             selectPairsSpanningExonJunction(resultPrimers, toReturn);
@@ -148,7 +147,6 @@ void Primer3Task::run() {
 
     // We have not pair as result, but separate primers - process them from primer3 structs to local @PrimerSingle
     if (resultPrimers->output_type == primer_list) {
-        singlePrimers.clear();
         int maxCount = 0;
         settings->getIntProperty("PRIMER_NUM_RETURN", &maxCount);
         if (resultPrimers->fwd.oligo != nullptr) {

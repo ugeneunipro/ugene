@@ -716,13 +716,13 @@ bool Primer3Dialog::doDataExchange() {
     settings->setTaskByName(edit_PRIMER_TASK->currentText());
 
 
-    auto setPrimerChecboxesState = [&widgetStates, this](bool state) {
+    auto setPrimerCheckboxesState = [&widgetStates, this](bool state) {
         widgetStates.insert(checkbox_PRIMER_PICK_LEFT_PRIMER, state);
         widgetStates.insert(checkbox_PRIMER_PICK_INTERNAL_OLIGO, state);
         widgetStates.insert(checkbox_PRIMER_PICK_RIGHT_PRIMER, state);
     };
 
-    setPrimerChecboxesState(true);
+    setPrimerCheckboxesState(true);
     widgetStates.insert(edit_SEQUENCE_PRIMER, widgetStates.value(edit_SEQUENCE_PRIMER));
     widgetStates.insert(edit_SEQUENCE_INTERNAL_OLIGO, widgetStates.value(edit_SEQUENCE_INTERNAL_OLIGO));
     widgetStates.insert(edit_SEQUENCE_PRIMER_REVCOMP, widgetStates.value(edit_SEQUENCE_PRIMER_REVCOMP));
@@ -748,7 +748,7 @@ bool Primer3Dialog::doDataExchange() {
         bool hasRightPrimer = pickRightChecked && !edit_SEQUENCE_PRIMER_REVCOMP->text().isEmpty();
         if (!pickLeftChecked && !pickInternalChecked && !pickRightChecked) {
             errors.append(tr("At least one primer on the \"Main\" settings page should be enabled - this is required by the \"check_primers\" task."));
-            setPrimerChecboxesState(false);
+            setPrimerCheckboxesState(false);
         } else {
             QString possibleError(tr("The %1 primer on the \"Main\" settings page is enabled, but not set."));
             auto addError = [&possibleError, &errors, &widgetStates](bool needArror, QLineEdit* lePrimer, QString primerName) {

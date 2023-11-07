@@ -33,7 +33,7 @@
 
 namespace U2 {
 
-CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _settings, const QList<QSharedPointer<PrimerPair>>& _results, QPointer<U2SequenceObject> _seqObj) :
+CheckComplementTask::CheckComplementTask(const CheckComplementSettings& _settings, const QList<QSharedPointer<PrimerPair>>& _results, const QPointer<U2SequenceObject>& _seqObj) :
     Task(tr("Check complement task"), TaskFlags_FOSCOE),
     settings(_settings),
     results(_results),

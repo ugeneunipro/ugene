@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-FindExonRegionsTask::FindExonRegionsTask(QPointer<U2SequenceObject> dObj, const QString& annName)
+FindExonRegionsTask::FindExonRegionsTask(const QPointer<U2SequenceObject>& dObj, const QString& annName)
     : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName) {
 }
 
