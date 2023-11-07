@@ -16,7 +16,7 @@
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="59"/>
         <source>Location parsing error.</source>
-        <translation>Location parsing error.</translation>
+        <translation>Ошибка разбора местоположения.</translation>
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="60"/>
@@ -29,12 +29,12 @@
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="625"/>
         <source>Ignoring remote entry</source>
-        <translation>Ignoring remote entry</translation>
+        <translation>Игнорирование удаленной записи</translation>
     </message>
     <message>
         <location filename="../src/GenbankLocationParser.cpp" line="626"/>
         <source>Ignoring different strands in JOIN</source>
-        <translation>Ignoring different strands in JOIN</translation>
+        <translation>Игнорирование разных цепей в операции JOIN</translation>
     </message>
 </context>
 <context>
@@ -50,10 +50,6 @@
         <translation>Невозможно прочитать заголовок файла: &quot;%1&quot;</translation>
     </message>
     <message>
-        <source>Can not build the fasta index for the file: &quot;%1&quot;</source>
-        <translation type="vanished">Невозможно построить индекс для файла: &quot;%1&quot;</translation>
-    </message>
-    <message>
         <location filename="../src/BAMUtils.cpp" line="251"/>
         <source>Error parsing the reads from the file: &quot;%1&quot;</source>
         <translation>Ошибка чтения ридов из файла: &quot;%1&quot;</translation>
@@ -66,7 +62,7 @@
     <message>
         <location filename="../src/BAMUtils.cpp" line="1058"/>
         <source>Can&apos;t open file with given url: %1.</source>
-        <translation>Can&apos;t open file with given url: %1.</translation>
+        <translation>Не удается открыть файл по указанному URL: %1.</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteBlobInputStream.cpp" line="96"/>
@@ -327,7 +323,7 @@
     <message>
         <location filename="../src/ace/AceImporter.cpp" line="66"/>
         <source>Dbi ref is invalid</source>
-        <translation>Dbi ref is invalid</translation>
+        <translation>Ссылка Dbi недействительна</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImporter.cpp" line="82"/>
@@ -355,7 +351,7 @@
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="98"/>
         <source>Attempt to find any number in the string failed</source>
-        <translation>Attempt to find any number in the string failed</translation>
+        <translation>Попытка найти число в строке не удалась</translation>
     </message>
     <message>
         <location filename="../src/apr/AprFormat.cpp" line="150"/>
@@ -403,7 +399,7 @@
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="120"/>
         <source>Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats</source>
-        <translation>Инструмент для импорта Vector NTI/AlignX файлов используется для конвертации APR файлов в формат множественного выравнивания</translation>
+        <translation type="unfinished">Инструмент для импорта Vector NTI/AlignX файлов используется для конвертации APR файлов в формат множественного выравнивания</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="135"/>
@@ -416,18 +412,18 @@
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="54"/>
         <source>APR file import: %1</source>
-        <translation>APR file import: %1</translation>
+        <translation>Импорт файла APR: %1</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="65"/>
         <location filename="../src/apr/AprImporter.cpp" line="91"/>
         <source>Empty destination url</source>
-        <translation>Empty destination url</translation>
+        <translation>Пустой целевой url</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="71"/>
         <source>Invalid I/O environment!</source>
-        <translation>Invalid I/O environment!</translation>
+        <translation>Недопустимая среда ввода/вывода!</translation>
     </message>
 </context>
 <context>
@@ -438,63 +434,56 @@
         <translation>Нет заголовка в SAM файле &quot;%1&quot;. Необходимая информация будет сгенерирована автоматически.</translation>
     </message>
     <message>
-        <source>Sort bam file: &quot;%1&quot; using %2 Mb of memory. Result sorted file is: &quot;%3&quot;</source>
-        <translation type="vanished">Сортировка bam файла: &quot;%1&quot; использует %2 Mb памяти. Сортированный файл: &quot;%3&quot;</translation>
-    </message>
-    <message>
         <location filename="../src/BAMUtils.cpp" line="501"/>
         <source>Merging BAM files: &quot;%1&quot;. Resulting merged file is: &quot;%2&quot;</source>
         <translation>Слияние BAM файлов: &quot;%1&quot;. Соединенный файл: &quot;%2&quot;</translation>
     </message>
     <message>
-        <source>Remove PCR duplicate in BAM file: &quot;%1&quot;. Resulting  file is: &quot;%2&quot;</source>
-        <translation type="vanished">Удаление PCR повторов в BAM файле: &quot;%1&quot;. Результирующий файл: &quot;%2&quot;</translation>
-    </message>
-    <message>
         <location filename="../src/BAMUtils.cpp" line="417"/>
         <source>[sort_blocks] fail to create file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>[sort_blocks] не удалось создать файл %1</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="431"/>
         <source>Failed to open file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось открыть файл: %1</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="435"/>
         <source>[bam_sort_core] fail to open file</source>
-        <translation type="unfinished"></translation>
+        <translation>bam_sort_core] не удалось открыть файл</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="533"/>
         <source>[bam_merge_core] fail to open file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>bam_merge_core] не удалось открыть файл %1</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="555"/>
         <source>[bam_merge_core] different target sequence name: &apos;%1&apos; != &apos;%2&apos; in file &apos;%3&apos;
 </source>
-        <translation type="unfinished"></translation>
+        <translation>[bam_merge_core] разные имена целевой последовательности: &apos;%1&apos; != &apos;%2&apos; в файле &apos;%3
+</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="593"/>
         <source>Failed to create the output file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать выходной файл: %1</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="621"/>
         <source>[bam_merge_core] &apos;%1&apos; is truncated. Continue anyway.</source>
-        <translation type="unfinished"></translation>
+        <translation>[bam_merge_core] &apos;%1&apos; усечен. Продолжить в любом случае.</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="506"/>
         <source>Failed to merge BAM files: %1 into %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось объединить файлы BAM: %1 в %2</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="671"/>
         <source>Can&apos;t remove temporary file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удается удалить временный файл: %1</translation>
     </message>
     <message>
         <location filename="../src/BAMUtils.cpp" line="743"/>
@@ -509,7 +498,7 @@
     <message>
         <location filename="../src/BAMUtils.cpp" line="999"/>
         <source>Wrong line in a SAM file.</source>
-        <translation>Wrong line in a SAM file.</translation>
+        <translation>Неправильная строка в файле SAM.</translation>
     </message>
 </context>
 <context>
@@ -522,17 +511,17 @@
     <message>
         <location filename="../src/BedFormat.cpp" line="135"/>
         <source>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</source>
-        <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
+        <translation>Файл &quot;%1&quot; содержит слишком много таблиц аннотаций для отображения. Однако вы можете обработать эти данные, используя конвейеры, созданные с помощью Конструктора рабочего процесса (Workflow Designer).</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="862"/>
         <source>BED parsing error: incorrect format of the &apos;track&apos; header line!</source>
-        <translation>BED parsing error: incorrect format of the &apos;track&apos; header line!</translation>
+        <translation>Ошибка разбора формата BED: неверный формат строки заголовка &apos;track&apos;!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="654"/>
         <source>BED parsing error: unexpected number of fields in the first annotations line!</source>
-        <translation>BED parsing error: unexpected number of fields in the first annotations line!</translation>
+        <translation>Ошибка разбора формата BED: неожиданное количество полей в первой строке аннотаций!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="99"/>
@@ -547,42 +536,42 @@
     <message>
         <location filename="../src/BedFormat.cpp" line="931"/>
         <source>BED parsing error: incorrect number of fields at line %1!</source>
-        <translation>BED parsing error: incorrect number of fields at line %1!</translation>
+        <translation>Ошибка разбора формата BED: неверное количество полей в строке %1!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="935"/>
         <source>BED parsing error: a field at line %1 is empty!</source>
-        <translation>BED parsing error: a field at line %1 is empty!</translation>
+        <translation>Ошибка разбора формата BED: поле в строке %1 пустое!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="939"/>
         <source>BED parsing error: incorrect coordinates at line %1!</source>
-        <translation>BED parsing error: incorrect coordinates at line %1!</translation>
+        <translation>Ошибка разбора формата BED: неверные координаты в строке %1!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="943"/>
         <source>BED parsing error: incorrect score value &apos;%1&apos; at line %2!</source>
-        <translation>BED parsing error: incorrect score value &apos;%1&apos; at line %2!</translation>
+        <translation>Ошибка разбора формата BED: неверное значение балла &apos;%1&apos; в строке %2!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="950"/>
         <source>BED parsing error: incorrect strand value &apos;%1&apos; at line %2!</source>
-        <translation>BED parsing error: incorrect strand value &apos;%1&apos; at line %2!</translation>
+        <translation>Ошибка разбора формата BED: неверное значение направления &apos;%1&apos; в строке %2!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="957"/>
         <source>BED parsing error: incorrect thick coordinates at line %1!</source>
-        <translation>BED parsing error: incorrect thick coordinates at line %1!</translation>
+        <translation>Ошибка разбора формата BED: неверные координаты толщины в строке %1!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="961"/>
         <source>BED parsing error: incorrect itemRgb value &apos;%1&apos; at line %2!</source>
-        <translation>BED parsing error: incorrect itemRgb value &apos;%1&apos; at line %2!</translation>
+        <translation>Ошибка разбора формата BED: неверное значение itemRgb &apos;%1&apos; в строке %2!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="968"/>
         <source>BED parsing error: incorrect value of the block parameters at line %1!</source>
-        <translation>BED parsing error: incorrect value of the block parameters at line %1!</translation>
+        <translation>Ошибка разбора формата BED: неверное значение параметров блока в строке %1!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="402"/>
@@ -592,12 +581,12 @@
     <message>
         <location filename="../src/BedFormat.cpp" line="413"/>
         <source>Can not convert GObject to AnnotationTableObject</source>
-        <translation>Can not convert GObject to AnnotationTableObject</translation>
+        <translation>Невозможно преобразовать объект GObject в объект AnnotationTableObject</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="427"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
-        <translation>Can not detect chromosome name. &apos;Chr&apos; name will be used.</translation>
+        <translation>Невозможно определить имя хромосомы. Будет использовано имя &apos;Chr&apos;.</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="443"/>
@@ -607,27 +596,27 @@
     <message>
         <location filename="../src/BedFormat.cpp" line="506"/>
         <source>BED saving error: incorrect thick coordinates in the first annotation!</source>
-        <translation>BED saving error: incorrect thick coordinates in the first annotation!</translation>
+        <translation>Ошибка сохранения BED: неверные координаты толщины в первой аннотации!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="520"/>
         <source>BED saving error: incorrect block fields in the first annotation!</source>
-        <translation>BED saving error: incorrect block fields in the first annotation!</translation>
+        <translation>Ошибка сохранения BED: неверные поля блока в первой аннотации!</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="528"/>
         <source>BED saving: detected %1 fields per line for file &apos;%2&apos;</source>
-        <translation>BED saving: detected %1 fields per line for file &apos;%2&apos;</translation>
+        <translation>Сохранение в формате BED: обнаружено %1 полей в строке для файла &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="537"/>
         <source>BED saving error: an annotation is expected to have &apos;%1&apos; qualifier, but it is absent! Skipping the annotation.</source>
-        <translation>BED saving error: an annotation is expected to have &apos;%1&apos; qualifier, but it is absent! Skipping the annotation.</translation>
+        <translation>Ошибка сохранения в формате BED: ожидалось наличие &apos;%1&apos; квалификатора для аннотации, но его нет! Аннотация будет пропущена.</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="591"/>
         <source>BED saving error: an annotation is expected to have the block qualifiers! Skipping the annotation.</source>
-        <translation>BED saving error: an annotation is expected to have the block qualifiers! Skipping the annotation.</translation>
+        <translation>Ошибка сохранения в формате BED: ожидалось, что аннотация будет иметь квалификаторы блока! Аннотация будет пропущена.</translation>
     </message>
     <message>
         <location filename="../src/BedFormat.cpp" line="613"/>
@@ -640,7 +629,7 @@
     <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="50"/>
         <source>Bgzip Compression task</source>
-        <translation>Bgzip Compression task</translation>
+        <translation>Задача по сжатию с использованием Bgzip</translation>
     </message>
     <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="56"/>
@@ -665,7 +654,7 @@
     <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="67"/>
         <source>Can not open input file &apos;%1&apos;</source>
-        <translation>Can not open input file &apos;%1&apos;</translation>
+        <translation>Не удается открыть входной файл &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="77"/>
@@ -703,7 +692,7 @@
     <message>
         <location filename="../src/tasks/CalculateSequencesNumberTask.cpp" line="29"/>
         <source>Calculate sequences number</source>
-        <translation>Calculate sequences number</translation>
+        <translation>Рассчитать количество последовательностей</translation>
     </message>
 </context>
 <context>
@@ -814,7 +803,7 @@
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="58"/>
         <source>Converting assembly from %1 to %2 started</source>
-        <translation>Ковертация сборки из %1 в %2 начата</translation>
+        <translation>Конвертация сборки из %1 в %2 начата</translation>
     </message>
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="66"/>
@@ -1333,10 +1322,6 @@
         <location filename="../src/FastaFormat.cpp" line="240"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
-    </message>
-    <message>
-        <source>Sequence #%1 is processed</source>
-        <translation type="vanished">Sequence #%1 is processed</translation>
     </message>
     <message>
         <location filename="../src/FastaFormat.cpp" line="271"/>
@@ -2089,7 +2074,7 @@
     <message>
         <location filename="../src/PDBFormat.cpp" line="194"/>
         <source>Inconsistent atom indexes in pdb file: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Несогласованные индексы атомов в файле PDB: %1.</translation>
     </message>
     <message>
         <location filename="../src/PDBFormat.cpp" line="276"/>
@@ -2518,52 +2503,52 @@
         <translation>Failed to parse packed row range info %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="81"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="80"/>
         <source>There is no assembly object with the specified id.</source>
         <translation>Нет объекта сборки с указанным идентификатором.</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="96"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="93"/>
         <source>Unsupported reads storage type: %1</source>
         <translation>Unsupported reads storage type: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="362"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="359"/>
         <source>Packing method is not supported: %1</source>
         <translation>Packing method is not supported: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="446"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="443"/>
         <source>Packed data are empty!</source>
         <translation>Packed data are empty!</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="453"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="450"/>
         <source>Packing method prefix is not supported: %1</source>
         <translation>Префикс метода упаковки не поддерживается: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="461"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="458"/>
         <source>Data are corrupted, no name end marker found: %1</source>
         <translation>Данные повреждены, маркер окончания имени не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="470"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="467"/>
         <source>Data are corrupted, no sequence end marker found: %1</source>
         <translation>Данные повреждены, маркер конца последовательности не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="479"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="476"/>
         <source>Data are corrupted, no CIGAR end marker found: %1</source>
         <translation>Данные повреждены, маркер конца CIGAR не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="498"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="495"/>
         <source>Data are corrupted, no rnext end marker found: %1</source>
         <translation>Данные повреждены, маркер rnext не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="513"/>
+        <location filename="../src/sqlite_dbi/SQLiteAssemblyDbi.cpp" line="510"/>
         <source>Can not convert pnext to a number: %1</source>
         <translation>Невозможно конвертировать pnext в число: %1</translation>
     </message>
@@ -2713,11 +2698,6 @@
         <location filename="../src/sqlite_dbi/SQLiteVariantDbi.cpp" line="136"/>
         <source>Sequence name is not set!</source>
         <translation>Sequence name is not set!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/assembly/RTreeAssemblyAdapter.cpp" line="64"/>
-        <source>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</source>
-        <translation>Error during RTree index creation: %1! Check if SQLite library has RTree index support!</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteUdrDbi.cpp" line="56"/>

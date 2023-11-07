@@ -549,7 +549,7 @@
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="767"/>
         <source>Download remote documents by qualifiers</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка удаленных документов по квалификаторам</translation>
     </message>
     <message>
         <location filename="../src/ExportSequenceViewItems.cpp" line="284"/>
@@ -747,12 +747,12 @@
         <translation>Generate sequence task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="201"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="200"/>
         <source>Incorrect reference file: %1</source>
         <translation>Incorrect reference file: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="315"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="314"/>
         <source>Generated MSA</source>
         <translation>Сгенерированное выравнивание</translation>
     </message>
@@ -760,12 +760,12 @@
 <context>
     <name>U2::EvaluateBaseContentTask</name>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="379"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="378"/>
         <source>Evaluate base content task</source>
         <translation>Evaluate base content task</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="392"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="391"/>
         <source>Base content can be evaluated for sequence or sequence alignment</source>
         <translation>Base content can be evaluated for sequence or sequence alignment</translation>
     </message>
@@ -973,40 +973,24 @@
         <translation>Конвертировать выравнивание в разные последовательности</translation>
     </message>
     <message>
-        <source>Export to file</source>
-        <translation type="vanished">Записать в файл</translation>
-    </message>
-    <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="51"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <source>File format to use</source>
-        <translation type="vanished">Формат файла</translation>
-    </message>
-    <message>
-        <source>Add document to the project</source>
-        <translation type="vanished">Добавить документ к проекту</translation>
-    </message>
-    <message>
-        <source>Gap characters (&apos;-&apos;)</source>
-        <translation type="vanished">Символы пробела (&quot;-&quot;)</translation>
-    </message>
-    <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="31"/>
         <source>Export format</source>
-        <translation type="unfinished"></translation>
+        <translation>Формат экспорта</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="41"/>
         <source>Export file</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт файла</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="58"/>
         <source>Gap characters (&apos;-&apos;)  </source>
-        <translation type="unfinished"></translation>
+        <translation>Символы пробела (&quot;-&quot;)  </translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="67"/>
@@ -1021,7 +1005,7 @@
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.ui" line="101"/>
         <source>Add exported document to the project</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить документ к проекту</translation>
     </message>
     <message>
         <location filename="../src/ExportMSA2SequencesDialog.cpp" line="54"/>
@@ -1528,7 +1512,7 @@
         <translation>Failed to allocate memory for the result sequence.</translation>
     </message>
     <message>
-        <location filename="../src/DNASequenceGenerator.cpp" line="402"/>
+        <location filename="../src/DNASequenceGenerator.cpp" line="401"/>
         <source>Generate DNA sequence task</source>
         <translation>Generate DNA sequence task</translation>
     </message>
@@ -2035,23 +2019,19 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
 <context>
     <name>U2::MSAExportContext</name>
     <message>
-        <source>Amino translation...</source>
-        <translation type="vanished">Экспортировать транслированное выравнивание...</translation>
-    </message>
-    <message>
         <location filename="../src/ExportAlignmentViewItems.cpp" line="80"/>
         <source>Export amino acid translated alignment...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выровненной последовательности, переведенной в аминокислоты...</translation>
     </message>
     <message>
         <location filename="../src/ExportAlignmentViewItems.cpp" line="84"/>
         <source>Export whole alignment to a sequence file format...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт всего выравнивания в формат файла последовательности...</translation>
     </message>
     <message>
         <location filename="../src/ExportAlignmentViewItems.cpp" line="88"/>
         <source>Export selected rows to separate sequence files...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выбранных строк в отдельные файлы последовательности...</translation>
     </message>
 </context>
 <context>
@@ -2133,47 +2113,47 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="14"/>
         <source>Export Selected Sequence(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт выбранных последовательностей</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="25"/>
         <source>Export to folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт в папку</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="37"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="46"/>
         <source>File format</source>
-        <translation type="unfinished">Формат файла</translation>
+        <translation>Формат файла</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="56"/>
         <source>File name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя файла</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="62"/>
         <source>Sequence name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя последоавтельности</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="85"/>
         <source>Custom name</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользовательское имя</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="117"/>
         <source>Keep gaps</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить пропуски (промежутки)</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialog.ui" line="127"/>
         <source>Add to project</source>
-        <translation type="unfinished">Добавить в проект</translation>
+        <translation>Добавить в проект</translation>
     </message>
 </context>
 <context>
@@ -2181,17 +2161,17 @@ You can use this worker to convert .fasta and .qual pair to fastq format.</sourc
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialogController.cpp" line="54"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialogController.cpp" line="55"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/dialogs/SaveSelectedSequenceFromMSADialogController.cpp" line="80"/>
         <source>File &quot;%1&quot; is already exists, choose another filename or select another directory for save!</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл &quot;%1&quot; уже существует. Выберите другое имя файла или выберите другой каталог для сохранения!</translation>
     </message>
 </context>
 <context>
