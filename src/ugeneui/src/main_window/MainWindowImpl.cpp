@@ -240,6 +240,10 @@ void MainWindowImpl::createActions() {
     visitWebAction->setObjectName("Visit UGENE Web Site");
     connect(visitWebAction, SIGNAL(triggered()), SLOT(sl_visitWeb()));
 
+    visitPatreonAction = new QAction(tr("Support UGENE on Patreon"), this);
+    visitPatreonAction->setObjectName("supportOnPatreonAction");
+    connect(visitPatreonAction, &QAction::triggered, this, [] { GUIUtils::runWebBrowser("https://patreon.com/uniprougene"); });
+
     viewOnlineDocumentation = new QAction(tr("View UGENE Documentation Online"), this);
     viewOnlineDocumentation->setObjectName("View UGENE Documentation Online");
     connect(viewOnlineDocumentation, SIGNAL(triggered()), SLOT(sl_viewOnlineDocumentation()));
@@ -340,11 +344,12 @@ void MainWindowImpl::prepareGUI() {
     helpMenu->addAction(showWhatsNewAction);
     helpMenu->addAction(checkUpdateAction);
     helpMenu->addSeparator();
-#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
-    // TODO: re-test support for MAC OS before enabling.
-    helpMenu->addAction(createDesktopShortcutAction);
-    helpMenu->addSeparator();
-#endif
+    if (isOsLinux() || isOsWindows()) {
+        // TODO: re-test support for MAC OS before enabling.
+        helpMenu->addAction(createDesktopShortcutAction);
+        helpMenu->addSeparator();
+    }
+    helpMenu->addAction(visitPatreonAction);
     helpMenu->addAction(welcomePageAction);
     helpMenu->addAction(aboutAction);
     if (qgetenv(ENV_TEST_CRASH_HANDLER) == "1") {
