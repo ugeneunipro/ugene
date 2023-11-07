@@ -307,7 +307,7 @@ void DetViewSequenceEditor::modifySequence(U2SequenceObject* seqObj, const U2Reg
     FixAnnotationsUtils::fixAnnotations(&os, seqObj, region, sequence, AppContext::getProject()->getDocuments(), s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_RECALC_QUALIFIERS, false).toBool(), strategy);
     SAFE_POINT_OP(os, );
     auto context = qobject_cast<ADVSequenceObjectContext*>(view->getSequenceContext());
-    SAFE_POINT(context != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
+    SAFE_POINT_NN(context, );
     context->getAnnotatedDNAView()->updateAutoAnnotations();
 }
 

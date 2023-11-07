@@ -49,7 +49,7 @@ QList<AbstractProjectFilterTask*> ProjectFilterTaskRegistry::createFilterTasks(c
 }
 
 void ProjectFilterTaskRegistry::registerTaskFactory(ProjectFilterTaskFactory* factory) {
-    SAFE_POINT(factory != nullptr, L10N::nullPointerError("Project filter task factory"), );
+    SAFE_POINT_NN(factory, );
     SAFE_POINT(!factories.contains(factory), "Attempting to register a factory twice", );
 
     QMutexLocker guard(&lock);

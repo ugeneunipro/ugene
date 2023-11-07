@@ -843,7 +843,7 @@ LoadDataWelcomePageAction::LoadDataWelcomePageAction(ProjectLoaderImpl* loader)
 }
 
 void LoadDataWelcomePageAction::perform() {
-    SAFE_POINT(!loader.isNull(), L10N::nullPointerError("Project Loader"), );
+    SAFE_POINT_NN(loader, );
     loader->sl_openProject();
 }
 
@@ -852,7 +852,7 @@ CreateSequenceWelcomePageAction::CreateSequenceWelcomePageAction(ProjectLoaderIm
 }
 
 void CreateSequenceWelcomePageAction::perform() {
-    SAFE_POINT(!loader.isNull(), L10N::nullPointerError("Project Loader"), );
+    SAFE_POINT_NN(loader, );
     loader->sl_newDocumentFromText();
 }
 

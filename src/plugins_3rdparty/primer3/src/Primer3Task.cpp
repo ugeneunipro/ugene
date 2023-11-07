@@ -662,7 +662,7 @@ QList<Task*> Primer3ToAnnotationsTask::onSubTaskFinished(Task* subTask) {
         res.append(checkComplementTask);
     } else if (subTask == primer3Task || subTask == checkComplementTask) {
         CHECK_EXT(!annotationTableObject.isNull(), setError(tr("Object with annotations was removed")), res);
-        SAFE_POINT(primer3Task != nullptr, L10N::nullPointerError("Primer3Task"), res);
+        SAFE_POINT_NN(primer3Task, res);
 
         auto resultAnnotations = getResultAnnotations();
         if (resultAnnotations.isEmpty()) {
@@ -802,7 +802,7 @@ void Primer3ToAnnotationsTask::findExonTaskIsfinished() {
 
 QMap<QString, QList<SharedAnnotationData>> Primer3ToAnnotationsTask::getResultAnnotations() const {
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
-    SAFE_POINT(primer3Task != nullptr, L10N::nullPointerError("Primer3Task"), resultAnnotations)
+    SAFE_POINT_NN(primer3Task, resultAnnotations)
 
     QList<QSharedPointer<PrimerPair>> filteredPrimers;
     if (checkComplementTask != nullptr) {
