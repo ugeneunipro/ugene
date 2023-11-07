@@ -9,75 +9,75 @@
         <translation>Не удалось открыть адаптер</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="55"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="53"/>
         <source>Cannot load a page. %1</source>
         <translation>Не удалось загрузить страницу. %1</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="72"/>
-        <location filename="../src/HttpRequestBLAST.cpp" line="123"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="70"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="121"/>
         <source>The response is empty</source>
         <translation>Пустой ответ</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="86"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="84"/>
         <source>Nucleotide FASTA provided for protein sequence</source>
         <translation>Nucleotide FASTA provided for protein sequence</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="94"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="92"/>
         <source>Cannot get the request ID</source>
         <translation>Не удалось получить ID для поиска</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="102"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="100"/>
         <source>Cannot get the waiting time</source>
         <translation>Не удалось получить время ожидания</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="136"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="134"/>
         <source>Database couldn&apos;t prepare the response. You can increase timeout and perform search again.</source>
         <translation>База данных не готова для запроса. Вы можете увеличить таймаут и запустить снова.</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="141"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="139"/>
         <source>NCBI BLAST web server returned &quot;CPU usage limit was exceeded&quot; error. Probably, the query sequence is too large.</source>
         <translation>NCBI BLAST web server returned &quot;CPU usage limit was exceeded&quot; error. Probably, the query sequence is too large.</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="145"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="143"/>
         <source>NCBI BLAST received result in %1 seconds</source>
         <translation>NCBI BLAST получил результат за %1 секунд</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="159"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="157"/>
         <source>Cannot read the response</source>
         <translation>Не удалось прочитать ответ</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="222"/>
-        <location filename="../src/HttpRequestBLAST.cpp" line="229"/>
-        <location filename="../src/HttpRequestBLAST.cpp" line="246"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="220"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="227"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="244"/>
         <source>Cannot get the location</source>
         <translation>Не удалось получитьь локацию</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="256"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="254"/>
         <source>Cannot get the identity</source>
         <translation>Не удалось получить идентификатор последовательности</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="263"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="261"/>
         <source>Cannot evaluate the gaps</source>
         <translation>Не удалось вычислить пробелы</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="270"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="268"/>
         <source>Cannot get the alignment length</source>
         <translation>Не удалось получить длину выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/HttpRequestBLAST.cpp" line="283"/>
+        <location filename="../src/HttpRequestBLAST.cpp" line="281"/>
         <source>Cannot evaluate the location</source>
         <translation>Не удалось вычислить локацию</translation>
     </message>

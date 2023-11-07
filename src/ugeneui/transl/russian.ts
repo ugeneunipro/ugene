@@ -1271,22 +1271,22 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="251"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="255"/>
         <source>Create desktop shortcut</source>
         <translation>Добавить ярлык на рабочий стол</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="385"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="390"/>
         <source>Shutdown already in process. Close UGENE immediately?</source>
         <translation>Программа уже в процессе выключения. Закрыть немедленно?</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="386"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="391"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="387"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="392"/>
         <source>Wait</source>
         <translation>Подождать</translation>
     </message>
@@ -1306,7 +1306,7 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Перейти на сайт UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="243"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="247"/>
         <source>View UGENE Documentation Online</source>
         <translation>Открыть документацию UGENE</translation>
     </message>
@@ -1316,69 +1316,69 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Поддержать UGENE на Patreon</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="247"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="251"/>
         <source>Check for Updates</source>
         <translation>Проверить обновления</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="255"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="259"/>
         <source>Open Start Page</source>
         <translation>Открыть стартовую страницу</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="259"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="263"/>
         <source>What&apos;s New in UGENE</source>
         <translation>Что нового в UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="263"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="267"/>
         <source>Crash UGENE</source>
         <translation>Падение UGENE</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="268"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="272"/>
         <source>Enable Terminal Usage...</source>
         <translation>Разрешить использование терминала...</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="359"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="364"/>
         <source>Add unique notification</source>
         <translation>Добавить уникальное уведомление</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="367"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="372"/>
         <source>Add repeating notification</source>
         <translation>Добавить повторяющееся уведомление</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="453"/>
         <location filename="../src/main_window/MainWindowImpl.cpp" line="458"/>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="466"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="463"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
         <source>Installation failed</source>
         <translation>Installation failed</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="453"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="458"/>
         <source>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</source>
         <translation>Failed to enable terminal usage: couldn&apos;t install &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="458"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="463"/>
         <source>Failed to enable terminal usage: not authorized</source>
         <translation>Failed to enable terminal usage: not authorized</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="466"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
         <source>Failed to enable terminal usage: authorization failure</source>
         <translation>Failed to enable terminal usage: authorization failure</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="476"/>
         <source>Installation successful</source>
         <translation>Installation successful</translation>
     </message>
     <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="471"/>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="476"/>
         <source>Terminal usage successfully enabled.
 
 Now you can type ugene in command line to start UGENE.</source>
@@ -2430,17 +2430,22 @@ Would you like to download and install it?</source>
         <translation>UGENE в социальных сетях:</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="247"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="210"/>
+        <source>Support UGENE:</source>
+        <translation>Поддержать UGENE:</translation>
+    </message>
+    <message>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="256"/>
         <source>No recent files</source>
         <translation>Нет открытых файлов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="265"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="274"/>
         <source>No recent projects</source>
         <translation>Нет открытых проектов</translation>
     </message>
     <message>
-        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="333"/>
+        <location filename="../src/welcome_page/WelcomePageWidget.cpp" line="342"/>
         <source>The Workflow Designer plugin is not loaded. You can add it using the menu Settings -&gt; Plugins. Then you need to restart UGENE.</source>
         <translation>Плагин дизайнера вычислительных схем не был загружен. Вы можете добавить его в меню Настройки -&gt; Модули. После этого перезапустите UGENE.</translation>
     </message>
