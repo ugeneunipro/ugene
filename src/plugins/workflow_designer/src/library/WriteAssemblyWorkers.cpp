@@ -60,7 +60,7 @@ void BaseWriteAssemblyWorker::data2doc(Document* doc, const QVariantMap& data) {
     CHECK(hasDataToWrite(data), );
     SharedDbiDataHandler assemblyId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<AssemblyObject> assemblyObj(StorageUtils::getAssemblyObject(context->getDataStorage(), assemblyId));
-    SAFE_POINT(!assemblyObj.isNull(), tr("Assembly writer: NULL assembly object"), );
+    SAFE_POINT(!assemblyObj.isNull(), "Assembly writer: NULL assembly object", );
 
     QString objName = assemblyObj->getGObjectName();
     if (doc->findGObjectByName(objName)) {

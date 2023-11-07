@@ -1454,11 +1454,6 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::LocalWorkflow::BaseWriteAssemblyWorker</name>
     <message>
-        <location filename="../src/library/WriteAssemblyWorkers.cpp" line="63"/>
-        <source>Assembly writer: NULL assembly object</source>
-        <translation>Запись сборки: нет сборки</translation>
-    </message>
-    <message>
         <location filename="../src/library/WriteAssemblyWorkers.cpp" line="181"/>
         <source>Build index (BAM only)</source>
         <translation>Построение индекса (применимо только к файлам BAM)</translation>
@@ -2206,14 +2201,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/ExtractMSAConsensusWorker.cpp" line="108"/>
         <source>Error with msa object</source>
         <translation>Error with msa object</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::FastQWriter</name>
-    <message>
-        <location filename="../src/library/DocWorkers.cpp" line="379"/>
-        <source>Fastq writer: NULL sequence object</source>
-        <translation>Записать Fastq: нет последовательности</translation>
     </message>
 </context>
 <context>
@@ -2965,22 +2952,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
 </context>
 <context>
-    <name>U2::LocalWorkflow::GFFWriter</name>
-    <message>
-        <location filename="../src/library/DocWorkers.cpp" line="639"/>
-        <source>GFF writer: NULL sequence object</source>
-        <translation>Записать GFF: нет последовательности</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::GenbankWriter</name>
-    <message>
-        <location filename="../src/library/DocWorkers.cpp" line="499"/>
-        <source>Genbank writer: NULL sequence object</source>
-        <translation>Записать Genbank: нет последовательности</translation>
-    </message>
-</context>
-<context>
     <name>U2::LocalWorkflow::GetFileListPrompter</name>
     <message>
         <location filename="../src/library/GetFileListWorker.cpp" line="133"/>
@@ -3303,14 +3274,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/SequencesToMSAWorker.h" line="78"/>
         <source>MSAFromSequencesTask</source>
         <translation>MSAFromSequencesTask</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::MSAWriter</name>
-    <message>
-        <location filename="../src/library/DocWorkers.cpp" line="850"/>
-        <source>Empty alignment passed for writing to %1</source>
-        <translation>Пустое выравнивание для записи в %1</translation>
     </message>
 </context>
 <context>
@@ -3786,14 +3749,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
     </message>
 </context>
 <context>
-    <name>U2::LocalWorkflow::RawSeqWriter</name>
-    <message>
-        <location filename="../src/library/DocWorkers.cpp" line="434"/>
-        <source>Raw sequence writer: NULL sequence object</source>
-        <translation>Записать колонки последовательностей: нет последовательностей</translation>
-    </message>
-</context>
-<context>
     <name>U2::LocalWorkflow::ReadAnnotationsTask</name>
     <message>
         <location filename="../src/library/ReadAnnotationsWorker.cpp" line="232"/>
@@ -4120,11 +4075,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 </context>
 <context>
     <name>U2::LocalWorkflow::RenameChomosomeInVariationWorker</name>
-    <message>
-        <location filename="../src/library/RenameChromosomeInVariationWorker.cpp" line="88"/>
-        <source>An unexpected task type</source>
-        <translation>An unexpected task type</translation>
-    </message>
     <message>
         <location filename="../src/library/RenameChromosomeInVariationWorker.cpp" line="107"/>
         <source>Source file URL is empty</source>
@@ -4465,11 +4415,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="70"/>
         <source>There is no sequence object in the message</source>
         <translation>There is no sequence object in the message</translation>
-    </message>
-    <message>
-        <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="78"/>
-        <source>An unexpected task type</source>
-        <translation>An unexpected task type</translation>
     </message>
     <message>
         <location filename="../src/library/SequenceQualityTrimWorker.cpp" line="83"/>
@@ -5192,11 +5137,6 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <location filename="../src/library/WriteVariationWorker.cpp" line="116"/>
         <source>The element gets message(s) with variations data and saves the data to the specified file(s) in one of the appropriate formats (e.g. VCF).</source>
         <translation>Этот элемент записывает все прилагаемые вариации в файл(ы) заданного формата.</translation>
-    </message>
-    <message>
-        <location filename="../src/library/WriteVariationWorker.cpp" line="58"/>
-        <source>Write variants: internal error</source>
-        <translation>Запись вариаций: внутренняя ошибка</translation>
     </message>
     <message>
         <location filename="../src/library/WriteVariationWorker.cpp" line="115"/>

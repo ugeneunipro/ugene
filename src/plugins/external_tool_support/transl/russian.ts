@@ -3960,11 +3960,6 @@ p, li { white-space: pre-wrap; }
         <translation>Can&apos;t read output file</translation>
     </message>
     <message>
-        <location filename="../src/blast/BlastCommonTask.cpp" line="471"/>
-        <source>Unknown strand source setting</source>
-        <translation>Unknown strand source setting</translation>
-    </message>
-    <message>
         <location filename="../src/blast/BlastCommonTask.cpp" line="476"/>
         <source>Can&apos;t get location. %1[%2]</source>
         <translation>Can&apos;t get location. %1[%2]</translation>
@@ -4155,11 +4150,6 @@ p, li { white-space: pre-wrap; }
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Извлечь последовательности по &apos;id&apos; %1</translation>
     </message>
-    <message>
-        <location filename="../src/blast/BlastSupport.cpp" line="322"/>
-        <source>Sequence object is NULL</source>
-        <translation>Sequence object is NULL</translation>
-    </message>
 </context>
 <context>
     <name>U2::BlastWithExtFileRunDialog</name>
@@ -4292,16 +4282,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/bwa/BwaTask.cpp" line="245"/>
         <source>Saming reads with BWA Multitask</source>
         <translation>Saming reads with BWA Multitask</translation>
-    </message>
-    <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="295"/>
-        <source>Log is incomplete</source>
-        <translation>Log is incomplete</translation>
-    </message>
-    <message>
-        <location filename="../src/bwa/BwaTask.cpp" line="298"/>
-        <source>Log is incorrect</source>
-        <translation>Log is incorrect</translation>
     </message>
 </context>
 <context>
@@ -4842,11 +4822,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Running Cuffdiff task</translation>
     </message>
     <message>
-        <location filename="../src/cufflinks/CuffdiffSupportTask.cpp" line="47"/>
-        <source>Workflow data storage is NULL</source>
-        <translation>Workflow data storage is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/cufflinks/CuffdiffSupportTask.cpp" line="85"/>
         <source>At least 2 sets of assemblies are required for Cuffdiff</source>
         <translation>At least 2 sets of assemblies are required for Cuffdiff</translation>
@@ -4892,11 +4867,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <source>Unable to get an assembly object.</source>
         <translation>Unable to get an assembly object.</translation>
     </message>
-    <message>
-        <location filename="../src/cufflinks/CufflinksSupportTask.cpp" line="232"/>
-        <source>An internal error occurred during getting annotations from a %1 output file!</source>
-        <translation>An internal error occurred during getting annotations from a %1 output file!</translation>
-    </message>
 </context>
 <context>
     <name>U2::CuffmergeSupportTask</name>
@@ -4904,11 +4874,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="50"/>
         <source>Running Cuffmerge task</source>
         <translation>Running Cuffmerge task</translation>
-    </message>
-    <message>
-        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="54"/>
-        <source>Workflow data storage is NULL</source>
-        <translation>Workflow data storage is NULL</translation>
     </message>
     <message>
         <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="55"/>
@@ -4919,11 +4884,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="143"/>
         <source>Can not create a file: %1</source>
         <translation>Can not create a file: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/cufflinks/CuffmergeSupportTask.cpp" line="195"/>
-        <source>An internal error occurred during getting annotations from a %1 output file!</source>
-        <translation>An internal error occurred during getting annotations from a %1 output file!</translation>
     </message>
 </context>
 <context>
@@ -4950,19 +4910,9 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolJustValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="57"/>
-        <source>Tool&apos;s path is empty</source>
-        <translation>Tool&apos;s path is empty</translation>
-    </message>
-    <message>
         <location filename="../src/utils/ExternalToolValidateTask.cpp" line="64"/>
         <source>External tool is not found: %1</source>
         <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="91"/>
-        <source>Scripting tool registry is NULL</source>
-        <translation>Scripting tool registry is NULL</translation>
     </message>
     <message>
         <location filename="../src/utils/ExternalToolValidateTask.cpp" line="93"/>
@@ -5004,29 +4954,9 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>&apos;%1&apos; external tool search task</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="137"/>
-        <source>An external tool &apos;%1&apos; isn&apos;t found in the registry</source>
-        <translation>An external tool &apos;%1&apos; isn&apos;t found in the registry</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="125"/>
-        <source>Tool pointer is NULL</source>
-        <translation>Tool pointer is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/utils/ExternalToolSearchTask.cpp" line="49"/>
         <source>External tool &apos;%1&apos; is not registered</source>
         <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="133"/>
-        <source>External tool module hasn&apos;t any dependencies: it hasn&apos;t master tool</source>
-        <translation>External tool module hasn&apos;t any dependencies: it hasn&apos;t master tool</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExternalToolSearchTask.cpp" line="135"/>
-        <source>External tool registry is NULL</source>
-        <translation>External tool registry is NULL</translation>
     </message>
     <message>
         <location filename="../src/utils/ExternalToolSearchTask.cpp" line="141"/>
@@ -5553,11 +5483,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <source>Build HMMER profile from file</source>
         <translation>Build HMMER profile from file</translation>
     </message>
-    <message>
-        <location filename="../src/hmmer/HmmerBuildFromFileTask.cpp" line="40"/>
-        <source>Msa URL is empty</source>
-        <translation>Msa URL is empty</translation>
-    </message>
 </context>
 <context>
     <name>U2::HmmerBuildFromMsaTask</name>
@@ -5565,11 +5490,6 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="41"/>
         <source>Build HMMER profile from msa</source>
         <translation>Build HMMER profile from msa</translation>
-    </message>
-    <message>
-        <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="47"/>
-        <source>HMM profile URL is empty</source>
-        <translation>HMM profile URL is empty</translation>
     </message>
     <message>
         <location filename="../src/hmmer/HmmerBuildFromMsaTask.cpp" line="107"/>
@@ -11435,11 +11355,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Cannot create temp folder</translation>
     </message>
     <message>
-        <location filename="../src/blast/MakeBlastDbTask.cpp" line="162"/>
-        <source>Trying to initialize Format DB task second time</source>
-        <translation>Trying to initialize Format DB task second time</translation>
-    </message>
-    <message>
         <location filename="../src/blast/MakeBlastDbTask.cpp" line="164"/>
         <source>Output database path contain space characters.</source>
         <translation>Путь до базы данных содержит пробелы.</translation>
@@ -11630,12 +11545,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <source>No trees are found</source>
         <translation>Деревья не найдены</translation>
     </message>
-    <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="234"/>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="240"/>
-        <source>No result tree in PhyML output</source>
-        <translation>No result tree in PhyML output</translation>
-    </message>
 </context>
 <context>
     <name>U2::PhyMLLogParser</name>
@@ -11651,12 +11560,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/phyml/PhyMLTask.cpp" line="40"/>
         <source>Generating input file for PhyML</source>
         <translation>Generating input file for PhyML</translation>
-    </message>
-    <message>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="67"/>
-        <location filename="../src/phyml/PhyMLTask.cpp" line="71"/>
-        <source>Internal UGENE error</source>
-        <translation>Internal UGENE error</translation>
     </message>
     <message>
         <location filename="../src/phyml/PhyMLTask.cpp" line="75"/>
@@ -11777,11 +11680,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>More than one sequence in the reference file: </translation>
     </message>
     <message>
-        <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="85"/>
-        <source>Unable to cast gobject to sequence object</source>
-        <translation>Unable to cast gobject to sequence object</translation>
-    </message>
-    <message>
         <location filename="../src/blast/align_worker_subtasks/PrepareReferenceSequenceTask.cpp" line="86"/>
         <source>The input reference sequence &apos;%1&apos; contains characters that don&apos;t belong to DNA alphabet.</source>
         <translation>The input reference sequence &apos;%1&apos; contains characters that don&apos;t belong to DNA alphabet.</translation>
@@ -11844,16 +11742,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <source>CAP3 run and open result task</source>
         <translation>CAP3 run and open result task</translation>
     </message>
-    <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="136"/>
-        <source>Invalid CAP3 task</source>
-        <translation>Invalid CAP3 task</translation>
-    </message>
-    <message>
-        <location filename="../src/cap3/CAP3SupportTask.cpp" line="151"/>
-        <source>Project loader is NULL</source>
-        <translation>Project loader is NULL</translation>
-    </message>
 </context>
 <context>
     <name>U2::RunFastTreeExternalToolTask</name>
@@ -11898,11 +11786,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/utils/ExportTasks.cpp" line="132"/>
         <source>Save sequence</source>
         <translation>Save sequence</translation>
-    </message>
-    <message>
-        <location filename="../src/utils/ExportTasks.cpp" line="162"/>
-        <source>&apos;%&apos; format is not registered</source>
-        <translation>&apos;%&apos; format is not registered</translation>
     </message>
 </context>
 <context>
@@ -11956,11 +11839,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/snpeff/SnpEffSupport.cpp" line="55"/>
         <source>&lt;i&gt;SnpEff&lt;/i&gt;: Genetic variant annotation and effect prediction toolbox.</source>
         <translation>&lt;i&gt;SnpEff&lt;/i&gt;: инструмент генетического варианта аннотации и прогнозирования эффекта.</translation>
-    </message>
-    <message>
-        <location filename="../src/snpeff/SnpEffSupport.cpp" line="94"/>
-        <source>Failed to get SnpEff database list</source>
-        <translation>Failed to get SnpEff database list</translation>
     </message>
 </context>
 <context>
@@ -12185,21 +12063,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>VcfConsensus started</translation>
     </message>
     <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="53"/>
-        <source>AppSettings is NULL</source>
-        <translation>AppSettings is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="55"/>
-        <source>UserAppsSettings is NULL</source>
-        <translation>UserAppsSettings is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="57"/>
-        <source>Temporary folder is not set!</source>
-        <translation>Temporary folder is not set!</translation>
-    </message>
-    <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="62"/>
         <source>Can not create folder for temporary files.</source>
         <translation>Не удаётся создать папку для временных файлов.</translation>
@@ -12208,21 +12071,6 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="66"/>
         <source>Saving temporary data to file &apos;%1&apos;</source>
         <translation>Saving temporary data to file &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="85"/>
-        <source>ExternalToolRegistry is NULL</source>
-        <translation>ExternalToolRegistry is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="89"/>
-        <source>There is no VcfConsensus external tool registered</source>
-        <translation>There is no VcfConsensus external tool registered</translation>
-    </message>
-    <message>
-        <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="90"/>
-        <source>There is no Tabix external tool registered</source>
-        <translation>There is no Tabix external tool registered</translation>
     </message>
     <message>
         <location filename="../src/vcftools/VcfConsensusSupportTask.cpp" line="111"/>

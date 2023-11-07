@@ -1225,7 +1225,7 @@ void FindPatternWidget::sl_syncSearchRegionWithTrackedSelection() {
 
         if (selectedRegions.size() == 2) {
             U2Region secondReg = selectedRegions.last();
-            SAFE_POINT(annotatedDnaView->getActiveSequenceContext() != nullptr, tr("Sequence in focus is NULL"), );
+            SAFE_POINT(annotatedDnaView->getActiveSequenceContext() != nullptr, "Sequence in focus is NULL", );
             int seqLen = annotatedDnaView->getActiveSequenceContext()->getSequenceLength();
             bool circularSelection = (firstReg.startPos == 0 && secondReg.endPos() == seqLen) || (firstReg.endPos() == seqLen && secondReg.startPos == 0);
             if (circularSelection) {

@@ -67,7 +67,7 @@ ExportImageDialog::ExportImageDialog(ImageExportController* factory,
       filename(file),
       origFilename(file),
       source(invoSource) {
-    SAFE_POINT(exportController != nullptr, tr("Image export task factory is NULL"), );
+    SAFE_POINT(exportController != nullptr, "Image export task factory is NULL", );
     init();
 }
 

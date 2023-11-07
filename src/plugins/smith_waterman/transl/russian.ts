@@ -340,11 +340,6 @@
 <context>
     <name>U2::PairwiseAlignmentSmithWatermanTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="439"/>
-        <source>Substitution matrix is empty</source>
-        <translation>Substitution matrix is empty</translation>
-    </message>
-    <message>
         <location filename="../src/SWAlgorithmTask.cpp" line="595"/>
         <source>Not enough memory to run the task. Required: %1 MB, limit %2 MB.</source>
         <translation>Недостаточно памяти для выполнения задачи. Требуется: %1 МБ, лимит %2 МБ.</translation>

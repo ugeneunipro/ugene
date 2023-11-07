@@ -572,7 +572,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
 
 bool MaEditorSequenceArea::isAlignmentLocked() const {
     MultipleAlignmentObject* obj = editor->getMaObject();
-    SAFE_POINT(obj != nullptr, tr("Alignment object is not available"), true);
+    SAFE_POINT(obj != nullptr, "Alignment object is not available", true);
     return obj->isStateLocked();
 }
 

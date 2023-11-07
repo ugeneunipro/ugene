@@ -2419,12 +2419,6 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
         <translation>Sequence quality data missing</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Tests.cpp" line="42"/>
-        <location filename="../src/Primer3Tests.cpp" line="333"/>
-        <source>QDomNode isn&apos;t element</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../src/Primer3Tests.cpp" line="97"/>
         <location filename="../src/Primer3Tests.cpp" line="103"/>
         <source>Illegal SEQUENCE_TARGET value: %1</source>

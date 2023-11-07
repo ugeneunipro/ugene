@@ -928,7 +928,7 @@ bool DotPlotWidget::getLineToDraw(const DotPlotResults& r, QLine* line, float ra
 void DotPlotWidget::drawAll(QPainter& p, QSize& size, qreal fontScale, DotPlotImageExportSettings& exportSettings) {
     p.save();
 
-    SAFE_POINT(w != 0 && h != 0, tr("Invalid weight and height parameters!"), );
+    SAFE_POINT(w != 0 && h != 0, "Invalid weight and height parameters!", );
     qreal scaleCoeff = fontScale * qMin((qreal)size.width() / w, (qreal)size.height() / h);
     QFont f = p.font();
     f.setPointSize((int)(f.pointSizeF() * scaleCoeff + 0.5));

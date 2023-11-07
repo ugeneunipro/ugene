@@ -358,22 +358,6 @@
         <translation>Слоты %1, %2 имеют разные типы</translation>
     </message>
     <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="45"/>
-        <source>Retrieving value of unassigned variable: %1</source>
-        <translation>Retrieving value of unassigned variable: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="60"/>
-        <location filename="../src/model/wizard/Variable.cpp" line="61"/>
-        <source>Unassigned variable: %1</source>
-        <translation>Unassigned variable: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="78"/>
-        <source>Variable is not defined: %1</source>
-        <translation>Variable is not defined: %1</translation>
-    </message>
-    <message>
         <location filename="../src/model/wizard/Variable.cpp" line="89"/>
         <source>Can not parse predicate from the string: %1</source>
         <translation>Can not parse predicate from the string: %1</translation>
@@ -871,11 +855,6 @@
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1692"/>
-        <source>Error: element name in the workflow file contains spaces</source>
-        <translation>Error: element name in the workflow file contains spaces</translation>
-    </message>
-    <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2057"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
@@ -1331,12 +1310,6 @@
         <location filename="../src/support/NoFailTaskWrapper.cpp" line="32"/>
         <source>Wrapper task for: &quot;%1&quot;</source>
         <translation>Wrapper task for: &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/support/NoFailTaskWrapper.cpp" line="45"/>
-        <location filename="../src/support/NoFailTaskWrapper.cpp" line="50"/>
-        <source>SubTask is NULL</source>
-        <translation>SubTask is NULL</translation>
     </message>
 </context>
 <context>

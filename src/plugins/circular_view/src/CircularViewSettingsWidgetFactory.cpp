@@ -36,12 +36,12 @@ const QString CircularViewSettingsWidgetFactory::GROUP_DOC_PAGE = "65929523";
 
 CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularViewContext* context)
     : ctx(context) {
-    SAFE_POINT(context != nullptr, tr("Circular view context is NULL"), );
+    SAFE_POINT(context != nullptr, "Circular view context is NULL", );
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
 QWidget* CircularViewSettingsWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& /*options*/) {
-    SAFE_POINT(objView != nullptr, tr("Object view is NULL"), nullptr);
+    SAFE_POINT(objView != nullptr, "Object view is NULL", nullptr);
 
     CircularViewSplitter* cvSplitter = ctx->getView(objView, false);
     auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);

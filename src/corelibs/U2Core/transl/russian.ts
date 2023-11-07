@@ -1668,11 +1668,6 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::HttpFileAdapter</name>
     <message>
-        <location filename="../src/io/HttpFileAdapter.cpp" line="107"/>
-        <source>Incorrect url string has been passed to HttpFileAdapter::open()</source>
-        <translation>Неправильная строка адреса была передана в HttpFileAdapter::open()</translation>
-    </message>
-    <message>
         <location filename="../src/io/HttpFileAdapter.cpp" line="123"/>
         <source>GET %1</source>
         <translatorcomment>Запрос %1</translatorcomment>
@@ -2090,11 +2085,6 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="262"/>
         <source>Cannot detect file format: %1</source>
         <translation>Не удается определить формат файла: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/LoadDocumentTask.cpp" line="265"/>
-        <source>Document format is unknown (format: &apos;%1&apos;, file path: &apos;%2&apos;)</source>
-        <translation>Формат документа неизвестен (формат: «%1», путь к файлу: «%2»)</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadDocumentTask.cpp" line="434"/>

@@ -197,7 +197,7 @@ void DNASequenceGeneratorTask::prepare() {
 
         loadRefTask = LoadDocumentTask::getDefaultLoadDocTask(stateInfo, GUrl(docUrl));
         CHECK_OP(stateInfo, );
-        SAFE_POINT_EXT(loadRefTask != nullptr, stateInfo.setError(tr("Incorrect reference file: %1").arg(docUrl)), );
+        SAFE_POINT_EXT(loadRefTask != nullptr, stateInfo.setError(QString("Incorrect reference file: %1").arg(docUrl)), );
         loadRefTask->setSubtaskProgressWeight(getTaskProgressWeightPerPhase(cfg));
         addSubTask(loadRefTask);
     } else {

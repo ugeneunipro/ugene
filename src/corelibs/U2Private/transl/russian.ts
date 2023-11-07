@@ -69,11 +69,6 @@
         <translation>Ошибка загрузки модуля: %1, строка %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="385"/>
-        <source>Settings is NULL</source>
-        <translation>Settings is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/PluginSupportImpl.cpp" line="440"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation>Plugin loading error: %1. Verification failed.</translation>

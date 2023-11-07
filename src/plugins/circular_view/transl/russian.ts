@@ -180,24 +180,9 @@
 <context>
     <name>U2::CircularViewImageExportController</name>
     <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="120"/>
-        <source>List of Circular Views is empty!</source>
-        <translation>Список круговых видов пуст!</translation>
-    </message>
-    <message>
         <location filename="../src/CircularViewImageExportTask.cpp" line="143"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="146"/>
-        <source>Sequence context is NULL!</source>
-        <translation>Sequence context is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewImageExportTask.cpp" line="147"/>
-        <source>Sequence Gobject is NULL</source>
-        <translation>Sequence Gobject is NULL</translation>
     </message>
 </context>
 <context>
@@ -212,24 +197,9 @@
         <source>Enables drawing of DNA sequences using circular representation</source>
         <translation>Круговой вид ДНК последовательности</translation>
     </message>
-    <message>
-        <location filename="../src/CircularViewPlugin.cpp" line="79"/>
-        <source>OPWidgetFactoryRegistry is NULL</source>
-        <translation>OPWidgetFactoryRegistry is NULL</translation>
-    </message>
 </context>
 <context>
     <name>U2::CircularViewRenderArea</name>
-    <message>
-        <location filename="../src/CircularView.cpp" line="371"/>
-        <source>CircularView is NULL</source>
-        <translation>CircularView is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularView.cpp" line="373"/>
-        <source>Circular view settings are NULL</source>
-        <translation>Circular view settings are NULL</translation>
-    </message>
     <message>
         <location filename="../src/CircularView.cpp" line="384"/>
         <source>circular view size %1 %2</source>
@@ -238,11 +208,6 @@
 </context>
 <context>
     <name>U2::CircularViewSettingsWidget</name>
-    <message>
-        <location filename="../src/CircularViewSettingsWidget.cpp" line="41"/>
-        <source>Circular view settings is NULL</source>
-        <translation>Circular view settings is NULL</translation>
-    </message>
     <message>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="64"/>
         <location filename="../src/CircularViewSettingsWidget.cpp" line="112"/>
@@ -284,19 +249,6 @@
     </message>
 </context>
 <context>
-    <name>U2::CircularViewSettingsWidgetFactory</name>
-    <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="39"/>
-        <source>Circular view context is NULL</source>
-        <translation>Circular view context is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewSettingsWidgetFactory.cpp" line="44"/>
-        <source>Object view is NULL</source>
-        <translation>Object view is NULL</translation>
-    </message>
-</context>
-<context>
     <name>U2::CircularViewSplitter</name>
     <message>
         <location filename="../src/CircularViewSplitter.cpp" line="49"/>
@@ -327,31 +279,6 @@
         <location filename="../src/CircularViewSplitter.cpp" line="68"/>
         <source>Show/hide restriction sites map</source>
         <translation>Показать/скрыть карту сайтов рестрикции</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="159"/>
-        <source>Circular View is NULL</source>
-        <translation>Circular View is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="161"/>
-        <source>Circular View viewport is NULL</source>
-        <translation>Circular View viewport is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="163"/>
-        <source>Scroll area is NULL</source>
-        <translation>Scroll area is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="218"/>
-        <source>Sequence context is NULL</source>
-        <translation>Sequence context is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/CircularViewSplitter.cpp" line="220"/>
-        <source>Sequence obejct is NULL</source>
-        <translation>Sequence obejct is NULL</translation>
     </message>
 </context>
 <context>

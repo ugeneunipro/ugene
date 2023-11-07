@@ -321,16 +321,6 @@
         <translation>Импорт ACE файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="66"/>
-        <source>Dbi ref is invalid</source>
-        <translation>Ссылка Dbi недействительна</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImporter.cpp" line="82"/>
-        <source>Can&apos;t create a temporary database</source>
-        <translation>Невозможно создать временную базу данных</translation>
-    </message>
-    <message>
         <location filename="../src/ace/AceImporter.cpp" line="136"/>
         <source>Failed to get load task for : %1</source>
         <translation>Не удалось получить загрузку задачи для: %1</translation>
@@ -399,7 +389,7 @@
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="120"/>
         <source>Vector NTI/AlignX files importer is used to convert conventional APR files to a multiple sequence alignment formats</source>
-        <translation type="unfinished">Инструмент для импорта Vector NTI/AlignX файлов используется для конвертации APR файлов в формат множественного выравнивания</translation>
+        <translation>Инструмент для импорта Vector NTI/AlignX файлов используется для конвертации APR файлов в формат множественного выравнивания</translation>
     </message>
     <message>
         <location filename="../src/apr/AprImporter.cpp" line="135"/>
@@ -413,17 +403,6 @@
         <location filename="../src/apr/AprImporter.cpp" line="54"/>
         <source>APR file import: %1</source>
         <translation>Импорт файла APR: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/apr/AprImporter.cpp" line="65"/>
-        <location filename="../src/apr/AprImporter.cpp" line="91"/>
-        <source>Empty destination url</source>
-        <translation>Пустой целевой url</translation>
-    </message>
-    <message>
-        <location filename="../src/apr/AprImporter.cpp" line="71"/>
-        <source>Invalid I/O environment!</source>
-        <translation>Недопустимая среда ввода/вывода!</translation>
     </message>
 </context>
 <context>
@@ -579,11 +558,6 @@
         <translation>Сохранение BED: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="413"/>
-        <source>Can not convert GObject to AnnotationTableObject</source>
-        <translation>Невозможно преобразовать объект GObject в объект AnnotationTableObject</translation>
-    </message>
-    <message>
         <location filename="../src/BedFormat.cpp" line="427"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Невозможно определить имя хромосомы. Будет использовано имя &apos;Chr&apos;.</translation>
@@ -637,21 +611,6 @@
         <translation>Начало сжатия bgzip &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="58"/>
-        <source>IOAdapterRegistry is NULL!</source>
-        <translation>IOAdapterRegistry is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="61"/>
-        <source>IOAdapterFactory is NULL!</source>
-        <translation>IOAdapterFactory is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="63"/>
-        <source>Can not create IOAdapter!</source>
-        <translation>Can not create IOAdapter!</translation>
-    </message>
-    <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="67"/>
         <source>Can not open input file &apos;%1&apos;</source>
         <translation>Не удается открыть входной файл &apos;%1&apos;</translation>
@@ -701,38 +660,6 @@
         <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="43"/>
         <source>Clone assembly object to the destination database</source>
         <translation>Клонирование объекта сборки в базу данных</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="51"/>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="52"/>
-        <source>Invalid assembly ID</source>
-        <translation>Invalid assembly ID</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="53"/>
-        <source>Invalid source database reference</source>
-        <translation>Invalid source database reference</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="54"/>
-        <source>Invalid destination database reference</source>
-        <translation>Invalid destination database reference</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="72"/>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="78"/>
-        <source>Can&apos;t get the cloned object</source>
-        <translation>Can&apos;t get the cloned object</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="74"/>
-        <source>Unexpected result object: expect AssemblyObject, got %1 object</source>
-        <translation>Unexpected result object: expect AssemblyObject, got %1 object</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/CloneAssemblyWithReferenceToDbiTask.cpp" line="80"/>
-        <source>Unexpected result object: expect U2SequenceObject, got %1 object</source>
-        <translation>Unexpected result object: expect U2SequenceObject, got %1 object</translation>
     </message>
 </context>
 <context>
@@ -806,39 +733,14 @@
         <translation>Конвертация сборки из %1 в %2 начата</translation>
     </message>
     <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="66"/>
-        <source>IOAdapterFactory is NULL</source>
-        <translation>IOAdapterFactory is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="70"/>
         <source>Can&apos;t open file &apos;%1&apos;</source>
         <translation>Невозможно открыть файл &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="83"/>
-        <source>DBI is NULL</source>
-        <translation>DBI is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="85"/>
-        <source>Object DBI is NULL</source>
-        <translation>Object DBI is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="88"/>
         <source>Importing</source>
         <translation>Импорт</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="213"/>
-        <source>Assembly DBI is NULL</source>
-        <translation>Assembly DBI is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="136"/>
-        <source>Sequence DBI is NULL</source>
-        <translation>Sequence DBI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="155"/>
@@ -850,11 +752,6 @@
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="219"/>
         <source>Packing reads for assembly &apos;%1&apos; (%2 of %3)</source>
         <translation>Упаковка ридов для сборки &apos;%1&apos; (%2 от %3)</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="245"/>
-        <source>Attribute DBI is NULL</source>
-        <translation>Attribute DBI is NULL</translation>
     </message>
     <message>
         <location filename="../src/ace/ConvertAceToSqliteTask.cpp" line="274"/>
@@ -1040,11 +937,6 @@
         <translation>Не указано имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="354"/>
-        <source>Invalid AF tag</source>
-        <translation>Invalid AF tag</translation>
-    </message>
-    <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="371"/>
         <source>A name is duplicated: %1</source>
         <translation>Повторные вхождения имени: %1</translation>
@@ -1071,11 +963,6 @@
         <location filename="../src/ace/AceImportUtils.cpp" line="473"/>
         <source>Invalid RD part</source>
         <translation>Неверная часть RD</translation>
-    </message>
-    <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="474"/>
-        <source>Can&apos;t find the RD tag</source>
-        <translation>Can&apos;t find the RD tag</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="483"/>
@@ -1287,16 +1174,6 @@
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Нечего экспортировать: выравнивание пустое</translation>
     </message>
-    <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="147"/>
-        <source>Illegal translation frame offset: %1</source>
-        <translation>Illegal translation frame offset: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/ExportTasks.cpp" line="148"/>
-        <source>Invalid amino translation: %1</source>
-        <translation>Invalid amino translation: %1</translation>
-    </message>
 </context>
 <context>
     <name>U2::ExportMSA2SequencesTask</name>
@@ -1421,11 +1298,6 @@
         <location filename="../src/FpkmTrackingFormat.cpp" line="86"/>
         <source>The FPKM (fragments per kilobase of exon model per million mapped fragments) Tracking Format is a native Cufflinks format to output estimated expression values.</source>
         <translation>FPKM (fragments per kilobase of exon model per million mapped fragments) Tracking Format это внутренний Cufflinks формат для выходных значений оценки выражений.</translation>
-    </message>
-    <message>
-        <location filename="../src/FpkmTrackingFormat.cpp" line="119"/>
-        <source>Internal error: qualifier with name &apos;%1&apos; and &apos;%2&apos; can&apos;t be added</source>
-        <translation>Internal error: qualifier with name &apos;%1&apos; and &apos;%2&apos; can&apos;t be added</translation>
     </message>
     <message>
         <location filename="../src/FpkmTrackingFormat.cpp" line="150"/>
@@ -1762,21 +1634,6 @@
         <translation>Данные повреждены: запись SOURCE</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="539"/>
-        <source>There is no IOAdapter registry yet</source>
-        <translation>There is no IOAdapter registry yet</translation>
-    </message>
-    <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="541"/>
-        <source>IOAdapterFactory is NULL</source>
-        <translation>IOAdapterFactory is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="543"/>
-        <source>IOAdapter is NULL</source>
-        <translation>IOAdapter is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="811"/>
         <source>Invalid annotation table!</source>
         <translation>Invalid annotation table!</translation>
@@ -1798,23 +1655,6 @@
         <location filename="../src/tasks/BgzipTask.cpp" line="140"/>
         <source>Start decompression &apos;%1&apos;</source>
         <translation>Начало разархивации &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="142"/>
-        <source>IOAdapterRegistry is NULL!</source>
-        <translation>IOAdapterRegistry is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="145"/>
-        <location filename="../src/tasks/BgzipTask.cpp" line="147"/>
-        <source>IOAdapterFactory is NULL!</source>
-        <translation>IOAdapterFactory is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/tasks/BgzipTask.cpp" line="150"/>
-        <location filename="../src/tasks/BgzipTask.cpp" line="153"/>
-        <source>Can not create IOAdapter!</source>
-        <translation>Can not create IOAdapter!</translation>
     </message>
     <message>
         <location filename="../src/tasks/BgzipTask.cpp" line="165"/>
@@ -2128,11 +1968,6 @@
         <source>Too much reads without a pair (&gt;%1). Check the input data are set correctly.</source>
         <translation>Too much reads without a pair (&gt;%1). Check the input data are set correctly.</translation>
     </message>
-    <message>
-        <location filename="../src/util/PairedFastqComparator.cpp" line="165"/>
-        <source>Invalid sequence info</source>
-        <translation>Invalid sequence info</translation>
-    </message>
 </context>
 <context>
     <name>U2::PhylipFormat</name>
@@ -2317,11 +2152,6 @@
         <location filename="../src/StockholmFormat.cpp" line="524"/>
         <source>A multiple sequence alignments file format</source>
         <translation>Формат файла для множественных выравниваний</translation>
-    </message>
-    <message>
-        <location filename="../src/StockholmFormat.cpp" line="543"/>
-        <source>Not an alignment object: </source>
-        <translation>Не является объектом выравнивания: </translation>
     </message>
     <message>
         <location filename="../src/StockholmFormat.cpp" line="392"/>
@@ -2671,11 +2501,6 @@
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="870"/>
         <source>Object not found!</source>
         <translation>Object not found!</translation>
-    </message>
-    <message>
-        <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="1004"/>
-        <source>Unexpected row count. Query: &apos;%1&apos;, rows: %2</source>
-        <translation>Unexpected row count. Query: &apos;%1&apos;, rows: %2</translation>
     </message>
     <message>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>

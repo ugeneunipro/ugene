@@ -249,10 +249,10 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics& commonStatist
     ADVSequenceWidget* wgt = annotatedDnaView->getActiveSequenceWidget();
     CHECK(wgt != nullptr, );
     ADVSequenceObjectContext* ctx = wgt->getActiveSequenceContext();
-    SAFE_POINT(ctx != nullptr, tr("Sequence context is NULL"), );
+    SAFE_POINT(ctx != nullptr, "Sequence context is NULL", );
 
     const DNAAlphabet* alphabet = ctx->getAlphabet();
-    SAFE_POINT(alphabet != nullptr, tr("Sequence alphabet is NULL"), );
+    SAFE_POINT(alphabet != nullptr, "Sequence alphabet is NULL", );
 
     int availableSpace = getAvailableSpace(alphabet->getType());
 

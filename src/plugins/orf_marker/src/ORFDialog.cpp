@@ -403,7 +403,7 @@ void ORFDialog::getSettings(ORFAlgorithmSettings& s) {
     // setup search region
     s.searchRegion = getCompleteSearchRegion(&isRegionOk);
 
-    SAFE_POINT(ctx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
+    SAFE_POINT(ctx->getSequenceObject() != nullptr, "Sequence object is NULL", );
     s.circularSearch = ctx->getSequenceObject()->isCircular();
 }
 

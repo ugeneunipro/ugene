@@ -103,7 +103,7 @@ QList<Task*> FormatsMsaClipboardTask::onSubTaskFinished(Task* subTask) {
 
     if (subTask == createSubalignmentTask) {
         Document* doc = createSubalignmentTask->getDocument();
-        SAFE_POINT_EXT(doc != nullptr, setError(tr("No temporary document.")), subTasks);
+        SAFE_POINT_EXT(doc != nullptr, setError("No temporary document."), subTasks);
         QScopedPointer<LocalFileAdapterFactory> factory(new LocalFileAdapterFactory());
         QScopedPointer<IOAdapter> io(factory->createIOAdapter());
         if (!io->open(doc->getURL(), IOAdapterMode_Read)) {

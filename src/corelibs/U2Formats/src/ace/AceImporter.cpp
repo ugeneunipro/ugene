@@ -63,7 +63,7 @@ void AceImporterTask::prepare() {
     startTime = GTimer::currentTimeMicros();
 
     dstDbiRef = settings.value(DocumentFormat::DBI_REF_HINT).value<U2DbiRef>();
-    SAFE_POINT_EXT(dstDbiRef.isValid(), setError(tr("Dbi ref is invalid")), );
+    SAFE_POINT_EXT(dstDbiRef.isValid(), setError("Dbi ref is invalid"), );
 
     isSqliteDbTransit = dstDbiRef.dbiFactoryId != SQLITE_DBI_ID;
     if (!isSqliteDbTransit) {
@@ -79,7 +79,7 @@ void AceImporterTask::prepare() {
         const QString filePath = tempLocalDb->fileName();
         tempLocalDb->close();
 
-        SAFE_POINT_EXT(QFile::exists(filePath), setError(tr("Can't create a temporary database")), );
+        SAFE_POINT_EXT(QFile::exists(filePath), setError("Can't create a temporary database"), );
 
         localDbiRef = U2DbiRef(SQLITE_DBI_ID, filePath);
     }
