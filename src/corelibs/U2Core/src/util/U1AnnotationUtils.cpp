@@ -619,9 +619,9 @@ void FixAnnotationsUtils::fixAnnotations() {
 
 QMap<QString, QList<SharedAnnotationData>> FixAnnotationsUtils::fixAnnotation(Annotation* an, bool& annIsRemoved) {
     QMap<QString, QList<SharedAnnotationData>> result;
-    SAFE_POINT(an != nullptr, L10N::nullPointerError("Annotation"), result);
+    SAFE_POINT_NN(an, result);
     AnnotationTableObject* ato = an->getGObject();
-    SAFE_POINT(ato != nullptr, L10N::nullPointerError("Annotation table object"), result);
+    SAFE_POINT_NN(ato, result);
 
     QList<QVector<U2Region>> newRegions = U1AnnotationUtils::fixLocationsForReplacedRegion(regionToReplace,
                                                                                            sequence2Insert.seq.length(),
@@ -729,7 +729,7 @@ U2Qualifier FixAnnotationsUtils::getFixedTranslationQualifier(const SharedAnnota
     CHECK(!translationQuals.empty(), U2Qualifier());
 
     DNATranslation* aminoTranslation = GObjectUtils::findAminoTT(seqObj, false);
-    SAFE_POINT(aminoTranslation != nullptr, L10N::nullPointerError("Amino translation"), U2Qualifier());
+    SAFE_POINT_NN(aminoTranslation, U2Qualifier());
 
     QString completeTranslation;
     foreach (const U2Region& r, ad->getRegions()) {

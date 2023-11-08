@@ -154,7 +154,7 @@ void MWStub::dragMoveEvent(QDragMoveEvent* event) {
 
 void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent* event) {
     MainWindow* mainWindow = AppContext::getMainWindow();
-    SAFE_POINT(mainWindow != nullptr, L10N::nullPointerError("Main Window"), );
+    SAFE_POINT_NN(mainWindow, );
 
     if (event->mimeData()->hasUrls())
         return;

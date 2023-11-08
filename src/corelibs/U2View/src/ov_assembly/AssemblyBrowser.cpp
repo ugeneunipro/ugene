@@ -1050,7 +1050,7 @@ void AssemblyBrowser::setReference(const Document* doc) {
 
 void AssemblyBrowser::sl_setReference() {
     const ProjectView* projectView = AppContext::getProjectView();
-    SAFE_POINT(projectView != nullptr, L10N::nullPointerError("ProjectView"), );
+    SAFE_POINT_NN(projectView, );
 
     const GObjectSelection* selection = projectView->getGObjectSelection();
     const QList<GObject*> objects = extractSequenceObjects(selection->getSelectedObjects());

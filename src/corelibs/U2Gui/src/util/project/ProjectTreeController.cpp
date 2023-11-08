@@ -137,7 +137,7 @@ const ProjectTreeControllerModeSettings& ProjectTreeController::getModeSettings(
 }
 
 QModelIndex ProjectTreeController::getIndexForDoc(Document* doc) const {
-    SAFE_POINT(doc != nullptr, L10N::nullPointerError("document"), QModelIndex());
+    SAFE_POINT_NN(doc, QModelIndex());
     return proxyModel == nullptr ? model->getIndexForDoc(doc) : proxyModel->getIndexForDoc(doc);
 }
 
@@ -148,7 +148,7 @@ void ProjectTreeController::highlightItem(Document* doc) {
 }
 
 void ProjectTreeController::refreshObject(GObject* object) {
-    SAFE_POINT(object != nullptr, L10N::nullPointerError("object"), );
+    SAFE_POINT_NN(object, );
     model->updateData(model->getIndexForObject(object));
 }
 
@@ -186,7 +186,7 @@ void ProjectTreeController::updateSettings(const ProjectTreeControllerModeSettin
             }
         }
     } else {
-        SAFE_POINT(proxyModel != nullptr, L10N::nullPointerError("Project proxy model"), );
+        SAFE_POINT_NN(proxyModel, );
         proxyModel->updateSettings(newSettings);
     }
 

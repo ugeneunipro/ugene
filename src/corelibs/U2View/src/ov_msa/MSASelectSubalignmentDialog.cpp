@@ -39,7 +39,7 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor* editor, const U2Reg
       editor(editor),
       window(region),
       selectedIndexes(_selectedIndexes) {
-    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MaEditor"), );
+    SAFE_POINT_NN(editor, );
 
     if (region.isEmpty() && selectedIndexes.isEmpty()) {
         int startSeq;

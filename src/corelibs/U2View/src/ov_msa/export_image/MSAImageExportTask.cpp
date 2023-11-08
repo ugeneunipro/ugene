@@ -273,7 +273,7 @@ void MSAImageExportToSvgTask::run() {
 MSAImageExportController::MSAImageExportController(MaEditorWgt* ui)
     : ImageExportController(ExportImageFormatPolicy(EnableRasterFormats | SupportSvg)),
       ui(ui) {
-    SAFE_POINT(ui != nullptr, L10N::nullPointerError("MSAEditorUI"), );
+    SAFE_POINT_NN(ui, );
     shortDescription = tr("Alignment");
     initSettingsWidget();
     checkRegionToExport();
@@ -383,7 +383,7 @@ static constexpr qint64 MaxSvgImageSize = 40'000'000;
 
 bool MSAImageExportController::fitsInLimits() const {
     MaEditor* editor = ui->getEditor();
-    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MSAEditor"), false);
+    SAFE_POINT_NN(editor, false);
     qint64 imageWidth = (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length) * editor->getColumnWidth();
     qint64 imageHeight = msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(msaSettings.seqIdx);
     if (imageWidth > IMAGE_SIZE_LIMIT || imageHeight > IMAGE_SIZE_LIMIT) {
@@ -397,7 +397,7 @@ bool MSAImageExportController::fitsInLimits() const {
 
 bool MSAImageExportController::canExportToSvg() const {
     MaEditor* editor = ui->getEditor();
-    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MSAEditor"), false);
+    SAFE_POINT_NN(editor, false);
     qint64 charactersNumber = msaSettings.exportAll ? (editor->getNumSequences() * editor->getAlignmentLen()) : (msaSettings.region.length * msaSettings.seqIdx.size());
     return charactersNumber < MaxSvgCharacters;
 }

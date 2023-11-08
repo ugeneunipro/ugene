@@ -39,7 +39,7 @@ namespace U2 {
 
 ProjectViewFilterModel::ProjectViewFilterModel(ProjectViewModel* srcModel, const ProjectTreeControllerModeSettings& settings, QObject* p)
     : QAbstractItemModel(p), settings(settings), srcModel(srcModel) {
-    SAFE_POINT(srcModel != nullptr, L10N::nullPointerError("Project view model"), );
+    SAFE_POINT_NN(srcModel, );
     connect(&filterController, SIGNAL(si_objectsFiltered(const QString&, const QList<QPointer<GObject>>&)), SLOT(sl_objectsFiltered(const QString&, const QList<QPointer<GObject>>&)));
     connect(&filterController, SIGNAL(si_filteringStarted()), SIGNAL(si_filteringStarted()));
     connect(&filterController, SIGNAL(si_filteringFinished()), SIGNAL(si_filteringFinished()));
@@ -58,7 +58,7 @@ QList<QPointer<Document>> getAllDocumentsSafely() {
     QList<QPointer<Document>> result;
 
     Project* proj = AppContext::getProject();
-    SAFE_POINT(proj != nullptr, L10N::nullPointerError("project"), result);
+    SAFE_POINT_NN(proj, result);
     foreach (Document* doc, proj->getDocuments()) {
         result.append(doc);
     }
@@ -80,14 +80,14 @@ void ProjectViewFilterModel::updateSettings(const ProjectTreeControllerModeSetti
 
 void ProjectViewFilterModel::addFilteredObject(const QString& filterGroupName, GObject* obj) {
     SAFE_POINT(!filterGroupName.isEmpty(), "Empty project filter group name", );
-    SAFE_POINT(obj != nullptr, L10N::nullPointerError("object"), );
+    SAFE_POINT_NN(obj, );
 
     if (!hasFilterGroup(filterGroupName)) {
         addFilterGroup(filterGroupName);
     }
 
     FilteredProjectGroup* group = findFilterGroup(filterGroupName);
-    SAFE_POINT(group != nullptr, L10N::nullPointerError("project filter group"), );
+    SAFE_POINT_NN(group, );
 
 #ifdef _DEBUG
     SAFE_POINT(!group->contains(obj), "Attempting to add duplicate to a filter group", );
@@ -123,10 +123,10 @@ QModelIndex ProjectViewFilterModel::getIndexForGroup(FilteredProjectGroup* group
 
 QModelIndex ProjectViewFilterModel::getIndexForObject(const QString& groupName, GObject* obj) const {
     FilteredProjectGroup* group = findFilterGroup(groupName);
-    SAFE_POINT(group != nullptr, L10N::nullPointerError("project filter group"), {});
+    SAFE_POINT_NN(group, {});
 
     WrappedObject* wrappedObj = group->getWrappedObject(obj);
-    SAFE_POINT(wrappedObj != nullptr, L10N::nullPointerError("filtered object"), {});
+    SAFE_POINT_NN(wrappedObj, {});
     return createIndex(group->getWrappedObjectNumber(wrappedObj), 0, wrappedObj);
 }
 

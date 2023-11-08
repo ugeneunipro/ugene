@@ -48,7 +48,7 @@ const QStringList& ComboBoxWithCheckBoxes::getCheckedItems() const {
 
 void ComboBoxWithCheckBoxes::setCheckedItems(const QStringList& items) {
     auto standardModel = qobject_cast<QStandardItemModel*>(model());
-    SAFE_POINT(standardModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
+    SAFE_POINT_NN(standardModel, );
 
     disconnect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
 
@@ -59,7 +59,7 @@ void ComboBoxWithCheckBoxes::setCheckedItems(const QStringList& items) {
 
     for (int i = 0; i < count(); ++i) {
         QStandardItem* currentItem = standardModel->item(i);
-        SAFE_POINT(currentItem != nullptr, L10N::nullPointerError("QStandardItem"), );
+        SAFE_POINT_NN(currentItem, );
 
         Qt::CheckState newState = checkedIndexes.contains(i) ? Qt::Checked : Qt::Unchecked;
 
@@ -94,7 +94,7 @@ void ComboBoxWithCheckBoxes::resizeEvent(QResizeEvent* e) {
 
 void ComboBoxWithCheckBoxes::sl_modelRowsInserted(const QModelIndex&, int start, int end) {
     QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model());
-    SAFE_POINT(standardModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
+    SAFE_POINT_NN(standardModel, );
 
     disconnect(standardModel, &QStandardItemModel::itemChanged, this, &ComboBoxWithCheckBoxes::sl_modelItemChanged);
 
@@ -116,12 +116,12 @@ void ComboBoxWithCheckBoxes::sl_modelItemChanged(QStandardItem*) {
 
 void ComboBoxWithCheckBoxes::updateOnCheckedItemsChange() {
     QStandardItemModel* standartModel = qobject_cast<QStandardItemModel*>(model());
-    SAFE_POINT(standartModel != nullptr, L10N::nullPointerError("QStandardItemModel"), );
+    SAFE_POINT_NN(standartModel, );
 
     checkedItems.clear();
     for (int i = 0; i < count(); ++i) {
         QStandardItem* currentItem = standartModel->item(i);
-        SAFE_POINT(currentItem != nullptr, L10N::nullPointerError("QStandardItem"), );
+        SAFE_POINT_NN(currentItem, );
 
         Qt::CheckState checkState = static_cast<Qt::CheckState>(currentItem->data(Qt::CheckStateRole).toInt());
         if (checkState == Qt::Checked) {

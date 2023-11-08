@@ -323,7 +323,7 @@ QList<Task*> LoadRemoteDocumentAndAddToProjectTask::onSubTaskFinished(Task* subT
 }
 
 QString LoadRemoteDocumentAndAddToProjectTask::generateReport() const {
-    SAFE_POINT(loadRemoteDocTask != nullptr, L10N::nullPointerError("LoadRemoteDocumentTask"), {});
+    SAFE_POINT_NN(loadRemoteDocTask, {});
 
     return loadRemoteDocTask->generateReport();
 }

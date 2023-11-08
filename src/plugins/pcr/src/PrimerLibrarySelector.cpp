@@ -56,7 +56,7 @@ Primer PrimerLibrarySelector::getResult() const {
 
 void PrimerLibrarySelector::sl_selectionChanged() {
     QPushButton* okButton = buttonBox->button(QDialogButtonBox::Ok);
-    SAFE_POINT(okButton != nullptr, L10N::nullPointerError("OK button"), );
+    SAFE_POINT_NN(okButton, );
 
     QList<Primer> selection = primerTable->getSelection();
     okButton->setDisabled(selection.isEmpty());

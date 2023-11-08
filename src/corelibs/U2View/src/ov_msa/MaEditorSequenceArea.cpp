@@ -717,7 +717,7 @@ void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
 
 void MaEditorSequenceArea::sl_setDefaultColorScheme() {
     MsaColorSchemeFactory* defaultFactory = getDefaultColorSchemeFactory();
-    SAFE_POINT(defaultFactory != nullptr, L10N::nullPointerError("default color scheme factory"), );
+    SAFE_POINT_NN(defaultFactory, );
     applyColorScheme(defaultFactory->getId());
 }
 
@@ -732,7 +732,7 @@ void MaEditorSequenceArea::sl_changeHighlightScheme() {
 
     QString id = a->data().toString();
     MsaHighlightingSchemeFactory* factory = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(id);
-    SAFE_POINT(factory != nullptr, L10N::nullPointerError("highlighting scheme"), );
+    SAFE_POINT_NN(factory, );
     if (ui->getEditor()->getMaObject() == nullptr) {
         return;
     }

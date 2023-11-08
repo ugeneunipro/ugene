@@ -190,10 +190,10 @@ void EnzymesADVContext::initViewContext(GObjectViewController* view) {
 
 void EnzymesADVContext::sl_search() {
     auto action = qobject_cast<GObjectViewAction*>(sender());
-    SAFE_POINT(action != nullptr, L10N::nullPointerError("GObjectViewAction"), );
+    SAFE_POINT_NN(action, );
 
     auto av = qobject_cast<AnnotatedDNAView*>(action->getObjectView());
-    SAFE_POINT(av != nullptr, L10N::nullPointerError("AnnotatedDNAView"), );
+    SAFE_POINT_NN(av, );
 
     auto seqCtx = QPointer <ADVSequenceObjectContext>(av->getActiveSequenceContext());
     SAFE_POINT(seqCtx->getAlphabet()->isNucleic(), "Expected nucleic alphabet", );
