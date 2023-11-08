@@ -70,7 +70,7 @@ Primer3Plugin::Primer3Plugin()
     // tests
     GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     auto xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    SAFE_POINT(xmlTestFormat != nullptr, L10N::nullPointerError("XMLTestFormat"), );
+    SAFE_POINT_NN(xmlTestFormat, );
 
     GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = Primer3Tests::createTestFactories();
@@ -97,10 +97,10 @@ void Primer3ADVContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
     auto viewAction = qobject_cast<GObjectViewAction*>(a);
     auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
-    SAFE_POINT(av != nullptr, L10N::nullPointerError("AnnotatedDNAView"), );
+    SAFE_POINT_NN(av, );
 
     ADVSequenceObjectContext* seqCtx = av->getActiveSequenceContext();
-    SAFE_POINT(seqCtx != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
+    SAFE_POINT_NN(seqCtx, );
 
     Primer3Dialog dialog(seqCtx);
     dialog.exec();

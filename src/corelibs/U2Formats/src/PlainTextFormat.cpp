@@ -61,7 +61,7 @@ Document* PlainTextFormat::loadTextDocument(IOAdapterReader& reader, const U2Dbi
 void PlainTextFormat::storeTextDocument(IOAdapterWriter& writer, Document* document, U2OpStatus& os) {
     CHECK(document->getObjects().size() == 1, );
     auto textObject = qobject_cast<TextObject*>(document->getObjects().first());
-    SAFE_POINT(textObject != nullptr, L10N::nullPointerError("Text object"), );
+    SAFE_POINT_NN(textObject, );
     QString text = textObject->getText();
     writer.write(os, text);
 }
