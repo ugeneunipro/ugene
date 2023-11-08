@@ -118,17 +118,13 @@ SharedAnnotationData ProcessPrimer3ResultsToAnnotationsTask::oligoToAnnotation(c
     annotationData->qualifiers.append(U2Qualifier("3'", QString::number(primer->endStability)));
     annotationData->qualifiers.append(U2Qualifier("penalty", QString::number(primer->quality)));
 
-    auto areDoubleValuesEqual = [](double val, double reference) -> bool {
-        static constexpr double EPSILON = 0.1;
-        return qAbs(reference - val) > EPSILON;
-    };
-    if (areDoubleValuesEqual(primer->bound, OLIGOTM_ERROR)) {
+    if (!qFuzzyCompare(primer->bound, OLIGOTM_ERROR)) {
         annotationData->qualifiers.append(U2Qualifier("bound%", QString::number(primer->bound)));
     }
-    if (areDoubleValuesEqual(primer->templateMispriming, ALIGN_SCORE_UNDEF)) {
+    if (!qFuzzyCompare(primer->templateMispriming, ALIGN_SCORE_UNDEF)) {
         annotationData->qualifiers.append(U2Qualifier("template_mispriming", QString::number(primer->templateMispriming)));
     }
-    if (areDoubleValuesEqual(primer->hairpin, ALIGN_SCORE_UNDEF)) {
+    if (!qFuzzyCompare(primer->hairpin, ALIGN_SCORE_UNDEF)) {
         annotationData->qualifiers.append(U2Qualifier("hairpin", QString::number(primer->hairpin)));
     }
     if (primer->type == oligo_type::OT_LEFT) {

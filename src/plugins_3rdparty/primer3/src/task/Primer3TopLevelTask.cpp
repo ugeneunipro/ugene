@@ -76,14 +76,6 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
     settings(_settings), resultFilePath(_resultFilePath), openView(_openView),
     groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {}
 
-Primer3TopLevelTask::~Primer3TopLevelTask() {
-    if (!document.isNull()) {
-        // If we created @document, but did not pass it to the project (some error appeared, for example),
-        // we need to delete it on our own.
-        document->deleteLater();
-    }
-}
-
 void Primer3TopLevelTask::prepare() {
     if (settings->getSpanIntronExonBoundarySettings().enabled) {
         SAFE_POINT(!seqObj.isNull(), L10N::nullPointerError("U2SequenceObject"), );
@@ -119,6 +111,15 @@ QList<Task*> Primer3TopLevelTask::onSubTaskFinished(Task* subTask) {
 
     res.removeAll(nullptr);
     return res;
+}
+
+Task::ReportResult Primer3TopLevelTask::report() {
+    if (!document.isNull()) {
+        // If we created @document, but did not pass it to the project (some error appeared, for example),
+        // we need to delete it on our own.
+        document->deleteLater();
+    }
+    return Task::ReportResult::ReportResult_Finished;
 }
 
 QString Primer3TopLevelTask::generateReport() const {

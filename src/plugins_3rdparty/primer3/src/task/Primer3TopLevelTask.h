@@ -62,10 +62,9 @@ public:
                         const QString& resultFilePath,
                         bool openView = true);
 
-    ~Primer3TopLevelTask();
-
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
+    ReportResult report() override;
     QString generateReport() const override;
 
     QPointer<AnnotationTableObject> getAnnotationTableObject() const;
