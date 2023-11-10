@@ -347,6 +347,7 @@ DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
       rcCharactersCount(MAP_SIZE, 0),
       dinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0)),
       rcDinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0)) {
+    SAFE_POINT_EXT(U2Region::sumLength(regions) != 0, setError("selected regions have zero length"), );
     SAFE_POINT_EXT(alphabet != nullptr, setError("Alphabet is NULL"), );
 }
 
@@ -431,11 +432,13 @@ void DNAStatisticsTask::computeStats() {
     const qint64 ungappedLength = totalLength - charactersCount.value(U2Msa::GAP_CHAR, 0);
 
     if (alphabet->isNucleic()) {
-        //  gcContent = ((nG + nC + nS + 0.5*nM + 0.5*nK + 0.5*nR + 0.5*nY + (2/3)*nB + (1/3)*nD + (1/3)*nH + (2/3)*nV + 0.5*nN) / n ) * 100%
-        for (int i = 0, n = charactersCount.size(); i < n; ++i) {
-            result.gcContent += charactersCount[i] * GC_RATIO_MAP[i];
+        if (ungappedLength > 0) {
+            //  gcContent = ((nG + nC + nS + 0.5*nM + 0.5*nK + 0.5*nR + 0.5*nY + (2/3)*nB + (1/3)*nD + (1/3)*nH + (2/3)*nV + 0.5*nN) / n ) * 100%
+            for (int i = 0, n = charactersCount.size(); i < n; ++i) {
+                result.gcContent += charactersCount[i] * GC_RATIO_MAP[i];
+            }
+            result.gcContent = 100.0 * result.gcContent / ungappedLength;
         }
-        result.gcContent = 100.0 * result.gcContent / ungappedLength;
 
         // Calculating molecular weight
         // Source: http://www.basic.northwestern.edu/biotools/oligocalc.html
