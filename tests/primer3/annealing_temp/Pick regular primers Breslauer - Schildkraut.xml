@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/annealing_temp/Pick regular primers Breslauer - Schildkraut.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="Pick regular primers Breslauer - Schildkraut" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_LOWERCASE_MASKING="0" 
 			PRIMER_EXPLAIN_FLAG="1" 
@@ -10,9 +12,7 @@
 			PRIMER_PICK_LEFT_PRIMER="1" 
 			PRIMER_NUM_RETURN="4" 
 			PRIMER_TM_FORMULA="0" 
-			PRIMER_SALT_CORRECTIONS="0" 
-			SEQUENCE_ID="Pick regular primers Breslauer - Schildkraut" 
-			SEQUENCE_TEMPLATE="atggatttgatggacatggatgccatcaatgacctccacttctctggacacagctccctcaccaacacccctacttccgacgaggattatggttgcacctggaaccactggtctcccatcgtcaactgggacacctttacaggtgccccagatgactttcaccacctcatggacaccatcatcgaggacagaacaactgtcctcgaacagctcagtccatctatcaccacaaccaccaccaccaccacaaccacggatgaggaagaagaagaaatggaaacaacaaccacaacaacaacaacggcaataaaaacgcatgaagttggtgatgattcaaaagggctaaaactagtgcacctattgatggctggcgcggaagccttaaccggttcaaccaaaaaccgtgacttagctcgagtgatattgatccggctcaaggaattagtctcacaacatgctaacggctccaacatggagagacttgccgctcatttcaccgaagcccttcatggactactagaaggtgctgggggtgcgcataataaccaccatcaccacaacaacaacaaacattacctcaccacaaatggtccccacgacaaccaaaacgacacacttgctgctttccaactacttcaagacatgtcaccttacgtcaaattcggccacttcacagccaatcaagccatcatcgaagccgtggcccacgaacgccgcgtccatgtcatcgactacgatatcatggaaggggtccaatgggcctcattaatccaatcacttgcttccaacaacaacggtccacatcttcggataaccgcattatcgcggacaggaaccggccggaggtcaatcgccaccgtacaagaaaccggcaggcgattaacctcctttgccgcttccctcggacaaccattttcttttcatcactgcagattagactccgatgaaactttccgtccttctgcattaaagcttgtacgtggagaggctttggttttcaactgcatgctgaatttacctcaccttagttaccgtgcaccggaatcagttgcttcgtttttaaacggagcaaaaacgttgaatccaaagcttgtgacgttggttgaagaagaagttggttctgttattggtgggtttgtggaaaggttcatggactcacttcatcattattcagcggtttttgattcattggaggctggttttccgatgcagaaccgggcccggactttggtggagagggtattttttgggcctagaattgcaggctcgttgggccggatatatagaacgggtggtgaagaggagagaaggtcatggggggagtggttaggtgaggtagggtttaggggagttccggtgagctttgcaaatcattgtcaagcaaagctgttgttagggctttttaatgatgggtatagggttgaagaggtgggtgtgggtagtaataagttggtgttggattggaaatcaagacgtttgctttctgcttccctttggacttgttcttcttcagattctgatttatag"/>
+			PRIMER_SALT_CORRECTIONS="0"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="4" 
 			PRIMER_RIGHT_NUM_RETURNED="4" 

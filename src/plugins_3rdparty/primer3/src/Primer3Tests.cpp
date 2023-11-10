@@ -21,21 +21,68 @@
 
 #include "Primer3Tests.h"
 
+#include "task/Primer3TaskSettings.h"
+#include "task/Primer3TopLevelTask.h"
+#include "task/PrimerPair.h"
+#include "task/PrimerSingle.h"
+
+#include <U2Core/AppContext.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <QFile>
+#include <QtGlobal>
 
 namespace U2 {
 
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
+    seqObjCtx = el.attribute("sequence");
+    circular = el.attribute("circular") == "true";
+
     settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
     settings->getPrimerSettings()->first_base_index = 0;  // Default mode for XML tests.
-    settings->setIncludedRegion(U2Region(0, -1));
+    auto buf = el.attribute("range");
+    if (!buf.isEmpty()) {
+        auto rangeSplit = buf.split(",");
+        int start = rangeSplit.first().toInt();
+        int length = rangeSplit.last().toInt();
+        settings->setSequenceRange(U2Region(start, length));
+    }
 
-    QString buf;
+    CheckComplementSettings ccs;
+    ccs.enabled = el.attribute("enable-check-complement-settings").toInt() == 1;
+    if (ccs.enabled) {
+        auto getIntValue = [&el](const QString& attributeName, int defaultAttributeValue) -> int {
+            bool ok = false;
+            int value = el.attribute(attributeName).toInt(&ok);
+            int result = defaultAttributeValue;
+            if (ok) {
+                result = value;
+            }
+            return result;
+        };
+        ccs.enableMaxComplementPairs = el.attribute("enable-max-complement-pairs").toInt() == 1;
+        ccs.maxComplementPairs = getIntValue("max-complement-pairs", ccs.maxComplementPairs);
+        ccs.enableMaxGcContent = el.attribute("enable-max-gc-content").toInt() == 1;
+        ccs.maxGcContent = getIntValue("max-gc-content", ccs.maxGcContent);
+        if (el.attribute("save-csv-report").toInt() == 1) {
+            auto tmpDataDir = env->getVar("TEMP_DATA_DIR") + "/";
+            csvReportTmpFile = QSharedPointer<QTemporaryFile>(new QTemporaryFile(env->getVar("TEMP_DATA_DIR") + "/XXXXXX.csv"));
+            CHECK_EXT(csvReportTmpFile->open(), L10N::errorWritingFile(csvReportTmpFile->fileName()), );
+
+            ccs.csvReportPath = csvReportTmpFile->fileName();
+        }
+        settings->setCheckComplementSettings(ccs);
+    }
+
+    auto reportPath = el.attribute("report-path");
+    if (!reportPath.isEmpty()) {
+        reportPath = env->getVar("COMMON_DATA_DIR") + "/" + reportPath;
+    }
+
     QDomNodeList inputParameters = el.elementsByTagName("plugin_primer_3_in");
     for (int inputParametersIndex = 0; inputParametersIndex < inputParameters.size(); inputParametersIndex++) {
         QDomNode n = inputParameters.item(inputParametersIndex);
@@ -57,29 +104,6 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
             if (!buf.isEmpty()) {
                 settings->setDoubleProperty(key, buf.toDouble());
             }
-        }
-        // 1
-        buf = elInput.attribute("SEQUENCE_ID");
-        if (!buf.isEmpty()) {
-            settings->setSequenceName(buf.toLatin1());
-        }
-        // 2
-        buf = elInput.attribute("SEQUENCE_TEMPLATE");
-        if (!buf.isEmpty()) {
-            settings->setSequence(buf.toLatin1());
-        }
-
-        buf = elInput.attribute("CIRCULAR");
-        if (!buf.isEmpty()) {
-            settings->setCircularity(buf == "true");
-        }
-
-        buf = elInput.attribute("RANGE");
-        if (!buf.isEmpty()) {
-            auto rangeSplit = buf.split(",");
-            int start = rangeSplit.first().toInt();
-            int length = rangeSplit.last().toInt();
-            settings->setSequenceRange(U2Region(start, length));
         }
 
         // 3
@@ -419,93 +443,80 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
 
         for (int pairIndex = 0; pairIndex < pairsCount; pairIndex++) {
             QSharedPointer<PrimerPair> result(new PrimerPair);
-            result->setLeftPrimer(leftPrimers[pairIndex]);
-            result->setRightPrimer(rightPrimers[pairIndex]);
+            result->leftPrimer = leftPrimers[pairIndex];
+            result->rightPrimer = rightPrimers[pairIndex];
             if (internalCount > 0) {
-                result->setInternalOligo(internalPrimers[pairIndex]);
+                result->internalOligo = internalPrimers[pairIndex];
             }
             auto suffix = "_" + QString::number(pairIndex);
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY");
                 if (!value.isEmpty()) {
-                    result->setComplAny(value.toDouble());
+                    result->complAny = value.toDouble();
                 } else {
                     value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_TH");
                     if (!value.isEmpty()) {
-                        result->setComplAny(value.toDouble());
+                        result->complAny = value.toDouble();
                     }
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END");
                 if (!value.isEmpty()) {
-                    result->setComplEnd(value.toDouble());
+                    result->complEnd = value.toDouble();
                 } else {
                     value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_TH");
                     if (!value.isEmpty()) {
-                        result->setComplEnd(value.toDouble());
+                        result->complEnd = value.toDouble();
                     }
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_SIZE");
                 if (!value.isEmpty()) {
-                    result->setProductSize(value.toInt());
+                    result->productSize = value.toInt();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PRODUCT_TM");
                 if (!value.isEmpty()) {
-                    result->setProductTm(value.toDouble());
+                    result->tm = value.toDouble();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_PENALTY");
                 if (!value.isEmpty()) {
-                    result->setProductQuality(value.toDouble());
+                    result->quality = value.toDouble();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING");
                 if (!value.isEmpty()) {
                     auto mispriming = value.split(", ");
-                    result->setRepeatSim(mispriming.first().toDouble());
-                    result->setRepeatSimName(mispriming.last());
+                    result->repeatSim = mispriming.first().toDouble();
+                    result->repeatSimName = mispriming.last();
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_ANY_STUCT");
                 if (!value.isEmpty()) {
-                    result->setComplAnyStruct(value);
+                    result->complAnyStruct = value;
                 }
             }
             {
                 QString value = elOutput.attribute("PRIMER_PAIR" + suffix + "_COMPL_END_STUCT");
                 if (!value.isEmpty()) {
-                    result->setComplEndStruct(value);
+                    result->complEndStruct = value;
                 }
             }
             expectedBestPairs << result;
         }
     }
 
-    int sequenceLength = settings->getSequence().size();
-    if (settings->getSequenceRange().isEmpty()) {
-        settings->setSequenceRange(U2Region(0, sequenceLength));
-    }
     if (settings->getTask() == check_primers) {
-        settings->setIntProperty("PRIMER_PICK_LEFT_PRIMER", 0);
-        settings->setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 0);
-        settings->setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 0);
-    }
-    if (!settings->getLeftInput().isEmpty()) {
-        settings->setIntProperty("PRIMER_PICK_LEFT_PRIMER", 1);
-    }
-    if (!settings->getRightInput().isEmpty()) {
-        settings->setIntProperty("PRIMER_PICK_RIGHT_PRIMER", 1);
-    }
-    if (!settings->getInternalInput().isEmpty()) {
-        settings->setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", 1);
+        settings->setIntProperty("PRIMER_PICK_LEFT_PRIMER", !settings->getLeftInput().isEmpty());
+        settings->setIntProperty("PRIMER_PICK_RIGHT_PRIMER", !settings->getRightInput().isEmpty());
+        settings->setIntProperty("PRIMER_PICK_INTERNAL_OLIGO", !settings->getInternalInput().isEmpty());
     }
     if (settings->getPrimerSettings()->p_args.min_quality != 0 && settings->getPrimerSettings()->p_args.min_end_quality < settings->getPrimerSettings()->p_args.min_quality) {
         settings->getPrimerSettings()->p_args.min_end_quality = settings->getPrimerSettings()->p_args.min_quality;
@@ -513,6 +524,22 @@ void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
 }
 
 void GTest_Primer3::prepare() {
+    if (!seqObjCtx.isEmpty()) {
+        seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
+        CHECK_EXT(seqObj != nullptr, setError(QString("Sequence context not found %1").arg(seqObjCtx)), );
+
+        QByteArray seqData = seqObj->getWholeSequenceData(stateInfo);
+        CHECK_OP(stateInfo, );
+
+        settings->setSequenceName(seqObj->getSequenceName().toLocal8Bit());
+        settings->setSequence(seqData, circular);
+        seqObj->setCircular(circular);
+    }
+    int sequenceLength = settings->getSequence().size();
+    if (settings->getSequenceRange().isEmpty()) {
+        settings->setSequenceRange(U2Region(0, sequenceLength));
+    }
+
     if (!localErrorMessage.isEmpty()) {
         return;
     }
@@ -524,7 +551,19 @@ void GTest_Primer3::prepare() {
         localErrorMessage = GTest::tr("Sequence quality data missing");
         return;
     }
-    task = new Primer3Task(settings);
+
+    if (seqObj != nullptr) {
+        auto dbiReg = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
+        CHECK_OP(stateInfo, );
+
+        annotationTableObject = QSharedPointer<AnnotationTableObject>(new AnnotationTableObject(seqObj->getSequenceName(), dbiReg));
+        annotationTableObject->addObjectRelation(seqObj, ObjectRole_Sequence);
+
+        task = new Primer3TopLevelTask(settings, seqObj, annotationTableObject.get(), "top_primers", "top_primers", "");
+    } else {
+        auto newFilePath = env->getVar("TEMP_DATA_DIR") + "/check_primers.gb";
+        task = new Primer3TopLevelTask(settings, newFilePath, false);
+    }
     addSubTask(task);
 }
 
@@ -558,59 +597,69 @@ Task::ReportResult GTest_Primer3::report() {
         return ReportResult_Finished;
     }
 
-    const auto& currentBestPairs = task->getBestPairs();
-    if (currentBestPairs.size() != expectedBestPairs.size()) {
-        stateInfo.setError(GTest::tr("PRIMER_PAIR_NUM_RETURNED is incorrect. Expected:%1, but Actual:%2").arg(expectedBestPairs.size()).arg(currentBestPairs.size()));
-        return ReportResult_Finished;
-    }
+    if (!reportPath.isEmpty()) {
+        QString currentReport;
+        if (!csvReportTmpFile.isNull()) {
+            QFile csvReportFile(csvReportTmpFile->fileName());
+            CHECK_EXT(csvReportFile.open(QIODevice::ReadOnly), setError(L10N::errorReadingFile(csvReportTmpFile->fileName())), Task::ReportResult::ReportResult_Finished);
 
-    for (int i = 0; i < expectedBestPairs.size(); i++) {
-        if (!checkPrimerPair(currentBestPairs[i], expectedBestPairs[i], "_" + QString::number(i))) {
-            return ReportResult_Finished;
+            currentReport = csvReportFile.readAll();
+            csvReportFile.close();
+        } else {
+            currentReport = task->generateReport();
         }
+        QFile reportFile(reportPath);
+        CHECK_EXT(reportFile.open(QIODevice::ReadOnly), setError(L10N::errorReadingFile(reportPath)), Task::ReportResult::ReportResult_Finished);
+
+        QString expectedReport = reportFile.readAll();
+        CHECK_EXT(currentReport == expectedReport, setError("Expected and result reports are not equal"), Task::ReportResult::ReportResult_Finished);
     }
 
-    if (expectedBestPairs.size() != 0) {
+    if (task->getAnnotationTableObject() == nullptr) {
+        CHECK_EXT(expectedBestPairs.isEmpty() && expectedSinglePrimers.isEmpty(), setError("No primers, but expected"), ReportResult_Finished);
         return ReportResult_Finished;
     }
 
-    const auto& currentSinglePrimers = task->getSinglePrimers();
-    if (currentSinglePrimers.size() != expectedSinglePrimers.size()) {
-        stateInfo.setError(GTest::tr("Incorrect single primers num. Expected:%1, but Actual:%2").arg(expectedSinglePrimers.size()).arg(currentSinglePrimers.size()));
+    AnnotationGroup* rootGroup = task->getAnnotationTableObject()->getRootGroup();
+    const auto& topPrimersGroups = rootGroup->getSubgroups();
+    if (topPrimersGroups.isEmpty()) {
+        CHECK_EXT(expectedBestPairs.isEmpty() && expectedSinglePrimers.isEmpty(), setError("No primers, but expected"), ReportResult_Finished);
         return ReportResult_Finished;
     }
 
-    if (expectedSinglePrimers.size() > 0 && expectedBestPairs.size() == 0) {
-        int leftCount = 0;
-        int rightCount = 0;
-        for (int i = 0; i < expectedSinglePrimers.size(); i++) {
-            const auto& expectedrimer = expectedSinglePrimers.value(i);
-            const auto& currentPrimer = currentSinglePrimers.value(i);
-            if (expectedrimer->getType() != currentPrimer->getType()) {
-                stateInfo.setError(GTest::tr("Incorrect single primer type, num: %1. Expected:%2, but Actual:%3").arg(i).arg(expectedrimer->getType()).arg(currentPrimer->getType()));
-                return ReportResult_Finished;
+    auto topPrimersGroup = topPrimersGroups.first();
+    if (!expectedBestPairs.isEmpty()) {
+        const auto& primerGroups = topPrimersGroup->getSubgroups();
+        CHECK_EXT(primerGroups.size() == expectedBestPairs.size(), setError("Unexpected primer pairs size"), ReportResult_Finished);
+
+        for (int i = 0; i < primerGroups.size(); i++) {
+            auto annPrimerGroup = primerGroups[i];
+            const auto& annotations = annPrimerGroup->getAnnotations();
+            auto expectedPair = expectedBestPairs[i];
+            if (!expectedPair->leftPrimer.isNull()) {
+                CHECK(comparePrimerSingleFromPairAndAnnotation(expectedPair, annotations, oligo_type::OT_LEFT), ReportResult_Finished);
             }
 
-            QString suffix = "PRIMER_";
-            bool internalOligo = false;
-            switch (expectedrimer->getType()) {
-                case OT_LEFT:
-                    suffix += "LEFT_" + QString::number(i);
-                    leftCount++;
-                    break;
-                case OT_RIGHT:
-                    suffix += "RIGHT_" + QString::number(i - leftCount);
-                    rightCount++;
-                    break;
-                case OT_INTL:
-                    suffix += "INTERNAL_" + QString::number(i - leftCount - rightCount);
-                    internalOligo = true;
-                    break;
+            if (!expectedPair->rightPrimer.isNull()) {
+                CHECK(comparePrimerSingleFromPairAndAnnotation(expectedPair, annotations, oligo_type::OT_RIGHT), ReportResult_Finished);
             }
-            if (!checkPrimer(currentPrimer, expectedrimer, suffix, internalOligo)) {
-                return ReportResult_Finished;
+
+            if (!expectedPair->internalOligo.isNull()) {
+                CHECK(comparePrimerSingleFromPairAndAnnotation(expectedPair, annotations, oligo_type::OT_INTL), ReportResult_Finished);
             }
         }
+    } else if (!expectedSinglePrimers.isEmpty()) {
+        const auto& annotations = topPrimersGroup->getAnnotations();
+        CHECK_EXT(annotations.size() == expectedSinglePrimers.size(), setError("Unexpected single primers size"), ReportResult_Finished);
+
+        for (int i = 0; i < annotations.size(); i++) {
+            auto annotation = annotations[i];
+            const auto& primer = expectedSinglePrimers[i];
+
+            CHECK(comparePrimerSingleAndAnnotation(primer, annotation, "Single #" + QString::number(i + 1)), ReportResult_Finished);
+        }
+    } else {
+        setError("Not expected primers, but annotation has been created");
     }
 
     return ReportResult_Finished;
@@ -622,11 +671,12 @@ bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, QSharedPoint
         if (!buf.isEmpty()) {
             int start = buf.split(',')[0].toInt();
             int length = buf.split(',')[1].toInt();
-            outPrimer->setStart(start);
-            outPrimer->setLength(length);
+            outPrimer->start = start;
+            outPrimer->length = length;
             if (prefix.contains("RIGHT")) {
-                outPrimer->setStart(start - length + 1);
+                outPrimer->start = start - length + 1;
             }
+            outPrimer->start = outPrimer->start - settings->getPrimerSettings()->first_base_index;
         } else {
             return false;
         }
@@ -634,190 +684,187 @@ bool GTest_Primer3::readPrimer(QDomElement element, QString prefix, QSharedPoint
     {
         QString buf = element.attribute(prefix + "_TM");
         if (!buf.isEmpty()) {
-            outPrimer->setMeltingTemperature(buf.toDouble());
+            outPrimer->meltingTemperature = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_GC_PERCENT");
         if (!buf.isEmpty()) {
-            outPrimer->setGcContent(buf.toDouble());
+            outPrimer->gcContent = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_ANY");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfAny(buf.toDouble());
+            outPrimer->selfAny = buf.toDouble();
         } else {
             buf = element.attribute(prefix + "_SELF_ANY_TH");
             if (!buf.isEmpty()) {
-                outPrimer->setSelfAny(buf.toDouble());
+                outPrimer->selfAny = buf.toDouble();
             }
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_END");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfEnd(buf.toDouble());
+            outPrimer->selfEnd = buf.toDouble();
         } else {
             buf = element.attribute(prefix + "_SELF_END_TH");
             if (!buf.isEmpty()) {
-                outPrimer->setSelfEnd(buf.toDouble());
+                outPrimer->selfEnd = buf.toDouble();
+            }
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_TEMPLATE_MISPRIMING");
+        if (!buf.isEmpty()) {
+            outPrimer->templateMispriming = buf.toDouble();
+        } else {
+            buf = element.attribute(prefix + "_TEMPLATE_MISPRIMING_TH");
+            if (!buf.isEmpty()) {
+                outPrimer->templateMispriming = buf.toDouble();
             }
         }
     }
     {
         QString buf = element.attribute(prefix + "_HAIRPIN_TH");
         if (!buf.isEmpty()) {
-            outPrimer->setHairpin(buf.toDouble());
+            outPrimer->hairpin = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_PENALTY");
         if (!buf.isEmpty()) {
-            outPrimer->setQuality(buf.toDouble());
+            outPrimer->quality = buf.toDouble();
+        }
+    }
+    {
+        QString buf = element.attribute(prefix + "_BOUND");
+        if (!buf.isEmpty()) {
+            outPrimer->bound = buf.toDouble();
         }
     }
     {
         QString buf = element.attribute(prefix + "_LIBRARY_" + (internalOligo ? "MISHYB" : "MISPRIMING"));
         if (!buf.isEmpty()) {
             auto mispriming = buf.split(", ");
-            outPrimer->setRepeatSim(mispriming.first().toDouble());
+            outPrimer->repeatSim = mispriming.first().toDouble();
             mispriming.removeFirst();
-            outPrimer->setRepeatSimName(mispriming.join(", "));
+            outPrimer->repeatSimName = mispriming.join(", ");
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_ANY_STUCT");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfAnyStruct(buf);
+            outPrimer->selfAnyStruct = buf;
         }
     }
     {
         QString buf = element.attribute(prefix + "_SELF_END_STUCT");
         if (!buf.isEmpty()) {
-            outPrimer->setSelfEndStruct(buf);
+            outPrimer->selfEndStruct = buf;
         }
     }
+
 
     if (!internalOligo) {
         {
             QString buf = element.attribute(prefix + "_END_STABILITY");
             if (!buf.isEmpty()) {
-                outPrimer->setEndStability(buf.toDouble());
+                outPrimer->endStability = buf.toDouble();
             }
         }
     }
     return true;
 }
 
-bool GTest_Primer3::checkPrimerPair(const QSharedPointer<PrimerPair>& primerPair, const QSharedPointer<PrimerPair>& expectedPrimerPair, QString suffix) {
-    if (!checkPrimer(primerPair->getLeftPrimer(), expectedPrimerPair->getLeftPrimer(), "PRIMER_LEFT" + suffix, false)) {
-        return false;
-    }
-    if (!checkPrimer(primerPair->getRightPrimer(), expectedPrimerPair->getRightPrimer(), "PRIMER_RIGHT" + suffix, false)) {
-        return false;
-    }
-    if (!checkPrimer(primerPair->getInternalOligo(), expectedPrimerPair->getInternalOligo(), "PRIMER_INTERNAL" + suffix, true)) {
-        return false;
-    }
-    if (!checkDoubleProperty(primerPair->getComplAny(), expectedPrimerPair->getComplAny(), "PRIMER_PAIR" + suffix + "_COMPL_ANY")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primerPair->getComplEnd(), expectedPrimerPair->getComplEnd(), "PRIMER_PAIR" + suffix + "_COMPL_END")) {
-        return false;
-    }
-    if (!checkIntProperty(primerPair->getProductSize() + settings->getOverhangLeft().size() + settings->getOverhangRight().size(), expectedPrimerPair->getProductSize(), "PRIMER_PAIR" + suffix + "_PRODUCT_SIZE")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primerPair->getProductQuality(), expectedPrimerPair->getProductQuality(), "PRIMER_PAIR" + suffix + "_PENALTY")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primerPair->getProductTm(), expectedPrimerPair->getProductTm(), "PRIMER_PAIR" + suffix + "_PRODUCT_TM")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primerPair->getRepeatSim(), expectedPrimerPair->getRepeatSim(), "PRIMER_PAIR" + suffix + "_LIBRARY_MISPRIMING")) {
-        return false;
-    }
-    if (primerPair->getRepeatSimName() != expectedPrimerPair->getRepeatSimName()) {
-        stateInfo.setError(GTest::tr("PRIMER_PAIR%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3").arg(suffix).arg(expectedPrimerPair->getRepeatSimName()).arg(primerPair->getRepeatSimName()));
-        return false;
-    }
-    if (primerPair->getComplAnyStruct() != expectedPrimerPair->getComplAnyStruct()) {
-        stateInfo.setError(GTest::tr("PRIMER_PAIR%1_COMPL_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(suffix).arg(expectedPrimerPair->getComplAnyStruct()).arg(primerPair->getComplAnyStruct()));
-        return false;
-    }
-    if (primerPair->getComplEndStruct() != expectedPrimerPair->getComplEndStruct()) {
-        stateInfo.setError(GTest::tr("PRIMER_PAIR%1_COMPL_END_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(suffix).arg(expectedPrimerPair->getComplEndStruct()).arg(primerPair->getComplEndStruct()));
-        return false;
+bool GTest_Primer3::comparePrimerSingleFromPairAndAnnotation(const QSharedPointer<PrimerPair>& pair, const QList<Annotation*>& annotations, oligo_type type) {
+    QSharedPointer<PrimerSingle> primer;
+    Annotation* annotation = nullptr;
+    QString primerText;
+    switch (type) {
+    case oligo_type::OT_LEFT:
+        primer = pair->leftPrimer;
+        for (auto ann : qAsConst(annotations)) {
+            CHECK_CONTINUE(ann->getName() == "top_primers" && ann->getStrand() == U2Strand::Direct);
+
+            annotation = ann;
+            break;
+        }
+        annotation = annotations.first();
+        primerText = "Left";
+        break;
+    case oligo_type::OT_RIGHT:
+        primer = pair->rightPrimer;
+        for (auto ann : qAsConst(annotations)) {
+            CHECK_CONTINUE(ann->getName() == "top_primers" && ann->getStrand() == U2Strand::Complementary);
+
+            annotation = ann;
+            break;
+        }
+        primerText = "Right";
+        break;
+    case oligo_type::OT_INTL:
+        primer = pair->internalOligo;
+        for (auto ann : qAsConst(annotations)) {
+            CHECK_CONTINUE(ann->getName() == "internalOligo");
+
+            annotation = ann;
+            break;
+        }
+        primerText = "Internal";
+        break;
     }
 
-    return true;
+    return comparePrimerSingleAndAnnotation(primer, annotation, primerText, pair->productSize);
 }
 
-bool GTest_Primer3::checkPrimer(const QSharedPointer<PrimerSingle>& primer, const QSharedPointer<PrimerSingle>& expectedPrimer, QString prefix, bool internalOligo) {
-    if (primer == nullptr) {
-        if (expectedPrimer == nullptr) {
-            return true;
-        } else {
-            stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2,%3, but Actual:NULL")
-                                   .arg(prefix)
-                                   .arg(expectedPrimer->getStart())
-                                   .arg(expectedPrimer->getLength()));
-            return false;
+bool GTest_Primer3::comparePrimerSingleAndAnnotation(const QSharedPointer<PrimerSingle>& primer, Annotation* annotation, const QString& primerText, int productSize) {
+    CHECK_EXT(!primer.isNull(), setError(QString("%1 primer is missed").arg(primerText)), false);
+    CHECK_EXT(annotation != nullptr, setError(QString("%1 annotation is missed").arg(primerText)), false);
+
+    int start = primer->start;
+    int length = primer->length;
+    auto regs = annotation->getRegions();
+    if (regs.size() == 2) {
+        CHECK_EXT(settings->isSequenceCircular(), setError("Sequence is not circular, but should be"), false);
+
+        auto firstRegion = regs.first();
+        int regStart = firstRegion.startPos;
+        int regLength = firstRegion.length + regs.last().length;
+        CHECK_EXT(regStart == start && regLength == length, setError(QString("%1 primer on junction point has incorrect region").arg(primerText)), false);
+    } else if (regs.size() == 1) {
+        auto region = regs.first();
+        CHECK_EXT(region.startPos == start && region.length == length, setError(QString("%1 primer has incorrect region").arg(primerText)), false);
+    } else {
+        setError("Unexpected region size");
+        return false;
+    }
+    const auto qualifiers = annotation->getQualifiers();
+    for (const auto qual : qAsConst(qualifiers)) {
+        if (qual.name == "3'") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->endStability, "3'"), false);
+        } else if (qual.name == "any") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->selfAny, "any"), false);
+        } else if (qual.name == "end") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->selfEnd, "end"), false);
+        } else if (qual.name == "gc%") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->gcContent, "gc%"), false);
+        } else if (qual.name == "penalty") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->quality, "penalty"), false);
+        } else if (qual.name == "product_size") {
+            CHECK(checkIntProperty(qual.value.toInt(), productSize, "product_size"), false);
+        } else if (qual.name == "tm") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->meltingTemperature, "tm"), false);
+        } else if (qual.name == "bound%") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->bound, "bound%"), false);
+        } else if (qual.name == "template_mispriming") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->templateMispriming, "template_mispriming"), false);
+        } else if (qual.name == "hairpin") {
+            CHECK(checkDoubleProperty(qual.value.toDouble(), primer->hairpin, "hairpin"), false);
         }
-    }
-    if (expectedPrimer == nullptr) {
-        stateInfo.setError(GTest::tr("%1 is incorrect. Expected:NULL, but Actual:%2,%3")
-                               .arg(prefix)
-                               .arg(primer->getStart())
-                               .arg(primer->getLength()));
-        return false;
-    }
-    {
-        if ((primer->getStart() + settings->getFirstBaseIndex() != expectedPrimer->getStart()) ||
-            (primer->getLength() != expectedPrimer->getLength())) {
-            stateInfo.setError(GTest::tr("%1 is incorrect. Expected:%2,%3, but Actual:%4,%5")
-                                   .arg(prefix)
-                                   .arg(expectedPrimer->getStart() + settings->getFirstBaseIndex())
-                                   .arg(expectedPrimer->getLength())
-                                   .arg(primer->getStart())
-                                   .arg(primer->getLength()));
-            return false;
-        }
-    }
-    if (!checkDoubleProperty(primer->getMeltingTemperature(), expectedPrimer->getMeltingTemperature(), prefix + "_TM")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primer->getGcContent(), expectedPrimer->getGcContent(), prefix + "_GC_PERCENT")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primer->getSelfAny(), expectedPrimer->getSelfAny(), prefix + "_SELF_ANY")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primer->getSelfEnd(), expectedPrimer->getSelfEnd(), prefix + "_SELF_END")) {
-        return false;
-    }
-    if (!checkDoubleProperty(primer->getRepeatSim(), expectedPrimer->getRepeatSim(), prefix + "_LIBRARY_MISPRIMING")) {
-        return false;
-    }
-    if (primer->getRepeatSimName() != expectedPrimer->getRepeatSimName()) {
-        stateInfo.setError(GTest::tr("%1_LIBRARY_MISPRIMING_NAME name is incorrect. Expected:%2, but Actual:%3").arg(prefix).arg(expectedPrimer->getRepeatSimName()).arg(primer->getRepeatSimName()));
-        return false;
-    }
-    if (primer->getSelfAnyStruct() != expectedPrimer->getSelfAnyStruct()) {
-        stateInfo.setError(GTest::tr("%1_SELF_ANY_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(prefix).arg(expectedPrimer->getSelfAnyStruct()).arg(primer->getSelfAnyStruct()));
-        return false;
-    }
-    if (primer->getSelfEndStruct() != expectedPrimer->getSelfEndStruct()) {
-        stateInfo.setError(GTest::tr("%1_SELF_END_STUCT name is incorrect. Expected:%2, but Actual:%3").arg(prefix).arg(expectedPrimer->getSelfEndStruct()).arg(primer->getSelfEndStruct()));
-        return false;
     }
 
-    if (!internalOligo) {
-        if (!checkDoubleProperty(primer->getEndStability(), expectedPrimer->getEndStability(), prefix + "_END_STABILITY")) {
-            return false;
-        }
-    }
     return true;
 }
 
@@ -835,121 +882,6 @@ bool GTest_Primer3::checkDoubleProperty(double value, double expectedValue, QStr
         return false;
     }
     return true;
-}
-
-const QString GTest_Primer3ToAnnotations::TOP_PRIMERS = "top_primers";
-
-void GTest_Primer3ToAnnotations::init(XMLTestFormat*, const QDomElement& el) {
-    seqObjCtxName = el.attribute("sequence");
-    CHECK_EXT(!seqObjCtxName.isEmpty(), stateInfo.setError("Sequence object context not specified"), );
-    
-    aObjName = el.attribute("annotations");
-    CHECK_EXT(!aObjName.isEmpty(), stateInfo.setError("Annotations table object not specified"), );
-
-    settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
-    settings->setIntProperty("PRIMER_NUM_RETURN", 1);
-
-    CheckComplementSettings ccs;
-    ccs.enabled = el.attribute("enable-check-complement-settings").toInt() == 1;
-    if (ccs.enabled) {
-        auto getIntValue = [&el](const QString& attributeName, int defaultAttributeValue) -> int {
-            bool ok = false;
-            int value = el.attribute(attributeName).toInt(&ok);
-            int result = defaultAttributeValue;
-            if (ok) {
-                result = value;
-            }
-            return result;
-        };
-        ccs.enableMaxComplementPairs = el.attribute("enable-max-complement-pairs").toInt() == 1;
-        ccs.maxComplementPairs = getIntValue("max-complement-pairs", ccs.maxComplementPairs);
-        ccs.enableMaxGcContent = el.attribute("enable-max-gc-content").toInt() == 1;
-        ccs.maxGcContent = getIntValue("max-gc-content", ccs.maxGcContent);
-        if (el.attribute("save-csv-report").toInt() == 1) {
-            auto tmpDataDir = env->getVar("TEMP_DATA_DIR") + "/";
-            csvReportTmpFile = QSharedPointer<QTemporaryFile>(new QTemporaryFile(env->getVar("TEMP_DATA_DIR") + "/XXXXXX.csv"));
-            CHECK_EXT(csvReportTmpFile->open(), L10N::errorWritingFile(csvReportTmpFile->fileName()), );
-            
-            ccs.csvReportPath = csvReportTmpFile->fileName();
-        }
-        settings->setCheckComplementSettings(ccs);
-    }
-
-    QString rar = el.attribute("result-annotations-region");
-    if (!rar.isEmpty()) {
-        auto rarSplit = rar.split(";");
-        auto left = rarSplit.first().split(",");
-        resultPrimerAnnotationsRegions.first = U2Region(left.first().toInt(), left.last().toInt());
-        auto right = rarSplit.last().split(",");
-        resultPrimerAnnotationsRegions.second = U2Region(right.first().toInt(), right.last().toInt());
-    }
-
-    QString commonDataDir = env->getVar("COMMON_DATA_DIR");
-    reportPath = commonDataDir + "/" + el.attribute("report-path");
-}
-
-void GTest_Primer3ToAnnotations::prepare() {
-    seqObj = getContext<U2SequenceObject>(this, seqObjCtxName);
-    CHECK_EXT(seqObj != nullptr, setError(QString("Sequence context not found %1").arg(seqObjCtxName)), );
-
-    annObj = getContext<AnnotationTableObject>(this, aObjName);
-    CHECK_EXT(annObj != nullptr, setError(QString("Annotations table object not found %1").arg(aObjName)), );
-
-    settings->setSequence(seqObj->getWholeSequenceData(stateInfo));
-    CHECK_OP(stateInfo, );
-
-    settings->setSequenceName(seqObj->getSequenceName().toLocal8Bit());
-
-    task = new Primer3ToAnnotationsTask(settings, seqObj, annObj, TOP_PRIMERS, TOP_PRIMERS, "");
-    addSubTask(task);
-}
-
-Task::ReportResult GTest_Primer3ToAnnotations::report() {
-    CHECK_OP(task->getStateInfo(), Task::ReportResult::ReportResult_Finished);
-
-    if (!reportPath.isEmpty()) {
-        QString currentReport;
-        if (!csvReportTmpFile.isNull()) {
-            QFile csvReportFile(csvReportTmpFile->fileName());
-            CHECK_EXT(csvReportFile.open(QIODevice::ReadOnly), setError(L10N::errorReadingFile(csvReportTmpFile->fileName())), Task::ReportResult::ReportResult_Finished);
-
-            currentReport = csvReportFile.readAll();
-            csvReportFile.close();
-        } else {
-            currentReport = task->generateReport();
-        }
-        QFile reportFile(reportPath);
-        CHECK_EXT(reportFile.open(QIODevice::ReadOnly), setError(L10N::errorReadingFile(reportPath)), Task::ReportResult::ReportResult_Finished);
-        
-        QString expectedReport = reportFile.readAll();
-        CHECK_EXT(currentReport == expectedReport, setError("Expected and result reports are not equal"), Task::ReportResult::ReportResult_Finished);
-    }
-
-    CHECK(!resultPrimerAnnotationsRegions.first.isEmpty(), Task::ReportResult::ReportResult_Finished);
-
-    auto rootGroup = annObj->getRootGroup();
-    CHECK_EXT(rootGroup != nullptr, setError(L10N::nullPointerError("AnnotationGroup")), Task::ReportResult::ReportResult_Finished);
-
-    auto groups = rootGroup->getSubgroups();
-    auto primer3Group = *std::find_if(groups.begin(), groups.end(), [this](AnnotationGroup* group) {
-        return group->getName() == TOP_PRIMERS;
-    });
-    CHECK_EXT(primer3Group != nullptr, setError("No primers group found, but should be"), Task::ReportResult::ReportResult_Finished);
-
-    const auto& p3AnnotationGroups = primer3Group->getSubgroups();
-    CHECK_EXT(p3AnnotationGroups.size() == 1, setError("Expected one primer pair"), Task::ReportResult::ReportResult_Finished);
-
-    const auto& annGroup = p3AnnotationGroups.first();
-    const auto& anns = annGroup->getAnnotations();
-    CHECK_EXT(anns.size() == 2, setError("Expected left and right primers"), Task::ReportResult::ReportResult_Finished);
-
-    U2Region left = anns.first()->getLocation()->regions.first();
-    CHECK_EXT(resultPrimerAnnotationsRegions.first == left, setError("Incorrect left region"), Task::ReportResult::ReportResult_Finished);
-
-    U2Region right = anns.last()->getLocation()->regions.first();
-    CHECK_EXT(resultPrimerAnnotationsRegions.second == right, setError("Incorrect right region"), Task::ReportResult::ReportResult_Finished);
-
-    return Task::ReportResult::ReportResult_Finished;
 }
 
 }  // namespace U2

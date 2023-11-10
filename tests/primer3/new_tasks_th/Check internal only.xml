@@ -10,7 +10,6 @@
 			PRIMER_TASK="check_primers" 
 			PRIMER_PICK_ANYWAY="1" 
 			PRIMER_DNTP_CONC="0.0" 
-			SEQUENCE_ID="Check internal only" 
 			SEQUENCE_INTERNAL_OLIGO="ccacggatgaggaagaagaa"/>
 		<plugin_primer_3_out 
 			PRIMER_WARNING="PRIMER_SALT_DIVALENT &gt; 0.0 but PRIMER_DNTP_CONC &lt;" 

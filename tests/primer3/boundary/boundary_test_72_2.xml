@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/boundary/boundary_test_72_2.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="boundary_test_72_2" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TM_FORMULA="0" 
 			PRIMER_SALT_CORRECTIONS="0" 
@@ -32,9 +34,7 @@
 			PRIMER_PICK_INTERNAL_OLIGO="0" 
 			PRIMER_INTERNAL_MIN_TM="0" 
 			PRIMER_INTERNAL_MAX_TM="100" 
-			SEQUENCE_ID="boundary_test_72_2" 
 			SEQUENCE_INCLUDED_REGION="2,56" 
-			SEQUENCE_TEMPLATE="NNCACGTCATCTCATCAAATTTGATTGNNNNNACTCACTGTCATTTCCAAACAATTCNN" 
 			P3_COMMENT="should succeed with exactly one pair"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="1" 

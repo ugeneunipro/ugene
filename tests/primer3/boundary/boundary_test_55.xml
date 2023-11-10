@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/boundary/boundary_test_55.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="boundary_test_55" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TM_FORMULA="0" 
 			PRIMER_SALT_CORRECTIONS="0" 
@@ -29,9 +31,7 @@
 			PRIMER_GC_CLAMP="0" 
 			PRIMER_PAIR_MAX_DIFF_TM="0.29" 
 			PRIMER_LIBERAL_BASE="0" 
-			SEQUENCE_ID="boundary_test_55" 
 			SEQUENCE_EXCLUDED_REGION="28,1" 
-			SEQUENCE_TEMPLATE="NNCACGTCATCTCATCAAATTTGATTGNNKNNCCTCACTGTCATTTCCAAACAATTCNN" 
 			P3_COMMENT="should generate error"/>
 		<plugin_primer_3_out 
 			PRIMER_ERROR="Unrecognized base in input sequence"/>

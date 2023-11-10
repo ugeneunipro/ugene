@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-FindExonRegionsTask::FindExonRegionsTask(U2SequenceObject* dObj, const QString& annName)
+FindExonRegionsTask::FindExonRegionsTask(const QPointer<U2SequenceObject>& dObj, const QString& annName)
     : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName) {
 }
 
@@ -87,6 +87,8 @@ QList<Task*> FindExonRegionsTask::onSubTaskFinished(Task* subTask) {
 
 Task::ReportResult FindExonRegionsTask::report() {
     QList<GObject*> allAnnotationObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
+    CHECK_EXT(!dnaObj.isNull(), setError(tr("Sequence object has been closed, abort")), ReportResult_Finished);
+
     QList<GObject*> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allAnnotationObjects, UOF_LoadedOnly);
 
     if (relAnns.isEmpty()) {

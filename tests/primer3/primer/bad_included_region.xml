@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/primer/bad_included_region.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="bad_included_region" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_MAX_SELF_ANY="20" 
 			PRIMER_PAIR_MAX_COMPL_ANY="20" 
@@ -14,8 +16,6 @@
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_MIN_TM="0" 
 			PRIMER_MAX_TM="100" 
-			SEQUENCE_ID="bad_included_region" 
-			SEQUENCE_TEMPLATE="ATCTGCTAGCTGATCGAGCTATCATGCTAGCTGATCATGCTAGCTATCGTACTACTATCATCTACTGATCATGCTAGCTACTATCATCTACTATCATCATCTAGCTACTAGCTACTACGATCTACTACTATCATCTACTAGCTACTATCACTACTACTATCATCATCTACTACTACATCACACTGATCGTGGGCTAGCTGGCAGCGCG" 
 			SEQUENCE_INCLUDED_REGION="-1,100" 
 			P3_FILE_FLAG="0"/>
 		<plugin_primer_3_out 

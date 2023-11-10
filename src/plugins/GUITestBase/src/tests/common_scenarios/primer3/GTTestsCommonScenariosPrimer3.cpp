@@ -20,16 +20,22 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <base_dialogs/MessageBoxFiller.h>
 #include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLabel.h>
+#include <primitives/GTLineEdit.h>
+#include "primitives/GTMenu.h"
+#include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <system/GTFile.h>
 
 #include "GTTestsCommonScenariosPrimer3.h"
 #include "GTUtilsAnnotationsTreeView.h"
+#include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 
@@ -578,6 +584,70 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
     GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "Primer3");
     CHECK_SET_ERR(GTFile::equals(testDir + "_common_data/primer3/rpa_sequence.txt", sandBoxDir + "test_0025_RPA.txt", true), "RPA settings are not equal");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0026) {
+    static const QString FORWAND_PRIMER("GTCTCAATCTCTTGTAACTGAATATAGATG");
+    static const QString REVCOMP_PRIMER("CAAGAAAAATATGCACGGGGTCATCACTTG");
+
+    class Scenario : public Filler {
+    public:
+        Scenario()
+            : Filler("Primer3Dialog") {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+
+            auto editPrimerTaskCb = GTWidget::findComboBox("edit_PRIMER_TASK", dialog);
+            GTComboBox::checkCurrentValue(editPrimerTaskCb, "check_primers");
+            CHECK_SET_ERR(!editPrimerTaskCb->isEnabled(), "Task combo box is disabled");
+
+            auto tabWidget = GTWidget::findTabWidget("tabWidget", dialog);
+            CHECK_SET_ERR(!tabWidget->widget(Primer3DialogFiller::RT_PCR_DESIGN_TAB_NUMBER)->isEnabled(), "RT PCR tab is enabled, but shouldn't be");
+            CHECK_SET_ERR(!tabWidget->widget(Primer3DialogFiller::POSTERIOR_ACTIONS_TAB_NUMBER)->isEnabled(), "Posterior actions tab is enabled, but shouldn't be");
+
+            auto cbPickLeft = GTWidget::findCheckBox("checkbox_PRIMER_PICK_LEFT_PRIMER", dialog);
+            GTCheckBox::setChecked(cbPickLeft, false);
+
+            auto cbPickRight = GTWidget::findCheckBox("checkbox_PRIMER_PICK_RIGHT_PRIMER", dialog);
+            GTCheckBox::setChecked(cbPickRight, false);
+
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Cancel, "At least one primer on the \"Main\" settings page should be enabled - this is required by the \"check_primers\" task."));
+
+            auto pick = GTWidget::findPushButton("pickPrimersButton", dialog);
+            GTWidget::click(pick);
+
+            GTCheckBox::setChecked(cbPickLeft, true);
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Cancel, "The left primer on the \"Main\" settings page is enabled, but not set."));
+            GTWidget::click(pick);
+
+            GTCheckBox::setChecked(cbPickLeft, false);
+            GTCheckBox::setChecked(cbPickRight, true);
+            GTUtilsDialog::waitForDialog(new MessageBoxDialogFiller(QMessageBox::Cancel, "The right primer on the \"Main\" settings page is enabled, but not set."));
+            GTWidget::click(pick);
+
+            GTCheckBox::setChecked(cbPickLeft, true);
+            GTLineEdit::setText("edit_SEQUENCE_PRIMER", "GTCTCAATCTCTTGTAACTGAATATAGATG", dialog);
+            GTLineEdit::setText("edit_SEQUENCE_PRIMER_REVCOMP", "CAAGAAAAATATGCACGGGGTCATCACTTG", dialog);
+
+            GTTabWidget::clickTab(tabWidget, Primer3DialogFiller::RESULT_ANNOTATION_SETTINGS_TAB_NUMBER);
+            GTLineEdit::setText("outputFileLineEdit", sandBoxDir + "/result.gb", dialog);
+
+            GTWidget::click(pick);
+        }
+    };
+
+    GTUtilsDialog::add(new Scenario());
+    GTMenu::clickMainMenuItem({ "Tools", "Primer", "Primer3 (no target sequence)..." });
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive();
+
+    static const QString MID_SEQ(140, 'N');
+    static const QString EXPECTED_SEQ = FORWAND_PRIMER + MID_SEQ + "CAAGTGATGACCCCGTGCATATTTTTCTTG";
+
+    auto sequence = GTUtilsSequenceView::getSequenceAsString();
+    CHECK_SET_ERR(sequence == EXPECTED_SEQ, "Unexpected sequence");
+}
+
 
 }  // namespace GUITest_common_scenarios_primer3
 }  // namespace U2
