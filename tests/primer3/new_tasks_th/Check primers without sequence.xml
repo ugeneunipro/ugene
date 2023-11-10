@@ -15,7 +15,6 @@
 			PRIMER_PICK_INTERNAL_OLIGO="0" 
 			PRIMER_PICK_LEFT_PRIMER="0" 
 			PRIMER_NUM_RETURN="5" 
-			SEQUENCE_ID="Check primers without sequence" 
 			SEQUENCE_PRIMER="gtcctcgaacagctcagtcc" 
 			SEQUENCE_INTERNAL_OLIGO="ccacggatgaggaagaagaa" 
 			SEQUENCE_PRIMER_REVCOMP="gcgtttttattgccgttgtt"/>

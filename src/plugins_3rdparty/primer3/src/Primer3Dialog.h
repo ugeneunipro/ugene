@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef PRIMER3DIALOG_H
-#define PRIMER3DIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -30,8 +29,7 @@
 
 #include <U2View/ADVSequenceObjectContext.h>
 
-#include "Primer3Task.h"
-#include "Primer3TaskSettings.h"
+#include "task/Primer3TaskSettings.h"
 #include "ui_Primer3Dialog.h"
 
 namespace U2 {
@@ -49,6 +47,7 @@ public:
     const QSharedPointer<Primer3TaskSettings>& getSettings();
     const CreateAnnotationModel& getCreateAnnotationModel() const;
     U2Region getRegion(bool* ok = nullptr) const;
+    QString getResultFileName() const;
     QString checkModel();
     bool prepareAnnotationObject();
 
@@ -82,6 +81,7 @@ private slots:
     void sl_ChooseCsvReportPathButtonClicked();
 
 private:
+    void updateNoSequenceDialogState();
     void saveSettings(const QString& filePath);
     void loadSettings(const QString& filePath);
 
@@ -90,7 +90,9 @@ private:
 
     CreateAnnotationWidgetController* createAnnotationWidgetController = nullptr;
     QSharedPointer<Primer3TaskSettings> settings;
-    RegionSelector* rs = nullptr;
+    RegionSelector* regionSelector = nullptr;
+    SaveDocumentController* saveDocumentController = nullptr;
+    QLineEdit* outputFileLineEdit = nullptr;
     ADVSequenceObjectContext* context = nullptr;
 
     U2SavableWidget savableWidget;
@@ -107,4 +109,3 @@ private:
 
 }  // namespace U2
 
-#endif  // PRIMER3DIALOG_H

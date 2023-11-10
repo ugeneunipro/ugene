@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/must_use/anyway_1.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="anyway_1" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
-			SEQUENCE_ID="anyway_1" 
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_MAX_SELF_ANY="12" 
 			PRIMER_PAIR_MAX_COMPL_ANY="12" 
@@ -12,7 +13,6 @@
 			PRIMER_PAIR_MAX_COMPL_END="8" 
 			PRIMER_NUM_RETURN="1" 
 			PRIMER_PICK_ANYWAY="1" 
-			SEQUENCE_TEMPLATE="TCCTACAGCTGTGGGAAAATGatgcgtacgatccatgctagctagctactatcgattagctatcatctactatcatctactatctactacacatctactatcatctacacacacacacacactaggccgctatatcatctagcGCCGCCATGTACACACTG" 
 			SEQUENCE_TARGET="21,122"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="1" 

@@ -7,7 +7,6 @@
 			PRIMER_TM_FORMULA="1" 
 			PRIMER_SALT_CORRECTIONS="1" 
 			PRIMER_SALT_DIVALENT="1.5" 
-			SEQUENCE_ID="Check left only" 
 			SEQUENCE_PRIMER="gtcctcgaacagctcagtcc" 
 			PRIMER_TASK="check_primers" 
 			PRIMER_PICK_ANYWAY="1" 

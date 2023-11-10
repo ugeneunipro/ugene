@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/quality_boundary/quality_test2.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="quality_test2" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_MIN_TM="0" 
@@ -14,9 +16,7 @@
 			PRIMER_PRODUCT_SIZE_RANGE="50-70 70-90 90-110 110-500" 
 			PRIMER_MIN_QUALITY="60" 
 			PRIMER_QUALITY_RANGE_MAX="65" 
-			SEQUENCE_ID="quality_test2" 
 			P3_COMMENT="quality scores out of range" 
-			SEQUENCE_TEMPLATE="ATCGTAGCTGATCGTAGCTGATCGTAGCTAGTCAGTCTACTACTGATCTAGCTGATCATCGTAGCTAGCTAGTCATCATCGTACTACGTAGCTACTAGTCATCTAGCTAGCTAGTCGATGC" 
 			SEQUENCE_QUALITY="50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50 50" 
 			PRIMER_QUALITY_RANGE_MIN="60"/>
 		<plugin_primer_3_out 
