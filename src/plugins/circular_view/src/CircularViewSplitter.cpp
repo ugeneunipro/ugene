@@ -156,11 +156,11 @@ void CircularViewSplitter::sl_moveSlider(int delta) {
 }
 
 void CircularViewSplitter::removeView(CircularView* view, RestrctionMapWidget* rmapWidget) {
-    SAFE_POINT(view != nullptr, tr("Circular View is NULL"), );
+    SAFE_POINT(view != nullptr, "Circular View is NULL", );
     QWidget* viewport = view->parentWidget();
-    SAFE_POINT(viewport != nullptr, tr("Circular View viewport is NULL"), );
+    SAFE_POINT(viewport != nullptr, "Circular View viewport is NULL", );
     auto scrollArea = qobject_cast<QScrollArea*>(viewport->parentWidget());
-    SAFE_POINT(scrollArea != nullptr, tr("Scroll area is NULL"), );
+    SAFE_POINT(scrollArea != nullptr, "Scroll area is NULL", );
     view->setParent(nullptr);
     delete scrollArea;
 
@@ -215,9 +215,9 @@ void CircularViewSplitter::sl_export() {
         cvInFocus = circularViewList.last();
     }
 
-    SAFE_POINT(cvInFocus->getSequenceContext() != nullptr, tr("Sequence context is NULL"), );
+    SAFE_POINT(cvInFocus->getSequenceContext() != nullptr, "Sequence context is NULL", );
     U2SequenceObject* seqObj = cvInFocus->getSequenceContext()->getSequenceObject();
-    SAFE_POINT(seqObj != nullptr, tr("Sequence obejct is NULL"), );
+    SAFE_POINT(seqObj != nullptr, "Sequence obejct is NULL", );
 
     CircularViewImageExportController factory(circularViewList, cvInFocus);
 

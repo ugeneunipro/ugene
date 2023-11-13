@@ -89,7 +89,7 @@ void RemoteBLASTWorkerFactory::init() {
     a << programNameAttr;
 
     const int defaultDatabaseNumber = 2;
-    SAFE_POINT(defaultDatabaseNumber < ParametersLists::blastn_dataBase.size(), QObject::tr("Incorrect list of Blastn databases"), );
+    SAFE_POINT(defaultDatabaseNumber < ParametersLists::blastn_dataBase.size(), "Incorrect list of Blastn databases", );
     a << new Attribute(databaseDescriptor, BaseTypes::STRING_TYPE(), true, ParametersLists::blastn_dataBase.at(defaultDatabaseNumber));
 
     a << new Attribute(evalueDescriptor, BaseTypes::STRING_TYPE(), false, 10);

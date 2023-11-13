@@ -27,7 +27,7 @@
 
 namespace U2 {
 
-class ImportSequenceFromRawDataTask : public Task {
+class U2GUI_EXPORT ImportSequenceFromRawDataTask : public Task {
     Q_OBJECT
 public:
     ImportSequenceFromRawDataTask(const U2DbiRef& dbiRef, const QString& folder, const DNASequence& sequence);

@@ -9,7 +9,6 @@
 			PRIMER_PICK_INTERNAL_OLIGO="0" 
 			PRIMER_PICK_LEFT_PRIMER="1" 
 			PRIMER_NUM_RETURN="2" 
-			SEQUENCE_ID="Check left only too big" 
 			SEQUENCE_PRIMER="tgacctccacttctctggacacagctccctcaccaa"/>
 		<plugin_primer_3_out 
 			PRIMER_WARNING="Specified left primer &gt; PRIMER_MAX_SIZE" 

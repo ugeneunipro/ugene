@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<load-document index="doc" url="genbank/murine_cut.gb" io="local_file" format="genbank"/>
+	<find-object-by-name index="seq" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq" enable-check-complement-settings="1" enable-max-complement-pairs="1" max-complement-pairs="5" enable-max-gc-content="1" max-gc-content="75" report-path="primer3/primer3_xml/posterior_actions/test_0001_report.html" >
+		<plugin_primer_3_in 
+			PRIMER_NUM_RETURN="1" />
+		<plugin_primer_3_out 
+			PRIMER_LEFT_NUM_RETURNED="1" 
+			PRIMER_RIGHT_NUM_RETURNED="1"
+			PRIMER_PAIR_NUM_RETURNED="1"
+			PRIMER_LEFT_0_SEQUENCE="TGCAACTGGCTCTAGGGACT" 
+			PRIMER_RIGHT_0_SEQUENCE="GAGGTCTCCAGACTTCGTGC" 
+			PRIMER_LEFT_0="3605,20" 
+			PRIMER_RIGHT_0="3828,20"
+			PRIMER_LEFT_0_PENALTY="0.0124701" 
+			PRIMER_RIGHT_0_PENALTY="0.00693717" 
+			PRIMER_LEFT_0_TM="60.0125" 
+			PRIMER_RIGHT_0_TM="59.9931" 
+			PRIMER_LEFT_0_GC_PERCENT="55.000" 
+			PRIMER_RIGHT_0_GC_PERCENT="60.000" 
+			PRIMER_LEFT_0_SELF_ANY="4.00" 
+			PRIMER_RIGHT_0_SELF_ANY="8.00" 
+			PRIMER_LEFT_0_SELF_END="2.00" 
+			PRIMER_RIGHT_0_SELF_END="2.00" 
+			PRIMER_LEFT_0_MIN_SEQ_QUALITY="60" 
+			PRIMER_RIGHT_0_MIN_SEQ_QUALITY="60" 
+			PRIMER_LEFT_0_END_STABILITY="7.6000" 
+			PRIMER_RIGHT_0_END_STABILITY="9.9000" 
+			PRIMER_PAIR_0_COMPL_ANY="5.00" 
+			PRIMER_PAIR_0_COMPL_END="4.00" 
+			PRIMER_PAIR_0_PRODUCT_SIZE="224"/>
+	</plugin_primer_3>
+</multi-test>

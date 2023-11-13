@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<load-document index="doc" url="primer3/primer3_xml/mispriming_long_lib/seq0.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="seq0" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
+		<plugin_primer_3_in 
+			P3_COMMENT="should fail" 
+			PRIMER_MAX_LIBRARY_MISPRIMING="18" 
+			PRIMER_MAX_SELF_ANY="20" 
+			PRIMER_MAX_SELF_END="20" 
+			PRIMER_PAIR_MAX_COMPL_ANY="20" 
+			PRIMER_PAIR_MAX_COMPL_END="20" 
+			PRIMER_MAX_TM="100" 
+			PRIMER_MIN_TM="10" 
+			PRIMER_MIN_SIZE="20" 
+			PRIMER_MAX_SIZE="20" 
+			PRIMER_MIN_GC="10" 
+			PRIMER_MAX_GC="90" 
+			PRIMER_MISPRIMING_LIBRARY="primer_repeat_long_lib" 
+			PRIMER_EXPLAIN_FLAG="1"/>
+		<plugin_primer_3_out 
+			PRIMER_LEFT_NUM_RETURNED="0" 
+			PRIMER_RIGHT_NUM_RETURNED="0" 
+			PRIMER_INTERNAL_NUM_RETURNED="0" 
+			PRIMER_PAIR_NUM_RETURNED="0"/>
+	</plugin_primer_3>
+</multi-test>

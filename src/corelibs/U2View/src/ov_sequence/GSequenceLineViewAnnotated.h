@@ -93,6 +93,14 @@ protected slots:
 
 private:
     void connectAnnotationObject(const AnnotationTableObject* ao);
+    /*
+     * Calculate the index of the annotation region, which was as close as possible to the set base position.
+     * This function is very valuable, then scale is very low and one pixel contains more than one sequence base.
+     * \param ann The annotation.
+     * \param baseIndex index of base user clicked on.
+     * \return 0 The index of the closest annotation to the current position.
+     **/
+    static int getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex);
 
 protected:
     friend class ClearAnnotationsTask;
@@ -138,14 +146,24 @@ public:
     /** Returns all annotations by a coordinate inside render area. */
     QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const override;
 
-    /** Returns true if the given annotation region contains 'y' point. */
-    bool checkAnnotationRegionContainsYPoint(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+    /**
+     * Returns all x-regions covered by the annotation location region.
+     */
+    virtual QList<U2Region> getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const = 0;
 
     /**
      * Returns all y-regions covered by the annotation location region.
      * TODO: rework to return list of QRects (may require a bigger refactoring).
      */
     virtual QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const = 0;
+
+private:
+    /** Returns indexes of annotation region contains 'x' point. */
+    QList<int> getAnnotationRegionIndexesByXCoord(int x, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+
+    /** Returns the index of annotation region contains 'y' point. */
+    int getAnnotationRegionIndexByYCoord(int y, Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const;
+
 };
 
 class ClearAnnotationsTask : public Task {

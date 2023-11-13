@@ -75,7 +75,7 @@ TmCalculatorSelectorWidget::TmCalculatorSelectorWidget(QWidget* parent, bool sho
             swSettings->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
         }
         auto currentWidget = swSettings->widget(index);
-        SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), );
+        SAFE_POINT_NN(currentWidget, );
         currentWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
         swSettings->adjustSize();
         adjustSize();
@@ -95,10 +95,10 @@ void TmCalculatorSelectorWidget::init(const QVariantMap& currentSettings) {
 
 QVariantMap TmCalculatorSelectorWidget::getSettings() const {
     auto currentWidget = swSettings->widget(cbAlgorithm->currentIndex());
-    SAFE_POINT(currentWidget != nullptr, L10N::nullPointerError("QWidget"), {});
+    SAFE_POINT_NN(currentWidget, {});
 
     auto settingsWidget = qobject_cast<TmCalculatorSettingsWidget*>(currentWidget);
-    SAFE_POINT(settingsWidget != nullptr, L10N::nullPointerError("TmCalculatorSettingsWidget"), {});
+    SAFE_POINT_NN(settingsWidget, {});
 
     return settingsWidget->createSettings();
 }

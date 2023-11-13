@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/ok_regions/SEQUENCE_PRIMER_PAIR_OK_REGION_LIST test 3 any pair - OK.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="SEQUENCE_PRIMER_PAIR_OK_REGION_LIST test 3 any pair - OK" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_NUM_RETURN="1" 
 			PRIMER_EXPLAIN_FLAG="1" 
@@ -17,8 +19,6 @@
 			PRIMER_MAX_SELF_END="100" 
 			PRIMER_FIRST_BASE_INDEX="1" 
 			PRIMER_MIN_SIZE="16" 
-			SEQUENCE_ID="SEQUENCE_PRIMER_PAIR_OK_REGION_LIST test 3 any pair - OK" 
-			SEQUENCE_TEMPLATE="cttgattcaatgaatctcaaaaatggattactattgttcattctgtttcTggattgtgtttttttcaaagttgaatccaaatgtgtaaaagggtgtgatg" 
 			SEQUENCE_PRIMER_PAIR_OK_REGION_LIST=",,," 
 			SEQUENCE_PRIMER="cttgattcaatgaatctcaa" 
 			SEQUENCE_PRIMER_REVCOMP="aaaaaaacacaatccA"/>

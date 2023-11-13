@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/new_tasks/Pick a right primer and an internal oligo.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="Pick a right primer and an internal oligo" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TASK="generic" 
 			PRIMER_PICK_ANYWAY="1" 
@@ -9,9 +11,7 @@
 			PRIMER_PICK_INTERNAL_OLIGO="1" 
 			PRIMER_PICK_LEFT_PRIMER="0" 
 			PRIMER_NUM_RETURN="1" 
-			PRIMER_MIN_THREE_PRIME_DISTANCE="0" 
-			SEQUENCE_ID="Pick a right primer and an internal oligo" 
-			SEQUENCE_TEMPLATE="atggatttgatggacatggatgccatcaatgacctccacttctctggacacagctccctcaccaacacccctacttccgacgaggattatggttgcacctggaaccactggtctcccatcgtcaactgggacacctttacaggtgccccagatgactttcaccacctcatggacaccatcatcgaggacagaacaactgtcctcgaacagctcagtccatctatcaccacaaccaccaccaccaccacaaccacggatgaggaagaagaagaaatggaaacaacaaccacaacaacaacaacggcaataaaaacgcatgaagttggtgatgattcaaaagggctaaaactagtgcacctattgatggctggcgcggaagccttaaccggttcaaccaaaaaccgtgacttagctcgagtgatattgatccggctcaaggaattagtctcacaacatgctaacggctccaacatggagagacttgccgctcatttcaccgaagcccttcatggactactagaaggtgctgggggtgcgcataataaccaccatcaccacaacaacaacaaacattacctcaccacaaatggtccccacgacaaccaaaacgacacacttgctgctttccaactacttcaagacatgtcaccttacgtcaaattcggccacttcacagccaatcaagccatcatcgaagccgtggcccacgaacgccgcgtccatgtcatcgactacgatatcatggaaggggtccaatgggcctcattaatccaatcacttgcttccaacaacaacggtccacatcttcggataaccgcattatcgcggacaggaaccggccggaggtcaatcgccaccgtacaagaaaccggcaggcgattaacctcctttgccgcttccctcggacaaccattttcttttcatcactgcagattagactccgatgaaactttccgtccttctgcattaaagcttgtacgtggagaggctttggttttcaactgcatgctgaatttacctcaccttagttaccgtgcaccggaatcagttgcttcgtttttaaacggagcaaaaacgttgaatccaaagcttgtgacgttggttgaagaagaagttggttctgttattggtgggtttgtggaaaggttcatggactcacttcatcattattcagcggtttttgattcattggaggctggttttccgatgcagaaccgggcccggactttggtggagagggtattttttgggcctagaattgcaggctcgttgggccggatatatagaacgggtggtgaagaggagagaaggtcatggggggagtggttaggtgaggtagggtttaggggagttccggtgagctttgcaaatcattgtcaagcaaagctgttgttagggctttttaatgatgggtatagggttgaagaggtgggtgtgggtagtaataagttggtgttggattggaaatcaagacgtttgctttctgcttccctttggacttgttcttcttcagattctgatttatag"/>
+			PRIMER_MIN_THREE_PRIME_DISTANCE="0"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="0" 
 			PRIMER_RIGHT_NUM_RETURNED="1" 

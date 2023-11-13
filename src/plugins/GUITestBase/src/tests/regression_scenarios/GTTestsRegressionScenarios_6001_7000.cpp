@@ -1753,6 +1753,30 @@ GUI_TEST_CLASS_DEFINITION(test_6314) {
                       .arg(name.size()));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6321) {
+    GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
+    GTUtilsTaskTreeView::waitTaskFinished();
+
+    GTUtilsSequenceView::selectSequenceRegion(10, 20);
+
+    class CheckAnnotationDialogScenario : public CustomScenario {
+    public:
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            CHECK_SET_ERR(GTWidget::findWidget("chbComplement", dialog)->isHidden(), "chbComplement is visible");
+            CHECK_SET_ERR(GTWidget::findWidget("tbDoComplement", dialog)->isHidden(), "tbDoComplement is visible");
+            GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(new CreateAnnotationWidgetFiller(new CheckAnnotationDialogScenario()));
+    GTToolbar::clickButtonByTooltipOnToolbar(MWTOOLBAR_ACTIVEMDI, "New annotation");
+
+    GTUtilsDialog::waitForDialog(new EditAnnotationFiller(new CheckAnnotationDialogScenario()));
+    GTKeyboardDriver::keyClick(Qt::Key_F2);
+    GTTreeWidget::click(GTUtilsAnnotationsTreeView::findItem("misc_feature"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6350) {
     // 1. Open "human_T1.fa"
     GTFileDialog::openFile(dataDir + "samples/FASTA/human_T1.fa");

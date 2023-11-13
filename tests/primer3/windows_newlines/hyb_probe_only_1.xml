@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/windows_newlines/hyb_probe_only_1.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="hyb_probe_only" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT="1" 
 			PRIMER_THERMODYNAMIC_PARAMETERS_PATH="primer3_config/" 
@@ -17,10 +19,8 @@
 			PRIMER_DNTP_CONC="0.0" 
 			PRIMER_MIN_SIZE="20" 
 			PRIMER_MAX_SIZE="20" 
-			SEQUENCE_ID="hyb_probe_only" 
 			PRIMER_INTERNAL_MIN_SIZE="20" 
-			PRIMER_INTERNAL_MAX_SIZE="20" 
-			SEQUENCE_TEMPLATE="TTAGAAGGGGTGTCTGGGTG"/>
+			PRIMER_INTERNAL_MAX_SIZE="20"/>
 		<plugin_primer_3_out 
 			PRIMER_WARNING="PRIMER_SALT_DIVALENT &gt; 0.0 but PRIMER_DNTP_CONC &lt;" 
 			PRIMER_LEFT_NUM_RETURNED="1" 

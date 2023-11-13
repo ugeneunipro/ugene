@@ -69,11 +69,6 @@
         <translation>Ошибка загрузки модуля: %1, строка %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="385"/>
-        <source>Settings is NULL</source>
-        <translation>Settings is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/PluginSupportImpl.cpp" line="440"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation>Plugin loading error: %1. Verification failed.</translation>
@@ -328,135 +323,111 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::TaskSchedulerImpl</name>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="716"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="711"/>
         <source>New</source>
         <translation>Новая</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="718"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="713"/>
         <source>Prepared</source>
         <translation>Инициализирована</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="720"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="715"/>
         <source>Running</source>
         <translation>Выполняется</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="77"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="722"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="78"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="717"/>
         <source>Finished</source>
         <translation>Завершена</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="96"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="98"/>
         <source>Canceling task: %1</source>
         <translation>Отменяется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="112"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="116"/>
         <source>There is not enough memory to finish the task.</source>
         <translation>There is not enough memory to finish the task.</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="133"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="155"/>
         <source>Subtask {%1} is failed: %2</source>
         <translation>Подзадача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="429"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="483"/>
         <source>Waiting for resource &apos;%1&apos;, count: 1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание ресурса %1, количество: 1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="447"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="501"/>
         <source>Task resource not found: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ресурс задачи не найден: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="455"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="509"/>
         <source>Not enough resources for the task, resource: &apos;%1&apos; max: %2%3 requested: %4%5</source>
-        <translation type="unfinished"></translation>
+        <translation>Недостаточно ресурсов для задачи, ресурс: %1, максимум: %2%3, запрошено: %4%5</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="465"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="519"/>
         <source>Waiting for the resource: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание ресурса: %1</translation>
     </message>
     <message>
-        <source>Waiting for resource &apos;%1&apos;, count: %2</source>
-        <translation type="vanished">Ожидание ресурса &quot;%1&quot;, требуется: %2</translation>
-    </message>
-    <message>
-        <source>Not enough resources for the task, resource name: &apos;%1&apos; max: %2%3 requested: %4%5</source>
-        <translation type="vanished">Не достаточно ресурсов для выполнения задачи: &apos;%1&apos; макс: %2%3	запрошено: %4%5</translation>
-    </message>
-    <message>
-        <source>Waiting for resource &apos;%1&apos;, count: %2%3</source>
-        <translation type="vanished">Ожидание ресурса &quot;%1&quot;, требуется: %2%3</translation>
-    </message>
-    <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="596"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="620"/>
         <source>Registering new task: %1</source>
         <translation>Добавлена задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <source>Invalid name</source>
-        <translation type="vanished">Неизвестное состояние</translation>
-    </message>
-    <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="950"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="930"/>
         <source>Deleting task: %1</source>
         <translation>Удаляется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="794"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="780"/>
         <source>Promoting task {%1} to &apos;%2&apos;</source>
         <translation>Задача {%1} %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="125"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="147"/>
         <source>Subtask {%1} is canceled %2</source>
         <translation>Подзадача {%1} отменена %2</translation>
     </message>
     <message>
-        <source>No required resources for the task, resource id: &apos;%1&apos;</source>
-        <translation type="vanished">No required resources for the task, resource id: &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>Unable to run test because required resource not found</source>
-        <translation type="vanished">Unable to run test because required resource not found</translation>
-    </message>
-    <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="656"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="662"/>
         <source>Unregistering task: %1</source>
         <translation>Незарегистрированная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="796"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="782"/>
         <source>Promoting task {%1} to &apos;%2&apos;, error &apos;%3&apos;</source>
         <translation>Задача {%1} %2; ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="806"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="793"/>
         <source>Starting {%1} task</source>
         <translation>Старт задачи {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="834"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="821"/>
         <source>Task {%1} finished with error: %2</source>
         <translation>Задача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="837"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="824"/>
         <source>Task {%1} canceled</source>
         <translation>Отменяется задача {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="840"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="827"/>
         <source>Task {%1} finished</source>
         <translation>Задача {%1} завершена</translation>
     </message>

@@ -163,9 +163,9 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
     int perfectMatch = perfectSpinBox->value();
     SAFE_POINT(perfectMatch >= 0, "Negative perfect match", );
     ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT_NN(sequenceContext, );
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT_NN(sequenceObject, );
 
     auto settings = new InSilicoPcrTaskSettings;
     settings->forwardPrimer = forwardPrimerBox->getPrimer();
@@ -191,7 +191,7 @@ void InSilicoPcrOptionPanelWidget::sl_findProduct() {
 
 void InSilicoPcrOptionPanelWidget::sl_onFindTaskFinished() {
     CHECK(pcrTask == sender(), );
-    SAFE_POINT(pcrTask != nullptr, L10N::nullPointerError("InSilicoPcrTask"), );
+    SAFE_POINT_NN(pcrTask, );
     if (pcrTask->isCanceled() || pcrTask->hasError()) {
         disconnect(pcrTask, SIGNAL(si_stateChanged()));
         pcrTask = nullptr;
@@ -214,9 +214,9 @@ void InSilicoPcrOptionPanelWidget::showResults(InSilicoPcrTask* task) {
 
 void InSilicoPcrOptionPanelWidget::sl_extractProduct() {
     ADVSequenceObjectContext* sequenceContext = productsTable->productsContext();
-    SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT_NN(sequenceContext, );
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT_NN(sequenceObject, );
     ExtractProductSettings settings;
     settings.sequenceRef = sequenceContext->getSequenceRef();
     settings.annotationsExtraction = ExtractProductSettings::AnnotationsExtraction(annsComboBox->itemData(annsComboBox->currentIndex()).toInt());
@@ -251,7 +251,7 @@ void InSilicoPcrOptionPanelWidget::sl_onSequenceChanged(ADVSequenceObjectContext
 bool InSilicoPcrOptionPanelWidget::isDnaSequence(ADVSequenceObjectContext* sequenceContext) {
     CHECK(sequenceContext != nullptr, false);
     const DNAAlphabet* alphabet = sequenceContext->getAlphabet();
-    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("Alphabet"), false);
+    SAFE_POINT_NN(alphabet, false);
     return alphabet->isDNA();
 }
 

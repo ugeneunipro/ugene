@@ -141,23 +141,23 @@ void AutoAnnotationObject::updateGroup(const QString& groupName) {
 }
 
 void AutoAnnotationObject::addNewUpdateTask(AutoAnnotationsUpdater* updater, Task* updateTask) {
-    SAFE_POINT(updater != nullptr, L10N::nullPointerError("Auto-annotation updater"), );
-    SAFE_POINT(updateTask != nullptr, L10N::nullPointerError("Auto-annotation update task"), );
+    SAFE_POINT_NN(updater, );
+    SAFE_POINT_NN(updateTask, );
 
     connect(updateTask, SIGNAL(si_stateChanged()), SLOT(sl_updateTaskFinished()));
     newUpdateTasks[updater].append(updateTask);
 }
 
 void AutoAnnotationObject::addRunningUpdateTask(AutoAnnotationsUpdater* updater, Task* updateTask) {
-    SAFE_POINT(updater != nullptr, L10N::nullPointerError("Auto-annotation updater"), );
-    SAFE_POINT(updateTask != nullptr, L10N::nullPointerError("Auto-annotation update task"), );
+    SAFE_POINT_NN(updater, );
+    SAFE_POINT_NN(updateTask, );
 
     connect(updateTask, SIGNAL(si_stateChanged()), SLOT(sl_updateTaskFinished()));
     runningUpdateTasks[updater].append(updateTask);
 }
 
 bool AutoAnnotationObject::cancelRunningUpdateTasks(AutoAnnotationsUpdater* updater) {
-    SAFE_POINT(updater != nullptr, L10N::nullPointerError("Auto-annotation updater"), false);
+    SAFE_POINT_NN(updater, false);
 
     bool result = !runningUpdateTasks[updater].isEmpty();
     foreach (Task* task, runningUpdateTasks[updater]) {
@@ -217,7 +217,7 @@ void AutoAnnotationObject::handleUpdate(const QList<AutoAnnotationsUpdater*>& up
 
 void AutoAnnotationObject::sl_updateTaskFinished() {
     auto task = qobject_cast<Task*>(sender());
-    SAFE_POINT(task != nullptr, L10N::nullPointerError("Auto-annotation update task"), );
+    SAFE_POINT_NN(task, );
 
     CHECK(task->isFinished(), );
 

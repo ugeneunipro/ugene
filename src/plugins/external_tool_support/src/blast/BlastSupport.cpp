@@ -319,7 +319,7 @@ void BlastSupportContext::sl_showDialog() {
     CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
     settings.resultRegionOffset = region.startPos;
-    SAFE_POINT(seqCtx->getSequenceObject() != nullptr, tr("Sequence object is NULL"), );
+    SAFE_POINT(seqCtx->getSequenceObject() != nullptr, "Sequence object is NULL", );
 
     settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
     settings.querySequenceObject = seqCtx->getSequenceObject();

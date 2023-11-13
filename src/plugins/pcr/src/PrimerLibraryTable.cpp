@@ -116,7 +116,7 @@ void PrimerLibraryModel::updatePrimer(const Primer& primer) {
 }
 
 void PrimerLibraryModel::removePrimer(const QModelIndex& index, U2OpStatus& os) {
-    SAFE_POINT_EXT(index.row() >= 0 && index.row() < primers.size(), os.setError(tr("Incorrect primer number")), );
+    SAFE_POINT_EXT(index.row() >= 0 && index.row() < primers.size(), os.setError("Incorrect primer number"), );
     beginRemoveRows(QModelIndex(), index.row(), index.row());
     primers.removeAt(index.row());
     endRemoveRows();
@@ -124,7 +124,7 @@ void PrimerLibraryModel::removePrimer(const QModelIndex& index, U2OpStatus& os) 
 
 void PrimerLibraryModel::removePrimer(const U2DataId& primerId, U2OpStatus& os) {
     int row = getRow(primerId);
-    SAFE_POINT_EXT(row >= 0 && row < primers.size(), os.setError(tr("Incorrect primer number")), );
+    SAFE_POINT_EXT(row >= 0 && row < primers.size(), os.setError("Incorrect primer number"), );
     beginRemoveRows(QModelIndex(), row, row);
     primers.removeAt(row);
     endRemoveRows();

@@ -137,6 +137,7 @@ private:
     QAction* checkUpdateAction = nullptr;
     QAction* createDesktopShortcutAction = nullptr;
     QAction* visitWebAction = nullptr;
+    QAction* visitPatreonAction = nullptr;
     QAction* viewOnlineDocumentation = nullptr;
     QAction* welcomePageAction = nullptr;
     QAction* crashUgeneAction = nullptr;

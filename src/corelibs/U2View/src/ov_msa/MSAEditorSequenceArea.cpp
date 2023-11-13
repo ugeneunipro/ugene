@@ -461,7 +461,7 @@ void MSAEditorSequenceArea::sl_lockedStateChanged() {
 
 void MSAEditorSequenceArea::sl_removeAllGaps() {
     MultipleSequenceAlignmentObject* msa = getEditor()->getMaObject();
-    SAFE_POINT(!msa->isStateLocked(), tr("MSA is locked"), );
+    SAFE_POINT(!msa->isStateLocked(), "MSA is locked", );
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled

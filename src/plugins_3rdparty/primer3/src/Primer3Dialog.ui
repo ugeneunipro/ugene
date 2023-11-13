@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>768</height>
+    <height>781</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,7 +35,7 @@
       <string/>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_Main">
       <attribute name="title">
@@ -1206,6 +1206,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The annealing temperature (Celsius) used in the PCR reaction. Usually it is chosen up to 10°C below the melting temperature of the primers. If provided, Primer3 will calculate the fraction of primers bound at the provided annealing temperature for each oligo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
+             <property name="minimum">
+              <double>-9999.989999999999782</double>
+             </property>
              <property name="maximum">
               <double>9999.989999999999782</double>
              </property>
@@ -1626,10 +1629,10 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
-              <double>-100000.000000000000000</double>
+              <double>-1000000.000000000000000</double>
              </property>
              <property name="maximum">
-              <double>100000.000000000000000</double>
+              <double>1000000.000000000000000</double>
              </property>
              <property name="value">
               <double>-100000.000000000000000</double>
@@ -1648,10 +1651,10 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The minimum, optimum, and maximum melting temperature of the amplicon.&lt;/p&gt;&lt;p&gt;Primer3 will not pick a product with melting temperature less than min or greater than max. If Opt is supplied and the Penalty Weights for Product Size are non-0 Primer3 will attempt to pick an amplicon with melting temperature close to Opt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="minimum">
-              <double>-100000.000000000000000</double>
+              <double>-1000000.000000000000000</double>
              </property>
              <property name="maximum">
-              <double>100000.000000000000000</double>
+              <double>1000000.000000000000000</double>
              </property>
              <property name="value">
               <double>100000.000000000000000</double>
@@ -2417,7 +2420,10 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </widget>
            </item>
            <item row="10" column="2">
-            <widget class="QLabel" name="label_119">
+            <widget class="QLabel" name="label_PRIMER_SEQUENCING_INTERVAL">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the reverse strand. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -2428,6 +2434,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
            </item>
            <item row="11" column="3">
             <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_ACCURACY">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the calculated position of the 3'end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -2590,6 +2599,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
            </item>
            <item row="11" column="1">
             <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_LEAD">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3'end of the primer to the point were the trace signals are readable. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -2654,7 +2666,10 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </widget>
            </item>
            <item row="11" column="2">
-            <widget class="QLabel" name="label_120">
+            <widget class="QLabel" name="label_PRIMER_SEQUENCING_ACCURACY">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the calculated position of the 3'end to both sides in which Primer3Plus picks the best primer. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -2778,7 +2793,10 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </spacer>
            </item>
            <item row="11" column="0">
-            <widget class="QLabel" name="label_118">
+            <widget class="QLabel" name="label_PRIMER_SEQUENCING_LEAD">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3'end of the primer to the point were the trace signals are readable. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -2804,7 +2822,10 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </widget>
            </item>
            <item row="10" column="0">
-            <widget class="QLabel" name="label_117">
+            <widget class="QLabel" name="label_PRIMER_SEQUENCING_SPACING">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the same strand. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -2815,6 +2836,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
            </item>
            <item row="10" column="3">
             <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_INTERVAL">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the reverse strand. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -3116,6 +3140,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
            </item>
            <item row="10" column="1">
             <widget class="QSpinBox" name="edit_PRIMER_SEQUENCING_SPACING">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Defines the space from the 3'end of the primer to the 3'end of the next primer on the same strand. Value only used if &lt;span style=&quot; font-weight:700;&quot;&gt;Primer Task&lt;/span&gt; is &lt;span style=&quot; font-weight:700; font-style:italic;&quot;&gt;pick_sequencing_primers&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -3323,6 +3350,9 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
            </item>
            <item row="1" column="0">
             <widget class="QCheckBox" name="checkbox_PRIMER_LOWERCASE_MASKING">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="toolTip">
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This option allows for intelligent design of primers in sequence in which masked regions (for example repeat-masked regions) are lower-cased. (New in v. 1.1.0, added by Maido Remm and Triinu Koressaar)&lt;/p&gt;&lt;p&gt;A value of 1 directs Primer3 to reject primers overlapping lowercase a base exactly at the 3' end.&lt;/p&gt;&lt;p&gt;This property relies on the assumption that masked features (e.g. repeats) can partly overlap primer, but they cannot overlap the 3'-end of the primer. In other words, lowercase bases at other positions in the primer are accepted, assuming that the masked features do not influence the primer performance if they do not overlap the 3'-end of primer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
@@ -6443,7 +6473,10 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab_PosteriorActions">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <attribute name="title">
        <string>Posterior Actions</string>
       </attribute>
@@ -6466,6 +6499,45 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
           <bool>true</bool>
          </property>
          <layout class="QGridLayout" name="gridLayout_17">
+          <item row="2" column="1" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <item>
+             <widget class="QLineEdit" name="leCsvReportPath">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="toolTip">
+               <string>Save primer report in CSV file format</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pbCsvReportChoosePath">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Save primer report in CSV file format</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
           <item row="0" column="0">
            <widget class="QCheckBox" name="cbMaxBasePairInDimer">
             <property name="text">
@@ -6473,42 +6545,6 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </property>
             <property name="checked">
              <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="sbMaxComplementPairs">
-            <property name="toolTip">
-             <string>Maximum persantage of G/C base pairs</string>
-            </property>
-            <property name="suffix">
-             <string> bp</string>
-            </property>
-            <property name="value">
-             <number>4</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="cbMaxDimerGcContent">
-            <property name="text">
-             <string>Max dimer GC-content</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="sbMaxGcPairs">
-            <property name="toolTip">
-             <string>Maximum persantage of G/C base pairs</string>
-            </property>
-            <property name="suffix">
-             <string> %</string>
-            </property>
-            <property name="value">
-             <number>50</number>
             </property>
            </widget>
           </item>
@@ -6535,44 +6571,41 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
             </property>
            </widget>
           </item>
-          <item row="2" column="1" colspan="2">
-           <layout class="QHBoxLayout" name="horizontalLayout_14">
-            <item>
-             <widget class="QLineEdit" name="leCsvReportPath">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="toolTip">
-               <string>Save primer report in CSV file format</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pbCsvReportChoosePath">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>22</width>
-                <height>22</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Save primer report in CSV file format</string>
-              </property>
-              <property name="text">
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbMaxGcPairs">
+            <property name="toolTip">
+             <string>Maximum persantage of G/C base pairs</string>
+            </property>
+            <property name="suffix">
+             <string> %</string>
+            </property>
+            <property name="value">
+             <number>50</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="cbMaxDimerGcContent">
+            <property name="text">
+             <string>Max dimer GC-content</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbMaxComplementPairs">
+            <property name="toolTip">
+             <string>Maximum persantage of G/C base pairs</string>
+            </property>
+            <property name="suffix">
+             <string> bp</string>
+            </property>
+            <property name="value">
+             <number>4</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -7648,6 +7681,70 @@ Any triplet can be provided as start codon.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;<
     <hint type="destinationlabel">
      <x>979</x>
      <y>136</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_PICK_LEFT_PRIMER</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_SEQUENCE_OVERHANG_LEFT</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>55</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_PICK_LEFT_PRIMER</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>edit_SEQUENCE_OVERHANG_LEFT</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>218</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_PICK_RIGHT_PRIMER</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_SEQUENCE_OVERHANG_RIGHT</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>839</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>712</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkbox_PRIMER_PICK_RIGHT_PRIMER</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>edit_SEQUENCE_OVERHANG_RIGHT</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>839</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>875</x>
+     <y>209</y>
     </hint>
    </hints>
   </connection>

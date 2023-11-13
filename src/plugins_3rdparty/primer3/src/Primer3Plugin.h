@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _PRIMER3_PLUGIN_H_
-#define _PRIMER3_PLUGIN_H_ 1
+#pragma once
+
 #include <QMenu>
 
 #include <U2Core/AppResources.h>
@@ -49,7 +49,7 @@ class Primer3ADVContext : public GObjectViewWindowContext {
 public:
     Primer3ADVContext(QObject* p);
 
-protected slots:
+public slots:
     void sl_showDialog();
 
 protected:
@@ -62,4 +62,3 @@ public:
 };
 
 }  // namespace U2
-#endif  //_PRIMER3_PLUGIN_H_

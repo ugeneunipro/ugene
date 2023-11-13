@@ -268,13 +268,13 @@ void AssemblyModel::setAssembly(U2AssemblyDbi* dbi, const U2Assembly& assm) {
         switch (U2DbiUtils::toType(assembly.referenceId)) {
             case U2Type::Sequence: {
                 Project* prj = AppContext::getProject();
-                SAFE_POINT(prj != nullptr, tr("No active project found!"), );
+                SAFE_POINT(prj != nullptr, "No active project found!", );
 
                 Document* refDoc = prj->findDocumentByURL(U2DbiUtils::ref2Url(dbiHandle.dbi->getDbiRef()));
-                SAFE_POINT(refDoc != nullptr, tr("No reference document found in the project"), );
+                SAFE_POINT(refDoc != nullptr, "No reference document found in the project", );
 
                 auto refObj = qobject_cast<U2SequenceObject*>(refDoc->getObjectById(assembly.referenceId));
-                SAFE_POINT(refObj != nullptr, tr("No reference object found in the project"), );
+                SAFE_POINT(refObj != nullptr, "No reference object found in the project", );
 
                 setReference(refObj);
                 break;
@@ -289,7 +289,7 @@ void AssemblyModel::setAssembly(U2AssemblyDbi* dbi, const U2Assembly& assm) {
 
                 // 2. find project and load reference doc to project
                 Project* prj = AppContext::getProject();
-                SAFE_POINT(prj != nullptr, tr("No active project found!"), );
+                SAFE_POINT(prj != nullptr, "No active project found!", );
 
                 Document* refDoc = prj->findDocumentByURL(crossRef.dataRef.dbiRef.dbiId);
                 Task* t = nullptr;
@@ -481,7 +481,7 @@ void AssemblyModel::setReference(U2SequenceObject* seqObj) {
 }
 
 QByteArray AssemblyModel::getReferenceRegion(const U2Region& region, U2OpStatus& os) {
-    SAFE_POINT_EXT(refObj, os.setError(tr("Reference document is not ready!")), QByteArray());
+    SAFE_POINT_EXT(refObj, os.setError("Reference document is not ready!"), QByteArray());
     return refObj->getSequenceData(region);
 }
 

@@ -44,7 +44,7 @@ HmmerBuildFromMsaTask::HmmerBuildFromMsaTask(const HmmerBuildSettings& settings,
       saveTask(nullptr),
       hmmerTask(nullptr),
       removeWorkingDir(false) {
-    SAFE_POINT_EXT(!settings.profileUrl.isEmpty(), setError(tr("HMM profile URL is empty")), );
+    SAFE_POINT_EXT(!settings.profileUrl.isEmpty(), setError("HMM profile URL is empty"), );
     GCOUNTER(cvar, "ExternalTool_HMMER");
 }
 

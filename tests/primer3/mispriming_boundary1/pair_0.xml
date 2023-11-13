@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/mispriming_boundary1/pair_0.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="pair_0" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_MISPRIMING_LIBRARY="primer_repeat_boundary1_lib" 
@@ -28,9 +30,7 @@
 			PRIMER_MAX_TM="100" 
 			PRIMER_MIN_TM="0" 
 			PRIMER_OPT_TM="60" 
-			SEQUENCE_ID="pair_0" 
-			P3_COMMENT="Should fail because of high repeat similarity" 
-			SEQUENCE_TEMPLATE="TATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATTATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATATA"/>
+			P3_COMMENT="Should fail because of high repeat similarity"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="0" 
 			PRIMER_RIGHT_NUM_RETURNED="0" 

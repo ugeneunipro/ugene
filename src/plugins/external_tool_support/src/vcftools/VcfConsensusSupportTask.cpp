@@ -50,11 +50,11 @@ VcfConsensusSupportTask::VcfConsensusSupportTask(const GUrl& inputFA, const GUrl
 void VcfConsensusSupportTask::prepare() {
     algoLog.details(tr("VcfConsensus started"));
 
-    SAFE_POINT_EXT(AppContext::getAppSettings() != nullptr, setError(tr("AppSettings is NULL")), );
+    SAFE_POINT_EXT(AppContext::getAppSettings() != nullptr, setError("AppSettings is NULL"), );
     const UserAppsSettings* userAS = AppContext::getAppSettings()->getUserAppsSettings();
-    SAFE_POINT_EXT(userAS != nullptr, setError(tr("UserAppsSettings is NULL")), );
+    SAFE_POINT_EXT(userAS != nullptr, setError("UserAppsSettings is NULL"), );
     QString tmpDirPath(userAS->getCurrentProcessTemporaryDirPath(VcfConsensusSupport::VCF_CONSENSUS_TMP_DIR));
-    SAFE_POINT_EXT(!tmpDirPath.isEmpty(), setError(tr("Temporary folder is not set!")), );
+    SAFE_POINT_EXT(!tmpDirPath.isEmpty(), setError("Temporary folder is not set!"), );
     GUrl tmp(tmpDirPath + "/" + inputVcf.fileName() + ".gz");
 
     QDir tmpDir(tmpDirPath);
@@ -82,12 +82,12 @@ QList<Task*> VcfConsensusSupportTask::onSubTaskFinished(Task* subTask) {
     }
 
     ExternalToolRegistry* extToolReg = AppContext::getExternalToolRegistry();
-    SAFE_POINT_EXT(extToolReg, setError(tr("ExternalToolRegistry is NULL")), res);
+    SAFE_POINT_EXT(extToolReg, setError("ExternalToolRegistry is NULL"), res);
 
     ExternalTool* vcfToolsET = extToolReg->getById(VcfConsensusSupport::ET_VCF_CONSENSUS_ID);
     ExternalTool* tabixET = extToolReg->getById(TabixSupport::ET_TABIX_ID);
-    SAFE_POINT_EXT(vcfToolsET, setError(tr("There is no VcfConsensus external tool registered")), res);
-    SAFE_POINT_EXT(tabixET, setError(tr("There is no Tabix external tool registered")), res);
+    SAFE_POINT_EXT(vcfToolsET, setError("There is no VcfConsensus external tool registered"), res);
+    SAFE_POINT_EXT(tabixET, setError("There is no Tabix external tool registered"), res);
 
     QMap<QString, QString> envVariables;
     envVariables["PERL5LIB"] = getPath(vcfToolsET);

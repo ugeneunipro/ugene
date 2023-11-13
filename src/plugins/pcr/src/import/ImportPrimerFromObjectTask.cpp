@@ -41,7 +41,7 @@ ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject* object)
            TaskFlags(TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
       validator(this) {
     SAFE_POINT_EXT(object != nullptr, setError(L10N::nullPointerError("an input object")), );
-    SAFE_POINT_EXT(GObjectTypes::SEQUENCE == object->getGObjectType(), setError(tr("A non-sequence object was provided")), );
+    SAFE_POINT_EXT(GObjectTypes::SEQUENCE == object->getGObjectType(), setError("A non-sequence object was provided"), );
     sequenceObject = qobject_cast<U2SequenceObject*>(object);
     SAFE_POINT_EXT(sequenceObject != nullptr, setError(L10N::nullPointerError("sequence object")), );
     SAFE_POINT_EXT(sequenceObject->getAlphabet(), setError(L10N::nullPointerError("sequence alphabet")), );

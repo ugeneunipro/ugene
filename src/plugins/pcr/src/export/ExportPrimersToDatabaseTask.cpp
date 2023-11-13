@@ -82,7 +82,7 @@ Task::ReportResult ExportPrimersToDatabaseTask::report() {
     while (!dbiSequences.objects.isEmpty() && !dbiAnnotations.objects.isEmpty()) {
         importedObjectIds.insert(dbiSequences.objects.takeFirst(), dbiAnnotations.objects.takeFirst());
     }
-    SAFE_POINT_EXT(dbiSequences.objects.isEmpty() && dbiAnnotations.objects.isEmpty(), setError(tr("Unexpected objects count")), ReportResult_Finished);
+    SAFE_POINT_EXT(dbiSequences.objects.isEmpty() && dbiAnnotations.objects.isEmpty(), setError("Unexpected objects count"), ReportResult_Finished);
     return ReportResult_Finished;
 }
 

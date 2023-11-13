@@ -339,7 +339,7 @@ bool PluginSupportImpl::isDefaultPluginsDir(const QString& url) {
 //////////////////////////////////////////////////////////////////////////
 /// Tasks
 AddPluginTask::AddPluginTask(PluginSupportImpl* _ps, const PluginDesc& _desc, bool forceVerification)
-    : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlag_NoRun),
+    : Task(tr("Add plugin task: %1").arg(_desc.id), TaskFlags(TaskFlag_NoRun)),
       lib(nullptr),
       ps(_ps),
       desc(_desc),
@@ -382,7 +382,7 @@ void AddPluginTask::prepare() {
     }
 
     Settings* settings = AppContext::getSettings();
-    SAFE_POINT(settings != nullptr, tr("Settings is NULL"), );
+    SAFE_POINT(settings != nullptr, "Settings is NULL", );
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
     bool verificationIsEnabled = true;

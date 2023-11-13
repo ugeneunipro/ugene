@@ -137,7 +137,7 @@ const ProjectTreeControllerModeSettings& ProjectTreeController::getModeSettings(
 }
 
 QModelIndex ProjectTreeController::getIndexForDoc(Document* doc) const {
-    SAFE_POINT(doc != nullptr, L10N::nullPointerError("document"), QModelIndex());
+    SAFE_POINT_NN(doc, QModelIndex());
     return proxyModel == nullptr ? model->getIndexForDoc(doc) : proxyModel->getIndexForDoc(doc);
 }
 
@@ -148,7 +148,7 @@ void ProjectTreeController::highlightItem(Document* doc) {
 }
 
 void ProjectTreeController::refreshObject(GObject* object) {
-    SAFE_POINT(object != nullptr, L10N::nullPointerError("object"), );
+    SAFE_POINT_NN(object, );
     model->updateData(model->getIndexForObject(object));
 }
 
@@ -186,7 +186,7 @@ void ProjectTreeController::updateSettings(const ProjectTreeControllerModeSettin
             }
         }
     } else {
-        SAFE_POINT(proxyModel != nullptr, L10N::nullPointerError("Project proxy model"), );
+        SAFE_POINT_NN(proxyModel, );
         proxyModel->updateSettings(newSettings);
     }
 
@@ -590,7 +590,7 @@ void ProjectTreeController::sl_onImportToDatabase() {
     } else if (1 == selectedDocuments.size()) {
         doc = selectedDocuments.values().first();
     }
-    SAFE_POINT(doc != nullptr, tr("Select a database to import anything"), );
+    SAFE_POINT(doc != nullptr, "Select a database to import anything", );
 
     auto mainWindow = qobject_cast<QWidget*>(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<ImportToDatabaseDialog> importDialog = new ImportToDatabaseDialog(doc, selectedFolders.first().getFolderPath(), mainWindow);
@@ -631,13 +631,13 @@ void ProjectTreeController::sl_windowDeactivated(MWMDIWindow* w) {
 }
 
 void ProjectTreeController::sl_objectAddedToActiveView(GObjectViewController*, GObject* obj) {
-    SAFE_POINT(obj != nullptr, tr("No object to add to view"), );
+    SAFE_POINT(obj != nullptr, "No object to add to view", );
     uiLog.trace(QString("Processing object add to active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);
 }
 
 void ProjectTreeController::sl_objectRemovedFromActiveView(GObjectViewController*, GObject* obj) {
-    SAFE_POINT(obj != nullptr, tr("No object to remove from view"), );
+    SAFE_POINT(obj != nullptr, "No object to remove from view", );
     uiLog.trace(QString("Processing object remove from active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);
 }

@@ -251,11 +251,11 @@ Task* SpadesWorker::tick() {
 
         if (isPaired) {
             QVariant inputData = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariant());
-            SAFE_POINT(inputData != QVariant(), tr("Incorrect input data"), new FailTask(tr("Incorrect input data")));
+            SAFE_POINT(inputData != QVariant(), "Incorrect input data", new FailTask(tr("Incorrect input data")));
 
             QVariantMap mapData = inputData.toMap();
             QStringList values = mapData[portId].toString().split(":");
-            SAFE_POINT(values.size() == 2, tr("Incorrect port values"), new FailTask(tr("Incorrect port values")));
+            SAFE_POINT(values.size() == 2, "Incorrect port values", new FailTask(tr("Incorrect port values")));
 
             read.orientation = values.first();
             read.readType = values.last();
