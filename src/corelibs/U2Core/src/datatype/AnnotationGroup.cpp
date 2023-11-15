@@ -173,7 +173,7 @@ QList<AnnotationGroup*> AnnotationGroup::getSubgroups() const {
 }
 
 void AnnotationGroup::removeSubgroup(AnnotationGroup* g) {
-    SAFE_POINT(g != nullptr, L10N::nullPointerError("annotation group"), );
+    SAFE_POINT_NN(g, );
     SAFE_POINT(g->getParentGroup() == this, "Attempting to remove group belonging to different group", );
 
     parentObject->emit_onGroupRemoved(this, g);
@@ -272,7 +272,7 @@ AnnotationGroup* AnnotationGroup::addSubgroup(const U2Feature& feature) {
         return result;
     } else {
         AnnotationGroup* parentGroup = findSubgroupById(feature.parentFeatureId);
-        SAFE_POINT(parentGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
+        SAFE_POINT_NN(parentGroup, nullptr);
         return parentGroup->addSubgroup(feature);
     }
 }

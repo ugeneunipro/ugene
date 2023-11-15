@@ -231,7 +231,7 @@ void BAMImporterTask::initPrepareToImportTask() {
         const QString filePath = tempLocalDb->fileName();
         tempLocalDb->close();
 
-        SAFE_POINT_EXT(QFile::exists(filePath), setError(tr("Can't create a temporary database")), );
+        SAFE_POINT_EXT(QFile::exists(filePath), setError("Can't create a temporary database"), );
 
         localDbiRef = U2DbiRef(SQLITE_DBI_ID, filePath);
     }

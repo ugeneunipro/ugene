@@ -44,7 +44,7 @@ CuffdiffSupportTask::CuffdiffSupportTask(const CuffdiffSettings& _settings)
     : ExternalToolSupportTask(tr("Running Cuffdiff task"), TaskFlags_NR_FOSE_COSC),
       settings(_settings),
       diffTask(nullptr) {
-    SAFE_POINT_EXT(settings.storage != nullptr, setError(tr("Workflow data storage is NULL")), );
+    SAFE_POINT_EXT(settings.storage != nullptr, setError("Workflow data storage is NULL"), );
     GCOUNTER(cvar, "ExternalTool_Cuff");
 }
 

@@ -84,6 +84,7 @@ public:
 
     static const QString PRIMER_MENU;
     static const QString PRIMER_LIBRARY;
+    static const QString PRIMER3;
 
     static const QString TFBS_MENU;
     static const QString TFBS_SITECON;

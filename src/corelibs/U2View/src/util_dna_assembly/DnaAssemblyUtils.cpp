@@ -276,7 +276,7 @@ void FilterUnpairedReadsTask::run() {
             downstream << set;
         }
     }
-    SAFE_POINT_EXT(upstream.size() == downstream.size(), setError(tr("The count of upstream files is not equal to the count of downstream files")), );
+    SAFE_POINT_EXT(upstream.size() == downstream.size(), setError("The count of upstream files is not equal to the count of downstream files"), );
 
     for (int i = 0; i < upstream.size(); i++) {
         QString tmpFileUpstream = getTmpFilePath(upstream[i].url);

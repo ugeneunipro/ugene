@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/boundary/poly_x_3.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="poly_x_3" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TM_FORMULA="0" 
 			PRIMER_SALT_CORRECTIONS="0" 
@@ -31,11 +33,8 @@
 			PRIMER_LIBERAL_BASE="0" 
 			PRIMER_PICK_INTERNAL_OLIGO="1" 
 			PRIMER_INTERNAL_MIN_TM="0" 
-			PRIMER_INTERNAL_MAX_TM="100" 
-			SEQUENCE_ID="poly_x_3" 
-			SEQUENCE_TEMPLATE="AAAAAACCCCCCTTTTTTGGGGGGAAAAAACCCCCCTTTTTTGGGGGGAAAAAACCCCCCTTTTTTGGGGGGAAAAAAACCCCCCTTTTTTGGGGGGAAAAAACCCCCCCTTTTTTGGGGGGAAAAAACCCCCCTTTTTTGGGGGGAAAAAAACCCCCCTTTTTTGGGGGGAAAAAACCCCCCTTTTTTTGGGGGGGGGGGGGG"/>
+			PRIMER_INTERNAL_MAX_TM="100"/>
 		<plugin_primer_3_out 
-			PRIMER_INTERNAL_EXPLAIN="considered 187, long poly-x seq 187, ok 0" 
 			PRIMER_LEFT_NUM_RETURNED="0" 
 			PRIMER_RIGHT_NUM_RETURNED="0" 
 			PRIMER_INTERNAL_NUM_RETURNED="0" 

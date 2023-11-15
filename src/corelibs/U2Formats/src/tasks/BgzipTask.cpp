@@ -55,12 +55,12 @@ BgzipTask::BgzipTask(const GUrl& fileUrl, const GUrl& bgzfUrl)
 void BgzipTask::run() {
     taskLog.details(tr("Start bgzip compression '%1'").arg(fileUrl.getURLString()));
 
-    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, setError(tr("IOAdapterRegistry is NULL!")), );
+    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, setError("IOAdapterRegistry is NULL!"), );
     IOAdapterFactory* ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
 
-    SAFE_POINT_EXT(ioFactory != nullptr, setError(tr("IOAdapterFactory is NULL!")), );
+    SAFE_POINT_EXT(ioFactory != nullptr, setError("IOAdapterFactory is NULL!"), );
     QScopedPointer<IOAdapter> in(ioFactory->createIOAdapter());
-    SAFE_POINT_EXT(!in.isNull(), setError(tr("Can not create IOAdapter!")), );
+    SAFE_POINT_EXT(!in.isNull(), setError("Can not create IOAdapter!"), );
 
     bool res = in->open(fileUrl, IOAdapterMode_Read);
     if (!res) {
@@ -139,18 +139,18 @@ GzipDecompressTask::GzipDecompressTask(const GUrl& zipUrl, const GUrl& fileUrl)
 void GzipDecompressTask::run() {
     taskLog.details(tr("Start decompression '%1'").arg(zippedUrl.getURLString()));
 
-    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, setError(tr("IOAdapterRegistry is NULL!")), );
+    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, setError("IOAdapterRegistry is NULL!"), );
 
     IOAdapterFactory* inFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::GZIPPED_LOCAL_FILE);
-    SAFE_POINT_EXT(inFactory != nullptr, setError(tr("IOAdapterFactory is NULL!")), );
+    SAFE_POINT_EXT(inFactory != nullptr, setError("IOAdapterFactory is NULL!"), );
     IOAdapterFactory* outFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(outFactory != nullptr, setError(tr("IOAdapterFactory is NULL!")), );
+    SAFE_POINT_EXT(outFactory != nullptr, setError("IOAdapterFactory is NULL!"), );
 
     QScopedPointer<IOAdapter> in(inFactory->createIOAdapter());
-    SAFE_POINT_EXT(!in.isNull(), setError(tr("Can not create IOAdapter!")), );
+    SAFE_POINT_EXT(!in.isNull(), setError("Can not create IOAdapter!"), );
 
     QScopedPointer<IOAdapter> out(outFactory->createIOAdapter());
-    SAFE_POINT_EXT(!out.isNull(), setError(tr("Can not create IOAdapter!")), );
+    SAFE_POINT_EXT(!out.isNull(), setError("Can not create IOAdapter!"), );
 
     if (unzippedUrl.isEmpty()) {
         QString unzippedUrlString = zippedUrl.dirPath() + "/" + QFileInfo(zippedUrl.getURLString()).completeBaseName();

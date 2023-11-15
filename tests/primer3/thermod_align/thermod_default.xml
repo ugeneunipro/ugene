@@ -1,13 +1,14 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/thermod_align/thermod_default.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="thermod_default" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TM_FORMULA="0" 
 			PRIMER_SALT_CORRECTIONS="0" 
 			PRIMER_SALT_DIVALENT="0.0" 
 			PRIMER_DNTP_CONC="0.0" 
 			PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS="0" 
-			SEQUENCE_ID="thermod_default" 
 			PRIMER_TASK="pick_pcr_primers_and_hyb_probe" 
 			PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT="1" 
 			PRIMER_THERMODYNAMIC_TEMPLATE_ALIGNMENT="1" 
@@ -35,8 +36,7 @@
 			PRIMER_PAIR_WT_COMPL_ANY_TH="0.0" 
 			PRIMER_PAIR_WT_COMPL_END_TH="0.0" 
 			PRIMER_PAIR_WT_TEMPLATE_MISPRIMING_TH="0.0" 
-			P3_COMMENT="default values of parameters using thermodynamic approach" 
-			SEQUENCE_TEMPLATE="AAGCCGAGGATGACTTCACTTTCCGACCCTGCAGAGCCGAGTTTCACCCACGAGTGAAGACTCCGCCAGCCTTGCCCCTCGGGCCTCTCCCTCAACTCACCATGATGACCGTCAGGCTGAGGAGGCAGGCGGACTGAGGCGTGGTCCGCGGGGCTCAGGGAGGTGGCTCCTGCGCCGG"/>
+			P3_COMMENT="default values of parameters using thermodynamic approach"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="5" 
 			PRIMER_RIGHT_NUM_RETURNED="5" 

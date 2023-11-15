@@ -19,8 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef PRIMER3TASKSETTINGS_H
-#define PRIMER3TASKSETTINGS_H
+#pragma once
 
 #include <QByteArray>
 #include <QList>
@@ -228,4 +227,3 @@ private:
 
 }  // namespace U2
 
-#endif  // PRIMER3TASKSETTINGS_H

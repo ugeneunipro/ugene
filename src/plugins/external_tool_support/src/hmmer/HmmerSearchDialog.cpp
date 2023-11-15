@@ -63,7 +63,7 @@ HmmerSearchDialog::HmmerSearchDialog(ADVSequenceObjectContext* seqCtx, QWidget* 
 
 void HmmerSearchDialog::init(U2SequenceObject* seqObj) {
     setupUi(this);
-    SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("sequence object"), );
+    SAFE_POINT_NN(seqObj, );
 
     new HelpButton(this, buttonBox, "65930823");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
@@ -191,7 +191,7 @@ void HmmerSearchDialog::sl_okButtonClicked() {
         return;
     }
 
-    SAFE_POINT(!model.sequence.isNull(), L10N::nullPointerError("sequence object"), );
+    SAFE_POINT_NN(model.sequence, );
     getModelValues();
     QString err = checkModel();
     if (!err.isEmpty()) {

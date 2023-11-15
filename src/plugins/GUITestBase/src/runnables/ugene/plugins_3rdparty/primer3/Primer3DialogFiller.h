@@ -71,6 +71,9 @@ public:
     Primer3DialogFiller(const Primer3Settings& settings = Primer3Settings());
     void commonScenario();
 
+    static constexpr const int RT_PCR_DESIGN_TAB_NUMBER = 6;
+    static constexpr const int POSTERIOR_ACTIONS_TAB_NUMBER = 7;
+    static constexpr const int RESULT_ANNOTATION_SETTINGS_TAB_NUMBER = 8;
 private:
     struct Widgets {
         QList<QPair<QSpinBox*, QString>> spin;

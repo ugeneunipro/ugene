@@ -376,7 +376,7 @@ void FastQWriter::data2document(Document* doc, const QVariantMap& data, Workflow
     CHECK(data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId()), );
     SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-    SAFE_POINT(seqObj.data() != nullptr, tr("Fastq writer: NULL sequence object"), );
+    SAFE_POINT(seqObj.data() != nullptr, "Fastq writer: NULL sequence object", );
 
     U2OpStatusImpl os;
     DNASequence seq = seqObj->getWholeSequence(os);
@@ -431,7 +431,7 @@ void RawSeqWriter::data2document(Document* doc, const QVariantMap& data, Workflo
     CHECK(data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId()), );
     SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-    SAFE_POINT(seqObj.data() != nullptr, tr("Raw sequence writer: NULL sequence object"), );
+    SAFE_POINT(seqObj.data() != nullptr, "Raw sequence writer: NULL sequence object", );
 
     U2OpStatusImpl os;
     DNASequence seq = seqObj->getWholeSequence(os);
@@ -496,7 +496,7 @@ void GenbankWriter::data2document(Document* doc, const QVariantMap& data, Workfl
     if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
         SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
         seqObj.reset(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        SAFE_POINT(seqObj.data() != nullptr, tr("Genbank writer: NULL sequence object"), );
+        SAFE_POINT(seqObj.data() != nullptr, "Genbank writer: NULL sequence object", );
 
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -636,7 +636,7 @@ void GFFWriter::data2document(Document* doc, const QVariantMap& data, WorkflowCo
     if (data.contains(BaseSlots::DNA_SEQUENCE_SLOT().getId())) {
         SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
         seqObj.reset(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        SAFE_POINT(!seqObj.isNull(), tr("GFF writer: NULL sequence object"), );
+        SAFE_POINT(!seqObj.isNull(), "GFF writer: NULL sequence object", );
 
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -847,7 +847,7 @@ void MSAWriter::data2document(Document* doc, const QVariantMap& data, WorkflowCo
     SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", );
     MultipleSequenceAlignment msa = msaObj->getMsaCopy();
 
-    SAFE_POINT(!msa->isEmpty(), tr("Empty alignment passed for writing to %1").arg(doc->getURLString()), )
+    SAFE_POINT(!msa->isEmpty(), QString("Empty alignment passed for writing to %1").arg(doc->getURLString()), )
 
     if (msa->getName().isEmpty()) {
         QString name = QString(MA_OBJECT_NAME + "_%1").arg(ct);

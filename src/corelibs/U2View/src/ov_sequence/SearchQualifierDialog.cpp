@@ -106,7 +106,7 @@ void SearchQualifierDialog::SearchQualifier::showQualifier() const {
 
     for (const auto& p : qAsConst(foundQuals)) {
         AVAnnotationItem* ai = p.first;
-        SAFE_POINT(ai != nullptr, L10N::nullPointerError("annotation item"), );
+        SAFE_POINT_NN(ai, );
         if (!ai->isExpanded()) {
             treeView->getTreeWidget()->expandItem(ai);
             treeView->sl_itemExpanded(ai);

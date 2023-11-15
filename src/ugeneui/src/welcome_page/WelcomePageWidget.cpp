@@ -192,21 +192,30 @@ QWidget* WelcomePageWidget::createFooterWidget() {
     footerCiteLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     footerCiteLabel->setAlignment(Qt::AlignTop);
     footerBottomWidgetLayout->addWidget(footerCiteLabel);
-    footerBottomWidgetLayout->addStretch(3);
+    footerBottomWidgetLayout->addStretch(1);
 
     auto footerFollowLabel = new QLabel("<b>" + tr("Follow UGENE:") + "</b>" +
                                         "<table cellspacing=7><tr>"
                                         "<td width=33></td>"
                                         "<td><a href='https://www.facebook.com/groups/ugene'><img src=':/ugene/images/welcome_page/social_icon_facebook.png'></a></td>"
-                                        "<td><a href='https://twitter.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_twitter.png'></a></td>"
                                         "<td><a href='https://www.linkedin.com/in/unipro-ugene-4a01b357/'><img src=':/ugene/images/welcome_page/social_icon_linkedin.png'></a></td>"
-                                        "<td><a href='http://www.youtube.com/user/UniproUGENE'><img src=':/ugene/images/welcome_page/social_icon_youtube.png'></a></td>"
-                                        "<td><a href='http://vk.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_vkontakte.png'></a></td>"
-                                        "<td><a href='http://feeds2.feedburner.com/NewsOfUgeneProject'><img src=':/ugene/images/welcome_page/social_icon_rss.png'></a></td>"
+                                        "<td><a href='https://www.youtube.com/user/UniproUGENE'><img src=':/ugene/images/welcome_page/social_icon_youtube.png'></a></td>"
+                                        "<td><a href='https://vk.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_vkontakte.png'></a></td>"
                                         "</tr></table>");
     footerFollowLabel->setOpenExternalLinks(true);
     footerFollowLabel->setAlignment(Qt::AlignTop);
     footerBottomWidgetLayout->addWidget(footerFollowLabel);
+    footerBottomWidgetLayout->addStretch(1);
+
+    auto footerSupportLabel = new QLabel("<b>" + tr("Support UGENE:") + "</b>" +
+                                        "<table cellspacing=7><tr>"
+                                        "<td width=30></td>"
+                                        "<td><a href='https://patreon.com/uniprougene'><img src=':/ugene/images/welcome_page/social_icon_patreon.png'></a></td>"
+                                        "</tr></table>");
+    footerSupportLabel->setOpenExternalLinks(true);
+    footerSupportLabel->setAlignment(Qt::AlignTop);
+    footerBottomWidgetLayout->addWidget(footerSupportLabel);
+
     footerBottomWidgetLayout->addStretch(2);
     return footerWidget;
 }

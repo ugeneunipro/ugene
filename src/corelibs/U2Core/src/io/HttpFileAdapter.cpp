@@ -104,10 +104,11 @@ bool HttpFileAdapter::open(const QUrl& url, const QNetworkProxy& p) {
     if (url.toString().length() > MAX_GET_LENGTH) {
         QStringList splittedStrings = url.toString().split(RemoteRequestConfig::HTTP_BODY_SEPARATOR);
         if (splittedStrings.count() > 1) {
-            SAFE_POINT(2 == splittedStrings.count(), tr("Incorrect url string has been passed to HttpFileAdapter::open()"), false);
+            SAFE_POINT(splittedStrings.count() == 2, "Incorrect url string has been passed to HttpFileAdapter::open()", false);
             const QString& headerString = splittedStrings.at(0);
             postData = splittedStrings.at(1).toLatin1();
             QNetworkRequest netRequest(headerString);
+            netRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
             reply = netManager->post(netRequest, postData);
         } else {
             QNetworkRequest netRequest(url);

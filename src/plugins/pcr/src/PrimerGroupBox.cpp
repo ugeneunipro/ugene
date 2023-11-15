@@ -112,13 +112,13 @@ void PrimerGroupBox::sl_findPrimerTaskStateChanged() {
         if (results.size() == 1) {
             // in case of the sequence context was changed the task is canceled
             ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
-            SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
+            SAFE_POINT_NN(sequenceContext, );
             U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-            SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
+            SAFE_POINT_NN(sequenceObject, );
 
             QByteArray primerOnSeq = sequenceObject->getSequenceData(results.first().region);
             if (results.first().strand == U2Strand::Complementary) {
-                SAFE_POINT(findPrimerTask->getSettings().complementTT != nullptr, L10N::nullPointerError("Complement Translation"), );
+                SAFE_POINT_NN(findPrimerTask->getSettings().complementTT, );
                 findPrimerTask->getSettings().complementTT->translate(primerOnSeq.data(), primerOnSeq.length());
                 TextUtils::reverse(primerOnSeq.data(), primerOnSeq.length());
             }
@@ -139,7 +139,7 @@ void PrimerGroupBox::sl_activeSequenceChanged() {
 }
 
 QString PrimerGroupBox::getTmString(const QString& sequence) {
-    SAFE_POINT(temperatureCalculator != nullptr, L10N::nullPointerError("TmCalculator"), "");
+    SAFE_POINT_NN(temperatureCalculator, "");
 
     double tm = temperatureCalculator->getMeltingTemperature(sequence.toLocal8Bit());
     QString tmString = tm != TmCalculator::INVALID_TM ? PrimerStatistics::getDoubleStringValue(tm) + QString::fromLatin1("\x00B0") + "C" : tr("N/A");
@@ -152,11 +152,11 @@ void PrimerGroupBox::findPrimerAlternatives(const QString& primer) {
 
     FindAlgorithmTaskSettings settings;
 
-    SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("Annotated DNA view"), );
+    SAFE_POINT_NN(annotatedDnaView, );
     ADVSequenceObjectContext* sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(sequenceContext != nullptr, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT_NN(sequenceContext, );
     U2SequenceObject* sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT_NN(sequenceObject, );
 
     U2OpStatusImpl os;
     settings.sequence = sequenceObject->getWholeSequenceData(os);
@@ -169,9 +169,9 @@ void PrimerGroupBox::findPrimerAlternatives(const QString& primer) {
     settings.pattern = primer.toLatin1();
 
     const DNAAlphabet* alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
-    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("DNA Alphabet"), );
+    SAFE_POINT_NN(alphabet, );
     DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-    SAFE_POINT(translator != nullptr, L10N::nullPointerError("DNA Translator"), );
+    SAFE_POINT_NN(translator, );
     settings.complementTT = translator;
 
     findPrimerTask = new FindAlgorithmTask(settings);

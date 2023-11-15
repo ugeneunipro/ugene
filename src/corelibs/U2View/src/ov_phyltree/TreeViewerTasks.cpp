@@ -216,7 +216,7 @@ CreateTreeViewerTask::CreateTreeViewerTask(const QString& name, const QPointer<P
       viewName(name),
       phyObj(obj),
       stateData(sData) {
-    SAFE_POINT_EXT(phyObj != nullptr, setError(tr("Invalid tree object detected")), );
+    SAFE_POINT_EXT(phyObj != nullptr, setError("Invalid tree object detected"), );
     connect(obj.data(), SIGNAL(destroyed(QObject*)), SLOT(cancel()));
 }
 

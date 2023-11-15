@@ -128,7 +128,7 @@ QList<Task*> CallVariantsTask::onSubTaskFinished(Task* subTask) {
 
     } else if (subTask == loadTask) {
         QScopedPointer<Document> doc(loadTask->takeDocument(false));
-        SAFE_POINT(doc != nullptr, tr("No document loaded"), res);
+        SAFE_POINT(doc != nullptr, "No document loaded", res);
         doc->setDocumentOwnsDbiResources(false);
         foreach (GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
             auto varObj = dynamic_cast<VariantTrackObject*>(go);
