@@ -63,7 +63,7 @@ void ConvertAceToSqliteTask::run() {
 
     QScopedPointer<IOAdapter> ioAdapter;
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(sourceUrl));
-    SAFE_POINT_EXT(factory, setError(tr("IOAdapterFactory is NULL")), );
+    SAFE_POINT_EXT(factory, setError("IOAdapterFactory is NULL"), );
     ioAdapter.reset(factory->createIOAdapter());
 
     if (!ioAdapter->open(sourceUrl, IOAdapterMode_Read)) {
@@ -80,9 +80,9 @@ void ConvertAceToSqliteTask::run() {
     }
 
     dbi = dbiHandle.dbi;
-    SAFE_POINT(dbi, tr("DBI is NULL"), );
+    SAFE_POINT(dbi, "DBI is NULL", );
     U2ObjectDbi* objDbi = dbi->getObjectDbi();
-    SAFE_POINT(objDbi, tr("Object DBI is NULL"), );
+    SAFE_POINT(objDbi, "Object DBI is NULL", );
 
     stateInfo.setDescription("Importing");
     taskLog.details(tr("Importing"));
@@ -133,7 +133,7 @@ qint64 ConvertAceToSqliteTask::importAssemblies(IOAdapter& ioAdapter) {
     qint64 totalReadsImported = 0;
 
     U2SequenceDbi* seqDbi = dbi->getSequenceDbi();
-    SAFE_POINT(seqDbi, tr("Sequence DBI is NULL"), totalReadsImported);
+    SAFE_POINT(seqDbi, "Sequence DBI is NULL", totalReadsImported);
 
     U2OpStatusChildImpl os(&stateInfo, U2OpStatusMapping(0, 50));
     QScopedPointer<AceReader> aceReader;
@@ -210,7 +210,7 @@ qint64 ConvertAceToSqliteTask::packReads() {
     }
 
     U2AssemblyDbi* assDbi = dbi->getAssemblyDbi();
-    SAFE_POINT(assDbi, tr("Assembly DBI is NULL"), 0);
+    SAFE_POINT(assDbi, "Assembly DBI is NULL", 0);
 
     foreach (int assemblyNum, assemblies.keys()) {
         U2AssemblyReadsImportInfo& importInfo = importInfos[assemblyNum];
@@ -242,7 +242,7 @@ void ConvertAceToSqliteTask::updateAttributeDbi() {
     }
 
     U2AttributeDbi* attrDbi = dbi->getAttributeDbi();
-    SAFE_POINT(attrDbi, tr("Attribute DBI is NULL"), );
+    SAFE_POINT(attrDbi, "Attribute DBI is NULL", );
 
     foreach (int assemblyNum, assemblies.keys()) {
         const U2Assembly& assembly = assemblies[assemblyNum];

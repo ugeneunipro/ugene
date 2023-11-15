@@ -307,10 +307,6 @@ void PanView::sl_onAnnotationSettingsChanged(const QStringList& changedSettings)
     AnnotationSettingsRegistry* asr = AppContext::getAnnotationsSettingsRegistry();
     for (const QString& name : qAsConst(changedSettings)) {
         AnnotationSettings* as = asr->getAnnotationSettings(name);
-        bool hasRow = rowsManager->hasRowWithName(name);
-        if (as->visible == hasRow) {
-            continue;
-        }
         QList<Annotation*> changed;
         foreach (AnnotationTableObject* ao, ctx->getAnnotationObjects(true)) {
             changed << ao->getAnnotationsByName(name);
@@ -668,10 +664,26 @@ void PanViewRenderArea::drawAll(QPaintDevice* pd) {
     }
 }
 
+U2Region PanViewRenderArea::getAnnotationXRange(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
+    CHECK(annotationSettings->visible, U2Region());
+
+    const auto& regs = annotation->getRegions();
+    SAFE_POINT(0 <= locationRegionIndex && locationRegionIndex < regs.size(), "Annotation should contain locationRegionIndex", U2Region());
+
+    const auto& annotationRegion = regs.at(locationRegionIndex);
+    auto canvasSize = QSize(width(), height());
+    bool selected = view->getSequenceContext()->getAnnotationsSelection()->getAnnotations().contains(annotation);
+    return renderer->getAnnotationXRange(annotationRegion, view->getVisibleRange(), canvasSize, selected);
+}
+
 U2Region PanViewRenderArea::getAnnotationYRange(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
     U2Region region = renderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, height());
     region.startPos += renderer->getContentIndentY(height());
     return region;
+}
+
+QList<U2Region> PanViewRenderArea::getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
+    return { getAnnotationXRange(annotation, locationRegionIndex, annotationSettings) };
 }
 
 QList<U2Region> PanViewRenderArea::getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {

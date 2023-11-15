@@ -54,10 +54,10 @@ ExportConsensusTask::ExportConsensusTask(const ExportConsensusTaskSettings& sett
 void ExportConsensusTask::prepare() {
     U2DbiRef dbiRef;
     if (settings.saveToFile) {
-        SAFE_POINT_EXT(!settings.fileName.isEmpty(), setError(tr("File name cannot be empty")), );
+        SAFE_POINT_EXT(!settings.fileName.isEmpty(), setError("File name cannot be empty"), );
 
         DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(settings.formatId);
-        SAFE_POINT_EXT(df != nullptr, setError(tr("Internal: couldn't find document format with id '%1'").arg(settings.formatId)), );
+        SAFE_POINT_EXT(df != nullptr, setError(QString("Internal: couldn't find document format with id '%1'").arg(settings.formatId)), );
 
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(settings.fileName));
         resultDocument = df->createNewLoadedDocument(iof, settings.fileName, stateInfo);

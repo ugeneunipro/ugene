@@ -64,11 +64,11 @@ QList<Task*> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task* subTask) {
     }
 
     if (subTask == saveDocumentTask) {
-        SAFE_POINT_EXT(saveDocumentTask->getDocument() != nullptr, setError(tr("Internal UGENE error")), res);
+        SAFE_POINT_EXT(saveDocumentTask->getDocument() != nullptr, setError("Internal UGENE error"), res);
 
         QString fileUrl = saveDocumentTask->getDocument()->getURLString();
 
-        SAFE_POINT_EXT(!fileUrl.isEmpty(), setError(tr("Internal UGENE error")), res);
+        SAFE_POINT_EXT(!fileUrl.isEmpty(), setError("Internal UGENE error"), res);
 
         QFile tmpFile(fileUrl);
         if (!tmpFile.open(QIODevice::Append)) {
@@ -231,13 +231,13 @@ QList<Task*> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task* subTask) {
         }
 
         const QList<GObject*>& treeList = doc->getObjects();
-        SAFE_POINT_EXT(treeList.count() > 0, setError(tr("No result tree in PhyML output")), res);
+        SAFE_POINT_EXT(treeList.count() > 0, setError("No result tree in PhyML output"), res);
         int index = 1;  // the second tree in the file is needed
         if (treeList.count() - 1 < index) {
             index = 0;
         }
         phyObject = qobject_cast<PhyTreeObject*>(treeList.at(index));
-        SAFE_POINT_EXT(phyObject != nullptr, setError(tr("No result tree in PhyML output")), res);
+        SAFE_POINT_EXT(phyObject != nullptr, setError("No result tree in PhyML output"), res);
     }
 
     return res;

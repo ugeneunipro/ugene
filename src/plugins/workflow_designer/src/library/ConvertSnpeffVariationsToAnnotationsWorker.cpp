@@ -152,7 +152,7 @@ void ConvertSnpeffVariationsToAnnotationsWorker::cleanup() {
 
 void ConvertSnpeffVariationsToAnnotationsWorker::sl_taskFinished(Task* task) {
     auto convertTask = qobject_cast<LoadConvertAndSaveSnpeffVariationsToAnnotationsTask*>(task);
-    SAFE_POINT(convertTask != nullptr, L10N::nullPointerError("LoadConvertAndSaveSnpeffVariationsToAnnotationsTask"), );
+    SAFE_POINT_NN(convertTask, );
     CHECK(!convertTask->hasError() && !convertTask->isCanceled(), );
     monitor()->addOutputFile(convertTask->getResultUrl(), getActorId());
 }

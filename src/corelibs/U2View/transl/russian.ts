@@ -689,11 +689,6 @@ Probably, the data are too big.</source>
         <translation>Паттерны</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="63"/>
-        <source>I&apos;m replaced with another widget in code!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternForm.ui" line="170"/>
         <source>Shift+Return</source>
         <translation>Shift+Return</translation>
@@ -1293,16 +1288,6 @@ Do you want to replace it?</source>
         <location filename="../src/ov_sequence/AnnotatedDNAViewTasks.cpp" line="185"/>
         <source>Warning</source>
         <translation>Внимание</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="74"/>
-        <source>Overview is NULL</source>
-        <translation>Overview is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="75"/>
-        <source>Graph overview is NULL</source>
-        <translation>Graph overview is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="106"/>
@@ -2101,7 +2086,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="429"/>
         <source>Expansion </source>
-        <translation>Расширение</translation>
+        <translation>Расширение </translation>
     </message>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.ui" line="442"/>
@@ -2230,14 +2215,6 @@ Double-click to collapse the branch</source>
         <location filename="../src/ov_sequence/ADVAnnotationCreation.cpp" line="50"/>
         <source>Create annotations task</source>
         <translation>Создание аннотации</translation>
-    </message>
-</context>
-<context>
-    <name>U2::ADVSequenceObjectContext</name>
-    <message>
-        <location filename="../src/ov_sequence/ADVSequenceObjectContext.cpp" line="51"/>
-        <source>Incorrect signal sender!</source>
-        <translation>Incorrect signal sender!</translation>
     </message>
 </context>
 <context>
@@ -2512,18 +2489,13 @@ Double-click to collapse the branch</source>
         <source>Add short reads to document</source>
         <translation>Add short reads to document</translation>
     </message>
-    <message>
-        <location filename="../src/ov_assembly/AddReadsToDocumentTask.cpp" line="40"/>
-        <source>Invalid database reference detected</source>
-        <translation>Invalid database reference detected</translation>
-    </message>
 </context>
 <context>
     <name>U2::AddTreeWidget</name>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="373"/>
         <source>No active trees found.</source>
-        <translation>Нет активных деревьев</translation>
+        <translation>Нет активных деревьев.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/phy_tree_tab/TreeOptionsWidget.cpp" line="379"/>
@@ -2597,11 +2569,6 @@ Double-click to collapse the branch</source>
         <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="129"/>
         <source>Next annotation</source>
         <translation>Следующая аннотация</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="207"/>
-        <source>Sequence context is NULL</source>
-        <translation>Sequence context is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/annot_highlight/AnnotHighlightWidget.cpp" line="317"/>
@@ -2933,11 +2900,6 @@ Double-click to collapse the branch</source>
         <translation>Error opening open assembly browser for %1, assembly %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="214"/>
-        <source>Internal error: only object with document can be added to browser</source>
-        <translation>Internal error: only object with document can be added to browser</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="216"/>
         <source>Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.</source>
         <translation>Только нуклеотидные последовательности или вариации могут быть добавлены в сборку.</translation>
@@ -2946,11 +2908,6 @@ Double-click to collapse the branch</source>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="220"/>
         <source>Internal error: broken sequence object</source>
         <translation>Internal error: broken sequence object</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="221"/>
-        <source>Internal error: empty document format</source>
-        <translation>Internal error: empty document format</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyBrowser.cpp" line="267"/>
@@ -3220,22 +3177,6 @@ Double-click to collapse the branch</source>
 <context>
     <name>U2::AssemblyModel</name>
     <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="271"/>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="292"/>
-        <source>No active project found!</source>
-        <translation>No active project found!</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="274"/>
-        <source>No reference document found in the project</source>
-        <translation>No reference document found in the project</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="277"/>
-        <source>No reference object found in the project</source>
-        <translation>No reference object found in the project</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="310"/>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="639"/>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="644"/>
@@ -3265,11 +3206,6 @@ Try to open another file with a reference sequence and associate it with the ass
 Do you want to remove the association?</source>
         <translation>Последовательность &apos;%1&apos; ассоциирована со сборкой &apos;%2&apos;?
 Вы хотите удалить ассоциацию?</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/AssemblyModel.cpp" line="484"/>
-        <source>Reference document is not ready!</source>
-        <translation>Reference document is not ready!</translation>
     </message>
     <message>
         <location filename="../src/ov_assembly/AssemblyModel.cpp" line="639"/>
@@ -3613,26 +3549,6 @@ You don&apos;t have enough rights to change file</source>
         <source>Calculate coverage per base for assembly on region (%1, %2)</source>
         <translation>Calculate coverage per base for assembly on region (%1, %2)</translation>
     </message>
-    <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="40"/>
-        <source>Invalid database reference</source>
-        <translation>Invalid database reference</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="41"/>
-        <source>Invalid assembly ID</source>
-        <translation>Invalid assembly ID</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="52"/>
-        <source>Assembly DBI is NULL</source>
-        <translation>Assembly DBI is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="122"/>
-        <source>Cigar string: out of bounds</source>
-        <translation>Cigar string: out of bounds</translation>
-    </message>
 </context>
 <context>
     <name>U2::CalculateCoveragePerBaseTask</name>
@@ -3640,21 +3556,6 @@ You don&apos;t have enough rights to change file</source>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="135"/>
         <source>Calculate coverage per base for assembly</source>
         <translation>Calculate coverage per base for assembly</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="139"/>
-        <source>Invalid database reference</source>
-        <translation>Invalid database reference</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="140"/>
-        <source>Invalid assembly ID</source>
-        <translation>Invalid assembly ID</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="165"/>
-        <source>An unexpected subtask</source>
-        <translation>An unexpected subtask</translation>
     </message>
 </context>
 <context>
@@ -3993,11 +3894,6 @@ You don&apos;t have enough rights to change file</source>
         <source>Open tree viewer</source>
         <translation>Открыть дерево</translation>
     </message>
-    <message>
-        <location filename="../src/ov_phyltree/TreeViewerTasks.cpp" line="219"/>
-        <source>Invalid tree object detected</source>
-        <translation>Invalid tree object detected</translation>
-    </message>
 </context>
 <context>
     <name>U2::CurrentViewPainter</name>
@@ -4013,12 +3909,6 @@ You don&apos;t have enough rights to change file</source>
         <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="341"/>
         <source>Calculate sequence statistics</source>
         <translation>Вычислить статистику последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="350"/>
-        <location filename="../src/ov_sequence/sequence_info/DNAStatisticsTask.cpp" line="366"/>
-        <source>Alphabet is NULL</source>
-        <translation>Alphabet is NULL</translation>
     </message>
 </context>
 <context>
@@ -4275,14 +4165,6 @@ Please, check external tools in the settings.</source>
     </message>
 </context>
 <context>
-    <name>U2::ExportAutoAnnotationsGroupTask</name>
-    <message>
-        <location filename="../src/ov_sequence/AutoAnnotationUtils.cpp" line="307"/>
-        <source>Invalid annotation group provided</source>
-        <translation>Invalid annotation group provided</translation>
-    </message>
-</context>
-<context>
     <name>U2::ExportConsensusDialog</name>
     <message>
         <location filename="../src/ov_assembly/ExportConsensusDialog.cpp" line="45"/>
@@ -4331,17 +4213,7 @@ Please, check external tools in the settings.</source>
     <message>
         <location filename="../src/ov_assembly/ExportConsensusTask.cpp" line="50"/>
         <source>Export consensus of assembly &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportConsensusTask.cpp" line="57"/>
-        <source>File name cannot be empty</source>
-        <translation>Имя файла не может быть пусто</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportConsensusTask.cpp" line="60"/>
-        <source>Internal: couldn&apos;t find document format with id &apos;%1&apos;</source>
-        <translation>Internal: couldn&apos;t find document format with id &apos;%1&apos;</translation>
+        <translation>Экспорт консенсуса сборки &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -4412,16 +4284,6 @@ Please, check external tools in the settings.</source>
         <source>Export consensus variations of assembly &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Export consensus variations of assembly &apos;%1&apos; to &apos;%2&apos;</translation>
     </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportConsensusVariationsTask.cpp" line="51"/>
-        <source>File name cannot be empty</source>
-        <translation>File name cannot be empty</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportConsensusVariationsTask.cpp" line="54"/>
-        <source>Internal: couldn&apos;t find document format with id &apos;%1&apos;</source>
-        <translation>Internal: couldn&apos;t find document format with id &apos;%1&apos;</translation>
-    </message>
 </context>
 <context>
     <name>U2::ExportCoverageDialog</name>
@@ -4461,19 +4323,9 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::ExportCoverageHistogramTask</name>
     <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="164"/>
-        <source>Attribute DBI is NULL</source>
-        <translation>Attribute DBI is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="168"/>
         <source>Can&apos;t get the assembly length: attribute is missing</source>
         <translation>Can&apos;t get the assembly length: attribute is missing</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="171"/>
-        <source>Assembly has zero length</source>
-        <translation>Assembly has zero length</translation>
     </message>
 </context>
 <context>
@@ -4482,36 +4334,6 @@ Please, check external tools in the settings.</source>
         <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="62"/>
         <source>Export assembly coverage per base</source>
         <translation>Export assembly coverage per base</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="69"/>
-        <source>Invalid database reference</source>
-        <translation>Invalid database reference</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="70"/>
-        <source>Invalid assembly ID</source>
-        <translation>Invalid assembly ID</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="71"/>
-        <source>Invalid destination url</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="83"/>
-        <source>Can&apos;t write the compressed file: IOAdapterFactory is NULL</source>
-        <translation>Can&apos;t write the compressed file: IOAdapterFactory is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="89"/>
-        <source>Can&apos;t write the file: IOAdapterFactory is NULL</source>
-        <translation>Can&apos;t write the file: IOAdapterFactory is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="109"/>
-        <source>Not all regions were processed</source>
-        <translation>Not all regions were processed</translation>
     </message>
 </context>
 <context>
@@ -4658,11 +4480,6 @@ Please, check external tools in the settings.</source>
         <source>Extract consensus</source>
         <translation>Извлечь консенсус</translation>
     </message>
-    <message>
-        <location filename="../src/ov_msa/MaEditorTasks.cpp" line="346"/>
-        <source>No sequences in alignment</source>
-        <translation>No sequences in alignment</translation>
-    </message>
 </context>
 <context>
     <name>U2::FilterUnpairedReadsTask</name>
@@ -4677,11 +4494,6 @@ Please, check external tools in the settings.</source>
         <translation>Filtering unpaired reads is launched on not-paired data</translation>
     </message>
     <message>
-        <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="279"/>
-        <source>The count of upstream files is not equal to the count of downstream files</source>
-        <translation>The count of upstream files is not equal to the count of downstream files</translation>
-    </message>
-    <message>
         <location filename="../src/util_dna_assembly/DnaAssemblyUtils.cpp" line="308"/>
         <source>%1 read pairs were mapped, %2 reads without a pair from files &quot;%3&quot; and &quot;%4&quot; were skipped.</source>
         <translation>%1 read pairs were mapped, %2 reads without a pair from files &quot;%3&quot; and &quot;%4&quot; were skipped.</translation>
@@ -4690,14 +4502,14 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::FindPatternListTask</name>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="123"/>
-        <source>Searching patterns in sequence task</source>
-        <translation>Searching patterns in sequence task</translation>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="120"/>
+        <source>Find patterns in sequence</source>
+        <translation>Найти паттерны в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="149"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="146"/>
         <source>Empty pattern: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Пустой паттерн: %1</translation>
     </message>
 </context>
 <context>
@@ -4861,11 +4673,11 @@ Please, check external tools in the settings.</source>
     <name>U2::FindPatternTask</name>
     <message>
         <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="35"/>
-        <source>Searching a pattern in sequence task</source>
-        <translation>Searching a pattern in sequence task</translation>
+        <source>Find pattern in sequence</source>
+        <translation>Найти паттерн в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="109"/>
+        <location filename="../src/ov_sequence/find_pattern/FindPatternTask.cpp" line="106"/>
         <source>Removed %1 overlapped results.</source>
         <translation>Removed %1 overlapped results.</translation>
     </message>
@@ -5079,19 +4891,9 @@ Please, check external tools in the settings.</source>
         <source>Results: %1/%2</source>
         <translation>Результаты: %1/%2</translation>
     </message>
-    <message>
-        <location filename="../src/ov_sequence/find_pattern/FindPatternWidget.cpp" line="1228"/>
-        <source>Sequence in focus is NULL</source>
-        <translation>Sequence in focus is NULL</translation>
-    </message>
 </context>
 <context>
     <name>U2::FormatsMsaClipboardTask</name>
-    <message>
-        <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="106"/>
-        <source>No temporary document.</source>
-        <translation>No temporary document.</translation>
-    </message>
     <message>
         <location filename="../src/ov_msa/clipboard/SubalignmentToClipboardTask.cpp" line="110"/>
         <source>Cannot read the temporary file.</source>
@@ -5162,7 +4964,7 @@ Please, check external tools in the settings.</source>
 <context>
     <name>U2::GSequenceLineViewAnnotated</name>
     <message>
-        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="392"/>
+        <location filename="../src/ov_sequence/GSequenceLineViewAnnotated.cpp" line="409"/>
         <source>etc ...</source>
         <translation>Прочие ...</translation>
     </message>
@@ -5225,11 +5027,6 @@ Directory Path: %1</source>
 <context>
     <name>U2::GetAssemblyLengthTask</name>
     <message>
-        <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="192"/>
-        <source>Attribute DBI is NULL</source>
-        <translation>Attribute DBI is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/ov_assembly/CalculateCoveragePerBaseTask.cpp" line="196"/>
         <source>Can&apos;t get the assembly length: attribute is missing</source>
         <translation>Can&apos;t get the assembly length: attribute is missing</translation>
@@ -5247,11 +5044,6 @@ Directory Path: %1</source>
 </context>
 <context>
     <name>U2::GetAssemblyVisibleNameTask</name>
-    <message>
-        <location filename="../src/ov_assembly/ExportCoverageTask.cpp" line="54"/>
-        <source>Assembly DBI is NULL</source>
-        <translation>Assembly DBI is NULL</translation>
-    </message>
     <message>
         <location filename="../src/ov_assembly/ExportCoverageTask.h" line="70"/>
         <source>Get visible name of Assembly</source>
@@ -5309,11 +5101,6 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp" line="292"/>
         <source>Load sequences and add to alignment task</source>
         <translation>Load sequences and add to alignment task</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp" line="297"/>
-        <source>Alignment object is null</source>
-        <translation>Alignment object is null</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.cpp" line="310"/>
@@ -5654,12 +5441,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="234"/>
         <source>Block size is too big and can&apos;t be copied into the clipboard</source>
-        <translation type="unfinished">Block size is too big and can&apos;t be copied into the clipboard</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="464"/>
-        <source>MSA is locked</source>
-        <translation>MSA заблокировано</translation>
+        <translation>Размер блока слишком большой и не может быть скопирован в буфер обмена</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="605"/>
@@ -5710,11 +5492,6 @@ Directory Path: %1</source>
         <translation>Нет доступных алгоритмов для построения дерева.</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="271"/>
-        <source>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</source>
-        <translation>Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="301"/>
         <source>Select files to open...</source>
         <translation>Выберите файлы...</translation>
@@ -5734,12 +5511,6 @@ Directory Path: %1</source>
         <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="345"/>
         <source>Document contains no tree objects!</source>
         <translation>Документ не содержит объектов дерева!</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="366"/>
-        <location filename="../src/ov_msa/phy_tree/MSAEditorTreeManager.cpp" line="368"/>
-        <source>Incorrect reference to the MSAEditor</source>
-        <translation>Incorrect reference to the MSAEditor</translation>
     </message>
 </context>
 <context>
@@ -5893,24 +5664,6 @@ Directory Path: %1</source>
     </message>
 </context>
 <context>
-    <name>U2::MSAImageExportTask</name>
-    <message>
-        <location filename="../src/ov_msa/export_image/MSAImageExportTask.cpp" line="49"/>
-        <source>MSA Editor UI is NULL</source>
-        <translation>MSA Editor UI is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/export_image/MSAImageExportTask.cpp" line="55"/>
-        <source>MSA Editor is NULL</source>
-        <translation>MSA Editor is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/export_image/MSAImageExportTask.cpp" line="62"/>
-        <source>MSA Consensus area is NULL</source>
-        <translation>MSA Consensus area is NULL</translation>
-    </message>
-</context>
-<context>
     <name>U2::MSAImageExportToBitmapTask</name>
     <message>
         <location filename="../src/ov_msa/export_image/MSAImageExportTask.cpp" line="100"/>
@@ -5931,16 +5684,6 @@ Directory Path: %1</source>
 </context>
 <context>
     <name>U2::MSAImageExportToSvgTask</name>
-    <message>
-        <location filename="../src/ov_msa/export_image/MSAImageExportTask.cpp" line="204"/>
-        <source>Nothing to export</source>
-        <translation>Экспортировать нечего</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/export_image/MSAImageExportTask.cpp" line="237"/>
-        <source>The image size is too big.</source>
-        <translation>The image size is too big.</translation>
-    </message>
     <message>
         <location filename="../src/ov_msa/export_image/MSAImageExportTask.cpp" line="241"/>
         <source>SVG %1</source>
@@ -5971,24 +5714,6 @@ Directory Path: %1</source>
     </message>
 </context>
 <context>
-    <name>U2::MaClustalOverviewCalculationTask</name>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="169"/>
-        <source>MSAConsensusAlgorithmRegistry is NULL!</source>
-        <translation>MSAConsensusAlgorithmRegistry is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="172"/>
-        <source>Clustal algorithm factory is NULL</source>
-        <translation>Clustal algorithm factory is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="174"/>
-        <source>MSA is NULL</source>
-        <translation>MSA is NULL</translation>
-    </message>
-</context>
-<context>
     <name>U2::MaConsensusMismatchController</name>
     <message>
         <location filename="../src/ov_mca/MaConsensusMismatchController.cpp" line="54"/>
@@ -6004,24 +5729,6 @@ Directory Path: %1</source>
         <location filename="../src/ov_mca/MaConsensusMismatchController.cpp" line="139"/>
         <source>There are no variations in the consensus sequence.</source>
         <translation>Консенсусная последовательность не содержит вариаций.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MaConsensusOverviewCalculationTask</name>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="132"/>
-        <source>MSAConsensusAlgorithmRegistry is NULL!</source>
-        <translation>MSAConsensusAlgorithmRegistry is NULL!</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="135"/>
-        <source>Strict consensus algorithm factory is NULL</source>
-        <translation>Strict consensus algorithm factory is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="137"/>
-        <source>MSA is NULL</source>
-        <translation>MSA is NULL</translation>
     </message>
 </context>
 <context>
@@ -6214,11 +5921,6 @@ Directory Path: %1</source>
         <translation>Заменить гэпами</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorSequenceArea.cpp" line="575"/>
-        <source>Alignment object is not available</source>
-        <translation>Alignment object is not available</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/MaEditorSequenceArea.cpp" line="755"/>
         <source>No reference sequence selected</source>
         <translation>Не выбрана референсная последовательность</translation>
@@ -6373,16 +6075,6 @@ Directory Path: %1</source>
         <source>Render overview</source>
         <translation>Рассчитать панораму</translation>
     </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="48"/>
-        <source>MSA is NULL</source>
-        <translation>MSA is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="69"/>
-        <source>Overview width is zero</source>
-        <translation>Overview width is zero</translation>
-    </message>
 </context>
 <context>
     <name>U2::MaGraphOverview</name>
@@ -6409,39 +6101,9 @@ Directory Path: %1</source>
         <source>MSA highlighting scheme registry is NULL</source>
         <translation>MSA highlighting scheme registry is NULL</translation>
     </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="203"/>
-        <source>MSA highlighting scheme factory with &apos;%1&apos; id is NULL</source>
-        <translation>MSA highlighting scheme factory with &apos;%1&apos; id is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="216"/>
-        <source>Color scheme is NULL</source>
-        <translation>Color scheme is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="217"/>
-        <source>Highlighting scheme is NULL</source>
-        <translation>Highlighting scheme is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaGraphCalculationTask.cpp" line="218"/>
-        <source>Highlighting scheme factory is NULL</source>
-        <translation>Highlighting scheme factory is NULL</translation>
-    </message>
 </context>
 <context>
     <name>U2::MaOverviewContextMenu</name>
-    <message>
-        <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="44"/>
-        <source>Overview is NULL</source>
-        <translation>Overview is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="45"/>
-        <source>Graph overview is NULL</source>
-        <translation>Graph overview is NULL</translation>
-    </message>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="55"/>
         <source>Set color...</source>
@@ -6534,16 +6196,6 @@ Directory Path: %1</source>
 <context>
     <name>U2::MaOverviewImageExportToBitmapTask</name>
     <message>
-        <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="43"/>
-        <source>Overview is NULL</source>
-        <translation>Overview is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="44"/>
-        <source>Graph overview is NULL</source>
-        <translation>Graph overview is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/overview/MaOverviewImageExportTask.cpp" line="46"/>
         <source>Nothing to export. </source>
         <translation>Nothing to export. </translation>
@@ -6555,14 +6207,6 @@ Directory Path: %1</source>
     </message>
 </context>
 <context>
-    <name>U2::MaSangerOverview</name>
-    <message>
-        <location filename="../src/ov_mca/overview/MaSangerOverview.cpp" line="260"/>
-        <source>Incorrect multiple chromatogram alignment object</source>
-        <translation>Incorrect multiple chromatogram alignment object</translation>
-    </message>
-</context>
-<context>
     <name>U2::MaSimpleOverview</name>
     <message>
         <location filename="../src/ov_msa/overview/MaSimpleOverview.cpp" line="87"/>
@@ -6570,11 +6214,6 @@ Directory Path: %1</source>
 Simple overview is unavailable.</source>
         <translation>Множественное выравнивание слишком большое для этого окна.
 Простая панорама недоступна.</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/overview/MaSimpleOverview.cpp" line="128"/>
-        <source>Incorrect multiple alignment object!</source>
-        <translation>Incorrect multiple alignment object!</translation>
     </message>
 </context>
 <context>
@@ -6860,17 +6499,17 @@ Simple overview is unavailable.</source>
     <message>
         <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="203"/>
         <source>Data is outdated</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные устарели</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="204"/>
         <source>Data is valid</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные действительны</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MsaEditorSimilarityColumn.cpp" line="205"/>
         <source>Data is being updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные обновляются</translation>
     </message>
 </context>
 <context>
@@ -6884,24 +6523,24 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::MsaEditorMultilineWgt</name>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="91"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="92"/>
         <source>Deleting widget from grid, count %1, index %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление виджета из сетки, количество %1, индекс %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="98"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="99"/>
         <source>Deleting widget from uiChild, count %1, index %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаление виджета из uiChild, количество %1, индекс %2</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="102"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="103"/>
         <source>Deleted widget, uiChildCount %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Удален виджет, количество uiChildCount %1</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="392"/>
+        <location filename="../src/ov_msa/MsaEditorMultilineWgt.cpp" line="393"/>
         <source>Go to Position</source>
-        <translation type="unfinished">Перейти к позиции</translation>
+        <translation>Перейти к позиции</translation>
     </message>
 </context>
 <context>
@@ -7309,19 +6948,6 @@ Simple overview is unavailable.</source>
     </message>
 </context>
 <context>
-    <name>U2::OverviewRenderArea</name>
-    <message>
-        <location filename="../src/ov_sequence/Overview.cpp" line="487"/>
-        <source>Overview is NULL</source>
-        <translation>Overview is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/Overview.cpp" line="489"/>
-        <source>ADVSingleSequenceWidget is NULL</source>
-        <translation>ADVSingleSequenceWidget is NULL</translation>
-    </message>
-</context>
-<context>
     <name>U2::PairAlign</name>
     <message>
         <location filename="../src/ov_msa/pairwise_alignment/PairAlign.cpp" line="107"/>
@@ -7412,7 +7038,7 @@ Simple overview is unavailable.</source>
         <translation>Показывать дополнительные шкалы</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/PanView.cpp" line="466"/>
+        <location filename="../src/ov_sequence/PanView.cpp" line="462"/>
         <source>range change request: [%1, %2]</source>
         <translation>Изменён видимый диапазон: [%1, %2]</translation>
     </message>
@@ -7566,27 +7192,27 @@ Simple overview is unavailable.</source>
 <context>
     <name>U2::SecStructDialog</name>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="67"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="64"/>
         <source>Predict</source>
         <translation>Предсказать</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="68"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="65"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="69"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="66"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="78"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="75"/>
         <source>Region</source>
         <translation>Регион</translation>
     </message>
     <message>
-        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="79"/>
+        <location filename="../src/util_sec_struct_predict/SecStructDialog.cpp" line="76"/>
         <source>Structure Type</source>
         <translation>Тип структуры</translation>
     </message>
@@ -7618,11 +7244,6 @@ Please, load the corresponding plugins.</source>
         <translation>Выделить</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="132"/>
-        <source>MSA Object is NULL</source>
-        <translation>MSA Object is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="76"/>
         <source>Start position must be less than end position!</source>
         <translation>Начальная позиция должна быть меньше конечной позиции!</translation>
@@ -7636,11 +7257,6 @@ Please, load the corresponding plugins.</source>
         <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="93"/>
         <source>No sequences selected</source>
         <translation>Нет выделенных последовательностей</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_msa/MSASelectSubalignmentDialog.cpp" line="121"/>
-        <source>Ma Editor is NULL</source>
-        <translation>Ma Editor is NULL</translation>
     </message>
 </context>
 <context>
@@ -7659,27 +7275,6 @@ Please, load the corresponding plugins.</source>
         <location filename="../src/ov_msa/statistics/SeqStatisticsWidget.cpp" line="99"/>
         <source>Press button to update</source>
         <translation>Нажмите, чтобы обновить</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SequenceAreaRenderer</name>
-    <message>
-        <location filename="../src/ov_msa/SequenceAreaRenderer.cpp" line="63"/>
-        <source>Alignment object is NULL</source>
-        <translation>Alignment object is NULL</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SequenceExportSettingsWidget</name>
-    <message>
-        <location filename="../src/ov_sequence/image_export/SequenceExportSettingsWidget.cpp" line="37"/>
-        <source>Cannot cast CustomExportSettings to SequenceExportSettings</source>
-        <translation>Cannot cast CustomExportSettings to SequenceExportSettings</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/image_export/SequenceExportSettingsWidget.cpp" line="38"/>
-        <source>Sequence Object is NULL</source>
-        <translation>Sequence Object is NULL</translation>
     </message>
 </context>
 <context>
@@ -7738,16 +7333,6 @@ Please, load the corresponding plugins.</source>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="142"/>
         <source>Amino acids</source>
         <translation>Амино кислоты</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="252"/>
-        <source>Sequence context is NULL</source>
-        <translation>Sequence context is NULL</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="255"/>
-        <source>Sequence alphabet is NULL</source>
-        <translation>Sequence alphabet is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/sequence_info/SequenceInfo.cpp" line="263"/>
@@ -7852,11 +7437,6 @@ Please, load the corresponding plugins.</source>
         <translation>Рамка считывания -%1</translation>
     </message>
     <message>
-        <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="280"/>
-        <source>Incorrect signal sender!</source>
-        <translation>Incorrect signal sender!</translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/SequenceObjectContext.cpp" line="289"/>
         <source>Select genetic code</source>
         <translation>Выбрать генетический код</translation>
@@ -7883,20 +7463,9 @@ Please, load the corresponding plugins.</source>
 <context>
     <name>U2::SingleSequenceImageExportController</name>
     <message>
-        <location filename="../src/ov_sequence/image_export/SingleSequenceImageExportController.cpp" line="43"/>
-        <source>Sequence Widget is NULL</source>
-        <translation>Sequence Widget is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/ov_sequence/image_export/SingleSequenceImageExportController.cpp" line="44"/>
         <source>Sequence</source>
         <translation>Последовательности</translation>
-    </message>
-    <message>
-        <location filename="../src/ov_sequence/image_export/SingleSequenceImageExportController.cpp" line="47"/>
-        <location filename="../src/ov_sequence/image_export/SingleSequenceImageExportController.cpp" line="58"/>
-        <source>Sequence Object is NULL</source>
-        <translation>Sequence Object is NULL</translation>
     </message>
     <message>
         <location filename="../src/ov_sequence/image_export/SingleSequenceImageExportController.cpp" line="96"/>
@@ -8085,7 +7654,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/temperature/TmCalculatorSelectorWidget.cpp" line="50"/>
         <source>Hint: UGENE computes Tm for sequence regions from %1 up to %2 bp</source>
-        <translation type="unfinished"></translation>
+        <translation>Подсказка: UGENE вычисляет температуру плавления (Tm) для участков последовательности от %1 до %2 пар нуклеотидов</translation>
     </message>
     <message>
         <location filename="../src/temperature/TmCalculatorSelectorWidget.cpp" line="57"/>
@@ -8244,7 +7813,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="184"/>
         <source>Fit Zoom to Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Подогнать масштаб по размеру окна</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="191"/>
@@ -8308,12 +7877,12 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1176"/>
         <source>Image is too large. Please zoom out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображение слишком большое. Пожалуйста, уменьшьте масштаб.</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1181"/>
         <source>Failed to copy image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось скопировать изображение.</translation>
     </message>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1206"/>
@@ -8340,7 +7909,7 @@ Please, load the corresponding plugins.</source>
     <message>
         <location filename="../src/ov_phyltree/TreeViewer.cpp" line="1299"/>
         <source>Failed to build tree layout.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось построить макет дерева.</translation>
     </message>
 </context>
 <context>

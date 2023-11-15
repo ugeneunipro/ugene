@@ -4392,7 +4392,7 @@ GUI_TEST_CLASS_DEFINITION(test_4728) {
     int indent = 50;
     qreal widgetCenterHeight = seqWidget->rect().height() / 2;
     startPos = seqWidget->mapToGlobal(QPoint(indent, widgetCenterHeight));
-    endPos = seqWidget->mapToGlobal(QPoint(seqWidget->rect().width() - indent, widgetCenterHeight));
+    endPos = seqWidget->mapToGlobal(QPoint(seqWidget->rect().width(), widgetCenterHeight));
 
     GTMouseDriver::moveTo(startPos);
     GTMouseDriver::press();

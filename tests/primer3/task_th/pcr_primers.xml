@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/task_th/pcr_primers.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="pcr_primers" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_THERMODYNAMIC_OLIGO_ALIGNMENT="1" 
 			PRIMER_THERMODYNAMIC_PARAMETERS_PATH="primer3_config/" 
@@ -16,8 +18,6 @@
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_TASK="pick_pcr_primers" 
 			PRIMER_DNTP_CONC="0.0" 
-			SEQUENCE_ID="pcr_primers" 
-			SEQUENCE_TEMPLATE="TCCTACAGCTGTGGGAAAATGatgcgtacgatccatgctagctagctactatcgattagctatcatctactatcatctactatctactacacatctactatcatctacacacacacacacactaggccgctatatcatctagcGCCGCCATGTACACACTG" 
 			SEQUENCE_TARGET="21,122"/>
 		<plugin_primer_3_out 
 			PRIMER_WARNING="PRIMER_SALT_DIVALENT &gt; 0.0 but PRIMER_DNTP_CONC &lt;" 

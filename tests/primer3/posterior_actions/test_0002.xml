@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<multi-test>
+	<load-document index="doc" url="genbank/murine_cut.gb" io="local_file" format="genbank"/>
+	<find-object-by-name index="seq" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq" enable-check-complement-settings="1" enable-max-complement-pairs="1" max-complement-pairs="3" enable-max-gc-content="1" report-path="primer3/primer3_xml/posterior_actions/test_0002_report.html" >
+		<plugin_primer_3_in 
+			PRIMER_NUM_RETURN="1" />
+		<plugin_primer_3_out 
+			PRIMER_LEFT_NUM_RETURNED="0" 
+			PRIMER_RIGHT_NUM_RETURNED="0"
+			PRIMER_PAIR_NUM_RETURNED="0"/>
+	</plugin_primer_3>
+</multi-test>

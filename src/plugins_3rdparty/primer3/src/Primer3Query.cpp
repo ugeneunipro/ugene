@@ -29,7 +29,9 @@
 #include <U2Lang/BaseTypes.h>
 
 #include "Primer3Dialog.h"
-#include "Primer3Task.h"
+#include "task/Primer3Task.h"
+#include "task/PrimerPair.h"
+#include "task/PrimerSingle.h"
 
 namespace U2 {
 
@@ -143,17 +145,14 @@ void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
     const auto& bestPairs = primerTask->getBestPairs();
     for(const auto& pair : qAsConst(bestPairs)) {
         QList<SharedAnnotationData> annotations;
-        const auto& leftPrimer = pair->getLeftPrimer();
-        const auto& rightPrimer = pair->getRightPrimer();
-        if (leftPrimer != nullptr && rightPrimer != nullptr) {
+        if (pair->leftPrimer != nullptr && pair->rightPrimer != nullptr) {
             QDResultUnit ru1(new QDResultUnitData);
             ru1->strand = U2Strand::Direct;
-            ru1->region = U2Region(leftPrimer->getStart(), leftPrimer->getLength());
+            ru1->region = U2Region(pair->leftPrimer->start, pair->leftPrimer->length);
             ru1->owner = units.value(LEFT_PRIMER_ID);
             QDResultUnit ru2(new QDResultUnitData);
             ru2->strand = U2Strand::Complementary;
-            ru2->region = U2Region(rightPrimer->getStart(),
-                                   rightPrimer->getLength());
+            ru2->region = U2Region(pair->rightPrimer->start, pair->rightPrimer->length);
             ru2->owner = units.value(RIGHT_PRIMER_ID);
             QDResultGroup* g = new QDResultGroup;
             g->add(ru1);

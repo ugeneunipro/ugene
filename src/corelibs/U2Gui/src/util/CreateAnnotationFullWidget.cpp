@@ -101,8 +101,10 @@ void CreateAnnotationFullWidget::useAminoAnnotationTypes(bool useAmino) {
     lwAnnotationType->clear();
     lwAnnotationType->addItems(featureTypes);
 
-    const int index = featureTypes.indexOf(U2FeatureTypes::getVisualName(U2FeatureTypes::MiscFeature));
+    int index = featureTypes.indexOf(U2FeatureTypes::getVisualName(U2FeatureTypes::MiscFeature));
     lwAnnotationType->setCurrentRow(index);
+    chbComplement->setVisible(!useAmino);
+    tbDoComplement->setVisible(!useAmino);
 }
 
 void CreateAnnotationFullWidget::focusGroupName() {

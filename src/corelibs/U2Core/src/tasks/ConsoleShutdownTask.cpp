@@ -30,24 +30,34 @@
 
 namespace U2 {
 
-ConsoleShutdownTask::ConsoleShutdownTask(QCoreApplication* app)
-    : Task(tr("Shutdown"), TaskFlags_NR_FOSCOE | TaskFlag_NoAutoDelete), app(app) {
-    connect(AppContext::getTaskScheduler(), SIGNAL(si_topLevelTaskUnregistered(Task*)), SLOT(startShutdown()));
-    connect(app, SIGNAL(aboutToQuit()), SLOT(startShutdown()));
+ConsoleShutdownTask::ConsoleShutdownTask(QCoreApplication* app, bool exitAppOnTaskError_)
+    : Task(tr("Shutdown"), TaskFlags_NR_FOSCOE | TaskFlag_NoAutoDelete), app(app), exitAppOnTaskError(exitAppOnTaskError_) {
+    TaskScheduler* ts = AppContext::getTaskScheduler();
+    connect(ts, &TaskScheduler::si_topLevelTaskUnregistered, this, &ConsoleShutdownTask::startShutdown);
+    connect(app, &QCoreApplication::aboutToQuit, this, &ConsoleShutdownTask::startShutdown);
+    if (exitAppOnTaskError) {
+        connect(ts, &TaskScheduler::si_stateChanged, this, &ConsoleShutdownTask::sl_shutdownOnTaskError);
+    }
 }
 
 void ConsoleShutdownTask::startShutdown() {
     if (sender() == app) {
-        coreLog.info("Shutdown initiated by user");
+        coreLog.info(tr("Shutdown initiated by user"));
     } else {
         if (!AppContext::getTaskScheduler()->getTopLevelTasks().empty()) {
             return;
         }
-        coreLog.info("All tasks finished, shutting down");
+        coreLog.info(tr("All tasks finished, shutting down"));
     }
-    app->disconnect(this, SLOT(startShutdown()));
-    AppContext::getTaskScheduler()->disconnect(this, SLOT(startShutdown()));
-    AppContext::getTaskScheduler()->registerTopLevelTask(this);
+    registerShutdownTask();
+}
+
+void ConsoleShutdownTask::sl_shutdownOnTaskError(Task* t) {
+    if (t->hasError() && t->hasFlags(TaskFlag_FailCommandLineRunOnTaskError)) {
+        coreLog.info(tr("Shutdown because of task error"));
+        exitCode = 1;
+        registerShutdownTask();
+    }
 }
 
 static bool isReadyToBeDisabled(Service* s, ServiceRegistry* sr) {
@@ -123,6 +133,14 @@ QList<Task*> ConsoleShutdownTask::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
+void ConsoleShutdownTask::registerShutdownTask() {
+    TaskScheduler* ts = AppContext::getTaskScheduler();
+    disconnect(ts, &TaskScheduler::si_topLevelTaskUnregistered, this, &ConsoleShutdownTask::startShutdown);
+    disconnect(app, &QCoreApplication::aboutToQuit, this, &ConsoleShutdownTask::startShutdown);
+    disconnect(ts, &TaskScheduler::si_stateChanged, this, &ConsoleShutdownTask::sl_shutdownOnTaskError);
+    ts->registerTopLevelTask(this);
+}
+
 Task::ReportResult ConsoleShutdownTask::report() {
     if (stateInfo.cancelFlag) {
         coreLog.info(tr("Shutdown was canceled"));
@@ -130,6 +148,9 @@ Task::ReportResult ConsoleShutdownTask::report() {
     }
     if (propagateSubtaskError()) {
         coreLog.error(tr("Shutdown failed, error: %1").arg(stateInfo.getError()));
+        if (exitAppOnTaskError) {
+            QCoreApplication::exit(exitCode);
+        }
         return Task::ReportResult_Finished;
     }
 
@@ -139,7 +160,7 @@ Task::ReportResult ConsoleShutdownTask::report() {
         assert(s->isDisabled());
     }
 #endif
-    QCoreApplication::quit();
+    QCoreApplication::exit(exitCode);
     return Task::ReportResult_Finished;
 }
 

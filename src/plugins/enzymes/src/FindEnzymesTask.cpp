@@ -117,7 +117,7 @@ FindEnzymesTask::FindEnzymesTask(const U2EntityRef& seqRef, const U2Region& regi
       seqlen(0),
       countOfResultsInMap(0) {
     U2SequenceObject seq("sequence", seqRef);
-    SAFE_POINT(seq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
+    SAFE_POINT(seq.getAlphabet()->isNucleic(), "Alphabet is not nucleic.", );
     seqlen = seq.getSequenceLength();
     // for every enzymes in selection create FindSingleEnzymeTask
     for (const SEnzymeData& enzyme : qAsConst(enzymes)) {
@@ -246,7 +246,7 @@ FindSingleEnzymeTask::FindSingleEnzymeTask(const U2EntityRef& sequenceObjectRef,
 void FindSingleEnzymeTask::prepare() {
     U2SequenceObject dnaSeq("sequence", sequenceObjectRef);
 
-    SAFE_POINT(dnaSeq.getAlphabet()->isNucleic(), tr("Alphabet is not nucleic."), );
+    SAFE_POINT(dnaSeq.getAlphabet()->isNucleic(), "Alphabet is not nucleic.", );
     if (resultListener == nullptr) {
         resultListener = this;
     }
@@ -299,14 +299,14 @@ void FindSingleEnzymeTask::onRegion(SequenceDbiWalkerSubtask* t, TaskStateInfo& 
     if (sequenceLen < enzyme->seq.length()) {
         return;
     }
-    SAFE_POINT(enzyme->alphabet != nullptr, tr("No enzyme alphabet"), );
+    SAFE_POINT(enzyme->alphabet != nullptr, "No enzyme alphabet", );
     if (!enzyme->alphabet->isNucleic()) {
         algoLog.info(tr("Non-nucleic enzyme alphabet: %1, enzyme: %2, skipping..").arg(enzyme->alphabet->getId()).arg(enzyme->id));
         return;
     }
 
     const DNAAlphabet* seqAlphabet = dnaSequenceObject.getAlphabet();
-    SAFE_POINT(seqAlphabet != nullptr, tr("Failed to get sequence alphabet"), );
+    SAFE_POINT(seqAlphabet != nullptr, "Failed to get sequence alphabet", );
 
     bool useExtendedComparator = enzyme->alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() || seqAlphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() || seqAlphabet->getId() == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() || seqAlphabet->getId() == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED();
 

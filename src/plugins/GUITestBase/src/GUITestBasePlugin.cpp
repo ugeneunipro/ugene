@@ -129,14 +129,6 @@ static QStringList nightly(const QStringList& labelList = QStringList()) {
 #define REGISTER_TEST(TestClass) \
     guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, nightly()));
 
-/** Registers a GUI test with a given set of labels and description. Usually used to pass some non-default labels and the reason to the test. */
-#define REGISTER_TEST_EXT(TestClass, LABELS, DESCRIPTION) \
-    { \
-        auto test = new TestClass(DEFAULT_GUI_TEST_TIMEOUT, LABELS); \
-        test->setDescription(DESCRIPTION); \
-        guiTestBase->registerTest(test); \
-    }
-
 /** Registers a GUI test with the TIMEOUT and LABELS provided. */
 #define REGISTER_TEST_TL(TestClass, TIMEOUT, LABELS) \
     guiTestBase->registerTest(new TestClass(TIMEOUT, LABELS));
@@ -1485,6 +1477,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_6309);
     REGISTER_TEST(GUITest_regression_scenarios::test_6314);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6321);
     REGISTER_TEST(GUITest_regression_scenarios::test_6350);
     REGISTER_TEST(GUITest_regression_scenarios::test_6581);
     REGISTER_TEST(GUITest_regression_scenarios::test_6397);
@@ -1494,6 +1487,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6459);
     REGISTER_TEST(GUITest_regression_scenarios::test_6475_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6475_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6479);
     REGISTER_TEST(GUITest_regression_scenarios::test_6481_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_6481_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6481_3);
@@ -1676,6 +1670,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7091);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7106);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7110);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7111);
     REGISTER_TEST(GUITest_regression_scenarios::test_7121);
     REGISTER_TEST(GUITest_regression_scenarios::test_7125);
     REGISTER_TEST(GUITest_regression_scenarios::test_7126);
@@ -1844,7 +1840,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase* guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_7923);
     REGISTER_TEST(GUITest_regression_scenarios::test_7925);
     REGISTER_TEST(GUITest_regression_scenarios::test_7927);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7945);
     REGISTER_TEST(GUITest_regression_scenarios::test_7946);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7947);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7968);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

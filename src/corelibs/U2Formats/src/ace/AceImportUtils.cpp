@@ -351,7 +351,7 @@ void AceReader::parseAfTag(U2::IOAdapter* io, char* buff, int count, QMap<QByteA
 
         afLine.replace('\n', "");
 
-        SAFE_POINT_EXT(afLine.startsWith(AF), os->setError(DocumentFormatUtils::tr("Invalid AF tag")), );
+        SAFE_POINT_EXT(afLine.startsWith(AF), os->setError("Invalid AF tag"), );
 
         name = getName(afLine);
         CHECK_OP((*os), );
@@ -471,7 +471,7 @@ void AceReader::parseRdAndQaTag(U2::IOAdapter* io, char* buff, QSet<QByteArray>&
     QList<QByteArray> rdSplitted = rdBlock.split(' ');
     // Magic numbers: RD tag, name, three numbers, sequence data
     CHECK_EXT(6 <= rdSplitted.count(), os->setError(DocumentFormatUtils::tr("Invalid RD part")), );
-    SAFE_POINT_EXT(RD == rdSplitted[0], os->setError(DocumentFormatUtils::tr("Can't find the RD tag")), );
+    SAFE_POINT_EXT(RD == rdSplitted[0], os->setError("Can't find the RD tag"), );
     read.name = rdSplitted[1];
 
     for (int chain = 5; chain < rdSplitted.count(); chain++) {

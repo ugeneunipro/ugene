@@ -358,22 +358,6 @@
         <translation>Слоты %1, %2 имеют разные типы</translation>
     </message>
     <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="45"/>
-        <source>Retrieving value of unassigned variable: %1</source>
-        <translation>Retrieving value of unassigned variable: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="60"/>
-        <location filename="../src/model/wizard/Variable.cpp" line="61"/>
-        <source>Unassigned variable: %1</source>
-        <translation>Unassigned variable: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/model/wizard/Variable.cpp" line="78"/>
-        <source>Variable is not defined: %1</source>
-        <translation>Variable is not defined: %1</translation>
-    </message>
-    <message>
         <location filename="../src/model/wizard/Variable.cpp" line="89"/>
         <source>Can not parse predicate from the string: %1</source>
         <translation>Can not parse predicate from the string: %1</translation>
@@ -871,11 +855,6 @@
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1692"/>
-        <source>Error: element name in the workflow file contains spaces</source>
-        <translation>Error: element name in the workflow file contains spaces</translation>
-    </message>
-    <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2057"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
@@ -985,22 +964,6 @@
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="977"/>
         <source>%1 slot is undefined: at &quot;%2&quot; in aliases block&apos;</source>
         <translation>%1 slot is undefined: at &quot;%2&quot; in aliases block&apos;</translation>
-    </message>
-    <message>
-        <source>Duplicate port alias &quot;%1&quot;</source>
-        <translation type="vanished">Duplicate port alias &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <source>Empty port aliases are not allowed: %1</source>
-        <translation type="vanished">Empty port aliases are not allowed: %1</translation>
-    </message>
-    <message>
-        <source>Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</source>
-        <translation type="vanished">Duplicate port alias name &quot;%1&quot; at &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <source>Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</source>
-        <translation type="vanished">Duplicate slot alias &quot;%1&quot; at port alias&quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="985"/>
@@ -1347,12 +1310,6 @@
         <location filename="../src/support/NoFailTaskWrapper.cpp" line="32"/>
         <source>Wrapper task for: &quot;%1&quot;</source>
         <translation>Wrapper task for: &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/support/NoFailTaskWrapper.cpp" line="45"/>
-        <location filename="../src/support/NoFailTaskWrapper.cpp" line="50"/>
-        <source>SubTask is NULL</source>
-        <translation>SubTask is NULL</translation>
     </message>
 </context>
 <context>
@@ -1842,33 +1799,33 @@
 <context>
     <name>U2::Workflow::SchemaSerializer</name>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="251"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="250"/>
         <source>no metadata</source>
         <translation>Нет описания схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="322"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="321"/>
         <source>Invalid content: duplicate process %1</source>
         <translation>Обнаружен дублирующий идентификатор задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="329"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="328"/>
         <source>Invalid content: unknown process type %1</source>
         <translation>Неизвестный тип задачи: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="360"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="359"/>
         <source>Invalid content: unknown port %1 requested for %2</source>
         <translation>Неизвестный порт %1 для задачи %2</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="389"/>
-        <location filename="../src/support/SchemaSerializer.cpp" line="396"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="388"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="395"/>
         <source>Invalid content: no such process %1 to bind</source>
         <translation>Соединение с несуществующей задачей: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SchemaSerializer.cpp" line="408"/>
+        <location filename="../src/support/SchemaSerializer.cpp" line="407"/>
         <source>Invalid content: cannot bind [%1 : %2] to [%3 : %4]</source>
         <translation>Не удалось соединить порты задач:  [%1 : %2] к [%3 : %4]</translation>
     </message>
@@ -1897,37 +1854,37 @@
         <translation>Запуск схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="178"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="177"/>
         <source>Unknown domain %1</source>
         <translation>Неизвестное имя среды исполнения: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="221"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="220"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Не удалось предварительно обработать схему. Некоторые из включенных файлов некорректны</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="229"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="228"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Не удалось создать процесс %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="239"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="238"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Не удалось создать соединение процессов %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="253"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="252"/>
         <source>Failed to create a workflow context</source>
         <translation>Невозможно создать контекст схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="318"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="317"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>Все процессы находятся в состоянии &quot;не готовы&quot; (обработали входные данные), но не все процессы находятся в состоянии &quot;завершил исполнение&quot;. Пожалуйста, проверьте схему?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="259"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="258"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Не удалось создать планировщик для среды исполнения %1</translation>
     </message>
@@ -2038,13 +1995,6 @@
     </message>
 </context>
 <context>
-    <name>U2::WorkflowSettings</name>
-    <message>
-        <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
-        <translation type="vanished">Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
-    </message>
-</context>
-<context>
     <name>U2::WorkflowUtils</name>
     <message>
         <location filename="../src/model/Attribute.cpp" line="242"/>
@@ -2095,18 +2045,6 @@
         <location filename="../src/support/WorkflowUtils.cpp" line="655"/>
         <source>grouper</source>
         <translation>grouper</translation>
-    </message>
-    <message>
-        <source>The workflow has not any aliased ports</source>
-        <translation type="vanished">The workflow has not any aliased ports</translation>
-    </message>
-    <message>
-        <source>The aliased port %1.%2 has no aliased slots</source>
-        <translation type="vanished">The aliased port %1.%2 has no aliased slots</translation>
-    </message>
-    <message>
-        <source>The free port %1.%2 is not aliased</source>
-        <translation type="vanished">The free port %1.%2 is not aliased</translation>
     </message>
     <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="681"/>

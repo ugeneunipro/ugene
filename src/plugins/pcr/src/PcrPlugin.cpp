@@ -53,7 +53,7 @@ PcrPlugin::PcrPlugin()
     // Init GUI elements
     if (AppContext::getMainWindow() != nullptr) {
         OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
-        SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
+        SAFE_POINT_NN(opRegistry, );
         opRegistry->registerFactory(new InSilicoPcrOPWidgetFactory());
 
         if (library != nullptr) {

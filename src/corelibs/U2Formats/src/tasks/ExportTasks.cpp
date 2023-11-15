@@ -60,9 +60,9 @@ ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment& _ma, c
 
 void ExportAlignmentTask::run() {
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
-    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
+    SAFE_POINT_NN(format, );
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    SAFE_POINT_NN(iof, );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
@@ -95,9 +95,9 @@ ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment
 
 void ExportMSA2SequencesTask::run() {
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
-    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
+    SAFE_POINT_NN(format, );
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    SAFE_POINT_NN(iof, );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
     QList<DNASequence> sequenceList = MSAUtils::convertMsaToSequenceList(ma, stateInfo, trimLeadingAndTrailingGaps);
@@ -144,8 +144,8 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
 
     CHECK_EXT(!msa->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
 
-    SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, setError(tr("Illegal translation frame offset: %1").arg(translationFrame)), );
-    SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(tr("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
+    SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, setError(QString("Illegal translation frame offset: %1").arg(translationFrame)), );
+    SAFE_POINT_EXT(aminoTranslation == nullptr || aminoTranslation->isThree2One(), setError(QString("Invalid amino translation: %1").arg(aminoTranslation->getTranslationName())), );
     setVerboseLogMode(true);
 
     sequenceList = MSAUtils::convertMsaToSequenceList(msa, stateInfo, trimLeadingAndTrailingGaps, rowIds.toSet(), columnRegion);
@@ -154,9 +154,9 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment& msa,
 
 void ExportMSA2MSATask::run() {
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
-    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
+    SAFE_POINT_NN(format, );
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    SAFE_POINT_NN(iof, );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 

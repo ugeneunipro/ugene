@@ -82,6 +82,18 @@ qint64 DetViewSingleLineRenderer::coordToPos(const QPoint& p, const QSize& /*can
     return qMin(visibleRange.startPos + p.x() / commonMetrics.charWidth, visibleRange.endPos());
 }
 
+QList<U2Region> DetViewSingleLineRenderer::getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& visibleRange) const {
+    CHECK(annotationSettings->visible, {});
+
+    const auto& regs = annotation->getRegions();
+    SAFE_POINT(0 <= locationRegionIndex && locationRegionIndex < regs.size(), "Annotation should contain locationRegionIndex", {});
+
+    const auto& annotationRegion = regs.at(locationRegionIndex);
+    bool selected = detView->getSequenceContext()->getAnnotationsSelection()->getAnnotations().contains(annotation);
+
+    return { getAnnotationXRange(annotationRegion, visibleRange, canvasSize, selected) };
+}
+
 QList<U2Region> DetViewSingleLineRenderer::getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings, const QSize& canvasSize, const U2Region& /*visibleRange*/) const {
     return QList<U2Region>() << getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, canvasSize.height());
 }

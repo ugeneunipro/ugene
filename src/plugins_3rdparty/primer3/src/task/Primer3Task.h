@@ -19,37 +19,44 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _FIND_EXON_REGIONS_TASK_H_
-#define _FIND_EXON_REGIONS_TASK_H_
+#pragma once
 
 #include <U2Core/Task.h>
-#include <U2Core/U2Region.h>
+
+#include "Primer3TaskSettings.h"
+
+#include <QSharedPointer>
 
 namespace U2 {
 
-class LoadRemoteDocumentTask;
-class SplicedAlignmentTask;
-class U2SequenceObject;
+class AnnotationTableObject;
+struct PrimerPair;
+struct PrimerSingle;
 
-class FindExonRegionsTask : public Task {
+/**
+ * This class represents a task, which runs Primer3 itself.
+ */
+class Primer3Task : public Task {
     Q_OBJECT
 public:
-    FindExonRegionsTask(U2SequenceObject* dnaObj,
-                        const QString& exonAnnotaitonName);
-    QList<U2Region> getRegions() {
-        return exonRegions;
-    }
+    Primer3Task(const QSharedPointer<Primer3TaskSettings>& settings);
 
-    void prepare();
-    QList<Task*> onSubTaskFinished(Task* subTask);
-    ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
+    const QList<QSharedPointer<PrimerPair>>& getBestPairs() const;
+    const QList<QSharedPointer<PrimerSingle>>& getSinglePrimers() const;
 
 private:
-    QList<U2Region> exonRegions;
-    U2SequenceObject* dnaObj;
-    QString exonAnnName;
+    void selectPairsSpanningExonJunction(p3retval* primers, int toReturn);
+    void selectPairsSpanningIntron(p3retval* primers, int toReturn);
+
+    QSharedPointer<Primer3TaskSettings> settings;
+    QList<QSharedPointer<PrimerPair>> bestPairs;
+    QList<QSharedPointer<PrimerSingle>> singlePrimers;
+
+    int offset = 0;
 };
 
 }  // namespace U2
-
-#endif  // _FIND_EXON_REGIONS_TASK_H_
