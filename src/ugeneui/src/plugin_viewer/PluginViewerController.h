@@ -58,25 +58,23 @@ private:
     void connectStaticActions();
     void connectVisualActions();
     void disconnectVisualActions();
-    void buildItems();
+    void buildItems() const;
     void createWindow();
     void updateActions();
     void updateState();
     void showLicense();
     void hideLicense();
 
-    PlugViewPluginItem* findPluginItem(Plugin* p) const;
     PlugViewServiceItem* findServiceItem(Service* s) const;
     PlugViewServiceItem* getCurrentServiceItem() const;
-    PlugViewPluginItem* getCurrentPluginItem() const;
 
     Ui_PluginViewWidget ui;
 
-    MWMDIWindow* mdiWindow;
-    QAction* enableServiceAction;
-    QAction* disableServiceAction;
+    MWMDIWindow* mdiWindow = nullptr;
+    QAction* enableServiceAction = nullptr;
+    QAction* disableServiceAction = nullptr;
 
-    bool showServices;
+    bool showServices = false;
 };
 
 class PlugViewTreeItem : public QTreeWidgetItem {
