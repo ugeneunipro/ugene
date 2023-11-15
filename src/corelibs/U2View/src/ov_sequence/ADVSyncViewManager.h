@@ -80,6 +80,8 @@ private:
 
     QList<ADVSingleSequenceWidget*> getViewsFromADV() const;
 
+    void saveLockStates();
+
     AnnotatedDNAView* adv;
 
     QAction* lockByStartPosAction;
@@ -89,6 +91,11 @@ private:
     QAction* syncBySeqSelAction;
     QAction* syncByAnnSelAction;
     QActionGroup* lockActionGroup;
+
+    //previous states for lock states
+    bool lockByStartPrevState = false;
+    bool lockBySelPrevState = false;
+    bool lockByAnnPrevState = false;
 
     QToolButton* syncButton;
     QToolButton* lockButton;

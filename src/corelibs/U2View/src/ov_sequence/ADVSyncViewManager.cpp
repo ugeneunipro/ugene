@@ -42,17 +42,17 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView* v)
 
     lockByStartPosAction = new QAction(tr("Lock scales: visible range start"), this);
     lockByStartPosAction->setObjectName("Lock scales: visible range start");
-    connect(lockByStartPosAction, SIGNAL(triggered()), SLOT(sl_lock()));
+    connect(lockByStartPosAction, &QAction::triggered, this, &ADVSyncViewManager::sl_lock);
     lockByStartPosAction->setCheckable(true);
 
     lockBySeqSelAction = new QAction(tr("Lock scales: selected sequence"), this);
     lockBySeqSelAction->setObjectName("Lock scales: selected sequence");
-    connect(lockBySeqSelAction, SIGNAL(triggered()), SLOT(sl_lock()));
+    connect(lockBySeqSelAction, &QAction::triggered, this, &ADVSyncViewManager::sl_lock);
     lockBySeqSelAction->setCheckable(true);
 
     lockByAnnSelAction = new QAction(tr("Lock scales: selected annotation"), this);
     lockByAnnSelAction->setObjectName("Lock scales: selected annotation");
-    connect(lockByAnnSelAction, SIGNAL(triggered()), SLOT(sl_lock()));
+    connect(lockByAnnSelAction, &QAction::triggered, this, &ADVSyncViewManager::sl_lock);
     lockByAnnSelAction->setCheckable(true);
 
     lockActionGroup = new QActionGroup(this);
@@ -266,6 +266,16 @@ void ADVSyncViewManager::sl_lock() {
     GCOUNTER(tvar, "SequenceView::SyncViewManager::Lock scales");
     QObject* s = sender();
     bool buttonClicked = (s == lockButton);
+    if (s == lockByStartPosAction && lockByStartPrevState || 
+        s == lockBySeqSelAction && lockBySelPrevState || 
+        s == lockByAnnSelAction && lockByAnnPrevState) {
+        QAction* action = qobject_cast<QAction*>(s);
+        action->setChecked(false);
+        lockButton->setChecked(false);
+        saveLockStates();
+        unlock();
+        return;
+    }
 
     SyncMode m = SyncMode_Start;
     if (lockButton->isChecked()) {
@@ -292,6 +302,13 @@ void ADVSyncViewManager::sl_lock() {
     } else {
         lockButton->setChecked(lockActionGroup->checkedAction() != nullptr);
     }
+    saveLockStates();
+}
+
+void ADVSyncViewManager::saveLockStates() {
+    lockByStartPrevState = lockByStartPosAction->isChecked();
+    lockBySelPrevState = lockBySeqSelAction->isChecked();
+    lockByAnnPrevState = lockByAnnSelAction->isChecked();
 }
 
 void ADVSyncViewManager::sl_sync() {
