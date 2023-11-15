@@ -116,7 +116,7 @@ int readFpkmTrLine(QString& buffer, IOAdapter* io, QScopedArrayPointer<char>& ch
 void FpkmTrackingFormat::addQualifierIfValuePresent(SharedAnnotationData& annotData, const QString& name, const QString& val) {
     if (NO_VALUE_STR != val) {
         U2Qualifier qual(name, val);
-        SAFE_POINT(qual.isValid(), tr("Internal error: qualifier with name '%1' and '%2' can't be added").arg(name).arg(val), );
+        SAFE_POINT(qual.isValid(), QString("Internal error: qualifier with name '%1' and '%2' can't be added").arg(name).arg(val), );
         annotData->qualifiers.push_back(qual);
     }
 }

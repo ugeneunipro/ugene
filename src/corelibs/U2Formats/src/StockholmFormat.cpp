@@ -540,7 +540,7 @@ void StockholmFormat::storeTextDocument(IOAdapterWriter& writer, Document* doc, 
     QList<GObject*> objects = doc->getObjects();
     for (GObject* obj : qAsConst(objects)) {
         auto alnObj = qobject_cast<const MultipleSequenceAlignmentObject*>(obj);
-        SAFE_POINT_EXT(alnObj != nullptr, os.setError(tr("Not an alignment object: ") + obj->getGObjectName()), );
+        SAFE_POINT_EXT(alnObj != nullptr, os.setError("Not an alignment object: " + obj->getGObjectName()), );
         save(writer, alnObj->getMultipleAlignment(), alnObj->getGObjectName(), os);
         CHECK_OP(os, );
     }

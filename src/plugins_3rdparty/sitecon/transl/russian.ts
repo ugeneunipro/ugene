@@ -781,11 +781,7 @@
     <message>
         <location filename="../src/SiteconBuildDialogController.cpp" line="222"/>
         <source>Calculating average and dispersion matrices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Calculating average and dispersion matrixes</source>
-        <translation type="vanished">Расчёт матрицы средних и дисперсии</translation>
+        <translation>Расчет средней и матрицы дисперсии</translation>
     </message>
     <message>
         <location filename="../src/SiteconBuildDialogController.cpp" line="226"/>

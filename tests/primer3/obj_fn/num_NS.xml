@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/obj_fn/num_NS.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="num_NS" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_PRODUCT_SIZE_RANGE="50-500" 
 			PRIMER_TASK="pick_pcr_primers" 
@@ -21,10 +23,8 @@
 			PRIMER_INTERNAL_WT_SELF_ANY="1" 
 			PRIMER_INTERNAL_WT_SELF_END="2" 
 			PRIMER_PAIR_WT_DIFF_TM="0" 
-			SEQUENCE_ID="num_NS" 
 			PRIMER_WT_NUM_NS="1" 
-			PRIMER_MAX_NS_ACCEPTED="15" 
-			SEQUENCE_TEMPLATE="AAGCCGNGGATGANTTCACTTTCNGACCNTGCAGAGCCGANTTTCACNCACGAGNGAAGACTNCGCCAGCCTTGCCCCTNGGGCCTCTNCCTCAACTCNCCATGATGNCCGTCAGGNNNNNNNNNCAGGCGNACTGAGGCGTGGTNCGCGGGGCTCAGGNNNNNNNNNCCTGCGCCGG"/>
+			PRIMER_MAX_NS_ACCEPTED="15"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="5" 
 			PRIMER_RIGHT_NUM_RETURNED="5" 

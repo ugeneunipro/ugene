@@ -162,7 +162,7 @@ void writeSequence(U2OpStatus& os, const DNASequence& seq, IOAdapter* ioAdapter)
 }
 
 void PairedFastqComparator::writePair(U2OpStatus& os, const FastqSequenceInfo& seqInfo_1, const FastqSequenceInfo& seqInfo_2) {
-    SAFE_POINT_EXT(seqInfo_1.isValid() && seqInfo_2.isValid(), os.setError(tr("Invalid sequence info")), );
+    SAFE_POINT_EXT(seqInfo_1.isValid() && seqInfo_2.isValid(), os.setError("Invalid sequence info"), );
 
     writeSequence(os, seqInfo_1.getDNASeq(), out_1.data());
     CHECK_OP(os, );

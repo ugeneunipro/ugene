@@ -850,6 +850,12 @@ bool DetViewRenderArea::isOnTranslationsLine(const QPoint& p) const {
     return renderer->isOnTranslationsLine(p, size(), view->getVisibleRange());
 }
 
+QList<U2Region> DetViewRenderArea::getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
+    auto canvasSize = QSize(width(), height());
+    const auto& visibleRange = view->getVisibleRange();
+    return renderer->getAnnotationXRegions(annotation, locationRegionIndex, annotationSettings, canvasSize, visibleRange);
+}
+
 QList<U2Region> DetViewRenderArea::getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const {
     return renderer->getAnnotationYRegions(annotation, locationRegionIndex, annotationSettings, size(), view->getVisibleRange());
 }

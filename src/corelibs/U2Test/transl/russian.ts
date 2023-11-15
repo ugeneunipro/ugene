@@ -38,12 +38,12 @@
 <context>
     <name>U2::GTestSuite</name>
     <message>
-        <location filename="../src/GTest.cpp" line="334"/>
+        <location filename="../src/GTest.cpp" line="327"/>
         <source>Can&apos;t load suite list %1</source>
         <translation>Can&apos;t load suite list %1</translation>
     </message>
     <message>
-        <location filename="../src/GTest.cpp" line="335"/>
+        <location filename="../src/GTest.cpp" line="328"/>
         <source>Can&apos;t open suite list %1</source>
         <translation>Can&apos;t open suite list %1</translation>
     </message>

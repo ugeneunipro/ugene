@@ -468,7 +468,7 @@ void BlastCommonTask::parseXMLHsp(const QDomNode& xml, int querySequenceIndex, c
             strandTag = "Hsp_query-frame";
             break;
         default:
-            SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
+            SAFE_POINT_EXT(false, stateInfo.setError("Unknown strand source setting"), );
     }
     elem = xml.lastChildElement(strandTag);
     int frame = elem.text().toInt(&isOk);

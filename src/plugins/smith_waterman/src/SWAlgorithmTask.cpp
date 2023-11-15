@@ -436,7 +436,7 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
             settings->realizationName = SW_classic;
         }
     }
-    SAFE_POINT(!settings->sMatrix.isEmpty(), tr("Substitution matrix is empty"), );
+    SAFE_POINT(!settings->sMatrix.isEmpty(), "Substitution matrix is empty", );
     maxScore = calculateMaxScore(*ptrn, settings->sMatrix);
 
     minScore = (maxScore * settings->percentOfScore) / 100;

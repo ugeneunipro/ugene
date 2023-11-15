@@ -229,13 +229,13 @@ QList<FeatureAndKey> U2FeatureUtils::getSortedSubgroups(QList<FeatureAndKey>& fk
 
 AnnotationGroup* U2FeatureUtils::loadAnnotationTable(const U2DataId& rootFeatureId, const U2DbiRef& dbiRef, AnnotationTableObject* parentObj, U2OpStatus& os) {
     SAFE_POINT(!rootFeatureId.isEmpty(), "Invalid feature ID detected!", nullptr);
-    SAFE_POINT(parentObj != nullptr, L10N::nullPointerError("Annotation table object"), nullptr);
+    SAFE_POINT_NN(parentObj, nullptr);
     SAFE_POINT(dbiRef.isValid(), "Invalid DBI reference detected!", nullptr);
 
     DbiConnection connection(dbiRef, os);
     CHECK_OP(os, nullptr);
     U2FeatureDbi* dbi = connection.dbi->getFeatureDbi();
-    SAFE_POINT(dbi != nullptr, L10N::nullPointerError("Feature DBI"), nullptr);
+    SAFE_POINT_NN(dbi, nullptr);
 
     auto rootGroup = new AnnotationGroup(rootFeatureId, AnnotationGroup::ROOT_GROUP_NAME, nullptr, parentObj);
 

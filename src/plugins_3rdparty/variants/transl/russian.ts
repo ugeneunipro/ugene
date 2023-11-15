@@ -62,11 +62,6 @@
         <translation>No sequence URL</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="131"/>
-        <source>No document loaded</source>
-        <translation>No document loaded</translation>
-    </message>
-    <message>
         <location filename="../src/AssemblySamtoolsMpileup.cpp" line="135"/>
         <source>Incorrect variant track object in %1</source>
         <translation>Incorrect variant track object in %1</translation>

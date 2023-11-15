@@ -1206,7 +1206,7 @@ void AnnotatedDNAView::updateState(const AnnotatedDNAViewState& s) {
 
 void AnnotatedDNAView::sl_editSettings() {
     Settings* s = AppContext::getSettings();
-    SAFE_POINT(s != nullptr, L10N::nullPointerError("AppContext::settings"), );
+    SAFE_POINT_NN(s, );
     EditSettings settings;
     settings.annotationStrategy =
         (U1AnnotationUtils::AnnotationStrategyForResize)s->getValue(QString(SEQ_EDIT_SETTINGS_ROOT) + SEQ_EDIT_SETTINGS_ANNOTATION_STRATEGY,
@@ -1286,7 +1286,7 @@ void AnnotatedDNAView::sl_removeSequencePart() {
     } else {
         t = new ModifySequenceContentTask(dialog->getDocumentFormatId(), seqObj, dialog->getRegionToDelete(), DNASequence(), dialog->recalculateQualifiers(), dialog->getStrategy(), dialog->getNewDocumentPath(), dialog->mergeAnnotations());
     }
-    SAFE_POINT(t != nullptr, L10N::nullPointerError("Edit sequence task"), );
+    SAFE_POINT_NN(t, );
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 
     seqCtx->getSequenceSelection()->clear();

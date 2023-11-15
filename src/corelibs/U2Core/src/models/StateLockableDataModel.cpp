@@ -338,8 +338,8 @@ QList<StateLock*> StateLockableTreeItem::findLocks(StateLockableTreeItemBranchFl
 StateLocker::StateLocker(StateLockableItem* lockableItem, StateLock* lock)
     : lockableItem(lockableItem),
       lock(lock == nullptr ? lock = new StateLock() : lock) {
-    SAFE_POINT(lockableItem != nullptr, L10N::nullPointerError("StateLockableItem"), );
-    SAFE_POINT(lock != nullptr, L10N::nullPointerError("StateLock"), );
+    SAFE_POINT_NN(lockableItem, );
+    SAFE_POINT_NN(lock, );
     lockableItem->lockState(lock);
 }
 

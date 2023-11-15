@@ -155,6 +155,8 @@ public:
         return renderer;
     }
 
+    QList<U2Region> getAnnotationXRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const override;
+
     /** Returns all y regions covered by the given location of the annotation. */
     QList<U2Region> getAnnotationYRegions(Annotation* annotation, int locationRegionIndex, const AnnotationSettings* annotationSettings) const override;
 

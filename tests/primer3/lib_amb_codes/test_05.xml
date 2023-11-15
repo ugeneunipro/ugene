@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/lib_amb_codes/test_05.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="test_05" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_NUM_RETURN="1" 
@@ -29,8 +31,6 @@
 			PRIMER_MISPRIMING_LIBRARY="not_for_production_Ns.lib" 
 			PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS="1" 
 			PRIMER_PICK_ANYWAY="1" 
-			SEQUENCE_ID="test_05" 
-			SEQUENCE_TEMPLATE="GCTTGCATGCCTGCAGGTCGACTCTAGAGGATCCCCCTACATTTTAGCATCAGTGAGTACAGCATGCTTACTGGAAGAGAGGGTCATGCAACAGATTAGGAGGTAAGTTTGCAAAGGCAGGCTAAGGAGGAGACGCACTGAATGCCATGGTAAGAACTCTGGACATAAAAATATTGGAAGTTGTTGAGCAAGTAAAAAAATGTTTGGAAGTGTTACTTTAGCAATGGCAAGAATGATAGTATGGAATAGATTGGCAGAATGAAGGCAAAATGATTAGACATATTGCATTAAGGTAAAAAATGATAACTGAAGAATTATGTGCCACACTTATTAATAAGAAAGAATATGTGAACCTTGCAGATGTTTCCCTCTAGTAG" 
 			P3_COMMENT="Both primers should have high repeat similarity, but the explain line for right primers will not indicate this because mispriming is calculated lazily -- only if there are good left primers."/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="0" 

@@ -159,7 +159,7 @@ QList<Task*> SaveSequenceTask::onSubTaskFinished(Task* subTask) {
 
     if (subTask == cloneTask) {
         DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-        SAFE_POINT_EXT(format != nullptr, setError(tr("'%' format is not registered").arg(formatId)), result);
+        SAFE_POINT_EXT(format != nullptr, setError(QString("'%' format is not registered").arg(formatId)), result);
 
         Document* document = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), url, stateInfo);
         CHECK_OP(stateInfo, result);

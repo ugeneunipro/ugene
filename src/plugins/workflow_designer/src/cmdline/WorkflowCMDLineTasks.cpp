@@ -48,7 +48,7 @@ namespace U2 {
  * WorkflowRunFromCMDLineBase
  *******************************************/
 WorkflowRunFromCMDLineBase::WorkflowRunFromCMDLineBase()
-    : Task(tr("Workflow run from cmdline"), TaskFlag_None),
+    : Task(tr("Workflow run from cmdline"), TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported | TaskFlag_FailCommandLineRunOnTaskError),
       schema(nullptr),
       optionsStartAt(-1),
       loadTask(nullptr),
@@ -181,19 +181,27 @@ QList<Task*> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task* subTask) {
     return res;
 }
 
-void WorkflowRunFromCMDLineBase::run() {
+Task::ReportResult WorkflowRunFromCMDLineBase::report() {
+    ReportResult res = ReportResult_Finished;
     CMDLineRegistry* cmdLineRegistry = AppContext::getCMDLineRegistry();
-    SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is NULL", );
-    CHECK(workflowRunTask != nullptr, );
+    SAFE_POINT(cmdLineRegistry != nullptr, "CMDLineRegistry is NULL", res);
+    CHECK(workflowRunTask != nullptr || stateInfo.hasError(), res);
 
     const QString reportFilePath = cmdLineRegistry->getParameterValue(CmdlineTaskRunner::REPORT_FILE_ARG);
-    CHECK(!reportFilePath.isEmpty(), );
+    CHECK(!reportFilePath.isEmpty(), res);
 
     QFile reportFile(reportFilePath);
     const bool opened = reportFile.open(QIODevice::WriteOnly);
-    CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), );
+    CHECK_EXT(opened, setError(L10N::errorOpeningFileWrite(reportFilePath)), res);
 
-    reportFile.write(workflowRunTask->generateReport().toLocal8Bit());
+    reportFile.write(!stateInfo.hasError() ? workflowRunTask->generateReport().toLocal8Bit() : getReportFromError());
+    return res;
+}
+
+QByteArray WorkflowRunFromCMDLineBase::getReportFromError() const {
+    QString res = "<br><table><tr><td><b>" + tr("Details") + "</b></td></tr></table>\n";
+    res += "<u>" + tr("Error: %1").arg(getError()) + "</u>";
+    return res.toLocal8Bit();
 }
 
 /*******************************************

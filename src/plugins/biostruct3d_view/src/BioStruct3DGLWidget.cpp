@@ -984,8 +984,7 @@ void BioStruct3DGLWidget::sl_showSurface() {
     auto surfaceCalcTask = new MolecularSurfaceCalcTask(surfaceType, atoms);
     connect(new TaskSignalMapper(surfaceCalcTask), &TaskSignalMapper::si_taskSucceeded, this, [this](Task* task) {
         auto surfaceTask = qobject_cast<MolecularSurfaceCalcTask*>(task);
-        SAFE_POINT(surfaceTask != nullptr,
-                   L10N::nullPointerError(tr("Molecular surface calculation task for %1").arg(objectName())), );
+        SAFE_POINT_NN(surfaceTask, );
         molSurface.reset(surfaceTask->getCalculatedSurface());
         makeCurrent();
         update();

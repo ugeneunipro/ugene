@@ -111,10 +111,10 @@ QByteArray DNASequenceUtils::complement(const QByteArray& sequence, const DNAAlp
     if (alphabet == nullptr) {
         alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
     }
-    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("DNA Alphabet"), "");
+    SAFE_POINT_NN(alphabet, "");
 
     DNATranslation* translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
-    SAFE_POINT(translator != nullptr, L10N::nullPointerError("DNA Translator"), "");
+    SAFE_POINT_NN(translator, "");
 
     QByteArray result(sequence.length(), 0);
     translator->translate(sequence.constData(), sequence.length(), result.data(), result.length());

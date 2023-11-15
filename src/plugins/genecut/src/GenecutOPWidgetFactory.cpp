@@ -43,7 +43,7 @@ GenecutOPWidgetFactory::GenecutOPWidgetFactory()
 
 QWidget* GenecutOPWidgetFactory::createWidget(GObjectViewController* objView, const QVariantMap& ) {
     auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
-    SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
+    SAFE_POINT_NN(annotatedDnaView, nullptr);
 
     auto opWidget = new GenecutOPWidget(annotatedDnaView);
     opWidget->setObjectName("GenecurOpInnerWidget");

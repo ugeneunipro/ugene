@@ -41,7 +41,7 @@ QWidget* InSilicoPcrOPWidgetFactory::createWidget(GObjectViewController* objView
     Q_UNUSED(options);
 
     auto annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
-    SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
+    SAFE_POINT_NN(annotatedDnaView, nullptr);
 
     auto opWidget = new InSilicoPcrOptionPanelWidget(annotatedDnaView);
     opWidget->setObjectName("InSilicoPcrOptionPanelWidget");
@@ -53,7 +53,7 @@ OPGroupParameters InSilicoPcrOPWidgetFactory::getOPGroupParameters() {
 }
 
 bool InSilicoPcrOPWidgetFactory::passFiltration(OPFactoryFilterVisitorInterface* filter) {
-    SAFE_POINT(filter != nullptr, L10N::nullPointerError("Options Panel Filter"), false);
+    SAFE_POINT_NN(filter, false);
 
     return filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
 }

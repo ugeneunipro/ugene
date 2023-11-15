@@ -410,7 +410,7 @@ void BedFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os) {
 
     foreach (GObject* annotTableGObject, annotTables) {
         auto annotTable = qobject_cast<AnnotationTableObject*>(annotTableGObject);
-        SAFE_POINT_EXT(annotTable != nullptr, os.setError(tr("Can not convert GObject to AnnotationTableObject")), );
+        SAFE_POINT_EXT(annotTable != nullptr, os.setError("Can not convert GObject to AnnotationTableObject"), );
 
         QString chromName;
         QList<GObjectRelation> relations = annotTable->findRelatedObjectsByType(GObjectTypes::SEQUENCE);

@@ -107,7 +107,17 @@ public:
         bool isDoubleClick = false,
         Qt::MouseButton button = Qt::LeftButton);
 
-    static void clickAnnotationPan(const QString& name, int startPos, int number = 0, bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton);
+     /**
+     * Clicks on the center (if @clickOffsetX is 0) of the annotation region in PanView.
+     * Locates the region to click by the annotationName and annotationRegionStartPos(visual, starts with 1) that must be one of the location.region.startPos.
+     * @name name of the annotation
+     * @startPos annotation first base number
+     * @number number of sequence view this annotation is located on (in case of multi-sequence view)
+     * @isDoubleClick double click if True, single click if False
+     * @button button to click
+     * @clickOffsetX by default, the center of annotation is being clicked on. This parameter sets the shift from the center (>0 - to the right, <0 - to the left)
+     */
+    static void clickAnnotationPan(const QString& name, int startPos, int number = 0, bool isDoubleClick = false, Qt::MouseButton button = Qt::LeftButton, int clickOffsetX = 0);
 
     static GSequenceGraphView* getGraphView();
     static QList<QVariant> getLabelPositions(GSequenceGraphView* graph);

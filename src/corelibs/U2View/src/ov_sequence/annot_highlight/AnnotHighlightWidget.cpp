@@ -204,7 +204,7 @@ bool AnnotHighlightWidget::findFirstAnnotatedRegionAfterPos(AnnotatedRegion& ann
 
     const QList<AnnotationTableObject*> annObjects = annotatedDnaView->getAnnotationObjects(true);
     foreach (AnnotationTableObject* annObject, annObjects) {
-        SAFE_POINT(annotatedDnaView->getSequenceContext(annObject) != nullptr, tr("Sequence context is NULL"), false);
+        SAFE_POINT(annotatedDnaView->getSequenceContext(annObject) != nullptr, "Sequence context is NULL", false);
         qint64 seqLen = annotatedDnaView->getSequenceContext(annObject)->getSequenceLength();
         QList<Annotation*> annots = annObject->getAnnotationsByRegion(U2Region(isForward ? startPos : 0, isForward ? seqLen - startPos : startPos));
         for (Annotation* a : qAsConst(annots)) {

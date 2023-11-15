@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/boundary/test_098.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="test_098" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TM_FORMULA="0" 
 			PRIMER_SALT_CORRECTIONS="0" 
@@ -34,8 +36,6 @@
 			PRIMER_INTERNAL_MAX_TM="100" 
 			PRIMER_OUTSIDE_PENALTY="0" 
 			PRIMER_INSIDE_PENALTY="-1.0" 
-			SEQUENCE_ID="test_098" 
-			SEQUENCE_TEMPLATE="ATCNCATCATCTCATCAAATTTGATTGATTTTACTCACTGTCATTTCCAAACAATACGG" 
 			PRIMER_PRODUCT_MAX_TM="62.4120" 
 			P3_COMMENT="Should succeed."/>
 		<plugin_primer_3_out 

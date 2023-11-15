@@ -1092,12 +1092,6 @@ Maybe model data are not enough for selected algorithm</source>
         <translation>Нулевая длина или поврежденная модель
 Возможно, данных модели недостаточно для выбранного алгоритма</translation>
     </message>
-    <message>
-        <source>Zero length or corrupted model.
-Maybe model data are not enough for selected algorithm</source>
-        <translation type="vanished">Zero length or corrupted model
-Maybe model data are not enough for selected algorithm</translation>
-    </message>
 </context>
 <context>
     <name>U2::PWMatrixReadTask</name>

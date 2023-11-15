@@ -91,7 +91,7 @@ FindORFsToAnnotationsTask::FindORFsToAnnotationsTask(AnnotationTableObject* aobj
       groupName(gName),
       annDescription(annDescription),
       entityRef(_entityRef) {
-    SAFE_POINT_EXT(aobj != nullptr, setError(tr("Annotation table object is NULL!")), );
+    SAFE_POINT_EXT(aobj != nullptr, setError("Annotation table object is NULL!"), );
     if (groupName.isEmpty()) {
         groupName = ORFAlgorithmSettings::ANNOTATION_GROUP_NAME;
     }

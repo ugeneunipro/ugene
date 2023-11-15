@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/obj_fn/primer_gc_content.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="primer_gc_content" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_PRODUCT_SIZE_RANGE="50-500" 
 			PRIMER_TASK="pick_pcr_primers_and_hyb_probe" 
@@ -66,11 +68,9 @@
 			PRIMER_INTERNAL_MAX_GC="60" 
 			PRIMER_INTERNAL_WT_GC_PERCENT_GT="1" 
 			PRIMER_INTERNAL_WT_GC_PERCENT_LT="1" 
-			SEQUENCE_ID="primer_gc_content" 
 			PRIMER_OPT_GC_PERCENT="50" 
 			PRIMER_WT_GC_PERCENT_GT="1" 
-			PRIMER_WT_GC_PERCENT_LT="1" 
-			SEQUENCE_TEMPLATE="AAGCCGAGGATGACTTCACTTTCCGACCCTGCAGAGCCGAGTTTCACCCACGAGTGAAGACTCCGCCAGCCTTGCCCCTCGGGCCTCTCCCTCAACTCACCATGATGACCGTCAGGCTGAGGAGGCAGGCGGACTGAGGCGTGGTCCGCGGGGCTCAGGGAGGTGGCTCCTGCGCCGG"/>
+			PRIMER_WT_GC_PERCENT_LT="1"/>
 		<plugin_primer_3_out 
 			PRIMER_WARNING="Non-default inside penalty or outside penalty has no effect when number of targets is 0" 
 			PRIMER_LEFT_NUM_RETURNED="5" 

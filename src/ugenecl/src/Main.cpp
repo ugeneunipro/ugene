@@ -479,7 +479,7 @@ int main(int argc, char** argv) {
     // 3 run QT
     t1.stop();
     coreLog.info(AppContextImpl::tr("%1-bit version of UGENE started").arg(Version::appArchitecture));
-    ConsoleShutdownTask watchQuit(&app);
+    ConsoleShutdownTask watchQuit(&app, true);
     Q_UNUSED(watchQuit);
     int rc = QCoreApplication::exec();
 

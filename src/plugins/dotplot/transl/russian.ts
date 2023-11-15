@@ -357,11 +357,6 @@
 <context>
     <name>U2::DotPlotImageExportController</name>
     <message>
-        <location filename="../src/DotPlotImageExportTask.cpp" line="60"/>
-        <source>Dotplot widget is NULL</source>
-        <translation>Dotplot widget is NULL</translation>
-    </message>
-    <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="61"/>
         <source>Dotplot</source>
         <translation>Dotplot</translation>
@@ -375,14 +370,6 @@
         <location filename="../src/DotPlotImageExportTask.cpp" line="79"/>
         <source>Include repeat selection</source>
         <translation>Включить повторяющиеся выделения</translation>
-    </message>
-</context>
-<context>
-    <name>U2::DotPlotImageExportToBitmapTask</name>
-    <message>
-        <location filename="../src/DotPlotImageExportTask.cpp" line="49"/>
-        <source>Incorrect DPI parameter</source>
-        <translation>Incorrect DPI parameter</translation>
     </message>
 </context>
 <context>
@@ -447,11 +434,6 @@
         <location filename="../src/DotPlotSplitter.cpp" line="52"/>
         <source>Hand tool (&lt;b&gt;H&lt;/b&gt;)</source>
         <translation>Рука (&lt;b&gt;H&lt;/b&gt;)</translation>
-    </message>
-    <message>
-        <location filename="../src/DotPlotSplitter.cpp" line="279"/>
-        <source>One of the sequences in dotplot is NULL</source>
-        <translation>One of the sequences in dotplot is NULL</translation>
     </message>
 </context>
 <context>
@@ -603,14 +585,9 @@
         <translation>Сохранить данные dotplot перед закрытием?</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotWidget.cpp" line="931"/>
-        <source>Invalid weight and height parameters!</source>
-        <translation>Некорректные параметры!</translation>
-    </message>
-    <message>
         <location filename="../src/DotPlotWidget.cpp" line="980"/>
         <source>Dotplot widget is too small</source>
-        <translation type="unfinished"></translation>
+        <translation>Виджет точечной диаграммы слишком маленький</translation>
     </message>
     <message>
         <location filename="../src/DotPlotWidget.cpp" line="991"/>

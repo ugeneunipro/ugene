@@ -164,7 +164,7 @@ bool ExportSequenceItem::isEmpty() const {
 }
 
 void ExportSequenceItem::setSequenceInfo(U2SequenceObject* seqObj) {
-    SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("sequence object"), );
+    SAFE_POINT_NN(seqObj, );
 
     seqRef = seqObj->getEntityRef();
     name = seqObj->getGObjectName();
@@ -325,7 +325,7 @@ ExportSequenceItem backToNucleic(ExportSequenceItem& ei, bool mostProbable, cons
 
     // translate
     const DNATranslation1to3Impl* trans = dynamic_cast<const DNATranslation1to3Impl*>(ei.backTT);
-    SAFE_POINT(trans != nullptr, L10N::nullPointerError("DNA translation"), backEi);
+    SAFE_POINT_NN(trans, backEi);
     const BackTranslationMode translationMode = mostProbable ? USE_MOST_PROBABLE_CODONS : USE_FREQUENCE_DISTRIBUTION;
 
     U2SequenceObject seqObject(ei.name, ei.seqRef);
@@ -447,9 +447,9 @@ void ExportSequenceTask::run() {
     GTIMER(cvar, tvar, "ExportSequenceTask");
 
     DocumentFormat* format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
-    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
+    SAFE_POINT_NN(format, );
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.fileName));
-    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    SAFE_POINT_NN(iof, );
     QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, config.fileName, stateInfo));
     CHECK_OP(stateInfo, );
 

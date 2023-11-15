@@ -42,10 +42,6 @@
 
 namespace U2 {
 
-CmdlineTaskConfig::CmdlineTaskConfig()
-    : logLevel(LogLevel_DETAILS), withPluginList(false) {
-}
-
 /************************************************************************/
 /* CmdlineTaskRunner */
 /************************************************************************/
@@ -287,6 +283,10 @@ Task::ReportResult CmdlineTaskRunner::report() {
     return ReportResult_Finished;
 }
 
+QString CmdlineTaskRunner::getProcessErrorsLog() const {
+    return processErrorLog;
+}
+
 bool CmdlineTaskRunner::isCommandLogLine(const QString& /*logLine*/) const {
     return false;
 }
@@ -295,9 +295,9 @@ bool CmdlineTaskRunner::parseCommandLogWord(const QString& /*logWord*/) {
     return false;
 }
 
-void CmdlineTaskRunner::writeLog(QStringList& lines) {
-    QStringList::Iterator it = lines.begin();
-    for (; it != lines.end(); it++) {
+void CmdlineTaskRunner::writeLog(QStringList& messages) {
+    QStringList::Iterator it = messages.begin();
+    for (; it != messages.end(); it++) {
         QString& line = *it;
         line = line.trimmed();
         QString nameCandidate;
@@ -306,19 +306,24 @@ void CmdlineTaskRunner::writeLog(QStringList& lines) {
             continue;
         }
 
+        QString logMessage = line.mid(closePos + 1);
+        static const QString logLevelErrorName = getLogLevelName(LogLevel_ERROR);
+        if (logLevelErrorName == nameCandidate) {
+            processErrorLog += logMessage + "\n";
+        }
+
         for (int i = config.logLevel; i < LogLevel_NumLevels; i++) {
             QString logLevelName = getLogLevelName((LogLevel)i);
             if (logLevelName != nameCandidate) {
                 continue;
             }
 
-            QString logLine = line.mid(closePos + 1);
-            logLine = logLine.trimmed();
-            bool commandToken = logLine.startsWith(OUTPUT_PROGRESS_TAG) || logLine.startsWith(ERROR_KEYWORD) || isCommandLogLine(logLine);
+            logMessage = logMessage.trimmed();
+            bool commandToken = logMessage.startsWith(OUTPUT_PROGRESS_TAG) || logMessage.startsWith(ERROR_KEYWORD) || isCommandLogLine(logMessage);
             if (commandToken) {
                 continue;
             }
-            taskLog.message((LogLevel)i, processLogPrefix + logLine);
+            taskLog.message((LogLevel)i, processLogPrefix + logMessage);
         }
     }
 }
@@ -357,8 +362,16 @@ void CmdlineTaskRunner::sl_onError(QProcess::ProcessError error) {
 
 void CmdlineTaskRunner::sl_onReadStandardOutput() {
     QString data = readStdout();
-    QStringList lines = data.split(QChar('\n'));
-    writeLog(lines);
+    const QStringList lines = data.split(QChar('\n'));
+    QStringList combineMultiLines;
+    for (const QString& line : qAsConst(lines)) {
+        if (line.startsWith("[") || combineMultiLines.isEmpty()) {
+            combineMultiLines.append(line);
+        } else {
+            combineMultiLines.last() += "\n" + line;
+        }
+    }
+    writeLog(combineMultiLines);
 
     int errInd = data.indexOf(ERROR_KEYWORD);
     if (errInd >= 0) {
@@ -390,8 +403,6 @@ void CmdlineTaskRunner::sl_onReadStandardOutput() {
 }
 
 void CmdlineTaskRunner::sl_onFinish(int exitCode, QProcess::ExitStatus exitStatus) {
-    CHECK(!hasError(), );  // !do not overwrite previous error!
-
     // On Windows, if the process was terminated with TerminateProcess() from another application,
     // this function will still return NormalExit unless the exit code is less than 0.
     if (exitStatus != QProcess::NormalExit || exitCode != 0) {
