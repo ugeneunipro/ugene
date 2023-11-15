@@ -29,12 +29,10 @@ namespace U2 {
 
 class U2CORE_EXPORT CmdlineTaskConfig {
 public:
-    CmdlineTaskConfig();
-
     QString command;
     QStringList arguments;
-    LogLevel logLevel;
-    bool withPluginList;
+    LogLevel logLevel = LogLevel_DETAILS;
+    bool withPluginList = false;
     QStringList pluginList;
     QString reportFile;
 };
@@ -53,6 +51,11 @@ public:
     void prepare();
     ReportResult report();
 
+    /*
+    * Returns QString with [ERROR] level log messages separated by new line.
+    */
+    QString getProcessErrorsLog() const;
+
     static const QString REPORT_FILE_ARG;
 
 protected:
@@ -60,7 +63,7 @@ protected:
     virtual bool parseCommandLogWord(const QString& logWord);
 
 private:
-    void writeLog(QStringList& lines);
+    void writeLog(QStringList& messages);
     QString readStdout();
 
 private slots:
@@ -72,6 +75,7 @@ private:
     CmdlineTaskConfig config;
     QProcess* process;
     QString processLogPrefix;
+    QString processErrorLog;
 };
 
 class U2CORE_EXPORT CmdlineTask : public Task {

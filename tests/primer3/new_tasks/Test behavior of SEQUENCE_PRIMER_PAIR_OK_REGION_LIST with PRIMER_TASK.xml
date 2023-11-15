@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/new_tasks/Test behavior of SEQUENCE_PRIMER_PAIR_OK_REGION_LIST with PRIMER_TASK.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="Test behavior of SEQUENCE_PRIMER_PAIR_OK_REGION_LIST with PRIMER_TASK" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TASK="pick_primer_list" 
 			PRIMER_PICK_ANYWAY="0" 
@@ -10,8 +12,6 @@
 			PRIMER_PICK_LEFT_PRIMER="1" 
 			PRIMER_NUM_RETURN="15" 
 			PRIMER_MIN_THREE_PRIME_DISTANCE="0" 
-			SEQUENCE_ID="Test behavior of SEQUENCE_PRIMER_PAIR_OK_REGION_LIST with PRIMER_TASK" 
-			SEQUENCE_TEMPLATE="cttgattcaatgaatctcaaaaatggattactattgttcattctgtttcTggattgtgtttttttcaaagttgaatccaaatgtgtaaaagggtgtgatg" 
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_PRODUCT_SIZE_RANGE="40-100" 
 			PRIMER_MIN_GC="0" 

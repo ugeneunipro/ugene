@@ -159,7 +159,7 @@ QString MakeBlastDbTask::prepareLink(const QString& path) const {
 }
 
 void MakeBlastDbTask::initMakeBlastDbExternalToolTask() {
-    SAFE_POINT_EXT(makeBlastDbExternalToolTask == nullptr, setError(tr("Trying to initialize Format DB task second time")), );
+    SAFE_POINT_EXT(makeBlastDbExternalToolTask == nullptr, setError("Trying to initialize Format DB task second time"), );
     if (settings.outputPath.contains(" ")) {
         stateInfo.setError(tr("Output database path contain space characters."));
         return;

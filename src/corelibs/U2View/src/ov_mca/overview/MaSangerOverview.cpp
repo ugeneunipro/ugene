@@ -257,7 +257,7 @@ void MaSangerOverview::drawReads() {
     painter.fillRect(cachedReadsView.rect(), Qt::white);
 
     MultipleChromatogramAlignmentObject const* const mcaObject = getEditor()->getMaObject();
-    SAFE_POINT(mcaObject != nullptr, tr("Incorrect multiple chromatogram alignment object"), );
+    SAFE_POINT(mcaObject != nullptr, "Incorrect multiple chromatogram alignment object", );
     const MultipleChromatogramAlignment mca = mcaObject->getMultipleAlignment();
     const int rowsCount = editor->getCollapseModel()->getViewRowCount();
 

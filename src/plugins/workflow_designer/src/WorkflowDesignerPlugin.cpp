@@ -242,7 +242,7 @@ WorkflowDesignerService::WorkflowDesignerService()
 
 void WorkflowDesignerService::serviceStateChangedCallback(ServiceState, bool enabledStateChanged) {
     IdRegistry<WelcomePageAction>* welcomePageActions = AppContext::getWelcomePageActionRegistry();
-    SAFE_POINT(welcomePageActions != nullptr, L10N::nullPointerError("Welcome Page Actions"), );
+    SAFE_POINT_NN(welcomePageActions, );
 
     if (!enabledStateChanged) {
         return;
@@ -412,7 +412,7 @@ WorkflowWelcomePageAction::WorkflowWelcomePageAction(WorkflowDesignerService* se
 }
 
 void WorkflowWelcomePageAction::perform() {
-    SAFE_POINT(!service.isNull(), L10N::nullPointerError("Workflow Service"), );
+    SAFE_POINT_NN(service, );
     service->sl_showDesignerWindow();
 }
 

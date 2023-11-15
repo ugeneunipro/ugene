@@ -37,7 +37,7 @@ AddReadsToDocumentTask::AddReadsToDocumentTask(const QList<U2AssemblyRead>& read
     : Task(tr("Add short reads to document"), TaskFlag_None), reads(reads), doc(doc) {
     SAFE_POINT_EXT(!doc.isNull(), setError(L10N::nullPointerError("document")), );
     dbiRef = doc->getDbiRef();
-    SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("Invalid database reference detected")), );
+    SAFE_POINT_EXT(dbiRef.isValid(), setError("Invalid database reference detected"), );
 
     tpm = Progress_Manual;
 }

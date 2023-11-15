@@ -292,10 +292,10 @@ void BwaAlignTask::LogParser::parseErrOutput(const QString& partOfLog) {
         if (i->contains("This application has requested the Runtime to terminate")) {
             QStringList errors;
             for (int strings = 0; strings < 2; i++, strings++) {
-                SAFE_POINT(i != log.end(), tr("Log is incomplete"), );
+                SAFE_POINT(i != log.end(), "Log is incomplete", );
                 errors << *i;
             }
-            SAFE_POINT(i == log.end(), tr("Log is incorrect"), );
+            SAFE_POINT(i == log.end(), "Log is incorrect", );
             setLastError(errors.join(" "));
         } else if (i->contains("Abort!")) {
             setLastError(*i);

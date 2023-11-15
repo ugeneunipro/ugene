@@ -54,7 +54,7 @@ ExternalToolJustValidateTask::ExternalToolJustValidateTask(const QString& toolId
       externalToolProcess(nullptr),
       tool(nullptr) {
     toolPath = path;
-    SAFE_POINT_EXT(!toolPath.isEmpty(), setError(tr("Tool's path is empty")), );
+    SAFE_POINT_EXT(!toolPath.isEmpty(), setError("Tool's path is empty"), );
 
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(etRegistry, "An external tool registry is NULL", );
@@ -88,7 +88,7 @@ void ExternalToolJustValidateTask::run() {
 
     if (!originalValidation.toolRunnerProgram.isEmpty()) {
         ScriptingToolRegistry* stRegistry = AppContext::getScriptingToolRegistry();
-        SAFE_POINT_EXT(stRegistry != nullptr, setError(tr("Scripting tool registry is NULL")), );
+        SAFE_POINT_EXT(stRegistry != nullptr, setError("Scripting tool registry is NULL"), );
         ScriptingTool* stool = stRegistry->getById(originalValidation.toolRunnerProgram);
         CHECK_EXT(stool != nullptr, setError(tr("Scripting tool '%1' isn't found in the registry").arg(originalValidation.toolRunnerProgram)), );
 

@@ -281,7 +281,7 @@ int TaskViewDockWidget::countAvailableReports() const {
 }
 
 void TaskViewDockWidget::removeReport(TVTreeItem* ti) {
-    SAFE_POINT(ti->reportButton != nullptr, L10N::nullPointerError("report button"), );
+    SAFE_POINT_NN(ti->reportButton, );
     delete ti;
     emit si_reportsCountChanged();
 }
@@ -294,7 +294,7 @@ void TaskViewDockWidget::sl_onRemoveTaskReport() {
 }
 
 void TaskViewDockWidget::activateReport(TVTreeItem* ti) {
-    SAFE_POINT(ti->reportButton != nullptr, L10N::nullPointerError("report button"), );
+    SAFE_POINT_NN(ti->reportButton, );
     uiLog.details(tr("Activating task report: %1").arg(ti->taskName));
 
     MWMDIManager* mdi = AppContext::getMainWindow()->getMDIManager();

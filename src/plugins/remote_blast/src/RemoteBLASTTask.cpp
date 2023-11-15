@@ -236,7 +236,7 @@ CreateAnnotationsFromHttpBlastResultTask::CreateAnnotationsFromHttpBlastResultTa
       cfg(cfg),
       httpBlastResults(results) {
     seqLen = cfg.query.size();
-    SAFE_POINT_EXT(!httpBlastResults.isEmpty(), setError(tr("HttpBlastResult list is empty")), );
+    SAFE_POINT_EXT(!httpBlastResults.isEmpty(), setError("HttpBlastResult list is empty"), );
 }
 
 void CreateAnnotationsFromHttpBlastResultTask::prepare() {
@@ -248,7 +248,7 @@ void CreateAnnotationsFromHttpBlastResultTask::prepare() {
 
 void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult& result) {
     HttpRequest* t = result.request;
-    SAFE_POINT_EXT(t != nullptr, setError(tr("HttpRequest is NULL!")), );
+    SAFE_POINT_EXT(t != nullptr, setError("HttpRequest is NULL!"), );
     RemoteBlastHttpRequestTask::Query q = result.query;
     QList<SharedAnnotationData> annotations = t->getAnnotations();
     {
@@ -462,8 +462,8 @@ bool CreateAnnotationsFromHttpBlastResultTask::annotationsReferToTheSameSeq(cons
 }
 
 bool CreateAnnotationsFromHttpBlastResultTask::annotationsAreNeighbours(SharedAnnotationData& start, SharedAnnotationData& end) {
-    SAFE_POINT(start->getRegions().size() == 1, tr("Wrong number of annotations"), false);
-    SAFE_POINT(end->getRegions().size() == 1, tr("Wrong number of annotations"), false);
+    SAFE_POINT(start->getRegions().size() == 1, "Wrong number of annotations", false);
+    SAFE_POINT(end->getRegions().size() == 1, "Wrong number of annotations", false);
 
     int sStart = start->getRegions().first().startPos;
     int sEnd = start->getRegions().first().endPos();
@@ -519,8 +519,8 @@ QList<Task*> CreateAnnotationsFromHttpBlastResultTask::onSubTaskFinished(Task* s
     if (checkCircTask->getResult()) {
         // merge
         int idx = circCheckTasks.indexOf(checkCircTask);
-        SAFE_POINT_EXT(idx != -1, setError(tr("Invalid subtask")), res);
-        SAFE_POINT_EXT(idx < mergeCandidates.size(), setError(tr("No corresponding annotations")), res);
+        SAFE_POINT_EXT(idx != -1, setError("Invalid subtask"), res);
+        SAFE_POINT_EXT(idx < mergeCandidates.size(), setError("No corresponding annotations"), res);
         resultAnnotations << merge(mergeCandidates[idx].first, mergeCandidates[idx].second);
         resultAnnotations.removeOne(mergeCandidates[idx].first);
         resultAnnotations.removeOne(mergeCandidates[idx].second);
@@ -537,7 +537,7 @@ CheckNCBISequenceCircularityTask::CheckNCBISequenceCircularityTask(const QString
       seqId(id),
       loadTask(nullptr),
       result(false) {
-    SAFE_POINT_EXT(!seqId.isEmpty(), setError(tr("ID is empty")), );
+    SAFE_POINT_EXT(!seqId.isEmpty(), setError("ID is empty"), );
 
     U2OpStatusImpl os;
     tempUrl = GUrlUtils::prepareDirLocation(AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath("blast_circ_check"),
@@ -611,21 +611,21 @@ U2Qualifier Merge::equalQualifiers(const QString& qualName, const SharedAnnotati
     QString qualValue;
     qualValue = first->findFirstQualifierValue(qualName);
 
-    SAFE_POINT(!qualValue.isEmpty(), tr("Qualifier %1 not found").arg(qualName), U2Qualifier());
-    SAFE_POINT(qualValue == second->findFirstQualifierValue(qualName), tr("Can not merge %1 qualifiers: values are not the same.").arg(qualName), U2Qualifier());
+    SAFE_POINT(!qualValue.isEmpty(), QString("Qualifier %1 not found").arg(qualName), U2Qualifier());
+    SAFE_POINT(qualValue == second->findFirstQualifierValue(qualName), QString("Can not merge %1 qualifiers: values are not the same.").arg(qualName), U2Qualifier());
 
     return U2Qualifier(qualName, qualValue);
 }
 
 U2Qualifier Merge::percentQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second) {
     QString tmp = first->findFirstQualifierValue(qualName);
-    SAFE_POINT(!tmp.isEmpty(), tr("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
+    SAFE_POINT(!tmp.isEmpty(), QString("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
     // parse
     int number = tmp.left(tmp.indexOf('/')).toInt();
     int total = tmp.mid(tmp.indexOf('/') + 1, tmp.indexOf(' ') - tmp.indexOf('/')).toInt();
 
     tmp = second->findFirstQualifierValue(qualName);
-    SAFE_POINT(!tmp.isEmpty(), tr("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
+    SAFE_POINT(!tmp.isEmpty(), QString("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
     number += tmp.left(tmp.indexOf('/')).toInt();
     total += tmp.mid(tmp.indexOf('/') + 1, tmp.indexOf(' ') - tmp.indexOf('/')).toInt();
 
@@ -649,33 +649,33 @@ U2Qualifier Merge::hitToQualifier(const SharedAnnotationData& first, const Share
 
 U2Qualifier Merge::sumQualifiers(const QString& qualName, const SharedAnnotationData& first, const SharedAnnotationData& second) {
     QString tmp = first->findFirstQualifierValue(qualName);
-    SAFE_POINT(!tmp.isEmpty(), tr("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
+    SAFE_POINT(!tmp.isEmpty(), QString("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
     bool ok;
     int res = tmp.toDouble(&ok);
-    SAFE_POINT(ok, tr("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
+    SAFE_POINT(ok, QString("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
 
     tmp = second->findFirstQualifierValue(qualName);
-    SAFE_POINT(!tmp.isEmpty(), tr("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
+    SAFE_POINT(!tmp.isEmpty(), QString("Can not find '%1' qualifier").arg(qualName), U2Qualifier());
     res += tmp.toDouble(&ok);
-    SAFE_POINT(ok, tr("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
+    SAFE_POINT(ok, QString("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
 
     return U2Qualifier(qualName, QString::number(res));
 }
 
 U2Qualifier Merge::eValueQualifier(int seqLen, const SharedAnnotationData& first, const SharedAnnotationData& second) {
     QString tmp = first->findFirstQualifierValue("E-value");
-    SAFE_POINT(!tmp.isEmpty(), tr("Can not find 'E-value' qualifier"), U2Qualifier());
+    SAFE_POINT(!tmp.isEmpty(), "Can not find 'E-value' qualifier", U2Qualifier());
     bool ok;
     double e1 = tmp.toDouble(&ok);
-    SAFE_POINT(ok, tr("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
+    SAFE_POINT(ok, QString("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
 
     tmp = second->findFirstQualifierValue("E-value");
     double e2 = tmp.toDouble(&ok);
-    SAFE_POINT(ok, tr("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
+    SAFE_POINT(ok, QString("Can not convert qualifier value '%1' to double").arg(tmp), U2Qualifier());
 
     tmp = first->findFirstQualifierValue("hit-len");
     int refLen = tmp.toInt(&ok);
-    SAFE_POINT(ok, tr("Can not convert qualifier value '%1' to int").arg(tmp), U2Qualifier());
+    SAFE_POINT(ok, QString("Can not convert qualifier value '%1' to int").arg(tmp), U2Qualifier());
 
     double eValue = e1 * e2 / seqLen * refLen;
 

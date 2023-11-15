@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/task/pcr_primers.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="pcr_primers" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_MAX_SELF_ANY="12" 
 			PRIMER_PAIR_MAX_COMPL_ANY="12" 
@@ -10,8 +12,6 @@
 			P3_FILE_FLAG="1" 
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_TASK="pick_pcr_primers" 
-			SEQUENCE_ID="pcr_primers" 
-			SEQUENCE_TEMPLATE="TCCTACAGCTGTGGGAAAATGatgcgtacgatccatgctagctagctactatcgattagctatcatctactatcatctactatctactacacatctactatcatctacacacacacacacactaggccgctatatcatctagcGCCGCCATGTACACACTG" 
 			SEQUENCE_TARGET="21,122"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="3" 

@@ -181,10 +181,6 @@ Ignore boundary ORFs which last beyond the search region
         <translation>Найти ORF и сохранить аннотации</translation>
     </message>
     <message>
-        <source>Annotation table object is NULL!</source>
-        <translation>Annotation table object is NULL!</translation>
-    </message>
-    <message>
         <source>Object with annotations was removed</source>
         <translation>Объект с аннотациями был удален</translation>
     </message>
@@ -392,10 +388,6 @@ Ignore boundary ORFs which last beyond the search region
     <message>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
-    </message>
-    <message>
-        <source>Sequence object is NULL</source>
-        <translation>Sequence object is NULL</translation>
     </message>
     <message>
         <source>OK</source>

@@ -44,7 +44,7 @@ WelcomePageMdiController::WelcomePageMdiController()
 
 MWMDIManager* WelcomePageMdiController::getMdiManager() {
     MainWindow* mainWindow = AppContext::getMainWindow();
-    SAFE_POINT(mainWindow != nullptr, L10N::nullPointerError("Main Window"), nullptr);
+    SAFE_POINT_NN(mainWindow, nullptr);
 
     return mainWindow->getMDIManager();
 }

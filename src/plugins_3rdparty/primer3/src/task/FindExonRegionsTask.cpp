@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-FindExonRegionsTask::FindExonRegionsTask(U2SequenceObject* dObj, const QString& annName)
+FindExonRegionsTask::FindExonRegionsTask(const QPointer<U2SequenceObject>& dObj, const QString& annName)
     : Task("FindExonRegionsTask", TaskFlags_NR_FOSCOE), dnaObj(dObj), exonAnnName(annName) {
 }
 
@@ -60,7 +60,7 @@ QList<Task*> FindExonRegionsTask::onSubTaskFinished(Task* subTask) {
         }
 
         U2SequenceObject *rnaSeqObj = qobject_cast<U2SequenceObject *>(objects.first());
-        SAFE_POINT(NULL != rnaSeqObj, tr("Failed to load RNA sequence"), res);
+        SAFE_POINT(NULL != rnaSeqObj, "Failed to load RNA sequence", res);
 
         SplicedAlignmentTaskConfig cfg(rnaSeqObj, dnaObj);
 
@@ -87,6 +87,8 @@ QList<Task*> FindExonRegionsTask::onSubTaskFinished(Task* subTask) {
 
 Task::ReportResult FindExonRegionsTask::report() {
     QList<GObject*> allAnnotationObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE);
+    CHECK_EXT(!dnaObj.isNull(), setError(tr("Sequence object has been closed, abort")), ReportResult_Finished);
+
     QList<GObject*> relAnns = GObjectUtils::findObjectsRelatedToObjectByRole(dnaObj, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, allAnnotationObjects, UOF_LoadedOnly);
 
     if (relAnns.isEmpty()) {

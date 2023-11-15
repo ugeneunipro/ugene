@@ -71,19 +71,26 @@ void AnnotHighlightSettingsWidget::sl_onShowHideChanged(int checkedState) {
 
 void AnnotHighlightSettingsWidget::sl_onShowOnTranslationChanged(int checkedState) {
     SAFE_POINT(0 != currentSettings, "An annotation should always be selected!", );
+    bool prevValue = currentSettings->amino;
     currentSettings->amino = (checkedState == Qt::Checked) ? true : false;
-    emit si_annotSettingsChanged(currentSettings);
+    if (prevValue != currentSettings->amino) {
+        emit si_annotSettingsChanged(currentSettings);
+    }
 }
 
 void AnnotHighlightSettingsWidget::sl_onShowQualifierChanged(int checkedState) {
     SAFE_POINT(0 != currentSettings, "An annotation should always be selected!", );
+    bool prevValue = currentSettings->showNameQuals;
     currentSettings->showNameQuals = (checkedState == Qt::Checked) ? true : false;
-    emit si_annotSettingsChanged(currentSettings);
+    if (prevValue != currentSettings->showNameQuals) {
+        emit si_annotSettingsChanged(currentSettings);
+    }
 }
 
 void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inputNameQuals) {
     SAFE_POINT(0 != currentSettings, "An annotation should always be selected!", );
     QStringList qualifierNames = inputNameQuals.split(',', QString::SkipEmptyParts);
+    QStringList prevValue = currentSettings->nameQuals;
 
     // Validate the input
     foreach (QString qualifierName, qualifierNames) {
@@ -96,7 +103,9 @@ void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inp
     // If the qualifier names are correct
     currentSettings->nameQuals = qualifierNames;
     setCorrectState();
-    emit si_annotSettingsChanged(currentSettings);
+    if (prevValue != currentSettings->nameQuals) {
+        emit si_annotSettingsChanged(currentSettings);
+    }
 }
 
 void AnnotHighlightSettingsWidget::setIncorrectState() {

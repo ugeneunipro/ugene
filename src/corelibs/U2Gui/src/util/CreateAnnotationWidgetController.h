@@ -190,7 +190,6 @@ private:
     SaveDocumentController* saveController;
 
     QString GROUP_NAME_AUTO;
-    static const QString DESCRIPTION_QUALIFIER_KEY;
     static const QString SETTINGS_LASTDIR;
 
     CreateAnnotationWidgetController(CreateAnnotationWidgetController&&) = delete;

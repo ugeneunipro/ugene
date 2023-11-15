@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/lib_amb_codes/test_08.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="test_08" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_EXPLAIN_FLAG="1" 
 			PRIMER_NUM_RETURN="1" 
@@ -30,8 +32,6 @@
 			PRIMER_LIB_AMBIGUITY_CODES_CONSENSUS="1" 
 			PRIMER_PICK_ANYWAY="1" 
 			PRIMER_INTERNAL_MISHYB_LIBRARY="not_for_production_Ns.lib" 
-			SEQUENCE_ID="test_08" 
-			SEQUENCE_TEMPLATE="GCTTGCATGCCTGCAGGTCGACTCTAGAGGATCCCCCTCTGATCATCTTCTGATCCAAGACCCGTGCTAGTCTACTGTATTCTACATGTACCCTTCTACAAGCTTTGAATTCCATAATCATCAGAGAATCCAGAAATTATTCATTATCACATAATAACAACACTCAAATATTTAAAGTTTTATGGTTGAATCTTTATGATTGAACCCATTCTATCAGGTGGTTATTTTATATCTAATAGAATTCATTTCAGGGTTACACAAAGGTCCGAATCTATCCATTTTACTGAG" 
 			P3_COMMENT="Should fail because of high repeat similarity for all internal oligos"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="0" 

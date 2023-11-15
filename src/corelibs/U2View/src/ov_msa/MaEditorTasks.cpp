@@ -343,7 +343,7 @@ void ExtractConsensusTask::run() {
         }
         int count = 0;
         int nSeq = alignment->getRowCount();
-        SAFE_POINT(0 != nSeq, tr("No sequences in alignment"), );
+        SAFE_POINT(0 != nSeq, "No sequences in alignment", );
 
         QChar c = algorithm->getConsensusCharAndScore(alignment, i, count);
         if (c == MSAConsensusAlgorithm::INVALID_CONS_CHAR) {

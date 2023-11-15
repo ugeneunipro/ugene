@@ -843,7 +843,7 @@ LoadDataWelcomePageAction::LoadDataWelcomePageAction(ProjectLoaderImpl* loader)
 }
 
 void LoadDataWelcomePageAction::perform() {
-    SAFE_POINT(!loader.isNull(), L10N::nullPointerError("Project Loader"), );
+    SAFE_POINT_NN(loader, );
     loader->sl_openProject();
 }
 
@@ -852,7 +852,7 @@ CreateSequenceWelcomePageAction::CreateSequenceWelcomePageAction(ProjectLoaderIm
 }
 
 void CreateSequenceWelcomePageAction::perform() {
-    SAFE_POINT(!loader.isNull(), L10N::nullPointerError("Project Loader"), );
+    SAFE_POINT_NN(loader, );
     loader->sl_newDocumentFromText();
 }
 
@@ -1071,7 +1071,7 @@ QList<Task*> AddDocumentsToProjectTask::prepareLoadTasks() {
     QList<Task*> res;
 
     Project* p = AppContext::getProject();
-    SAFE_POINT(p != nullptr, tr("No active project found!"), res);
+    SAFE_POINT(p != nullptr, "No active project found!", res);
 
     foreach (const AD2P_DocumentInfo& info, docsInfo) {
         Document* doc = p->findDocumentByURL(info.url);

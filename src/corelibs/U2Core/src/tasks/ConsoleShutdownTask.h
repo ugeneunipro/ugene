@@ -30,19 +30,24 @@ namespace U2 {
 class U2CORE_EXPORT ConsoleShutdownTask : public Task {
     Q_OBJECT
 public:
-    ConsoleShutdownTask(QCoreApplication* app);
+    ConsoleShutdownTask(QCoreApplication* app, bool exitAppOnTaskError = false);
 
     void prepare();
 
     ReportResult report();
 protected slots:
     void startShutdown();
+    void sl_shutdownOnTaskError(Task* t);
 
 protected:
     virtual QList<Task*> onSubTaskFinished(Task* subTask);
 
 private:
+    void registerShutdownTask();
+
     QCoreApplication* app;
+    bool exitAppOnTaskError = false;
+    int exitCode = 0;
 };
 
 }  // namespace U2

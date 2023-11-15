@@ -901,10 +901,10 @@ void AssemblyReadsArea::exportReads(const QList<U2AssemblyRead>& reads) {
         ExportReadsDialogModel model = dlg->getModel();
         SAFE_POINT(!model.filepath.isEmpty(), "Result file path is empty", );
         DocumentFormat* df = AppContext::getDocumentFormatRegistry()->getFormatById(model.format);
-        SAFE_POINT(df != nullptr, L10N::nullPointerError("document format"), );
+        SAFE_POINT_NN(df, );
 
         IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(model.filepath));
-        SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter"), );
+        SAFE_POINT_NN(iof, );
 
         U2OpStatus2Log os;
         Document* doc = df->createNewLoadedDocument(iof, model.filepath, os);

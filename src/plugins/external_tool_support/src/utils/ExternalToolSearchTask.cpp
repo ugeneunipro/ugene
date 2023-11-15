@@ -122,7 +122,7 @@ void ExternalToolSearchTask::run() {
 }
 
 QString ExternalToolSearchTask::getExecutableFileName(ExternalTool* tool) {
-    SAFE_POINT_EXT(tool, setError(tr("Tool pointer is NULL")), "");
+    SAFE_POINT_EXT(tool, setError("Tool pointer is NULL"), "");
 
     if (!tool->getExecutableFileName().isEmpty()) {
         return tool->getExecutableFileName();
@@ -130,11 +130,11 @@ QString ExternalToolSearchTask::getExecutableFileName(ExternalTool* tool) {
 
     if (tool->isModule()) {
         QStringList dependencies = tool->getDependencies();
-        SAFE_POINT_EXT(!dependencies.isEmpty(), setError(tr("External tool module hasn't any dependencies: it hasn't master tool")), "");
+        SAFE_POINT_EXT(!dependencies.isEmpty(), setError("External tool module hasn't any dependencies: it hasn't master tool"), "");
         ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
-        SAFE_POINT_EXT(etRegistry, setError(tr("External tool registry is NULL")), "");
+        SAFE_POINT_EXT(etRegistry, setError("External tool registry is NULL"), "");
         ExternalTool* masterTool = etRegistry->getById(dependencies.first());
-        SAFE_POINT_EXT(masterTool, setError(tr("An external tool '%1' isn't found in the registry").arg(dependencies.first())), "");
+        SAFE_POINT_EXT(masterTool, setError(QString("An external tool '%1' isn't found in the registry").arg(dependencies.first())), "");
         return masterTool->getExecutableFileName();
     }
 

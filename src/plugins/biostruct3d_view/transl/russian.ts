@@ -87,12 +87,12 @@
     <message>
         <location filename="../src/SelectModelsDialog.ui" line="25"/>
         <source>All</source>
-        <translation type="unfinished">Все</translation>
+        <translation>Все</translation>
     </message>
     <message>
         <location filename="../src/SelectModelsDialog.ui" line="32"/>
         <source>Invert</source>
-        <translation type="unfinished">Инвертировать</translation>
+        <translation>Инвертировать</translation>
     </message>
 </context>
 <context>
@@ -347,22 +347,6 @@ You may try to upgrade your system by updating the video card driver.</translati
 </context>
 <context>
     <name>U2::SelectModelsDialog</name>
-    <message>
-        <source>All</source>
-        <translation type="vanished">Все</translation>
-    </message>
-    <message>
-        <source>Invert</source>
-        <translation type="vanished">Инвертировать</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">Применить</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Отмена</translation>
-    </message>
     <message>
         <location filename="../src/SelectModelsDialog.cpp" line="73"/>
         <source>Error</source>

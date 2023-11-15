@@ -52,7 +52,7 @@ double TmCalculator::getAnnealingTemperature(const QByteArray& product, const QB
 
 bool TmCalculator::isNucleotideSequence(const QByteArray& sequence) {
     auto alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
-    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("DNAAlphabet"), false);
+    SAFE_POINT_NN(alphabet, false);
 
     return alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT();
 }

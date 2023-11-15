@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/overlap_junction/Details of SEQUENCE_OVERLAP_JUNCTION_LIST and PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION TEST 01 -- OVERLAP.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="Details of SEQUENCE_OVERLAP_JUNCTION_LIST and PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION TEST 01 -- OVERLAP" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
-			SEQUENCE_ID="Details of SEQUENCE_OVERLAP_JUNCTION_LIST and PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION TEST 01 -- OVERLAP" 
 			P3_COMMENT="The 50th nt is uppercase" 
 			PRIMER_NUM_RETURN="1" 
 			PRIMER_EXPLAIN_FLAG="1" 
@@ -10,7 +11,6 @@
 			PRIMER_MIN_GC="0" 
 			PRIMER_MIN_TM="0" 
 			PRIMER_PICK_ANYWAY="0" 
-			SEQUENCE_TEMPLATE="cttgattcaatgaatctcaaaaatggattactattgttcattctgtttcTggattgtgtttttttcaaagttgaatccaaatgtgtaaaagggtgtgatg" 
 			PRIMER_MIN_3_PRIME_OVERLAP_OF_JUNCTION="2" 
 			PRIMER_MIN_5_PRIME_OVERLAP_OF_JUNCTION="2" 
 			SEQUENCE_OVERLAP_JUNCTION_LIST="50" 
