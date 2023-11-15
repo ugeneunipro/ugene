@@ -382,7 +382,7 @@ void AddPluginTask::prepare() {
     }
 
     Settings* settings = AppContext::getSettings();
-    SAFE_POINT(settings != nullptr, tr("Settings is NULL"), );
+    SAFE_POINT(settings != nullptr, "Settings is NULL", );
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
     bool verificationIsEnabled = true;

@@ -42,7 +42,7 @@ void ProjectFilterProxyModel::updateSettings(const ProjectTreeControllerModeSett
 
 ProjectViewModel* ProjectFilterProxyModel::sourceModel() const {
     auto srcModel = qobject_cast<ProjectViewModel*>(QSortFilterProxyModel::sourceModel());
-    SAFE_POINT(srcModel != nullptr, L10N::nullPointerError("project view model"), nullptr);
+    SAFE_POINT_NN(srcModel, nullptr);
     return srcModel;
 }
 

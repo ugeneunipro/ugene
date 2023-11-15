@@ -41,7 +41,7 @@ GenecutPlugin::GenecutPlugin()
              tr("Desktop acess to GeneCut calculation results")) {
     if (AppContext::getMainWindow() != nullptr) {
         OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
-        SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
+        SAFE_POINT_NN(opRegistry, );
         opRegistry->registerFactory(new GenecutOPWidgetFactory());
     }
 }

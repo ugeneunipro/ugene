@@ -40,11 +40,11 @@ SingleSequenceImageExportController::SingleSequenceImageExportController(ADVSing
     : ImageExportController(ExportImageFormatPolicy(EnableRasterFormats | SupportSvg)),
       sequenceWidget(seqWidget),
       seqSettingsWidget(nullptr) {
-    SAFE_POINT(seqWidget != nullptr, tr("Sequence Widget is NULL"), );
+    SAFE_POINT(seqWidget != nullptr, "Sequence Widget is NULL", );
     shortDescription = tr("Sequence");
 
     U2SequenceObject* seqObject = sequenceWidget->getSequenceObject();
-    SAFE_POINT(seqObject != nullptr, tr("Sequence Object is NULL"), );
+    SAFE_POINT(seqObject != nullptr, "Sequence Object is NULL", );
     customExportSettings = QSharedPointer<SequenceExportSettings>(new SequenceExportSettings(seqObject->getSequenceLength(), ExportCurrentView));
     connect(customExportSettings.data(), SIGNAL(si_changed()), SLOT(sl_customSettingsChanged()));
 
@@ -55,7 +55,7 @@ SingleSequenceImageExportController::SingleSequenceImageExportController(ADVSing
 
 void SingleSequenceImageExportController::initSettingsWidget() {
     U2SequenceObject* seqObject = sequenceWidget->getSequenceObject();
-    SAFE_POINT(seqObject != nullptr, tr("Sequence Object is NULL"), );
+    SAFE_POINT(seqObject != nullptr, "Sequence Object is NULL", );
 
     settingsWidget = new SequenceExportSettingsWidget(seqObject, customExportSettings, sequenceWidget->getSequenceSelection());
 }

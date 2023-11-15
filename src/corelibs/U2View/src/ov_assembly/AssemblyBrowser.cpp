@@ -211,14 +211,14 @@ bool AssemblyBrowser::eventFilter(QObject* o, QEvent* e) {
 
 QString AssemblyBrowser::tryAddObject(GObject* obj) {
     Document* objDoc = obj->getDocument();
-    SAFE_POINT(objDoc != nullptr, "", tr("Internal error: only object with document can be added to browser"));
+    SAFE_POINT(objDoc != nullptr, "", "Internal error: only object with document can be added to browser");
 
     static const QString unacceptableObjectError = tr("Only a nucleotide sequence or a variant track objects can be added to the Assembly Browser.");
 
     if (GObjectTypes::SEQUENCE == obj->getGObjectType()) {
         auto seqObj = qobject_cast<U2SequenceObject*>(obj);
         CHECK(seqObj != nullptr, tr("Internal error: broken sequence object"));
-        SAFE_POINT(objDoc->getDocumentFormat() != nullptr, "", tr("Internal error: empty document format"));
+        SAFE_POINT(objDoc->getDocumentFormat() != nullptr, "", "Internal error: empty document format");
 
         bool setRef = !isAssemblyObjectLocked(true) && !model->isLoadingReference();
         setRef &= model->checkPermissions(QFile::WriteUser, setRef);
@@ -1050,7 +1050,7 @@ void AssemblyBrowser::setReference(const Document* doc) {
 
 void AssemblyBrowser::sl_setReference() {
     const ProjectView* projectView = AppContext::getProjectView();
-    SAFE_POINT(projectView != nullptr, L10N::nullPointerError("ProjectView"), );
+    SAFE_POINT_NN(projectView, );
 
     const GObjectSelection* selection = projectView->getGObjectSelection();
     const QList<GObject*> objects = extractSequenceObjects(selection->getSelectedObjects());

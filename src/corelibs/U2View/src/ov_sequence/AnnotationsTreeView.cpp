@@ -927,7 +927,7 @@ void AnnotationsTreeView::sl_onBuildMenu(GObjectViewController*, QMenu* m, const
     m->insertAction(first, invertAnnotationSelectionAction);
 
     QMenu* editMenu = GUIUtils::findSubMenu(m, ADV_MENU_EDIT);
-    SAFE_POINT(editMenu != nullptr, L10N::nullPointerError(ADV_MENU_EDIT), );
+    SAFE_POINT_NN(editMenu, );
     if (editAction->isEnabled()) {
         editMenu->addAction(editAction);
     }
@@ -1385,9 +1385,9 @@ bool AnnotationsTreeView::initiateDragAndDrop(QMouseEvent*) {
     dndCopyOnly = false;  // allow 'move' by default first
     for (int i = 0, n = initialSelItems.size(); i < n; i++) {
         auto itemi = dynamic_cast<AVItem*>(initialSelItems[i]);
-        SAFE_POINT(itemi != nullptr, L10N::nullPointerError("Annotation tree item"), false);
+        SAFE_POINT_NN(itemi, false);
         AnnotationTableObject* ao = itemi->getAnnotationTableObject();
-        SAFE_POINT(ao != nullptr, L10N::nullPointerError("annotation table object"), false);
+        SAFE_POINT_NN(ao, false);
         if (AutoAnnotationsSupport::isAutoAnnotationObject(ao)) {
             //  only allow to drag top-level auto annotations groups
             if (!(itemi->type == AVItemType_Group && itemi->parent() != nullptr)) {

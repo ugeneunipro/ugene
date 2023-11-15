@@ -72,7 +72,6 @@ AnnotationTableObject* CreateAnnotationModel::getAnnotationObject() const {
     return aobj;
 }
 
-const QString CreateAnnotationWidgetController::DESCRIPTION_QUALIFIER_KEY = "note";
 const QString CreateAnnotationWidgetController::SETTINGS_LASTDIR = "create_annotation/last_dir";
 
 CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateAnnotationModel& m,
@@ -173,7 +172,7 @@ void CreateAnnotationWidgetController::commonWidgetUpdate() {
     w->setUsePatternNamesVisible(!model.hideUsePatternNames);
 
     w->useAminoAnnotationTypes(model.useAminoAnnotationTypes);
-    if (U2FeatureTypes::Invalid != model.data->type) {
+    if (model.data->type != U2FeatureTypes::Invalid) {
         w->setAnnotationType(model.data->type);
     }
 }
@@ -184,7 +183,7 @@ public:
         : PTCObjectRelationFilter(_rel, p), allowUnloaded(_allowUnloaded) {
     }
 
-    bool filter(GObject* obj) const {
+    bool filter(GObject* obj) const override {
         if (PTCObjectRelationFilter::filter(obj)) {
             return true;
         }
@@ -248,6 +247,9 @@ QString CreateAnnotationWidgetController::validate() {
             if (reg.endPos() > model.sequenceLen || reg.startPos < 0 || reg.endPos() < reg.startPos) {
                 return tr("Invalid location! Location must be in GenBank format.\nSimple examples:\n1..10\njoin(1..10,15..45)\ncomplement(5..15)");
             }
+        }
+        if (model.useAminoAnnotationTypes && model.data->location->strand != U2Strand::Direct) {
+            return tr("The 'complement' keyword cannot be present in the location of an amino acid sequence annotation.");
         }
     }
 

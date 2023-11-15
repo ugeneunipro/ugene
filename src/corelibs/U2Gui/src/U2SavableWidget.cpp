@@ -44,7 +44,7 @@ namespace U2 {
 
 U2SavableWidget::U2SavableWidget(QWidget* wrappedWidget, MWMDIWindow* contextWindow, const QStringList& _excludeWidgetIds)
     : wrappedWidget(wrappedWidget), contextWindow(contextWindow), widgetStateSaved(false), excludeWidgetIds(_excludeWidgetIds) {
-    SAFE_POINT(wrappedWidget != nullptr, L10N::nullPointerError("wrapped widget"), );
+    SAFE_POINT_NN(wrappedWidget, );
 }
 
 U2SavableWidget::~U2SavableWidget() {

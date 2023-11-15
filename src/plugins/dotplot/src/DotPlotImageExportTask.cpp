@@ -46,7 +46,7 @@ void DotPlotImageExportToBitmapTask::run() {
         tmp.fill(Qt::white);
         defaultDpm = tmp.dotsPerMeterX();
     }
-    SAFE_POINT(dpm != 0, tr("Incorrect DPI parameter"), );
+    SAFE_POINT(dpm != 0, "Incorrect DPI parameter", );
     float fontScale = (float)defaultDpm / dpm;
     dotplotWidget->drawAll(painter, settings.imageSize, fontScale, dpExportSettings);
 
@@ -57,7 +57,7 @@ void DotPlotImageExportToBitmapTask::run() {
 DotPlotImageExportController::DotPlotImageExportController(DotPlotWidget* wgt)
     : ImageExportController(),
       dotplotWidget(wgt) {
-    SAFE_POINT(dotplotWidget != nullptr, tr("Dotplot widget is NULL"), );
+    SAFE_POINT(dotplotWidget != nullptr, "Dotplot widget is NULL", );
     shortDescription = tr("Dotplot");
     initSettingsWidget();
 }

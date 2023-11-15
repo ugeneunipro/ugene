@@ -133,7 +133,7 @@ RunCap3AndOpenResultTask::RunCap3AndOpenResultTask(const CAP3SupportTaskSettings
 }
 
 void RunCap3AndOpenResultTask::prepare() {
-    SAFE_POINT_EXT(cap3Task, setError(tr("Invalid CAP3 task")), );
+    SAFE_POINT_EXT(cap3Task, setError("Invalid CAP3 task"), );
     addSubTask(cap3Task);
 }
 
@@ -148,7 +148,7 @@ QList<Task*> RunCap3AndOpenResultTask::onSubTaskFinished(Task* subTask) {
         GUrl url(cap3Task->getOutputFile());
 
         ProjectLoader* loader = AppContext::getProjectLoader();
-        SAFE_POINT_EXT(loader, setError(tr("Project loader is NULL")), subTasks);
+        SAFE_POINT_EXT(loader, setError("Project loader is NULL"), subTasks);
         QVariantMap hints;
         hints[ProjectLoaderHint_LoadWithoutView] = !openView;
         Task* loadTask = loader->openWithProjectTask(url, hints);

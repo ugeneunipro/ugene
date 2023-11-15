@@ -117,7 +117,7 @@ CircularViewImageExportController::CircularViewImageExportController(const QList
     : ImageExportController(ExportImageFormatPolicy_SupportAll),
       cvWidget(defaultCV),
       cvList(list) {
-    SAFE_POINT(!list.isEmpty(), tr("List of Circular Views is empty!"), );
+    SAFE_POINT(!list.isEmpty(), "List of Circular Views is empty!", );
     if (defaultCV == nullptr) {
         cvWidget = list.first();
     }
@@ -143,8 +143,8 @@ void CircularViewImageExportController::initSettingsWidget() {
         QLabel* label = new QLabel(tr("Sequence"));
         sequenceComboBox = new QComboBox();
         foreach (CircularView* cv, cvList) {
-            SAFE_POINT(cv->getSequenceContext() != nullptr, tr("Sequence context is NULL!"), );
-            SAFE_POINT(cv->getSequenceContext()->getSequenceGObject() != nullptr, tr("Sequence Gobject is NULL"), );
+            SAFE_POINT(cv->getSequenceContext() != nullptr, "Sequence context is NULL!", );
+            SAFE_POINT(cv->getSequenceContext()->getSequenceGObject() != nullptr, "Sequence Gobject is NULL", );
             QString seqName = cv->getSequenceContext()->getSequenceGObject()->getGObjectName();
             sequenceComboBox->addItem(seqName);
             if (cv == cvWidget) {

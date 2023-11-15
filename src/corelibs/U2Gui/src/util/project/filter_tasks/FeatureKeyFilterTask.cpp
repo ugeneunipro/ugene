@@ -54,7 +54,7 @@ void FeatureKeyFilterTask::filterDocument(Document* doc) {
     SAFE_POINT_EXT(doc != nullptr, stateInfo.setError(L10N::nullPointerError("document")), );
     CHECK(doc->isLoaded(), );
     const U2DbiRef dbiRef = doc->getDbiRef();
-    SAFE_POINT_EXT(dbiRef.isValid(), setError(tr("DbiRef is invalid")), );    
+    SAFE_POINT_EXT(dbiRef.isValid(), setError("DbiRef is invalid"), );
     DbiConnection connection(dbiRef, stateInfo);
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(connection.dbi != nullptr, stateInfo.setError(L10N::nullPointerError("Database connection")), );

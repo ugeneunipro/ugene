@@ -100,7 +100,7 @@ private:
      * \param baseIndex index of base user clicked on.
      * \return 0 The index of the closest annotation to the current position.
      **/
-    static const int getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex);
+    static int getClosestAnnotationRegionToPointIndex(Annotation* ann, qint64 baseIndex);
 
 protected:
     friend class ClearAnnotationsTask;

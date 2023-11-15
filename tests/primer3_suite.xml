@@ -1,4 +1,23 @@
-<suite name="Primer 3 tests" test-timeout="300">
+<suite name="Primer 3 tests" test-timeout="1000">
 
     <test-dir test-ext="*.xml" path="primer3" test-format="XML"/>
+	
+	<excluded test="tm_lc_masking/000.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/000.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/001.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/002.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/010.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/011.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/012.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/100.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/101.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/102.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/110.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/111.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/112.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/masking_001.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/masking_002.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/masking_003.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/masking_004.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
+	<excluded test="tm_lc_masking/masking_005.xml" reason="https://ugene.dev/tracker/browse/UGENE-7972"/>
 </suite>

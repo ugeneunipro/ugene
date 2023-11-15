@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/internal1/boundary_test_15.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="boundary_test_15" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_FIRST_BASE_INDEX="1" 
 			PRIMER_MAX_POLY_X="0" 
@@ -29,9 +31,7 @@
 			PRIMER_INTERNAL_MIN_GC="0" 
 			PRIMER_PICK_INTERNAL_OLIGO="1" 
 			PRIMER_MAX_NS_ACCEPTED="0" 
-			PRIMER_INTERNAL_MAX_NS_ACCEPTED="2" 
-			SEQUENCE_ID="boundary_test_15" 
-			SEQUENCE_TEMPLATE="NNGGGGGGGGGGGGGGGGGGGGGGGGGNNNNNTTTTTTTTTTTTTTTTTTTTTTTTTACTCACTGTCATTTCCAAACAATTCNN"/>
+			PRIMER_INTERNAL_MAX_NS_ACCEPTED="2"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="1" 
 			PRIMER_RIGHT_NUM_RETURNED="1" 

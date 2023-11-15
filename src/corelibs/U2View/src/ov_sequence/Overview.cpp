@@ -484,9 +484,9 @@ void OverviewRenderArea::drawAll(QPaintDevice* pd) {
 
     // don't show arrow when det view collapsed
     auto overview = qobject_cast<Overview*>(view);
-    SAFE_POINT(overview != nullptr, tr("Overview is NULL"), );
+    SAFE_POINT(overview != nullptr, "Overview is NULL", );
     ADVSingleSequenceWidget* ssw = overview->seqWidget;
-    SAFE_POINT(ssw != nullptr, tr("ADVSingleSequenceWidget is NULL"), );
+    SAFE_POINT(ssw != nullptr, "ADVSingleSequenceWidget is NULL", );
     if (!ssw->isPanViewCollapsed()) {
         drawSlider(p, panSlider, QColor(230, 230, 230));
     }

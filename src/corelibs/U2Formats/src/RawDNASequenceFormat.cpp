@@ -134,7 +134,7 @@ void RawDNASequenceFormat::storeTextDocument(IOAdapterWriter& writer, Document* 
     QList<GObject*> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK(objects.size() == 1, );
     auto sequenceObject = qobject_cast<U2SequenceObject*>(objects.first());
-    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence object"), );
+    SAFE_POINT_NN(sequenceObject, );
     QByteArray seqData = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
     writer.write(os, QString::fromLatin1(seqData));  // Note: we limit DNA sequence alphabet to Latin1.

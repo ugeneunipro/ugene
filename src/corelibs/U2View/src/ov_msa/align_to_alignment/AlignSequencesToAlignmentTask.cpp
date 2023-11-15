@@ -294,7 +294,7 @@ LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(Multi
 }
 
 void LoadSequencesAndAlignToAlignmentTask::prepare() {
-    SAFE_POINT_EXT(!maObjPointer.isNull(), setError(tr("Alignment object is null")), );
+    SAFE_POINT_EXT(!maObjPointer.isNull(), setError("Alignment object is null"), );
 
     loadSequencesTask = new LoadSequencesTask(maObjPointer->getAlphabet(), urls);
     loadSequencesTask->setSubtaskProgressWeight(5);

@@ -38,7 +38,7 @@ CircularViewSettingsWidget::CircularViewSettingsWidget(CircularViewSettings* s, 
       settings(s),
       settingsWidget(nullptr),
       savableWidget(this, GObjectViewUtils::getActiveObjectViewWindow()) {
-    SAFE_POINT(s != nullptr, tr("Circular view settings is NULL"), );
+    SAFE_POINT(s != nullptr, "Circular view settings is NULL", );
     setupUi(this);
 
     initLayout();

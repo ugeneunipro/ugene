@@ -38,25 +38,21 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::PredictSecondaryStructureDialogFiller"
 
-PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(int startPos, int endPos, bool onlyPressOk)
+PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(int _startPos, int _endPos, bool _onlyPressOk)
     : Filler("SecStructDialog"),
-      startPos(startPos),
-      endPos(endPos),
-      onlyPressOk(onlyPressOk) {
+      startPos(_startPos),
+      endPos(_endPos),
+      onlyPressOk(_onlyPressOk) {
 }
 
 PredictSecondaryStructureDialogFiller::PredictSecondaryStructureDialogFiller(CustomScenario* scenario)
-    : Filler("SecStructDialog", scenario),
-      startPos(0),
-      endPos(0),
-      onlyPressOk(0) {
+    : Filler("SecStructDialog", scenario) {
 }
 
 void PredictSecondaryStructureDialogFiller::commonScenario() {
     QWidget* dialog = GTWidget::getActiveModalWidget();
 
     GTLineEdit::setText("start_edit_line", QString::number(startPos), dialog);
-
     GTLineEdit::setText("end_edit_line", QString::number(endPos), dialog);
 
     auto box = GTWidget::findDialogButtonBox("buttonBox", dialog);
@@ -72,9 +68,8 @@ void PredictSecondaryStructureDialogFiller::commonScenario() {
 
     class Scenario : public CustomScenario {
     public:
-        void run() {
+        void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-
             GTUtilsDialog::clickButtonBox(dialog, QDialogButtonBox::Ok);
         }
     };

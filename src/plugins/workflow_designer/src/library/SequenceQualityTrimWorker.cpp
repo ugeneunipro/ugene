@@ -75,7 +75,7 @@ Task* SequenceQualityTrimWorker::createTask(const Message& message, U2OpStatus& 
 QList<Message> SequenceQualityTrimWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> messages;
     auto trimTask = qobject_cast<SequenceQualityTrimTask*>(task);
-    SAFE_POINT_EXT(trimTask != nullptr, os.setError(tr("An unexpected task type")), messages);
+    SAFE_POINT_EXT(trimTask != nullptr, os.setError("An unexpected task type"), messages);
 
     QScopedPointer<U2SequenceObject> trimmedSequenceObject(trimTask->takeTrimmedSequence());
     SAFE_POINT_EXT(trimmedSequenceObject != nullptr, os.setError("Sequence trim task didn't produce any object without any errors"), messages);

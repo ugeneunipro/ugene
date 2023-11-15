@@ -321,7 +321,7 @@ void TaskStatusBar::sl_notificationChanged() {
 
 void TaskStatusBar::sl_taskProgressChanged() {
     CHECK(sender() != nullptr, );
-    SAFE_POINT(taskToTrack == sender(), tr("Wrong signal sender!"), );
+    SAFE_POINT(taskToTrack == sender(), "Wrong signal sender!", );
     updateState();
 }
 

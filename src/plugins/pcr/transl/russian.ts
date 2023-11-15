@@ -27,10 +27,6 @@
         <translation>Экспорт праймеров</translation>
     </message>
     <message>
-        <source>Export to:</source>
-        <translation type="vanished">Экспортировать в:</translation>
-    </message>
-    <message>
         <location filename="../src/export/ExportPrimersDialog.ui" line="38"/>
         <source>Format:</source>
         <translation>Формат:</translation>
@@ -44,18 +40,6 @@
         <location filename="../src/export/ExportPrimersDialog.ui" line="67"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <source>Database:</source>
-        <translation type="vanished">База данных:</translation>
-    </message>
-    <message>
-        <source>Destination folder:</source>
-        <translation type="vanished">Папка для сохранения:</translation>
-    </message>
-    <message>
-        <source>Connect</source>
-        <translation type="vanished">Подключиться</translation>
     </message>
 </context>
 <context>
@@ -72,14 +56,6 @@
         <location filename="../src/import/ImportPrimersDialog.ui" line="20"/>
         <source>Import Primers</source>
         <translation>Импорт праймеров</translation>
-    </message>
-    <message>
-        <source>Import from:</source>
-        <translation type="vanished">Импортировать из:</translation>
-    </message>
-    <message>
-        <source>Connect to database</source>
-        <translation type="vanished">Подключиться к базе данных</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimersDialog.ui" line="28"/>
@@ -116,10 +92,6 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <source>Maximum product</source>
-        <translation type="vanished">Максимальный продукт</translation>
-    </message>
-    <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="101"/>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="147"/>
         <source> bp</source>
@@ -128,7 +100,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="124"/>
         <source>3&apos; perfect match</source>
-        <translation>3&apos; идеальное совпадение</translation>
+        <translation>Совпадение на 3&apos; конце</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="117"/>
@@ -234,21 +206,6 @@
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <source>Local file</source>
-        <translation type="vanished">Локальный файл</translation>
-    </message>
-    <message>
-        <source>Shared database</source>
-        <translation type="vanished">Общая база данных</translation>
-    </message>
-    <message>
-        <source>Local file(s)</source>
-        <translation type="vanished">Локальный файл(ы)</translation>
-    </message>
-</context>
-<context>
     <name>U2::EditPrimerDialog</name>
     <message>
         <location filename="../src/EditPrimerDialog.cpp" line="44"/>
@@ -270,11 +227,6 @@
         <location filename="../src/export/ExportPrimersToDatabaseTask.cpp" line="36"/>
         <source>Export primers</source>
         <translation>Экспорт праймеров</translation>
-    </message>
-    <message>
-        <location filename="../src/export/ExportPrimersToDatabaseTask.cpp" line="85"/>
-        <source>Unexpected objects count</source>
-        <translation>Unexpected objects count</translation>
     </message>
 </context>
 <context>
@@ -325,11 +277,6 @@
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="40"/>
         <source>Import primer from the shared database object: %1</source>
         <translation>Import primer from the shared database object: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="44"/>
-        <source>A non-sequence object was provided</source>
-        <translation>A non-sequence object was provided</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimerFromObjectTask.cpp" line="48"/>
@@ -396,11 +343,6 @@
         <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="46"/>
         <source>Internal error: can&apos;t load the file &apos;%1&apos;</source>
         <translation>Internal error: can&apos;t load the file &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="56"/>
-        <source>Document wasn&apos;t loaded</source>
-        <translation>Document wasn&apos;t loaded</translation>
     </message>
     <message>
         <location filename="../src/import/ImportPrimersFromFileTask.cpp" line="58"/>
@@ -478,7 +420,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="77"/>
         <source>Inner</source>
-        <translation>Внутренний</translation>
+        <translation>Внутренние</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="78"/>
@@ -488,7 +430,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="79"/>
         <source>None</source>
-        <translation>Ни один</translation>
+        <translation>Не извлекать</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="99"/>
@@ -513,7 +455,7 @@
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="154"/>
         <source>Error: </source>
-        <translation>Ошибка:</translation>
+        <translation>Ошибка: </translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrOptionPanelWidget.cpp" line="235"/>
@@ -580,23 +522,12 @@
     <message>
         <location filename="../src/FindPrimerPairsWorker.cpp" line="59"/>
         <source>unset</source>
-        <translation type="unfinished">не указан</translation>
+        <translation>не указан</translation>
     </message>
     <message>
         <location filename="../src/FindPrimerPairsWorker.cpp" line="62"/>
         <source>Find correct pairs over primers from &quot;%1&quot;.</source>
-        <translation type="unfinished">Поиск корректных пар праймеров из &quot;%1&quot;.</translation>
-    </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::FindPrimerPairsPromter</name>
-    <message>
-        <source>unset</source>
-        <translation type="vanished">не указан</translation>
-    </message>
-    <message>
-        <source>Find correct pairs over primers from &quot;%1&quot;.</source>
-        <translation type="vanished">Поиск корректных пар праймеров из &quot;%1&quot;.</translation>
+        <translation>Поиск корректных пар праймеров из &quot;%1&quot;.</translation>
     </message>
 </context>
 <context>
@@ -644,7 +575,7 @@
     <message>
         <location filename="../src/FindPrimerPairsWorker.cpp" line="145"/>
         <source>Set up temperature calculation method.</source>
-        <translation>Задать метод расчета температуры</translation>
+        <translation>Задать метод расчета температуры.</translation>
     </message>
     <message>
         <location filename="../src/FindPrimerPairsWorker.cpp" line="154"/>
@@ -818,7 +749,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="143"/>
         <source>Inner</source>
-        <translation>Внутренний</translation>
+        <translation>Внутренние</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="144"/>
@@ -828,7 +759,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="145"/>
         <source>None</source>
-        <translation>Ни один</translation>
+        <translation>Не извлекать</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="153"/>
@@ -888,7 +819,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="378"/>
         <source>Failed to find TM algorithm with id &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось найти алгоритм расчета температуры плавления с ID %1.</translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="385"/>
@@ -957,27 +888,27 @@
         <translation>Отчетный файл</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="258"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="261"/>
         <source>Group name</source>
         <translation>Имя группы</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="259"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="262"/>
         <source>Forward primer name</source>
         <translation>Имя прямого праймера</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="260"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="263"/>
         <source>Forward primer sequence</source>
         <translation>Последовательность прямого праймера</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="261"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="264"/>
         <source>Reverse primer name</source>
         <translation>Имя обратного праймера</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="262"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="265"/>
         <source>Reverse primer sequence</source>
         <translation>Последовательность обратного праймера</translation>
     </message>
@@ -1021,12 +952,12 @@
         <translation>Primer grouper task</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="288"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="291"/>
         <source>Group %1</source>
         <translation>Группа %1</translation>
     </message>
     <message>
-        <location filename="../src/PrimersGrouperWorker.cpp" line="296"/>
+        <location filename="../src/PrimersGrouperWorker.cpp" line="299"/>
         <source>No IO adapter found for URL: %1</source>
         <translation>No IO adapter found for URL: %1</translation>
     </message>
@@ -1060,12 +991,6 @@
         <location filename="../src/PrimerLibraryTable.cpp" line="77"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
-    </message>
-    <message>
-        <location filename="../src/PrimerLibraryTable.cpp" line="119"/>
-        <location filename="../src/PrimerLibraryTable.cpp" line="127"/>
-        <source>Incorrect primer number</source>
-        <translation>Incorrect primer number</translation>
     </message>
     <message>
         <location filename="../src/PrimerLibraryTable.cpp" line="139"/>

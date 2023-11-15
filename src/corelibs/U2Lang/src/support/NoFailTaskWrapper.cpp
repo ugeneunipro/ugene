@@ -42,12 +42,12 @@ Task* NoFailTaskWrapper::originalTask() const {
 }
 
 bool NoFailTaskWrapper::hasWarning() const {
-    SAFE_POINT(subTask != nullptr, tr("SubTask is NULL"), false);
+    SAFE_POINT(subTask != nullptr, "SubTask is NULL", false);
     return subTask->hasWarning();
 }
 
 QStringList NoFailTaskWrapper::getWarnings() const {
-    SAFE_POINT(subTask != nullptr, tr("SubTask is NULL"), QStringList());
+    SAFE_POINT(subTask != nullptr, "SubTask is NULL", QStringList());
     return subTask->getWarnings();
 }
 

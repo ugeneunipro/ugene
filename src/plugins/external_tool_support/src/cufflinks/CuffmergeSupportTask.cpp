@@ -51,7 +51,7 @@ CuffmergeSupportTask::CuffmergeSupportTask(const CuffmergeSettings& _settings)
       fileNum(0),
       mergeTask(nullptr),
       loadResultTask(nullptr) {
-    SAFE_POINT_EXT(settings.storage != nullptr, setError(tr("Workflow data storage is NULL")), );
+    SAFE_POINT_EXT(settings.storage != nullptr, setError("Workflow data storage is NULL"), );
     CHECK_EXT(!settings.annotationTables.isEmpty(), setError(tr("There are no annotations to process")), );
     GCOUNTER(cvar, "ExternalTool_Cuff");
 }
@@ -192,7 +192,7 @@ LoadDocumentTask* CuffmergeSupportTask::createLoadResultDocumentTask(const QStri
     const QString filePath = settings.outDir + "/" + fileName;
 
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(iof != nullptr, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFMERGE)), nullptr);
+    SAFE_POINT_EXT(iof != nullptr, setError(QString("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFMERGE)), nullptr);
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.storage->getDbiRef());

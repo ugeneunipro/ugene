@@ -92,6 +92,14 @@ public:
         return result; \
     }
 
+/** Asserts that the passed statement is not nullptr. */
+#define SAFE_POINT_NN(statement, result) \
+    if (Q_UNLIKELY((statement) == nullptr)) { \
+        QString message = U2_TOSTRING(statement); \
+        U2::U2SafePoints::fail(QString("Trying to recover from nullptr error: %1 at %2:%3").arg(message).arg(__FILE__).arg(__LINE__)); \
+        return result; \
+    }
+
 /**
     FAIL utility. Same as SAFE_POINT but uses unconditional fail.
     Can be used in code that must be unreachable

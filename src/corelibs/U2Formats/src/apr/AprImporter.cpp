@@ -62,13 +62,13 @@ void AprImporterTask::prepare() {
     QVariant v = settings.value(ImportHint_DestinationUrl);
     QString dstUrl = v.toString();
 
-    SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError(tr("Empty destination url")), );
+    SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError("Empty destination url"), );
 
     QVariant variantFormat = settings.value(ImportHint_FormatId);
     DocumentFormatId formatId = variantFormat.toString();
 
     IOAdapterRegistry* ioar = AppContext::getIOAdapterRegistry();
-    SAFE_POINT_EXT(ioar != nullptr, stateInfo.setError(tr("Invalid I/O environment!")), );
+    SAFE_POINT_EXT(ioar != nullptr, stateInfo.setError("Invalid I/O environment!"), );
 
     QFileInfo fileInfo(dstUrl);
     QDir qDir = fileInfo.dir();
@@ -88,7 +88,7 @@ QList<Task*> AprImporterTask::onSubTaskFinished(Task* subTask) {
     auto convTask = qobject_cast<DefaultConvertFileTask*>(subTask);
     if (convTask != nullptr) {
         QString dstUrl = convTask->getResult();
-        SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError(tr("Empty destination url")), res);
+        SAFE_POINT_EXT(!dstUrl.isEmpty(), stateInfo.setError("Empty destination url"), res);
 
         QVariantMap hints;
         hints[DocumentReadingMode_SequenceAsAlignmentHint] = true;

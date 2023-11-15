@@ -42,7 +42,7 @@ const QString& Variable::getName() const {
 }
 
 const QString& Variable::getValue() const {
-    SAFE_POINT(assigned, QObject::tr("Retrieving value of unassigned variable: %1").arg(name), value);
+    SAFE_POINT(assigned, QString("Retrieving value of unassigned variable: %1").arg(name), value);
     return value;
 }
 
@@ -57,8 +57,8 @@ bool Variable::isAssigned() const {
 
 bool Variable::operator==(const Variable& other) const {
     CHECK(name == other.name, false);
-    SAFE_POINT(assigned, QObject::tr("Unassigned variable: %1").arg(name), false);
-    SAFE_POINT(other.assigned, QObject::tr("Unassigned variable: %1").arg(other.name), false);
+    SAFE_POINT(assigned, QString("Unassigned variable: %1").arg(name), false);
+    SAFE_POINT(other.assigned, QString("Unassigned variable: %1").arg(other.name), false);
     return (value == other.value);
 }
 
@@ -75,7 +75,7 @@ Variable Predicate::variable() const {
 }
 
 bool Predicate::isTrue(const QMap<QString, Variable>& vars) const {
-    SAFE_POINT(vars.contains(var.getName()), QObject::tr("Variable is not defined: %1").arg(var.getName()), false);
+    SAFE_POINT(vars.contains(var.getName()), QString("Variable is not defined: %1").arg(var.getName()), false);
     return (var == vars[var.getName()]);
 }
 

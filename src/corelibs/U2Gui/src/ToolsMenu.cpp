@@ -77,6 +77,7 @@ const QString ToolsMenu::CLONING_CONSTRUCT = "CLONING_CONSTRUCT";
 
 const QString ToolsMenu::PRIMER_MENU = "PRIMER_MENU";
 const QString ToolsMenu::PRIMER_LIBRARY = "PRIMER_LIBRARY";
+const QString ToolsMenu::PRIMER3 = "PRIMER3";
 
 const QString ToolsMenu::TFBS_MENU = "TFBS_MENU";
 const QString ToolsMenu::TFBS_SITECON = "TFBS_SITECON";
@@ -178,6 +179,7 @@ void ToolsMenu::init() {
     subMenuAction[TOOLS] << PRIMER_MENU;
     {
         subMenuAction[PRIMER_MENU] << PRIMER_LIBRARY;
+        subMenuAction[PRIMER_MENU] << PRIMER3;
     }
 
     actionText[TFBS_MENU] = tr("Search for TFBS");

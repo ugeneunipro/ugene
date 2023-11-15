@@ -229,7 +229,7 @@ void CufflinksSupportTask::initLoadIsoformAnnotationsTask(const QString& fileNam
     const QString filePath = settings.outDir + "/" + fileName;
 
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(iof != nullptr, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFLINKS)), );
+    SAFE_POINT_EXT(iof != nullptr, setError(QString("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFLINKS)), );
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.storage->getDbiRef());

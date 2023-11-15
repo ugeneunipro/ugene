@@ -31,7 +31,7 @@ const QString HttpRequestBLAST::host = "https://blast.ncbi.nlm.nih.gov/Blast.cgi
 
 QString HttpRequestBLAST::runHttpRequest(const QString& request) {
     IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::HTTP_FILE);
-    IOAdapter* io = iof->createIOAdapter();
+    QScopedPointer<IOAdapter, QScopedPointerDeleteLater> io(iof->createIOAdapter());
     if (!io->open(request, IOAdapterMode_Read)) {
         error = tr("Cannot open the IO adapter");
         return "";
@@ -42,7 +42,6 @@ QString HttpRequestBLAST::runHttpRequest(const QString& request) {
     QByteArray response(CHUNK_SIZE, 0);
     do {
         if (task->isCanceled()) {
-            io->close();
             return "";
         }
         read = io->readBlock(response.data() + offs, CHUNK_SIZE);
@@ -50,7 +49,6 @@ QString HttpRequestBLAST::runHttpRequest(const QString& request) {
         response.resize(offs + read);
     } while (read == CHUNK_SIZE);
     QString error = io->errorString();
-    io->close();
     if (read < 0) {
         taskLog.error(tr("Cannot load a page. %1").arg(error));
         return "";

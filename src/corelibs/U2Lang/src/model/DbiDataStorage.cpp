@@ -150,7 +150,7 @@ SharedDbiDataHandler DbiDataStorage::putSequence(const DNASequence& dnaSeq) {
 
 SharedDbiDataHandler DbiDataStorage::putSequence(const U2SequenceObject* sequenceObject) {
     SAFE_POINT(dbiHandle != nullptr, "Invalid DBI handle", SharedDbiDataHandler());
-    SAFE_POINT(sequenceObject != nullptr, L10N::nullPointerError("Sequence object"), SharedDbiDataHandler());
+    SAFE_POINT_NN(sequenceObject, SharedDbiDataHandler());
 
     U2OpStatusImpl os;
 
@@ -203,7 +203,7 @@ SharedDbiDataHandler DbiDataStorage::putAnnotationTable(const QList<SharedAnnota
 
 SharedDbiDataHandler DbiDataStorage::putAnnotationTable(AnnotationTableObject* annTable) {
     SAFE_POINT(dbiHandle != nullptr, "Invalid DBI handle!", SharedDbiDataHandler());
-    SAFE_POINT(annTable != nullptr, L10N::nullPointerError("annotation table object"), SharedDbiDataHandler());
+    SAFE_POINT_NN(annTable, SharedDbiDataHandler());
 
     U2OpStatusImpl os;
 

@@ -19,13 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_QUERY_H_
-#define _U2_PRIMER_QUERY_H_
+#pragma once
 
 #include "U2Lang/QDScheme.h"
 #include "U2Lang/QueryDesignerRegistry.h"
 
-#include "Primer3TaskSettings.h"
+#include "task/Primer3TaskSettings.h"
 
 namespace U2 {
 
@@ -63,4 +62,3 @@ public:
 
 }  // namespace U2
 
-#endif
