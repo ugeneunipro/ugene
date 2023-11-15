@@ -21,10 +21,8 @@
 
 #include "SecStructDialog.h"
 
-#include <QHeaderView>
 #include <QMessageBox>
 #include <QMutableListIterator>
-#include <QPushButton>
 
 #include <U2Algorithm/SecStructPredictAlgRegistry.h>
 #include <U2Algorithm/SecStructPredictTask.h>
@@ -32,7 +30,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/L10n.h>
 #include <U2Core/PluginModel.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -53,7 +50,7 @@
 namespace U2 {
 
 SecStructDialog::SecStructDialog(ADVSequenceObjectContext* _ctx, QWidget* p)
-    : QDialog(p), ctx(_ctx), task(nullptr) {
+    : QDialog(p), Ui_SecStructDialog(), ctx(_ctx), task(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930792");
 
@@ -107,6 +104,14 @@ void SecStructDialog::sl_onStartPredictionClicked() {
     SecStructPredictTaskFactory* factory = sspr->getAlgorithm(algorithmComboBox->currentText());
     SAFE_POINT(factory != nullptr, "Unregistered factory name", );
 
+    bool okFlag = false;
+    region = regionSelector->getRegion(&okFlag);
+    if (!okFlag) {
+        regionSelector->showErrorMessage();
+        return;
+    }
+    SAFE_POINT(region.length > 0 && region.startPos >= 0 && region.endPos() <= ctx->getSequenceLength(), "Illegal region!", );
+
     // Check license
     QString algorithm = algorithmComboBox->currentText();
     QList<Plugin*> plugins = AppContext::getPluginSupport()->getPlugins();
@@ -126,7 +131,7 @@ void SecStructDialog::sl_onStartPredictionClicked() {
 
     // prepare target sequence
     region = regionSelector->getRegion();
-    SAFE_POINT(region.length > 0 && region.startPos >= 0 && region.endPos() <= ctx->getSequenceLength(), "Illegal region!", );
+
 
     U2OpStatusImpl os;
     QByteArray seqPart = ctx->getSequenceData(region, os);
@@ -159,10 +164,10 @@ void SecStructDialog::showResults() {
     resultsTable->setRowCount(results.size());
     foreach (const SharedAnnotationData& data, results) {
         U2Region annRegion = data->getRegions().first();
-        QTableWidgetItem* locItem = new QTableWidgetItem(QString("[%1..%2]").arg(annRegion.startPos).arg(annRegion.endPos()));
+        auto locItem = new QTableWidgetItem(QString("[%1..%2]").arg(annRegion.startPos).arg(annRegion.endPos()));
         resultsTable->setItem(rowIndex, 0, locItem);
         SAFE_POINT(data->qualifiers.size() == 1, "Only one qualifier expected!", );
-        QTableWidgetItem* nameItem = new QTableWidgetItem(QString(data->qualifiers.first().value));
+        auto nameItem = new QTableWidgetItem(QString(data->qualifiers.first().value));
         resultsTable->setItem(rowIndex, 1, nameItem);
         ++rowIndex;
     }

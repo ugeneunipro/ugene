@@ -41,6 +41,7 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/SaveDocumentController.h>
 #include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -85,10 +86,11 @@ const QStringList Primer3Dialog::LINE_EDIT_PARAMETERS =
 const QRegularExpression Primer3Dialog::MUST_MATCH_END_REGEX("^([nagctrywsmkbhdvNAGCTRYWSMKBHDV]){5}$");
 const QRegularExpression Primer3Dialog::MUST_MATCH_START_CODON_SEQUENCE_REGEX("^([a-zA-Z]){3}$");
 
-Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
-    : QDialog(context->getAnnotatedDNAView()->getWidget()),
-      context(context),
-      savableWidget(this, GObjectViewUtils::findViewByName(context->getAnnotatedDNAView()->getName()), { "primer3RegionSelector", "primer3AnnWgt" }),
+Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* _context)
+    : QDialog(_context != nullptr ? _context->getAnnotatedDNAView()->getWidget() : nullptr),
+      context(_context),
+      savableWidget(this, GObjectViewUtils::findViewByName(context != nullptr ? context->getAnnotatedDNAView()->getName() : "primer3-no-target-sequence"),
+                    {"primer3RegionSelector", "primer3AnnWgt"}),
       primer3DataDirectory(QFileInfo(QString(PATH_PREFIX_DATA) + ":primer3/").absoluteFilePath().toLatin1()) {
     setupUi(this);
     new HelpButton(this, helpButton, "65930919");
@@ -105,14 +107,15 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
     connect(checkbox_PRIMER_PICK_RIGHT_PRIMER, &QCheckBox::toggled, this, &Primer3Dialog::sl_checkComplementStateChanged);
     connect(pbCsvReportChoosePath, &QPushButton::clicked, this, &Primer3Dialog::sl_ChooseCsvReportPathButtonClicked);
 
-    auto reportPath = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath() + "/report.csv";
+    auto defaultDataDir = AppContext::getAppSettings()->getUserAppsSettings()->getDefaultDataDirPath();
+    auto reportPath = defaultDataDir + "/report.csv";
     reportPath = GUrlUtils::rollFileName(reportPath, "_");
     leCsvReportPath->setText(reportPath);
 
     tabWidget->setCurrentIndex(0);
-    
+    pbCsvReportChoosePath->setFixedWidth(pbCsvReportChoosePath->height());
 
-    {
+    if (context != nullptr) {
         CreateAnnotationModel createAnnotationModel;
         createAnnotationModel.data->name = "top_primers";
         createAnnotationModel.sequenceObjectRef = GObjectReference(context->getSequenceGObject());
@@ -123,14 +126,36 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
         auto annWgt = createAnnotationWidgetController->getWidget();
         annWgt->setObjectName("primer3AnnWgt");
         annotationWidgetLayout->addWidget(annWgt);
-    }
 
-    if (!context->getSequenceSelection()->getSelectedRegions().isEmpty()) {
-        selection = context->getSequenceSelection()->getSelectedRegions().first();
+        if (!context->getSequenceSelection()->getSelectedRegions().isEmpty()) {
+            selection = context->getSequenceSelection()->getSelectedRegions().first();
+        }
+        regionSelector = new RegionSelector(this, context->getSequenceLength(), false, context->getSequenceSelection(), true);
+        regionSelector->setObjectName("primer3RegionSelector");
+        rangeSelectorLayout->addWidget(regionSelector);
+    } else {
+        outputFileLineEdit = new QLineEdit(this);
+        outputFileLineEdit->setObjectName("outputFileLineEdit");
+        auto browseFileButton = new QPushButton("...", this);
+        browseFileButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        browseFileButton->setFixedWidth(browseFileButton->height());
+        auto horizontalLayout = new QHBoxLayout(this);
+        horizontalLayout->addWidget(outputFileLineEdit);
+        horizontalLayout->addWidget(browseFileButton);
+        auto groupLayout = new QFormLayout(this);
+        groupLayout->addRow(tr("Save result to file"), horizontalLayout);
+        annotationWidgetLayout->addLayout(groupLayout);
+
+        SaveDocumentControllerConfig config;
+        config.defaultFileName = defaultDataDir + "/check_primers.gb";
+        config.defaultFormatId = BaseDocumentFormats::PLAIN_GENBANK;
+        config.fileDialogButton = browseFileButton;
+        config.fileNameEdit = outputFileLineEdit;
+        config.parentWidget = this;
+        config.saveTitle = tr("Save to...");
+
+        saveDocumentController = new SaveDocumentController(config, { BaseDocumentFormats::PLAIN_GENBANK }, this);
     }
-    rs = new RegionSelector(this, context->getSequenceLength(), false, context->getSequenceSelection(), true);
-    rs->setObjectName("primer3RegionSelector");
-    rangeSelectorLayout->addWidget(rs);
 
     repeatLibraries.append(QPair<QString, QByteArray>(tr("NONE"), ""));
     repeatLibraries.append(QPair<QString, QByteArray>(tr("HUMAN"), "/humrep_and_simple.txt"));
@@ -164,11 +189,13 @@ Primer3Dialog::Primer3Dialog(ADVSequenceObjectContext* context)
 
     reset();
 
+    updateNoSequenceDialogState();
+
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 }
 
 Primer3Dialog::~Primer3Dialog() {
-    rs->deleteLater();
+    regionSelector->deleteLater();
     createAnnotationWidgetController->deleteLater();
 }
 
@@ -177,11 +204,21 @@ const QSharedPointer<Primer3TaskSettings>& Primer3Dialog::getSettings() {
 }
 
 const CreateAnnotationModel& Primer3Dialog::getCreateAnnotationModel() const {
+    SAFE_POINT(createAnnotationWidgetController != nullptr, L10N::nullPointerError("CreateAnnotationWidgetController"), CreateAnnotationModel());
+
     return createAnnotationWidgetController->getModel();
 }
 
 U2Region Primer3Dialog::getRegion(bool* ok) const {
-    return rs->getRegion(ok);
+    SAFE_POINT(regionSelector != nullptr, L10N::nullPointerError("RegionSelector"), U2Region());
+
+    return regionSelector->getRegion(ok);
+}
+
+QString Primer3Dialog::getResultFileName() const {
+    SAFE_POINT(saveDocumentController != nullptr, L10N::nullPointerError("SaveDocumentController"), QString());
+
+    return saveDocumentController->getSaveFileName();
 }
 
 bool Primer3Dialog::prepareAnnotationObject() {
@@ -645,9 +682,10 @@ bool Primer3Dialog::doDataExchange() {
         widgetStates.insert(edit_SEQUENCE_OVERHANG_RIGHT, true);
     }
 
-    {
+    if (context != nullptr) {
         QVector<int> qualityList;
-        QStringList stringList = edit_SEQUENCE_QUALITY->toPlainText().split(QRegExp("\\s+"), QString::SkipEmptyParts);
+        auto sequenceQual = edit_SEQUENCE_QUALITY->toPlainText();
+        QStringList stringList = sequenceQual.split(QRegExp("\\s+"), QString::SkipEmptyParts);
         bool ok = true;
         for (const QString& string : qAsConst(stringList)) {
             bool isInt = false;
@@ -657,9 +695,12 @@ bool Primer3Dialog::doDataExchange() {
             }
             qualityList.append(value);
         }
-        if (!qualityList.isEmpty() && (qualityList.size() != (rs->getRegion().length))) { // todo add check on wrong region
+        int qualityLength = qualityList.size();
+        int sequenceLength = context->getSequenceLength();
+        if (!qualityList.isEmpty() && (qualityLength != sequenceLength)) { // todo add check on wrong region
             ok = false;
-            errors.append(tr("Sequence quality list length must be equal to the sequence length"));
+            errors.append(tr("Sequence quality list length must be equal to the sequence length. Sequence length = %1, quality list length = %2.")
+                .arg(sequenceLength).arg(qualityLength));
         }
         settings->setSequenceQuality(qualityList);
         widgetStates.insert(edit_SEQUENCE_QUALITY, ok);
@@ -673,23 +714,55 @@ bool Primer3Dialog::doDataExchange() {
     settings->setExplain(checkbox_PRIMER_EXPLAIN_FLAG->isChecked());
 
     settings->setTaskByName(edit_PRIMER_TASK->currentText());
+
+
+    auto setPrimerCheckboxesState = [&widgetStates, this](bool state) {
+        widgetStates.insert(checkbox_PRIMER_PICK_LEFT_PRIMER, state);
+        widgetStates.insert(checkbox_PRIMER_PICK_INTERNAL_OLIGO, state);
+        widgetStates.insert(checkbox_PRIMER_PICK_RIGHT_PRIMER, state);
+    };
+
+    setPrimerCheckboxesState(true);
+    widgetStates.insert(edit_SEQUENCE_PRIMER, widgetStates.value(edit_SEQUENCE_PRIMER));
+    widgetStates.insert(edit_SEQUENCE_INTERNAL_OLIGO, widgetStates.value(edit_SEQUENCE_INTERNAL_OLIGO));
+    widgetStates.insert(edit_SEQUENCE_PRIMER_REVCOMP, widgetStates.value(edit_SEQUENCE_PRIMER_REVCOMP));
+
     switch (settings->getTask()) {
     case pick_discriminative_primers:
         if (settings->getSeqArgs()->tar2.count != 1) {
             widgetStates.insert(edit_SEQUENCE_TARGET, false);
             errors.append(tr("Task \"pick_discriminative_primers\" requires exactly one \"Targets\" region."));
         }
+        break;
     case pick_cloning_primers:
     case generic:
     case pick_sequencing_primers:
     case pick_primer_list:
-    case check_primers:
-        if (!(checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked() ||
-            checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked() ||
-            checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked())) {
-            errors.append(tr("At least one primer on the \"Main\" settings page should be enabled."));
+        break;
+    case check_primers: {
+        bool pickLeftChecked = checkbox_PRIMER_PICK_LEFT_PRIMER->isChecked();
+        bool pickInternalChecked = checkbox_PRIMER_PICK_INTERNAL_OLIGO->isChecked();
+        bool pickRightChecked = checkbox_PRIMER_PICK_RIGHT_PRIMER->isChecked();
+        bool hasLeftPrimer = pickLeftChecked && !edit_SEQUENCE_PRIMER->text().isEmpty();
+        bool hasInternalPrimer = pickInternalChecked && !edit_SEQUENCE_INTERNAL_OLIGO->text().isEmpty();
+        bool hasRightPrimer = pickRightChecked && !edit_SEQUENCE_PRIMER_REVCOMP->text().isEmpty();
+        if (!pickLeftChecked && !pickInternalChecked && !pickRightChecked) {
+            errors.append(tr("At least one primer on the \"Main\" settings page should be enabled - this is required by the \"check_primers\" task."));
+            setPrimerCheckboxesState(false);
+        } else {
+            QString possibleError(tr("The %1 primer on the \"Main\" settings page is enabled, but not set."));
+            auto addError = [&possibleError, &errors, &widgetStates](bool needArror, QLineEdit* lePrimer, QString primerName) {
+                CHECK(needArror, );
+
+                errors.append(possibleError.arg(primerName));
+                widgetStates.insert(lePrimer, false);
+            };
+            addError(pickLeftChecked && !hasLeftPrimer, edit_SEQUENCE_PRIMER, tr("left"));
+            addError(pickInternalChecked && !hasInternalPrimer, edit_SEQUENCE_INTERNAL_OLIGO, tr("internal"));
+            addError(pickRightChecked && !hasRightPrimer, edit_SEQUENCE_PRIMER_REVCOMP, tr("right"));
         }
         break;
+    }
     default:
         FAIL("Invalid Primer3 task", false);
     }
@@ -712,12 +785,12 @@ bool Primer3Dialog::doDataExchange() {
                 errors.append(tr("Primer Size Ranges should have at least one range"));
                 ok = false;
                 alreadyHasError = true;
-            } else {
+            } else if (regionSelector != nullptr) {
                 settings->setProductSizeRange(list);
                 bool isRegionOk = false;
-                U2Region sequenceRangeRegion = rs->getRegion(&isRegionOk);
+                U2Region sequenceRangeRegion = regionSelector->getRegion(&isRegionOk);
                 if (!isRegionOk) {
-                    rs->showErrorMessage();
+                    regionSelector->showErrorMessage();
                     return false;
                 }
                 if (!settings->isIncludedRegionValid(sequenceRangeRegion)) {
@@ -734,27 +807,37 @@ bool Primer3Dialog::doDataExchange() {
             errors.append(getWidgetTemplateError(edit_PRIMER_PRODUCT_SIZE_RANGE));
         }
     }
-    {
-        U2Region sequenceRangeRegion = rs->getRegion();
+
+    if (regionSelector != nullptr) {
+        U2Region sequenceRangeRegion = regionSelector->getRegion();
         bool ok = true;
         if (sequenceRangeRegion.length > MAXIMUM_ALLOWED_SEQUENCE_LENGTH) {
             errors.append(tr("The priming sequence is too long, please, decrease the region"));
             ok = false;
         }
-        widgetStates.insert(rs, ok);
+        widgetStates.insert(regionSelector, ok);
     }
-    {
-        const auto& includedRegion = settings->getIncludedRegion();
-        int fbs = settings->getFirstBaseIndex();
-        int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
-        if (includedRegionOffset < 0) {
-            errors.append(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0"));
-        }
-        U2Region sequenceRangeRegion = rs->getRegion();
+    const auto& includedRegion = settings->getIncludedRegion();
+    int fbs = settings->getFirstBaseIndex();
+    int includedRegionOffset = includedRegion.startPos != 0 ? includedRegion.startPos - fbs : 0;
+    if (includedRegionOffset < 0) {
+        errors.append(tr("Incorrect sum \"Included Region Start + First Base Index\" - should be more or equal than 0"));
+    }
+    if (regionSelector != nullptr) {
+        U2Region sequenceRangeRegion = regionSelector->getRegion();
         if (sequenceRangeRegion.endPos() > context->getSequenceLength() + includedRegionOffset && !context->getSequenceObject()->isCircular()) {
             errors.append(tr("The priming sequence is out of range.\n"
                 "Either make the priming region end \"%1\" less or equal than the sequence size \"%2\" plus the first base index value \"%3\""
                 "or mark the sequence as circular").arg(sequenceRangeRegion.endPos()).arg(context->getSequenceLength()).arg(settings->getFirstBaseIndex()));
+        }
+    }
+    if (saveDocumentController != nullptr) {
+        SAFE_POINT(outputFileLineEdit != nullptr, L10N::nullPointerError("QLineEdit"), false);
+
+        widgetStates.insert(outputFileLineEdit, true);
+        if (saveDocumentController->getSaveFileName().isEmpty()) {
+            widgetStates.insert(outputFileLineEdit, false);
+            errors.append(tr("Result file path is empty. Please, set this value on the \"Result Settings\" tab"));
         }
     }
 
@@ -801,12 +884,12 @@ QString Primer3Dialog::getWidgetTemplateError(QWidget* wgt, const QString& error
 }
 
 void Primer3Dialog::sl_pickClicked() {
-    bool isRegionOk = false;
-    rs->getRegion(&isRegionOk);
-    if (!isRegionOk) {
-        rs->showErrorMessage();
-        return;
+    if (context != nullptr) {
+        bool isRegionOk = false;
+        regionSelector->getRegion(&isRegionOk);
+        CHECK_EXT(isRegionOk, regionSelector->showErrorMessage(), );
     }
+
     if (doDataExchange()) {
         accept();
     }
@@ -837,7 +920,7 @@ void Primer3Dialog::sl_loadSettings() {
 
 void Primer3Dialog::sl_resetClicked() {
     reset();
-    rs->reset();
+    regionSelector->reset();
 }
 
 void Primer3Dialog::sl_taskChanged(const QString& text) {
@@ -853,19 +936,35 @@ void Primer3Dialog::sl_taskChanged(const QString& text) {
         label_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
         edit_SEQUENCE_INCLUDED_REGION->setEnabled(includedRegion);
     };
+    auto setSequencingEnabled = [&](bool enabled) {
+        label_PRIMER_SEQUENCING_SPACING->setEnabled(enabled);
+        edit_PRIMER_SEQUENCING_SPACING->setEnabled(enabled);
+        label_PRIMER_SEQUENCING_INTERVAL->setEnabled(enabled);
+        edit_PRIMER_SEQUENCING_INTERVAL->setEnabled(enabled);
+        label_PRIMER_SEQUENCING_LEAD->setEnabled(enabled);
+        edit_PRIMER_SEQUENCING_LEAD->setEnabled(enabled);
+        label_PRIMER_SEQUENCING_ACCURACY->setEnabled(enabled);
+        edit_PRIMER_SEQUENCING_ACCURACY->setEnabled(enabled);
+    };
 
     if (text == "generic") {
         setSequenceParametersEnabled(true, true, true, true, true);
+        setSequencingEnabled(false);
     } else if (text == "pick_sequencing_primers") {
         setSequenceParametersEnabled(true, false, false, false, false);
+        setSequencingEnabled(true);
     } else if (text == "pick_primer_list") {
         setSequenceParametersEnabled(true, true, true, true, true);
+        setSequencingEnabled(false);
     } else if (text == "check_primers") {
         setSequenceParametersEnabled(false, false, false, false, false);
+        setSequencingEnabled(false);
     } else if (text == "pick_cloning_primers") {
         setSequenceParametersEnabled(false, false, false, false, true);
+        setSequencingEnabled(false);
     } else if (text == "pick_discriminative_primers") {
         setSequenceParametersEnabled(true, false, false, false, false);
+        setSequencingEnabled(false);
     } else {
         FAIL("Unexpected task value", );
     }
@@ -878,11 +977,15 @@ void Primer3Dialog::sl_presetChanged(const QString& text) {
         lbPresetInfo->clear();
     } else if (text == tr("Recombinase Polymerase Amplification")) {
         loadSettings(primer3DataDirectory + "/presets/RPA.txt");
-        gbCheckComplementary->setChecked(true);
-        lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
+        if (context != nullptr) {
+            gbCheckComplementary->setChecked(true);
+            lbPresetInfo->setText(tr("Info: \"Check complementary\" has been enabled (see the \"Posterior Actions\" tab)"));
+        }
     } else {
         FAIL("Unexpected preset", );
     }
+
+    updateNoSequenceDialogState();
 }
 
 void Primer3Dialog::sl_checkComplementStateChanged() {
@@ -914,6 +1017,16 @@ void Primer3Dialog::sl_ChooseCsvReportPathButtonClicked() {
     }
 }
 
+void Primer3Dialog::updateNoSequenceDialogState() {
+    CHECK(context == nullptr, );
+
+    edit_PRIMER_TASK->setCurrentText("check_primers");
+    edit_PRIMER_TASK->setEnabled(false);
+    tabWidget->setTabEnabled(tabWidget->indexOf(tab_spanIntronExon), false);
+    tabWidget->setTabEnabled(tabWidget->indexOf(tab_PosteriorActions), false);
+    checkbox_PRIMER_PICK_ANYWAY->setChecked(true);
+}
+
 void Primer3Dialog::saveSettings(const QString& filePath) {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadWrite | QIODevice::Truncate | QIODevice::Text)) {
@@ -942,7 +1055,7 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
         }
         QDoubleSpinBox* spinBox = findChild<QDoubleSpinBox*>("edit_" + key);
         if (spinBox != nullptr) {
-            stream << key << "=" << spinBox->value() << endl;
+            stream << key << "=" << QString::number(spinBox->value(), 'f', 2) << endl;
         }
     }
 
@@ -954,8 +1067,10 @@ void Primer3Dialog::saveSettings(const QString& filePath) {
     }
 
     U2OpStatusImpl os;
-    stream << "SEQUENCE_TEMPLATE=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
-    stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << endl;
+    if (context != nullptr) {
+        stream << "SEQUENCE_TEMPLATE=" << context->getSequenceObject()->getWholeSequenceData(os) << endl;
+        stream << "SEQUENCE_ID=" << context->getSequenceObject()->getSequenceName() << endl;
+    }
     stream << "SEQUENCE_QUALITY=" << edit_SEQUENCE_QUALITY->toPlainText() << endl;
 
     stream << "PRIMER_TASK=" << edit_PRIMER_TASK->currentText() << endl;

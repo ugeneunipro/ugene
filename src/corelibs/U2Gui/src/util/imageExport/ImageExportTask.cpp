@@ -73,14 +73,14 @@ ImageExportController::ImageExportController(const ExportImageFormatPolicy& fPol
 
 Task* ImageExportController::getTaskInstance(const ImageExportTaskSettings& settings) const {
     if (settings.isSVGFormat()) {
-        SAFE_POINT(isSvgSupported(), tr("SVG format is not supported"), nullptr);
+        SAFE_POINT(isSvgSupported(), "SVG format is not supported", nullptr);
         return getExportToSvgTask(settings);
     }
     if (settings.isPDFFormat()) {
-        SAFE_POINT(isPdfSupported(), tr("PS/PDF format is not supported"), nullptr);
+        SAFE_POINT(isPdfSupported(), "PS/PDF format is not supported", nullptr);
         return getExportToPdfTask(settings);
     }
-    SAFE_POINT(isRasterFormatsEnabled(), tr("Raster formats are disabled"), nullptr);
+    SAFE_POINT(isRasterFormatsEnabled(), "Raster formats are disabled", nullptr);
     return getExportToBitmapTask(settings);
 }
 

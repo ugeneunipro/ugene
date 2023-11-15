@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <multi-test>
-	<plugin_primer_3>
+	<load-document index="doc" url="primer3/primer3_xml/thal_args/sec_str_thal_args_def_vs_user.fa" io="local_file" format="fasta"/>
+	<find-object-by-name index="seq" doc="doc" name="sec_str_thal_args_def_vs_user" type="OT_SEQUENCE"/>
+	<plugin_primer_3 sequence="seq">
 		<plugin_primer_3_in 
 			PRIMER_TM_FORMULA="1" 
 			PRIMER_SALT_CORRECTIONS="1" 
@@ -23,9 +25,7 @@
 			PRIMER_INTERNAL_MIN_SIZE="28" 
 			PRIMER_SALT_MONOVALENT="0.0001" 
 			PRIMER_DNA_CONC="205" 
-			PRIMER_MIN_THREE_PRIME_DISTANCE="4" 
-			SEQUENCE_ID="sec_str_thal_args_def_vs_user" 
-			SEQUENCE_TEMPLATE="CGCTGCTGCGCTCCAAGCTTTACCGCTTCGCCTGCTGGCTTCGCTAAATTGCGGATTGGAAAATTTTGAAATAAGAACCCCTATCGGGCTGTTATCTGATTATGGTTATTTTGACATAGTTGTATCATCTTAAAAACAAGCATACAATCTGCAAATCTTAGACAAAGCAAAACCCCCGCCAAACGCCAATCTGCACGGGGGTTTCGAGAT"/>
+			PRIMER_MIN_THREE_PRIME_DISTANCE="4"/>
 		<plugin_primer_3_out 
 			PRIMER_LEFT_NUM_RETURNED="5" 
 			PRIMER_RIGHT_NUM_RETURNED="5" 

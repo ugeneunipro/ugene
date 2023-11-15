@@ -92,45 +92,44 @@ U2Region RegionSelectorController::getRegion(bool* _ok) const {
     SAFE_POINT_EXT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, *_ok = false, U2Region());
 
     bool ok = false;
-    qint64 v1 = gui.startLineEdit->text().toLongLong(&ok) - 1;
+    qint64 startPosInclusive = gui.startLineEdit->text().toLongLong(&ok) - 1;
 
-    if (!ok || v1 < 0 || v1 > settings.maxLen) {
+    if (!ok || startPosInclusive < 0 || startPosInclusive > settings.maxLen) {
         if (_ok != nullptr) {
             *_ok = false;
         }
-        return U2Region();
+        return {};
     }
 
-    int v2 = gui.endLineEdit->text().toLongLong(&ok);
+    qint64 endPosExlusive = gui.endLineEdit->text().toLongLong(&ok);
 
-    if (!ok || v2 <= 0 || v2 > settings.maxLen) {
+    if (!ok || endPosExlusive <= 0 || endPosExlusive > settings.maxLen) {
         if (_ok != nullptr) {
             *_ok = false;
         }
-        return U2Region();
+        return {};
     }
 
-    if (v1 > v2 && !settings.circular) {  // start > end
+    if (startPosInclusive >= endPosExlusive && !settings.circular) {  // start > end
         if (_ok != nullptr) {
             *_ok = false;
         }
-        return U2Region();
+        return {};
     }
 
     if (_ok != nullptr) {
         *_ok = true;
     }
 
-    if (v1 < v2) {
-        return U2Region(v1, v2 - v1);
-    } else {
-        return U2Region(v1, v2 + settings.maxLen - v1);
+    if (startPosInclusive < endPosExlusive) {
+        return {startPosInclusive, endPosExlusive - startPosInclusive};
     }
+    return {startPosInclusive, endPosExlusive + settings.maxLen - startPosInclusive};
 }
 
 void RegionSelectorController::setRegion(const U2Region& region) {
     CHECK(region != getRegion(), );
-    SAFE_POINT(region.startPos >= 0 && region.startPos < settings.maxLen && region.length <= settings.maxLen, tr("Region is not in sequence range"), );
+    SAFE_POINT(region.startPos >= 0 && region.startPos < settings.maxLen && region.length <= settings.maxLen, "Region is not in sequence range", );
 
     qint64 end = region.endPos();
     if (end > settings.maxLen) {
@@ -148,12 +147,12 @@ void RegionSelectorController::setRegion(const U2Region& region) {
 }
 
 QString RegionSelectorController::getPresetName() const {
-    SAFE_POINT(gui.presetsComboBox != nullptr, tr("Cannot get preset name, ComboBox is NULL"), QString());
+    SAFE_POINT(gui.presetsComboBox != nullptr, "Cannot get preset name, ComboBox is NULL", QString());
     return gui.presetsComboBox->currentText();
 }
 
 void RegionSelectorController::setPreset(const QString& preset) {
-    SAFE_POINT(gui.presetsComboBox != nullptr, tr("Cannot set preset, ComboBox is NULL"), );
+    SAFE_POINT(gui.presetsComboBox != nullptr, "Cannot set preset, ComboBox is NULL", );
     gui.presetsComboBox->setCurrentText(preset);
 }
 
@@ -170,7 +169,7 @@ void RegionSelectorController::removePreset(const QString& preset) {
 }
 
 void RegionSelectorController::reset() {
-    SAFE_POINT(gui.presetsComboBox != nullptr, tr("Cannot set preset, ComboBox is NULL"), );
+    SAFE_POINT(gui.presetsComboBox != nullptr, "Cannot set preset, ComboBox is NULL", );
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);
 }
 
@@ -186,21 +185,18 @@ const QString REGION_IS_INVALID = QApplication::translate("RegionSelectorControl
 
 QString RegionSelectorController::getErrorMessage() const {
     bool ok = false;
-    qint64 v1 = gui.startLineEdit->text().toLongLong(&ok) - 1;
-    if (!ok || v1 < 0 || v1 > settings.maxLen) {
+    qint64 startInclusive = gui.startLineEdit->text().toLongLong(&ok) - 1;
+    if (!ok || startInclusive < 0 || startInclusive > settings.maxLen) {
         return START_IS_INVALID;
     }
-
-    int v2 = gui.endLineEdit->text().toLongLong(&ok);
-    if (!ok || v2 <= 0 || v2 > settings.maxLen) {
+    qint64 endExclusive = gui.endLineEdit->text().toLongLong(&ok);
+    if (!ok || endExclusive <= 0 || endExclusive > settings.maxLen) {
         return END_IS_INVALID;
     }
-
-    if (v1 > v2 && !settings.circular) {  // start > end
+    if (startInclusive >= endExclusive && !settings.circular) {  // start >= end
         return REGION_IS_INVALID;
     }
-
-    return QString();
+    return {};
 }
 
 void RegionSelectorController::sl_onPresetChanged(int index) {
@@ -228,7 +224,7 @@ void RegionSelectorController::sl_regionChanged() {
 }
 
 void RegionSelectorController::sl_onRegionChanged() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
 
     bool ok = false;
 
@@ -275,7 +271,7 @@ void RegionSelectorController::sl_onSelectionChanged(GSelection* selection) {
 }
 
 void RegionSelectorController::sl_onValueEdited() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
 
     if (gui.startLineEdit->text().isEmpty() || gui.endLineEdit->text().isEmpty()) {
         GUIUtils::setWidgetWarningStyle(gui.startLineEdit, gui.startLineEdit->text().isEmpty());
@@ -289,7 +285,7 @@ void RegionSelectorController::sl_onValueEdited() {
 }
 
 void RegionSelectorController::init() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
 
     int w = qMax(((int)log10((double)settings.maxLen)) * 10, 50);
 
@@ -324,7 +320,7 @@ void RegionSelectorController::setupPresets() {
 }
 
 void RegionSelectorController::connectSlots() {
-    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, "Region lineEdit is NULL", );
 
     connect(gui.startLineEdit, SIGNAL(editingFinished()), SLOT(sl_onRegionChanged()));
     connect(gui.startLineEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_onValueEdited()));

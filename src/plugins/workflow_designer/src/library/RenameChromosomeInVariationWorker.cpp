@@ -85,7 +85,7 @@ RenameChomosomeInVariationWorker::RenameChomosomeInVariationWorker(Actor* actor)
 QList<Message> RenameChomosomeInVariationWorker::fetchResult(Task* task, U2OpStatus& os) {
     QList<Message> messages;
     auto renameTask = qobject_cast<RenameChromosomeInVariationFileTask*>(task);
-    SAFE_POINT_EXT(renameTask != nullptr, os.setError(tr("An unexpected task type")), messages);
+    SAFE_POINT_EXT(renameTask != nullptr, os.setError("An unexpected task type"), messages);
 
     const QString resultFileUrl = renameTask->getDstFileUrl();
     monitor()->addOutputFile(resultFileUrl, actor->getId(), false);

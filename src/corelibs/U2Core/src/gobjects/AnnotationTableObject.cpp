@@ -134,7 +134,7 @@ GObject* AnnotationTableObject::clone(const U2DbiRef& ref, U2OpStatus& os, const
     AnnotationGroup* clonedRootGroup = cln->getRootGroup();
     for (const QString& groupPath : qAsConst(subgroupPaths)) {
         AnnotationGroup* originalGroup = rootGroup->getSubgroup(groupPath, false);
-        SAFE_POINT(originalGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
+        SAFE_POINT_NN(originalGroup, nullptr);
 
         AnnotationGroup* clonedGroup = clonedRootGroup->getSubgroup(groupPath, true);
         QList<SharedAnnotationData> groupData;
@@ -164,7 +164,7 @@ QList<Annotation*> AnnotationTableObject::getAnnotationsByName(const QString& na
 namespace {
 
 bool annotationIntersectsRange(const Annotation* a, const U2Region& range, bool contains) {
-    SAFE_POINT(a != nullptr, L10N::nullPointerError("annotation"), false);
+    SAFE_POINT_NN(a, false);
     if (!contains) {
         foreach (const U2Region& r, a->getRegions()) {
             if (r.intersects(range)) {

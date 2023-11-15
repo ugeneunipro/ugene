@@ -76,7 +76,7 @@ CircularViewPlugin::CircularViewPlugin()
     viewCtx->init();
 
     OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
-    SAFE_POINT(opWidgetFactoryRegistry != nullptr, tr("OPWidgetFactoryRegistry is NULL"), );
+    SAFE_POINT(opWidgetFactoryRegistry != nullptr, "OPWidgetFactoryRegistry is NULL", );
     opWidgetFactoryRegistry->registerFactory(new CircularViewSettingsWidgetFactory(qobject_cast<CircularViewContext*>(viewCtx)));
 }
 

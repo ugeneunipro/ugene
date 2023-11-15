@@ -602,57 +602,51 @@ void FindPatternWidget::sl_onActiveSequenceChanged() {
 
 void FindPatternWidget::updateLayout() {
     // Algorithm group
-    if (selectedAlgorithm == FindAlgorithmPatternSettings_Exact) {
-        useAmbiguousBasesBox->setChecked(false);
-        useAmbiguousBasesContainer->hide();
-        useMaxResultLenContainer->hide();
-        boxMaxResultLen->hide();
-        spinMatch->hide();
-        lblMatch->hide();
-    }
-    if (selectedAlgorithm == FindAlgorithmPatternSettings_InsDel) {
-        useAmbiguousBasesBox->setChecked(false);
-        useAmbiguousBasesContainer->hide();
-        useMaxResultLenContainer->hide();
-        boxMaxResultLen->hide();
-        enableDisableMatchSpin();
-        lblMatch->show();
-        spinMatch->show();
-        QWidget::setTabOrder(boxAlgorithm, spinMatch);
-        QWidget::setTabOrder(spinMatch, boxStrand);
-    } else if (selectedAlgorithm == FindAlgorithmPatternSettings_Subst) {
-        useAmbiguousBasesContainer->show();
-        useMaxResultLenContainer->hide();
-        boxMaxResultLen->hide();
-        QWidget::setTabOrder(boxAlgorithm, spinMatch);
-        QWidget::setTabOrder(spinMatch, useAmbiguousBasesBox);
-        enableDisableMatchSpin();
-        lblMatch->show();
-        spinMatch->show();
-        QWidget::setTabOrder(useAmbiguousBasesBox, boxStrand);
-    } else if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        useAmbiguousBasesBox->setChecked(false);
-        useAmbiguousBasesContainer->hide();
-        useMaxResultLenContainer->show();
-        boxMaxResultLen->show();
-        spinMatch->hide();
-        lblMatch->hide();
-        QWidget::setTabOrder(boxAlgorithm, boxUseMaxResultLen);
-        QWidget::setTabOrder(boxUseMaxResultLen, boxMaxResultLen);
+    switch (selectedAlgorithm) {
+        case FindAlgorithmPatternSettings_Exact:
+            useAmbiguousBasesContainer->hide();
+            useMaxResultLenContainer->hide();
+            boxMaxResultLen->hide();
+            spinMatch->hide();
+            lblMatch->hide();
+            break;
+        case FindAlgorithmPatternSettings_InsDel:
+            useAmbiguousBasesContainer->hide();
+            useMaxResultLenContainer->hide();
+            boxMaxResultLen->hide();
+            enableDisableMatchSpin();
+            lblMatch->show();
+            spinMatch->show();
+            QWidget::setTabOrder(boxAlgorithm, spinMatch);
+            QWidget::setTabOrder(spinMatch, boxStrand);
+            break;
+        case FindAlgorithmPatternSettings_Subst:
+            useAmbiguousBasesContainer->show();
+            useMaxResultLenContainer->hide();
+            boxMaxResultLen->hide();
+            QWidget::setTabOrder(boxAlgorithm, spinMatch);
+            QWidget::setTabOrder(spinMatch, useAmbiguousBasesBox);
+            enableDisableMatchSpin();
+            lblMatch->show();
+            spinMatch->show();
+            QWidget::setTabOrder(useAmbiguousBasesBox, boxStrand);
+            break;
+        case FindAlgorithmPatternSettings_RegExp:
+            useAmbiguousBasesContainer->hide();
+            useMaxResultLenContainer->show();
+            boxMaxResultLen->show();
+            spinMatch->hide();
+            lblMatch->hide();
+            QWidget::setTabOrder(boxAlgorithm, boxUseMaxResultLen);
+            QWidget::setTabOrder(boxUseMaxResultLen, boxMaxResultLen);
+            break;
     }
 
     // "Search in" group
-    if (isAminoSequenceSelected) {
-        lblStrand->hide();
-        boxStrand->hide();
-        lblSeqTransl->hide();
-        boxSeqTransl->hide();
-    } else {
-        lblStrand->show();
-        boxStrand->show();
-        lblSeqTransl->show();
-        boxSeqTransl->show();
-    }
+    lblStrand->setHidden(isAminoSequenceSelected);
+    boxStrand->setHidden(isAminoSequenceSelected);
+    lblSeqTransl->setHidden(isAminoSequenceSelected);
+    boxSeqTransl->setHidden(isAminoSequenceSelected);
 }
 
 void FindPatternWidget::setMessageFlag(const MessageFlag& messageFlag, bool show, const QString& additionalMsg) {
@@ -1225,7 +1219,7 @@ void FindPatternWidget::sl_syncSearchRegionWithTrackedSelection() {
 
         if (selectedRegions.size() == 2) {
             U2Region secondReg = selectedRegions.last();
-            SAFE_POINT(annotatedDnaView->getActiveSequenceContext() != nullptr, tr("Sequence in focus is NULL"), );
+            SAFE_POINT(annotatedDnaView->getActiveSequenceContext() != nullptr, "Sequence in focus is NULL", );
             int seqLen = annotatedDnaView->getActiveSequenceContext()->getSequenceLength();
             bool circularSelection = (firstReg.startPos == 0 && secondReg.endPos() == seqLen) || (firstReg.endPos() == seqLen && secondReg.startPos == 0);
             if (circularSelection) {

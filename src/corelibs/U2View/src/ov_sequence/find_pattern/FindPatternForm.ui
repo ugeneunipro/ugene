@@ -60,7 +60,7 @@
          <enum>Qt::StrongFocus</enum>
         </property>
         <property name="plainText">
-         <string>I'm replaced with another widget in code!</string>
+         <string notr="true">I'm replaced with another widget in code!</string>
         </property>
        </widget>
       </item>

@@ -55,7 +55,7 @@ WriteVariationWorker::WriteVariationWorker(Actor* p, const DocumentFormatId& fid
 void WriteVariationWorker::data2doc(Document* doc, const QVariantMap& data) {
     Q_UNUSED(doc);
     Q_UNUSED(data);
-    SAFE_POINT(false, tr("Write variants: internal error"), );
+    SAFE_POINT(false, "Write variants: internal error", );
 }
 
 void WriteVariationWorker::storeEntry(IOAdapter* io, const QVariantMap& data, int entryNum) {

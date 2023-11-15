@@ -420,7 +420,7 @@ void WizardController::setSelectorValue(ElementSelectorWidget* widget, const QVa
 
 void WizardController::registerSelector(ElementSelectorWidget* widget) {
     if (selectors.contains(widget->getActorId())) {
-        WIZARD_SAFE_POINT(false, QObject::tr("Actors selector is already defined: %1").arg(widget->getActorId()), );
+        WIZARD_SAFE_POINT(false, QString("Actors selector is already defined: %1").arg(widget->getActorId()), );
     }
     U2OpStatusImpl os;
     SelectorActors actors(widget, currentActors, os);
@@ -430,12 +430,12 @@ void WizardController::registerSelector(ElementSelectorWidget* widget) {
 
 void WizardController::replaceCurrentActor(const QString& actorId, const QString& selectorValue) {
     if (!selectors.contains(actorId)) {
-        WIZARD_SAFE_POINT(false, QObject::tr("Unknown actors selector: %1").arg(actorId), );
+        WIZARD_SAFE_POINT(false, QString("Unknown actors selector: %1").arg(actorId), );
     }
     Actor* currentA = WorkflowUtils::actorById(currentActors, actorId);
-    WIZARD_SAFE_POINT(currentA != nullptr, QObject::tr("Unknown actor id: %1").arg(actorId), );
+    WIZARD_SAFE_POINT(currentA != nullptr, QString("Unknown actor id: %1").arg(actorId), );
     Actor* newA = selectors[actorId].getActor(selectorValue);
-    WIZARD_SAFE_POINT(newA != nullptr, QObject::tr("Unknown actors selector value id: %1").arg(selectorValue), );
+    WIZARD_SAFE_POINT(newA != nullptr, QString("Unknown actors selector value id: %1").arg(selectorValue), );
 
     int idx = currentActors.indexOf(currentA);
     currentActors.replace(idx, newA);

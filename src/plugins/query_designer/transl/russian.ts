@@ -46,22 +46,6 @@
         <source>...</source>
         <translation>...</translation>
     </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Hint: &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Queries can be created using the Query Designer tool. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;To launch the Query Designer select the&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;&amp;quot;Tools &amp;gt; Query Designer&amp;quot;  &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;item.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Hint: &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;Queries can be created using the Query Designer tool. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;To launch the Query Designer select the&lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-style:italic;&quot;&gt;&amp;quot;Tools &amp;gt; Query Designer&amp;quot;  &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;item.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -86,17 +70,17 @@ p, li { white-space: pre-wrap; }
         <translation>Начало-Начало</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="384"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="383"/>
         <source>Can not find %1.</source>
         <translation>Не удаётся найти %1.</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="398"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="397"/>
         <source>Error loading file.</source>
         <translation>Ошибка загрузки файла.</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="515"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="514"/>
         <source>Error loading schema. Schema does not contain group %1.</source>
         <translation>Ошибка загрузки схемы. Схема не содержит группу %1.</translation>
     </message>
@@ -328,9 +312,19 @@ p, li { white-space: pre-wrap; }
         <translation>Схемы запросов</translation>
     </message>
     <message>
+        <location filename="../src/QDWorker.cpp" line="189"/>
+        <source>Failed to parse QueryDesigner schema from %1</source>
+        <translation>Не удалось разобрать схему QueryDesigner из %1</translation>
+    </message>
+    <message>
         <location filename="../src/QDWorker.cpp" line="195"/>
-        <source>Failed to read QueryDesigner schema from %1</source>
-        <translation type="unfinished"></translation>
+        <source>Failed to convert QueryDesigner documents from %1</source>
+        <translation>Не удалось преобразовать документы QueryDesigner из %1</translation>
+    </message>
+    <message>
+        <location filename="../src/QDWorker.cpp" line="196"/>
+        <source>QueryDesigner is empty: %1</source>
+        <translation>QueryDesigner пуст: %1</translation>
     </message>
 </context>
 <context>
@@ -338,7 +332,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/QDRunDialog.cpp" line="292"/>
         <source>Query Designer preview area.&lt;br&gt;&lt;br&gt;&lt;b&gt;Hint:&lt;/b&gt;&lt;br&gt;Queries can be created by Query Designer tool.&lt;br&gt;To launch Query Designer use &quot;Tools/Query Designer&quot; menu.</source>
-        <translation type="unfinished"></translation>
+        <translation>Область предварительного просмотра Query Designer.&lt;br&gt;&lt;br&gt;&lt;b&gt;Подсказка:&lt;/b&gt;&lt;br&gt;Запросы можно создавать с помощью инструмента Query Designer.&lt;br&gt;Чтобы запустить Query Designer, используйте меню &quot;Инструменты/Query Designer&quot;.</translation>
     </message>
     <message>
         <location filename="../src/QDRunDialog.cpp" line="295"/>
@@ -714,17 +708,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDLoadDocumentTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="132"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="131"/>
         <source>Loading document from %1</source>
         <translation>Загрузка документа из %1</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="136"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="135"/>
         <source>Loading scheme from file: %1</source>
         <translation>Загрузка схемы из файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="149"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="148"/>
         <source>Invalid content: %1</source>
         <translation>Некорректный состав: %1</translation>
     </message>
@@ -740,7 +734,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDLoadSceneTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="69"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="68"/>
         <source>Load query scheme</source>
         <translation>Загрузка схемы</translation>
     </message>
@@ -748,7 +742,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDLoadSchemeTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="102"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="101"/>
         <source>Load query task</source>
         <translation>Загрузка задачи</translation>
     </message>
@@ -815,12 +809,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDSaveSceneTask</name>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="42"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="41"/>
         <source>Save query scheme</source>
         <translation>Сохранить схему</translation>
     </message>
     <message>
-        <location filename="../src/QDSceneIOTasks.cpp" line="53"/>
+        <location filename="../src/QDSceneIOTasks.cpp" line="52"/>
         <source>Saving scheme to file: %1</source>
         <translation>Сохранение схемы в файл: %1</translation>
     </message>

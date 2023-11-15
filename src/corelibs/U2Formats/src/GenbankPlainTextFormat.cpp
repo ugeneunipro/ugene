@@ -536,11 +536,11 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter* io, const QMap<GObjectType, Q
 }
 
 bool GenbankPlainTextFormat::checkCircularity(const GUrl& filePath, U2OpStatus& os) {
-    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, os.setError(tr("There is no IOAdapter registry yet")), false);
+    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, os.setError("There is no IOAdapter registry yet"), false);
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(factory != nullptr, os.setError(tr("IOAdapterFactory is NULL")), false);
+    SAFE_POINT_EXT(factory != nullptr, os.setError("IOAdapterFactory is NULL"), false);
     IOAdapter* io = factory->createIOAdapter();
-    SAFE_POINT_EXT(io != nullptr, os.setError(tr("IOAdapter is NULL")), false);
+    SAFE_POINT_EXT(io != nullptr, os.setError("IOAdapter is NULL"), false);
     io->setFormatMode(IOAdapter::TextMode);
     bool ok = io->open(filePath, IOAdapterMode_Read);
     CHECK_EXT(ok, os.setError(L10N::errorOpeningFileRead(filePath)), false);

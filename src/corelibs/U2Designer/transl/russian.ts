@@ -508,7 +508,6 @@ this merge sequence slot:</source>
     </message>
     <message>
         <location filename="../src/wizard/SelectorActors.cpp" line="42"/>
-        <location filename="../src/wizard/WizardController.cpp" line="436"/>
         <source>Unknown actor id: %1</source>
         <translation>Неизвестный идентификатор: %1</translation>
     </message>
@@ -520,21 +519,6 @@ this merge sequence slot:</source>
         <location filename="../src/wizard/WizardController.cpp" line="470"/>
         <source>Undefined variable: %1</source>
         <translation>Неопределенная переменная: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/WizardController.cpp" line="423"/>
-        <source>Actors selector is already defined: %1</source>
-        <translation>Селектор уже определен: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/WizardController.cpp" line="433"/>
-        <source>Unknown actors selector: %1</source>
-        <translation>Неизвестный селектор: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/wizard/WizardController.cpp" line="438"/>
-        <source>Unknown actors selector value id: %1</source>
-        <translation>Неизвестный идентификатор значения селектора: %1</translation>
     </message>
     <message>
         <location filename="../src/wizard/WizardPageController.cpp" line="83"/>

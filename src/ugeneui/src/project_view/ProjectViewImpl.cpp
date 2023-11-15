@@ -126,7 +126,7 @@ void DocumentUpdater::update() {
     QList<Document*> outdatedDocs;
     QList<Document*> removedDocs;
     foreach (Document* doc, docs2check) {
-        SAFE_POINT(doc != nullptr, tr("Project contains NULL document"), );
+        SAFE_POINT(doc != nullptr, "Project contains NULL document", );
 
         if (!doc->isLoaded()) {
             continue;
@@ -188,8 +188,8 @@ bool DocumentUpdater::isAnyDialogOpened() const {
 namespace {
 
 void removeDocFromProject(Project* proj, Document* doc) {
-    SAFE_POINT(proj != nullptr, L10N::nullPointerError("Project"), );
-    SAFE_POINT(doc != nullptr, L10N::nullPointerError("Document"), );
+    SAFE_POINT_NN(proj, );
+    SAFE_POINT_NN(doc, );
 
     proj->removeRelations(doc->getURLString());
     proj->removeDocument(doc);
@@ -206,7 +206,7 @@ bool DocumentUpdater::makeDecision(Document* doc, QListIterator<Document*>& iter
                                                             QMessageBox::Yes | QMessageBox::No | QMessageBox::NoToAll);
 
     Project* activeProject = AppContext::getProject();
-    SAFE_POINT(activeProject != nullptr, L10N::nullPointerError("Project"), false);
+    SAFE_POINT_NN(activeProject, false);
 
     switch (btn) {
         case QMessageBox::Yes: {
@@ -285,7 +285,7 @@ void DocumentUpdater::notifyUserAndProcessRemovedDocuments(const QList<Document*
         CHECK(!warningBox.isNull(), );
 
         Project* activeProject = AppContext::getProject();
-        SAFE_POINT(activeProject != nullptr, L10N::nullPointerError("Project"), );
+        SAFE_POINT_NN(activeProject, );
         foreach (Document* doc, dbiDocs) {
             removeDocFromProject(activeProject, doc);
         }

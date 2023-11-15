@@ -33,7 +33,7 @@ namespace U2 {
 void PrimerLibraryMdiWindow::showLibrary() {
     GCOUNTER(cvar, "Primer Library");
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
-    SAFE_POINT(mdiManager != nullptr, L10N::nullPointerError("MDI Manager"), );
+    SAFE_POINT_NN(mdiManager, );
 
     static const QString title = tr("Primer Library");
     foreach (MWMDIWindow* mdiWindow, mdiManager->getWindows()) {
@@ -58,7 +58,7 @@ PrimerLibraryMdiWindow::PrimerLibraryMdiWindow(const QString& title)
 
 void PrimerLibraryMdiWindow::sl_closeWindow() {
     MWMDIManager* mdiManager = AppContext::getMainWindow()->getMDIManager();
-    SAFE_POINT(mdiManager != nullptr, L10N::nullPointerError("MDI Manager"), );
+    SAFE_POINT_NN(mdiManager, );
 
     mdiManager->closeMDIWindow(this);
 }

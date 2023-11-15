@@ -119,10 +119,6 @@ p, li { white-space: pre-wrap; }
         <translation>Использовать &quot;best&quot; режим в процессе выравнивания</translation>
     </message>
     <message>
-        <source>Use GPU-optimization</source>
-        <translation type="vanished">Использовать GPU оптимизацию</translation>
-    </message>
-    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="265"/>
         <source>Advanced parameters</source>
         <translation>Дополнительные параметры</translation>
@@ -887,10 +883,6 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
         <location filename="../src/GenomeAlignerWorker.cpp" line="388"/>
         <source>Index</source>
         <translation>Индекс</translation>
-    </message>
-    <message>
-        <source>Use GPU-optimization</source>
-        <translation type="vanished">Использовать GPU оптимизацию</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="91"/>

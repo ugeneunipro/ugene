@@ -26,6 +26,7 @@
 #include <QFontMetrics>
 #include <QGridLayout>
 #include <QPainter>
+#include <QtMath>
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
@@ -367,9 +368,9 @@ CircularViewRenderArea::CircularViewRenderArea(CircularView* d)
       rotationDegree(0),
       mouseAngle(0),
       oldYlevel(0) {
-    SAFE_POINT(d != nullptr, tr("CircularView is NULL"), );
+    SAFE_POINT(d != nullptr, "CircularView is NULL", );
     settings = d->getSettings();
-    SAFE_POINT(settings != nullptr, tr("Circular view settings are NULL"), );
+    SAFE_POINT(settings != nullptr, "Circular view settings are NULL", );
     settingsWereChanged = false;
 
     setMouseTracking(true);
@@ -1126,7 +1127,7 @@ qint64 CircularViewRenderArea::asinToPos(const qreal asin) const {
         graduatedAngle += 360 * CircularView::GRADUATION;
     }
     qint64 seqLength = circularView->getSequenceLength();
-    qint64 resultPosition = (seqLength * graduatedAngle) / CircularView::MAX_GRADUATION_ANGLE + 0.5f;
+    qint64 resultPosition = qFloor((seqLength * graduatedAngle) / CircularView::MAX_GRADUATION_ANGLE);
 
     return resultPosition;
 }

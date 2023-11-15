@@ -903,7 +903,7 @@ void writePhyTree(const PhyTree& pt, IOAdapter* io, U2OpStatus& ti) {
 }
 
 void NEXUSFormat::storeObjects(const QList<GObject*>& objects, bool simpleNames, IOAdapter* io, U2OpStatus& ti) {
-    SAFE_POINT(io != nullptr, L10N::nullPointerError("I/O Adapter"), );
+    SAFE_POINT_NN(io, );
     writeHeader(io, ti);
 
     for (GObject* object : qAsConst(objects)) {

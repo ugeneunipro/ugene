@@ -100,9 +100,9 @@ MultipleSequenceAlignmentObject* MultipleSequenceAlignmentImporter::createAlignm
 }
 
 void MultipleSequenceAlignmentImporter::setChildRankForSequences(const DbiConnection& con, const QList<U2Sequence>& sequences, U2OpStatus& os) {
-    SAFE_POINT(con.dbi != nullptr, L10N::nullPointerError("database connection"), );
+    SAFE_POINT_NN(con.dbi, );
     U2ObjectDbi* objDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(objDbi != nullptr, L10N::nullPointerError("object storage"), );
+    SAFE_POINT_NN(objDbi, );
 
     foreach (const U2Sequence& seq, sequences) {
         objDbi->setObjectRank(seq.id, U2DbiObjectRank_Child, os);

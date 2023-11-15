@@ -46,20 +46,20 @@ MSAImageExportTask::MSAImageExportTask(MaEditorWgt* _ui,
     : ImageExportTask(settings),
       ui(_ui),
       msaSettings(_msaSettings) {
-    SAFE_POINT_EXT(ui != nullptr, setError(tr("MSA Editor UI is NULL")), );
+    SAFE_POINT_EXT(ui != nullptr, setError("MSA Editor UI is NULL"), );
 }
 
 void MSAImageExportTask::paintSequencesNames(QPainter& painter) {
     CHECK(msaSettings.includeSeqNames, );
     MaEditorNameList* namesArea = ui->getEditorNameList();
-    SAFE_POINT_EXT(ui->getEditor() != nullptr, setError(tr("MSA Editor is NULL")), );
+    SAFE_POINT_EXT(ui->getEditor() != nullptr, setError("MSA Editor is NULL"), );
     namesArea->drawNames(painter, msaSettings.seqIdx);
 }
 
 void MSAImageExportTask::paintConsensusAndRuler(QPainter& painter, const U2Region& region) {
     CHECK(msaSettings.includeConsensus || msaSettings.includeRuler, );
     MaEditorConsensusArea* consensusArea = ui->getConsensusArea();
-    SAFE_POINT_EXT(consensusArea != nullptr, setError(tr("MSA Consensus area is NULL")), );
+    SAFE_POINT_EXT(consensusArea != nullptr, setError("MSA Consensus area is NULL"), );
 
     MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
     consensusSettings.visibleElements = MaEditorConsElements();
@@ -201,7 +201,7 @@ void MSAImageExportToSvgTask::run() {
     SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
 
     int ok = msaSettings.exportAll || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
-    SAFE_POINT_EXT(ok, setError(tr("Nothing to export")), );
+    SAFE_POINT_EXT(ok, setError("Nothing to export"), );
 
     // Repeating logic of ExportToBitmap task. TODO: use common code for both tasks.
     if (msaSettings.exportAll) {
@@ -234,7 +234,7 @@ void MSAImageExportToSvgTask::run() {
     int lineHeight = (msaSettings.includeConsensus ? consensusHeight : 0) +
                      (msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(msaSettings.seqIdx));
     qint64 height = lineHeight * multilineRegions.length() + multilineVerticalSpacing * (multilineRegions.length() - 1);
-    SAFE_POINT_EXT(qMax(width, height) < IMAGE_SIZE_LIMIT, setError(tr("The image size is too big.") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
+    SAFE_POINT_EXT(qMax(width, height) < IMAGE_SIZE_LIMIT, setError(QString("The image size is too big.") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 
     generator.setSize(QSize((int)width, (int)height));
     generator.setViewBox(QRect(0, 0, (int)width, (int)height));
@@ -273,7 +273,7 @@ void MSAImageExportToSvgTask::run() {
 MSAImageExportController::MSAImageExportController(MaEditorWgt* ui)
     : ImageExportController(ExportImageFormatPolicy(EnableRasterFormats | SupportSvg)),
       ui(ui) {
-    SAFE_POINT(ui != nullptr, L10N::nullPointerError("MSAEditorUI"), );
+    SAFE_POINT_NN(ui, );
     shortDescription = tr("Alignment");
     initSettingsWidget();
     checkRegionToExport();
@@ -383,7 +383,7 @@ static constexpr qint64 MaxSvgImageSize = 40'000'000;
 
 bool MSAImageExportController::fitsInLimits() const {
     MaEditor* editor = ui->getEditor();
-    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MSAEditor"), false);
+    SAFE_POINT_NN(editor, false);
     qint64 imageWidth = (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length) * editor->getColumnWidth();
     qint64 imageHeight = msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(msaSettings.seqIdx);
     if (imageWidth > IMAGE_SIZE_LIMIT || imageHeight > IMAGE_SIZE_LIMIT) {
@@ -397,7 +397,7 @@ bool MSAImageExportController::fitsInLimits() const {
 
 bool MSAImageExportController::canExportToSvg() const {
     MaEditor* editor = ui->getEditor();
-    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MSAEditor"), false);
+    SAFE_POINT_NN(editor, false);
     qint64 charactersNumber = msaSettings.exportAll ? (editor->getNumSequences() * editor->getAlignmentLen()) : (msaSettings.region.length * msaSettings.seqIdx.size());
     return charactersNumber < MaxSvgCharacters;
 }

@@ -45,7 +45,7 @@ MaGraphCalculationTask::MaGraphCalculationTask(MultipleAlignmentObject* maObject
       seqNumber(0),
       width(width),
       height(height) {
-    SAFE_POINT_EXT(maObject != nullptr, setError(tr("MSA is NULL")), );
+    SAFE_POINT_EXT(maObject != nullptr, setError("MSA is NULL"), );
     msaLength = maObject->getLength();
     seqNumber = maObject->getRowCount();
     if (!memLocker.tryAcquire(maObject->getMultipleAlignment()->getLength() * maObject->getMultipleAlignment()->getRowCount())) {
@@ -66,7 +66,7 @@ void MaGraphCalculationTask::run() {
 }
 
 void MaGraphCalculationTask::constructPolygon(QPolygonF& polygon) {
-    SAFE_POINT_EXT(width != 0, setError(tr("Overview width is zero")), );
+    SAFE_POINT_EXT(width != 0, setError("Overview width is zero"), );
     stateInfo.setProgress(0);
     emit si_progressChanged();
 
@@ -129,12 +129,12 @@ MaConsensusOverviewCalculationTask::MaConsensusOverviewCalculationTask(MultipleA
                                                                        int width,
                                                                        int height)
     : MaGraphCalculationTask(msa, width, height) {
-    SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError(tr("MSAConsensusAlgorithmRegistry is NULL!")), );
+    SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError("MSAConsensusAlgorithmRegistry is NULL!"), );
 
     MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::STRICT_ALGO);
-    SAFE_POINT_EXT(factory != nullptr, setError(tr("Strict consensus algorithm factory is NULL")), );
+    SAFE_POINT_EXT(factory != nullptr, setError("Strict consensus algorithm factory is NULL"), );
 
-    SAFE_POINT_EXT(msa != nullptr, setError(tr("MSA is NULL")), );
+    SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
     algorithm = factory->createAlgorithm(msa->getMultipleAlignment());
     algorithm->setParent(this);
 }
@@ -166,12 +166,12 @@ int MaGapOverviewCalculationTask::getGraphValue(int pos) const {
 
 MaClustalOverviewCalculationTask::MaClustalOverviewCalculationTask(MultipleAlignmentObject* msa, int width, int height)
     : MaGraphCalculationTask(msa, width, height) {
-    SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError(tr("MSAConsensusAlgorithmRegistry is NULL!")), );
+    SAFE_POINT_EXT(AppContext::getMSAConsensusAlgorithmRegistry() != nullptr, setError("MSAConsensusAlgorithmRegistry is NULL!"), );
 
     MSAConsensusAlgorithmFactory* factory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO);
-    SAFE_POINT_EXT(factory != nullptr, setError(tr("Clustal algorithm factory is NULL")), );
+    SAFE_POINT_EXT(factory != nullptr, setError("Clustal algorithm factory is NULL"), );
 
-    SAFE_POINT_EXT(msa != nullptr, setError(tr("MSA is NULL")), );
+    SAFE_POINT_EXT(msa != nullptr, setError("MSA is NULL"), );
     algorithm = factory->createAlgorithm(ma);
     algorithm->setParent(this);
 }
@@ -200,7 +200,7 @@ MaHighlightingOverviewCalculationTask::MaHighlightingOverviewCalculationTask(MaE
     SAFE_POINT_EXT(AppContext::getMsaHighlightingSchemeRegistry() != nullptr,
                    setError(tr("MSA highlighting scheme registry is NULL")), );
     MsaHighlightingSchemeFactory* f_hs = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(highlightingSchemeId);
-    SAFE_POINT_EXT(f_hs != nullptr, setError(tr("MSA highlighting scheme factory with '%1' id is NULL").arg(highlightingSchemeId)), );
+    SAFE_POINT_EXT(f_hs != nullptr, setError(QString("MSA highlighting scheme factory with '%1' id is NULL").arg(highlightingSchemeId)), );
 
     highlightingScheme = f_hs->create(this, editor->getMaObject());
     schemeId = f_hs->getId();
@@ -213,9 +213,9 @@ MaHighlightingOverviewCalculationTask::MaHighlightingOverviewCalculationTask(MaE
 }
 
 bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlignment& ma, MsaHighlightingScheme* highlightingScheme, MsaColorScheme* colorScheme, int seq, int pos, int refSeq) {
-    SAFE_POINT(colorScheme != nullptr, tr("Color scheme is NULL"), false);
-    SAFE_POINT(highlightingScheme != nullptr, tr("Highlighting scheme is NULL"), false);
-    SAFE_POINT(highlightingScheme->getFactory() != nullptr, tr("Highlighting scheme factory is NULL"), false);
+    SAFE_POINT(colorScheme != nullptr, "Color scheme is NULL", false);
+    SAFE_POINT(highlightingScheme != nullptr, "Highlighting scheme is NULL", false);
+    SAFE_POINT(highlightingScheme->getFactory() != nullptr, "Highlighting scheme factory is NULL", false);
     QString schemeId = highlightingScheme->getFactory()->getId();
 
     if (seq == refSeq || isEmptyScheme(schemeId) ||
