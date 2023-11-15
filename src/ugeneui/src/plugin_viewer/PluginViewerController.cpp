@@ -275,15 +275,13 @@ void PluginViewerController::updateState() {
 }
 
 void PluginViewerController::sl_treeCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous) {
-    Q_UNUSED(current);
-    Q_UNUSED(previous);
     if (current == previous) {
         return;
     }
     ui.showLicenseButton->setEnabled(true);
-    auto curentItem = dynamic_cast<PlugViewPluginItem*>(current);
-    if (!curentItem->plugin->isFree()) {
-        if (curentItem->plugin->isLicenseAccepted()) {
+    auto currentItem = dynamic_cast<PlugViewPluginItem*>(current);
+    if (!currentItem->plugin->isFree()) {
+        if (currentItem->plugin->isLicenseAccepted()) {
             hideLicense();
         } else {
             showLicense();
@@ -305,6 +303,7 @@ void PluginViewerController::sl_acceptLicense() {
     auto currentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
     showLicense();
     AppContext::getPluginSupport()->setLicenseAccepted(currentItem->plugin);
+    hideLicense();
 }
 
 void PluginViewerController::showLicense() const {
@@ -312,15 +311,7 @@ void PluginViewerController::showLicense() const {
     ui.licenseView->show();
     ui.licenseLabel->show();
     auto currentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
-    if (currentItem && !currentItem->plugin->isFree()) {
-        if (!currentItem->plugin->isLicenseAccepted()) {
-            ui.acceptLicenseButton->show();
-        } else {
-            ui.acceptLicenseButton->hide();
-        }
-    } else {
-        ui.acceptLicenseButton->hide();
-    }
+    ui.acceptLicenseButton->setHidden(!currentItem || currentItem->plugin->isFree() || currentItem->plugin->isLicenseAccepted());
 
     // Opening the license file.
     QFile licenseFile(currentItem->plugin->getLicensePath().getURLString());
