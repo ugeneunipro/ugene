@@ -21,6 +21,7 @@
 
 #include "SendSelectionDialog.h"
 
+#include <QListWidget>
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -45,6 +46,7 @@ namespace U2 {
 #define SHORT_SETTINGS QString("short")
 #define EXPECT_SETTINGS QString("espect_value")
 #define HITS_SETTINGS QString("max_hits")
+#define HITS_PAIRS_SETTINGS QString("max_hits_pairs")
 #define LOW_COMPLEX_SETTINGS QString("low_complexity_filter")
 #define REPEATS_SETTINGS QString("human_repeats_filter")
 #define LOOKUP_SETTINGS QString("lookup_mask")
@@ -56,7 +58,11 @@ void SendSelectionDialog::setUpSettings() {
     Settings* s = AppContext::getSettings();
     shortSequenceCheckBox->setChecked(s->getValue(SETTINGS_ROOT + SHORT_SETTINGS, false).toBool());
     evalueSpinBox->setValue(s->getValue(SETTINGS_ROOT + EXPECT_SETTINGS, 10).toDouble());
-    quantitySpinBox->setValue(s->getValue(SETTINGS_ROOT + HITS_SETTINGS, 20).toInt());
+    if (annWgtController != nullptr) {
+        quantitySpinBox->setValue(s->getValue(SETTINGS_ROOT + HITS_SETTINGS, 20).toInt());
+    } else {
+        quantitySpinBox->setValue(s->getValue(SETTINGS_ROOT + HITS_PAIRS_SETTINGS, 200).toInt());
+    }
     lowComplexityFilterCheckBox->setChecked(s->getValue(SETTINGS_ROOT + LOW_COMPLEX_SETTINGS, true).toBool());
     repeatsCheckBox->setChecked(s->getValue(SETTINGS_ROOT + REPEATS_SETTINGS, false).toBool());
     lookupMaskCheckBox->setChecked(s->getValue(SETTINGS_ROOT + LOOKUP_SETTINGS, false).toBool());
@@ -70,7 +76,11 @@ void SendSelectionDialog::saveSettings() {
     Settings* s = AppContext::getSettings();
     s->setValue(SETTINGS_ROOT + SHORT_SETTINGS, shortSequenceCheckBox->isChecked());
     s->setValue(SETTINGS_ROOT + EXPECT_SETTINGS, evalueSpinBox->value());
-    s->setValue(SETTINGS_ROOT + HITS_SETTINGS, quantitySpinBox->value());
+    if (annWgtController != nullptr) {
+        s->setValue(SETTINGS_ROOT + HITS_SETTINGS, quantitySpinBox->value());
+    } else {
+        s->setValue(SETTINGS_ROOT + HITS_PAIRS_SETTINGS, quantitySpinBox->value());
+    }
     s->setValue(SETTINGS_ROOT + LOW_COMPLEX_SETTINGS, lowComplexityFilterCheckBox->isChecked());
     s->setValue(SETTINGS_ROOT + REPEATS_SETTINGS, repeatsCheckBox->isChecked());
     s->setValue(SETTINGS_ROOT + LOOKUP_SETTINGS, lookupMaskCheckBox->isChecked());
@@ -129,26 +139,40 @@ void SendSelectionDialog::alignComboBoxes() {
     }
 }
 
-SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool _isAminoSeq, QWidget* p)
-    : QDialog(p), translateToAmino(false), isAminoSeq(_isAminoSeq), extImported(false), seqCtx(seqCtx) {
-    U2SequenceObject* dnaso = seqCtx->getSequenceObject();
-    CreateAnnotationModel ca_m;
-    ca_m.hideAnnotationType = true;
-    ca_m.hideAnnotationName = true;
-    ca_m.hideLocation = true;
-    ca_m.sequenceObjectRef = GObjectReference(dnaso);
-    ca_m.sequenceLen = dnaso->getSequenceLength();
-    ca_c = new CreateAnnotationWidgetController(ca_m, this);
+SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* _seqCtx, bool _isAminoSeq, const QStringList& selectedPrimerPairNames, QWidget* parent)
+    : QDialog(parent), isAminoSeq(_isAminoSeq), seqCtx(_seqCtx) {
     setupUi(this);
+
+    if (selectedPrimerPairNames.isEmpty()) {
+        U2SequenceObject* dnaso = seqCtx->getSequenceObject();
+        CreateAnnotationModel createAnnotationModel;
+        createAnnotationModel.hideAnnotationType = true;
+        createAnnotationModel.hideAnnotationName = true;
+        createAnnotationModel.hideLocation = true;
+        createAnnotationModel.sequenceObjectRef = GObjectReference(dnaso);
+        createAnnotationModel.sequenceLen = dnaso->getSequenceLength();
+        annWgtController = new CreateAnnotationWidgetController(createAnnotationModel, this);
+
+        optionsTab->setCurrentIndex(0);
+        layoutAnnotations->addWidget(annWgtController->getWidget());
+    } else {
+        auto label = new QLabel(tr("The following primer pairs will be BLASTed:"), this);
+        // This listwidget shows grou names of all fit primer pairs
+        auto listWidget = new QListWidget(this);
+        listWidget->addItems(selectedPrimerPairNames);
+        layoutAnnotations->addWidget(label);
+        layoutAnnotations->addWidget(listWidget);
+
+        lblQuantity->setText(tr("One primer result limit:"));
+        quantitySpinBox->setValue(200);
+        QString tooltip = tr("The maximum number of results received for each primer");
+        lblQuantity->setToolTip(tooltip);
+        quantitySpinBox->setToolTip(tooltip);
+    }
+
     new HelpButton(this, buttonBox, "65930710");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
-    optionsTab->setCurrentIndex(0);
-    int idx = 2;
-    QWidget* wdgt;
-    wdgt = ca_c->getWidget();
-    layoutAnnotations->insertWidget(idx, wdgt);
 
     matrixComboBox->addItems(ParametersLists::blastp_matrix);
 
@@ -165,6 +189,9 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool 
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_Cancel()));
     connect(megablastCheckBox, SIGNAL(stateChanged(int)), SLOT(sl_megablastChecked(int)));
     connect(serviceComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_serviceChanged(int)));
+    // I would like to check megablast as default in case of primer pair BLASTing,
+    // because it works extremely faster than regular BLAST does.
+    megablastCheckBox->setChecked(annWgtController == nullptr);
     sl_scriptSelected(0);
 }
 
@@ -190,23 +217,23 @@ void SendSelectionDialog::sl_megablastChecked(int state) {
 }
 
 QString SendSelectionDialog::getGroupName() const {
-    return ca_c->getModel().groupName;
+    return annWgtController->getModel().groupName;
 }
 
 const QString& SendSelectionDialog::getAnnotationDescription() const {
-    return ca_c->getModel().description;
+    return annWgtController->getModel().description;
 }
 
 const CreateAnnotationModel* SendSelectionDialog::getModel() const {
-    return &(ca_c->getModel());
+    return &(annWgtController->getModel());
 }
 
 AnnotationTableObject* SendSelectionDialog::getAnnotationObject() const {
-    return ca_c->getModel().getAnnotationObject();
+    return annWgtController->getModel().getAnnotationObject();
 }
 
 QString SendSelectionDialog::getUrl() const {
-    return ca_c->getModel().newDocUrl;
+    return annWgtController->getModel().newDocUrl;
 }
 
 void SendSelectionDialog::setupDataBaseList() {
@@ -292,33 +319,32 @@ void SendSelectionDialog::sl_scriptSelected(int index) {
 }
 
 void SendSelectionDialog::sl_OK() {
-    QString error = ca_c->validate();
-    if (!error.isEmpty()) {
-        QMessageBox::critical(nullptr, tr("Error"), error);
-        return;
+    if (annWgtController != nullptr) {
+        QString error = annWgtController->validate();
+        CHECK_EXT(error.isEmpty(), QMessageBox::critical(nullptr, tr("Error"), error), );
     }
-    retries = retrySpinBox->value();
-    db = dataBase->currentText();
-    if (db != "cdd") {
-        requestParameters = "CMD=Put";
-        addParametr(requestParameters, ReqParams::program, db);
+
+    cfg.dbChoosen = dataBase->currentText();
+    if (cfg.dbChoosen != "cdd") {
+        cfg.params = "CMD=Put";
+        addParametr(cfg.params, ReqParams::program, cfg.dbChoosen);
 
         double eValue = evalueSpinBox->value();
         if (shortSequenceCheckBox->isChecked())
             eValue = 1000;
-        addParametr(requestParameters, ReqParams::expect, eValue);
+        addParametr(cfg.params, ReqParams::expect, eValue);
 
         if (false == entrezQueryEdit->text().isEmpty())
-            addParametr(requestParameters, ReqParams::entrezQuery, entrezQueryEdit->text());
+            addParametr(cfg.params, ReqParams::entrezQuery, entrezQueryEdit->text());
 
         int maxHit = quantitySpinBox->value();
-        addParametr(requestParameters, ReqParams::hits, maxHit);
+        addParametr(cfg.params, ReqParams::hits, maxHit);
 
         if (megablastCheckBox->isChecked()) {
-            addParametr(requestParameters, ReqParams::megablast, "true");
+            addParametr(cfg.params, ReqParams::megablast, "true");
         }
 
-        addParametr(requestParameters, ReqParams::database, dbComboBox->currentText().split(" ").last());
+        addParametr(cfg.params, ReqParams::database, dbComboBox->currentText().split(" ").last());
 
         QString filter = "";
         if (lowComplexityFilterCheckBox->isChecked() && !shortSequenceCheckBox->isChecked()) {
@@ -331,51 +357,51 @@ void SendSelectionDialog::sl_OK() {
             filter.append("m");
         }
         if (!filter.isEmpty()) {
-            addParametr(requestParameters, ReqParams::filter, filter);
+            addParametr(cfg.params, ReqParams::filter, filter);
         }
 
-        addParametr(requestParameters, ReqParams::gapCost, costsComboBox->currentText());
-        if (db == "blastn") {
-            addParametr(requestParameters, ReqParams::matchScore, scoresComboBox->currentText().split(" ").first());
-            addParametr(requestParameters, ReqParams::mismatchScore, scoresComboBox->currentText().split(" ").last());
+        addParametr(cfg.params, ReqParams::gapCost, costsComboBox->currentText());
+        if (cfg.dbChoosen == "blastn") {
+            addParametr(cfg.params, ReqParams::matchScore, scoresComboBox->currentText().split(" ").first());
+            addParametr(cfg.params, ReqParams::mismatchScore, scoresComboBox->currentText().split(" ").last());
         }
 
         if (shortSequenceCheckBox->isChecked()) {
             QString wordSize = wordSizeComboBox->currentText().toInt() > 7 ? "7" : wordSizeComboBox->currentText();
-            addParametr(requestParameters, ReqParams::wordSize, wordSize);
+            addParametr(cfg.params, ReqParams::wordSize, wordSize);
         } else {
-            addParametr(requestParameters, ReqParams::wordSize, wordSizeComboBox->currentText());
+            addParametr(cfg.params, ReqParams::wordSize, wordSizeComboBox->currentText());
         }
 
         if (lowerCaseCheckBox->isChecked()) {
-            addParametr(requestParameters, ReqParams::lowCaseMask, "yes");
+            addParametr(cfg.params, ReqParams::lowCaseMask, "yes");
         }
 
-        if (db == "blastp") {
+        if (cfg.dbChoosen == "blastp") {
             if (!isAminoSeq) {
                 translateToAmino = true;
             }
 
-            addParametr(requestParameters, ReqParams::matrix, matrixComboBox->currentText());
-            addParametr(requestParameters, ReqParams::service, serviceComboBox->currentText());
+            addParametr(cfg.params, ReqParams::matrix, matrixComboBox->currentText());
+            addParametr(cfg.params, ReqParams::service, serviceComboBox->currentText());
             if (serviceComboBox->currentText() == "phi") {
-                addParametr(requestParameters, ReqParams::phiPattern, phiPatternEdit->text());
+                addParametr(cfg.params, ReqParams::phiPattern, phiPatternEdit->text());
             }
         }
     }
 
     else {  // CDD
-        requestParameters = "CMD=Put";
-        db = "blastp";
-        addParametr(requestParameters, ReqParams::program, db);
+        cfg.params = "CMD=Put";
+        cfg.dbChoosen = "blastp";
+        addParametr(cfg.params, ReqParams::program, cfg.dbChoosen);
 
-        addParametr(requestParameters, ReqParams::expect, evalueSpinBox->value());
+        addParametr(cfg.params, ReqParams::expect, evalueSpinBox->value());
 
-        addParametr(requestParameters, ReqParams::hits, quantitySpinBox->value());
+        addParametr(cfg.params, ReqParams::hits, quantitySpinBox->value());
 
         QString dbName = dbComboBox->currentText().split(" ").last();
-        addParametr(requestParameters, ReqParams::database, dbName.toLower());
-        addParametr(requestParameters, ReqParams::service, "rpsblast");
+        addParametr(cfg.params, ReqParams::database, dbName.toLower());
+        addParametr(cfg.params, ReqParams::service, "rpsblast");
     }
 
     if (translateToAmino) {
@@ -400,16 +426,16 @@ void SendSelectionDialog::sl_OK() {
     cfg.filterResult = filterResults;
     cfg.useEval = evalueRadioButton->isChecked();
     cfg.retries = retrySpinBox->value();
-    cfg.params = requestParameters;
-    cfg.dbChoosen = db;
 
     saveSettings();
-    bool objectPrepared = ca_c->prepareAnnotationObject();
-    if (!objectPrepared) {
-        QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
-        return;
+    if (annWgtController != nullptr) {
+        bool objectPrepared = annWgtController->prepareAnnotationObject();
+        if (!objectPrepared) {
+            QMessageBox::warning(this, tr("Error"), tr("Cannot create an annotation object. Please check settings"));
+            return;
+        }
+        seqCtx->getAnnotatedDNAView()->tryAddObject(annWgtController->getModel().getAnnotationObject());
     }
-    seqCtx->getAnnotatedDNAView()->tryAddObject(ca_c->getModel().getAnnotationObject());
     accept();
 }
 
