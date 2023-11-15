@@ -92,7 +92,7 @@ void PluginViewerController::connectStaticActions() {
     MainWindow* mw = AppContext::getMainWindow();
     QMenu* pluginsMenu = mw->getTopLevelMenu(MWMENU_SETTINGS);
 
-    QAction* viewPluginsAction = new QAction(QIcon(":ugene/images/plugins.png"), tr("Plugins..."), this);
+    auto viewPluginsAction = new QAction(QIcon(":ugene/images/plugins.png"), tr("Plugins..."), this);
     connect(viewPluginsAction, SIGNAL(triggered()), SLOT(sl_show()));
     viewPluginsAction->setObjectName(ACTION__PLUGINS_VIEW);
     pluginsMenu->addAction(viewPluginsAction);
@@ -139,7 +139,7 @@ void PluginViewerController::buildItems() const {
     const QList<Plugin*>& plugins = AppContext::getPluginSupport()->getPlugins();
     foreach (Plugin* p, plugins) {
         QTreeWidget* treeWidget = ui.treeWidget;
-        PlugViewPluginItem* pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
+        auto pluginItem = new PlugViewPluginItem(nullptr, p, showServices);
         if (showServices) {
             QList<Service*> services = p->getServices();
             // this method is called for default state init also -> look for registered plugin services
@@ -302,12 +302,12 @@ void PluginViewerController::sl_showHideLicense() {
     }
 }
 void PluginViewerController::sl_acceptLicense() {
-    auto curentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
+    auto currentItem = dynamic_cast<PlugViewPluginItem*>(ui.treeWidget->currentItem());
     showLicense();
-    AppContext::getPluginSupport()->setLicenseAccepted(curentItem->plugin);
+    AppContext::getPluginSupport()->setLicenseAccepted(currentItem->plugin);
 }
 
-void PluginViewerController::showLicense() {
+void PluginViewerController::showLicense() const {
     ui.showLicenseButton->setText(tr("Hide License"));
     ui.licenseView->show();
     ui.licenseLabel->show();
@@ -322,7 +322,7 @@ void PluginViewerController::showLicense() {
         ui.acceptLicenseButton->hide();
     }
 
-    // Opening license file
+    // Opening the license file.
     QFile licenseFile(currentItem->plugin->getLicensePath().getURLString());
     if (!licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         ui.licenseView->setText(tr("License file not found."));
@@ -331,7 +331,8 @@ void PluginViewerController::showLicense() {
         licenseFile.close();
     }
 }
-void PluginViewerController::hideLicense() {
+
+void PluginViewerController::hideLicense() const {
     ui.showLicenseButton->setText(tr("Show License"));
     ui.licenseView->hide();
     ui.licenseLabel->hide();

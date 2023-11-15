@@ -62,8 +62,8 @@ private:
     void createWindow();
     void updateActions();
     void updateState();
-    void showLicense();
-    void hideLicense();
+    void showLicense() const;
+    void hideLicense() const;
 
     PlugViewServiceItem* findServiceItem(Service* s) const;
     PlugViewServiceItem* getCurrentServiceItem() const;
