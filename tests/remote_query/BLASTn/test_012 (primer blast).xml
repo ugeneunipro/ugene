@@ -1,0 +1,26 @@
+<multi-test>
+
+	<load-document index="doc" url="primer_blast/murine_primer_pair.gb" io="local_file" format="genbank"/>
+
+	<find-object-by-name index="seq" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
+
+	<find-object-by-name index="ann" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_remote-query sequence_object="seq"
+	                     annotations_object="ann"
+	                     alg="blastn"
+	                     db="nr"
+	                     e-value="10"
+	                     word_size="11"
+	                     short_seq="0"
+	                     gap_costs="5 2"
+	                     alph="nucleo"
+	                     match_scores="2 -3"
+	                     max_length="2048"
+	                     min_length="0"
+	                     megablast="true"
+	                     hits="200"
+						 filters="L"
+	                     expected_results="NC_001502,V01185,AF033813,AF011892,M96854,J02266,NC_001499,AY277735,AY277734,AY277733,AF455027,V01178,V01541,AF462057,AF033812,NC_001501,Z93724,K01683,M12997,J02254,J02255,L06433,X60280"/>
+
+</multi-test>

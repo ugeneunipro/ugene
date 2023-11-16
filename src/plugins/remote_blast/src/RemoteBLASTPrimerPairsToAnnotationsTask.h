@@ -30,19 +30,19 @@
 namespace U2 {
 
 class Annotation;
-class ADVSequenceObjectContext;
 class RemoteBLASTPrimerPairToAnnotationsTask;
+class U2SequenceObject;
 
 class RemoteBLASTPrimerPairsToAnnotationsTask : public Task {
 public:
-    RemoteBLASTPrimerPairsToAnnotationsTask(const QPointer<ADVSequenceObjectContext>& ctx,
+    RemoteBLASTPrimerPairsToAnnotationsTask(const QPointer<U2SequenceObject>& seqObj,
                                             const QList<QPair<Annotation*, Annotation*>>& primerAnnotationPairs,
                                             const RemoteBLASTTaskSettings& cfg);
 
     void prepare() override;
 
 private:
-    QPointer<ADVSequenceObjectContext> ctx;
+    QPointer<U2SequenceObject> seqObj;
     QList<QPair<Annotation*, Annotation*>> primerAnnotationPairs;
     RemoteBLASTTaskSettings cfg;
 

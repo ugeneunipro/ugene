@@ -22,9 +22,10 @@
 #include "RemoteBLASTPrimerPairToAnnotationsTask.h"
 
 #include <U2Core/CreateAnnotationTask.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
-
-#include <U2View/ADVSequenceObjectContext.h>
+#include <U2Core/L10n.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <QPointer>
 
@@ -33,13 +34,14 @@ namespace U2 {
 static const QStringList COMMON_QUALIFIERS = {"id", "def", "accession", "hit_len"};
 
 RemoteBLASTPrimerPairToAnnotationsTask::RemoteBLASTPrimerPairToAnnotationsTask(const QString& _pairName,
-                                                                               const QPointer<ADVSequenceObjectContext>& _ctx,
+                                                                               const QPointer<U2SequenceObject>& _seqObj,
+                                                                               const QPointer<AnnotationTableObject>& _ato,
                                                                                const SharedAnnotationData& _leftPrimer,
                                                                                const SharedAnnotationData& _rightPrimer,
                                                                                const RemoteBLASTTaskSettings& _cfg,
                                                                                const QString& _groupPath)
     : Task(tr("BLAST primer pair \"%1\"").arg(_pairName), TaskFlags_NR_FOSE_COSC),
-      pairName(_pairName), ctx(_ctx), leftPrimer(_leftPrimer), rightPrimer(_rightPrimer), cfg(_cfg), groupPath(_groupPath) {
+    pairName(_pairName), seqObj(_seqObj), ato(_ato), leftPrimer(_leftPrimer), rightPrimer(_rightPrimer), cfg(_cfg), groupPath(_groupPath) {
     // We should not run more than one BLAST request per time,
     // because multiple requests looks very suspicious and BLAST could block them all
     setMaxParallelSubtasks(1);
@@ -87,6 +89,10 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
             annotationData->location->regions = U2Region::join(allRegions);
             annotationData->location->op = U2LocationOperator::U2LocationOperator_Join;
 
+            if (leftRes->name == "CP031776" && rightRes->name == "CP031776") {
+                int qwe = 0;
+            }
+
             qint64 leftFrom = 0;
             qint64 leftTo = 0;
             qint64 rightFrom = 0;
@@ -122,33 +128,11 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
     }
 
     CHECK_EXT(!resultAnnotations.isEmpty(), stateInfo.addWarning(tr("No BLAST pairs have been found for  \"%1\"").arg(pairName)), {});
-    CHECK_EXT(!ctx.isNull(), setError(tr("Sequence is not found, it has, probably, been closed")), {});
-
-    auto annotationTableObjects = ctx->getAnnotationObjects();
-    AnnotationTableObject* annotationTableObject = nullptr;
-    for (auto ato : qAsConst(annotationTableObjects)) {
-        auto currentAtoAnnotations = ato->getAnnotations();
-        bool leftFound = false;
-        bool rightFound = false;
-        for (auto ann : qAsConst(currentAtoAnnotations)) {
-            if (*ann->getData() == *leftPrimer) {
-                leftFound = true;
-            } else if (*ann->getData() == *rightPrimer) {
-                rightFound = true;
-            }
-            CHECK_BREAK(!leftFound || !rightFound);
-        }
-        CHECK_CONTINUE(leftFound && rightFound);
-
-        annotationTableObject = ato;
-        break;
-    }
-    CHECK_EXT(annotationTableObject != nullptr,
-              setError(tr("Annotation Table with left and right primer selected has not been found, probably, it has been removed")), {});
+    CHECK_EXT(!ato.isNull(), L10N::nullPointerError("AnnotationTableObject"), {});
 
     QMap<QString, QList<SharedAnnotationData>> resultAnnotationsMap;
     resultAnnotationsMap.insert(groupPath, resultAnnotations);
-    createAnnotationsTask = new CreateAnnotationsTask(annotationTableObject, resultAnnotationsMap);
+    createAnnotationsTask = new CreateAnnotationsTask(ato, resultAnnotationsMap);
     return {createAnnotationsTask};
 }
 
@@ -156,15 +140,17 @@ RemoteBLASTTask* RemoteBLASTPrimerPairToAnnotationsTask::getBlastTaskForAnnotati
     const auto& regions = ann->getRegions();
     int regionsSize = regions.size();
     RemoteBLASTTaskSettings newCfg(cfg);
+    SAFE_POINT_EXT(!seqObj.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), nullptr);
+
     // One region is a regular primer, two regions - if the primer is located on junction point
     if (regionsSize == 1) {
-        newCfg.query = ctx->getSequenceData(regions.first(), stateInfo);
+        newCfg.query = seqObj->getSequenceData(regions.first(), stateInfo);
         CHECK_OP(stateInfo, nullptr);
     } else if (regionsSize == 2) {
-        newCfg.query = ctx->getSequenceData(regions.last(), stateInfo);
+        newCfg.query = seqObj->getSequenceData(regions.last(), stateInfo);
         CHECK_OP(stateInfo, nullptr);
 
-        newCfg.query += ctx->getSequenceData(regions.first(), stateInfo);
+        newCfg.query += seqObj->getSequenceData(regions.first(), stateInfo);
         CHECK_OP(stateInfo, nullptr);
     } else {
         setError(tr("Primer \"%1\" has unexpected number of regions (%2) - it should not be more than two. Please, check this primer manually.")

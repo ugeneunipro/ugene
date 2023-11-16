@@ -30,13 +30,15 @@
 
 namespace U2 {
 
-class ADVSequenceObjectContext;
+class AnnotationTableObject;
 class CreateAnnotationsTask;
+class U2SequenceObject;
 
 class RemoteBLASTPrimerPairToAnnotationsTask : public Task {
 public:
     RemoteBLASTPrimerPairToAnnotationsTask(const QString& pairName,
-                                           const QPointer<ADVSequenceObjectContext>& ctx,
+                                           const QPointer<U2SequenceObject>& seqObj,
+                                           const QPointer<AnnotationTableObject>& ato,
                                            const SharedAnnotationData& leftPrimer,
                                            const SharedAnnotationData& rightPrimer,
                                            const RemoteBLASTTaskSettings& cfg,
@@ -49,7 +51,8 @@ private:
     RemoteBLASTTask* getBlastTaskForAnnotationRegion(const SharedAnnotationData& ann);
 
     QString pairName;
-    QPointer<ADVSequenceObjectContext> ctx;
+    QPointer<U2SequenceObject> seqObj;
+    QPointer<AnnotationTableObject> ato;
     SharedAnnotationData leftPrimer;
     SharedAnnotationData rightPrimer;
     RemoteBLASTTaskSettings cfg;

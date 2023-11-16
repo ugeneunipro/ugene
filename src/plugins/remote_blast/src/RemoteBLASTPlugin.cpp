@@ -131,6 +131,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
     for (const auto& primerPair : qAsConst(selectedPrimerPairs)) {
         selectedPrimerPairGroupNames << primerPair.first->getGroup()->getName();
     }
+
     bool isAminoSeq = seqCtx->getAlphabet()->isAmino();
 
     QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, selectedPrimerPairGroupNames, av->getWidget());
@@ -178,7 +179,8 @@ void RemoteBLASTViewContext::sl_showDialog() {
             AppContext::getTaskScheduler()->registerTopLevelTask(t);
         }
     } else {
-        auto t = new RemoteBLASTPrimerPairsToAnnotationsTask(seqCtx, selectedPrimerPairs, cfg);
+        auto sequenceObject = seqCtx->getSequenceObject();
+        auto t = new RemoteBLASTPrimerPairsToAnnotationsTask(sequenceObject, selectedPrimerPairs, cfg);
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
     }
 }

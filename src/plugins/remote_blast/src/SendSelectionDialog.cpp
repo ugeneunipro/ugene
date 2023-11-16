@@ -159,6 +159,7 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* _seqCtx, bool
         auto label = new QLabel(tr("The following primer pairs will be BLASTed:"), this);
         // This listwidget shows grou names of all fit primer pairs
         auto listWidget = new QListWidget(this);
+        listWidget->setObjectName("listWidget");
         listWidget->addItems(selectedPrimerPairNames);
         layoutAnnotations->addWidget(label);
         layoutAnnotations->addWidget(listWidget);

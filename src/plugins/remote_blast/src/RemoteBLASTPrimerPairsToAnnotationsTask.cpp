@@ -23,19 +23,21 @@
 #include "RemoteBLASTPrimerPairToAnnotationsTask.h"
 
 #include <U2Core/Annotation.h>
-
-#include <U2View/ADVSequenceObjectContext.h>
+#include <U2Core/AnnotationGroup.h>
+#include <U2Core/AnnotationTableObject.h>
+#include <U2Core/DNASequenceObject.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <QPointer>
 
 namespace U2 {
 
 
-RemoteBLASTPrimerPairsToAnnotationsTask::RemoteBLASTPrimerPairsToAnnotationsTask(const QPointer<ADVSequenceObjectContext>& _ctx,
+RemoteBLASTPrimerPairsToAnnotationsTask::RemoteBLASTPrimerPairsToAnnotationsTask(const QPointer<U2SequenceObject>& _seqObj,
                                                                                  const QList<QPair<Annotation*, Annotation*>>& _primerAnnotationPairs,
                                                                                  const RemoteBLASTTaskSettings& _cfg)
     : Task(tr("BLAST primer pairs"), TaskFlags_NR_FOSE_COSC),
-    ctx(_ctx),
+    seqObj(_seqObj),
     primerAnnotationPairs(_primerAnnotationPairs),
     cfg(_cfg) {
     // We should not run more than one BLAST request per time,
@@ -46,7 +48,10 @@ RemoteBLASTPrimerPairsToAnnotationsTask::RemoteBLASTPrimerPairsToAnnotationsTask
 void RemoteBLASTPrimerPairsToAnnotationsTask::prepare() {
     for (const auto& primerPair : qAsConst(primerAnnotationPairs)) {
         auto group = primerPair.first->getGroup();
-        auto t = new RemoteBLASTPrimerPairToAnnotationsTask(group->getName(), ctx, primerPair.first->getData(), primerPair.second->getData(), cfg, group->getGroupPath());
+        auto annotationTableObject = primerPair.first->getGObject();
+        SAFE_POINT(annotationTableObject == primerPair.second->getGObject(), "Primers should have similar Annotation Table Objects", );
+
+        auto t = new RemoteBLASTPrimerPairToAnnotationsTask(group->getName(), seqObj, annotationTableObject, primerPair.first->getData(), primerPair.second->getData(), cfg, group->getGroupPath());
         tasks << t;
         addSubTask(t);
     }

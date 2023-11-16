@@ -21,6 +21,8 @@
 
 #include "RemoteBLASTPluginTests.h"
 
+#include "RemoteBLASTPrimerPairsToAnnotationsTask.h"
+
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -29,13 +31,8 @@
 namespace U2 {
 
 void GTest_RemoteBLAST::init(XMLTestFormat*, const QDomElement& el) {
-    ao = nullptr;
-    task = nullptr;
-    sequence = el.attribute(SEQUENCE_ATTR);
-    if (sequence.isEmpty()) {
-        failMissingValue(SEQUENCE_ATTR);
-        return;
-    }
+    seqId = el.attribute(SEQUENCE_OBJECT_ATTR);
+    annId = el.attribute(ANNOTATIONS_OBJECT_ATTR);
 
     algoritm = el.attribute(PROGRAM_ATTR);
     if (algoritm.isEmpty()) {
@@ -192,20 +189,55 @@ void GTest_RemoteBLAST::init(XMLTestFormat*, const QDomElement& el) {
 }
 
 void GTest_RemoteBLAST::prepare() {
-    QByteArray query(sequence.toLatin1());
-    const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
-    SAFE_POINT_OP(stateInfo, );
-    ao = new AnnotationTableObject("aaa", dbiRef);
     RemoteBLASTTaskSettings cfg;
     cfg.dbChoosen = algoritm;
     cfg.aminoT = nullptr;
     cfg.complT = nullptr;
-    cfg.query = query;
     cfg.retries = 600;
     cfg.filterResult = 0;
     cfg.useEval = 0;
     cfg.params = request;
-    task = new RemoteBLASTToAnnotationsTask(cfg, 0, ao, "", QString("result"), "");
+    if (seqId.isEmpty()) {
+        const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
+        SAFE_POINT_OP(stateInfo, );
+
+        ao = new AnnotationTableObject("aaa", dbiRef);
+        QByteArray query(sequence.toLatin1());
+        cfg.query = query;
+        task = new RemoteBLASTToAnnotationsTask(cfg, 0, ao, "", QString("result"), "");
+    } else {
+        seqObj = getContext<U2SequenceObject>(this, seqId);
+        CHECK_EXT(seqObj != nullptr, setError(QString("Sequence context not found %1").arg(seqId)), );
+
+        ao = getContext<AnnotationTableObject>(this, annId);
+        CHECK_EXT(ao != nullptr, setError(QString("AnnotationTableObject not found %1").arg(annId)), );
+
+        auto root = ao->getRootGroup();
+        auto topPrimersSubgroup = root->getSubgroup("top_primers", false);
+        auto pairsGroups = topPrimersSubgroup->getSubgroups();
+        QList<QPair<Annotation*, Annotation*>> annotationPairs;
+        for (const auto& pairGroup : qAsConst(pairsGroups)) {
+            auto annotations = pairGroup->getAnnotations();
+            QPair<Annotation*, Annotation*> annotationPair;
+            for (auto annotation : qAsConst(annotations)) {
+                CHECK_CONTINUE(annotation->getName() != "internalOligo");
+
+                switch (annotation->getStrand().getDirection()) {
+                    case U2Strand::Direct:
+                        annotationPair.first = annotation;
+                        break;
+                    case U2Strand::Complementary:
+                        annotationPair.second = annotation;
+                        break;
+                }
+                CHECK_CONTINUE(annotationPair.first != nullptr && annotationPair.second != nullptr);
+
+                annotationPairs << annotationPair;
+            }
+        }
+
+        task = new RemoteBLASTPrimerPairsToAnnotationsTask(seqObj, annotationPairs, cfg);
+    }
     addSubTask(task);
 }
 
