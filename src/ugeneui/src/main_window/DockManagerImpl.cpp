@@ -307,6 +307,7 @@ void MWDockManagerImpl::destroyDockData(DockData* d) {
     }
     docks.removeOne(d);
     updateTB(d->area);
+    activeDocks[d->area] = nullptr;
     delete d;
 }
 
