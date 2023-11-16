@@ -507,10 +507,8 @@ void FindPatternWidget::sl_onAlgorithmChanged(int index) {
     selectedAlgorithm = boxAlgorithm->itemData(index).toInt();
     updatePatternText(previousAlgorithm);
     updateLayout();
-    bool noValidationErrors = verifyPatternAlphabet();
-    if (noValidationErrors) {
-        sl_activateNewSearch(true);
-    }
+    verifyPatternAlphabet();
+    sl_activateNewSearch(true);
 }
 
 void FindPatternWidget::sl_onRegionOptionChanged(int index) {
@@ -840,7 +838,6 @@ void FindPatternWidget::setRegionToWholeSequence() {
 
 bool FindPatternWidget::verifyPatternAlphabet() {
     U2OpStatusImpl os;
-
     QStringList patternNoNames;
     QList<NamePattern> patternsWithNames = getPatternsFromTextPatternField(os);
     for (const NamePattern& name_pattern : qAsConst(patternsWithNames)) {
@@ -852,7 +849,9 @@ bool FindPatternWidget::verifyPatternAlphabet() {
     bool alphabetIsOk = checkAlphabet(patterns);
     setMessageFlag(PatternAlphabetDoNotMatch, !alphabetIsOk);
 
-    bool result = alphabetIsOk;
+    if (!alphabetIsOk) {
+        return false;
+    }
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         QString pattern = textPattern->toPlainText();
@@ -860,20 +859,19 @@ bool FindPatternWidget::verifyPatternAlphabet() {
         // Check that all symbols are ascii
         if (pattern.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
             setMessageFlag(PatternWrongRegExp, true);
-            result = false;
+            return false;
+        }
+        QRegExp regExp(pattern.toUtf8());
+        if (regExp.isValid()) {
+            setMessageFlag(PatternWrongRegExp, false);
         } else {
-            QRegExp regExp(pattern.toUtf8());
-            if (regExp.isValid()) {
-                setMessageFlag(PatternWrongRegExp, false);
-            } else {
-                setMessageFlag(PatternWrongRegExp, true);
-                result = false;
-            }
+            setMessageFlag(PatternWrongRegExp, true);
+            return false;
         }
     } else {
         setMessageFlag(PatternWrongRegExp, false);
     }
-    return result;
+    return true;
 }
 
 void FindPatternWidget::sl_onSequenceTranslationChanged(int /* index */) {
@@ -1160,32 +1158,21 @@ void FindPatternWidget::sl_findPatternTaskStateChanged() {
 
 bool FindPatternWidget::checkAlphabet(const QString& pattern) {
     ADVSequenceObjectContext* activeContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(activeContext != nullptr, "Internal error: there is no sequence in focus on pattern search!", false);
+    SAFE_POINT_NN(activeContext, false);
 
     const DNAAlphabet* alphabet = activeContext->getAlphabet();
-    if (!isAminoSequenceSelected && SeqTranslIndex_Translation == boxSeqTransl->currentIndex()) {
+    if (!isAminoSequenceSelected && boxSeqTransl->currentIndex() == SeqTranslIndex_Translation) {
         DNATranslation* translation = activeContext->getAminoTT();
-        SAFE_POINT(translation != nullptr, "Failed to get translation on pattern search!", false);
-
+        SAFE_POINT_NN(translation, false);
         alphabet = translation->getDstAlphabet();
     }
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
         return true;
     }
-    bool patternFitsIntoAlphabet = TextUtils::fits(alphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
-    if (patternFitsIntoAlphabet) {
-        return true;
+    if (selectedAlgorithm == FindAlgorithmPatternSettings_Subst && useAmbiguousBasesBox->isChecked() && !alphabet->isExtended()) {
+        alphabet = U2AlphabetUtils::getExtendedAlphabet(alphabet);
     }
-    if (useAmbiguousBasesBox->isChecked() && !alphabet->isExtended()) {
-        const DNAAlphabet* extAlphabet = U2AlphabetUtils::getExtendedAlphabet(alphabet);
-        if (extAlphabet != nullptr) {
-            bool patternFitsIntoExtAlphabet = TextUtils::fits(extAlphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
-            if (patternFitsIntoExtAlphabet) {
-                return true;
-            }
-        }
-    }
-    return false;
+    return TextUtils::fits(alphabet->getMap(), pattern.toLocal8Bit().data(), pattern.size());
 }
 
 QString FindPatternWidget::checkSearchRegion() const {
