@@ -395,7 +395,30 @@ ProcessPrimer3ResultsToAnnotationsTask* Primer3TopLevelTask::createProcessPrimer
         sequenceLength = settings->getSequence().length();
     }
 
-    return new ProcessPrimer3ResultsToAnnotationsTask(settings, bestPairs, filteredPairs, singlePrimers, groupName, annName, annDescription, sequenceLength);
+    int maxPairNumber = 0;
+    if (!annotationTableObject.isNull()) {
+        auto rootGroup = annotationTableObject->getRootGroup();
+        SAFE_POINT(rootGroup != nullptr, L10N::nullPointerError("AnnotationGroup"), {});
+
+        auto primer3ResultsGroup = rootGroup->getSubgroup(groupName, false);
+        if (primer3ResultsGroup != nullptr) {
+            auto pairGroups = primer3ResultsGroup->getSubgroups();
+            for (auto pairGroup : qAsConst(pairGroups)) {
+                auto name = pairGroup->getName();
+                static const QString PAIR_NAME_BEGINNING = "pair ";
+                CHECK_CONTINUE(name.startsWith(PAIR_NAME_BEGINNING));
+
+                auto orderNumberString = name.mid(PAIR_NAME_BEGINNING.size());
+                bool ok = false;
+                int orderNumber = orderNumberString.toInt(&ok);
+                CHECK_CONTINUE(ok);
+
+                maxPairNumber = qMax(maxPairNumber, orderNumber);
+            }
+        }
+    }
+
+    return new ProcessPrimer3ResultsToAnnotationsTask(settings, bestPairs, filteredPairs, singlePrimers, groupName, annName, annDescription, sequenceLength, maxPairNumber);
 }
 
 

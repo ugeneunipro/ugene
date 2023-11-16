@@ -38,8 +38,15 @@
 
 namespace U2 {
 
+GTest_Primer3::~GTest_Primer3() {
+    if (annotationTableId.isEmpty()) {
+        delete annotationTableObject;
+    }
+}
+
 void GTest_Primer3::init(XMLTestFormat*, const QDomElement& el) {
     seqObjCtx = el.attribute("sequence");
+    annotationTableId = el.attribute("annotation");
     circular = el.attribute("circular") == "true";
 
     settings = QSharedPointer<Primer3TaskSettings>(new Primer3TaskSettings);
@@ -556,10 +563,14 @@ void GTest_Primer3::prepare() {
         auto dbiReg = AppContext::getDbiRegistry()->getSessionTmpDbiRef(stateInfo);
         CHECK_OP(stateInfo, );
 
-        annotationTableObject = QSharedPointer<AnnotationTableObject>(new AnnotationTableObject(seqObj->getSequenceName(), dbiReg));
-        annotationTableObject->addObjectRelation(seqObj, ObjectRole_Sequence);
+        if (!annotationTableId.isEmpty()) {
+            annotationTableObject = getContext<AnnotationTableObject>(this, annotationTableId);
+        } else {
+            annotationTableObject = new AnnotationTableObject(seqObj->getSequenceName(), dbiReg);
+            annotationTableObject->addObjectRelation(seqObj, ObjectRole_Sequence);
+        }
 
-        task = new Primer3TopLevelTask(settings, seqObj, annotationTableObject.get(), "top_primers", "top_primers", "");
+        task = new Primer3TopLevelTask(settings, seqObj, annotationTableObject, "top_primers", "top_primers", "");
     } else {
         auto newFilePath = env->getVar("TEMP_DATA_DIR") + "/check_primers.gb";
         task = new Primer3TopLevelTask(settings, newFilePath, false);
@@ -627,7 +638,15 @@ Task::ReportResult GTest_Primer3::report() {
         return ReportResult_Finished;
     }
 
-    auto topPrimersGroup = topPrimersGroups.first();
+    AnnotationGroup* topPrimersGroup = nullptr;
+    for (auto group : qAsConst(topPrimersGroups)) {
+        CHECK_CONTINUE(group->getName() == "top_primers");
+
+        topPrimersGroup = group;
+        break;
+    }
+    CHECK_EXT(topPrimersGroup != nullptr, setError("top_primers group is not found"), ReportResult_Finished);
+
     if (!expectedBestPairs.isEmpty()) {
         const auto& primerGroups = topPrimersGroup->getSubgroups();
         CHECK_EXT(primerGroups.size() == expectedBestPairs.size(), setError("Unexpected primer pairs size"), ReportResult_Finished);
