@@ -34,8 +34,16 @@ class AnnotationTableObject;
 class CreateAnnotationsTask;
 class U2SequenceObject;
 
+// This task is required to find common BLAST results of left and right Primer3 primers
 class RemoteBLASTPrimerPairToAnnotationsTask : public Task {
 public:
+    // \param pairName Name of primer group. Looks like "pair [num]".
+    // \param seqObj Sequence object pointer.
+    // \param ato Annotation table object pointer.
+    // \param leftPrimer Left primer annotations data.
+    // \param rightPrimer Right primer annotations data.
+    // \param cfg Blast task configurations.
+    // \param groupPath Full path to this primer annotation group.
     RemoteBLASTPrimerPairToAnnotationsTask(const QString& pairName,
                                            const QPointer<U2SequenceObject>& seqObj,
                                            const QPointer<AnnotationTableObject>& ato,
@@ -49,6 +57,7 @@ public:
 
 private:
     RemoteBLASTTask* getBlastTaskForAnnotationRegion(const SharedAnnotationData& ann);
+    void removeAlreadyFoundBlastResults(QList<SharedAnnotationData>& resultAnnotations);
 
     QString pairName;
     QPointer<U2SequenceObject> seqObj;

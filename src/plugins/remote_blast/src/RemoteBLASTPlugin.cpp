@@ -190,10 +190,6 @@ const QList<QPair<Annotation*, Annotation*>> RemoteBLASTViewContext::getSelected
     QList<QPair<Annotation*, Annotation*>> primerAnnotationPairs;
     for (auto primerGroup : qAsConst(annGroups)) {
         auto primerAnnotations = primerGroup->getAnnotations();
-        auto primerAnnSize = primerAnnotations.size();
-        // We should have whether left and right primer (2) or left, right and internal (3)
-        CHECK_CONTINUE(primerAnnSize == 2 || primerAnnSize == 3);
-
         Annotation* forward = nullptr;
         Annotation* reverse = nullptr;
         for (auto ann : qAsConst(primerAnnotations)) {

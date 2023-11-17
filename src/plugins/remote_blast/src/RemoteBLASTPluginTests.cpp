@@ -290,9 +290,8 @@ Task::ReportResult GTest_RemoteBLAST::report() {
 }
 
 void GTest_RemoteBLAST::cleanup() {
-    if (ao != nullptr) {
+    if (!ao.isNull()) {
         delete ao;
-        ao = nullptr;
     }
 
     XmlTest::cleanup();

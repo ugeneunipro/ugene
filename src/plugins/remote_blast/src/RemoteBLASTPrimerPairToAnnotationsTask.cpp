@@ -31,6 +31,7 @@
 
 namespace U2 {
 
+// Both primers have these values similar
 static const QStringList COMMON_QUALIFIERS = {"id", "def", "accession", "hit_len"};
 
 RemoteBLASTPrimerPairToAnnotationsTask::RemoteBLASTPrimerPairToAnnotationsTask(const QString& _pairName,
@@ -48,6 +49,7 @@ RemoteBLASTPrimerPairToAnnotationsTask::RemoteBLASTPrimerPairToAnnotationsTask(c
 }
 
 void RemoteBLASTPrimerPairToAnnotationsTask::prepare() {
+    // Run BLAST for both left and right primers.
     CHECK_EXT(leftPrimer.data() != nullptr, setError(tr("The left primer is lost, probably, annotation object has been closed")), );
 
     leftPrimerBlastTask = getBlastTaskForAnnotationRegion(leftPrimer);
@@ -73,6 +75,7 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
     for (const auto& leftRes : qAsConst(leftPrimerBlastResults)) {
         auto leftAccession = leftRes->findFirstQualifierValue("accession");
         for (const auto& rightRes : qAsConst(rightPrimerBlastResults)) {
+            // Find left and fight primers results from the same sequence.
             auto rightAccession = rightRes->findFirstQualifierValue("accession");
             CHECK_CONTINUE(leftAccession == rightAccession);
 
@@ -89,10 +92,6 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
             annotationData->location->regions = U2Region::join(allRegions);
             annotationData->location->op = U2LocationOperator::U2LocationOperator_Join;
 
-            /*if (leftRes->name == "CP031776" && rightRes->name == "CP031776") {
-                int qwe = 0;
-            }*/
-
             qint64 leftFrom = 0;
             qint64 leftTo = 0;
             qint64 rightFrom = 0;
@@ -103,13 +102,10 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
                 } else {
                     if (qual.name == "hit-from") {
                         leftFrom = qual.value.toInt();
-                        // The right primer is on reverse-complementary strand, this is why, I suppose,
-                        // "hit-from" is higher than "hit-to" - we are considering the strand from right to left.
-                        // But it would be more convenient to have region in usual genbank formats here.
-                        rightTo = rightRes->findFirstQualifierValue(qual.name).toInt();
+                        rightFrom = rightRes->findFirstQualifierValue(qual.name).toInt();
                     } else if (qual.name == "hit-to") {
                         leftTo = qual.value.toInt();
-                        rightFrom = rightRes->findFirstQualifierValue(qual.name).toInt();
+                        rightTo = rightRes->findFirstQualifierValue(qual.name).toInt();
                     } else {
                         U2Qualifier commonQual(qual.name,
                                                qual.value + " | " + rightRes->findFirstQualifierValue(qual.name));
@@ -117,18 +113,46 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
                     }
                 }
             }
-            // The left primer should be on the left of the right primer
-            CHECK_CONTINUE(leftTo < rightFrom);
-
-            annotationData->qualifiers << U2Qualifier("left-reg", QString("%1..%2").arg(leftFrom).arg(leftTo));
-            annotationData->qualifiers << U2Qualifier("right-reg", QString("%1..%2").arg(rightFrom).arg(rightTo));
+            // If primer is located on reverse-complementary strand,
+            // than "hit-from" is higher than "hit-to" - we are considering the strand from right to left.
+            // Also, primers should have they 3' ends points to each other.
+            // Than means, we have two possible ways of primer locations:
+            //
+            //
+            //                   Left
+            // 1    (hit-from) ----------> (hit-to)                                      1000
+            // 1                                    (hit-to) <-------------- (hit-from)  1000
+            //                                                   Right
+            //
+            // OR
+            //
+            //                                                   Left
+            // 1                                    (hit-to) <-------------- (hit-from)  1000
+            // 1    (hit-from) ----------> (hit-to)                                      1000
+            //                  Right
+            //
+            // Result region would be more convenient to have in usual genbank formats here.
+            if (leftFrom < leftTo && rightFrom > rightTo && leftTo < rightFrom) {
+                annotationData->qualifiers << U2Qualifier("left-reg-gb", QString("%1..%2").arg(leftFrom).arg(leftTo));
+                annotationData->qualifiers << U2Qualifier("right-reg-gb", QString("%1..%2").arg(rightTo).arg(rightFrom));
+            } else if (leftFrom > leftTo && rightFrom < rightTo && leftFrom > rightFrom) {
+                annotationData->qualifiers << U2Qualifier("right-reg-gb", QString("%1..%2").arg(leftTo).arg(leftFrom));
+                annotationData->qualifiers << U2Qualifier("left-reg-gb", QString("%1..%2").arg(rightFrom).arg(rightTo));
+            } else {
+                continue;
+            }
 
             resultAnnotations << annotationData;
         }
     }
 
-    CHECK_EXT(!resultAnnotations.isEmpty(), stateInfo.addWarning(tr("No BLAST pairs have been found for  \"%1\"").arg(pairName)), {});
+    CHECK_EXT(!resultAnnotations.isEmpty(), stateInfo.addWarning(tr("No BLAST pairs have been found for \"%1\"").arg(pairName)), {});
     CHECK_EXT(!ato.isNull(), L10N::nullPointerError("AnnotationTableObject"), {});
+
+    // Remove results, which are already presented to avoid duplicity
+    removeAlreadyFoundBlastResults(resultAnnotations);
+    CHECK_OP(stateInfo, {});
+    CHECK_EXT(!resultAnnotations.isEmpty(), stateInfo.addWarning(tr("All found BLAST results already presented for \"%1\"").arg(pairName)), {});
 
     QMap<QString, QList<SharedAnnotationData>> resultAnnotationsMap;
     resultAnnotationsMap.insert(groupPath, resultAnnotations);
@@ -163,6 +187,32 @@ RemoteBLASTTask* RemoteBLASTPrimerPairToAnnotationsTask::getBlastTaskForAnnotati
     }
 
     return new RemoteBLASTTask(newCfg);
+}
+
+void RemoteBLASTPrimerPairToAnnotationsTask::removeAlreadyFoundBlastResults(QList<SharedAnnotationData>& resultAnnotations) {
+    auto rootGroup = ato->getRootGroup();
+    SAFE_POINT_EXT(rootGroup != nullptr, setError("Root group is not found, but should be"), );
+
+    auto primerPairGroup = rootGroup->getSubgroup(groupPath, false);
+    SAFE_POINT_EXT(primerPairGroup != nullptr, setError("Primer pair group is not found, but should be"), );
+
+    auto primerGroupAnnotations = primerPairGroup->getAnnotations();
+    QList<SharedAnnotationData> alreadyExistedAnnotations;
+    for (auto primerGroupAnn : qAsConst(primerGroupAnnotations)) {
+        for (auto resultAnn : qAsConst(resultAnnotations)) {
+            CHECK_CONTINUE(*primerGroupAnn->getData() == *resultAnn);
+
+            alreadyExistedAnnotations << resultAnn;
+        }
+    }
+    for (auto alreadyExistsData : qAsConst(alreadyExistedAnnotations)) {
+        auto foundRes = std::find_if(resultAnnotations.begin(), resultAnnotations.end(), [&alreadyExistsData](const SharedAnnotationData& resData) {
+            return *alreadyExistsData == *resData;
+        });
+        CHECK_CONTINUE(foundRes != resultAnnotations.end());
+
+        resultAnnotations.removeOne(*foundRes);
+    }
 }
 
 

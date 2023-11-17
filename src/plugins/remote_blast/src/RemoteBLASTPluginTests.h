@@ -43,7 +43,7 @@ private:
     QString seqId;
     QString annId;
     U2SequenceObject* seqObj = nullptr;
-    AnnotationTableObject* ao = nullptr;
+    QPointer<AnnotationTableObject> ao;
     Task* task = nullptr;
     int minLength;
     int maxLength;

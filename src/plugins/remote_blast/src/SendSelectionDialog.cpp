@@ -190,10 +190,10 @@ SendSelectionDialog::SendSelectionDialog(ADVSequenceObjectContext* _seqCtx, bool
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_Cancel()));
     connect(megablastCheckBox, SIGNAL(stateChanged(int)), SLOT(sl_megablastChecked(int)));
     connect(serviceComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_serviceChanged(int)));
+    sl_scriptSelected(0);
     // I would like to check megablast as default in case of primer pair BLASTing,
     // because it works extremely faster than regular BLAST does.
     megablastCheckBox->setChecked(annWgtController == nullptr);
-    sl_scriptSelected(0);
 }
 
 void SendSelectionDialog::sl_serviceChanged(int) {

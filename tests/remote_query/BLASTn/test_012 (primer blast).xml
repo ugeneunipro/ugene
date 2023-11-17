@@ -11,7 +11,7 @@
 	                     alg="blastn"
 	                     db="nr"
 	                     e-value="10"
-	                     word_size="11"
+	                     word_size="24"
 	                     short_seq="0"
 	                     gap_costs="5 2"
 	                     alph="nucleo"
@@ -21,6 +21,6 @@
 	                     megablast="true"
 	                     hits="200"
 						 filters="L"
-	                     expected_results="NC_001502,V01185,AF033813,AF011892,M96854,J02266,NC_001499,AY277735,AY277734,AY277733,AF455027,V01178,V01541,AF462057,AF033812,NC_001501,Z93724,K01683,M12997,J02254,J02255,L06433,X60280"/>
+	                     expected_results="NC_001502,V01185,AF033813,AF011892,M96854,NC_001499,AY277735,AY277734,AF455027,V01178,V01541,AF462057,AF033812,NC_001501,Z93724,K01683,M12997,J02254,J02255,L06433,X60280,CP031776"/>
 
 </multi-test>
