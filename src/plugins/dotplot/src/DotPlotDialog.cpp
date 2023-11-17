@@ -266,8 +266,6 @@ void DotPlotDialog::sl_directInvertedCheckBox() {
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isDirect() || isInverted());
 }
 
-static const QString COLOR_STYLE("QPushButton { background-color: %1 }");
-
 void DotPlotDialog::sl_directColorButton() {
     QObjectScopedPointer<QColorDialog> d = new U2ColorDialog(directColor, this);
     d->exec();
@@ -344,8 +342,25 @@ void DotPlotDialog::sl_loadTaskStateChanged(Task* t) {
 }
 
 void DotPlotDialog::updateColors() {
-    directColorButton->setStyleSheet(COLOR_STYLE.arg(directColor.name()));
-    invertedColorButton->setStyleSheet(COLOR_STYLE.arg(invertedColor.name()));
+    QPalette palette = directColorButton->palette();
+    palette.setColor(directColorButton->backgroundRole(), directColor);
+    directColorButton->setPalette(palette);
+
+    palette = invertedColorButton->palette();
+    palette.setColor(invertedColorButton->backgroundRole(), invertedColor);
+    invertedColorButton->setPalette(palette);
+    //invertedColorButton->setPalette(palette);
+    //invertedColorButton->setStyleSheet(COLOR_STYLE.arg(invertedColor.name()));
+    //directColorButton->setStyleSheet("color: rgb(6, 6, 254);");
+    //this->setStyleSheet("background-color: rgb(0,0,255);");
+    //this->setStyleSheet("background-color: rgb(6, 6, 254);");
+
+    /*    
+    QPalette palette = button->palette();
+    CHECK(palette.color(button->backgroundRole()) != newColor, );
+    palette.setColor(button->backgroundRole(), newColor);
+    button->setPalette(palette);
+    */
 }
 
 bool DotPlotDialog::isObjectInADV(GObject* obj) {
