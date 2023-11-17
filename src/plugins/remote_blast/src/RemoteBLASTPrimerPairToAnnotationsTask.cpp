@@ -89,9 +89,9 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
             annotationData->location->regions = U2Region::join(allRegions);
             annotationData->location->op = U2LocationOperator::U2LocationOperator_Join;
 
-            if (leftRes->name == "CP031776" && rightRes->name == "CP031776") {
+            /*if (leftRes->name == "CP031776" && rightRes->name == "CP031776") {
                 int qwe = 0;
-            }
+            }*/
 
             qint64 leftFrom = 0;
             qint64 leftTo = 0;
