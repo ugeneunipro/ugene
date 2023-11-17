@@ -126,10 +126,10 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
             //
             // OR
             //
-            //                                                   Left
-            // 1                                    (hit-to) <-------------- (hit-from)  1000
-            // 1    (hit-from) ----------> (hit-to)                                      1000
             //                  Right
+            // 1    (hit-from) ----------> (hit-to)                                      1000
+            // 1                                    (hit-to) <-------------- (hit-from)  1000
+            //                                                   Left
             //
             // Result region would be more convenient to have in usual genbank formats here.
             if (leftFrom < leftTo && rightFrom > rightTo && leftTo < rightFrom) {
