@@ -638,17 +638,13 @@ Task::ReportResult GTest_Primer3::report() {
         return ReportResult_Finished;
     }
 
-    AnnotationGroup* topPrimersGroup = nullptr;
-    for (auto group : qAsConst(topPrimersGroups)) {
-        CHECK_CONTINUE(group->getName() == "top_primers");
-
-        topPrimersGroup = group;
-        break;
-    }
-    CHECK_EXT(topPrimersGroup != nullptr, setError("top_primers group is not found"), ReportResult_Finished);
+    auto topPrimersGroup = std::find_if(topPrimersGroups.begin(), topPrimersGroups.end(), [](AnnotationGroup* group) {
+        return group->getName() == "top_primers";
+    });
+    CHECK_EXT(topPrimersGroup != topPrimersGroups.end(), setError("top_primers group is not found"), ReportResult_Finished);
 
     if (!expectedBestPairs.isEmpty()) {
-        const auto& primerGroups = topPrimersGroup->getSubgroups();
+        const auto& primerGroups = (*topPrimersGroup)->getSubgroups();
         CHECK_EXT(primerGroups.size() == expectedBestPairs.size(), setError("Unexpected primer pairs size"), ReportResult_Finished);
 
         for (int i = 0; i < primerGroups.size(); i++) {
@@ -668,7 +664,7 @@ Task::ReportResult GTest_Primer3::report() {
             }
         }
     } else if (!expectedSinglePrimers.isEmpty()) {
-        const auto& annotations = topPrimersGroup->getAnnotations();
+        const auto& annotations = (*topPrimersGroup)->getAnnotations();
         CHECK_EXT(annotations.size() == expectedSinglePrimers.size(), setError("Unexpected single primers size"), ReportResult_Finished);
 
         for (int i = 0; i < annotations.size(); i++) {

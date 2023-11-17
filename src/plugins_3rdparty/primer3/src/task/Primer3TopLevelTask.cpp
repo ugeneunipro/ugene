@@ -398,7 +398,7 @@ ProcessPrimer3ResultsToAnnotationsTask* Primer3TopLevelTask::createProcessPrimer
     int maxPairNumber = 0;
     if (!annotationTableObject.isNull()) {
         auto rootGroup = annotationTableObject->getRootGroup();
-        SAFE_POINT(rootGroup != nullptr, L10N::nullPointerError("AnnotationGroup"), {});
+        SAFE_POINT_NN(rootGroup, {});
 
         auto primer3ResultsGroup = rootGroup->getSubgroup(groupName, false);
         if (primer3ResultsGroup != nullptr) {

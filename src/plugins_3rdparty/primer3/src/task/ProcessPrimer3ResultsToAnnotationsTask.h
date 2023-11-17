@@ -83,7 +83,7 @@ private:
     QString annName;
     QString annDescription;
     qint64 sequenceLength;
-    int pairNumberOffset;
+    int pairNumberOffset = 0;
 
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
 };
