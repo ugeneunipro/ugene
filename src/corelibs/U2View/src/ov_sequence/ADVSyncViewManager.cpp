@@ -24,6 +24,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -191,6 +192,15 @@ void ADVSyncViewManager::updateEnabledState() {
     bool enabled = getViewsFromADV().size() > 1;
     syncButton->setEnabled(enabled);
     lockButton->setEnabled(enabled);
+    if (resetLockActions) {
+        for (QAction* action : { lockByStartPosAction, lockBySeqSelAction, lockByAnnSelAction }) {
+            if (action->isChecked()) {
+                action->setChecked(false);
+            }
+        }
+        lockButton->setChecked(false);
+        resetLockActions = false;
+    }
 }
 
 void ADVSyncViewManager::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
@@ -270,8 +280,8 @@ void ADVSyncViewManager::sl_lock() {
         s == lockBySeqSelAction && lockBySelPrevState || 
         s == lockByAnnSelAction && lockByAnnPrevState) {
         QAction* action = qobject_cast<QAction*>(s);
-        action->setChecked(false);
-        lockButton->setChecked(false);
+        CHECK(action, );
+        resetLockActions = true;
         saveLockStates();
         unlock();
         return;

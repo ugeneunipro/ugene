@@ -97,6 +97,8 @@ private:
     bool lockBySelPrevState = false;
     bool lockByAnnPrevState = false;
 
+    bool resetLockActions = false;
+
     QToolButton* syncButton;
     QToolButton* lockButton;
     QMenu* syncMenu;
