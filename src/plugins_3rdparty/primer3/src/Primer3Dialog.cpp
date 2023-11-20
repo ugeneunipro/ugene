@@ -920,6 +920,8 @@ void Primer3Dialog::sl_loadSettings() {
 
 void Primer3Dialog::sl_resetClicked() {
     reset();
+    CHECK(regionSelector != nullptr, );
+
     regionSelector->reset();
 }
 
