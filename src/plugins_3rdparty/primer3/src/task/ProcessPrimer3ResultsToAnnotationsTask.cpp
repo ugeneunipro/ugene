@@ -39,13 +39,14 @@
 namespace U2 {
 
 ProcessPrimer3ResultsToAnnotationsTask::ProcessPrimer3ResultsToAnnotationsTask(const QSharedPointer<Primer3TaskSettings>& _settings,
-                                                   const QList<QSharedPointer<PrimerPair>>& _bestPairs,
-                                                   const QList<QSharedPointer<PrimerPair>>& _filteredPairs,
-                                                   const QList<QSharedPointer<PrimerSingle>>& _singlePrimers,
-                                                   const QString& _groupName,
-                                                   const QString& _annName,
-                                                   const QString& _annDescription,
-                                                   qint64 _sequenceLength)
+                                                                               const QList<QSharedPointer<PrimerPair>>& _bestPairs,
+                                                                               const QList<QSharedPointer<PrimerPair>>& _filteredPairs,
+                                                                               const QList<QSharedPointer<PrimerSingle>>& _singlePrimers,
+                                                                               const QString& _groupName,
+                                                                               const QString& _annName,
+                                                                               const QString& _annDescription,
+                                                                               qint64 _sequenceLength,
+                                                                               int _pairNumberOffset)
     : Task(tr("Search primers to annotations"), TaskFlags_FOSE_COSC),
       settings(_settings),
       bestPairs(_bestPairs),
@@ -54,7 +55,8 @@ ProcessPrimer3ResultsToAnnotationsTask::ProcessPrimer3ResultsToAnnotationsTask(c
       groupName(_groupName),
       annName(_annName),
       annDescription(_annDescription),
-      sequenceLength(_sequenceLength) {}
+      sequenceLength(_sequenceLength),
+      pairNumberOffset(_pairNumberOffset) {}
 
 void ProcessPrimer3ResultsToAnnotationsTask::run() {
     int bestPairsSize = bestPairs.size();
@@ -73,8 +75,8 @@ void ProcessPrimer3ResultsToAnnotationsTask::run() {
         if (pair->rightPrimer != nullptr) {
             annotations.append(oligoToAnnotation(annName, pair->rightPrimer, productSize, U2Strand::Complementary));
         }
-        int digitsNumberInBestPairsSize = (int)std::log10(bestPairsSize) + 1;
-        QString number = QStringLiteral("%1").arg(i + 1, digitsNumberInBestPairsSize, 10, QLatin1Char('0'));
+        int digitsNumberInBestPairsSize = (int)std::log10(bestPairsSize + pairNumberOffset) + 1;
+        QString number = QStringLiteral("%1").arg(i + 1 + pairNumberOffset, digitsNumberInBestPairsSize, 10, QLatin1Char('0'));
         resultAnnotations[groupName + "/pair " + number].append(annotations);
     }
 

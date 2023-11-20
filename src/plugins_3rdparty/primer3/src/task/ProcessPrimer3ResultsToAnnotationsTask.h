@@ -53,6 +53,10 @@ public:
     * \param annName name of annotation.
     * \param annDescription description of annotation.
     * \param sequenceLength sequence length.
+    * \param pairNumberOffset Annotation group with result primer pair has a number.
+    * For example, if one primer have been found, we will have the following
+    * result group name - "pair 1". But, if @pairNumberOffset is more than, for example, 10,
+    * the group name will be "pair 11".
     */
     ProcessPrimer3ResultsToAnnotationsTask(const QSharedPointer<Primer3TaskSettings>& settings,
                                            const QList<QSharedPointer<PrimerPair>>& bestPairs,
@@ -61,7 +65,8 @@ public:
                                            const QString& groupName,
                                            const QString& annName,
                                            const QString& annDescription,
-                                           qint64 sequenceLength);
+                                           qint64 sequenceLength,
+                                           int pairNumberOffset);
 
     void run() override;
 
@@ -78,6 +83,7 @@ private:
     QString annName;
     QString annDescription;
     qint64 sequenceLength;
+    int pairNumberOffset = 0;
 
     QMap<QString, QList<SharedAnnotationData>> resultAnnotations;
 };

@@ -48,6 +48,8 @@ class GTest_Primer3 : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_Primer3, "plugin_primer_3", TaskFlags(TaskFlag_FailOnSubtaskCancel) | TaskFlag_NoRun);
 
+    ~GTest_Primer3();
+
     void prepare();
     Task::ReportResult report();
 
@@ -61,12 +63,13 @@ private:
     bool checkDoubleProperty(double value, double expectedValue, QString name);
 
     QString seqObjCtx;
+    QString annotationTableId;
     bool circular = false;
     U2Region range;
     QString reportPath;
     QSharedPointer<QTemporaryFile> csvReportTmpFile;
     U2SequenceObject* seqObj = nullptr;
-    QSharedPointer<AnnotationTableObject> annotationTableObject;
+    AnnotationTableObject* annotationTableObject = nullptr;
 
     Primer3TopLevelTask* task = nullptr;
     QSharedPointer<Primer3TaskSettings> settings;
