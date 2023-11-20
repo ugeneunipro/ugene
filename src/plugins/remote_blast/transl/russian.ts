@@ -771,29 +771,37 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <translation>BLAST для пары праймеров &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="53"/>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="86"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="58"/>
+        <source>The left primer is lost, probably, annotation object has been removed from the project or the current annotation has been removed from the file</source>
+        <translation>Левый праймер не найден, вероятно, объект аннотаций был удален из проекта либо текущая аннотация была удалена из файла</translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="64"/>
+        <source>The right primer is lost, probably, annotation object has been removed from the project or the current annotation has been removed from the file</source>
+        <translation>Правый праймер не найден, вероятно, объект аннотаций был удален из проекта либо текущая аннотация была удалена из файла</translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="91"/>
         <source>The left primer is lost, probably, annotation object has been closed</source>
         <translation>Левый праймер потерян, вероятно, объект аннотаций был закрыт</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="59"/>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="89"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="94"/>
         <source>The right primer is lost, probably, annotation object has been closed</source>
         <translation>Правый праймер потерян, вероятно, объект аннотаций был закрыт</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="149"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="152"/>
         <source>No BLAST pairs have been found for &quot;%1&quot;</source>
         <translation>Не было найдено пар BLAST для &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="155"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="158"/>
         <source>All found BLAST results already presented for &quot;%1&quot;</source>
         <translation>Все найденные результаты BLAST уже существуют в &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="180"/>
+        <location filename="../src/RemoteBLASTPrimerPairToAnnotationsTask.cpp" line="183"/>
         <source>Primer &quot;%1&quot; has unexpected number of regions (%2) - it should not be more than two. Please, check this primer manually.</source>
         <translation>Праймер &quot;%1&quot; расположен на неправильно количестве регионов (%2) - должно быть не больше двух. Пожалуйста, проверьте этот праймер вручную.</translation>
     </message>

@@ -34,8 +34,13 @@ class AnnotationTableObject;
 class CreateAnnotationsTask;
 class U2SequenceObject;
 
-// This task is required to find common BLAST results of left and right Primer3 primers
+// This task is required to find common BLAST results of left and right Primer3 primers.
+// This task BLASTs left and right primers (usually, Primer3 results), gathers both BLAST results
+// and looks for common organisms these primers accessible at.
+// This is the equivalent of the Primer-BLAST tool, look here for details:
+// https://www.ncbi.nlm.nih.gov/tools/primer-blast/primerinfo.html
 class RemoteBLASTPrimerPairToAnnotationsTask : public Task {
+    Q_OBJECT
 public:
     // \param pairName Name of primer group. Looks like "pair [num]".
     // \param seqObj Sequence object pointer.

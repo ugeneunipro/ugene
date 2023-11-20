@@ -2624,7 +2624,6 @@ GUI_TEST_CLASS_DEFINITION(test_0086) {
     class Scenario : public CustomScenario {
         void run() override {
             QWidget* dialog = GTWidget::getActiveModalWidget();
-            GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
             GTCheckBox::checkState("megablastCheckBox", true, dialog);
             int v = GTSpinBox::getValue("quantitySpinBox", dialog);
@@ -2644,8 +2643,7 @@ GUI_TEST_CLASS_DEFINITION(test_0086) {
     };
 
     GTUtilsDialog::waitForDialog(new RemoteBLASTDialogFiller(new Scenario()));
-    GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTKeyboardDriver::keyClick('b', Qt::ShiftModifier);
+    GTKeyboardDriver::keyClick('b', Qt::ShiftModifier | Qt::ControlModifier);
 }
 
 

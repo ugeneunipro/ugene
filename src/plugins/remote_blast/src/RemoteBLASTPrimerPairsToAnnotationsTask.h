@@ -35,6 +35,7 @@ class U2SequenceObject;
 
 // Run @RemoteBLASTPrimerPairToAnnotationsTask for each received primer pair
 class RemoteBLASTPrimerPairsToAnnotationsTask : public Task {
+    Q_OBJECT
 public:
     // \param seqObj Sequence object.
     // \param primerAnnotationPairs Primer pairs list.
@@ -49,8 +50,6 @@ private:
     QPointer<U2SequenceObject> seqObj;
     QList<QPair<Annotation*, Annotation*>> primerAnnotationPairs;
     RemoteBLASTTaskSettings cfg;
-
-    QList<RemoteBLASTPrimerPairToAnnotationsTask*> tasks;
 };
 
 }

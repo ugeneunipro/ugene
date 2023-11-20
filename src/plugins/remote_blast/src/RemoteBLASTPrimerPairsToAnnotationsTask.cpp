@@ -52,7 +52,6 @@ void RemoteBLASTPrimerPairsToAnnotationsTask::prepare() {
         SAFE_POINT(annotationTableObject == primerPair.second->getGObject(), "Primers should have similar Annotation Table Objects", );
 
         auto t = new RemoteBLASTPrimerPairToAnnotationsTask(group->getName(), seqObj, annotationTableObject, primerPair.first->getData(), primerPair.second->getData(), cfg, group->getGroupPath());
-        tasks << t;
         addSubTask(t);
     }
 }

@@ -122,7 +122,7 @@ void RemoteBLASTViewContext::sl_showDialog() {
     QAction* a = (QAction*)sender();
     auto viewAction = qobject_cast<GObjectViewAction*>(a);
     auto av = qobject_cast<AnnotatedDNAView*>(viewAction->getObjectView());
-    SAFE_POINT(av != nullptr, L10N::nullPointerError("AnnotatedDNAView"), );
+    SAFE_POINT_NN(av, );
 
     auto seqCtx = av->getActiveSequenceContext();
     // If we have selected primer pairs we should BLAST their regions
@@ -137,16 +137,16 @@ void RemoteBLASTViewContext::sl_showDialog() {
     QObjectScopedPointer<SendSelectionDialog> dlg = new SendSelectionDialog(seqCtx, isAminoSeq, selectedPrimerPairGroupNames, av->getWidget());
     dlg->exec();
     CHECK(!dlg.isNull(), );
-    CHECK(QDialog::Accepted == dlg->result(), );
+    CHECK(dlg->result() == QDialog::Accepted, );
 
     RemoteBLASTTaskSettings cfg = dlg->cfg;
     auto seqObj = seqCtx->getSequenceObject();
-    SAFE_POINT(seqObj != nullptr, L10N::nullPointerError("U2SequenceObject"), );
+    SAFE_POINT_NN(seqObj, );
 
     cfg.isCircular = seqObj->isCircular();
-    DNATranslation* aminoT = (dlg->translateToAmino ? seqCtx->getAminoTT() : 0);
+    DNATranslation* aminoT = dlg->translateToAmino ? seqCtx->getAminoTT() : 0;
     cfg.aminoT = aminoT;
-    DNATranslation* complT = (dlg->translateToAmino ? seqCtx->getComplementTT() : 0);
+    DNATranslation* complT = dlg->translateToAmino ? seqCtx->getComplementTT() : 0;
     cfg.complT = complT;
 
 

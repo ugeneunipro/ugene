@@ -31,7 +31,7 @@
 
 namespace U2 {
 
-// Both primers have these values similar
+// Values of these qualifiers are similar for both primers
 static const QStringList COMMON_QUALIFIERS = {"id", "def", "accession", "hit_len"};
 
 RemoteBLASTPrimerPairToAnnotationsTask::RemoteBLASTPrimerPairToAnnotationsTask(const QString& _pairName,
@@ -49,14 +49,19 @@ RemoteBLASTPrimerPairToAnnotationsTask::RemoteBLASTPrimerPairToAnnotationsTask(c
 }
 
 void RemoteBLASTPrimerPairToAnnotationsTask::prepare() {
+    // Validate primers
+    auto leftDirection = leftPrimer->getStrand().getDirection();
+    auto rightDirection = rightPrimer->getStrand().getDirection();
+    CHECK_EXT(leftDirection != rightDirection, setError("Left and right primers should be located on different strands"), );
+
     // Run BLAST for both left and right primers.
-    CHECK_EXT(leftPrimer.data() != nullptr, setError(tr("The left primer is lost, probably, annotation object has been closed")), );
+    CHECK_EXT(leftPrimer.data() != nullptr, setError(tr("The left primer is lost, probably, annotation object has been removed from the project or the current annotation has been removed from the file")), );
 
     leftPrimerBlastTask = getBlastTaskForAnnotationRegion(leftPrimer);
     CHECK_OP(stateInfo, );
 
     addSubTask(leftPrimerBlastTask);
-    CHECK_EXT(rightPrimer.data() != nullptr, setError(tr("The right primer is lost, probably, annotation object has been closed")), );
+    CHECK_EXT(rightPrimer.data() != nullptr, setError(tr("The right primer is lost, probably, annotation object has been removed from the project or the current annotation has been removed from the file")), );
 
     rightPrimerBlastTask = getBlastTaskForAnnotationRegion(rightPrimer);
     CHECK_OP(stateInfo, );
@@ -99,18 +104,16 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
             for (const auto& qual : qAsConst(leftRes->qualifiers)) {
                 if (COMMON_QUALIFIERS.contains(qual.name)) {
                     annotationData->qualifiers << qual;
+                } else if (qual.name == "hit-from") {
+                    leftFrom = qual.value.toInt();
+                    rightFrom = rightRes->findFirstQualifierValue(qual.name).toInt();
+                } else if (qual.name == "hit-to") {
+                    leftTo = qual.value.toInt();
+                    rightTo = rightRes->findFirstQualifierValue(qual.name).toInt();
                 } else {
-                    if (qual.name == "hit-from") {
-                        leftFrom = qual.value.toInt();
-                        rightFrom = rightRes->findFirstQualifierValue(qual.name).toInt();
-                    } else if (qual.name == "hit-to") {
-                        leftTo = qual.value.toInt();
-                        rightTo = rightRes->findFirstQualifierValue(qual.name).toInt();
-                    } else {
-                        U2Qualifier commonQual(qual.name,
-                                               qual.value + " | " + rightRes->findFirstQualifierValue(qual.name));
-                        annotationData->qualifiers << commonQual;
-                    }
+                    U2Qualifier commonQual(qual.name,
+                                           qual.value + " | " + rightRes->findFirstQualifierValue(qual.name));
+                    annotationData->qualifiers << commonQual;
                 }
             }
             // If primer is located on reverse-complementary strand,
@@ -147,7 +150,7 @@ QList<Task*> RemoteBLASTPrimerPairToAnnotationsTask::onSubTaskFinished(Task* sub
     }
 
     CHECK_EXT(!resultAnnotations.isEmpty(), stateInfo.addWarning(tr("No BLAST pairs have been found for \"%1\"").arg(pairName)), {});
-    CHECK_EXT(!ato.isNull(), L10N::nullPointerError("AnnotationTableObject"), {});
+    CHECK_EXT(!ato.isNull(), setError(L10N::nullPointerError("AnnotationTableObject")), {});
 
     // Remove results, which are already presented to avoid duplicity
     removeAlreadyFoundBlastResults(resultAnnotations);
