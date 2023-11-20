@@ -4939,7 +4939,7 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
             : menuItemNameToClick(menuItemNameToClick_) {};
         void run() override {
             QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
-            QAction* action = GTMenu::clickMenuItem(activePopupMenu, menuItemNameToClick, GTGlobals::UseMouse, true);
+            GTMenu::clickMenuItem(activePopupMenu, menuItemNameToClick, GTGlobals::UseMouse, true);
         }
 
     private:
