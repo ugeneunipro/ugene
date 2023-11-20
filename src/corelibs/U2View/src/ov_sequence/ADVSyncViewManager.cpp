@@ -192,14 +192,11 @@ void ADVSyncViewManager::updateEnabledState() {
     bool enabled = getViewsFromADV().size() > 1;
     syncButton->setEnabled(enabled);
     lockButton->setEnabled(enabled);
-    if (resetLockActions) {
-        for (QAction* action : { lockByStartPosAction, lockBySeqSelAction, lockByAnnSelAction }) {
-            if (action->isChecked()) {
-                action->setChecked(false);
-            }
-        }
+    if (syncModeState == SyncMode_None) {
+        lockByStartPosAction->setChecked(false);
+        lockBySeqSelAction->setChecked(false);
+        lockByAnnSelAction->setChecked(false);
         lockButton->setChecked(false);
-        resetLockActions = false;
     }
 }
 
@@ -276,16 +273,6 @@ void ADVSyncViewManager::sl_lock() {
     GCOUNTER(tvar, "SequenceView::SyncViewManager::Lock scales");
     QObject* s = sender();
     bool buttonClicked = (s == lockButton);
-    if (s == lockByStartPosAction && lockByStartPrevState || 
-        s == lockBySeqSelAction && lockBySelPrevState || 
-        s == lockByAnnSelAction && lockByAnnPrevState) {
-        QAction* action = qobject_cast<QAction*>(s);
-        CHECK(action, );
-        resetLockActions = true;
-        saveLockStates();
-        unlock();
-        return;
-    }
 
     SyncMode m = SyncMode_Start;
     if (lockButton->isChecked()) {
@@ -301,6 +288,15 @@ void ADVSyncViewManager::sl_lock() {
         sync(true, m);
     }
 
+    if (syncModeState == m) {
+        syncModeState = SyncMode_None;
+        QAction* action = qobject_cast<QAction*>(s);
+        CHECK(action, );
+        unlock();
+        return;
+    }
+
+    syncModeState = m;
     if (buttonClicked) {
         QAction* checkedAction = lockActionGroup->checkedAction();
         if (checkedAction == nullptr) {
@@ -312,13 +308,6 @@ void ADVSyncViewManager::sl_lock() {
     } else {
         lockButton->setChecked(lockActionGroup->checkedAction() != nullptr);
     }
-    saveLockStates();
-}
-
-void ADVSyncViewManager::saveLockStates() {
-    lockByStartPrevState = lockByStartPosAction->isChecked();
-    lockBySelPrevState = lockBySeqSelAction->isChecked();
-    lockByAnnPrevState = lockByAnnSelAction->isChecked();
 }
 
 void ADVSyncViewManager::sl_sync() {

@@ -63,7 +63,8 @@ private:
     enum SyncMode {
         SyncMode_Start,
         SyncMode_SeqSel,
-        SyncMode_AnnSel
+        SyncMode_AnnSel,
+        SyncMode_None
     };
 
     void sync(bool lock, SyncMode mode);
@@ -80,8 +81,6 @@ private:
 
     QList<ADVSingleSequenceWidget*> getViewsFromADV() const;
 
-    void saveLockStates();
-
     AnnotatedDNAView* adv;
 
     QAction* lockByStartPosAction;
@@ -92,12 +91,7 @@ private:
     QAction* syncByAnnSelAction;
     QActionGroup* lockActionGroup;
 
-    //previous states for lock states
-    bool lockByStartPrevState = false;
-    bool lockBySelPrevState = false;
-    bool lockByAnnPrevState = false;
-
-    bool resetLockActions = false;
+    SyncMode syncModeState = SyncMode_None;
 
     QToolButton* syncButton;
     QToolButton* lockButton;
