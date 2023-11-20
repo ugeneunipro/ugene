@@ -350,6 +350,9 @@ void ADVSyncViewManager::sync(bool lock, SyncMode m) {
             case SyncMode_AnnSel:
                 offset = offsetByAnnSel(seqW);
                 break;
+            case SyncMode_None:
+                CHECK("Unexpected switch", );
+                break;
         }
         offsets[i] = offset;
         if (seqW == focusedW) {
