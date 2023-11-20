@@ -4868,6 +4868,23 @@ GUI_TEST_CLASS_DEFINITION(test_7947) {
     CHECK_SET_ERR(!GTUtilsSequenceView::getSelection().isEmpty(), "No selected regions, but should be");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7957) {
+    class Scenario : public Filler {
+    public:
+        Scenario()
+            : Filler("Primer3Dialog") {
+        }
+        void run() override {
+            QWidget* dialog = GTWidget::getActiveModalWidget();
+            GTWidget::click(GTWidget::findWidget("resetButton", dialog));
+            GTWidget::click(GTWidget::findWidget("closeButton", dialog));
+        }
+    };
+
+    GTUtilsDialog::add(new Scenario());
+    GTMenu::clickMainMenuItem({"Tools", "Primer", "Primer3 (no target sequence)..."});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTFileDialog::openFile(testDir + "_common_data/fasta/AMINO.fa");
     GTUtilsTaskTreeView::waitTaskFinished();
