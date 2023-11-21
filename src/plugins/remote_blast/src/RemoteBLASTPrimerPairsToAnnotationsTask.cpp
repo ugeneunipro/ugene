@@ -25,6 +25,7 @@
 #include <U2Core/Annotation.h>
 #include <U2Core/AnnotationGroup.h>
 #include <U2Core/AnnotationTableObject.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -40,6 +41,7 @@ RemoteBLASTPrimerPairsToAnnotationsTask::RemoteBLASTPrimerPairsToAnnotationsTask
     seqObj(_seqObj),
     primerAnnotationPairs(_primerAnnotationPairs),
     cfg(_cfg) {
+    GCOUNTER(cvar, "BLAST_primer_multiple_pairs");
     // We should not run more than one BLAST request per time,
     // because multiple requests looks very suspicious and BLAST could block them all
     setMaxParallelSubtasks(1);

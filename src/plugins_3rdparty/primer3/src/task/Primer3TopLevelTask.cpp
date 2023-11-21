@@ -33,6 +33,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CreateAnnotationTask.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -63,7 +64,9 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
                                                               TaskFlag_FailOnSubtaskError |
                                                               TaskFlag_CollectChildrenWarnings),
     settings(_settings), seqObj(_seqObj), annotationTableObject(_aobj),
-    groupName(_groupName), annName(_annName), annDescription(_annDescription) {}
+    groupName(_groupName), annName(_annName), annDescription(_annDescription) {
+    GCOUNTER(cvar, "Primer3Task");
+}
 
 Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSettings>& _settings,
                                          const QString& _resultFilePath,
@@ -74,7 +77,9 @@ Primer3TopLevelTask::Primer3TopLevelTask(const QSharedPointer<Primer3TaskSetting
                                                               TaskFlag_FailOnSubtaskError |
                                                               TaskFlag_CollectChildrenWarnings),
     settings(_settings), resultFilePath(_resultFilePath), openView(_openView),
-    groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {}
+    groupName(PRIMER_ANNOTATION_NAME), annName(PRIMER_ANNOTATION_NAME) {
+    GCOUNTER(cvar, "Primer3Task_noTargetSequence");
+}
 
 void Primer3TopLevelTask::prepare() {
     if (settings->getSpanIntronExonBoundarySettings().enabled) {

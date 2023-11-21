@@ -24,6 +24,7 @@
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/Counter.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -43,6 +44,8 @@ RemoteBLASTPrimerPairToAnnotationsTask::RemoteBLASTPrimerPairToAnnotationsTask(c
                                                                                const QString& _groupPath)
     : Task(tr("BLAST primer pair \"%1\"").arg(_pairName), TaskFlags_NR_FOSE_COSC),
     pairName(_pairName), seqObj(_seqObj), ato(_ato), leftPrimer(_leftPrimer), rightPrimer(_rightPrimer), cfg(_cfg), groupPath(_groupPath) {
+    GCOUNTER(cvar, "BLAST_primer_only_one_pair");
+
     // We should not run more than one BLAST request per time,
     // because multiple requests looks very suspicious and BLAST could block them all
     setMaxParallelSubtasks(1);
