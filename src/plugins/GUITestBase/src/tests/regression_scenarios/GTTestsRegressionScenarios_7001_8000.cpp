@@ -4929,7 +4929,6 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
 
-    private:
         QString menuItemNameToCheck;
     };
 
@@ -4942,7 +4941,6 @@ GUI_TEST_CLASS_DEFINITION(test_7979) {
             GTMenu::clickMenuItem(activePopupMenu, menuItemNameToClick, GTGlobals::UseMouse, true);
         }
 
-    private:
         QString menuItemNameToClick;
     };
 

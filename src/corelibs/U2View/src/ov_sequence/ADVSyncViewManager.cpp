@@ -192,12 +192,6 @@ void ADVSyncViewManager::updateEnabledState() {
     bool enabled = getViewsFromADV().size() > 1;
     syncButton->setEnabled(enabled);
     lockButton->setEnabled(enabled);
-    if (syncModeState == SyncMode_None) {
-        lockByStartPosAction->setChecked(false);
-        lockBySeqSelAction->setChecked(false);
-        lockByAnnSelAction->setChecked(false);
-        lockButton->setChecked(false);
-    }
 }
 
 void ADVSyncViewManager::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
@@ -274,40 +268,34 @@ void ADVSyncViewManager::sl_lock() {
     QObject* s = sender();
     bool buttonClicked = (s == lockButton);
 
-    SyncMode m = SyncMode_Start;
+    SyncMode m = SyncMode_None;
+    if (s == lockByStartPosAction) {
+        m = SyncMode_Start;
+    } else if (s == lockBySeqSelAction) {
+        m = SyncMode_SeqSel;
+    } else if (s == lockByAnnSelAction) {
+        m = SyncMode_AnnSel;
+    } else if (buttonClicked) {
+        m = detectSyncMode();
+    }
     if (lockButton->isChecked()) {
         unlock();
     } else {
-        if (s == lockBySeqSelAction) {
-            m = SyncMode_SeqSel;
-        } else if (s == lockByAnnSelAction) {
-            m = SyncMode_AnnSel;
-        } else if (s == lockButton) {
-            m = detectSyncMode();
-        }
         sync(true, m);
     }
 
-    if (syncModeState == m) {
-        syncModeState = SyncMode_None;
-        QAction* action = qobject_cast<QAction*>(s);
-        CHECK(action, );
-        unlock();
-        return;
-    }
-
-    syncModeState = m;
     if (buttonClicked) {
-        QAction* checkedAction = lockActionGroup->checkedAction();
-        if (checkedAction == nullptr) {
-            toggleCheckedAction(m);
-        } else {
-            checkedAction->toggle();
-        }
+        toggleCheckedAction(m);
         lockButton->toggle();
     } else {
+        if (syncModeState == m) {
+            lockButton->setChecked(false);
+            m = SyncMode_None;
+            toggleCheckedAction(m);
+        }
         lockButton->setChecked(lockActionGroup->checkedAction() != nullptr);
     }
+    syncModeState = m;
 }
 
 void ADVSyncViewManager::sl_sync() {
@@ -351,8 +339,7 @@ void ADVSyncViewManager::sync(bool lock, SyncMode m) {
                 offset = offsetByAnnSel(seqW);
                 break;
             case SyncMode_None:
-                CHECK("Unexpected switch", );
-                break;
+                return;
         }
         offsets[i] = offset;
         if (seqW == focusedW) {
@@ -532,8 +519,14 @@ void ADVSyncViewManager::toggleCheckedAction(SyncMode mode) {
         case SyncMode_SeqSel:
             lockBySeqSelAction->toggle();
             break;
-        default:
+        case SyncMode_Start:
             lockByStartPosAction->toggle();
+            break;
+        case SyncMode_None:
+            lockByStartPosAction->setChecked(false);
+            lockBySeqSelAction->setChecked(false);
+            lockByAnnSelAction->setChecked(false);
+            break;
     }
 }
 
