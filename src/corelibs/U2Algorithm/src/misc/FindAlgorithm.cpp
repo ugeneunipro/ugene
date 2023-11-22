@@ -361,39 +361,37 @@ static void findInAmino_subst(FindAlgorithmResultsListener* rl,
 static const char* createAmbiguousDnaMatchMap() {
     // Source: http://www.ncbi.nlm.nih.gov/blast/fasta.shtml
     // Unknown symbol is zero: no match
-    static char map[128];
-    static bool isInitialized = false;
+    static char map[256];
+    memset(map, 0, 256);
 
-    if (!isInitialized) {
-        memset(map, 0, 128);
+    char a = 0x01;  // Bitmask: 00000001;
+    char c = 0x02;  // Bitmask: 00000010;
+    char g = 0x04;  // Bitmask: 00000100;
+    char t = 0x08;  // Bitmask: 00001000;
 
-        char a = 0x01;  // Bitmask: 00000001;
-        char c = 0x02;  // Bitmask: 00000010;
-        char g = 0x04;  // Bitmask: 00000100;
-        char t = 0x08;  // Bitmask: 00001000;
+    // Base alphabet.
+    map[(int)'A'] = a;
+    map[(int)'C'] = c;
+    map[(int)'G'] = g;
+    map[(int)'T'] = t;
+    map[(int)'U'] = t;
 
-        // Base alphabet.
-        map[(int)'A'] = a;
-        map[(int)'C'] = c;
-        map[(int)'G'] = g;
-        map[(int)'T'] = t;
-        map[(int)'U'] = t;
+    // Extended alphabet.
+    map[(int)'B'] = c | g | t;
+    map[(int)'D'] = a | g | t;
+    map[(int)'H'] = a | c | t;
+    map[(int)'K'] = g | t;
+    map[(int)'M'] = a | c;
+    map[(int)'R'] = a | g;
+    map[(int)'S'] = c | g;
+    map[(int)'V'] = a | c | g;
+    map[(int)'W'] = a | t;
+    map[(int)'Y'] = c | t;
 
-        // Extended alphabet.
-        map[(int)'B'] = c | g | t;
-        map[(int)'D'] = a | g | t;
-        map[(int)'H'] = a | c | t;
-        map[(int)'K'] = g | t;
-        map[(int)'M'] = a | c;
-        map[(int)'R'] = a | g;
-        map[(int)'S'] = c | g;
-        map[(int)'V'] = a | c | g;
-        map[(int)'W'] = a | t;
-        map[(int)'Y'] = c | t;
+    // In 'ambiguous' mode N matches any symbol.
+    map[(int)'N'] = a | c | g | t;
 
-        isInitialized = true;
-    }
-    return map;
+    return &map[0];
 }
 
 bool FindAlgorithm::cmpAmbiguousDna(char a, char b) {
@@ -681,6 +679,14 @@ static void find_subst(FindAlgorithmResultsListener* rl,
         tmp.resize(patternLen);
         complPattern = tmp.data();
         TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
+        for (int i = 0; i < patternLen; i++) {
+            if (complPattern[i] == 'N' && pattern[i] != 'N') {
+                // If some unknown symbol was replaced by 'N' in 'TextUtils::translate', do not keep N but keep the original symbol.
+                // Reason: in 'ambiguous' bases search mode 'N' matches any other symbol, and an unknown symbol (like 'Z') does not match anything
+                // but is translated as 'N' by 'TextUtils::translate'.
+                complPattern[i] = pattern[i];
+            }
+        }
         TextUtils::reverse(complPattern, patternLen);
     }
 
