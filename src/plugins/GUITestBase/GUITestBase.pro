@@ -204,6 +204,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.h \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_8001_9000.h \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.h \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h \
@@ -490,6 +491,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.cpp \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_8001_9000.cpp \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.cpp \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.cpp \
