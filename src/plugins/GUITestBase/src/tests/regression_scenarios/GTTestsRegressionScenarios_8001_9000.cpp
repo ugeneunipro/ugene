@@ -51,18 +51,17 @@ GUI_TEST_CLASS_DEFINITION(test_8009) {
     };
 
     GTLogTracer lt;
-
-    SetRefAndAlign setRefAndAlignScenario = SetRefAndAlign();
-    setRefAndAlignScenario.refUrl = dataDir + "samples/ACE/K26.ace";
-    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(&setRefAndAlignScenario));
+    SetRefAndAlign *setRefAndAlignScenario = new SetRefAndAlign();
+    setRefAndAlignScenario->refUrl = dataDir + "samples/ACE/K26.ace";
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(setRefAndAlignScenario));
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasMessage("wrong reference format"), "Expected message 'wrong reference format' not found!");    
 
     lt.clear();
-
-    setRefAndAlignScenario.refUrl = dataDir + "not_existing_path";
-    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(&setRefAndAlignScenario));
+    setRefAndAlignScenario = new SetRefAndAlign();
+    setRefAndAlignScenario->refUrl = dataDir + "not_existing_path";
+    GTUtilsDialog::waitForDialog(new AlignToReferenceBlastDialogFiller(setRefAndAlignScenario));
     GTMenu::clickMainMenuItem({"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsTaskTreeView::waitTaskFinished();
     CHECK_SET_ERR(lt.hasMessage("reference file doesn't exist"), "Expected message 'reference file doesn't exist' not found!");    
