@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 #include <api/GTUtils.h>
+#include <api/GTSequenceReadingModeDialog.h>
+#include <api/GTSequenceReadingModeDialogUtils.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <cmath>
 #include <drivers/GTKeyboardDriver.h>
@@ -4906,6 +4908,77 @@ GUI_TEST_CLASS_DEFINITION(test_7968) {
     GTUtilsDialog::waitForDialog(new PopupChooser({ADV_MENU_ANALYSE, "Predict secondary structure"}));
     GTMenu::showContextMenu(GTUtilsSequenceView::getPanOrDetView());
     GTUtilsTaskTreeView::waitTaskFinished();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7979) {
+    /*
+    * 1. Open samples/Genbank/NC_014267.1.gb and sars.gb
+    * 2. Close view for sars.gb
+    * 3. Right click on sequence object in sars.gb and add it to opened view
+    * 4. Press "Lock scales" button
+    * Expected state: "Lock scales: visible range start" menu item checked in "Lock scales" menu
+    * 5. Activate "Lock scales: visible range start" menu item in "Lock scales" menu
+    * Expected state: "Lock scales" button is not pressed
+    * 6. Press "Lock scales" button
+    * 7. Activate "Lock scales: selected annotation" menu item in "Lock scales" menu
+    * Expected state: "Lock scales: selected annotation" menu item checked in "Lock scales" menu, other items are not checked
+    */
+    GTSequenceReadingModeDialog::mode = GTSequenceReadingModeDialog::Separate;
+    GTUtilsDialog::waitForDialog(new GTSequenceReadingModeDialogUtils());
+    GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list(dataDir + "samples/Genbank/", {"NC_014267.1.gb", "sars.gb"}));
+    GTMenu::clickMainMenuItem({"File", "Open..."});
+
+    GTUtilsMdi::closeWindow("NC_004718 [sars.gb]");
+    GTUtilsMdi::closeWindow("Start Page");
+
+    GTUtilsDialog::waitForDialog(new PopupChooserByText({"Add to view", "Add to view: NC_014267 [NC_014267.1.gb]"}));
+    GTUtilsProjectTreeView::click("NC_004718", Qt::RightButton);
+
+    class MenuChecker : public CustomScenario {
+    public:
+        MenuChecker(const QString& menuItemNameToCheck_) :
+        menuItemNameToCheck(menuItemNameToCheck_) {
+        };
+        void run() override {
+            QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
+            QAction* action = GTMenu::getMenuItem(activePopupMenu, menuItemNameToCheck, true);
+            CHECK_SET_ERR(action->isChecked(), QString("Item %1 is not checked!").arg(menuItemNameToCheck));            
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+
+        QString menuItemNameToCheck;
+    };
+
+    class MenuClicker : public CustomScenario {
+    public:
+        MenuClicker(const QString& menuItemNameToClick_)
+            : menuItemNameToClick(menuItemNameToClick_) {};
+        void run() override {
+            QMenu* activePopupMenu = GTWidget::getActivePopupMenu();
+            GTMenu::clickMenuItem(activePopupMenu, menuItemNameToClick, GTGlobals::UseMouse, true);
+        }
+
+        QString menuItemNameToClick;
+    };
+
+    QAbstractButton* lockScalesButton = qobject_cast<QAbstractButton*>(GTWidget::findWidget("Lock scales"));
+    GTWidget::click(lockScalesButton);
+    QPoint menuActivationPoint = QPoint(lockScalesButton->size().width() - 6, lockScalesButton->size().height() / 2);
+    
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: visible range start")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuClicker("Lock scales: visible range start")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    CHECK_SET_ERR(!lockScalesButton->isDown(), "'Lock scales' button should be down");
+
+    GTWidget::click(lockScalesButton);
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuClicker("Lock scales: selected annotation")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
+
+    GTUtilsDialog::waitForDialog(new PopupChecker(new MenuChecker("Lock scales: selected annotation")));
+    GTWidget::click(lockScalesButton, Qt::LeftButton, menuActivationPoint);
 }
 
 }  // namespace GUITest_regression_scenarios
