@@ -573,7 +573,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/api/GTSequenceReadingModeDialogUtils.cpp \
             src/api/GTUtils.cpp \
             src/base_dialogs/GTFileDialog.cpp \
-            src/test_runner/GUITestRunner.cpp
+            src/test_runner/GUITestRunner.cpp 
 
 FORMS += \
     src/test_runner/GUITestRunner.ui

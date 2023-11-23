@@ -7759,7 +7759,7 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
     // Download a sequence from NCBI. Use "limit" for results.
-    GTUtilsDialog::waitForDialog(new NCBISearchDialogSimpleFiller("rabbit", false, 10, "Organism"));
+    GTUtilsDialog::waitForDialog(new NCBISearchDialogSimpleFiller("rabbit", false, 10, "Organism", "NM_001329075"));
     GTMenu::clickMainMenuItem({"File", "Search NCBI GenBank..."});
 
     // Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
