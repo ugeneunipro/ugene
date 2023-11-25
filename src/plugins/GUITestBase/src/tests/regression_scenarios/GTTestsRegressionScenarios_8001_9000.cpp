@@ -99,8 +99,6 @@ GUI_TEST_CLASS_DEFINITION(test_8009) {
     class SetRefAndAlign : public CustomScenario {
     public:
         void run() override {
-            auto dialog = GTWidget::getActiveModalWidget();
-
             GTLineEdit::setText(GTWidget::findLineEdit("referenceLineEdit"), refUrl);
 
             GTUtilsDialog::waitForDialog(new GTFileDialogUtils_list({testDir + "_common_data/sanger/sanger_03.ab1"}));
