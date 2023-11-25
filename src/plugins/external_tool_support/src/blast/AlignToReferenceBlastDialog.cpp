@@ -227,6 +227,12 @@ QList<Task*> AlignToReferenceBlastCmdlineTask::onSubTaskFinished(Task* subTask) 
 }
 
 Task::ReportResult AlignToReferenceBlastCmdlineTask::report() {
+    CHECK(!isCanceled(), ReportResult_Finished);
+    if (hasError()) {
+        reportString = "<br><table><tr><td><b>" + tr("Error: ") + "</b></td><td>" + stateInfo.getError() + "</td></tr></table>";
+        return ReportResult_Finished;
+    } 
+    SAFE_POINT_NN(cmdlineTask, ReportResult_Finished);
     if (cmdlineTask->hasError()) {
         reportString = cmdlineTask->getProcessErrorsLog();
         reportString.replace("\n", "<br>");
