@@ -311,9 +311,6 @@
         </item>
         <item row="0" column="3">
          <widget class="QPushButton" name="directColorButton">
-          <property name="styleSheet">
-           <string notr="true">QPushButton { background-color: rgb(26, 255, 0); }</string>
-          </property>
           <property name="text">
            <string notr="true"/>
           </property>
@@ -357,9 +354,6 @@
         </item>
         <item row="1" column="3">
          <widget class="QPushButton" name="invertedColorButton">
-          <property name="styleSheet">
-           <string notr="true">alternate-background-color: rgb(0, 26, 255);</string>
-          </property>
           <property name="text">
            <string notr="true"/>
           </property>

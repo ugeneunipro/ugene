@@ -22,6 +22,8 @@
 #include <math.h>
 
 #include <QDesktopWidget>
+#include <QProxyStyle>
+#include <QStyleFactory>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -58,6 +60,11 @@ DotPlotDialog::DotPlotDialog(QWidget* parent, AnnotatedDNAView* currentADV, int 
 
     directCheckBox->setChecked(dir);
     invertedCheckBox->setChecked(inv);
+
+    QStyle* buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
+    buttonStyle->setParent(this);
+    directColorButton->setStyle(buttonStyle);
+    invertedColorButton->setStyle(buttonStyle);
 
     updateColors();
 
@@ -343,24 +350,12 @@ void DotPlotDialog::sl_loadTaskStateChanged(Task* t) {
 
 void DotPlotDialog::updateColors() {
     QPalette palette = directColorButton->palette();
-    palette.setColor(directColorButton->backgroundRole(), directColor);
+    palette.setColor(QPalette::Button, directColor);   
     directColorButton->setPalette(palette);
 
     palette = invertedColorButton->palette();
     palette.setColor(invertedColorButton->backgroundRole(), invertedColor);
     invertedColorButton->setPalette(palette);
-    //invertedColorButton->setPalette(palette);
-    //invertedColorButton->setStyleSheet(COLOR_STYLE.arg(invertedColor.name()));
-    //directColorButton->setStyleSheet("color: rgb(6, 6, 254);");
-    //this->setStyleSheet("background-color: rgb(0,0,255);");
-    //this->setStyleSheet("background-color: rgb(6, 6, 254);");
-
-    /*    
-    QPalette palette = button->palette();
-    CHECK(palette.color(button->backgroundRole()) != newColor, );
-    palette.setColor(button->backgroundRole(), newColor);
-    button->setPalette(palette);
-    */
 }
 
 bool DotPlotDialog::isObjectInADV(GObject* obj) {
