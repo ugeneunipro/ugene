@@ -40,7 +40,12 @@ class CreateAnnotationWidgetController;
 class SendSelectionDialog : public QDialog, Ui_RemoteBLASTDialog {
     Q_OBJECT
 public:
-    SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool _isAminoSeq, QWidget* p = nullptr);
+    // \param seqCtx Sequence context.
+    // \param isAminoSeq True if sequence is amino.
+    // \param selectedPrimerPairNames This is the list is not empty, we show this names of primer groups, which primers are be about to be BLASTed.
+    // If this list is empty, we show regular Annotation Controller settings.
+    // \param parent Parent widget.
+    SendSelectionDialog(ADVSequenceObjectContext* seqCtx, bool isAminoSeq, const QStringList& selectedPrimerPairNames, QWidget* parent);
     QString getGroupName() const;
     const QString& getAnnotationDescription() const;
     AnnotationTableObject* getAnnotationObject() const;
@@ -55,25 +60,19 @@ private slots:
 
 private:
     void setupDataBaseList();
-    void setupAlphabet();
     void setUpSettings();
     void saveSettings();
     void alignComboBoxes();
 
 public:
-    int retries;
-    QString db;
-    QString requestParameters;
-    bool translateToAmino;
-    int filterResults;
-    bool useEval;
+    bool translateToAmino = false;
     RemoteBLASTTaskSettings cfg;
 
 private:
-    bool isAminoSeq;
-    CreateAnnotationWidgetController* ca_c;
-    bool extImported;
-    ADVSequenceObjectContext* seqCtx;
+    bool isAminoSeq = false;
+    CreateAnnotationWidgetController* annWgtController = nullptr;
+    bool extImported = false;
+    ADVSequenceObjectContext* seqCtx = nullptr;
 };
 
 }  // namespace U2
