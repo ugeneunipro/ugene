@@ -5664,20 +5664,20 @@ GUI_TEST_CLASS_DEFINITION(test_4969_2) {
 GUI_TEST_CLASS_DEFINITION(test_4981) {
     GTFileDialog::openFile(dataDir + "samples/PDB/1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
 
     GTKeyboardDriver::keyClick('3', Qt::AltModifier);
     auto logView = GTWidget::findWidget("dock_log_view");
-    CHECK_SET_ERR(logView->isVisible(), "Log View is not visible (check #1)");
-
-    GTWidget::click(GTWidget::findWidget("dock_log_view"));
+    GTWidget::click(logView); // Move focus to the log view.
 
     GTKeyboardDriver::keyClick('1', Qt::AltModifier);
-    auto projectViewWidget = GTWidget::findWidget("project_view");
-    CHECK_SET_ERR(!projectViewWidget->isVisible(), "Project view is expected to be invisible");
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
 
     GTKeyboardDriver::keyClick('2', Qt::AltModifier);
-    auto taskViewWidget = GTWidget::findWidget("dock_task_view");
-    CHECK_SET_ERR(taskViewWidget->isVisible(), "Task view is expected to be visible");
+    CHECK_SET_ERR(GTUtilsTaskTreeView::isViewOpened(), "Task view is expected to be opened");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4983) {

@@ -40,16 +40,14 @@ namespace U2 {
 
 #define MAX_VISIBLE_MESSAGES 1000
 
-LogViewWidget::LogViewWidget(const LogFilter& filter)
-    : messageCounter(0), connected(false) {
+LogViewWidget::LogViewWidget(const LogFilter& filter) {
     cache = new LogCache(MAX_VISIBLE_MESSAGES);
     cache->filter = filter;
     cache->setParent(this);
     init();
 }
 
-LogViewWidget::LogViewWidget(LogCache* c)
-    : messageCounter(0), connected(false) {
+LogViewWidget::LogViewWidget(LogCache* c) {
     cache = c;
     init();
 }
@@ -84,7 +82,7 @@ void LogViewWidget::init() {
     clearAction = new QAction(tr("Clear log"), this);
     connect(clearAction, SIGNAL(triggered()), SLOT(sl_clear()));
 
-    QVBoxLayout* l = new QVBoxLayout();
+    auto l = new QVBoxLayout();
     l->setSpacing(0);
     l->setMargin(0);
     l->setContentsMargins(0, 0, 0, 0);
@@ -97,11 +95,10 @@ void LogViewWidget::init() {
     edit->setContextMenuPolicy(Qt::CustomContextMenu);
     edit->setTextInteractionFlags(Qt::NoTextInteraction | Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     edit->setMaximumBlockCount(MAX_VISIBLE_MESSAGES);
-    edit->installEventFilter(this);
 
     searchEdit = new QLineEdit();
     searchEdit->setContextMenuPolicy(Qt::CustomContextMenu);
-    shortcut = new QShortcut(QString("/"), this, 0, 0, Qt::WidgetWithChildrenShortcut);
+    shortcut = new QShortcut(QString("/"), this, nullptr, nullptr, Qt::WidgetWithChildrenShortcut);
     highlighter = new SearchHighlighter(edit->document());
 
     l->addWidget(edit);
@@ -112,14 +109,6 @@ void LogViewWidget::init() {
     QObject::connect(shortcut, SIGNAL(activated()), this, SLOT(sl_showHideEdit()));
     QObject::connect(searchEdit, SIGNAL(textEdited(const QString&)), this, SLOT(sl_onTextEdited(const QString&)));
     resetView();
-}
-
-bool LogViewWidget::eventFilter(QObject* object, QEvent* event) {
-    if (edit == object && event->type() == QEvent::ShortcutOverride) {
-        event->accept();
-        return true;
-    }
-    return false;
 }
 
 void LogViewWidget::popupMenu(const QPoint& pos) {
@@ -187,9 +176,7 @@ void LogViewWidget::sl_openSettingsDialog() {
     AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_GUI_LOG);
 }
 
-void LogViewWidget::searchPopupMenu(const QPoint& pos) {
-    Q_UNUSED(pos);
-
+void LogViewWidget::searchPopupMenu(const QPoint&) {
     QMenu popup;
     QAction* action = popup.addAction(tr("logview_set_case"), this, SLOT(setSearchCaseSensitive()));
     action->setCheckable(true);
@@ -265,7 +252,7 @@ void LogViewWidget::onMessage(const LogMessage& /*msg*/) {
     messageCounter++;
 }
 
-bool LogViewWidget::isShown(const LogMessage& msg) {
+bool LogViewWidget::isShown(const LogMessage& msg) const {
     QString category = getEffectiveCategory(msg);
     return !category.isEmpty();
 }
