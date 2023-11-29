@@ -2967,7 +2967,7 @@ GUI_TEST_CLASS_DEFINITION(test_2549) {
     GTKeyboardUtils::selectAll();
     GTKeyboardUtils::copy();
 
-    const QString clipboardContent = GTClipboard::text();
+    QString clipboardContent = GTClipboard::text();
     CHECK_SET_ERR(!clipboardContent.isEmpty(), "Clipboard is empty");
 }
 

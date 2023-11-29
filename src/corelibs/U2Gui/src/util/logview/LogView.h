@@ -44,7 +44,7 @@ public:
     }
 
     QRegExp reg_exp;
-    void highlightBlock(const QString& text);
+    void highlightBlock(const QString& text) override;
 };
 
 enum LogViewSearchBoxMode {
@@ -62,24 +62,24 @@ public:
      */
     LogViewWidget(LogCache* c);
     LogViewWidget(const LogFilter& filter);
-    ~LogViewWidget();
+    ~LogViewWidget() override;
 
-    bool isShown(const LogMessage& msg);
+    bool isShown(const LogMessage& msg) const;
     bool isShown(const QString& txt);
     /** returns first category in the msg.categories that match 'show-filter' criteria*/
     QString getEffectiveCategory(const LogMessage& msg) const;
 
-    virtual void setSettings(const LogSettings& s);
+    void setSettings(const LogSettings& s) override;
 
     void setSearchBoxMode(LogViewSearchBoxMode mode);
 
-    virtual void onMessage(const LogMessage& msg);
+    void onMessage(const LogMessage& msg) override;
 
 protected:
     void addMessage(const LogMessage& msg);
     void addText(const QString& text);
-    void showEvent(QShowEvent* e);
-    void hideEvent(QHideEvent* e);
+    void showEvent(QShowEvent* e) override;
+    void hideEvent(QHideEvent* e) override;
     void resetView();
 
 private slots:
@@ -98,23 +98,23 @@ private slots:
 private:
     QString prepareText(const LogMessage& msg) const;
     void init();
-    bool eventFilter(QObject* object, QEvent* event);
 
     QTimer updateViewTimer;
-    QPlainTextEdit* edit;
-    QLineEdit* searchEdit;
-    QShortcut* shortcut;
+    QPlainTextEdit* edit = nullptr;
+    QLineEdit* searchEdit = nullptr;
+    QShortcut* shortcut = nullptr;
     SearchHighlighter* highlighter;
-    bool caseSensitive, useRegexp;
+    bool caseSensitive = false;
+    bool useRegexp = false;
 
-    int messageCounter;
-    LogCache* cache;
-    QAction* showViewAction;
-    QAction* showSettingsAction;
-    QAction* dumpCountersAction;
-    QAction* clearAction;
-    QAction* addSeparatorAction;
-    bool connected;
+    int messageCounter = 0;
+    LogCache* cache = nullptr;
+    QAction* showViewAction = nullptr;
+    QAction* showSettingsAction = nullptr;
+    QAction* dumpCountersAction = nullptr;
+    QAction* clearAction = nullptr;
+    QAction* addSeparatorAction = nullptr;
+    bool connected = false;
 };
 
 }  // namespace U2

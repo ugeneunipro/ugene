@@ -5661,6 +5661,25 @@ GUI_TEST_CLASS_DEFINITION(test_4969_2) {
     CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4981) {
+    GTFileDialog::openFile(dataDir + "samples/PDB/1CF7.PDB");
+    GTUtilsTaskTreeView::waitTaskFinished();
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    GTKeyboardDriver::keyClick('3', Qt::AltModifier);
+    auto logView = GTWidget::findWidget("dock_log_view");
+    GTWidget::click(logView); // Move focus to the log view.
+
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsProjectTreeView::checkProjectViewIsClosed();
+
+    GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+    GTUtilsProjectTreeView::checkProjectViewIsOpened();
+
+    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
+    CHECK_SET_ERR(GTUtilsTaskTreeView::isViewOpened(), "Task view is expected to be opened");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4983) {
     // 1. Open file : "data/samples/PDB/1CF7.PDB"
     GTLogTracer lt;
